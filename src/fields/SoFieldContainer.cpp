@@ -162,10 +162,10 @@ sofieldcontainer_destruct_copydict(void * closure)
 // Coin
 static SbStorage * sofieldcontainer_copydictstorage;
 
-static void 
+static void
 sofieldcontainer_copydict_cleanup(void)
 {
-  delete sofieldcontainer_copydictstorage; 
+  delete sofieldcontainer_copydictstorage;
 }
 
 static sofieldcontainer_copydict *
@@ -191,10 +191,10 @@ SoFieldContainer::initClass(void)
   sofieldcontainer_userdata_dict = new UserDataMap;
   coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, CC_ATEXIT_NORMAL);
 
-  sofieldcontainer_copydictstorage = 
+  sofieldcontainer_copydictstorage =
     new SbStorage(sizeof(sofieldcontainer_copydict),
                   sofieldcontainer_construct_copydict,
-                  sofieldcontainer_destruct_copydict);                 
+                  sofieldcontainer_destruct_copydict);
 
   coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup, CC_ATEXIT_NORMAL);
   coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
@@ -574,7 +574,7 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
   }
 
   free(buffer);
-  
+
   delete output;
 }
 
@@ -586,8 +586,8 @@ SoFieldContainer::notify(SoNotList * l)
   char c;
   SoDebugError::postInfo("SoFieldContainer::notify", "fc %p, list %p, stack %p", this, l, &c);
 #endif // debug
-  
-  const int flags = this->donotify; 
+
+  const int flags = this->donotify;
   if (flags & FLAG_DONOTIFY) {
     if (l->getLastRec()->getType() == SoNotRec::PARENT) {
       // we were notified from a child node. Create a new SoNotRec.
@@ -598,7 +598,7 @@ SoFieldContainer::notify(SoNotList * l)
     else {
       // we were notififed from a field. No need to add a new
       // SoNotRec since the base pointer will point to us.
-      assert(l->getLastRec()->getType() == SoNotRec::CONTAINER);  
+      assert(l->getLastRec()->getType() == SoNotRec::CONTAINER);
       assert(l->getLastRec()->getBase() == (SoBase*) this);
       inherited::notify(l);
     }
@@ -767,7 +767,7 @@ SoFieldContainer::initCopyDict(void)
 {
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
-     
+
   // Create two new dictionaries and _insert_ them in slot 0 in their
   // corresponding parallel lists, so they are stacked atop of the
   // already existing copy dictionaries (if any).
@@ -797,13 +797,13 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
   // instances. We need to track down exactly what happens in the
   // draggers that triggers an assert when copied. pederb, 2003-06-30
   copy->ref();
-  
+
   SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
   ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
-  
+
   assert(copiedinstances);
   assert(contentscopied);
-  
+
   SbBool s = copiedinstances->put(orig, copy);
   assert(s);
   s = contentscopied->put(orig, FALSE);
@@ -847,7 +847,7 @@ SoFieldContainer::checkCopy(const SoFieldContainer * orig)
   just return NULL here. This is done to match how it's done in SGI
   Inventor.
 
-  \sa checkCopy() 
+  \sa checkCopy()
 */
 SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * orig,
@@ -864,12 +864,12 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 
   SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
   ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
-  
+
   assert(copiedinstances);
   assert(contentscopied);
 
   SoProtoInstance * protoinst = SoProtoInstance::findProtoInstance((SoNode*) orig);
-  
+
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
     if (protoinst) {
@@ -908,7 +908,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
     SbBool copied = FALSE;
     SbBool chk = contentscopied->get(orig, copied);
     assert(chk);
-    
+
     if (!copied) {
       // we have to update the dictionary _before_ calling
       // copyContents in case we have an SoSFNode field in the node
@@ -938,7 +938,7 @@ fieldcontainer_unref_node(const SoFieldContainer * const & key,
   // unref() (not unrefNoDelete()) so that unused nodes are
   // destructed (can happen during nodekit copy)
   fieldcontainer->unref();
-} 
+}
 
 /*!
   \COININTERNAL
@@ -952,10 +952,10 @@ SoFieldContainer::copyDone(void)
 {
   sofieldcontainer_copydict * copydict =
     sofieldcontainer_get_copydict();
-  
+
   SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
   ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
-  
+
   assert(copiedinstances);
   assert(contentscopied);
 
@@ -1025,19 +1025,19 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       SoType sftype = sfield->getTypeId();
 
       if (sfield->getTypeId().isDerivedFrom(SoSFImage::getClassTypeId())) {
-	const SoSFImage * imgfield = static_cast<const SoSFImage *>(sfield);
-	SbVec2s size(0, 0);
-	int nc = 0;
-	imgfield->getValue(size, nc);
-	managed += size[0] * size[1] * nc;	
+        const SoSFImage * imgfield = static_cast<const SoSFImage *>(sfield);
+        SbVec2s size(0, 0);
+        int nc = 0;
+        imgfield->getValue(size, nc);
+        managed += size[0] * size[1] * nc;
       } else if (sfield->getTypeId().isDerivedFrom(SoSFImage3::getClassTypeId())) {
-	const SoSFImage3 * img3field = static_cast<const SoSFImage3 *>(sfield);
-	SbVec3s size(0, 0, 0);
-	int nc = 0;
-	img3field->getValue(size, nc);
-	managed += size[0] * size[1] * size[2] * nc;	
+        const SoSFImage3 * img3field = static_cast<const SoSFImage3 *>(sfield);
+        SbVec3s size(0, 0, 0);
+        int nc = 0;
+        img3field->getValue(size, nc);
+        managed += size[0] * size[1] * size[2] * nc;
       } else {
-	// memory size estimation probably not needed
+        // memory size estimation probably not needed
       }
     }
     else if (field->getTypeId().isDerivedFrom(SoMField::getClassTypeId())) {
@@ -1090,97 +1090,97 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       // TODO: stuff these values into an std::map<> instead of this ifelse...
       const char * mftypekey = mftype.getName().getString();
       if (mftypekey == MFBitMask_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFBitMask>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFBitMask>::DataType[2]) / 2;
       } else if (mftypekey == MFBool_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFBool>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFBool>::DataType[2]) / 2;
       } else if (mftypekey == MFColor_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFColor>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFColor>::DataType[2]) / 2;
       } else if (mftypekey == MFColorRGBA_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFColorRGBA>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFColorRGBA>::DataType[2]) / 2;
       } else if (mftypekey == MFDouble_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFDouble>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFDouble>::DataType[2]) / 2;
       } else if (mftypekey == MFEngine_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFEngine>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFEngine>::DataType[2]) / 2;
       } else if (mftypekey == MFEnum_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFEnum>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFEnum>::DataType[2]) / 2;
       } else if (mftypekey == MFFloat_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFFloat>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFFloat>::DataType[2]) / 2;
       } else if (mftypekey == MFInt32_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFInt32>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFInt32>::DataType[2]) / 2;
       } else if (mftypekey == MFMatrix_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFMatrix>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFMatrix>::DataType[2]) / 2;
       } else if (mftypekey == MFName_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFName>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFName>::DataType[2]) / 2;
       } else if (mftypekey == MFNode_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFNode>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFNode>::DataType[2]) / 2;
       } else if (mftypekey == MFPlane_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFPlane>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFPlane>::DataType[2]) / 2;
       } else if (mftypekey == MFRotation_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFRotation>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFRotation>::DataType[2]) / 2;
       } else if (mftypekey == MFShort_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFShort>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFShort>::DataType[2]) / 2;
       } else if (mftypekey == MFString_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFString>::DataType[2]) / 2;
-	// FIXME: should we add strlen(str[i]) to memory size? would
-	// potentially take some time to compute. 20080302 larsa
-	//for (int c = 0; c < numelements; ++c) {
-	//  add strlen(string[c]) + 1 to memory size?
-	//}
+        elementsize = sizeof(SbTypeInfo<SoMFString>::DataType[2]) / 2;
+        // FIXME: should we add strlen(str[i]) to memory size? would
+        // potentially take some time to compute. 20080302 larsa
+        //for (int c = 0; c < numelements; ++c) {
+        //  add strlen(string[c]) + 1 to memory size?
+        //}
       } else if (mftypekey == MFTime_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFTime>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFTime>::DataType[2]) / 2;
       } else if (mftypekey == MFUInt32_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFUInt32>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFUInt32>::DataType[2]) / 2;
       } else if (mftypekey == MFUShort_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFUShort>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFUShort>::DataType[2]) / 2;
       } else if (mftypekey == MFVec2b_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec2b>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec2b>::DataType[2]) / 2;
       } else if (mftypekey == MFVec2d_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec2d>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec2d>::DataType[2]) / 2;
       } else if (mftypekey == MFVec2f_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec2f>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec2f>::DataType[2]) / 2;
       } else if (mftypekey == MFVec2i32_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec2i32>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec2i32>::DataType[2]) / 2;
       } else if (mftypekey == MFVec2s_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec2s>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec2s>::DataType[2]) / 2;
       } else if (mftypekey == MFVec3b_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec3b>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec3b>::DataType[2]) / 2;
       } else if (mftypekey == MFVec3d_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec3d>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec3d>::DataType[2]) / 2;
       } else if (mftypekey == MFVec3f_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec3f>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec3f>::DataType[2]) / 2;
       } else if (mftypekey == MFVec3i32_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec3i32>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec3i32>::DataType[2]) / 2;
       } else if (mftypekey == MFVec3s_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec3s>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec3s>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4b_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4b>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4b>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4d_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4d>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4d>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4f_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4f>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4f>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4i32_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4i32>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4i32>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4s_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4s>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4s>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4ub_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4ub>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4ub>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4ui32_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4ui32>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4ui32>::DataType[2]) / 2;
       } else if (mftypekey == MFVec4us_string.getString()) {
-	elementsize = sizeof(SbTypeInfo<SoMFVec4us>::DataType[2]) / 2;
+        elementsize = sizeof(SbTypeInfo<SoMFVec4us>::DataType[2]) / 2;
       } else {
-	// unsupported field type
-	elementsize = -1;
+        // unsupported field type
+        elementsize = -1;
       }
 
 #undef SBNAMESTRING
 
       if (mfield->isDeleteValuesEnabled()) {
-	// assume this is a self-managed multi-field
-	managed += elementsize * numelements;
+        // assume this is a self-managed multi-field
+        managed += elementsize * numelements;
       } else {
-	// assume setValuesPointer() has been used
-	unmanaged += elementsize * numelements;
+        // assume setValuesPointer() has been used
+        unmanaged += elementsize * numelements;
       }
     }
   }
@@ -1197,28 +1197,28 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
   \sa getUserData()
   \since Coin 2.0
 */
-void 
+void
 SoFieldContainer::setUserData(void * userdata) const
 {
   (void)sofieldcontainer_userdata_dict->put(this, userdata);
 }
 
-/*!  
+/*!
   Return the generic user data pointer for this field container, or
   NULL if no user data has been set.
 
   \sa setUserData()
   \since Coin 2.0
 */
-void * 
+void *
 SoFieldContainer::getUserData(void) const
 {
   void * tmp = NULL;
   if (sofieldcontainer_userdata_dict->get(this, tmp)) {
     return tmp;
   }
-  return NULL;  
+  return NULL;
 }
 
 #undef FLAG_DONOTIFY
-#undef FLAG_FIRSTINSTANCE 
+#undef FLAG_FIRSTINSTANCE

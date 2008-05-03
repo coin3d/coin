@@ -71,7 +71,7 @@ SoZoomMode::SoZoomMode(SbName name)
   // it if we ever need one in the future.
   PRIVATE(this) = NULL;
   this->set1DValueFunc(SoNavigationMode::getMouseMoveVerticalNormalizedDistance,
-		       NULL);
+                       NULL);
 }
 
 /*!
@@ -116,7 +116,7 @@ SoZoomMode::handleEvent(const SoEvent * event, const SoNavigationControl * ctrl)
         ctrl->saveCamera();
       }
       this->finish();
-      return TRUE; 
+      return TRUE;
     } else if (button == SoMouseButtonEvent::BUTTON5) {  // Zoom out
       if (state == SoButtonEvent::DOWN) {
         if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
@@ -184,7 +184,7 @@ SoZoomMode::handleEvent(const SoEvent * event, const SoNavigationControl * ctrl)
     if (distorigo > float(sqrt(FLT_MAX))) {
 #if 0 // debug
       fprintf(stderr, "zoomed too far (distance to origo==%f (%e))",
-	      distorigo, distorigo);
+              distorigo, distorigo);
 #endif // debug
     }
     else {
@@ -195,7 +195,7 @@ SoZoomMode::handleEvent(const SoEvent * event, const SoNavigationControl * ctrl)
     SoType utmcamtype = SoType::fromName("UTMCamera");
   if (utmcamtype != SoType::badType() &&
       camera->isOfType(utmcamtype)) {
-    
+
       SoSFVec3d * utmposfield = (SoSFVec3d *) camera->getField("utmposition");
       SbVec3d camposd;
       camposd.setValue(camera->position.getValue());

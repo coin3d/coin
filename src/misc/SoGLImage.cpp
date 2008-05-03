@@ -875,7 +875,7 @@ SoGLImage::isOfType(SoType type) const
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   depthmap->close(state);
 
@@ -1067,7 +1067,7 @@ SoGLImage::setData(const SbImage *image,
       SbBool compress =
         (PRIVATE(this)->flags & COMPRESSED) &&
         SoGLDriverDatabase::isSupported(glw, SO_GL_TEXTURE_COMPRESSION);
-      
+
       if (dl->isMipMapTextureObject()) {
         if (is3D)
           fast_mipmap(createinstate, size[0], size[1], size[2], nc, bytes,
@@ -1770,7 +1770,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
 
     this->applyFilter(mipmap);
-    
+
     if (!mipmap) {
       if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
         cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, internalFormat, w, h, d,
@@ -1817,7 +1817,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       mipmapimage = FALSE;
     }
-    
+
     this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) &&
         SoGLDriverDatabase::isSupported(glw, SO_GL_ANISOTROPIC_FILTERING)) {

@@ -41,12 +41,12 @@
 
   \verbatim
   #Inventor V2.1 ascii
-  
+
   Material { ambientColor 1 0 0 }
   Cone { }
-  
+
   Translation { translation 5 0 0 }
-  
+
   Material { }
   Sphere { }
   \endverbatim
@@ -91,20 +91,20 @@
 
   \verbatim
   #Inventor V2.1 ascii
-  
+
   Separator {
      Coordinate3 {
         point [ 0 0 0, 1 0 0, 1 1 0 ]
      }
-  
+
      Material {
         diffuseColor [ 1 0 0, 1 1 0, 0 0 1 ]
      }
-  
+
      MaterialBinding {
         value PER_VERTEX
      }
-  
+
      IndexedFaceSet {
         coordIndex [ 0, 1, 2, -1 ]
      }
@@ -257,22 +257,22 @@
 
 class SoMaterialP {
 public:
-  SoMaterialP() : 
+  SoMaterialP() :
 #ifdef COIN_THREADSAFE
     colorpacker_storage(sizeof(void*), alloc_colorpacker, free_colorpacker),
 #endif // COIN_THREADSAFE
     vbo(NULL) { }
   ~SoMaterialP() { delete this->vbo; }
-  
+
   int materialtype;
   int transparencyflag;
-  
+
 #ifdef COIN_THREADSAFE
   SbStorage colorpacker_storage;
 #else // COIN_THREADSAFE
   SoColorPacker single_colorpacker;
 #endif // COIN_THREADSAFE
-  
+
   SoColorPacker * getColorPacker(void) {
 #ifdef COIN_THREADSAFE
     SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
@@ -316,7 +316,7 @@ SoMaterial::SoMaterial(void)
   SO_NODE_ADD_FIELD(emissiveColor, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(shininess, (0.2f));
   SO_NODE_ADD_FIELD(transparency, (0.0f));
-  
+
   PRIVATE(this)->materialtype = TYPE_NORMAL;
   PRIVATE(this)->transparencyflag = FALSE; // we know it's not transparent
 }
@@ -372,14 +372,14 @@ SoMaterial::doAction(SoAction * action)
     if (state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       const SoColorPacker * packer = PRIVATE(this)->getColorPacker();
       if (packer) {
-	SoProfilerElement * profilerelt = SoProfilerElement::get(state);
-	assert(profilerelt);
-	SbProfilingData & data = profilerelt->getProfilingData();
-	int entry = data.getIndex(action->getCurPath(), TRUE);
-	assert(entry != -1);
-	size_t mem = data.getNodeFootprint(entry, SbProfilingData::MEMORY_SIZE);
-	data.setNodeFootprint(entry, SbProfilingData::MEMORY_SIZE,
-			      mem + packer->getSize() * sizeof(uint32_t));
+        SoProfilerElement * profilerelt = SoProfilerElement::get(state);
+        assert(profilerelt);
+        SbProfilingData & data = profilerelt->getProfilingData();
+        int entry = data.getIndex(action->getCurPath(), TRUE);
+        assert(entry != -1);
+        size_t mem = data.getNodeFootprint(entry, SbProfilingData::MEMORY_SIZE);
+        data.setNodeFootprint(entry, SbProfilingData::MEMORY_SIZE,
+                              mem + packer->getSize() * sizeof(uint32_t));
       }
     }
   }
@@ -457,7 +457,7 @@ SoMaterial::doAction(SoAction * action)
 
   if (bitmask) {
     SbColor dummycolor(0.8f, 0.8f, 0.0f);
-    float dummyval = 0.2f;    
+    float dummyval = 0.2f;
     const SbColor * diffuseptr = this->diffuseColor.getValues(0);
     int numdiffuse = this->diffuseColor.getNum();
 
@@ -468,10 +468,10 @@ SoMaterial::doAction(SoAction * action)
       numdiffuse = this->emissiveColor.getNum();
       // if only emissive color, turn off lighting and render as diffuse.
       // this is much faster
-      SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR); 
+      SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
     }
     else if (this->getNodeType() == SoNode::VRML1) {
-      SoLightModelElement::set(state, this, SoLightModelElement::PHONG); 
+      SoLightModelElement::set(state, this, SoLightModelElement::PHONG);
     }
 
 #if COIN_DEBUG
@@ -490,13 +490,13 @@ SoMaterial::doAction(SoAction * action)
 #endif // COIN_DEBUG
 
     const int numtransp = this->transparency.getNum();
-    SoLazyElement::setMaterials(state, this, bitmask, 
+    SoLazyElement::setMaterials(state, this, bitmask,
                                 PRIVATE(this)->getColorPacker(),
-                                diffuseptr, numdiffuse, 
+                                diffuseptr, numdiffuse,
                                 this->transparency.getValues(0), numtransp,
-                                bitmask & SoLazyElement::AMBIENT_MASK ? 
+                                bitmask & SoLazyElement::AMBIENT_MASK ?
                                 this->ambientColor[0] : dummycolor,
-                                bitmask & SoLazyElement::EMISSIVE_MASK ? 
+                                bitmask & SoLazyElement::EMISSIVE_MASK ?
                                 this->emissiveColor[0] : dummycolor,
                                 bitmask & SoLazyElement::SPECULAR_MASK ?
                                 this->specularColor[0] : dummycolor,
@@ -547,7 +547,7 @@ SoMaterial::notify(SoNotList *list)
 // to test for special vrml1 case. It's not used right now,
 // but it might be enabled again later. pederb, 2002-09-11
 //
-int 
+int
 SoMaterial::getMaterialType(void)
 {
   if (this->getNodeType() != SoNode::VRML1) return TYPE_NORMAL;
@@ -560,7 +560,7 @@ SoMaterial::getMaterialType(void)
         PRIVATE(this)->materialtype = TYPE_VRML1_ONLYEMISSIVE;
       }
       else if (this->emissiveColor.getNum() > this->diffuseColor.getNum()) {
-        PRIVATE(this)->materialtype = TYPE_VRML1_ONLYEMISSIVE;          
+        PRIVATE(this)->materialtype = TYPE_VRML1_ONLYEMISSIVE;
       }
       else {
         PRIVATE(this)->materialtype = TYPE_NORMAL;

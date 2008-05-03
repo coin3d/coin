@@ -52,7 +52,7 @@ SoGLCgShaderParameter::shaderType(void) const
 
 void
 SoGLCgShaderParameter::setState(const SoGLShaderObject * shader,
-				CGGLenum matrix, CGGLenum transform,
+                                CGGLenum matrix, CGGLenum transform,
                                 const char* name)
 {
   if (this->isValid(shader, name, CG_FLOAT4x4))
@@ -93,7 +93,7 @@ SoGLCgShaderParameter::set4f(const SoGLShaderObject * shader, const float * v,
 
 void
 SoGLCgShaderParameter::set1fv(const SoGLShaderObject * shader, const int num,
-			      const float* v, const char * name, const int)
+                              const float* v, const char * name, const int)
 {
   int cnt = num;
   if (this->isValid(shader, name, CG_ARRAY, &cnt))
@@ -102,7 +102,7 @@ SoGLCgShaderParameter::set1fv(const SoGLShaderObject * shader, const int num,
 
 void
 SoGLCgShaderParameter::set2fv(const SoGLShaderObject * shader, const int num,
-			      const float *v, const char * name, const int)
+                              const float *v, const char * name, const int)
 {
   int cnt = num;
   if (this->isValid(shader, name, CG_ARRAY, &cnt))
@@ -111,7 +111,7 @@ SoGLCgShaderParameter::set2fv(const SoGLShaderObject * shader, const int num,
 
 void
 SoGLCgShaderParameter::set3fv(const SoGLShaderObject * shader, const int num,
-			      const float *v, const char * name, const int)
+                              const float *v, const char * name, const int)
 {
   int cnt = num;
   if (this->isValid(shader, name, CG_ARRAY, &cnt))
@@ -120,7 +120,7 @@ SoGLCgShaderParameter::set3fv(const SoGLShaderObject * shader, const int num,
 
 void
 SoGLCgShaderParameter::set4fv(const SoGLShaderObject * shader, const int num,
-			      const float *v, const char * name, const int)
+                              const float *v, const char * name, const int)
 {
   int cnt = num;
   if (this->isValid(shader, name, CG_ARRAY, &cnt))
@@ -129,8 +129,8 @@ SoGLCgShaderParameter::set4fv(const SoGLShaderObject * shader, const int num,
 
 void
 SoGLCgShaderParameter::setMatrix(const SoGLShaderObject * shader,
-				 const float * value, const char * name,
-				 const int)
+                                 const float * value, const char * name,
+                                 const int)
 {
   // FIXME: Support of other matrices, e.g. float3x4? -- 20050128 martin
   if (this->isValid(shader, name, CG_FLOAT4x4)) {
@@ -144,8 +144,8 @@ SoGLCgShaderParameter::setMatrix(const SoGLShaderObject * shader,
 
 void
 SoGLCgShaderParameter::setMatrixArray(const SoGLShaderObject * shader,
-				      const int num, const float * value,
-				      const char * name, const int)
+                                      const int num, const float * value,
+                                      const char * name, const int)
 {
   // *******************************************
   // FIXME -> NOT TESTED YET!!! 20050128 martin
@@ -163,7 +163,7 @@ SoGLCgShaderParameter::setMatrixArray(const SoGLShaderObject * shader,
 
 void
 SoGLCgShaderParameter::set1i(const SoGLShaderObject * shader,
-			     const int32_t value, const char * name, const int)
+                             const int32_t value, const char * name, const int)
 {
   if (this->isValid(shader, name, CG_INT))
     glue_cgGLSetParameter1f(this->cgParameter, (float)value);
@@ -171,24 +171,24 @@ SoGLCgShaderParameter::set1i(const SoGLShaderObject * shader,
 
 void
 SoGLCgShaderParameter::set2i(const SoGLShaderObject * shader,
-			     const int32_t * value, const char * name,
-			     const int)
+                             const int32_t * value, const char * name,
+                             const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
 SoGLCgShaderParameter::set3i(const SoGLShaderObject * shader,
-			     const int32_t * value, const char * name,
-			     const int)
+                             const int32_t * value, const char * name,
+                             const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
 SoGLCgShaderParameter::set4i(const SoGLShaderObject * shader,
-			     const int32_t * value, const char * name,
-			     const int)
+                             const int32_t * value, const char * name,
+                             const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
@@ -258,7 +258,7 @@ SoGLCgShaderParameter::isEqual(CGtype type1, CGtype type2)
 
 SbBool
 SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
-			       const char* name, CGtype type, int * num)
+                               const char* name, CGtype type, int * num)
 {
   assert(shader->shaderType() == SoShader::CG_SHADER);
 
@@ -269,12 +269,12 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
       glue_cgIsParameter(this->cgParameter)) {
     if (num) { // assume: this->cacheType == CG_ARRAY
       if (this->cacheSize < *num) {
-	// FIXME: better error handling - 20050128 martin
-	SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
-				  "parameter %s[%d] < input[%d]!",
-				  this->cacheName.getString(),
-				  this->cacheSize, *num);
-	*num = this->cacheSize;
+        // FIXME: better error handling - 20050128 martin
+        SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
+                                  "parameter %s[%d] < input[%d]!",
+                                  this->cacheName.getString(),
+                                  this->cacheSize, *num);
+        *num = this->cacheSize;
       }
       return (*num > 0);
     }
@@ -295,9 +295,9 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
   if (!this->isEqual(this->cacheType, type)) {
     SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
                               "In main(): parameter %s [%s] is "
-			      "of wrong type [%s]!",
+                              "of wrong type [%s]!",
                               this->cacheName.getString(),
-			      glue_cgGetTypeString(this->cacheType),
+                              glue_cgGetTypeString(this->cacheType),
                               glue_cgGetTypeString(type));
     this->cacheType = CG_UNKNOWN_TYPE;
     return FALSE;
@@ -309,9 +309,9 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
 
     if (dim != 1) {
       SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
-				"In main(): Dimension of %s is %d "
-				"(only dim=1 is supported)",
-				this->cacheName.getString(), dim);
+                                "In main(): Dimension of %s is %d "
+                                "(only dim=1 is supported)",
+                                this->cacheName.getString(), dim);
       return FALSE;
     }
     // FIXME: What about checking the array sub type? - 20050128 martin
@@ -319,12 +319,12 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
     this->cacheSize = glue_cgGetArraySize(this->cgParameter, 0);
     if (num) {
       if (this->cacheSize < *num) {
-	// FIXME: better error handling - 20050128 martin
-	SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
-				  "parameter %s[%d] < input[%d]!",
-				  this->cacheName.getString(),
-				  this->cacheSize, *num);
-	*num = this->cacheSize;
+        // FIXME: better error handling - 20050128 martin
+        SoDebugError::postWarning("SoGLCgShaderParameter::isValid",
+                                  "parameter %s[%d] < input[%d]!",
+                                  this->cacheName.getString(),
+                                  this->cacheSize, *num);
+        *num = this->cacheSize;
       }
       return (*num > 0);
     }

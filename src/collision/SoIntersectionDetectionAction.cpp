@@ -48,52 +48,52 @@
   #include <Inventor/errors/SoDebugError.h>
   #include <Inventor/nodekits/SoNodeKit.h>
   #include <Inventor/nodes/SoSeparator.h>
-  
+
   static SoIntersectionDetectionAction::Resp
-  intersectionCB(void * closure, 
+  intersectionCB(void * closure,
                  const SoIntersectingPrimitive * pr1,
                  const SoIntersectingPrimitive * pr2)
   {
     (void)fprintf(stdout, "intersection hit!\n");
     return SoIntersectionDetectionAction::NEXT_PRIMITIVE;
   }
-  
+
   int
   main(int argc, char ** argv)
   {
     SoDB::init();
     SoNodeKit::init();
     SoInteraction::init();
-  
+
     if (argc != 2) {
       (void)fprintf(stderr, "\n\tUsage: testapp <filename.iv>\n\n");
       exit(1);
     }
-  
+
     SoInput in;
     SbBool ok = in.openFile(argv[1]);
     assert(ok);
     SoSeparator * root = SoDB::readAll(&in);
     assert(root);
-  
+
     root->ref();
-  
+
     SoIntersectionDetectionAction ida;
     ida.addIntersectionCallback(intersectionCB, NULL);
     ida.setManipsEnabled(FALSE);
     ida.setDraggersEnabled(FALSE);
     ida.setIntersectionDetectionEpsilon(10.0f);
-  
+
     SbTime starttime = SbTime::getTimeOfDay();
     SoDebugError::postInfo("main", "SoIntersectionDetectionAction::apply");
-  
+
     ida.apply(root);
-  
+
     SoDebugError::postInfo("main", "apply() done after %f seconds.",
                            (SbTime::getTimeOfDay() - starttime).getValue());
-  
+
     root->unref();
-  
+
     return 0;
   }
   \endcode
@@ -395,14 +395,14 @@ SoIntersectionDetectionAction::isTypeEnabled(SoType type, SbBool checkgroups) co
   if ( checkgroups ) {
     // is type a dragger?
     if ( !PRIVATE(this)->draggersenabled &&
-	 type.isDerivedFrom(SoDragger::getClassTypeId()) ) return FALSE;
+         type.isDerivedFrom(SoDragger::getClassTypeId()) ) return FALSE;
     // is type a manip?
     if ( !PRIVATE(this)->manipsenabled ) {
       if ( type.isDerivedFrom(SoTransformManip::getClassTypeId()) ||
-	   type.isDerivedFrom(SoClipPlaneManip::getClassTypeId()) ||
-	   type.isDerivedFrom(SoDirectionalLightManip::getClassTypeId()) ||
-	   type.isDerivedFrom(SoPointLightManip::getClassTypeId()) ||
-	   type.isDerivedFrom(SoSpotLightManip::getClassTypeId()) ) return FALSE;
+           type.isDerivedFrom(SoClipPlaneManip::getClassTypeId()) ||
+           type.isDerivedFrom(SoDirectionalLightManip::getClassTypeId()) ||
+           type.isDerivedFrom(SoPointLightManip::getClassTypeId()) ||
+           type.isDerivedFrom(SoSpotLightManip::getClassTypeId()) ) return FALSE;
     }
   }
   return TRUE;
@@ -1129,7 +1129,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
                            "total number of shapedata items == %d",
                            this->shapedata.getLength());
-    
+
   }
 
   const SbOctTreeFuncs funcs = {
@@ -1298,7 +1298,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
 
   const float theepsilon = this->getEpsilon();
   const SbVec3f e(theepsilon, theepsilon, theepsilon);
- 
+
   for (unsigned int i = 0; i < iterationprims->numTriangles(); i++) {
     SbTri3f * t1 = (SbTri3f *) iterationprims->getTriangle(i);
 
@@ -1308,7 +1308,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
       tribbox.getMin() -= e;
       tribbox.getMax() += e;
     }
-    
+
     SbList<void*> candidatetris;
     octtree->findItems(tribbox, candidatetris);
 
@@ -1419,7 +1419,7 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
         primitives->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
         primitives->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
         primitives->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
-	int c;
+        int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
             (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
@@ -1432,8 +1432,8 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
           case SoIntersectionDetectionAction::ABORT:
             cont = FALSE;
             goto done;
-	  default:
-	    assert(0);
+          default:
+            assert(0);
           }
         }
       }

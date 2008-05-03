@@ -84,7 +84,7 @@ sogl_glue_instance(const SoState * state)
   return cc_glglue_instance(action->getCacheContext());
 #else // disabled
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-    return cc_glglue_instance(action->getCacheContext());    
+    return cc_glglue_instance(action->getCacheContext());
   }
   static int didwarn = 0;
   if (!didwarn) {
@@ -95,7 +95,7 @@ sogl_glue_instance(const SoState * state)
   }
   // just return some cc_glglue instance. It usually doesn't matter
   // that much unless multiple contexts on multiple displays are used.
-  return cc_glglue_instance(1); 
+  return cc_glglue_instance(1);
 #endif // workaround version
 }
 
@@ -138,11 +138,11 @@ sogl_render_cone(const float radius,
   const SbBool * unitenabled = NULL;
   int maxunit = 0;
   const cc_glglue * glue = NULL;
-  
+
   int flags = flagsin;
 
   if (state) {
-    unitenabled = 
+    unitenabled =
       SoMultiTextureEnabledElement::getEnabledUnits(state, maxunit);
     if (unitenabled) {
       glue = sogl_glue_instance(state);
@@ -312,7 +312,7 @@ sogl_render_cylinder(const float radius,
   int flags = flagsin;
 
   if (state) {
-    unitenabled = 
+    unitenabled =
       SoMultiTextureEnabledElement::getEnabledUnits(state, maxunit);
     if (unitenabled) {
       glue = sogl_glue_instance(state);
@@ -486,7 +486,7 @@ sogl_render_sphere(const float radius,
   unsigned int flags = flagsin;
 
   if (state && (flags & SOGL_NEED_TEXCOORDS)) {
-    unitenabled = 
+    unitenabled =
       SoMultiTextureEnabledElement::getEnabledUnits(state, maxunit);
     if (unitenabled) {
       glue = sogl_glue_instance(state);
@@ -494,7 +494,7 @@ sogl_render_sphere(const float radius,
     }
     else maxunit = -1;
   }
-  
+
   int stacks = numstacks;
   int slices = numslices;
 
@@ -798,7 +798,7 @@ sogl_render_cube(const float width,
   int flags = flagsin;
 
   if (state) {
-    unitenabled = 
+    unitenabled =
       SoMultiTextureEnabledElement::getEnabledUnits(state, maxunit);
     if (unitenabled) {
       glue = sogl_glue_instance(state);
@@ -866,18 +866,18 @@ namespace { namespace SoGL { namespace IndexedLineSet {
   };
 
   template < int NormalBinding,
-	     int MaterialBinding,
-	     int TexturingEnabled >
+             int MaterialBinding,
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * coords,
-		       const int32_t *indices,
-		       int num_vertexindices,
-		       const SbVec3f *normals,
-		       const int32_t *normindices,
-		       SoMaterialBundle *const materials,
-		       const int32_t *matindices,
-		       const SoTextureCoordinateBundle * const texcoords,
-		       const int32_t *texindices,
-		       const int drawAsPoints)
+                       const int32_t *indices,
+                       int num_vertexindices,
+                       const SbVec3f *normals,
+                       const int32_t *normindices,
+                       SoMaterialBundle *const materials,
+                       const int32_t *matindices,
+                       const SoTextureCoordinateBundle * const texcoords,
+                       const int32_t *texindices,
+                       const int drawAsPoints)
   {
     const SbVec3f * coords3d = NULL;
     const SbVec4f * coords4d = NULL;
@@ -916,217 +916,217 @@ namespace { namespace SoGL { namespace IndexedLineSet {
     }
 
     if ((AttributeBinding)MaterialBinding == PER_SEGMENT ||
-	(AttributeBinding)MaterialBinding == PER_SEGMENT_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_SEGMENT ||
-	(AttributeBinding)NormalBinding == PER_SEGMENT_INDEXED) {
+        (AttributeBinding)MaterialBinding == PER_SEGMENT_INDEXED ||
+        (AttributeBinding)NormalBinding == PER_SEGMENT ||
+        (AttributeBinding)NormalBinding == PER_SEGMENT_INDEXED) {
       int previ;
 
       if (drawAsPoints)
-	glBegin(GL_POINTS);
+        glBegin(GL_POINTS);
       else
-	glBegin(GL_LINES);
+        glBegin(GL_LINES);
 
       while (indices < end) {
-	previ = *indices++;
+        previ = *indices++;
 
-	// Variable used for counting errors and make sure not a bunch of
-	// errormessages flood the screen.
-	static uint32_t current_errors = 0;
+        // Variable used for counting errors and make sure not a bunch of
+        // errormessages flood the screen.
+        static uint32_t current_errors = 0;
 
-	// This test is for robustness upon buggy data sets
-	if (previ < 0 || previ >= numcoords) {
-	  if (current_errors < 1) {
-	    SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
-				      "index: %d (Should be within [0, %d]). Aborting "
-				      "rendering. This message will be shown once, but "
-				      "there might be more errors", previ, numcoords - 1);
-	  }
-	  
-	  current_errors++;
-	  glEnd();
-	  return;
-	}
+        // This test is for robustness upon buggy data sets
+        if (previ < 0 || previ >= numcoords) {
+          if (current_errors < 1) {
+            SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                      "index: %d (Should be within [0, %d]). Aborting "
+                                      "rendering. This message will be shown once, but "
+                                      "there might be more errors", previ, numcoords - 1);
+          }
 
-	if ((AttributeBinding)MaterialBinding == PER_LINE ||
-	    (AttributeBinding)MaterialBinding == PER_VERTEX) {
-	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_LINE_INDEXED ||
-		   (AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	  materials->send(*matindices++, TRUE);
-	}
+          current_errors++;
+          glEnd();
+          return;
+        }
 
-	if ((AttributeBinding)NormalBinding == PER_LINE ||
-	    (AttributeBinding)NormalBinding == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*) currnormal);
-	} else if ((AttributeBinding)NormalBinding == PER_LINE_INDEXED ||
-		   (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	  currnormal = &normals[*normindices++];
-	  glNormal3fv((const GLfloat*) currnormal);
-	}
-	if (TexturingEnabled == TRUE) {
-	  texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
-	}
-	i = (indices < end) ? *indices++ : -1;
-	while (i >= 0) {
-	  // For robustness upon buggy data sets
-	  if (i >= numcoords) {
-	    if (current_errors < 1) {
-	      SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
-					"index: %d (Should be within [0, %d]). Aborting "
-					"rendering. This message will be shown once, but "
-					"there might be more errors", i, numcoords - 1);
-	    }
-	    current_errors++;
-	    break;
-	  }
+        if ((AttributeBinding)MaterialBinding == PER_LINE ||
+            (AttributeBinding)MaterialBinding == PER_VERTEX) {
+          materials->send(matnr++, TRUE);
+        } else if ((AttributeBinding)MaterialBinding == PER_LINE_INDEXED ||
+                   (AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+          materials->send(*matindices++, TRUE);
+        }
 
-	  if ((AttributeBinding)MaterialBinding == PER_SEGMENT) {
-	    materials->send(matnr++, TRUE);
-	  } else if ((AttributeBinding)MaterialBinding == PER_SEGMENT_INDEXED) {
-	    materials->send(*matindices++, TRUE);
-	  }
+        if ((AttributeBinding)NormalBinding == PER_LINE ||
+            (AttributeBinding)NormalBinding == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat*) currnormal);
+        } else if ((AttributeBinding)NormalBinding == PER_LINE_INDEXED ||
+                   (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+          currnormal = &normals[*normindices++];
+          glNormal3fv((const GLfloat*) currnormal);
+        }
+        if (TexturingEnabled == TRUE) {
+          texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
+        }
+        i = (indices < end) ? *indices++ : -1;
+        while (i >= 0) {
+          // For robustness upon buggy data sets
+          if (i >= numcoords) {
+            if (current_errors < 1) {
+              SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                        "index: %d (Should be within [0, %d]). Aborting "
+                                        "rendering. This message will be shown once, but "
+                                        "there might be more errors", i, numcoords - 1);
+            }
+            current_errors++;
+            break;
+          }
 
-	  if ((AttributeBinding)NormalBinding == PER_SEGMENT) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat*) currnormal);
-	  } else if ((AttributeBinding)NormalBinding == PER_SEGMENT_INDEXED) {
-	    currnormal = &normals[*normindices++];
-	    glNormal3fv((const GLfloat*)currnormal);
-	  }
-	  SEND_VERTEX(previ);
+          if ((AttributeBinding)MaterialBinding == PER_SEGMENT) {
+            materials->send(matnr++, TRUE);
+          } else if ((AttributeBinding)MaterialBinding == PER_SEGMENT_INDEXED) {
+            materials->send(*matindices++, TRUE);
+          }
 
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    materials->send(matnr++, TRUE);
-	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	    materials->send(*matindices++, TRUE);
-	  }
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat*)currnormal);
-	  } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	    currnormal = &normals[*normindices++];
-	    glNormal3fv((const GLfloat*)currnormal);
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
-	  }
-	  SEND_VERTEX(i);
-	  previ = i;
-	  i = indices < end ? *indices++ : -1;
-	}
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	  matindices++;
-	}
-	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	  normindices++;
-	}
-	if (TexturingEnabled == TRUE) {
-	  if (texindices) texindices++;
-	}
+          if ((AttributeBinding)NormalBinding == PER_SEGMENT) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat*) currnormal);
+          } else if ((AttributeBinding)NormalBinding == PER_SEGMENT_INDEXED) {
+            currnormal = &normals[*normindices++];
+            glNormal3fv((const GLfloat*)currnormal);
+          }
+          SEND_VERTEX(previ);
+
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            materials->send(matnr++, TRUE);
+          } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+            materials->send(*matindices++, TRUE);
+          }
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat*)currnormal);
+          } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+            currnormal = &normals[*normindices++];
+            glNormal3fv((const GLfloat*)currnormal);
+          }
+          if (TexturingEnabled == TRUE) {
+            texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
+          }
+          SEND_VERTEX(i);
+          previ = i;
+          i = indices < end ? *indices++ : -1;
+        }
+        if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+          matindices++;
+        }
+        if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+          normindices++;
+        }
+        if (TexturingEnabled == TRUE) {
+          if (texindices) texindices++;
+        }
       }
       glEnd();
 
     } else { // no per_segment binding code below
 
       if (drawAsPoints)
-	glBegin(GL_POINTS);
+        glBegin(GL_POINTS);
 
       while (indices < end) {
-	if (!drawAsPoints)
-	  glBegin(GL_LINE_STRIP);
+        if (!drawAsPoints)
+          glBegin(GL_LINE_STRIP);
 
-	i = *indices++;
+        i = *indices++;
 
-	// Variable used for counting errors and make sure not a bunch of
-	// errormessages flood the screen.
-	static uint32_t current_errors = 0;
+        // Variable used for counting errors and make sure not a bunch of
+        // errormessages flood the screen.
+        static uint32_t current_errors = 0;
 
-	// This test is for robustness upon buggy data sets
-	if (i < 0 || i >= numcoords) {
-	  if (current_errors < 1) {
-	    SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
-				      "index: %d (Should be within [0, %d]). Aborting "
-				      "rendering. This message will be shown once, but "
-				      "there might be more errors", i, numcoords - 1);
-	  }
-	  
-	  current_errors++;
-	  glEnd();
-	  return;
-	}
+        // This test is for robustness upon buggy data sets
+        if (i < 0 || i >= numcoords) {
+          if (current_errors < 1) {
+            SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                      "index: %d (Should be within [0, %d]). Aborting "
+                                      "rendering. This message will be shown once, but "
+                                      "there might be more errors", i, numcoords - 1);
+          }
 
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-	    (AttributeBinding)MaterialBinding == PER_LINE_INDEXED) {
-	  materials->send(*matindices++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-		   (AttributeBinding)MaterialBinding == PER_LINE) {
-	  materials->send(matnr++, TRUE);
-	}
+          current_errors++;
+          glEnd();
+          return;
+        }
 
-	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-	    (AttributeBinding)NormalBinding == PER_LINE_INDEXED) {
-	  currnormal = &normals[*normindices++];
-	  glNormal3fv((const GLfloat*) currnormal);
-	} else if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-		   (AttributeBinding)NormalBinding == PER_LINE) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*) currnormal);
-	}
-	if (TexturingEnabled == TRUE) {
-	  texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
-	}
+        if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+            (AttributeBinding)MaterialBinding == PER_LINE_INDEXED) {
+          materials->send(*matindices++, TRUE);
+        } else if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+                   (AttributeBinding)MaterialBinding == PER_LINE) {
+          materials->send(matnr++, TRUE);
+        }
 
-	SEND_VERTEX(i);
-	i = indices < end ? *indices++ : -1;
-	while (i >= 0) {
-	  // For robustness upon buggy data sets
-	  if (i >= numcoords) {
-	    if (current_errors < 1) {
-	      SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
-					"index: %d (Should be within [0, %d]). Aborting "
-					"rendering. This message will be shown once, but "
-					"there might be more errors", i, numcoords - 1);
-	    }
-	    current_errors++;
-	    break;
-	  }
+        if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+            (AttributeBinding)NormalBinding == PER_LINE_INDEXED) {
+          currnormal = &normals[*normindices++];
+          glNormal3fv((const GLfloat*) currnormal);
+        } else if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+                   (AttributeBinding)NormalBinding == PER_LINE) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat*) currnormal);
+        }
+        if (TexturingEnabled == TRUE) {
+          texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
+        }
 
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    materials->send(matnr++, TRUE);
-	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	    materials->send(*matindices++, TRUE);
-	  }
+        SEND_VERTEX(i);
+        i = indices < end ? *indices++ : -1;
+        while (i >= 0) {
+          // For robustness upon buggy data sets
+          if (i >= numcoords) {
+            if (current_errors < 1) {
+              SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                        "index: %d (Should be within [0, %d]). Aborting "
+                                        "rendering. This message will be shown once, but "
+                                        "there might be more errors", i, numcoords - 1);
+            }
+            current_errors++;
+            break;
+          }
 
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat*) currnormal);
-	  } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	    currnormal = &normals[*normindices++];
-	    glNormal3fv((const GLfloat*) currnormal);
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
-	  }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            materials->send(matnr++, TRUE);
+          } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+            materials->send(*matindices++, TRUE);
+          }
 
-	  SEND_VERTEX(i);
-	  i = indices < end ? *indices++ : -1;
-	}
-	if (!drawAsPoints)
-	  glEnd(); // end of line strip
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat*) currnormal);
+          } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+            currnormal = &normals[*normindices++];
+            glNormal3fv((const GLfloat*) currnormal);
+          }
+          if (TexturingEnabled == TRUE) {
+            texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
+          }
 
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	  matindices++;
-	}
-	if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	  normindices++;
-	}
-	if (TexturingEnabled == TRUE) {
-	  if (texindices) texindices++;
-	}
+          SEND_VERTEX(i);
+          i = indices < end ? *indices++ : -1;
+        }
+        if (!drawAsPoints)
+          glEnd(); // end of line strip
+
+        if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+          matindices++;
+        }
+        if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+          normindices++;
+        }
+        if (TexturingEnabled == TRUE) {
+          if (texindices) texindices++;
+        }
       }
       if (drawAsPoints)
-	glEnd();
+        glEnd();
     }
   }
 
@@ -1198,7 +1198,7 @@ namespace { namespace SoGL { namespace IndexedLineSet {
 
 #define SOGL_INDEXEDLINESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
   SOGL_INDEXEDLINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
-  
+
 void
 sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     const int32_t *cindices,
@@ -1216,15 +1216,15 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 {
 
   SOGL_INDEXEDLINESET_GLRENDER(nbind, mbind, texture, (coords,
-						       cindices,
-						       numindices,
-						       normals,
-						       nindices,
-						       mb,
-						       mindices,
-						       tb,
-						       tindices,
-						       drawAsPoints));
+                                                       cindices,
+                                                       numindices,
+                                                       normals,
+                                                       nindices,
+                                                       mb,
+                                                       mindices,
+                                                       tb,
+                                                       tindices,
+                                                       drawAsPoints));
 }
 
 #undef SOGL_INDEXEDLINESET_GLRENDER_CALL_FUNC
@@ -1264,7 +1264,7 @@ static void sogl_dealloc_coords(void * ptr)
   delete *cptr;
 }
 
-static SbList <float> * 
+static SbList <float> *
 sogl_get_tmpcoordlist(void)
 {
   if (sogl_coordstorage == NULL) {
@@ -1315,18 +1315,18 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
     complexity = float(1.0/(complexity*complexity) - 0.5);
     if (complexity < 0.5f) complexity = 0.5f;
 
-    GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                    (GLenum) GLU_SAMPLING_METHOD,
                                    GLU_PARAMETRIC_ERROR);
-    GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                   (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                   (GLenum) GLU_PARAMETRIC_TOLERANCE,
                                    complexity);
-    
+
     static SbBool first = TRUE;
     if (sogl_nurbs_debugging() && first) {
       first = FALSE;
         SoDebugError::postInfo("sogl_set_nurbs_complexity",
-                               "sampling method = GLU_PARAMETRIC_ERROR, " 
+                               "sampling method = GLU_PARAMETRIC_ERROR, "
                                "GLU_PARAMETRIC_TOLERANCE = %.4f",
                                complexity);
     }
@@ -1340,7 +1340,7 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
       SbVec3f center;
       shape->computeBBox(action, box, center);
       float diag;
-      { 
+      {
         float dx, dy, dz;
         box.getSize(dx, dy, dz);
         diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
@@ -1364,11 +1364,11 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
                                complexity);
       }
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                      (GLenum) GLU_SAMPLING_METHOD,
                                      GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                     (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                     (GLenum) GLU_PARAMETRIC_TOLERANCE,
                                      complexity);
       break;
     }
@@ -1397,11 +1397,11 @@ sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrender
                                complexity);
       }
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                      (GLenum) GLU_SAMPLING_METHOD,
                                      GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                     (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                     (GLenum) GLU_PARAMETRIC_TOLERANCE,
                                      complexity);
       break;
     }
@@ -1502,7 +1502,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   GLfloat * ptr = coords->is3D() ?
     (GLfloat *)coordelem->getArrayPtr3() :
     (GLfloat *)coordelem->getArrayPtr4();
-  
+
   // just copy indexed control points into a linear array
   if (numcoordindex && coordindex) {
     SbList <float> * tmpcoordlist = sogl_get_tmpcoordlist();
@@ -1524,17 +1524,17 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                 dim, dim * numuctrlpts, ptr,
                                 numuknot - numuctrlpts, numvknot - numvctrlpts,
                                 (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
-  SbBool okcheckelem = 
+  SbBool okcheckelem =
     state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
     state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex());
 
 
-  if (!okcheckelem || (SoTextureEnabledElement::get(state) || 
+  if (!okcheckelem || (SoTextureEnabledElement::get(state) ||
       SoTexture3EnabledElement::get(state))) {
     const SoTextureCoordinateElement * tc =
       SoTextureCoordinateElement::getInstance(state);
     if (numsctrlpts && numtctrlpts && numsknot && numtknot &&
-        (tc->getType() == SoTextureCoordinateElement::EXPLICIT) && 
+        (tc->getType() == SoTextureCoordinateElement::EXPLICIT) &&
         tc->getNum()) {
       int texdim = tc->is2D() ? 2 : 4;
       GLfloat * texptr = tc->is2D() ?
@@ -1642,7 +1642,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     if (istrimming) GLUWrapper()->gluEndTrim(nurbsrenderer);
   }
   GLUWrapper()->gluEndSurface(nurbsrenderer);
-  
+
   // clear GL error(s) if parametric error value is out of range.
   // FIXME: man, this is ugly! 20020530 mortene.
   if (glrender) {
@@ -1808,16 +1808,16 @@ namespace { namespace SoGL { namespace FaceSet {
 
   template < int NormalBinding,
              int MaterialBinding,
-	     int TexturingEnabled >
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * const vertexlist,
-		       const int32_t *vertexindices,
-		       int numindices,
-		       const SbVec3f *normals,
-		       const int32_t *normalindices,
-		       SoMaterialBundle *materials,
-		       const int32_t *matindices,
-		       const SoTextureCoordinateBundle * const texcoords,
-		       const int32_t *texindices)
+                       const int32_t *vertexindices,
+                       int numindices,
+                       const SbVec3f *normals,
+                       const int32_t *normalindices,
+                       SoMaterialBundle *materials,
+                       const int32_t *matindices,
+                       const SoTextureCoordinateBundle * const texcoords,
+                       const int32_t *texindices)
   {
 
     // just in case someone forgot
@@ -1825,7 +1825,7 @@ namespace { namespace SoGL { namespace FaceSet {
     if (normalindices == NULL) normalindices = vertexindices;
 
     int texidx = 0;
-    
+
     const SbVec3f * coords3d = NULL;
     const SbVec4f * coords4d = NULL;
     const SbBool is3d = vertexlist->is3D();
@@ -1839,7 +1839,7 @@ namespace { namespace SoGL { namespace FaceSet {
     // This is the same code as in SoGLCoordinateElement::send().
     // It is inlined here for speed (~15% speed increase).
 #define SEND_VERTEX(_idx_)                                           \
-    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_));	     \
+    if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_));             \
     else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
     int mode = GL_POLYGON; // ...to save a test
@@ -1853,10 +1853,10 @@ namespace { namespace SoGL { namespace FaceSet {
     SbVec3f dummynormal(0,0,1);
     const SbVec3f * currnormal = &dummynormal;
     if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	(AttributeBinding)NormalBinding == PER_FACE ||
-	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
-	TexturingEnabled == TRUE) {
+        (AttributeBinding)NormalBinding == PER_FACE ||
+        (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+        (AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
+        TexturingEnabled == TRUE) {
       if (normals) currnormal = normals;
     }
 
@@ -1873,266 +1873,266 @@ namespace { namespace SoGL { namespace FaceSet {
 
       // This test is for robustness upon buggy data sets
       if (v1 < 0 || v2 < 0 || v3 < 0 ||
-	  v1 >= numverts || v2 >= numverts || v3 >= numverts) {
-	
-	if (current_errors < 1) {
-	  SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-				    "Ignoring (offset: %d, [%d %d %d]). Should be within "
-				    " [0, %d] This message will only be shown once, but "
-				    "more errors might be present",
-				    viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
-	}
-	current_errors++;
-	break;
+          v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                    "Ignoring (offset: %d, [%d %d %d]). Should be within "
+                                    " [0, %d] This message will only be shown once, but "
+                                    "more errors might be present",
+                                    viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
+        }
+        current_errors++;
+        break;
       }
       v4 = viptr < viendptr ? *viptr++ : -1;
       if (v4  < 0) newmode = GL_TRIANGLES;
       // This test for numverts is for robustness upon buggy data sets
       else if (v4 >= numverts) {
-	newmode = GL_TRIANGLES;
-	
-	if (current_errors < 1) {
-	  SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-				    "(offset: %d, [%d %d %d %d]). Should be within "
-				    " [0, %d] This message will only be shown once, but "
-				    "more errors might be present",
-				    viptr - vistartptr - 4, v1, v2, v3, v4, numverts - 1);
-	}
-	current_errors++;
+        newmode = GL_TRIANGLES;
+
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                    "(offset: %d, [%d %d %d %d]). Should be within "
+                                    " [0, %d] This message will only be shown once, but "
+                                    "more errors might be present",
+                                    viptr - vistartptr - 4, v1, v2, v3, v4, numverts - 1);
+        }
+        current_errors++;
       }
       else {
-	v5 = viptr < viendptr ? *viptr++ : -1;
-	if (v5 < 0) newmode = GL_QUADS;
-	// This test for numverts is for robustness upon buggy data sets
-	else if (v5 >= numverts) {
-	  newmode = GL_QUADS;
-	  
-	  if (current_errors < 1) {
-	    SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-				      "(offset: %d, [%d %d %d %d %d]). Should be within "
-				      " [0, %d] This message will only be shown once, but "
-				      "more errors might be present",
-				      viptr - vistartptr - 5, v1, v2, v3, v4, v5, numverts - 1);
-	  }
-	  current_errors++;
-	}
-	else newmode = GL_POLYGON;
+        v5 = viptr < viendptr ? *viptr++ : -1;
+        if (v5 < 0) newmode = GL_QUADS;
+        // This test for numverts is for robustness upon buggy data sets
+        else if (v5 >= numverts) {
+          newmode = GL_QUADS;
+
+          if (current_errors < 1) {
+            SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                      "(offset: %d, [%d %d %d %d %d]). Should be within "
+                                      " [0, %d] This message will only be shown once, but "
+                                      "more errors might be present",
+                                      viptr - vistartptr - 5, v1, v2, v3, v4, v5, numverts - 1);
+          }
+          current_errors++;
+        }
+        else newmode = GL_POLYGON;
       }
       if (newmode != mode) {
-	if (mode != GL_POLYGON) glEnd();
-	mode = newmode;
-	glBegin((GLenum) mode);
+        if (mode != GL_POLYGON) glEnd();
+        mode = newmode;
+        glBegin((GLenum) mode);
       }
       else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
-      
+
       /* vertex 1 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-	  (AttributeBinding)MaterialBinding == PER_FACE) {
-	materials->send(matnr++, TRUE);
+          (AttributeBinding)MaterialBinding == PER_FACE) {
+        materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-		 (AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	materials->send(*matindices++, TRUE);
+                 (AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+        materials->send(*matindices++, TRUE);
       }
-      
+
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	  (AttributeBinding)NormalBinding == PER_FACE) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+          (AttributeBinding)NormalBinding == PER_FACE) {
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-		 (AttributeBinding)NormalBinding == PER_FACE_INDEXED) {
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+                 (AttributeBinding)NormalBinding == PER_FACE_INDEXED) {
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
       }
-      
+
       if (TexturingEnabled == TRUE) {
-	texcoords->send(texindices ? *texindices++ : texidx++,
-			vertexlist->get3(v1),
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v1),
+                        *currnormal);
       }
 
       SEND_VERTEX(v1);
-      
+
       /* vertex 2 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	materials->send(matnr++, TRUE);
+        materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	materials->send(*matindices++, TRUE);
+        materials->send(*matindices++, TRUE);
       }
 
       // nvidia color-per-face-bug workaround
       if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	materials->send(matnr-1, TRUE);
+        materials->send(matnr-1, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	materials->send(matindices[-1], TRUE);
+        materials->send(matindices[-1], TRUE);
       }
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
       }
 
       if (TexturingEnabled == TRUE) {
-	texcoords->send(texindices ? *texindices++ : texidx++,
-			vertexlist->get3(v2),
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v2),
+                        *currnormal);
       }
 
       SEND_VERTEX(v2);
 
       /* vertex 3 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	materials->send(matnr++, TRUE);
+        materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	materials->send(*matindices++, TRUE);
+        materials->send(*matindices++, TRUE);
       }
 
       // nvidia color-per-face-bug workaround
       if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	materials->send(matnr-1, TRUE);
+        materials->send(matnr-1, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	materials->send(matindices[-1], TRUE);
+        materials->send(matindices[-1], TRUE);
       }
-      
+
       if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
       }
-      
+
       if (TexturingEnabled == TRUE) {
-	texcoords->send(texindices ? *texindices++ : texidx++,
-			vertexlist->get3(v3),
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v3),
+                        *currnormal);
       }
 
       SEND_VERTEX(v3);
 
       if (mode != GL_TRIANGLES) {
-	/* vertex 4 (quad or polygon)**************************************/
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	  materials->send(*matindices++, TRUE);
-	}
-	
-	// nvidia color-per-face-bug workaround
-	if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	  materials->send(matnr-1, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	  materials->send(matindices[-1], TRUE);
-	}
-	
-	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	  currnormal = &normals[*normalindices++];
-	  glNormal3fv((const GLfloat*)currnormal);
-	}
-	
-	if (TexturingEnabled == TRUE) {
-	  texcoords->send(texindices ? *texindices++ : texidx++,
-			  vertexlist->get3(v4),
-			  *currnormal);
-	}
-	
-	SEND_VERTEX(v4);
+        /* vertex 4 (quad or polygon)**************************************/
+        if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+          materials->send(matnr++, TRUE);
+        } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+          materials->send(*matindices++, TRUE);
+        }
 
-	if (mode == GL_POLYGON) {
-	  /* vertex 5 (polygon) ********************************************/
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    materials->send(matnr++, TRUE);
-	  } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	    materials->send(*matindices++, TRUE);
-	  }
-	  
-	  // nvidia color-per-face-bug workaround
-	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	    materials->send(matnr-1, TRUE);
-	  } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	    materials->send(matindices[-1], TRUE);
-	  }
-	  
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat*)currnormal);
-	  } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	    currnormal = &normals[*normalindices++];
-	    glNormal3fv((const GLfloat*)currnormal);
-	  }
+        // nvidia color-per-face-bug workaround
+        if ((AttributeBinding)MaterialBinding == PER_FACE) {
+          materials->send(matnr-1, TRUE);
+        } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+          materials->send(matindices[-1], TRUE);
+        }
 
-	  if (TexturingEnabled == TRUE) {
-	    texcoords->send(texindices ? *texindices++ : texidx++,
-			    vertexlist->get3(v5),
-			    *currnormal);
-	  }
+        if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat*)currnormal);
+        } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+          currnormal = &normals[*normalindices++];
+          glNormal3fv((const GLfloat*)currnormal);
+        }
 
-	  SEND_VERTEX(v5);
+        if (TexturingEnabled == TRUE) {
+          texcoords->send(texindices ? *texindices++ : texidx++,
+                          vertexlist->get3(v4),
+                          *currnormal);
+        }
 
-	  v1 = viptr < viendptr ? *viptr++ : -1;
-	  while (v1 >= 0) {
-	    // For robustness upon buggy data sets
-	    if (v1 >= numverts) {
-	      if (current_errors < 1) {
-		SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
-					  "(offset: %d, [... %d]). Should be within "
-					  "[0, %d] This message will only be shown once, but "
-					  "more errors might be present",
-					  viptr - vistartptr - 1, v1, numverts - 1);
-	      }
-	      current_errors++;
-	      break;
-	    }
+        SEND_VERTEX(v4);
 
-	    /* vertex 6-n (polygon) *****************************************/
-	    if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	      materials->send(matnr++, TRUE);
-	    } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	      materials->send(*matindices++, TRUE);
-	    }
+        if (mode == GL_POLYGON) {
+          /* vertex 5 (polygon) ********************************************/
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            materials->send(matnr++, TRUE);
+          } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+            materials->send(*matindices++, TRUE);
+          }
 
-	    // nvidia color-per-face-bug workaround
-	    if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	      materials->send(matnr-1, TRUE);
-	    } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
-	      materials->send(matindices[-1], TRUE);
-	    }
+          // nvidia color-per-face-bug workaround
+          if ((AttributeBinding)MaterialBinding == PER_FACE) {
+            materials->send(matnr-1, TRUE);
+          } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+            materials->send(matindices[-1], TRUE);
+          }
 
-	    if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	      currnormal = normals++;
-	      glNormal3fv((const GLfloat*)currnormal);
-	    } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	      currnormal = &normals[*normalindices++];
-	      glNormal3fv((const GLfloat*)currnormal);
-	    }
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat*)currnormal);
+          } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+            currnormal = &normals[*normalindices++];
+            glNormal3fv((const GLfloat*)currnormal);
+          }
 
-	    if (TexturingEnabled == TRUE) {
-	      texcoords->send(texindices ? *texindices++ : texidx++,
-			      vertexlist->get3(v1),
-			      *currnormal);
-	    }
-	    
-	    SEND_VERTEX(v1);
-	    
-	    v1 = viptr < viendptr ? *viptr++ : -1;
-	  }
-	  glEnd(); /* draw polygon */
-	}
+          if (TexturingEnabled == TRUE) {
+            texcoords->send(texindices ? *texindices++ : texidx++,
+                            vertexlist->get3(v5),
+                            *currnormal);
+          }
+
+          SEND_VERTEX(v5);
+
+          v1 = viptr < viendptr ? *viptr++ : -1;
+          while (v1 >= 0) {
+            // For robustness upon buggy data sets
+            if (v1 >= numverts) {
+              if (current_errors < 1) {
+                SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                          "(offset: %d, [... %d]). Should be within "
+                                          "[0, %d] This message will only be shown once, but "
+                                          "more errors might be present",
+                                          viptr - vistartptr - 1, v1, numverts - 1);
+              }
+              current_errors++;
+              break;
+            }
+
+            /* vertex 6-n (polygon) *****************************************/
+            if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+              materials->send(matnr++, TRUE);
+            } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
+              materials->send(*matindices++, TRUE);
+            }
+
+            // nvidia color-per-face-bug workaround
+            if ((AttributeBinding)MaterialBinding == PER_FACE) {
+              materials->send(matnr-1, TRUE);
+            } else if ((AttributeBinding)MaterialBinding == PER_FACE_INDEXED) {
+              materials->send(matindices[-1], TRUE);
+            }
+
+            if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+              currnormal = normals++;
+              glNormal3fv((const GLfloat*)currnormal);
+            } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
+              currnormal = &normals[*normalindices++];
+              glNormal3fv((const GLfloat*)currnormal);
+            }
+
+            if (TexturingEnabled == TRUE) {
+              texcoords->send(texindices ? *texindices++ : texidx++,
+                              vertexlist->get3(v1),
+                              *currnormal);
+            }
+
+            SEND_VERTEX(v1);
+
+            v1 = viptr < viendptr ? *viptr++ : -1;
+          }
+          glEnd(); /* draw polygon */
+        }
       }
 
       if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	matindices++;
+        matindices++;
       }
       if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	normalindices++;
+        normalindices++;
       }
       if (TexturingEnabled == TRUE) {
-	if (texindices) texindices++;
+        if (texindices) texindices++;
       }
     }
     // check if triangle or quad
@@ -2195,7 +2195,7 @@ namespace { namespace SoGL { namespace FaceSet {
 
 #define SOGL_FACESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
   SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
-  
+
 
 void
 sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
@@ -2212,14 +2212,14 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
                     const int texture)
 {
   SOGL_FACESET_GLRENDER(nbind, mbind, texture, (vertexlist,
-						vertexindices,
-						num_vertexindices,
-						normals,
-						normindices,
-						materials,
-						matindices,
-						texcoords,
-						texindices));
+                                                vertexindices,
+                                                num_vertexindices,
+                                                normals,
+                                                normindices,
+                                                materials,
+                                                matindices,
+                                                texcoords,
+                                                texindices));
 }
 
 #undef SOGL_FACESET_GLRENDER
@@ -2257,17 +2257,17 @@ namespace { namespace SoGL { namespace TriStripSet {
   };
 
   template < int NormalBinding,
-	     int MaterialBinding,
-	     int TexturingEnabled >
+             int MaterialBinding,
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * const vertexlist,
-		       const int32_t *vertexindices,			 
-		       int numindices,				 
-		       const SbVec3f *normals,			 
-		       const int32_t *normalindices,
-		       SoMaterialBundle *materials,
-		       const int32_t *matindices,
-		       const SoTextureCoordinateBundle * const texcoords,
-		       const int32_t *texindices)
+                       const int32_t *vertexindices,
+                       int numindices,
+                       const SbVec3f *normals,
+                       const int32_t *normalindices,
+                       SoMaterialBundle *materials,
+                       const int32_t *matindices,
+                       const SoTextureCoordinateBundle * const texcoords,
+                       const int32_t *texindices)
   {
 
     // just in case someone forgot...
@@ -2298,11 +2298,11 @@ namespace { namespace SoGL { namespace TriStripSet {
     else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
     if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	(AttributeBinding)NormalBinding == PER_TRIANGLE ||
-	(AttributeBinding)NormalBinding == PER_STRIP ||
-	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
+        (AttributeBinding)NormalBinding == PER_TRIANGLE ||
+        (AttributeBinding)NormalBinding == PER_STRIP ||
+        (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+        (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
+        (AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
       assert(normals && "Aborting rendering of tristrip; got NULL normals");
     }
 
@@ -2310,12 +2310,12 @@ namespace { namespace SoGL { namespace TriStripSet {
     const SbVec3f *currnormal = &dummynormal;
 
     if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	(AttributeBinding)NormalBinding == PER_TRIANGLE ||
-	(AttributeBinding)NormalBinding == PER_STRIP ||
-	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_STRIP_INDEXED ||
-	TexturingEnabled == TRUE) {
+        (AttributeBinding)NormalBinding == PER_TRIANGLE ||
+        (AttributeBinding)NormalBinding == PER_STRIP ||
+        (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+        (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
+        (AttributeBinding)NormalBinding == PER_STRIP_INDEXED ||
+        TexturingEnabled == TRUE) {
       if (normals) currnormal = normals;
     }
 
@@ -2328,168 +2328,168 @@ namespace { namespace SoGL { namespace TriStripSet {
 
       // This should be here to prevent illegal polygons from being rendered
       if (v1 < 0 || v2 < 0 || v3 < 0 ||
-	  v1 >= numverts || v2 >= numverts || v3 >= numverts) {
-	 
-	static uint32_t current_errors = 0;
-	if (current_errors < 1) {
-	  SoDebugError::postWarning("[tristrip]::GLRender", "Erroneous polygon detected. "
-				    "Ignoring (offset: %d, [%d %d %d]). Should be within "
-				    " [0, %d] This message will only be shown once, but "
-				    "more errors may be present",
-				    viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
-	}
+          v1 >= numverts || v2 >= numverts || v3 >= numverts) {
 
-	current_errors++;
-	break;
+        static uint32_t current_errors = 0;
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[tristrip]::GLRender", "Erroneous polygon detected. "
+                                    "Ignoring (offset: %d, [%d %d %d]). Should be within "
+                                    " [0, %d] This message will only be shown once, but "
+                                    "more errors may be present",
+                                    viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
+        }
+
+        current_errors++;
+        break;
       }
 
       glBegin(GL_TRIANGLE_STRIP);
 
       /* vertex 1 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-	  (AttributeBinding)MaterialBinding == PER_STRIP) {
-	materials->send(matnr++, TRUE);
+          (AttributeBinding)MaterialBinding == PER_STRIP) {
+        materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-		 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
-	materials->send(*matindices++, TRUE);
+                 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+        materials->send(*matindices++, TRUE);
       }
-      
+
       // needed for nvidia color-per-face-bug workaround
       if ((AttributeBinding)MaterialBinding == PER_TRIANGLE) {
-	materials->send(matnr, TRUE);
+        materials->send(matnr, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
-	materials->send(*matindices, TRUE);
+        materials->send(*matindices, TRUE);
       }
       // end of nvidia workaround
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	  (AttributeBinding)NormalBinding == PER_STRIP) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+          (AttributeBinding)NormalBinding == PER_STRIP) {
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-		 (AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+                 (AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
       }
       if (TexturingEnabled == TRUE) {
-	texcoords->send(texindices ? *texindices++ : texidx++,
-			vertexlist->get3(v1),
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v1),
+                        *currnormal);
       }
       SEND_VERTEX_TRISTRIP(v1);
-    
+
       /* vertex 2 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	materials->send(matnr++, TRUE);
+        materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	materials->send(*matindices++, TRUE);
+        materials->send(*matindices++, TRUE);
       }
 
       // needed for nvidia color-per-face-bug workaround
       if ((AttributeBinding)MaterialBinding == PER_TRIANGLE) {
-	materials->send(matnr, TRUE);
+        materials->send(matnr, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
-	materials->send(*matindices, TRUE);
+        materials->send(*matindices, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_STRIP) {
-	materials->send(matnr-1, TRUE);
+        materials->send(matnr-1, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
-	materials->send(matindices[-1], TRUE);
+        materials->send(matindices[-1], TRUE);
       }
       // end of nvidia workaround
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
       }
       if (TexturingEnabled == TRUE) {
-	texcoords->send(texindices ? *texindices++ : texidx++,
-			vertexlist->get3(v2),
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v2),
+                        *currnormal);
       }
       SEND_VERTEX_TRISTRIP(v2);
 
       /* vertex 3 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-	  (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
-	materials->send(matnr++, TRUE);
+          (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+        materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-		 (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
-	materials->send(*matindices++, TRUE);
+                 (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+        materials->send(*matindices++, TRUE);
       }
 
       // needed for nvidia color-per-face-bug workaround
       if ((AttributeBinding)MaterialBinding == PER_STRIP) {
-	materials->send(matnr-1, TRUE);
+        materials->send(matnr-1, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
-	materials->send(matindices[-1], TRUE);
+        materials->send(matindices[-1], TRUE);
       }
       // end of nvidia workaround
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	  (AttributeBinding)NormalBinding == PER_TRIANGLE) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+          (AttributeBinding)NormalBinding == PER_TRIANGLE) {
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-		 (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+                 (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
       }
       if (TexturingEnabled == TRUE) {
-	texcoords->send(texindices ? *texindices++ : texidx++,
-			vertexlist->get3(v3),
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v3),
+                        *currnormal);
       }
       SEND_VERTEX_TRISTRIP(v3);
-      
+
       v1 = viptr < viendptr ? *viptr++ : -1;
       while (v1 >= 0) {
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-	    (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
-	  materials->send(matnr++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-		   (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
-	  materials->send(*matindices++, TRUE);
-	}
-	
-	// needed for nvidia color-per-face-bug workaround
-	if ((AttributeBinding)MaterialBinding == PER_STRIP) {
-	  materials->send(matnr-1, TRUE);
-	} else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
-	  materials->send(matindices[-1], TRUE);
-	}
-	// end of nvidia workaround
+        if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
+            (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+          materials->send(matnr++, TRUE);
+        } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
+                   (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+          materials->send(*matindices++, TRUE);
+        }
 
-	if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	    (AttributeBinding)NormalBinding == PER_TRIANGLE) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*)currnormal);
-	} else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-		   (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
-	  currnormal = &normals[*normalindices++];
-	  glNormal3fv((const GLfloat*)currnormal);
-	}
-	if (TexturingEnabled == TRUE) {
-	  texcoords->send(texindices ? *texindices++ : texidx++,
-			  vertexlist->get3(v1),
-			  *currnormal);
-	}
+        // needed for nvidia color-per-face-bug workaround
+        if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+          materials->send(matnr-1, TRUE);
+        } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+          materials->send(matindices[-1], TRUE);
+        }
+        // end of nvidia workaround
 
-	SEND_VERTEX_TRISTRIP(v1);
-	v1 = viptr < viendptr ? *viptr++ : -1;
+        if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+            (AttributeBinding)NormalBinding == PER_TRIANGLE) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat*)currnormal);
+        } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+                   (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
+          currnormal = &normals[*normalindices++];
+          glNormal3fv((const GLfloat*)currnormal);
+        }
+        if (TexturingEnabled == TRUE) {
+          texcoords->send(texindices ? *texindices++ : texidx++,
+                          vertexlist->get3(v1),
+                          *currnormal);
+        }
+
+        SEND_VERTEX_TRISTRIP(v1);
+        v1 = viptr < viendptr ? *viptr++ : -1;
       }
       glEnd(); // end of tristrip
 
       if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-	matindices++;
+        matindices++;
       }
       if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-	normalindices++;
+        normalindices++;
       }
       if (TexturingEnabled == TRUE) {
-	if (texindices) texindices++;
+        if (texindices) texindices++;
       }
     }
   }
@@ -2562,7 +2562,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 
 #define SOGL_TRISTRIPSET_GLRENDER(normalbinding, materialbinding, texturing, args) \
   SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
-  
+
 void
 sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,
@@ -2578,14 +2578,14 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
                      const int texture)
 {
   SOGL_TRISTRIPSET_GLRENDER(nbind, mbind, texture, (vertexlist,
-						    vertexindices,
-						    num_vertexindices,
-						    normals,
-						    normindices,
-						    materials,
-						    matindices,
-						    texcoords,
-						    texindices));
+                                                    vertexindices,
+                                                    num_vertexindices,
+                                                    normals,
+                                                    normindices,
+                                                    materials,
+                                                    matindices,
+                                                    texcoords,
+                                                    texindices));
 }
 
 #undef SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC
@@ -2842,7 +2842,7 @@ static int SOGL_AUTOCACHE_LOCAL_MAX = 1000000;
   Called by each shape during rendering. Will enable/disable autocaching
   based on the number of primitives.
 */
-void 
+void
 sogl_autocache_update(SoState * state, const int numprimitives)
 {
   static SbBool didtestenv = FALSE;
@@ -2887,7 +2887,7 @@ sogl_autocache_update(SoState * state, const int numprimitives)
 static SoOffscreenRenderer * offscreenrenderer = NULL;
 static SoCallback * offscreencallback = NULL;
 
-static void offscreenrenderer_cleanup(void) 
+static void offscreenrenderer_cleanup(void)
 {
   offscreencallback->unref();
   delete offscreenrenderer;
@@ -2905,7 +2905,7 @@ static void offscreenrenderer_cleanup(void)
 //
 // 20030519 mortene.
 
-void 
+void
 sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
                                void * closure)
 {

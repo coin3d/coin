@@ -98,12 +98,12 @@ SbNodeProfilingData::operator != (const SbNodeProfilingData & rhs) const {
 }
 
 SbTypeProfilingData::SbTypeProfilingData(void)
-: totaltime(0.0), maximumtime(0.0), count(0) 
+: totaltime(0.0), maximumtime(0.0), count(0)
 {
 }
 
 SbNameProfilingData::SbNameProfilingData(void)
-: totaltime(0.0), maximumtime(0.0), count(0) 
+: totaltime(0.0), maximumtime(0.0), count(0)
 {
 }
 
@@ -177,7 +177,7 @@ SbProfilingData::constructorInit(void)
 /*!
   Remove all stored data.
 */
-void 
+void
 SbProfilingData::reset(void)
 {
   this->constructorInit();
@@ -220,27 +220,27 @@ findPath(const std::vector<SbNodeProfilingData> & src, std::vector<SbNodeProfili
   const int numdestentries = dst.size();
 
   // FIXME: optimize this part
-  
+
   bool match = false;
   for (int i = 0; i < numdestentries && !match; ++i) {
     if (dst[i].node == src[srcentryidx].node &&
-	dst[i].childidx == src[srcentryidx].childidx) {
+        dst[i].childidx == src[srcentryidx].childidx) {
       // we have a potential match
       int dstidx = dst[i].parentidx, srcidx = src[srcentryidx].parentidx;
       while ((srcidx != -1) &&
-	     (dstidx != -1) &&
-	     (src[srcidx].node == dst[dstidx].node) &&
-	     (src[srcidx].childidx == dst[dstidx].childidx)) {
-	srcidx = src[srcidx].parentidx;
-	dstidx = dst[dstidx].parentidx;
+             (dstidx != -1) &&
+             (src[srcidx].node == dst[dstidx].node) &&
+             (src[srcidx].childidx == dst[dstidx].childidx)) {
+        srcidx = src[srcidx].parentidx;
+        dstidx = dst[dstidx].parentidx;
       }
       if (srcidx == -1 && dstidx == -1) { // match!
-	match = true;
-	matchidx = i;
+        match = true;
+        matchidx = i;
       }
     }
   }
-  
+
   if (match) {
     parentidx = dst[matchidx].parentidx;
   } else {
@@ -255,20 +255,20 @@ findPath(const std::vector<SbNodeProfilingData> & src, std::vector<SbNodeProfili
 
     for (int i = 0; i < numdestentries && !match; ++i) {
       if (dst[i].node == src[srcentryidx].node &&
-	  dst[i].childidx == src[srcentryidx].childidx) {
-	// we have a potential match
-	int dstidx = dst[i].parentidx, srcidx = src[srcentryidx].parentidx;
-	while ((srcidx != -1) &&
-	       (dstidx != -1) &&
-	       (src[srcidx].node == dst[dstidx].node) &&
-	       (src[srcidx].childidx == dst[dstidx].childidx)) {
-	  srcidx = src[srcidx].parentidx;
-	  dstidx = dst[dstidx].parentidx;
-	}
-	if (srcidx == -1 && dstidx == -1) { // match!
-	  match = true;
-	  parentidx = i;
-	}
+          dst[i].childidx == src[srcentryidx].childidx) {
+        // we have a potential match
+        int dstidx = dst[i].parentidx, srcidx = src[srcentryidx].parentidx;
+        while ((srcidx != -1) &&
+               (dstidx != -1) &&
+               (src[srcidx].node == dst[dstidx].node) &&
+               (src[srcidx].childidx == dst[dstidx].childidx)) {
+          srcidx = src[srcidx].parentidx;
+          dstidx = dst[dstidx].parentidx;
+        }
+        if (srcidx == -1 && dstidx == -1) { // match!
+          match = true;
+          parentidx = i;
+        }
       }
     }
   }
@@ -310,14 +310,14 @@ SbProfilingData::operator += (const SbProfilingData & rhs)
       int matchidx = -1, parentidx = -1;
       findPath(src, dst, c, matchidx, parentidx);
       if (matchidx == -1) {
-	SbNodeProfilingData data;
-	data.node = src[c].node;
-	data.childidx = src[c].childidx;
-	data.parentidx = parentidx;
-	data.nodetype = src[c].nodetype;
-	data.nodename = src[c].nodename;
-	dst.push_back(data);
-	matchidx = dst.size() - 1;
+        SbNodeProfilingData data;
+        data.node = src[c].node;
+        data.childidx = src[c].childidx;
+        data.parentidx = parentidx;
+        data.nodetype = src[c].nodetype;
+        data.nodename = src[c].nodename;
+        dst.push_back(data);
+        matchidx = dst.size() - 1;
       }
       // acumulate data (something about this really doesn't make sense)
       dst[matchidx].traversaltime += src[c].traversaltime;
@@ -333,14 +333,14 @@ SbProfilingData::operator += (const SbProfilingData & rhs)
     while (srctypeit != PRIVATE(&rhs)->nodeTypeData.end()) {
       maptype::iterator dsttypeit = PRIVATE(this)->nodeTypeData.find(srctypeit->first);
       if (dsttypeit != PRIVATE(this)->nodeTypeData.end()) {
-	dsttypeit->second.totaltime += srctypeit->second.totaltime;
-	dsttypeit->second.count += srctypeit->second.count;
-	if (srctypeit->second.maximumtime > dsttypeit->second.maximumtime) {
-	  dsttypeit->second.maximumtime = srctypeit->second.maximumtime;
-	}
+        dsttypeit->second.totaltime += srctypeit->second.totaltime;
+        dsttypeit->second.count += srctypeit->second.count;
+        if (srctypeit->second.maximumtime > dsttypeit->second.maximumtime) {
+          dsttypeit->second.maximumtime = srctypeit->second.maximumtime;
+        }
       } else {
-	// new type entry - copy data in
-	PRIVATE(this)->nodeTypeData.insert(*srctypeit);
+        // new type entry - copy data in
+        PRIVATE(this)->nodeTypeData.insert(*srctypeit);
       }
       ++srctypeit;
     }
@@ -352,14 +352,14 @@ SbProfilingData::operator += (const SbProfilingData & rhs)
     while (srctypeit != PRIVATE(&rhs)->nodeNameData.end()) {
       maptype::iterator dsttypeit = PRIVATE(this)->nodeNameData.find(srctypeit->first);
       if (dsttypeit != PRIVATE(this)->nodeNameData.end()) {
-	dsttypeit->second.totaltime += srctypeit->second.totaltime;
-	dsttypeit->second.count += srctypeit->second.count;
-	if (srctypeit->second.maximumtime > dsttypeit->second.maximumtime) {
-	  dsttypeit->second.maximumtime = srctypeit->second.maximumtime;
-	}
+        dsttypeit->second.totaltime += srctypeit->second.totaltime;
+        dsttypeit->second.count += srctypeit->second.count;
+        if (srctypeit->second.maximumtime > dsttypeit->second.maximumtime) {
+          dsttypeit->second.maximumtime = srctypeit->second.maximumtime;
+        }
       } else {
-	// new type entry - copy data in
-	PRIVATE(this)->nodeNameData.insert(*srctypeit);
+        // new type entry - copy data in
+        PRIVATE(this)->nodeNameData.insert(*srctypeit);
       }
       ++srctypeit;
     }
@@ -483,7 +483,7 @@ SbProfilingData::getIndex(const SoPath * path, SbBool create)
   const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
   if ((PRIVATE(this)->lastPathIndex != -1) &&
       isPathMatch(fullpath, fullpath->getLength(),
-		  PRIVATE(this)->lastPathIndex)) {
+                  PRIVATE(this)->lastPathIndex)) {
     return PRIVATE(this)->lastPathIndex;
   }
   int idx = -1;
@@ -531,10 +531,10 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int pathlen)
       SbMin(fullpath->getLength(), (int) lastentrypathindexes.size());
     while (samelength < pathlength) {
       if ((PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].node !=
-	   static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
-	  (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
-	   fullpath->getIndex(samelength))) {
-	break;
+           static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
+          (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
+           fullpath->getIndex(samelength))) {
+        break;
       }
       ++samelength;
     }
@@ -595,12 +595,12 @@ SbProfilingData::getIndexNoCreate(const SoPath * path, int pathlen) const
       SbMin(fullpath->getLength(), (int) lastentrypathindexes.size());
     while (samelength < pathlength) {
       if ((PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].node !=
-	   static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
-	  (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
-	   fullpath->getIndex(samelength))) {
-	break;
+           static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
+          (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
+           fullpath->getIndex(samelength))) {
+        break;
       }
-      ++samelength;	 
+      ++samelength;
     }
   }
 
@@ -651,7 +651,7 @@ SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen,
   const int nodedatacount = PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
     if ((PRIVATE(this)->nodeData[idx].node == tail) &&
-	(PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
+        (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
       return idx;
     }
   }
@@ -691,7 +691,7 @@ SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathle
   const int nodedatacount = PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
     if ((PRIVATE(this)->nodeData[idx].node == tail) &&
-	(PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
+        (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
       return idx;
     }
   }
@@ -765,29 +765,29 @@ SbProfilingData::setNodeTiming(int idx, SbTime timing)
       PRIVATE(this)->nodeData[parentidx].nodename;
     if (namekey != SbName::empty().getString()) {
       std::map<SbProfilingNodeNameKey, SbNameProfilingData>::iterator nameit =
-	PRIVATE(this)->nodeNameData.find(namekey);
+        PRIVATE(this)->nodeNameData.find(namekey);
       if (nameit != PRIVATE(this)->nodeNameData.end()) {
-	nameit->second.totaltime += timing;
-	if (idx == parentidx) { // entry at named node level
-	  // DISABLED: we won't know the "unit" time for this aggregate
-	  // time-sum so we can't give maximum unit time. we'll need to
-	  // store total-time from preTraversal() to figure it
-	  // out i think. 20080304 larsa
-	  //if (nameit->second.maximumtime < timing) {
-	  //  nameit->second.maximumtime = timing;
-	  //}
-	  nameit->second.count += 1;
-	}
+        nameit->second.totaltime += timing;
+        if (idx == parentidx) { // entry at named node level
+          // DISABLED: we won't know the "unit" time for this aggregate
+          // time-sum so we can't give maximum unit time. we'll need to
+          // store total-time from preTraversal() to figure it
+          // out i think. 20080304 larsa
+          //if (nameit->second.maximumtime < timing) {
+          //  nameit->second.maximumtime = timing;
+          //}
+          nameit->second.count += 1;
+        }
       } else {
-	SbNameProfilingData data;
-	data.totaltime = timing;
-	//data.maximumtime = timing;
-	if (idx == parentidx) {
-	  data.count += 1;
-	} else {
+        SbNameProfilingData data;
+        data.totaltime = timing;
+        //data.maximumtime = timing;
+        if (idx == parentidx) {
+          data.count += 1;
+        } else {
 
-	}
-	PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
+        }
+        PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
       }
       if (!inclusive) break;
     }
@@ -830,22 +830,22 @@ SbProfilingData::preOffsetNodeTiming(int idx, SbTime timing)
     SbProfilingNodeNameKey namekey = PRIVATE(this)->nodeData[parentidx].nodename;
     if (namekey != SbName::empty().getString()) {
       std::map<SbProfilingNodeNameKey, SbNameProfilingData>::iterator nameit =
-	PRIVATE(this)->nodeNameData.find(namekey);
+        PRIVATE(this)->nodeNameData.find(namekey);
       if (nameit != PRIVATE(this)->nodeNameData.end()) {
-	nameit->second.totaltime += timing;
-	if (idx == parentidx) { // entry at named node level
-	  // DISABLED: we won't know the "unit" time for this aggregate
-	  // time-sum so we can't give maximum unit time. we'll need to
-	  // store total-time from preTraversal() to figure it
-	  // out i think. 20080304 larsa
-	  //if (nameit->second.maximumtime < timing) {
-	  //  nameit->second.maximumtime = timing;
-	  //}
-	}
+        nameit->second.totaltime += timing;
+        if (idx == parentidx) { // entry at named node level
+          // DISABLED: we won't know the "unit" time for this aggregate
+          // time-sum so we can't give maximum unit time. we'll need to
+          // store total-time from preTraversal() to figure it
+          // out i think. 20080304 larsa
+          //if (nameit->second.maximumtime < timing) {
+          //  nameit->second.maximumtime = timing;
+          //}
+        }
       } else {
-	SbNameProfilingData data;
-	data.totaltime = timing;
-	PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
+        SbNameProfilingData data;
+        data.totaltime = timing;
+        PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
       }
       if (!inclusive) break;
     }
@@ -1094,8 +1094,8 @@ SbProfilingData::reportAll(SbProfilingDataCB * callback, void * userdata) const
     SbList<int> indices;
 
     for (int nodeidx = idx;
-	 nodeidx != -1;
-	 nodeidx = PRIVATE(this)->nodeData[nodeidx].parentidx) {
+         nodeidx != -1;
+         nodeidx = PRIVATE(this)->nodeData[nodeidx].parentidx) {
       pointers.append(static_cast<SoNode *>(PRIVATE(this)->nodeData[nodeidx].node));
       indices.append(PRIVATE(this)->nodeData[nodeidx].childidx);
     }
@@ -1151,8 +1151,8 @@ SbProfilingData::getStatsForTypesKeyList(SbList<SbProfilingNodeTypeKey> & keys_o
 
 void
 SbProfilingData::getStatsForType(SbProfilingNodeTypeKey type,
-				 SbTime & totaltime, SbTime & maxtime,
-				 uint32_t & count) const
+                                 SbTime & totaltime, SbTime & maxtime,
+                                 uint32_t & count) const
 {
   std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::const_iterator it =
     PRIVATE(this)->nodeTypeData.find(type);
@@ -1184,8 +1184,8 @@ SbProfilingData::getStatsForNamesKeyList(SbList<SbProfilingNodeNameKey> & keys_o
 
 void
 SbProfilingData::getStatsForName(SbProfilingNodeNameKey name,
-				 SbTime & totaltime, SbTime & maxtime,
-				 uint32_t & count) const
+                                 SbTime & totaltime, SbTime & maxtime,
+                                 uint32_t & count) const
 {
   std::map<SbProfilingNodeNameKey, SbNameProfilingData>::const_iterator it =
     PRIVATE(this)->nodeNameData.find(name);

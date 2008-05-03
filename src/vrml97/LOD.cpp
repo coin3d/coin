@@ -460,10 +460,10 @@ SoVRMLLOD::GLRenderInPath(SoGLRenderAction * action)
       SoNode * child = this->getChild(idx);
       action->pushCurPath(idx, child);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         child->GLRenderInPath(action);
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       action->popCurPath(pathcode);
     }
@@ -484,10 +484,10 @@ SoVRMLLOD::GLRenderOffPath(SoGLRenderAction * action)
     if (child->affectsState()) {
       action->pushCurPath(idx, child);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         child->GLRenderOffPath(action);
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       action->popCurPath();
     }

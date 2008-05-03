@@ -739,7 +739,7 @@ SoShadowGroup::notify(SoNotList * nl)
 
   \since Coin 2.6
  */
-void 
+void
 SoShadowGroup::enableSubgraphSearchOnNotify(const SbBool onoff)
 {
   PRIVATE(this)->subgraphsearchenabled = onoff;
@@ -916,7 +916,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
   float visnear = PUBLIC(this)->visibilityNearRadius.getValue();
   float visfar = PUBLIC(this)->visibilityRadius.getValue();
 
-  SbBool needbbox = 
+  SbBool needbbox =
     (visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) ||
     (visflag == SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR) ||
     ((visnear < 0.0f) || (visfar < 0.0f));
@@ -925,7 +925,7 @@ SoShadowGroupP::updateCamera(SoShadowSpotLightCache * cache, const SbMatrix & tr
     SoShadowSpotLight * sslight = (SoShadowSpotLight*) light;
     const float ssnear = sslight->nearDistance.getValue();
     const float ssfar = sslight->farDistance.getValue();
-    
+
     if (ssnear > 0.0f && ssfar > ssnear) {
       visnear = ssnear;
       visfar = ssfar;
@@ -1165,12 +1165,11 @@ SoShadowGroupP::setVertexShader(SoState * state)
     gen.addMainStatement("gl_FogFragCoord = abs(ecPosition3.z);\n");
     break;
   }
-  gen.addMainStatement(
-		       "perVertexColor = vec3(clamp(color.r, 0.0, 1.0), clamp(color.g, 0.0, 1.0), clamp(color.b, 0.0, 1.0));"
-		       "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
-		       "gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;\n"
-		       "gl_Position = ftransform();\n"
-		       "gl_FrontColor = gl_Color;");
+  gen.addMainStatement("perVertexColor = vec3(clamp(color.r, 0.0, 1.0), clamp(color.g, 0.0, 1.0), clamp(color.b, 0.0, 1.0));"
+                       "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
+                       "gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;\n"
+                       "gl_Position = ftransform();\n"
+                       "gl_FrontColor = gl_Color;");
 
 
   // never update unless the program has actually changed. Creating a
@@ -1284,10 +1283,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   }
   gen.addMainStatement("vec3 color = perVertexColor;\n"
                        "vec3 scolor = vec3(0.0);\n"
-		       "float dist;\n"
-		       "float shadeFactor;\n"
-		       "vec3 coord;\n"
-		       "vec4 map;\n"
+                       "float dist;\n"
+                       "float shadeFactor;\n"
+                       "vec3 coord;\n"
+                       "vec4 map;\n"
                        "mydiffuse.a *= texcolor.a;\n");
 
   if (perpixelspot) {

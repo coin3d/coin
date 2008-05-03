@@ -59,7 +59,7 @@ SoGlyphCache::SoGlyphCache(SoState * state)
   if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGlyphCache::SoGlyphCache",
                            "Cache constructed: %p", this);
-    
+
   }
 #endif // debug
 }
@@ -70,7 +70,7 @@ SoGlyphCache::~SoGlyphCache()
   if (coin_debug_caching_level() > 0) {
     SoDebugError::postInfo("SoGlyphCache::~SoGlyphCache",
                            "Cache destructed: %p", this);
-    
+
   }
 #endif // debug
 
@@ -131,7 +131,7 @@ SoGlyphCache::readFontspec(SoState * state)
 
 /*!
   Returns the cached fontspec.
-*/	
+*/
 const cc_font_specification *
 SoGlyphCache::getCachedFontspec(void) const
 {

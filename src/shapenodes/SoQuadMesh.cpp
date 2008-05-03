@@ -90,13 +90,13 @@
 
   \verbatim
   #Inventor V2.1 ascii
-  
+
   Separator {
     Complexity { textureQuality 0.01 }
-    Texture2 { 
+    Texture2 {
       image 2 2 4 0xff0000ff 0x00ff00ff 0xffff00ff 0xff00ffff
     }
-    Coordinate3 { 
+    Coordinate3 {
       point [
         0 2 0,
         1 2 0,
@@ -348,17 +348,17 @@ namespace { namespace SoGL { namespace QuadMesh {
   };
 
   template < int NormalBinding,
-	     int MaterialBinding,
-	     int TexturingEnabled >
+             int MaterialBinding,
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * coords,
-		       const SbVec3f *normals,
-		       SoMaterialBundle * mb,
-		       const SoTextureCoordinateBundle * tb,
-		       SbBool needNormals,
-		       int rowsize,
-		       int colsize,
-		       int start,
-		       SbBool preciseLighting)
+                       const SbVec3f *normals,
+                       SoMaterialBundle * mb,
+                       const SoTextureCoordinateBundle * tb,
+                       SbBool needNormals,
+                       int rowsize,
+                       int colsize,
+                       int start,
+                       SbBool preciseLighting)
   {
     assert(rowsize >= 0 && colsize >= 0 && start >= 0);
     assert(coords->getNum() - start >= rowsize * colsize);
@@ -372,7 +372,7 @@ namespace { namespace SoGL { namespace QuadMesh {
       // This is the same code as in SoGLCoordinateElement::send().
       // It is inlined here for speed (~15% speed increase).
 #define SEND_VERTEX(_idx_) \
-      if (is3d) glVertex3fv((const GLfloat*) (coords3d + (_idx_)));	\
+      if (is3d) glVertex3fv((const GLfloat*) (coords3d + (_idx_)));        \
       else glVertex4fv((const GLfloat*) (coords4d + (_idx_)));
 
       int midx = 0;
@@ -382,61 +382,61 @@ namespace { namespace SoGL { namespace QuadMesh {
       if (normals) currnormal = normals;
 
       if ((AttributeBinding)NormalBinding == OVERALL) {
-	if (needNormals) {
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
+        if (needNormals) {
+          glNormal3fv((const GLfloat *)currnormal);
+        }
       }
 
       int curridx; // for optimization only
 
       for (int i = 0; i < colsize-1; i++) {
-	int j = 0;
-	glBegin(GL_QUAD_STRIP);
-	if ((AttributeBinding)NormalBinding == PER_ROW) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
-	if ((AttributeBinding)MaterialBinding == PER_ROW) {
-	  mb->send(midx++,TRUE);
-	}
-	
-	for (j = 0; j < rowsize; j++) {
-	  curridx = IDX(i,j);
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = &normals[curridx];
-	    glNormal3fv((const GLfloat *)currnormal);
-	  }
-	  if ((AttributeBinding)NormalBinding == PER_FACE) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat *)currnormal);
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    mb->send(curridx, TRUE);
-	  }
+        int j = 0;
+        glBegin(GL_QUAD_STRIP);
+        if ((AttributeBinding)NormalBinding == PER_ROW) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if ((AttributeBinding)MaterialBinding == PER_ROW) {
+          mb->send(midx++,TRUE);
+        }
 
-	  if (TexturingEnabled == TRUE) {
-	    tb->send(curridx, coords->get3(start + curridx),
-		     *currnormal);
-	  }
-	  SEND_VERTEX(start + curridx);
-	  curridx = IDX(i+1,j);
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = &normals[curridx];
-	    glNormal3fv((const GLfloat *)currnormal);
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    mb->send(curridx, TRUE);
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    tb->send(curridx, coords->get3(start + curridx), *currnormal);
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	    // FIXME: optimize by moving first 2 vertices in row outside loop
-	    if (j > 0) mb->send(midx++, TRUE);
-	  }
-	  SEND_VERTEX(start + curridx);
-	}
-	glEnd(); // end of strip/row
+        for (j = 0; j < rowsize; j++) {
+          curridx = IDX(i,j);
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = &normals[curridx];
+            glNormal3fv((const GLfloat *)currnormal);
+          }
+          if ((AttributeBinding)NormalBinding == PER_FACE) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat *)currnormal);
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            mb->send(curridx, TRUE);
+          }
+
+          if (TexturingEnabled == TRUE) {
+            tb->send(curridx, coords->get3(start + curridx),
+                     *currnormal);
+          }
+          SEND_VERTEX(start + curridx);
+          curridx = IDX(i+1,j);
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = &normals[curridx];
+            glNormal3fv((const GLfloat *)currnormal);
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            mb->send(curridx, TRUE);
+          }
+          if (TexturingEnabled == TRUE) {
+            tb->send(curridx, coords->get3(start + curridx), *currnormal);
+          }
+          if ((AttributeBinding)MaterialBinding == PER_FACE) {
+            // FIXME: optimize by moving first 2 vertices in row outside loop
+            if (j > 0) mb->send(midx++, TRUE);
+          }
+          SEND_VERTEX(start + curridx);
+        }
+        glEnd(); // end of strip/row
       }
 #undef SEND_VERTEX
 
@@ -454,9 +454,9 @@ namespace { namespace SoGL { namespace QuadMesh {
       if (normals) currnormal = normals;
 
       if ((AttributeBinding)NormalBinding == OVERALL) {
-	if (needNormals) {
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
+        if (needNormals) {
+          glNormal3fv((const GLfloat *)currnormal);
+        }
       }
 
       const SbVec3f *c1d3 = NULL,*c2d3 = NULL,*c3d3 = NULL,*c4d3 = NULL;
@@ -475,292 +475,292 @@ namespace { namespace SoGL { namespace QuadMesh {
       int curridx1 = 0;
       int curridx2 = rowsize;
       for (int i = 0; i < colsize-1; i++) {
-	int j = 0;
-	if ((AttributeBinding)NormalBinding == PER_ROW) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
-	if ((AttributeBinding)MaterialBinding == PER_ROW) {
-	  mb->send(midx++, TRUE);
-	}
+        int j = 0;
+        if ((AttributeBinding)NormalBinding == PER_ROW) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if ((AttributeBinding)MaterialBinding == PER_ROW) {
+          mb->send(midx++, TRUE);
+        }
 
-	if (is3d) {
-	  c3d3 = &coords3d[start+curridx1];
-	  c4d3 = &coords3d[start+curridx2];
-	} else {
-	  c3d4 = &coords4d[start+curridx1];
-	  c4d4 = &coords4d[start+curridx2];
-	}
-	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	  n3 = &normals[curridx1];
-	  n4 = &normals[curridx2];
-	}
-	curridx1++;
-	curridx2++;
+        if (is3d) {
+          c3d3 = &coords3d[start+curridx1];
+          c4d3 = &coords3d[start+curridx2];
+        } else {
+          c3d4 = &coords4d[start+curridx1];
+          c4d4 = &coords4d[start+curridx2];
+        }
+        if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+          n3 = &normals[curridx1];
+          n4 = &normals[curridx2];
+        }
+        curridx1++;
+        curridx2++;
 
-	for (j = 1; j < rowsize; j++) {
-	  if (is3d) {
-	    c1d3 = c3d3;
-	    c2d3 = c4d3;
-	    c3d3 = &coords3d[start+curridx1];
-	    c4d3 = &coords3d[start+curridx2];
-	    ccd3 = ((*c1d3)+(*c2d3)+(*c3d3)+(*c4d3)) * 0.25f;
-	  } else {
-	    c1d4 = c3d4;
-	    c2d4 = c4d4;
-	    c3d4 = &coords4d[start+curridx1];
-	    c4d4 = &coords4d[start+curridx2];
-	    assert(!"4d coordinates handling unimplemented yet");
-	  }
+        for (j = 1; j < rowsize; j++) {
+          if (is3d) {
+            c1d3 = c3d3;
+            c2d3 = c4d3;
+            c3d3 = &coords3d[start+curridx1];
+            c4d3 = &coords3d[start+curridx2];
+            ccd3 = ((*c1d3)+(*c2d3)+(*c3d3)+(*c4d3)) * 0.25f;
+          } else {
+            c1d4 = c3d4;
+            c2d4 = c4d4;
+            c3d4 = &coords4d[start+curridx1];
+            c4d4 = &coords4d[start+curridx2];
+            assert(!"4d coordinates handling unimplemented yet");
+          }
 
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	      TexturingEnabled == TRUE) {
-	    if (is3d) {
-	      s1 = ((*c1d3) - ccd3).sqrLength();
-	      s2 = ((*c2d3) - ccd3).sqrLength();
-	      s3 = ((*c3d3) - ccd3).sqrLength();
-	      s4 = ((*c4d3) - ccd3).sqrLength();
-	    } else {
-	      // FIXME: 4D coordinates are not currently implemented
-	      // for HQ rendering - following code is never used
-	      //sum234d4 = qmeshAddVec4f(c2, sum34d4);
-	      //vec1d4 = qmeshAddSpec4f(c1, sum234d4);
-	      //sum134d4 = qmeshAddVec4f(c1, sum34d4);
-	      //vec2d4 = qmeshAddSpec4f(c2, sum134d4);
-	      //sum124d4 = qmeshAddVec4f(c4, sum12d4);
-	      //vec3d4 = qmeshAddSpec4f(c3, sum124d4);
-	      //sum123d4 = qmeshAddVec4f(c3, sum12d4);
-	      //vec4d4 = qmeshAddSpec4f(c4, sum123d4);
-	      //s1 = qmeshSqrLen(vec1d4);
-	      //s2 = qmeshSqrLen(vec2d4);
-	      //s3 = qmeshSqrLen(vec3d4);
-	      //s4 = qmeshSqrLen(vec4d4);
-	    }
+          if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+              TexturingEnabled == TRUE) {
+            if (is3d) {
+              s1 = ((*c1d3) - ccd3).sqrLength();
+              s2 = ((*c2d3) - ccd3).sqrLength();
+              s3 = ((*c3d3) - ccd3).sqrLength();
+              s4 = ((*c4d3) - ccd3).sqrLength();
+            } else {
+              // FIXME: 4D coordinates are not currently implemented
+              // for HQ rendering - following code is never used
+              //sum234d4 = qmeshAddVec4f(c2, sum34d4);
+              //vec1d4 = qmeshAddSpec4f(c1, sum234d4);
+              //sum134d4 = qmeshAddVec4f(c1, sum34d4);
+              //vec2d4 = qmeshAddSpec4f(c2, sum134d4);
+              //sum124d4 = qmeshAddVec4f(c4, sum12d4);
+              //vec3d4 = qmeshAddSpec4f(c3, sum124d4);
+              //sum123d4 = qmeshAddVec4f(c3, sum12d4);
+              //vec4d4 = qmeshAddSpec4f(c4, sum123d4);
+              //s1 = qmeshSqrLen(vec1d4);
+              //s2 = qmeshSqrLen(vec2d4);
+              //s3 = qmeshSqrLen(vec3d4);
+              //s4 = qmeshSqrLen(vec4d4);
+            }
 
-	    if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	        TexturingEnabled == TRUE) {
-	      w1 = qmeshGetWeight(s1/s4) * 0.5f;
-	      w2 = qmeshGetWeight(s2/s3) * 0.5f;
-	      w3 = 0.5f - w2;
-	      w4 = 0.5f - w1;
-	    }
-	  }
+            if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+                TexturingEnabled == TRUE) {
+              w1 = qmeshGetWeight(s1/s4) * 0.5f;
+              w2 = qmeshGetWeight(s2/s3) * 0.5f;
+              w3 = 0.5f - w2;
+              w4 = 0.5f - w1;
+            }
+          }
 
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    n1 = n3;
-	    n2 = n4;
-	    n3 = &normals[curridx1];
-	    n4 = &normals[curridx2];
-	    nc = ((*n1)*w1 + (*n2)*w2 + (*n3)*w3 + (*n4)*w4);
-	    if (!qmeshNormalize(nc, n1->sqrLength() + n2->sqrLength() +
-				n3->sqrLength() + n4->sqrLength())) {
-	      if (is3d) {
-		SbPlane p1(*c1d3,*c2d3,*c4d3);
-		SbPlane p2(*c1d3,*c4d3,*c3d3);
-		SbVec3f n = p1.getNormal() + p2.getNormal();
-		SbBool quadok = qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
-					     n3->sqrLength() + n4->sqrLength());
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            n1 = n3;
+            n2 = n4;
+            n3 = &normals[curridx1];
+            n4 = &normals[curridx2];
+            nc = ((*n1)*w1 + (*n2)*w2 + (*n3)*w3 + (*n4)*w4);
+            if (!qmeshNormalize(nc, n1->sqrLength() + n2->sqrLength() +
+                                n3->sqrLength() + n4->sqrLength())) {
+              if (is3d) {
+                SbPlane p1(*c1d3,*c2d3,*c4d3);
+                SbPlane p2(*c1d3,*c4d3,*c3d3);
+                SbVec3f n = p1.getNormal() + p2.getNormal();
+                SbBool quadok = qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
+                                               n3->sqrLength() + n4->sqrLength());
 #if COIN_DEBUG
-		if ( !quadok )
-		  SoDebugError::postWarning("SoQuadMesh::GLRender",
-					    "Can not compute normal because of "
-					    "wrong quad coordinates.");
+                if ( !quadok )
+                  SoDebugError::postWarning("SoQuadMesh::GLRender",
+                                            "Can not compute normal because of "
+                                            "wrong quad coordinates.");
 #endif // COIN_DEBUG
-	      } else {
-		// FIXME
-	      }
-	    }
-	  }
+              } else {
+                // FIXME
+              }
+            }
+          }
 
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(FALSE && "yet unimplemented");
-	  }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(FALSE && "yet unimplemented");
+          }
 
-	  if (TexturingEnabled == TRUE) {
-	    t1 = t3;
-	    t2 = t4;
-	    if (!tb->isFunction()) {
-	      t3 = &((SoTextureCoordinateBundle*)tb)->get(curridx1);
-	      t4 = &((SoTextureCoordinateBundle*)tb)->get(curridx2);
-	    } else {
-	      assert(FALSE && "unimplemented");
-	    }
-	    tc = ((*t1)*w1 + (*t2)*w2 + (*t3)*w3 + (*t4)*w4);
-	  }
+          if (TexturingEnabled == TRUE) {
+            t1 = t3;
+            t2 = t4;
+            if (!tb->isFunction()) {
+              t3 = &((SoTextureCoordinateBundle*)tb)->get(curridx1);
+              t4 = &((SoTextureCoordinateBundle*)tb)->get(curridx2);
+            } else {
+              assert(FALSE && "unimplemented");
+            }
+            tc = ((*t1)*w1 + (*t2)*w2 + (*t3)*w3 + (*t4)*w4);
+          }
 
-	  glBegin(GL_TRIANGLE_FAN);
+          glBegin(GL_TRIANGLE_FAN);
 
-	  if ((AttributeBinding)NormalBinding == PER_FACE) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat *)currnormal);
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	    mb->send(curridx1, TRUE);
-	  }
+          if ((AttributeBinding)NormalBinding == PER_FACE) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat *)currnormal);
+          }
+          if ((AttributeBinding)MaterialBinding == PER_FACE) {
+            mb->send(curridx1, TRUE);
+          }
 
-	  // CENTER vertex
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    glNormal3fv(nc.getValue());
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(FALSE && "unimplemented");
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    // tb->send(?curridx?, cc, nc) was replaced by
-	    // glTexCoord for center vertex
-	    glTexCoord4fv((const GLfloat*)&tc);
-	  }
-	  if (is3d) {
-	    glVertex3fv((const GLfloat*)&ccd3);
-	  } else {
-	    glVertex4fv((const GLfloat*)&ccd4);
-	  }
+          // CENTER vertex
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            glNormal3fv(nc.getValue());
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(FALSE && "unimplemented");
+          }
+          if (TexturingEnabled == TRUE) {
+            // tb->send(?curridx?, cc, nc) was replaced by
+            // glTexCoord for center vertex
+            glTexCoord4fv((const GLfloat*)&tc);
+          }
+          if (is3d) {
+            glVertex3fv((const GLfloat*)&ccd3);
+          } else {
+            glVertex4fv((const GLfloat*)&ccd4);
+          }
 
-	  // FIRST vertex
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    glNormal3fv(n1->getValue());
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(FALSE && "unimplemented");
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    if (is3d) {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		tb->send(curridx1-1, *c1d3, *n1);
-	      } else {
-		tb->send(curridx1-1, *c1d3, *currnormal);
-	      }
-	    } else {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		//tb->send(curridx1-1, *c1d4, *n1);
-	      } else {
-		//tb->send(curridx1-1, *c1d4, *currnormal);
-	      }
-	    }
-	  }
-	  if (is3d) {
-	    glVertex3fv((const GLfloat*)c1d3);
-	  } else {
-	    glVertex4fv((const GLfloat*)c1d4);
-	  }
+          // FIRST vertex
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            glNormal3fv(n1->getValue());
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(FALSE && "unimplemented");
+          }
+          if (TexturingEnabled == TRUE) {
+            if (is3d) {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                tb->send(curridx1-1, *c1d3, *n1);
+              } else {
+                tb->send(curridx1-1, *c1d3, *currnormal);
+              }
+            } else {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                //tb->send(curridx1-1, *c1d4, *n1);
+              } else {
+                //tb->send(curridx1-1, *c1d4, *currnormal);
+              }
+            }
+          }
+          if (is3d) {
+            glVertex3fv((const GLfloat*)c1d3);
+          } else {
+            glVertex4fv((const GLfloat*)c1d4);
+          }
 
-	  // SECOND vertex
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    glNormal3fv(n2->getValue());
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(!"unimplemented");
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    if (is3d) {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		tb->send(curridx2-1, *c2d3, *n2);
-	      } else {
-		tb->send(curridx2-1, *c2d3, *currnormal);
-	      }
-	    } else {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		//tb->send(curridx2-1, *c2d4, *n2);
-	      } else {
-		//tb->send(curridx2-1, *c2d4, *currnormal);
-	      }
-	    }
-	  }
-	  if (is3d) {
-	    glVertex3fv((const GLfloat*)c2d3);
-	  } else {
-	    glVertex4fv((const GLfloat*)c2d4);
-	  }
+          // SECOND vertex
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            glNormal3fv(n2->getValue());
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(!"unimplemented");
+          }
+          if (TexturingEnabled == TRUE) {
+            if (is3d) {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                tb->send(curridx2-1, *c2d3, *n2);
+              } else {
+                tb->send(curridx2-1, *c2d3, *currnormal);
+              }
+            } else {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                //tb->send(curridx2-1, *c2d4, *n2);
+              } else {
+                //tb->send(curridx2-1, *c2d4, *currnormal);
+              }
+            }
+          }
+          if (is3d) {
+            glVertex3fv((const GLfloat*)c2d3);
+          } else {
+            glVertex4fv((const GLfloat*)c2d4);
+          }
 
-	  // FOURTH vertex
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    glNormal3fv(n4->getValue());
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(FALSE && "unimplemented");
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    if (is3d) {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		tb->send(curridx2, *c4d3, *n4);
-	      } else {
-		tb->send(curridx2, *c4d3, *currnormal);
-	      }
-	    } else {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		//tb->send(curridx2, *c4d4, *n4);
-	      } else {
-		//tb->send(curridx2, *c4d4, *currnormal);
-	      }
-	    }
-	  }
-	  if (is3d) {
-	    glVertex3fv((const GLfloat*)c4d3);
-	  } else {
-	    glVertex4fv((const GLfloat*)c4d4);
-	  }
+          // FOURTH vertex
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            glNormal3fv(n4->getValue());
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(FALSE && "unimplemented");
+          }
+          if (TexturingEnabled == TRUE) {
+            if (is3d) {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                tb->send(curridx2, *c4d3, *n4);
+              } else {
+                tb->send(curridx2, *c4d3, *currnormal);
+              }
+            } else {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                //tb->send(curridx2, *c4d4, *n4);
+              } else {
+                //tb->send(curridx2, *c4d4, *currnormal);
+              }
+            }
+          }
+          if (is3d) {
+            glVertex3fv((const GLfloat*)c4d3);
+          } else {
+            glVertex4fv((const GLfloat*)c4d4);
+          }
 
-	  // THIRD vertex
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    glNormal3fv(n3->getValue());
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(!"unimplemented");
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    if (is3d) {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		tb->send(curridx1, *c3d3, *n3);
-	      } else {
-		tb->send(curridx1, *c3d3, *currnormal);
-	      }
-	    } else {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		//tb->send(curridx1, *c3d4, *n3);
-	      } else {
-		//tb->send(curridx1, *c3d4, *currnormal);
-	      }
-	    }
-	  }
-	  if (is3d) {
-	    glVertex3fv((const GLfloat*)c3d3);
-	  } else {
-	    glVertex4fv((const GLfloat*)c3d4);
-	  }
+          // THIRD vertex
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            glNormal3fv(n3->getValue());
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(!"unimplemented");
+          }
+          if (TexturingEnabled == TRUE) {
+            if (is3d) {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                tb->send(curridx1, *c3d3, *n3);
+              } else {
+                tb->send(curridx1, *c3d3, *currnormal);
+              }
+            } else {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                //tb->send(curridx1, *c3d4, *n3);
+              } else {
+                //tb->send(curridx1, *c3d4, *currnormal);
+              }
+            }
+          }
+          if (is3d) {
+            glVertex3fv((const GLfloat*)c3d3);
+          } else {
+            glVertex4fv((const GLfloat*)c3d4);
+          }
 
-	  // again FIRST vertex
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    glNormal3fv(n1->getValue());
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    assert(!"unimplemented");
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    if (is3d) {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		tb->send(curridx1-1, *c1d3, *n1);
-	      } else {
-		tb->send(curridx1-1, *c1d3, *currnormal);
-	      }
-	    } else {
-	      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-		//tb->send(curridx1-1, *c1d4, *n1);
-	      } else {
-		//tb->send(curridx1-1, *c1d4, *currnormal);
-	      }
-	    }
-	  }
-	  if (is3d) {
-	    glVertex3fv((const GLfloat*)c1d3);
-	  } else {
-	    glVertex4fv((const GLfloat*)c1d4);
-	  }
+          // again FIRST vertex
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            glNormal3fv(n1->getValue());
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            assert(!"unimplemented");
+          }
+          if (TexturingEnabled == TRUE) {
+            if (is3d) {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                tb->send(curridx1-1, *c1d3, *n1);
+              } else {
+                tb->send(curridx1-1, *c1d3, *currnormal);
+              }
+            } else {
+              if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+                //tb->send(curridx1-1, *c1d4, *n1);
+              } else {
+                //tb->send(curridx1-1, *c1d4, *currnormal);
+              }
+            }
+          }
+          if (is3d) {
+            glVertex3fv((const GLfloat*)c1d3);
+          } else {
+            glVertex4fv((const GLfloat*)c1d4);
+          }
 
-	  glEnd();
-	  
-	  curridx1++;
-	  curridx2++;
-	}
+          glEnd();
+
+          curridx1++;
+          curridx2++;
+        }
       }
     }
   }
@@ -785,48 +785,48 @@ SoQuadMesh::initClass(void)
   SoGL::QuadMesh::GLRender<normalbinding, materialbinding, texturing> args
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
-  if (texturing) {							\
+  if (texturing) {                                                      \
     SOGL_QUADMESH_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
-  } else {								\
+  } else {                                                              \
     SOGL_QUADMESH_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
   }
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {						\
-  case SoGL::QuadMesh::OVERALL:						\
+  switch (materialbinding) {                                            \
+  case SoGL::QuadMesh::OVERALL:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::OVERALL, texturing, args); \
-    break;								\
-  case SoGL::QuadMesh::PER_ROW:						\
+    break;                                                              \
+  case SoGL::QuadMesh::PER_ROW:                                                \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::PER_ROW, texturing, args); \
-    break;								\
-  case SoGL::QuadMesh::PER_FACE:					\
+    break;                                                              \
+  case SoGL::QuadMesh::PER_FACE:                                        \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::PER_FACE, texturing, args); \
-    break;								\
-  case SoGL::QuadMesh::PER_VERTEX:					\
+    break;                                                              \
+  case SoGL::QuadMesh::PER_VERTEX:                                      \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::PER_VERTEX, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid materialbinding argument");			\
-    break;								\
+    break;                                                              \
+  default:                                                              \
+    assert(!"invalid materialbinding argument");                        \
+    break;                                                              \
   }
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {						\
-  case SoGL::QuadMesh::OVERALL:						\
+  switch (normalbinding) {                                              \
+  case SoGL::QuadMesh::OVERALL:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::OVERALL, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::QuadMesh::PER_ROW:						\
+    break;                                                              \
+  case SoGL::QuadMesh::PER_ROW:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::PER_ROW, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::QuadMesh::PER_FACE:					\
+    break;                                                              \
+  case SoGL::QuadMesh::PER_FACE:                                        \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::PER_FACE, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::QuadMesh::PER_VERTEX:					\
+    break;                                                              \
+  case SoGL::QuadMesh::PER_VERTEX:                                      \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::PER_VERTEX, materialbinding, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid normalbinding argument");				\
-    break;								\
+    break;                                                              \
+  default:                                                              \
+    assert(!"invalid normalbinding argument");                          \
+    break;                                                              \
   }
 
 #define SOGL_QUADMESH_GLRENDER(normalbinding, materialbinding, texturing, args) \
@@ -924,7 +924,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
                                 "dimension [%d %d] with %d coordinates available. "
                                 "Must specify >= 2 rows and columns. "
                                 "Aborting rendering. This message will only be shown "
-                                "once, but there might be more errors.", 
+                                "once, but there might be more errors.",
                                 rowsize, colsize, coords->getNum() - start);
     }
     current_errors++;
@@ -939,7 +939,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
       SoDebugError::postWarning("SoQuadMesh::GLRender", "Erroneous quadmesh "
                                 "dimension [%d %d] with %d coordinates available. "
                                 "Ignoring. This message will only be shown once, but "
-                                "there might be more errors.", 
+                                "there might be more errors.",
                                 rowsize, colsize, coords->getNum() - start);
     }
     current_errors++;
@@ -947,14 +947,14 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   }
 
   SOGL_QUADMESH_GLRENDER(nbind, mbind, doTextures, (coords,
-						    normals,
-						    &mb,
-						    &tb,
-						    needNormals,
-						    rowsize,
-						    colsize,
-						    start,
-						    pl));
+                                                    normals,
+                                                    &mb,
+                                                    &tb,
+                                                    needNormals,
+                                                    rowsize,
+                                                    colsize,
+                                                    start,
+                                                    pl));
 
  glrender_done:
 

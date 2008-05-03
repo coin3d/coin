@@ -114,8 +114,8 @@ coin_create_normalization_cube_map(const int size)
       ptr += 3;
     }
   }
-  glTexImage2D(	GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-                0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+  glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+               0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* positive y */
   ptr=data;
@@ -216,7 +216,7 @@ coin_apply_normalization_cube_map(const cc_glglue * glue)
       if (env) {
         int size = atoi(env);
         if (size >= 2 && coin_is_power_of_two((uint32_t) size)) {
-          CUBEMAP_SIZE = size; 
+          CUBEMAP_SIZE = size;
         }
       }
     }

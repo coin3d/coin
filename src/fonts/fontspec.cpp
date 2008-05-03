@@ -29,7 +29,7 @@
 
 void
 cc_fontspec_construct(cc_font_specification * spec,
-		      const char * name_style, float size, float complexity)
+                      const char * name_style, float size, float complexity)
 {
   const char * tmpstr, * tmpptr;
 
@@ -55,8 +55,8 @@ cc_fontspec_construct(cc_font_specification * spec,
         *tmpptrspace = ':';
       }
     }
-    
-    return; 
+
+    return;
   }
 
   /* Check if style is included in the fontname using the
@@ -70,46 +70,46 @@ cc_fontspec_construct(cc_font_specification * spec,
     int trimposstyle = pos + 1;
     int trimposname = pos - 1;
 
-    while (tmpstr[trimposstyle] == ' ') { 
+    while (tmpstr[trimposstyle] == ' ') {
       ++trimposstyle;
     }
 
-    while (tmpstr[trimposname] == ' ') { 
+    while (tmpstr[trimposname] == ' ') {
       --trimposname;
     }
- 
+
     cc_string_set_text(&spec->style, cc_string_get_text(&spec->name));
     cc_string_remove_substring(&spec->style, 0, trimposstyle - 1);
     cc_string_remove_substring(&spec->name, trimposname + 1, namelen-1);
-    
+
     trimstyleend = cc_string_length(&spec->style);
     trimposstyle = trimstyleend;
     tmpstr = cc_string_get_text(&spec->style);
 
-    while (tmpstr[trimstyleend-1] == ' ') { 
+    while (tmpstr[trimstyleend-1] == ' ') {
       --trimstyleend;
     }
-    
+
     if(trimstyleend !=  trimposstyle) {
       cc_string_remove_substring(&spec->style, trimstyleend, cc_string_length(&spec->style) - 1);
     }
-    
+
     tmpstr = cc_string_get_text(&spec->name);
     trimnamestart = 0;
     while (tmpstr[trimnamestart] == ' ') {
       ++trimnamestart;
     }
-    
+
     if (trimnamestart != 0) {
       cc_string_remove_substring(&spec->name, 0, trimnamestart-1);
     }
-   
+
   }
 }
 
 void
 cc_fontspec_copy(const cc_font_specification * from,
-		 cc_font_specification * to)
+                 cc_font_specification * to)
 {
   to->size = from->size;
   to->complexity = from->complexity;

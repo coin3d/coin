@@ -66,7 +66,7 @@ cc_string_remove_substring(cc_string * me, int start, int end)
   if ( end == -1 ) end = len - 1;
 
   assert(!(start < 0 || start >= len || end < 0 || end >= len || start > end) &&
-	 "invalid arguments for cc_string_remove_substring()");
+         "invalid arguments for cc_string_remove_substring()");
 
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
 }
@@ -90,7 +90,7 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
            "newsize==%d\n",
            me->bufsize, me->pointer, me->buffer, newsize);
   }
-                         
+
 
   if (newsize <= me->bufsize) { return; }
 
@@ -513,7 +513,7 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
          To make sure me->buffer never contains a string that is not
          '0'-terminated, we clear the buffer below before we grow it
          and retry coin_vsnprintf().
-      
+
          20070927 thammer.  */
       cc_string_clear_no_free(me);
       /* increase linearly in 1Kb intervals */

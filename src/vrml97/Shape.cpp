@@ -284,10 +284,10 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
       if (action->getCurPathCode() != SoAction::OFF_PATH ||
           child->affectsState()) {
         if (!action->abortNow()) {
-	  SoNodeProfiling profiling;
-	  profiling.preTraversal(action);
+          SoNodeProfiling profiling;
+          profiling.preTraversal(action);
           child->GLRender(action);
-	  profiling.postTraversal(action);
+          profiling.postTraversal(action);
         }
         else {
           SoCacheElement::invalidate(state);

@@ -214,7 +214,7 @@ SoLOD::doAction(SoAction *action)
       this->children->traverse(action, idx);
       PRIVATE(this)->enableTraversingOfInactiveChildren();
       PRIVATE(this)->traverseInactiveChildren(this, action, idx, pathcode,
-                                              this->getNumChildren(), 
+                                              this->getNumChildren(),
                                               this->getChildren());
     }
   }
@@ -292,10 +292,10 @@ SoLOD::GLRenderInPath(SoGLRenderAction * action)
       SoNode * node = this->getChild(idx);
       action->pushCurPath(idx, node);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         node->GLRenderInPath(action);
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       action->popCurPath(pathcode);
     }
@@ -316,10 +316,10 @@ SoLOD::GLRenderOffPath(SoGLRenderAction * action)
     if (node->affectsState()) {
       action->pushCurPath(idx, node);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         node->GLRenderOffPath(action);
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       action->popCurPath();
     }

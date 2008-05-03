@@ -50,7 +50,7 @@ cc_xml_load_file(const char * path)
     }
   }
   buffer[bufsize] = '\0';
-  fclose(fd);				// close opened file
+  fclose(fd); // close opened file
   return buffer;
 }
 

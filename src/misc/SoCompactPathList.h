@@ -43,7 +43,7 @@ class SoCompactPathList {
 public:
   SoCompactPathList(const SoPathList & list);
   ~SoCompactPathList();
-  
+
   void reset(void);
 
   void getChildren(int & numindices, const int *& indices);
@@ -55,14 +55,14 @@ public:
 private:
   int * lookuptable;
   SbList <int> stack;
-  int	lookupidx;
+  int lookupidx;
   int lookupsize;
 
-  int	getNumIndices(void); 
-  int	getStartIndex(void);
+  int getNumIndices(void);
+  int getStartIndex(void);
 
-  int	getChildIndex(const int child);  
-  int	createLookupTable(int curslot, int depth,
+  int getChildIndex(const int child);
+  int createLookupTable(int curslot, int depth,
                         const SoPathList & list,
                         int firstpath, int numpaths);
 };

@@ -112,7 +112,7 @@
 
 /*!
   \enum SoNavigationSystem::INITIAL
-  
+
   This transition is used to set the default/initial submode of the
   navigation system.
 */
@@ -209,7 +209,7 @@ SoNavigationSystemP::NameDict * SoNavigationSystemP::namedict = NULL;
 void
 SoNavigationSystem::initClass(void)
 {
-  SoNavigationSystemP::namedict = new SoNavigationSystemP::NameDict;  
+  SoNavigationSystemP::namedict = new SoNavigationSystemP::NameDict;
   SoNavigationSystemP::initBuiltinSystems();
 }
 
@@ -318,7 +318,7 @@ SoNavigationSystem::getByName(SbName name)
 
 /*!
   This function returns a distinct copy of the navigation system defined
-  by the given name, or NULL if no such navigation system has been 
+  by the given name, or NULL if no such navigation system has been
 */
 
 SoNavigationSystem *
@@ -622,7 +622,7 @@ SoNavigationSystem::processEvent(const SoEvent * event)
       }
       retval = TRUE; // transitions should always be considered handled events
       break;
-      
+
     case STACK:
     case SWITCH:
       mode->processEvent(event, PRIVATE(this)->ctrl);
@@ -782,7 +782,7 @@ SoNavigationSystem::getCurrentMode(void) const
 {
   return PRIVATE(this)->state->getMode();
 }
- 
+
 // *************************************************************************
 
 #undef PRIVATE
@@ -808,7 +808,7 @@ SoNavigationSystemP::~SoNavigationSystemP(void)
     const int num = this->transitions->getLength();
     int i;
     for (i = 0; i < num; i++) {
-      SoNavigationModeTransition * transition =	(*(this->transitions))[i];
+      SoNavigationModeTransition * transition = (*(this->transitions))[i];
       if (transition->trigger) { delete transition->trigger; }
       if (transition->condition) { delete transition->condition; }
       delete transition;
@@ -830,45 +830,45 @@ SoNavigationSystemP::~SoNavigationSystemP(void)
 
 // *************************************************************************
 
-void 
+void
 SoNavigationSystemP::initExaminerSystem(void)
 {
   SoKeyboardEvent * escapedown = new SoKeyboardEvent;
   escapedown->setKey(SoKeyboardEvent::ESCAPE);
   escapedown->setState(SoButtonEvent::DOWN);
-  
+
   SoKeyboardEvent * shiftdown = new SoKeyboardEvent;
   shiftdown->setKey(SoKeyboardEvent::LEFT_SHIFT);
   shiftdown->setState(SoButtonEvent::DOWN);
   SoKeyboardEvent * shiftup = new SoKeyboardEvent;
   shiftup->setKey(SoKeyboardEvent::LEFT_SHIFT);
   shiftup->setState(SoButtonEvent::UP);
-  
+
   SoKeyboardEvent * ctrldown = new SoKeyboardEvent;
   ctrldown->setKey(SoKeyboardEvent::LEFT_CONTROL);
   ctrldown->setState(SoButtonEvent::DOWN);
   SoKeyboardEvent * ctrlup = new SoKeyboardEvent;
   ctrlup->setKey(SoKeyboardEvent::LEFT_CONTROL);
   ctrlup->setState(SoButtonEvent::UP);
-  
+
   SoKeyboardEvent * key_sdown = new SoKeyboardEvent;
   key_sdown->setKey(SoKeyboardEvent::S);
   key_sdown->setState(SoButtonEvent::DOWN);
-  
+
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
   button1down->setButton(SoMouseButtonEvent::BUTTON1);
   button1down->setState(SoButtonEvent::DOWN);
   SoMouseButtonEvent * button1up = new SoMouseButtonEvent;
   button1up->setButton(SoMouseButtonEvent::BUTTON1);
   button1up->setState(SoButtonEvent::UP);
-  
+
   SoMouseButtonEvent * button2down = new SoMouseButtonEvent;
   button2down->setButton(SoMouseButtonEvent::BUTTON2);
   button2down->setState(SoButtonEvent::DOWN);
   SoMouseButtonEvent * button2up = new SoMouseButtonEvent;
   button2up->setButton(SoMouseButtonEvent::BUTTON2);
   button2up->setState(SoButtonEvent::UP);
-  
+
   SoMouseButtonEvent * button3down = new SoMouseButtonEvent;
   button3down->setButton(SoMouseButtonEvent::BUTTON3);
   button3down->setState(SoButtonEvent::DOWN);
@@ -904,7 +904,7 @@ SoNavigationSystemP::initExaminerSystem(void)
     new SoIdleMode(SO_EXAMINER_WAITFORCENTER_MODE);
   SoCenterMode * examinercenter =
     new SoCenterMode(SO_EXAMINER_CENTER_MODE);
-  
+
   examiner->addMode(examineridle);
   examiner->addMode(examinerrotate);
   examiner->addMode(examinerwaitforzoom);
@@ -916,21 +916,21 @@ SoNavigationSystemP::initExaminerSystem(void)
 
   examiner->addModeTransition(examineridle, SoNavigationSystem::INITIAL);
   examiner->addModeTransition(examineridle, examinerrotate,
-			      SoNavigationSystem::STACK, button1down);
+                              SoNavigationSystem::STACK, button1down);
   examiner->addModeTransition(examineridle, examinerwaitforzoom,
-			      SoNavigationSystem::STACK, shiftdown);
+                              SoNavigationSystem::STACK, shiftdown);
   examiner->addModeTransition(examineridle, examinerwaitforpan,
-			      SoNavigationSystem::STACK, ctrldown);
+                              SoNavigationSystem::STACK, ctrldown);
   examiner->addModeTransition(examineridle, examinerzoom,
-			      SoNavigationSystem::STACK, button2down);
+                              SoNavigationSystem::STACK, button2down);
   examiner->addModeTransition(examineridle, examinerzoom,
-			      SoNavigationSystem::STACK, mwheeldown);
+                              SoNavigationSystem::STACK, mwheeldown);
   examiner->addModeTransition(examineridle, examinerzoom,
-			      SoNavigationSystem::STACK, mwheelup);
+                              SoNavigationSystem::STACK, mwheelup);
   examiner->addModeTransition(examineridle, examinerpan,
-			      SoNavigationSystem::STACK, button3down);
+                              SoNavigationSystem::STACK, button3down);
   examiner->addModeTransition(examineridle, examinerwaitforcenter,
-			      SoNavigationSystem::STACK, key_sdown);
+                              SoNavigationSystem::STACK, key_sdown);
 
   examiner->addModeTransition(examinerrotate, SoNavigationSystem::FINISH, button1up, button1down);
   examiner->addModeTransition(examinerrotate, SoNavigationSystem::ABORT, escapedown);
@@ -957,7 +957,7 @@ SoNavigationSystemP::initExaminerSystem(void)
 
 
   SoNavigationSystem::registerSystem(examiner);
-  
+
   delete escapedown;
   delete key_sdown;
   delete button1down;
@@ -974,8 +974,8 @@ SoNavigationSystemP::initExaminerSystem(void)
   delete mwheelup;
 }
 
-void 
-SoNavigationSystemP::initPannerSystem(void) 
+void
+SoNavigationSystemP::initPannerSystem(void)
 {
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
   button1down->setButton(SoMouseButtonEvent::BUTTON1);
@@ -997,9 +997,9 @@ SoNavigationSystemP::initPannerSystem(void)
   panner->addMode(panner_pan);
   panner->addModeTransition(panner_idle, SoNavigationSystem::INITIAL);
   panner->addModeTransition(panner_idle, panner_pan,
-			    SoNavigationSystem::STACK, button1down);
+                            SoNavigationSystem::STACK, button1down);
   panner->addModeTransition(panner_pan, panner_pan,
-			    SoNavigationSystem::SWITCH, spacedown);
+                            SoNavigationSystem::SWITCH, spacedown);
   panner->addModeTransition(panner_pan, SoNavigationSystem::FINISH, button1up);
   panner->addModeTransition(panner_pan, SoNavigationSystem::ABORT, escapedown);
 
@@ -1011,8 +1011,8 @@ SoNavigationSystemP::initPannerSystem(void)
   delete button1up;
 }
 
-void 
-SoNavigationSystemP::initZoomerSystem(void) 
+void
+SoNavigationSystemP::initZoomerSystem(void)
 {
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
   button1down->setButton(SoMouseButtonEvent::BUTTON1);
@@ -1034,9 +1034,9 @@ SoNavigationSystemP::initZoomerSystem(void)
   zoomer->addMode(zoomer_zoom);
   zoomer->addModeTransition(zoomer_idle, SoNavigationSystem::INITIAL);
   zoomer->addModeTransition(zoomer_idle, zoomer_zoom,
-			    SoNavigationSystem::STACK, button1down);
+                            SoNavigationSystem::STACK, button1down);
   zoomer->addModeTransition(zoomer_zoom, zoomer_zoom,
-			    SoNavigationSystem::SWITCH, spacedown);
+                            SoNavigationSystem::SWITCH, spacedown);
   zoomer->addModeTransition(zoomer_zoom, SoNavigationSystem::FINISH, button1up);
   zoomer->addModeTransition(zoomer_zoom, SoNavigationSystem::ABORT, escapedown);
 
@@ -1048,8 +1048,8 @@ SoNavigationSystemP::initZoomerSystem(void)
   delete button1up;
 }
 
-void 
-SoNavigationSystemP::initRotaterSystem(void) 
+void
+SoNavigationSystemP::initRotaterSystem(void)
 {
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
   button1down->setButton(SoMouseButtonEvent::BUTTON1);
@@ -1071,22 +1071,22 @@ SoNavigationSystemP::initRotaterSystem(void)
   rotater->addMode(rotater_rotate);
   rotater->addModeTransition(rotater_idle, SoNavigationSystem::INITIAL);
   rotater->addModeTransition(rotater_idle, rotater_rotate,
-			     SoNavigationSystem::STACK, button1down);
+                             SoNavigationSystem::STACK, button1down);
   rotater->addModeTransition(rotater_rotate, rotater_rotate,
-			     SoNavigationSystem::SWITCH, spacedown);
+                             SoNavigationSystem::SWITCH, spacedown);
   rotater->addModeTransition(rotater_rotate, SoNavigationSystem::FINISH, button1up);
   rotater->addModeTransition(rotater_rotate, SoNavigationSystem::ABORT, escapedown);
 
   SoNavigationSystem::registerSystem(rotater);
-  
+
   delete spacedown;
   delete escapedown;
   delete button1down;
   delete button1up;
 }
 
-void 
-SoNavigationSystemP::initCentererSystem(void) 
+void
+SoNavigationSystemP::initCentererSystem(void)
 {
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
   button1down->setButton(SoMouseButtonEvent::BUTTON1);
@@ -1100,20 +1100,20 @@ SoNavigationSystemP::initCentererSystem(void)
   centerer->addMode(centerer_center);
   centerer->addModeTransition(centerer_idle, SoNavigationSystem::INITIAL);
   centerer->addModeTransition(centerer_idle, centerer_center,
-			      SoNavigationSystem::STACK, button1down);
+                              SoNavigationSystem::STACK, button1down);
 
   SoNavigationSystem::registerSystem(centerer);
 
   delete button1down;
 }
 
-void 
-SoNavigationSystemP::initPickerSystem(void) 
+void
+SoNavigationSystemP::initPickerSystem(void)
 {
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
   button1down->setButton(SoMouseButtonEvent::BUTTON1);
   button1down->setState(SoButtonEvent::DOWN);
-  
+
   SoNavigationSystem * picker = new SoNavigationSystem(SO_PICKER_SYSTEM);
   SoIdleMode * picker_idle = new SoIdleMode(SO_PICKER_IDLE_MODE);
   SoPickMode * picker_pick = new SoPickMode(SO_PICKER_PICK_MODE);
@@ -1128,8 +1128,8 @@ SoNavigationSystemP::initPickerSystem(void)
   delete button1down;
 }
 
-void 
-SoNavigationSystemP::initIdleSystem(void) 
+void
+SoNavigationSystemP::initIdleSystem(void)
 {
   SoNavigationSystem * idler =
     new SoNavigationSystem(SO_IDLER_SYSTEM);
@@ -1141,7 +1141,7 @@ SoNavigationSystemP::initIdleSystem(void)
   SoNavigationSystem::registerSystem(idler);
 }
 
-void 
+void
 SoNavigationSystemP::initPlaneViewerSystem(void)
 {
   SoMouseButtonEvent * button1down = new SoMouseButtonEvent;
@@ -1168,21 +1168,21 @@ SoNavigationSystemP::initPlaneViewerSystem(void)
   SoKeyboardEvent * shiftup = new SoKeyboardEvent;
   shiftup->setKey(SoKeyboardEvent::LEFT_SHIFT);
   shiftup->setState(SoButtonEvent::UP);
-  
+
   SoNavigationSystem * planeviewer = new SoNavigationSystem(SO_PLANEVIEWER_SYSTEM);
   SoIdleMode * idle = new SoIdleMode(SO_PLANEVIEWER_IDLE_MODE);
   SoPanMode * pan = new SoPanMode(SO_PLANEVIEWER_PAN_MODE);
-  
+
   SoIdleMode * waitforzoom =
     new SoIdleMode(SO_PLANEVIEWER_WAITFORZOOM_MODE);
   SoZoomMode * zoom =
     new SoZoomMode(SO_PLANEVIEWER_ZOOM_MODE);
-  
+
   planeviewer->addMode(idle);
   planeviewer->addMode(pan);
   planeviewer->addMode(zoom);
   planeviewer->addMode(waitforzoom);
-  
+
   planeviewer->addModeTransition(idle, SoNavigationSystem::INITIAL);
   planeviewer->addModeTransition(idle, waitforzoom,
                                  SoNavigationSystem::STACK, shiftdown);
@@ -1193,7 +1193,7 @@ SoNavigationSystemP::initPlaneViewerSystem(void)
   planeviewer->addModeTransition(idle, zoom,
                                  SoNavigationSystem::STACK, button2down);
   planeviewer->addModeTransition(zoom, SoNavigationSystem::FINISH, button2up, button2down);
-  
+
   planeviewer->addModeTransition(zoom, SoNavigationSystem::FINISH, button1up, button1down);
 
   planeviewer->addModeTransition(pan, SoNavigationSystem::ABORT, escapedown);
@@ -1211,7 +1211,7 @@ SoNavigationSystemP::initPlaneViewerSystem(void)
 }
 
 
-void 
+void
 SoNavigationSystemP::initBuiltinSystems(void)
 {
   initExaminerSystem();

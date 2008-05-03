@@ -255,7 +255,7 @@ cc_flww32_exit(void)
   BOOL ok;
 
   /* FIXME: this hash should be empty at this point? 20030930 handegar */
-  cc_dict_destruct(cc_flww32_globals.font2kerninghash);	
+  cc_dict_destruct(cc_flww32_globals.font2kerninghash);
   cc_dict_destruct(cc_flww32_globals.fontsizehash);
 
   ok = DeleteDC(cc_flww32_globals.devctx);
@@ -290,22 +290,22 @@ cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
 }
 
 /*
-  Wrapper for 
+  Wrapper for
   int tolower(int)
 */
 static char cc_flww32_chartolower(char c)
 {
   return (char)tolower(c);
 }
- 
-/* 
+
+/*
   Simply passes the parameters to the GDI function CreateFont() and returns the result
 */
-static HFONT cc_flww32_create_font(const char* fontname, int sizey, 
+static HFONT cc_flww32_create_font(const char* fontname, int sizey,
                                    float angle, BOOL bold, BOOL italic)
 {
   HFONT font;
-  font = CreateFont(-sizey, 
+  font = CreateFont(-sizey,
                     /* Using a negative 'sizey'. Otherwise
                        leads to less details as it seems like
                        the Win32 systems tries to 'quantize'
@@ -384,11 +384,11 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
     return NULL;
   }
 
-  /* 
-  Some windows fonts (like "Courier New") have separate entries for the bold 
+  /*
+  Some windows fonts (like "Courier New") have separate entries for the bold
   ("Courier New Bold"), italic ("Courier New Italic") and bold+italic ("Courier New Bold Italic")
-  versions, and will work with the previous approach. Others (like "Lucida Console") 
-  use the same font for all the versions, and will not be found if we specify bold/italic as 
+  versions, and will work with the previous approach. Others (like "Lucida Console")
+  use the same font for all the versions, and will not be found if we specify bold/italic as
   part of the font name, instead we get a default font back from GDI (Arial plain). This is also
   the case if the parameters are specified in the wrong order (i.e. "Courier New Italic Bold").
   (wiesener 20071010)
@@ -417,8 +417,8 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
 
     bold = strstr(tmp, " bold");
     italic = strstr(tmp, " italic");
-    /* FIXME: Should we also try to handle fontconfig style font specification, 
-       ie. "bold:italic"? This has most likely never worked with the previous 
+    /* FIXME: Should we also try to handle fontconfig style font specification,
+       ie. "bold:italic"? This has most likely never worked with the previous
        approach. (wiesener 20071016)
     */
     if ( bold || italic)
@@ -434,17 +434,17 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
       }
       basename = cc_string_construct_new();
       cc_string_set_text(basename, fontname);
-      cc_string_remove_substring(basename, baselen, 
+      cc_string_remove_substring(basename, baselen,
           cc_string_length(basename) - 1);
 
       /* try constructing the font again: */
-      wfont2 = cc_flww32_create_font(cc_string_get_text(basename), sizey, angle,  
+      wfont2 = cc_flww32_create_font(cc_string_get_text(basename), sizey, angle,
                                      bold ? TRUE : FALSE, italic ? TRUE : FALSE);
       if (wfont2) {
         cc_flww32_get_font_name(wfont2, realname);
         if (((int) cc_string_length(realname) == baselen) &&
-            !coin_strncasecmp(cc_string_get_text(realname), 
-                              cc_string_get_text(basename), 
+            !coin_strncasecmp(cc_string_get_text(realname),
+                              cc_string_get_text(basename),
                               baselen)) {
           /* The new font was a perfect match. Replace the old one. */
           DeleteObject(wfont);
@@ -553,8 +553,8 @@ cc_flww32_get_font_name(void * font, cc_string * str)
        means that the system has cropped the string. Requested font
        will most probably not be found. */
     cc_debugerror_postwarning("cc_flww32_get_font_name",
-			      "GetTextFace(). The length of the returned fontname is"
-			      " >= expected size. Fontname has been cropped.");
+                              "GetTextFace(). The length of the returned fontname is"
+                              " >= expected size. Fontname has been cropped.");
   }
 
   free(s);
@@ -572,7 +572,7 @@ cc_flww32_done_font(void * font)
 {
   BOOL ok;
   SbBool found;
-  cc_dict * khash;	
+  cc_dict * khash;
 
   found = cc_dict_remove(cc_flww32_globals.fontsizehash, (uintptr_t)font);
   assert(found && "huh?");
@@ -618,7 +618,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
   /* FIXME: this should be investigated in more detail -- how the heck
      can it make a difference whether or not it's static? 20031118 mortene. */
   const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
-				{ 0, 0 }, { 0, 1 } };
+                                { 0, 0 }, { 0, 1 } };
   DWORD ret;
   DWORD size = 0;
   HFONT previousfont;
@@ -673,9 +673,9 @@ cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int *
 {
 
   float * kerning = NULL;
-  cc_dict * khash;	
+  cc_dict * khash;
 
-  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, (void **) &khash)) {	
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, (void **) &khash)) {
     if (cc_dict_get(khash, (uintptr_t)glyph1, (void **) &khash)) {
       if (cc_dict_get((cc_dict *) khash, (uintptr_t)glyph2, (void **) &kerning)) {
         *x = (int) kerning[0];
@@ -696,7 +696,7 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
 {
 
   float * kerning = NULL;
-  cc_dict * khash;	
+  cc_dict * khash;
   DWORD ret;
   DWORD size;
   LOGFONT lfont;
@@ -708,7 +708,7 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
     size = 1;
   }
 
-  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, (void **) &khash)) {	
+  if (cc_dict_get(cc_flww32_globals.font2kerninghash, (uintptr_t)font, (void **) &khash)) {
     if (cc_dict_get(khash, (uintptr_t)glyph1, (void **) &khash)) {
       if (cc_dict_get((cc_dict *) khash, (uintptr_t)glyph2, (void **) &kerning)) {
         *x = kerning[0] / size;
@@ -743,7 +743,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   /* FIXME: this should be investigated in more detail -- how the heck
      can it make a difference whether or not it's static? 20031118 mortene. */
   const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
-				{ 0, 0 }, { 0, 1 } };
+                                { 0, 0 }, { 0, 1 } };
   DWORD ret;
   DWORD size = 0;
   uint8_t * w32bitmap = NULL;
@@ -848,11 +848,11 @@ cc_flww32_get_bitmap(void * font, int glyph)
     for (i = 0; i < bm->rows; i++) {
       src = next_row;
       for (j=0; j < bm->width; j++, dst++, src++) {
-	/* we get a value ranging from 0-64. adjust it to 256 gray
-	   level values by multiplying it by 4. handle the 0 and 64
-	   special cases by either returning 0 or always using the by
-	   one smaller value in order not to overflow the 64 case. */
-	*dst = *src ? (*src - 1) << 2 : 0;
+        /* we get a value ranging from 0-64. adjust it to 256 gray
+           level values by multiplying it by 4. handle the 0 and 64
+           special cases by either returning 0 or always using the by
+           one smaller value in order not to overflow the 64 case. */
+        *dst = *src ? (*src - 1) << 2 : 0;
       }
       /* go to the next DWORD aligned row oriented row */
       next_row += ((bm->width + 3) >> 2) << 2;
@@ -905,11 +905,11 @@ flww32_getVerticesFromPath(HDC hdc)
 
     /* go through the endpoints */
     for (i = 0; i < numpoints; i++) {
-            	
+
       /* if this endpoint starts a new contour */
       if (p_types[i] == PT_MOVETO) {
 
-        lastmoveto = i;	
+        lastmoveto = i;
         if (flww32_tessellator.contour_open) {
           GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);
           cc_list_truncate(flww32_tessellator.edgeindexlist,
@@ -921,30 +921,30 @@ flww32_getVerticesFromPath(HDC hdc)
 
         GLUWrapper()->gluTessBeginContour(flww32_tessellator.tessellator_object);
         flww32_tessellator.edge_start_vertex = flww32_tessellator.vertex_counter;
-        flww32_tessellator.contour_open = TRUE;	
+        flww32_tessellator.contour_open = TRUE;
         continue;
       }
-					
+
       /* Close the contour? */
-      if (p_types[i] & PT_CLOSEFIGURE) {				
-	if (flww32_win9598Me) {
-	  /* If the current OS is Windows95/98/Me, the last vertex
-	    must be added before closing the figure-path. If the OS is
-	    a newer version (ie. XP/2000/NT), adding the last vertex
-	    will lead to a 'gap' which looks quite ugly when
-	    extruded. The 'flww32_win9598Me' is a static SbBool
-	    initialized once in 'flww32_initialize()'. */
-	  flww32_addTessVertex(p_points[i].x, p_points[i].y);
-	}
+      if (p_types[i] & PT_CLOSEFIGURE) {
+        if (flww32_win9598Me) {
+          /* If the current OS is Windows95/98/Me, the last vertex
+            must be added before closing the figure-path. If the OS is
+            a newer version (ie. XP/2000/NT), adding the last vertex
+            will lead to a 'gap' which looks quite ugly when
+            extruded. The 'flww32_win9598Me' is a static SbBool
+            initialized once in 'flww32_initialize()'. */
+          flww32_addTessVertex(p_points[i].x, p_points[i].y);
+        }
 
         flww32_addTessVertex(p_points[lastmoveto].x, p_points[lastmoveto].y);
       }
       else {
-        flww32_addTessVertex(p_points[i].x, p_points[i].y);		
+        flww32_addTessVertex(p_points[i].x, p_points[i].y);
       }
     }
     if (p_points != NULL) free(p_points);
-    if (p_types != NULL) free(p_types);	
+    if (p_types != NULL) free(p_types);
   }
 
 }
@@ -1360,7 +1360,7 @@ flww32_calcfontsize(float complexity)
   };
   const unsigned int lastidx = sizeof(sizes) / sizeof(sizes[0]) - 1;
   unsigned int index = (unsigned int)(lastidx * complexity);
-  if (index > lastidx) index = lastidx;	
+  if (index > lastidx) index = lastidx;
 
   return sizes[index];
 }

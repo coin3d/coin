@@ -160,7 +160,7 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
   // this function should *not* have multiple return-points.
 
   // Don't use getNum(), getValues() or operator[] to find old values,
-  // since this might trigger a recursive evaluation call if the field 
+  // since this might trigger a recursive evaluation call if the field
   // is connected.
 
   // Expand array if necessary.
@@ -179,10 +179,10 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
       // The path should be audited by us at all times. So don't use
       // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
       assert(h==this->pathheads[idx] &&
-	     "Path head changed without notification!");
+             "Path head changed without notification!");
       if (h) {
-	h->removeAuditor(this, SoNotRec::FIELD);
-	h->unref();
+        h->removeAuditor(this, SoNotRec::FIELD);
+        h->unref();
       }
 #endif // COIN_INTERNAL_SOMFPATH
       oldptr->removeAuditor(this, SoNotRec::FIELD);
@@ -195,8 +195,8 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
 #ifdef COIN_INTERNAL_SOMFPATH
       SoNode * h = newval->getHead();
       if (h) {
-	h->addAuditor(this, SoNotRec::FIELD);
-	h->ref();
+        h->addAuditor(this, SoNotRec::FIELD);
+        h->ref();
       }
 #endif // COIN_INTERNAL_SOMFPATH
     }
@@ -237,8 +237,8 @@ SoMFPath::operator==(const SoMFPath & field) const
 void
 SoMFPath::deleteAllValues(void)
 {
-  // Don't use getNum(), but use this->num directly, since getNum() 
-  // might trigger a recursive evaluation call if the field 
+  // Don't use getNum(), but use this->num directly, since getNum()
+  // might trigger a recursive evaluation call if the field
   // is connected.
 
   if (this->num) this->deleteValues(0);
@@ -410,7 +410,7 @@ SoMFPath::fixCopy(SbBool copyconnections)
 #if defined(COIN_INTERNAL_SOMFNODE) || defined(COIN_INTERNAL_SOMFENGINE)
       SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
 #if COIN_DEBUG
-      fc->assertAlive();  
+      fc->assertAlive();
 #endif // COIN_DEBUG
       this->set1Value(i, (SoPath *)fc);
 #endif // COIN_INTERNAL_SOMFNODE || COIN_INTERNAL_SOMFENGINE

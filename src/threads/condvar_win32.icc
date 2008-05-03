@@ -42,8 +42,8 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
   if (condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] == NULL) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_condvar_struct_init",
-			   "CreateEvent(NULL,FALSE,FALSE,NULL)",
-			   GetLastError());
+                           "CreateEvent(NULL,FALSE,FALSE,NULL)",
+                           GetLastError());
     }
     return CC_ERROR;
   }
@@ -53,8 +53,8 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
   if (condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] == NULL) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_condvar_struct_init",
-			   "CreateEvent(NULL,TRUE,FALSE,NULL)",
-			   GetLastError());
+                           "CreateEvent(NULL,TRUE,FALSE,NULL)",
+                           GetLastError());
     }
     return CC_ERROR;
   }
@@ -72,7 +72,7 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
   if (status == FALSE) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_condvar_struct_clean",
-			   "CloseHandle()", GetLastError());
+                           "CloseHandle()", GetLastError());
     }
     ret = CC_ERROR;
   }
@@ -80,7 +80,7 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
   if (status == FALSE) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_condvar_struct_clean",
-			   "CloseHandle()", GetLastError());
+                           "CloseHandle()", GetLastError());
     }
     ret = CC_ERROR;
   }
@@ -124,7 +124,7 @@ internal_condvar_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD perio
   if (result == WAIT_FAILED) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_condvar_wait_common",
-			   "WaitForMultipleObjects()", GetLastError());
+                           "WaitForMultipleObjects()", GetLastError());
     }
     return CC_ERROR;
   }

@@ -64,11 +64,11 @@
   mytessellator.endPolygon();
 
   \endcode
-  
+
   The call to SbTesselator::endPolygon() triggers the SbTesselator to
   spring into action, calling the tess_cb() function for each triangle
   it generates.
-  
+
   The reason we use 2 arguments to SbTesselator::addVertex() and passes
   void pointers for the vertices to the callback function is to make it
   possible to have more complex structures than just the coordinates
@@ -178,7 +178,7 @@ SbTesselator::SbTesselator(SbTesselatorCB * func, void * data)
 {
   this->setCallback(func, data);
   this->headV = this->tailV = NULL;
-  this->currVertex = 0;  
+  this->currVertex = 0;
 
   this->heap = (SbHeap *) new SbTesselatorP;
   PRIVATE(this)->heap =
@@ -194,7 +194,7 @@ SbTesselator::~SbTesselator()
   cleanUp();
   int i, n = this->vertexStorage.getLength();
   for (i = 0; i < n; i++) { delete this->vertexStorage[i]; }
-  
+
   cc_heap_destruct(PRIVATE(this)->heap);
   delete PRIVATE(this);
 }
@@ -273,7 +273,7 @@ SbTesselator::endPolygon()
       this->numVerts--;
     }
   }
- 
+
   SbTVertex *v;
 
   if (this->numVerts > 3) {
@@ -336,7 +336,7 @@ SbTesselator::endPolygon()
       cc_heap_add(PRIVATE(this)->heap, v);
       v = v->next;
     } while (v != this->headV);
-    
+
     while (this->numVerts > 4) {
       v = (SbTVertex*) cc_heap_get_top(PRIVATE(this)->heap);
       if (heap_evaluate(v) == FLT_MAX) break;
@@ -346,7 +346,7 @@ SbTesselator::endPolygon()
                                                  0.0f));
       this->emitTriangle(v); // will remove v->next
       this->numVerts--;
-      
+
       v->prev->dirtyweight = 1;
       v->dirtyweight = 1;
 
@@ -474,7 +474,7 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   // of the triangle edges. Do a point_on_edge test for all three
   // edges to handle this case. Example model that fails without this
   // test:
-  // 
+  //
   //  ShapeHints { faceType UNKNOWN_FACE_TYPE vertexOrdering CLOCKWISE }
   //  IndexedFaceSet {
   //    vertexProperty
@@ -517,8 +517,8 @@ SbBool
 SbTesselator::isTriangle(SbTVertex *v)
 {
   return (((v->next->v[X]-v->v[X]) * (v->next->next->v[Y]-v->v[Y]) -
-	   (v->next->v[Y]-v->v[Y]) * (v->next->next->v[X]-v->v[X])) *
-	  this->polyDir > 0.0) ? TRUE : FALSE;
+           (v->next->v[Y]-v->v[Y]) * (v->next->next->v[X]-v->v[X])) *
+          this->polyDir > 0.0) ? TRUE : FALSE;
 }
 
 //
@@ -533,10 +533,10 @@ SbTesselator::clippable(SbTVertex *v)
   bbox.extendBy(SbVec3f(v->v[X], v->v[Y], 0.0f));
   bbox.extendBy(SbVec3f(v->next->v[X], v->next->v[Y], 0.0f));
   bbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 0.0f));
-  
+
   SbSphere sphere;
   sphere.circumscribe(bbox);
-  
+
   SbList <int> & l = PRIVATE(this)->clippablelist;
   l.truncate(0);
   PRIVATE(this)->bsptree.findPoints(sphere, l);
@@ -684,7 +684,7 @@ SbTesselator::calcPolygonNormal()
   polyNormal[0] += (vert1[1] - vert2[1]) * (vert1[2] + vert2[2]);
   polyNormal[1] += (vert1[2] - vert2[2]) * (vert1[0] + vert2[0]);
   polyNormal[2] += (vert1[0] - vert2[0]) * (vert1[1] + vert2[1]);
-  
+
   if (polyNormal.normalize() == 0.0f) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SbTesselator::calcPolygonNormal",

@@ -37,12 +37,12 @@
 
   \verbatim
   #Inventor V2.1 ascii
-  
+
   Separator {
      Coordinate3 {
         point [ 0 0 0, 1 1 1, 2 1 1, 2 2 1, 2 2 2, 2 2 3, 2 3 2, 2 3 3, 3 3 3 ]
      }
-  
+
      LineSet {
         numVertices [ 3, 4, 2 ]
      }
@@ -222,17 +222,17 @@ namespace { namespace SoGL { namespace LineSet {
   };
 
   template < int NormalBinding,
-	     int MaterialBinding,
-	     int TexturingEnabled >
+             int MaterialBinding,
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * coords,
-		       const SbVec3f *normals,
-		       SoMaterialBundle * mb,
-		       const SoTextureCoordinateBundle * tb,
-		       int32_t idx,
-		       const int32_t *ptr,
-		       const int32_t *end,
-		       SbBool needNormals,
-		       SbBool drawPoints)
+                       const SbVec3f *normals,
+                       SoMaterialBundle * mb,
+                       const SoTextureCoordinateBundle * tb,
+                       int32_t idx,
+                       const int32_t *ptr,
+                       const int32_t *end,
+                       SbBool needNormals,
+                       SbBool drawPoints)
   {
     const SbVec3f * coords3d = NULL;
     const SbVec4f * coords4d = NULL;
@@ -246,7 +246,7 @@ namespace { namespace SoGL { namespace LineSet {
 
     // This is the same code as in SoGLCoordinateElement::send().
     // It is inlined here for speed (~15% speed increase).
-#define SEND_VERTEX(_idx_)					\
+#define SEND_VERTEX(_idx_)                                        \
     if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
     else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
@@ -255,61 +255,61 @@ namespace { namespace SoGL { namespace LineSet {
     if (normals) currnormal = normals;
     if ((AttributeBinding)NormalBinding == OVERALL) {
       if (needNormals)
-	glNormal3fv((const GLfloat *)currnormal);
+        glNormal3fv((const GLfloat *)currnormal);
     }
 
     int matnr = 0;
     int texnr = 0;
 
     if ((AttributeBinding)NormalBinding == PER_SEGMENT ||
-	(AttributeBinding)MaterialBinding == PER_SEGMENT) {
+        (AttributeBinding)MaterialBinding == PER_SEGMENT) {
 
       if (drawPoints) glBegin(GL_POINTS);
       else glBegin(GL_LINES);
 
       while (ptr < end) {
-	int n = *ptr++;
-	if (n < 2) {
-	  idx += n;
-	  continue;
-	}
-	if ((AttributeBinding)MaterialBinding == PER_LINE ||
-	    (AttributeBinding)MaterialBinding == PER_VERTEX) {
-	  mb->send(matnr++, TRUE);
-	}
-	if ((AttributeBinding)NormalBinding == PER_LINE ||
-	    (AttributeBinding)NormalBinding == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*)currnormal);
-	}
-	if (TexturingEnabled == TRUE) {
-	  tb->send(texnr++, coords->get3(idx), *currnormal);
-	}
+        int n = *ptr++;
+        if (n < 2) {
+          idx += n;
+          continue;
+        }
+        if ((AttributeBinding)MaterialBinding == PER_LINE ||
+            (AttributeBinding)MaterialBinding == PER_VERTEX) {
+          mb->send(matnr++, TRUE);
+        }
+        if ((AttributeBinding)NormalBinding == PER_LINE ||
+            (AttributeBinding)NormalBinding == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat*)currnormal);
+        }
+        if (TexturingEnabled == TRUE) {
+          tb->send(texnr++, coords->get3(idx), *currnormal);
+        }
 
-	while (--n) {
-	  if ((AttributeBinding)MaterialBinding == PER_SEGMENT) {
-	    mb->send(matnr++, TRUE);
-	  }
-	  if ((AttributeBinding)NormalBinding == PER_SEGMENT) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat*)currnormal);
-	  }
-	  SEND_VERTEX(idx);
-	  idx++;
+        while (--n) {
+          if ((AttributeBinding)MaterialBinding == PER_SEGMENT) {
+            mb->send(matnr++, TRUE);
+          }
+          if ((AttributeBinding)NormalBinding == PER_SEGMENT) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat*)currnormal);
+          }
+          SEND_VERTEX(idx);
+          idx++;
 
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat *)currnormal);
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    mb->send(matnr++, TRUE);
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    tb->send(texnr++, coords->get3(idx), *currnormal);
-	  }
-	  SEND_VERTEX(idx);
-	}
-	idx++;
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat *)currnormal);
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            mb->send(matnr++, TRUE);
+          }
+          if (TexturingEnabled == TRUE) {
+            tb->send(texnr++, coords->get3(idx), *currnormal);
+          }
+          SEND_VERTEX(idx);
+        }
+        idx++;
       }
       glEnd();
 
@@ -317,41 +317,41 @@ namespace { namespace SoGL { namespace LineSet {
 
       if (drawPoints) glBegin(GL_POINTS);
       while (ptr < end) {
-	int n = *ptr++;
-	if (n < 2) {
-	  idx += n; // FIXME: is this correct?
-	  continue;
-	}
-	n -= 2;
-	if (!drawPoints) glBegin(GL_LINE_STRIP);
+        int n = *ptr++;
+        if (n < 2) {
+          idx += n; // FIXME: is this correct?
+          continue;
+        }
+        n -= 2;
+        if (!drawPoints) glBegin(GL_LINE_STRIP);
 
-	if ((AttributeBinding)NormalBinding != OVERALL) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
-	if ((AttributeBinding)MaterialBinding != OVERALL) {
-	  mb->send(matnr++, TRUE);
-	}
-	if (TexturingEnabled == TRUE) {
-	  tb->send(texnr++, coords->get3(idx), *currnormal);
-	}
-	SEND_VERTEX(idx);
-	idx++;
-	do {
-	  if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	    currnormal = normals++;
-	    glNormal3fv((const GLfloat *)currnormal);
-	  }
-	  if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	    mb->send(matnr++, TRUE);
-	  }
-	  if (TexturingEnabled == TRUE) {
-	    tb->send(texnr++, coords->get3(idx), *currnormal);
-	  }
-	  SEND_VERTEX(idx);
-	  idx++;
-	} while (n--);
-	if (!drawPoints) glEnd();
+        if ((AttributeBinding)NormalBinding != OVERALL) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if ((AttributeBinding)MaterialBinding != OVERALL) {
+          mb->send(matnr++, TRUE);
+        }
+        if (TexturingEnabled == TRUE) {
+          tb->send(texnr++, coords->get3(idx), *currnormal);
+        }
+        SEND_VERTEX(idx);
+        idx++;
+        do {
+          if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+            currnormal = normals++;
+            glNormal3fv((const GLfloat *)currnormal);
+          }
+          if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+            mb->send(matnr++, TRUE);
+          }
+          if (TexturingEnabled == TRUE) {
+            tb->send(texnr++, coords->get3(idx), *currnormal);
+          }
+          SEND_VERTEX(idx);
+          idx++;
+        } while (n--);
+        if (!drawPoints) glEnd();
       }
     }
     if (drawPoints) glEnd();
@@ -371,48 +371,48 @@ SoLineSet::initClass(void)
   SoGL::LineSet::GLRender<normalbinding, materialbinding, texturing> args
 
 #define SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
-  if (texturing) {							\
+  if (texturing) {                                                      \
     SOGL_LINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
-  } else {								\
+  } else {                                                              \
     SOGL_LINESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
   }
 
 #define SOGL_LINESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {						\
-  case SoGL::LineSet::OVERALL:						\
+  switch (materialbinding) {                                            \
+  case SoGL::LineSet::OVERALL:                                          \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::OVERALL, texturing, args); \
-    break;								\
-  case SoGL::LineSet::PER_LINE:						\
+    break;                                                              \
+  case SoGL::LineSet::PER_LINE:                                         \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::PER_LINE, texturing, args); \
-    break;								\
-  case SoGL::LineSet::PER_SEGMENT:					\
+    break;                                                              \
+  case SoGL::LineSet::PER_SEGMENT:                                      \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::PER_SEGMENT, texturing, args); \
-    break;								\
-  case SoGL::LineSet::PER_VERTEX:					\
+    break;                                                              \
+  case SoGL::LineSet::PER_VERTEX:                                       \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::PER_VERTEX, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid materialbinding argument");			\
-    break;								\
+    break;                                                              \
+  default:                                                              \
+    assert(!"invalid materialbinding argument");                        \
+    break;                                                              \
   }
 
 #define SOGL_LINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {						\
-  case SoGL::LineSet::OVERALL:						\
+  switch (normalbinding) {                                              \
+  case SoGL::LineSet::OVERALL:                                          \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::OVERALL, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::LineSet::PER_LINE:						\
+    break;                                                              \
+  case SoGL::LineSet::PER_LINE:                                         \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::PER_LINE, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::LineSet::PER_SEGMENT:					\
+    break;                                                              \
+  case SoGL::LineSet::PER_SEGMENT:                                      \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::PER_SEGMENT, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::LineSet::PER_VERTEX:					\
+    break;                                                              \
+  case SoGL::LineSet::PER_VERTEX:                                       \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::PER_VERTEX, materialbinding, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid normalbinding argument");				\
-    break;								\
+    break;                                                              \
+  default:                                                              \
+    assert(!"invalid normalbinding argument");                          \
+    break;                                                              \
   }
 
 #define SOGL_LINESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
@@ -447,7 +447,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
     return; // nothing to render
   }
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-   
+
 
   SoMaterialBundle mb(action);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
@@ -484,21 +484,21 @@ SoLineSet::GLRender(SoGLRenderAction * action)
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
   SOGL_LINESET_GLRENDER(nbind, mbind, doTextures, (coords,
-						   normals,
-						   &mb,
-						   &tb,
-						   idx,
-						   ptr,
-						   end,
-						   needNormals,
-						   drawPoints));
+                                                   normals,
+                                                   &mb,
+                                                   &tb,
+                                                   idx,
+                                                   ptr,
+                                                   end,
+                                                   needNormals,
+                                                   drawPoints));
 
   if (didpush)
     state->pop();
 
   int numv = this->numVertices.getNum();
   // send approx number of lines for autocache handling
-  sogl_autocache_update(state, numv ? 
+  sogl_autocache_update(state, numv ?
                         (this->numVertices[0]-1)*numv : 0);
 }
 
@@ -542,9 +542,9 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   int32_t dummyarray[1];
   const int32_t *ptr = this->numVertices.getValues(0);
   const int32_t *end = ptr + this->numVertices.getNum();
-  
+
   if ((end-ptr == 1) && (*ptr == 0)) return;
-  
+
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
 
   if (action->canApproximateCount()) {
@@ -651,7 +651,7 @@ SoLineSet::generatePrimitives(SoAction *action)
         pointDetail.setCoordinateIndex(idx);
         vertex.setPoint(coords->get3(idx++));
         this->shapeVertex(&vertex);
-        
+
         if (nbind == PER_VERTEX) {
           pointDetail.setNormalIndex(normnr);
           currnormal = &normals[normnr++];

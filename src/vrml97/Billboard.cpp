@@ -114,7 +114,7 @@
      translation -2 0 0
      children [
         Billboard {
-  	 children [ Box { } ]
+          children [ Box { } ]
         }
      ]
   }
@@ -123,8 +123,8 @@
      translation 2 0 0
      children [
         Billboard {
-  	 axisOfRotation 0 1 0
-  	 children [ Box { } ]
+          axisOfRotation 0 1 0
+          children [ Box { } ]
         }
      ]
   }
@@ -370,10 +370,10 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
         if (offpath->affectsState()) {
           action->pushCurPath(childidx, offpath);
           if (!action->abortNow()) {
-	    SoNodeProfiling profiling;
-	    profiling.preTraversal(action);
+            SoNodeProfiling profiling;
+            profiling.preTraversal(action);
             offpath->GLRenderOffPath(action);
-	    profiling.postTraversal(action);
+            profiling.postTraversal(action);
           }
           action->popCurPath(pathcode);
         }
@@ -381,10 +381,10 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
       SoNode * inpath = childarray[childidx];
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         inpath->GLRenderInPath(action);
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       action->popCurPath(pathcode);
       childidx++;

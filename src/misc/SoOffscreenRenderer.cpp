@@ -52,40 +52,40 @@
   #include <Inventor/nodes/SoDirectionalLight.h>
   #include <Inventor/nodes/SoPerspectiveCamera.h>
   #include <Inventor/nodes/SoSeparator.h>
-  
-  int 
-  main(int argc, char ** argv) 
+
+  int
+  main(int argc, char ** argv)
   {
     SoDB::init();
-  
+
     SoPerspectiveCamera * camera = new SoPerspectiveCamera;
     SoDirectionalLight * light = new SoDirectionalLight;
     SoCube * cube = new SoCube;
-  
+
     SoSeparator * root = new SoSeparator;
     root->addChild(camera);
     root->addChild(light);
     root->addChild(cube);
     root->ref();
-  
+
     SbViewportRegion vpr;
     vpr.setWindowSize(400, 400);
-  
+
     light->direction.setValue(1, -1.2, -0.5);
-  
+
     camera->position.setValue(-2, 2, 2);
     camera->pointAt(SbVec3f(0, 0, 0));
     camera->viewAll(cube, vpr);
-  
+
     SoOffscreenRenderer osr(vpr);
     SbBool ok = osr.render(root);
     if (!ok) { exit(1); }
-  
+
     ok = osr.writeToRGB("test-image.rgb");
     if (!ok) { exit(1); }
-  
+
     (void)puts("Image written successfully.");
-  
+
     root->unref();
     return 0;
   }
@@ -299,7 +299,7 @@ public:
     this->buffer = NULL;
     this->bufferbytesize = 0;
     this->lastnodewasacamera = FALSE;
-    
+
     if (glrenderaction) {
       this->renderaction = glrenderaction;
     }
@@ -573,7 +573,7 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
   assert(node);
 
   if (thisp->lastnodewasacamera) {
-    thisp->setCameraViewvolForTile(thisp->visitedcamera);    
+    thisp->setCameraViewvolForTile(thisp->visitedcamera);
     thisp->lastnodewasacamera = FALSE;
   }
 
@@ -643,7 +643,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                            "fullsize==<%d, %d>, glsize==<%d, %d>",
                            fullsize[0], fullsize[1], glsize[0], glsize[1]);
   }
-  
+
   // oldcontext is used to restore the previous context id, in case
   // the render action is not allocated by us.
   const uint32_t oldcontext = this->renderaction->getCacheContext();
@@ -742,7 +742,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     // We have to grab cameras using this callback during rendering
     this->visitedcamera = NULL;
     this->renderaction->setAbortCallback(SoOffscreenRendererP::GLRenderAbortCallback, this);
-    
+
     // Render entire scenegraph for each subscreen.
     for (int y=0; y < this->numsubscreens[1]; y++) {
       for (int x=0; x < this->numsubscreens[0]; x++) {
@@ -761,16 +761,16 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         }
 
         SbViewportRegion subviewport = SbViewportRegion(SbVec2s(this->subsize[0], this->subsize[1]));
-        this->renderaction->setViewportRegion(subviewport); 
-        
-        if (base->isOfType(SoNode::getClassTypeId())) 
+        this->renderaction->setViewportRegion(subviewport);
+
+        if (base->isOfType(SoNode::getClassTypeId()))
           this->renderaction->apply((SoNode *)base);
         else if (base->isOfType(SoPath::getClassTypeId()))
           this->renderaction->apply((SoPath *)base);
         else {
           assert(FALSE && "Cannot apply to anything else than an SoNode or an SoPath");
         }
-        
+
         const unsigned int nrcomp = PUBLIC(this)->getComponents();
 
         const int MAINBUF_OFFSET =
@@ -836,7 +836,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                              (SbTime::getTimeOfDay() - t).getValue() * 1000);
       t = SbTime::getTimeOfDay();
     }
-    
+
     const SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
     this->glcanvas.readPixels(this->buffer, dims, dims[0],
                               (unsigned int)PUBLIC(this)->getComponents());
@@ -1255,12 +1255,12 @@ SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
     if (CoinOffscreenGLCanvas::debug()) {
-      if (!simage_wrapper()->available) {    
-	SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
-			       "simage library not available.");
+      if (!simage_wrapper()->available) {
+        SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
+                               "simage library not available.");
       } else {
-	SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
-			       "You need simage v1.1 for this functionality.");
+        SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
+                               "You need simage v1.1 for this functionality.");
       }
     }
     return FALSE;
@@ -1297,13 +1297,13 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
   return simage_wrapper()->simage_get_num_savers();
 }
 
-/*!  
+/*!
   Returns information about an image exporter. \a extlist is a list
   of filename extensions for a file format. E.g. for JPEG it is legal
   to use both jpg and jpeg. Extlist will contain const char * pointers
   (you need to cast the void * pointers to const char * before using
   them).
-  
+
   \a fullname is the full name of the image format. \a description is
   an optional string with more information about the file format.
 
@@ -1516,7 +1516,7 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
 
 /*!
   \DANGEROUS_ALLOC_RETURN
-  
+
   To avoid this potential problem, use the overloaded
   getWriteFiletypeInfo() function with an SbPList for the second
   argument instead.

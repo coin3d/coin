@@ -31,7 +31,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-        
+
 SbBool SoRenderManagerP::touchtimer = TRUE;
 SbBool SoRenderManagerP::cleanupfunctionset = FALSE;
 int SoRenderManagerRootSensor::debugrootnotifications = -1;
@@ -40,7 +40,7 @@ int SoRenderManagerRootSensor::debugrootnotifications = -1;
 #define PUBLIC(p) (p->publ)
 
 
-SoRenderManagerP::SoRenderManagerP(SoRenderManager * publ) 
+SoRenderManagerP::SoRenderManagerP(SoRenderManager * publ)
 {
   this->publ = publ;
   this->getmatrixaction = NULL;
@@ -98,7 +98,7 @@ SoRenderManagerP::setClippingPlanes(void)
   if (!camera || !scene) return;
 
   SbViewportRegion vp = this->glaction->getViewportRegion();
-  
+
   if (!this->getbboxaction) {
     this->getbboxaction = new SoGetBoundingBoxAction(vp);
   } else {
@@ -163,7 +163,7 @@ SoRenderManagerP::setClippingPlanes(void)
 }
 
 void
-SoRenderManagerP::getCameraCoordinateSystem(SbMatrix & matrix, 
+SoRenderManagerP::getCameraCoordinateSystem(SbMatrix & matrix,
                                             SbMatrix & inverse)
 {
   SoCamera * camera = this->camera;
@@ -171,7 +171,7 @@ SoRenderManagerP::getCameraCoordinateSystem(SbMatrix & matrix,
   assert(camera && scene);
 
   matrix = inverse = SbMatrix::identity();
-  
+
   if (!this->searchaction) {
     this->searchaction = new SoSearchAction;
   }
@@ -185,7 +185,7 @@ SoRenderManagerP::getCameraCoordinateSystem(SbMatrix & matrix,
   if (this->searchaction->getPath()) {
     if (!this->getmatrixaction) {
       this->getmatrixaction =
-	new SoGetMatrixAction(this->glaction->getViewportRegion());
+        new SoGetMatrixAction(this->glaction->getViewportRegion());
     } else {
       this->getmatrixaction->setViewportRegion(this->glaction->getViewportRegion());
     }
@@ -219,10 +219,10 @@ Superimposition::Superimposition(SoNode * scene,
 
   PRIVATE(this)->scene = scene;
   PRIVATE(this)->scene->ref();
-  
+
   PRIVATE(this)->enabled = enabled;
   PRIVATE(this)->stateflags = flags;
-  
+
   PRIVATE(this)->manager = manager;
   PRIVATE(this)->sensor = new SoNodeSensor(Superimposition::changeCB, this);
   PRIVATE(this)->sensor->attach(PRIVATE(this)->scene);
@@ -235,35 +235,35 @@ Superimposition::~Superimposition()
   delete PRIVATE(this);
 }
 
-void 
-Superimposition::render(void) 
+void
+Superimposition::render(void)
 {
   if (!PRIVATE(this)->enabled) return;
 
   SbBool zbufferwason = glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE;
-  
+
   PRIVATE(this)->stateflags & Superimposition::ZBUFFERON ?
     glEnable(GL_DEPTH_TEST):
     glDisable(GL_DEPTH_TEST);
 
   if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER)
     glClear(GL_DEPTH_BUFFER_BIT);
-  
+
   PRIVATE(this)->manager->getGLRenderAction()->apply(PRIVATE(this)->scene);
-  
+
   zbufferwason ?
     glEnable(GL_DEPTH_TEST):
     glDisable(GL_DEPTH_TEST);
 }
 
-void 
+void
 Superimposition::setEnabled(SbBool yes)
 {
   PRIVATE(this)->enabled = yes;
 }
 
-void 
-Superimposition::changeCB(void * data, SoSensor * sensor) 
+void
+Superimposition::changeCB(void * data, SoSensor * sensor)
 {
   Superimposition * thisp = (Superimposition *) data;
   assert(thisp && PRIVATE(thisp)->manager);

@@ -32,7 +32,7 @@
   and blue is Z. See
   http://www.paulsprojects.net/tutorials/simplebump/simplebump.html
   for a nice introduction about bump mapping and normal maps.
-  
+
   If the image is a grayscale image, it will be treated as a height
   map, and automatically converted to a normal map.
 
@@ -52,7 +52,7 @@
   GL_ARB_vertex_program and GL_ARB_fragment_program is required to get
   specular lighting on the bumps. If these extensions are not
   available, the bumps will be rendered with diffuse lighting only.
-  
+
   Bump mapped objects will be rendered with multiple rendering
   passes. One extra pass per light source for diffuse only bumps, and
   two extra passes per light source for diffuse and specular
@@ -157,10 +157,10 @@ public:
   SbImage convertedheightmap;
   SbBool didconvert;
   int isgrayscale; // -1 = unknown, 0 = no, 1 = yes
-  
-  void testGrayscale(const unsigned char * srcptr, 
-		     const SbVec2s size,
-		     const int nc) 
+
+  void testGrayscale(const unsigned char * srcptr,
+                     const SbVec2s size,
+                     const int nc)
   {
     // check if we have a cached value
     if (this->isgrayscale >= 0) return;
@@ -173,11 +173,11 @@ public:
       this->isgrayscale = 1;
       const int n = size[0]*size[1];
       for (int i = 0; i < n; i++) {
-	if ((src[0] != src[1]) || (src[0] != src[2])) {
-	  this->isgrayscale = 0;
-	  return;
-	}
-	src += nc;
+        if ((src[0] != src[1]) || (src[0] != src[2])) {
+          this->isgrayscale = 0;
+          return;
+        }
+        src += nc;
       }
     }
   }
@@ -186,8 +186,8 @@ public:
 #undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
 
-static void 
-convert_heightmap_to_normalmap(const unsigned char * srcptr, 
+static void
+convert_heightmap_to_normalmap(const unsigned char * srcptr,
                                const SbVec2s size,
                                const int nc,
                                SbImage & dst)
@@ -202,57 +202,57 @@ convert_heightmap_to_normalmap(const unsigned char * srcptr,
 
 #define GET_PIXEL_RED(x_, y_) \
   srcptr[(y_)*width*nc + (x_)*nc]
-  
+
   for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {      
+    for (int x = 0; x < width; x++) {
       // do Y Sobel filter
       red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
       dy  = ((float) red) / 255.0f * -1.0f;
-      
+
       red = GET_PIXEL_RED(x % width, (y+1) % height);
       dy += ((float) red) / 255.0f * -2.0f;
-      
+
       red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
       dy += ((float) red) / 255.0f * -1.0f;
-      
+
       red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
       dy += ((float) red) / 255.0f *  1.0f;
-      
+
       red = GET_PIXEL_RED(x % width, (y-1+height) % height);
       dy += ((float) red) / 255.0f *  2.0f;
-      
+
       red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
       dy += ((float) red) / 255.0f *  1.0f;
-      
+
       // Do X Sobel filter
       red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
       dx  = ((float) red) / 255.0f * -1.0f;
-      
+
       red = GET_PIXEL_RED((x-1+width) % width,   y % height);
       dx += ((float) red) / 255.0f * -2.0f;
-      
+
       red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
       dx += ((float) red) / 255.0f * -1.0f;
-            
+
       red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
       dx += ((float) red) / 255.0f *  1.0f;
-      
+
       red = GET_PIXEL_RED((x+1) % width,   y % height);
       dx += ((float) red) / 255.0f *  2.0f;
-      
+
       red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
       dx += ((float) red) / 255.0f *  1.0f;
-            
+
       n[0] = -dx;
       n[1] = -dy;
       n[2] = 1.0f;
       (void) n.normalize();
-            
-      *dstptr++ = (unsigned char) SbMin((n[0]+1.0f) * 128.0f, 255.0f); 
-      *dstptr++ = (unsigned char) SbMin((n[1]+1.0f) * 128.0f, 255.0f); 
-      *dstptr++ = (unsigned char) SbMin((n[2]+1.0f) * 128.0f, 255.0f); 
+
+      *dstptr++ = (unsigned char) SbMin((n[0]+1.0f) * 128.0f, 255.0f);
+      *dstptr++ = (unsigned char) SbMin((n[1]+1.0f) * 128.0f, 255.0f);
+      *dstptr++ = (unsigned char) SbMin((n[2]+1.0f) * 128.0f, 255.0f);
     }
-  }      
+  }
 #undef GET_PIXEL_RED
   dst.setValue(size, 3, dststore);
   delete[] dststore;
@@ -349,24 +349,24 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-  
+
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_BUMPMAPPING)) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes = this->image.getValue(size, nc);
-    
+
     if (bytes && size != SbVec2s(0,0)) {
       if (!PRIVATE(this)->glimagevalid) {
-	PRIVATE(this)->testGrayscale(bytes, size, nc);
-	if (PRIVATE(this)->isgrayscale) {
-	  if (!PRIVATE(this)->didconvert) {
+        PRIVATE(this)->testGrayscale(bytes, size, nc);
+        if (PRIVATE(this)->isgrayscale) {
+          if (!PRIVATE(this)->didconvert) {
             convert_heightmap_to_normalmap(bytes, size, nc, PRIVATE(this)->convertedheightmap);
             PRIVATE(this)->didconvert = TRUE;
-	  }
-	  bytes = PRIVATE(this)->convertedheightmap.getValue(size, nc);
-	}
+          }
+          bytes = PRIVATE(this)->convertedheightmap.getValue(size, nc);
+        }
 
-	PRIVATE(this)->glimage->setData(bytes, size, nc,
+        PRIVATE(this)->glimage->setData(bytes, size, nc,
                                         bumpmap_translateWrap((Wrap)this->wrapS.getValue()),
                                         bumpmap_translateWrap((Wrap)this->wrapT.getValue()),
                                         1.0f); // max quality for bumpmaps
@@ -401,7 +401,7 @@ SoBumpMap::doAction(SoAction * action)
   int nc;
   SbVec2s size;
   const unsigned char * bytes = this->image.getValue(size, nc);
-  
+
   if (bytes && size != SbVec2s(0,0)) {
     SoShapeStyleElement::setBumpmapEnabled(state, TRUE);
   }

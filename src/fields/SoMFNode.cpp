@@ -163,7 +163,7 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
   // this function should *not* have multiple return-points.
 
   // Don't use getNum(), getValues() or operator[] to find old values,
-  // since this might trigger a recursive evaluation call if the field 
+  // since this might trigger a recursive evaluation call if the field
   // is connected.
 
   // Expand array if necessary.
@@ -182,10 +182,10 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
       // The path should be audited by us at all times. So don't use
       // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
       assert(h==this->pathheads[idx] &&
-	     "Path head changed without notification!");
+             "Path head changed without notification!");
       if (h) {
-	h->removeAuditor(this, SoNotRec::FIELD);
-	h->unref();
+        h->removeAuditor(this, SoNotRec::FIELD);
+        h->unref();
       }
 #endif // COIN_INTERNAL_SOMFPATH
       oldptr->removeAuditor(this, SoNotRec::FIELD);
@@ -198,8 +198,8 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
 #ifdef COIN_INTERNAL_SOMFPATH
       SoNode * h = newval->getHead();
       if (h) {
-	h->addAuditor(this, SoNotRec::FIELD);
-	h->ref();
+        h->addAuditor(this, SoNotRec::FIELD);
+        h->ref();
       }
 #endif // COIN_INTERNAL_SOMFPATH
     }
@@ -240,8 +240,8 @@ SoMFNode::operator==(const SoMFNode & field) const
 void
 SoMFNode::deleteAllValues(void)
 {
-  // Don't use getNum(), but use this->num directly, since getNum() 
-  // might trigger a recursive evaluation call if the field 
+  // Don't use getNum(), but use this->num directly, since getNum()
+  // might trigger a recursive evaluation call if the field
   // is connected.
 
   if (this->num) this->deleteValues(0);
@@ -634,7 +634,7 @@ BOOST_AUTO_TEST_CASE(NULLreading)
   SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
   SoReadError::setHandlerCallback(readErrorHandler, NULL);
 
-  const char file[] = 
+  const char file[] =
     "[ DEF mycube Cube {} USE mycube ]";
   SoInput in;
   in.setBuffer(reinterpret_cast<void *> (const_cast<char *> (file)), sizeof(file));

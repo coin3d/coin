@@ -64,7 +64,7 @@
   bytes in the pixel color values marked as "XX" are ignored and can
   be left out. "GG" is the part which gives a grayscale value and "AA"
   is for opacity.
-  
+
   For 1-component images, the pixel-format is 0xXXXXXXGG, where the
   bytes in the pixel color values marked as "XX" are ignored and can
   be left out.
@@ -78,13 +78,13 @@
 
   \code
   Texture3 {
-	 images 2 2 2 3
+    images 2 2 2 3
 
-	 0x000000 0x00ff00
-	 0xff0000 0xffff00
+    0x000000 0x00ff00
+    0xff0000 0xffff00
 
-	 0x000000 0x0000ff
-	 0x00ff00 0x00ffff
+    0x000000 0x0000ff
+    0x00ff00 0x00ffff
   }
   \endcode
 
@@ -185,7 +185,7 @@ SoSFImage3::readValue(SoInput * in)
   }
 
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSFImage3::readValue", 
+  SoDebugError::postInfo("SoSFImage3::readValue",
                          "image dimensions: %dx%dx%dx%d",
                          size[0], size[1], size[2], nc);
 #endif // debug

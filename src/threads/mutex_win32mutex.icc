@@ -36,7 +36,7 @@ win32_mutex_struct_init(cc_mutex * mutex_struct)
   if (mutex_struct->w32thread.mutexhandle == NULL) {
     if (COIN_DEBUG) {
       cc_win32_print_error("win32_mutex_struct_init",
-			   "CreateMutex()", GetLastError());
+                           "CreateMutex()", GetLastError());
     }
     return CC_ERROR;
   }
@@ -50,7 +50,7 @@ win32_mutex_struct_clean(cc_mutex * mutex_struct)
   if (status == FALSE) {
     if (COIN_DEBUG) {
       cc_win32_print_error("win32_mutex_struct_clean",
-			   "CloseHandle()", GetLastError());
+                           "CloseHandle()", GetLastError());
     }
     return CC_ERROR;
   }
@@ -65,7 +65,7 @@ win32_mutex_lock(cc_mutex * mutex)
   if (status == WAIT_FAILED) {
     if (COIN_DEBUG) {
       cc_win32_print_error("win32_mutex_lock",
-			   "WaitSingleObject()", GetLastError());
+                           "WaitSingleObject()", GetLastError());
     }
     return CC_ERROR;
   }
@@ -85,7 +85,7 @@ win32_mutex_try_lock(cc_mutex * mutex)
   /* if we get here there was an error */
   if (COIN_DEBUG) {
     cc_win32_print_error("win32_mutex_try_lock",
-			 "WaitSingleObject()", GetLastError());
+                         "WaitSingleObject()", GetLastError());
   }
   return CC_ERROR;
 }
@@ -97,7 +97,7 @@ win32_mutex_unlock(cc_mutex * mutex)
   if (status == FALSE) {
     if (COIN_DEBUG) {
       cc_win32_print_error("win32_mutex_unlock",
-			   "ReleaseMutex()", GetLastError());
+                           "ReleaseMutex()", GetLastError());
     }
     return CC_ERROR;
   }

@@ -39,7 +39,7 @@
   1. the number of distinct children at that level
   2. a child index to each distinct child to be used for IN_PATH travesal
   3. an index to each child's lookup table position
-  
+
   1. and 2. are used for optimized IN_PATH action traversal. 3. is
   used internally to traverse this lookup table.
 
@@ -65,7 +65,7 @@ SoCompactPathList::SoCompactPathList(const SoPathList & list)
   // worst-case size, but memory usage isn't an issue for this class
   // (memory usage will be small compared to memory used by the paths)
   this->lookupsize = 3 * numnodes + 1;
-  
+
   this->lookuptable = new int[this->lookupsize];
   this->createLookupTable(0, 1, list, 0, list.getLength());
   this->reset();
@@ -110,8 +110,8 @@ SoCompactPathList::push(int childindex)
 
   // push current node to be able to restore it in pop()
   this->stack.push(this->lookupidx);
-  
-  int	i;
+
+  int i;
   const int n = this->getNumIndices();
   const int idx = this->getStartIndex();
 
@@ -119,7 +119,7 @@ SoCompactPathList::push(int childindex)
   for (i = 0; i < n; i++) {
     if (this->lookuptable[idx + i] == childindex) break;
   }
-  
+
   if (i < n) { // IN_PATH
     // get ready to traverse the child
     this->lookupidx = this->getChildIndex(i);
@@ -155,25 +155,25 @@ SoCompactPathList::createLookupTable(int curidx, int depth,
     return curidx + 1;
   }
 
-  int i;    
-  // count the number of IN_PATH indices that we need to create and 
+  int i;
+  // count the number of IN_PATH indices that we need to create and
   // fill in first part of the lookup table. We do this by finding the
   // number of distinct children in all the paths we're traversing.
   int numchildren = 0;
   int prevchildidx = -1;
- 
+
   for (i = 0; i < numpaths; i++) {
     int childidx = FULL_PATH(list, firstpath + i)->getIndex(depth);
     if (childidx != prevchildidx) {
       // fill in the IN_PATH table indices
       this->lookuptable[curidx + 1 + numchildren] = childidx;
-	    numchildren++;
-	    prevchildidx = childidx;
+      numchildren++;
+      prevchildidx = childidx;
     }
   }
   // store the size of this node's tables
   this->lookuptable[curidx] = numchildren;
-  
+
   // Find next free position in lookup table. We need to store 1 +
   // 2*numchildren integers for this node (size + IN_PATH table and
   // lookup table position for each child)
@@ -182,7 +182,7 @@ SoCompactPathList::createLookupTable(int curidx, int depth,
   // Recurse and fill in info for each child in the lookup table
   int curchild = 0;
   i = 0;
-  
+
   while (i < numpaths) {
     int startpath = i + firstpath;
     int childidx = FULL_PATH(list, firstpath + i)->getIndex(depth);
@@ -208,38 +208,38 @@ SoCompactPathList::createLookupTable(int curidx, int depth,
 /*!
   Returns the number of IN_PATH children for the current node.
 */
-int	
-SoCompactPathList::getNumIndices(void)	
-{ 
+int
+SoCompactPathList::getNumIndices(void)
+{
   assert(this->lookupidx >= 0);
-  return this->lookuptable[this->lookupidx]; 
+  return this->lookuptable[this->lookupidx];
 }
 
 /*!
   Returns the position of the IN_PATH table.
 */
-int	
-SoCompactPathList::getStartIndex(void)	
-{ 
+int
+SoCompactPathList::getStartIndex(void)
+{
   assert(this->lookupidx >= 0);
-  return this->lookupidx + 1; 
+  return this->lookupidx + 1;
 }
 
 /*!
   Returns the lookup table position for \a child.
 */
-int	
-SoCompactPathList::getChildIndex(const int child) 
+int
+SoCompactPathList::getChildIndex(const int child)
 {
   const int idx = this->getStartIndex() + this->getNumIndices() + child;
   assert(idx < this->lookupsize);
-  return this->lookuptable[idx]; 
+  return this->lookuptable[idx];
 }
 
 /*!
   Returns the depth of the current node.
 */
-int 
+int
 SoCompactPathList::getDepth(void) const
 {
   return 1 + this->stack.getLength();

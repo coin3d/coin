@@ -278,7 +278,7 @@ SoVBO::bindBuffer(uint32_t contextid)
     else {
       SoDebugError::postInfo("SoVBO::bindBuffer",
                              "Setting up buffer for rendering. Datasize: %d",
-                             this->datasize);      
+                             this->datasize);
     }
   }
 #endif // COIN_DEBUG
@@ -373,7 +373,7 @@ SoVBO::shouldCreateVBO(SoState * state, const uint32_t contextid, const int numd
 
 SbBool
 SoVBO::shouldRenderAsVertexArrays(SoState * state,
-				  const uint32_t contextid,
+                                  const uint32_t contextid,
                                   const int numdata)
 {
   // FIXME: consider also using results from the performance tests

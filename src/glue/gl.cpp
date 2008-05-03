@@ -907,7 +907,7 @@ glglue_resolve_symbols(cc_glglue * w)
                                   "glActiveTexture found, but one or more of the other "
                                   "multitexture functions were not found");
       }
-    }  
+    }
   }
   w->maxtextureunits = 1; /* when multitexturing is not available */
   if (w->glActiveTexture) {
@@ -1229,9 +1229,9 @@ glglue_resolve_symbols(cc_glglue * w)
       /* Enable users to override this workaround by setting COIN_VBO=1 */
       const char * env = coin_getenv("COIN_VBO");
       if (!env || (atoi(env) > 0)) {
-	if (w->vendor_is_intel) {
-	  w->glBindBuffer = NULL;
-	}
+        if (w->vendor_is_intel) {
+          w->glBindBuffer = NULL;
+        }
       }
     }
   }
@@ -1786,7 +1786,7 @@ glglue_resolve_symbols(cc_glglue * w)
 
 
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
-    w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");		
+    w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");
     w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
     w->glDeleteRenderbuffers = (COIN_PFNGLDELETERENDERBUFFERSPROC)cc_glglue_getprocaddress("glDeleteRenderbuffersEXT");
     w->glGenRenderbuffers = (COIN_PFNGLGENRENDERBUFFERSPROC)cc_glglue_getprocaddress("glGenRenderbuffersEXT");
@@ -2210,7 +2210,7 @@ cc_glglue_instance(int contextid)
     ptr = gi;
     cc_dict_put(gldict, (uintptr_t)contextid, ptr);
 
-    /* 
+    /*
        Make sure all GL errors are cleared before we do our assert
        test below. The OpenGL context might be set up by the user, and
        it's better to print a warning than asserting here if the user
@@ -2223,7 +2223,7 @@ cc_glglue_instance(int contextid)
                                 "there is no current context, or if the context has been set "
                                 "up incorrectly.");
       glerr = glGetError();
-      
+
       /* We might get this error if there is no current context.
          Break out and assert later in that case */
       if (glerr == GL_INVALID_OPERATION) break;
@@ -2242,10 +2242,10 @@ cc_glglue_instance(int contextid)
     gi->vendorstr = (const char *)glGetString(GL_VENDOR);
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
     gi->vendor_is_nvidia = strcmp((const char*)gi->vendorstr, "NVIDIA Corporation") == 0;
-    gi->vendor_is_intel = 
-      strstr((const char *)gi->vendorstr, "Tungsten") || 
+    gi->vendor_is_intel =
+      strstr((const char *)gi->vendorstr, "Tungsten") ||
       strstr((const char *)gi->vendorstr, "Intel");
-    
+
     /* FIXME: update when nVidia fixes their driver. pederb, 2004-09-01 */
     gi->nvidia_color_per_face_bug = gi->vendor_is_nvidia;
     if (gi->nvidia_color_per_face_bug) {

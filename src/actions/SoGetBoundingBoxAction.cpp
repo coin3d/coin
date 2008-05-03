@@ -118,14 +118,14 @@
 //            BaseColor { rgb 1 0 0 }
 //            Translation { translation +4 0 0 }
 //            Separator {
-//      	 Transform {
-//      	    translation 0 -0.5 0
-//      	    rotation 0 0 1 0.78
-//      	    scaleFactor 0.5 2 3
-//      	    scaleOrientation 1 0 0 0.78
-//      	    center 0.5 0.5 0.5
-//      	 }
-//      	 Cube { }
+//               Transform {
+//                  translation 0 -0.5 0
+//                  rotation 0 0 1 0.78
+//                  scaleFactor 0.5 2 3
+//                  scaleOrientation 1 0 0 0.78
+//                  center 0.5 0.5 0.5
+//               }
+//               Cube { }
 //            }
 //         }
 //
@@ -136,14 +136,14 @@
 //            BaseColor { rgb 1 0 0 }
 //            Translation { translation +4 0 0 }
 //            Separator {
-//      	 Transform {
-//      	    translation 10 -0.5 0 ~
-//      	    rotation 0 0 1 0.78
-//      	    scaleFactor 0.5 2 3
-//      	    scaleOrientation 1 0 0 0.78
-//      	    center 0.5 0.5 0.5
-//      	 }
-//      	 Cube { }
+//               Transform {
+//                  translation 10 -0.5 0 ~
+//                  rotation 0 0 1 0.78
+//                  scaleFactor 0.5 2 3
+//                  scaleOrientation 1 0 0 0.78
+//                  center 0.5 0.5 0.5
+//               }
+//               Cube { }
 //            }
 //         }
 //      }
@@ -165,17 +165,17 @@
 //
 //      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 //      #Inventor V2.1 ascii
-//    
+//
 //      Separator {
 //         LightModel { model BASE_COLOR }
-//       
+//
 //         Cube { height 5 }
-//    
+//
 //         Separator {
 //            Rotation { rotation 1 0 0  0.7854 }
 //            Cube { }
 //         }
-//    
+//
 //         Rotation { rotation 2 3 9  1.5708 }
 //         Cube { height 4 }
 //      }

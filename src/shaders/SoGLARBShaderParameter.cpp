@@ -52,8 +52,8 @@ SoGLARBShaderParameter::set1f(const SoGLShaderObject * shader,
 {
   if (this->isValid(shader, idx))
     cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
-					this->target, this->identifier,
-					value, value, value, value);
+                                        this->target, this->identifier,
+                                        value, value, value, value);
 }
 
 void
@@ -62,8 +62,8 @@ SoGLARBShaderParameter::set2f(const SoGLShaderObject * shader,
 {
   if (this->isValid(shader, idx))
     cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
-					this->target, this->identifier,
-					value[0], value[1], value[0], value[0]);
+                                        this->target, this->identifier,
+                                        value[0], value[1], value[0], value[0]);
 }
 
 void
@@ -72,8 +72,8 @@ SoGLARBShaderParameter::set3f(const SoGLShaderObject * shader,
 {
   if (this->isValid(shader, idx))
     cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
-					this->target, this->identifier,
-					value[0], value[1], value[2], value[0]);
+                                        this->target, this->identifier,
+                                        value[0], value[1], value[2], value[0]);
 }
 
 void
@@ -82,41 +82,41 @@ SoGLARBShaderParameter::set4f(const SoGLShaderObject * shader,
 {
   if (this->isValid(shader, idx))
     cc_glglue_glProgramLocalParameter4f(shader->GLContext(),
-					this->target, this->identifier,
-					value[0], value[1], value[2], value[3]);
+                                        this->target, this->identifier,
+                                        value[0], value[1], value[2], value[3]);
 }
 
 void
 SoGLARBShaderParameter::set1fv(const SoGLShaderObject*, const int,
-			       const float*, const char*, const int)
+                               const float*, const char*, const int)
 {
   // FIXME: not implemented yet 20050127 martin
 }
 
 void
 SoGLARBShaderParameter::set2fv(const SoGLShaderObject*, const int,
-			       const float*, const char*, const int)
+                               const float*, const char*, const int)
 {
   // FIXME: not implemented yet 20050127 martin
 }
 
 void
 SoGLARBShaderParameter::set3fv(const SoGLShaderObject*, const int,
-			       const float*, const char*, const int)
+                               const float*, const char*, const int)
 {
   // FIXME: not implemented yet 20050127 martin
 }
 
 void
 SoGLARBShaderParameter::set4fv(const SoGLShaderObject*, const int,
-			       const float*, const char*, const int)
+                               const float*, const char*, const int)
 {
   // FIXME: not implemented yet 20050127 martin
 }
 
 void
 SoGLARBShaderParameter::setMatrix(const SoGLShaderObject *,
-				  const float *, const char *, const int)
+                                  const float *, const char *, const int)
 {
   // FIXME not implemented yet -- 20050128 martin
 }
@@ -124,39 +124,39 @@ SoGLARBShaderParameter::setMatrix(const SoGLShaderObject *,
 
 void
 SoGLARBShaderParameter::setMatrixArray(const SoGLShaderObject *, const int,
-				       const float *, const char *, const int)
+                                       const float *, const char *, const int)
 {
   // FIXME not implemented yet -- 20050128 martin
 }
 
 void
 SoGLARBShaderParameter::set1i(const SoGLShaderObject * shader,
-			      const int32_t value, const char * name,
-			      const int)
+                              const int32_t value, const char * name,
+                              const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
 SoGLARBShaderParameter::set2i(const SoGLShaderObject * shader,
-			      const int32_t * value, const char * name,
-			      const int)
+                              const int32_t * value, const char * name,
+                              const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
 SoGLARBShaderParameter::set3i(const SoGLShaderObject * shader,
-			      const int32_t * value, const char * name,
-			      const int)
+                              const int32_t * value, const char * name,
+                              const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
 SoGLARBShaderParameter::set4i(const SoGLShaderObject * shader,
-			      const int32_t * value, const char * name,
-			      const int)
+                              const int32_t * value, const char * name,
+                              const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }

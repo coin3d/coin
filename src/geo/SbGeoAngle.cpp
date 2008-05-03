@@ -117,7 +117,7 @@ SbGeoAngle::operator-=(const SbGeoAngle & a)
 }
 
  SbGeoAngle
-SbGeoAngle::operator-() const	
+SbGeoAngle::operator-() const
 {
   SbGeoAngle p;
   p.a = -this->a;
@@ -125,27 +125,27 @@ SbGeoAngle::operator-() const
 }
 
  SbGeoAngle
-SbGeoAngle::operator+(SbGeoAngle a) const	
+SbGeoAngle::operator+(SbGeoAngle a) const
 {
   a += *this;
   return a;
 }
 
  SbGeoAngle
-SbGeoAngle::operator-(SbGeoAngle a) const	
+SbGeoAngle::operator-(SbGeoAngle a) const
 {
   a -= *this;
   return -a;
 }
 
 SbGeoAngle
-SbGeoAngle::operator+(double d) const	
+SbGeoAngle::operator+(double d) const
 {
   return *this + SbGeoAngle(d);
 }
 
 SbGeoAngle
-SbGeoAngle::operator-(double d) const	
+SbGeoAngle::operator-(double d) const
 {
   return *this - SbGeoAngle(d);
 }

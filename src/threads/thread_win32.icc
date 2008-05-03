@@ -78,7 +78,7 @@ internal_join(cc_thread * thread,
   if (status == WAIT_FAILED) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_join", "WaitForSingleObject()",
-			   GetLastError());
+                           GetLastError());
     }
     return CC_ERROR;
   }
@@ -94,7 +94,7 @@ internal_join(cc_thread * thread,
   if (bstatus == FALSE) {
     if (COIN_DEBUG) {
       cc_win32_print_error("internal_join", "GetExitCodeThread()",
-			   GetLastError());
+                           GetLastError());
     }
   }
   else if (retvalptr) {

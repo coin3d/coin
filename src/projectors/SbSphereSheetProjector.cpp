@@ -36,42 +36,42 @@
   #include <Inventor/SbLinear.h>
   #include <Inventor/projectors/SbSphereSheetProjector.h>
   #include <Inventor/SoDB.h>
-  
+
   int
   main(void)
   {
     SoDB::init();
-  
+
     const float START = 0.0f;
     const float END = 1.0f;
     const float STEPS = 50.0f;
     const float STEPSIZE = ((END - START) / STEPS);
-  
+
     SbSphere s(SbVec3f(0, 0, 0), 0.8);
     SbSphereSheetProjector ssp(s, TRUE); // last argument is orientToEye
-  
+
     SbViewVolume volume;
     volume.ortho(-1, 1, -1, 1, -1, 1);
     ssp.setViewVolume(volume);
-  
+
     (void)fprintf(stdout, "#Inventor V2.1 ascii\n\n"
                   "Separator {\n"
                   "  Coordinate3 {\n"
                   "    point [\n");
-  
+
     for (float i=START; i <= END; i += STEPSIZE) {
       for (float j=START; j <= END; j += STEPSIZE) {
         SbVec3f v = ssp.project(SbVec2f(j, i));
         (void)fprintf(stdout, "\t%f %f %f,\n", v[0], v[1], v[2]);
       }
     }
-  
+
     (void)fprintf(stdout, "      ]\n"
                   "    }\n"
                   "  DrawStyle { pointSize 2 }\n"
                   "  PointSet { }\n"
                   "}\n");
-  
+
     return 0;
   }
   \endcode
@@ -196,12 +196,12 @@ SbSphereSheetProjector::project(const SbVec2f & point)
     // case is the "radial" distance from the plane centerpoint to the
     // plane intersection point.
     float hyperbval = (1.0f / planardist) * v;
-	    
+
     // Now, find the direction of the hyperbolic value vector.
     SbVec3f adddir(0.0f, 0.0f, 1.0f); // if orient-to-eye is FALSE
     if (this->isOrientToEye()) { adddir = -projline.getDirection(); }
     if (!this->intersectFront) { adddir.negate(); }
-	    
+
     projpt = planehit + (adddir * hyperbval);
   }
 

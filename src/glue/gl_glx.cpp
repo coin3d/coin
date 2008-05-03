@@ -134,7 +134,7 @@ typedef void * COIN_GLXFBConfig;
 typedef COIN_GLXFBConfig * (APIENTRY * COIN_PFNGLXCHOOSEFBCONFIG)(Display * dpy, int screen, const int * attrib_list, int * nelements);
 typedef GLXContext (APIENTRY * COIN_PFNGLXCREATENEWCONTEXT)(Display * dpy, COIN_GLXFBConfig config, int render_type, GLXContext share_list, Bool direct);
 typedef int (APIENTRY * COIN_PFNGLXGETFBCONFIGATTRIB)(Display * dpy, COIN_GLXFBConfig config, int attribute, int * value);
-					   
+
 static COIN_PFNGLXCHOOSEFBCONFIG glxglue_glXChooseFBConfig;
 static COIN_PFNGLXCREATENEWCONTEXT glxglue_glXCreateNewContext;
 static COIN_PFNGLXGETFBCONFIGATTRIB glxglue_glXGetFBConfigAttrib;
@@ -297,7 +297,7 @@ glxglue_isdirect(cc_glglue * w)
   GLXContext ctx = glXGetCurrentContext();
 
   if (!ctx) {
-    cc_debugerror_postwarning("glxglue_isdirect", 
+    cc_debugerror_postwarning("glxglue_isdirect",
                               "Couldn't get current GLX context.");
     return TRUE;
   }
@@ -665,10 +665,10 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
   /* Note that the value of the last argument (which indicates whether
      or not we're asking for a DRI-capable context) is "False" on
      purpose, as the man pages for glXCreateContext() says:
-    
+
           [...] direct rendering contexts [...] may be unable to
           render to GLX pixmaps [...]
-    
+
      Rendering to a GLX pixmap is of course exactly what we want to be
      able to do. */
   context->glxcontext = glXCreateContext(glxglue_get_display(), context->visinfo, 0,
@@ -679,7 +679,7 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
                               "Couldn't create GLX context.");
     return FALSE;
   }
-  
+
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_context_create_software",
                            "made new offscreen context == %p",
@@ -695,7 +695,7 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
                               context->width, context->height, context->visinfo->depth);
     return FALSE;
   }
-  
+
   context->glxpixmap = glXCreateGLXPixmap(glxglue_get_display(),
                                           context->visinfo, context->pixmap);
   if (context->glxpixmap == 0) {
@@ -824,7 +824,7 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
                               "Couldn't create GLX context.");
     return FALSE;
   }
-  
+
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_context_create_pbuffer",
                            "made new pbuffer offscreen context == %p",
@@ -951,8 +951,8 @@ glxglue_context_make_current(void * ctx)
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_make_context_current",
                            "%s context %p current",
-                           (r == True) ? "successfully made" : "failed to make", 
-			   context->glxcontext);
+                           (r == True) ? "successfully made" : "failed to make",
+                           context->glxcontext);
   }
 
   return (r == True) ? TRUE : FALSE;
@@ -966,19 +966,19 @@ glxglue_context_reinstate_previous(void * ctx)
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_context_reinstate_previous",
                            "releasing context (glxMakeCurrent(%p, None, NULL))",
-			   glxglue_get_display());
+                           glxglue_get_display());
   }
 
   /* FIXME: this causes a crash with ATI on Linux for me. ATI and Mesa
      is somehow mixed together, which is probably the reason why the
      crash happens..? 20041105 mortene. */
   (void)glXMakeCurrent(glxglue_get_display(), None, NULL); /* release */
-    
+
   /* The previous context is stored and reset to make it possible to
      use an SoOffscreenRenderer from for instance an SoCallback node
      callback during SoGLRenderAction traversal, without the need for
      any extra book-keeping on the application side. */
-  
+
   if (context->storedcontext && context->storeddrawable && context->storeddisplay) {
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("glxglue_context_reinstate_previous",
@@ -992,7 +992,7 @@ glxglue_context_reinstate_previous(void * ctx)
     /* FIXME: this causes a crash for the Mesa version 3.4.2 that
        comes with XFree86 v4, on the third invocation after two
        successful runs first. This is _bad_. 20020729 mortene.
-      
+
        UPDATE: this might be our bug, and could be fixed now --
        test. 20020802 mortene. */
     (void)glXMakeCurrent(context->storeddisplay, context->storeddrawable,
@@ -1028,7 +1028,7 @@ glxglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 {
   int returnval, attribval, i;
   const int attribs[] = {
-    GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT, GLX_MAX_PBUFFER_PIXELS 
+    GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT, GLX_MAX_PBUFFER_PIXELS
   };
   struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
 
@@ -1036,7 +1036,7 @@ glxglue_context_pbuffer_max(void * ctx, unsigned int * lims)
   if (!glxglue_glXGetFBConfigAttrib) { return FALSE; }
 
   for (i = 0; i < 3; i++) {
-    returnval = glxglue_glXGetFBConfigAttrib(context->display, 
+    returnval = glxglue_glXGetFBConfigAttrib(context->display,
                                              context->fbconfig,
                                              attribs[i],
                                              &attribval);
@@ -1065,7 +1065,7 @@ void glxglue_cleanup(void)
 
   glxglue_glXChooseFBConfig = NULL;
   glxglue_glXCreateNewContext = NULL;
-  glxglue_glXGetFBConfigAttrib = NULL; 
+  glxglue_glXGetFBConfigAttrib = NULL;
   glxglue_glXCreatePbuffer_GLX_1_3 = NULL;
   glxglue_glXCreateGLXPbufferSGIX = NULL;
   glxglue_glXDestroyPbuffer = NULL;

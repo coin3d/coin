@@ -83,54 +83,54 @@
   // "entry point" into each node of the scenegraph. The granularity of
   // the progress callbacks is on a per-node basis, which should usually
   // be good enough.
-  
+
   #include <Inventor/SoDB.h>
   #include <Inventor/actions/SoWriteAction.h>
   #include <Inventor/nodes/SoSeparator.h>
-  
-  
+
+
   //// Definition of extension class "MyWriteAction" ///////////////
 
   class MyWriteAction : public SoWriteAction {
     SO_ACTION_HEADER(SoWriteAction);
-  
+
   public:
     MyWriteAction(SoOutput * out);
     virtual ~MyWriteAction();
-  
+
     static void initClass(void);
-  
+
   protected:
     virtual void beginTraversal(SoNode * node);
-  
+
   private:
     static void actionMethod(SoAction *, SoNode *);
     int nrnodes;
     int totalnrnodes;
   };
-  
+
   //// Implementation of extension class "MyWriteAction" ///////////
 
   SO_ACTION_SOURCE(MyWriteAction);
-  
+
   MyWriteAction::MyWriteAction(SoOutput * out)
     : SoWriteAction(out)
   {
     SO_ACTION_CONSTRUCTOR(MyWriteAction);
   }
-  
+
   MyWriteAction::~MyWriteAction()
   {
   }
-  
+
   void
   MyWriteAction::initClass(void)
   {
     SO_ACTION_INIT_CLASS(MyWriteAction, SoWriteAction);
-  
+
     SO_ACTION_ADD_METHOD(SoNode, MyWriteAction::actionMethod);
   }
-  
+
   void
   MyWriteAction::beginTraversal(SoNode * node)
   {
@@ -138,14 +138,14 @@
     this->totalnrnodes = 0;
     SoWriteAction::beginTraversal(node);
   }
-  
+
   void
   MyWriteAction::actionMethod(SoAction * a, SoNode * n)
   {
     // To abort the export process in mid-writing, we could just avoid
     // calling in to the SoNode::writeS() method.
     SoNode::writeS(a, n);
-  
+
     MyWriteAction * mwa = (MyWriteAction *)a;
     SoOutput * out = mwa->getOutput();
     if (out->getStage() == SoOutput::COUNT_REFS) {
@@ -158,7 +158,7 @@
       out->write(s.getString());
     }
   }
-  
+
   //// main ////////////////////////////////////////////////////////
 
   int
@@ -168,24 +168,24 @@
       (void)fprintf(stderr, "\n\nUsage: %s <filename>\n\n", argv[0]);
       exit(1);
     }
-  
+
     SoDB::init();
     MyWriteAction::initClass();
-  
+
     SoInput in;
     if (!in.openFile(argv[1])) { exit(1); }
-  
+
     SoSeparator * root = SoDB::readAll(&in);
     if (!root) { exit(1); }
-  
+
     root->ref();
-  
+
     SoOutput out;
     MyWriteAction mwa(&out);
     mwa.apply(root);
-  
+
     root->unref();
-  
+
     return 0;
   }
   \endcode
@@ -337,7 +337,7 @@ SoAction::SoAction(void)
   PRIVATE(this)->applieddata.node = NULL;
   PRIVATE(this)->terminated = FALSE;
   PRIVATE(this)->prevenabledelementscounter = 0;
-  
+
   this->currentpath.ref(); // to avoid having a zero refcount instance
 }
 
@@ -349,7 +349,7 @@ SoAction::~SoAction(void)
   int n = PRIVATE(this)->pathcodearray.getLength();
   for (int i = 0; i < n; i++) delete PRIVATE(this)->pathcodearray[i];
   delete this->state;
-  
+
   this->currentpath.unrefNoDelete(); // to match the ref() in the constructor
 }
 
@@ -413,9 +413,9 @@ SoAction::initClasses(void)
   SoRayPickAction::initClass();
   SoSearchAction::initClass();
   SoWriteAction::initClass();
-  SoAudioRenderAction::initClass();  
+  SoAudioRenderAction::initClass();
   SoIntersectionDetectionAction::initClass();
-  
+
   SoSimplifyAction::initClass();
   SoReorganizeAction::initClass();
   SoToVRMLAction::initClass();
@@ -466,7 +466,7 @@ SoAction::apply(SoNode * root)
   this->traversalMethods->setUp();
 
   // if a new element has been enabled, we need to recreate the state
-  if (this->state && 
+  if (this->state &&
       (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
     delete this->state;
     this->state = NULL;
@@ -547,7 +547,7 @@ SoAction::apply(SoNode * root)
     }
 
     // start profiling
-    if (SoProfiler::isEnabled() && 
+    if (SoProfiler::isEnabled() &&
         state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       SoProfilerElement * elt = SoProfilerElement::get(state);
       assert(elt);
@@ -560,7 +560,7 @@ SoAction::apply(SoNode * root)
     this->beginTraversal(root);
     this->endTraversal(root);
 
-    if (SoProfiler::isEnabled() && 
+    if (SoProfiler::isEnabled() &&
         state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
       SoProfilerElement * elt = SoProfilerElement::get(state);
       assert(elt);
@@ -569,7 +569,7 @@ SoAction::apply(SoNode * root)
     }
 
     if (SoProfiler::isOverlayActive() &&
-	!this->isOfType(SoGLRenderAction::getClassTypeId())) {
+        !this->isOfType(SoGLRenderAction::getClassTypeId())) {
       // update profiler stats node with the profiling data from the traversal
       SoNode * profilerstats = SoActionP::getProfilerStatsNode();
       SoProfiler::enable(FALSE);
@@ -625,7 +625,7 @@ SoAction::apply(SoPath * path)
   this->traversalMethods->setUp();
 
   // if a new element has been enabled, we need to recreate the state
-  if (this->state && 
+  if (this->state &&
       (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
     delete this->state;
     this->state = NULL;
@@ -695,7 +695,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   PathCode storedcurr = this->currentpathcode;
 
   // if a new element has been enabled, we need to recreate the state
-  if (this->state && 
+  if (this->state &&
       (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
     delete this->state;
     this->state = NULL;
@@ -790,9 +790,9 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 /*!
   Applies this action object to the same as \a beingApplied is being
   applied to.
-  
+
   \COIN_FUNCTION_EXTENSION
-  
+
   \since Coin 2.1
 */
 void
@@ -1001,7 +1001,7 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
           this->currentpathcode = OFF_PATH;
         }
         else {
-          int	numchildren;
+          int numchildren;
           const int * dummy;
           PRIVATE(this)->applieddata.pathlistdata.compactlist->getChildren(numchildren, dummy);
           this->currentpathcode = numchildren == 0 ? BELOW_PATH : IN_PATH;
@@ -1017,7 +1017,7 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
         const SoPathList * pl = PRIVATE(this)->applieddata.pathlistdata.pathlist;
         int i, n = pl->getLength();
         int len = -1;
-        
+
         for (i = 0; i < n; i++) {
           const SoPath * path = (*pl)[i];
           len = path->getFullLength();

@@ -136,7 +136,7 @@ CGbool glue_cgIsContext(CGcontext);
 const char * glue_cgGetLastListing(CGcontext);
 
 CGprogram glue_cgCreateProgram(CGcontext, CGenum, const char *, CGprofile,
-			       const char *, const char **);
+                               const char *, const char **);
 void glue_cgDestroyProgram(CGprogram);
 CGbool glue_cgIsProgram(CGprogram);
 

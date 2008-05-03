@@ -103,10 +103,10 @@
 #ifndef DOXYGEN_SKIP_THIS
 class SoFaceSetP {
 public:
-  SoFaceSetP(void) 
+  SoFaceSetP(void)
 #ifdef COIN_THREADSAFE
     : convexmutex(SbRWMutex::READ_PRECEDENCE)
-#endif // COIN_THREADSAFE 
+#endif // COIN_THREADSAFE
   { }
   SoConvexDataCache * convexCache;
   int concavestatus;
@@ -150,7 +150,7 @@ SoFaceSet::SoFaceSet()
   THIS = new SoFaceSetP;
   THIS->convexCache = NULL;
   THIS->concavestatus = STATUS_UNKNOWN;
-  
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFaceSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
@@ -256,19 +256,19 @@ namespace { namespace SoGL { namespace FaceSet {
   };
 
   template < int NormalBinding,
-	     int MaterialBinding,
-	     int TexturingEnabled >
+             int MaterialBinding,
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * coords,
-		       const SbVec3f *normals,
-		       SoMaterialBundle * mb,
-		       const SoTextureCoordinateBundle * tb,
-		       int nbind,
-		       int mbind,
-		       int doTextures,
-		       int32_t idx,
-		       const int32_t *ptr,
-		       const int32_t *end,
-		       SbBool needNormals)
+                       const SbVec3f *normals,
+                       SoMaterialBundle * mb,
+                       const SoTextureCoordinateBundle * tb,
+                       int nbind,
+                       int mbind,
+                       int doTextures,
+                       int32_t idx,
+                       const int32_t *ptr,
+                       const int32_t *end,
+                       SbBool needNormals)
   {
     // Make sure specified coordinate startindex is valid
     assert(idx >= 0);
@@ -307,59 +307,59 @@ namespace { namespace SoGL { namespace FaceSet {
       n = *ptr++;
 
       if (n < 3 || idx + n > numcoords) {
-	static uint32_t current_errors = 0;
-	if (current_errors < 1) {
-	  SoDebugError::postWarning("[nonindexedfaceset]::GLRender", "Erroneous "
-				    "number of coordinates specified: %d. Must "
-				    "be >= 3 and less than or equal to the number of "
-				    "coordinates available (which is: %d). Aborting "
-				    "rendering. This message will be shown only once, "
-				    "but more errors might be present", n, numcoords - idx);
-	}
+        static uint32_t current_errors = 0;
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[nonindexedfaceset]::GLRender", "Erroneous "
+                                    "number of coordinates specified: %d. Must "
+                                    "be >= 3 and less than or equal to the number of "
+                                    "coordinates available (which is: %d). Aborting "
+                                    "rendering. This message will be shown only once, "
+                                    "but more errors might be present", n, numcoords - idx);
+        }
 
-	current_errors++;
-	break;
+        current_errors++;
+        break;
       }
 
       if (n == 3) newmode = GL_TRIANGLES;
       else if (n == 4) newmode = GL_QUADS;
       else newmode = GL_POLYGON;
       if (newmode != mode) {
-	if (mode != GL_POLYGON) glEnd();
-	mode = newmode;
-	glBegin((GLenum) mode);
+        if (mode != GL_POLYGON) glEnd();
+        mode = newmode;
+        glBegin((GLenum) mode);
       }
       else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
 
       if ((AttributeBinding)NormalBinding != OVERALL) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if ((AttributeBinding)MaterialBinding != OVERALL) {
-	mb->send(matnr++, TRUE);
+        mb->send(matnr++, TRUE);
       }
       if (TexturingEnabled == TRUE) {
-	tb->send(texnr++, coords->get3(idx), *currnormal);
+        tb->send(texnr++, coords->get3(idx), *currnormal);
       }
       SEND_VERTEX(idx);
       idx++;
       while (--n) {
-	if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
-	if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	  mb->send(matnr++, TRUE);
-	} else if ((AttributeBinding)MaterialBinding != OVERALL) {
-	  // only needed for nvidia color-per-face bug workaround
-	  mb->send(matnr-1, TRUE);
-	}
+        if ((AttributeBinding)NormalBinding == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
+          mb->send(matnr++, TRUE);
+        } else if ((AttributeBinding)MaterialBinding != OVERALL) {
+          // only needed for nvidia color-per-face bug workaround
+          mb->send(matnr-1, TRUE);
+        }
 
-	if (TexturingEnabled == TRUE) {
-	  tb->send(texnr++, coords->get3(idx), *currnormal);
-	}
-	SEND_VERTEX(idx);
-	idx++;
+        if (TexturingEnabled == TRUE) {
+          tb->send(texnr++, coords->get3(idx), *currnormal);
+        }
+        SEND_VERTEX(idx);
+        idx++;
       }
       if (mode == GL_POLYGON) glEnd();
     }
@@ -380,42 +380,42 @@ SoFaceSet::initClass(void)
   SoGL::FaceSet::GLRender<normalbinding, materialbinding, texturing> args
 
 #define SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
-  if (texturing) {							\
+  if (texturing) {                                                       \
     SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
-  } else {								\
+  } else {                                                               \
     SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
   }
 
 #define SOGL_FACESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {						\
-  case SoGL::FaceSet::OVERALL:						\
+  switch (materialbinding) {                                             \
+  case SoGL::FaceSet::OVERALL:                                           \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, OVERALL, texturing, args); \
-    break;								\
-  case SoGL::FaceSet::PER_FACE:						\
+    break;                                                               \
+  case SoGL::FaceSet::PER_FACE:                                          \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_FACE, texturing, args); \
-    break;								\
-  case SoGL::FaceSet::PER_VERTEX:					\
+    break;                                                               \
+  case SoGL::FaceSet::PER_VERTEX:                                        \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_VERTEX, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid materialbinding value");				\
-    break;								\
+    break;                                                               \
+  default:                                                               \
+    assert(!"invalid materialbinding value");                            \
+    break;                                                               \
   }
 
 #define SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {						\
-  case SoGL::FaceSet::OVERALL:						\
+  switch (normalbinding) {                                               \
+  case SoGL::FaceSet::OVERALL:                                           \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG2(OVERALL, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::FaceSet::PER_FACE:						\
+    break;                                                               \
+  case SoGL::FaceSet::PER_FACE:                                          \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG2(PER_FACE, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::FaceSet::PER_VERTEX:					\
+    break;                                                               \
+  case SoGL::FaceSet::PER_VERTEX:                                        \
     SOGL_FACESET_GLRENDER_RESOLVE_ARG2(PER_VERTEX, materialbinding, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid materialbinding value");				\
-    break;								\
+    break;                                                               \
+  default:                                                               \
+    assert(!"invalid materialbinding value");                            \
+    break;                                                               \
   }
 
 #define SOGL_FACESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
@@ -430,7 +430,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t *ptr = this->numVertices.getValues(0);
   const int32_t *end = ptr + this->numVertices.getNum();
   if ((end-ptr == 1) && (ptr[0] == 0)) return; // nothing to render
-  
+
   SoState * state = action->getState();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
@@ -508,16 +508,16 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     }
 
     SOGL_FACESET_GLRENDER(nbind, mbind, doTextures, (coords,
-						     normals,
-						     &mb,
-						     &tb,
-						     nbind,
-						     mbind,
-						     doTextures,
-						     idx,
-						     ptr,
-						     end,
-						     needNormals));
+                                                     normals,
+                                                     &mb,
+                                                     &tb,
+                                                     nbind,
+                                                     mbind,
+                                                     doTextures,
+                                                     idx,
+                                                     ptr,
+                                                     end,
+                                                     needNormals));
 
     if (nc) {
       this->readUnlockNormalCache();
@@ -532,10 +532,10 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   // needed for convex cache
   (void) SoCacheElement::setInvalid(storedinvalid);
   state->pop();
-  
+
   int numv = this->numVertices.getNum();
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, numv ? 
+  sogl_autocache_update(state, numv ?
                         (this->numVertices[0]-2)*numv : 0);
 }
 
@@ -602,7 +602,7 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
     else {
       SoDebugError::postWarning("SoFaceSet::generateDefaultNormals", "Erroneous "
                                 "number of coordinates: %d specified for FaceSet. "
-                                "Legal value is >= 3, with %d coordinate(s) available", 
+                                "Legal value is >= 3, with %d coordinate(s) available",
                                 num, numcoords - idx);
 
       // Not able to generate normals for invalid faceset
@@ -836,7 +836,7 @@ SoFaceSet::useConvexCache(SoAction * action)
   }
 
   THIS->readLockConvexCache();
-  
+
   SbBool isvalid = THIS->convexCache && THIS->convexCache->isValid(state);
 
   SbMatrix modelmatrix;

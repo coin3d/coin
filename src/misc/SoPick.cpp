@@ -90,7 +90,7 @@ intersect_cone_line(const float br,
   return numisect;
 }
 
-void 
+void
 sopick_pick_cone(const float bottomRadius,
                  const float h,
                  const unsigned int flags,
@@ -185,7 +185,7 @@ set_side_pp_data(SoPickedPoint * pp, const SbVec3f & isect,
 }
 
 
-void 
+void
 sopick_pick_cylinder(const float r,
                      const float height,
                      const unsigned int flags,
@@ -250,7 +250,7 @@ sopick_pick_cylinder(const float r,
   }
 
   float r2 = r * r;
-  
+
   SbBool matperpart = flags & SOPICK_MATERIAL_PER_PART;
 
   if ((numPicked < 2) && (flags & SOPICK_TOP)) {
@@ -314,7 +314,7 @@ try_add_intersection(SoRayPickAction * action, const SbVec3f & pt)
   }
 }
 
-void 
+void
 sopick_pick_sphere(const float radius,
                    SoRayPickAction * const action)
 {
@@ -328,7 +328,7 @@ sopick_pick_sphere(const float radius,
   }
 }
 
-void 
+void
 sopick_pick_cube(const float width,
                  const float height,
                  const float depth,
@@ -366,7 +366,7 @@ sopick_pick_cube(const float width,
             SoCubeDetail * detail = new SoCubeDetail();
             detail->setPart(translation[cnt]);
             pp->setDetail(detail, shape);
-            if (flags & SOPICK_MATERIAL_PER_PART) 
+            if (flags & SOPICK_MATERIAL_PER_PART)
               pp->setMaterialIndex(translation[cnt]);
             pp->setObjectNormal(norm);
             i1 = textranslation[i][0];
@@ -378,10 +378,10 @@ sopick_pick_cube(const float width,
             switch (i) {
             default: // just to avoid warnings
             case 0:
-			  if (j > 0.0f) s = 1.0f - s;
+              if (j > 0.0f) s = 1.0f - s;
               break;
             case 1:
-			  if (j > 0.0f) t = 1.0f - t;
+              if (j > 0.0f) t = 1.0f - t;
               break;
             case 2:
               if (j < 0.0f) s = 1.0f - s;

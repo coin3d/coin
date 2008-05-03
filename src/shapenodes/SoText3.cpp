@@ -42,12 +42,12 @@
 
   This is a simple example of an extruded SoText3 string:
 
-  \verbatim  
+  \verbatim
    #Inventor V2.1 ascii
 
    Separator {
      renderCaching ON
-     Font {  
+     Font {
         name "Arial"
         size 2
      }
@@ -65,10 +65,10 @@
        value 1
      }
      ShapeHints {
-       creaseAngle 1.5 
+       creaseAngle 1.5
        shapeType SOLID
        vertexOrdering COUNTERCLOCKWISE
-     }       
+     }
      Material {
        diffuseColor 0.6 0.6 0.8
        specularColor 1 1 1
@@ -76,8 +76,8 @@
      Text3 {
        string ["Coin3D"]
        parts ALL
-     } 
-   } 
+     }
+   }
   \endverbatim
 
   <center>
@@ -86,10 +86,10 @@
 
 
   if SoText3::Part is set to SIDES or ALL and no profile is provided, a
-  flat, one unit long profile will be created. 
+  flat, one unit long profile will be created.
 
   Separate colors can be assigned to the front, sides and back of the
-  glyphs by adding a preceding SoMaterialBinding node.  Set the \e value 
+  glyphs by adding a preceding SoMaterialBinding node.  Set the \e value
   field to PER_PART (default is OVERALL). The front, side and back of
   the glyphs will then be colored according to diffuse color 0, 1 and 2
   found on the stack.
@@ -239,7 +239,7 @@ public:
 
   void render(SoState * state, const cc_font_specification * fontspec, unsigned int part);
   void generate(SoAction * action, const cc_font_specification * fontspec, unsigned int part);
-  
+
   SbList <float> widths;
   void setUpGlyphs(SoState * state, SoText3 * textnode);
   SbBox3f maxglyphbbox;
@@ -333,17 +333,17 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
   float maxw = FLT_MIN;
   for (i = 0; i < n; i++) {
-    maxw = SbMax(maxw, PRIVATE(this)->widths[i]); 
+    maxw = SbMax(maxw, PRIVATE(this)->widths[i]);
   }
 
   if (maxw == FLT_MIN) { // There is no text to bound. Returning.
     PRIVATE(this)->unlock();
-    return; 
+    return;
   }
 
   SbBox2f maxbox;
   float maxglyphsize = 1;
-  
+
   float maxy = fontspec->size;
   float miny = -this->spacing.getValue() * fontspec->size * (n-1);
 
@@ -370,7 +370,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   // check profiles and extend bounding box if necessary
   float profsize = 0;
   float minz = -1.0f, maxz = 0.0f;
-  
+
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
   if ( numprofiles > 0) {
@@ -421,7 +421,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       minz = 0.0f;
     }
   }
- 
+
   box.setBounds(SbVec3f(minx, miny, minz), SbVec3f(maxx, maxy, maxz));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
@@ -430,7 +430,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   box.extendBy(SbVec3f(box.getMax()[0] + profsize, box.getMax()[1] + profsize, 0));
   box.extendBy(SbVec3f(box.getMin()[0] - profsize, box.getMin()[1] - profsize, 0));
-    
+
   center = box.getCenter();
   PRIVATE(this)->unlock();
 }
@@ -451,7 +451,7 @@ SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
 void
 SoText3::GLRender(SoGLRenderAction * action)
 {
-  if (!this->shouldGLRender(action)) 
+  if (!this->shouldGLRender(action))
     return;
 
   PRIVATE(this)->lock();
@@ -490,21 +490,21 @@ SoText3::GLRender(SoGLRenderAction * action)
   const int numdiffuse = lazyelement->getNumDiffuse();
 
   SbBool matperpart = (binding != SoMaterialBindingElement::OVERALL);
-  
+
   if (prts & SoText3::FRONT) {
     PRIVATE(this)->render(state, fontspec, SoText3::FRONT);
   }
   if (prts & SoText3::SIDES) {
-    if (matperpart && (numdiffuse > 1)) 
-        mb.send(1, FALSE);    
+    if (matperpart && (numdiffuse > 1))
+        mb.send(1, FALSE);
     PRIVATE(this)->render(state, fontspec, SoText3::SIDES);
   }
   if (prts & SoText3::BACK) {
-    if (matperpart && (numdiffuse > 2)) 
-      mb.send(2, FALSE);    
+    if (matperpart && (numdiffuse > 2))
+      mb.send(2, FALSE);
     PRIVATE(this)->render(state, fontspec, SoText3::BACK);
   }
-  
+
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
     SoGLCacheContextElement::incNumShapes(state);
@@ -517,7 +517,7 @@ void
 SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (action->is3DTextCountedAsTriangles()) {
-    // will cause a call to generatePrimitives() 
+    // will cause a call to generatePrimitives()
     // slow, but we can't be bothered to implement a new loop to count triangles
     inherited::getPrimitiveCount(action);
   }
@@ -627,7 +627,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     nearz = -nearz;
     farz = -farz;
   }
-  
+
   // If no profiles have been specified, or if no valid coordinates have
   // been given, set near and far / front and back values to default.
   if (!validprofile) {
@@ -638,7 +638,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
   int glyphidx = 0;
   float ypos = 0.0f;
- 
+
   for (i = 0; i < n; i++) {
 
     float xpos = 0.0f;
@@ -654,7 +654,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     cc_glyph3d * prevglyph = NULL;
     const unsigned int length = PUBLIC(this)->string[i].getLength();
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
- 
+
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
@@ -673,15 +673,15 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
         cc_glyph3d_unref(prevglyph);
       }
       prevglyph = glyph;
-      
+
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
         glBegin(GL_TRIANGLES);
-        
+
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
-          if (part == SoText3::FRONT) {         
+          if (part == SoText3::FRONT) {
             glNormal3f(0.0f, 0.0f, 1.0f);
             v2 = coords[*ptr++];
             v1 = coords[*ptr++];
@@ -696,15 +696,15 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             zval = farz;
           }
           if(do2Dtextures)
-            glTexCoord2f(v0[0] + xpos/fontspec->size, 
-                         v0[1] + ypos/fontspec->size);           
+            glTexCoord2f(v0[0] + xpos/fontspec->size,
+                         v0[1] + ypos/fontspec->size);
           glVertex3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, zval);
           if(do2Dtextures)
-            glTexCoord2f(v1[0] + xpos/fontspec->size, 
+            glTexCoord2f(v1[0] + xpos/fontspec->size,
                          v1[1] + ypos/fontspec->size);
           glVertex3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, zval);
           if(do2Dtextures)
-            glTexCoord2f(v2[0] + xpos/fontspec->size, 
+            glTexCoord2f(v2[0] + xpos/fontspec->size,
                          v2[1] + ypos/fontspec->size);
           glVertex3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval);
 
@@ -719,7 +719,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           int counter = 0;
 
           glBegin(GL_QUADS);
- 
+
           while (*ptr >= 0) {
             v1 = coords[*ptr++];
             v0 = coords[*ptr++];
@@ -728,13 +728,13 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
             SbVec3f vright(coords[*cw][0], coords[*cw][1], 0);
             counter++;
-                      
+
             // create two 'normal' vectors pointing out from the edges
             SbVec3f normala(vright[0] - v0[0], vright[1] - v0[1], 0.0f);
             normala = normala.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normala.length() > 0)
               normala.normalize();
-       
+
             SbVec3f normalb(v1[0] - vleft[0], v1[1] - vleft[1], 0.0f);
             normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normalb.length() > 0)
@@ -751,28 +751,28 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
               flatshading = TRUE;
             }
-          
+
             if (!flatshading) {
               if(do2Dtextures)
-                 glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                 glTexCoord2f(v1[0] + xpos/fontspec->size,
                               v1[1] + ypos/fontspec->size);
               glNormal3fv(normala.getValue());
-              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);     
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                glTexCoord2f(v0[0] + xpos/fontspec->size,
                              v0[1] + ypos/fontspec->size);
               glNormal3fv(normalb.getValue());
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                glTexCoord2f(v0[0] + xpos/fontspec->size,
                              v0[1] + ypos/fontspec->size);
               glNormal3fv(normalb.getValue());
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                glTexCoord2f(v1[0] + xpos/fontspec->size,
                              v1[1] + ypos/fontspec->size);
               glNormal3fv(normala.getValue());
               glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f);
@@ -781,22 +781,22 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             else {
               glNormal3fv(normala.getValue());
               if(do2Dtextures)
-                glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                glTexCoord2f(v1[0] + xpos/fontspec->size,
                              v1[1] + ypos/fontspec->size);
-              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);          
-              
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);
+
               if(do2Dtextures)
-                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                glTexCoord2f(v0[0] + xpos/fontspec->size,
                              v0[1] + ypos/fontspec->size);
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                glTexCoord2f(v0[0] + xpos/fontspec->size,
                              v0[1] + ypos/fontspec->size);
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                glTexCoord2f(v1[0] + xpos/fontspec->size,
                              v1[1] + ypos/fontspec->size);
               glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f);
             }
@@ -806,16 +806,16 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
         }
         else {  // profile
           assert(validprofile && firstprofile >= 0);
-          
+
           const int * indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;
           SbVec3f normala, normalb;
 
-          SbList <SbVec3f> vertexlist;         
+          SbList <SbVec3f> vertexlist;
           this->normalgenerator->reset(FALSE);
 
           while (*indices >= 0) {
-            
+
             int i0 = *indices++;
             int i1 = *indices++;
             SbVec3f va(coords[i0][0], coords[i0][1], nearz);
@@ -825,7 +825,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
             SbVec3f vright(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
-        
+
             va[0] = va[0] * fontspec->size;
             va[1] = va[1] * fontspec->size;
             vb[0] = vb[0] * fontspec->size;
@@ -838,27 +838,27 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             // create two 'normal' vectors pointing out from the edges
             SbVec3f normala(vleft[0] - va[0], vleft[1] - va[1], 0.0f);
             normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            if (normala.length() > 0) 
+            if (normala.length() > 0)
               normala.normalize();
 
             SbVec3f normalb(vb[0] - vright[0], vb[1] - vright[1], 0.0f);
             normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             if (normalb.length() > 0)
               normalb.normalize();
-  
+
             SoProfile * pn = (SoProfile *) profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
 
             SbVec3f vc,vd;
             SbVec2f starta(va[0], va[1]);
             SbVec2f startb(vb[0], vb[1]);
-            
+
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile * pn = (SoProfile *) profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
-              
+
               for (int k=1; k<profnum; k++) {
-                
+
                 // Calc points for two next faces
                 vd[0] = starta[0] + (profcoords[k][1] * normalb[0]);
                 vd[1] = starta[1] + (profcoords[k][1] * normalb[1]);
@@ -866,37 +866,37 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
                 vc[0] = startb[0] + (profcoords[k][1] * normala[0]);
                 vc[1] = startb[1] + (profcoords[k][1] * normala[1]);
                 vc[2] = -profcoords[k][0];
-                
+
                 // The windows tesselation sometimes return
                 // illegal/empty tris. A test must be done to
                 // prevent stdout from being flooded with
                 // normalize() warnings from inside the normal
                 // generator.
-               
-                if ((va != vd) && (va != vb) && (vd != vb)) {	
+
+                if ((va != vd) && (va != vb) && (vd != vb)) {
                   vertexlist.append(va);
                   vertexlist.append(vd);
                   vertexlist.append(vb);
                   normalgenerator->triangle(va,vd,vb);
                 }
-                
-                if ((vb != vd) && (vb != vc) && (vd != vc)) {	               
+
+                if ((vb != vd) && (vb != vc) && (vd != vc)) {
                   vertexlist.append(vb);
                   vertexlist.append(vd);
                   vertexlist.append(vc);
                   normalgenerator->triangle(vb,vd,vc);
-                }                       
-                
+                }
+
                 va = vd;
                 vb = vc;
-                
-              }            
+
+              }
             }
-            
+
           }
-              
+
           normalgenerator->generate(creaseangle);
-          const SbVec3f * normals = normalgenerator->getNormals();          
+          const SbVec3f * normals = normalgenerator->getNormals();
           const int size = vertexlist.getLength();
 
           // NOTE: We add the xpos and ypos to each vertex at this
@@ -908,30 +908,30 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           // compilator. (Tested on MSVC 6 and GCC 2.95.4) (20031010
           // handegar).
 
-          glBegin(GL_TRIANGLES);   
-     
+          glBegin(GL_TRIANGLES);
+
           for (int z = 0;z < size;z += 3) {
 
             // FIXME: Add proper texturing for profile
             // coords. (20031010 handegar)
 
             glNormal3fv(normals[z+2].getValue());
-            glVertex3fv(SbVec3f(vertexlist[z+2][0] + xpos, 
-                                vertexlist[z+2][1] + ypos, 
+            glVertex3fv(SbVec3f(vertexlist[z+2][0] + xpos,
+                                vertexlist[z+2][1] + ypos,
                                 vertexlist[z+2][2]).getValue());
 
             glNormal3fv(normals[z+1].getValue());
-            glVertex3fv(SbVec3f(vertexlist[z+1][0] + xpos, 
-                                vertexlist[z+1][1] + ypos, 
+            glVertex3fv(SbVec3f(vertexlist[z+1][0] + xpos,
+                                vertexlist[z+1][1] + ypos,
                                 vertexlist[z+1][2]).getValue());
-   
+
             glNormal3fv(normals[z].getValue());
-            glVertex3fv(SbVec3f(vertexlist[z][0] + xpos, 
-                                vertexlist[z][1] + ypos, 
+            glVertex3fv(SbVec3f(vertexlist[z][0] + xpos,
+                                vertexlist[z][1] + ypos,
                                 vertexlist[z][2]).getValue());
           }
           glEnd();
-                    
+
           vertexlist.truncate(0);
 
         }
@@ -970,7 +970,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
                    unsigned int part)
 {
   SoState * state = action->getState();
- 
+
   // SoCreaseAngleElement is not enabled for SoGetPrimitiveCountAction.
   float creaseangle = 0.5f;
   if (state->isElementEnabled(SoCreaseAngleElement::getClassStackIndex())) {
@@ -983,22 +983,22 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
   // we might get here from getPrimitiveCount(). We therefore need to
   // check if lazy element is enabled
-  if (SoMaterialBindingElement::get(state) != 
+  if (SoMaterialBindingElement::get(state) !=
       SoMaterialBindingElement::OVERALL &&
       state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
-    
-    SoLazyElement * lazyelement = SoLazyElement::getInstance(state);
-    const int numdiffuse = lazyelement->getNumDiffuse();    
 
-    if (part == SoText3::SIDES && (numdiffuse > 1)) 
-      vertex.setMaterialIndex(1);    
-    else if (part == SoText3::BACK && (numdiffuse > 2)) 
-      vertex.setMaterialIndex(2);    
+    SoLazyElement * lazyelement = SoLazyElement::getInstance(state);
+    const int numdiffuse = lazyelement->getNumDiffuse();
+
+    if (part == SoText3::SIDES && (numdiffuse > 1))
+      vertex.setMaterialIndex(1);
+    else if (part == SoText3::BACK && (numdiffuse > 2))
+      vertex.setMaterialIndex(2);
   }
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
-  
+
   // not all actions have these elements enabled
   // (for instance SoGetPrimitiveCountAction)
   if (state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
@@ -1079,9 +1079,9 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.      
+      // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) PUBLIC(this)->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);    
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
 
       detail.setCharacterIndex(strcharidx);
@@ -1100,7 +1100,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
         PUBLIC(this)->beginShape(action, SoShape::TRIANGLES, NULL);
-        
+
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
@@ -1121,19 +1121,19 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
           if(do2Dtextures) {
             vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, v0[1] + ypos/fontspec->size));
-          }          
+          }
           vertex.setPoint(SbVec3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
 
           if(do2Dtextures) {
             vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, v1[1] + ypos/fontspec->size));
-          }   
+          }
           vertex.setPoint(SbVec3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
 
           if(do2Dtextures) {
             vertex.setTextureCoords(SbVec2f(v2[0] + xpos/fontspec->size, v2[1] + ypos/fontspec->size));
-          }   
+          }
           vertex.setPoint(SbVec3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
         }
@@ -1143,13 +1143,13 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       }
       else { // SIDES
         if (profilenodes.getLength() == 0) {  // no profile - extrude
-         
+
           const int * ptr = cc_glyph3d_getedgeindices(glyph);
           SbVec2f v0, v1;
-          int counter = 0;          
+          int counter = 0;
           PUBLIC(this)->beginShape(action, SoShape::QUADS, NULL);
 
-          while (*ptr >= 0) {            
+          while (*ptr >= 0) {
             v1 = coords[*ptr++];
             v0 = coords[*ptr++];
             const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, counter);
@@ -1157,7 +1157,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
             SbVec3f vright(coords[*cw][0], coords[*cw][1], 0);
             counter++;
-           
+
             v0[0] = v0[0];
             v0[1] = v0[1];
             v1[0] = v1[0];
@@ -1172,7 +1172,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             normala = normala.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normala.length() > 0)
               normala.normalize();
-       
+
             SbVec3f normalb(v1[0] - vleft[0], v1[1] - vleft[1], 0.0f);
             normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normalb.length() > 0)
@@ -1190,71 +1190,71 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
             if (!flatshading) {
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size,
                                                 v1[1] + ypos/fontspec->size));
               }
               vertex.setNormal(normala);
-              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f));  
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f));
               PUBLIC(this)->shapeVertex(&vertex);
 
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size,
                                                 v0[1] + ypos/fontspec->size));
               }
               vertex.setNormal(normalb);
-              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f));
+              PUBLIC(this)->shapeVertex(&vertex);
 
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size,
                                                 v0[1] + ypos/fontspec->size));
               }
               vertex.setNormal(normalb);
-              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f));
+              PUBLIC(this)->shapeVertex(&vertex);
 
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size,
                                                 v1[1] + ypos/fontspec->size));
               }
               vertex.setNormal(normala);
-              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f));  
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f));
               PUBLIC(this)->shapeVertex(&vertex);
             }
             else {
               vertex.setNormal(normala);
 
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size,
                                                 v1[1] + ypos/fontspec->size));
               }
-              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);
-                
-              if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
-                                                v0[1] + ypos/fontspec->size));
-              }
-              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f));  
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f));
               PUBLIC(this)->shapeVertex(&vertex);
 
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size,
                                                 v0[1] + ypos/fontspec->size));
               }
-              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f));
+              PUBLIC(this)->shapeVertex(&vertex);
 
               if (do2Dtextures) {
-                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size,
+                                                v0[1] + ypos/fontspec->size));
+              }
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f));
+              PUBLIC(this)->shapeVertex(&vertex);
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size,
                                                 v1[1] + ypos/fontspec->size));
-              }              
-              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f));  
+              }
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f));
               PUBLIC(this)->shapeVertex(&vertex);
 
             }
           }
-          
+
           PUBLIC(this)->endShape();
 
         }
@@ -1264,7 +1264,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
           int ind = 0;
           SbVec3f normala, normalb;
 
-          SbList <SbVec3f> vertexlist;         
+          SbList <SbVec3f> vertexlist;
           this->normalgenerator->reset(FALSE);
 
           while (*indices >= 0) {
@@ -1276,7 +1276,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             const int *ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
             const int *cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
-            SbVec3f vright(coords[*cw][0], coords[*cw][1], nearz);        
+            SbVec3f vright(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
 
             va[0] = va[0] * fontspec->size;
@@ -1291,7 +1291,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             // create two 'normal' vectors pointing out from the edges
             SbVec3f normala(vleft[0] - va[0], vleft[1] - va[1], 0.0f);
             normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            if (normala.length() > 0) 
+            if (normala.length() > 0)
               normala.normalize();
 
             SbVec3f normalb(vb[0] - vright[0], vb[1] - vright[1], 0.0f);
@@ -1301,17 +1301,17 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
-         
+
             SbVec3f vc,vd;
             SbVec2f starta(va[0], va[1]);
             SbVec2f startb(vb[0], vb[1]);
-        
+
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile *pn = (SoProfile *)profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
 
               for (int k=1; k<profnum; k++) {
-                
+
                 // Calc points for two next faces
                 vd[0] = starta[0] + (profcoords[k][1] * normalb[0]);
                 vd[1] = starta[1] + (profcoords[k][1] * normalb[1]);
@@ -1324,57 +1324,57 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
                 // illegal/empty tris. A test must be done to prevent
                 // stdout from being flooded with normalize() warnings
                 // from inside the normal generator.
-               
-                if ((va != vd) && (va != vb) && (vd != vb)) {	
+
+                if ((va != vd) && (va != vb) && (vd != vb)) {
                   vertexlist.append(va);
                   vertexlist.append(vd);
                   vertexlist.append(vb);
                   normalgenerator->triangle(va,vd,vb);
                 }
-                
-                if ((vb != vd) && (vb != vc) && (vd != vc)) {	               
+
+                if ((vb != vd) && (vb != vc) && (vd != vc)) {
                   vertexlist.append(vb);
                   vertexlist.append(vd);
                   vertexlist.append(vc);
                   normalgenerator->triangle(vb,vd,vc);
-                }                       
-                
+                }
+
                 va = vd;
                 vb = vc;
 
-              }       
-              
+              }
+
             }
 
           }
 
 
           normalgenerator->generate(creaseangle);
-          const SbVec3f * normals = normalgenerator->getNormals();          
+          const SbVec3f * normals = normalgenerator->getNormals();
           const int size = vertexlist.getLength();
 
           PUBLIC(this)->beginShape(action, SoShape::TRIANGLES, NULL);
-          for (int z = 0;z < size;z += 3) {      
+          for (int z = 0;z < size;z += 3) {
             vertex.setNormal(normals[z+2].getValue());
-            vertex.setPoint(SbVec3f(vertexlist[z+2][0] + xpos, 
-                                    vertexlist[z+2][1] + ypos, 
+            vertex.setPoint(SbVec3f(vertexlist[z+2][0] + xpos,
+                                    vertexlist[z+2][1] + ypos,
                                     vertexlist[z+2][2]).getValue());
-            PUBLIC(this)->shapeVertex(&vertex);              
-          
+            PUBLIC(this)->shapeVertex(&vertex);
+
             vertex.setNormal(normals[z+1].getValue());
-            vertex.setPoint(SbVec3f(vertexlist[z+1][0] + xpos, 
-                                    vertexlist[z+1][1] + ypos, 
+            vertex.setPoint(SbVec3f(vertexlist[z+1][0] + xpos,
+                                    vertexlist[z+1][1] + ypos,
                                     vertexlist[z+1][2]).getValue());
-            PUBLIC(this)->shapeVertex(&vertex);              
-          
+            PUBLIC(this)->shapeVertex(&vertex);
+
             vertex.setNormal(normals[z].getValue());
-            vertex.setPoint(SbVec3f(vertexlist[z][0] + xpos, 
-                                    vertexlist[z][1] + ypos, 
+            vertex.setPoint(SbVec3f(vertexlist[z][0] + xpos,
+                                    vertexlist[z][1] + ypos,
                                     vertexlist[z][2]).getValue());
-            PUBLIC(this)->shapeVertex(&vertex);              
-                             
+            PUBLIC(this)->shapeVertex(&vertex);
+
           }
-          PUBLIC(this)->endShape();          
+          PUBLIC(this)->endShape();
           vertexlist.truncate(0);
 
         }
@@ -1396,7 +1396,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 }
 
 // Documented in superclass.
-void 
+void
 SoText3::notify(SoNotList * list)
 {
   PRIVATE(this)->lock();
@@ -1417,17 +1417,17 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
 
   state->push();
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-  this->cache = new SoGlyphCache(state); 
+  this->cache = new SoGlyphCache(state);
   this->cache->ref();
   SoCacheElement::set(state, this->cache);
   this->cache->readFontspec(state);
-  const cc_font_specification * fontspec = this->cache->getCachedFontspec(); 
-  
+  const cc_font_specification * fontspec = this->cache->getCachedFontspec();
+
   this->widths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
 
-    const unsigned int length = textnode->string[i].getLength(); 
+    const unsigned int length = textnode->string[i].getLength();
     float stringwidth = 0.0f;
     float kerningx = 0;
     float kerningy = 0;
@@ -1452,18 +1452,18 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
-              
-      if (strcharidx > 0) 
-        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);      
+
+      if (strcharidx > 0)
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      
+
       stringwidth += (advancex + kerningx) * fontspec->size;
       prevglyph = glyph;
     }
 
     if (prevglyph != NULL) {
       // Italic font might cause last letter to be outside bbox. Add width if needed.
-      if (advancex < cc_glyph3d_getwidth(prevglyph)) 
+      if (advancex < cc_glyph3d_getwidth(prevglyph))
         stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
     }
 

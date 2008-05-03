@@ -249,19 +249,19 @@ namespace { namespace SoGL { namespace TriStripSet {
   };
 
   template < int NormalBinding,
-	     int MaterialBinding,
-	     int TexturingEnabled >
+             int MaterialBinding,
+             int TexturingEnabled >
   static void GLRender(const SoGLCoordinateElement * coords,
-		       const SbVec3f *normals,
-		       SoMaterialBundle * mb,
-		       const SoTextureCoordinateBundle * tb,
-		       int nbind,
-		       int mbind,
-		       int doTextures,
-		       int32_t idx,
-		       const int32_t *ptr,
-		       const int32_t *end,
-		       SbBool needNormals)
+                       const SbVec3f *normals,
+                       SoMaterialBundle * mb,
+                       const SoTextureCoordinateBundle * tb,
+                       int nbind,
+                       int mbind,
+                       int doTextures,
+                       int32_t idx,
+                       const int32_t *ptr,
+                       const int32_t *end,
+                       SbBool needNormals)
   {
     const SbVec3f * coords3d = NULL;
     const SbVec4f * coords4d = NULL;
@@ -275,7 +275,7 @@ namespace { namespace SoGL { namespace TriStripSet {
 
     // This is the same code as in SoGLCoordinateElement::send().
     // It is inlined here for speed (~15% speed increase).
-#define SEND_VERTEX(_idx_)					\
+#define SEND_VERTEX(_idx_)                                      \
     if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
     else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
@@ -293,75 +293,75 @@ namespace { namespace SoGL { namespace TriStripSet {
     while (ptr < end) {
       n = *ptr++ - 2;
       assert(n > 0);
-      
+
       glBegin(GL_TRIANGLE_STRIP);
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	  (AttributeBinding)NormalBinding == PER_STRIP) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+          (AttributeBinding)NormalBinding == PER_STRIP) {
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if ((AttributeBinding)MaterialBinding == PER_STRIP ||
-	  (AttributeBinding)MaterialBinding == PER_VERTEX) {
-	mb->send(matnr++, TRUE);
+          (AttributeBinding)MaterialBinding == PER_VERTEX) {
+        mb->send(matnr++, TRUE);
       }
 
       // workaround for nvidia color-per-face-bug
       if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	mb->send(matnr, TRUE);
+        mb->send(matnr, TRUE);
       }
       // end of nvidia workaround
 
       if (TexturingEnabled == TRUE) {
-	tb->send(texnr++, coords->get3(idx), *currnormal);
+        tb->send(texnr++, coords->get3(idx), *currnormal);
       }
       SEND_VERTEX(idx);
       idx++;
-    
+
       if ((AttributeBinding)NormalBinding == PER_VERTEX) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
-	mb->send(matnr++, TRUE);
+        mb->send(matnr++, TRUE);
       }
 
       // workaround for nvidia color-per-face-bug
       if ((AttributeBinding)MaterialBinding == PER_FACE) {
-	mb->send(matnr, TRUE);
+        mb->send(matnr, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_STRIP) {
-	mb->send(matnr-1, TRUE);
+        mb->send(matnr-1, TRUE);
       }
       // end of nvidia workaround
 
       if (TexturingEnabled == TRUE) {
-	tb->send(texnr++, coords->get3(idx), *currnormal);
+        tb->send(texnr++, coords->get3(idx), *currnormal);
       }
       SEND_VERTEX(idx);
       idx++;
 
       while (n--) {
-	if ((AttributeBinding)NormalBinding == PER_FACE ||
-	    (AttributeBinding)NormalBinding == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
-	if ((AttributeBinding)MaterialBinding == PER_FACE ||
-	    (AttributeBinding)MaterialBinding == PER_VERTEX) {
-	  mb->send(matnr++, TRUE);
-	}
+        if ((AttributeBinding)NormalBinding == PER_FACE ||
+            (AttributeBinding)NormalBinding == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if ((AttributeBinding)MaterialBinding == PER_FACE ||
+            (AttributeBinding)MaterialBinding == PER_VERTEX) {
+          mb->send(matnr++, TRUE);
+        }
 
-	// workaround for nvidia color-per-face-bug
-	if ((AttributeBinding)MaterialBinding == PER_STRIP) {
-	  mb->send(matnr-1, TRUE);    
-	}
-	// end of nvidia workaround
+        // workaround for nvidia color-per-face-bug
+        if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+          mb->send(matnr-1, TRUE);
+        }
+        // end of nvidia workaround
 
-	if (TexturingEnabled == TRUE) {
-	  tb->send(texnr++, coords->get3(idx), *currnormal);
-	}
-	SEND_VERTEX(idx);
-	idx++;
+        if (TexturingEnabled == TRUE) {
+          tb->send(texnr++, coords->get3(idx), *currnormal);
+        }
+        SEND_VERTEX(idx);
+        idx++;
       }
       glEnd();
     }
@@ -381,48 +381,48 @@ SoTriangleStripSet::initClass(void)
   SoGL::TriStripSet::GLRender<normalbinding, materialbinding, texturing> args
 
 #define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
-  if (texturing) {							\
+  if (texturing) {                                                        \
     SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
-  } else {								\
+  } else {                                                                \
     SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
   }
 
 #define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {						\
-  case SoGL::TriStripSet::OVERALL:					\
+  switch (materialbinding) {                                              \
+  case SoGL::TriStripSet::OVERALL:                                        \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, OVERALL, texturing, args); \
-    break;								\
-  case SoGL::TriStripSet::PER_STRIP:					\
+    break;                                                                \
+  case SoGL::TriStripSet::PER_STRIP:                                      \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_STRIP, texturing, args); \
-    break;								\
-  case SoGL::TriStripSet::PER_FACE:					\
+    break;                                                                \
+  case SoGL::TriStripSet::PER_FACE:                                       \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_FACE, texturing, args); \
-    break;								\
-  case SoGL::TriStripSet::PER_VERTEX:					\
+    break;                                                                \
+  case SoGL::TriStripSet::PER_VERTEX:                                     \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, PER_VERTEX, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid tristripset normal binding");			\
-    break;								\
+    break;                                                                \
+  default:                                                                \
+    assert(!"invalid tristripset normal binding");                        \
+    break;                                                                \
   }
 
 #define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {						\
-  case SoGL::TriStripSet::OVERALL:					\
+  switch (normalbinding) {                                                \
+  case SoGL::TriStripSet::OVERALL:                                        \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(OVERALL, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::TriStripSet::PER_STRIP:					\
+    break;                                                                \
+  case SoGL::TriStripSet::PER_STRIP:                                      \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(PER_STRIP, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::TriStripSet::PER_FACE:					\
+    break;                                                                \
+  case SoGL::TriStripSet::PER_FACE:                                       \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(PER_FACE, materialbinding, texturing, args); \
-    break;								\
-  case SoGL::TriStripSet::PER_VERTEX:					\
+    break;                                                                \
+  case SoGL::TriStripSet::PER_VERTEX:                                     \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(PER_VERTEX, materialbinding, texturing, args); \
-    break;								\
-  default:								\
-    assert(!"invalid tristripset normal binding");			\
-    break;								\
+    break;                                                                \
+  default:                                                                \
+    assert(!"invalid tristripset normal binding");                        \
+    break;                                                                \
   }
 
 #define SOGL_TRISTRIPSET_GLRENDER(normalbinding, materialbinding, texturing, args) \
@@ -437,7 +437,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   const int32_t * ptr = this->numVertices.getValues(0);
   const int32_t * end = ptr + this->numVertices.getNum();
   if ((end-ptr == 1) && ptr[0] == 0) return; // nothing to render
-  
+
   SoState * state = action->getState();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
@@ -492,29 +492,29 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   }
 
   mb.sendFirst(); // make sure we have the correct material
-  
+
   SOGL_TRISTRIPSET_GLRENDER(nbind, mbind, doTextures, (coords,
-						       normals,
-						       &mb,
-						       &tb,
-						       nbind,
-						       mbind,
-						       doTextures,
-						       idx,
-						       ptr,
-						       end,
-						       needNormals));
-  
+                                                       normals,
+                                                       &mb,
+                                                       &tb,
+                                                       nbind,
+                                                       mbind,
+                                                       doTextures,
+                                                       idx,
+                                                       ptr,
+                                                       end,
+                                                       needNormals));
+
   if (nc) {
     this->readUnlockNormalCache();
   }
-  
+
   if (didpush)
     state->pop();
 
   int numv = this->numVertices.getNum();
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, numv ? 
+  sogl_autocache_update(state, numv ?
                         (this->numVertices[0]-2)*numv : 0);
 }
 
@@ -594,9 +594,9 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   const int32_t * end = ptr + numVertices.getNum();
   const ptrdiff_t range = end - ptr;
   if ((range == 1) && ptr[0] == 0) return;
-  
+
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
-  
+
   if (action->canApproximateCount()) {
     // this is a wild guess, disable? pederb, 20000131
     action->addNumTriangles((int)(range * 8));
@@ -792,3 +792,4 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   if (this->vertexProperty.getValue())
     state->pop();
 }
+

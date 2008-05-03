@@ -26,7 +26,7 @@
 
   The SoShaderParameter class is the base class for all shader parameter classes.
 
-  In addition to the \a name and \a identifier field, all subclasses have a 
+  In addition to the \a name and \a identifier field, all subclasses have a
   \a value field which is used for specifying the parameter value.
 */
 
@@ -373,7 +373,7 @@ SO_NODE_SOURCE(SoShaderParameterArray1f);
 void SoShaderParameterArray1f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray1f,
-			      SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterArray1f::SoShaderParameterArray1f(void)
@@ -405,7 +405,7 @@ SO_NODE_SOURCE(SoShaderParameterArray2f);
 void SoShaderParameterArray2f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray2f,
-			      SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterArray2f::SoShaderParameterArray2f(void)
@@ -433,9 +433,10 @@ void SoShaderParameterArray2f::updateParameter(SoGLShaderObject *shader)
     }
   }
 
-  this->getGLShaderParameter(shader->getCacheContext())->set2fv(shader, num, buffer,
-			  this->name.getValue().getString(),
-			  this->identifier.getValue());
+  this->getGLShaderParameter(shader->getCacheContext())
+        ->set2fv(shader, num, buffer,
+                 this->name.getValue().getString(),
+                 this->identifier.getValue());
   if (buffer) delete[] buffer;
 }
 
@@ -448,7 +449,7 @@ SO_NODE_SOURCE(SoShaderParameterArray3f);
 void SoShaderParameterArray3f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray3f,
-			      SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterArray3f::SoShaderParameterArray3f(void)
@@ -492,7 +493,7 @@ SO_NODE_SOURCE(SoShaderParameterArray4f);
 void SoShaderParameterArray4f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray4f,
-			      SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterArray4f::SoShaderParameterArray4f(void)
@@ -522,9 +523,10 @@ void SoShaderParameterArray4f::updateParameter(SoGLShaderObject *shader)
     }
   }
 
-  this->getGLShaderParameter(shader->getCacheContext())->set4fv(shader, num, buffer,
-			  this->name.getValue().getString(),
-			  this->identifier.getValue());
+  this->getGLShaderParameter(shader->getCacheContext())
+        ->set4fv(shader, num, buffer,
+                 this->name.getValue().getString(),
+                 this->identifier.getValue());
   if (buffer) delete[] buffer;
 }
 
@@ -537,7 +539,7 @@ SO_NODE_SOURCE(SoShaderParameterMatrix);
 void SoShaderParameterMatrix::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterMatrix,
-			      SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+                              SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterMatrix::SoShaderParameterMatrix(void)
@@ -603,9 +605,10 @@ void SoShaderParameterMatrixArray::updateParameter(SoGLShaderObject *shader)
     }
   }
 
-  this->getGLShaderParameter(shader->getCacheContext())->setMatrixArray(shader, num, buffer,
-				  this->name.getValue().getString(),
-				  this->identifier.getValue());
+  this->getGLShaderParameter(shader->getCacheContext())
+        ->setMatrixArray(shader, num, buffer,
+                         this->name.getValue().getString(),
+                         this->identifier.getValue());
 
   if (buffer) delete[] buffer;
 }
@@ -660,7 +663,7 @@ SoShaderParameter2i::~SoShaderParameter2i()
 {
 }
 
-void 
+void
 SoShaderParameter2i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter2i,
@@ -693,7 +696,7 @@ SoShaderParameter3i::~SoShaderParameter3i()
 {
 }
 
-void 
+void
 SoShaderParameter3i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter3i,
@@ -726,7 +729,7 @@ SoShaderParameter4i::~SoShaderParameter4i()
 {
 }
 
-void 
+void
 SoShaderParameter4i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter4i,
@@ -759,7 +762,7 @@ SoShaderParameterArray1i::~SoShaderParameterArray1i()
 {
 }
 
-void 
+void
 SoShaderParameterArray1i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray1i,
@@ -793,7 +796,7 @@ SoShaderParameterArray2i::~SoShaderParameterArray2i()
 {
 }
 
-void 
+void
 SoShaderParameterArray2i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray2i,
@@ -827,7 +830,7 @@ SoShaderParameterArray3i::~SoShaderParameterArray3i()
 {
 }
 
-void 
+void
 SoShaderParameterArray3i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray3i,
@@ -861,7 +864,7 @@ SoShaderParameterArray4i::~SoShaderParameterArray4i()
 {
 }
 
-void 
+void
 SoShaderParameterArray4i::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray4i,

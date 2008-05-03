@@ -149,7 +149,7 @@
      }
      Rotation {
         rotation 0 0 1  0 =
-        USE mydragger	. rotation
+        USE mydragger . rotation
      }
      Cube {
         height 10
@@ -385,7 +385,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   int numtoreset = this->numNodesUpToReset.getValue();
   const SoFullPath * curpath = (const SoFullPath *) action->getCurPath();
   const int curpathlen = curpath->getLength();
-  
+
   if ((numtocontainer <= 0) || (numtocontainer >= curpathlen)) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoSurroundScale::updateMySurroundParams",
@@ -403,7 +403,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   // make sure we don't get here when calculating the bbox
   SbBool storedignore = this->isIgnoreInBbox();
   this->setIgnoreInBbox(TRUE);
-  
+
   SoPath * applypath = curpath->copy(0, curpathlen - numtocontainer);
   applypath->ref();
 
@@ -414,7 +414,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
     resetpath = curpath->copy(0, curpathlen - numtoreset);
     resetpath->ref();
   }
-  
+
   SbViewportRegion vp(100, 100);
   // need to test if SoViewportRegionElement is enabled since this
   // element is not enabled for SoAudioRenderAction.
@@ -422,7 +422,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   if (action->getState()->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
     vp = SoViewportRegionElement::get(action->getState());
   }
-  
+
   SoGetBoundingBoxAction bboxaction(vp);
 
   // reset bbox when returning from surroundscale branch,
@@ -472,7 +472,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
 
     this->cachedTranslation = box.getCenter();
   }
-  
+
   this->setIgnoreInBbox(storedignore);
   this->cacheOK = TRUE;
 }

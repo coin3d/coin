@@ -222,7 +222,7 @@ int SoSeparator::numrendercaches = 2;
   It's possible to tune the limits using some environment variables:
 
   <ul>
- 
+
     <li>\c COIN_AUTOCACHE_LOCAL_MIN can be used to change the
         enable-caching limit, while \c COIN_AUTOCACHE_LOCAL_MAX
         controls the disable-caching limit.</li>
@@ -524,7 +524,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 
     // check if we should disable auto caching
     if (PRIVATE(this)->bboxcache_destroycount > 10 && this->boundingBoxCaching.getValue() == AUTO) {
-      if (float(PRIVATE(this)->bboxcache_usecount) / float(PRIVATE(this)->bboxcache_destroycount) < 5.0f) { 
+      if (float(PRIVATE(this)->bboxcache_usecount) / float(PRIVATE(this)->bboxcache_destroycount) < 5.0f) {
         iscaching = FALSE;
       }
     }
@@ -662,8 +662,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       if (SoProfiler::isEnabled()) {
         SoProfilerElement * e = SoProfilerElement::get(state);
         if (e) {
-	  e->getProfilingData().setNodeFlag(action->getCurPath(), SbProfilingData::GL_CACHED_FLAG, TRUE);
-	}
+          e->getProfilingData().setNodeFlag(action->getCurPath(), SbProfilingData::GL_CACHED_FLAG, TRUE);
+        }
       }
 
       return;
@@ -698,10 +698,10 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       }
 
       {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
-	childarray[i]->GLRenderBelowPath(action); // traversal call
-	profiling.postTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
+        childarray[i]->GLRenderBelowPath(action); // traversal call
+        profiling.postTraversal(action);
       }
 
 #if COIN_DEBUG
@@ -739,7 +739,7 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
 {
   int numindices;
   const int * indices;
-  
+
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
 
   if (pathcode == SoAction::IN_PATH) {
@@ -753,10 +753,10 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
         if (offpath->affectsState()) {
           action->pushCurPath(childidx, offpath);
           if (!action->abortNow()) {
-	    SoNodeProfiling profiling;
-	    profiling.preTraversal(action);
+            SoNodeProfiling profiling;
+            profiling.preTraversal(action);
             offpath->GLRenderOffPath(action); // traversal call
-	    profiling.postTraversal(action);
+            profiling.postTraversal(action);
           }
           else {
             SoCacheElement::invalidate(state);
@@ -767,10 +767,10 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
       SoNode * inpath = childarray[childidx];
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         inpath->GLRenderInPath(action); // traversal call
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       else {
         SoCacheElement::invalidate(state);

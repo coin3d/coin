@@ -69,9 +69,9 @@ public:
     size_t managedmem = 0, unmanagedmem = 0;
     fullpath->getTail()->getFieldsMemorySize(managedmem, unmanagedmem);
     data.setNodeFootprint(this->entryindex,
-			  SbProfilingData::MEMORY_SIZE, managedmem);
+                          SbProfilingData::MEMORY_SIZE, managedmem);
     data.setNodeFootprint(this->entryindex,
-			  SbProfilingData::VIDEO_MEMORY_SIZE, 0);
+                          SbProfilingData::VIDEO_MEMORY_SIZE, 0);
     this->pretime = SbTime::getTimeOfDay();
   }
 
@@ -105,11 +105,11 @@ public:
 #if 0 // DEBUG
     const SoFullPath * fullpath = (const SoFullPath *)action->getCurPath();
     SoDebugError::postInfo("Profiling",
-			   "%20s (%d): duration %g, offset %g, adjusted %g",
-			   fullpath->getTail()->getTypeId().getName().getString(),
-			   fullpath->getLength(),
-			   duration.getValue(), childrenoffset.getValue(),
-			   adjusted.getValue());
+                           "%20s (%d): duration %g, offset %g, adjusted %g",
+                           fullpath->getTail()->getTypeId().getName().getString(),
+                           fullpath->getLength(),
+                           duration.getValue(), childrenoffset.getValue(),
+                           adjusted.getValue());
 #endif
   }
 

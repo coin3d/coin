@@ -634,10 +634,10 @@ SoVRMLGroup::GLRenderInPath(SoGLRenderAction * action)
         if (offpath->affectsState()) {
           action->pushCurPath(childidx, offpath);
           if (!action->abortNow()) {
-	    SoNodeProfiling profiling;
-	    profiling.preTraversal(action);
+            SoNodeProfiling profiling;
+            profiling.preTraversal(action);
             offpath->GLRenderOffPath(action);
-	    profiling.postTraversal(action);
+            profiling.postTraversal(action);
           }
           else {
             SoCacheElement::invalidate(state);
@@ -648,10 +648,10 @@ SoVRMLGroup::GLRenderInPath(SoGLRenderAction * action)
       SoNode * inpath = childarray[childidx];
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
-	SoNodeProfiling profiling;
-	profiling.preTraversal(action);
+        SoNodeProfiling profiling;
+        profiling.preTraversal(action);
         inpath->GLRenderInPath(action);
-	profiling.postTraversal(action);
+        profiling.postTraversal(action);
       }
       else {
         SoCacheElement::invalidate(state);

@@ -42,13 +42,13 @@ class SoVBO {
   ~SoVBO();
 
   static void init(void);
-  
-  void setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid = 0);  
-  void * allocBufferData(intptr_t size, uint32_t dataid = 0);  
+
+  void setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid = 0);
+  void * allocBufferData(intptr_t size, uint32_t dataid = 0);
   uint32_t getBufferDataId(void) const;
   void getBufferData(const GLvoid *& data, intptr_t & size);
   void bindBuffer(uint32_t contextid);
-  
+
   static void setVertexCountLimits(const int minlimit, const int maxlimit);
   static int getVertexCountMinLimit(void);
   static int getVertexCountMaxLimit(void);
@@ -56,7 +56,7 @@ class SoVBO {
   static void testGLPerformance(const uint32_t contextid);
   static SbBool shouldCreateVBO(SoState * state, const uint32_t contextid, const int numdata);
   static SbBool shouldRenderAsVertexArrays(SoState * statea,
-					   const uint32_t contextid,
+                                           const uint32_t contextid,
                                            const int numdata);
 
  private:
@@ -67,7 +67,7 @@ class SoVBO {
                            const GLuint & value,
                            void * closure);
   static void vbo_delete(void * closure, uint32_t contextid);
-  
+
   GLenum target;
   GLenum usage;
   const GLvoid * data;
