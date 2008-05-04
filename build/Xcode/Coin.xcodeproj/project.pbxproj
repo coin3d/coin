@@ -56,6 +56,8 @@
 		E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */; };
 		E011F20E0D9BED09001D1675 /* CoinResources.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20D0D9BED09001D1675 /* CoinResources.h */; };
 		E011F2100D9BED2C001D1675 /* SoScXMLViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */; };
+		E018D8720DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E018D8710DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp */; };
+		E03F043E0DC0545600CB2F20 /* SoShadowSpotLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E03F043D0DC0545600CB2F20 /* SoShadowSpotLight.cpp */; };
 		E09989660D9425F40054FBE6 /* non_winsys.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F00D9425F40054FBE6 /* non_winsys.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989670D9425F40054FBE6 /* oivwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F10D9425F40054FBE6 /* oivwin32.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989690D9425F40054FBE6 /* Sb.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F30D9425F40054FBE6 /* Sb.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -873,7 +875,6 @@
 		E0FC4F0D0D92D50900EF3BB3 /* SoBlinker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A3F0D92D50400EF3BB3 /* SoBlinker.cpp */; };
 		E0FC4F0E0D92D50900EF3BB3 /* SoBumpMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A400D92D50400EF3BB3 /* SoBumpMap.cpp */; };
 		E0FC4F0F0D92D50900EF3BB3 /* SoBumpMapCoordinate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A410D92D50400EF3BB3 /* SoBumpMapCoordinate.cpp */; };
-		E0FC4F100D92D50900EF3BB3 /* SoBumpMappingProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A420D92D50400EF3BB3 /* SoBumpMappingProperty.cpp */; };
 		E0FC4F110D92D50900EF3BB3 /* SoBumpMapTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A430D92D50400EF3BB3 /* SoBumpMapTransform.cpp */; };
 		E0FC4F120D92D50900EF3BB3 /* SoCacheHint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A440D92D50400EF3BB3 /* SoCacheHint.cpp */; };
 		E0FC4F130D92D50900EF3BB3 /* SoCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A450D92D50400EF3BB3 /* SoCallback.cpp */; };
@@ -1339,6 +1340,8 @@
 		E011F2080D9BEBAB001D1675 /* SoScXMLViewUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoScXMLViewUtils.cpp; path = ../../src/navigation/SoScXMLViewUtils.cpp; sourceTree = SOURCE_ROOT; };
 		E011F20D0D9BED09001D1675 /* CoinResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinResources.h; sourceTree = "<group>"; };
 		E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLViewUtils.h; sourceTree = "<group>"; };
+		E018D8710DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoProfilingReportGenerator.cpp; sourceTree = "<group>"; };
+		E03F043D0DC0545600CB2F20 /* SoShadowSpotLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoShadowSpotLight.cpp; sourceTree = "<group>"; };
 		E09988D80D9425F40054FBE6 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; name = actions; path = /Users/kintel/code/checkout/Coin/include/Inventor/actions; sourceTree = "<absolute>"; };
 		E09988D90D9425F40054FBE6 /* annex */ = {isa = PBXFileReference; lastKnownFileType = folder; name = annex; path = /Users/kintel/code/checkout/Coin/include/Inventor/annex; sourceTree = "<absolute>"; };
 		E09988DA0D9425F40054FBE6 /* bundles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bundles; path = /Users/kintel/code/checkout/Coin/include/Inventor/bundles; sourceTree = "<absolute>"; };
@@ -3178,7 +3181,6 @@
 		E0FC4A3F0D92D50400EF3BB3 /* SoBlinker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoBlinker.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoBlinker.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A400D92D50400EF3BB3 /* SoBumpMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoBumpMap.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoBumpMap.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A410D92D50400EF3BB3 /* SoBumpMapCoordinate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoBumpMapCoordinate.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoBumpMapCoordinate.cpp; sourceTree = DEVELOPER_DIR; };
-		E0FC4A420D92D50400EF3BB3 /* SoBumpMappingProperty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoBumpMappingProperty.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoBumpMappingProperty.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A430D92D50400EF3BB3 /* SoBumpMapTransform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoBumpMapTransform.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoBumpMapTransform.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A440D92D50400EF3BB3 /* SoCacheHint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoCacheHint.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoCacheHint.cpp; sourceTree = DEVELOPER_DIR; };
 		E0FC4A450D92D50400EF3BB3 /* SoCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoCallback.cpp; path = ../Users/kintel/code/checkout/Coin/src/nodes/SoCallback.cpp; sourceTree = DEVELOPER_DIR; };
@@ -6601,7 +6603,6 @@
 				E0FC4A3F0D92D50400EF3BB3 /* SoBlinker.cpp */,
 				E0FC4A400D92D50400EF3BB3 /* SoBumpMap.cpp */,
 				E0FC4A410D92D50400EF3BB3 /* SoBumpMapCoordinate.cpp */,
-				E0FC4A420D92D50400EF3BB3 /* SoBumpMappingProperty.cpp */,
 				E0FC4A430D92D50400EF3BB3 /* SoBumpMapTransform.cpp */,
 				E0FC4A440D92D50400EF3BB3 /* SoCacheHint.cpp */,
 				E0FC4A450D92D50400EF3BB3 /* SoCallback.cpp */,
@@ -6718,6 +6719,7 @@
 		E0FC4AA80D92D50500EF3BB3 /* profiler */ = {
 			isa = PBXGroup;
 			children = (
+				E018D8710DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp */,
 				E0FC4AAA0D92D50500EF3BB3 /* inventormaps.icc */,
 				E0FC4AAD0D92D50500EF3BB3 /* SbProfilingData.cpp */,
 				E0FC4AAE0D92D50500EF3BB3 /* SoNodeProfiling.h */,
@@ -6837,6 +6839,7 @@
 		E0FC4B060D92D50500EF3BB3 /* shadows */ = {
 			isa = PBXGroup;
 			children = (
+				E03F043D0DC0545600CB2F20 /* SoShadowSpotLight.cpp */,
 				E0FC4B0A0D92D50500EF3BB3 /* SoGLShadowCullingElement.cpp */,
 				E0FC4B0B0D92D50500EF3BB3 /* SoShadowCulling.cpp */,
 				E0FC4B0C0D92D50500EF3BB3 /* SoShadowGroup.cpp */,
@@ -8050,7 +8053,6 @@
 				E0FC4F0D0D92D50900EF3BB3 /* SoBlinker.cpp in Sources */,
 				E0FC4F0E0D92D50900EF3BB3 /* SoBumpMap.cpp in Sources */,
 				E0FC4F0F0D92D50900EF3BB3 /* SoBumpMapCoordinate.cpp in Sources */,
-				E0FC4F100D92D50900EF3BB3 /* SoBumpMappingProperty.cpp in Sources */,
 				E0FC4F110D92D50900EF3BB3 /* SoBumpMapTransform.cpp in Sources */,
 				E0FC4F120D92D50900EF3BB3 /* SoCacheHint.cpp in Sources */,
 				E0FC4F130D92D50900EF3BB3 /* SoCallback.cpp in Sources */,
@@ -8363,6 +8365,8 @@
 				E011F1CC0D9AB769001D1675 /* SoScXMLZoomUtils.cpp in Sources */,
 				E011F1FF0D9BE986001D1675 /* CoinResources.cpp in Sources */,
 				E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */,
+				E018D8720DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp in Sources */,
+				E03F043E0DC0545600CB2F20 /* SoShadowSpotLight.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
