@@ -530,6 +530,14 @@ SoShaderObjectP::readSource(void)
       delete subdirs[0];
       delete subdirs[1];
 
+      if (fileName.getLength() <= 0) {
+        SoDebugError::postWarning("SoShaderObjectP::readSource",
+                                  "Shader file not found: '%s'",
+                                  this->owner->sourceProgram.getValue().getString());
+        this->cachedSourceType = SoShaderObject::FILENAME;
+        return;
+      }
+
       FILE * f = fopen(fileName.getString(), "rb");
       SbBool readok = FALSE;
       if (f) {
