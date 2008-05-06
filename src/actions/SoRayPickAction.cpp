@@ -524,10 +524,9 @@ SoRayPickAction::computeWorldSpaceRay(void)
     }
     PRIVATE(this)->wsline = SbDPLine(PRIVATE(this)->raystart,
                                      PRIVATE(this)->raystart + PRIVATE(this)->raydirection);
-
-    SbVec3d tmp;
-    tmp.setValue(vv.getProjectionDirection());
-    PRIVATE(this)->nearplane = SbDPPlane(tmp, PRIVATE(this)->raystart);
+    
+    PRIVATE(this)->nearplane = SbDPPlane(vv.getDPViewVolume().getProjectionDirection(), 
+					 PRIVATE(this)->raystart);
     PRIVATE(this)->setFlag(SoRayPickActionP::WS_RAY_COMPUTED);
 
     // we pick on a real cone, but keep pick view volume in sync to be
