@@ -232,7 +232,7 @@ fi
 
 # SIM_AC_DEFINE_BYTESIZE_TYPES
 # ----------------------------------------------------------
-#
+# 
 AC_DEFUN([SIM_AC_DEFINE_BYTESIZE_TYPES], [
 SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([
 ], [
@@ -253,7 +253,7 @@ SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([
 ], [$1])
 ])# SIM_AC_DEFINE_BYTESIZE_TYPES
 
-#**************************************************************************
+#************************************************************************** 
 # SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER(includes, struct name, member name, variable, if-error)
 
 AC_DEFUN([SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER], [
@@ -923,10 +923,10 @@ fi
 #
 #    $sim_ac_enable_universal (true if we are building Universal Binaries)
 #    $sim_ac_universal_flags (extra flags needed for Universal Binaries)
-#
+#  
 #  The CFLAGS and CXXFLAGS variables will also be modified accordingly.
 #
-#  Note that when building Universal Binaries, dependency tracking will
+#  Note that when building Universal Binaries, dependency tracking will 
 #  be turned off.
 #
 #  Important: This macro must be called _before_ AM_INIT_AUTOMAKE.
@@ -939,7 +939,7 @@ sim_ac_enable_universal=false
 
 
 case $host_os in
-  darwin* )
+  darwin* ) 
     AC_ARG_ENABLE(
       [universal],
       AC_HELP_STRING([--enable-universal], [build Universal Binaries]), [
@@ -948,7 +948,7 @@ case $host_os in
           *) ;;
         esac])
 
-    AC_MSG_CHECKING([whether we should build Universal Binaries])
+    AC_MSG_CHECKING([whether we should build Universal Binaries])   
     if $sim_ac_enable_universal; then
       AC_MSG_RESULT([yes])
       SIM_AC_CONFIGURATION_SETTING([Build Universal Binaries], [Yes])
@@ -959,7 +959,7 @@ case $host_os in
       fi
 
       sim_ac_universal_flags="-arch i386 -arch ppc $sim_ac_universal_sdk_flags"
-
+      
       CFLAGS="$sim_ac_universal_flags $CFLAGS"
       CXXFLAGS="$sim_ac_universal_flags $CXXFLAGS"
 
@@ -8356,16 +8356,16 @@ AC_SUBST(DSUFFIX)
 # Description:
 #   Let the user decide if optimization should be attempted turned off
 #   by stripping off an "-O[0-9]" option.
-#
+# 
 #   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
 #   in the configure.in script.
 #
 # FIXME: this is pretty much just a dirty hack. Unfortunately, this
 # seems to be the best we can do without fixing Autoconf to behave
 # properly wrt setting optimization options. 20011021 mortene.
-#
+# 
 # Author: Morten Eriksen, <mortene@sim.no>.
-#
+# 
 
 AC_DEFUN([SIM_AC_COMPILER_OPTIMIZATION], [
 AC_ARG_ENABLE(
@@ -9005,12 +9005,12 @@ fi
 #   Let the user decide if debug symbol information should be compiled
 #   in. The compiled libraries/executables will use a lot less space
 #   if stripped for their symbol information.
-#
+# 
 #   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
 #   in the configure.in script.
-#
+# 
 # Author: Morten Eriksen, <mortene@sim.no>.
-#
+# 
 
 AC_DEFUN([SIM_AC_DEBUGSYMBOLS], [
 AC_ARG_ENABLE(
@@ -9039,10 +9039,10 @@ fi
 #   Let the user decide if RTTI should be compiled in. The compiled
 #   libraries/executables will use a lot less space if they don't
 #   contain RTTI.
-#
+# 
 #   Note: this macro must be placed after AC_PROG_CXX in the
 #   configure.in script.
-#
+# 
 # Author: Morten Eriksen, <mortene@sim.no>.
 
 AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
@@ -9113,12 +9113,8 @@ if test x"$enable_exceptions" = x"no"; then
     fi
   fi
 else
-  if $BUILD_WITH_MSVC; then
-    SIM_AC_CXX_COMPILER_OPTION([/EHsc], [CXXFLAGS="$CXXFLAGS /EHsc"])
-  else
-    if test x"$GXX" != x"yes"; then
-      AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
-    fi
+  if test x"$GXX" != x"yes"; then
+    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
   fi
 fi
 ])
@@ -9364,7 +9360,7 @@ if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
       [],
       [sim_ac_have_nobool=true])])
 fi
-
+ 
 if $sim_ac_have_nobool; then
   sim_ac_nobool_CXXFLAGS="/noBool"
   AC_MSG_RESULT([yes])
@@ -9733,7 +9729,7 @@ AC_DEFUN([SIM_AC_CHECK_DLD], [
 # SIM_AC_CHECK_DYLD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 # -------------------------------------------------------------------
 #
-#  Try to use the Mac OS X dynamik link editor method
+#  Try to use the Mac OS X dynamik link editor method 
 #  NSLookupAndBindSymbol()
 #
 # Author: Karin Kosina, <kyrah@sim.no>
@@ -9741,7 +9737,7 @@ AC_DEFUN([SIM_AC_CHECK_DLD], [
 AC_DEFUN([SIM_AC_CHECK_DYLD], [
 AC_ARG_ENABLE(
   [dyld],
-  [AC_HELP_STRING([--disable-dyld],
+  [AC_HELP_STRING([--disable-dyld], 
                   [don't use run-time link bindings under Mac OS X])],
   [case $enableval in
   yes | true ) sim_ac_dyld=true ;;
@@ -9886,7 +9882,7 @@ fi
 # SIM_AC_CHECK_HEADER_AL([IF-FOUND], [IF-NOT-FOUND])
 #
 # This macro detects how to include the AL header file, and gives you
-# the necessary CPPFLAGS in $sim_ac_al_cppflags, and also sets the
+# the necessary CPPFLAGS in $sim_ac_al_cppflags, and also sets the 
 # config.h defines HAVE_AL_AL_H or HAVE_OPENAL_AL_H if one of them is found.
 
 AC_DEFUN([SIM_AC_CHECK_HEADER_AL],
@@ -9976,7 +9972,7 @@ true)
 
 case $host_os in
 darwin*)
-  sim_ac_openal_libs="-Wl,-framework,OpenAL"
+  sim_ac_openal_libs="-Wl,-framework,OpenAL" 
 ;;
 *)
   sim_ac_openal_debug=false
@@ -10008,7 +10004,7 @@ darwin*)
     # unset sim_ac_openal_path
   fi
 ;;
-esac
+esac 
 
   SIM_AC_CHECK_HEADER_AL([CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"],
                          [AC_MSG_WARN([could not find al.h])])
@@ -10055,7 +10051,7 @@ fi
 
 # **************************************************************************
 # SIM_AC_CHECK_HEADER_SILENT([header], [if-found], [if-not-found], [includes])
-#
+# 
 # This macro will not output any header checking information, nor will it
 # cache the result, so it can be used multiple times on the same header,
 # trying out different compiler options.
@@ -10114,7 +10110,7 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
 
-  # Mac OS X framework (no X11, -framework OpenGL)
+  # Mac OS X framework (no X11, -framework OpenGL) 
   if $sim_ac_enable_darwin_x11; then :
   else
     SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
@@ -10191,7 +10187,7 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
-  # Mac OS X framework (no X11, -framework OpenGL)
+  # Mac OS X framework (no X11, -framework OpenGL) 
   if $sim_ac_enable_darwin_x11; then :
   else
     SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
@@ -10209,7 +10205,7 @@ if test x"$with_opengl" != x"no"; then
       AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
     ])
   fi
-
+ 
   CPPFLAGS="$sim_ac_glu_save_CPPFLAGS"
   if $sim_ac_glu_header_avail; then
     if test x"$sim_ac_glu_cppflags" = x""; then
@@ -10268,7 +10264,7 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
 
-  # Mac OS X framework (no X11, -framework OpenGL)
+  # Mac OS X framework (no X11, -framework OpenGL) 
   if $sim_ac_enable_darwin_x11; then :
   else
     SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
@@ -10839,14 +10835,14 @@ sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
 
 LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
 
-# see comment in Coin/src/glue/gl_agl.c: regarding __CARBONSOUND__ define
+# see comment in Coin/src/glue/gl_agl.c: regarding __CARBONSOUND__ define 
 
 AC_CACHE_CHECK(
   [whether AGL is on the system],
   sim_cv_have_agl,
   AC_TRY_LINK(
     [#include <AGL/agl.h>
-     #define __CARBONSOUND__
+     #define __CARBONSOUND__ 
      #include <Carbon/Carbon.h>],
     [aglGetCurrentContext();],
     [sim_cv_have_agl=true],
@@ -10859,7 +10855,7 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_AGL_IFELSE()
-
+ 
 
 AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
   AC_CACHE_CHECK([whether we can use AGL pBuffers],
@@ -10868,7 +10864,7 @@ AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
                  [AGLPbuffer pbuffer;],
                  [sim_cv_agl_pbuffer_avail=yes],
                  [sim_cv_agl_pbuffer_avail=no])])
-
+  
   if test x"$sim_cv_agl_pbuffer_avail" = xyes; then
     ifelse([$1], , :, [$1])
   else
@@ -10900,7 +10896,7 @@ AC_REQUIRE([AC_PATH_XTRA])
 sim_ac_enable_darwin_x11=false
 
 case $host_os in
-  darwin* )
+  darwin* ) 
     AC_ARG_ENABLE([darwin-x11],
       AC_HELP_STRING([--enable-darwin-x11],
                      [enable X11 on Darwin [[default=--disable-darwin-x11]]]),
@@ -11292,7 +11288,7 @@ fi
 # SIM_AC_CHECK_HEADER_FONTCONFIG([IF-FOUND], [IF-NOT-FOUND])
 #
 # This macro detects how to include the Fontconfig header files, and gives you
-# the necessary CPPFLAGS in $sim_ac_fontconfig_cppflags, and also sets the
+# the necessary CPPFLAGS in $sim_ac_fontconfig_cppflags, and also sets the 
 # config.h define HAVE_FONTCONFIG_H if one of them is found.
 
 AC_DEFUN([SIM_AC_CHECK_HEADER_FONTCONFIG],
@@ -11382,8 +11378,8 @@ true)
   if test -n "$sim_ac_fontconfig_path"; then
     for sim_ac_fontconfig_candidate in \
       `( ls $sim_ac_fontconfig_path/lib/fontconfig*.lib;
-         ls $sim_ac_fontconfig_path/lib/fontconfig*d.lib;
-         ls $sim_ac_fontconfig_path/lib/libfontconfig*.lib;
+         ls $sim_ac_fontconfig_path/lib/fontconfig*d.lib; 
+         ls $sim_ac_fontconfig_path/lib/libfontconfig*.lib; 
          ls $sim_ac_fontconfig_path/lib/libfontconfig*d.lib ) 2>/dev/null`
     do
       case $sim_ac_fontconfig_candidate in
@@ -11441,7 +11437,7 @@ fi
 # SIM_AC_CHECK_HEADER_SPIDERMONKEY([IF-FOUND], [IF-NOT-FOUND])
 #
 # This macro detects how to include the SpiderMonkey header files, and gives you
-# the necessary CPPFLAGS in $sim_ac_spidermonkey_cppflags, and also sets the
+# the necessary CPPFLAGS in $sim_ac_spidermonkey_cppflags, and also sets the 
 # config.h define HAVE_SPIDERMONKEY_H if one of them is found.
 
 AC_DEFUN([SIM_AC_CHECK_HEADER_SPIDERMONKEY],
@@ -11450,7 +11446,7 @@ AC_MSG_CHECKING([how to include spidermonkey's jsapi.h])
 if test x"$with_spidermonkey" != x"no"; then
   sim_ac_spidermonkey_tmp_CPPFLAGS=$CPPFLAGS
 
-  if $BUILD_WITH_MSVC; then
+  if $BUILD_WITH_MSVC; then      
     if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
       sim_ac_spidermonkey_cppflags="-I${with_spidermonkey}"
     fi
@@ -11462,11 +11458,11 @@ if test x"$with_spidermonkey" != x"no"; then
     fi
   fi
 
-  if $BUILD_WITH_MSVC; then
-    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DXP_WIN -DWIN32"
-  else
-    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE"
-  fi
+  if $BUILD_WITH_MSVC; then 
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DXP_WIN -DWIN32" 
+  else 
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE" 
+  fi 
 
 
   SIM_AC_CHECK_HEADER_SILENT([jsapi.h], [
@@ -11542,12 +11538,12 @@ true)
   sim_ac_spidermonkey_name=
   sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
 
-  sim_ac_spidermonkey_build_dir=lib
+  sim_ac_spidermonkey_build_dir=lib      
 
   if test -n "$sim_ac_spidermonkey_path"; then
 
   # Trying all SpiderMonkey platforms.
-  # NOTE: This have check not been tested on IRIX, SunOS or HPUX [20050908 handegar]
+  # NOTE: This have check not been tested on IRIX, SunOS or HPUX [20050908 handegar] 
   for sim_ac_spidermonkey_build_dir in \
     "Debug" "Release" \
     "Linux_All_OPT.OBJ" "Linux_All_DBG.OBJ" \
@@ -11571,7 +11567,7 @@ true)
            ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libsmjs*.so;
            ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libsmjs*.a;
            ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/smjs*.lib;
-           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/smjs*d.lib;) 2>/dev/null`; do
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/smjs*d.lib;) 2>/dev/null`; do        
         case $sim_ac_spidermonkey_candidate in
         *d.lib)
           $sim_ac_spidermonkey_debug &&
@@ -11610,11 +11606,11 @@ true)
 
   AC_MSG_CHECKING([for Spidermonkey])
 
-  if $BUILD_WITH_MSVC; then
-    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32"
-  else
-    CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE"
-  fi
+  if $BUILD_WITH_MSVC; then 
+    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32" 
+  else 
+    CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE" 
+  fi 
 
   LIBS="$sim_ac_spidermonkey_libs $LIBS"
   AC_TRY_LINK(
@@ -11638,7 +11634,7 @@ if $sim_ac_want_spidermonkey; then
     $1
   else
     AC_MSG_RESULT([failure])
-    SIM_AC_ERROR([spidermonkey-unavailable])
+    SIM_AC_ERROR([spidermonkey-unavailable])    
     $2
   fi
 else
@@ -11652,7 +11648,7 @@ fi
 # SIM_AC_CHECK_HEADER_FREETYPE([IF-FOUND], [IF-NOT-FOUND])
 #
 # This macro detects how to include the FreeType header files, and gives you
-# the necessary CPPFLAGS in $sim_ac_freetype_cppflags, and also sets the
+# the necessary CPPFLAGS in $sim_ac_freetype_cppflags, and also sets the 
 # config.h define HAVE_FREETYPE_H if one of them is found.
 
 AC_DEFUN([SIM_AC_CHECK_HEADER_FREETYPE],
@@ -11742,8 +11738,8 @@ true)
   if test -n "$sim_ac_freetype_path"; then
     for sim_ac_freetype_candidate in \
       `( ls $sim_ac_freetype_path/lib/freetype*.lib;
-         ls $sim_ac_freetype_path/lib/freetype*d.lib;
-         ls $sim_ac_freetype_path/lib/libfreetype*.lib;
+         ls $sim_ac_freetype_path/lib/freetype*d.lib; 
+         ls $sim_ac_freetype_path/lib/libfreetype*.lib; 
          ls $sim_ac_freetype_path/lib/libfreetype*d.lib ) 2>/dev/null`
     do
       case $sim_ac_freetype_candidate in
