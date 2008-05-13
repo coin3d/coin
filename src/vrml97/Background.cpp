@@ -781,7 +781,7 @@ SoVRMLBackgroundP::buildGeometry(void)
   this->bottomface = NULL;
 
   if (PUBLIC(this)->backUrl.getNum() != 0) {     
-    const int32_t vindices[] = {3, 2, 1, 0, -1};
+    const int32_t vindices[] = {4, 5, 6, 7, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->backUrl,this->backface, vindices);    
     cubedata->addChild(sep);
   }
@@ -793,7 +793,7 @@ SoVRMLBackgroundP::buildGeometry(void)
   }
   
   if (PUBLIC(this)->frontUrl.getNum() != 0) {
-    const int32_t vindices[] = {4, 5, 6, 7, -1};
+    const int32_t vindices[] = {3, 2, 1, 0, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->frontUrl,this->frontface, vindices);    
     cubedata->addChild(sep);
   }
