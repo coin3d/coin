@@ -293,6 +293,7 @@ public:
                        SoGLRenderAction * glrenderaction = NULL)
   {
     this->master = masterptr;
+    this->didreadbuffer = TRUE;
 
     this->backgroundcolor.setValue(0,0,0);
     this->components = SoOffscreenRenderer::RGB;
@@ -351,7 +352,9 @@ public:
 
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
-
+  
+  // used for lazy readPixels()
+  SbBool didreadbuffer;
 private:
   SoOffscreenRenderer * master;
 };
@@ -734,6 +737,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
   // Shall we use subscreen rendering or regular one-screen renderer?
   if (tiledrendering) {
+    // we need to copy from GL to system memory if we're doing tiled rendering
+    this->didreadbuffer = TRUE;
 
     for (int i=0; i < 2; i++) {
       this->numsubscreens[i] = (fullsize[i] + (glsize[i] - 1)) / glsize[i];
@@ -817,7 +822,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   }
   // Regular, non-tiled rendering.
   else {
-
+    // do lazy buffer read (GL context is read in getBuffer())
+    this->didreadbuffer = FALSE;
     this->renderaction->setViewportRegion(this->viewport);
 
     SbTime t = SbTime::getTimeOfDay(); // for profiling
@@ -836,10 +842,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                              (SbTime::getTimeOfDay() - t).getValue() * 1000);
       t = SbTime::getTimeOfDay();
     }
-
-    const SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
-    this->glcanvas.readPixels(this->buffer, dims, dims[0],
-                              (unsigned int)PUBLIC(this)->getComponents());
 
     if (CoinOffscreenGLCanvas::debug()) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
@@ -922,6 +924,16 @@ SoOffscreenRenderer::render(SoPath * scene)
 unsigned char *
 SoOffscreenRenderer::getBuffer(void) const
 {
+  if (!PRIVATE(this)->didreadbuffer) {
+    const SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
+    fprintf(stderr,"reading pixels: %d %d\n", dims[0], dims[1]);
+
+    PRIVATE(this)->glcanvas.activateGLContext();
+    PRIVATE(this)->glcanvas.readPixels(PRIVATE(this)->buffer, dims, dims[0],
+                                       (unsigned int) this->getComponents());
+    PRIVATE(this)->glcanvas.deactivateGLContext();
+    PRIVATE(this)->didreadbuffer = TRUE;
+  }
   return PRIVATE(this)->buffer;
 }
 
@@ -1002,7 +1014,7 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
 
   return SoOffscreenRendererP::writeToRGB(fp, size[0], size[1],
                                           this->getComponents(),
-                                          PRIVATE(this)->buffer);
+                                          this->getBuffer());
 }
 
 /*!
@@ -1085,7 +1097,7 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
   const SbVec2s pixelsize((short)(printsize[0]*defaultdpi),
                           (short)(printsize[1]*defaultdpi));
 
-  const unsigned char * src = PRIVATE(this)->buffer;
+  const unsigned char * src = this->getBuffer();
   const int chan = nc <= 2 ? 1 : 3;
   const SbVec2s scaledsize((short) ceil(size[0]*defaultdpi/dpi),
                            (short) ceil(size[1]*defaultdpi/dpi));
@@ -1417,7 +1429,7 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
 
   SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   int comp = (int) this->getComponents();
-  unsigned char * bytes = PRIVATE(this)->buffer;
+  unsigned char * bytes = this->getBuffer();
   int ret = simage_wrapper()->simage_save_image(filename.getString(),
                                                 bytes,
                                                 int(size[0]), int(size[1]), comp,
