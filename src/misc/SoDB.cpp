@@ -214,6 +214,7 @@ SoDB::init(void)
   SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
   SoDBP::sensormanager = new SoSensorManager;
   SoDBP::converters = new UInt32ToInt16Map;
+  // FIXME: these are never cleaned up
 
   // NB! There are dependencies in the order of initialization of
   // components below.
