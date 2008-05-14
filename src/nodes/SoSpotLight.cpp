@@ -96,7 +96,8 @@
 
   The angle in radians from the direction vector where there will be
   no light outside (i.e. the angle of the "lampshade"). Default value
-  is PI/4.0 (i.e. 45°).
+  is PI/4.0 (i.e. 45°). The value of this field will be clamped to
+  [0.0, PI/2] before it is used.
 */
 
 
@@ -180,6 +181,18 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   float cutoff = this->cutOffAngle.getValue() * 180.0f / float(M_PI);
   float dropoff = SbClamp(this->dropOffRate.getValue(), 0.0f, 1.0f) * 128.0f;
   
+#ifdef COIN_EXTRA_DEBUG // output a warning if the cutoff is invalid
+                        // since we now clamp it (someone might have
+                        // been setting it to 180.0, which would make
+                        // this a PointLight)
+  if (cutoff < 0.0f || cutoff > 90.0f) {
+    SoDebugError::postWarning("SoSpotLight::GLRender",
+                              "invalid cutOffAngle for SpotLight: %f, clamping to [0.0f, 90.0f]", cutoff);
+  }
+#endif // COIN_EXTRA_DEBUG
+
+  cutoff = SbClamp(cutoff, 0.0f, 90.0f);
+
   glLightf(light, GL_SPOT_EXPONENT, dropoff);
   glLightf(light, GL_SPOT_CUTOFF, cutoff);
 }
