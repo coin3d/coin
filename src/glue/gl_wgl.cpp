@@ -46,16 +46,6 @@
 
 #ifndef HAVE_WGL
 
-// This method is for tagging casts that actually need to be the old C-style
-// way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
-// are not rewritten to static_cast<> or something similar in the future.
-
-template <typename Type>
-Type cstyle_cast(PROC procaddr)
-{
-  return (Type) procaddr;
-}
-
 /* ********************************************************************** */
 
 /* Dummy implementations, for when WGL is not available: */
@@ -77,6 +67,16 @@ SbBool wglglue_context_pbuffer_max(void * ctx, unsigned int * lims) { assert(FAL
 /* ********************************************************************** */
 
 #else /* HAVE_WGL */
+
+// This method is for tagging casts that actually need to be the old C-style
+// way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
+// are not rewritten to static_cast<> or something similar in the future.
+
+template <typename Type>
+Type cstyle_cast(PROC procaddr)
+{
+  return (Type) procaddr;
+}
 
 struct wglglue_contextdata;
 static SbBool (* wglglue_context_create)(struct wglglue_contextdata * context, SbBool warnonerrors) = NULL;
