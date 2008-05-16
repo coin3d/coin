@@ -146,6 +146,20 @@
 #include "glue/dlp.h"
 #include "tidbitsp.h"
 
+#ifdef HAVE_WINDLL_RUNTIME_BINDING
+
+// This method is for tagging casts that actually need to be the old C-style
+// way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
+// are not rewritten to static_cast<> or something similar in the future.
+
+template <typename Type>
+Type cstyle_cast(FARPROC procaddr)
+{
+  return (Type) procaddr;
+}
+
+#endif // HAVE_WINDLL_RUNTIME_BINDING
+
 /* ********************************************************************** */
 
 /*!
@@ -802,7 +816,8 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
   if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
-  ptr = (void *) GetProcAddress((HINSTANCE) handle->nativehnd, symbolname);
+ 
+  ptr = cstyle_cast<void *>(GetProcAddress((HINSTANCE) handle->nativehnd, symbolname));
 
   if (cc_dl_debugging() && (ptr == NULL)) {
     cc_string funcstr;

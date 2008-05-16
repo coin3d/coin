@@ -44,6 +44,16 @@
 #include "glue/win32api.h"
 #endif /* HAVE_WIN32_API */
 
+// This method is for tagging casts that actually need to be the old C-style
+// way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
+// are not rewritten to static_cast<> or something similar in the future.
+
+template <typename Type>
+Type cstyle_cast(PROC procaddr)
+{
+  return (Type) procaddr;
+}
+
 /* ********************************************************************** */
 
 #ifndef HAVE_WGL
@@ -177,7 +187,7 @@ static SbBool attemptedextresolved = FALSE;
 void *
 coin_wgl_getprocaddress(const char * fname)
 {
-  void * ptr = (void *) wglGetProcAddress(fname);
+  void * ptr = cstyle_cast<void *>(wglGetProcAddress(fname));
 
   /* wglGetProcAddress() seems to only be able to fetch
      function-addresses for *extension* functions, not "proper" OpenGL
