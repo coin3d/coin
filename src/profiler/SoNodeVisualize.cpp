@@ -48,7 +48,8 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 
 struct TextureImageData {
-  SbVec2s dims;
+  int width;
+  int height;
   int numcomps;
   const unsigned char * pixels;
 };
@@ -61,27 +62,27 @@ static const unsigned char material_1_data[] = {
 #include "inventormaps.icc"
 
 static TextureImageData NodeKit = {
-  SbVec2s(125, 200), 1, NodeKit_data
+  125, 200, 1, NodeKit_data
 };
 
 static TextureImageData Switch = {
-  SbVec2s(125, 200), 1, Switch_data
+  125, 200, 1, Switch_data
 };
 
 static TextureImageData geometry_root = {
-  SbVec2s(125, 200), 1, geometry_root_data
+  125, 200, 1, geometry_root_data
 };
 
 static TextureImageData material_1 = {
-  SbVec2s(1, 8), 1, material_1_data
+  1, 8, 1, material_1_data
 };
 
 static TextureImageData shape = {
-  SbVec2s(125, 200), 1, shape_data
+  125, 200, 1, shape_data
 };
 
 static TextureImageData top_transform = {
-  SbVec2s(125, 200), 1, top_transform_data
+  125, 200, 1, top_transform_data
 };
 
 // *************************************************************************
@@ -107,7 +108,7 @@ namespace {
     SoTexture2 * createTexture(const TextureImageData * data)
     {
       SoTexture2 * texnode = new SoTexture2;
-      texnode->image.setValue(data->dims, data->numcomps, data->pixels);
+      texnode->image.setValue(SbVec2s(data->width, data->height), data->numcomps, data->pixels);
       return texnode;
     }
 
@@ -276,7 +277,8 @@ SoNodeVisualize::setupChildCatalog(SoNode * node,int depth) {
 
   --depth;
 
-  for (unsigned int i=0;i<numNodeChildren;++i) {
+  unsigned int i;
+  for (i=0;i<numNodeChildren;++i) {
     sep->addChild(new SoTranslation());
     SoNodeVisualize * nv=visualizeTree((*children)[i],depth);
     nv->parent=this;
@@ -288,7 +290,7 @@ SoNodeVisualize::setupChildCatalog(SoNode * node,int depth) {
   lineS->coordIndex.setNum((numNodeChildren+1)*3);
 
   int32_t * ind = lineS->coordIndex.startEditing();
-  for (unsigned int i=1;i<=numNodeChildren;++i) {
+  for (i=1;i<=numNodeChildren;++i) {
     *ind++=0;
     *ind++=i;
     *ind++=-1;
@@ -327,7 +329,8 @@ SoNodeVisualize::recalculate() {
 
     //Before we do any calculation on our own, we recalculate all our children
     SoNodeList * nodeChildren=node->getChildren();
-    for (int i = 0; i < nodeChildren->getLength(); ++i)
+    int i;
+    for (i = 0; i < nodeChildren->getLength(); ++i)
       static_cast<SoNodeVisualize *>((*geometryChildren)[2 * i + 1])->recalculate();
 
     //The child geometry should contain exactly one translation and
@@ -343,7 +346,7 @@ SoNodeVisualize::recalculate() {
     trans->translation.setValue(1.5f * this->getWidth()[this->isAlternating()?1:0],
                                 -3.0f, 0.0f);
 
-    for (int i = 0; i < nodeChildren->getLength(); ++i) {
+    for (i = 0; i < nodeChildren->getLength(); ++i) {
       //We translate this node left for half the boundingbox's X component
       SoNodeVisualize * nv = static_cast<SoNodeVisualize*>((*geometryChildren)[2*i+1]);
       trans->translation = 
@@ -370,7 +373,7 @@ SoNodeVisualize::recalculate() {
     
     SbVec3f * dst = vp->vertex.startEditing();
     *dst = SbVec3f(0,0,0);
-    for (int i = 0; i < numNodeChildren; ++i)
+    for (i = 0; i < numNodeChildren; ++i)
       dst[i + 1] = dst[i] + 
         static_cast<SoTranslation *>((*geometryChildren)[2 * i])->translation.getValue();
     vp->vertex.finishEditing();

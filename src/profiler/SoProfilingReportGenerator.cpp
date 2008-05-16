@@ -451,10 +451,11 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
   }
 
   if (categorization == NODES) {
+    int c = 0;
     const int numindexes = data.getNumNodeEntries();
     boost::scoped_array<int> indexarray;
     indexarray.reset(new int [ numindexes ]);
-    for (int c = 0; c < numindexes; ++c) {
+    for (c = 0; c < numindexes; ++c) {
       indexarray[c] = c;
     }
 
@@ -466,7 +467,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
-    int c = addheader ? -1 : 0;
+    c = addheader ? -1 : 0;
     for (; c < maxindexes; ++c) {
       SbString text;
       int entryidx = -1;
@@ -490,6 +491,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     }
   }
   else if (categorization == NAMES) {
+    int c = 0;
     if (namekeys == NULL) {
       namekeys = new SbList<SbProfilingNodeNameKey>;
     }
@@ -499,7 +501,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     const int numindexes = namekeys->getLength();
     boost::scoped_array<int> indexarray;
     indexarray.reset(new int [ numindexes ]);
-    for (int c = 0; c < numindexes; ++c) {
+    for (c = 0; c < numindexes; ++c) {
       indexarray[c] = c;
     }
 
@@ -511,7 +513,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
-    int c = addheader ? -1 : 0;
+    c = addheader ? -1 : 0;
     for (; c < maxindexes; ++c) {
       SbString text;
       int entryidx = -1;
@@ -536,6 +538,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     }
   }
   else if (categorization == TYPES) {
+    int c = 0;
     if (typekeys == NULL) {
       typekeys = new SbList<SbProfilingNodeTypeKey>;
     }
@@ -546,7 +549,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     const int numindexes = typekeys->getLength();
     boost::scoped_array<int> indexarray;
     indexarray.reset(new int [ numindexes ]);
-    for (int c = 0; c < numindexes; ++c) {
+    for (c = 0; c < numindexes; ++c) {
       indexarray[c] = c;
     }
 
@@ -558,7 +561,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
-    int c = addheader ? -1 : 0;
+    c = addheader ? -1 : 0;
     for (; c < maxindexes; ++c) {
       SbString text;
       int entryidx = -1;
