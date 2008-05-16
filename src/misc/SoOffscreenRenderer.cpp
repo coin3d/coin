@@ -926,7 +926,7 @@ SoOffscreenRenderer::getBuffer(void) const
 {
   if (!PRIVATE(this)->didreadbuffer) {
     const SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
-    fprintf(stderr,"reading pixels: %d %d\n", dims[0], dims[1]);
+    //fprintf(stderr,"reading pixels: %d %d\n", dims[0], dims[1]);
 
     PRIVATE(this)->glcanvas.activateGLContext();
     PRIVATE(this)->glcanvas.readPixels(PRIVATE(this)->buffer, dims, dims[0],
