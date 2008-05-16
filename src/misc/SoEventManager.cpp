@@ -78,7 +78,7 @@ SoEventManager::SoEventManager(void)
     this->addSoScXMLStateMachine(static_cast<SoScXMLStateMachine *>(sm));
   } else {
     SoDebugError::post("SoEventManager",
-                       "failed to created default camera contrl state machine");
+                       "failed to created default camera control state machine");
   }
 #endif
 }
