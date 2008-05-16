@@ -44,6 +44,8 @@
 #include "glue/win32api.h"
 #endif /* HAVE_WIN32_API */
 
+#ifndef HAVE_WGL
+
 // This method is for tagging casts that actually need to be the old C-style
 // way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
 // are not rewritten to static_cast<> or something similar in the future.
@@ -55,8 +57,6 @@ Type cstyle_cast(PROC procaddr)
 }
 
 /* ********************************************************************** */
-
-#ifndef HAVE_WGL
 
 /* Dummy implementations, for when WGL is not available: */
 
