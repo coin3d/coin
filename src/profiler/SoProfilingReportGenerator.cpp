@@ -453,6 +453,11 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
   if (categorization == NODES) {
     int c = 0;
     const int numindexes = data.getNumNodeEntries();
+    if (numindexes == 0) {
+      profdata = NULL;
+      sortingconfig = NULL;
+      return;
+    }
     boost::scoped_array<int> indexarray;
     indexarray.reset(new int [ numindexes ]);
     for (c = 0; c < numindexes; ++c) {
@@ -494,11 +499,17 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     int c = 0;
     if (namekeys == NULL) {
       namekeys = new SbList<SbProfilingNodeNameKey>;
+    } else {
+      namekeys->truncate(0);
     }
-    namekeys->truncate(0);
     data.getStatsForNamesKeyList(*namekeys);
 
     const int numindexes = namekeys->getLength();
+    if (numindexes == 0) {
+      profdata = NULL;
+      sortingconfig = NULL;
+      return;
+    }
     boost::scoped_array<int> indexarray;
     indexarray.reset(new int [ numindexes ]);
     for (c = 0; c < numindexes; ++c) {
@@ -541,12 +552,17 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     int c = 0;
     if (typekeys == NULL) {
       typekeys = new SbList<SbProfilingNodeTypeKey>;
+    } else {
+      typekeys->truncate(0);
     }
-    typekeys->truncate(0);
-
     data.getStatsForTypesKeyList(*typekeys);
 
     const int numindexes = typekeys->getLength();
+    if (numindexes == 0) {
+      profdata = NULL;
+      sortingconfig = NULL;
+      return;
+    }
     boost::scoped_array<int> indexarray;
     indexarray.reset(new int [ numindexes ]);
     for (c = 0; c < numindexes; ++c) {
