@@ -29,6 +29,9 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/tools/SbPimplPtr.h>
+
+class SoTextureCoordinatePlaneP;
 
 class COIN_DLL_API SoTextureCoordinatePlane : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
@@ -41,6 +44,7 @@ public:
 
   SoSFVec3f directionS;
   SoSFVec3f directionT;
+  SoSFVec3f directionR;
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
@@ -56,17 +60,7 @@ private:
                                  const SbVec3f &n);
   static void handleTexgen(void *data);
 
-  // Note: Microsoft Visual C++ 6.0 needs to have a type definition
-  // and an explicit variable declaration, just using
-  // "struct { ... } gencache;" won't do.
-  typedef struct {
-    SbVec3f s, t;
-    float mul_s, mul_t;
-    SbVec4f ret;
-  } gencache_t;
-
-  gencache_t gencache;
-
+  SbPimplPtr<SoTextureCoordinatePlaneP> pimpl;
   void setupGencache(void);
 };
 

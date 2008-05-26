@@ -27,32 +27,36 @@
   \ingroup nodes
 
   SoTextureCoordinatePlane is used for generating texture coordinates
-  by projecting the object onto a texture plane.  The s and t texture
-  coordinates are computed as the distance from the origin to the
-  projected point, in the respective directions. The texture plane is
-  specified using two direction vectors, given as
+  by projecting the object onto a texture plane.  The s, t and r
+  texture coordinates are computed as the distance from the origin to
+  the projected point, in the respective directions. The texture plane
+  is specified using two direction vectors, given as
   SoTextureCoordinatePlane::directionS and
   SoTextureCoordinatePlane::directionT in object space coordinates.
+  SoTextureCoordinatePlane::directionR is used for generating the
+  third coordinate, and can be used for generating texture coordinate
+  for 3D textures. For 2D textures you can just leave this field alone.
+
   The length of the vector determines the repeat interval of the
-  texture per unit length. 
+  texture per unit length.
 
   A simple usage example:
 
   \code
   SoSeparator *root = new SoSeparator;
   root->ref();
-  
+
   // the texture image
   SoTexture2 *tex = new SoTexture2;
   tex->filename.setValue("foo.png");
   root->addChild(tex);
-  
+
   // the texture plane
   SoTextureCoordinatePlane *texPlane = new SoTextureCoordinatePlane;
   texPlane->directionS.setValue(SbVec3f(1,0,0));
   texPlane->directionT.setValue(SbVec3f(0,1,0));
   root->addChild(texPlane);
-  
+
   // add a simple cube
   SoCube * c = new SoCube;
   c->width.setValue(1.0);
@@ -66,7 +70,7 @@
   = (0,1,0), meaning that it is parallel to the front face of the
   cube. Setting e.g. directionS = (0,1,0) and directionT = (-1,0,0)
   would rotate the texture counterclockwise by 90 degrees. Setting
-  them to ((2,0,0), (0,2,0)) results to the texture being repeated twice 
+  them to ((2,0,0), (0,2,0)) results to the texture being repeated twice
   per unit, so the texture appears four times on the 1x1 face.
 
   Note that when you transform the cube, the transformation will also
@@ -118,17 +122,36 @@
   \var SoSFVec3f SoTextureCoordinatePlane::directionS
   The S texture coordinate plane direction.
   The length of the vector determines the repeat interval of the
-  texture per unit length. 
+  texture per unit length.
 
 */
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionT
   The T texture coordinate plane direction.
   The length of the vector determines the repeat interval of the
-  texture per unit length. 
+  texture per unit length.
 */
 
+/*!
+  \var SoSFVec3f SoTextureCoordinatePlane::directionR
+  The R texture coordinate plane direction.
+  The length of the vector determines the repeat interval of the
+  texture per unit length.
+*/
+
+
 // *************************************************************************
+
+class SoTextureCoordinatePlaneP {
+public:
+  SbVec3f s, t, r;
+  SbVec4f ret;
+};
+
+// *************************************************************************
+
+#define PRIVATE(obj) obj->pimpl
+
 
 SO_NODE_SOURCE(SoTextureCoordinatePlane);
 
@@ -141,6 +164,7 @@ SoTextureCoordinatePlane::SoTextureCoordinatePlane()
 
   SO_NODE_ADD_FIELD(directionS, (1.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(directionT, (0.0f, 1.0f, 0.0f));
+  SO_NODE_ADD_FIELD(directionR, (0.0f, 0.0f, 1.0f));
 }
 
 /*!
@@ -165,11 +189,12 @@ SoTextureCoordinatePlane::generate(void * userdata,
 {
   SoTextureCoordinatePlane *thisp =
     (SoTextureCoordinatePlane*) userdata;
-
-  thisp->gencache.ret.setValue(thisp->gencache.s.dot(p),
-                               thisp->gencache.t.dot(p),
-                               0.0f, 1.0f);
-  return thisp->gencache.ret;
+  
+  PRIVATE(thisp)->ret.setValue(PRIVATE(thisp)->s.dot(p),
+                               PRIVATE(thisp)->t.dot(p),
+                               PRIVATE(thisp)->r.dot(p), 
+                               1.0f);
+  return PRIVATE(thisp)->ret;
 }
 
 // doc from parent
@@ -210,7 +235,7 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
   else {
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     int maxunits = cc_glglue_max_texture_units(glue);
-    if (unit < maxunits) {        
+    if (unit < maxunits) {
       this->setupGencache();
       SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
                                                    this, unit,
@@ -259,22 +284,25 @@ SoTextureCoordinatePlane::handleTexgen(void *data)
   plane[2] = t[2];
   glTexGenfv(GL_T, GL_OBJECT_PLANE, plane);
 
-  // supply dummy plane for R and Q so that texture generation works
+  const SbVec3f & r = thisp->directionR.getValue();
+  plane[0] = r[0];
+  plane[1] = r[1];
+  plane[2] = r[2];
+  glTexGenfv(GL_R, GL_OBJECT_PLANE, plane);
+
+  // supply dummy plane for Q so that texture generation works
   // properly
   plane[0] = 0.0f;
   plane[1] = 0.0f;
   plane[2] = 0.0f;
   plane[3] = 1.0f;
-  glTexGenfv(GL_R, GL_OBJECT_PLANE, plane);
   glTexGenfv(GL_Q, GL_OBJECT_PLANE, plane);
 }
 
-void 
+void
 SoTextureCoordinatePlane::setupGencache(void)
 {
-  this->gencache.s = this->directionS.getValue();
-  this->gencache.t = this->directionT.getValue();
-  // FIXME: the other variables in gencache are actually not needed.
-  // Remove before Coin 3.0. pederb, 2004-04-14
+  PRIVATE(this)->s = this->directionS.getValue();
+  PRIVATE(this)->t = this->directionT.getValue();
+  PRIVATE(this)->r = this->directionR.getValue();
 }
-
