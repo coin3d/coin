@@ -324,6 +324,7 @@ public:
   SoPath * surrogatepath;
 
   SoCallbackAction * cbaction;
+  float projectorepsilon;
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -360,6 +361,7 @@ SoDragger::SoDragger(void)
   PRIVATE(this)->surrogatepath = NULL;
   PRIVATE(this)->cbaction = NULL;
   PRIVATE(this)->didmousemove = FALSE;
+  PRIVATE(this)->projectorepsilon = 0.01f;
 }
 
 /*!
@@ -561,6 +563,35 @@ SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   this->updateElements(state);
   inherited::getPrimitiveCount(action);
   state->pop();
+}
+
+/*!
+  Sets the epsilon used for restricting the draggers when the
+  intersection line is almost parallel with the projector direction.
+  
+  For line projectors this is based on the dot product between the
+  picking ray and the projector line. For plane projector, the dot
+  product between the plane normal and the picking ray is used.
+
+  Default value is 0.0.
+
+  \since Coin 3.0
+*/
+void 
+SoDragger::setProjectorEpsilon(const float epsilon)
+{
+  PRIVATE(this)->projectorepsilon = epsilon;
+}
+
+/*
+  Returns the projector epsilon set for this dragger.
+
+  \since Coin 3.0
+*/
+float
+SoDragger::getProjectorEpsilon(void) const
+{
+  return PRIVATE(this)->projectorepsilon;
 }
 
 /*!

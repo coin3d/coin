@@ -52,6 +52,7 @@
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/SbRotation.h>
 
 #include <data/draggerDefaults/translate2Dragger.h>
 
@@ -72,6 +73,30 @@
   The application programmer applying this dragger in his code should
   connect the relevant node fields in the scene to this field to make
   it follow the dragger.
+*/
+
+/*!
+  \var SoSFVec2f SoTranslate1Dragger::minTranslation
+
+  Sets the minimum value allowed in each component of the translaton
+  field.  This is only active if minTranslation <= maxTranslation for
+  each component.
+
+  Default value is [1.0, 1.0]
+
+  \since Coin 3.0
+*/
+
+/*!
+  \var SoSFVec2f SoTranslate1Dragger::maxTranslation
+
+  Sets the maximum value allowed in each component of the translaton
+  field.  This is only active if minTranslation <= maxTranslation for
+  each component.
+
+  Default value is [0.0, 0.0]
+
+  \since Coin 3.0
 */
 
 /*!
@@ -182,6 +207,8 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
                                        (int)strlen(TRANSLATE2DRAGGER_draggergeometry));
   }
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
+  SO_KIT_ADD_FIELD(minTranslation, (1.0f, 1.0f));
+  SO_KIT_ADD_FIELD(maxTranslation, (0.0f, 0.0f));
   SO_KIT_INIT_INSTANCE();
 
   // initialize default parts
@@ -263,11 +290,20 @@ SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
 {
   assert(d);
   SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
-  SbMatrix matrix = thisp->getMotionMatrix();
+  const SbVec2f minv = thisp->minTranslation.getValue();
+  const SbVec2f maxv = thisp->maxTranslation.getValue();
+
   SbVec3f t = thisp->translation.getValue();
-  matrix[3][0] = t[0];
-  matrix[3][1] = t[1];
-  matrix[3][2] = t[2];
+  SbVec3f orgt = t;
+  
+  for (int i = 0; i < 2; i++) {
+    if (minv[i] <= maxv[i]) {
+      t[i] = SbClamp(t[i], minv[i], maxv[i]);
+    }
+  }
+  if (t != orgt) thisp->translation = t;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
 }
 
@@ -277,17 +313,20 @@ SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
 {
   SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
   SbMatrix matrix = thisp->getMotionMatrix();
-
-  SbVec3f t;
-  t[0] = matrix[3][0];
-  t[1] = matrix[3][1];
-  t[2] = matrix[3][2];
-
+  SbVec3f trans = thisp->clampMatrix(matrix);
   thisp->fieldSensor->detach();
-  if (thisp->translation.getValue() != t) {
-    thisp->translation = t;
-  }
+  if (thisp->translation.getValue() != trans)
+    thisp->translation = trans;
   thisp->fieldSensor->attach(&thisp->translation);
+}
+
+// doc in parent
+void 
+SoTranslate2Dragger::setMotionMatrix(const SbMatrix & matrix)
+{
+  SbMatrix m = matrix;
+  (void) this->clampMatrix(m);
+  inherited::setMotionMatrix(m);  
 }
 
 /*! \COININTERNAL */
@@ -361,69 +400,72 @@ SoTranslate2Dragger::drag(void)
   this->planeProj->setViewVolume(this->getViewVolume());
   this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
 
-  SbVec3f projPt = this->planeProj->project(this->getNormalizedLocaterPosition());
-
-  const SoEvent *event = this->getEvent();
-  if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
-    this->constraintState = CONSTRAINT_WAIT;
-    this->setStartLocaterPosition(event->getPosition());
-    this->getLocalToWorldMatrix().multVecMatrix(projPt, this->worldRestartPt);
-  }
-  else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
-    SbVec3f worldProjPt;
-    this->getLocalToWorldMatrix().multVecMatrix(projPt, worldProjPt);
-    this->setStartingPoint(worldProjPt);
-    PRIVATE(this)->extramotion += PRIVATE(this)->lastmotion;
+  SbVec3f projPt;
+  if (this->planeProj->tryProject(this->getNormalizedLocaterPosition(),
+                                  this->getProjectorEpsilon(),
+                                  projPt)) {
+    const SoEvent *event = this->getEvent();
+    if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
+      this->constraintState = CONSTRAINT_WAIT;
+      this->setStartLocaterPosition(event->getPosition());
+      this->getLocalToWorldMatrix().multVecMatrix(projPt, this->worldRestartPt);
+    }
+    else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
+      SbVec3f worldProjPt;
+      this->getLocalToWorldMatrix().multVecMatrix(projPt, worldProjPt);
+      this->setStartingPoint(worldProjPt);
+      PRIVATE(this)->extramotion += PRIVATE(this)->lastmotion;
+      
+      SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+      SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+      this->constraintState = CONSTRAINT_OFF;
+    }
     
-    SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
-    this->constraintState = CONSTRAINT_OFF;
-  }
-
-  SbVec3f startPt = this->getLocalStartingPoint();
-  SbVec3f motion;
-  SbVec3f localrestartpt;
-
-  if (this->constraintState != CONSTRAINT_OFF) {
-    this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt,
-                                                localrestartpt);
-    motion = localrestartpt - startPt;
-  }
-  else motion = projPt - startPt;
-
-  switch(this->constraintState) {
-  case CONSTRAINT_OFF:
-    break;
-  case CONSTRAINT_WAIT:
-    if (this->isAdequateConstraintMotion()) {
-      SbVec3f newmotion = projPt - localrestartpt;
-      if (fabs(newmotion[0]) >= fabs(newmotion[1])) {
+    SbVec3f startPt = this->getLocalStartingPoint();
+    SbVec3f motion;
+    SbVec3f localrestartpt;
+    
+    if (this->constraintState != CONSTRAINT_OFF) {
+      this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt,
+                                                  localrestartpt);
+      motion = localrestartpt - startPt;
+    }
+    else motion = projPt - startPt;
+    
+    switch(this->constraintState) {
+    case CONSTRAINT_OFF:
+      break;
+    case CONSTRAINT_WAIT:
+      if (this->isAdequateConstraintMotion()) {
+        SbVec3f newmotion = projPt - localrestartpt;
+        if (fabs(newmotion[0]) >= fabs(newmotion[1])) {
         this->constraintState = CONSTRAINT_X;
         motion[0] += newmotion[0];
         SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
         SoInteractionKit::setSwitchValue(sw, 0);
+        }
+        else {
+          this->constraintState = CONSTRAINT_Y;
+          motion[1] += newmotion[1];
+          SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+          SoInteractionKit::setSwitchValue(sw, 1);
+        }
       }
       else {
-        this->constraintState = CONSTRAINT_Y;
-        motion[1] += newmotion[1];
-        SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
-        SoInteractionKit::setSwitchValue(sw, 1);
-      }
-    }
-    else {
       return;
+      }
+      break;
+    case CONSTRAINT_X:
+      motion[0] += projPt[0] - localrestartpt[0];
+      break;
+    case CONSTRAINT_Y:
+      motion[1] += projPt[1] - localrestartpt[1];
+    break;
     }
-    break;
-  case CONSTRAINT_X:
-    motion[0] += projPt[0] - localrestartpt[0];
-    break;
-  case CONSTRAINT_Y:
-    motion[1] += projPt[1] - localrestartpt[1];
-    break;
-  }
-  PRIVATE(this)->lastmotion = motion;
-  this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(),
+    PRIVATE(this)->lastmotion = motion;
+    this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(),
                                                 PRIVATE(this)->extramotion+motion));
+  }
 }
 
 /*! \COININTERNAL
@@ -441,6 +483,29 @@ SoTranslate2Dragger::dragFinish(void)
   sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
   this->constraintState = CONSTRAINT_OFF;
+}
+
+SbVec3f 
+SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
+{
+  const SbVec2f minv = this->minTranslation.getValue();
+  const SbVec2f maxv = this->maxTranslation.getValue();
+  
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  m.getTransform(trans, rot, scale, scaleOrient);
+  SbVec3f t = trans;
+
+  for (int i = 0; i < 2; i++) {
+    if (minv[i] <= maxv[i]) {
+      t[i] = SbClamp(t[i], minv[i], maxv[i]);
+    }
+  }
+
+  if (t != trans) {
+    m.setTransform(t, rot, scale, scaleOrient);
+  }
+  return t;
 }
 
 #undef PRIVATE

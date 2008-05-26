@@ -27,6 +27,7 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFVec2f.h>
 
 class SoSensor;
 class SoFieldSensor;
@@ -52,10 +53,13 @@ public:
   SoTranslate2Dragger(void);
 
   SoSFVec3f translation;
+  SoSFVec2f minTranslation;
+  SoSFVec2f maxTranslation;
 
 protected:
   virtual ~SoTranslate2Dragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  virtual void setMotionMatrix(const SbMatrix & m);
 
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);
@@ -76,6 +80,8 @@ private:
   int constraintState;
 
 private:
+  SbVec3f clampMatrix(SbMatrix & m) const;
+
   SbPimplPtr<SoTranslate2DraggerP> pimpl;
 
   // NOT IMPLEMENTED:

@@ -79,6 +79,28 @@
 */
 
 /*!
+  \var SoSFFloat SoTranslate1Dragger::minTranslation
+
+  Sets the minimum value allowed in the x component of the translaton
+  field.  This is only active if minTranslation <= maxTranslation.
+
+  Default value is 1.0
+
+  \since Coin 3.0
+*/
+
+/*!
+  \var SoSFFloat SoTranslate1Dragger::maxTranslation
+
+  Sets the maximum value allowed in the x component of the translaton
+  field.  This is only active if minTranslation <= maxTranslation.
+
+  Default value is 0.0.
+
+  \since Coin 3.0
+*/
+
+/*!
   \var SbLineProjector * SoTranslate1Dragger::lineProj
 
   The SbLineProjector instance used for projecting from 2D mouse
@@ -166,7 +188,9 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
-
+  SO_KIT_ADD_FIELD(minTranslation, (1.0f));
+  SO_KIT_ADD_FIELD(maxTranslation, (0.0f));
+  
   SO_KIT_INIT_INSTANCE();
 
   // initialize default parts
@@ -242,12 +266,27 @@ SoTranslate1Dragger::fieldSensorCB(void *d, SoSensor *)
 {
   assert(d);
   SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
+  const float minv = thisp->minTranslation.getValue();
+  const float maxv = thisp->maxTranslation.getValue();
+  if (minv <= maxv) {
+    SbVec3f t = thisp->translation.getValue();
+    if (t[0] < minv || t[0] > maxv) {
+      t[0] = SbClamp(t[0], minv, maxv);
+      thisp->translation = t;
+    }
+  }
   SbMatrix matrix = thisp->getMotionMatrix();
-  SbVec3f t = thisp->translation.getValue();
-  matrix[3][0] = t[0];
-  matrix[3][1] = t[1];
-  matrix[3][2] = t[2];
+  thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
+}
+
+// doc in parent
+void 
+SoTranslate1Dragger::setMotionMatrix(const SbMatrix & matrix)
+{
+  SbMatrix m = matrix;
+  (void) this->clampMatrix(m);
+  inherited::setMotionMatrix(m);  
 }
 
 /*! \COININTERNAL */
@@ -256,27 +295,11 @@ SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 {
   SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
   SbMatrix matrix = thisp->getMotionMatrix();
-
-#if 0 // FIXME: what's up here? 20011113 mortene.
-  SbVec3f t;
-  t[0] = matrix[3][0];
-  t[1] = matrix[3][1];
-  t[2] = matrix[3][2];
-
-  thisp->fieldSensor->detach();
-  if (thisp->translation.getValue() != t) {
-    thisp->translation = t;
-  }
-  thisp->fieldSensor->attach(&thisp->translation);
-#else
-  SbVec3f trans, scale;
-  SbRotation rot, scaleOrient;
-  matrix.getTransform(trans, rot, scale, scaleOrient);
+  SbVec3f trans = thisp->clampMatrix(matrix);
   thisp->fieldSensor->detach();
   if (thisp->translation.getValue() != trans)
     thisp->translation = trans;
   thisp->fieldSensor->attach(&thisp->translation);
-#endif
 }
 
 /*! \COININTERNAL */
@@ -327,11 +350,15 @@ SoTranslate1Dragger::drag(void)
 {
   this->lineProj->setViewVolume(this->getViewVolume());
   this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
-
-  SbVec3f projPt = this->lineProj->project(this->getNormalizedLocaterPosition());
-  SbVec3f startPt = this->getLocalStartingPoint();
-  SbVec3f motion = projPt - startPt;
-  this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
+  
+  const float epsilon = this->getProjectorEpsilon();
+  SbVec3f projPt;
+  if (this->lineProj->tryProject(this->getNormalizedLocaterPosition(), epsilon, projPt)) {
+    SbVec3f startPt = this->getLocalStartingPoint();
+    SbVec3f motion = projPt - startPt;
+    SbMatrix mm = this->appendTranslation(this->getStartMotionMatrix(), motion);
+    this->setMotionMatrix(mm);
+  }
 }
 
 /*! \COININTERNAL
@@ -346,4 +373,23 @@ SoTranslate1Dragger::dragFinish(void)
   SoInteractionKit::setSwitchValue(sw, 0);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
+}
+
+SbVec3f 
+SoTranslate1Dragger::clampMatrix(SbMatrix & m) const
+{
+  const float minv = this->minTranslation.getValue();
+  const float maxv = this->maxTranslation.getValue();
+  
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  m.getTransform(trans, rot, scale, scaleOrient);
+  if (minv <= maxv) {    
+    SbVec3f t = trans;
+    t[0] = SbClamp(t[0], minv, maxv);
+    if (t != trans) {
+      m.setTransform(t, rot, scale, scaleOrient);
+    }
+  }
+  return trans;
 }

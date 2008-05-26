@@ -27,6 +27,7 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/tools/SbLazyPimplPtr.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 class SoSensor;
 class SoFieldSensor;
@@ -49,10 +50,14 @@ static void initClass(void);
   SoTranslate1Dragger(void);
 
   SoSFVec3f translation;
+  SoSFFloat minTranslation;
+  SoSFFloat maxTranslation;
 
 protected:
   virtual ~SoTranslate1Dragger(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+
+  virtual void setMotionMatrix(const SbMatrix & matrix);
 
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);
@@ -68,6 +73,7 @@ protected:
   SbLineProjector * lineProj;
 
 private:
+  SbVec3f clampMatrix(SbMatrix & m) const;
   SbLazyPimplPtr<SoTranslate1DraggerP> pimpl;
 
   // NOT IMPLEMENTED:

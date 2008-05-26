@@ -72,6 +72,9 @@ public:
   virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
+  void setProjectorEpsilon(const float epsilon);
+  float getProjectorEpsilon(void) const;
+
   void addStartCallback(SoDraggerCB * func, void * data = NULL);
   void removeStartCallback(SoDraggerCB * func, void * data = NULL);
   void addMotionCallback(SoDraggerCB * func, void * data = NULL);
@@ -98,7 +101,7 @@ public:
   void transformMatrixLocalToWorld(const SbMatrix & frommatrix, SbMatrix & tomatrix);
   void transformMatrixWorldToLocal(const SbMatrix & frommatrix, SbMatrix & tomatrix);
   void transformMatrixToLocalSpace(const SbMatrix & frommatrix, SbMatrix & tomatrix, const SbName & fromspacepartname);
-  void setMotionMatrix(const SbMatrix & newmatrix);
+  virtual void setMotionMatrix(const SbMatrix & newmatrix);
   void valueChanged(void);
   const SbMatrix & getStartMotionMatrix(void);
   virtual void saveStartParameters(void);
