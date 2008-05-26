@@ -40,6 +40,8 @@ public:
   const SbMatrix & getWorkingSpace(void) const;
   virtual SbProjector * copy(void) const = 0;
 
+  virtual SbBool tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result);
+
 protected:
   SbProjector(void);
   virtual ~SbProjector() { }
@@ -48,7 +50,7 @@ protected:
 
   SbViewVolume viewVol;
   SbMatrix worldToWorking, workingToWorld;
-  
+
   float findVanishingDistance(void) const;
   SbBool verifyProjection(const SbVec3f & projpt) const;
 };

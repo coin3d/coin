@@ -190,14 +190,14 @@ SbProjector::findVanishingDistance(void) const
   int cnt = 0;
 
   float unit = depth * 0.25f;
-  
+
   SbBox3f unitbox(-unit, -unit, -unit, unit, unit, unit);
   SbVec3f projdir = this->viewVol.getProjectionDirection();
   SbMatrix m;
   m.setTranslate(projdir * depth);
   SbBox3f box = unitbox;
   box.transform(m);
-  
+
   SbVec2f siz = vv.projectBox(box);
   while (cnt < 64 && (siz[1] > (1.0f / 512.0f))) {
     depth *= 2.0f;
@@ -230,5 +230,27 @@ SbProjector::verifyProjection(const SbVec3f & projpt) const
     this->workingToWorld.multVecMatrix(projpt, wrld);
     if (eyeplane.isInHalfSpace(wrld)) return FALSE;
   }
+  return TRUE;
+}
+
+/*!
+  Try projecting the 2D \a point from normalized viewport coordinates to a 3D
+  point. The mapping will be done in accordance with the type of the
+  projector.
+
+  If the projection can't be done safely (for instance when the
+  projection plane or line is parallel to the view volume projection),
+  this function should return FALSE.
+  
+  Default implementation will call project() and always return TRUE,
+  but subclasses can override this behavior to support safe
+  projections.
+
+  \since Coin 3.0
+*/
+SbBool 
+SbProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result)
+{
+  result = this->project(point);
   return TRUE;
 }
