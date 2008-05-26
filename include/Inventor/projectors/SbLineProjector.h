@@ -37,6 +37,8 @@ public:
   virtual SbProjector * copy(void) const;
 
   virtual SbVec3f project(const SbVec2f & point);
+  virtual SbBool tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result);
+
   void setLine(const SbLine & line);
   const SbLine & getLine(void) const;
   virtual SbVec3f getVector(const SbVec2f & viewpos1,

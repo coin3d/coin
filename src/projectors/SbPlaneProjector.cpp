@@ -93,12 +93,8 @@ SbPlaneProjector::SbPlaneProjector(const SbPlane & plane, const SbBool orient)
 {
 }
 
-/*!
-  Projects 2D \a point into a 3D point within the current projection
-  plane.
-*/
-SbVec3f
-SbPlaneProjector::project(const SbVec2f & point)
+SbBool 
+SbPlaneProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result)
 {
   if (this->needSetup) this->setupPlane();
 
@@ -107,12 +103,17 @@ SbPlaneProjector::project(const SbVec2f & point)
 
   SbBool ortho = this->viewVol.getProjectionType() == SbViewVolume::ORTHOGRAPHIC;
 
-  SbBool ok = this->plane.intersect(projline, projpt);
+  SbBool ok = TRUE;
+  if (epsilon > 0.0f) {
+    const float dot = SbAbs(this->plane.getNormal().dot(projline.getDirection()));
+    if (dot < epsilon) ok = FALSE;
+  }
+  if (ok) ok = this->plane.intersect(projline, projpt);
 
   SbBool valid = ok;
   if (ok && !ortho) valid = this->verifyProjection(projpt);
-
-  if (!valid && !ortho) {
+  
+  if (!valid && !ortho && (epsilon == 0.0f)) {
     SbPlane wrldplane = this->plane;
     SbLine wrldline;
     this->workingToWorld.multLineMatrix(projline, wrldline);
@@ -131,7 +132,7 @@ SbPlaneProjector::project(const SbVec2f & point)
       }
     }
   }
-  if (!valid) {
+  if (!valid && ok && (epsilon == 0.0f)) {
     // this can happen for instance with orthographic view volumes,
     // when the plane is perpendicular to the view.
 #if COIN_DEBUG
@@ -151,7 +152,8 @@ SbPlaneProjector::project(const SbVec2f & point)
     // project this point into plane.
     projpt = ptonline - this->plane.getNormal() * this->plane.getDistance(ptonline);
   }
-  return projpt;
+  result = projpt;
+  return ok && valid;
 }
 
 /*!
@@ -165,6 +167,19 @@ SbPlaneProjector::setOrientToEye(const SbBool orienttoeye)
     this->orientToEye = orienttoeye;
     this->needSetup = TRUE;
   }
+}
+
+
+/*!
+  Projects 2D \a point into a 3D point within the current projection
+  plane.
+*/
+SbVec3f
+SbPlaneProjector::project(const SbVec2f & point)
+{
+  SbVec3f ret;
+  (void) this->tryProject(point, 0.0f, ret);
+  return ret;
 }
 
 /*!

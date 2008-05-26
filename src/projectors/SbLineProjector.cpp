@@ -62,9 +62,9 @@ SbLineProjector::SbLineProjector(void)
 {
 }
 
-// Documented in superclass.
-SbVec3f
-SbLineProjector::project(const SbVec2f & point)
+// Documented in superclass
+SbBool 
+SbLineProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result)
 {
   // first project the line into screen space to find the 2D point
   // closest to the projection line there. Then use that 2D point to
@@ -94,8 +94,17 @@ SbLineProjector::project(const SbVec2f & point)
 
   SbLine projline = this->getWorkingLine(newpt);
   SbVec3f projpt, dummy;
-  SbBool nonparallel = this->line.getClosestPoints(projline, projpt, dummy);
 
+  // check how parallel the lines are
+  SbBool nonparallel = TRUE;  
+  if (epsilon > 0.0f) {
+    const float dot = SbAbs(this->line.getDirection().dot(projline.getDirection())); 
+    nonparallel = SbAbs(1.0f - dot) > epsilon;
+  }
+  
+  if (nonparallel) {
+    nonparallel = this->line.getClosestPoints(projline, projpt, dummy);
+  }
   // if lines are parallel, we will never get an intersection, and
   // we set projection point to the middle of the view volume
   if (!nonparallel) {
@@ -119,8 +128,22 @@ SbLineProjector::project(const SbVec2f & point)
       this->worldToWorking.multVecMatrix(projpt, projpt);
     }
   }
-  this->lastPoint = projpt;
-  return projpt;
+
+  result = projpt;
+  if (nonparallel) {
+    this->lastPoint = projpt;
+  }
+  return nonparallel;
+}
+
+// Documented in superclass.
+SbVec3f
+SbLineProjector::project(const SbVec2f & point)
+{
+  SbVec3f ret;
+  (void) this->tryProject(point, 0.0f, ret);
+  this->lastPoint = ret;
+  return ret;
 }
 
 /*!
