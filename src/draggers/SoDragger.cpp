@@ -361,7 +361,7 @@ SoDragger::SoDragger(void)
   PRIVATE(this)->surrogatepath = NULL;
   PRIVATE(this)->cbaction = NULL;
   PRIVATE(this)->didmousemove = FALSE;
-  PRIVATE(this)->projectorepsilon = 0.01f;
+  PRIVATE(this)->projectorepsilon = 0.0f;
 }
 
 /*!
