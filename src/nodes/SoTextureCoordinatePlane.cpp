@@ -160,6 +160,8 @@ SO_NODE_SOURCE(SoTextureCoordinatePlane);
 */
 SoTextureCoordinatePlane::SoTextureCoordinatePlane()
 {
+  PRIVATE(this) = new SoTextureCoordinatePlaneP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinatePlane);
 
   SO_NODE_ADD_FIELD(directionS, (1.0f, 0.0f, 0.0f));
@@ -172,6 +174,7 @@ SoTextureCoordinatePlane::SoTextureCoordinatePlane()
 */
 SoTextureCoordinatePlane::~SoTextureCoordinatePlane()
 {
+  delete PRIVATE(this);
 }
 
 // doc from parent

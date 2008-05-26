@@ -29,7 +29,6 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/tools/SbPimplPtr.h>
 
 class SoTextureCoordinatePlaneP;
 
@@ -60,7 +59,7 @@ private:
                                  const SbVec3f &n);
   static void handleTexgen(void *data);
 
-  SbPimplPtr<SoTextureCoordinatePlaneP> pimpl;
+  SoTextureCoordinatePlaneP * pimpl;
   void setupGencache(void);
 };
 
