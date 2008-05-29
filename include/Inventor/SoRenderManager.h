@@ -43,9 +43,9 @@ typedef void SoRenderManagerRenderCB(void * userdata, class SoRenderManager * mg
 class COIN_DLL_API Superimposition {
 public:
   enum StateFlags {
-    AUTOREDRAW   = 0x0000,
     ZBUFFERON    = 0x0001,
-    CLEARZBUFFER = 0x0002
+    CLEARZBUFFER = 0x0002,
+    AUTOREDRAW   = 0x0004
   };
 
   Superimposition(SoNode * scene,
