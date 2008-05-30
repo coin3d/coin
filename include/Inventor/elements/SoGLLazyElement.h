@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/C/glue/gl.h>
 
 class SoGLRenderCache;
 class SoGLLazyElementP;
@@ -75,6 +76,8 @@ public:
     int32_t blending;
     int32_t blend_sfactor;
     int32_t blend_dfactor;
+    int32_t alpha_blend_sfactor;
+    int32_t alpha_blend_dfactor;
     int32_t stipplenum;
     int32_t vertexordering;
     int32_t culling;
@@ -102,7 +105,7 @@ public:
   virtual void setSpecularElt(const SbColor* color);
   virtual void setShininessElt(float value);
   virtual void setColorMaterialElt(SbBool value);
-  virtual void enableBlendingElt(int sfactor, int dfactor);
+  virtual void enableBlendingElt(int sfactor, int dfactor, int alpha_sfactor, int alpha_dfactor);
   virtual void disableBlendingElt(void);
   virtual void setLightModelElt(SoState *state, int32_t model);
   virtual void setMaterialElt(SoNode * node, uint32_t bitmask,
@@ -147,6 +150,9 @@ private:
   void sendShininess(const float shininess) const;
   void sendTransparency(const int stipplenum) const;
   void enableBlending(const int sfactor, const int dfactor) const;
+  void enableSeparateBlending(const cc_glglue * glue,
+                              const int sfactor, const int dfactor,
+                              const int alpha_sfactor, const int alpha_dfactor) const;
   void disableBlending(void) const;
 
   void sendLightModel(const int32_t model) const;

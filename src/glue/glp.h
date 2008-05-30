@@ -214,6 +214,9 @@ typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)(GLenum target,
 /* Typedefs for glBlendEquation[EXT]. */
 typedef void *(APIENTRY * COIN_PFNGLBLENDEQUATIONPROC)(GLenum);
 
+/* Typedef for glBlendFuncSeparate */
+typedef void *(APIENTRY * COIN_PFNGLBLENDFUNCSEPARATEPROC)(GLenum, GLenum, GLenum, GLenum);
+
 /* typedefs for OpenGL vertex arrays */
 typedef void (APIENTRY * COIN_PFNGLVERTEXPOINTERPROC)(GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
 typedef void (APIENTRY * COIN_PFNGLTEXCOORDPOINTERPROC)(GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
@@ -624,6 +627,8 @@ struct cc_glglue {
 
   COIN_PFNGLBLENDEQUATIONPROC glBlendEquation;
   COIN_PFNGLBLENDEQUATIONPROC glBlendEquationEXT;
+
+  COIN_PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate;
 
   COIN_PFNGLVERTEXPOINTERPROC glVertexPointer;
   COIN_PFNGLTEXCOORDPOINTERPROC glTexCoordPointer;

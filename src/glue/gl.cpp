@@ -1089,6 +1089,13 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_EXT_blend_minmax */
 
+  w->glBlendFuncSeparate = NULL;
+#if defined(GL_VERSION_1_4)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
+    w->glBlendFuncSeparate = (COIN_PFNGLBLENDFUNCSEPARATEPROC)PROC(glBlendFuncSeparate);
+  }
+#endif /* GL_VERSION_1_4 */
+
   w->glVertexPointer = NULL; /* for cc_glglue_has_vertex_array() */
 #if defined(GL_VERSION_1_1)
   if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
@@ -3164,6 +3171,23 @@ cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
 
   if (glue->glBlendEquation) glue->glBlendEquation(mode);
   else glue->glBlendEquationEXT(mode);
+}
+
+SbBool
+cc_glglue_has_blendfuncseparate(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+
+  return glue->glBlendFuncSeparate != NULL;
+}
+
+void
+cc_glglue_glBlendFuncSeparate(const cc_glglue * glue,
+                              GLenum rgbsrc, GLenum rgbdst,
+                              GLenum alphasrc, GLenum alphadst)
+{
+  assert(glue->glBlendFuncSeparate);
+  glue->glBlendFuncSeparate(rgbsrc, rgbdst, alphasrc, alphadst);
 }
 
 SbBool

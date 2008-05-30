@@ -338,6 +338,12 @@ COIN_DLL_API void cc_glglue_glGetColorTableParameterfv(const cc_glglue * glue,
 COIN_DLL_API SbBool cc_glglue_has_blendequation(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode);
 
+/* Texture blend separate */
+COIN_DLL_API SbBool cc_glglue_has_blendfuncseparate(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glBlendFuncSeparate(const cc_glglue * glue, 
+                                                GLenum srgb, GLenum drgb,
+                                                GLenum salpha, GLenum dalpha);
+
 /* OpenGL vertex array ***/
 
 COIN_DLL_API SbBool cc_glglue_has_vertex_array(const cc_glglue * glue);
