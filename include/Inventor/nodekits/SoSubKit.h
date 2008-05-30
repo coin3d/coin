@@ -198,6 +198,10 @@ PRIVATE_KIT_SOURCE(_class_)
 #define SO_KIT_ADD_FIELD(_fieldname_, _defvalue_) \
   SO_NODE_ADD_FIELD(_fieldname_, _defvalue_)
 
+// New for Coin-3
+#define SO_KIT_ADD_EMPTY_MFIELD(_fieldname_) \
+  SO_NODE_ADD_EMPTY_MFIELD(_fieldname_)
+
 #define SO_KIT_DEFINE_ENUM_VALUE(_enumtype_, _enumvalue_) \
   SO_NODE_DEFINE_ENUM_VALUE(_enumtype_, _enumvalue_)
 
