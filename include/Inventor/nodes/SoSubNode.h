@@ -227,6 +227,13 @@ _class_::createInstance(void) \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_); \
   } while (0)
 
+// New for Coin-3
+#define SO_NODE_ADD_EMPTY_MFIELD(_field_) \
+  do { \
+    this->_field_.setContainer(this); \
+    fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
+  } while (0)
+
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
