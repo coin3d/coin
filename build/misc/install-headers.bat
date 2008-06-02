@@ -750,7 +750,6 @@ copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXML.h %COINDIR%\include\Invento
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLObject.h %COINDIR%\include\Inventor\scxml\ScXMLObject.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLSubObject.h %COINDIR%\include\Inventor\scxml\ScXMLSubObject.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLDocument.h %COINDIR%\include\Inventor\scxml\ScXMLDocument.h >nul:
-copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLStateBase.h %COINDIR%\include\Inventor\scxml\ScXMLStateBase.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLState.h %COINDIR%\include\Inventor\scxml\ScXMLState.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLOnEntry.h %COINDIR%\include\Inventor\scxml\ScXMLOnEntry.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\scxml\ScXMLOnExit.h %COINDIR%\include\Inventor\scxml\ScXMLOnExit.h >nul:

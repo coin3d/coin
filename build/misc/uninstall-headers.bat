@@ -750,7 +750,6 @@ del %COINDIR%\include\Inventor\scxml\ScXML.h
 del %COINDIR%\include\Inventor\scxml\ScXMLObject.h
 del %COINDIR%\include\Inventor\scxml\ScXMLSubObject.h
 del %COINDIR%\include\Inventor\scxml\ScXMLDocument.h
-del %COINDIR%\include\Inventor\scxml\ScXMLStateBase.h
 del %COINDIR%\include\Inventor\scxml\ScXMLState.h
 del %COINDIR%\include\Inventor\scxml\ScXMLOnEntry.h
 del %COINDIR%\include\Inventor\scxml\ScXMLOnExit.h

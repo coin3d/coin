@@ -40209,51 +40209,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLStateBase.cpp">
-					<FileConfiguration
-						Name="LIB (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\scxml/"
-							ProgramDataBaseFileName="StaticDebug\scxml/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\scxml/"
-							ProgramDataBaseFileName="Release\scxml/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\scxml/"
-							ProgramDataBaseFileName="StaticRelease\scxml/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\scxml/"
-							ProgramDataBaseFileName="Debug\scxml/"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\src\scxml\ScXMLStateMachine.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -43065,9 +43020,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLState.h">
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLStateBase.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLStateMachine.h">

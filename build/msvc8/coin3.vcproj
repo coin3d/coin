@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{20E34DC6-099A-48D6-9B1D-29F61D21F9C3}"
+	ProjectGUID="{A6AC9373-904E-43E3-BBAC-B113EBB41D06}"
 	>
 	<Platforms>
 		<Platform
@@ -44792,56 +44792,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLStateBase.cpp"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\scxml/"
-							ProgramDataBaseFileName="StaticDebug\scxml/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Release\scxml/"
-							ProgramDataBaseFileName="Release\scxml/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\scxml/"
-							ProgramDataBaseFileName="StaticRelease\scxml/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Debug\scxml/"
-							ProgramDataBaseFileName="Debug\scxml/"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\src\scxml\ScXMLStateMachine.cpp"
 					>
 					<FileConfiguration
@@ -48453,10 +48403,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLState.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLStateBase.h"
 					>
 				</File>
 				<File

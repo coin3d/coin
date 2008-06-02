@@ -11657,19 +11657,6 @@ SOURCE=..\..\src\scxml\ScXMLDocument.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\ScXMLStateBase.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\scxml\ScXMLState.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
@@ -15039,10 +15026,6 @@ SOURCE=..\..\include\Inventor\scxml\ScXMLSubObject.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\scxml\ScXMLDocument.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLStateBase.h
 # End Source File
 # Begin Source File
 
