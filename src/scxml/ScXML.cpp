@@ -178,9 +178,6 @@ SbBool ScXMLP::no_datamodel_warning = FALSE;
 void
 ScXML::initClasses(void)
 {
-  static int initialized = FALSE;
-  assert(!initialized);
-
   ScXMLObject::initClass();
   ScXMLDocument::initClass();
   ScXMLState::initClass();
@@ -202,8 +199,6 @@ ScXML::initClasses(void)
   SoScXMLDebugInfoInvoke::initClass();
   SoScXMLScheduleRedrawInvoke::initClass();
   SoScXMLScheduleTimerEventInvoke::initClass();
-
-  initialized = TRUE;
 }
 
 // *************************************************************************
