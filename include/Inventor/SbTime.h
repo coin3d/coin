@@ -50,6 +50,7 @@ public:
 
   static SbTime max(void);
   static SbTime maxTime(void);
+  static void sleep(int msec);
   void setValue(const double sec);
   void setValue(const int32_t sec, const long usec);
   void setValue(const struct timeval * const tv);

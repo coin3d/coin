@@ -60,6 +60,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/threads/thread.h>
 
 #ifndef SIM_TIMEVAL_TV_SEC_T
 #define SIM_TIMEVAL_TV_SEC_T time_t
@@ -201,6 +202,18 @@ SbTime::max(void)
   return SbTime::maxTime();
 }
 
+/*!
+  Suspends the current thread for \a msec milliseconds.
+  
+  \sa cc_sleep().
+
+  \since Coin 3.0
+*/
+void
+SbTime::sleep(int msec)
+{
+  cc_sleep(msec/1000.0f);
+}
 
 /*!
   Reset an SbTime instance to \a sec number of seconds.
