@@ -1655,6 +1655,8 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
@@ -1723,6 +1725,8 @@ BOOST_AUTO_TEST_CASE(readNullChildList)
 
 BOOST_AUTO_TEST_CASE(readInvalidChildList)
 {
+  BOOST_CHECK_MESSAGE(false, "Check Disabled since it freezes up the computer");
+  return;
   // FIXME: We are forced to restore the global state before terminating,
   // or independent tests could fail. (sveinung 20071108)
   SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
@@ -1753,6 +1757,14 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
   BOOST_CHECK_MESSAGE(root, "Import should succeed");
 
   SoReadError::setHandlerCallback(prevErrorCB, NULL);
+}
+
+BOOST_AUTO_TEST_CASE(testInitCleanup)
+{
+  SoDB::cleanup();
+
+  SoDB::init();
+  SoDB::cleanup();
 }
 
 #endif // COIN_TEST_SUITE
