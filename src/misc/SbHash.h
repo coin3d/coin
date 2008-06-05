@@ -64,7 +64,6 @@ public:
     return (void*) entry;
   }
   void operator delete(void * ptr, cc_memalloc * memhandler) {
-    SbHashEntry<Type, Key> * entry = (SbHashEntry<Type, Key> *) ptr;
     cc_memalloc_deallocate(memhandler, ptr);
   }
   void operator delete(void * ptr) {
