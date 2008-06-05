@@ -148,7 +148,7 @@ cc_string_construct_new(void)
 */
 
 cc_string *
-cc_string_clone(cc_string * string)
+cc_string_clone(const cc_string * string)
 {
   cc_string * me;
   me = cc_string_construct_new();

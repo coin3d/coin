@@ -52,7 +52,7 @@ typedef char (*cc_apply_f)(char);
 
 COIN_DLL_API void cc_string_construct(cc_string * me);
 COIN_DLL_API cc_string * cc_string_construct_new(void);
-COIN_DLL_API cc_string * cc_string_clone(cc_string * str);
+COIN_DLL_API cc_string * cc_string_clone(const cc_string * str);
 COIN_DLL_API void cc_string_clean(cc_string * str);
 COIN_DLL_API void cc_string_destruct(cc_string * str);
 
