@@ -115,6 +115,7 @@ _class_::atexit_cleanup(void) \
   delete _class_::fieldData; \
   _class_::fieldData = NULL; \
   _class_::parentFieldData = NULL; \
+  SoType::removeType(_class_::classTypeId.getName()); \
   _class_::classTypeId STATIC_SOTYPE_INIT; \
   _class_::classinstances = 0; \
 }
