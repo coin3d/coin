@@ -118,6 +118,7 @@ TEST_SUITE_OBJECTS = \
 	geoSoGeoOrigin.$(OBJEXT) \
 	geoSoGeoSeparator.$(OBJEXT) \
 	miscSoDB.$(OBJEXT) \
+	miscSoType.$(OBJEXT) \
 	nodesSoAnnotation.$(OBJEXT) \
 	shadersSoFragmentShader.$(OBJEXT) \
 	shadersSoGeometryShader.$(OBJEXT) \
@@ -228,6 +229,7 @@ TEST_SUITE_BUILT_FILES = \
 	geoSoGeoOrigin.cpp \
 	geoSoGeoSeparator.cpp \
 	miscSoDB.cpp \
+	miscSoType.cpp \
 	nodesSoAnnotation.cpp \
 	shadersSoFragmentShader.cpp \
 	shadersSoGeometryShader.cpp \
@@ -844,6 +846,12 @@ miscSoDB.cpp: $(top_srcdir)/src/misc/SoDB.cpp $(srcdir)/makeextract.sh
 
 miscSoDB.$(OBJEXT): miscSoDB.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c miscSoDB.cpp
+
+miscSoType.cpp: $(top_srcdir)/src/misc/SoType.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoType.cpp
+
+miscSoType.$(OBJEXT): miscSoType.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c miscSoType.cpp
 
 nodesSoAnnotation.cpp: $(top_srcdir)/src/nodes/SoAnnotation.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/nodes/SoAnnotation.cpp
