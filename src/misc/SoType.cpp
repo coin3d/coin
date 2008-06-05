@@ -292,6 +292,35 @@ SoType::createType(const SoType parent, const SbName name,
 }
 
 /*!
+  This method removes class type from the class system.
+  Returns FALSE if a type with the given name doesn't exist.
+
+  \since Coin 3.0
+*/
+SbBool
+SoType::removeType(const SbName & name)
+{
+  int16_t index = 0;
+  if (!type_dict->get(name.getString(), index)) {
+    SoDebugError::post("SoType::removeType",
+                       "type with name ``%s'' not found",
+                       name.getString());
+    return FALSE;
+  }
+
+  type_dict->remove(name.getString());
+  SoTypeData *typedata = (*SoType::typedatalist)[index];
+  (*SoType::typedatalist)[index] = NULL;
+  delete typedata;
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoType::removeType", "%s", name.getString());
+#endif // debug
+  
+  return TRUE;
+}
+
+/*!
   This method makes a new class's instantiation method override
   the instantiation method of an existing class.
 
@@ -770,10 +799,12 @@ SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
   int counter = 0;
   int n = SoType::typedatalist->getLength();
   for (int i = 0; i < n; i++) {
-    SoType chktype = (*SoType::typedatalist)[i]->type;
-    if (!chktype.isInternal() && chktype.isDerivedFrom(type)) {
-      list.append(chktype);
-      counter++;
+    if ((*SoType::typedatalist)[i]) {
+      SoType chktype = (*SoType::typedatalist)[i]->type;
+      if (!chktype.isInternal() && chktype.isDerivedFrom(type)) {
+        list.append(chktype);
+        counter++;
+      }
     }
   }
   return counter;
@@ -826,6 +857,8 @@ SoType::createInstance(void) const
 int
 SoType::getNumTypes(void)
 {
+  // FIXME: typedatalist can contain entries for removed types, so the number 
+  // returned from this method is potentially too high. kintel 20080605.
   return SoType::typedatalist->getLength();
 }
 
@@ -910,3 +943,29 @@ SoType::isInternal(void) const
   Comparison operator for sorting type data according to some internal
   criterion.
 */
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SoType.h>
+#include <Inventor/SbName.h>
+#include <Inventor/nodes/SoNode.h>
+
+static void * createInstance(void)
+{
+  return (void *)0x1234;
+}
+
+BOOST_AUTO_TEST_CASE(testRemoveType)
+{
+  BOOST_CHECK_MESSAGE(SoType::fromName(SbName("MyClass")) == SoType::badType(),
+                      "Type didn't init to badType");
+  SoType newtype = SoType::createType(SoNode::getClassTypeId(), SbName("MyClass"), createInstance, 0);
+  BOOST_CHECK_MESSAGE(SoType::fromName(SbName("MyClass")) != SoType::badType(),
+                      "Type didn't init correctly");
+  bool success = SoType::removeType(SbName("MyClass"));
+  BOOST_CHECK_MESSAGE(success,
+                      "removeType() failed");
+  BOOST_CHECK_MESSAGE(SoType::fromName(SbName("MyClass")) == SoType::badType(),
+                      "Type didn't deregister correctly");
+}
+
+#endif // COIN_TEST_SUITE

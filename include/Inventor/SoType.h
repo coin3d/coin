@@ -79,6 +79,8 @@ public:
   static const SoType overrideType(const SoType originalType,
                                    const instantiationMethod method = (instantiationMethod) NULL);
 
+  static SbBool removeType(const SbName & name);
+
   static void init(void);
 
   static SoType fromKey(uint16_t key);
