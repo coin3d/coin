@@ -346,6 +346,30 @@ SbString::findAll(const SbString & strarg, SbIntList & found) const
 */
 
 /*!
+  \fn const SbString operator+(const SbString & str1, const SbString & str2)
+
+  Addition operator.
+
+  \relates SbString
+*/
+
+/*!
+  \fn const SbString operator+(const SbString & sbstr, const char * s)
+
+  Addition operator.
+
+  \relates SbString
+*/
+
+/*!
+  \fn const SbString operator+(const char * s, const SbString & sbstr)
+
+  Addition operator.
+
+  \relates SbString
+*/
+
+/*!
   \fn SbString & SbString::sprintf(const char * formatstr, ...)
 
   Set SbString instance to the formatted string \a formatstr,
@@ -368,3 +392,32 @@ SbString::findAll(const SbString & strarg, SbIntList & found) const
   Note that this function is not part of the original Open Inventor
   API.
 */
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbString.h>
+
+static void * createInstance(void)
+{
+  return (void *)0x1234;
+}
+
+BOOST_AUTO_TEST_CASE(testAddition)
+{
+  SbString str1("First");
+  SbString str2("Second");
+  const char *cstr1 = "Erste";
+  const char *cstr2 = "Zweite";
+
+  SbString a = str1 + str2;
+  SbString b = cstr1 + str2;
+  SbString c = str1 + cstr2;
+
+  BOOST_CHECK_MESSAGE(a == SbString("FirstSecond"),
+                      "operator+ error");
+  BOOST_CHECK_MESSAGE(b == SbString("ErsteSecond"),
+                      "operator+ error");
+  BOOST_CHECK_MESSAGE(c == SbString("FirstZweite"),
+                      "operator+ error");
+}
+
+#endif // COIN_TEST_SUITE

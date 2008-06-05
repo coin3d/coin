@@ -122,6 +122,9 @@ public:
   friend int operator!=(const SbString & sbstr, const char * s);
   friend int operator!=(const char * s, const SbString & sbstr);
   friend int operator!=(const SbString & str1, const SbString & str2);
+  friend const SbString operator+(const SbString & str1, const SbString & str2);
+  friend const SbString operator+(const SbString & sbstr, const char * s);
+  friend const SbString operator+(const char * s, const SbString & sbstr);
 
 private:
   struct cc_string str;
@@ -140,6 +143,25 @@ inline int operator!=(const char * s, const SbString & sbstr)
 { return (cc_string_compare_text(s, sbstr.str.pointer) != 0); }
 inline int operator!=(const SbString & str1, const SbString & str2)
 { return (cc_string_compare_text(str1.str.pointer, str2.str.pointer) != 0); }
+
+inline const SbString operator+(const SbString & str1, const SbString & str2)
+{ 
+  SbString newstr(str1);
+  newstr += str2;
+  return newstr;
+}
+inline const SbString operator+(const SbString & sbstr, const char * s)
+{
+  SbString newstr(sbstr);
+  newstr += s;
+  return newstr;
+}
+inline const SbString operator+(const char * s, const SbString & sbstr)
+{
+  SbString newstr(s);
+  newstr += sbstr;
+  return newstr;
+}
 
 #ifndef COIN_INTERNAL
 // For Open Inventor compatibility.
