@@ -79,8 +79,8 @@ TEST_SUITE_OBJECTS = \
 	fieldsSoSFEngine.$(OBJEXT) \
 	fieldsSoSFEnum.$(OBJEXT) \
 	fieldsSoSFFloat.$(OBJEXT) \
-	fieldsSoSFImage3.$(OBJEXT) \
 	fieldsSoSFImage.$(OBJEXT) \
+	fieldsSoSFImage3.$(OBJEXT) \
 	fieldsSoSFInt32.$(OBJEXT) \
 	fieldsSoSFMatrix.$(OBJEXT) \
 	fieldsSoSFName.$(OBJEXT) \
@@ -127,8 +127,10 @@ TEST_SUITE_OBJECTS = \
 	shadowsSoGLShadowCullingElement.$(OBJEXT) \
 	shadowsSoShadowCulling.$(OBJEXT) \
 	shadowsSoShadowGroup.$(OBJEXT) \
+	shadowsSoShadowSpotLight.$(OBJEXT) \
 	shadowsSoShadowStyle.$(OBJEXT) \
 	shadowsSoShadowStyleElement.$(OBJEXT) \
+	xmldocument.$(OBJEXT) \
 	$(EMPTY)
 
 TEST_SUITE_BUILT_FILES = \
@@ -187,8 +189,8 @@ TEST_SUITE_BUILT_FILES = \
 	fieldsSoSFEngine.cpp \
 	fieldsSoSFEnum.cpp \
 	fieldsSoSFFloat.cpp \
-	fieldsSoSFImage3.cpp \
 	fieldsSoSFImage.cpp \
+	fieldsSoSFImage3.cpp \
 	fieldsSoSFInt32.cpp \
 	fieldsSoSFMatrix.cpp \
 	fieldsSoSFName.cpp \
@@ -235,8 +237,10 @@ TEST_SUITE_BUILT_FILES = \
 	shadowsSoGLShadowCullingElement.cpp \
 	shadowsSoShadowCulling.cpp \
 	shadowsSoShadowGroup.cpp \
+	shadowsSoShadowSpotLight.cpp \
 	shadowsSoShadowStyle.cpp \
 	shadowsSoShadowStyleElement.cpp \
+	xmldocument.cpp \
 	$(EMPTY)
 
 all: testsuite$(EXEEXT)
@@ -607,17 +611,17 @@ fieldsSoSFFloat.cpp: $(top_srcdir)/src/fields/SoSFFloat.cpp $(srcdir)/makeextrac
 fieldsSoSFFloat.$(OBJEXT): fieldsSoSFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFFloat.cpp
 
-fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
-
-fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
-
 fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
 
 fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
+
+fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
+
+fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
 
 fieldsSoSFInt32.cpp: $(top_srcdir)/src/fields/SoSFInt32.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFInt32.cpp
@@ -895,6 +899,12 @@ shadowsSoShadowGroup.cpp: $(top_srcdir)/src/shadows/SoShadowGroup.cpp $(srcdir)/
 shadowsSoShadowGroup.$(OBJEXT): shadowsSoShadowGroup.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c shadowsSoShadowGroup.cpp
 
+shadowsSoShadowSpotLight.cpp: $(top_srcdir)/src/shadows/SoShadowSpotLight.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowSpotLight.cpp
+
+shadowsSoShadowSpotLight.$(OBJEXT): shadowsSoShadowSpotLight.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c shadowsSoShadowSpotLight.cpp
+
 shadowsSoShadowStyle.cpp: $(top_srcdir)/src/shadows/SoShadowStyle.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowStyle.cpp
 
@@ -906,4 +916,10 @@ shadowsSoShadowStyleElement.cpp: $(top_srcdir)/src/shadows/SoShadowStyleElement.
 
 shadowsSoShadowStyleElement.$(OBJEXT): shadowsSoShadowStyleElement.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c shadowsSoShadowStyleElement.cpp
+
+xmldocument.cpp: $(top_srcdir)/src/xml/document.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/xml/document.cpp
+
+xmldocument.$(OBJEXT): xmldocument.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c xmldocument.cpp
 

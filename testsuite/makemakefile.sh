@@ -114,8 +114,8 @@ prefix = @prefix@
 OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
-@MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
-@MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -lCoin
+@MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD = -lCoin
+@MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -framework Inventor
 
 TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
 TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
@@ -173,19 +173,19 @@ makefile-update:
 	( cd $(srcdir); ./makemakefile.sh Makefile.in filter="$(filter)" )
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
-testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS) Makefile
+testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS)
 	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(TS_LIBS)
 
-TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp $(srcdir)/TestSuiteUtils.h Makefile
+TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp $(srcdir)/TestSuiteUtils.h
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
 
-TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.h Makefile
+TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.h
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
 
-TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h Makefile
+TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
 
-StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h Makefile
+StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
 
 EODATA
@@ -202,7 +202,7 @@ while test x"$e" != x""; do
     echo >&5 "$extractfile: \$(top_srcdir)/$sourcefile \$(srcdir)/makeextract.sh"
     echo >&5 "	\$(srcdir)/makeextract.sh \$(top_srcdir) $sourcefile"
     echo >&5 ""
-    echo >&5 "$objectfile: $extractfile \$(srcdir)/TestSuiteUtils.h \$(srcdir)/TestSuiteMisc.h Makefile"
+    echo >&5 "$objectfile: $extractfile \$(srcdir)/TestSuiteUtils.h \$(srcdir)/TestSuiteMisc.h"
     echo >&5 "	\$(CXX) \$(TS_CPPFLAGS) -g -c $extractfile"
     echo >&5 ""
   fi
