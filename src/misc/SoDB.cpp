@@ -1761,6 +1761,8 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
 
 BOOST_AUTO_TEST_CASE(testInitCleanup)
 {
+  BOOST_CHECK_MESSAGE(false, "Check Disabled since it crashes the test driver");
+  return;
   SoDB::cleanup();
 
   SoDB::init();
