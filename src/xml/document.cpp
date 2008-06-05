@@ -889,7 +889,6 @@ BOOST_AUTO_TEST_CASE(bufread)
   cc_xml_doc * doc1 = cc_xml_read_buffer(buffer);
   BOOST_CHECK_MESSAGE(doc1 != NULL, "cc_xml_doc_read_buffer() failed");
 
-  fprintf(stdout, "\ndocument read in ok\n");
   boost::scoped_array<char> buffer2;
   size_t bytecount = 0;
   {
@@ -897,8 +896,6 @@ BOOST_AUTO_TEST_CASE(bufread)
     cc_xml_doc_write_to_buffer(doc1, bufptr, bytecount);
     buffer2.reset(bufptr);
   }
-
-  fprintf(stderr, "OUTPUT:\n'%s'\n", buffer2.get());
 
   cc_xml_doc * doc2 = cc_xml_read_buffer(buffer2.get());
 
