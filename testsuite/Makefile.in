@@ -25,6 +25,7 @@ TEST_SUITE_OBJECTS = \
 	TestSuiteMisc.$(OBJEXT) \
 	StandardTests.$(OBJEXT) \
 	actionsSoWriteAction.$(OBJEXT) \
+	baseSbString.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
 	fieldsSoMFBool.$(OBJEXT) \
 	fieldsSoMFColor.$(OBJEXT) \
@@ -136,6 +137,7 @@ TEST_SUITE_OBJECTS = \
 
 TEST_SUITE_BUILT_FILES = \
 	actionsSoWriteAction.cpp \
+	baseSbString.cpp \
 	fieldsSoMFBitMask.cpp \
 	fieldsSoMFBool.cpp \
 	fieldsSoMFColor.cpp \
@@ -288,6 +290,12 @@ actionsSoWriteAction.cpp: $(top_srcdir)/src/actions/SoWriteAction.cpp $(srcdir)/
 
 actionsSoWriteAction.$(OBJEXT): actionsSoWriteAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c actionsSoWriteAction.cpp
+
+baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
+
+baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c baseSbString.cpp
 
 fieldsSoMFBitMask.cpp: $(top_srcdir)/src/fields/SoMFBitMask.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFBitMask.cpp
