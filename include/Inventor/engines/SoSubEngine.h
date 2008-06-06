@@ -123,6 +123,7 @@ _class_::atexit_cleanup(void) \
   _class_::outputdata = NULL; \
   _class_::parentinputdata = NULL; \
   _class_::parentoutputdata = NULL; \
+  SoType::removeType(_class_::classTypeId.getName()); \
   _class_::classTypeId STATIC_SOTYPE_INIT; \
   _class_::classinstances = 0; \
 }
