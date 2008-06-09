@@ -25,6 +25,8 @@
 
 #include <assert.h>
 
+#include <string>
+
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -34,6 +36,8 @@
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLEvent.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
+
+#include "tidbitsp.h"
 
 class ZoomData {
 public:
@@ -140,7 +144,6 @@ SoScXMLSetZoom::invoke(ScXMLStateMachine * statemachinearg)
   else {
     return;
   }
-
 }
 
 // *************************************************************************
@@ -166,6 +169,21 @@ SoScXMLUpdateZoom::invoke(ScXMLStateMachine * statemachinearg)
 
   SoScXMLStateMachine * statemachine =
     static_cast<SoScXMLStateMachine *>(statemachinearg);
+
+  const char * srcexprstr = this->getSrcExprAttribute();
+  if (srcexprstr) {
+    std::string srcexpr = srcexprstr;
+    float diffvalue = 0.0f;
+    enum LocalConstants { ZOOMVALUELEN = sizeof("zoomvalue=")-1 };
+    if (srcexpr.compare(0, ZOOMVALUELEN, "zoomvalue=") == 0) {
+      diffvalue = atof(&(srcexpr.at(ZOOMVALUELEN)));
+    }
+    if (!coin_isnan(diffvalue) && diffvalue != 0.0f) {
+      SoCamera * camera = statemachine->getActiveCamera();
+      SoScXMLNavigationInvoke::zoom(camera, diffvalue);
+    }
+    return;
+  }
 
   ZoomData * data = SoScXMLZoomInvoke::getZoomData(statemachine);
   assert(data);
