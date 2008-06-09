@@ -35,10 +35,13 @@ Camera navigation SCXML state machine for Coin 3.0.
       <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="rotate">
         <invoke targettype="sim.coin3d.coin" src="SetRotate"/>
       </transition>
-      
+
       <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON3" target="pan_button_move">
         <invoke targettype="sim.coin3d.coin" src="SetPan"/>
       </transition>
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON4" target="zoom_step_out"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON5" target="zoom_step_in"/>
 
       <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_SHIFT" target="pan_shift_wait"/>
 
@@ -160,6 +163,25 @@ Camera navigation SCXML state machine for Coin 3.0.
           <invoke targettype="sim.coin3d.coin" src="SetPan"/>
         </transition>
       </state>
+
+      <state id="zoom_step">
+        <transition event="zoom_step_in_container.done" target="idle"/>
+        <transition event="zoom_step_out_container.done" target="idle"/>
+
+        <state id="zoom_step_in_container">
+          <onentry>
+            <invoke targettype="sim.coin3d.coin" src="UpdateZoom" srcexpr="zoomvalue=-0.1"/>
+          </onentry>
+          <final id="zoom_step_in"/>
+        </state>
+
+        <state id="zoom_step_out_container">
+          <onentry>
+            <invoke targettype="sim.coin3d.coin" src="UpdateZoom" srcexpr="zoomvalue=0.1"/>
+          </onentry>
+          <final id="zoom_step_out"/>
+        </state>
+      </state>
     </state>
 
 
@@ -175,7 +197,7 @@ Camera navigation SCXML state machine for Coin 3.0.
 
       <state id="seek_move">
         <onentry><invoke targettype="sim.coin3d.coin" src="ScheduleRedraw"/></onentry>
-        
+
         <transition event="sim.coin3d.coin.GLRender.PRE_RENDER">
           <invoke targettype="sim.coin3d.coin" src="UpdateSeek"/>
         </transition>
