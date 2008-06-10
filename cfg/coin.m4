@@ -150,7 +150,7 @@ describing the situation where this failed.
           fi
           LDFLAGS="$LDFLAGS -L$sim_ac_coindir/lib"
           LIBS="-l$sim_ac_coin_lib_name -lopengl32 $LIBS"
-          
+
           AC_LANG_PUSH(C++)
 
           AC_TRY_LINK(
