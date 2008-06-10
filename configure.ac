@@ -215,9 +215,6 @@ if $BUILD_WITH_MSVC; then
     CXXFLAGS="$CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
     LDFLAGS="$LDFLAGS $sim_ac_msvcrt_LDFLAGS"
     LIBS="$LIBS $sim_ac_msvcrt_LIBS"
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_msvcrt_CPPFLAGS"
-    COIN_EXTRA_CFLAGS="$COIN_EXTRA_CFLAGS $sim_ac_msvcrt_CFLAGS"
-    COIN_EXTRA_CXXFLAGS="$COIN_EXTRA_CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
     # sim_ac_msvcrt_LIBLIBS is set up at the end
     # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
   ])
@@ -330,8 +327,8 @@ AC_PROG_LIBTOOL
 # **************************************************************************
 #  These are used for constructing the coin-config file.
 AC_SUBST([COIN_EXTRA_CPPFLAGS], [$CPPFLAGS])
-AC_SUBST([COIN_EXTRA_CFLAGS], [])
-AC_SUBST([COIN_EXTRA_CXXFLAGS], [])
+AC_SUBST([COIN_EXTRA_CFLAGS], [$CFLAGS])
+AC_SUBST([COIN_EXTRA_CXXFLAGS], [$CXXFLAGS])
 AC_SUBST([COIN_EXTRA_LDFLAGS], [$LDFLAGS])
 AC_SUBST([COIN_EXTRA_LIBS], [$LIBS])
 
