@@ -199,9 +199,19 @@ echo mkdir %COINDIR%\include\Inventor\tools
 mkdir tools
 :toolsexists
 
+if exist scxml\*.* goto scxmlexists
+echo mkdir %COINDIR%\include\Inventor\scxml
+mkdir scxml
+:scxmlexists
+
 popd
 
 pushd include\Inventor\C
+
+if exist XML\*.* goto cxmlexists
+echo mkdir %COINDIR%\include\Inventor\C\XML
+mkdir XML
+:cxmlexists
 
 if exist base\*.* goto cbaseexists
 echo mkdir %COINDIR%\include\Inventor\C\base
@@ -236,6 +246,40 @@ if exist ForeignFiles\*.* goto foreignfilesexists
 echo mkdir %COINDIR%\include\Inventor\annex\ForeignFiles
 mkdir ForeignFiles
 :foreignfilesexists
+
+if exist Profiler\*.* goto profilerexists
+echo mkdir %COINDIR%\include\Inventor\annex\Profiler
+mkdir Profiler
+:profilerexists
+
+pushd Profiler
+
+if exist nodes\*.* goto pnodesexists
+echo mkdir %COINDIR%\include\Inventor\annex\Profiler\nodes
+mkdir nodes
+:pnodesexists
+
+if exist elements\*.* goto pelementsexists
+echo mkdir %COINDIR%\include\Inventor\annex\Profiler\elements
+mkdir elements
+:pelementsexists
+
+if exist nodekits\*.* goto pnodekitsexists
+echo mkdir %COINDIR%\include\Inventor\annex\Profiler\nodekits
+mkdir nodekits
+:pnodekitsexists
+
+if exist engines\*.* goto penginesexists
+echo mkdir %COINDIR%\include\Inventor\annex\Profiler\engines
+mkdir engines
+:penginesexists
+
+if exist utils\*.* goto putilsexists
+echo mkdir %COINDIR%\include\Inventor\annex\Profiler\utils
+mkdir utils
+:putilsexists
+
+popd
 
 if exist FXViz\*.* goto fxvizexists
 echo mkdir %COINDIR%\include\Inventor\annex\FXViz
