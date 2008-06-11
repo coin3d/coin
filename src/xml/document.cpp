@@ -288,8 +288,6 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 void
 cc_xml_doc_expat_processing_instruction_handler_cb(void * userdata, const XML_Char * target, const XML_Char * pidata)
 {
-  XML_Parser parser = static_cast<XML_Parser>(userdata);
-  cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
 #ifdef DEV_DEBUG
   fprintf(stdout, "received processing Instruction...\n");
 #endif // DEV_DEBUG
@@ -846,7 +844,6 @@ cc_xml_doc_handle_parse_error(const cc_xml_doc * doc)
 
   const int line = XML_GetCurrentLineNumber(doc->parser);
   const int column = XML_GetCurrentColumnNumber(doc->parser);
-  const long byte = XML_GetCurrentByteIndex(doc->parser);
 
   const char * errormsg = XML_ErrorString(XML_GetErrorCode(doc->parser));
 
@@ -867,7 +864,6 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
   const int line = XML_GetCurrentLineNumber(doc->parser);
   const int column = XML_GetCurrentColumnNumber(doc->parser);
-  const long byte = XML_GetCurrentByteIndex(doc->parser);
 
   SbString errorstr;
   errorstr.sprintf("XML parse warning, line %d, column %d: %s\n", line, column, message);
