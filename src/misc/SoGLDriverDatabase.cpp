@@ -157,11 +157,11 @@ SoGLDriverDatabaseP::SoGLDriverDatabaseP()
 
 SoGLDriverDatabaseP::~SoGLDriverDatabaseP() 
 {
-  if(database != NULL) {
+  if (this->database != NULL) {
 #if COIN_DEBUG
-    cc_xml_doc_write_to_file(database, "database_debug.xml");
+    cc_xml_doc_write_to_file(this->database, "database_debug.xml");
 #endif
-    cc_xml_doc_delete_x(database);
+    cc_xml_doc_delete_x(this->database);
   }
 
   for(int i = 0; i < driverlist.getLength(); i++) {
@@ -360,7 +360,7 @@ SoGLDriverDatabaseP::getComment(const cc_glglue * context, const SbName & featur
   SoGLDriver * driver = this->findGLDriver(context);
 
   if (driver) {
-    if(!driver->features.get(feature, comment))
+    if (!driver->features.get(feature, comment))
       return SbName("undefined");
   }
   return SbName(comment);
@@ -379,12 +379,12 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
   for(unsigned int i = 0; i < numplatforms; i++) {
     platform = cc_xml_elt_get_child_of_type(root, "platform", i);
 
-    if(platform) {
+    if (platform) {
       cc_xml_element * name = cc_xml_elt_get_child_of_type(platform, "name", 0);
       
       SbName namestr;
 
-      if(!name) {
+      if (!name) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoGLDriverDatabaseP::findPlatform", "Missing name in platform element!");
 #endif
@@ -393,14 +393,14 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
       else 
         namestr = cc_xml_elt_get_cdata(name);
 
-      if(strcmp(namestr, platformstring) == 0) {
+      if (strcmp(namestr, platformstring) == 0) {
         return platform;
       }
       else {
         unsigned int numaliases = cc_xml_elt_get_num_children_of_type(platform, "alias");
 
         for(unsigned int j = 0; j < numaliases; j++) {
-          if(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(platform, "alias", j)), platformstring) == 0) {
+          if (strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(platform, "alias", j)), platformstring) == 0) {
             return platform;
           }
         }      
@@ -423,12 +423,12 @@ SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendor
   for(unsigned int i = 0; i < numvendors; i++) {
     cc_xml_element * vendor = cc_xml_elt_get_child_of_type(platform, "vendor", i);
 
-    if(vendor) {
+    if (vendor) {
       cc_xml_element * name = cc_xml_elt_get_child_of_type(vendor, "name", 0);
       
       SbName namestr;
 
-      if(!name) {
+      if (!name) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoGLDriverDatabaseP::findPlatform", "Missing name in vendor element!");
 #endif
@@ -437,14 +437,14 @@ SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendor
       else 
         namestr = cc_xml_elt_get_cdata(name);
 
-      if(strcmp(namestr, vendorstring) == 0) { 
+      if (strcmp(namestr, vendorstring) == 0) { 
         return vendor;
       }
       else {
         unsigned int numaliases = cc_xml_elt_get_num_children_of_type(vendor, "alias");
 
         for(unsigned int j = 0; j < numaliases; j++) {
-          if(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(vendor, "alias", j)), vendorstring) == 0) {
+          if (strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(vendor, "alias", j)), vendorstring) == 0) {
             return vendor;
           }
         }
@@ -466,7 +466,7 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * con
     cc_xml_element * driver = cc_xml_elt_get_child_of_type(vendor, "driver", k);      
     cc_xml_element * versionrange = cc_xml_elt_get_child_of_type(driver, "versionrange", 0);
 
-    if(!versionrange) {
+    if (!versionrange) {
 #if COIN_DEBUG
       SoDebugError::postWarning("SoGLDriverDatabaseP::findDriver", "Missing versioninfo in driver element!");
 #endif
@@ -478,9 +478,9 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * con
       SbString minversion;
       SbString maxversion;
 
-      if(minversionelement)
+      if (minversionelement)
         minversion = cc_xml_elt_get_cdata(minversionelement);
-      if(maxversionelement)
+      if (maxversionelement)
         maxversion = cc_xml_elt_get_cdata(maxversionelement);
 
       unsigned int minversion_major = 0;
@@ -496,24 +496,24 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * con
 
       minversion.findAll(".", indices);
 
-      if(indices.getLength() >= 0)
+      if (indices.getLength() >= 0)
         minversion_major = atoi(minversion.getString());
-      if(indices.getLength() > 0) 
+      if (indices.getLength() > 0) 
         minversion_minor = atoi(minversion.getSubString(indices[0] + 1).getString());
-      if(indices.getLength() > 1)
+      if (indices.getLength() > 1)
         minversion_micro = atoi(minversion.getSubString(indices[1] + 1).getString());
-      if(indices.getLength() > 2)
+      if (indices.getLength() > 2)
         minversion_nano = atoi(minversion.getSubString(indices[2] + 1).getString());
 
       maxversion.findAll(".", indices);
 
-      if(indices.getLength() >= 0)
+      if (indices.getLength() >= 0)
         maxversion_major = atoi(maxversion.getString());
-      if(indices.getLength() > 0) 
+      if (indices.getLength() > 0) 
         maxversion_minor = atoi(maxversion.getSubString(indices[0] + 1).getString());
-      if(indices.getLength() > 1)
+      if (indices.getLength() > 1)
         maxversion_micro = atoi(maxversion.getSubString(indices[1] + 1).getString());
-      if(indices.getLength() > 2)
+      if (indices.getLength() > 2)
         maxversion_nano = atoi(maxversion.getSubString(indices[2] + 1).getString());
 
       //FIXME: Match Driver and add features.
@@ -559,30 +559,30 @@ SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context)
   // Check if a driver object has been created for this context. If so
   // use this driver.
   for(int i = 0; i < driverlist.getLength(); i++) {
-    if(driverlist[i]->contextid == context->contextid) {
+    if (driverlist[i]->contextid == context->contextid) {
       driver = driverlist[i];
       break;
     }
   }
 
-  if(!driver) {
+  if (!driver) {
     driver = new SoGLDriver();
     driver->contextid = context->contextid;
 
     driverlist.append(driver);
   
-    if(database) {
-      cc_xml_element * root = cc_xml_doc_get_root(database);
+    if (this->database) {
+      cc_xml_element * root = cc_xml_doc_get_root(this->database);
 
-      if(root) {
+      if (root) {
         addFeatures(context, root, driver);        
         const cc_xml_element * platform = findPlatform(root, platformstring);
 
-        if(platform) {
+        if (platform) {
           addFeatures(context, platform, driver);
           const cc_xml_element * vendor = findVendor(platform, vendorstring);
 
-          if(vendor) {                 
+          if (vendor) {                 
             addFeatures(context, vendor, driver);
             const cc_xml_element * driver = findDriver(vendor, context);
 
@@ -602,16 +602,16 @@ SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context)
 SbBool 
 SoGLDriverDatabaseP::loadFromFile(const SbName & filename) 
 {
-  if(database != NULL)
-    cc_xml_doc_delete_x(database);
+  if (this->database != NULL)
+    cc_xml_doc_delete_x(this->database);
 
-  database = cc_xml_doc_new();
+  this->database = cc_xml_doc_new();
 
-  SbBool result = cc_xml_doc_read_file_x(database, filename);
+  SbBool result = cc_xml_doc_read_file_x(this->database, filename);
 
-  if(!result || !checkDocumentVersion(database)) {
-    cc_xml_doc_delete_x(database);
-    database = NULL;
+  if (!result || !checkDocumentVersion(this->database)) {
+    cc_xml_doc_delete_x(this->database);
+    this->database = NULL;
   }
   return result;
 }
@@ -622,16 +622,16 @@ SoGLDriverDatabaseP::loadFromFile(const SbName & filename)
 SbBool 
 SoGLDriverDatabaseP::loadFromBuffer(const char * buffer) 
 {
-  if(database != NULL)
-    cc_xml_doc_delete_x(database);
+  if (this->database != NULL)
+    cc_xml_doc_delete_x(this->database);
 
-  database = cc_xml_doc_new();
+  this->database = cc_xml_doc_new();
 
-  SbBool result = cc_xml_doc_read_buffer_x(database, buffer, strlen(buffer));
+  SbBool result = cc_xml_doc_read_buffer_x(this->database, buffer, strlen(buffer));
 
-  if(!result || !checkDocumentVersion(database)) {
-    cc_xml_doc_delete_x(database);
-    database = NULL;
+  if (!result || !checkDocumentVersion(this->database)) {
+    cc_xml_doc_delete_x(this->database);
+    this->database = NULL;
   }
   return result;
 }
@@ -648,7 +648,7 @@ SoGLDriverDatabaseP::mergeFeatures(cc_xml_elt * destination, const cc_xml_elt * 
   for(unsigned int i = 0; i < numfeatures; i++) {
     cc_xml_element * feature = cc_xml_elt_get_child_of_type(source, "feature", i);
 
-    if(!mergeFeature(destination, feature))
+    if (!mergeFeature(destination, feature))
       result = FALSE;
   }
   return result;
@@ -663,7 +663,7 @@ SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * f
   cc_xml_element * name = cc_xml_elt_get_child_of_type(feature, "name", 0);
   SbName featurename = "undefined";
   
-  if(name)
+  if (name)
     featurename = cc_xml_elt_get_cdata(name);
 
   unsigned int numfeatures = cc_xml_elt_get_num_children_of_type(destination, "feature");
@@ -675,10 +675,10 @@ SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * f
 
     SbName existingfeaturename = "undefined";
     
-    if(existingname)
+    if (existingname)
       existingfeaturename = cc_xml_elt_get_cdata(existingname);
 
-    if(existingfeaturename == featurename) {
+    if (existingfeaturename == featurename) {
       cc_xml_element * comment = cc_xml_elt_get_child_of_type(feature, "comment", 0);  
       SbName commentstr = cc_xml_elt_get_cdata(comment);
 
@@ -713,7 +713,7 @@ SoGLDriverDatabaseP::mergeVendor(cc_xml_elt * platform, const cc_xml_elt * vendo
 
   existingvendor = findVendor(platform, namestr);
 
-  if(existingvendor == NULL) {
+  if (existingvendor == NULL) {
     // Try Aliases
     unsigned int numaliases = cc_xml_elt_get_num_children_of_type(vendor, "alias");
 
@@ -724,12 +724,12 @@ SoGLDriverDatabaseP::mergeVendor(cc_xml_elt * platform, const cc_xml_elt * vendo
     }
   }
 
-  if(existingvendor == NULL) {
+  if (existingvendor == NULL) {
     cc_xml_elt_add_child_x(platform, cc_xml_elt_clone(vendor));
     result = TRUE;
   }
   else {
-    if(!mergeFeatures(existingvendor, vendor))
+    if (!mergeFeatures(existingvendor, vendor))
       result = FALSE;
 
     unsigned int numdrivers = cc_xml_elt_get_num_children_of_type(vendor, "driver");
@@ -737,7 +737,7 @@ SoGLDriverDatabaseP::mergeVendor(cc_xml_elt * platform, const cc_xml_elt * vendo
     for(unsigned int i = 0; i < numdrivers; i++) {
       cc_xml_element * driver = cc_xml_elt_get_child_of_type(vendor, "driver", i);
 
-      if(!mergeDriver(existingvendor, driver))
+      if (!mergeDriver(existingvendor, driver))
         result = FALSE;
     }
   }
@@ -760,7 +760,7 @@ SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform)
 
   existingplatform = findPlatform(root, namestr);
 
-  if(existingplatform == NULL) {
+  if (existingplatform == NULL) {
     // Try Aliases
     unsigned int numaliases = cc_xml_elt_get_num_children_of_type(platform, "alias");
 
@@ -771,12 +771,12 @@ SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform)
     }
   }
 
-  if(existingplatform == NULL) {
+  if (existingplatform == NULL) {
     cc_xml_elt_add_child_x(root, cc_xml_elt_clone(platform));
     result = TRUE;
   }
   else {
-    if(!mergeFeatures(existingplatform, platform))
+    if (!mergeFeatures(existingplatform, platform))
       result = FALSE;
 
     unsigned int numvendors = cc_xml_elt_get_num_children_of_type(platform, "vendor");
@@ -784,7 +784,7 @@ SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform)
     for(unsigned int i = 0; i < numvendors; i++) {
       cc_xml_element * vendor = cc_xml_elt_get_child_of_type(platform, "vendor", i);
 
-      if(!mergeVendor(existingplatform, vendor))
+      if (!mergeVendor(existingplatform, vendor))
         result = FALSE;
     }
   }  
@@ -799,7 +799,7 @@ SoGLDriverDatabaseP::mergeRoot(const cc_xml_elt * root)
 {
   SbBool result = TRUE;
 
-  if(!mergeFeatures(getDatabaseRoot(), root))
+  if (!mergeFeatures(getDatabaseRoot(), root))
     result = FALSE;
 
   unsigned int numplatforms = cc_xml_elt_get_num_children_of_type(root, "platform");
@@ -807,7 +807,7 @@ SoGLDriverDatabaseP::mergeRoot(const cc_xml_elt * root)
   for(unsigned int i = 0; i < numplatforms; i++) {
     cc_xml_elt * platform = cc_xml_elt_get_child_of_type(root, "platform", i);
 
-    if(!mergePlatform(platform))
+    if (!mergePlatform(platform))
       result = FALSE;
   }
   return result;
@@ -820,15 +820,15 @@ SoGLDriverDatabaseP::mergeRoot(const cc_xml_elt * root)
 cc_xml_elt *
 SoGLDriverDatabaseP::getDatabaseRoot() 
 {
-  if(database == NULL)
-    database = cc_xml_doc_new();
+  if (this->database == NULL)
+    this->database = cc_xml_doc_new();
 
-  cc_xml_elt * root = cc_xml_doc_get_root(database);
+  cc_xml_elt * root = cc_xml_doc_get_root(this->database);
 
-  if(!root) {
+  if (!root) {
     root = cc_xml_elt_new();
     cc_xml_elt_set_type_x(root, "featuredatabase");
-    cc_xml_doc_set_root_x(database, root);
+    cc_xml_doc_set_root_x(this->database, root);
   }
   return root;
 }
@@ -840,17 +840,17 @@ SoGLDriverDatabaseP::getDatabaseRoot()
 SbBool
 SoGLDriverDatabaseP::checkDocumentVersion(cc_xml_doc * document)
 {
-  if(!document)
+  if (!document)
     return FALSE;
 
   cc_xml_element * root = cc_xml_doc_get_root(document);
 
-  if(!root)
+  if (!root)
     return FALSE;
 
   cc_xml_element * version = cc_xml_elt_get_child_of_type(root, "version", 0);
 
-  if(!version) {
+  if (!version) {
     // FIXME: Should issue warning, but SoDebugError is not initialized yet.
     // SoDebugError::postWarning("SoDriverDatabaseP::checkDocumentVersion",
     // "Version element not found, this might indicate old or corrupted data "
@@ -865,7 +865,7 @@ SoGLDriverDatabaseP::checkDocumentVersion(cc_xml_doc * document)
   // FIXME: Implement handling of versions properly instead of just warning
   // 20080325, oyshole
 
-  if(versionnumber != databaseloaderversion) { // Current version is 1
+  if (versionnumber != databaseloaderversion) { // Current version is 1
     // FIXME: Should issue warning, but SoDebugError is not initialized yet.
     // SoDebugError::postWarning("SoDriverDatabaseP::checkDocumentVersion",
     // "The version number of the XML data being imported does not correspond"
@@ -883,23 +883,23 @@ SoGLDriverDatabaseP::addDocument(const cc_xml_doc * document)
 {
   cc_xml_element * root = cc_xml_doc_get_root(document);
 
-  if(!root) {
+  if (!root) {
     return FALSE;
   }
 
   SbBool result = TRUE;
   SbName roottype = cc_xml_elt_get_type(root);    
 
-  if(roottype == "featuredatabase") {
+  if (roottype == "featuredatabase") {
     // Merge on root node
     result = mergeRoot(root);
   }
-  else if(roottype == "feature") {
+  else if (roottype == "feature") {
     // Merge global feature
     cc_xml_elt * db = getDatabaseRoot();
     mergeFeature(db, root);
   }
-  else if(roottype == "platform") {
+  else if (roottype == "platform") {
     // Merge on platform
     result = mergePlatform(root);
   }
@@ -919,7 +919,7 @@ SoGLDriverDatabaseP::addBuffer(const char * buffer)
   cc_xml_doc * doc = cc_xml_doc_new();
   SbBool result = cc_xml_doc_read_buffer_x(doc, buffer, strlen(buffer));
 
-  if(!result || !checkDocumentVersion(doc)) {
+  if (!result || !checkDocumentVersion(doc)) {
     cc_xml_doc_delete_x(doc);
     return FALSE;
   }
@@ -938,7 +938,7 @@ SoGLDriverDatabaseP::addFile(const SbName & filename)
   cc_xml_doc * doc = cc_xml_doc_new();
   SbBool result = cc_xml_doc_read_file_x(doc, filename);
 
-  if(!result || !checkDocumentVersion(doc)) {
+  if (!result || !checkDocumentVersion(doc)) {
     cc_xml_doc_delete_x(doc);
     return FALSE;
   }
@@ -998,7 +998,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
     SbName featurename = "undefined";
     SbName commentstr = "undefined";
 
-    if(name && comment) {
+    if (name && comment) {
       featurename = cc_xml_elt_get_cdata(name);     
       commentstr = cc_xml_elt_get_cdata(comment);
 
@@ -1009,22 +1009,22 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
     SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature", "Feature %s is %s!", featurename.getString(), commentstr.getString());
   #endif
 
-    if(strcmp("disabled", commentstr) == 0) {
+    if (strcmp("disabled", commentstr) == 0) {
       driver->disabled.append(featurename);
     }
-    else if(strcmp("broken", commentstr) == 0) {
+    else if (strcmp("broken", commentstr) == 0) {
       driver->broken.append(featurename);
     }
-    else if(strcmp("slow", commentstr) == 0) {
+    else if (strcmp("slow", commentstr) == 0) {
       driver->slow.append(featurename);
     }
-    else if(strcmp("fast", commentstr) == 0) {
+    else if (strcmp("fast", commentstr) == 0) {
       driver->fast.append(featurename);
     }
-    else if(strcmp("enabled", commentstr) == 0) {
+    else if (strcmp("enabled", commentstr) == 0) {
       // Do nothing, let extension/feature tests decide
     }
-    else if(strcmp("supported", commentstr) == 0) {
+    else if (strcmp("supported", commentstr) == 0) {
       // Do nothing, let extension/feature tests decide
     }
     else {
