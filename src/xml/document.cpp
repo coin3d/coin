@@ -247,6 +247,7 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
   cc_xml_elt_set_cdata_x(elt, buffer.get());
 
   if (cc_xml_is_all_whitespace_p(buffer.get())) {
+    cc_xml_elt_delete_x(elt);
     return;
   }
 
@@ -254,6 +255,8 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
     cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
     cc_xml_elt_add_child_x(parent, elt);
   }
+
+  //FIXME 2008-06-11 BFG: Possible leak of elt.
 
   if (doc->filtercb) {
     doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
