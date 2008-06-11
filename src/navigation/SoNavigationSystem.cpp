@@ -1207,6 +1207,7 @@ SoNavigationSystemP::initPlaneViewerSystem(void)
   delete shiftup;
   delete escapedown;
   delete button1down;
+  delete button2down;
   delete button1up;
 }
 
