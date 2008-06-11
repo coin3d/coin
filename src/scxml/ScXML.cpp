@@ -67,6 +67,10 @@
   document for a basic understanding how SCXML documents should be
   constructed.
 
+  NOTE: A new version of the draft has just been released (May 2008).
+  The code here does not reflect any changes done to the draft SCXML
+  specification yet.
+
   Coin uses it for its navigation system, to be able to remove
   hardcoded logic for user navigation and externalize it into XML
   files.  It is hoped that this technology will prove to be a useful
