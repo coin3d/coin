@@ -99,6 +99,7 @@ SoGLModelMatrixElement::push(SoState * stateptr)
   //                                          pederb, 2000-12-20
   this->stackoverflow = prev->stackoverflow;
   this->state = prev->state;
+  this->viewEltNodeId = prev->viewEltNodeId;
   
   if (COIN_HANDLE_STACK_OVERFLOW > 0) {
     if (!this->stackoverflow) {
