@@ -1501,6 +1501,7 @@ XML_Parse(XML_Parser parser, const char *s, int len, int isFinal)
           ps_parsing = XML_FINISHED;
           return result;
         }
+		// FIXME: default case or handle XML_FINISHED.
       }
     }
 
