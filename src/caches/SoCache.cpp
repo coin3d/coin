@@ -60,7 +60,7 @@
   a cache to make the cache dependencies work. Basically you have to
   do it like this:
   
-  \begin verbatim
+  \verbatim
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push();
   SoMyCache * cache = new SoMyCache(state);
@@ -69,7 +69,7 @@
   buildMyCache();
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
-  \end verbatim
+  \endverbatim
   
   First you reset and store the old value of the cache
   invalid-flag. Then you push the state so that the cache can detect
