@@ -126,11 +126,9 @@ typedef struct {
   cc_gzm_file * memfile;
 } cc_gzm_stream;
 
-static int do_flush(cc_gzm_stream * s, int flush);
 static int get_byte(cc_gzm_stream * s);
 static void check_header(cc_gzm_stream * s);
 static int destroy(cc_gzm_stream * s);
-static void putInt32(cc_gzm_file * file, uint32_t x);
 static uint32_t getInt32(cc_gzm_stream * s);
 
 static int cc_gzm_fseek(cc_gzm_file * file, long offset, int whence);
