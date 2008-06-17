@@ -353,7 +353,7 @@ namespace DefaultFaceGroup {
   static SoTriangleStripSet* createSoTriStripSet_n(tagContext *con);
 
   static SoIndexedTriangleStripSet* createSoIndexedTriStripSet_i(tagContext *con);
-};
+}
 
 typedef struct {
   SbList<Face*> faceList;
