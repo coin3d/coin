@@ -23,7 +23,8 @@
 
 #include <Inventor/scxml/ScXML.h>
 
-#include <assert.h>
+#include <cassert>
+#include <cstring>
 
 #include <Inventor/SbName.h>
 #include <Inventor/errors/SoDebugError.h>

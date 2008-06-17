@@ -23,7 +23,8 @@
 
 #include "scxml/SoScXMLScheduleTimerEventInvoke.h"
 
-#include <assert.h>
+#include <cassert>
+#include <cstring>
 #include <map>
 
 #include <Inventor/sensors/SoAlarmSensor.h>

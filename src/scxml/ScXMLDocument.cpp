@@ -23,8 +23,9 @@
 
 #include <Inventor/scxml/ScXMLDocument.h>
 
-#include <assert.h>
 #include <algorithm>
+#include <cassert>
+#include <cstring>
 #include <vector>
 
 #include <Inventor/scxml/ScXML.h>

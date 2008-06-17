@@ -23,9 +23,10 @@
 
 #include <Inventor/annex/Profiler/SbProfilingData.h>
 
-#include <vector>
-#include <map>
 #include <algorithm> // std::reverse
+#include <cstring>
+#include <map>
+#include <vector>
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoFullPath.h>

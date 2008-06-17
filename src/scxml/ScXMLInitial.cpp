@@ -23,8 +23,9 @@
 
 #include <Inventor/scxml/ScXMLInitial.h>
 
-#include <assert.h>
 #include <algorithm>
+#include <cassert>
+#include <cstring>
 
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLTransition.h>

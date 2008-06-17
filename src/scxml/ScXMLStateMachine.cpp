@@ -23,11 +23,12 @@
 
 #include <Inventor/scxml/ScXMLStateMachine.h>
 
-#include <assert.h>
-#include <list>
-#include <vector>
-#include <map>
 #include <algorithm>
+#include <cassert>
+#include <cstring>
+#include <list>
+#include <map>
+#include <vector>
 
 #include <boost/scoped_ptr.hpp>
 
