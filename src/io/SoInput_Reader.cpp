@@ -318,7 +318,15 @@ SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
   // FIXME: about the cast; see note about the call to cc_gzm_open()
   // above. 20050525 mortene.
-  return cc_zlibglue_gzread(this->gzfp, (void*) buf, (uint32_t)readlen);
+  int result = cc_zlibglue_gzread(this->gzfp, (void*) buf, (uint32_t)readlen);
+
+  // the signature of this this function was changed to return size_t
+  // without checking that gzread() actually returns a signed
+  // integer. We need to check for this and not just cast to size_t on
+  // return
+  if (result < 0) result = 0; // EOF
+
+  return (size_t) result;
 }
 
 const SbString &
@@ -362,11 +370,16 @@ SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
   int ret = cc_bzglue_BZ2_bzRead(&bzerror, this->bzfp,
                                  buf, (uint32_t)readlen);
   if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
-    ret = -1;
+    ret = 0;
     cc_bzglue_BZ2_bzReadClose(&bzerror, this->bzfp);
     this->bzfp = NULL;
   }
-  return ret;
+  // the signature of this this function was changed to return size_t
+  // without checking that bzRead() actually returns a signed
+  // integer. We need to check for this and not just cast to size_t on
+  // return.
+  if (ret < 0) ret = 0; // might not be necessary, but will catch other errors
+  return (size_t) ret;
 }
 
 const SbString &
