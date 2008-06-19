@@ -107,6 +107,7 @@ SoVRMLParent::initClass(void)
   // used when the 'children' field contains NULL-nodes
   vrmlparent_nullnode = new SoInfo;
   vrmlparent_nullnode->ref();
+  vrmlparent_nullnode->setName("SoVRMLParent::nullnode");
   coin_atexit((coin_atexit_f*) vrmlparent_cleanup, CC_ATEXIT_NORMAL);
 }
 
