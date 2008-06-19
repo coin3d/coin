@@ -131,6 +131,9 @@ SoEventManager::getNavigationState(void) const
 /*!
   This method sets the navigation system to use.
 
+  \param system The SoEventManager keeps its own copy of the system,
+  remember to delete your own.
+
   \sa SoNavigationSystem, getNavigationSystem
 */
 
@@ -140,13 +143,18 @@ SoEventManager::setNavigationSystem(SoNavigationSystem * system)
   if (PRIVATE(this)->navigationsystem) {
     PRIVATE(this)->navigationsystem->setCamera(NULL);
     PRIVATE(this)->navigationsystem->setSceneGraph(NULL);
+    //NOTE: Need to delete this, as we may hold the navigationsystem
+    //from our constructor, which is the only one of its kind.
+    delete PRIVATE(this)->navigationsystem;
   }
 
   if (!system) {
     PRIVATE(this)->navigationsystem = NULL; // SoNavigationSystem::getByName(SO_IDLER_SYSTEM);
     return;
   }
-  PRIVATE(this)->navigationsystem = system;
+
+  //Keep a unique copy.
+  PRIVATE(this)->navigationsystem = system->clone();
   PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
   PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
   PRIVATE(this)->navigationsystem->setViewport(PRIVATE(this)->handleeventaction->getViewportRegion());
