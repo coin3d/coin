@@ -383,7 +383,11 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
-  assert(shaderProgram);
+  if (!shaderProgram) {
+    SoDebugError::postWarning("SoShaderObject::GLRender",
+                              "SoShaderObject seems to not be under a SoShaderProgram node");
+    return;
+  }
 
   const uint32_t cachecontext = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(cachecontext);
