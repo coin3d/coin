@@ -13,7 +13,8 @@ CLEANFILES = \
 noinst_HEADERS = \
         unconfig.h \
         tidbitsp.h \
-        coindefs.h
+        coindefs.h \
+        SbBasic.h
 
 EXTRADIST = \
         update-config.sh \
