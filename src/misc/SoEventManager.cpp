@@ -85,6 +85,7 @@ SoEventManager::SoEventManager(void)
 
 SoEventManager::~SoEventManager()
 {
+  this->setCamera(NULL);
   delete PRIVATE(this)->searchaction;
 
   if (PRIVATE(this)->navigationsystem) {
