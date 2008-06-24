@@ -14,7 +14,7 @@ noinst_HEADERS = \
         unconfig.h \
         tidbitsp.h \
         coindefs.h \
-        SbBasic.h
+        SbBasicP.h
 
 EXTRADIST = \
         update-config.sh \
