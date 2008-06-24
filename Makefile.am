@@ -97,7 +97,7 @@ EXTRA_DIST = \
 	docs/doxygen/header.html \
 	docs/doxygen/footer.html \
 	docs/doxygen/stylesheet.css \
-	docs/doxygen/Coin_logo.png \    
+	docs/doxygen/Coin_logo.png \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
 	packaging/debian/copyright.in \
