@@ -82,15 +82,32 @@ public:
   void lockChildList(void) { }
   void unlockChildList(void) { }
 #endif // !COIN_THREADSAFE
+
+  static SoInfo * getNullNode(void) {
+    if (SoVRMLParentP::nullnode == NULL) {
+      SoVRMLParentP::nullnode = new SoInfo;
+      SoVRMLParentP::nullnode->ref();
+      SoVRMLParentP::nullnode->setName("SoVRMLParent::nullnode");
+    }
+    return SoVRMLParentP::nullnode;
+  }
+  static void freeNullNode(void) {
+    if (SoVRMLParentP::nullnode != NULL) {
+      SoVRMLParentP::nullnode->unref();
+      SoVRMLParentP::nullnode = NULL;
+    }
+  }
+
+private:
+  static SoInfo * nullnode;
 };
 
-static SoInfo * vrmlparent_nullnode = NULL;
+SoInfo * SoVRMLParentP::nullnode = NULL;
 
 static void
 vrmlparent_cleanup(void)
 {
-  vrmlparent_nullnode->unref();
-  vrmlparent_nullnode = NULL;
+  SoVRMLParentP::freeNullNode();
 }
 
 // *************************************************************************
@@ -105,9 +122,6 @@ SoVRMLParent::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVRMLParent, SO_VRML97_NODE_TYPE);
   // used when the 'children' field contains NULL-nodes
-  vrmlparent_nullnode = new SoInfo;
-  vrmlparent_nullnode->ref();
-  vrmlparent_nullnode->setName("SoVRMLParent::nullnode");
   coin_atexit((coin_atexit_f*) vrmlparent_cleanup, CC_ATEXIT_NORMAL);
 }
 
@@ -390,7 +404,7 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
       // (of type SoInfo). This is to simplify the traversal code, and
       // to make it easier to check if the SoChildList is up-to-date
       if (clarr[i] == NULL) {
-        if (nodes[i] != vrmlparent_nullnode) break;
+        if (nodes[i] != SoVRMLParentP::getNullNode()) break;
       }
       else {        
         if (clarr[i] != nodes[i]) break;
@@ -406,7 +420,7 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
       }
       else {
         // insert a dummy SoInfo node
-        cl.append(vrmlparent_nullnode);
+        cl.append(SoVRMLParentP::getNullNode());
       }
     }
   }
