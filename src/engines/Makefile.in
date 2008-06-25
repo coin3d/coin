@@ -302,20 +302,26 @@ RegularSources = \
 	SoTimeCounter.cpp \
 	SoTransformVec3f.cpp \
 	SoTriggerAny.cpp \
+	SoTexture2Convert.cpp \
+	SoHeightMapToNormalMap.cpp \
 	evaluator.c \
 	evaluator_tab.c
+
 
 LinkHackSources = \
 	all-engines-cpp.cpp \
 	all-engines-c.c
 
+
 PublicHeaders = 
+
 PrivateHeaders = \
 	SoSubEngineP.h \
 	SoConvertAll.h \
 	SoSubNodeEngineP.h \
 	evaluator.h \
 	so_eval.ic
+
 
 ObsoleteHeaders = 
 
@@ -410,7 +416,8 @@ am__engines_lst_SOURCES_DIST = SoBoolOperation.cpp SoCalculator.cpp \
 	SoInterpolateVec4f.cpp SoNodeEngine.cpp SoOnOff.cpp \
 	SoOneShot.cpp SoOutputData.cpp SoSelectOne.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
-	evaluator.c evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
+	SoTexture2Convert.cpp SoHeightMapToNormalMap.cpp evaluator.c \
+	evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
 am__objects_1 = all-engines-cpp.$(OBJEXT) all-engines-c.$(OBJEXT)
 am__objects_2 = SoBoolOperation.$(OBJEXT) SoCalculator.$(OBJEXT) \
 	SoComposeMatrix.$(OBJEXT) SoComposeRotation.$(OBJEXT) \
@@ -429,7 +436,8 @@ am__objects_2 = SoBoolOperation.$(OBJEXT) SoCalculator.$(OBJEXT) \
 	SoNodeEngine.$(OBJEXT) SoOnOff.$(OBJEXT) SoOneShot.$(OBJEXT) \
 	SoOutputData.$(OBJEXT) SoSelectOne.$(OBJEXT) \
 	SoTimeCounter.$(OBJEXT) SoTransformVec3f.$(OBJEXT) \
-	SoTriggerAny.$(OBJEXT) evaluator.$(OBJEXT) \
+	SoTriggerAny.$(OBJEXT) SoTexture2Convert.$(OBJEXT) \
+	SoHeightMapToNormalMap.$(OBJEXT) evaluator.$(OBJEXT) \
 	evaluator_tab.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
@@ -450,7 +458,8 @@ am__EXTRA_engines_lst_SOURCES_DIST = SoSubEngineP.h SoConvertAll.h \
 	SoInterpolateVec4f.cpp SoNodeEngine.cpp SoOnOff.cpp \
 	SoOneShot.cpp SoOutputData.cpp SoSelectOne.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
-	evaluator.c evaluator_tab.c
+	SoTexture2Convert.cpp SoHeightMapToNormalMap.cpp evaluator.c \
+	evaluator_tab.c
 engines_lst_OBJECTS = $(am_engines_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -470,7 +479,8 @@ am__libengines_la_SOURCES_DIST = SoBoolOperation.cpp SoCalculator.cpp \
 	SoInterpolateVec4f.cpp SoNodeEngine.cpp SoOnOff.cpp \
 	SoOneShot.cpp SoOutputData.cpp SoSelectOne.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
-	evaluator.c evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
+	SoTexture2Convert.cpp SoHeightMapToNormalMap.cpp evaluator.c \
+	evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
 am__objects_6 = all-engines-cpp.lo all-engines-c.lo
 am__objects_7 = SoBoolOperation.lo SoCalculator.lo SoComposeMatrix.lo \
 	SoComposeRotation.lo SoComposeRotationFromTo.lo \
@@ -484,8 +494,8 @@ am__objects_7 = SoBoolOperation.lo SoCalculator.lo SoComposeMatrix.lo \
 	SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
 	SoInterpolateVec4f.lo SoNodeEngine.lo SoOnOff.lo SoOneShot.lo \
 	SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo \
-	SoTransformVec3f.lo SoTriggerAny.lo evaluator.lo \
-	evaluator_tab.lo
+	SoTransformVec3f.lo SoTriggerAny.lo SoTexture2Convert.lo \
+	SoHeightMapToNormalMap.lo evaluator.lo evaluator_tab.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libengines_la_OBJECTS = $(am__objects_8)
@@ -505,7 +515,8 @@ am__EXTRA_libengines_la_SOURCES_DIST = SoSubEngineP.h SoConvertAll.h \
 	SoInterpolateVec4f.cpp SoNodeEngine.cpp SoOnOff.cpp \
 	SoOneShot.cpp SoOutputData.cpp SoSelectOne.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
-	evaluator.c evaluator_tab.c
+	SoTexture2Convert.cpp SoHeightMapToNormalMap.cpp evaluator.c \
+	evaluator_tab.c
 libengines_la_OBJECTS = $(am_libengines_la_OBJECTS)
 libengines@SUFFIX@LINKHACK_la_LDFLAGS =
 libengines@SUFFIX@LINKHACK_la_LIBADD =
@@ -523,7 +534,8 @@ am__libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoolOperation.cpp \
 	SoInterpolateVec4f.cpp SoNodeEngine.cpp SoOnOff.cpp \
 	SoOneShot.cpp SoOutputData.cpp SoSelectOne.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
-	evaluator.c evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
+	SoTexture2Convert.cpp SoHeightMapToNormalMap.cpp evaluator.c \
+	evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
 am_libengines@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubEngineP.h \
 	SoConvertAll.h SoSubNodeEngineP.h evaluator.h so_eval.ic \
@@ -541,7 +553,8 @@ am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubEngineP.h \
 	SoInterpolateVec4f.cpp SoNodeEngine.cpp SoOnOff.cpp \
 	SoOneShot.cpp SoOutputData.cpp SoSelectOne.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
-	evaluator.c evaluator_tab.c
+	SoTexture2Convert.cpp SoHeightMapToNormalMap.cpp evaluator.c \
+	evaluator_tab.c
 libengines@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libengines@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -587,6 +600,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoFieldConverter.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFieldConverter.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGate.Plo ./$(DEPDIR)/SoGate.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoHeightMapToNormalMap.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoHeightMapToNormalMap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInterpolate.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInterpolate.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInterpolateFloat.Plo \
@@ -607,6 +622,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoOutputData.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSelectOne.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSelectOne.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTexture2Convert.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTexture2Convert.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimeCounter.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimeCounter.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformVec3f.Plo \
@@ -750,6 +767,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldConverter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoHeightMapToNormalMap.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoHeightMapToNormalMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInterpolate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInterpolate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInterpolateFloat.Plo@am__quote@
@@ -772,6 +791,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutputData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSelectOne.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSelectOne.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture2Convert.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture2Convert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimeCounter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimeCounter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformVec3f.Plo@am__quote@
