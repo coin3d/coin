@@ -192,6 +192,8 @@ SoEngine::initClasses(void)
   SoTimeCounter::initClass();
   SoTransformVec3f::initClass();
   SoTriggerAny::initClass();
+  SoTexture2Convert::initClass();
+  SoHeightMapToNormalMap::initClass();
 }
 
 // Documented in superclass.

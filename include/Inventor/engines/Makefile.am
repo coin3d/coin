@@ -38,7 +38,9 @@ PublicHeaders = \
 	SoSelectOne.h \
 	SoTimeCounter.h \
 	SoTransformVec3f.h \
-	SoTriggerAny.h
+	SoTriggerAny.h \
+	SoTexture2Convert.h \
+	SoHeightMapToNormalMap.h
 
 PrivateHeaders =
 

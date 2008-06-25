@@ -96,6 +96,7 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
+#include <Inventor/engines/SoHeightMapToNormalMap.h>
 
 #include "coindefs.h" // COIN_OBSOLETED()
 #include "nodes/SoSubNodeP.h"
@@ -185,78 +186,6 @@ public:
 
 #undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
-
-static void
-convert_heightmap_to_normalmap(const unsigned char * srcptr,
-                               const SbVec2s size,
-                               const int nc,
-                               SbImage & dst)
-{
-  float dx, dy;
-  int width = size[0];
-  int height = size[1];
-  unsigned char * dstptr = new unsigned char[width*height*3];
-  unsigned char * dststore = dstptr;
-  unsigned char red;
-  SbVec3f n;
-
-#define GET_PIXEL_RED(x_, y_) \
-  srcptr[(y_)*width*nc + (x_)*nc]
-
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
-      // do Y Sobel filter
-      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
-      dy  = ((float) red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED(x % width, (y+1) % height);
-      dy += ((float) red) / 255.0f * -2.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
-      dy += ((float) red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
-      dy += ((float) red) / 255.0f *  1.0f;
-
-      red = GET_PIXEL_RED(x % width, (y-1+height) % height);
-      dy += ((float) red) / 255.0f *  2.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
-      dy += ((float) red) / 255.0f *  1.0f;
-
-      // Do X Sobel filter
-      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
-      dx  = ((float) red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED((x-1+width) % width,   y % height);
-      dx += ((float) red) / 255.0f * -2.0f;
-
-      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
-      dx += ((float) red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
-      dx += ((float) red) / 255.0f *  1.0f;
-
-      red = GET_PIXEL_RED((x+1) % width,   y % height);
-      dx += ((float) red) / 255.0f *  2.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
-      dx += ((float) red) / 255.0f *  1.0f;
-
-      n[0] = -dx;
-      n[1] = -dy;
-      n[2] = 1.0f;
-      (void) n.normalize();
-
-      *dstptr++ = (unsigned char) SbMin((n[0]+1.0f) * 128.0f, 255.0f);
-      *dstptr++ = (unsigned char) SbMin((n[1]+1.0f) * 128.0f, 255.0f);
-      *dstptr++ = (unsigned char) SbMin((n[2]+1.0f) * 128.0f, 255.0f);
-    }
-  }
-#undef GET_PIXEL_RED
-  dst.setValue(size, 3, dststore);
-  delete[] dststore;
-}
 
 
 SO_NODE_SOURCE(SoBumpMap);
@@ -360,7 +289,7 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
         PRIVATE(this)->testGrayscale(bytes, size, nc);
         if (PRIVATE(this)->isgrayscale) {
           if (!PRIVATE(this)->didconvert) {
-            convert_heightmap_to_normalmap(bytes, size, nc, PRIVATE(this)->convertedheightmap);
+            SoHeightMapToNormalMap::convert(bytes, size, nc, PRIVATE(this)->convertedheightmap);
             PRIVATE(this)->didconvert = TRUE;
           }
           bytes = PRIVATE(this)->convertedheightmap.getValue(size, nc);

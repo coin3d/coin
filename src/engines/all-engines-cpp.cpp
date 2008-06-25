@@ -57,3 +57,5 @@
 #include "SoTransformVec3f.cpp"
 #include "SoTriggerAny.cpp"
 #include "SoNodeEngine.cpp"
+#include "SoTexture2Convert.cpp"
+#include "SoHeightMapToNormalMap.cpp"

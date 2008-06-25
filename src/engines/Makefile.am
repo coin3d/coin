@@ -38,18 +38,24 @@ RegularSources = \
 	SoTimeCounter.cpp \
 	SoTransformVec3f.cpp \
 	SoTriggerAny.cpp \
+	SoTexture2Convert.cpp \
+	SoHeightMapToNormalMap.cpp \
 	evaluator.c \
 	evaluator_tab.c
+
 LinkHackSources = \
 	all-engines-cpp.cpp \
 	all-engines-c.c
+
 PublicHeaders =
+
 PrivateHeaders = \
 	SoSubEngineP.h \
 	SoConvertAll.h \
 	SoSubNodeEngineP.h \
 	evaluator.h \
 	so_eval.ic
+
 ObsoleteHeaders =
 
 EXTRA_DIST = \

@@ -55,5 +55,7 @@
 #include <Inventor/engines/SoTimeCounter.h>
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/engines/SoTriggerAny.h>
+#include <Inventor/engines/SoTexture2Convert.h>
+#include <Inventor/engines/SoHeightMapToNormalMap.h>
 
 #endif // !COIN_SOENGINES_H
