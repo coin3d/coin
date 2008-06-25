@@ -364,6 +364,8 @@ del %COINDIR%\include\Inventor\engines\SoSelectOne.h
 del %COINDIR%\include\Inventor\engines\SoTimeCounter.h
 del %COINDIR%\include\Inventor\engines\SoTransformVec3f.h
 del %COINDIR%\include\Inventor\engines\SoTriggerAny.h
+del %COINDIR%\include\Inventor\engines\SoTexture2Convert.h
+del %COINDIR%\include\Inventor\engines\SoHeightMapToNormalMap.h
 del %COINDIR%\include\Inventor\errors\SoErrors.h
 del %COINDIR%\include\Inventor\errors\SoDebugError.h
 del %COINDIR%\include\Inventor\errors\SoError.h

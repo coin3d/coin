@@ -629,6 +629,8 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\engines\SoTransformVec3f.h \
                          ..\..\include\Inventor\engines\SoTriggerAny.h \
                          ..\..\include\Inventor\engines\SoNodeEngine.h \
+                         ..\..\include\Inventor\engines\SoTexture2Convert.h \
+                         ..\..\include\Inventor\engines\SoHeightMapToNormalMap.h \
                          ..\..\include\Inventor\errors\SoDebugError.h \
                          ..\..\include\Inventor\errors\SoError.h \
                          ..\..\include\Inventor\errors\SoMemoryError.h \
@@ -1201,6 +1203,8 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\engines\SoTransformVec3f.cpp \
                          ..\..\src\engines\SoTriggerAny.cpp \
                          ..\..\src\engines\SoNodeEngine.cpp \
+                         ..\..\src\engines\SoTexture2Convert.cpp \
+                         ..\..\src\engines\SoHeightMapToNormalMap.cpp \
                          ..\..\src\errors\SoDebugError.cpp \
                          ..\..\src\errors\SoError.cpp \
                          ..\..\src\errors\SoMemoryError.cpp \

@@ -4098,6 +4098,32 @@ SOURCE=..\..\src\engines\SoTriggerAny.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\engines\SoTexture2Convert.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\engines"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\engines\SoHeightMapToNormalMap.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\engines"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\engines"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\engines\evaluator.c
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
@@ -13434,6 +13460,14 @@ SOURCE=..\..\include\Inventor\engines\SoTransformVec3f.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\engines\SoTriggerAny.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\engines\SoTexture2Convert.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\engines\SoHeightMapToNormalMap.h
 # End Source File
 # End Group
 # Begin Group "Inventor\errors headers"

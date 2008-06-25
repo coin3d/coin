@@ -13232,6 +13232,51 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\engines\SoHeightMapToNormalMap.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\engines/"
+							ProgramDataBaseFileName="StaticDebug\engines/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\engines/"
+							ProgramDataBaseFileName="Release\engines/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\engines/"
+							ProgramDataBaseFileName="StaticRelease\engines/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\engines/"
+							ProgramDataBaseFileName="Debug\engines/"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\engines\SoInterpolate.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -13683,6 +13728,51 @@
 				</File>
 				<File
 					RelativePath="..\..\src\engines\SoSelectOne.cpp">
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\engines/"
+							ProgramDataBaseFileName="StaticDebug\engines/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\engines/"
+							ProgramDataBaseFileName="Release\engines/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\engines/"
+							ProgramDataBaseFileName="StaticRelease\engines/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\engines/"
+							ProgramDataBaseFileName="Debug\engines/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\engines\SoTexture2Convert.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -41728,6 +41818,9 @@
 					RelativePath="..\..\include\Inventor\engines\SoGate.h">
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\engines\SoHeightMapToNormalMap.h">
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\engines\SoInterpolate.h">
 				</File>
 				<File
@@ -41765,6 +41858,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\engines\SoSubNodeEngine.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\engines\SoTexture2Convert.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\engines\SoTimeCounter.h">

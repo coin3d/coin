@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{A6AC9373-904E-43E3-BBAC-B113EBB41D06}"
+	ProjectGUID="{BB857FFD-7CEF-4B9B-846D-2710241753C7}"
 	>
 	<Platforms>
 		<Platform
@@ -14802,6 +14802,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\engines\SoHeightMapToNormalMap.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\engines/"
+							ProgramDataBaseFileName="StaticDebug\engines/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\engines/"
+							ProgramDataBaseFileName="Release\engines/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\engines/"
+							ProgramDataBaseFileName="StaticRelease\engines/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\engines/"
+							ProgramDataBaseFileName="Debug\engines/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\engines\SoInterpolate.cpp"
 					>
 					<FileConfiguration
@@ -15303,6 +15353,56 @@
 				</File>
 				<File
 					RelativePath="..\..\src\engines\SoSelectOne.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\engines/"
+							ProgramDataBaseFileName="StaticDebug\engines/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\engines/"
+							ProgramDataBaseFileName="Release\engines/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\engines/"
+							ProgramDataBaseFileName="StaticRelease\engines/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\engines/"
+							ProgramDataBaseFileName="Debug\engines/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\engines\SoTexture2Convert.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -46702,6 +46802,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\engines\SoHeightMapToNormalMap.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\engines\SoInterpolate.h"
 					>
 				</File>
@@ -46751,6 +46855,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\engines\SoSubNodeEngine.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\engines\SoTexture2Convert.h"
 					>
 				</File>
 				<File

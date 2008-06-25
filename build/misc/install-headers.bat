@@ -364,6 +364,8 @@ copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoSelectOne.h %COINDIR%\include
 copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoTimeCounter.h %COINDIR%\include\Inventor\engines\SoTimeCounter.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoTransformVec3f.h %COINDIR%\include\Inventor\engines\SoTransformVec3f.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoTriggerAny.h %COINDIR%\include\Inventor\engines\SoTriggerAny.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoTexture2Convert.h %COINDIR%\include\Inventor\engines\SoTexture2Convert.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoHeightMapToNormalMap.h %COINDIR%\include\Inventor\engines\SoHeightMapToNormalMap.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\errors\SoErrors.h %COINDIR%\include\Inventor\errors\SoErrors.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\errors\SoDebugError.h %COINDIR%\include\Inventor\errors\SoDebugError.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\errors\SoError.h %COINDIR%\include\Inventor\errors\SoError.h >nul:
