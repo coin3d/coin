@@ -209,10 +209,10 @@ public:
   uint32_t stateflags;
 };
 
-Superimposition::Superimposition(SoNode * scene,
-                                 SbBool enabled,
-                                 SoRenderManager * manager,
-                                 uint32_t flags)
+SoRenderManager::Superimposition::Superimposition(SoNode * scene,
+                                                  SbBool enabled,
+                                                  SoRenderManager * manager,
+                                                  uint32_t flags)
 {
   assert(scene != NULL);
   PRIVATE(this) = new SuperimpositionP;
@@ -228,15 +228,21 @@ Superimposition::Superimposition(SoNode * scene,
   PRIVATE(this)->sensor->attach(PRIVATE(this)->scene);
 }
 
-Superimposition::~Superimposition()
+SoRenderManager::Superimposition::~Superimposition()
 {
   PRIVATE(this)->scene->unref();
   delete PRIVATE(this)->sensor;
   delete PRIVATE(this);
 }
 
+int
+SoRenderManager::Superimposition::getStateFlags(void) const
+{
+  return PRIVATE(this)->stateflags;
+}
+
 void
-Superimposition::render(void)
+SoRenderManager::Superimposition::render(SoGLRenderAction * action, SbBool clearcolorbuffer)
 {
   if (!PRIVATE(this)->enabled) return;
 
@@ -246,24 +252,26 @@ Superimposition::render(void)
     glEnable(GL_DEPTH_TEST):
     glDisable(GL_DEPTH_TEST);
 
-  if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER)
-    glClear(GL_DEPTH_BUFFER_BIT);
-
-  PRIVATE(this)->manager->getGLRenderAction()->apply(PRIVATE(this)->scene);
-
+  GLbitfield clearflags = clearcolorbuffer ? GL_COLOR_BUFFER_BIT : 0;
+  if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER) {
+    clearflags |= GL_DEPTH_BUFFER_BIT;
+  } 
+  
+  PRIVATE(this)->manager->renderScene(action, PRIVATE(this)->scene, (uint32_t) clearflags);
+  
   zbufferwason ?
     glEnable(GL_DEPTH_TEST):
     glDisable(GL_DEPTH_TEST);
 }
 
 void
-Superimposition::setEnabled(SbBool yes)
+SoRenderManager::Superimposition::setEnabled(SbBool yes)
 {
   PRIVATE(this)->enabled = yes;
 }
 
 void
-Superimposition::changeCB(void * data, SoSensor * sensor)
+SoRenderManager::Superimposition::changeCB(void * data, SoSensor * sensor)
 {
   Superimposition * thisp = (Superimposition *) data;
   assert(thisp && PRIVATE(thisp)->manager);

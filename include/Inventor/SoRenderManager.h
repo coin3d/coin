@@ -40,31 +40,33 @@ class SoSensor;
 
 typedef void SoRenderManagerRenderCB(void * userdata, class SoRenderManager * mgr);
 
-class COIN_DLL_API Superimposition {
-public:
-  enum StateFlags {
-    ZBUFFERON    = 0x0001,
-    CLEARZBUFFER = 0x0002,
-    AUTOREDRAW   = 0x0004
-  };
-
-  Superimposition(SoNode * scene,
-                  SbBool enabled,
-                  SoRenderManager * manager,
-                  uint32_t flags);
-  ~Superimposition();
-  
-  void render(void);
-  void setEnabled(SbBool yes);
-  
-private:
-  static void changeCB(void * data, SoSensor * sensor);
-  class SuperimpositionP * pimpl;
-};
-
-
 class COIN_DLL_API SoRenderManager {
 public:
+
+  class COIN_DLL_API Superimposition {
+  public:
+    enum StateFlags {
+      ZBUFFERON    = 0x0001,
+      CLEARZBUFFER = 0x0002,
+      AUTOREDRAW   = 0x0004,
+      BACKGROUND   = 0x0008
+    };
+    
+    Superimposition(SoNode * scene,
+                    SbBool enabled,
+                    SoRenderManager * manager,
+                    uint32_t flags);
+    ~Superimposition();
+    
+    void render(SoGLRenderAction * action, SbBool clearcolorbuffer = FALSE);
+    void setEnabled(SbBool yes);
+    int getStateFlags(void) const;
+    
+  private:
+    static void changeCB(void * data, SoSensor * sensor);
+    class SuperimpositionP * pimpl;
+  };
+
   enum RenderMode {
     AS_IS,
     WIREFRAME,
@@ -104,8 +106,10 @@ public:
                       const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
 
+
+
+
   Superimposition * addSuperimposition(SoNode * scene, 
-                                       SbBool enabled = TRUE, 
                                        uint32_t flags = 
                                        Superimposition::AUTOREDRAW | 
                                        Superimposition::ZBUFFERON  |
@@ -188,6 +192,10 @@ public:
 protected:
   int isActive(void) const;
   void redraw(void);
+
+  void renderScene(SoGLRenderAction * action,
+                   SoNode * scene,
+                   uint32_t clearmask);
 
   void actuallyRender(SoGLRenderAction * action,
                       const SbBool initmatrices = TRUE,

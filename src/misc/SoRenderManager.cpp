@@ -266,15 +266,14 @@ SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
 /*!
 
  */
-Superimposition *
+SoRenderManager::Superimposition *
 SoRenderManager::addSuperimposition(SoNode * scene, 
-                                    SbBool enabled,
                                     uint32_t flags)
 {
   if (!PRIVATE(this)->superimpositions) {
     PRIVATE(this)->superimpositions = new SbPList;
   }
-  Superimposition * s = new Superimposition(scene, enabled, this, flags);
+  Superimposition * s = new Superimposition(scene, TRUE, this, flags);
   PRIVATE(this)->superimpositions->append(s);
   return s;
 }
@@ -350,19 +349,32 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 void
 SoRenderManager::render(SoGLRenderAction * action,
                         const SbBool initmatrices,
-                        const SbBool clearwindow,
+                        const SbBool clearwindow_in,
                         const SbBool clearzbuffer)
 {
+  SbBool clearwindow = clearwindow_in; // make sure we only clear the color buffer once
   PRIVATE(this)->invokePreRenderCallbacks();
-
-  (this->getStereoMode() == SoRenderManager::MONO) ?
-    this->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
-    this->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
 
   if (PRIVATE(this)->superimpositions) {
     for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
       Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
-      s->render();
+      if (s->getStateFlags() & Superimposition::BACKGROUND) {
+        s->render(action, clearwindow);
+        clearwindow = FALSE;
+      }
+    }
+  }
+
+  (this->getStereoMode() == SoRenderManager::MONO) ?
+    this->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
+    this->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
+  
+  if (PRIVATE(this)->superimpositions) {
+    for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
+      Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
+      if (!(s->getStateFlags() & Superimposition::BACKGROUND)) {
+        s->render(action);
+      }
     }
   }
 
@@ -379,21 +391,6 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
   
-  if (mask) {
-    if (PRIVATE(this)->isrgbmode) {
-      const SbColor4f bgcol = PRIVATE(this)->backgroundcolor;
-      glClearColor(bgcol[0], bgcol[1], bgcol[2], bgcol[3]);
-    }
-    else {
-      glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
-    }
-    // Registering a callback is needed since the correct GL viewport
-    // is set by SoGLRenderAction before rendering. It might not be
-    // correct when we get here.
-    // This callback is removed again in the prerendercb function
-    action->addPreRenderCallback(this->prerendercb, (void*) (uintptr_t) mask);
-  }
-
   if (initmatrices) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -418,7 +415,7 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   PRIVATE(this)->unlock();
   // Apply the SoGLRenderAction to the scenegraph root.
   if (PRIVATE(this)->scene) {
-    action->apply(PRIVATE(this)->scene);
+    this->renderScene(action, PRIVATE(this)->scene, (uint32_t) mask);
   }
 
   // Automatically re-triggers rendering if any animation stuff is
@@ -436,6 +433,28 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
       ((SoSFTime *)realtime)->setValue(SbTime::getTimeOfDay());
     }
   }
+}
+
+void 
+SoRenderManager::renderScene(SoGLRenderAction * action, SoNode* scene, uint32_t clearmask)
+{
+  if (clearmask) {
+    if (clearmask & GL_COLOR_BUFFER_BIT) {
+      if (PRIVATE(this)->isrgbmode) {
+        const SbColor4f bgcol = PRIVATE(this)->backgroundcolor;
+        glClearColor(bgcol[0], bgcol[1], bgcol[2], bgcol[3]);
+      }
+      else {
+        glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
+      }
+    }
+    // Registering a callback is needed since the correct GL viewport
+    // is set by SoGLRenderAction before rendering. It might not be
+    // correct when we get here.
+    // This callback is removed again in the prerendercb function
+    action->addPreRenderCallback(this->prerendercb, (void*) (uintptr_t) clearmask);
+  }
+  action->apply(scene);
 }
 
 // render once in correct draw style
