@@ -281,7 +281,7 @@ SoEngine::getByName(const SbName & name, SoEngineList & el)
 
 /*!
   Called when an input is changed. The default method does nothing,
-  but subclasses may override this method to do the The Right Thing
+  but subclasses may override this method to do The Right Thing
   when a specific field is changed.
 */
 void
