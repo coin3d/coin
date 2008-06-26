@@ -117,7 +117,7 @@
   }
   \endcode
 
-  The fragment shader (perpixel_vertex.glsl):
+  The fragment shader (perpixel_fragment.glsl):
   \code
   varying vec3 ecPosition3;
   varying vec3 fragmentNormal;
