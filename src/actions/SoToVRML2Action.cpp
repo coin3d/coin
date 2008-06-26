@@ -362,6 +362,7 @@ public:
   SbHash<SoGroup *, const SoNode *> dict;
   SoCallbackAction cbaction;
   SoSearchAction searchaction;
+  SbList <SoVRMLGroup*> separatorstack;
 
   SbBSPTree * bsptree;
   SbBSPTree * bsptreetex;
@@ -408,6 +409,7 @@ public:
 
   // Property nodes
   static SoCallbackAction::Response soinfo_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response solabel_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response somattrans_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sorotation_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sorotationxyz_cb(void *, SoCallbackAction *, const SoNode *);
@@ -502,6 +504,7 @@ SoToVRML2Action::SoToVRML2Action(void)
 
   // Property nodes
   ADD_PRE_CB(SoInfo, soinfo_cb);
+  ADD_PRE_CB(SoLabel, solabel_cb);
   ADD_PRE_CB(SoMatrixTransform, somattrans_cb);
   ADD_PRE_CB(SoRotation, sorotation_cb);
   ADD_PRE_CB(SoRotationXYZ, sorotationxyz_cb);
@@ -929,9 +932,10 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
   // Push a new SoVRMLGroup on the tail of the path
   prevgroup->addChild(newgroup);
   thisp->vrml2path->append(newgroup);
+  thisp->separatorstack.append(newgroup);
+
   return SoCallbackAction::CONTINUE;
 }
-
 
 SoCallbackAction::Response
 SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node)
@@ -941,14 +945,14 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const So
     return SoCallbackAction::CONTINUE;
   }
 
+  SoGroup * pushedgroup = THISP(closure)->separatorstack.pop();
   // Pop node from the tail of the path until an SoVRMLGroup has been popped
   SoGroup * grp;
+
   do {
     grp = THISP(closure)->get_current_tail();
     THISP(closure)->vrml2path->pop();
-    // check for type == here, and don't use isOfType(), since we
-    // might have added SoVRMLTransform nodes inside this SoVRMLGroup
-  } while (!(grp->getTypeId() == SoVRMLGroup::getClassTypeId()));
+  } while (grp != pushedgroup);
   
   THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
@@ -1721,6 +1725,17 @@ SoToVRML2ActionP::soinfo_cb(void * closure, SoCallbackAction * action, const SoN
   const SoInfo * oldinfo = (const SoInfo*) node;
   SoVRMLWorldInfo * info = NEW_NODE(SoVRMLWorldInfo, node);
   info->title = oldinfo->string;
+  THISP(closure)->get_current_tail()->addChild(info);
+  return SoCallbackAction::CONTINUE;
+}
+
+// Property nodes
+SoCallbackAction::Response
+SoToVRML2ActionP::solabel_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  const SoLabel * oldlabel = (const SoLabel*) node;
+  SoVRMLWorldInfo * info = NEW_NODE(SoVRMLWorldInfo, node);
+  info->title = oldlabel->label.getValue().getString();
   THISP(closure)->get_current_tail()->addChild(info);
   return SoCallbackAction::CONTINUE;
 }
