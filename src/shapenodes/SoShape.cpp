@@ -1205,7 +1205,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
           float total = (v2->getPoint()-v1->getPoint()).length();
           float len1 = 1.0f;
           float len2 = 0.0f;
-          if (total >= 0.0f) {
+          if (total > 0.0f) {
             len1 = (intersection-v1->getPoint()).length();
             len2 = (intersection-v2->getPoint()).length();
             len1 /= total;
