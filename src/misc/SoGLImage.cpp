@@ -176,9 +176,11 @@
 #include <Inventor/misc/SoGLImage.h>
 
 #include <assert.h>
+#include <list>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <utility>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -212,6 +214,10 @@
 #include "glue/glp.h"
 #include "glue/simage_wrapper.h"
 #include "threads/threadsutilp.h"
+
+using std::list;
+using std::pair;
+using std::make_pair;
 
 // *************************************************************************
 
@@ -2068,15 +2074,23 @@ void
 SoGLImage::endFrame(SoState *state)
 {
   if (glimage_reglist) {
+    list<pair<void (*)(void *), void *> > cb_list;
     LOCK_GLIMAGE;
     int n = glimage_reglist->getLength();
     for (int i = 0; i < n; i++) {
       SoGLImage *img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
       if (img->pimpl->endframecb)
-        img->pimpl->endframecb(img->pimpl->endframeclosure);
+        cb_list.push_back(make_pair(img->pimpl->endframecb, 
+                                    img->pimpl->endframeclosure));
     }
     UNLOCK_GLIMAGE;
+
+    // the actual invocation of the callbacks should be performed outside 
+    // the locked region to avoid deadlocks
+    for (list<pair<void (*)(void *), void *> >::iterator it = cb_list.begin(),
+           end = cb_list.end(); it != end; ++it)
+      it->first(it->second);
   }
 }
 
