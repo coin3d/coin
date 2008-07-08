@@ -550,9 +550,8 @@ SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * action, co
 SoCallbackAction::Response 
 SoReorganizeActionP::post_shape_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
 {
-  SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
-
 #if 0 // debug
+  SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
   fprintf(stderr,"shape: %s, numtri: %d, pvcache: %p\n",
           node->getTypeId().getName().getString(),
           thisp->numtriangles,
