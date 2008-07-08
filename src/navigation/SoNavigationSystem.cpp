@@ -211,6 +211,7 @@ SoNavigationSystem::initClass(void)
 {
   SoNavigationSystemP::namedict = new SoNavigationSystemP::NameDict;
   SoNavigationSystemP::initBuiltinSystems();
+  cc_coin_atexit_static_internal((coin_atexit_f*) cleanClass);
 }
 
 /*!
@@ -238,8 +239,6 @@ SoNavigationSystem::cleanClass(void)
   DELETE_SYSTEM(SO_CENTERER_SYSTEM);
   DELETE_SYSTEM(SO_PICKER_SYSTEM);
   DELETE_SYSTEM(SO_PLANEVIEWER_SYSTEM);
-
-#undef DELETE_SYSTEM
 
   delete SoNavigationSystemP::namedict;
   SoNavigationSystemP::namedict = NULL;
