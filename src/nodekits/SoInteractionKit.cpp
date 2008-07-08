@@ -168,18 +168,27 @@ public:
 
 static SbList <SoNode*> * defaultdraggerparts = NULL;
 
+
 //
-// atexit callback. To delete default dragger parts files.
+// atexit callback used to unref() each draggerdefaults file
 //
 static void
-interactionkit_cleanup(void)
+defaultdraggerparts_cleanup(void)
 {
   int n = defaultdraggerparts->getLength();
   for (int i = 0; i < n; i++) {
     (*defaultdraggerparts)[i]->unref();
   }
+}
 
+//
+// atexit callback used to delete static data for this class
+//
+static void
+interactionkit_cleanup(void)
+{
   delete defaultdraggerparts;
+  defaultdraggerparts = NULL;
 }
 
 #undef THIS
@@ -240,6 +249,7 @@ void
 SoInteractionKit::initClass(void)
 {
   defaultdraggerparts = new SbList <SoNode*>;
+  coin_atexit((coin_atexit_f *)defaultdraggerparts_cleanup, CC_ATEXIT_DRAGGERDEFAULTS);
   coin_atexit((coin_atexit_f *)interactionkit_cleanup, CC_ATEXIT_NORMAL);
 
   SO_KIT_INTERNAL_INIT_CLASS(SoInteractionKit, SO_FROM_INVENTOR_1);

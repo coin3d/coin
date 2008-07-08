@@ -82,6 +82,15 @@ enum coin_atexit_priorities {
   */
   CC_ATEXIT_REALTIME_FIELD = CC_ATEXIT_NORMAL + 10,
 
+  /*
+    We need to clean up default parts for draggers before tracking SoBase instances
+   */
+  CC_ATEXIT_DRAGGERDEFAULTS = CC_ATEXIT_NORMAL + 2,
+
+  /*
+    SoBase instance tracking should happen before normal cleanups
+  */
+  CC_ATEXIT_TRACK_SOBASE_INSTANCES = CC_ATEXIT_NORMAL + 1, 
   /* 
      Used to clean up static data for nodes/elements/nodekits ++
      Must be done before the typesystem cleanup 

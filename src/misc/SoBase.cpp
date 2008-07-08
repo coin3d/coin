@@ -362,7 +362,7 @@ SoBase::initClass(void)
   // should be safe).
   //
   // -mortene.
-  coin_atexit((coin_atexit_f *)SoBaseP::check_for_leaks, CC_ATEXIT_NORMAL + 1);
+  coin_atexit((coin_atexit_f *)SoBaseP::check_for_leaks, CC_ATEXIT_TRACK_SOBASE_INSTANCES);
 
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());
