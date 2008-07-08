@@ -30,6 +30,7 @@
 
 class CoinResources {
 public:
+  static void init(void);
   static SbBool get(const char * resloc,
                     const char *& buffer, size_t & bufsize);
 
@@ -38,7 +39,8 @@ public:
                     unsigned int flags = 0);
 
   static void freeLoadedExternals(void);
-
+private:
+  static void cleanup(void);
 };
 
 #endif // !COIN_RESOURCES_H

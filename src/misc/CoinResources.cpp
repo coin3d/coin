@@ -81,13 +81,33 @@ class CoinResourcesP {
 public:
   typedef std::map<const char *, ResourceHandle *> ResourceMap;
 
-  static ResourceMap resourcemap;
+  static ResourceMap * resourcemap;
 
   static ResourceHandle * getResourceHandle(const char * resloc);
   static ResourceHandle * createResourceHandle(const char * resloc);
 };
 
-CoinResourcesP::ResourceMap CoinResourcesP::resourcemap;
+CoinResourcesP::ResourceMap * CoinResourcesP::resourcemap;
+
+void 
+CoinResources::init(void)
+{
+  CoinResourcesP::resourcemap = new CoinResourcesP::ResourceMap;
+  cc_coin_atexit_static_internal((coin_atexit_f*) CoinResources::cleanup);
+}
+
+void 
+CoinResources::cleanup(void)
+{
+  CoinResourcesP::ResourceMap::iterator it = CoinResourcesP::resourcemap->begin();
+  while (it != CoinResourcesP::resourcemap->end()) {
+    delete it->second;
+    it++;
+  }
+  delete CoinResourcesP::resourcemap;
+  CoinResourcesP::resourcemap = NULL;
+}
+
 
 /*!
   Returns a resource if one exists. If the Coin installation permits,
@@ -204,8 +224,8 @@ void
 CoinResources::freeLoadedExternals(void)
 {
   CoinResourcesP::ResourceMap::iterator it =
-    CoinResourcesP::resourcemap.begin();
-  while (it != CoinResourcesP::resourcemap.end()) {
+    CoinResourcesP::resourcemap->begin();
+  while (it != CoinResourcesP::resourcemap->end()) {
     ResourceHandle * handle = it->second;
     if (handle->loadedbuf != NULL) {
       delete [] handle->loadedbuf;
@@ -223,8 +243,8 @@ CoinResourcesP::getResourceHandle(const char * resloc)
   assert(resloc);
   SbName reslochash(resloc);
   CoinResourcesP::ResourceMap::iterator it =
-    CoinResourcesP::resourcemap.find(reslochash.getString());
-  if (it == CoinResourcesP::resourcemap.end()) return NULL;
+    CoinResourcesP::resourcemap->find(reslochash.getString());
+  if (it == CoinResourcesP::resourcemap->end()) return NULL;
   return it->second;
 }
 
@@ -237,6 +257,6 @@ CoinResourcesP::createResourceHandle(const char * resloc)
   ResourceHandle * handle = new ResourceHandle;
   handle->resloc = const_cast<char *>(reslochash.getString());
   std::pair<const char *, ResourceHandle *> mapentry(reslochash.getString(), handle);
-  CoinResourcesP::resourcemap.insert(mapentry);
+  CoinResourcesP::resourcemap->insert(mapentry);
   return handle;
 }

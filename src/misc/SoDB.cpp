@@ -102,6 +102,7 @@
 #include "misc/systemsanity.icc"
 #include "misc/SoDBP.h"
 #include "misc/SbHash.h"
+#include "misc/CoinResources.h"
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
@@ -270,6 +271,7 @@ SoDB::init(void)
   }
 #endif // OBSOLETED sanity checks
 
+  CoinResources::init();
   SoInput::init();
   SoBase::initClass();
   SoDetail::initClass();
