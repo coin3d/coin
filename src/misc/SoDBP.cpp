@@ -18,7 +18,10 @@
 #include "fields/SoGlobalField.h"
 
 #ifdef COIN_THREADSAFE
-class SbRWMutex * SoDBP::globalmutex = NULL;
+// need to include SbRWMutex.h to make C++ call the actual destructor,
+// and not just default destructor
+#include <Inventor/threads/SbRWMutex.h>
+SbRWMutex * SoDBP::globalmutex = NULL;
 #endif // COIN_THREADSAFE
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
 SoSensorManager * SoDBP::sensormanager = NULL;
@@ -128,7 +131,7 @@ SoDBP::clean(void)
     delete (*SoDBP::headerlist)[i];
   delete SoDBP::headerlist;
   SoDBP::headerlist = NULL;
-  
+
 #ifdef COIN_THREADSAFE
   delete SoDBP::globalmutex;
   SoDBP::globalmutex = NULL;

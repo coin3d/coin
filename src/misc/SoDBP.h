@@ -38,6 +38,7 @@
 #include "misc/SbHash.h"
 
 class SoSensor;
+class SbRWMutex;
 
 // *************************************************************************
 
@@ -75,7 +76,7 @@ public:
   static void listWin32ProcessModules(void);
 
 #ifdef COIN_THREADSAFE
-  static class SbRWMutex * globalmutex;
+  static SbRWMutex * globalmutex;
 #endif // COIN_THREADSAFE
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;

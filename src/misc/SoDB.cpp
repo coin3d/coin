@@ -116,8 +116,6 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #include "threads/recmutexp.h"
-
-static SbRWMutex * sodb_globalmutex = NULL;
 #endif // COIN_THREADSAFE
 
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
