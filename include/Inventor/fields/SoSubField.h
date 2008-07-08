@@ -26,6 +26,7 @@
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h> // SoType::createType() needs to know SbName.
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 #ifndef COIN_INTERNAL
@@ -59,7 +60,7 @@ public: \
 #define SO_SFIELD_REQUIRED_HEADER(_class_) \
 private: \
   static SoType classTypeId; \
-  static void atexit_cleanup(void) { _class_::classTypeId STATIC_SOTYPE_INIT; } \
+  static void atexit_cleanup(void) { SoType::removeType(_class_::classTypeId.getName()); _class_::classTypeId STATIC_SOTYPE_INIT; } \
 public: \
   static void * createInstance(void); \
   static SoType getClassTypeId(void); \
@@ -134,6 +135,7 @@ public: \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_FIELD_INIT_CLASS(_class_, classname, _parent_, &_class_::createInstance); \
+    cc_coin_atexit_pri((coin_atexit_f*)_class_::atexit_cleanup, 0);           \
   } while (0)
 
 #define SO_SFIELD_CONSTRUCTOR_SOURCE(_class_) \

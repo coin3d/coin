@@ -65,6 +65,7 @@ SbBool coin_is_exiting(void);
    third argument to coin_atexit_func() -- no other values than these
    should be used! */
 enum coin_atexit_priorities {
+  /* Absolute priorities goes first */
 
   /* clean-ups of client code should be done before any clean-up code
      within Coin happens, so this is (2^31 - 1): */
@@ -74,12 +75,20 @@ enum coin_atexit_priorities {
      code: */
   CC_ATEXIT_NORMAL = 0,
 
+  /* Priorities relative to CC_ATEXIT_NORMAL */
+
   /* The realTime field should be cleaned up before normal cleanups
      are called, since the global field list will be cleaned up there.
   */
   CC_ATEXIT_REALTIME_FIELD = CC_ATEXIT_NORMAL + 10,
 
   /* 
+     Used to clean up static data for nodes/elements/nodekits ++
+     Must be done before the typesystem cleanup 
+  */
+  CC_ATEXIT_STATIC_DATA = CC_ATEXIT_NORMAL - 10,
+
+  /*
      Cleanups for static SoDB data (sensor manager, converters++)
    */
   CC_ATEXIT_SODB = CC_ATEXIT_NORMAL - 20,
@@ -92,7 +101,7 @@ enum coin_atexit_priorities {
     Typesystem cleanup.
   */
   CC_ATEXIT_SOTYPE  = CC_ATEXIT_NORMAL - 40,
-  
+
   /* later, in case e.g. some nodes' clean-up depends on the font
      subsystem still being up'n'running: */
   CC_ATEXIT_FONT_SUBSYSTEM = CC_ATEXIT_NORMAL - 100,
@@ -105,7 +114,7 @@ enum coin_atexit_priorities {
     possible, since SbName is used a lot in other modules.
   */
   CC_ATEXIT_SBNAME = CC_ATEXIT_NORMAL - 500,
-  
+
   /* needs to happen late, since CC_ATEXIT_NORMAL clean-up routines
      will for instance often want to dealloc mutexes: */
   CC_ATEXIT_THREADING_SUBSYSTEM = CC_ATEXIT_NORMAL - 1000,
@@ -198,10 +207,10 @@ unsigned long coin_geq_prime_number(unsigned long num);
 
 /* ********************************************************************** */
 
-enum CoinOSType { 
-  COIN_UNIX, 
-  COIN_OS_X, 
-  COIN_MSWINDOWS 
+enum CoinOSType {
+  COIN_UNIX,
+  COIN_OS_X,
+  COIN_MSWINDOWS
 };
 
 int coin_runtime_os(void);

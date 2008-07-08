@@ -50,6 +50,7 @@
 #include <Inventor/SoType.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/C/tidbits.h>
 
 // *************************************************************************
 
@@ -196,6 +197,9 @@ _class_::createInstance(void) \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
+\
+    /* Make sure also external nodes are cleaned up */ \
+    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanup);  \
   } while (0)
 
 
@@ -205,10 +209,6 @@ _class_::createInstance(void) \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
   } while (0)
-
-// FIXME: document. 20060208 kintel.
-#define SO_NODE_EXIT_CLASS(_class_) \
-  _class_::atexit_cleanup()
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \

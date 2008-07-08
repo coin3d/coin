@@ -57,7 +57,6 @@
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
-    coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
   } while (0)
 
 

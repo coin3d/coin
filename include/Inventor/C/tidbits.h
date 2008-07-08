@@ -71,6 +71,9 @@ COIN_DLL_API void coin_viewvolume_jitter(int numpasses, int curpass, const int *
 typedef void coin_atexit_f(void);
 COIN_DLL_API void cc_coin_atexit(coin_atexit_f * fp);
 
+/* Used internally to clean up static data. Do not use in application code */
+COIN_DLL_API void cc_coin_atexit_static_internal(coin_atexit_f * fp);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

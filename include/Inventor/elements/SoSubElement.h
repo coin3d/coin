@@ -58,7 +58,7 @@ private: \
   /* sensible to keep it private.  20000808 mortene. */ \
   static int classStackIndex; \
   static SoType classTypeId; \
-  static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; }
+  static void cleanupClass(void) { SoType::removeType(_class_::classTypeId.getName()); _class_::classTypeId STATIC_SOTYPE_INIT; }
 
 // *************************************************************************
 
@@ -88,7 +88,7 @@ _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
 void * _class_::createInstance(void) { return (void *) new _class_; }
 
 /*
-  Specific to Coin. Added 2003-10-27. 
+  Specific to Coin. Added 2003-10-27.
 */
 #define SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(_class_) \
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
@@ -106,10 +106,7 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
                                               _instantiate_); \
     if (_parent_::getClassStackIndex() < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
     else _class_::classStackIndex = _parent_::getClassStackIndex(); \
-    /* FIXME: internal code should not use this function, but use the coin_atexit() function */ \
-    /* with priority set to CC_ATEXIT_NORMAL. As it is now, the clean-up functions for */ \
-    /* these classes will always be run before all other Coin at-exit clean-ups. 20070126 mortene */ \
-    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
+    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 

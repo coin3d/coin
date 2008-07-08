@@ -1198,7 +1198,7 @@ coin_atexit_cleanup(void)
 
   isexiting = TRUE;
 
-  /* delete mutex here to make sure this is done before the threading subsystem is shut down */ 
+  /* delete mutex here to make sure this is done before the threading subsystem is shut down */
 #ifdef COIN_THREADSAFE
   cc_mutex_destruct(atexit_list_monitor);
   atexit_list_monitor = NULL;
@@ -1336,6 +1336,15 @@ cc_coin_atexit(coin_atexit_f * f)
   coin_atexit(f, CC_ATEXIT_EXTERNAL);
 }
 
+/*!
+  Internal function used for cleaning up static data. Do not use
+  from appliction code.
+*/
+void
+cc_coin_atexit_static_internal(coin_atexit_f * fp)
+{
+  coin_atexit(fp, CC_ATEXIT_STATIC_DATA);
+}
 
 /*
   Returns \c TRUE if we are currently iterating over the functions
@@ -1760,7 +1769,7 @@ static unsigned long coin_prime_table[32] = {
   4294967291U /* 2^32 = 4294967296 */
 };
 
-unsigned long 
+unsigned long
 coin_geq_prime_number(unsigned long num)
 {
   int i;
@@ -1775,7 +1784,7 @@ coin_geq_prime_number(unsigned long num)
 
 /**************************************************************************/
 
-int 
+int
 coin_runtime_os(void)
 {
   /*
@@ -1803,14 +1812,14 @@ coin_runtime_os(void)
  * mean that anything is wrong, but they can be useful for debugging
  * anyway.
  */
-int 
+int
 coin_debug_extra(void)
 {
 #if COIN_DEBUG
   return COIN_DEBUG_EXTRA;
 #else /* COIN_DEBUG */
   return 0;
-#endif /* !COIN_DEBUG */ 
+#endif /* !COIN_DEBUG */
 }
 
 /*
@@ -1818,7 +1827,7 @@ coin_debug_extra(void)
  * This can be enabled using the COIN_DEBUG_NORMALIZE environment
  * variable.
  */
-int 
+int
 coin_debug_normalize(void)
 {
 #if COIN_DEBUG
@@ -1832,7 +1841,7 @@ coin_debug_normalize(void)
 /*!
   Used for debugging caching.
 */
-int 
+int
 coin_debug_caching_level(void)
 {
 #if COIN_DEBUG
@@ -1853,4 +1862,3 @@ coin_debug_caching_level(void)
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
-

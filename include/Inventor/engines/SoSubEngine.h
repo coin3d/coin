@@ -27,6 +27,7 @@
 #include <assert.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoFieldData.h>
@@ -103,15 +104,6 @@ const SoEngineOutputData * \
 _class_::getOutputData(void) const \
 { \
   return _class_::outputdata; \
-}
-
-#define SO_ENGINE_SOURCE(_class_) \
-SO_ENGINE_ABSTRACT_SOURCE(_class_); \
- \
-void * \
-_class_::createInstance(void) \
-{ \
-  return new _class_; \
 } \
  \
 void \
@@ -123,15 +115,25 @@ _class_::atexit_cleanup(void) \
   _class_::outputdata = NULL; \
   _class_::parentinputdata = NULL; \
   _class_::parentoutputdata = NULL; \
+  assert(_class_::classTypeId != SoType::badType()); \
   SoType::removeType(_class_::classTypeId.getName()); \
   _class_::classTypeId STATIC_SOTYPE_INIT; \
   _class_::classinstances = 0; \
 }
 
+#define SO_ENGINE_SOURCE(_class_) \
+SO_ENGINE_ABSTRACT_SOURCE(_class_); \
+ \
+void * \
+_class_::createInstance(void) \
+{ \
+  return new _class_; \
+}
+
 // *************************************************************************
 
 #define SO_ENGINE_IS_FIRST_INSTANCE() \
-   (classinstances == 1) 
+   (classinstances == 1)
 
 #define SO_ENGINE_CONSTRUCTOR(_class_) \
   do { \
@@ -173,6 +175,7 @@ _class_::atexit_cleanup(void) \
     /* Store parent's data pointers for later use in the constructor. */ \
     _class_::parentinputdata = _parentclass_::getInputDataPtr(); \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
+    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanup);  \
   } while (0)
 
 
@@ -181,9 +184,6 @@ _class_::atexit_cleanup(void) \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
   } while (0)
-
-#define SO_ENGINE_EXIT_CLASS(_class_) \
-  _class_::atexit_cleanup()
 
 #define SO_ENGINE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \

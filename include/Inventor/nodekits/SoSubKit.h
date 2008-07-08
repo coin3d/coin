@@ -27,6 +27,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/nodekits/SoNodekitCatalog.h>
+#include <Inventor/C/tidbits.h>
 
 #ifndef COIN_INTERNAL
 // Include this header file for better Open Inventor compatibility.
@@ -87,10 +88,9 @@ _class_::getClassNodekitCatalogPtr(void) \
 void \
 _class_::atexit_cleanupkit(void) \
 { \
-  delete _class_::classcatalog; \
+   delete _class_::classcatalog; \
   _class_::classcatalog = NULL; \
   _class_::parentcatalogptr = NULL; \
-  _class_::classTypeId STATIC_SOTYPE_INIT; \
 }
 
 #define SO_KIT_SOURCE(_class_) \
@@ -110,9 +110,6 @@ PRIVATE_KIT_SOURCE(_class_)
     _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
   } while (0)
 
-#define SO_KIT_EXIT_CLASS(_class_) \
-  _class_::atexit_cleanupkit()
-
 #define SO_KIT_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_); \
@@ -127,6 +124,7 @@ PRIVATE_KIT_SOURCE(_class_)
     if (_class_::classcatalog == NULL) { \
       SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
       _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
+      cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanupkit); \
     } \
     SoBase::staticDataUnlock(); \
   } while (0)

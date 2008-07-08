@@ -658,6 +658,7 @@ SoType::fromKey(uint16_t key)
 SbName
 SoType::getName(void) const
 {
+  assert(!this->isBad());
   return (*SoType::typedatalist)[(int)this->getKey()]->name;
 }
 
@@ -671,6 +672,7 @@ SoType::getName(void) const
 uint16_t
 SoType::getData(void) const
 {
+  assert(!this->isBad());
   return (*SoType::typedatalist)[(int)this->getKey()]->data;
 }
 
@@ -682,6 +684,7 @@ SoType::getData(void) const
 const SoType
 SoType::getParent(void) const
 {
+  assert(!this->isBad());
   return (*SoType::typedatalist)[(int)this->getKey()]->parent;
 }
 
