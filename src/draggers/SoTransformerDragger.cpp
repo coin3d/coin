@@ -841,6 +841,11 @@ SoTransformerDragger::SoTransformerDragger(void)
  */
 SoTransformerDragger::~SoTransformerDragger()
 {
+  delete this->planeProj;
+  delete this->lineProj;
+  delete this->sphereProj;
+  delete this->cylProj;
+  
   delete this->translFieldSensor;
   delete this->scaleFieldSensor;
   delete this->rotateFieldSensor;

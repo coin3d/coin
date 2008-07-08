@@ -204,6 +204,7 @@ SoVRMLInline::SoVRMLInline(void)
 */
 SoVRMLInline::~SoVRMLInline()
 {
+  delete PRIVATE(this)->urlsensor;
   delete PRIVATE(this)->children;
   delete PRIVATE(this);
 }
