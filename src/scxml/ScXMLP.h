@@ -90,7 +90,7 @@ protected:
   static SbBool no_datamodel_warning;
 
 private:
-  static void cleanup_namespaces(void);
+  static void cleanup_namespacedict(NamespaceDict * dict);
   static void cleanup_targettypes(void);
 }; // ScXMLP
 

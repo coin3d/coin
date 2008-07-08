@@ -1165,7 +1165,6 @@ ScXMLP::readScXMLDatamodel(ScXMLObject * container, cc_xml_elt * elt, const char
   return NULL;
 } // readScXMLDatamodel
 
-
 void
 ScXMLP::init(void)
 {
@@ -1177,21 +1176,20 @@ ScXMLP::init(void)
 void
 ScXMLP::cleanup(void)
 {
-  cleanup_namespaces();
+  cleanup_namespacedict(ScXMLP::namespaces);
+  delete ScXMLP::namespaces;
+  ScXMLP::namespaces = NULL;
   cleanup_targettypes();
 }
 
 void
-ScXMLP::cleanup_namespaces(void)
+ScXMLP::cleanup_namespacedict(NamespaceDict * dict)
 {
-  assert(ScXMLP::namespaces);
-  NamespaceDict::iterator it = ScXMLP::namespaces->begin();
-  while (it != ScXMLP::namespaces->end()) {
+  NamespaceDict::iterator it = dict->begin();
+  while (it != dict->end()) {
     delete it->second;
     it++;
   }
-  delete ScXMLP::namespaces;
-  ScXMLP::namespaces = NULL;
 }
 
 void
@@ -1200,7 +1198,9 @@ ScXMLP::cleanup_targettypes(void)
   assert(ScXMLP::targettypes);
   TargettypeDict::iterator it = ScXMLP::targettypes->begin();
   while (it != ScXMLP::targettypes->end()) {
-    delete it->second;
+    ScXMLP::NamespaceDict * dict = it->second;
+    cleanup_namespacedict(dict);
+    delete dict;
     it++;
   }
   delete ScXMLP::targettypes;
