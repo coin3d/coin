@@ -34,11 +34,13 @@
 #include <string.h>
 
 #include <Inventor/SoType.h>
+#include <Inventor/C/tidbits.h>
 
 #define SO_NAVIGATION_MODE_HEADER(classname) \
 public: \
   static SoType classTypeId; \
   static SoType getClassTypeId(void); \
+  static void cleanClass(void); \
   virtual SoType getTypeId(void) const
 
 #define SO_NAVIGATION_MODE_SOURCE(classname) \
@@ -47,6 +49,10 @@ SoType classname::getTypeId(void) const { \
 } \
 SoType classname::getClassTypeId(void) { \
   return classname::classTypeId; \
+} \
+void classname::cleanClass(void) {\
+  SoType::removeType(classname::classTypeId.getName()); \
+  classname::classTypeId STATIC_SOTYPE_INIT; \
 } \
 SoType classname::classTypeId = SoType::badType()
 
@@ -64,6 +70,7 @@ SoType classname::classTypeId = SoType::badType()
                          SO__QUOTE(classname), \
                          NULL /* createfunc */, \
                          0 /* data */); \
+    cc_coin_atexit_static_internal((coin_atexit_f*) classname::cleanClass); \
   } while (0)
 
 #endif // !COIN_SOSUBMODE_H

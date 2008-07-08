@@ -44,6 +44,7 @@
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
 #include <ForeignFiles/SoForeignFileKit.h>
+#include <Inventor/C/tidbits.h>
 
 #include "tidbitsp.h"
 
@@ -85,4 +86,5 @@ SoNodeKit::init(void)
   SoForeignFileKit::initClass();
 
   nodekit_isinitialized = TRUE;
+  cc_coin_atexit_static_internal((coin_atexit_f*) nodekit_cleanup);
 }

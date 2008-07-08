@@ -117,16 +117,21 @@ SoDBP::clean(void)
   SoDBP::sensormanager->setChangedCallback(NULL, NULL);
 
   delete SoDBP::globaltimersensor;
+  SoDBP::globaltimersensor = NULL;
   delete SoDBP::converters;
+  SoDBP::converters = NULL;
 
   delete SoDBP::sensormanager;
+  SoDBP::sensormanager = NULL;
 
   for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
     delete (*SoDBP::headerlist)[i];
   delete SoDBP::headerlist;
+  SoDBP::headerlist = NULL;
   
 #ifdef COIN_THREADSAFE
   delete SoDBP::globalmutex;
+  SoDBP::globalmutex = NULL;
 #endif // COIN_THREADSAFE
 }
 

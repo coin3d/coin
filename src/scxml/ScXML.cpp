@@ -47,6 +47,7 @@
 #include <Inventor/scxml/ScXMLHistory.h>
 #include <Inventor/scxml/SoScXMLEvent.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
+#include "tidbitsp.h"
 
 #include "misc/CoinResources.h"
 
@@ -89,7 +90,7 @@
 
   The Coin type system makes it possible to override the default types
   to have the state chart description instantiated using customized
-  objects. A design choice made in that regard was to both use the 
+  objects. A design choice made in that regard was to both use the
   type overriding system in Coin, and also to use the 'xmlns'
   (XML Namespace) attribute to make ScXML types available and to
   prioritize which classtypes to instantiate objects from.  The xmlns
@@ -160,8 +161,8 @@
 // *************************************************************************
 
 // private static variables
-ScXMLP::NamespaceDict ScXMLP::namespaces;
-ScXMLP::TargettypeDict ScXMLP::targettypes;
+ScXMLP::NamespaceDict *ScXMLP::namespaces;
+ScXMLP::TargettypeDict *ScXMLP::targettypes;
 
 SbBool ScXMLP::no_datamodel_warning = FALSE;
 
@@ -183,6 +184,7 @@ SbBool ScXMLP::no_datamodel_warning = FALSE;
 void
 ScXML::initClasses(void)
 {
+  ScXMLP::init();
   ScXMLObject::initClass();
   ScXMLDocument::initClass();
   ScXMLState::initClass();
@@ -271,7 +273,7 @@ void
 ScXMLP::registerClassType(const char * xmlns, const char * classname, SoType type)
 {
   assert(!type.isBad());
-  ScXMLP::registerClassType(&ScXMLP::namespaces, xmlns, classname, type);
+  ScXMLP::registerClassType(ScXMLP::namespaces, xmlns, classname, type);
 }
 
 /*
@@ -291,7 +293,7 @@ ScXMLP::registerInvokeClassType(const char * xmlns, const char * targettype, con
   // the next-to-bottom level to be able to share code when looking up
   // types.
 
-  ScXMLP::NamespaceDict * nsdict = ScXMLP::getNamespaceDict(&ScXMLP::targettypes, targettype);
+  ScXMLP::NamespaceDict * nsdict = ScXMLP::getNamespaceDict(ScXMLP::targettypes, targettype);
   assert(nsdict);
 
   ScXMLP::registerClassType(nsdict, xmlns, source, type);
@@ -388,13 +390,13 @@ ScXMLP::getNamespaceDict(TargettypeDict * ttdict, const char * targettype)
 SoType
 ScXMLP::getClassType(const char * xmlns, const char * classname)
 {
-  return ScXMLP::getClassType(&ScXMLP::namespaces, xmlns, classname);
+  return ScXMLP::getClassType(ScXMLP::namespaces, xmlns, classname);
 }
 
 SoType
 ScXMLP::getInvokeClassType(const char * xmlns, const char * targettype, const char * source)
 {
-  NamespaceDict * nsdict = ScXMLP::getNamespaceDict(&ScXMLP::targettypes, targettype);
+  NamespaceDict * nsdict = ScXMLP::getNamespaceDict(ScXMLP::targettypes, targettype);
   assert(nsdict);
 
   SoType invoketype = ScXMLP::getClassType(nsdict, xmlns, source);
@@ -1089,7 +1091,7 @@ ScXMLP::readScXMLAnchor(ScXMLObject * container, cc_xml_elt * elt, const char * 
                        elementtype);
     delete anchor;
     return NULL;
-  }  
+  }
 
   return anchor;
 } // readScXMLAnchor
@@ -1144,7 +1146,7 @@ ScXMLP::readScXMLInvoke(ScXMLObject * container, cc_xml_elt * elt, const char * 
                        elementtype);
     delete invoke;
     return NULL;
-  }  
+  }
 
 
   return invoke;
@@ -1162,5 +1164,47 @@ ScXMLP::readScXMLDatamodel(ScXMLObject * container, cc_xml_elt * elt, const char
   }
   return NULL;
 } // readScXMLDatamodel
+
+
+void
+ScXMLP::init(void)
+{
+  coin_atexit((coin_atexit_f*) ScXMLP::cleanup, CC_ATEXIT_NORMAL);
+  ScXMLP::namespaces = new ScXMLP::NamespaceDict;
+  ScXMLP::targettypes = new ScXMLP::TargettypeDict;
+}
+
+void
+ScXMLP::cleanup(void)
+{
+  cleanup_namespaces();
+  cleanup_targettypes();
+}
+
+void
+ScXMLP::cleanup_namespaces(void)
+{
+  assert(ScXMLP::namespaces);
+  NamespaceDict::iterator it = ScXMLP::namespaces->begin();
+  while (it != ScXMLP::namespaces->end()) {
+    delete it->second;
+    it++;
+  }
+  delete ScXMLP::namespaces;
+  ScXMLP::namespaces = NULL;
+}
+
+void
+ScXMLP::cleanup_targettypes(void)
+{
+  assert(ScXMLP::targettypes);
+  TargettypeDict::iterator it = ScXMLP::targettypes->begin();
+  while (it != ScXMLP::targettypes->end()) {
+    delete it->second;
+    it++;
+  }
+  delete ScXMLP::targettypes;
+  ScXMLP::targettypes = NULL;
+}
 
 // *************************************************************************

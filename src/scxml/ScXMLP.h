@@ -34,13 +34,16 @@ class ScXMLObject;
 
 class ScXMLP {
 public:
+  static void init(void);
+  static void cleanup(void);
+
   static void registerClassType(const char * xmlns,
                                 const char * classname, SoType type);
 
   static void registerInvokeClassType(const char * xmlns,
                                       const char * targettype,
                                       const char * source, SoType type);
-  
+
   static ScXMLStateMachine * readXMLData(cc_xml_doc * doc);
 
 protected:
@@ -51,8 +54,8 @@ protected:
   typedef std::map<const char *, NamespaceDict *> TargettypeDict;
   typedef std::pair<const char *, NamespaceDict *> TargettypeEntry;
 
-  static NamespaceDict namespaces;
-  static TargettypeDict targettypes;
+  static NamespaceDict * namespaces;
+  static TargettypeDict * targettypes;
 
   // toplevel getters
   static SoType getClassType(const char * xmlns, const char * classname);
@@ -86,6 +89,9 @@ protected:
 
   static SbBool no_datamodel_warning;
 
+private:
+  static void cleanup_namespaces(void);
+  static void cleanup_targettypes(void);
 }; // ScXMLP
 
 #endif // !COIN_SCXMLP_H

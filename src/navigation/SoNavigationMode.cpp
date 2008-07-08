@@ -118,6 +118,7 @@ SoNavigationMode::initClass(void)
                                                      "SoNavigationMode",
                                                      NULL /* createfunc */,
                                                      0 /* data */);
+  cc_coin_atexit_static_internal((coin_atexit_f*) cleanClass);
 }
 
 #define PRIVATE(obj) ((obj)->pimpl)
