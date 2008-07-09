@@ -298,7 +298,13 @@ SoMField::initClass(void)
 
   CC_MUTEX_CONSTRUCT(somfield_mutex);
   coin_atexit((coin_atexit_f*) somfield_mutex_cleanup, CC_ATEXIT_NORMAL);
-  coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
+}
+
+void 
+SoMField::atexit_cleanup(void)
+{
+  SoType::removeType(SoMField::classTypeId.getName());
+  SoMField::classTypeId STATIC_SOTYPE_INIT; 
 }
 
 /*!

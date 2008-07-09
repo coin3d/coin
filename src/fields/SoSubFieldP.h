@@ -36,13 +36,10 @@
 #error this is a private header file
 #endif // !COIN_INTERNAL
 
-#include "tidbitsp.h"
-
 #define SO_SFIELD_INTERNAL_INIT_CLASS(_class_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_FIELD_INIT_CLASS(_class_, &classname[2], inherited, &_class_::createInstance); \
-    coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, CC_ATEXIT_NORMAL); \
   } while (0)
 
 

@@ -38,15 +38,6 @@
 
 /**************************************************************************
  *
- * Common source macros
- *
- **************************************************************************/
-
-#define SO_FIELD_EXIT_CLASS(_class_) \
-  _class_::atexit_cleanup()
-
-/**************************************************************************
- *
  * Header macros for single-value fields.
  *
  **************************************************************************/
@@ -127,6 +118,7 @@ public: \
     assert(_class_::classTypeId == SoType::badType()); \
     _class_::classTypeId = \
       SoType::createType(_parent_::getClassTypeId(), _classname_, _createfunc_); \
+    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
 
 
@@ -135,7 +127,6 @@ public: \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_FIELD_INIT_CLASS(_class_, classname, _parent_, &_class_::createInstance); \
-    cc_coin_atexit_pri((coin_atexit_f*)_class_::atexit_cleanup, 0);           \
   } while (0)
 
 #define SO_SFIELD_CONSTRUCTOR_SOURCE(_class_) \
@@ -271,7 +262,7 @@ public: \
   void setValuesPointer(const int num, const _valtype_ * userdata); \
   void setValuesPointer(const int num, _valtype_ * userdata)
 
-   
+
 /**************************************************************************
  *
  * Source macros for multiple-value fields.

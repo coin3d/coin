@@ -34,8 +34,7 @@ public:
 
   static void initClass(void);
   static SoType getClassTypeId(void);
-  static void cleanupClass(void) { SoSField::classTypeId STATIC_SOTYPE_INIT; };
-
+  static void atexit_cleanup(void);
 protected:
   SoSField(void);
 

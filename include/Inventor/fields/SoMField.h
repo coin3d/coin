@@ -36,7 +36,7 @@ public:
   virtual ~SoMField();
 
   static SoType getClassTypeId(void);
-  static void cleanupClass(void) { SoMField::classTypeId STATIC_SOTYPE_INIT; };
+  static void atexit_cleanup(void);
 
   int getNum(void) const;
   void setNum(const int num);

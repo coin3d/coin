@@ -123,5 +123,11 @@ void
 SoSField::initClass(void)
 {
   PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
-  coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
+}
+
+void 
+SoSField::atexit_cleanup(void)
+{
+  SoType::removeType(SoSField::classTypeId.getName());
+  SoSField::classTypeId STATIC_SOTYPE_INIT; 
 }
