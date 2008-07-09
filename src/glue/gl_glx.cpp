@@ -40,6 +40,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>
@@ -198,11 +199,39 @@ static COIN_PFNGLXDESTROYPBUFFER glxglue_glXDestroyPbuffer;
 
 /* ********************************************************************** */
 
+struct glxglue_contextdata {
+  XVisualInfo * visinfo;
+  GLXContext glxcontext;
+  unsigned int width, height;
+  Pixmap pixmap;
+  GLXPixmap glxpixmap;
 
-/* This function works in a "Singleton-like" manner. */
+  Display * storeddisplay;
+  GLXDrawable storeddrawable;
+  GLXContext storedcontext;
+
+  SbBool pbuffer;
+  /* the next two are only valid if the offscreen context is a
+     pbuffer: */
+  Display * display;
+  COIN_GLXFBConfig fbconfig;
+};
+
+
+/*
+
+  We try two different ways of getting the display here.
+  
+  1) if we have a current context (glw), we try using glXGetCurrentDisplay, if it exists
+  2) Fall back to XOpenDisplay()
+
+ */
 static Display *
-glxglue_get_display(void)
+glxglue_get_display(const cc_glglue * currentcontext = NULL)
 {
+  if (currentcontext && currentcontext->glx.glXGetCurrentDisplay) 
+    return (Display*) currentcontext->glx.glXGetCurrentDisplay();
+  
   if ((glxglue_display == NULL) && !glxglue_opendisplay_failed) {
     /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
     glxglue_display = XOpenDisplay(NULL);
@@ -225,16 +254,16 @@ glxglue_get_display(void)
 }
 
 static void
-glxglue_set_version(int * major, int * minor)
+glxglue_set_version(const cc_glglue * w, int * major, int * minor)
 {
   Bool ok = False;
 
   *major = -1;
   *minor = 0;
 
-  if (glxglue_get_display() == NULL) { return; }
+  if (glxglue_get_display(w) == NULL) { return; }
 
-  ok = glXQueryVersion(glxglue_get_display(), major, minor);
+  ok = glXQueryVersion(glxglue_get_display(w), major, minor);
 
   if (!ok) {
     cc_debugerror_post("glxglue_version",
@@ -302,8 +331,8 @@ glxglue_isdirect(cc_glglue * w)
     return TRUE;
   }
 
-  if (!glxglue_get_display()) return TRUE;
-  return glXIsDirect(glxglue_get_display(), ctx) ? TRUE : FALSE;
+  if (!glxglue_get_display(w)) return TRUE;
+  return glXIsDirect(glxglue_get_display(w), ctx) ? TRUE : FALSE;
 }
 
 int
@@ -346,30 +375,18 @@ glxglue_resolve_symbols(cc_glglue * w)
   const char * env;
   struct cc_glxglue * g = &(w->glx);
 
-  /* SGI's glx.h header file shipped with the NVidia Linux drivers
-     identifies glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's
-     GL man pages lists it as a GLX 1.2 function, ditto for HP's GL
-     man pages, and ditto for AIX's man pages. (See top of this file
-     for URL). So we will assume the man pages are correct.
-  */
-  g->glXGetCurrentDisplay = NULL;
-#ifdef GLX_VERSION_1_2
-  if (cc_glglue_glxversion_matches_at_least(w, 1, 2)) {
-    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
-  }
-#endif /* GLX_VERSION_1_2 */
-#ifdef GLX_EXT_import_context
-  if (!g->glXGetCurrentDisplay && glxglue_ext_supported(w, "GLX_EXT_import_context")) {
-    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT);
-  }
-#endif /* GLX_EXT_import_context */
-
   glxglue_glXChooseFBConfig = NULL;
   glxglue_glXCreateNewContext = NULL;
   glxglue_glXGetFBConfigAttrib = NULL;
 
   env = coin_getenv("COIN_GLXGLUE_NO_GLX13_PBUFFERS");
   glx13pbuffer = (env == NULL) || (atoi(env) < 1);
+
+#ifdef GLX_EXT_import_context
+  if (!g->glXGetCurrentDisplay && glxglue_ext_supported(w, "GLX_EXT_import_context")) {
+    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT);
+  }
+#endif /* GLX_EXT_import_context */
 
 #ifdef GLX_VERSION_1_3
   if (glx13pbuffer && cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
@@ -433,7 +450,19 @@ glxglue_has_pbuffer_support(void)
 void
 glxglue_init(cc_glglue * w)
 {
-  glxglue_set_version(&w->glx.version.major, &w->glx.version.minor);
+  /* SGI's glx.h header file shipped with the NVidia Linux drivers
+     identifies glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's
+     GL man pages lists it as a GLX 1.2 function, ditto for HP's GL
+     man pages, and ditto for AIX's man pages. (See top of this file
+     for URL). So we will assume the man pages are correct.
+  */
+  struct cc_glxglue * g = &(w->glx);
+  g->glXGetCurrentDisplay = NULL;
+#ifdef GLX_VERSION_1_2
+  g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
+#endif /* GLX_VERSION_1_2 */
+
+  glxglue_set_version(w, &w->glx.version.major, &w->glx.version.minor);
   w->glx.isdirect = glxglue_isdirect(w);
 
 
@@ -445,14 +474,14 @@ glxglue_init(cc_glglue * w)
   w->glx.clientextensions = NULL;
   w->glx.glxextensions = NULL;
 
-  if (glxglue_get_display()) {
+  if (glxglue_get_display(w)) {
 
     /* Note: be aware that glXQueryServerString(),
        glXGetClientString() and glXQueryExtensionsString() are all
        from GLX 1.1 -- just in case there are ever compile-time,
        link-time or run-time problems with this.  */
 
-    Display * d = glxglue_get_display();
+    Display * d = glxglue_get_display(w);
     w->glx.serverversion = glXQueryServerString(d, glxglue_screen, GLX_VERSION);
     w->glx.servervendor = glXQueryServerString(d, glxglue_screen, GLX_VENDOR);
     w->glx.serverextensions = glXQueryServerString(d, glxglue_screen, GLX_EXTENSIONS);
@@ -599,23 +628,6 @@ glxglue_find_gl_visual(void)
 
 /*** GLX offscreen contexts **************************************************/
 
-struct glxglue_contextdata {
-  XVisualInfo * visinfo;
-  GLXContext glxcontext;
-  unsigned int width, height;
-  Pixmap pixmap;
-  GLXPixmap glxpixmap;
-
-  Display * storeddisplay;
-  GLXDrawable storeddrawable;
-  GLXContext storedcontext;
-
-  SbBool pbuffer;
-  /* the next two are only valid if the offscreen context is a
-     pbuffer: */
-  Display * display;
-  COIN_GLXFBConfig fbconfig;
-};
 
 static struct glxglue_contextdata *
 glxglue_contextdata_init(unsigned int width, unsigned int height)
@@ -648,12 +660,13 @@ glxglue_contextdata_cleanup(struct glxglue_contextdata * ctx)
 {
   if (ctx == NULL) { return; }
 
-  if (ctx->glxcontext) glXDestroyContext(glxglue_get_display(), ctx->glxcontext);
+  Display * display = glxglue_get_display(NULL);
+  if (ctx->glxcontext) glXDestroyContext(display, ctx->glxcontext);
   if (ctx->glxpixmap) {
-    if (ctx->pbuffer) { glxglue_glXDestroyPbuffer(glxglue_get_display(), ctx->glxpixmap); }
-    else { glXDestroyGLXPixmap(glxglue_get_display(), ctx->glxpixmap); }
+    if (ctx->pbuffer) { glxglue_glXDestroyPbuffer(display, ctx->glxpixmap); }
+    else { glXDestroyGLXPixmap(display, ctx->glxpixmap); }
   }
-  if (ctx->pixmap) XFreePixmap(glxglue_get_display(), ctx->pixmap);
+  if (ctx->pixmap) XFreePixmap(display, ctx->pixmap);
   if (ctx->visinfo) XFree(ctx->visinfo);
 
   free(ctx);
@@ -671,7 +684,9 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
 
      Rendering to a GLX pixmap is of course exactly what we want to be
      able to do. */
-  context->glxcontext = glXCreateContext(glxglue_get_display(), context->visinfo, 0,
+  
+  Display * display = glxglue_get_display(NULL);
+  context->glxcontext = glXCreateContext(display, context->visinfo, 0,
                                          False);
 
   if (context->glxcontext == NULL) {
@@ -686,8 +701,8 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
                            context->glxcontext);
   }
 
-  context->pixmap = XCreatePixmap(glxglue_get_display(),
-                                  DefaultRootWindow(glxglue_get_display()),
+  context->pixmap = XCreatePixmap(display,
+                                  DefaultRootWindow(display),
                                   context->width, context->height, context->visinfo->depth);
   if (context->pixmap == 0) {
     cc_debugerror_postwarning("glxglue_context_create_software",
@@ -696,7 +711,7 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
     return FALSE;
   }
 
-  context->glxpixmap = glXCreateGLXPixmap(glxglue_get_display(),
+  context->glxpixmap = glXCreateGLXPixmap(display,
                                           context->visinfo, context->pixmap);
   if (context->glxpixmap == 0) {
     cc_debugerror_postwarning("glxglue_context_create_software",
@@ -780,7 +795,7 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   assert(attrs[0] == GLX_STENCIL_SIZE);
   if (v != -1) { attrs[1] = v; };
 
-  dpy = glxglue_get_display();
+  dpy = glxglue_get_display(NULL);
   if (!dpy) { return FALSE; }
 
   /* get a list of matching GLX frame buffer configurations. the list is
@@ -946,7 +961,8 @@ glxglue_context_make_current(void * ctx)
                            context->storeddisplay);
   }
 
-  r = glXMakeCurrent(glxglue_get_display(), context->glxpixmap, context->glxcontext);
+  Display * display = glxglue_get_display(NULL); 
+  r = glXMakeCurrent(display, context->glxpixmap, context->glxcontext);
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_make_context_current",
@@ -966,13 +982,14 @@ glxglue_context_reinstate_previous(void * ctx)
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_context_reinstate_previous",
                            "releasing context (glxMakeCurrent(%p, None, NULL))",
-                           glxglue_get_display());
+                           glxglue_get_display(NULL));
   }
 
+  Display * display = glxglue_get_display(NULL);
   /* FIXME: this causes a crash with ATI on Linux for me. ATI and Mesa
      is somehow mixed together, which is probably the reason why the
      crash happens..? 20041105 mortene. */
-  (void)glXMakeCurrent(glxglue_get_display(), None, NULL); /* release */
+  (void)glXMakeCurrent(display, None, NULL); /* release */
 
   /* The previous context is stored and reset to make it possible to
      use an SoOffscreenRenderer from for instance an SoCallback node
