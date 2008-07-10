@@ -29,6 +29,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec2f.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class SoPrimitiveVertexCacheP;
 class SoPrimitiveVertex;
@@ -84,25 +85,11 @@ public:
   void depthSortTriangles(SoState * state);
 
 private:
-  friend class SoPrimitiveVertexCacheP;
-  class Vertex {
-  public:
-    SbVec3f vertex;
-    SbVec3f normal;
-    SbVec4f texcoord0;
-    SbVec2f bumpcoord;
-    uint8_t rgba[4];
-    int texcoordidx;
+  SbPimplPtr<SoPrimitiveVertexCacheP> pimpl;
 
-    // needed for SbHash
-    operator unsigned long(void) const;
-    
-    // needed, since if we don't add this the unsigned long operator
-    // will be used when comparing two vertices.
-    int operator==(const Vertex & v);
-  };
+  SoPrimitiveVertexCache(const SoPrimitiveVertexCache & rhs); // N/A
+  SoPrimitiveVertexCache & operator = (const SoPrimitiveVertexCache & rhs); // N/A
 
-  SoPrimitiveVertexCacheP * pimpl;
 };
 
 #endif // COIN_SOPRIMITIVEVERTEXCACHE_H

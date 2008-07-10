@@ -94,7 +94,24 @@ public:
       tangentvbo(NULL)
   { }
 
-  SbList <SoPrimitiveVertexCache::Vertex> vertices;
+  class Vertex {
+  public:
+    SbVec3f vertex;
+    SbVec3f normal;
+    SbVec4f texcoord0;
+    SbVec2f bumpcoord;
+    uint8_t rgba[4];
+    int texcoordidx;
+
+    // needed for SbHash
+    operator unsigned long(void) const;
+
+    // needed, since if we don't add this the unsigned long operator
+    // will be used when comparing two vertices.
+    int operator==(const Vertex & v);
+  };
+
+  SbList <Vertex> vertices;
 
   SbList <SbVec3f> vertexlist;
   SbList <SbVec3f> normallist;
@@ -102,7 +119,7 @@ public:
   SbList <SbVec2f> bumpcoordlist;
   SbList <uint8_t> rgbalist;
   SbList <SbVec3f> tangentlist;
-  SbHash <int32_t, SoPrimitiveVertexCache::Vertex> vhash;
+  SbHash <int32_t, Vertex> vhash;
 
   const SbVec2f * bumpcoords;
   int numbumpcoords;
@@ -136,7 +153,7 @@ public:
   SoVBO * tangentvbo;
   SbList <SoVBO*> multitexvbo;
 
-  void addVertex(const SoPrimitiveVertexCache::Vertex & v);
+  void addVertex(const Vertex & v);
 
   void renderImmediate(const cc_glglue * glue,
                        const GLint * indices,
@@ -184,7 +201,6 @@ public:
 SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
   : SoCache(state)
 {
-  PRIVATE(this) = new SoPrimitiveVertexCacheP;
   PRIVATE(this)->state = state;
   const SoBumpMapCoordinateElement * belem =
     SoBumpMapCoordinateElement::getInstance(state);
@@ -270,8 +286,7 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
   }
-  delete[] PRIVATE(this)->deptharray;
-  delete PRIVATE(this);
+  delete [] PRIVATE(this)->deptharray;
 }
 
 void
@@ -303,22 +318,26 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
                                                SoGLCacheContextElement::DONT_AUTO_CACHE);
     }
 
-    PRIVATE(this)->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
+
+    thisp->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->triangleindexer->render(glue, TRUE, contextid);
-    PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
+    thisp->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
   else if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
-    PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
+    thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->triangleindexer->render(glue, FALSE, contextid);
-    PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+    thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
     // fall back to immediate mode rendering
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     glBegin(GL_TRIANGLES);
-    PRIVATE(this)->renderImmediate(glue,
-                                   this->getTriangleIndices(),
-                                   this->getNumTriangleIndices(),
-                                   color, normal, texture, enabled, lastenabled);
+    thisp->renderImmediate(glue,
+                           this->getTriangleIndices(),
+                           this->getNumTriangleIndices(),
+                           color, normal, texture, enabled, lastenabled);
     glEnd();
   }
 
@@ -347,17 +366,19 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
   const uint32_t contextid = SoGLCacheContextElement::get(state);
 
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
-    PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
+    thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->lineindexer->render(glue, FALSE, contextid);
-    PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+    thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
     // fall back to immediate mode rendering
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     glBegin(GL_TRIANGLES);
-    PRIVATE(this)->renderImmediate(glue,
-                                   this->getLineIndices(),
-                                   this->getNumLineIndices(),
-                                   color, normal, texture, enabled, lastenabled);
+    thisp->renderImmediate(glue,
+                           this->getLineIndices(),
+                           this->getNumLineIndices(),
+                           color, normal, texture, enabled, lastenabled);
     glEnd();
   }
   // inform SoGLLazyElement that we might have changed the current color
@@ -385,17 +406,19 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
   const uint32_t contextid = SoGLCacheContextElement::get(state);
 
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
-    PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
+    thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     PRIVATE(this)->pointindexer->render(glue, FALSE, contextid);
-    PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+    thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
     // fall back to immediate mode rendering
+    SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     glBegin(GL_POINTS);
-    PRIVATE(this)->renderImmediate(glue,
-                                   this->getPointIndices(),
-                                   this->getNumPointIndices(),
-                                   color, normal, texture, enabled, lastenabled);
+    thisp->renderImmediate(glue,
+                           this->getPointIndices(),
+                           this->getNumPointIndices(),
+                           color, normal, texture, enabled, lastenabled);
     glEnd();
   }
   // inform SoGLLazyElement that we might have changed the current color
@@ -421,7 +444,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
   int32_t triangleindices[3];
 
   for (int i = 0; i < 3; i++) {
-    Vertex v;
+    SoPrimitiveVertexCacheP::Vertex v;
     v.vertex = vp[i]->getPoint();
     v.normal = vp[i]->getNormal();
     const SbVec4f & tmp = vp[i]->getTextureCoords();
@@ -506,7 +529,7 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
   int32_t lineindices[2];
 
   for (int i = 0; i < 2; i++) {
-    Vertex v;
+    SoPrimitiveVertexCacheP::Vertex v;
     v.vertex = vp[i]->getPoint();
     v.normal = vp[i]->getNormal();
     const SbVec4f & tmp = vp[i]->getTextureCoords();
@@ -582,7 +605,7 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
     // fetch SoMultiTextureCoordinateElement the first time we get here
     PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
   }
-  Vertex v;
+  SoPrimitiveVertexCacheP::Vertex v;
   v.vertex = v0->getPoint();
   v.normal = v0->getNormal();
   const SbVec4f & tmp = v0->getTextureCoords();
@@ -815,7 +838,7 @@ SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
   } 
 }
 
-SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
+SoPrimitiveVertexCacheP::Vertex::operator unsigned long(void) const
 {
   unsigned long key = 0;
   // create an xor key based on coordinates, normal and texcoords
@@ -833,7 +856,7 @@ SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
 }
 
 int 
-SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v)
+SoPrimitiveVertexCacheP::Vertex::operator==(const Vertex & v)
 {
   return 
     (this->vertex == v.vertex) &&
@@ -848,7 +871,7 @@ SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v)
 }
 
 void 
-SoPrimitiveVertexCacheP::addVertex(const SoPrimitiveVertexCache::Vertex & v) 
+SoPrimitiveVertexCacheP::addVertex(const Vertex & v) 
 {
   this->vertexlist.append(v.vertex);
   this->normallist.append(v.normal);
