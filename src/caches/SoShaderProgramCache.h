@@ -33,7 +33,7 @@ class COIN_DLL_API SoShaderProgramCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoShaderProgramCache(SoState *state);
-  ~SoShaderProgramCache();
+  virtual ~SoShaderProgramCache();
 
   void set(const SbString & program);
   const SbString & get(void) const;

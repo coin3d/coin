@@ -33,9 +33,10 @@ class SoTextureCoordinateCacheP;
 
 class COIN_DLL_API SoTextureCoordinateCache : public SoCache {
   typedef SoCache inherited;
+
 public:
   SoTextureCoordinateCache(SoState * const state);
-  ~SoTextureCoordinateCache();
+  virtual ~SoTextureCoordinateCache();
 
   // TODO: more ways to generate texture coordinates
   void generate(const SbBox3f & bbox, const SbVec3f * vertices,

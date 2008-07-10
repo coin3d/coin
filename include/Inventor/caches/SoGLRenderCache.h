@@ -33,10 +33,10 @@ class SoGLRenderCacheP;
 
 class COIN_DLL_API SoGLRenderCache : public SoCache {
   typedef SoCache inherited;
-public:
 
+public:
   SoGLRenderCache(SoState * state);
-  ~SoGLRenderCache();
+  virtual ~SoGLRenderCache();
 
   void open(SoState * state);
   void close(void);

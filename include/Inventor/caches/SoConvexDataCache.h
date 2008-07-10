@@ -36,7 +36,7 @@ class COIN_DLL_API SoConvexDataCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoConvexDataCache(SoState * const state);
-  ~SoConvexDataCache();
+  virtual ~SoConvexDataCache();
 
   enum Binding {
     // do not change these values. We rely on them matching

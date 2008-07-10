@@ -33,7 +33,7 @@ class COIN_DLL_API SoBoundingBoxCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoBoundingBoxCache(SoState *state);
-  ~SoBoundingBoxCache();
+  virtual ~SoBoundingBoxCache();
 
   void set(const SbXfBox3f & boundingbox,
            SbBool centerset,

@@ -36,7 +36,7 @@ class COIN_DLL_API SoNormalCache : public SoCache {
 
 public:
   SoNormalCache(SoState * const state);
-  ~SoNormalCache();
+  virtual ~SoNormalCache();
 
   void set(const int num, const SbVec3f * const normals);
   void set(SoNormalGenerator *generator);

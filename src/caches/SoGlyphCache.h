@@ -48,7 +48,7 @@ class SoGlyphCache : public SoCache {
 
 public:
   SoGlyphCache(SoState * state);
-  ~SoGlyphCache();
+  virtual ~SoGlyphCache();
 
   void readFontspec(SoState * state);
   const cc_font_specification * getCachedFontspec(void) const;

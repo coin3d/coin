@@ -40,7 +40,7 @@ class COIN_DLL_API SoPrimitiveVertexCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoPrimitiveVertexCache(SoState * state);
-  ~SoPrimitiveVertexCache();
+  virtual ~SoPrimitiveVertexCache();
 
   enum Arrays {
     NORMAL = 0x01,
