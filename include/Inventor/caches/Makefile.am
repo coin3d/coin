@@ -6,6 +6,7 @@ PublicHeaders = \
 	SoGLCacheList.h \
 	SoGLRenderCache.h \
 	SoNormalCache.h \
+	SoPrimitiveVertexCache.h \
 	SoTextureCoordinateCache.h
 
 PrivateHeaders =

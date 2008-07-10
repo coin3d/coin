@@ -96,6 +96,7 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/system/gl.h>
 
 #ifdef HAVE_VRML97
@@ -109,7 +110,6 @@
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
-#include "caches/SoPrimitiveVertexCache.h"
 #include "misc/SoGL.h"
 #include "glue/glp.h"
 #include "threads/threadsutilp.h"
@@ -539,7 +539,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
     return FALSE;
-  
+
   if (PRIVATE(this)->bboxcache && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
     if (PRIVATE(this)->bboxcache->isValid(state)) {
       if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
@@ -557,10 +557,10 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     if (style & SoShadowStyleElement::CASTS_SHADOW) return TRUE;
     return FALSE;
   }
-    
+
   if (action->handleTransparency(transparent))
     return FALSE;
-  
+
   if (shapestyleflags & SoShapeStyleElement::BBOXCMPLX) {
     this->GLRenderBoundingBox(action);
     return FALSE;
@@ -634,11 +634,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         glPopAttrib();
       }
     }
-    PRIVATE(this)->unlock();    
+    PRIVATE(this)->unlock();
 #endif // end of new sorted triangles transparency rendering
     return FALSE; // tell shape _not_ to render
   }
-  
+
   if (shapestyleflags & SoShapeStyleElement::BIGIMAGE) {
     SoGLTextureImageElement::Model model;
     SbColor blendcolor;
@@ -646,26 +646,26 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     if (glimage &&
         glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
         SoGLTextureEnabledElement::get(state)) {
-      
+
       // don't attempt to cache bigimage shapes
       if (state->isCacheOpen()) {
         SoCacheElement::invalidate(state);
       }
-      SoGLCacheContextElement::shouldAutoCache(state, 
+      SoGLCacheContextElement::shouldAutoCache(state,
                                                SoGLCacheContextElement::DONT_AUTO_CACHE);
-      
+
       soshape_staticdata * shapedata = soshape_get_staticdata();
-      
+
       // do this before generating triangles to get correct
       // material for lines and point (only triangles are handled for now).
       SoMaterialBundle mb(action);
       mb.sendFirst();
       shapedata->currentbundle = &mb;
-      
+
       SoGLBigImage * big = (SoGLBigImage*) glimage;
-      
+
       shapedata->rendermode = BIGTEXTURE;
-      
+
       soshape_bigtexture * bigtex = soshape_get_bigtexture(shapedata, action->getCacheContext());
       shapedata->currentbigtexture = bigtex;
       bigtex->beginShape(big, SoTextureQualityElement::get(state));
@@ -676,7 +676,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         action->getCurPath()->getHead()->touch();
       }
       shapedata->rendermode = NORMAL;
-      
+
       return FALSE;
     }
   }
@@ -714,7 +714,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         PRIVATE(this)->pvcache->fit();
         PRIVATE(this)->testSetupShapeHints(this);
       }
-      if (PRIVATE(this)->pvcache->getNumIndices() == 0) {
+      if (PRIVATE(this)->pvcache->getNumTriangleIndices() == 0) {
         PRIVATE(this)->unlock();
         return TRUE;
       }
@@ -724,11 +724,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       glPushAttrib(GL_DEPTH_BUFFER_BIT);
       glDepthFunc(GL_LEQUAL);
       glDisable(GL_LIGHTING);
-      
-      glColor3f(1.0f, 1.0f, 1.0f);      
+
+      glColor3f(1.0f, 1.0f, 1.0f);
       PRIVATE(this)->setupShapeHints(this, state);
-      const int numlights = lights.getLength();      
-      for (int i = 0; i < numlights; i++) {      
+      const int numlights = lights.getLength();
+      for (int i = 0; i < numlights; i++) {
         // fetch matrix that convert the light from its object space
         // to the OpenGL world space
         SbMatrix lm = SoLightElement::getMatrix(state, i);
@@ -743,9 +743,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         // bumprender is shared among all threads, so the mutex needs to
         // be locked when we get here since some internal arrays are
         // used while rendering
-        PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache, 
+        PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache,
                                               (SoLight*) lights[i], m);
-        
+
         if (i == 0) glEnable(GL_BLEND);
         if (i == numlights-1) {
           glBlendFunc(GL_DST_COLOR, GL_ZERO);
@@ -754,49 +754,49 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
           glBlendFunc(GL_ONE, GL_ONE);
         }
       }
-      
-      
-      SoGLLazyElement::getInstance(state)->reset(state, 
+
+
+      SoGLLazyElement::getInstance(state)->reset(state,
                                                  SoLazyElement::DIFFUSE_MASK |
                                                  SoLazyElement::GLIMAGE_MASK);
       SoMaterialBundle mb(action);
       mb.sendFirst();
       PRIVATE(this)->setupShapeHints(this, state);
       PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
-               
-      const SbColor spec = SoLazyElement::getSpecular(state); 
+
+      const SbColor spec = SoLazyElement::getSpecular(state);
       if (spec[0] != 0 || spec[1] != 0 || spec[2] != 0) { // Is the spec. color black?
 
         // Can the hardware do specular bump maps?
         if (glue->has_arb_fragment_program && 
             glue->has_arb_vertex_program) {
-          
-          SoGLLazyElement::getInstance(state)->reset(state, 
+
+          SoGLLazyElement::getInstance(state)->reset(state,
                                                      SoLazyElement::DIFFUSE_MASK |
-                                                     SoLazyElement::GLIMAGE_MASK);     
+                                                     SoLazyElement::GLIMAGE_MASK);
           glEnable(GL_BLEND);
           glBlendFunc(GL_ONE, GL_ONE);
-          
-          for (int i = 0; i < numlights; i++) {      
+
+          for (int i = 0; i < numlights; i++) {
             SbMatrix lm = SoLightElement::getMatrix(state, i);
             SbMatrix m = SoModelMatrixElement::get(state) *
               SoViewingMatrixElement::get(state);
             m = m.inverse();
-            m.multLeft(lm);                   
-            PRIVATE(this)->bumprender->renderBumpSpecular(state, PRIVATE(this)->pvcache, 
-                                                          (SoLight*) lights[i], m);          
+            m.multLeft(lm);
+            PRIVATE(this)->bumprender->renderBumpSpecular(state, PRIVATE(this)->pvcache,
+                                                          (SoLight*) lights[i], m);
           }
         }
         
-      }     
-      
-      
+      }
+
+
       PRIVATE(this)->unlock();
-      
+
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
-      
-      SoGLLazyElement::getInstance(state)->reset(state, 
+
+      SoGLLazyElement::getInstance(state)->reset(state,
                                                  SoLazyElement::LIGHT_MODEL_MASK|
                                                  SoLazyElement::BLENDING_MASK);
       
@@ -858,7 +858,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       PRIVATE(this)->testSetupShapeHints(this);
     }
     
-    if ((PRIVATE(this)->pvcache->getNumIndices() < 100) &&
+    if ((PRIVATE(this)->pvcache->getNumTriangleIndices() < 100) &&
         (PRIVATE(this)->pvcache->getNumLineIndices() < 100) &&
         (PRIVATE(this)->pvcache->getNumPointIndices() < 100)) {
       PRIVATE(this)->pvcache->unref();
@@ -869,9 +869,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       // let shape render
       return TRUE;
     }
-    PRIVATE(this)->unlock();    
+    PRIVATE(this)->unlock();
 
-    SoGLCacheContextElement::shouldAutoCache(state, 
+    SoGLCacheContextElement::shouldAutoCache(state,
                                              SoGLCacheContextElement::DONT_AUTO_CACHE);
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
     SoGLTextureImageElement::Model model;

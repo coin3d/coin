@@ -28,7 +28,7 @@
 
 // *************************************************************************
 
-#include "caches/SoPrimitiveVertexCache.h"
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -64,6 +64,13 @@
 #include "misc/SoVBO.h"
 #include "misc/SoVertexArrayIndexer.h"
 
+/*!
+  \class SoPrimtiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
+  \brief This cache contains an organized version of the geometry in vertex array form.
+
+  \since 2008-07-09
+*/
+
 // *************************************************************************
 
 class SoPrimitiveVertexCacheP {
@@ -74,6 +81,7 @@ public:
       texcoordlist(256),
       bumpcoordlist(256),
       rgbalist(256),
+      tangentlist(256),
       vhash(1024),
       deptharray(NULL),
       triangleindexer(NULL),
@@ -82,7 +90,8 @@ public:
       vertexvbo(NULL),
       normalvbo(NULL),
       texcoord0vbo(NULL),
-      rgbavbo(NULL)
+      rgbavbo(NULL),
+      tangentvbo(NULL)
   { }
 
   SbList <SoPrimitiveVertexCache::Vertex> vertices;
@@ -92,8 +101,9 @@ public:
   SbList <SbVec4f> texcoordlist;
   SbList <SbVec2f> bumpcoordlist;
   SbList <uint8_t> rgbalist;
+  SbList <SbVec3f> tangentlist;
   SbHash <int32_t, SoPrimitiveVertexCache::Vertex> vhash;
-  
+
   const SbVec2f * bumpcoords;
   int numbumpcoords;
 
@@ -123,6 +133,7 @@ public:
   SoVBO * normalvbo;
   SoVBO * texcoord0vbo;
   SoVBO * rgbavbo;
+  SoVBO * tangentvbo;
   SbList <SoVBO*> multitexvbo;
 
   void addVertex(const SoPrimitiveVertexCache::Vertex & v);
@@ -267,7 +278,7 @@ void
 SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
 {
   int lastenabled = -1;
-  const int n = this->getNumIndices();
+  const int n = this->getNumTriangleIndices();
   if (n == 0) return;
 
   const SbBool * enabled = NULL;
@@ -305,8 +316,8 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     // fall back to immediate mode rendering
     glBegin(GL_TRIANGLES);
     PRIVATE(this)->renderImmediate(glue,
-                                   this->getIndices(),
-                                   this->getNumIndices(),
+                                   this->getTriangleIndices(),
+                                   this->getNumTriangleIndices(),
                                    color, normal, texture, enabled, lastenabled);
     glEnd();
   }
@@ -673,20 +684,20 @@ SoPrimitiveVertexCache::getColorArray(void) const
 }
 
 int
-SoPrimitiveVertexCache::getNumIndices(void) const
+SoPrimitiveVertexCache::getNumTriangleIndices(void) const
 {
   return PRIVATE(this)->triangleindexer ? PRIVATE(this)->triangleindexer->getNumIndices() : 0;
 }
 
 const GLint *
-SoPrimitiveVertexCache::getIndices(void) const
+SoPrimitiveVertexCache::getTriangleIndices(void) const
 {
   assert(PRIVATE(this)->triangleindexer);
   return PRIVATE(this)->triangleindexer->getIndices();
 }
 
 int32_t
-SoPrimitiveVertexCache::getIndex(const int idx) const
+SoPrimitiveVertexCache::getTriangleIndex(const int idx) const
 {
   assert(PRIVATE(this)->triangleindexer);
   return PRIVATE(this)->triangleindexer->getIndices()[idx];
@@ -751,7 +762,7 @@ void
 SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
 {
   int numv = PRIVATE(this)->vertexlist.getLength();
-  int numtri = this->getNumIndices() / 3;
+  int numtri = this->getNumTriangleIndices() / 3;
   if (numv == 0 || numtri == 0) return;
   
   SbPlane sortplane = SoViewVolumeElement::get(state).getPlane(0.0);

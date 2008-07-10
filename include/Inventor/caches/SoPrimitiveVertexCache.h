@@ -35,9 +35,7 @@ class SoPrimitiveVertex;
 class SoPointDetail;
 class SoState;
 
-// FIXME: evaluate the design of this class, pederb 2003-11-17
-
-class SoPrimitiveVertexCache : public SoCache {
+class COIN_DLL_API SoPrimitiveVertexCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoPrimitiveVertexCache(SoState * state);
@@ -69,23 +67,23 @@ public:
   const SbVec2f * getBumpCoordArray(void) const;
   const uint8_t * getColorArray(void) const;
 
-  int getNumIndices(void) const;
-  const GLint * getIndices(void) const;
-  int32_t getIndex(const int idx) const;
+  int getNumTriangleIndices(void) const;
+  const GLint * getTriangleIndices(void) const;
+  int32_t getTriangleIndex(const int idx) const;
 
   SbBool colorPerVertex(void) const;
   const SbVec4f * getMultiTextureCoordinateArray(const int unit) const;
 
   int getNumLineIndices(void) const;
-  int getNumPointIndices(void) const;
-
   const GLint * getLineIndices(void) const;
+
+  int getNumPointIndices(void) const;
   const GLint * getPointIndices(void) const;
 
   void fit(void);
   void depthSortTriangles(SoState * state);
-private:
 
+private:
   friend class SoPrimitiveVertexCacheP;
   class Vertex {
   public:

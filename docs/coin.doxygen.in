@@ -546,6 +546,7 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLCacheList.h \
                          @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLRenderCache.h \
                          @path_tag@@coin_src_dir@/include/Inventor/caches/SoNormalCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoPrimitiveVertexCache.h \
                          @path_tag@@coin_src_dir@/include/Inventor/caches/SoTextureCoordinateCache.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoConeDetail.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoCubeDetail.h \
@@ -1122,6 +1123,7 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/caches/SoGLCacheList.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoGLRenderCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoNormalCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoPrimitiveVertexCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoTextureCoordinateCache.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoConeDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoCubeDetail.cpp \

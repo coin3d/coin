@@ -276,10 +276,10 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/SbColor4f.h>
 
 #include "coindefs.h" // COIN_STUB()
-#include "caches/SoPrimitiveVertexCache.h"
 #include "actions/SoSubActionP.h"
 
 class SoReorganizeActionP {
@@ -701,7 +701,7 @@ SoReorganizeActionP::replaceNode(SoFullPath * path)
   if (this->pvcache == NULL) return;  
   this->pvcache->fit(); // needed to do optimize-sort of data
   
-  if (this->pvcache->getNumIndices()) {
+  if (this->pvcache->getNumTriangleIndices()) {
     if (this->isvrml) {
       this->replaceVrmlIfs(path);
     }
@@ -794,8 +794,8 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
   ifs->materialIndex.setNum(0);
   ifs->textureCoordIndex.setNum(0);
   
-  int numtri = this->pvcache->getNumIndices() / 3;
-  const GLint * indices = this->pvcache->getIndices();
+  int numtri = this->pvcache->getNumTriangleIndices() / 3;
+  const GLint * indices = this->pvcache->getTriangleIndices();
   ifs->coordIndex.setNum(numtri * 4);
   int32_t * ptr = ifs->coordIndex.startEditing();
 
@@ -886,8 +886,8 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   ifs->colorIndex.setNum(0);
   ifs->texCoordIndex.setNum(0);
   
-  int numtri = this->pvcache->getNumIndices() / 3;
-  const GLint * indices = this->pvcache->getIndices();
+  int numtri = this->pvcache->getNumTriangleIndices() / 3;
+  const GLint * indices = this->pvcache->getTriangleIndices();
   ifs->coordIndex.setNum(numtri * 4);
   int32_t * ptr = ifs->coordIndex.startEditing();
 

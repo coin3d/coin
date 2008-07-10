@@ -56,11 +56,11 @@
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoSpotLight.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
 
 // For coin_apply_normalization_cube_map().
 #include "glue/glp.h"
 #include "misc/SoGL.h"
-#include "caches/SoPrimitiveVertexCache.h"
 
 // *************************************************************************
 
@@ -408,7 +408,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   // A check for fragment- and vertex-program support has already
   // been done in SoShape::shouldGLRender().
   //
-  const int n = cache->getNumIndices();
+  const int n = cache->getNumTriangleIndices();
   if (n == 0) return;
 
   const cc_glglue * glue = sogl_glue_instance(state);
@@ -526,7 +526,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
-                           (const GLvoid*) cache->getIndices());
+                           (const GLvoid*) cache->getTriangleIndices());
 
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
@@ -577,7 +577,7 @@ soshape_bumprender::renderBump(SoState * state,
                                const SoPrimitiveVertexCache * cache,
                                SoLight * light, const SbMatrix & toobjectspace)
 {
-  const int n = cache->getNumIndices();
+  const int n = cache->getNumTriangleIndices();
   if (n == 0) return;
 
   this->initLight(light, toobjectspace);
@@ -690,7 +690,7 @@ soshape_bumprender::renderBump(SoState * state,
   }
 
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
-                           (const GLvoid*) cache->getIndices());
+                           (const GLvoid*) cache->getTriangleIndices());
 
   if (use_vertex_program) {
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
@@ -760,12 +760,12 @@ void
 soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 {
   int i;
-  const int numi = cache->getNumIndices();
+  const int numi = cache->getNumTriangleIndices();
   if (numi == 0) return;
 
 
   const int numv = cache->getNumVertices();
-  const GLint * idxptr = cache->getIndices();
+  const GLint * idxptr = cache->getTriangleIndices();
   const SbVec3f * vertices = cache->getVertexArray();
   const SbVec3f * normals = cache->getNormalArray();
   const SbVec2f * bumpcoords = cache->getBumpCoordArray();

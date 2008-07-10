@@ -286,7 +286,6 @@ LinkHackSources = \
 PublicHeaders = 
 
 PrivateHeaders = \
-	SoPrimitiveVertexCache.h \
 	SoGlyphCache.h \
 	SoShaderProgramCache.h \
 	SoVBOCache.h
@@ -369,13 +368,12 @@ am__objects_2 = SoBoundingBoxCache.$(OBJEXT) SoCache.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_caches_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_caches_lst_SOURCES_DIST = SoPrimitiveVertexCache.h \
-	SoGlyphCache.h SoShaderProgramCache.h SoVBOCache.h \
-	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
-	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
-	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
-	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp \
-	SoShaderProgramCache.cpp SoVBOCache.cpp
+am__EXTRA_caches_lst_SOURCES_DIST = SoGlyphCache.h \
+	SoShaderProgramCache.h SoVBOCache.h all-caches-cpp.cpp \
+	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
+	SoGLCacheList.cpp SoGLRenderCache.cpp SoNormalCache.cpp \
+	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
+	SoGlyphCache.cpp SoShaderProgramCache.cpp SoVBOCache.cpp
 caches_lst_OBJECTS = $(am_caches_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -394,13 +392,12 @@ am__objects_7 = SoBoundingBoxCache.lo SoCache.lo SoConvexDataCache.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libcaches_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libcaches_la_SOURCES_DIST = SoPrimitiveVertexCache.h \
-	SoGlyphCache.h SoShaderProgramCache.h SoVBOCache.h \
-	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
-	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
-	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
-	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp \
-	SoShaderProgramCache.cpp SoVBOCache.cpp
+am__EXTRA_libcaches_la_SOURCES_DIST = SoGlyphCache.h \
+	SoShaderProgramCache.h SoVBOCache.h all-caches-cpp.cpp \
+	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
+	SoGLCacheList.cpp SoGLRenderCache.cpp SoNormalCache.cpp \
+	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
+	SoGlyphCache.cpp SoShaderProgramCache.cpp SoVBOCache.cpp
 libcaches_la_OBJECTS = $(am_libcaches_la_OBJECTS)
 libcaches@SUFFIX@LINKHACK_la_LDFLAGS =
 libcaches@SUFFIX@LINKHACK_la_LIBADD =
@@ -411,11 +408,10 @@ am__libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoundingBoxCache.cpp \
 	SoGlyphCache.cpp SoShaderProgramCache.cpp SoVBOCache.cpp \
 	all-caches-cpp.cpp
 am_libcaches@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	SoPrimitiveVertexCache.h SoGlyphCache.h SoShaderProgramCache.h \
-	SoVBOCache.h all-caches-cpp.cpp SoBoundingBoxCache.cpp \
-	SoCache.cpp SoConvexDataCache.cpp SoGLCacheList.cpp \
-	SoGLRenderCache.cpp SoNormalCache.cpp \
+am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGlyphCache.h \
+	SoShaderProgramCache.h SoVBOCache.h all-caches-cpp.cpp \
+	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
+	SoGLCacheList.cpp SoGLRenderCache.cpp SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
 	SoGlyphCache.cpp SoShaderProgramCache.cpp SoVBOCache.cpp
 libcaches@SUFFIX@LINKHACK_la_OBJECTS = \
