@@ -142,7 +142,7 @@ protected:
                          const SbBool colorpervertex);
 private:
   class SoShapeP * pimpl;
-
+  void validatePVCache(SoGLRenderAction * action);
   void getBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
   void rayPickBoundingBox(SoRayPickAction * action);
   friend class soshape_primdata;           // internal class

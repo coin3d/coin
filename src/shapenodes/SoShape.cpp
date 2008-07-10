@@ -177,11 +177,9 @@ public:
     if (this->pvcache) { this->pvcache->unref(); }
     delete this->bumprender;
   }
-  enum { 
+  enum {
     RENDERCNT_BITS = 4,     // bits needed to store rendercnt
-    FLAG_BITS = 4,          // bits needed to store flags
-    VERTEXARRAY_WAITCNT = 4 // # frames to wait before trying to create
-                            // a SoPrimitiveVertexCache
+    FLAG_BITS = 4           // bits needed to store flags
   };
   enum Flags {
     SHOULD_BBOX_CACHE = 0x1,
@@ -196,11 +194,11 @@ public:
   soshape_bumprender * bumprender;
   uint32_t flags : FLAG_BITS;
   // stores the number of frames rendered with no node changes
-  uint32_t rendercnt : RENDERCNT_BITS; 
+  uint32_t rendercnt : RENDERCNT_BITS;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
-  
+
   // needed since some VRML97 nodes change the GL state inside the node
   void testSetupShapeHints(SoShape * shape) {
 #ifdef HAVE_VRML97
@@ -339,8 +337,6 @@ SoShape::~SoShape()
   delete PRIVATE(this);
 }
 
-static int soshape_use_gl_vertex_arrays = 0;
-
 // Doc in parent.
 void
 SoShape::initClass(void)
@@ -351,11 +347,6 @@ SoShape::initClass(void)
     new SbStorage(sizeof(soshape_staticdata),
                   soshape_construct_staticdata,
                   soshape_destruct_staticdata);
-
-  const char * env = coin_getenv("COIN_USE_GL_VERTEX_ARRAYS");
-  if (env) {
-    soshape_use_gl_vertex_arrays = atoi(env);
-  }
   SoShapeP::calibrateBBoxCache();
   coin_atexit((coin_atexit_f*) soshape_cleanup, CC_ATEXIT_NORMAL);
 }
@@ -568,52 +559,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   // test if we should sort triangles before rendering
   if (transparent && (shapestyleflags & SoShapeStyleElement::TRANSP_SORTED_TRIANGLES)) {
-    soshape_staticdata * shapedata = soshape_get_staticdata();    
-#if 0 // old code
-    // do this before generating triangles to get correct
-    // material for lines and point (only triangles are sorted).
-    SoMaterialBundle mb(action);
-    mb.sendFirst();
-    shapedata->currentbundle = &mb;
-
-    shapedata->trianglesort->beginShape(state);
-
-    // when setting this flag, the triangles will be sent to the
-    // trianglesort handler in invokeTriangleCallbacks().
-    shapedata->rendermode = SORTED_TRIANGLES;
-    this->generatePrimitives(action);
-    shapedata->rendermode = NORMAL;
-
-    shapedata->trianglesort->endShape(state, mb); // this will render the triangles
-#else // new code that used the pvcache to render
     // lock mutex since pvcache is shared among all threads
     PRIVATE(this)->lock();
-    if (PRIVATE(this)->pvcache == NULL ||
-        !PRIVATE(this)->pvcache->isValid(state)) {
-      if (PRIVATE(this)->pvcache) {
-        PRIVATE(this)->pvcache->unref();
-      }
-      SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-      // must push state to make cache dependencies work
-      state->push();
-      PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
-      PRIVATE(this)->pvcache->ref();
-      SoCacheElement::set(state, PRIVATE(this)->pvcache);
-      shapedata->rendermode = PVCACHE;
-      this->generatePrimitives(action);
-      shapedata->rendermode = NORMAL;
-      // this _must_ be called after creating the pvcache
-      state->pop();
-      SoCacheElement::setInvalid(storedinvalid);
-      PRIVATE(this)->pvcache->fit();
-      PRIVATE(this)->testSetupShapeHints(this);
-    }
+    this->validatePVCache(action);
 
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
     SoGLTextureImageElement::Model model;
     SbColor blendcolor;
     SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
     if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
+
     SoMaterialBundle mb(action);
     mb.sendFirst();
     PRIVATE(this)->setupShapeHints(this, state);
@@ -635,7 +590,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       }
     }
     PRIVATE(this)->unlock();
-#endif // end of new sorted triangles transparency rendering
     return FALSE; // tell shape _not_ to render
   }
 
@@ -686,39 +640,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (shapestyleflags & SoShapeStyleElement::BUMPMAP) {
     const SoNodeList & lights = SoLightElement::getLights(state);
     if (lights.getLength()) {
-
-      soshape_staticdata * shapedata = soshape_get_staticdata();
       // lock mutex since bumprender and pvcache is shared among all threads
       PRIVATE(this)->lock();
       if (PRIVATE(this)->bumprender == NULL) {
         PRIVATE(this)->bumprender = new soshape_bumprender;
       }
-      if (PRIVATE(this)->pvcache == NULL ||
-          !PRIVATE(this)->pvcache->isValid(state)) {
-        if (PRIVATE(this)->pvcache) {
-          PRIVATE(this)->pvcache->unref();
-        }
-        SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-        // must push state to make cache dependencies work
-        state->push();
-        PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
-        PRIVATE(this)->pvcache->ref();
-        SoCacheElement::set(state, PRIVATE(this)->pvcache);
-        shapedata->rendermode = PVCACHE;
-        this->generatePrimitives(action);
-        shapedata->rendermode = NORMAL;
-        // this _must_ be called after creating the pvcache
-        PRIVATE(this)->bumprender->calcTangentSpace(PRIVATE(this)->pvcache);
-        state->pop();
-        SoCacheElement::setInvalid(storedinvalid);
-        PRIVATE(this)->pvcache->fit();
-        PRIVATE(this)->testSetupShapeHints(this);
-      }
+      this->validatePVCache(action);
       if (PRIVATE(this)->pvcache->getNumTriangleIndices() == 0) {
         PRIVATE(this)->unlock();
         return TRUE;
       }
-
       SoGLLazyElement::getInstance(state)->send(state, SoLazyElement::ALL_MASK);
 
       glPushAttrib(GL_DEPTH_BUFFER_BIT);
@@ -768,7 +699,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       if (spec[0] != 0 || spec[1] != 0 || spec[2] != 0) { // Is the spec. color black?
 
         // Can the hardware do specular bump maps?
-        if (glue->has_arb_fragment_program && 
+        if (glue->has_arb_fragment_program &&
             glue->has_arb_vertex_program) {
 
           SoGLLazyElement::getInstance(state)->reset(state,
@@ -787,7 +718,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
                                                           (SoLight*) lights[i], m);
           }
         }
-        
+
       }
 
 
@@ -799,76 +730,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       SoGLLazyElement::getInstance(state)->reset(state,
                                                  SoLazyElement::LIGHT_MODEL_MASK|
                                                  SoLazyElement::BLENDING_MASK);
-      
+
       return FALSE;
     }
   }
 
 
-  // wait some frames before trying to create the vertex array
-  // cache. This will give Coin a chance to create display list caches
-  // for parts of the scene graph.
-  if (((shapestyleflags & SoShapeStyleElement::VERTEXARRAY) ||
-       soshape_use_gl_vertex_arrays) && 
-      ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0) &&
-      SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY) &&
-      (PRIVATE(this)->rendercnt >= SoShapeP::VERTEXARRAY_WAITCNT) &&
-      !SoCacheElement::anyOpen(state)) {
-    // Only create cache for built in Coin shapes, as it is often
-    // tempting for developers writing Coin extension nodes to not
-    // bother with implementing a proper generatePrimitives()
-    // function.
-    //
-    // Can be overridden by setting COIN_USE_GL_VERTEX_ARRAYS=-1.
-    //
-    // FIXME: we should make it possible to have more fine-grained
-    // control of this, to somehow flag *particular* extension nodes
-    // as ok for vertex array rendering. 20040220 mortene.
-    if (!this->isBuiltIn && (soshape_use_gl_vertex_arrays != -1)) return TRUE;
-    soshape_staticdata * shapedata = soshape_get_staticdata();
+  if (shapestyleflags & SoShapeStyleElement::VERTEXARRAY) {
     // lock mutex since pvcache is shared among all threads
     PRIVATE(this)->lock();
-    if (PRIVATE(this)->pvcache == NULL ||
-        !PRIVATE(this)->pvcache->isValid(state)) {
-      if (PRIVATE(this)->pvcache) {
-        // invalid cache. Don't try to create it again
-        PRIVATE(this)->flags |= SoShapeP::DISABLE_VERTEX_ARRAY_CACHE;
-        PRIVATE(this)->pvcache->unref();
-        PRIVATE(this)->pvcache = NULL;
-        PRIVATE(this)->unlock();
-        // let shape render
-        return TRUE;
-      }
-      // for debugging
-      // fprintf(stderr,"creating pvcache: %p\n", this);
-
-      SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-      // must push state to make cache dependencies work
-      state->push();
-      PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
-      PRIVATE(this)->pvcache->ref();
-      SoCacheElement::set(state, PRIVATE(this)->pvcache);
-      shapedata->rendermode = PVCACHE;
-      this->generatePrimitives(action);
-      shapedata->rendermode = NORMAL;
-      // this _must_ be called after creating the pvcache
-      state->pop();
-      SoCacheElement::setInvalid(storedinvalid);
-      PRIVATE(this)->pvcache->fit();
-      PRIVATE(this)->testSetupShapeHints(this);
-    }
-    
-    if ((PRIVATE(this)->pvcache->getNumTriangleIndices() < 100) &&
-        (PRIVATE(this)->pvcache->getNumLineIndices() < 100) &&
-        (PRIVATE(this)->pvcache->getNumPointIndices() < 100)) {
-      PRIVATE(this)->pvcache->unref();
-      PRIVATE(this)->pvcache = NULL;
-      // don't try to create this cache again
-      PRIVATE(this)->flags |= SoShapeP::DISABLE_VERTEX_ARRAY_CACHE;
-      PRIVATE(this)->unlock();
-      // let shape render
-      return TRUE;
-    }
+    this->validatePVCache(action);
     PRIVATE(this)->unlock();
 
     SoGLCacheContextElement::shouldAutoCache(state,
@@ -1249,7 +1120,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
       glNormal3fv(v1->getNormal().getValue());
       shapedata->currentbundle->send(v1->getMaterialIndex(), TRUE);
       glVertex3fv(v1->getPoint().getValue());
-      
+
       glTexCoord4fv(v2->getTextureCoords().getValue());
       glNormal3fv(v2->getNormal().getValue());
       shapedata->currentbundle->send(v2->getMaterialIndex(), TRUE);
@@ -1293,7 +1164,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
-    
+
     switch (shapedata->rendermode) {
     case PVCACHE:
       PRIVATE(this)->pvcache->addPoint(v);
@@ -1570,7 +1441,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     // don't create bbox caches for shapes that change
     PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
   }
-  
+
   SbBool shouldcache = (PRIVATE(this)->flags & SoShapeP::SHOULD_BBOX_CACHE) != 0;
   SbBool storedinvalid = FALSE;
   if (shouldcache) {
@@ -1647,11 +1518,11 @@ SoShapeP::calibrateBBoxCache(void)
 /*!
   Convenience method that enables vertex arrays and/or VBOs
   Returns \e TRUE if VBO is used.
-  
+
   \sa finishVertexArray()
   \since Coin 3.0
 */
-SbBool 
+SbBool
 SoShape::startVertexArray(SoGLRenderAction * action,
                           const SoCoordinateElement * coords,
                           const SbVec3f * pervertexnormals,
@@ -1700,7 +1571,7 @@ SoShape::startVertexArray(SoGLRenderAction * action,
     const SoMultiTextureCoordinateElement * mtelem = NULL;
     const SbBool * enabledunits = NULL;
     int lastenabled;
-    
+
     telem = SoTextureCoordinateElement::getInstance(state);
     enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
     if (enabledunits) {
@@ -1781,26 +1652,26 @@ SoShape::startVertexArray(SoGLRenderAction * action,
     vertexvbo->bindBuffer(contextid);
   }
   else {
-    dataptr = coords->is3D() ? 
-      ((const GLvoid *)coords->getArrayPtr3()) : 
+    dataptr = coords->is3D() ?
+      ((const GLvoid *)coords->getArrayPtr3()) :
       ((const GLvoid *)coords->getArrayPtr4());
   }
   cc_glglue_glVertexPointer(glue, coords->is3D() ? 3 : 4, GL_FLOAT, 0,
                             dataptr);
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-  
+
   return dovbo;
 }
 
-/*!  
+/*!
   Should be called after rendering with vertex arrays. This method
   will disable arrays and VBOs enabled in the startVertexArray()
   function.
-  
+
   \sa startVertexArray()
   \since Coin 3.0
 */
-void 
+void
 SoShape::finishVertexArray(SoGLRenderAction * action,
                            const SbBool vbo,
                            const SbBool normpervertex,
@@ -1813,7 +1684,7 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
   if (vbo) {
     if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
       SoCacheElement::invalidate(state);
-      SoGLCacheContextElement::shouldAutoCache(state, 
+      SoGLCacheContextElement::shouldAutoCache(state,
                                                SoGLCacheContextElement::DONT_AUTO_CACHE);
     }
     // unset VBO buffer
@@ -1825,13 +1696,13 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
   }
   if (texpervertex) {
     int lastenabled;
-    const SbBool * enabledunits = 
+    const SbBool * enabledunits =
       SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
 
-    const SoMultiTextureCoordinateElement * mtelem = 
+    const SoMultiTextureCoordinateElement * mtelem =
       SoMultiTextureCoordinateElement::getInstance(state);
-    
-    const SoTextureCoordinateElement * telem = 
+
+    const SoTextureCoordinateElement * telem =
       SoTextureCoordinateElement::getInstance(state);
 
     for (int i = 1; i <= lastenabled; i++) {
@@ -1848,9 +1719,46 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
   if (colorpervertex) {
     SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);
     lelem->reset(state, SoLazyElement::DIFFUSE_MASK);
-    
+
     cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
   }
 }
+
+void
+SoShape::validatePVCache(SoGLRenderAction * action)
+{
+  SoState * state = action->getState();
+  if (PRIVATE(this)->pvcache == NULL ||
+      !PRIVATE(this)->pvcache->isValid(state)) {
+    if (PRIVATE(this)->pvcache) {
+      PRIVATE(this)->pvcache->unref();
+    }
+    // we don't want to create display list caches while building the VBOs
+    SoCacheElement::invalidate(state);
+
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+    SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+    // must push state to make cache dependencies work
+    state->push();
+    PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
+    PRIVATE(this)->pvcache->ref();
+    SoCacheElement::set(state, PRIVATE(this)->pvcache);
+    shapedata->rendermode = PVCACHE;
+    this->generatePrimitives(action);
+    shapedata->rendermode = NORMAL;
+    // needed for out old bumpmap handling
+    if (PRIVATE(this)->bumprender) PRIVATE(this)->bumprender->calcTangentSpace(PRIVATE(this)->pvcache);
+    // this _must_ be called after creating the pvcache
+
+    // FIXME: consider if we should call a virtual function here to
+    // enable subclasses to modify the primtive vertex cache. Must be
+    // done before to state->pop() call.
+    state->pop();
+    SoCacheElement::setInvalid(storedinvalid);
+    PRIVATE(this)->pvcache->fit();
+    PRIVATE(this)->testSetupShapeHints(this);
+  }
+}
+
 
 #undef PRIVATE
