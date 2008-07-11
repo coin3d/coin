@@ -39,6 +39,7 @@ int SoRenderManagerRootSensor::debugrootnotifications = -1;
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
+#define INHERIT_TRANSPARENCY_TYPE -1
 
 SoRenderManagerP::SoRenderManagerP(SoRenderManager * publ)
 {
@@ -207,6 +208,7 @@ public:
   SoRenderManager * manager;
   SoNodeSensor * sensor;
   uint32_t stateflags;
+  int transparencytype;
 };
 
 SoRenderManager::Superimposition::Superimposition(SoNode * scene,
@@ -222,6 +224,8 @@ SoRenderManager::Superimposition::Superimposition(SoNode * scene,
 
   PRIVATE(this)->enabled = enabled;
   PRIVATE(this)->stateflags = flags;
+  
+  PRIVATE(this)->transparencytype = INHERIT_TRANSPARENCY_TYPE;
 
   PRIVATE(this)->manager = manager;
   PRIVATE(this)->sensor = new SoNodeSensor(Superimposition::changeCB, this);
@@ -246,6 +250,10 @@ SoRenderManager::Superimposition::render(SoGLRenderAction * action, SbBool clear
 {
   if (!PRIVATE(this)->enabled) return;
 
+  SoGLRenderAction::TransparencyType oldttype = action->getTransparencyType();
+  if (PRIVATE(this)->transparencytype != INHERIT_TRANSPARENCY_TYPE) {
+    action->setTransparencyType((SoGLRenderAction::TransparencyType) PRIVATE(this)->transparencytype);
+  }
   SbBool zbufferwason = glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE;
 
   PRIVATE(this)->stateflags & Superimposition::ZBUFFERON ?
@@ -255,13 +263,17 @@ SoRenderManager::Superimposition::render(SoGLRenderAction * action, SbBool clear
   GLbitfield clearflags = clearcolorbuffer ? GL_COLOR_BUFFER_BIT : 0;
   if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER) {
     clearflags |= GL_DEPTH_BUFFER_BIT;
-  } 
-  
+  }
+
   PRIVATE(this)->manager->renderScene(action, PRIVATE(this)->scene, (uint32_t) clearflags);
-  
+
   zbufferwason ?
     glEnable(GL_DEPTH_TEST):
     glDisable(GL_DEPTH_TEST);
+  
+  if (PRIVATE(this)->transparencytype != INHERIT_TRANSPARENCY_TYPE) {
+    action->setTransparencyType(oldttype);
+  }
 }
 
 void
@@ -278,6 +290,12 @@ SoRenderManager::Superimposition::changeCB(void * data, SoSensor * sensor)
   if (PRIVATE(thisp)->stateflags & Superimposition::AUTOREDRAW) {
     PRIVATE(thisp)->manager->scheduleRedraw();
   }
+}
+
+void 
+SoRenderManager::Superimposition::setTransparencyType(SoGLRenderAction::TransparencyType type)
+{
+  PRIVATE(this)->transparencytype = (int) type;
 }
 
 #undef PRIVATE

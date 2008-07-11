@@ -267,7 +267,7 @@ SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
 
  */
 SoRenderManager::Superimposition *
-SoRenderManager::addSuperimposition(SoNode * scene, 
+SoRenderManager::addSuperimposition(SoNode * scene,
                                     uint32_t flags)
 {
   if (!PRIVATE(this)->superimpositions) {

@@ -27,6 +27,7 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 
 class SbViewportRegion;
 class SoEvent;
@@ -61,6 +62,7 @@ public:
     void render(SoGLRenderAction * action, SbBool clearcolorbuffer = FALSE);
     void setEnabled(SbBool yes);
     int getStateFlags(void) const;
+    void setTransparencyType(SoGLRenderAction::TransparencyType transparencytype);
     
   private:
     static void changeCB(void * data, SoSensor * sensor);
