@@ -57,8 +57,8 @@ FILE * coin_get_stderr(void);
 #define coin_atexit(func, priority) \
         coin_atexit_func(SO__QUOTE(func), func, priority)
 
-void coin_atexit_func(const char * name, coin_atexit_f * fp, int32_t priority);
 void coin_atexit_cleanup(void);
+
 SbBool coin_is_exiting(void);
 
 /* this enum contains all values that are available for use for the
@@ -75,7 +75,12 @@ enum coin_atexit_priorities {
      code: */
   CC_ATEXIT_NORMAL = 0,
 
-  /* Priorities relative to CC_ATEXIT_NORMAL */
+  /* dynamically loaded libraries should be the last to go, as other
+     code in Coin will be dependent on functionality in these in its
+     own clean-up code: */
+  CC_ATEXIT_DYNLIBS = -2147483647,
+
+  /* Relative priorities */
 
   /* The realTime field should be cleaned up before normal cleanups
      are called, since the global field list will be cleaned up there.
@@ -90,7 +95,11 @@ enum coin_atexit_priorities {
   /*
     SoBase instance tracking should happen before normal cleanups
   */
-  CC_ATEXIT_TRACK_SOBASE_INSTANCES = CC_ATEXIT_NORMAL + 1, 
+  CC_ATEXIT_TRACK_SOBASE_INSTANCES = CC_ATEXIT_NORMAL + 1,
+
+  /* Just after NORMAL */
+  CC_ATEXIT_NORMAL_LOWPRIORITY = CC_ATEXIT_NORMAL - 1,
+
   /* 
      Used to clean up static data for nodes/elements/nodekits ++
      Must be done before the typesystem cleanup 
@@ -115,6 +124,12 @@ enum coin_atexit_priorities {
      subsystem still being up'n'running: */
   CC_ATEXIT_FONT_SUBSYSTEM = CC_ATEXIT_NORMAL - 100,
 
+  /* Just before FONT_SUBSYSTEM */
+  CC_ATEXIT_FONT_SUBSYSTEM_HIGHPRIORITY = CC_ATEXIT_FONT_SUBSYSTEM + 1,
+
+  /* Just later than FONT_SUBSYSTEM */
+  CC_ATEXIT_FONT_SUBSYSTEM_LOWPRIORITY = CC_ATEXIT_FONT_SUBSYSTEM - 1,
+
   /* still later, so clean-up code can use e.g. SoDebugError to report
      problems, output debugging info, etc: */
   CC_ATEXIT_MSG_SUBSYSTEM = CC_ATEXIT_NORMAL - 200,
@@ -128,12 +143,22 @@ enum coin_atexit_priorities {
      will for instance often want to dealloc mutexes: */
   CC_ATEXIT_THREADING_SUBSYSTEM = CC_ATEXIT_NORMAL - 1000,
 
-  /* dynamically loaded libraries should be the last to go, as other
-     code in Coin will be dependent on functionality in these in its
-     own clean-up code: */
-  CC_ATEXIT_DYNLIBS = -2147483647
+  /* FIXME: Not sure if this is needed, refer comment by mortene where
+     enum is used in mutex.cpp - 20080711 BFG */
+  CC_ATEXIT_THREADING_SUBSYSTEM_LOWPRIORITY = CC_ATEXIT_THREADING_SUBSYSTEM - 1,
+
+  /* FIXME: Not sure if this is needed, refer comment by mortene where
+     enum is used in thread.cpp - 20080711 BFG */
+  CC_ATEXIT_THREADING_SUBSYSTEM_VERYLOWPRIORITY = CC_ATEXIT_THREADING_SUBSYSTEM - 2,
+
+  /* Needs to happen late, but before we cleanup our dynamic
+     libraries */
+  CC_ATEXIT_ENVIRONMENT = CC_ATEXIT_DYNLIBS + 10
+
 
 };
+
+void coin_atexit_func(const char * name, coin_atexit_f * fp, coin_atexit_priorities priority);
 
 /* ********************************************************************** */
 

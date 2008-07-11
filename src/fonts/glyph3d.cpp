@@ -119,7 +119,7 @@ cc_glyph3d_initialize()
 
   /* +1, so it happens before the underlying font abstraction layer
      cleans itself up: */
-  coin_atexit((coin_atexit_f*) cc_glyph3d_cleanup, CC_ATEXIT_FONT_SUBSYSTEM + 1);
+  coin_atexit((coin_atexit_f*) cc_glyph3d_cleanup, CC_ATEXIT_FONT_SUBSYSTEM_HIGHPRIORITY);
 
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);  
 }

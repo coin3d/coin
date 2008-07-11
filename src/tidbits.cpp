@@ -442,10 +442,10 @@ coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...)
   we should have a generic linked list class. 20011220 mortene.
 */
 
+#ifdef HAVE_GETENVIRONMENTVARIABLE
 static struct envvar_data * envlist_head = NULL;
 static struct envvar_data * envlist_tail = NULL;
 
-#ifdef HAVE_GETENVIRONMENTVARIABLE
 struct envvar_data {
   char * name;
   char * val;
@@ -467,30 +467,6 @@ envlist_cleanup(void)
   envlist_tail = NULL;
 }
 
-#else
-struct envvar_data {
-  char * string;
-  struct envvar_data * next;
-};
-
-static void
-envlist_cleanup(void)
-{
-  struct envvar_data * ptr = envlist_head;
-  while (ptr != NULL) {
-    struct envvar_data * tmp = ptr;
-    char * strptr = strchr(ptr->string, '=');
-    if (strptr) *strptr = '\0';
-    /* else huh? */
-    putenv(ptr->string); /* remove string from environment */
-    free(ptr->string);
-    ptr = ptr->next;
-    free(tmp);
-  }
-}
-
-#endif /* HAVE_GETENVIRONMENTVARIABLE */
-
 static void
 envlist_append(struct envvar_data * item)
 {
@@ -498,13 +474,16 @@ envlist_append(struct envvar_data * item)
   if (envlist_head == NULL) {
     envlist_head = item;
     envlist_tail = item;
-    coin_atexit_func("envlist_cleanup", envlist_cleanup, -2147483647);
+    coin_atexit_func("envlist_cleanup", envlist_cleanup, CC_ATEXIT_ENVIRONMENT);
   }
   else {
     envlist_tail->next = item;
     envlist_tail = item;
   }
 }
+
+#endif /* HAVE_GETENVIRONMENTVARIABLE */
+
 
 /**************************************************************************/
 
@@ -664,62 +643,7 @@ coin_setenv(const char * name, const char * value, int overwrite)
   else
     return TRUE;
 #else /* !HAVE_GETENVIRONMENTVARIABLE */
-  if (!getenv(name) || overwrite) {
-    /* ugh - this looks like a mess, but things must be ordered very strictly */
-
-    struct envvar_data * envptr, * prevptr;
-    cc_string str;
-    char * strbuf, * oldbuf;
-    int len;
-    cc_string_construct(&str);
-    cc_string_sprintf(&str, "%s=%s", name, value);
-    strbuf = (char *) malloc(cc_string_length(&str)+1);
-    if (strbuf) strcpy(strbuf, cc_string_get_text(&str));
-    cc_string_clean(&str);
-    if (!strbuf) {
-      /* handle this better? */
-      return FALSE;
-    }
-
-    envptr = envlist_head;
-    len = strlen(name) + 1;
-    while (envptr && strncmp(strbuf, envptr->string, len) != 0)
-      envptr = envptr->next;
-
-    if (envptr) {
-      oldbuf = envptr->string;
-    }
-    else {
-      oldbuf = NULL;
-      envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
-      if (!envptr) {
-        /* handle this better? */
-        free(strbuf);
-        return FALSE;
-      }
-    }
-    envptr->string = strbuf;
-
-    if (putenv(envptr->string) == -1) { /* denied! */
-      if (oldbuf) {
-        /* we had old value - setting new didn't work, so we do a rollback and assume we
-           still need to do bookkeeping of the old value */
-        free(envptr->string);
-        envptr->string = oldbuf;
-        return FALSE;
-      }
-      else {
-        free(envptr->string);
-        free(envptr);
-      }
-      return FALSE;
-    }
-    else {
-      if (oldbuf) free(oldbuf);
-      else envlist_append(envptr);
-    }
-  }
-  return TRUE;
+  return (setenv(name,value,overwrite) == 0);
 #endif /* !HAVE_GETENVIRONMENTVARIABLE */
 }
 
@@ -752,28 +676,7 @@ coin_unsetenv(const char * name)
   }
   SetEnvironmentVariable(name, NULL);
 #else /* !HAVE_GETENVIRONMENTVARIABLE */
-  int len;
-  struct envvar_data * envptr, * prevptr;
-  /* we assume we don't need to bookkeep this string */
-  /* if name contains '=' (abuse of function), then we're in deep trouble
-     when/if name is freed - it's not our responsibility to be /that/
-     paranoid though */
-  putenv((char *) name);
-  /* remove bookkeeping for environment string */
-  prevptr = NULL;
-  envptr = envlist_head;
-  len = strlen(name);
-  while (envptr && !((strncmp(name, envptr->string, len) == 0) && (envptr->string[len] == '='))) {
-    prevptr = envptr;
-    envptr = envptr->next;
-  }
-  if (envptr) {
-    if (prevptr) prevptr->next = envptr->next;
-    else envlist_head = envptr->next;
-    if (envptr == envlist_tail) envlist_tail = prevptr;
-    free(envptr->string);
-    free(envptr);
-  }
+  unsetenv(name);
 #endif /* !HAVE_GETENVIRONMENTVARIABLE */
 }
 
@@ -1259,7 +1162,7 @@ coin_atexit_cleanup(void)
 */
 
 void
-coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
+coin_atexit_func(const char * name, coin_atexit_f * f, coin_atexit_priorities priority)
 {
 #ifdef COIN_THREADSAFE
   /* This function being not mt-safe seemed to be the only cause of

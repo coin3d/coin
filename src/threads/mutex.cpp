@@ -250,7 +250,7 @@ cc_mutex_init(void)
        to keep the same order wrt the other thread-related clean-up
        functions, since before I changed hard-coded numbers for
        enumerated values for coin_atexit() invocations. 20060301 mortene. */
-    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 1);
+    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM_LOWPRIORITY);
   }
 
   if (env) { maxmutexlocktime = atof(env); }

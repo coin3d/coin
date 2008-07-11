@@ -225,7 +225,7 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
     socontexthandler_hashlist = new SbHash <uint32_t, socontexthandler_cbitem> (64);
     // make this callback trigger after the SoGLCacheContext cleanup function
     // by setting priority to -1
-    coin_atexit((coin_atexit_f *)socontexthandler_cleanup, CC_ATEXIT_NORMAL - 1);
+    coin_atexit((coin_atexit_f *)socontexthandler_cleanup, CC_ATEXIT_NORMAL_LOWPRIORITY);
   }
   socontexthandler_cbitem item;
   item.func = func;

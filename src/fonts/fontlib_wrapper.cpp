@@ -179,7 +179,7 @@ using_freetype(void)
       coin_atexit((coin_atexit_f *)freetype_cleanup,
                   /* priority must be lower than for abstraction
                      interface, so don't change this willy-nilly: */
-                  CC_ATEXIT_FONT_SUBSYSTEM - 1);
+                  CC_ATEXIT_FONT_SUBSYSTEM_LOWPRIORITY);
     }
   }
 
@@ -231,7 +231,7 @@ using_win32api(void)
       coin_atexit((coin_atexit_f *)win32api_cleanup,
                   /* priority must be lower than for abstraction
                      interface, so don't change this willy-nilly: */
-                  CC_ATEXIT_FONT_SUBSYSTEM - 1);
+                  CC_ATEXIT_FONT_SUBSYSTEM_LOWPRIORITY);
     }
   }
 

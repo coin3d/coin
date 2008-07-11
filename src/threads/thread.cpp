@@ -181,7 +181,7 @@ cc_thread_init(void)
      to keep the same order wrt the other thread-related clean-up
      functions, since before I changed hard-coded numbers for
      enumerated values for coin_atexit() invocations. 20060301 mortene. */
-  coin_atexit(win32_threadid_idx_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 2);
+  coin_atexit(win32_threadid_idx_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM_VERYLOWPRIORITY);
 #endif /* USE_WIN32THREAD */ 
   cc_recmutex_init();
 }
