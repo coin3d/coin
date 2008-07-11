@@ -791,6 +791,13 @@ SoTexture2::filenameSensorCB(void * data, SoSensor *)
                               thisp->filename.getValue().getString());
     thisp->setReadStatus(0);
   }
+  else if (thisp->filename.getValue() == "") {
+    // setting filename to "" should reset the node to its initial state
+    thisp->setReadStatus(0);
+    thisp->image.setValue(SbVec2s(0,0), 0, NULL);
+    thisp->image.setDefault(TRUE);
+    thisp->filename.setDefault(TRUE);
+  }
 }
 
 #undef LOCK_GLIMAGE
