@@ -225,7 +225,7 @@ cc_mutex_cleanup(void)
 void
 cc_mutex_init(void)
 {
-  const char * e = coin_getenv("COIN_DEBUG_MUTEXLOCK_MAXTIME");
+  const char * env = coin_getenv("COIN_DEBUG_MUTEXLOCK_MAXTIME");
 
 #ifdef USE_W32THREAD /* TryEnterCriticalSection test. */
 
@@ -253,10 +253,10 @@ cc_mutex_init(void)
     coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM - 1);
   }
 
-  if (e) { maxmutexlocktime = atof(e); }
+  if (env) { maxmutexlocktime = atof(env); }
 
-  e = coin_getenv("COIN_DEBUG_MUTEXLOCK_TIMING");
-  if (e) { reportmutexlocktiming = atof(e); }
+  env = coin_getenv("COIN_DEBUG_MUTEXLOCK_TIMING");
+  if (env) { reportmutexlocktiming = atof(env); }
 }
 
 void 
