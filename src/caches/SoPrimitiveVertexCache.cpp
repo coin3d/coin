@@ -374,7 +374,7 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
   else {
     // fall back to immediate mode rendering
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
-    glBegin(GL_TRIANGLES);
+    glBegin(GL_LINES);
     thisp->renderImmediate(glue,
                            this->getLineIndices(),
                            this->getNumLineIndices(),
