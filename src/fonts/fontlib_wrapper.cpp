@@ -57,6 +57,10 @@
 
 static void * flw_global_lock = NULL;
 static int flw_global_font_index = 0;
+static SbBool initialized = FALSE;
+static SbBool tried_init_fontlib = FALSE;
+static SbBool fontlib_available = FALSE;
+
 
 /* Debug: enable this in case code hangs waiting for a lock.  A hang
    will typically happen for one out of two reasons:
@@ -158,24 +162,21 @@ static void freetype_cleanup(void) { cc_flwft_exit(); }
 static SbBool
 using_freetype(void)
 {
-  static SbBool tried_init = FALSE;
-  static SbBool available = FALSE;
-
-  if (!tried_init) {
+  if (!tried_init_fontlib) {
     const char * env;
 
-    tried_init = TRUE;
+    tried_init_fontlib = TRUE;
 
     env = coin_getenv("COIN_FORCE_FREETYPE_OFF");
-    available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
-    available = available && cc_flwft_initialize();
+    fontlib_available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
+    fontlib_available = fontlib_available && cc_flwft_initialize();
     if (cc_font_debug()) {
       cc_debugerror_postinfo("using_freetype",
                              "FreeType library will%s be used",
-                             available ? "" : " not");
+                             fontlib_available ? "" : " not");
     }
 
-    if (available) {
+    if (fontlib_available) {
       coin_atexit((coin_atexit_f *)freetype_cleanup,
                   /* priority must be lower than for abstraction
                      interface, so don't change this willy-nilly: */
@@ -183,7 +184,7 @@ using_freetype(void)
     }
   }
 
-  return available;
+  return fontlib_available;
 }
 
 static void win32api_cleanup(void) { cc_flww32_exit(); }
@@ -191,21 +192,18 @@ static void win32api_cleanup(void) { cc_flww32_exit(); }
 static SbBool
 using_win32api(void)
 {
-  static SbBool tried_init = FALSE;
-  static SbBool available = FALSE;
-
-  if (!tried_init) {
+  if (!tried_init_fontlib) {
     const char * env;
 
-    tried_init = TRUE;
+    tried_init_fontlib = TRUE;
 
     env = coin_getenv("COIN_FORCE_WIN32FONTS_OFF");
-    available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
-    available = available && cc_flww32_initialize();
+    fontlib_available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
+    fontlib_available = fontlib_available && cc_flww32_initialize();
     if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_initialize",
                              "Win32 API can%s be used for font support",
-                             available ? "" : " not");
+                             fontlib_available ? "" : " not");
     }
 
     /* Allow only one of the availability flags to be set, as it's too
@@ -217,17 +215,17 @@ using_win32api(void)
        installed for a good reason on the Windows machine in question.
     */
 
-    if (available && using_freetype()) {
+    if (fontlib_available && using_freetype()) {
       if (cc_font_debug()) {
         cc_debugerror_postinfo("using_win32api",
                                "FreeType library will take precedence "
                                "over Win32 API");
       }
       cc_flww32_exit();
-      available = FALSE;
+      fontlib_available = FALSE;
     }
 
-    if (available) {
+    if (fontlib_available) {
       coin_atexit((coin_atexit_f *)win32api_cleanup,
                   /* priority must be lower than for abstraction
                      interface, so don't change this willy-nilly: */
@@ -235,7 +233,7 @@ using_win32api(void)
     }
   }
 
-  return available;
+  return fontlib_available;
 }
 
 /* ********************************************************************** */
@@ -378,6 +376,12 @@ flw_exit(void)
 
   cc_dynarray_destruct(fontarray);
 
+  fontarray = NULL;
+  initialized = FALSE;
+
+  tried_init_fontlib = FALSE;
+  fontlib_available = FALSE;
+
   CC_MUTEX_DESTRUCT(flw_global_lock);
   flw_global_font_index = 0;
 }
@@ -385,7 +389,6 @@ flw_exit(void)
 static void
 flw_initialize(void)
 {
-  static SbBool initialized = FALSE;
   /* CC_MUTEX_CONSTRUCT uses a global mutex to be thread safe */
   CC_MUTEX_CONSTRUCT(flw_global_lock);
   FLW_MUTEX_LOCK(flw_global_lock);
