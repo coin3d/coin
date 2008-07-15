@@ -403,8 +403,8 @@ SoGLLazyElement::enableBlending(const int sfactor, const int dfactor) const
   ((SoGLLazyElement*)this)->glstate.blending = TRUE;
   ((SoGLLazyElement*)this)->glstate.blend_sfactor = sfactor;
   ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;  
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_sfactor = 0;
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = 0;  
+  ((SoGLLazyElement*)this)->glstate.alpha_blend_sfactor = -1;
+  ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = -1;  
   ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
 }
 
