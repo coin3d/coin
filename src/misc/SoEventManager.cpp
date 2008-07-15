@@ -101,6 +101,12 @@ SoEventManager::~SoEventManager()
     this->removeSoScXMLStateMachine(sm);
     delete sm;
   }
+
+  if (PRIVATE(this)->camera)
+    PRIVATE(this)->camera->unref();
+  if (PRIVATE(this)->scene)
+    PRIVATE(this)->scene->unref();
+
 }
 
 /*!
