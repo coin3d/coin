@@ -152,7 +152,7 @@ SoLazyElement::init(SoState * state)
   this->coinstate.blending = FALSE;
   this->coinstate.blend_sfactor = 0;
   this->coinstate.blend_dfactor = 0;
-  this->coinstate.alpha_blend_dfactor = 0;
+  this->coinstate.alpha_blend_sfactor = 0;
   this->coinstate.alpha_blend_dfactor = 0;
   this->coinstate.lightmodel = PHONG;
   this->coinstate.packeddiffuse = FALSE;
