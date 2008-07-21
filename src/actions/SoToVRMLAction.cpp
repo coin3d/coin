@@ -216,8 +216,7 @@ public:
 
 #define PRIVATE(obj) ((obj)->pimpl)
 #define PUBLIC(obj) ((obj)->master)
-
-#define THISP(p) ((SoToVRMLActionP*)p)
+#define THISP(p) (static_cast<SoToVRMLActionP *>(p))
 
 // *************************************************************************
 
@@ -1152,4 +1151,5 @@ SoToVRMLActionP::vrmlextrusion_cb(void * closure, SoCallbackAction * action, con
 #undef PRIVATE
 #undef PUBLIC
 #undef THISP
+
 #endif // HAVE_VRML97

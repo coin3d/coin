@@ -446,7 +446,7 @@ public:
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
-#define THISP(p) ((SoToVRML2ActionP*)p)
+#define THISP(p) (static_cast<SoToVRML2ActionP *>(p))
 
 // *************************************************************************
 
@@ -568,6 +568,7 @@ SoToVRML2Action::SoToVRML2Action(void)
 #undef ADD_POST_CB
 #undef ADD_UNSUPPORTED
 #undef ADD_TRIANGLE_CB
+#undef ADD_SHAPE_CB
 #undef ADD_SO_TO_IFS
 }
 
@@ -2103,6 +2104,8 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 #undef DEFAULT_VIEWPORT_HEIGHT
 
 #undef PRIVATE
+#undef PUBLIC
+#undef THISP
 
 #endif // HAVE_VRML97
 

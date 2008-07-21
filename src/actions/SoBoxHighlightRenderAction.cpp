@@ -86,9 +86,7 @@ public:
   void drawHighlightBox(const SoPath * path);
 };
 
-#undef PRIVATE
 #define PRIVATE(obj) ((obj)->pimpl)
-#undef PUBLIC
 #define PUBLIC(obj) ((obj)->master)
 
 // used to initialize the internal storage class with variables

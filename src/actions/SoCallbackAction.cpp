@@ -1204,4 +1204,4 @@ SoCallbackAction::beginTraversal(SoNode * node)
   this->traverse(node);
 }
 
-#undef THIS
+#undef PRIVATE

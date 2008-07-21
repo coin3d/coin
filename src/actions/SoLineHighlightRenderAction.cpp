@@ -358,3 +358,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   PUBLIC(this)->setNumPasses(oldnumpasses);
   state->pop();
 }
+
+#undef PUBLIC
+#undef PRIVATE
+

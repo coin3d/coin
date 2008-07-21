@@ -362,7 +362,6 @@ class SoReorganizeActionP {
 };
 
 
-
 #define PRIVATE(obj) obj->pimpl
 
 SO_ACTION_SOURCE(SoReorganizeAction);
@@ -1009,3 +1008,5 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   path->push(idx);
   ils->unrefNoDelete();
 }
+
+#undef PRIVATE
