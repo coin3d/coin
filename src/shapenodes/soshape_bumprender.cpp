@@ -771,6 +771,7 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
   const SbVec2f * bumpcoords = cache->getBumpCoordArray();
 
   this->tangentlist.truncate(0);
+  this->tangentlist.ensureCapacity(numv * 2);
 
   for (i = 0; i < numv; i++) {
     this->tangentlist.append(SbVec3f(0.0f, 0.0f, 0.0f));
