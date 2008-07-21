@@ -119,7 +119,10 @@ public:
 
 #define PRIVATE(obj) ((obj)->pimpl)
 #define PUBLIC(obj) ((obj)->publ)
-#define DMSG SoDebugError::postInfo
+//#define DMSG SoDebugError::postInfo
+#define DMSG nop
+
+inline void nop(const char *, ...) { }
 
 // *************************************************************************
 
@@ -425,7 +428,7 @@ SoVertexAttribute::copyContents(const SoFieldContainer * from,
 void 
 SoVertexAttributeP::setDataPtr(void) 
 {
-  SoType datatype = SoType::fromName(PUBLIC(this)->typeName.getValue());
+  SoType datatype = SoType::fromName(PUBLIC(this)->typeName.getValue().getString());
   this->attributedata->type = datatype;
 
   if (datatype == SoMFFloat::getClassTypeId()) {
@@ -464,6 +467,9 @@ SoVertexAttributeP::setDataPtr(void)
     this->attributedata->dataptr = mfield->getValues(0);
 
   } else {
+    SoDebugError::postInfo("SoVertexAttributeP::setDataPtr",
+                           "Typename '%s' is not a supported type.",
+                           PUBLIC(this)->typeName.getValue().getString());
     assert(0 && "unknown attribute type");
   }
 }
