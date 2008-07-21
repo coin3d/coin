@@ -40,6 +40,7 @@ class SoAction;
 class SoMaterialBundle;
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
+class SoVertexAttributeBundle;
 class SbVec3f;
 class SbVec2f;
 
@@ -137,9 +138,12 @@ void sogl_render_faceset(const SoGLCoordinateElement * const coords,
                          const int32_t *matindices,
                          SoTextureCoordinateBundle * const texcoords,
                          const int32_t *texindices,
+                         SoVertexAttributeBundle * const attribs,
                          const int nbind,
                          const int mbind,
-                         const int texture);
+                         const int attribbind,
+                         const int dotexture,
+                         const int doattribs);
 
 void
 sogl_render_tristrip(const SoGLCoordinateElement * const coords,

@@ -3,6 +3,7 @@ PublicHeaders = \
 	SoBundle.h \
 	SoMaterialBundle.h \
 	SoNormalBundle.h \
+	SoVertexAttributeBundle.h \
 	SoTextureCoordinateBundle.h
 PrivateHeaders =
 ObsoleteHeaders =

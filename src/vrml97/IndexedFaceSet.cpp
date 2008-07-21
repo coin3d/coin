@@ -215,6 +215,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoFaceDetail.h>
@@ -223,6 +224,7 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoVertexAttributeBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
@@ -604,6 +606,18 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
                             mbind != OVERALL);
   }
   else {
+    SoVertexAttributeBundle vab(action, TRUE);
+    SbBool doattribs = vab.doAttributes();
+
+    SoVertexAttributeBindingElement::Binding attribbind = 
+      SoVertexAttributeBindingElement::get(state);
+
+    if (!doattribs) { 
+      // for overall attribute binding we check for doattribs before
+      // sending anything in SoGL::FaceSet::GLRender
+      attribbind = SoVertexAttributeBindingElement::OVERALL;
+    }
+
     sogl_render_faceset((SoGLCoordinateElement *)coords,
                         cindices,
                         numindices,
@@ -613,9 +627,13 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
                         mindices,
                         &tb,
                         tindices,
+                        &vab,
                         (int)nbind,
                         (int)mbind,
-                        doTextures?1:0);
+                        (int)attribbind,
+                        doTextures ? 1 : 0,
+                        doattribs ? 1 : 0);
+
   }
   if (normalCacheUsed) {
     this->readUnlockNormalCache();

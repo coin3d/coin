@@ -491,6 +491,9 @@ SoElement::initElements(void)
   SoDepthBufferElement::initClass();
   SoGLDepthBufferElement::initClass();
 
+  SoVertexAttributeElement::initClass();
+  SoGLVertexAttributeElement::initClass();
+  SoVertexAttributeBindingElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be

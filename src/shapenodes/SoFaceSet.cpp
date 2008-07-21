@@ -68,8 +68,10 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoVertexAttributeBindingElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/caches/SoNormalCache.h>
@@ -967,6 +969,18 @@ SoFaceSet::useConvexCache(SoAction * action)
   if (nbind == SoConvexDataCache::PER_VERTEX ||
       nbind == SoConvexDataCache::PER_FACE) realnbind++;
 
+  SoVertexAttributeBundle vab(action, TRUE);
+  SbBool doattribs = vab.doAttributes();
+
+  SoVertexAttributeBindingElement::Binding attribbind = 
+    SoVertexAttributeBindingElement::get(state);
+
+    if (!doattribs) { 
+      // for overall attribute binding we check for doattribs before
+      // sending anything in SoGL::FaceSet::GLRender
+      attribbind = SoVertexAttributeBindingElement::OVERALL;
+    }
+
   // use the IndededFaceSet rendering method.
   sogl_render_faceset(coords,
                       THIS->convexCache->getCoordIndices(),
@@ -977,9 +991,13 @@ SoFaceSet::useConvexCache(SoAction * action)
                       THIS->convexCache->getMaterialIndices(),
                       &tb,
                       THIS->convexCache->getTexIndices(),
+                      &vab,
                       realnbind,
                       realmbind,
-                      doTextures?1:0);
+                      attribbind,
+                      doTextures ? 1 : 0,
+                      doattribs ? 1 : 0);
+
 
   if (nc) {
     this->readUnlockNormalCache();

@@ -43,6 +43,7 @@ RegularSources = \
 	SoLineWidthElement.cpp \
 	SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp \
@@ -87,7 +88,8 @@ RegularSources = \
 	SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp
+	SoSoundElement.cpp \
+        SoVertexAttributeElement.cpp
 
 LinkHackSources = \
 	all-elements-cpp.cpp
@@ -96,7 +98,8 @@ PublicHeaders =
 
 PrivateHeaders = \
 	SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h
+	SoTextureScaleQualityElement.h \
+        SoVertexAttributeElement.cpp
 
 ObsoletedHeaders =
 

@@ -614,6 +614,7 @@ SoNode::initClasses(void)
   SoNurbsProfile::initClass();
   SoMaterial::initClass();
   SoMaterialBinding::initClass();
+  SoVertexAttributeBinding::initClass();
   SoNormal::initClass();
   SoNormalBinding::initClass();
   SoPackedColor::initClass();
@@ -662,6 +663,7 @@ SoNode::initClasses(void)
   SoTextureCoordinateNormalMap::initClass();
   SoTextureCoordinateReflectionMap::initClass();
   SoTextureCoordinateObject::initClass();
+  SoVertexAttribute::initClass();
 
   SoDepthBuffer::initClass();
 }

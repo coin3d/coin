@@ -326,8 +326,10 @@
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoVertexAttributeBindingElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
@@ -587,12 +589,16 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
+    SoGLVertexAttributeElement::getInstance(state)->enableVBO(action);
+
     PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(glue, TRUE, contextid);
-    
+
     cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
     cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
 
+    SoGLVertexAttributeElement::getInstance(state)->disableVBO(action);
+    
     if (doTextures) {
       for (i = 1; i <= lastenabled; i++) {
         if (enabled[i]) {
@@ -633,6 +639,17 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     SoTextureCoordinateBundle tb(action, TRUE, FALSE);
     doTextures = tb.needCoordinates();
     
+    SoVertexAttributeBundle vab(action, TRUE);
+    SbBool doattribs = vab.doAttributes();
+
+    SoVertexAttributeBindingElement::Binding attribbind = 
+      SoVertexAttributeBindingElement::get(state);
+
+    if (!doattribs) { 
+      // for overall attribute binding we check for doattribs before
+      // sending anything in SoGL::FaceSet::GLRender
+      attribbind = SoVertexAttributeBindingElement::OVERALL;
+    }
     
     sogl_render_faceset((SoGLCoordinateElement *) coords,
                         PRIVATE(this)->idx.getArrayPtr(),
@@ -643,9 +660,13 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
                         NULL,
                         &tb,
                         PRIVATE(this)->idx.getArrayPtr(),
+                        &vab,
                         3, /* SoIndexedFaceSet::PER_VERTEX */
                         0,
-                        doTextures?1:0);
+                        (int) attribbind,
+                        doTextures ? 1 : 0,
+                        doattribs ? 1 : 0);
+
   }
   PRIVATE(this)->readUnlock();
 

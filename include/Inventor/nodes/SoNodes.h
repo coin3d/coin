@@ -111,6 +111,8 @@
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoVertexAttribute.h>
+#include <Inventor/nodes/SoVertexAttributeBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/nodes/SoPackedColor.h>

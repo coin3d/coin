@@ -132,6 +132,8 @@ PublicHeaders = \
 	SoTriangleStripSet.h \
 	SoUnits.h \
 	SoVertexProperty.h \
+        SoVertexAttribute.h \
+        SoVertexAttributeBinding.h \
 	SoVertexShape.h \
 	SoWWWAnchor.h \
 	SoWWWInline.h \

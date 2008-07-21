@@ -84,6 +84,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoGLVertexAttributeElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -1660,6 +1661,8 @@ SoShape::startVertexArray(SoGLRenderAction * action,
                             dataptr);
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
+  SoGLVertexAttributeElement::getInstance(state)->enableVBO(action);
+
   return dovbo;
 }
 
@@ -1722,6 +1725,8 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
 
     cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
   }
+
+  SoGLVertexAttributeElement::getInstance(state)->disableVBO(action);
 }
 
 void

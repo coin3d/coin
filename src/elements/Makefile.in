@@ -307,6 +307,7 @@ RegularSources = \
 	SoLineWidthElement.cpp \
 	SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp \
@@ -351,7 +352,8 @@ RegularSources = \
 	SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp
+	SoSoundElement.cpp \
+        SoVertexAttributeElement.cpp
 
 
 LinkHackSources = \
@@ -362,7 +364,8 @@ PublicHeaders =
 
 PrivateHeaders = \
 	SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h
+	SoTextureScaleQualityElement.h \
+        SoVertexAttributeElement.cpp
 
 
 ObsoletedHeaders = 
@@ -447,6 +450,7 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -471,7 +475,7 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoWindowElement.cpp SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp SoSoundElement.cpp \
-	all-elements-cpp.cpp
+	SoVertexAttributeElement.cpp all-elements-cpp.cpp
 am__objects_1 = all-elements-cpp.$(OBJEXT)
 am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoAmbientColorElement.$(OBJEXT) \
@@ -497,6 +501,7 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoLightModelElement.$(OBJEXT) SoLinePatternElement.$(OBJEXT) \
 	SoLineWidthElement.$(OBJEXT) SoLocalBBoxMatrixElement.$(OBJEXT) \
 	SoMaterialBindingElement.$(OBJEXT) \
+	SoVertexAttributeBindingElement.$(OBJEXT) \
 	SoMultiTextureCoordinateElement.$(OBJEXT) \
 	SoMultiTextureEnabledElement.$(OBJEXT) \
 	SoMultiTextureMatrixElement.$(OBJEXT) \
@@ -528,14 +533,15 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoListenerPositionElement.$(OBJEXT) \
 	SoListenerOrientationElement.$(OBJEXT) \
 	SoListenerGainElement.$(OBJEXT) \
-	SoListenerDopplerElement.$(OBJEXT) SoSoundElement.$(OBJEXT)
+	SoListenerDopplerElement.$(OBJEXT) SoSoundElement.$(OBJEXT) \
+	SoVertexAttributeElement.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_elements_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_elements_lst_SOURCES_DIST = SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h all-elements-cpp.cpp \
-	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
-	SoAnnoText3CharOrientElement.cpp \
+	SoTextureScaleQualityElement.h SoVertexAttributeElement.cpp \
+	all-elements-cpp.cpp SoAccumulatedElement.cpp \
+	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -554,6 +560,7 @@ am__EXTRA_elements_lst_SOURCES_DIST = SoTextureScalePolicyElement.h \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -603,6 +610,7 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -627,9 +635,9 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoWindowElement.cpp SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp SoSoundElement.cpp \
-	all-elements-cpp.cpp
-am__objects_6 = all-elements-cpp.lo
-am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
+	SoVertexAttributeElement.cpp all-elements-cpp.cpp
+am__objects_7 = all-elements-cpp.lo
+am__objects_8 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoAnnoText3CharOrientElement.lo \
 	SoAnnoText3FontSizeHintElement.lo \
 	SoAnnoText3RenderPrintElement.lo SoBBoxModelMatrixElement.lo \
@@ -647,7 +655,8 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoLightAttenuationElement.lo SoLightElement.lo \
 	SoLightModelElement.lo SoLinePatternElement.lo \
 	SoLineWidthElement.lo SoLocalBBoxMatrixElement.lo \
-	SoMaterialBindingElement.lo SoMultiTextureCoordinateElement.lo \
+	SoMaterialBindingElement.lo SoVertexAttributeBindingElement.lo \
+	SoMultiTextureCoordinateElement.lo \
 	SoMultiTextureEnabledElement.lo SoMultiTextureMatrixElement.lo \
 	SoMultiTextureImageElement.lo SoModelMatrixElement.lo \
 	SoNormalBindingElement.lo SoNormalElement.lo \
@@ -669,14 +678,14 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoViewportRegionElement.lo SoWindowElement.lo \
 	SoListenerPositionElement.lo SoListenerOrientationElement.lo \
 	SoListenerGainElement.lo SoListenerDopplerElement.lo \
-	SoSoundElement.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
-am_libelements_la_OBJECTS = $(am__objects_8)
+	SoSoundElement.lo SoVertexAttributeElement.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
+am_libelements_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libelements_la_SOURCES_DIST = SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h all-elements-cpp.cpp \
-	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
-	SoAnnoText3CharOrientElement.cpp \
+	SoTextureScaleQualityElement.h SoVertexAttributeElement.cpp \
+	all-elements-cpp.cpp SoAccumulatedElement.cpp \
+	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -695,6 +704,7 @@ am__EXTRA_libelements_la_SOURCES_DIST = SoTextureScalePolicyElement.h \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -743,6 +753,7 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -767,12 +778,13 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoWindowElement.cpp SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp SoSoundElement.cpp \
-	all-elements-cpp.cpp
-am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+	SoVertexAttributeElement.cpp all-elements-cpp.cpp
+am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTextureScalePolicyElement.h SoTextureScaleQualityElement.h \
-	all-elements-cpp.cpp SoAccumulatedElement.cpp \
-	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
+	SoVertexAttributeElement.cpp all-elements-cpp.cpp \
+	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
+	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -791,6 +803,7 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoVertexAttributeBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
 	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
@@ -978,6 +991,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransparencyElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUnitsElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUnitsElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeBindingElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeBindingElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoViewVolumeElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoViewVolumeElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoViewingMatrixElement.Plo \
@@ -1241,6 +1258,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransparencyElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUnitsElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUnitsElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeBindingElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeBindingElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoViewVolumeElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoViewVolumeElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoViewingMatrixElement.Plo@am__quote@

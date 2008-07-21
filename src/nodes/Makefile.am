@@ -105,6 +105,8 @@ RegularSources = \
 	SoUnits.cpp \
 	SoUnknownNode.cpp \
 	SoVertexProperty.cpp \
+        SoVertexAttribute.cpp \
+        SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp \
 	SoWWWInline.cpp \
         SoViewerNavigationMode.cpp 

@@ -41,6 +41,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
@@ -1808,16 +1809,19 @@ namespace { namespace SoGL { namespace FaceSet {
 
   template < int NormalBinding,
              int MaterialBinding,
-             int TexturingEnabled >
+             int VertexAttributeBinding >
   static void GLRender(const SoGLCoordinateElement * const vertexlist,
-                       const int32_t *vertexindices,
-                       int numindices,
-                       const SbVec3f *normals,
-                       const int32_t *normalindices,
-                       SoMaterialBundle *materials,
-                       const int32_t *matindices,
-                       const SoTextureCoordinateBundle * const texcoords,
-                       const int32_t *texindices)
+		       const int32_t *vertexindices,
+		       int numindices,
+		       const SbVec3f *normals,
+		       const int32_t *normalindices,
+		       SoMaterialBundle *materials,
+		       const int32_t *matindices,
+		       const SoTextureCoordinateBundle * const texcoords,
+		       const int32_t *texindices,
+                       SoVertexAttributeBundle * const attribs,
+                       const int dotexture,
+                       const int doattribs)
   {
 
     // just in case someone forgot
@@ -1853,14 +1857,19 @@ namespace { namespace SoGL { namespace FaceSet {
     SbVec3f dummynormal(0,0,1);
     const SbVec3f * currnormal = &dummynormal;
     if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-        (AttributeBinding)NormalBinding == PER_FACE ||
-        (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-        (AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
-        TexturingEnabled == TRUE) {
+	(AttributeBinding)NormalBinding == PER_FACE ||
+	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+	(AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
+	dotexture) {
       if (normals) currnormal = normals;
     }
 
     int matnr = 0;
+    int attribnr = 0;
+
+    if (doattribs && (AttributeBinding)VertexAttributeBinding == OVERALL) {
+      attribs->send(0);
+    }
 
     while (viptr + 2 < viendptr) {
       v1 = *viptr++;
@@ -1944,7 +1953,13 @@ namespace { namespace SoGL { namespace FaceSet {
         glNormal3fv((const GLfloat*)currnormal);
       }
 
-      if (TexturingEnabled == TRUE) {
+      if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
+	attribs->send(attribnr++);
+      } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+        attribs->send(*vertexindices++);
+      }
+
+      if (dotexture) {
         texcoords->send(texindices ? *texindices++ : texidx++,
                         vertexlist->get3(v1),
                         *currnormal);
@@ -1974,7 +1989,13 @@ namespace { namespace SoGL { namespace FaceSet {
         glNormal3fv((const GLfloat*)currnormal);
       }
 
-      if (TexturingEnabled == TRUE) {
+      if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
+	attribs->send(attribnr++);
+      } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+        attribs->send(*vertexindices++);
+      }
+
+      if (dotexture) {
         texcoords->send(texindices ? *texindices++ : texidx++,
                         vertexlist->get3(v2),
                         *currnormal);
@@ -2004,7 +2025,13 @@ namespace { namespace SoGL { namespace FaceSet {
         glNormal3fv((const GLfloat*)currnormal);
       }
 
-      if (TexturingEnabled == TRUE) {
+      if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
+	attribs->send(attribnr++);
+      } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+        attribs->send(*vertexindices++);
+      }
+
+      if (dotexture) {
         texcoords->send(texindices ? *texindices++ : texidx++,
                         vertexlist->get3(v3),
                         *currnormal);
@@ -2035,7 +2062,7 @@ namespace { namespace SoGL { namespace FaceSet {
           glNormal3fv((const GLfloat*)currnormal);
         }
 
-        if (TexturingEnabled == TRUE) {
+        if (dotexture) {
           texcoords->send(texindices ? *texindices++ : texidx++,
                           vertexlist->get3(v4),
                           *currnormal);
@@ -2066,14 +2093,21 @@ namespace { namespace SoGL { namespace FaceSet {
             glNormal3fv((const GLfloat*)currnormal);
           }
 
-          if (TexturingEnabled == TRUE) {
+          if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
+            attribs->send(attribnr++);
+          } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+            attribs->send(*vertexindices++);
+          }
+          
+          if (dotexture) {
             texcoords->send(texindices ? *texindices++ : texidx++,
                             vertexlist->get3(v5),
                             *currnormal);
+      
           }
-
+          
           SEND_VERTEX(v5);
-
+            
           v1 = viptr < viendptr ? *viptr++ : -1;
           while (v1 >= 0) {
             // For robustness upon buggy data sets
@@ -2111,7 +2145,7 @@ namespace { namespace SoGL { namespace FaceSet {
               glNormal3fv((const GLfloat*)currnormal);
             }
 
-            if (TexturingEnabled == TRUE) {
+            if (dotexture) {
               texcoords->send(texindices ? *texindices++ : texidx++,
                               vertexlist->get3(v1),
                               *currnormal);
@@ -2131,7 +2165,11 @@ namespace { namespace SoGL { namespace FaceSet {
       if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
         normalindices++;
       }
-      if (TexturingEnabled == TRUE) {
+      if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+        vertexindices++;
+      }
+
+      if (dotexture) {
         if (texindices) texindices++;
       }
     }
@@ -2141,60 +2179,74 @@ namespace { namespace SoGL { namespace FaceSet {
 
 } } } // namespace
 
-#define SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, texturing, args) \
-  SoGL::FaceSet::GLRender<normalbinding, materialbinding, texturing> args
+#define SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, vertexattributebinding, args) \
+  SoGL::FaceSet::GLRender<normalbinding, materialbinding, vertexattributebinding> args
 
-#define SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, texturing, args) \
-  if (texturing) { \
-    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, TRUE, args); \
-  } else { \
-    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, FALSE, args); \
-  }
-
-#define SOGL_FACESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) { \
+#define SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, materialbinding, vertexattributebinding, args) \
+  switch (vertexattributebinding) { \
   case SoGL::FaceSet::OVERALL: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::OVERALL, texturing, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, SoGL::FaceSet::OVERALL, args); \
     break; \
   case SoGL::FaceSet::PER_FACE: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_FACE, texturing, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, SoGL::FaceSet::OVERALL, args); \
     break; \
   case SoGL::FaceSet::PER_FACE_INDEXED: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_FACE_INDEXED, texturing, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, SoGL::FaceSet::OVERALL, args); \
     break; \
   case SoGL::FaceSet::PER_VERTEX: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_VERTEX, texturing, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, SoGL::FaceSet::PER_VERTEX, args); \
     break; \
   case SoGL::FaceSet::PER_VERTEX_INDEXED: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_VERTEX_INDEXED, texturing, args); \
+    SOGL_FACESET_GLRENDER_CALL_FUNC(normalbinding, materialbinding, SoGL::FaceSet::PER_VERTEX_INDEXED, args); \
+    break; \
+  default: \
+    assert(!"invalid vertex attribute binding argument"); \
+  }
+
+#define SOGL_FACESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, vertexattributebinding, args) \
+  switch (materialbinding) { \
+  case SoGL::FaceSet::OVERALL: \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::OVERALL, vertexattributebinding, args); \
+    break; \
+  case SoGL::FaceSet::PER_FACE: \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_FACE, vertexattributebinding, args); \
+    break; \
+  case SoGL::FaceSet::PER_FACE_INDEXED: \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_FACE_INDEXED, vertexattributebinding, args); \
+    break; \
+  case SoGL::FaceSet::PER_VERTEX: \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_VERTEX, vertexattributebinding, args); \
+    break; \
+  case SoGL::FaceSet::PER_VERTEX_INDEXED: \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::FaceSet::PER_VERTEX_INDEXED, vertexattributebinding, args); \
     break; \
   default: \
     assert(!"invalid material binding argument"); \
   }
 
-#define SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
+#define SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, vertexattributebinding, args) \
   switch (normalbinding) { \
   case SoGL::FaceSet::OVERALL: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::OVERALL, materialbinding, texturing, args); \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::OVERALL, materialbinding, vertexattributebinding, args); \
     break; \
   case SoGL::FaceSet::PER_FACE: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_FACE, materialbinding, texturing, args); \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_FACE, materialbinding, vertexattributebinding, args); \
     break; \
   case SoGL::FaceSet::PER_FACE_INDEXED: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_FACE_INDEXED, materialbinding, texturing, args); \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_FACE_INDEXED, materialbinding, vertexattributebinding, args); \
     break; \
   case SoGL::FaceSet::PER_VERTEX: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_VERTEX, materialbinding, texturing, args); \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_VERTEX, materialbinding, vertexattributebinding, args); \
     break; \
   case SoGL::FaceSet::PER_VERTEX_INDEXED: \
-    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_VERTEX_INDEXED, materialbinding, texturing, args); \
+    SOGL_FACESET_GLRENDER_RESOLVE_ARG2(SoGL::FaceSet::PER_VERTEX_INDEXED, materialbinding, vertexattributebinding, args); \
     break; \
   default: \
     assert(!"invalid normal binding argument"); \
   }
 
-#define SOGL_FACESET_GLRENDER(normalbinding, materialbinding, texturing, args) \
-  SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args)
+#define SOGL_FACESET_GLRENDER(normalbinding, materialbinding, vertexattributebinding, args) \
+  SOGL_FACESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, vertexattributebinding, args)
 
 
 void
@@ -2207,25 +2259,32 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *matindices,
                     SoTextureCoordinateBundle * const texcoords,
                     const int32_t *texindices,
+                    SoVertexAttributeBundle * const attribs,
                     const int nbind,
                     const int mbind,
-                    const int texture)
+                    const int attribbind,
+                    const int dotexture,
+                    const int doattribs)
 {
-  SOGL_FACESET_GLRENDER(nbind, mbind, texture, (vertexlist,
-                                                vertexindices,
-                                                num_vertexindices,
-                                                normals,
-                                                normindices,
-                                                materials,
-                                                matindices,
-                                                texcoords,
-                                                texindices));
+  SOGL_FACESET_GLRENDER(nbind, mbind, attribbind, (vertexlist,
+                                                   vertexindices,
+                                                   num_vertexindices,
+                                                   normals,
+                                                   normindices,
+                                                   materials,
+                                                   matindices,
+                                                   texcoords,
+                                                   texindices,
+                                                   attribs,
+                                                   dotexture,
+                                                   doattribs));
 }
 
 #undef SOGL_FACESET_GLRENDER
 #undef SOGL_FACESET_GLRENDER_RESOLVE_ARG1
 #undef SOGL_FACESET_GLRENDER_RESOLVE_ARG2
 #undef SOGL_FACESET_GLRENDER_RESOLVE_ARG3
+#undef SOGL_FACESET_GLRENDER_RESOLVE_ARG4
 #undef SOGL_FACESET_GLRENDER_CALL_FUNC
 
 #endif // !NO_FACESET_RENDER

@@ -41,6 +41,7 @@ SoGLSLShaderProgram::SoGLSLShaderProgram(void)
   : programHandles(5)
 {
   this->isExecutable = FALSE;
+  this->neededlinking = TRUE;
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
@@ -98,6 +99,7 @@ SoGLSLShaderProgram::removeShaderObjects(void)
 void
 SoGLSLShaderProgram::enable(const cc_glglue * g)
 {
+  this->neededlinking = FALSE;
   this->ensureLinking(g);
 
   if (this->isExecutable) {
@@ -178,6 +180,7 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
                                  GL_OBJECT_LINK_STATUS_ARB,&didLink);
 
     this->isExecutable = didLink;
+    this->neededlinking = TRUE;
   }
 }
 
@@ -210,6 +213,11 @@ SoGLSLShaderProgram::getProgramHandle(const cc_glglue * g, const SbBool create)
   return handle;
 }
 
+SbBool 
+SoGLSLShaderProgram::neededLinking(void) const
+{
+  return this->neededlinking;
+}
 
 void
 SoGLSLShaderProgram::context_destruction_cb(uint32_t cachecontext, void * userdata)

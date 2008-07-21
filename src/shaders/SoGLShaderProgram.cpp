@@ -153,6 +153,23 @@ SoGLShaderProgram::getShaderObjectIds(SbList <uint32_t> & ids) const
   ids = this->objectids;
 }
 
+uint32_t 
+SoGLShaderProgram::getGLSLShaderProgramHandle(SoState * state) const
+{
+  const uint32_t cachecontext = SoGLCacheContextElement::get(state);
+  const cc_glglue * glctx = cc_glglue_instance(cachecontext);
+ 
+  return this->glslShaderProgram->getProgramHandle(glctx);
+}
+
+SbBool 
+SoGLShaderProgram::glslShaderProgramLinked(void) const
+{
+  if (this->glslShaderProgram) {
+    return this->glslShaderProgram->neededLinking();
+  }
+  return FALSE;
+}
 
 #if defined(SOURCE_HINT)
 SbString

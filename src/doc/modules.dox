@@ -311,6 +311,29 @@
 // *************************************************************************
 
 /*!
+  \defgroup shaders Shader Classes
+
+  Coin-2.5 added support for Shaders. Shaders replace the fixed
+  function vertex and fragment processing in OpenGL by letting the
+  user define the processing that takes place at key points in the
+  OpenGL pipeline. Vertex shaders handle the operations that occur on
+  each vertex, while fragment shaders handle the operations that occur
+  on each pixel. The SoShaderProgram node in Coin provides a
+  convenient way of specifying the code for vertex and fragment
+  shaders.
+
+  Coin-3.0 expanded upon the shader support by adding support for
+  OpenGL Vertex Attributes. When using shaders, programmers are no
+  longer limited to the set of attributes that OpenGL defines
+  (glColor, glNormal, glTexCoord etc.) You can now define your own
+  per-vertex data and pass them to the shaders using the
+  SoVertexAttribute node.
+
+*/
+
+// *************************************************************************
+
+/*!
   \defgroup sound 3D Sound Support Classes
 
 */

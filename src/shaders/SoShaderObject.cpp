@@ -29,6 +29,8 @@
   See \link coin_shaders Shaders in Coin \endlink for more information
   on how to set up a scene graph with shaders.
 
+  \ingroup shaders
+
   \sa SoShaderProgram
 */
 

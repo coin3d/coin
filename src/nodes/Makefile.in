@@ -369,6 +369,8 @@ RegularSources = \
 	SoUnits.cpp \
 	SoUnknownNode.cpp \
 	SoVertexProperty.cpp \
+        SoVertexAttribute.cpp \
+        SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp \
 	SoWWWInline.cpp \
         SoViewerNavigationMode.cpp 
@@ -482,6 +484,7 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoVertexAttribute.cpp SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp SoWWWInline.cpp SoViewerNavigationMode.cpp \
 	all-nodes-cpp.cpp
 am__objects_1 = all-nodes-cpp.$(OBJEXT)
@@ -538,6 +541,7 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
 	SoTransformSeparator.$(OBJEXT) SoTransformation.$(OBJEXT) \
 	SoTranslation.$(OBJEXT) SoUnits.$(OBJEXT) \
 	SoUnknownNode.$(OBJEXT) SoVertexProperty.$(OBJEXT) \
+	SoVertexAttribute.$(OBJEXT) SoVertexAttributeBinding.$(OBJEXT) \
 	SoWWWAnchor.$(OBJEXT) SoWWWInline.$(OBJEXT) \
 	SoViewerNavigationMode.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
@@ -581,6 +585,7 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoVertexAttribute.cpp SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp SoWWWInline.cpp SoViewerNavigationMode.cpp
 nodes_lst_OBJECTS = $(am_nodes_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -624,6 +629,7 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoVertexAttribute.cpp SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp SoWWWInline.cpp SoViewerNavigationMode.cpp \
 	all-nodes-cpp.cpp
 am__objects_6 = all-nodes-cpp.lo
@@ -662,7 +668,8 @@ am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
 	SoTextureMatrixTransform.lo SoTextureScalePolicy.lo \
 	SoTextureUnit.lo SoTransform.lo SoTransparencyType.lo \
 	SoTransformSeparator.lo SoTransformation.lo SoTranslation.lo \
-	SoUnits.lo SoUnknownNode.lo SoVertexProperty.lo SoWWWAnchor.lo \
+	SoUnits.lo SoUnknownNode.lo SoVertexProperty.lo \
+	SoVertexAttribute.lo SoVertexAttributeBinding.lo SoWWWAnchor.lo \
 	SoWWWInline.lo SoViewerNavigationMode.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
@@ -705,6 +712,7 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoVertexAttribute.cpp SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp SoWWWInline.cpp SoViewerNavigationMode.cpp
 libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -746,6 +754,7 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoVertexAttribute.cpp SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp SoWWWInline.cpp SoViewerNavigationMode.cpp \
 	all-nodes-cpp.cpp
 am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
@@ -787,6 +796,7 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubNodeP.h \
 	SoTextureUnit.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
+	SoVertexAttribute.cpp SoVertexAttributeBinding.cpp \
 	SoWWWAnchor.cpp SoWWWInline.cpp SoViewerNavigationMode.cpp
 libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
@@ -973,6 +983,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoUnits.Plo ./$(DEPDIR)/SoUnits.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUnknownNode.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUnknownNode.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttribute.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttribute.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeBinding.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeBinding.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexProperty.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexProperty.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoViewerNavigationMode.Plo \
@@ -1273,6 +1287,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUnits.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUnknownNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUnknownNode.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttribute.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttribute.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeBinding.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeBinding.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexProperty.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexProperty.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoViewerNavigationMode.Plo@am__quote@

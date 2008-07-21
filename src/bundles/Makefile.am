@@ -5,6 +5,7 @@ RegularSources = \
 	SoBundle.cpp \
 	SoMaterialBundle.cpp \
 	SoNormalBundle.cpp \
+	SoVertexAttributeBundle.cpp \
 	SoTextureCoordinateBundle.cpp
 LinkHackSources = \
 	all-bundles-cpp.cpp

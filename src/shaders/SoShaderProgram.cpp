@@ -22,18 +22,156 @@
 \**************************************************************************/
 
 /*!
+
   \class SoShaderProgram SoShaderProgram.h Inventor/nodes/SoShaderProgram.h
-  \brief The SoShaderProgram class is used to specify a set of vertex/geometry/fragment objects.
+
+  \brief The SoShaderProgram class is used to specify a set of
+  vertex/geometry/fragment objects.
 
   This node can store one of each of SoVertexShader, SoGeometryShader
   and SoFragmentShader in its shaderObject field. Coin will load all
   shader objects specified there, and attach all objects into a
   program before binding it as the current shader program.
 
-  See \link coin_shaders Shaders in Coin \endlink for more information
-  on how to set up a scene graph with shaders.
+  \ingroup shaders
 
-  \ingroup nodes
+  A typical scene graph with shaders will look something like this:
+
+  \code
+
+  Separator {
+    ShaderProgram {
+      shaderObject [
+        VertexShader {
+          sourceProgram "myvertexshader.glsl"
+          parameter [
+            ShaderParameter1f { name "myvertexparam" value 1.0 }
+          ]
+        }
+        FragmentShader {
+          sourceProgram "myfragmentshader.glsl"
+          parameter [
+            ShaderParameter1f { name "myfragmentparam" value 2.0 }
+          ]
+        }
+      ]
+    }
+    Cube { }
+  }
+
+  \endcode
+
+  This will render the Cube with the vertex and fragment shaders
+  specified in myvertexshader.glsl and myfragmentshader.glsl. Coin
+  also supports ARB shaders and Cg shaders (if the Cg library is
+  installed). However, we recommend using GLSL since we will focus
+  mostly on support this shader language.
+
+  Coin defines some named parameters that can be added by the
+  application programmer, and which will be automatically updated by
+  Coin while traversing the scene graph.
+
+  \li coin_texunit[n]_model - Set to 0 when texturing is disabled, and
+  to SoTextureImageElement::Model if there's a current texture on the
+  state for unit \a n.
+
+  \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
+
+  Example scene graph that renders per-fragment OpenGL Phong lighting
+  for one light source. The shaders assume the first light source is a
+  directional light. This is the case if you open the file in a
+  standard examiner viewer.
+
+  The iv-file:
+  \code
+  Separator {
+    ShaderProgram {
+      shaderObject [
+        VertexShader {
+          sourceProgram "perpixel_vertex.glsl"
+        }
+        FragmentShader {
+          sourceProgram "perpixel_fragment.glsl"
+        }
+      ]
+    }
+    Complexity { value 1.0 }
+    Material { diffuseColor 1 0 0 specularColor 1 1 1 shininess 0.9 }
+    Sphere { }
+
+    Translation { translation 3 0 0 }
+    Material { diffuseColor 0 1 0 specularColor 1 1 1 shininess 0.9 }
+    Cone { }
+
+    Translation { translation 3 0 0 }
+    Material { diffuseColor 0.8 0.4 0.1 specularColor 1 1 1 shininess 0.9 }
+    Cylinder { }
+  }
+  \endcode
+
+  The vertex shader (perpixel_vertex.glsl):
+  \code
+  varying vec3 ecPosition3;
+  varying vec3 fragmentNormal;
+
+  void main(void)
+  {
+    vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;
+    ecPosition3 = ecPosition.xyz / ecPosition.w;
+    fragmentNormal = normalize(gl_NormalMatrix * gl_Normal);
+
+    gl_Position = ftransform();
+    gl_FrontColor = gl_Color;
+  }
+  \endcode
+
+  The fragment shader (perpixel_vertex.glsl):
+  \code
+  varying vec3 ecPosition3;
+  varying vec3 fragmentNormal;
+
+  void DirectionalLight(in int i,
+                        in vec3 normal,
+                        inout vec4 ambient,
+                        inout vec4 diffuse,
+                        inout vec4 specular)
+  {
+    float nDotVP; // normal . light direction
+    float nDotHV; // normal . light half vector
+    float pf;     // power factor
+
+    nDotVP = max(0.0, dot(normal, normalize(vec3(gl_LightSource[i].position))));
+    nDotHV = max(0.0, dot(normal, vec3(gl_LightSource[i].halfVector)));
+
+    if (nDotVP == 0.0)
+      pf = 0.0;
+    else
+      pf = pow(nDotHV, gl_FrontMaterial.shininess);
+
+    ambient += gl_LightSource[i].ambient;
+    diffuse += gl_LightSource[i].diffuse * nDotVP;
+    specular += gl_LightSource[i].specular * pf;
+  }
+
+  void main(void)
+  {
+    vec3 eye = -normalize(ecPosition3);
+    vec4 ambient = vec4(0.0);
+    vec4 diffuse = vec4(0.0);
+    vec4 specular = vec4(0.0);
+    vec3 color;
+
+    DirectionalLight(0, normalize(fragmentNormal), ambient, diffuse, specular);
+
+    color =
+      gl_FrontLightModelProduct.sceneColor.rgb +
+      ambient.rgb * gl_FrontMaterial.ambient.rgb +
+      diffuse.rgb * gl_Color.rgb +
+      specular.rgb * gl_FrontMaterial.specular.rgb;
+
+    gl_FragColor = vec4(color, gl_Color.a);
+  }
+  \endcode
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

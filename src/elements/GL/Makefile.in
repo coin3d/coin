@@ -298,6 +298,7 @@ RegularSources = \
 	SoGLViewingMatrixElement.cpp \
 	SoGLViewportRegionElement.cpp \
 	SoGLDisplayList.cpp \
+        SoGLVertexAttributeElement.cpp \
 	SoResetMatrixElement.cpp
 
 LinkHackSources = \
@@ -387,8 +388,8 @@ am__glelements_lst_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp SoResetMatrixElement.cpp \
-	all-glelements-cpp.cpp
+	SoGLDisplayList.cpp SoGLVertexAttributeElement.cpp \
+	SoResetMatrixElement.cpp all-glelements-cpp.cpp
 am__objects_1 = all-glelements-cpp.$(OBJEXT)
 am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 	SoGLClipPlaneElement.$(OBJEXT) SoGLColorIndexElement.$(OBJEXT) \
@@ -413,6 +414,7 @@ am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 	SoGLUpdateAreaElement.$(OBJEXT) SoGLVBOElement.$(OBJEXT) \
 	SoGLViewingMatrixElement.$(OBJEXT) \
 	SoGLViewportRegionElement.$(OBJEXT) SoGLDisplayList.$(OBJEXT) \
+	SoGLVertexAttributeElement.$(OBJEXT) \
 	SoResetMatrixElement.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
@@ -436,7 +438,8 @@ am__EXTRA_glelements_lst_SOURCES_DIST = SoResetMatrixElement.h \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp SoResetMatrixElement.cpp
+	SoGLDisplayList.cpp SoGLVertexAttributeElement.cpp \
+	SoResetMatrixElement.cpp
 glelements_lst_OBJECTS = $(am_glelements_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -460,8 +463,8 @@ am__libglelements_la_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp SoResetMatrixElement.cpp \
-	all-glelements-cpp.cpp
+	SoGLDisplayList.cpp SoGLVertexAttributeElement.cpp \
+	SoResetMatrixElement.cpp all-glelements-cpp.cpp
 am__objects_6 = all-glelements-cpp.lo
 am__objects_7 = SoGLCacheContextElement.lo SoGLClipPlaneElement.lo \
 	SoGLColorIndexElement.lo SoGLCoordinateElement.lo \
@@ -480,7 +483,8 @@ am__objects_7 = SoGLCacheContextElement.lo SoGLClipPlaneElement.lo \
 	SoGLTextureImageElement.lo SoGLTextureMatrixElement.lo \
 	SoGLUpdateAreaElement.lo SoGLVBOElement.lo \
 	SoGLViewingMatrixElement.lo SoGLViewportRegionElement.lo \
-	SoGLDisplayList.lo SoResetMatrixElement.lo
+	SoGLDisplayList.lo SoGLVertexAttributeElement.lo \
+	SoResetMatrixElement.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglelements_la_OBJECTS = $(am__objects_8)
@@ -503,7 +507,8 @@ am__EXTRA_libglelements_la_SOURCES_DIST = SoResetMatrixElement.h \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp SoResetMatrixElement.cpp
+	SoGLDisplayList.cpp SoGLVertexAttributeElement.cpp \
+	SoResetMatrixElement.cpp
 libglelements_la_OBJECTS = $(am_libglelements_la_OBJECTS)
 libglelements@SUFFIX@LINKHACK_la_LDFLAGS =
 libglelements@SUFFIX@LINKHACK_la_LIBADD =
@@ -525,8 +530,8 @@ am__libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp SoResetMatrixElement.cpp \
-	all-glelements-cpp.cpp
+	SoGLDisplayList.cpp SoGLVertexAttributeElement.cpp \
+	SoResetMatrixElement.cpp all-glelements-cpp.cpp
 am_libglelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoResetMatrixElement.h all-glelements-cpp.cpp \
@@ -547,7 +552,8 @@ am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp SoResetMatrixElement.cpp
+	SoGLDisplayList.cpp SoGLVertexAttributeElement.cpp \
+	SoResetMatrixElement.cpp
 libglelements@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglelements@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -612,6 +618,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLUpdateAreaElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLVBOElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLVBOElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLVertexAttributeElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLVertexAttributeElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLViewingMatrixElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLViewingMatrixElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLViewportRegionElement.Plo \
@@ -766,6 +774,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLUpdateAreaElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLVBOElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLVBOElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLVertexAttributeElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLVertexAttributeElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLViewingMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLViewingMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLViewportRegionElement.Plo@am__quote@

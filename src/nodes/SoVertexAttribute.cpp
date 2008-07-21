@@ -22,107 +22,291 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoVertexAttribute.h>
+#include <Inventor/elements/SoGLVertexAttributeElement.h>
 
 #include <boost/scoped_ptr.hpp>
 
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec4f.h>
 #include <Inventor/fields/SoMFShort.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoMFMatrix.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 
+#include "misc/SoVBO.h"
 #include "nodes/SoSubNodeP.h"
+#include "elements/SoVertexAttributeData.h"
 
 /*!
   \class SoVertexAttribute Inventor/nodes/SoVertexAttribute.h
   \brief A generic node for providing GL vertex attributes of various types.
 
-  Vertex attributes are used for vertex shaders.
+  The SoVertexAttribute nodes is used with the SoShaderProgram node to
+  send vertex attributes to the vertex shader.
 
-  Vertex attributes are sent using the texture coordinate indexes of
-  the shape being rendered.  This was a design decision we made to
-  make vertex attributes fit into the existing node design without
-  having to make changes that would cause a lot of incompatibility
-  problems and add too much complexity in scene graph design and the
-  geometry generation code.  In many respects, texture coordinates are
-  just a specialization of vertex attributes, so classifying them
-  together makes in that way good sense.
+  \verbatim
+  #Inventor V2.1 ascii
 
-  \ingroup nodes
+  Separator {
+     ShaderProgram {
+        shaderObject [ 
+                      VertexShader {
+                         sourceProgram "vertex.glsl"
+                      }
+                   ]
+     }
+
+     Coordinate3 {
+        point [ 0 0 0, 1 0 0, 1 1 0 ]
+     }
+
+     VertexAttribute {
+        typeName "SoMFVec3f"
+        name "color"
+        values [ 1.0 0.0 0.0,
+                 0.0 1.0 0.0,
+                 0.0 0.0 1.0 ]
+     }
+
+     IndexedFaceSet {
+        coordIndex [ 0, 1, 2, -1 ]
+     }
+  }
+  \endverbatim
+
+The vertex shader (vertex.glsl)
+\code
+  attribute vec3 color;
+
+  void main(void)
+  {
+    gl_Position = ftransform();
+    gl_FrontColor = vec4(color, 1.0);
+  }
+  \endcode
+
+  \sa SoVertexAttributeBinding
+
+  \ingroup shaders
   \since 2008-03-15
 */
 
 class SoVertexAttributeP {
 public:
+  void setDataPtr(void);
+
+  int size;
+  GLenum gltype;
   SbBool isreading;
   SoMFFloat dummyfield;
   boost::scoped_ptr<SoMField> valuesfield;
   boost::scoped_ptr<SoFieldData> fielddata;
-
-  void setupFieldData(void);
-
+  SoVertexAttributeData * attributedata;
+  SoVertexAttribute * publ;
 }; // SoVertexAttributeP
 
 // *************************************************************************
 
 #define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->publ)
 #define DMSG SoDebugError::postInfo
 
-SO_NODE_SOURCE(SoVertexAttribute);
+// *************************************************************************
+
+// overridden to return the private fielddata
+const SoFieldData *
+SoVertexAttribute::getFieldData(void) const
+{
+  return PRIVATE(this)->fielddata.get();
+}
+ 
+void *
+SoVertexAttribute::createInstance(void)
+{ 
+  return new SoVertexAttribute;
+}
+// SO_NODE_SOURCE()
+// *************************************************************************
+
+SoType SoVertexAttribute::classTypeId STATIC_SOTYPE_INIT;
 
 void
 SoVertexAttribute::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoVertexAttribute, SO_FROM_COIN_3_0);
+  SoVertexAttribute::classTypeId =
+    SoType::createType(SoNode::getClassTypeId(),
+                       SbName("VertexAttribute"),
+                       SoVertexAttribute::createInstance,
+                       SoNode::nextActionMethodIndex++);
+
+  SoNode::setCompatibilityTypes(SoVertexAttribute::getClassTypeId(), SO_FROM_COIN_3_0);
+  SO_ENABLE(SoGLRenderAction, SoGLVertexAttributeElement);
 }
 
 SoVertexAttribute::SoVertexAttribute(void)
 {
+  this->setNodeType(SoNode::COIN_3_0);
+  this->isBuiltIn = TRUE;
+  assert(SoVertexAttribute::classTypeId != SoType::badType());
+
+  this->name.setContainer(this);
+  this->typeName.setContainer(this);
+
+  this->initFieldData();
+
+  // initialize attribute data
+  PRIVATE(this)->publ = this;
   PRIVATE(this)->isreading = FALSE;
-
-  SO_NODE_CONSTRUCTOR(SoVertexAttribute);
-
-  SO_NODE_ADD_FIELD(type, (NONE));
-  SO_NODE_ADD_FIELD(name, (""));
-
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, NONE);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, FLOAT);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, VEC2F);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, VEC3F);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, VEC4F);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, INT16);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, INT32);
-  SO_NODE_DEFINE_ENUM_VALUE(AttributeType, MATRIX);
-
-  SO_NODE_SET_SF_ENUM_TYPE(type, AttributeType);
+  PRIVATE(this)->attributedata = new SoVertexAttributeData;
+  PRIVATE(this)->attributedata->name = SbName::empty();
+  PRIVATE(this)->attributedata->index = -1;
+  PRIVATE(this)->attributedata->state = NULL;
+  PRIVATE(this)->attributedata->data = NULL;
+  PRIVATE(this)->attributedata->shaderobj = 0;
+  PRIVATE(this)->attributedata->nodeid = NULL;
+  PRIVATE(this)->attributedata->vbo = NULL;
 }
 
 SoVertexAttribute::~SoVertexAttribute(void)
 {
 }
 
+// Doc in superclass
+SoType
+SoVertexAttribute::getClassTypeId(void)
+{
+  return SoVertexAttribute::classTypeId;
+}
+
+// Doc in superclass
+SoType
+SoVertexAttribute::getTypeId(void) const
+{
+  return SoVertexAttribute::classTypeId;
+}
+
+void 
+SoVertexAttribute::initFieldData(void)
+{
+  // initialize fielddata
+  PRIVATE(this)->fielddata.reset(new SoFieldData);
+  PRIVATE(this)->fielddata->addField(this, "name", &this->name);
+  PRIVATE(this)->fielddata->addField(this, "typeName", &this->typeName);
+}
+
+void 
+SoVertexAttribute::doAction(SoAction * action)
+{
+  PRIVATE(this)->attributedata->name = this->name.getValue();
+  PRIVATE(this)->attributedata->data = PRIVATE(this)->valuesfield.get();
+  PRIVATE(this)->attributedata->state = action->getState();
+  PRIVATE(this)->attributedata->nodeid = this;
+      
+  SoVertexAttributeElement::add(action->getState(), PRIVATE(this)->attributedata);
+}
+
 void
 SoVertexAttribute::GLRender(SoGLRenderAction * action)
 {
+  SoState * state = action->getState();
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+
+  // check for gl vertex attribute support
+  SbBool vertex_shader_supported = SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_SHADER);
+  SbBool opengl_version_match = cc_glglue_glversion_matches_at_least(glue, 2, 0, 0);
+
+  if (!vertex_shader_supported || !opengl_version_match) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SbString msg("\nUnable to use Vertex Attributes:\n");
+      if (!opengl_version_match) msg += "OpenGL version < 2.0\n";
+      if (!vertex_shader_supported) msg += "GL_ARB_vertex_shader extension not supported\n";
+      SoDebugError::post("SoVertexAttribute::GLRender", msg.getString());
+    }
+    return;
+  }
+
+  // check if there was an SoShaderProgram node before this node in
+  // the scenegraph
+  SoGLShaderProgram * shaderprogram = 
+    static_cast<SoGLShaderProgram *>(SoGLShaderProgramElement::get(state));
+
+  if (!shaderprogram) {
+    SoDebugError::post("SoVertexAttribute::GLRender",
+                       "SoShaderProgram node not found in scene");
+    return;
+  }
+
+  // update element
+  PRIVATE(this)->setDataPtr();
+  SoVertexAttribute::doAction((SoAction *) action);
+
+  // check if vbo rendering should be used and create vbo if yes
+  SbBool setvbo = FALSE;
+  int num = PRIVATE(this)->attributedata->data->getNum();
+  SoBase::staticDataLock();
+  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
+    SbBool dirty = FALSE;
+    setvbo = TRUE;
+    if (PRIVATE(this)->attributedata->vbo == NULL) {
+      PRIVATE(this)->attributedata->vbo = new SoVBO;
+      dirty = TRUE;
+    }
+    else if (PRIVATE(this)->attributedata->vbo->getBufferDataId() 
+             != this->getNodeId()) {
+      dirty = TRUE;
+    }
+    if (dirty) {
+      PRIVATE(this)->attributedata->vbo->setBufferData(PRIVATE(this)->attributedata->dataptr, 
+                                                       PRIVATE(this)->attributedata->size, 
+                                                       this->getNodeId());
+    }
+  }
+  else if (PRIVATE(this)->attributedata->vbo && 
+           PRIVATE(this)->attributedata->vbo->getBufferDataId()) {
+    // clear buffers to deallocate VBO memory
+    PRIVATE(this)->attributedata->vbo->setBufferData(NULL, 0, 0);
+  }
+  SoBase::staticDataUnlock();
+}
+
+SoMField * 
+SoVertexAttribute::getValuesField(void) const
+{
+  return PRIVATE(this)->valuesfield.get();
 }
 
 void
 SoVertexAttribute::write(SoWriteAction * action)
 {
-}
+  SoOutput * out = action->getOutput();
 
-//SoMField *
-//SoVertexAttribute::getValuesField(void)
-//{
-//  return this->values;
-//}
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, FALSE, FALSE)) return;
+
+     this->typeName.write(out, "typeName");
+     this->name.write(out, "name");
+     SoMField * values = PRIVATE(this)->valuesfield.get();
+     if (values) {
+       values->write(out, "values");
+     }
+     this->writeFooter(out);
+  }
+}
 
 SbBool
 SoVertexAttribute::readInstance(SoInput * in, unsigned short flags)
@@ -130,7 +314,7 @@ SoVertexAttribute::readInstance(SoInput * in, unsigned short flags)
   PRIVATE(this)->isreading = TRUE;
   // avoid triggering in the notify()-function while reading the file.
 
-  static const SbName typekey("type");
+  static const SbName typenamekey("typeName");
   static const SbName namekey("name");
   static const SbName valueskey("values");
 
@@ -142,29 +326,19 @@ SoVertexAttribute::readInstance(SoInput * in, unsigned short flags)
     DMSG("SoVertexAttribute::readInstance", "found fieldname '%s'",
          fieldname.getString());
 
-    if (fieldname == typekey) {
-      err = !this->type.read(in, typekey);
+    if (fieldname == typenamekey) {
+      err = !this->typeName.read(in, typenamekey);
       if (!err) {
         if (PRIVATE(this)->valuesfield.get()) {
           PRIVATE(this)->valuesfield.reset(NULL);
         }
-        switch (this->type.getValue()) {
-        case FLOAT:   PRIVATE(this)->valuesfield.reset(new SoMFFloat);   break;
-        case VEC2F:   PRIVATE(this)->valuesfield.reset(new SoMFVec2f);   break;
-        case VEC3F:   PRIVATE(this)->valuesfield.reset(new SoMFVec3f);   break;
-        case VEC4F:   PRIVATE(this)->valuesfield.reset(new SoMFVec4f);   break;
-        case INT16:   PRIVATE(this)->valuesfield.reset(new SoMFShort);   break;
-        case INT32:   PRIVATE(this)->valuesfield.reset(new SoMFInt32);   break;
-        case MATRIX:  PRIVATE(this)->valuesfield.reset(new SoMFMatrix);  break;
-        default:
-          DMSG("SoVertexAttribute::readInstance", "read unknown value %d",
-               this->type.getValue());
-          break;
-        }
+        SoType datatype = SoType::fromName(this->typeName.getValue());
+        PRIVATE(this)->valuesfield.reset((SoMField *)datatype.createInstance());
         if (PRIVATE(this)->valuesfield.get()) {
-          //PRIVATE(this)->fielddata->addField(this, "values", PRIVATE(this)->valuesfield.get());
+          PRIVATE(this)->fielddata->addField(this, valueskey, 
+                                             PRIVATE(this)->valuesfield.get());
         }
-      }
+      } 
     }
     else if (fieldname == namekey) {
       err = !this->name.read(in, namekey);
@@ -201,14 +375,99 @@ SoVertexAttribute::readInstance(SoInput * in, unsigned short flags)
   return !err;
 }
 
+//
+// overridden to update the valuesfield and fielddata whenever the
+// type field changes
+//
 void
 SoVertexAttribute::notify(SoNotList * list)
 {
   if (PRIVATE(this)->isreading) return; // ignore notification while reading
 
-  DMSG("SoVertexAttribute::notify", "");
+  SoField * field = list->getLastField();
+  if (field == &this->typeName) {
+    SoType datatype = SoType::fromName(this->typeName.getValue());
+    PRIVATE(this)->valuesfield.reset((SoMField *)datatype.createInstance());
+    PRIVATE(this)->fielddata->addField(this, "values", 
+                                       PRIVATE(this)->valuesfield.get());
+  }
   inherited::notify(list);
 }
 
+// Doc in superclass
+void
+SoVertexAttribute::copyContents(const SoFieldContainer * from,
+                                SbBool copyConn)
+{
+  assert(from->isOfType(SoVertexAttribute::getClassTypeId()));
+  const SoVertexAttribute * fromnode = (SoVertexAttribute*) from;
+
+  SoField * valuesfield = NULL;
+
+  // copy fields
+  const SoFieldData * src = from->getFieldData();
+  const int n = src->getNumFields();
+  for (int i = 0; i < n; i++) {
+    const SoField * f = src->getField(from, i);
+    SoField * cp = (SoField*) f->getTypeId().createInstance();
+    cp->setFieldType(f->getFieldType());
+    cp->setContainer(this);
+    if (src->getFieldName(i) == SbName("values")) {
+      valuesfield = cp;
+    }
+    PRIVATE(this)->fielddata->addField(this, src->getFieldName(i), cp);
+  }
+  inherited::copyContents(from, copyConn);
+
+  PRIVATE(this)->valuesfield.reset((SoMField *) valuesfield);
+}
+
+void 
+SoVertexAttributeP::setDataPtr(void) 
+{
+  SoType datatype = SoType::fromName(PUBLIC(this)->typeName.getValue());
+  this->attributedata->type = datatype;
+
+  if (datatype == SoMFFloat::getClassTypeId()) {
+    SoMFFloat * mfield = static_cast<SoMFFloat *>(this->valuesfield.get());
+    this->attributedata->size = mfield->getNum() * sizeof(float);
+    this->attributedata->gltype = GL_FLOAT;
+    this->attributedata->num = 1;
+    this->attributedata->dataptr = mfield->getValues(0);
+
+  } else if (datatype == SoMFVec2f::getClassTypeId()) {
+    SoMFVec2f * mfield = static_cast<SoMFVec2f *>(this->valuesfield.get());
+    this->attributedata->size = mfield->getNum() * sizeof(SbVec2f);
+    this->attributedata->gltype = GL_FLOAT;
+    this->attributedata->num = 2;
+    this->attributedata->dataptr = mfield->getValues(0);
+
+  } else if (datatype == SoMFVec3f::getClassTypeId()) {
+    SoMFVec3f * mfield = static_cast<SoMFVec3f *>(this->valuesfield.get());
+    this->attributedata->size = mfield->getNum() * sizeof(SbVec3f);
+    this->attributedata->gltype = GL_FLOAT;
+    this->attributedata->num = 3;
+    this->attributedata->dataptr = mfield->getValues(0);
+
+  } else if (datatype == SoMFVec4f::getClassTypeId()) {
+    SoMFVec4f * mfield = static_cast<SoMFVec4f *>(this->valuesfield.get());
+    this->attributedata->size = mfield->getNum() * sizeof(SbVec4f);
+    this->attributedata->gltype = GL_FLOAT;
+    this->attributedata->num = 4;
+    this->attributedata->dataptr = mfield->getValues(0);
+
+  } else if (datatype == SoMFShort::getClassTypeId()) {
+    SoMFShort * mfield = static_cast<SoMFShort *>(this->valuesfield.get());
+    this->attributedata->size = mfield->getNum() * sizeof(short);
+    this->attributedata->gltype = GL_SHORT;
+    this->attributedata->num = 1;
+    this->attributedata->dataptr = mfield->getValues(0);
+
+  } else {
+    assert(0 && "unknown attribute type");
+  }
+}
+
 #undef PRIVATE
+#undef PUBLIC
 #undef DMSG

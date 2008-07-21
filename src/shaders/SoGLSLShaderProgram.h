@@ -62,12 +62,16 @@ public:
   SoGLSLShaderProgram(void);
   ~SoGLSLShaderProgram();
 
+  COIN_GLhandle getProgramHandle(const cc_glglue * g, const SbBool create = FALSE);
+  SbBool neededLinking(void) const;
+
 protected:
   SbList <int> programParameters;
   SbList <SoGLSLShaderObject *> shaderObjects;
   SbHash <COIN_GLhandle, uint32_t> programHandles;
 
   SbBool isExecutable;
+  SbBool neededlinking;
 
   int indexOfShaderObject(SoGLSLShaderObject * shaderObject);
   void ensureLinking(const cc_glglue * g);
@@ -76,8 +80,6 @@ protected:
 private:
   void deletePrograms(void);
   void deleteProgram(const cc_glglue * g);
-
-  COIN_GLhandle getProgramHandle(const cc_glglue * g, const SbBool create = FALSE);
 
   static void context_destruction_cb(uint32_t cachecontext, void * userdata);
   static void really_delete_object(void * closure, uint32_t contextid);

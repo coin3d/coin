@@ -336,6 +336,7 @@ PublicHeaders = \
 	SoLocalBBoxMatrixElement.h \
 	SoLongElement.h \
 	SoMaterialBindingElement.h \
+	SoVertexAttributeBindingElement.h \
 	SoModelMatrixElement.h \
 	SoMultiTextureCoordinateElement.h \
 	SoMultiTextureEnabledElement.h \
@@ -381,7 +382,9 @@ PublicHeaders = \
 	SoSoundElement.h \
 	SoGLShaderProgramElement.h \
 	SoDepthBufferElement.h \
-	SoGLDepthBufferElement.h
+	SoGLDepthBufferElement.h \
+        SoVertexAttributeElement.h \
+        SoGLVertexAttributeElement.h
 
 
 PrivateHeaders = 

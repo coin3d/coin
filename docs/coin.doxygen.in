@@ -807,6 +807,8 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCube.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCylinder.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDepthBuffer.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexAttribute.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexAttributeBinding.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDirectionalLight.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDrawStyle.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoEnvironment.h \
@@ -1396,6 +1398,8 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoCube.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoCylinder.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDepthBuffer.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoVertexAttribute.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoVertexAttributeBinding.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDirectionalLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDrawStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoEnvironment.cpp \
