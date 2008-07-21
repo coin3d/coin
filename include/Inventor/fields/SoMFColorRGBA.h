@@ -1,5 +1,5 @@
 #ifndef COIN_SOMFCOLORRGBA_H
-#define COIN_SOMFCOLOR_H
+#define COIN_SOMFCOLORRGBA_H
 
 /**************************************************************************\
  *
