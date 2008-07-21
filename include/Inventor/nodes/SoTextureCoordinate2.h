@@ -31,7 +31,6 @@ class SoTextureCoordinate2P;
 
 class COIN_DLL_API SoTextureCoordinate2 : public SoNode {
   typedef SoNode inherited;
-
   SO_NODE_HEADER(SoTextureCoordinate2);
 
 public:
@@ -48,7 +47,7 @@ public:
 protected:
   virtual ~SoTextureCoordinate2();
 
- private:
+private:
   SoTextureCoordinate2P * pimpl;
 };
 
