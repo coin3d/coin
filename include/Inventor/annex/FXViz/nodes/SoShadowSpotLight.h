@@ -1,5 +1,5 @@
 #ifndef COIN_SOSHADOWSPOTLIGHT_H
-#define COIN_SOSHADOWSTYLE_H
+#define COIN_SOSHADOWSPOTLIGHT_H
 
 /**************************************************************************\
  *
