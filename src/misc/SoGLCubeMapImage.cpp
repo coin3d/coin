@@ -306,7 +306,6 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
       dl->ref();
       dl->setTextureTarget((int) GL_TEXTURE_CUBE_MAP);
 
-      const cc_glglue * glue = sogl_glue_instance(state);
       dl->open(state);
 
       for (int i = 0; i < 6; i++) {

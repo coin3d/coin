@@ -347,10 +347,6 @@ SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
   }
 
   SbVec2s size(0,0);
-  int nc;
-
-  const unsigned char * bytes = this->getImage() ?
-    this->getImage()->getValue(size, nc) : NULL;
 
   tls->dim[0] = size[0] / subimagesize[0];
   tls->dim[1] = size[1] / subimagesize[1];
@@ -760,6 +756,7 @@ SoGLBigImageP::copyResizeSubImage(SoGLBigImageTls * tls,
   }
 }
 
+#if 0 // FIXME: Not in use
 // create a lower resolution image by averaging all pixels in a block
 // (from the full resolution image) into a new pixel. This is pretty
 // slow, but yields a higher quality result compared to when each
@@ -811,6 +808,7 @@ image_downsample(const unsigned char * bytes, const SbVec2s fullsize,
 
   return dst;
 }
+#endif
 
 // create a lower resolution image by averaging four and four pixels
 // into a new pixel. This is the same technique as the one usually

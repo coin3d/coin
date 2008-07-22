@@ -184,7 +184,6 @@ SoVectorizeActionP::add_point(vertexdata * vd, SoState * state)
   SbVec3f wv;
   SoVectorizePoint * point = new SoVectorizePoint;
 
-  float dist = 0.0f;
   SbColor4f c;
   c.setPackedValue(vd->diffuse);
   this->shapetoworldmatrix.multVecMatrix(vd->point, wv);
@@ -326,7 +325,6 @@ SoVectorizeActionP::triangle_cb(void * userdata,
     // check if we actually have one before testing the type
     if (detail && (detail->getTypeId() == SoFaceDetail::getClassTypeId())) {
       
-      const SoCoordinateElement * elem = SoCoordinateElement::getInstance(state);
       const SoFaceDetail * face = (const SoFaceDetail*) detail;
       int idx = face->getFaceIndex();
       if (idx != thisp->prevfaceindex) { // a new face has arrived

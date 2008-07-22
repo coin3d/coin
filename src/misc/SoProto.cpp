@@ -951,7 +951,6 @@ locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
     SoChildList * cl2 = cpy->getChildren();
     n = SbMin(cl->getLength(), cl2->getLength());
     for (i = 0; i < n; i++) {
-      SoNode * orgnode = (*cl)[i];
       SoNode * found = locate_node_copy(searchfor, (*cl)[i], (*cl2)[i]);
       if (found) return found;
     }
@@ -1043,7 +1042,6 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         // instances written to file with the updated values.  The alternative
         // is to have to locate the PROTO instance object yourself, and
         // modify the fields on it directly - 20040115 larsa
-        SbBool srcisdefault = srcfield->isDefault();
         srcfield->setDefault(FALSE);
         dstfield->connectFrom(srcfield);
 #if 0 // start of problematic code

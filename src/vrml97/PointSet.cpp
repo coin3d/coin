@@ -229,8 +229,6 @@ SoVRMLPointSet::generatePrimitives(SoAction * action)
 {
   SoVRMLCoordinate * coordnode = (SoVRMLCoordinate*) this->coord.getValue();
   if (!coordnode || coordnode->point.getNum() == 0) return;
-  SoNode * colornode = this->color.getValue();
-
   const SbVec3f * coords = coordnode->point.getValues(0);
 
   SoPrimitiveVertex vertex;

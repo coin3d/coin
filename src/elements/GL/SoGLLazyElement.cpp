@@ -557,7 +557,6 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
   if (index < 0 || index >= this->coinstate.numdiffuse) {
     static int first = 1;
     if (first) {
-      SoAction * action = this->state->getAction();
       SoFullPath * path = (SoFullPath*) this->state->getAction()->getCurPath();
       SoNode * tail = path->getTail();
       SbName name = tail->getName();

@@ -1725,8 +1725,6 @@ SoGLImageP::reallyBindPBuffer(SoState * state)
   glTexParameteri(target, GL_TEXTURE_WRAP_T,
                   translate_wrap(state, this->wrapt));
 
-  const cc_glglue * glue = sogl_glue_instance(state);
-
   SbBool mipmap = FALSE;
 
 #if 0

@@ -115,8 +115,6 @@ void
 SoGLTextureImageElement::push(SoState * stateptr)
 {
   inherited::push(stateptr);
-  SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
-    this->getNextInStack();
   this->glimage = NULL;
   this->state = stateptr;
 }

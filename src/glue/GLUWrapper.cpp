@@ -355,7 +355,6 @@ GLUWrapper(void)
 #ifdef GLU_RUNTIME_LINKING
 
   {
-    int idx;
     char * libname;
 
 #ifndef GLU_IS_PART_OF_GL

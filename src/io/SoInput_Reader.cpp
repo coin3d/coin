@@ -107,7 +107,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
   if ( trycompression ) {
     unsigned char header[4];
     long offset = ftell(fp);
-    size_t siz = fread(header, 1, 4, fp);
+    fread(header, 1, 4, fp);
     (void) fseek(fp, offset, SEEK_SET);
     fflush(fp); // needed since we fetch the file descriptor later
 

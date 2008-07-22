@@ -1259,7 +1259,6 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
     return SoCallbackAction::CONTINUE;
 
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  SoGroup * tail = thisp->get_current_tail();
   SoVRMLIndexedFaceSet * ifs = NEW_NODE(SoVRMLIndexedFaceSet, node);
 
   // Set the values from the current ShapeHints
@@ -1367,7 +1366,6 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     return SoCallbackAction::CONTINUE;
 
   SoVRMLIndexedLineSet * ils = NEW_NODE(SoVRMLIndexedLineSet, node);
-  SoGroup * tail = thisp->get_current_tail();
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldils->vertexProperty.getValue();
@@ -1530,7 +1528,6 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     return SoCallbackAction::CONTINUE;
 
   SoVRMLIndexedLineSet * ils = NEW_NODE(SoVRMLIndexedLineSet, node);
-  SoGroup * tail = thisp->get_current_tail();
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldls->vertexProperty.getValue();
@@ -1653,7 +1650,6 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   const SoPointSet * oldps = (const SoPointSet*) node;
 
   SoVRMLPointSet * ps = NEW_NODE(SoVRMLPointSet, node);
-  SoGroup * tail = thisp->get_current_tail();
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldps->vertexProperty.getValue();
@@ -1884,7 +1880,6 @@ SoCallbackAction::Response
 SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  SoGroup * tail = thisp->get_current_tail();
 
   thisp->didpush = FALSE;
   // push state to handle SoVertexProperty node

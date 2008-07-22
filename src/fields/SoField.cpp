@@ -1952,8 +1952,6 @@ SoField::write(SoOutput * out, const SbName & name) const
   // it is connected, and we should _not_ write the field. The ROUTEs
   // should be added though. pederb, 2002-06-13
 
-  SbBool vrml2connection = FALSE;
-
   if (is_vrml2_field(this)) {
     if (writeconnection) {
       writeconnection = FALSE;

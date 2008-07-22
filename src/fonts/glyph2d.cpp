@@ -122,7 +122,6 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   int i;
   struct cc_font_bitmap * bm;
   cc_font_specification * newspec;
-  int namelen = 0;
   cc_string * fonttoload;
   cc_list * glyphlist;
 

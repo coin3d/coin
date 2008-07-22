@@ -1323,7 +1323,6 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
   }
 #endif // COIN_DEBUG
 
-  SoBase * thisp = (SoBase *)this;
   writerefcount--;
   SoWriterefCounter::instance(out)->setWriteref(this, writerefcount);
 
