@@ -89,13 +89,10 @@ class COIN_DLL_API SoUniformShaderParameter : public SoShaderParameter {
   SoINTERNAL public:
   static void initClass(void);
   virtual void updateParameter(SoGLShaderObject *shaderObject) = 0;
-  SbBool isRegularBehavior() const { return isRegularBehaviorFlag; }
 
 protected:
   SoUniformShaderParameter();
   virtual ~SoUniformShaderParameter();
-
-  SbBool isRegularBehaviorFlag;
 
   SoGLShaderParameter * getGLShaderParameter(const uint32_t cachecontext);
   void ensureParameter(SoGLShaderObject * shader);
