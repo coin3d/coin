@@ -191,8 +191,7 @@ interactionkit_cleanup(void)
   defaultdraggerparts = NULL;
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_KIT_SOURCE(SoInteractionKit);
 
@@ -202,7 +201,7 @@ SO_KIT_SOURCE(SoInteractionKit);
 */
 SoInteractionKit::SoInteractionKit(void)
 {
-  THIS = new SoInteractionKitP(this);
+  PRIVATE(this) = new SoInteractionKitP(this);
   SO_KIT_INTERNAL_CONSTRUCTOR(SoInteractionKit);
 
   SO_KIT_ADD_FIELD(renderCaching, (SoInteractionKit::AUTO));
@@ -227,9 +226,9 @@ SoInteractionKit::SoInteractionKit(void)
 
   SO_KIT_INIT_INSTANCE();
 
-  THIS->connectedseparator = NULL;
-  THIS->fieldsensor = new SoFieldSensor(SoInteractionKit::fieldSensorCB, THIS);
-  THIS->fieldsensor->setPriority(0);
+  PRIVATE(this)->connectedseparator = NULL;
+  PRIVATE(this)->fieldsensor = new SoFieldSensor(SoInteractionKit::fieldSensorCB, PRIVATE(this));
+  PRIVATE(this)->fieldsensor->setPriority(0);
 
   this->setUpConnections(TRUE, TRUE);
 }
@@ -239,9 +238,9 @@ SoInteractionKit::SoInteractionKit(void)
 */
 SoInteractionKit::~SoInteractionKit()
 {
-  THIS->connectFields(FALSE);
-  delete THIS->fieldsensor;
-  delete THIS;
+  PRIVATE(this)->connectFields(FALSE);
+  delete PRIVATE(this)->fieldsensor;
+  delete PRIVATE(this);
 }
 
 // doc in super
@@ -315,12 +314,12 @@ SoInteractionKit::isPathSurrogateInMySubgraph(const SoPath * path,
                                               SoPath *& surrogatepath,
                                               SbBool fillargs)
 {
-  int idx = THIS->findSurrogateInPath(path);
+  int idx = PRIVATE(this)->findSurrogateInPath(path);
   if (idx >= 0) {
     if (fillargs) {
       pathToOwner = new SoPath(this); // a very short path
-      surrogatename = THIS->surrogatenamelist[idx];
-      surrogatepath = THIS->surrogatepathlist[idx];
+      surrogatename = PRIVATE(this)->surrogatenamelist[idx];
+      surrogatepath = PRIVATE(this)->surrogatepathlist[idx];
     }
     return TRUE;
   }
@@ -388,13 +387,13 @@ SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
   assert(fromFC->isOfType(SoInteractionKit::getClassTypeId()));
   SoInteractionKit * kit = (SoInteractionKit *) fromFC;
 
-  THIS->surrogatenamelist.truncate(0);
-  THIS->surrogatepathlist.truncate(0);
+  PRIVATE(this)->surrogatenamelist.truncate(0);
+  PRIVATE(this)->surrogatepathlist.truncate(0);
 
   const int n = kit->pimpl->surrogatenamelist.getLength();
   for (i = 0; i < n; i++) {
-    THIS->surrogatenamelist.append(kit->pimpl->surrogatenamelist[i]);
-    THIS->surrogatepathlist.append(kit->pimpl->surrogatepathlist[i]);
+    PRIVATE(this)->surrogatenamelist.append(kit->pimpl->surrogatenamelist[i]);
+    PRIVATE(this)->surrogatepathlist.append(kit->pimpl->surrogatepathlist[i]);
   }
 }
 
@@ -407,16 +406,16 @@ SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
   if (ret) {
     // remove surrogate paths where part != NULL and not an empty
     // group or separator
-    int n = THIS->surrogatenamelist.getLength();
+    int n = PRIVATE(this)->surrogatenamelist.getLength();
     for (int i = 0; i < n; i++) {
-      SbName name = THIS->surrogatenamelist[i];
+      SbName name = PRIVATE(this)->surrogatenamelist[i];
       SoNode * node = this->getAnyPart(name, FALSE, FALSE, FALSE);
       if (node && ((node->getTypeId() != SoGroup::getClassTypeId() &&
                     node->getTypeId() != SoSeparator::getClassTypeId()) ||
                    node->getChildren()->getLength())) {
         n--; // don't forget this!
-        THIS->surrogatenamelist.remove(i);
-        THIS->surrogatepathlist.remove(i);
+        PRIVATE(this)->surrogatenamelist.remove(i);
+        PRIVATE(this)->surrogatepathlist.remove(i);
       }
     }
   }
@@ -664,12 +663,12 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, FALSE);
-    THIS->connectFields(TRUE);
-    THIS->attachSensor(TRUE);
+    PRIVATE(this)->connectFields(TRUE);
+    PRIVATE(this)->attachSensor(TRUE);
   }
   else {
-    THIS->attachSensor(FALSE);
-    THIS->connectFields(FALSE);
+    PRIVATE(this)->attachSensor(FALSE);
+    PRIVATE(this)->connectFields(FALSE);
     inherited::setUpConnections(onoff, FALSE);
   }
   return !(this->connectionsSetUp = onoff);
@@ -682,7 +681,7 @@ SoInteractionKit::setPart(const int partNum, SoNode * node)
   // Overriden to detect when part changes value. If a substitute path
   // for that part exists, it must be cleared.
 
-  THIS->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));
+  PRIVATE(this)->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));
   return inherited::setPart(partNum, node);
 }
 
@@ -749,10 +748,10 @@ SoInteractionKit::connectSeparatorFields(SoSeparator * dest, SbBool onOff)
   SoDebugError::postWarning("SoInteractionKit::connectSeparatorFields",
                             "SoSeparator* input argument ignored, "
                             "using topSeparator");
-  THIS->connectFields(onOff);
+  PRIVATE(this)->connectFields(onOff);
 }
 
-#undef THIS
+#undef PRIVATE
 
 /*** methods for SoInteractionKitP are below *****************************/
 

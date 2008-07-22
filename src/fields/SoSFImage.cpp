@@ -136,7 +136,6 @@ public:
   unsigned char * freeimage; // free this data using free()
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
@@ -551,6 +550,8 @@ SoSFImage::hasTransparency(void) const
                             "Get in touch if you need this functionality.");
   return TRUE;
 }
+
+#undef PRIVATE
 
 #ifdef COIN_TEST_SUITE
 

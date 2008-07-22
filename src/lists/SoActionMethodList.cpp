@@ -72,8 +72,7 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   The constructor.  The \a parentlist argument is the parent action's
@@ -82,9 +81,9 @@ public:
 */
 SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentlist)
 {
-  THIS = new SoActionMethodListP;
-  THIS->parent = parentlist;
-  THIS->setupnumtypes = 0;
+  PRIVATE(this) = new SoActionMethodListP;
+  PRIVATE(this)->parent = parentlist;
+  PRIVATE(this)->setupnumtypes = 0;
 }
 
 /*!
@@ -92,7 +91,7 @@ SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentlist)
 */
 SoActionMethodList::~SoActionMethodList()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // Documented in superclass. Overridden from parent to cast from \c
@@ -110,11 +109,11 @@ void
 SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 {
   assert(node != SoType::badType());
-  THIS->lock();
-  THIS->addedtypes.append(node);
-  THIS->addedmethods.append(method);
-  THIS->setupnumtypes = 0; // force a new setUp
-  THIS->unlock();
+  PRIVATE(this)->lock();
+  PRIVATE(this)->addedtypes.append(node);
+  PRIVATE(this)->addedmethods.append(method);
+  PRIVATE(this)->setupnumtypes = 0; // force a new setUp
+  PRIVATE(this)->unlock();
 }
 
 // dummy method used for detecting unset action methods
@@ -130,22 +129,22 @@ static void unsetActionMethod(SoAction *, SoNode *)
 void
 SoActionMethodList::setUp(void)
 {
-  THIS->lock();
-  if (THIS->setupnumtypes != SoType::getNumTypes()) {
+  PRIVATE(this)->lock();
+  if (PRIVATE(this)->setupnumtypes != SoType::getNumTypes()) {
     int i, n;
 
     this->truncate(0); // clear action method list
 
     // first set all methods that have been set directly through SO_ACTION_ADD_METHOD()
-    n = THIS->addedtypes.getLength();
+    n = PRIVATE(this)->addedtypes.getLength();
     for (i = 0; i < n; i++) {
-      (*this)[SoNode::getActionMethodIndex(THIS->addedtypes[i])] = THIS->addedmethods[i];
+      (*this)[SoNode::getActionMethodIndex(PRIVATE(this)->addedtypes[i])] = PRIVATE(this)->addedmethods[i];
     }
     
     // make sure SoNode's action method is set to avoid a NULL action method
     i = SoNode::getActionMethodIndex(SoNode::getClassTypeId());
     if ((*this)[i] == NULL) {
-      if (THIS->parent == NULL) {
+      if (PRIVATE(this)->parent == NULL) {
         (*this)[i] = SoAction::nullAction;
       }
       else {
@@ -173,19 +172,20 @@ SoActionMethodList::setUp(void)
     }
 
     // inherit unset methods from parent action
-    if (THIS->parent != NULL) {
-      THIS->parent->setUp();
+    if (PRIVATE(this)->parent != NULL) {
+      PRIVATE(this)->parent->setUp();
       n = this->getLength();
       for (i = 0; i < n; i++) {
         if ((*this)[i] == unsetActionMethod) {
-          (*this)[i] = (*THIS->parent)[i];
+          (*this)[i] = (*PRIVATE(this)->parent)[i];
         }
       }
     }
     // used to detect when a new node has been added
-    THIS->setupnumtypes = SoType::getNumTypes();
+    PRIVATE(this)->setupnumtypes = SoType::getNumTypes();
   }
-  THIS->unlock();
+  PRIVATE(this)->unlock();
 }
 
-#undef THIS
+#undef PRIVATE
+

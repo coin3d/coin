@@ -799,4 +799,6 @@ SoVectorizePSActionP::convertToPS(const float mm) const
   return from_mm(mm, SoVectorizeAction::INCH) * 72.0f;
 }
 
-// *************************************************************************
+#undef PRIVATE
+#undef PUBLIC
+

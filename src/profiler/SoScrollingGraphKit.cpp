@@ -502,3 +502,7 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
 
 // *************************************************************************
 
+#undef PRIVATE
+#undef LINEUP
+#undef SMOOTH_DECAY
+

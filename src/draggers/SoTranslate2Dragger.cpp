@@ -509,3 +509,8 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
 }
 
 #undef PRIVATE
+#undef CONSTRAINT_OFF
+#undef CONSTRAINT_WAIT
+#undef CONSTRAINT_X
+#undef CONSTRAINT_Y
+

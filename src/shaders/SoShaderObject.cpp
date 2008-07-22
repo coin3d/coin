@@ -215,7 +215,7 @@ private:
 #endif
 };
 
-#define SELF this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -252,7 +252,7 @@ SoShaderObject::SoShaderObject(void)
   this->parameter.setNum(0);
   this->parameter.setDefault(TRUE);
 
-  SELF = new SoShaderObjectP(this);
+  PRIVATE(this) = new SoShaderObjectP(this);
 }
 
 /*!
@@ -260,14 +260,14 @@ SoShaderObject::SoShaderObject(void)
 */
 SoShaderObject::~SoShaderObject()
 {
-  delete SELF;
+  delete PRIVATE(this);
 }
 
 // doc from parent
 void
 SoShaderObject::GLRender(SoGLRenderAction * action)
 {
-  SELF->GLRender(action);
+  PRIVATE(this)->GLRender(action);
 }
 
 // doc from parent
@@ -306,14 +306,14 @@ SoShaderObject::search(SoSearchAction * action)
 SbBool
 SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 {
-  SELF->sensor->detach();
-  SELF->deleteGLShaderObjects();
+  PRIVATE(this)->sensor->detach();
+  PRIVATE(this)->deleteGLShaderObjects();
 
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
-    SELF->setSearchDirectories(SoInput::getDirectories());
+    PRIVATE(this)->setSearchDirectories(SoInput::getDirectories());
   }
-  SELF->sensor->attach(this);
+  PRIVATE(this)->sensor->attach(this);
 
   return ret;
 }
@@ -324,7 +324,7 @@ SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 SoShaderObject::SourceType
 SoShaderObject::getSourceType(void) const
 {
-  return SELF->cachedSourceType;
+  return PRIVATE(this)->cachedSourceType;
 }
 
 /*!
@@ -332,7 +332,7 @@ SoShaderObject::getSourceType(void) const
 */
 SbString SoShaderObject::getSourceProgram(void) const
 {
-  return SELF->cachedSourceProgram;
+  return PRIVATE(this)->cachedSourceProgram;
 }
 
 /*!
@@ -342,9 +342,9 @@ void
 SoShaderObject::updateParameters(SoState * state)
 {
   const uint32_t cachecontext = SoGLCacheContextElement::get(state);
-  SELF->updateAllParameters(cachecontext);
-  SELF->updateStateMatrixParameters(cachecontext);
-  SELF->updateCoinParameters(cachecontext, state);
+  PRIVATE(this)->updateAllParameters(cachecontext);
+  PRIVATE(this)->updateStateMatrixParameters(cachecontext);
+  PRIVATE(this)->updateCoinParameters(cachecontext, state);
 }
 
 /* ***************************************************************************
@@ -781,3 +781,6 @@ SoShaderObjectP::setSearchDirectories(const SbStringList & list)
   }
   this->didSetSearchDirectories = TRUE;
 }
+
+#undef PRIVATE
+

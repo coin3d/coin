@@ -611,6 +611,8 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
   arrayend = NULL;
 }
 
+#undef OUTPUT_PADDING
+
 // *************************************************************************
 // QSORT() HOOKS
 

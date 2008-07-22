@@ -792,9 +792,11 @@ SoTabPlaneDragger::getNodeFieldNode(const char *fieldname)
 #undef WHATKIND_NONE
 #undef WHATKIND_SCALE
 #undef WHATKIND_TRANSLATE
-
 #undef CONSTRAINT_OFF
 #undef CONSTRAINT_WAIT
 #undef CONSTRAINT_X
 #undef CONSTRAINT_Y
 #undef CONSTRAINT_Z
+#undef Z_OFFSET
+#undef TABSIZE
+

@@ -127,14 +127,14 @@ public:
 
 SO_KIT_SOURCE(SoSeparatorKit);
 
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
 */
 SoSeparatorKit::SoSeparatorKit(void)
 {
-  THIS = new SoSeparatorKitP(this);
+  PRIVATE(this) = new SoSeparatorKitP(this);
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSeparatorKit);
 
   SO_KIT_ADD_FIELD(renderCaching, (SoSeparatorKit::AUTO));
@@ -162,9 +162,9 @@ SoSeparatorKit::SoSeparatorKit(void)
   SO_KIT_ADD_CATALOG_LIST_ENTRY(childList, SoSeparator, TRUE, topSeparator, "", SoShapeKit, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(childList, SoSeparatorKit);
 
-  THIS->connectedseparator = NULL;
-  THIS->fieldsensor = new SoFieldSensor(SoSeparatorKitP::sensorCB, THIS);
-  THIS->fieldsensor->setPriority(0);
+  PRIVATE(this)->connectedseparator = NULL;
+  PRIVATE(this)->fieldsensor = new SoFieldSensor(SoSeparatorKitP::sensorCB, PRIVATE(this));
+  PRIVATE(this)->fieldsensor->setPriority(0);
 
   SO_KIT_INIT_INSTANCE();
 
@@ -176,9 +176,9 @@ SoSeparatorKit::SoSeparatorKit(void)
 */
 SoSeparatorKit::~SoSeparatorKit()
 {
-  THIS->connectFields(FALSE);
-  delete THIS->fieldsensor;
-  delete THIS;
+  PRIVATE(this)->connectFields(FALSE);
+  delete PRIVATE(this)->fieldsensor;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -207,19 +207,18 @@ SoSeparatorKit::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, FALSE);
-    THIS->connectFields(TRUE);
-    THIS->attachSensor(TRUE);
+    PRIVATE(this)->connectFields(TRUE);
+    PRIVATE(this)->attachSensor(TRUE);
   }
   else {
-    THIS->attachSensor(FALSE);
-    THIS->connectFields(FALSE);
+    PRIVATE(this)->attachSensor(FALSE);
+    PRIVATE(this)->connectFields(FALSE);
     inherited::setUpConnections(onoff, FALSE);
   }
   return !(this->connectionsSetUp = onoff);
 }
 
-#undef THIS
-
+#undef PRIVATE
 
 /****** methods for SoSeparatorKitP are below ************************/
 

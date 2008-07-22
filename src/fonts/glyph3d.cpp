@@ -430,3 +430,7 @@ glyph3d_specmatch(const cc_font_specification * spec1,
 
   return FALSE;
 }
+
+#undef GLYPH3D_MUTEX_LOCK
+#undef GLYPH3D_MUTEX_UNLOCK
+

@@ -320,7 +320,6 @@ public:
   SbList <struct so_eval_node*> evaluatorList;
 };
 
-#undef PRIVATE
 #define PRIVATE(thisp) (thisp->pimpl)
 
 SO_ENGINE_SOURCE(SoCalculator);

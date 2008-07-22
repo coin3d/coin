@@ -952,3 +952,7 @@ cc_flw_get_vector_glyph_edgeidx(struct cc_font_vector_glyph * vecglyph)
 
   return vecglyph->edgeindices;
 }
+
+#undef FLW_MUTEX_LOCK
+#undef FLW_MUTEX_UNLOCK
+

@@ -1227,3 +1227,6 @@ SbProfilingData::operator != (const SbProfilingData & rhs) const
 }
 
 // *************************************************************************
+
+#undef PRIVATE
+

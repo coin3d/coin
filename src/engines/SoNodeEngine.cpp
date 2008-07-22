@@ -336,3 +336,6 @@ SoNodeEngine::isNotifying(void) const
 {
   return (this->flags & FLAG_ISNOTIFYING) != 0;
 }
+
+#undef FLAG_ISNOTIFYING
+

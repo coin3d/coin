@@ -97,7 +97,6 @@ build_convert_dicts(void)
   converttoprintable_shift = new SbHash<char, int>();
   coin_atexit((coin_atexit_f *)sokeyboardevent_cleanup, CC_ATEXIT_NORMAL);
 
-#undef ADD_KEY // just in case
 #define ADD_KEY(x,y) d->put(SoKeyboardEvent::x, y)
 
   // shift not down

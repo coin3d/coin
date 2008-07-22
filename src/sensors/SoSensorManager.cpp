@@ -225,8 +225,7 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 
 #endif // ! COIN_THREADSAFE
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // Callback called whenever the timeoutsensor triggers
 // beacuse the system hasn't been idle for a while.
@@ -242,17 +241,17 @@ timeoutsensor_cb(void * userdata, SoSensor *)
  */
 SoSensorManager::SoSensorManager(void)
 {
-  THIS = new SoSensorManagerP;
+  PRIVATE(this) = new SoSensorManagerP;
 
-  THIS->queueChangedCB = NULL;
-  THIS->queueChangedCBData = NULL;
+  PRIVATE(this)->queueChangedCB = NULL;
+  PRIVATE(this)->queueChangedCBData = NULL;
 
-  THIS->processingtimerqueue = FALSE;
-  THIS->processingdelayqueue = FALSE;
-  THIS->processingimmediatequeue = FALSE;
+  PRIVATE(this)->processingtimerqueue = FALSE;
+  PRIVATE(this)->processingdelayqueue = FALSE;
+  PRIVATE(this)->processingimmediatequeue = FALSE;
 
-  THIS->delaysensortimeout.setValue(1.0/12.0);
-  THIS->timeoutsensor = new SoAlarmSensor(timeoutsensor_cb, this);
+  PRIVATE(this)->delaysensortimeout.setValue(1.0/12.0);
+  PRIVATE(this)->timeoutsensor = new SoAlarmSensor(timeoutsensor_cb, this);
 }
 
 /*!
@@ -260,13 +259,13 @@ SoSensorManager::SoSensorManager(void)
  */
 SoSensorManager::~SoSensorManager()
 {
-  delete THIS->timeoutsensor;
+  delete PRIVATE(this)->timeoutsensor;
 
   // FIXME: remove entries. 19990225 mortene.
-  if(THIS->delayqueue.getLength() != 0) {}
-  if(THIS->timerqueue.getLength() != 0) {}
+  if(PRIVATE(this)->delayqueue.getLength() != 0) {}
+  if(PRIVATE(this)->timerqueue.getLength() != 0) {}
 
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -277,7 +276,7 @@ SoSensorManager::~SoSensorManager()
 void
 SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
   assert(newentry);
 
   // immediate sensors are stored in a separate list. We don't need to
@@ -285,18 +284,18 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
   // strategy.
   if (newentry->getPriority() == 0) {
     LOCK_IMMEDIATE_QUEUE(this);
-    THIS->immediatequeue.append(newentry);
+    PRIVATE(this)->immediatequeue.append(newentry);
     UNLOCK_IMMEDIATE_QUEUE(this);
   }
   else {
-    if (!THIS->timeoutsensor->isScheduled() &&
-        THIS->delaysensortimeout != SbTime::zero()) {
-      THIS->timeoutsensor->setTimeFromNow(THIS->delaysensortimeout);
-      THIS->timeoutsensor->schedule();
+    if (!PRIVATE(this)->timeoutsensor->isScheduled() &&
+        PRIVATE(this)->delaysensortimeout != SbTime::zero()) {
+      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
+      PRIVATE(this)->timeoutsensor->schedule();
     }
 
     LOCK_DELAY_QUEUE(this);
-    SbList <SoDelayQueueSensor *> & delayqueue = THIS->delayqueue;
+    SbList <SoDelayQueueSensor *> & delayqueue = PRIVATE(this)->delayqueue;
 
     // <= in test since the sensors should be processed FIFO for
     // sensors with equal priority
@@ -315,10 +314,10 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
   SoDebugError::postInfo("SoSensorManager::insertDelaySensor",
                          "inserted delay sensor #%d -- %p -- "
                          "%sprocessing queue",
-                         THIS->delayqueue.getLength() +
-                         THIS->delaywaitqueue.getLength() - 1,
+                         PRIVATE(this)->delayqueue.getLength() +
+                         PRIVATE(this)->delaywaitqueue.getLength() - 1,
                          newentry,
-                         THIS->processingdelayqueue ? "" : "not ");
+                         PRIVATE(this)->processingdelayqueue ? "" : "not ");
 #endif // debug
 }
 
@@ -331,10 +330,10 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
 void
 SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
   assert(newentry);
 
-  SbList <SoTimerQueueSensor *> & timerqueue = THIS->timerqueue;
+  SbList <SoTimerQueueSensor *> & timerqueue = PRIVATE(this)->timerqueue;
 
   LOCK_TIMER_QUEUE(this);
   int i = 0;
@@ -355,13 +354,13 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
                          "inserted timer sensor #%d -- %p "
                          "(triggertime %f) -- "
                          "%sprocessing queue",
-                         THIS->timerqueue.getLength() +
-                         THIS->timerwaitqueue.getLength() - 1,
+                         PRIVATE(this)->timerqueue.getLength() +
+                         PRIVATE(this)->timerwaitqueue.getLength() - 1,
                          newentry, newentry->getTriggerTime().getValue(),
-                         THIS->processingtimerqueue ? "" : "not ");
+                         PRIVATE(this)->processingtimerqueue ? "" : "not ");
 #endif // debug
 
-  if (!THIS->processingtimerqueue) {
+  if (!PRIVATE(this)->processingtimerqueue) {
     this->notifyChanged();
   }
 }
@@ -374,24 +373,24 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 void
 SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_DELAY_QUEUE(this);
   // Check "real" queue first..
-  int idx = THIS->delayqueue.find(entry);
-  if (idx != -1) THIS->delayqueue.remove(idx);
+  int idx = PRIVATE(this)->delayqueue.find(entry);
+  if (idx != -1) PRIVATE(this)->delayqueue.remove(idx);
   UNLOCK_DELAY_QUEUE(this);
 
   // ..then the immediate queue.
   if (idx == -1) {
     LOCK_IMMEDIATE_QUEUE(this);
-    idx = THIS->immediatequeue.find(entry);
-    if (idx != -1) THIS->immediatequeue.remove(idx);
+    idx = PRIVATE(this)->immediatequeue.find(entry);
+    if (idx != -1) PRIVATE(this)->immediatequeue.remove(idx);
     UNLOCK_IMMEDIATE_QUEUE(this);
   }
   // ..then the reinsert list
   if (idx == -1) {
-    if (THIS->reinsertdict.remove(entry)) {
+    if (PRIVATE(this)->reinsertdict.remove(entry)) {
       idx = 0; // make sure notifyChanged() is called.
     }
   }
@@ -412,12 +411,12 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 void
 SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_TIMER_QUEUE(this);
-  int idx = THIS->timerqueue.find(entry);
+  int idx = PRIVATE(this)->timerqueue.find(entry);
   if (idx != -1) {
-    THIS->timerqueue.remove(idx);
+    PRIVATE(this)->timerqueue.remove(idx);
     UNLOCK_TIMER_QUEUE(this);
     this->notifyChanged();
   }
@@ -436,31 +435,31 @@ SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 void
 SoSensorManager::processTimerQueue(void)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
-  if (THIS->processingtimerqueue || THIS->timerqueue.getLength() == 0)
+  if (PRIVATE(this)->processingtimerqueue || PRIVATE(this)->timerqueue.getLength() == 0)
     return;
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
-                         "start: %d elements", THIS->timerqueue.getLength());
+                         "start: %d elements", PRIVATE(this)->timerqueue.getLength());
 #endif // debug
 
-  assert(THIS->reschedulelist.getLength() == 0);
-  THIS->processingtimerqueue = TRUE;
+  assert(PRIVATE(this)->reschedulelist.getLength() == 0);
+  PRIVATE(this)->processingtimerqueue = TRUE;
 
   LOCK_TIMER_QUEUE(this);
 
   SbTime currenttime = SbTime::getTimeOfDay();
-  while (THIS->timerqueue.getLength() > 0 &&
-         THIS->timerqueue[0]->getTriggerTime() <= currenttime) {
+  while (PRIVATE(this)->timerqueue.getLength() > 0 &&
+         PRIVATE(this)->timerqueue[0]->getTriggerTime() <= currenttime) {
 #if DEBUG_TIMER_SENSORHANDLING // debug
     SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                            "process element with triggertime %s",
-                           THIS->timerqueue[0]->getTriggerTime().format().getString());
+                           PRIVATE(this)->timerqueue[0]->getTriggerTime().format().getString());
 #endif // debug
-    SoSensor * sensor = THIS->timerqueue[0];
-    THIS->timerqueue.remove(0);
+    SoSensor * sensor = PRIVATE(this)->timerqueue[0];
+    PRIVATE(this)->timerqueue.remove(0);
     UNLOCK_TIMER_QUEUE(this);
     sensor->trigger();
     LOCK_TIMER_QUEUE(this);
@@ -471,26 +470,26 @@ SoSensorManager::processTimerQueue(void)
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                          "end, before merge: %d elements",
-                         THIS->timerqueue.getLength());
+                         PRIVATE(this)->timerqueue.getLength());
 #endif // debug
 
   LOCK_RESCHEDULE_LIST(this);
-  int n = THIS->reschedulelist.getLength();
+  int n = PRIVATE(this)->reschedulelist.getLength();
   if (n) {
     SbTime time = SbTime::getTimeOfDay();
     for (int i = 0; i < n; i++) {
-      THIS->reschedulelist[i]->reschedule(time);
+      PRIVATE(this)->reschedulelist[i]->reschedule(time);
     }
-    THIS->reschedulelist.truncate(0);
+    PRIVATE(this)->reschedulelist.truncate(0);
   }
   UNLOCK_RESCHEDULE_LIST(this);
 
-  THIS->processingtimerqueue = FALSE;
+  PRIVATE(this)->processingtimerqueue = FALSE;
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                          "end, after merge: %d elements",
-                         THIS->timerqueue.getLength());
+                         PRIVATE(this)->timerqueue.getLength());
 #endif // debug
 }
 
@@ -527,19 +526,19 @@ reinsert_dict_cb(SoDelayQueueSensor * const & key,
 void
 SoSensorManager::processDelayQueue(SbBool isidle)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
   this->processImmediateQueue();
 
-  if (THIS->processingdelayqueue || THIS->delayqueue.getLength() == 0)
+  if (PRIVATE(this)->processingdelayqueue || PRIVATE(this)->delayqueue.getLength() == 0)
     return;
 
 #if DEBUG_DELAY_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processDelayQueue",
-                         "start: %d elements", THIS->delayqueue.getLength());
+                         "start: %d elements", PRIVATE(this)->delayqueue.getLength());
 #endif // debug
 
-  THIS->processingdelayqueue = TRUE;
+  PRIVATE(this)->processingdelayqueue = TRUE;
 
   // triggerdict is used to store sensors that has already been
   // triggered. A sensor should only be triggered once during a call
@@ -548,20 +547,20 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // triggers a delay sensor, which again triggers a redraw. During
   // the redraw, SoSceneManager::scheduleRedraw() might be called
   // again, etc...
-  THIS->triggerdict.clear();
+  PRIVATE(this)->triggerdict.clear();
 
   LOCK_DELAY_QUEUE(this);
 
   // Sensors with higher priorities are triggered first.
-  while (THIS->delayqueue.getLength()) {
+  while (PRIVATE(this)->delayqueue.getLength()) {
 #if DEBUG_DELAY_SENSORHANDLING // debug
     SoDebugError::postInfo("SoSensorManager::processDelayQueue",
                            "treat element with pri %d",
-                           THIS->delayqueue[0]->getPriority());
+                           PRIVATE(this)->delayqueue[0]->getPriority());
 #endif // debug
 
-    SoDelayQueueSensor * sensor = THIS->delayqueue[0];
-    THIS->delayqueue.remove(0);
+    SoDelayQueueSensor * sensor = PRIVATE(this)->delayqueue[0];
+    PRIVATE(this)->delayqueue.remove(0);
     UNLOCK_DELAY_QUEUE(this);
 
     if (!isidle && sensor->isIdleOnly()) {
@@ -569,17 +568,17 @@ SoSensorManager::processDelayQueue(SbBool isidle)
       // at the end of this function. We do this to be able to always
       // remove the first list element. We avoid searching for the
       // first non-idle sensor.
-      (void) THIS->reinsertdict.put(sensor, sensor);
+      (void) PRIVATE(this)->reinsertdict.put(sensor, sensor);
     }
     else {
       // only trigger sensor once per processing loop
-      if (THIS->triggerdict.put(sensor, sensor)) {
+      if (PRIVATE(this)->triggerdict.put(sensor, sensor)) {
         sensor->trigger();
       }
       else {
         // Reuse the "reinsert" list to store the sensor. It will be
         // reinserted at the end of this function.
-        (void) THIS->reinsertdict.put(sensor, sensor);
+        (void) PRIVATE(this)->reinsertdict.put(sensor, sensor);
       }
     }
     LOCK_DELAY_QUEUE(this);
@@ -589,15 +588,15 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // reinsert sensors that couldn't be triggered, either because it
   // was an idle sensor, or because the sensor had already been
   // triggered
-  THIS->reinsertdict.apply(reinsert_dict_cb, this);
-  THIS->reinsertdict.clear();
-  THIS->processingdelayqueue = FALSE;
+  PRIVATE(this)->reinsertdict.apply(reinsert_dict_cb, this);
+  PRIVATE(this)->reinsertdict.clear();
+  PRIVATE(this)->processingdelayqueue = FALSE;
 
   // If we still have pending sensors and the timeoutsensor
   // isn't currently scheduled, schedule it.
-  if (THIS->delayqueue.getLength() && !THIS->timeoutsensor->isScheduled()) {
-    THIS->timeoutsensor->setTimeFromNow(THIS->delaysensortimeout);
-    THIS->timeoutsensor->schedule();
+  if (PRIVATE(this)->delayqueue.getLength() && !PRIVATE(this)->timeoutsensor->isScheduled()) {
+    PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
+    PRIVATE(this)->timeoutsensor->schedule();
   }
 }
 
@@ -613,17 +612,17 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 void
 SoSensorManager::processImmediateQueue(void)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
-  if (THIS->processingimmediatequeue) return;
+  if (PRIVATE(this)->processingimmediatequeue) return;
 
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "start: %d elements in full immediate queue",
-                         THIS->immediatequeue.getLength());
+                         PRIVATE(this)->immediatequeue.getLength());
 #endif // debug
 
-  THIS->processingimmediatequeue = TRUE;
+  PRIVATE(this)->processingimmediatequeue = TRUE;
 
   // FIXME: implement some better logic to break out of the
   // processing loop. Right now we break out if more than 10000
@@ -632,13 +631,13 @@ SoSensorManager::processImmediateQueue(void)
 
   LOCK_IMMEDIATE_QUEUE(this);
 
-  while (THIS->immediatequeue.getLength()) {
+  while (PRIVATE(this)->immediatequeue.getLength()) {
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
     SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                            "trigger element");
 #endif // debug
-    SoSensor * sensor = THIS->immediatequeue[0];
-    THIS->immediatequeue.remove(0);
+    SoSensor * sensor = PRIVATE(this)->immediatequeue[0];
+    PRIVATE(this)->immediatequeue.remove(0);
     UNLOCK_IMMEDIATE_QUEUE(this);
 
     sensor->trigger();
@@ -647,7 +646,7 @@ SoSensorManager::processImmediateQueue(void)
     triggercnt++;
     if (triggercnt > 10000) break;
   }
-  if (THIS->immediatequeue.getLength()) {
+  if (PRIVATE(this)->immediatequeue.getLength()) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoSensorManager::processImmediateQueue",
                               "Infinite loop detected. Breaking out.");
@@ -655,7 +654,7 @@ SoSensorManager::processImmediateQueue(void)
   }
   UNLOCK_IMMEDIATE_QUEUE(this);
 
-  THIS->processingimmediatequeue = FALSE;
+  PRIVATE(this)->processingimmediatequeue = FALSE;
 }
 
 /*!
@@ -664,10 +663,10 @@ SoSensorManager::processImmediateQueue(void)
 void
 SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_RESCHEDULE_LIST(this);
-  THIS->reschedulelist.append(s);
+  PRIVATE(this)->reschedulelist.append(s);
   UNLOCK_RESCHEDULE_LIST(this);
 }
 
@@ -677,12 +676,12 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 void
 SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_RESCHEDULE_LIST(this);
-  int idx = THIS->reschedulelist.find((SoTimerSensor*)s);
+  int idx = PRIVATE(this)->reschedulelist.find((SoTimerSensor*)s);
   if (idx >= 0) {
-    THIS->reschedulelist.remove(idx);
+    PRIVATE(this)->reschedulelist.remove(idx);
     UNLOCK_RESCHEDULE_LIST(this);
   }
   else {
@@ -698,10 +697,10 @@ SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 SbBool
 SoSensorManager::isDelaySensorPending(void)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
-  return (THIS->delayqueue.getLength() ||
-          THIS->immediatequeue.getLength()) ? TRUE : FALSE;
+  return (PRIVATE(this)->delayqueue.getLength() ||
+          PRIVATE(this)->immediatequeue.getLength()) ? TRUE : FALSE;
 }
 
 /*!
@@ -714,11 +713,11 @@ SoSensorManager::isDelaySensorPending(void)
 SbBool
 SoSensorManager::isTimerSensorPending(SbTime & tm)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_TIMER_QUEUE(this);
-  if (THIS->timerqueue.getLength() > 0) {
-    tm = THIS->timerqueue[0]->getTriggerTime();
+  if (PRIVATE(this)->timerqueue.getLength() > 0) {
+    tm = PRIVATE(this)->timerqueue[0]->getTriggerTime();
     UNLOCK_TIMER_QUEUE(this);
     return TRUE;
   }
@@ -746,7 +745,7 @@ SoSensorManager::isTimerSensorPending(SbTime & tm)
 void
 SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
 #if COIN_DEBUG
   if(t < SbTime::zero()) {
@@ -756,14 +755,14 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
   }
 #endif // COIN_DEBUG
 
-  THIS->delaysensortimeout = t;
+  PRIVATE(this)->delaysensortimeout = t;
 
-  if (t == SbTime::zero() && THIS->timeoutsensor->isScheduled()) {
-    THIS->timeoutsensor->unschedule();
+  if (t == SbTime::zero() && PRIVATE(this)->timeoutsensor->isScheduled()) {
+    PRIVATE(this)->timeoutsensor->unschedule();
   }
-  else if (THIS->delayqueue.getLength()) {
-    THIS->timeoutsensor->setTimeFromNow(t);
-    THIS->timeoutsensor->schedule();
+  else if (PRIVATE(this)->delayqueue.getLength()) {
+    PRIVATE(this)->timeoutsensor->setTimeFromNow(t);
+    PRIVATE(this)->timeoutsensor->schedule();
   }
 }
 
@@ -775,9 +774,9 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 const SbTime &
 SoSensorManager::getDelaySensorTimeout(void)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
-  return THIS->delaysensortimeout;
+  return PRIVATE(this)->delaysensortimeout;
 }
 
 /*!
@@ -790,22 +789,22 @@ SoSensorManager::getDelaySensorTimeout(void)
 void
 SoSensorManager::setChangedCallback(void (*func)(void *), void * data)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
-  THIS->queueChangedCB = func;
-  THIS->queueChangedCBData = data;
+  PRIVATE(this)->queueChangedCB = func;
+  PRIVATE(this)->queueChangedCBData = data;
 }
 
 void
 SoSensorManager::notifyChanged(void)
 {
-  SoSensorManagerP::assertAlive(THIS);
+  SoSensorManagerP::assertAlive(PRIVATE(this));
 
-  if (THIS->queueChangedCB &&
-      !THIS->processingtimerqueue &&
-      !THIS->processingdelayqueue &&
-      !THIS->processingimmediatequeue) {
-    THIS->queueChangedCB(THIS->queueChangedCBData);
+  if (PRIVATE(this)->queueChangedCB &&
+      !PRIVATE(this)->processingtimerqueue &&
+      !PRIVATE(this)->processingdelayqueue &&
+      !PRIVATE(this)->processingimmediatequeue) {
+    PRIVATE(this)->queueChangedCB(PRIVATE(this)->queueChangedCBData);
   }
 }
 
@@ -845,4 +844,15 @@ SoSensorManager::mergeDelayQueues(void)
 }
 
 
-#undef THIS
+#undef DEBUG_DELAY_SENSORHANDLING
+#undef DEBUG_TIMER_SENSORHANDLING
+#undef ALIVE_PATTERN
+#undef LOCK_TIMER_QUEUE
+#undef UNLOCK_TIMER_QUEUE
+#undef LOCK_DELAY_QUEUE
+#undef UNLOCK_DELAY_QUEUE
+#undef LOCK_IMMEDIATE_QUEUE
+#undef UNLOCK_IMMEDIATE_QUEUE
+#undef LOCK_RESCHEDULE_LIST
+#undef UNLOCK_RESCHEDULE_LIST
+#undef PRIVATE

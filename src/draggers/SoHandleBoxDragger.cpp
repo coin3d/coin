@@ -1004,3 +1004,14 @@ SoHandleBoxDragger::calcCtrlOffset(const SbVec3f startpt)
   }
   return v;
 }
+
+#undef WHATKIND_NONE
+#undef WHATKIND_TRANSLATOR
+#undef WHATKIND_EXTRUDER
+#undef WHATKIND_UNIFORM
+#undef CONSTRAINT_OFF
+#undef CONSTRAINT_WAIT
+#undef CONSTRAINT_X
+#undef CONSTRAINT_Y
+#undef CONSTRAINT_Z
+

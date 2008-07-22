@@ -115,5 +115,6 @@ SoVectorOutput::getFilePointer(void)
   return PRIVATE(this)->fp;
 }
 
+#undef PRIVATE
+#undef PUBLIC
 
-// *************************************************************************

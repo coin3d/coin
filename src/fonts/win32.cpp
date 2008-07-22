@@ -102,6 +102,7 @@ static int flww32_calcfontsize(float complexity);
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <wingdi.h>
+#undef WIN32_LEAN_AND_MEAN
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>

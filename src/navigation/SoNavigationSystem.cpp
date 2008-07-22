@@ -240,6 +240,8 @@ SoNavigationSystem::cleanClass(void)
   DELETE_SYSTEM(SO_PICKER_SYSTEM);
   DELETE_SYSTEM(SO_PLANEVIEWER_SYSTEM);
 
+#undef DELETE_SYSTEM
+
   delete SoNavigationSystemP::namedict;
   SoNavigationSystemP::namedict = NULL;
 }

@@ -425,7 +425,6 @@ SoInputP::isNameCharVRML2(unsigned char c, SbBool validIdent)
 
 // *************************************************************************
 
-#undef PRIVATE
 #define PRIVATE(obj) (obj->pimpl)
 
 // *************************************************************************
@@ -2856,4 +2855,9 @@ SoInput::findFile(const char * basename, SbString & fullname)
   return NULL;
 }
 
+#undef READ_NUM
+#undef READ_INTEGER
+#undef READ_UNSIGNED_INTEGER
+#undef READ_REAL
 #undef PRIVATE
+

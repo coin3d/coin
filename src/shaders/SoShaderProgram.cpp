@@ -380,6 +380,10 @@ SoShaderProgramP::sensorCB(void * data, SoSensor *)
   // nothing to do now
 }
 
+#undef PRIVATE
+#undef PUBLIC
+
+// *************************************************************************
 
 #ifdef COIN_TEST_SUITE
 

@@ -185,8 +185,6 @@ SoGeoCoordinate::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoGeoCoordinate::doAction((SoAction *)action);
 }
 
-// *************************************************************************
-
 SbMatrix
 SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
 {
@@ -198,6 +196,10 @@ SoGeoCoordinate::getTransform(SoGeoOrigin * origin, const int idx) const
                                    this->geoSystem.getNum(),
                                    this->point[idx]);
 }
+
+#undef PRIVATE
+
+// *************************************************************************
 
 #ifdef COIN_TEST_SUITE
 

@@ -71,18 +71,17 @@ static int enable_counter = 0;
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
 */
 SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const parentlist)
 {
-  THIS = new SoEnabledElementsListP;
+  PRIVATE(this) = new SoEnabledElementsListP;
 
-  THIS->prevmerge = 0;
-  THIS->parent = parentlist;
+  PRIVATE(this)->prevmerge = 0;
+  PRIVATE(this)->parent = parentlist;
 }
 
 /*!
@@ -90,7 +89,7 @@ SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const paren
 */
 SoEnabledElementsList::~SoEnabledElementsList()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -99,11 +98,11 @@ SoEnabledElementsList::~SoEnabledElementsList()
 const SoTypeList &
 SoEnabledElementsList::getElements(void) const
 {
-  THIS->lock();
+  PRIVATE(this)->lock();
   // check if we need a new merge
-  if (THIS->prevmerge != enable_counter) {
+  if (PRIVATE(this)->prevmerge != enable_counter) {
     int storedcounter = enable_counter;
-    SoEnabledElementsList * plist = (SoEnabledElementsList*) THIS->parent;
+    SoEnabledElementsList * plist = (SoEnabledElementsList*) PRIVATE(this)->parent;
     while (plist) {
       ((SoEnabledElementsList*)this)->merge(*plist);
       plist = plist->pimpl->parent;
@@ -112,8 +111,8 @@ SoEnabledElementsList::getElements(void) const
     ((SoEnabledElementsList*)this)->pimpl->prevmerge =
       enable_counter = storedcounter;
   }
-  THIS->unlock();
-  return THIS->elements;
+  PRIVATE(this)->unlock();
+  return PRIVATE(this)->elements;
 }
 
 /*!
@@ -123,13 +122,13 @@ SoEnabledElementsList::getElements(void) const
 void
 SoEnabledElementsList::enable(const SoType elementtype, const int stackindex)
 {
-  while (stackindex >= THIS->elements.getLength())
-    THIS->elements.append(SoType::badType());
+  while (stackindex >= PRIVATE(this)->elements.getLength())
+    PRIVATE(this)->elements.append(SoType::badType());
 
-  SoType currtype = THIS->elements[stackindex];
+  SoType currtype = PRIVATE(this)->elements[stackindex];
   if (currtype.isBad() ||
       (elementtype != currtype && elementtype.isDerivedFrom(currtype))) {
-    THIS->elements.set(stackindex, elementtype);
+    PRIVATE(this)->elements.set(stackindex, elementtype);
     // increment to detect when a new merge is needed
     enable_counter++;
   }
@@ -160,4 +159,4 @@ SoEnabledElementsList::getCounter(void)
   return enable_counter;
 }
 
-#undef THIS
+#undef PRIVATE

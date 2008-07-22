@@ -227,4 +227,6 @@ SoMPEGRenderer::getGLRenderAction(void) const
   return PRIVATE(this)->renderaction;
 }
 
+#undef PRIVATE
+
 // *************************************************************************

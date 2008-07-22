@@ -565,10 +565,7 @@ public:
   SbBool readUnknownFields(SoInput *in, SoFieldData *&unknownFieldData );
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-
-#undef PUBLIC
 #define PUBLIC(p) ((p)->kit)
 
 SbBool SoBaseKit::searchchildren = FALSE;
@@ -2730,3 +2727,7 @@ SoBaseKitP::readUnknownFields(SoInput *in, SoFieldData *&unknownfielddata)
   // (Apple snapshot 20041026, default in Mac OS 10.4) will warn.
   return TRUE;
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

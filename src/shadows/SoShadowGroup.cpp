@@ -1838,6 +1838,8 @@ SoShadowSpotLightCache::shadowmap_post_glcallback(void * closure, SoAction * act
 }
 
 #undef PUBLIC
+#undef DISTRIBUTE_FACTOR
+#undef USE_NEGATIVE
 
 #ifdef COIN_TEST_SUITE
 

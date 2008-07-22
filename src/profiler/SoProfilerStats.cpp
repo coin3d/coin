@@ -499,3 +499,5 @@ SoProfilerStats::getProfilingData(SoType actiontype) const
 // *************************************************************************
 
 #undef PRIVATE
+#undef BY_TYPE
+

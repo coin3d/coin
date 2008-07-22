@@ -347,3 +347,6 @@ SoDebugError::getHandler(void * & data) const
   data = SoDebugError::callbackData;
   return SoDebugError::callback;
 }
+
+#undef SODEBUGERROR_POST
+

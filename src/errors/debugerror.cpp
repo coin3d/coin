@@ -151,3 +151,6 @@ cc_debugerror_postinfo(const char * source, const char * format, ...)
 {
   CC_DEBUGERROR_POST(CC_DEBUGERROR_INFO, "info");
 }
+
+#undef CC_DEBUGERROR_POST
+

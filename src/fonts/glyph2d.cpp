@@ -286,3 +286,6 @@ cc_glyph2d_getmono(const cc_glyph2d * g)
 {
   return g->mono;
 }
+
+#undef GLYPH2D_MUTEX_LOCK
+#undef GLYPH2D_MUTEX_UNLOCK

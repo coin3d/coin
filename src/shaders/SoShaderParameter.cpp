@@ -882,6 +882,9 @@ SoShaderParameterArray4i::updateParameter(SoGLShaderObject *shader)
                                                                 this->identifier.getValue());
 }
 
+#undef PRIVATE
+
+// *************************************************************************
 
 #ifdef COIN_TEST_SUITE
 

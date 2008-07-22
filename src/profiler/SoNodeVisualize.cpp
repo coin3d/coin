@@ -533,7 +533,6 @@ SoNodeVisualize::recalculateWidth() {
 
 //This should usually always be turned on
 //turning it off should only be useful for debugging
-#undef CACHING
 //#define CACHING
 
 /*!
@@ -726,4 +725,9 @@ SoNodeVisualize::getChildGeometry() {
   assert(childgeometry);
   return childgeometry;
 }
+
+#ifdef CACHING
+#undef CACHING
+#endif
+#undef PRINT_FUNCTION
 

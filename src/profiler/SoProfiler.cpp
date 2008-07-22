@@ -268,6 +268,7 @@ SoProfilerP::setActionType(SoType actiontype)
                            "profiling action of type '%s' is not supported",
                            actiontype.getName().getString());
   }
+#undef IF_ACTION
 }
 
 SoType
