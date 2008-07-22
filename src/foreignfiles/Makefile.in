@@ -275,13 +275,12 @@ EXTRA_DIST = \
 RegularSources = \
 	SoForeignFileKit.cpp \
 	SoSTLFileKit.cpp \
-	steel.c
+	steel.cpp
 
 LinkHackSources = \
 	all-foreignfiles-cpp.cpp \
-	all-foreignfiles-c.c
+PublicHeaders =
 
-PublicHeaders = 
 PrivateHeaders = \
 	steel.h
 
@@ -351,44 +350,43 @@ LIBRARIES = $(noinst_LIBRARIES)
 foreignfiles_lst_AR = $(AR) cru
 foreignfiles_lst_LIBADD =
 am__foreignfiles_lst_SOURCES_DIST = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.c all-foreignfiles-cpp.cpp \
-	all-foreignfiles-c.c
-am__objects_1 = all-foreignfiles-cpp.$(OBJEXT) \
-	all-foreignfiles-c.$(OBJEXT)
+	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp \
+	PublicHeaders =
+am__objects_1 = all-foreignfiles-cpp.$(OBJEXT)
 am__objects_2 = SoForeignFileKit.$(OBJEXT) SoSTLFileKit.$(OBJEXT) \
 	steel.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_foreignfiles_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_foreignfiles_lst_SOURCES_DIST = steel.h \
-	all-foreignfiles-cpp.cpp all-foreignfiles-c.c \
-	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.c
+	all-foreignfiles-cpp.cpp PublicHeaders = SoForeignFileKit.cpp \
+	SoSTLFileKit.cpp steel.cpp
 foreignfiles_lst_OBJECTS = $(am_foreignfiles_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libforeignfiles_la_LDFLAGS =
 libforeignfiles_la_LIBADD =
 am__libforeignfiles_la_SOURCES_DIST = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.c all-foreignfiles-cpp.cpp \
-	all-foreignfiles-c.c
-am__objects_6 = all-foreignfiles-cpp.lo all-foreignfiles-c.lo
-am__objects_7 = SoForeignFileKit.lo SoSTLFileKit.lo steel.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
-am_libforeignfiles_la_OBJECTS = $(am__objects_8)
+	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp \
+	PublicHeaders =
+am__objects_7 = all-foreignfiles-cpp.lo
+am__objects_8 = SoForeignFileKit.lo SoSTLFileKit.lo steel.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
+am_libforeignfiles_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libforeignfiles_la_SOURCES_DIST = steel.h \
-	all-foreignfiles-cpp.cpp all-foreignfiles-c.c \
-	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.c
+	all-foreignfiles-cpp.cpp PublicHeaders = SoForeignFileKit.cpp \
+	SoSTLFileKit.cpp steel.cpp
 libforeignfiles_la_OBJECTS = $(am_libforeignfiles_la_OBJECTS)
 libforeignfiles@SUFFIX@LINKHACK_la_LDFLAGS =
 libforeignfiles@SUFFIX@LINKHACK_la_LIBADD =
 am__libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.c \
-	all-foreignfiles-cpp.cpp all-foreignfiles-c.c
-am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.cpp \
+	all-foreignfiles-cpp.cpp PublicHeaders =
+am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = steel.h \
-	all-foreignfiles-cpp.cpp all-foreignfiles-c.c \
-	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.c
+	all-foreignfiles-cpp.cpp PublicHeaders = SoForeignFileKit.cpp \
+	SoSTLFileKit.cpp steel.cpp
 libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -397,18 +395,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoForeignFileKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSTLFileKit.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSTLFileKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-c.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-c.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/steel.Plo ./$(DEPDIR)/steel.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -416,6 +405,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__foreignfiles_lst_SOURCES_DIST) \
 	$(am__EXTRA_foreignfiles_lst_SOURCES_DIST) \
@@ -431,7 +427,7 @@ SOURCES = $(foreignfiles_lst_SOURCES) $(EXTRA_foreignfiles_lst_SOURCES) $(libfor
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/foreignfiles/Makefile
@@ -492,8 +488,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoForeignFileKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSTLFileKit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSTLFileKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel.Plo@am__quote@
@@ -501,39 +495,6 @@ distclean-compile:
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
-
-.c.o:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
-
-.c.obj:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
-
-.c.lo:
-@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \

@@ -850,7 +850,7 @@ stl_reader_create(const char * filename)
     }
     reader->flags |= STL_BINARY;
     fseek(reader->file, 0, SEEK_SET);
-    reader->info = malloc(81);
+    reader->info = static_cast<char *>(malloc(81));
     assert(reader->info);
     fread(reader->info, 80, 1, reader->file);
     reader->info[80] = '\0';

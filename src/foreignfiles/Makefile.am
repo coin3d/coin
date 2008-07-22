@@ -10,10 +10,9 @@ EXTRA_DIST = \
 RegularSources = \
 	SoForeignFileKit.cpp \
 	SoSTLFileKit.cpp \
-	steel.c
+	steel.cpp
 LinkHackSources = \
 	all-foreignfiles-cpp.cpp \
-	all-foreignfiles-c.c
 PublicHeaders =
 PrivateHeaders = \
 	steel.h
