@@ -379,7 +379,6 @@ public:
 SbMutex * SoTexture2P::mutex;
 #endif // COIN_THREADSAFE
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
 
 #ifdef COIN_THREADSAFE
@@ -802,5 +801,5 @@ SoTexture2::filenameSensorCB(void * data, SoSensor *)
 
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
-
 #undef PRIVATE
+

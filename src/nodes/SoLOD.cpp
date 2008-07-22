@@ -135,9 +135,7 @@ public:
   SoLOD *master;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 SO_NODE_SOURCE(SoLOD);
@@ -387,4 +385,7 @@ SoLOD::notify(SoNotList * nl)
   inherited::notify(nl);
   PRIVATE(this)->notifyCalled();
 }
+
+#undef PRIVATE
+#undef PUBLIC
 

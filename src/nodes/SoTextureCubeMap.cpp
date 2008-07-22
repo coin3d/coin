@@ -242,7 +242,6 @@ public:
 };
 
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
 
 #ifdef COIN_THREADSAFE
@@ -673,3 +672,4 @@ SoTextureCubeMap::getImageField(const int idx)
 #undef UNLOCK_GLIMAGE
 
 #undef PRIVATE
+

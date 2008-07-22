@@ -309,3 +309,6 @@ SoTextureCoordinatePlane::setupGencache(void)
   PRIVATE(this)->t = this->directionT.getValue();
   PRIVATE(this)->r = this->directionR.getValue();
 }
+
+#undef PRIVATE
+

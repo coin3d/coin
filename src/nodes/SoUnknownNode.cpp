@@ -75,7 +75,6 @@ SoUnknownNode::createInstance(void)
   return new SoUnknownNode;
 }
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
 
 // Node implementation starts "proper".

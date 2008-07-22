@@ -184,9 +184,7 @@ public:
   }
 };
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
-
 
 SO_NODE_SOURCE(SoBumpMap);
 
@@ -417,3 +415,4 @@ SoBumpMap::filenameSensorCB(void * data, SoSensor *)
 }
 
 #undef PRIVATE
+

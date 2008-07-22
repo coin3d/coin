@@ -258,8 +258,7 @@ public:
 
 SO_NODE_SOURCE(SoLevelOfDetail);
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Default constructor.
@@ -287,8 +286,8 @@ SoLevelOfDetail::SoLevelOfDetail(int numchildren)
 void
 SoLevelOfDetail::commonConstructor(void)
 {
-  THIS = new SoLevelOfDetailP;
-  THIS->bboxcache = NULL;
+  PRIVATE(this) = new SoLevelOfDetailP;
+  PRIVATE(this)->bboxcache = NULL;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLevelOfDetail);
 
@@ -300,8 +299,8 @@ SoLevelOfDetail::commonConstructor(void)
 */
 SoLevelOfDetail::~SoLevelOfDetail()
 {
-  if (THIS->bboxcache) THIS->bboxcache->unref();
-  delete THIS;
+  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -356,7 +355,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   if (complexity == 1.0f) { idx = 0; goto traverse; }
   if (this->screenArea.getNum() == 0) { idx = 0; goto traverse; }
 
-  if (!THIS->bboxcache || !THIS->bboxcache->isValid(state)) {
+  if (!PRIVATE(this)->bboxcache || !PRIVATE(this)->bboxcache->isValid(state)) {
     SoGetBoundingBoxAction * bboxAction = so_lod_get_bbox_action();
 
     bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
@@ -369,7 +368,7 @@ SoLevelOfDetail::doAction(SoAction *action)
     bbox = bboxAction->getBoundingBox();
   }
   else {
-    bbox = THIS->bboxcache->getProjectedBox();
+    bbox = PRIVATE(this)->bboxcache->getProjectedBox();
   }
   SoShape::getScreenSize(state, bbox, size);
 
@@ -469,14 +468,14 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
-  SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+  SbBool validcache = PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
-    SoCacheElement::addCacheDependency(state, THIS->bboxcache);
-    childrenbbox = THIS->bboxcache->getBox();
-    childrencenterset = THIS->bboxcache->isCenterSet();
-    childrencenter = THIS->bboxcache->getCenter();
-    if (THIS->bboxcache->hasLinesOrPoints()) {
+    SoCacheElement::addCacheDependency(state, PRIVATE(this)->bboxcache);
+    childrenbbox = PRIVATE(this)->bboxcache->getBox();
+    childrencenterset = PRIVATE(this)->bboxcache->isCenterSet();
+    childrencenter = PRIVATE(this)->bboxcache->getCenter();
+    if (PRIVATE(this)->bboxcache->hasLinesOrPoints()) {
       SoBoundingBoxCache::setHasLinesOrPoints(state);
     }
   }
@@ -493,13 +492,13 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
       storedinvalid = SoCacheElement::setInvalid(FALSE);
 
       // if we get here, we know bbox cache is not created or is invalid
-      THIS->lock();
-      if (THIS->bboxcache) THIS->bboxcache->unref();
-      THIS->bboxcache = new SoBoundingBoxCache(state);
-      THIS->bboxcache->ref();
-      THIS->unlock();
+      PRIVATE(this)->lock();
+      if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+      PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
+      PRIVATE(this)->bboxcache->ref();
+      PRIVATE(this)->unlock();
       // set active cache to record cache dependencies
-      SoCacheElement::set(state, THIS->bboxcache);
+      SoCacheElement::set(state, PRIVATE(this)->bboxcache);
     }
 
     // the bounding box cache should be in the local coordinate system
@@ -516,7 +515,7 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
     action->getXfBoundingBox() = abox; // reset action bbox
 
     if (iscaching) {
-      THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
+      PRIVATE(this)->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
     state->pop(); // we pushed before calculating the cache
 
@@ -544,9 +543,12 @@ void
 SoLevelOfDetail::notify(SoNotList * nl)
 {
   if (nl->getLastField() != &this->screenArea) {
-    THIS->lock();
-    if (THIS->bboxcache) THIS->bboxcache->invalidate();
-    THIS->unlock();
+    PRIVATE(this)->lock();
+    if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
+    PRIVATE(this)->unlock();
   }
   inherited::notify(nl);
 }
+
+#undef PRIVATE
+

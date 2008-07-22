@@ -196,8 +196,7 @@ class SoWWWInlineP {
 
 const char SoWWWInlineP::UNDEFINED_FILE[] = "<Undefined file>";
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -212,9 +211,9 @@ SoWWWInline::SoWWWInline()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoWWWInline);
 
-  THIS = new SoWWWInlineP(this);
-  THIS->children = new SoChildList(this);
-  THIS->didrequest = FALSE;
+  PRIVATE(this) = new SoWWWInlineP(this);
+  PRIVATE(this)->children = new SoChildList(this);
+  PRIVATE(this)->didrequest = FALSE;
 
   SO_NODE_ADD_FIELD(name, (SoWWWInlineP::UNDEFINED_FILE));
   SO_NODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
@@ -235,8 +234,8 @@ SoWWWInline::SoWWWInline()
 */
 SoWWWInline::~SoWWWInline()
 {
-  delete THIS->children;
-  delete THIS;
+  delete PRIVATE(this)->children;
+  delete PRIVATE(this);
 }
 
 // doc in super
@@ -253,7 +252,7 @@ SoWWWInline::initClass(void)
 void
 SoWWWInline::setFullURLName(const SbString & url)
 {
-  THIS->fullname = url;
+  PRIVATE(this)->fullname = url;
 }
 
 /*!
@@ -264,7 +263,7 @@ SoWWWInline::setFullURLName(const SbString & url)
 const SbString &
 SoWWWInline::getFullURLName(void)
 {
-  return THIS->fullname.getLength() ? THIS->fullname : this->name.getValue();
+  return PRIVATE(this)->fullname.getLength() ? PRIVATE(this)->fullname : this->name.getValue();
 }
 
 /*!
@@ -289,9 +288,9 @@ SoWWWInline::copyChildren(void) const
 void
 SoWWWInline::requestURLData(void)
 {
-  if (!THIS->didrequest) {
-    THIS->didrequest = TRUE;
-    (void) THIS->readChildren();
+  if (!PRIVATE(this)->didrequest) {
+    PRIVATE(this)->didrequest = TRUE;
+    (void) PRIVATE(this)->readChildren();
   }
 }
 
@@ -302,7 +301,7 @@ SoWWWInline::requestURLData(void)
 SbBool
 SoWWWInline::isURLDataRequested(void) const
 {
-  return THIS->didrequest;
+  return PRIVATE(this)->didrequest;
 }
 
 /*!
@@ -326,7 +325,7 @@ SoWWWInline::isURLDataHere(void) const
 void
 SoWWWInline::cancelURLDataRequest(void)
 {
-  THIS->didrequest = FALSE;
+  PRIVATE(this)->didrequest = FALSE;
 }
 
 /*!
@@ -336,8 +335,8 @@ SoWWWInline::cancelURLDataRequest(void)
 void
 SoWWWInline::setChildData(SoNode * urldata)
 {
-  THIS->children->truncate(0);
-  THIS->children->append(urldata);
+  PRIVATE(this)->children->truncate(0);
+  PRIVATE(this)->children->append(urldata);
 }
 
 /*!
@@ -348,7 +347,7 @@ SoWWWInline::setChildData(SoNode * urldata)
 SoNode *
 SoWWWInline::getChildData(void) const
 {
-  if (THIS->children->getLength()) { return (*THIS->children)[0]; }
+  if (PRIVATE(this)->children->getLength()) { return (*PRIVATE(this)->children)[0]; }
   return NULL;
 }
 
@@ -553,7 +552,7 @@ SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 SoChildList *
 SoWWWInline::getChildren(void) const
 {
-  return THIS->children;
+  return PRIVATE(this)->children;
 }
 
 // doc in super
@@ -662,7 +661,7 @@ SoWWWInline::readInstance(SoInput * in, unsigned short flags)
 {
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
-    ret = THIS->readChildren();
+    ret = PRIVATE(this)->readChildren();
   }
   return ret;
 }
@@ -686,7 +685,7 @@ SoWWWInline::copyContents(const SoFieldContainer * fromfc,
   this->getChildren()->append(cp);
 }
 
-#undef THIS
+#undef PRIVATE
 
 // *************************************************************************
 

@@ -169,7 +169,6 @@ SoFullPath * SoLocateHighlightP::currenthighlight = NULL;
 
 // *************************************************************************
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
@@ -331,3 +330,4 @@ SoLocateHighlight::turnoffcurrent(SoAction * action)
 }
 
 #undef PRIVATE
+

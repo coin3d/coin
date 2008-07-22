@@ -573,4 +573,5 @@ SoMaterial::getMaterialType(void)
 #undef PRIVATE
 #undef TYPE_UNKNOWN
 #undef TYPE_NORMAL
-#undef TYPE_ONLYEMISSIVE
+#undef TYPE_VRML1_ONLYEMISSIVE
+

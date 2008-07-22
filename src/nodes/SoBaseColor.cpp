@@ -106,8 +106,7 @@ private:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -118,7 +117,7 @@ SO_NODE_SOURCE(SoBaseColor);
 */
 SoBaseColor::SoBaseColor()
 {
-  THIS = new SoBaseColorP;
+  PRIVATE(this) = new SoBaseColorP;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBaseColor);
 
   SO_NODE_ADD_FIELD(rgb, (SbColor(0.8f, 0.8f, 0.8f)));
@@ -129,7 +128,7 @@ SoBaseColor::SoBaseColor()
 */
 SoBaseColor::~SoBaseColor()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // Doc from superclass.
@@ -162,25 +161,25 @@ SoBaseColor::doAction(SoAction * action)
       !SoOverrideElement::getDiffuseColorOverride(state)) {
     const int num = this->rgb.getNum();
     SoLazyElement::setDiffuse(state, this, num,
-                              this->rgb.getValues(0), THIS->getColorPacker());
+                              this->rgb.getValues(0), PRIVATE(this)->getColorPacker());
     
     if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
       SbBool setvbo = FALSE;
       SoBase::staticDataLock();
       if (SoGLVBOElement::shouldCreateVBO(state, num)) {
         setvbo = TRUE;
-        if (THIS->vbo == NULL) {
-          THIS->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+        if (PRIVATE(this)->vbo == NULL) {
+          PRIVATE(this)->vbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
         }
       }
-      else if (THIS->vbo) {
-        THIS->vbo->setBufferData(NULL, 0, 0);
+      else if (PRIVATE(this)->vbo) {
+        PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
       }
       // don't fill in any data in the VBO. Data will be filled in
       // using the ColorPacker right before the VBO is used
       SoBase::staticDataUnlock();
       if (setvbo) {
-        SoGLVBOElement::setColorVBO(state, THIS->vbo);
+        SoGLVBOElement::setColorVBO(state, PRIVATE(this)->vbo);
       }
     }
     if (this->isOverride()) {
@@ -196,4 +195,5 @@ SoBaseColor::callback(SoCallbackAction * action)
   SoBaseColor::doAction(action);
 }
 
-#undef THIS
+#undef PRIVATE
+

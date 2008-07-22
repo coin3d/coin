@@ -364,7 +364,6 @@ public:
 
 // *************************************************************************
 
-#undef PRIVATE
 #define PRIVATE(obj) obj->pimpl
 
 
@@ -635,7 +634,6 @@ SoSceneTexture2::write(SoWriteAction * action)
 
 // *************************************************************************
 
-#undef PUBLIC
 #define PUBLIC(obj) obj->api
 
 SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)

@@ -145,9 +145,7 @@ void * SoWWWAnchorP::highlightdata = NULL;
 
 SO_NODE_SOURCE(SoWWWAnchor);
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
-
 
 /*!
   Constructor.
@@ -283,3 +281,6 @@ SoWWWAnchor::redrawHighlighted(SoAction * act, SbBool isNowHighlighting)
     SoWWWAnchorP::highlightfunc(s, SoWWWAnchorP::highlightdata, this);
   }
 }
+
+#undef PRIVATE
+

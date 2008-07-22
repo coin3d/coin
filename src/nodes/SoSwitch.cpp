@@ -137,9 +137,7 @@ public:
   SoSwitch *master;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 SO_NODE_SOURCE(SoSwitch);
@@ -469,3 +467,7 @@ SoSwitch::notify(SoNotList * nl)
     PRIVATE(this)->notifyCalled();
   }
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

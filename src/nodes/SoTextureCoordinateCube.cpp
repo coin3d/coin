@@ -118,8 +118,6 @@ private:
 
 static const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
 
-#undef PRIVATE
-#undef PUBLIC
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
@@ -322,3 +320,7 @@ SoTextureCoordinateCube::pick(SoPickAction * action)
 {
   SoTextureCoordinateCube::doAction((SoAction *)action);
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

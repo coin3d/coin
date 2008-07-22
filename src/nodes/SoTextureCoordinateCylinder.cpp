@@ -112,8 +112,6 @@ private:
 
 static const SbVec4f & textureCoordinateCylinderCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
 
-#undef PRIVATE
-#undef PUBLIC
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
@@ -310,4 +308,7 @@ SoTextureCoordinateCylinder::pick(SoPickAction * action)
 {
   SoTextureCoordinateCylinder::doAction((SoAction *)action);
 }
+
+#undef PRIVATE
+#undef PUBLIC
 

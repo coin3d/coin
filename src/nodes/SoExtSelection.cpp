@@ -2783,3 +2783,7 @@ SoExtSelectionP::validateViewportBBox(SbBox2s & bbox,
     bbox.extendBy(SbVec2s(bmin[0], bmin[1] + add));
   }
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

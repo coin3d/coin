@@ -145,7 +145,6 @@ SbRotation SoSceneTextureCubeMapP::ROT_POS_Z =
   SbRotation(SbVec3f(0,1,0), (float) M_PI) *
   SbRotation(SbVec3f(0,0,1), (float) M_PI);
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
 
 #ifdef COIN_THREADSAFE
@@ -353,7 +352,6 @@ SoSceneTextureCubeMap::notify(SoNotList * list)
 /* ***                       private implementation                    *** */
 /* *********************************************************************** */
 
-#undef PUBLIC
 #define PUBLIC(p) (p->api)
 
 SoSceneTextureCubeMapP::SoSceneTextureCubeMapP(SoSceneTextureCubeMap * apiptr)
@@ -705,5 +703,6 @@ SoSceneTextureCubeMapP::prerendercb(void * userdata, SoGLRenderAction * action)
 
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
-
 #undef PRIVATE
+#undef PUBLIC
+
