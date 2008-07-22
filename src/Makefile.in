@@ -285,6 +285,8 @@ EXTRADIST = \
         update-config.sh \
         Make-Common.tpl
 
+
+ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)
 @BUILD_WITH_SUPERGLU_FALSE@SUPERGLUDIR = 
 
 @BUILD_WITH_SUPERGLU_TRUE@SUPERGLUDIR = extensions/superglu
@@ -295,15 +297,16 @@ EXTRADIST = \
 
 
 # **************************************************************************
-SUBDIRS = \
-	extensions xml actions base bundles caches details draggers elements \
-	engines errors events fields fonts glue io manips misc lists nodekits \
-	navigation nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
-	vrml97 foreignfiles scxml doc .
+@MAC_FRAMEWORK_TRUE@SUBDIRS = 
+@MAC_FRAMEWORK_FALSE@SUBDIRS = \
+@MAC_FRAMEWORK_FALSE@	extensions xml actions base bundles caches details draggers elements \
+@MAC_FRAMEWORK_FALSE@	engines errors events fields fonts glue io manips misc lists nodekits \
+@MAC_FRAMEWORK_FALSE@	navigation nodes shapenodes projectors sensors upgraders \
+@MAC_FRAMEWORK_FALSE@	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
+@MAC_FRAMEWORK_FALSE@	vrml97 foreignfiles scxml doc .
 
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src $(ExtraIncludeDirs)
 
 
 # **************************************************************************
@@ -312,33 +315,78 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
+@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_LIBADD = 
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_LIBADD = \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	actions/libactions.la base/libbase.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/GL/libglelements.la engines/libengines.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	errors/liberrors.la events/libevents.la fields/libfields.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fonts/libfonts.la glue/libglue.la io/libio.la misc/libmisc.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shapenodes/libshapenodes.la projectors/libprojectors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
+
 
 
 # **************************************************************************
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
-@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la base/libbase.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	elements/GL/libglelements.la engines/libengines.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	errors/liberrors.la events/libevents.la fields/libfields.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	fonts/libfonts.la glue/libglue.la io/libio.la misc/libmisc.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	shapenodes/libshapenodes.la projectors/libprojectors.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
-@HACKING_DYNAMIC_MODULES_FALSE@	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
-
+@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_LIBADD = 
 
 
 # **************************************************************************
 # Source code files for local build & dist.
-RegularSources = \
-	tidbits.cpp \
-	share/gl/CoinGLPerformance.cpp
+@MAC_FRAMEWORK_TRUE@RegularSources = \
+@MAC_FRAMEWORK_TRUE@	actions/all-actions-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	base/all-base-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	bundles/all-bundles-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	caches/all-caches-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	elements/all-elements-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	elements/GL/all-glelements-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	engines/all-engines-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	engines/all-engines-c.c \
+@MAC_FRAMEWORK_TRUE@	errors/all-errors-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	events/all-events-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	fields/all-fields-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	fonts/all-fonts-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	glue/all-glue-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	io/all-io-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	misc/all-misc-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	lists/all-lists-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	nodekits/all-nodekits-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	nodes/all-nodes-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	shapenodes/all-shapenodes-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	projectors/all-projectors-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	sensors/all-sensors-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	details/all-details-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	draggers/all-draggers-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	manips/all-manips-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	upgraders/all-upgraders-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	navigation/all-navigation-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	3ds/all-3ds-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	collision/all-collision-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	hardcopy/all-hardcopy-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	threads/all-threads-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	mpeg/all-mpeg-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	shaders/all-shaders-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	shadows/all-shadows-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	geo/all-geo-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	foreignfiles/all-foreignfiles-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	xml/all-xml-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	xml/expat/all-expat-c.c \
+@MAC_FRAMEWORK_TRUE@	profiler/all-profiler-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	vrml97/all-vrml97-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	scxml/all-scxml-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	tidbits.cpp \
+@MAC_FRAMEWORK_TRUE@	share/gl/CoinGLPerformance.cpp
+
+@MAC_FRAMEWORK_FALSE@RegularSources = \
+@MAC_FRAMEWORK_FALSE@	tidbits.cpp \
+@MAC_FRAMEWORK_FALSE@	share/gl/CoinGLPerformance.cpp
 
 
 PrivateHeaders = \
@@ -446,103 +494,300 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_FALSE@	xml/xml.lst xml/expat/expat.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	profiler/profiler.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	vrml97/vrml97.lst scxml/scxml.lst
-am__objects_1 = tidbits.$(OBJEXT) CoinGLPerformance.$(OBJEXT)
+am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
+	actions/all-actions-cpp.cpp base/all-base-cpp.cpp \
+	bundles/all-bundles-cpp.cpp caches/all-caches-cpp.cpp \
+	elements/all-elements-cpp.cpp \
+	elements/GL/all-glelements-cpp.cpp engines/all-engines-cpp.cpp \
+	engines/all-engines-c.c errors/all-errors-cpp.cpp \
+	events/all-events-cpp.cpp fields/all-fields-cpp.cpp \
+	fonts/all-fonts-cpp.cpp glue/all-glue-cpp.cpp io/all-io-cpp.cpp \
+	misc/all-misc-cpp.cpp lists/all-lists-cpp.cpp \
+	nodekits/all-nodekits-cpp.cpp nodes/all-nodes-cpp.cpp \
+	shapenodes/all-shapenodes-cpp.cpp \
+	projectors/all-projectors-cpp.cpp sensors/all-sensors-cpp.cpp \
+	details/all-details-cpp.cpp draggers/all-draggers-cpp.cpp \
+	manips/all-manips-cpp.cpp upgraders/all-upgraders-cpp.cpp \
+	navigation/all-navigation-cpp.cpp 3ds/all-3ds-cpp.cpp \
+	collision/all-collision-cpp.cpp hardcopy/all-hardcopy-cpp.cpp \
+	threads/all-threads-cpp.cpp mpeg/all-mpeg-cpp.cpp \
+	shaders/all-shaders-cpp.cpp shadows/all-shadows-cpp.cpp \
+	geo/all-geo-cpp.cpp foreignfiles/all-foreignfiles-cpp.cpp \
+	xml/all-xml-cpp.cpp xml/expat/all-expat-c.c \
+	profiler/all-profiler-cpp.cpp vrml97/all-vrml97-cpp.cpp \
+	scxml/all-scxml-cpp.cpp tidbits.cpp \
+	share/gl/CoinGLPerformance.cpp
+@MAC_FRAMEWORK_TRUE@am__objects_1 = all-actions-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-base-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-bundles-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-caches-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-elements-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-glelements-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-engines-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-engines-c.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-errors-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-events-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-fields-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-fonts-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-glue-cpp.$(OBJEXT) all-io-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-misc-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-lists-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-nodekits-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-nodes-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-shapenodes-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-projectors-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-sensors-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-details-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-draggers-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-manips-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-upgraders-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-navigation-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-3ds-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-collision-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-hardcopy-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-threads-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-mpeg-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-shaders-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-shadows-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-geo-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-foreignfiles-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-xml-cpp.$(OBJEXT) all-expat-c.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-profiler-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-scxml-cpp.$(OBJEXT) tidbits.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	CoinGLPerformance.$(OBJEXT)
+@MAC_FRAMEWORK_FALSE@am__objects_1 = tidbits.$(OBJEXT) \
+@MAC_FRAMEWORK_FALSE@	CoinGLPerformance.$(OBJEXT)
 am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = $(am__objects_1)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
 	$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	caches/libcaches.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	elements/libelements.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	elements/GL/libglelements.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	errors/liberrors.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	events/libevents.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	fonts/libfonts.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	glue/libglue.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	io/libio.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	misc/libmisc.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	lists/liblists.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	nodes/libnodes.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	shapenodes/libshapenodes.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	projectors/libprojectors.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	details/libdetails.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	upgraders/libupgraders.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	navigation/libnavigation.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	collision/libcollision.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	hardcopy/libhardcopy.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	mpeg/libmpeg.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	shaders/libshaders.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	geo/libgeo.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/expat/libexpat.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	profiler/libprofiler.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	vrml97/libvrml97.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	scxml/libscxml.la
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	caches/libcaches.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	elements/libelements.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	elements/GL/libglelements.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	errors/liberrors.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	events/libevents.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	fonts/libfonts.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	glue/libglue.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	io/libio.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	misc/libmisc.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	lists/liblists.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	nodes/libnodes.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	shapenodes/libshapenodes.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	projectors/libprojectors.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	details/libdetails.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	upgraders/libupgraders.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	navigation/libnavigation.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	3ds/libformat3ds.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	collision/libcollision.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	hardcopy/libhardcopy.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	mpeg/libmpeg.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	shaders/libshaders.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	shadows/libshadows.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	geo/libgeo.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	foreignfiles/libforeignfiles.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/libxml.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	xml/expat/libexpat.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	profiler/libprofiler.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	vrml97/libvrml97.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	scxml/libscxml.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
-am__objects_3 = tidbits.lo CoinGLPerformance.lo
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	actions/libactions.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	base/libbase.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	bundles/libbundles.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	caches/libcaches.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/libelements.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/GL/libglelements.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	engines/libengines.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	errors/liberrors.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	events/libevents.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fields/libfields.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fonts/libfonts.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	glue/libglue.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	io/libio.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	misc/libmisc.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodekits/libnodekits.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodes/libnodes.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shapenodes/libshapenodes.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	projectors/libprojectors.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	sensors/libsensors.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	details/libdetails.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	draggers/libdraggers.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	manips/libmanips.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	upgraders/libupgraders.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	navigation/libnavigation.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	3ds/libformat3ds.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	collision/libcollision.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	hardcopy/libhardcopy.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	mpeg/libmpeg.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	geo/libgeo.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	foreignfiles/libforeignfiles.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/libxml.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	profiler/libprofiler.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	scxml/libscxml.la
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	actions/libactions.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	base/libbase.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	bundles/libbundles.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	caches/libcaches.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/libelements.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/GL/libglelements.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	engines/libengines.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	errors/liberrors.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	events/libevents.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fields/libfields.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fonts/libfonts.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	glue/libglue.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	io/libio.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	misc/libmisc.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodekits/libnodekits.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodes/libnodes.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shapenodes/libshapenodes.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	projectors/libprojectors.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	sensors/libsensors.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	details/libdetails.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	draggers/libdraggers.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	manips/libmanips.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	upgraders/libupgraders.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	navigation/libnavigation.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	3ds/libformat3ds.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	collision/libcollision.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	hardcopy/libhardcopy.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	mpeg/libmpeg.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	geo/libgeo.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	foreignfiles/libforeignfiles.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/libxml.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	profiler/libprofiler.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	scxml/libscxml.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES =
+am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
+	base/all-base-cpp.cpp bundles/all-bundles-cpp.cpp \
+	caches/all-caches-cpp.cpp elements/all-elements-cpp.cpp \
+	elements/GL/all-glelements-cpp.cpp engines/all-engines-cpp.cpp \
+	engines/all-engines-c.c errors/all-errors-cpp.cpp \
+	events/all-events-cpp.cpp fields/all-fields-cpp.cpp \
+	fonts/all-fonts-cpp.cpp glue/all-glue-cpp.cpp io/all-io-cpp.cpp \
+	misc/all-misc-cpp.cpp lists/all-lists-cpp.cpp \
+	nodekits/all-nodekits-cpp.cpp nodes/all-nodes-cpp.cpp \
+	shapenodes/all-shapenodes-cpp.cpp \
+	projectors/all-projectors-cpp.cpp sensors/all-sensors-cpp.cpp \
+	details/all-details-cpp.cpp draggers/all-draggers-cpp.cpp \
+	manips/all-manips-cpp.cpp upgraders/all-upgraders-cpp.cpp \
+	navigation/all-navigation-cpp.cpp 3ds/all-3ds-cpp.cpp \
+	collision/all-collision-cpp.cpp hardcopy/all-hardcopy-cpp.cpp \
+	threads/all-threads-cpp.cpp mpeg/all-mpeg-cpp.cpp \
+	shaders/all-shaders-cpp.cpp shadows/all-shadows-cpp.cpp \
+	geo/all-geo-cpp.cpp foreignfiles/all-foreignfiles-cpp.cpp \
+	xml/all-xml-cpp.cpp xml/expat/all-expat-c.c \
+	profiler/all-profiler-cpp.cpp vrml97/all-vrml97-cpp.cpp \
+	scxml/all-scxml-cpp.cpp tidbits.cpp \
+	share/gl/CoinGLPerformance.cpp
+@MAC_FRAMEWORK_TRUE@am__objects_3 = all-actions-cpp.lo all-base-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-bundles-cpp.lo all-caches-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-elements-cpp.lo all-glelements-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-engines-cpp.lo all-engines-c.lo \
+@MAC_FRAMEWORK_TRUE@	all-errors-cpp.lo all-events-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-fields-cpp.lo all-fonts-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-glue-cpp.lo all-io-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-misc-cpp.lo all-lists-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-nodekits-cpp.lo all-nodes-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-shapenodes-cpp.lo all-projectors-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-sensors-cpp.lo all-details-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-draggers-cpp.lo all-manips-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-upgraders-cpp.lo all-navigation-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-3ds-cpp.lo all-collision-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-hardcopy-cpp.lo all-threads-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-mpeg-cpp.lo all-shaders-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-shadows-cpp.lo all-geo-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-foreignfiles-cpp.lo all-xml-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-expat-c.lo all-profiler-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.lo all-scxml-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	tidbits.lo CoinGLPerformance.lo
+@MAC_FRAMEWORK_FALSE@am__objects_3 = tidbits.lo CoinGLPerformance.lo
 am_libCoin@SUFFIX@_la_OBJECTS = $(am__objects_3)
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/CoinGLPerformance.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/CoinGLPerformance.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/tidbits.Plo ./$(DEPDIR)/tidbits.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-3ds-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-3ds-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-actions-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-actions-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-base-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-base-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-bundles-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-bundles-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-collision-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-collision-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-details-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-details-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-draggers-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-draggers-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-elements-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-elements-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-engines-c.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-engines-c.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-engines-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-engines-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-errors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-errors-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-events-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-events-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-expat-c.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-expat-c.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-fields-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-fields-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-fonts-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-fonts-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-geo-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-geo-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glelements-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glelements-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glue-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glue-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-lists-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-lists-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-mpeg-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-mpeg-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodekits-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodekits-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodes-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodes-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-profiler-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-profiler-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shaders-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shaders-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shapenodes-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shapenodes-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-threads-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-threads-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-vrml97-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-vrml97-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Po ./$(DEPDIR)/tidbits.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/tidbits.Po
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -551,16 +796,9 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
+DIST_SOURCES = $(am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST) \
 	$(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
-	$(libCoin@SUFFIX@_la_SOURCES) \
+	$(am__libCoin@SUFFIX@_la_SOURCES_DIST) \
 	$(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 HEADERS = $(noinst_HEADERS)
 
@@ -572,14 +810,18 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	check-recursive installcheck-recursive
 DIST_COMMON = $(noinst_HEADERS) Makefile.am Makefile.in config.h.in \
 	discard.h.in setup.h.in
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = extensions xml actions base bundles caches details \
+	draggers elements engines errors events fields fonts glue io \
+	manips misc lists nodekits navigation nodes shapenodes \
+	projectors sensors upgraders 3ds collision hardcopy shadows geo \
+	threads mpeg shaders profiler vrml97 foreignfiles scxml doc .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: discard.h config.h setup.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .cpp .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/Makefile
@@ -699,11 +941,190 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinGLPerformance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinGLPerformance.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-3ds-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-3ds-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-actions-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-actions-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-bundles-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-bundles-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-collision-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-collision-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-details-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-details-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-draggers-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-draggers-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-elements-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-elements-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-engines-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-engines-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-engines-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-engines-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-errors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-errors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-events-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-events-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-expat-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-expat-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fields-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fields-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fonts-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fonts-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-geo-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-geo-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glelements-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glelements-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-lists-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-lists-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-mpeg-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-mpeg-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodekits-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodekits-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodes-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodes-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-profiler-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-profiler-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shaders-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shaders-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shapenodes-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shapenodes-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-threads-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-threads-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-vrml97-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-vrml97-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tidbits.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tidbits.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
+
+.c.o:
+@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
+
+.c.obj:
+@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
+
+.c.lo:
+@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+all-engines-c.o: engines/all-engines-c.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT all-engines-c.o -MD -MP -MF "$(DEPDIR)/all-engines-c.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o all-engines-c.o `test -f 'engines/all-engines-c.c' || echo '$(srcdir)/'`engines/all-engines-c.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/all-engines-c.Tpo" "$(DEPDIR)/all-engines-c.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/all-engines-c.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='engines/all-engines-c.c' object='all-engines-c.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/all-engines-c.Po' tmpdepfile='$(DEPDIR)/all-engines-c.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o all-engines-c.o `test -f 'engines/all-engines-c.c' || echo '$(srcdir)/'`engines/all-engines-c.c
+
+all-engines-c.obj: engines/all-engines-c.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT all-engines-c.obj -MD -MP -MF "$(DEPDIR)/all-engines-c.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o all-engines-c.obj `if test -f 'engines/all-engines-c.c'; then $(CYGPATH_W) 'engines/all-engines-c.c'; else $(CYGPATH_W) '$(srcdir)/engines/all-engines-c.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/all-engines-c.Tpo" "$(DEPDIR)/all-engines-c.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/all-engines-c.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='engines/all-engines-c.c' object='all-engines-c.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/all-engines-c.Po' tmpdepfile='$(DEPDIR)/all-engines-c.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o all-engines-c.obj `if test -f 'engines/all-engines-c.c'; then $(CYGPATH_W) 'engines/all-engines-c.c'; else $(CYGPATH_W) '$(srcdir)/engines/all-engines-c.c'; fi`
+
+all-engines-c.lo: engines/all-engines-c.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT all-engines-c.lo -MD -MP -MF "$(DEPDIR)/all-engines-c.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o all-engines-c.lo `test -f 'engines/all-engines-c.c' || echo '$(srcdir)/'`engines/all-engines-c.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/all-engines-c.Tpo" "$(DEPDIR)/all-engines-c.Plo"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/all-engines-c.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='engines/all-engines-c.c' object='all-engines-c.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/all-engines-c.Plo' tmpdepfile='$(DEPDIR)/all-engines-c.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o all-engines-c.lo `test -f 'engines/all-engines-c.c' || echo '$(srcdir)/'`engines/all-engines-c.c
+
+all-expat-c.o: xml/expat/all-expat-c.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT all-expat-c.o -MD -MP -MF "$(DEPDIR)/all-expat-c.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o all-expat-c.o `test -f 'xml/expat/all-expat-c.c' || echo '$(srcdir)/'`xml/expat/all-expat-c.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/all-expat-c.Tpo" "$(DEPDIR)/all-expat-c.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/all-expat-c.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='xml/expat/all-expat-c.c' object='all-expat-c.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/all-expat-c.Po' tmpdepfile='$(DEPDIR)/all-expat-c.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o all-expat-c.o `test -f 'xml/expat/all-expat-c.c' || echo '$(srcdir)/'`xml/expat/all-expat-c.c
+
+all-expat-c.obj: xml/expat/all-expat-c.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT all-expat-c.obj -MD -MP -MF "$(DEPDIR)/all-expat-c.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o all-expat-c.obj `if test -f 'xml/expat/all-expat-c.c'; then $(CYGPATH_W) 'xml/expat/all-expat-c.c'; else $(CYGPATH_W) '$(srcdir)/xml/expat/all-expat-c.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/all-expat-c.Tpo" "$(DEPDIR)/all-expat-c.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/all-expat-c.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='xml/expat/all-expat-c.c' object='all-expat-c.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/all-expat-c.Po' tmpdepfile='$(DEPDIR)/all-expat-c.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o all-expat-c.obj `if test -f 'xml/expat/all-expat-c.c'; then $(CYGPATH_W) 'xml/expat/all-expat-c.c'; else $(CYGPATH_W) '$(srcdir)/xml/expat/all-expat-c.c'; fi`
+
+all-expat-c.lo: xml/expat/all-expat-c.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT all-expat-c.lo -MD -MP -MF "$(DEPDIR)/all-expat-c.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o all-expat-c.lo `test -f 'xml/expat/all-expat-c.c' || echo '$(srcdir)/'`xml/expat/all-expat-c.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/all-expat-c.Tpo" "$(DEPDIR)/all-expat-c.Plo"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/all-expat-c.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='xml/expat/all-expat-c.c' object='all-expat-c.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/all-expat-c.Plo' tmpdepfile='$(DEPDIR)/all-expat-c.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o all-expat-c.lo `test -f 'xml/expat/all-expat-c.c' || echo '$(srcdir)/'`xml/expat/all-expat-c.c
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
@@ -737,6 +1158,1260 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+all-actions-cpp.o: actions/all-actions-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-actions-cpp.o -MD -MP -MF "$(DEPDIR)/all-actions-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-actions-cpp.o `test -f 'actions/all-actions-cpp.cpp' || echo '$(srcdir)/'`actions/all-actions-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-actions-cpp.Tpo" "$(DEPDIR)/all-actions-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-actions-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='actions/all-actions-cpp.cpp' object='all-actions-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-actions-cpp.Po' tmpdepfile='$(DEPDIR)/all-actions-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-actions-cpp.o `test -f 'actions/all-actions-cpp.cpp' || echo '$(srcdir)/'`actions/all-actions-cpp.cpp
+
+all-actions-cpp.obj: actions/all-actions-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-actions-cpp.obj -MD -MP -MF "$(DEPDIR)/all-actions-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-actions-cpp.obj `if test -f 'actions/all-actions-cpp.cpp'; then $(CYGPATH_W) 'actions/all-actions-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/actions/all-actions-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-actions-cpp.Tpo" "$(DEPDIR)/all-actions-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-actions-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='actions/all-actions-cpp.cpp' object='all-actions-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-actions-cpp.Po' tmpdepfile='$(DEPDIR)/all-actions-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-actions-cpp.obj `if test -f 'actions/all-actions-cpp.cpp'; then $(CYGPATH_W) 'actions/all-actions-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/actions/all-actions-cpp.cpp'; fi`
+
+all-actions-cpp.lo: actions/all-actions-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-actions-cpp.lo -MD -MP -MF "$(DEPDIR)/all-actions-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-actions-cpp.lo `test -f 'actions/all-actions-cpp.cpp' || echo '$(srcdir)/'`actions/all-actions-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-actions-cpp.Tpo" "$(DEPDIR)/all-actions-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-actions-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='actions/all-actions-cpp.cpp' object='all-actions-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-actions-cpp.Plo' tmpdepfile='$(DEPDIR)/all-actions-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-actions-cpp.lo `test -f 'actions/all-actions-cpp.cpp' || echo '$(srcdir)/'`actions/all-actions-cpp.cpp
+
+all-base-cpp.o: base/all-base-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-base-cpp.o -MD -MP -MF "$(DEPDIR)/all-base-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-base-cpp.o `test -f 'base/all-base-cpp.cpp' || echo '$(srcdir)/'`base/all-base-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-base-cpp.Tpo" "$(DEPDIR)/all-base-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-base-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='base/all-base-cpp.cpp' object='all-base-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-base-cpp.Po' tmpdepfile='$(DEPDIR)/all-base-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-base-cpp.o `test -f 'base/all-base-cpp.cpp' || echo '$(srcdir)/'`base/all-base-cpp.cpp
+
+all-base-cpp.obj: base/all-base-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-base-cpp.obj -MD -MP -MF "$(DEPDIR)/all-base-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-base-cpp.obj `if test -f 'base/all-base-cpp.cpp'; then $(CYGPATH_W) 'base/all-base-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/base/all-base-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-base-cpp.Tpo" "$(DEPDIR)/all-base-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-base-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='base/all-base-cpp.cpp' object='all-base-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-base-cpp.Po' tmpdepfile='$(DEPDIR)/all-base-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-base-cpp.obj `if test -f 'base/all-base-cpp.cpp'; then $(CYGPATH_W) 'base/all-base-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/base/all-base-cpp.cpp'; fi`
+
+all-base-cpp.lo: base/all-base-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-base-cpp.lo -MD -MP -MF "$(DEPDIR)/all-base-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-base-cpp.lo `test -f 'base/all-base-cpp.cpp' || echo '$(srcdir)/'`base/all-base-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-base-cpp.Tpo" "$(DEPDIR)/all-base-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-base-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='base/all-base-cpp.cpp' object='all-base-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-base-cpp.Plo' tmpdepfile='$(DEPDIR)/all-base-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-base-cpp.lo `test -f 'base/all-base-cpp.cpp' || echo '$(srcdir)/'`base/all-base-cpp.cpp
+
+all-bundles-cpp.o: bundles/all-bundles-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-bundles-cpp.o -MD -MP -MF "$(DEPDIR)/all-bundles-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-bundles-cpp.o `test -f 'bundles/all-bundles-cpp.cpp' || echo '$(srcdir)/'`bundles/all-bundles-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-bundles-cpp.Tpo" "$(DEPDIR)/all-bundles-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-bundles-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='bundles/all-bundles-cpp.cpp' object='all-bundles-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-bundles-cpp.Po' tmpdepfile='$(DEPDIR)/all-bundles-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-bundles-cpp.o `test -f 'bundles/all-bundles-cpp.cpp' || echo '$(srcdir)/'`bundles/all-bundles-cpp.cpp
+
+all-bundles-cpp.obj: bundles/all-bundles-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-bundles-cpp.obj -MD -MP -MF "$(DEPDIR)/all-bundles-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-bundles-cpp.obj `if test -f 'bundles/all-bundles-cpp.cpp'; then $(CYGPATH_W) 'bundles/all-bundles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/bundles/all-bundles-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-bundles-cpp.Tpo" "$(DEPDIR)/all-bundles-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-bundles-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='bundles/all-bundles-cpp.cpp' object='all-bundles-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-bundles-cpp.Po' tmpdepfile='$(DEPDIR)/all-bundles-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-bundles-cpp.obj `if test -f 'bundles/all-bundles-cpp.cpp'; then $(CYGPATH_W) 'bundles/all-bundles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/bundles/all-bundles-cpp.cpp'; fi`
+
+all-bundles-cpp.lo: bundles/all-bundles-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-bundles-cpp.lo -MD -MP -MF "$(DEPDIR)/all-bundles-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-bundles-cpp.lo `test -f 'bundles/all-bundles-cpp.cpp' || echo '$(srcdir)/'`bundles/all-bundles-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-bundles-cpp.Tpo" "$(DEPDIR)/all-bundles-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-bundles-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='bundles/all-bundles-cpp.cpp' object='all-bundles-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-bundles-cpp.Plo' tmpdepfile='$(DEPDIR)/all-bundles-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-bundles-cpp.lo `test -f 'bundles/all-bundles-cpp.cpp' || echo '$(srcdir)/'`bundles/all-bundles-cpp.cpp
+
+all-caches-cpp.o: caches/all-caches-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-caches-cpp.o -MD -MP -MF "$(DEPDIR)/all-caches-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-caches-cpp.o `test -f 'caches/all-caches-cpp.cpp' || echo '$(srcdir)/'`caches/all-caches-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-caches-cpp.Tpo" "$(DEPDIR)/all-caches-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-caches-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='caches/all-caches-cpp.cpp' object='all-caches-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-caches-cpp.Po' tmpdepfile='$(DEPDIR)/all-caches-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-caches-cpp.o `test -f 'caches/all-caches-cpp.cpp' || echo '$(srcdir)/'`caches/all-caches-cpp.cpp
+
+all-caches-cpp.obj: caches/all-caches-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-caches-cpp.obj -MD -MP -MF "$(DEPDIR)/all-caches-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-caches-cpp.obj `if test -f 'caches/all-caches-cpp.cpp'; then $(CYGPATH_W) 'caches/all-caches-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/caches/all-caches-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-caches-cpp.Tpo" "$(DEPDIR)/all-caches-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-caches-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='caches/all-caches-cpp.cpp' object='all-caches-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-caches-cpp.Po' tmpdepfile='$(DEPDIR)/all-caches-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-caches-cpp.obj `if test -f 'caches/all-caches-cpp.cpp'; then $(CYGPATH_W) 'caches/all-caches-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/caches/all-caches-cpp.cpp'; fi`
+
+all-caches-cpp.lo: caches/all-caches-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-caches-cpp.lo -MD -MP -MF "$(DEPDIR)/all-caches-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-caches-cpp.lo `test -f 'caches/all-caches-cpp.cpp' || echo '$(srcdir)/'`caches/all-caches-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-caches-cpp.Tpo" "$(DEPDIR)/all-caches-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-caches-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='caches/all-caches-cpp.cpp' object='all-caches-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-caches-cpp.Plo' tmpdepfile='$(DEPDIR)/all-caches-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-caches-cpp.lo `test -f 'caches/all-caches-cpp.cpp' || echo '$(srcdir)/'`caches/all-caches-cpp.cpp
+
+all-elements-cpp.o: elements/all-elements-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-elements-cpp.o -MD -MP -MF "$(DEPDIR)/all-elements-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-elements-cpp.o `test -f 'elements/all-elements-cpp.cpp' || echo '$(srcdir)/'`elements/all-elements-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-elements-cpp.Tpo" "$(DEPDIR)/all-elements-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-elements-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='elements/all-elements-cpp.cpp' object='all-elements-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-elements-cpp.Po' tmpdepfile='$(DEPDIR)/all-elements-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-elements-cpp.o `test -f 'elements/all-elements-cpp.cpp' || echo '$(srcdir)/'`elements/all-elements-cpp.cpp
+
+all-elements-cpp.obj: elements/all-elements-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-elements-cpp.obj -MD -MP -MF "$(DEPDIR)/all-elements-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-elements-cpp.obj `if test -f 'elements/all-elements-cpp.cpp'; then $(CYGPATH_W) 'elements/all-elements-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/elements/all-elements-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-elements-cpp.Tpo" "$(DEPDIR)/all-elements-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-elements-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='elements/all-elements-cpp.cpp' object='all-elements-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-elements-cpp.Po' tmpdepfile='$(DEPDIR)/all-elements-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-elements-cpp.obj `if test -f 'elements/all-elements-cpp.cpp'; then $(CYGPATH_W) 'elements/all-elements-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/elements/all-elements-cpp.cpp'; fi`
+
+all-elements-cpp.lo: elements/all-elements-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-elements-cpp.lo -MD -MP -MF "$(DEPDIR)/all-elements-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-elements-cpp.lo `test -f 'elements/all-elements-cpp.cpp' || echo '$(srcdir)/'`elements/all-elements-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-elements-cpp.Tpo" "$(DEPDIR)/all-elements-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-elements-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='elements/all-elements-cpp.cpp' object='all-elements-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-elements-cpp.Plo' tmpdepfile='$(DEPDIR)/all-elements-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-elements-cpp.lo `test -f 'elements/all-elements-cpp.cpp' || echo '$(srcdir)/'`elements/all-elements-cpp.cpp
+
+all-glelements-cpp.o: elements/GL/all-glelements-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-glelements-cpp.o -MD -MP -MF "$(DEPDIR)/all-glelements-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-glelements-cpp.o `test -f 'elements/GL/all-glelements-cpp.cpp' || echo '$(srcdir)/'`elements/GL/all-glelements-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-glelements-cpp.Tpo" "$(DEPDIR)/all-glelements-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-glelements-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='elements/GL/all-glelements-cpp.cpp' object='all-glelements-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-glelements-cpp.Po' tmpdepfile='$(DEPDIR)/all-glelements-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-glelements-cpp.o `test -f 'elements/GL/all-glelements-cpp.cpp' || echo '$(srcdir)/'`elements/GL/all-glelements-cpp.cpp
+
+all-glelements-cpp.obj: elements/GL/all-glelements-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-glelements-cpp.obj -MD -MP -MF "$(DEPDIR)/all-glelements-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-glelements-cpp.obj `if test -f 'elements/GL/all-glelements-cpp.cpp'; then $(CYGPATH_W) 'elements/GL/all-glelements-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/elements/GL/all-glelements-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-glelements-cpp.Tpo" "$(DEPDIR)/all-glelements-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-glelements-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='elements/GL/all-glelements-cpp.cpp' object='all-glelements-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-glelements-cpp.Po' tmpdepfile='$(DEPDIR)/all-glelements-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-glelements-cpp.obj `if test -f 'elements/GL/all-glelements-cpp.cpp'; then $(CYGPATH_W) 'elements/GL/all-glelements-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/elements/GL/all-glelements-cpp.cpp'; fi`
+
+all-glelements-cpp.lo: elements/GL/all-glelements-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-glelements-cpp.lo -MD -MP -MF "$(DEPDIR)/all-glelements-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-glelements-cpp.lo `test -f 'elements/GL/all-glelements-cpp.cpp' || echo '$(srcdir)/'`elements/GL/all-glelements-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-glelements-cpp.Tpo" "$(DEPDIR)/all-glelements-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-glelements-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='elements/GL/all-glelements-cpp.cpp' object='all-glelements-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-glelements-cpp.Plo' tmpdepfile='$(DEPDIR)/all-glelements-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-glelements-cpp.lo `test -f 'elements/GL/all-glelements-cpp.cpp' || echo '$(srcdir)/'`elements/GL/all-glelements-cpp.cpp
+
+all-engines-cpp.o: engines/all-engines-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-engines-cpp.o -MD -MP -MF "$(DEPDIR)/all-engines-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-engines-cpp.o `test -f 'engines/all-engines-cpp.cpp' || echo '$(srcdir)/'`engines/all-engines-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-engines-cpp.Tpo" "$(DEPDIR)/all-engines-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-engines-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='engines/all-engines-cpp.cpp' object='all-engines-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-engines-cpp.Po' tmpdepfile='$(DEPDIR)/all-engines-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-engines-cpp.o `test -f 'engines/all-engines-cpp.cpp' || echo '$(srcdir)/'`engines/all-engines-cpp.cpp
+
+all-engines-cpp.obj: engines/all-engines-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-engines-cpp.obj -MD -MP -MF "$(DEPDIR)/all-engines-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-engines-cpp.obj `if test -f 'engines/all-engines-cpp.cpp'; then $(CYGPATH_W) 'engines/all-engines-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/engines/all-engines-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-engines-cpp.Tpo" "$(DEPDIR)/all-engines-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-engines-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='engines/all-engines-cpp.cpp' object='all-engines-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-engines-cpp.Po' tmpdepfile='$(DEPDIR)/all-engines-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-engines-cpp.obj `if test -f 'engines/all-engines-cpp.cpp'; then $(CYGPATH_W) 'engines/all-engines-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/engines/all-engines-cpp.cpp'; fi`
+
+all-engines-cpp.lo: engines/all-engines-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-engines-cpp.lo -MD -MP -MF "$(DEPDIR)/all-engines-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-engines-cpp.lo `test -f 'engines/all-engines-cpp.cpp' || echo '$(srcdir)/'`engines/all-engines-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-engines-cpp.Tpo" "$(DEPDIR)/all-engines-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-engines-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='engines/all-engines-cpp.cpp' object='all-engines-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-engines-cpp.Plo' tmpdepfile='$(DEPDIR)/all-engines-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-engines-cpp.lo `test -f 'engines/all-engines-cpp.cpp' || echo '$(srcdir)/'`engines/all-engines-cpp.cpp
+
+all-errors-cpp.o: errors/all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-errors-cpp.o -MD -MP -MF "$(DEPDIR)/all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-errors-cpp.o `test -f 'errors/all-errors-cpp.cpp' || echo '$(srcdir)/'`errors/all-errors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-errors-cpp.Tpo" "$(DEPDIR)/all-errors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='errors/all-errors-cpp.cpp' object='all-errors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-errors-cpp.Po' tmpdepfile='$(DEPDIR)/all-errors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-errors-cpp.o `test -f 'errors/all-errors-cpp.cpp' || echo '$(srcdir)/'`errors/all-errors-cpp.cpp
+
+all-errors-cpp.obj: errors/all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-errors-cpp.obj -MD -MP -MF "$(DEPDIR)/all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-errors-cpp.obj `if test -f 'errors/all-errors-cpp.cpp'; then $(CYGPATH_W) 'errors/all-errors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/errors/all-errors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-errors-cpp.Tpo" "$(DEPDIR)/all-errors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='errors/all-errors-cpp.cpp' object='all-errors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-errors-cpp.Po' tmpdepfile='$(DEPDIR)/all-errors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-errors-cpp.obj `if test -f 'errors/all-errors-cpp.cpp'; then $(CYGPATH_W) 'errors/all-errors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/errors/all-errors-cpp.cpp'; fi`
+
+all-errors-cpp.lo: errors/all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-errors-cpp.lo -MD -MP -MF "$(DEPDIR)/all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-errors-cpp.lo `test -f 'errors/all-errors-cpp.cpp' || echo '$(srcdir)/'`errors/all-errors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-errors-cpp.Tpo" "$(DEPDIR)/all-errors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='errors/all-errors-cpp.cpp' object='all-errors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-errors-cpp.Plo' tmpdepfile='$(DEPDIR)/all-errors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-errors-cpp.lo `test -f 'errors/all-errors-cpp.cpp' || echo '$(srcdir)/'`errors/all-errors-cpp.cpp
+
+all-events-cpp.o: events/all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-events-cpp.o -MD -MP -MF "$(DEPDIR)/all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-events-cpp.o `test -f 'events/all-events-cpp.cpp' || echo '$(srcdir)/'`events/all-events-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-events-cpp.Tpo" "$(DEPDIR)/all-events-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='events/all-events-cpp.cpp' object='all-events-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-events-cpp.Po' tmpdepfile='$(DEPDIR)/all-events-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-events-cpp.o `test -f 'events/all-events-cpp.cpp' || echo '$(srcdir)/'`events/all-events-cpp.cpp
+
+all-events-cpp.obj: events/all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-events-cpp.obj -MD -MP -MF "$(DEPDIR)/all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-events-cpp.obj `if test -f 'events/all-events-cpp.cpp'; then $(CYGPATH_W) 'events/all-events-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/events/all-events-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-events-cpp.Tpo" "$(DEPDIR)/all-events-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='events/all-events-cpp.cpp' object='all-events-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-events-cpp.Po' tmpdepfile='$(DEPDIR)/all-events-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-events-cpp.obj `if test -f 'events/all-events-cpp.cpp'; then $(CYGPATH_W) 'events/all-events-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/events/all-events-cpp.cpp'; fi`
+
+all-events-cpp.lo: events/all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-events-cpp.lo -MD -MP -MF "$(DEPDIR)/all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-events-cpp.lo `test -f 'events/all-events-cpp.cpp' || echo '$(srcdir)/'`events/all-events-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-events-cpp.Tpo" "$(DEPDIR)/all-events-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='events/all-events-cpp.cpp' object='all-events-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-events-cpp.Plo' tmpdepfile='$(DEPDIR)/all-events-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-events-cpp.lo `test -f 'events/all-events-cpp.cpp' || echo '$(srcdir)/'`events/all-events-cpp.cpp
+
+all-fields-cpp.o: fields/all-fields-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-fields-cpp.o -MD -MP -MF "$(DEPDIR)/all-fields-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-fields-cpp.o `test -f 'fields/all-fields-cpp.cpp' || echo '$(srcdir)/'`fields/all-fields-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-fields-cpp.Tpo" "$(DEPDIR)/all-fields-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-fields-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fields/all-fields-cpp.cpp' object='all-fields-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-fields-cpp.Po' tmpdepfile='$(DEPDIR)/all-fields-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-fields-cpp.o `test -f 'fields/all-fields-cpp.cpp' || echo '$(srcdir)/'`fields/all-fields-cpp.cpp
+
+all-fields-cpp.obj: fields/all-fields-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-fields-cpp.obj -MD -MP -MF "$(DEPDIR)/all-fields-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-fields-cpp.obj `if test -f 'fields/all-fields-cpp.cpp'; then $(CYGPATH_W) 'fields/all-fields-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/fields/all-fields-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-fields-cpp.Tpo" "$(DEPDIR)/all-fields-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-fields-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fields/all-fields-cpp.cpp' object='all-fields-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-fields-cpp.Po' tmpdepfile='$(DEPDIR)/all-fields-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-fields-cpp.obj `if test -f 'fields/all-fields-cpp.cpp'; then $(CYGPATH_W) 'fields/all-fields-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/fields/all-fields-cpp.cpp'; fi`
+
+all-fields-cpp.lo: fields/all-fields-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-fields-cpp.lo -MD -MP -MF "$(DEPDIR)/all-fields-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-fields-cpp.lo `test -f 'fields/all-fields-cpp.cpp' || echo '$(srcdir)/'`fields/all-fields-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-fields-cpp.Tpo" "$(DEPDIR)/all-fields-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-fields-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fields/all-fields-cpp.cpp' object='all-fields-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-fields-cpp.Plo' tmpdepfile='$(DEPDIR)/all-fields-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-fields-cpp.lo `test -f 'fields/all-fields-cpp.cpp' || echo '$(srcdir)/'`fields/all-fields-cpp.cpp
+
+all-fonts-cpp.o: fonts/all-fonts-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-fonts-cpp.o -MD -MP -MF "$(DEPDIR)/all-fonts-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-fonts-cpp.o `test -f 'fonts/all-fonts-cpp.cpp' || echo '$(srcdir)/'`fonts/all-fonts-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-fonts-cpp.Tpo" "$(DEPDIR)/all-fonts-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-fonts-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fonts/all-fonts-cpp.cpp' object='all-fonts-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-fonts-cpp.Po' tmpdepfile='$(DEPDIR)/all-fonts-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-fonts-cpp.o `test -f 'fonts/all-fonts-cpp.cpp' || echo '$(srcdir)/'`fonts/all-fonts-cpp.cpp
+
+all-fonts-cpp.obj: fonts/all-fonts-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-fonts-cpp.obj -MD -MP -MF "$(DEPDIR)/all-fonts-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-fonts-cpp.obj `if test -f 'fonts/all-fonts-cpp.cpp'; then $(CYGPATH_W) 'fonts/all-fonts-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/fonts/all-fonts-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-fonts-cpp.Tpo" "$(DEPDIR)/all-fonts-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-fonts-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fonts/all-fonts-cpp.cpp' object='all-fonts-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-fonts-cpp.Po' tmpdepfile='$(DEPDIR)/all-fonts-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-fonts-cpp.obj `if test -f 'fonts/all-fonts-cpp.cpp'; then $(CYGPATH_W) 'fonts/all-fonts-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/fonts/all-fonts-cpp.cpp'; fi`
+
+all-fonts-cpp.lo: fonts/all-fonts-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-fonts-cpp.lo -MD -MP -MF "$(DEPDIR)/all-fonts-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-fonts-cpp.lo `test -f 'fonts/all-fonts-cpp.cpp' || echo '$(srcdir)/'`fonts/all-fonts-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-fonts-cpp.Tpo" "$(DEPDIR)/all-fonts-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-fonts-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fonts/all-fonts-cpp.cpp' object='all-fonts-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-fonts-cpp.Plo' tmpdepfile='$(DEPDIR)/all-fonts-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-fonts-cpp.lo `test -f 'fonts/all-fonts-cpp.cpp' || echo '$(srcdir)/'`fonts/all-fonts-cpp.cpp
+
+all-glue-cpp.o: glue/all-glue-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-glue-cpp.o -MD -MP -MF "$(DEPDIR)/all-glue-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-glue-cpp.o `test -f 'glue/all-glue-cpp.cpp' || echo '$(srcdir)/'`glue/all-glue-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-glue-cpp.Tpo" "$(DEPDIR)/all-glue-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-glue-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glue/all-glue-cpp.cpp' object='all-glue-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-glue-cpp.Po' tmpdepfile='$(DEPDIR)/all-glue-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-glue-cpp.o `test -f 'glue/all-glue-cpp.cpp' || echo '$(srcdir)/'`glue/all-glue-cpp.cpp
+
+all-glue-cpp.obj: glue/all-glue-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-glue-cpp.obj -MD -MP -MF "$(DEPDIR)/all-glue-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-glue-cpp.obj `if test -f 'glue/all-glue-cpp.cpp'; then $(CYGPATH_W) 'glue/all-glue-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/glue/all-glue-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-glue-cpp.Tpo" "$(DEPDIR)/all-glue-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-glue-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glue/all-glue-cpp.cpp' object='all-glue-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-glue-cpp.Po' tmpdepfile='$(DEPDIR)/all-glue-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-glue-cpp.obj `if test -f 'glue/all-glue-cpp.cpp'; then $(CYGPATH_W) 'glue/all-glue-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/glue/all-glue-cpp.cpp'; fi`
+
+all-glue-cpp.lo: glue/all-glue-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-glue-cpp.lo -MD -MP -MF "$(DEPDIR)/all-glue-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-glue-cpp.lo `test -f 'glue/all-glue-cpp.cpp' || echo '$(srcdir)/'`glue/all-glue-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-glue-cpp.Tpo" "$(DEPDIR)/all-glue-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-glue-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glue/all-glue-cpp.cpp' object='all-glue-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-glue-cpp.Plo' tmpdepfile='$(DEPDIR)/all-glue-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-glue-cpp.lo `test -f 'glue/all-glue-cpp.cpp' || echo '$(srcdir)/'`glue/all-glue-cpp.cpp
+
+all-io-cpp.o: io/all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-io-cpp.o -MD -MP -MF "$(DEPDIR)/all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-io-cpp.o `test -f 'io/all-io-cpp.cpp' || echo '$(srcdir)/'`io/all-io-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-io-cpp.Tpo" "$(DEPDIR)/all-io-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='io/all-io-cpp.cpp' object='all-io-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-io-cpp.Po' tmpdepfile='$(DEPDIR)/all-io-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-io-cpp.o `test -f 'io/all-io-cpp.cpp' || echo '$(srcdir)/'`io/all-io-cpp.cpp
+
+all-io-cpp.obj: io/all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-io-cpp.obj -MD -MP -MF "$(DEPDIR)/all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-io-cpp.obj `if test -f 'io/all-io-cpp.cpp'; then $(CYGPATH_W) 'io/all-io-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/io/all-io-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-io-cpp.Tpo" "$(DEPDIR)/all-io-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='io/all-io-cpp.cpp' object='all-io-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-io-cpp.Po' tmpdepfile='$(DEPDIR)/all-io-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-io-cpp.obj `if test -f 'io/all-io-cpp.cpp'; then $(CYGPATH_W) 'io/all-io-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/io/all-io-cpp.cpp'; fi`
+
+all-io-cpp.lo: io/all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-io-cpp.lo -MD -MP -MF "$(DEPDIR)/all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-io-cpp.lo `test -f 'io/all-io-cpp.cpp' || echo '$(srcdir)/'`io/all-io-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-io-cpp.Tpo" "$(DEPDIR)/all-io-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='io/all-io-cpp.cpp' object='all-io-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-io-cpp.Plo' tmpdepfile='$(DEPDIR)/all-io-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-io-cpp.lo `test -f 'io/all-io-cpp.cpp' || echo '$(srcdir)/'`io/all-io-cpp.cpp
+
+all-misc-cpp.o: misc/all-misc-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-misc-cpp.o -MD -MP -MF "$(DEPDIR)/all-misc-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-misc-cpp.o `test -f 'misc/all-misc-cpp.cpp' || echo '$(srcdir)/'`misc/all-misc-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-misc-cpp.Tpo" "$(DEPDIR)/all-misc-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-misc-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='misc/all-misc-cpp.cpp' object='all-misc-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-misc-cpp.Po' tmpdepfile='$(DEPDIR)/all-misc-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-misc-cpp.o `test -f 'misc/all-misc-cpp.cpp' || echo '$(srcdir)/'`misc/all-misc-cpp.cpp
+
+all-misc-cpp.obj: misc/all-misc-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-misc-cpp.obj -MD -MP -MF "$(DEPDIR)/all-misc-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-misc-cpp.obj `if test -f 'misc/all-misc-cpp.cpp'; then $(CYGPATH_W) 'misc/all-misc-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/misc/all-misc-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-misc-cpp.Tpo" "$(DEPDIR)/all-misc-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-misc-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='misc/all-misc-cpp.cpp' object='all-misc-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-misc-cpp.Po' tmpdepfile='$(DEPDIR)/all-misc-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-misc-cpp.obj `if test -f 'misc/all-misc-cpp.cpp'; then $(CYGPATH_W) 'misc/all-misc-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/misc/all-misc-cpp.cpp'; fi`
+
+all-misc-cpp.lo: misc/all-misc-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-misc-cpp.lo -MD -MP -MF "$(DEPDIR)/all-misc-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-misc-cpp.lo `test -f 'misc/all-misc-cpp.cpp' || echo '$(srcdir)/'`misc/all-misc-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-misc-cpp.Tpo" "$(DEPDIR)/all-misc-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-misc-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='misc/all-misc-cpp.cpp' object='all-misc-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-misc-cpp.Plo' tmpdepfile='$(DEPDIR)/all-misc-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-misc-cpp.lo `test -f 'misc/all-misc-cpp.cpp' || echo '$(srcdir)/'`misc/all-misc-cpp.cpp
+
+all-lists-cpp.o: lists/all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-lists-cpp.o -MD -MP -MF "$(DEPDIR)/all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-lists-cpp.o `test -f 'lists/all-lists-cpp.cpp' || echo '$(srcdir)/'`lists/all-lists-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-lists-cpp.Tpo" "$(DEPDIR)/all-lists-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='lists/all-lists-cpp.cpp' object='all-lists-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-lists-cpp.Po' tmpdepfile='$(DEPDIR)/all-lists-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-lists-cpp.o `test -f 'lists/all-lists-cpp.cpp' || echo '$(srcdir)/'`lists/all-lists-cpp.cpp
+
+all-lists-cpp.obj: lists/all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-lists-cpp.obj -MD -MP -MF "$(DEPDIR)/all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-lists-cpp.obj `if test -f 'lists/all-lists-cpp.cpp'; then $(CYGPATH_W) 'lists/all-lists-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/lists/all-lists-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-lists-cpp.Tpo" "$(DEPDIR)/all-lists-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='lists/all-lists-cpp.cpp' object='all-lists-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-lists-cpp.Po' tmpdepfile='$(DEPDIR)/all-lists-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-lists-cpp.obj `if test -f 'lists/all-lists-cpp.cpp'; then $(CYGPATH_W) 'lists/all-lists-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/lists/all-lists-cpp.cpp'; fi`
+
+all-lists-cpp.lo: lists/all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-lists-cpp.lo -MD -MP -MF "$(DEPDIR)/all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-lists-cpp.lo `test -f 'lists/all-lists-cpp.cpp' || echo '$(srcdir)/'`lists/all-lists-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-lists-cpp.Tpo" "$(DEPDIR)/all-lists-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='lists/all-lists-cpp.cpp' object='all-lists-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-lists-cpp.Plo' tmpdepfile='$(DEPDIR)/all-lists-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-lists-cpp.lo `test -f 'lists/all-lists-cpp.cpp' || echo '$(srcdir)/'`lists/all-lists-cpp.cpp
+
+all-nodekits-cpp.o: nodekits/all-nodekits-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-nodekits-cpp.o -MD -MP -MF "$(DEPDIR)/all-nodekits-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-nodekits-cpp.o `test -f 'nodekits/all-nodekits-cpp.cpp' || echo '$(srcdir)/'`nodekits/all-nodekits-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-nodekits-cpp.Tpo" "$(DEPDIR)/all-nodekits-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-nodekits-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='nodekits/all-nodekits-cpp.cpp' object='all-nodekits-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-nodekits-cpp.Po' tmpdepfile='$(DEPDIR)/all-nodekits-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-nodekits-cpp.o `test -f 'nodekits/all-nodekits-cpp.cpp' || echo '$(srcdir)/'`nodekits/all-nodekits-cpp.cpp
+
+all-nodekits-cpp.obj: nodekits/all-nodekits-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-nodekits-cpp.obj -MD -MP -MF "$(DEPDIR)/all-nodekits-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-nodekits-cpp.obj `if test -f 'nodekits/all-nodekits-cpp.cpp'; then $(CYGPATH_W) 'nodekits/all-nodekits-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/nodekits/all-nodekits-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-nodekits-cpp.Tpo" "$(DEPDIR)/all-nodekits-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-nodekits-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='nodekits/all-nodekits-cpp.cpp' object='all-nodekits-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-nodekits-cpp.Po' tmpdepfile='$(DEPDIR)/all-nodekits-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-nodekits-cpp.obj `if test -f 'nodekits/all-nodekits-cpp.cpp'; then $(CYGPATH_W) 'nodekits/all-nodekits-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/nodekits/all-nodekits-cpp.cpp'; fi`
+
+all-nodekits-cpp.lo: nodekits/all-nodekits-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-nodekits-cpp.lo -MD -MP -MF "$(DEPDIR)/all-nodekits-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-nodekits-cpp.lo `test -f 'nodekits/all-nodekits-cpp.cpp' || echo '$(srcdir)/'`nodekits/all-nodekits-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-nodekits-cpp.Tpo" "$(DEPDIR)/all-nodekits-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-nodekits-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='nodekits/all-nodekits-cpp.cpp' object='all-nodekits-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-nodekits-cpp.Plo' tmpdepfile='$(DEPDIR)/all-nodekits-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-nodekits-cpp.lo `test -f 'nodekits/all-nodekits-cpp.cpp' || echo '$(srcdir)/'`nodekits/all-nodekits-cpp.cpp
+
+all-nodes-cpp.o: nodes/all-nodes-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-nodes-cpp.o -MD -MP -MF "$(DEPDIR)/all-nodes-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-nodes-cpp.o `test -f 'nodes/all-nodes-cpp.cpp' || echo '$(srcdir)/'`nodes/all-nodes-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-nodes-cpp.Tpo" "$(DEPDIR)/all-nodes-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-nodes-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='nodes/all-nodes-cpp.cpp' object='all-nodes-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-nodes-cpp.Po' tmpdepfile='$(DEPDIR)/all-nodes-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-nodes-cpp.o `test -f 'nodes/all-nodes-cpp.cpp' || echo '$(srcdir)/'`nodes/all-nodes-cpp.cpp
+
+all-nodes-cpp.obj: nodes/all-nodes-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-nodes-cpp.obj -MD -MP -MF "$(DEPDIR)/all-nodes-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-nodes-cpp.obj `if test -f 'nodes/all-nodes-cpp.cpp'; then $(CYGPATH_W) 'nodes/all-nodes-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/nodes/all-nodes-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-nodes-cpp.Tpo" "$(DEPDIR)/all-nodes-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-nodes-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='nodes/all-nodes-cpp.cpp' object='all-nodes-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-nodes-cpp.Po' tmpdepfile='$(DEPDIR)/all-nodes-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-nodes-cpp.obj `if test -f 'nodes/all-nodes-cpp.cpp'; then $(CYGPATH_W) 'nodes/all-nodes-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/nodes/all-nodes-cpp.cpp'; fi`
+
+all-nodes-cpp.lo: nodes/all-nodes-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-nodes-cpp.lo -MD -MP -MF "$(DEPDIR)/all-nodes-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-nodes-cpp.lo `test -f 'nodes/all-nodes-cpp.cpp' || echo '$(srcdir)/'`nodes/all-nodes-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-nodes-cpp.Tpo" "$(DEPDIR)/all-nodes-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-nodes-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='nodes/all-nodes-cpp.cpp' object='all-nodes-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-nodes-cpp.Plo' tmpdepfile='$(DEPDIR)/all-nodes-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-nodes-cpp.lo `test -f 'nodes/all-nodes-cpp.cpp' || echo '$(srcdir)/'`nodes/all-nodes-cpp.cpp
+
+all-shapenodes-cpp.o: shapenodes/all-shapenodes-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shapenodes-cpp.o -MD -MP -MF "$(DEPDIR)/all-shapenodes-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shapenodes-cpp.o `test -f 'shapenodes/all-shapenodes-cpp.cpp' || echo '$(srcdir)/'`shapenodes/all-shapenodes-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shapenodes-cpp.Tpo" "$(DEPDIR)/all-shapenodes-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shapenodes-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shapenodes/all-shapenodes-cpp.cpp' object='all-shapenodes-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shapenodes-cpp.Po' tmpdepfile='$(DEPDIR)/all-shapenodes-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shapenodes-cpp.o `test -f 'shapenodes/all-shapenodes-cpp.cpp' || echo '$(srcdir)/'`shapenodes/all-shapenodes-cpp.cpp
+
+all-shapenodes-cpp.obj: shapenodes/all-shapenodes-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shapenodes-cpp.obj -MD -MP -MF "$(DEPDIR)/all-shapenodes-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shapenodes-cpp.obj `if test -f 'shapenodes/all-shapenodes-cpp.cpp'; then $(CYGPATH_W) 'shapenodes/all-shapenodes-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/shapenodes/all-shapenodes-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shapenodes-cpp.Tpo" "$(DEPDIR)/all-shapenodes-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shapenodes-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shapenodes/all-shapenodes-cpp.cpp' object='all-shapenodes-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shapenodes-cpp.Po' tmpdepfile='$(DEPDIR)/all-shapenodes-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shapenodes-cpp.obj `if test -f 'shapenodes/all-shapenodes-cpp.cpp'; then $(CYGPATH_W) 'shapenodes/all-shapenodes-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/shapenodes/all-shapenodes-cpp.cpp'; fi`
+
+all-shapenodes-cpp.lo: shapenodes/all-shapenodes-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shapenodes-cpp.lo -MD -MP -MF "$(DEPDIR)/all-shapenodes-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shapenodes-cpp.lo `test -f 'shapenodes/all-shapenodes-cpp.cpp' || echo '$(srcdir)/'`shapenodes/all-shapenodes-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shapenodes-cpp.Tpo" "$(DEPDIR)/all-shapenodes-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shapenodes-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shapenodes/all-shapenodes-cpp.cpp' object='all-shapenodes-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shapenodes-cpp.Plo' tmpdepfile='$(DEPDIR)/all-shapenodes-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shapenodes-cpp.lo `test -f 'shapenodes/all-shapenodes-cpp.cpp' || echo '$(srcdir)/'`shapenodes/all-shapenodes-cpp.cpp
+
+all-projectors-cpp.o: projectors/all-projectors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-projectors-cpp.o -MD -MP -MF "$(DEPDIR)/all-projectors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-projectors-cpp.o `test -f 'projectors/all-projectors-cpp.cpp' || echo '$(srcdir)/'`projectors/all-projectors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-projectors-cpp.Tpo" "$(DEPDIR)/all-projectors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-projectors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='projectors/all-projectors-cpp.cpp' object='all-projectors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-projectors-cpp.Po' tmpdepfile='$(DEPDIR)/all-projectors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-projectors-cpp.o `test -f 'projectors/all-projectors-cpp.cpp' || echo '$(srcdir)/'`projectors/all-projectors-cpp.cpp
+
+all-projectors-cpp.obj: projectors/all-projectors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-projectors-cpp.obj -MD -MP -MF "$(DEPDIR)/all-projectors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-projectors-cpp.obj `if test -f 'projectors/all-projectors-cpp.cpp'; then $(CYGPATH_W) 'projectors/all-projectors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/projectors/all-projectors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-projectors-cpp.Tpo" "$(DEPDIR)/all-projectors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-projectors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='projectors/all-projectors-cpp.cpp' object='all-projectors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-projectors-cpp.Po' tmpdepfile='$(DEPDIR)/all-projectors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-projectors-cpp.obj `if test -f 'projectors/all-projectors-cpp.cpp'; then $(CYGPATH_W) 'projectors/all-projectors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/projectors/all-projectors-cpp.cpp'; fi`
+
+all-projectors-cpp.lo: projectors/all-projectors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-projectors-cpp.lo -MD -MP -MF "$(DEPDIR)/all-projectors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-projectors-cpp.lo `test -f 'projectors/all-projectors-cpp.cpp' || echo '$(srcdir)/'`projectors/all-projectors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-projectors-cpp.Tpo" "$(DEPDIR)/all-projectors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-projectors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='projectors/all-projectors-cpp.cpp' object='all-projectors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-projectors-cpp.Plo' tmpdepfile='$(DEPDIR)/all-projectors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-projectors-cpp.lo `test -f 'projectors/all-projectors-cpp.cpp' || echo '$(srcdir)/'`projectors/all-projectors-cpp.cpp
+
+all-sensors-cpp.o: sensors/all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-sensors-cpp.o -MD -MP -MF "$(DEPDIR)/all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-sensors-cpp.o `test -f 'sensors/all-sensors-cpp.cpp' || echo '$(srcdir)/'`sensors/all-sensors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-sensors-cpp.Tpo" "$(DEPDIR)/all-sensors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='sensors/all-sensors-cpp.cpp' object='all-sensors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-sensors-cpp.Po' tmpdepfile='$(DEPDIR)/all-sensors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-sensors-cpp.o `test -f 'sensors/all-sensors-cpp.cpp' || echo '$(srcdir)/'`sensors/all-sensors-cpp.cpp
+
+all-sensors-cpp.obj: sensors/all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-sensors-cpp.obj -MD -MP -MF "$(DEPDIR)/all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-sensors-cpp.obj `if test -f 'sensors/all-sensors-cpp.cpp'; then $(CYGPATH_W) 'sensors/all-sensors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/sensors/all-sensors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-sensors-cpp.Tpo" "$(DEPDIR)/all-sensors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='sensors/all-sensors-cpp.cpp' object='all-sensors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-sensors-cpp.Po' tmpdepfile='$(DEPDIR)/all-sensors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-sensors-cpp.obj `if test -f 'sensors/all-sensors-cpp.cpp'; then $(CYGPATH_W) 'sensors/all-sensors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/sensors/all-sensors-cpp.cpp'; fi`
+
+all-sensors-cpp.lo: sensors/all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-sensors-cpp.lo -MD -MP -MF "$(DEPDIR)/all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-sensors-cpp.lo `test -f 'sensors/all-sensors-cpp.cpp' || echo '$(srcdir)/'`sensors/all-sensors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-sensors-cpp.Tpo" "$(DEPDIR)/all-sensors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='sensors/all-sensors-cpp.cpp' object='all-sensors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-sensors-cpp.Plo' tmpdepfile='$(DEPDIR)/all-sensors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-sensors-cpp.lo `test -f 'sensors/all-sensors-cpp.cpp' || echo '$(srcdir)/'`sensors/all-sensors-cpp.cpp
+
+all-details-cpp.o: details/all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-details-cpp.o -MD -MP -MF "$(DEPDIR)/all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-details-cpp.o `test -f 'details/all-details-cpp.cpp' || echo '$(srcdir)/'`details/all-details-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-details-cpp.Tpo" "$(DEPDIR)/all-details-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='details/all-details-cpp.cpp' object='all-details-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-details-cpp.Po' tmpdepfile='$(DEPDIR)/all-details-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-details-cpp.o `test -f 'details/all-details-cpp.cpp' || echo '$(srcdir)/'`details/all-details-cpp.cpp
+
+all-details-cpp.obj: details/all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-details-cpp.obj -MD -MP -MF "$(DEPDIR)/all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-details-cpp.obj `if test -f 'details/all-details-cpp.cpp'; then $(CYGPATH_W) 'details/all-details-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/details/all-details-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-details-cpp.Tpo" "$(DEPDIR)/all-details-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='details/all-details-cpp.cpp' object='all-details-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-details-cpp.Po' tmpdepfile='$(DEPDIR)/all-details-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-details-cpp.obj `if test -f 'details/all-details-cpp.cpp'; then $(CYGPATH_W) 'details/all-details-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/details/all-details-cpp.cpp'; fi`
+
+all-details-cpp.lo: details/all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-details-cpp.lo -MD -MP -MF "$(DEPDIR)/all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-details-cpp.lo `test -f 'details/all-details-cpp.cpp' || echo '$(srcdir)/'`details/all-details-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-details-cpp.Tpo" "$(DEPDIR)/all-details-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='details/all-details-cpp.cpp' object='all-details-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-details-cpp.Plo' tmpdepfile='$(DEPDIR)/all-details-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-details-cpp.lo `test -f 'details/all-details-cpp.cpp' || echo '$(srcdir)/'`details/all-details-cpp.cpp
+
+all-draggers-cpp.o: draggers/all-draggers-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-draggers-cpp.o -MD -MP -MF "$(DEPDIR)/all-draggers-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-draggers-cpp.o `test -f 'draggers/all-draggers-cpp.cpp' || echo '$(srcdir)/'`draggers/all-draggers-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-draggers-cpp.Tpo" "$(DEPDIR)/all-draggers-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-draggers-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='draggers/all-draggers-cpp.cpp' object='all-draggers-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-draggers-cpp.Po' tmpdepfile='$(DEPDIR)/all-draggers-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-draggers-cpp.o `test -f 'draggers/all-draggers-cpp.cpp' || echo '$(srcdir)/'`draggers/all-draggers-cpp.cpp
+
+all-draggers-cpp.obj: draggers/all-draggers-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-draggers-cpp.obj -MD -MP -MF "$(DEPDIR)/all-draggers-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-draggers-cpp.obj `if test -f 'draggers/all-draggers-cpp.cpp'; then $(CYGPATH_W) 'draggers/all-draggers-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/draggers/all-draggers-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-draggers-cpp.Tpo" "$(DEPDIR)/all-draggers-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-draggers-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='draggers/all-draggers-cpp.cpp' object='all-draggers-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-draggers-cpp.Po' tmpdepfile='$(DEPDIR)/all-draggers-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-draggers-cpp.obj `if test -f 'draggers/all-draggers-cpp.cpp'; then $(CYGPATH_W) 'draggers/all-draggers-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/draggers/all-draggers-cpp.cpp'; fi`
+
+all-draggers-cpp.lo: draggers/all-draggers-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-draggers-cpp.lo -MD -MP -MF "$(DEPDIR)/all-draggers-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-draggers-cpp.lo `test -f 'draggers/all-draggers-cpp.cpp' || echo '$(srcdir)/'`draggers/all-draggers-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-draggers-cpp.Tpo" "$(DEPDIR)/all-draggers-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-draggers-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='draggers/all-draggers-cpp.cpp' object='all-draggers-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-draggers-cpp.Plo' tmpdepfile='$(DEPDIR)/all-draggers-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-draggers-cpp.lo `test -f 'draggers/all-draggers-cpp.cpp' || echo '$(srcdir)/'`draggers/all-draggers-cpp.cpp
+
+all-manips-cpp.o: manips/all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-manips-cpp.o -MD -MP -MF "$(DEPDIR)/all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-manips-cpp.o `test -f 'manips/all-manips-cpp.cpp' || echo '$(srcdir)/'`manips/all-manips-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-manips-cpp.Tpo" "$(DEPDIR)/all-manips-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='manips/all-manips-cpp.cpp' object='all-manips-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-manips-cpp.Po' tmpdepfile='$(DEPDIR)/all-manips-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-manips-cpp.o `test -f 'manips/all-manips-cpp.cpp' || echo '$(srcdir)/'`manips/all-manips-cpp.cpp
+
+all-manips-cpp.obj: manips/all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-manips-cpp.obj -MD -MP -MF "$(DEPDIR)/all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-manips-cpp.obj `if test -f 'manips/all-manips-cpp.cpp'; then $(CYGPATH_W) 'manips/all-manips-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/manips/all-manips-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-manips-cpp.Tpo" "$(DEPDIR)/all-manips-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='manips/all-manips-cpp.cpp' object='all-manips-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-manips-cpp.Po' tmpdepfile='$(DEPDIR)/all-manips-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-manips-cpp.obj `if test -f 'manips/all-manips-cpp.cpp'; then $(CYGPATH_W) 'manips/all-manips-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/manips/all-manips-cpp.cpp'; fi`
+
+all-manips-cpp.lo: manips/all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-manips-cpp.lo -MD -MP -MF "$(DEPDIR)/all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-manips-cpp.lo `test -f 'manips/all-manips-cpp.cpp' || echo '$(srcdir)/'`manips/all-manips-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-manips-cpp.Tpo" "$(DEPDIR)/all-manips-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='manips/all-manips-cpp.cpp' object='all-manips-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-manips-cpp.Plo' tmpdepfile='$(DEPDIR)/all-manips-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-manips-cpp.lo `test -f 'manips/all-manips-cpp.cpp' || echo '$(srcdir)/'`manips/all-manips-cpp.cpp
+
+all-upgraders-cpp.o: upgraders/all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-upgraders-cpp.o -MD -MP -MF "$(DEPDIR)/all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-upgraders-cpp.o `test -f 'upgraders/all-upgraders-cpp.cpp' || echo '$(srcdir)/'`upgraders/all-upgraders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-upgraders-cpp.Tpo" "$(DEPDIR)/all-upgraders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='upgraders/all-upgraders-cpp.cpp' object='all-upgraders-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-upgraders-cpp.Po' tmpdepfile='$(DEPDIR)/all-upgraders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-upgraders-cpp.o `test -f 'upgraders/all-upgraders-cpp.cpp' || echo '$(srcdir)/'`upgraders/all-upgraders-cpp.cpp
+
+all-upgraders-cpp.obj: upgraders/all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-upgraders-cpp.obj -MD -MP -MF "$(DEPDIR)/all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-upgraders-cpp.obj `if test -f 'upgraders/all-upgraders-cpp.cpp'; then $(CYGPATH_W) 'upgraders/all-upgraders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/upgraders/all-upgraders-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-upgraders-cpp.Tpo" "$(DEPDIR)/all-upgraders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='upgraders/all-upgraders-cpp.cpp' object='all-upgraders-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-upgraders-cpp.Po' tmpdepfile='$(DEPDIR)/all-upgraders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-upgraders-cpp.obj `if test -f 'upgraders/all-upgraders-cpp.cpp'; then $(CYGPATH_W) 'upgraders/all-upgraders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/upgraders/all-upgraders-cpp.cpp'; fi`
+
+all-upgraders-cpp.lo: upgraders/all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-upgraders-cpp.lo -MD -MP -MF "$(DEPDIR)/all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-upgraders-cpp.lo `test -f 'upgraders/all-upgraders-cpp.cpp' || echo '$(srcdir)/'`upgraders/all-upgraders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-upgraders-cpp.Tpo" "$(DEPDIR)/all-upgraders-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='upgraders/all-upgraders-cpp.cpp' object='all-upgraders-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-upgraders-cpp.Plo' tmpdepfile='$(DEPDIR)/all-upgraders-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-upgraders-cpp.lo `test -f 'upgraders/all-upgraders-cpp.cpp' || echo '$(srcdir)/'`upgraders/all-upgraders-cpp.cpp
+
+all-navigation-cpp.o: navigation/all-navigation-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-navigation-cpp.o -MD -MP -MF "$(DEPDIR)/all-navigation-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-navigation-cpp.o `test -f 'navigation/all-navigation-cpp.cpp' || echo '$(srcdir)/'`navigation/all-navigation-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-navigation-cpp.Tpo" "$(DEPDIR)/all-navigation-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-navigation-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='navigation/all-navigation-cpp.cpp' object='all-navigation-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-navigation-cpp.Po' tmpdepfile='$(DEPDIR)/all-navigation-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-navigation-cpp.o `test -f 'navigation/all-navigation-cpp.cpp' || echo '$(srcdir)/'`navigation/all-navigation-cpp.cpp
+
+all-navigation-cpp.obj: navigation/all-navigation-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-navigation-cpp.obj -MD -MP -MF "$(DEPDIR)/all-navigation-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-navigation-cpp.obj `if test -f 'navigation/all-navigation-cpp.cpp'; then $(CYGPATH_W) 'navigation/all-navigation-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/navigation/all-navigation-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-navigation-cpp.Tpo" "$(DEPDIR)/all-navigation-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-navigation-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='navigation/all-navigation-cpp.cpp' object='all-navigation-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-navigation-cpp.Po' tmpdepfile='$(DEPDIR)/all-navigation-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-navigation-cpp.obj `if test -f 'navigation/all-navigation-cpp.cpp'; then $(CYGPATH_W) 'navigation/all-navigation-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/navigation/all-navigation-cpp.cpp'; fi`
+
+all-navigation-cpp.lo: navigation/all-navigation-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-navigation-cpp.lo -MD -MP -MF "$(DEPDIR)/all-navigation-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-navigation-cpp.lo `test -f 'navigation/all-navigation-cpp.cpp' || echo '$(srcdir)/'`navigation/all-navigation-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-navigation-cpp.Tpo" "$(DEPDIR)/all-navigation-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-navigation-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='navigation/all-navigation-cpp.cpp' object='all-navigation-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-navigation-cpp.Plo' tmpdepfile='$(DEPDIR)/all-navigation-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-navigation-cpp.lo `test -f 'navigation/all-navigation-cpp.cpp' || echo '$(srcdir)/'`navigation/all-navigation-cpp.cpp
+
+all-3ds-cpp.o: 3ds/all-3ds-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-3ds-cpp.o -MD -MP -MF "$(DEPDIR)/all-3ds-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-3ds-cpp.o `test -f '3ds/all-3ds-cpp.cpp' || echo '$(srcdir)/'`3ds/all-3ds-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-3ds-cpp.Tpo" "$(DEPDIR)/all-3ds-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-3ds-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds/all-3ds-cpp.cpp' object='all-3ds-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-3ds-cpp.Po' tmpdepfile='$(DEPDIR)/all-3ds-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-3ds-cpp.o `test -f '3ds/all-3ds-cpp.cpp' || echo '$(srcdir)/'`3ds/all-3ds-cpp.cpp
+
+all-3ds-cpp.obj: 3ds/all-3ds-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-3ds-cpp.obj -MD -MP -MF "$(DEPDIR)/all-3ds-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-3ds-cpp.obj `if test -f '3ds/all-3ds-cpp.cpp'; then $(CYGPATH_W) '3ds/all-3ds-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/3ds/all-3ds-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-3ds-cpp.Tpo" "$(DEPDIR)/all-3ds-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-3ds-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds/all-3ds-cpp.cpp' object='all-3ds-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-3ds-cpp.Po' tmpdepfile='$(DEPDIR)/all-3ds-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-3ds-cpp.obj `if test -f '3ds/all-3ds-cpp.cpp'; then $(CYGPATH_W) '3ds/all-3ds-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/3ds/all-3ds-cpp.cpp'; fi`
+
+all-3ds-cpp.lo: 3ds/all-3ds-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-3ds-cpp.lo -MD -MP -MF "$(DEPDIR)/all-3ds-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-3ds-cpp.lo `test -f '3ds/all-3ds-cpp.cpp' || echo '$(srcdir)/'`3ds/all-3ds-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-3ds-cpp.Tpo" "$(DEPDIR)/all-3ds-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-3ds-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds/all-3ds-cpp.cpp' object='all-3ds-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-3ds-cpp.Plo' tmpdepfile='$(DEPDIR)/all-3ds-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-3ds-cpp.lo `test -f '3ds/all-3ds-cpp.cpp' || echo '$(srcdir)/'`3ds/all-3ds-cpp.cpp
+
+all-collision-cpp.o: collision/all-collision-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-collision-cpp.o -MD -MP -MF "$(DEPDIR)/all-collision-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-collision-cpp.o `test -f 'collision/all-collision-cpp.cpp' || echo '$(srcdir)/'`collision/all-collision-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-collision-cpp.Tpo" "$(DEPDIR)/all-collision-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-collision-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='collision/all-collision-cpp.cpp' object='all-collision-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-collision-cpp.Po' tmpdepfile='$(DEPDIR)/all-collision-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-collision-cpp.o `test -f 'collision/all-collision-cpp.cpp' || echo '$(srcdir)/'`collision/all-collision-cpp.cpp
+
+all-collision-cpp.obj: collision/all-collision-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-collision-cpp.obj -MD -MP -MF "$(DEPDIR)/all-collision-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-collision-cpp.obj `if test -f 'collision/all-collision-cpp.cpp'; then $(CYGPATH_W) 'collision/all-collision-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/collision/all-collision-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-collision-cpp.Tpo" "$(DEPDIR)/all-collision-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-collision-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='collision/all-collision-cpp.cpp' object='all-collision-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-collision-cpp.Po' tmpdepfile='$(DEPDIR)/all-collision-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-collision-cpp.obj `if test -f 'collision/all-collision-cpp.cpp'; then $(CYGPATH_W) 'collision/all-collision-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/collision/all-collision-cpp.cpp'; fi`
+
+all-collision-cpp.lo: collision/all-collision-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-collision-cpp.lo -MD -MP -MF "$(DEPDIR)/all-collision-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-collision-cpp.lo `test -f 'collision/all-collision-cpp.cpp' || echo '$(srcdir)/'`collision/all-collision-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-collision-cpp.Tpo" "$(DEPDIR)/all-collision-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-collision-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='collision/all-collision-cpp.cpp' object='all-collision-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-collision-cpp.Plo' tmpdepfile='$(DEPDIR)/all-collision-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-collision-cpp.lo `test -f 'collision/all-collision-cpp.cpp' || echo '$(srcdir)/'`collision/all-collision-cpp.cpp
+
+all-hardcopy-cpp.o: hardcopy/all-hardcopy-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-hardcopy-cpp.o -MD -MP -MF "$(DEPDIR)/all-hardcopy-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-hardcopy-cpp.o `test -f 'hardcopy/all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`hardcopy/all-hardcopy-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-hardcopy-cpp.Tpo" "$(DEPDIR)/all-hardcopy-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-hardcopy-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hardcopy/all-hardcopy-cpp.cpp' object='all-hardcopy-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-hardcopy-cpp.Po' tmpdepfile='$(DEPDIR)/all-hardcopy-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-hardcopy-cpp.o `test -f 'hardcopy/all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`hardcopy/all-hardcopy-cpp.cpp
+
+all-hardcopy-cpp.obj: hardcopy/all-hardcopy-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-hardcopy-cpp.obj -MD -MP -MF "$(DEPDIR)/all-hardcopy-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-hardcopy-cpp.obj `if test -f 'hardcopy/all-hardcopy-cpp.cpp'; then $(CYGPATH_W) 'hardcopy/all-hardcopy-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/hardcopy/all-hardcopy-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-hardcopy-cpp.Tpo" "$(DEPDIR)/all-hardcopy-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-hardcopy-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hardcopy/all-hardcopy-cpp.cpp' object='all-hardcopy-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-hardcopy-cpp.Po' tmpdepfile='$(DEPDIR)/all-hardcopy-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-hardcopy-cpp.obj `if test -f 'hardcopy/all-hardcopy-cpp.cpp'; then $(CYGPATH_W) 'hardcopy/all-hardcopy-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/hardcopy/all-hardcopy-cpp.cpp'; fi`
+
+all-hardcopy-cpp.lo: hardcopy/all-hardcopy-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-hardcopy-cpp.lo -MD -MP -MF "$(DEPDIR)/all-hardcopy-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-hardcopy-cpp.lo `test -f 'hardcopy/all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`hardcopy/all-hardcopy-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-hardcopy-cpp.Tpo" "$(DEPDIR)/all-hardcopy-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-hardcopy-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hardcopy/all-hardcopy-cpp.cpp' object='all-hardcopy-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-hardcopy-cpp.Plo' tmpdepfile='$(DEPDIR)/all-hardcopy-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-hardcopy-cpp.lo `test -f 'hardcopy/all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`hardcopy/all-hardcopy-cpp.cpp
+
+all-threads-cpp.o: threads/all-threads-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-threads-cpp.o -MD -MP -MF "$(DEPDIR)/all-threads-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-threads-cpp.o `test -f 'threads/all-threads-cpp.cpp' || echo '$(srcdir)/'`threads/all-threads-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-threads-cpp.Tpo" "$(DEPDIR)/all-threads-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-threads-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='threads/all-threads-cpp.cpp' object='all-threads-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-threads-cpp.Po' tmpdepfile='$(DEPDIR)/all-threads-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-threads-cpp.o `test -f 'threads/all-threads-cpp.cpp' || echo '$(srcdir)/'`threads/all-threads-cpp.cpp
+
+all-threads-cpp.obj: threads/all-threads-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-threads-cpp.obj -MD -MP -MF "$(DEPDIR)/all-threads-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-threads-cpp.obj `if test -f 'threads/all-threads-cpp.cpp'; then $(CYGPATH_W) 'threads/all-threads-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/threads/all-threads-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-threads-cpp.Tpo" "$(DEPDIR)/all-threads-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-threads-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='threads/all-threads-cpp.cpp' object='all-threads-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-threads-cpp.Po' tmpdepfile='$(DEPDIR)/all-threads-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-threads-cpp.obj `if test -f 'threads/all-threads-cpp.cpp'; then $(CYGPATH_W) 'threads/all-threads-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/threads/all-threads-cpp.cpp'; fi`
+
+all-threads-cpp.lo: threads/all-threads-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-threads-cpp.lo -MD -MP -MF "$(DEPDIR)/all-threads-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-threads-cpp.lo `test -f 'threads/all-threads-cpp.cpp' || echo '$(srcdir)/'`threads/all-threads-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-threads-cpp.Tpo" "$(DEPDIR)/all-threads-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-threads-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='threads/all-threads-cpp.cpp' object='all-threads-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-threads-cpp.Plo' tmpdepfile='$(DEPDIR)/all-threads-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-threads-cpp.lo `test -f 'threads/all-threads-cpp.cpp' || echo '$(srcdir)/'`threads/all-threads-cpp.cpp
+
+all-mpeg-cpp.o: mpeg/all-mpeg-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-mpeg-cpp.o -MD -MP -MF "$(DEPDIR)/all-mpeg-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-mpeg-cpp.o `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-mpeg-cpp.Tpo" "$(DEPDIR)/all-mpeg-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-mpeg-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='mpeg/all-mpeg-cpp.cpp' object='all-mpeg-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-mpeg-cpp.Po' tmpdepfile='$(DEPDIR)/all-mpeg-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-mpeg-cpp.o `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp
+
+all-mpeg-cpp.obj: mpeg/all-mpeg-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-mpeg-cpp.obj -MD -MP -MF "$(DEPDIR)/all-mpeg-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-mpeg-cpp.obj `if test -f 'mpeg/all-mpeg-cpp.cpp'; then $(CYGPATH_W) 'mpeg/all-mpeg-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/mpeg/all-mpeg-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-mpeg-cpp.Tpo" "$(DEPDIR)/all-mpeg-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-mpeg-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='mpeg/all-mpeg-cpp.cpp' object='all-mpeg-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-mpeg-cpp.Po' tmpdepfile='$(DEPDIR)/all-mpeg-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-mpeg-cpp.obj `if test -f 'mpeg/all-mpeg-cpp.cpp'; then $(CYGPATH_W) 'mpeg/all-mpeg-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/mpeg/all-mpeg-cpp.cpp'; fi`
+
+all-mpeg-cpp.lo: mpeg/all-mpeg-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-mpeg-cpp.lo -MD -MP -MF "$(DEPDIR)/all-mpeg-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-mpeg-cpp.lo `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-mpeg-cpp.Tpo" "$(DEPDIR)/all-mpeg-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-mpeg-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='mpeg/all-mpeg-cpp.cpp' object='all-mpeg-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-mpeg-cpp.Plo' tmpdepfile='$(DEPDIR)/all-mpeg-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-mpeg-cpp.lo `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp
+
+all-shaders-cpp.o: shaders/all-shaders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shaders-cpp.o -MD -MP -MF "$(DEPDIR)/all-shaders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shaders-cpp.o `test -f 'shaders/all-shaders-cpp.cpp' || echo '$(srcdir)/'`shaders/all-shaders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shaders-cpp.Tpo" "$(DEPDIR)/all-shaders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shaders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shaders/all-shaders-cpp.cpp' object='all-shaders-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shaders-cpp.Po' tmpdepfile='$(DEPDIR)/all-shaders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shaders-cpp.o `test -f 'shaders/all-shaders-cpp.cpp' || echo '$(srcdir)/'`shaders/all-shaders-cpp.cpp
+
+all-shaders-cpp.obj: shaders/all-shaders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shaders-cpp.obj -MD -MP -MF "$(DEPDIR)/all-shaders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shaders-cpp.obj `if test -f 'shaders/all-shaders-cpp.cpp'; then $(CYGPATH_W) 'shaders/all-shaders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/shaders/all-shaders-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shaders-cpp.Tpo" "$(DEPDIR)/all-shaders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shaders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shaders/all-shaders-cpp.cpp' object='all-shaders-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shaders-cpp.Po' tmpdepfile='$(DEPDIR)/all-shaders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shaders-cpp.obj `if test -f 'shaders/all-shaders-cpp.cpp'; then $(CYGPATH_W) 'shaders/all-shaders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/shaders/all-shaders-cpp.cpp'; fi`
+
+all-shaders-cpp.lo: shaders/all-shaders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shaders-cpp.lo -MD -MP -MF "$(DEPDIR)/all-shaders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shaders-cpp.lo `test -f 'shaders/all-shaders-cpp.cpp' || echo '$(srcdir)/'`shaders/all-shaders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shaders-cpp.Tpo" "$(DEPDIR)/all-shaders-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shaders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shaders/all-shaders-cpp.cpp' object='all-shaders-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shaders-cpp.Plo' tmpdepfile='$(DEPDIR)/all-shaders-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shaders-cpp.lo `test -f 'shaders/all-shaders-cpp.cpp' || echo '$(srcdir)/'`shaders/all-shaders-cpp.cpp
+
+all-shadows-cpp.o: shadows/all-shadows-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shadows-cpp.o -MD -MP -MF "$(DEPDIR)/all-shadows-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shadows-cpp.o `test -f 'shadows/all-shadows-cpp.cpp' || echo '$(srcdir)/'`shadows/all-shadows-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shadows-cpp.Tpo" "$(DEPDIR)/all-shadows-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shadows-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shadows/all-shadows-cpp.cpp' object='all-shadows-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shadows-cpp.Po' tmpdepfile='$(DEPDIR)/all-shadows-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shadows-cpp.o `test -f 'shadows/all-shadows-cpp.cpp' || echo '$(srcdir)/'`shadows/all-shadows-cpp.cpp
+
+all-shadows-cpp.obj: shadows/all-shadows-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shadows-cpp.obj -MD -MP -MF "$(DEPDIR)/all-shadows-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shadows-cpp.obj `if test -f 'shadows/all-shadows-cpp.cpp'; then $(CYGPATH_W) 'shadows/all-shadows-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/shadows/all-shadows-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shadows-cpp.Tpo" "$(DEPDIR)/all-shadows-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shadows-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shadows/all-shadows-cpp.cpp' object='all-shadows-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shadows-cpp.Po' tmpdepfile='$(DEPDIR)/all-shadows-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shadows-cpp.obj `if test -f 'shadows/all-shadows-cpp.cpp'; then $(CYGPATH_W) 'shadows/all-shadows-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/shadows/all-shadows-cpp.cpp'; fi`
+
+all-shadows-cpp.lo: shadows/all-shadows-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shadows-cpp.lo -MD -MP -MF "$(DEPDIR)/all-shadows-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-shadows-cpp.lo `test -f 'shadows/all-shadows-cpp.cpp' || echo '$(srcdir)/'`shadows/all-shadows-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-shadows-cpp.Tpo" "$(DEPDIR)/all-shadows-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-shadows-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shadows/all-shadows-cpp.cpp' object='all-shadows-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-shadows-cpp.Plo' tmpdepfile='$(DEPDIR)/all-shadows-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-shadows-cpp.lo `test -f 'shadows/all-shadows-cpp.cpp' || echo '$(srcdir)/'`shadows/all-shadows-cpp.cpp
+
+all-geo-cpp.o: geo/all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-geo-cpp.o -MD -MP -MF "$(DEPDIR)/all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-geo-cpp.o `test -f 'geo/all-geo-cpp.cpp' || echo '$(srcdir)/'`geo/all-geo-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-geo-cpp.Tpo" "$(DEPDIR)/all-geo-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='geo/all-geo-cpp.cpp' object='all-geo-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-geo-cpp.Po' tmpdepfile='$(DEPDIR)/all-geo-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-geo-cpp.o `test -f 'geo/all-geo-cpp.cpp' || echo '$(srcdir)/'`geo/all-geo-cpp.cpp
+
+all-geo-cpp.obj: geo/all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-geo-cpp.obj -MD -MP -MF "$(DEPDIR)/all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-geo-cpp.obj `if test -f 'geo/all-geo-cpp.cpp'; then $(CYGPATH_W) 'geo/all-geo-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/geo/all-geo-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-geo-cpp.Tpo" "$(DEPDIR)/all-geo-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='geo/all-geo-cpp.cpp' object='all-geo-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-geo-cpp.Po' tmpdepfile='$(DEPDIR)/all-geo-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-geo-cpp.obj `if test -f 'geo/all-geo-cpp.cpp'; then $(CYGPATH_W) 'geo/all-geo-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/geo/all-geo-cpp.cpp'; fi`
+
+all-geo-cpp.lo: geo/all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-geo-cpp.lo -MD -MP -MF "$(DEPDIR)/all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-geo-cpp.lo `test -f 'geo/all-geo-cpp.cpp' || echo '$(srcdir)/'`geo/all-geo-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-geo-cpp.Tpo" "$(DEPDIR)/all-geo-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='geo/all-geo-cpp.cpp' object='all-geo-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-geo-cpp.Plo' tmpdepfile='$(DEPDIR)/all-geo-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-geo-cpp.lo `test -f 'geo/all-geo-cpp.cpp' || echo '$(srcdir)/'`geo/all-geo-cpp.cpp
+
+all-foreignfiles-cpp.o: foreignfiles/all-foreignfiles-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-foreignfiles-cpp.o -MD -MP -MF "$(DEPDIR)/all-foreignfiles-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-foreignfiles-cpp.o `test -f 'foreignfiles/all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`foreignfiles/all-foreignfiles-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-foreignfiles-cpp.Tpo" "$(DEPDIR)/all-foreignfiles-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-foreignfiles-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='foreignfiles/all-foreignfiles-cpp.cpp' object='all-foreignfiles-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-foreignfiles-cpp.Po' tmpdepfile='$(DEPDIR)/all-foreignfiles-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-foreignfiles-cpp.o `test -f 'foreignfiles/all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`foreignfiles/all-foreignfiles-cpp.cpp
+
+all-foreignfiles-cpp.obj: foreignfiles/all-foreignfiles-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-foreignfiles-cpp.obj -MD -MP -MF "$(DEPDIR)/all-foreignfiles-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-foreignfiles-cpp.obj `if test -f 'foreignfiles/all-foreignfiles-cpp.cpp'; then $(CYGPATH_W) 'foreignfiles/all-foreignfiles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/foreignfiles/all-foreignfiles-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-foreignfiles-cpp.Tpo" "$(DEPDIR)/all-foreignfiles-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-foreignfiles-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='foreignfiles/all-foreignfiles-cpp.cpp' object='all-foreignfiles-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-foreignfiles-cpp.Po' tmpdepfile='$(DEPDIR)/all-foreignfiles-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-foreignfiles-cpp.obj `if test -f 'foreignfiles/all-foreignfiles-cpp.cpp'; then $(CYGPATH_W) 'foreignfiles/all-foreignfiles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/foreignfiles/all-foreignfiles-cpp.cpp'; fi`
+
+all-foreignfiles-cpp.lo: foreignfiles/all-foreignfiles-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-foreignfiles-cpp.lo -MD -MP -MF "$(DEPDIR)/all-foreignfiles-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-foreignfiles-cpp.lo `test -f 'foreignfiles/all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`foreignfiles/all-foreignfiles-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-foreignfiles-cpp.Tpo" "$(DEPDIR)/all-foreignfiles-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-foreignfiles-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='foreignfiles/all-foreignfiles-cpp.cpp' object='all-foreignfiles-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-foreignfiles-cpp.Plo' tmpdepfile='$(DEPDIR)/all-foreignfiles-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-foreignfiles-cpp.lo `test -f 'foreignfiles/all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`foreignfiles/all-foreignfiles-cpp.cpp
+
+all-xml-cpp.o: xml/all-xml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-xml-cpp.o -MD -MP -MF "$(DEPDIR)/all-xml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-xml-cpp.o `test -f 'xml/all-xml-cpp.cpp' || echo '$(srcdir)/'`xml/all-xml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-xml-cpp.Tpo" "$(DEPDIR)/all-xml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-xml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/all-xml-cpp.cpp' object='all-xml-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-xml-cpp.Po' tmpdepfile='$(DEPDIR)/all-xml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-xml-cpp.o `test -f 'xml/all-xml-cpp.cpp' || echo '$(srcdir)/'`xml/all-xml-cpp.cpp
+
+all-xml-cpp.obj: xml/all-xml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-xml-cpp.obj -MD -MP -MF "$(DEPDIR)/all-xml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-xml-cpp.obj `if test -f 'xml/all-xml-cpp.cpp'; then $(CYGPATH_W) 'xml/all-xml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/xml/all-xml-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-xml-cpp.Tpo" "$(DEPDIR)/all-xml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-xml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/all-xml-cpp.cpp' object='all-xml-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-xml-cpp.Po' tmpdepfile='$(DEPDIR)/all-xml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-xml-cpp.obj `if test -f 'xml/all-xml-cpp.cpp'; then $(CYGPATH_W) 'xml/all-xml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/xml/all-xml-cpp.cpp'; fi`
+
+all-xml-cpp.lo: xml/all-xml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-xml-cpp.lo -MD -MP -MF "$(DEPDIR)/all-xml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-xml-cpp.lo `test -f 'xml/all-xml-cpp.cpp' || echo '$(srcdir)/'`xml/all-xml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-xml-cpp.Tpo" "$(DEPDIR)/all-xml-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-xml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/all-xml-cpp.cpp' object='all-xml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-xml-cpp.Plo' tmpdepfile='$(DEPDIR)/all-xml-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-xml-cpp.lo `test -f 'xml/all-xml-cpp.cpp' || echo '$(srcdir)/'`xml/all-xml-cpp.cpp
+
+all-profiler-cpp.o: profiler/all-profiler-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-profiler-cpp.o -MD -MP -MF "$(DEPDIR)/all-profiler-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-profiler-cpp.o `test -f 'profiler/all-profiler-cpp.cpp' || echo '$(srcdir)/'`profiler/all-profiler-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-profiler-cpp.Tpo" "$(DEPDIR)/all-profiler-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-profiler-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='profiler/all-profiler-cpp.cpp' object='all-profiler-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-profiler-cpp.Po' tmpdepfile='$(DEPDIR)/all-profiler-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-profiler-cpp.o `test -f 'profiler/all-profiler-cpp.cpp' || echo '$(srcdir)/'`profiler/all-profiler-cpp.cpp
+
+all-profiler-cpp.obj: profiler/all-profiler-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-profiler-cpp.obj -MD -MP -MF "$(DEPDIR)/all-profiler-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-profiler-cpp.obj `if test -f 'profiler/all-profiler-cpp.cpp'; then $(CYGPATH_W) 'profiler/all-profiler-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/profiler/all-profiler-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-profiler-cpp.Tpo" "$(DEPDIR)/all-profiler-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-profiler-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='profiler/all-profiler-cpp.cpp' object='all-profiler-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-profiler-cpp.Po' tmpdepfile='$(DEPDIR)/all-profiler-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-profiler-cpp.obj `if test -f 'profiler/all-profiler-cpp.cpp'; then $(CYGPATH_W) 'profiler/all-profiler-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/profiler/all-profiler-cpp.cpp'; fi`
+
+all-profiler-cpp.lo: profiler/all-profiler-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-profiler-cpp.lo -MD -MP -MF "$(DEPDIR)/all-profiler-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-profiler-cpp.lo `test -f 'profiler/all-profiler-cpp.cpp' || echo '$(srcdir)/'`profiler/all-profiler-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-profiler-cpp.Tpo" "$(DEPDIR)/all-profiler-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-profiler-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='profiler/all-profiler-cpp.cpp' object='all-profiler-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-profiler-cpp.Plo' tmpdepfile='$(DEPDIR)/all-profiler-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-profiler-cpp.lo `test -f 'profiler/all-profiler-cpp.cpp' || echo '$(srcdir)/'`profiler/all-profiler-cpp.cpp
+
+all-vrml97-cpp.o: vrml97/all-vrml97-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-vrml97-cpp.o -MD -MP -MF "$(DEPDIR)/all-vrml97-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-vrml97-cpp.o `test -f 'vrml97/all-vrml97-cpp.cpp' || echo '$(srcdir)/'`vrml97/all-vrml97-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-vrml97-cpp.Tpo" "$(DEPDIR)/all-vrml97-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-vrml97-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='vrml97/all-vrml97-cpp.cpp' object='all-vrml97-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-vrml97-cpp.Po' tmpdepfile='$(DEPDIR)/all-vrml97-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-vrml97-cpp.o `test -f 'vrml97/all-vrml97-cpp.cpp' || echo '$(srcdir)/'`vrml97/all-vrml97-cpp.cpp
+
+all-vrml97-cpp.obj: vrml97/all-vrml97-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-vrml97-cpp.obj -MD -MP -MF "$(DEPDIR)/all-vrml97-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-vrml97-cpp.obj `if test -f 'vrml97/all-vrml97-cpp.cpp'; then $(CYGPATH_W) 'vrml97/all-vrml97-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/vrml97/all-vrml97-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-vrml97-cpp.Tpo" "$(DEPDIR)/all-vrml97-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-vrml97-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='vrml97/all-vrml97-cpp.cpp' object='all-vrml97-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-vrml97-cpp.Po' tmpdepfile='$(DEPDIR)/all-vrml97-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-vrml97-cpp.obj `if test -f 'vrml97/all-vrml97-cpp.cpp'; then $(CYGPATH_W) 'vrml97/all-vrml97-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/vrml97/all-vrml97-cpp.cpp'; fi`
+
+all-vrml97-cpp.lo: vrml97/all-vrml97-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-vrml97-cpp.lo -MD -MP -MF "$(DEPDIR)/all-vrml97-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-vrml97-cpp.lo `test -f 'vrml97/all-vrml97-cpp.cpp' || echo '$(srcdir)/'`vrml97/all-vrml97-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-vrml97-cpp.Tpo" "$(DEPDIR)/all-vrml97-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-vrml97-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='vrml97/all-vrml97-cpp.cpp' object='all-vrml97-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-vrml97-cpp.Plo' tmpdepfile='$(DEPDIR)/all-vrml97-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-vrml97-cpp.lo `test -f 'vrml97/all-vrml97-cpp.cpp' || echo '$(srcdir)/'`vrml97/all-vrml97-cpp.cpp
+
+all-scxml-cpp.o: scxml/all-scxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-scxml-cpp.o -MD -MP -MF "$(DEPDIR)/all-scxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-scxml-cpp.o `test -f 'scxml/all-scxml-cpp.cpp' || echo '$(srcdir)/'`scxml/all-scxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-scxml-cpp.Tpo" "$(DEPDIR)/all-scxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-scxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='scxml/all-scxml-cpp.cpp' object='all-scxml-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-scxml-cpp.Po' tmpdepfile='$(DEPDIR)/all-scxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-scxml-cpp.o `test -f 'scxml/all-scxml-cpp.cpp' || echo '$(srcdir)/'`scxml/all-scxml-cpp.cpp
+
+all-scxml-cpp.obj: scxml/all-scxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-scxml-cpp.obj -MD -MP -MF "$(DEPDIR)/all-scxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-scxml-cpp.obj `if test -f 'scxml/all-scxml-cpp.cpp'; then $(CYGPATH_W) 'scxml/all-scxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/scxml/all-scxml-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-scxml-cpp.Tpo" "$(DEPDIR)/all-scxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-scxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='scxml/all-scxml-cpp.cpp' object='all-scxml-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-scxml-cpp.Po' tmpdepfile='$(DEPDIR)/all-scxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-scxml-cpp.obj `if test -f 'scxml/all-scxml-cpp.cpp'; then $(CYGPATH_W) 'scxml/all-scxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/scxml/all-scxml-cpp.cpp'; fi`
+
+all-scxml-cpp.lo: scxml/all-scxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-scxml-cpp.lo -MD -MP -MF "$(DEPDIR)/all-scxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-scxml-cpp.lo `test -f 'scxml/all-scxml-cpp.cpp' || echo '$(srcdir)/'`scxml/all-scxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-scxml-cpp.Tpo" "$(DEPDIR)/all-scxml-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-scxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='scxml/all-scxml-cpp.cpp' object='all-scxml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-scxml-cpp.Plo' tmpdepfile='$(DEPDIR)/all-scxml-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-scxml-cpp.lo `test -f 'scxml/all-scxml-cpp.cpp' || echo '$(srcdir)/'`scxml/all-scxml-cpp.cpp
 
 CoinGLPerformance.o: share/gl/CoinGLPerformance.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CoinGLPerformance.o -MD -MP -MF "$(DEPDIR)/CoinGLPerformance.Tpo" \
@@ -936,7 +2611,7 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	list='$(SUBDIRS)'; for subdir in $$list; do \
+	list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \

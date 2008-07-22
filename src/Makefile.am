@@ -20,6 +20,8 @@ EXTRADIST = \
         update-config.sh \
         Make-Common.tpl
 
+ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)
+
 if BUILD_WITH_SUPERGLU
 SUPERGLUDIR = extensions/superglu
 SUPERGLULIBADD = $(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
@@ -32,14 +34,18 @@ endif
 
 # **************************************************************************
 
+if MAC_FRAMEWORK
+SUBDIRS =
+else
 SUBDIRS = \
 	extensions xml actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
 	vrml97 foreignfiles scxml doc .
+endif
 
-DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src $(ExtraIncludeDirs)
 
 # **************************************************************************
 
@@ -56,6 +62,9 @@ endif
 
 # **************************************************************************
 
+if MAC_FRAMEWORK
+libCoin@SUFFIX@_la_LIBADD = 
+else
 if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
 else
@@ -75,13 +84,60 @@ libCoin@SUFFIX@_la_LIBADD = \
 	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
 	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
 endif
+endif
 
 # **************************************************************************
 # Source code files for local build & dist.
 
+if MAC_FRAMEWORK
+RegularSources = \
+	actions/all-actions-cpp.cpp \
+	base/all-base-cpp.cpp \
+	bundles/all-bundles-cpp.cpp \
+	caches/all-caches-cpp.cpp \
+	elements/all-elements-cpp.cpp \
+	elements/GL/all-glelements-cpp.cpp \
+	engines/all-engines-cpp.cpp \
+	engines/all-engines-c.c \
+	errors/all-errors-cpp.cpp \
+	events/all-events-cpp.cpp \
+	fields/all-fields-cpp.cpp \
+	fonts/all-fonts-cpp.cpp \
+	glue/all-glue-cpp.cpp \
+	io/all-io-cpp.cpp \
+	misc/all-misc-cpp.cpp \
+	lists/all-lists-cpp.cpp \
+	nodekits/all-nodekits-cpp.cpp \
+	nodes/all-nodes-cpp.cpp \
+	shapenodes/all-shapenodes-cpp.cpp \
+	projectors/all-projectors-cpp.cpp \
+	sensors/all-sensors-cpp.cpp \
+	details/all-details-cpp.cpp \
+	draggers/all-draggers-cpp.cpp \
+	manips/all-manips-cpp.cpp \
+	upgraders/all-upgraders-cpp.cpp \
+	navigation/all-navigation-cpp.cpp \
+	3ds/all-3ds-cpp.cpp \
+	collision/all-collision-cpp.cpp \
+	hardcopy/all-hardcopy-cpp.cpp \
+	threads/all-threads-cpp.cpp \
+	mpeg/all-mpeg-cpp.cpp \
+	shaders/all-shaders-cpp.cpp \
+	shadows/all-shadows-cpp.cpp \
+	geo/all-geo-cpp.cpp \
+	foreignfiles/all-foreignfiles-cpp.cpp \
+	xml/all-xml-cpp.cpp \
+	xml/expat/all-expat-c.c \
+	profiler/all-profiler-cpp.cpp \
+	vrml97/all-vrml97-cpp.cpp \
+	scxml/all-scxml-cpp.cpp \
+	tidbits.cpp \
+	share/gl/CoinGLPerformance.cpp
+else
 RegularSources = \
 	tidbits.cpp \
 	share/gl/CoinGLPerformance.cpp
+endif
 
 PrivateHeaders = \
 	share/gl/CoinGLPerformance.h
