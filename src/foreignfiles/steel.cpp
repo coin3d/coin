@@ -43,7 +43,9 @@
 #ifdef __cplusplus
 
 #include <stdlib.h>
+#if 0 //QUICKFIX for Windows build problems
 #include <unistd.h>
+#endif
 
 /* Use prototypes in function declarations. */
 #define YY_USE_PROTOS
