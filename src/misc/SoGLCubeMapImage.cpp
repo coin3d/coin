@@ -91,8 +91,6 @@ static GLenum get_gltarget(SoGLCubeMapImage::Target target)
   return ret;
 }
 
-#undef MIRROR
-
 class SoGLCubeMapImageP {
 public:
   SoGLCubeMapImageP(void) { 
@@ -349,4 +347,5 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
   return dl;
 }
 
+#undef PRIVATE
 

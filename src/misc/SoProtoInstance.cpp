@@ -109,8 +109,7 @@ SoProtoInstance::cleanupClass(void)
   SoProtoInstance::classTypeId STATIC_SOTYPE_INIT;
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
@@ -118,9 +117,9 @@ SoProtoInstance::cleanupClass(void)
 SoProtoInstance::SoProtoInstance(SoProto * proto,
                                  const SoFieldData * deffielddata)
 {
-  THIS = new SoProtoInstanceP;
-  THIS->fielddata = new SoFieldData;
-  THIS->protodef = proto;
+  PRIVATE(this) = new SoProtoInstanceP;
+  PRIVATE(this)->fielddata = new SoFieldData;
+  PRIVATE(this)->protodef = proto;
   if (proto) proto->ref();
   this->copyFieldData(deffielddata);
 }
@@ -131,21 +130,21 @@ SoProtoInstance::SoProtoInstance(SoProto * proto,
 SoProtoInstance::~SoProtoInstance()
 {
   this->setRootNode(NULL);
-  const int n = THIS->fielddata->getNumFields();
+  const int n = PRIVATE(this)->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
-    delete THIS->fielddata->getField(this, i);
+    delete PRIVATE(this)->fielddata->getField(this, i);
   }
-  delete THIS->fielddata;
-  if (THIS->protodef) THIS->protodef->unref();
-  delete THIS;
-  THIS = 0;
+  delete PRIVATE(this)->fielddata;
+  if (PRIVATE(this)->protodef) PRIVATE(this)->protodef->unref();
+  delete PRIVATE(this);
+  PRIVATE(this) = 0;
 }
 
 // doc in parent
 const SoFieldData *
 SoProtoInstance::getFieldData(void) const
 {
-  return THIS->fielddata;
+  return PRIVATE(this)->fielddata;
 }
 
 /*!
@@ -154,7 +153,7 @@ SoProtoInstance::getFieldData(void) const
 SoProto *
 SoProtoInstance::getProtoDefinition(void) const
 {
-  return THIS->protodef;
+  return PRIVATE(this)->protodef;
 }
 
 /*!
@@ -163,7 +162,7 @@ SoProtoInstance::getProtoDefinition(void) const
 SbName
 SoProtoInstance::getProtoName(void) const
 {
-  if (THIS->protodef) return THIS->protodef->getProtoName();
+  if (PRIVATE(this)->protodef) return PRIVATE(this)->protodef->getProtoName();
   return SbName::empty();
 }
 
@@ -182,10 +181,10 @@ void
 SoProtoInstance::setRootNode(SoNode * root)
 {
   CC_MUTEX_LOCK(protoinstance_mutex);
-  if (THIS->root) {
-    protoinstance_dict->remove(THIS->root);
+  if (PRIVATE(this)->root) {
+    protoinstance_dict->remove(PRIVATE(this)->root);
   }
-  THIS->root = root;
+  PRIVATE(this)->root = root;
   if (root) {
     protoinstance_dict->put(root, this);
   }
@@ -198,7 +197,7 @@ SoProtoInstance::setRootNode(SoNode * root)
 SoNode *
 SoProtoInstance::getRootNode(void)
 {
-  return THIS->root;
+  return PRIVATE(this)->root;
 }
 
 // Doc in parent
@@ -222,7 +221,7 @@ SoProtoInstance::write(SoWriteAction * action)
 const char *
 SoProtoInstance::getFileFormatName(void) const
 {
-  return THIS->protodef->getProtoName().getString();
+  return PRIVATE(this)->protodef->getProtoName().getString();
 }
 
 /*!
@@ -246,10 +245,10 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
   const int n = src->getNumFields();
   SoFieldContainer::initCopyDict();
   for (int i = 0; i < n; i++) {
-    SoField * f = src->getField(THIS->protodef, i);
+    SoField * f = src->getField(PRIVATE(this)->protodef, i);
     SoField * cp = (SoField*) f->getTypeId().createInstance();
     cp->setContainer(this);
-    THIS->fielddata->addField(this, src->getFieldName(i), cp);
+    PRIVATE(this)->fielddata->addField(this, src->getFieldName(i), cp);
     if (f->getFieldType() == SoField::NORMAL_FIELD ||
         f->getFieldType() == SoField::EXPOSED_FIELD) {
       cp->copyFrom(*f);
@@ -272,3 +271,6 @@ SoProtoInstance::sensorCB(void * data, SoSensor *)
   thisp->setRootNode(NULL);
   thisp->unref();
 }
+
+#undef PRIVATE
+

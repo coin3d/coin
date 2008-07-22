@@ -298,6 +298,7 @@ SoRenderManager::Superimposition::setTransparencyType(SoGLRenderAction::Transpar
   PRIVATE(this)->transparencytype = (int) type;
 }
 
+#undef INHERIT_TRANSPARENCY_TYPE
 #undef PRIVATE
 #undef PUBLIC
 

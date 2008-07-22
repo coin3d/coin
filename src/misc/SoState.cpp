@@ -111,8 +111,7 @@ public:
   class sostate_pushstore * pushstore;
 };
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -128,11 +127,11 @@ public:
 
 SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
 {
-  THIS = new SoStateP;
+  PRIVATE(this) = new SoStateP;
 
-  THIS->action = theAction;
-  THIS->depth = 0;
-  THIS->ispopping = FALSE;
+  PRIVATE(this)->action = theAction;
+  PRIVATE(this)->depth = 0;
+  PRIVATE(this)->ispopping = FALSE;
   this->cacheopen = FALSE;
 
   int i;
@@ -142,10 +141,10 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
   // the stack member can be accessed from inline methods, and is
   // therefore not moved to the private class.
   this->stack = new SoElement * [this->numstacks];
-  THIS->initial = new SoElement * [this->numstacks];
+  PRIVATE(this)->initial = new SoElement * [this->numstacks];
 
   for (i = 0; i < this->numstacks; i++) {
-    THIS->initial[i] = NULL;
+    PRIVATE(this)->initial[i] = NULL;
     this->stack[i] = NULL;
   }
 
@@ -155,14 +154,14 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
     assert(type.isBad() || type.canCreateInstance());
     if (!type.isBad()) {
       SoElement * const element = (SoElement *) type.createInstance();
-      element->setDepth(THIS->depth);
+      element->setDepth(PRIVATE(this)->depth);
       const int stackindex = element->getStackIndex();
       this->stack[stackindex] = element;
-      THIS->initial[stackindex] = element;
+      PRIVATE(this)->initial[stackindex] = element;
       element->init(this); // called for first element in state stack
     }
   }
-  THIS->pushstore = new sostate_pushstore;
+  PRIVATE(this)->pushstore = new sostate_pushstore;
 }
 
 /*!
@@ -175,7 +174,7 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
 SoState::~SoState(void)
 {
   for (int i = 0; i < this->numstacks; i++) {
-    SoElement * elem = THIS->initial[i];
+    SoElement * elem = PRIVATE(this)->initial[i];
     SoElement * next;
     while (elem) {
       next = elem->nextup;
@@ -184,17 +183,17 @@ SoState::~SoState(void)
     }
   }
 
-  delete[] THIS->initial;
+  delete[] PRIVATE(this)->initial;
   delete[] this->stack;
 
-  sostate_pushstore * item = THIS->pushstore;
+  sostate_pushstore * item = PRIVATE(this)->pushstore;
   while (item->prev) item = item->prev; // go to first item
   while (item) {
     sostate_pushstore * next = item->next;
     delete item;
     item = next;
   }
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -205,7 +204,7 @@ SoState::~SoState(void)
 SoAction *
 SoState::getAction(void) const
 {
-  return THIS->action;
+  return PRIVATE(this)->action;
 }
 
 /*!
@@ -221,7 +220,7 @@ SoState::getElement(const int stackindex)
   // catch attempts at setting an element from another element's pop()
   // method (yes, I did this stupid mistake myself and spent a long
   // time debugging it, pederb, 2007-08-01)
-  assert(!THIS->ispopping);
+  assert(!PRIVATE(this)->ispopping);
 
   if (!this->isElementEnabled(stackindex)) return NULL;
   SoElement * element = this->stack[stackindex];
@@ -233,22 +232,22 @@ SoState::getElement(const int stackindex)
                          stackindex, element,
                          element->getTypeId().getName().getString(),
                          element->getDepth(),
-                         (element->getDepth() < THIS->depth) ?
+                         (element->getDepth() < PRIVATE(this)->depth) ?
                          "yes" : "no");
 #endif // debug
 
-  if (element->getDepth() < THIS->depth) { // create elt of correct depth
+  if (element->getDepth() < PRIVATE(this)->depth) { // create elt of correct depth
     SoElement * next = element->nextup;
     if (! next) { // allocate new element
       next = (SoElement *) element->getTypeId().createInstance();
       next->nextdown = element;
       element->nextup = next;
     }
-    next->setDepth(THIS->depth);
+    next->setDepth(PRIVATE(this)->depth);
     next->push(this);
     this->stack[stackindex] = next;
     element = next;
-    THIS->pushstore->elements.append(stackindex);
+    PRIVATE(this)->pushstore->elements.append(stackindex);
   }
   return element;
 }
@@ -265,14 +264,14 @@ SoState::getElement(const int stackindex)
 void
 SoState::push(void)
 {
-  if (THIS->pushstore->next == NULL) {
+  if (PRIVATE(this)->pushstore->next == NULL) {
     sostate_pushstore * store = new sostate_pushstore;
-    store->prev = THIS->pushstore;
-    THIS->pushstore->next = store;
+    store->prev = PRIVATE(this)->pushstore;
+    PRIVATE(this)->pushstore->next = store;
   }
-  THIS->pushstore = THIS->pushstore->next;
-  THIS->pushstore->elements.truncate(0);
-  THIS->depth++;
+  PRIVATE(this)->pushstore = PRIVATE(this)->pushstore->next;
+  PRIVATE(this)->pushstore->elements.truncate(0);
+  PRIVATE(this)->depth++;
 }
 
 /*!
@@ -284,11 +283,11 @@ SoState::push(void)
 void
 SoState::pop(void)
 {
-  THIS->ispopping = TRUE;
-  THIS->depth--;
-  int n = THIS->pushstore->elements.getLength();
+  PRIVATE(this)->ispopping = TRUE;
+  PRIVATE(this)->depth--;
+  int n = PRIVATE(this)->pushstore->elements.getLength();
   if (n) {
-    const int * array = THIS->pushstore->elements.getArrayPtr();
+    const int * array = PRIVATE(this)->pushstore->elements.getArrayPtr();
     for (int i = n-1; i >= 0; i--) {
       int idx = array[i];
       SoElement * elem = this->stack[idx];
@@ -298,9 +297,9 @@ SoState::pop(void)
       this->stack[idx] = prev;
     }
   }
-  THIS->pushstore->elements.truncate(0);
-  THIS->pushstore = THIS->pushstore->prev;
-  THIS->ispopping = FALSE;
+  PRIVATE(this)->pushstore->elements.truncate(0);
+  PRIVATE(this)->pushstore = PRIVATE(this)->pushstore->prev;
+  PRIVATE(this)->ispopping = FALSE;
 }
 
 /*!
@@ -310,7 +309,7 @@ SoState::pop(void)
 void
 SoState::print(FILE * const file) const
 {
-  fprintf(file, "SoState[%p]: depth = %d\n", this, THIS->depth);
+  fprintf(file, "SoState[%p]: depth = %d\n", this, PRIVATE(this)->depth);
   fprintf(file, "  enabled elements {\n");
   for (int i = 0; i < this->numstacks; i++) {
     SoElement * element;
@@ -330,7 +329,7 @@ SoState::print(FILE * const file) const
 int
 SoState::getDepth(void) const
 {
-  return THIS->depth;
+  return PRIVATE(this)->depth;
 }
 
 /*!
@@ -342,4 +341,5 @@ SoState::setCacheOpen(const SbBool open)
   this->cacheopen = open;
 }
 
-#undef THIS
+#undef PRIVATE
+

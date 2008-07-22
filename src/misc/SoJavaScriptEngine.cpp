@@ -35,8 +35,6 @@
 
 // *************************************************************************
 
-#undef PRIVATE
-#undef PUBLIC
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 

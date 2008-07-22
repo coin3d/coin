@@ -1917,4 +1917,5 @@ SoBase::staticDataUnlock(void)
   CC_MUTEX_UNLOCK(SoBaseP::global_mutex);
 }
 
+#undef ALIVE_PATTERN
 
