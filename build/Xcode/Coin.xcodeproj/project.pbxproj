@@ -56,7 +56,16 @@
 		E011F20E0D9BED09001D1675 /* CoinResources.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20D0D9BED09001D1675 /* CoinResources.h */; };
 		E011F2100D9BED2C001D1675 /* SoScXMLViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */; };
 		E018D8720DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E018D8710DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp */; };
+		E01B15840E35DA65001399E5 /* steel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B15830E35DA65001399E5 /* steel.cpp */; };
+		E01B15860E35DA8F001399E5 /* SoVertexAttributeBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B15850E35DA8F001399E5 /* SoVertexAttributeBundle.cpp */; };
+		E01B15890E35DAB8001399E5 /* SoVertexAttributeBindingElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B15870E35DAB8001399E5 /* SoVertexAttributeBindingElement.cpp */; };
+		E01B158A0E35DAB8001399E5 /* SoVertexAttributeElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B15880E35DAB8001399E5 /* SoVertexAttributeElement.cpp */; };
+		E01B158C0E35DAD3001399E5 /* SoGLVertexAttributeElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B158B0E35DAD3001399E5 /* SoGLVertexAttributeElement.cpp */; };
+		E01B15970E35DAF0001399E5 /* SoVertexAttributeBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B15960E35DAF0001399E5 /* SoVertexAttributeBinding.cpp */; };
+		E01B15990E35DB08001399E5 /* SoVertexAttribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E01B15980E35DB08001399E5 /* SoVertexAttribute.cpp */; };
 		E03F043E0DC0545600CB2F20 /* SoShadowSpotLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E03F043D0DC0545600CB2F20 /* SoShadowSpotLight.cpp */; };
+		E08973DB0E227FFD00D10D7C /* SoHeightMapToNormalMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E08973D90E227FFD00D10D7C /* SoHeightMapToNormalMap.cpp */; };
+		E08973DC0E227FFD00D10D7C /* SoTexture2Convert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E08973DA0E227FFD00D10D7C /* SoTexture2Convert.cpp */; };
 		E09989660D9425F40054FBE6 /* non_winsys.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F00D9425F40054FBE6 /* non_winsys.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989670D9425F40054FBE6 /* oivwin32.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F10D9425F40054FBE6 /* oivwin32.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E09989690D9425F40054FBE6 /* Sb.h in Headers */ = {isa = PBXBuildFile; fileRef = E09988F30D9425F40054FBE6 /* Sb.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -658,7 +667,6 @@
 		E0FC4DFA0D92D50900EF3BB3 /* win32.h in Headers */ = {isa = PBXBuildFile; fileRef = E0FC491D0D92D50300EF3BB3 /* win32.h */; };
 		E0FC4DFF0D92D50900EF3BB3 /* SoForeignFileKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC49230D92D50300EF3BB3 /* SoForeignFileKit.cpp */; };
 		E0FC4E000D92D50900EF3BB3 /* SoSTLFileKit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC49240D92D50300EF3BB3 /* SoSTLFileKit.cpp */; };
-		E0FC4E010D92D50900EF3BB3 /* steel.c in Sources */ = {isa = PBXBuildFile; fileRef = E0FC49250D92D50300EF3BB3 /* steel.c */; };
 		E0FC4E020D92D50900EF3BB3 /* steel.h in Headers */ = {isa = PBXBuildFile; fileRef = E0FC49260D92D50300EF3BB3 /* steel.h */; };
 		E0FC4E070D92D50900EF3BB3 /* SbGeoAngle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC492C0D92D50300EF3BB3 /* SbGeoAngle.cpp */; };
 		E0FC4E080D92D50900EF3BB3 /* SbGeoAngle.h in Headers */ = {isa = PBXBuildFile; fileRef = E0FC492D0D92D50300EF3BB3 /* SbGeoAngle.h */; };
@@ -1339,7 +1347,16 @@
 		E011F20D0D9BED09001D1675 /* CoinResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinResources.h; sourceTree = "<group>"; };
 		E011F20F0D9BED2C001D1675 /* SoScXMLViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoScXMLViewUtils.h; sourceTree = "<group>"; };
 		E018D8710DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoProfilingReportGenerator.cpp; sourceTree = "<group>"; };
+		E01B15830E35DA65001399E5 /* steel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = steel.cpp; sourceTree = "<group>"; };
+		E01B15850E35DA8F001399E5 /* SoVertexAttributeBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoVertexAttributeBundle.cpp; sourceTree = "<group>"; };
+		E01B15870E35DAB8001399E5 /* SoVertexAttributeBindingElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoVertexAttributeBindingElement.cpp; sourceTree = "<group>"; };
+		E01B15880E35DAB8001399E5 /* SoVertexAttributeElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoVertexAttributeElement.cpp; sourceTree = "<group>"; };
+		E01B158B0E35DAD3001399E5 /* SoGLVertexAttributeElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoGLVertexAttributeElement.cpp; sourceTree = "<group>"; };
+		E01B15960E35DAF0001399E5 /* SoVertexAttributeBinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoVertexAttributeBinding.cpp; sourceTree = "<group>"; };
+		E01B15980E35DB08001399E5 /* SoVertexAttribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoVertexAttribute.cpp; sourceTree = "<group>"; };
 		E03F043D0DC0545600CB2F20 /* SoShadowSpotLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoShadowSpotLight.cpp; sourceTree = "<group>"; };
+		E08973D90E227FFD00D10D7C /* SoHeightMapToNormalMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoHeightMapToNormalMap.cpp; sourceTree = "<group>"; };
+		E08973DA0E227FFD00D10D7C /* SoTexture2Convert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoTexture2Convert.cpp; sourceTree = "<group>"; };
 		E09988D80D9425F40054FBE6 /* actions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = actions; sourceTree = "<group>"; };
 		E09988D90D9425F40054FBE6 /* annex */ = {isa = PBXFileReference; lastKnownFileType = folder; path = annex; sourceTree = "<group>"; };
 		E09988DA0D9425F40054FBE6 /* bundles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundles; sourceTree = "<group>"; };
@@ -2961,7 +2978,6 @@
 		E0FC491D0D92D50300EF3BB3 /* win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
 		E0FC49230D92D50300EF3BB3 /* SoForeignFileKit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoForeignFileKit.cpp; sourceTree = "<group>"; };
 		E0FC49240D92D50300EF3BB3 /* SoSTLFileKit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoSTLFileKit.cpp; sourceTree = "<group>"; };
-		E0FC49250D92D50300EF3BB3 /* steel.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = steel.c; sourceTree = "<group>"; };
 		E0FC49260D92D50300EF3BB3 /* steel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steel.h; sourceTree = "<group>"; };
 		E0FC492C0D92D50300EF3BB3 /* SbGeoAngle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SbGeoAngle.cpp; sourceTree = "<group>"; };
 		E0FC492D0D92D50300EF3BB3 /* SbGeoAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SbGeoAngle.h; sourceTree = "<group>"; };
@@ -5695,6 +5711,7 @@
 		E0FC47680D92D50200EF3BB3 /* bundles */ = {
 			isa = PBXGroup;
 			children = (
+				E01B15850E35DA8F001399E5 /* SoVertexAttributeBundle.cpp */,
 				E0FC476C0D92D50200EF3BB3 /* SoBundle.cpp */,
 				E0FC476D0D92D50200EF3BB3 /* SoMaterialBundle.cpp */,
 				E0FC476E0D92D50200EF3BB3 /* SoNormalBundle.cpp */,
@@ -5783,6 +5800,8 @@
 		E0FC47B50D92D50200EF3BB3 /* elements */ = {
 			isa = PBXGroup;
 			children = (
+				E01B15870E35DAB8001399E5 /* SoVertexAttributeBindingElement.cpp */,
+				E01B15880E35DAB8001399E5 /* SoVertexAttributeElement.cpp */,
 				E0FC47B70D92D50200EF3BB3 /* GL */,
 				E0FC47E00D92D50200EF3BB3 /* SoAccumulatedElement.cpp */,
 				E0FC47E10D92D50200EF3BB3 /* SoAmbientColorElement.cpp */,
@@ -5877,6 +5896,7 @@
 		E0FC47B70D92D50200EF3BB3 /* GL */ = {
 			isa = PBXGroup;
 			children = (
+				E01B158B0E35DAD3001399E5 /* SoGLVertexAttributeElement.cpp */,
 				E0FC47BB0D92D50200EF3BB3 /* SoGLCacheContextElement.cpp */,
 				E0FC47BC0D92D50200EF3BB3 /* SoGLClipPlaneElement.cpp */,
 				E0FC47BD0D92D50200EF3BB3 /* SoGLColorIndexElement.cpp */,
@@ -5918,6 +5938,8 @@
 		E0FC48360D92D50200EF3BB3 /* engines */ = {
 			isa = PBXGroup;
 			children = (
+				E08973D90E227FFD00D10D7C /* SoHeightMapToNormalMap.cpp */,
+				E08973DA0E227FFD00D10D7C /* SoTexture2Convert.cpp */,
 				E0FC48390D92D50200EF3BB3 /* evaluator.c */,
 				E0FC483A0D92D50200EF3BB3 /* evaluator.h */,
 				E0FC483D0D92D50200EF3BB3 /* evaluator_tab.c */,
@@ -6154,9 +6176,9 @@
 		E0FC491E0D92D50300EF3BB3 /* foreignfiles */ = {
 			isa = PBXGroup;
 			children = (
+				E01B15830E35DA65001399E5 /* steel.cpp */,
 				E0FC49230D92D50300EF3BB3 /* SoForeignFileKit.cpp */,
 				E0FC49240D92D50300EF3BB3 /* SoSTLFileKit.cpp */,
-				E0FC49250D92D50300EF3BB3 /* steel.c */,
 				E0FC49260D92D50300EF3BB3 /* steel.h */,
 			);
 			path = foreignfiles;
@@ -6475,6 +6497,8 @@
 		E0FC4A2B0D92D50400EF3BB3 /* nodes */ = {
 			isa = PBXGroup;
 			children = (
+				E01B15980E35DB08001399E5 /* SoVertexAttribute.cpp */,
+				E01B15960E35DAF0001399E5 /* SoVertexAttributeBinding.cpp */,
 				E0FC4A2D0D92D50400EF3BB3 /* ivy */,
 				E0FC4A390D92D50400EF3BB3 /* SoAnnotation.cpp */,
 				E0FC4A3A0D92D50400EF3BB3 /* SoAnnoText3.cpp */,
@@ -7750,7 +7774,6 @@
 				E0FC4DF90D92D50900EF3BB3 /* win32.cpp in Sources */,
 				E0FC4DFF0D92D50900EF3BB3 /* SoForeignFileKit.cpp in Sources */,
 				E0FC4E000D92D50900EF3BB3 /* SoSTLFileKit.cpp in Sources */,
-				E0FC4E010D92D50900EF3BB3 /* steel.c in Sources */,
 				E0FC4E070D92D50900EF3BB3 /* SbGeoAngle.cpp in Sources */,
 				E0FC4E090D92D50900EF3BB3 /* SbGeoEllipsoid.cpp in Sources */,
 				E0FC4E0B0D92D50900EF3BB3 /* SbGeoProjection.cpp in Sources */,
@@ -8231,6 +8254,15 @@
 				E011F2090D9BEBAB001D1675 /* SoScXMLViewUtils.cpp in Sources */,
 				E018D8720DA52F9200E8DB34 /* SoProfilingReportGenerator.cpp in Sources */,
 				E03F043E0DC0545600CB2F20 /* SoShadowSpotLight.cpp in Sources */,
+				E08973DB0E227FFD00D10D7C /* SoHeightMapToNormalMap.cpp in Sources */,
+				E08973DC0E227FFD00D10D7C /* SoTexture2Convert.cpp in Sources */,
+				E01B15840E35DA65001399E5 /* steel.cpp in Sources */,
+				E01B15860E35DA8F001399E5 /* SoVertexAttributeBundle.cpp in Sources */,
+				E01B15890E35DAB8001399E5 /* SoVertexAttributeBindingElement.cpp in Sources */,
+				E01B158A0E35DAB8001399E5 /* SoVertexAttributeElement.cpp in Sources */,
+				E01B158C0E35DAD3001399E5 /* SoGLVertexAttributeElement.cpp in Sources */,
+				E01B15970E35DAF0001399E5 /* SoVertexAttributeBinding.cpp in Sources */,
+				E01B15990E35DB08001399E5 /* SoVertexAttribute.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8263,6 +8295,8 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Inventor_Prefix.pch;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
 					include,
@@ -8285,6 +8319,7 @@
 				OTHER_LDFLAGS = "-headerpad_max_install_names";
 				PRODUCT_NAME = Inventor;
 				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "-Wall";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
