@@ -315,3 +315,7 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
     cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
   }
 }
+
+#undef MAX_UNITS
+#undef PRIVATE
+

@@ -788,3 +788,6 @@ SoOverrideElement::setNormalBindingOverride(SoState * const state,
   SO_SET_OVERRIDE(NORMAL_BINDING);
 }
 
+#undef SO_GET_OVERRIDE
+#undef SO_SET_OVERRIDE
+

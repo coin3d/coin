@@ -254,3 +254,5 @@ SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
     SoVBO::shouldCreateVBO(state, glue->contextid, numdata);
 }
 
+#undef PRIVATE
+

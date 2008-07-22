@@ -44,7 +44,6 @@ public:
   float gfxvalue;
 };
 
-#undef PRIVATE
 #define PRIVATE(obj) obj->pimpl
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoCacheHintElement);
@@ -157,3 +156,5 @@ SoCacheHintElement::get(SoState * const state, float & memvalue, float & gfxvalu
 }
 
 #undef PRIVATE
+#undef VERTEX_ARRAY_LIMIT
+

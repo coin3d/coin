@@ -1364,3 +1364,5 @@ SoGLLazyElement::mergeCacheInfo(SoState * state,
 
 #undef FLAG_FORCE_DIFFUSE
 #undef FLAG_DIFFUSE_DEPENDENCY
+#undef GLLAZY_DEBUG
+

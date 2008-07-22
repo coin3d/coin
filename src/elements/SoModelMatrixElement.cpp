@@ -420,3 +420,7 @@ SoModelMatrixElement::getModelMatrix(void) const
 {
   return this->modelMatrix;
 }
+
+#undef FLG_IDENTITY
+#undef FLG_CULLMATRIX
+#undef FLG_COMBINED

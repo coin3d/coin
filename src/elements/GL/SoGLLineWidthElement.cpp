@@ -63,14 +63,10 @@
 #include <assert.h>
 #include <Inventor/errors/SoDebugError.h>
 
-// Also used in other element .cpp files, so wrap to handle
-// --enable-compact build mode.
-#ifndef RANGE_NOT_CHECKED
 // Important note: do _not_ use a "static const" variable instead, as
 // it is then not given that it will be initialized before the static
 // "sizerange" class variable array below.
 #define RANGE_NOT_CHECKED FLT_MAX
-#endif // RANGE_NOT_CHECKED
 
 float SoGLLineWidthElement::sizerange[2] = { RANGE_NOT_CHECKED, -1.0f};
 
@@ -198,3 +194,6 @@ SoGLLineWidthElement::updategl(void)
 
   glLineWidth(useval);
 }
+
+#undef RANGE_NOT_CHECKED
+
