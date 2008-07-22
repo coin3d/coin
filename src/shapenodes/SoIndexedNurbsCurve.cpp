@@ -120,9 +120,7 @@ private:
   SoIndexedNurbsCurve * owner;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) (p->owner)
 
 // *************************************************************************
@@ -447,3 +445,7 @@ SoIndexedNurbsCurveP::tessEnd(void * data)
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->thisp->endShape();
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

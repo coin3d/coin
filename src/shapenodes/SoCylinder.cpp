@@ -364,3 +364,5 @@ SoCylinder::generatePrimitives(SoAction * action)
                           this,
                           action);
 }
+
+#undef CYL_SIDE_NUMTRIS

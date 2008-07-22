@@ -270,8 +270,7 @@ public:
 };
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoIndexedFaceSet);
 
@@ -280,10 +279,10 @@ SO_NODE_SOURCE(SoIndexedFaceSet);
 */
 SoIndexedFaceSet::SoIndexedFaceSet()
 {
-  THIS = new SoIndexedFaceSetP;
-  THIS->convexCache = NULL;
-  THIS->vaindexer = NULL;
-  THIS->concavestatus = STATUS_UNKNOWN;
+  PRIVATE(this) = new SoIndexedFaceSetP;
+  PRIVATE(this)->convexCache = NULL;
+  PRIVATE(this)->vaindexer = NULL;
+  PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedFaceSet);
 }
@@ -294,9 +293,9 @@ SoIndexedFaceSet::SoIndexedFaceSet()
 */
 SoIndexedFaceSet::~SoIndexedFaceSet()
 {
-  delete THIS->vaindexer;
-  if (THIS->convexCache) THIS->convexCache->unref();
-  delete THIS;
+  delete PRIVATE(this)->vaindexer;
+  if (PRIVATE(this)->convexCache) PRIVATE(this)->convexCache->unref();
+  delete PRIVATE(this);
 }
 
 // doc from parent
@@ -388,16 +387,16 @@ void
 SoIndexedFaceSet::notify(SoNotList * list)
 {
   // Overridden to invalidate convex cache.
-  THIS->readLockConvexCache();
-  if (THIS->convexCache) THIS->convexCache->invalidate();
-  THIS->readUnlockConvexCache();
+  PRIVATE(this)->readLockConvexCache();
+  if (PRIVATE(this)->convexCache) PRIVATE(this)->convexCache->invalidate();
+  PRIVATE(this)->readUnlockConvexCache();
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) {
-    THIS->concavestatus = STATUS_UNKNOWN;
+    PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
     LOCK_VAINDEXER(this);
-    if (THIS->vaindexer) {
-      delete THIS->vaindexer;
-      THIS->vaindexer = NULL;
+    if (PRIVATE(this)->vaindexer) {
+      delete PRIVATE(this)->vaindexer;
+      PRIVATE(this)->vaindexer = NULL;
     }
     UNLOCK_VAINDEXER(this);
   }
@@ -493,11 +492,11 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   SbBool convexcacheused = FALSE;
   if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
-    cindices = THIS->convexCache->getCoordIndices();
-    numindices = THIS->convexCache->getNumCoordIndices();
-    mindices = THIS->convexCache->getMaterialIndices();
-    nindices = THIS->convexCache->getNormalIndices();
-    tindices = THIS->convexCache->getTexIndices();
+    cindices = PRIVATE(this)->convexCache->getCoordIndices();
+    numindices = PRIVATE(this)->convexCache->getNumCoordIndices();
+    mindices = PRIVATE(this)->convexCache->getMaterialIndices();
+    nindices = PRIVATE(this)->convexCache->getNormalIndices();
+    tindices = PRIVATE(this)->convexCache->getTexIndices();
 
     if (mbind == PER_VERTEX) mbind = PER_VERTEX_INDEXED;
     else if (mbind == PER_FACE) mbind = PER_FACE_INDEXED;
@@ -551,7 +550,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
                                           doTextures,
                                           mbind != OVERALL);
     LOCK_VAINDEXER(this);
-    if (THIS->vaindexer == NULL) {
+    if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
       int i = 0;
       while (i < numindices) {
@@ -578,7 +577,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
       }
       indexer->close();
       if (indexer->getNumVertices()) {
-        THIS->vaindexer = indexer;
+        PRIVATE(this)->vaindexer = indexer;
       }
       else {
         delete indexer;
@@ -588,8 +587,8 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 #endif
     }
 
-    if (THIS->vaindexer) {
-      THIS->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
+    if (PRIVATE(this)->vaindexer) {
+      PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
     this->finishVertexArray(action,
@@ -632,7 +631,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   }
 
   if (convexcacheused) {
-    THIS->readUnlockConvexCache();
+    PRIVATE(this)->readUnlockConvexCache();
   }
 
   if (hasvp) {
@@ -759,11 +758,11 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 
   SbBool convexcacheused = FALSE;
   if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
-    cindices = THIS->convexCache->getCoordIndices();
-    numindices = THIS->convexCache->getNumCoordIndices();
-    mindices = THIS->convexCache->getMaterialIndices();
-    nindices = THIS->convexCache->getNormalIndices();
-    tindices = THIS->convexCache->getTexIndices();
+    cindices = PRIVATE(this)->convexCache->getCoordIndices();
+    numindices = PRIVATE(this)->convexCache->getNumCoordIndices();
+    mindices = PRIVATE(this)->convexCache->getMaterialIndices();
+    nindices = PRIVATE(this)->convexCache->getNormalIndices();
+    tindices = PRIVATE(this)->convexCache->getTexIndices();
 
     if (mbind == PER_VERTEX) mbind = PER_VERTEX_INDEXED;
     else if (mbind == PER_FACE) mbind = PER_FACE_INDEXED;
@@ -885,7 +884,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     this->readUnlockNormalCache();
   }
   if (convexcacheused) {
-    THIS->readUnlockConvexCache();
+    PRIVATE(this)->readUnlockConvexCache();
   }
 
   if (this->vertexProperty.getValue()) {
@@ -945,30 +944,30 @@ SoIndexedFaceSet::useConvexCache(SoAction * action,
   if (SoShapeHintsElement::getFaceType(state) == SoShapeHintsElement::CONVEX)
     return FALSE;
   
-  if (THIS->concavestatus == STATUS_UNKNOWN) {
+  if (PRIVATE(this)->concavestatus == STATUS_UNKNOWN) {
     const int32_t * ptr = this->coordIndex.getValues(0);
     const int32_t * endptr = ptr + this->coordIndex.getNum();
     int cnt = 0;
-    THIS->concavestatus = STATUS_CONVEX;
+    PRIVATE(this)->concavestatus = STATUS_CONVEX;
     while (ptr < endptr) {
       if (*ptr++ >= 0) cnt++;
       else {
-        if (cnt > 3) { THIS->concavestatus = STATUS_CONCAVE; break; }
+        if (cnt > 3) { PRIVATE(this)->concavestatus = STATUS_CONCAVE; break; }
         cnt = 0;
       }
     }
   }
-  if (THIS->concavestatus == STATUS_CONVEX) return FALSE;
+  if (PRIVATE(this)->concavestatus == STATUS_CONVEX) return FALSE;
 
-  THIS->readLockConvexCache();
+  PRIVATE(this)->readLockConvexCache();
 
-  if (THIS->convexCache && THIS->convexCache->isValid(state))
+  if (PRIVATE(this)->convexCache && PRIVATE(this)->convexCache->isValid(state))
     return TRUE;
 
-  THIS->readUnlockConvexCache();
-  THIS->writeLockConvexCache();
+  PRIVATE(this)->readUnlockConvexCache();
+  PRIVATE(this)->writeLockConvexCache();
 
-  if (THIS->convexCache) THIS->convexCache->unref();
+  if (PRIVATE(this)->convexCache) PRIVATE(this)->convexCache->unref();
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
 
   // need to send matrix if we have some weird transformation
@@ -980,9 +979,9 @@ SoIndexedFaceSet::useConvexCache(SoAction * action,
 
   // push to create cache dependencies
   state->push();
-  THIS->convexCache = new SoConvexDataCache(state);
-  THIS->convexCache->ref();
-  SoCacheElement::set(state, THIS->convexCache);
+  PRIVATE(this)->convexCache = new SoConvexDataCache(state);
+  PRIVATE(this)->convexCache->ref();
+  SoCacheElement::set(state, PRIVATE(this)->convexCache);
   if (this->vertexProperty.getValue()) this->vertexProperty.getValue()->doAction(action);
   const SoCoordinateElement * coords;
   const SbVec3f * dummynormals;
@@ -1041,19 +1040,19 @@ SoIndexedFaceSet::useConvexCache(SoAction * action,
   if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
     mindices = cindices;
   }
-  THIS->convexCache->generate(coords, modelmatrix,
+  PRIVATE(this)->convexCache->generate(coords, modelmatrix,
                               cindices, numindices,
                               mindices, nindices, tindices,
                               (SoConvexDataCache::Binding)mbind,
                               (SoConvexDataCache::Binding)nbind,
                               (SoConvexDataCache::Binding)tbind);
 
-  THIS->writeUnlockConvexCache();
+  PRIVATE(this)->writeUnlockConvexCache();
 
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
 
-  THIS->readLockConvexCache();
+  PRIVATE(this)->readLockConvexCache();
 
   return TRUE;
 }
@@ -1111,9 +1110,10 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
   return TRUE;
 }
 
-#undef THIS
+#undef PRIVATE
 #undef STATUS_UNKNOWN
 #undef STATUS_CONVEX
 #undef STATUS_CONCAVE
 #undef LOCK_VAINDEXER
 #undef UNLOCK_VAINDEXER
+

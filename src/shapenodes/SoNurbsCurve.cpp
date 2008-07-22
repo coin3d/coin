@@ -157,9 +157,7 @@ private:
   SoNurbsCurve * owner;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) (p->owner)
 
 // *************************************************************************
@@ -501,3 +499,7 @@ SoNurbsCurveP::tessEnd(void * data)
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->thisp->endShape();
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

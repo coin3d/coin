@@ -176,9 +176,7 @@ private:
   SoNurbsSurface * owner;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) (p->owner)
 
 // *************************************************************************
@@ -517,3 +515,7 @@ SoNurbsSurfaceP::tessEnd(void * data)
   coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
   cbdata->thisp->endShape();
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

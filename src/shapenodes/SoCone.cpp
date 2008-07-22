@@ -337,3 +337,5 @@ SoCone::generatePrimitives(SoAction * action)
                       this,
                       action);
 }
+
+#undef CONE_SIDE_NUMTRIS

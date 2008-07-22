@@ -264,9 +264,7 @@ private:
   SoText3 * master;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 // *************************************************************************
@@ -1477,3 +1475,7 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
   if (oldcache) oldcache->unref();
 
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

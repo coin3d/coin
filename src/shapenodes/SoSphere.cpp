@@ -201,3 +201,7 @@ SoSphere::generatePrimitives(SoAction * action)
                         this,
                         action);
 }
+
+#undef SPHERE_NUM_SLICES
+#undef SPHERE_NUM_STACKS
+

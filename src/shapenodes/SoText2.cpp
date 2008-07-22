@@ -144,6 +144,7 @@
 //        -mortene
 #define WIN32_LEAN_AND_MEAN
 #include <Inventor/system/gl.h>
+#undef WIN32_LEAN_AND_MEAN
 // UPDATE, FIXME: due to some reorganization of header files GL/glx.h
 // should not be included anywhere for this source code file any
 // more. This means the hack above should no longer be necessary. To
@@ -234,8 +235,6 @@ private:
   SoText2 * master;
 };
 
-#undef PRIVATE
-#undef PUBLIC
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
@@ -889,3 +888,7 @@ SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   center = box.getCenter();
 }
+
+#undef PRIVATE
+#undef PUBLIC
+

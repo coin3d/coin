@@ -93,16 +93,15 @@ public:
 
 SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
 */
 SoVertexShape::SoVertexShape(void)
 {
-  THIS = new SoVertexShapeP;
-  THIS->normalcache = NULL;
+  PRIVATE(this) = new SoVertexShapeP;
+  PRIVATE(this)->normalcache = NULL;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShape);
 
@@ -114,8 +113,8 @@ SoVertexShape::SoVertexShape(void)
 */
 SoVertexShape::~SoVertexShape()
 {
-  if (THIS->normalcache) THIS->normalcache->unref();
-  delete THIS;
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->unref();
+  delete PRIVATE(this);
 }
 
 // doc from superclass
@@ -130,7 +129,7 @@ void
 SoVertexShape::notify(SoNotList * nl)
 {
   this->readLockNormalCache();
-  if (THIS->normalcache) THIS->normalcache->invalidate();
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->invalidate();
   this->readUnlockNormalCache();
   inherited::notify(nl);
 }
@@ -190,12 +189,12 @@ SoVertexShape::setNormalCache(SoState * const state,
                               const SbVec3f * normals)
 {
   this->writeLockNormalCache();
-  if (THIS->normalcache) THIS->normalcache->unref();
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->unref();
   // create new normal cache with no dependencies
   state->push();
-  THIS->normalcache = new SoNormalCache(state);
-  THIS->normalcache->ref();
-  THIS->normalcache->set(num, normals);
+  PRIVATE(this)->normalcache = new SoNormalCache(state);
+  PRIVATE(this)->normalcache->ref();
+  PRIVATE(this)->normalcache->set(num, normals);
   // force element dependencies
   (void) SoCoordinateElement::getInstance(state);
   (void) SoShapeHintsElement::getVertexOrdering(state);
@@ -210,7 +209,7 @@ SoVertexShape::setNormalCache(SoState * const state,
 SoNormalCache *
 SoVertexShape::getNormalCache(void) const
 {
-  return THIS->normalcache;
+  return PRIVATE(this)->normalcache;
 }
 
 /*!  
@@ -232,23 +231,23 @@ SoNormalCache *
 SoVertexShape::generateAndReadLockNormalCache(SoState * const state)
 {
   this->readLockNormalCache();
-  if (THIS->normalcache && THIS->normalcache->isValid(state)) {
-    return THIS->normalcache;
+  if (PRIVATE(this)->normalcache && PRIVATE(this)->normalcache->isValid(state)) {
+    return PRIVATE(this)->normalcache;
   }
   this->readUnlockNormalCache();
   this->writeLockNormalCache();
   
   SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
   
-  if (THIS->normalcache) THIS->normalcache->unref();
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->unref();
   state->push(); // need to push for cache dependencies
-  THIS->normalcache = new SoNormalCache(state);
-  THIS->normalcache->ref();
-  SoCacheElement::set(state, THIS->normalcache);
+  PRIVATE(this)->normalcache = new SoNormalCache(state);
+  PRIVATE(this)->normalcache->ref();
+  SoCacheElement::set(state, PRIVATE(this)->normalcache);
   //
   // See if the node supports the Coin-way of generating normals
   //
-  if (!generateDefaultNormals(state, THIS->normalcache)) {
+  if (!generateDefaultNormals(state, PRIVATE(this)->normalcache)) {
     // FIXME: implement SoNormalBundle
     if (generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
       // FIXME: set generator in normal cache
@@ -259,7 +258,7 @@ SoVertexShape::generateAndReadLockNormalCache(SoState * const state)
   SoCacheElement::setInvalid(storeinvalid);
   this->writeUnlockNormalCache();
   this->readLockNormalCache();
-  return THIS->normalcache;
+  return PRIVATE(this)->normalcache;
 }
 
 /*!
@@ -305,7 +304,7 @@ void
 SoVertexShape::readLockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.readLock();
+  PRIVATE(this)->normalcachemutex.readLock();
 #endif // COIN_THREADSAFE
 }
 
@@ -321,7 +320,7 @@ void
 SoVertexShape::readUnlockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.readUnlock();
+  PRIVATE(this)->normalcachemutex.readUnlock();
 #endif // COIN_THREADSAFE
 }
 
@@ -330,7 +329,7 @@ void
 SoVertexShape::writeLockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.writeLock();
+  PRIVATE(this)->normalcachemutex.writeLock();
 #endif // COIN_THREADSAFE
 }
 
@@ -339,8 +338,8 @@ void
 SoVertexShape::writeUnlockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.writeUnlock();
+  PRIVATE(this)->normalcachemutex.writeUnlock();
 #endif // COIN_THREADSAFE
 }
 
-#undef THIS
+#undef PRIVATE
