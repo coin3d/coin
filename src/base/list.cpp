@@ -255,4 +255,6 @@ cc_list_pop(cc_list * list)
   return list->itembuffer[--list->numitems];
 }
 
+#undef CC_LIST_DEFAULT_SIZE
+
 /* ********************************************************************** */

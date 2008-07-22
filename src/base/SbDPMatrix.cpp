@@ -1701,3 +1701,12 @@ decomp_affine(HMatrix A, AffineParts * parts)
   parts->u = p * parts->u;
 }
 
+#undef mat_pad
+#undef mat_copy
+#undef mat_tpose
+#undef mat_binop
+#undef TOL
+#undef SQRTHALF
+#undef sgn
+#undef swap
+

@@ -1064,3 +1064,7 @@ SbTime::print(FILE * fp) const
                (long int)tm.tv_usec);
 #endif // COIN_DEBUG
 }
+
+#undef SIM_TIMEVAL_TV_SEC_T
+#undef SIM_TIMEVAL_TV_USEC_T
+

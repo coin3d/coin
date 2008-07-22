@@ -1949,7 +1949,6 @@ SbMatrixP::snuggle(SbRotation q, SbVec4f & k)
 #undef SQRTHALF
 #undef sgn
 #undef swap
-#undef cycle
 }
 
 /******* Decompose Affine Matrix *******/

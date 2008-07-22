@@ -197,3 +197,6 @@ cc_namemap_peek_string(const char * str)
 {
   return namemap_find_or_add_string(str, FALSE);
 }
+
+#undef CHUNK_SIZE
+

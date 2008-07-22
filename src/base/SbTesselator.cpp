@@ -717,3 +717,6 @@ SbTesselator::cleanUp()
   this->currVertex = 0;
   this->numVerts = 0;
 }
+
+#undef PRIVATE
+
