@@ -3,8 +3,7 @@ RegularSources = \
 	3dsLoader.cpp \
 	SoStream.cpp
 LinkHackSources = \
-	3dsLoader.cpp \
-	SoStream.cpp
+	all-3ds-cpp.cpp
 PrivateHeaders = \
 	3dsLoader.h \
 	SoStream.h \

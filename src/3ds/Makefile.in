@@ -272,8 +272,7 @@ target_vendor = @target_vendor@
 # dummy included for 'make dist'
 @BUILD_3DS_CAPABILITIES_FALSE@RegularSources = 3ds-dummy.cpp
 @BUILD_3DS_CAPABILITIES_TRUE@LinkHackSources = \
-@BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.cpp \
-@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.cpp
+@BUILD_3DS_CAPABILITIES_TRUE@	all-3ds-cpp.cpp
 
 @BUILD_3DS_CAPABILITIES_FALSE@LinkHackSources = 3ds-dummy.cpp
 @BUILD_3DS_CAPABILITIES_TRUE@PrivateHeaders = \
@@ -350,37 +349,42 @@ LIBRARIES = $(noinst_LIBRARIES)
 format3ds_lst_AR = $(AR) cru
 format3ds_lst_LIBADD =
 am__format3ds_lst_SOURCES_DIST = 3dsLoader.cpp SoStream.cpp \
-	3ds-dummy.cpp
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_1 = 3dsLoader.$(OBJEXT) \
-@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.$(OBJEXT)
+	3ds-dummy.cpp all-3ds-cpp.cpp
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_1 = all-3ds-cpp.$(OBJEXT)
 @BUILD_3DS_CAPABILITIES_FALSE@am__objects_1 = 3ds-dummy.$(OBJEXT)
-@HACKING_COMPACT_BUILD_TRUE@am__objects_2 = $(am__objects_1)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_2 = $(am__objects_1)
-am_format3ds_lst_OBJECTS = $(am__objects_2)
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_2 = 3dsLoader.$(OBJEXT) \
+@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.$(OBJEXT)
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_2 = 3ds-dummy.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
+am_format3ds_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_format3ds_lst_SOURCES_DIST = 3dsLoader.h SoStream.h \
-	3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp
+	3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp all-3ds-cpp.cpp
 format3ds_lst_OBJECTS = $(am_format3ds_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libformat3ds_la_LDFLAGS =
 libformat3ds_la_LIBADD =
 am__libformat3ds_la_SOURCES_DIST = 3dsLoader.cpp SoStream.cpp \
-	3ds-dummy.cpp
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_5 = 3dsLoader.lo SoStream.lo
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_5 = 3ds-dummy.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_6 = $(am__objects_5)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_6 = $(am__objects_5)
-am_libformat3ds_la_OBJECTS = $(am__objects_6)
+	3ds-dummy.cpp all-3ds-cpp.cpp
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_7 = all-3ds-cpp.lo
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_7 = 3ds-dummy.lo
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_8 = 3dsLoader.lo SoStream.lo
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_8 = 3ds-dummy.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
+am_libformat3ds_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libformat3ds_la_SOURCES_DIST = 3dsLoader.h SoStream.h \
-	3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp
+	3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp all-3ds-cpp.cpp
 libformat3ds_la_OBJECTS = $(am_libformat3ds_la_OBJECTS)
 libformat3ds@SUFFIX@LINKHACK_la_LDFLAGS =
 libformat3ds@SUFFIX@LINKHACK_la_LIBADD =
 am__libformat3ds@SUFFIX@LINKHACK_la_SOURCES_DIST = 3dsLoader.cpp \
-	SoStream.cpp 3ds-dummy.cpp
-am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_6)
+	SoStream.cpp 3ds-dummy.cpp all-3ds-cpp.cpp
+am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES_DIST = 3dsLoader.h \
-	SoStream.h 3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp
+	SoStream.h 3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp \
+	all-3ds-cpp.cpp
 libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -388,7 +392,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/3ds-dummy.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/3ds-dummy.Po ./$(DEPDIR)/3dsLoader.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/3dsLoader.Po ./$(DEPDIR)/SoStream.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoStream.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoStream.Po ./$(DEPDIR)/all-3ds-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-3ds-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -481,6 +486,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/3dsLoader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoStream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoStream.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-3ds-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-3ds-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
