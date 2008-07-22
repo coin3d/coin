@@ -163,6 +163,7 @@ del %COINDIR%\include\Inventor\annex\Profiler\SoProfiler.h
 del %COINDIR%\include\Inventor\bundles\SoBundle.h
 del %COINDIR%\include\Inventor\bundles\SoMaterialBundle.h
 del %COINDIR%\include\Inventor\bundles\SoNormalBundle.h
+del %COINDIR%\include\Inventor\bundles\SoVertexAttributeBundle.h
 del %COINDIR%\include\Inventor\bundles\SoTextureCoordinateBundle.h
 del %COINDIR%\include\Inventor\caches\SoBoundingBoxCache.h
 del %COINDIR%\include\Inventor\caches\SoCache.h
@@ -170,6 +171,7 @@ del %COINDIR%\include\Inventor\caches\SoConvexDataCache.h
 del %COINDIR%\include\Inventor\caches\SoGLCacheList.h
 del %COINDIR%\include\Inventor\caches\SoGLRenderCache.h
 del %COINDIR%\include\Inventor\caches\SoNormalCache.h
+del %COINDIR%\include\Inventor\caches\SoPrimitiveVertexCache.h
 del %COINDIR%\include\Inventor\caches\SoTextureCoordinateCache.h
 del %COINDIR%\include\Inventor\collision\SoIntersectionDetectionAction.h
 del %COINDIR%\include\Inventor\details\SoSubDetail.h
@@ -279,6 +281,7 @@ del %COINDIR%\include\Inventor\elements\SoLineWidthElement.h
 del %COINDIR%\include\Inventor\elements\SoLocalBBoxMatrixElement.h
 del %COINDIR%\include\Inventor\elements\SoLongElement.h
 del %COINDIR%\include\Inventor\elements\SoMaterialBindingElement.h
+del %COINDIR%\include\Inventor\elements\SoVertexAttributeBindingElement.h
 del %COINDIR%\include\Inventor\elements\SoModelMatrixElement.h
 del %COINDIR%\include\Inventor\elements\SoMultiTextureCoordinateElement.h
 del %COINDIR%\include\Inventor\elements\SoMultiTextureEnabledElement.h
@@ -325,6 +328,8 @@ del %COINDIR%\include\Inventor\elements\SoSoundElement.h
 del %COINDIR%\include\Inventor\elements\SoGLShaderProgramElement.h
 del %COINDIR%\include\Inventor\elements\SoDepthBufferElement.h
 del %COINDIR%\include\Inventor\elements\SoGLDepthBufferElement.h
+del %COINDIR%\include\Inventor\elements\SoVertexAttributeElement.h
+del %COINDIR%\include\Inventor\elements\SoGLVertexAttributeElement.h
 del %COINDIR%\include\Inventor\engines\SoSubEngine.h
 del %COINDIR%\include\Inventor\engines\SoSubNodeEngine.h
 del %COINDIR%\include\Inventor\engines\SoEngines.h
@@ -697,6 +702,8 @@ del %COINDIR%\include\Inventor\nodes\SoTransparencyType.h
 del %COINDIR%\include\Inventor\nodes\SoTriangleStripSet.h
 del %COINDIR%\include\Inventor\nodes\SoUnits.h
 del %COINDIR%\include\Inventor\nodes\SoVertexProperty.h
+del %COINDIR%\include\Inventor\nodes\SoVertexAttribute.h
+del %COINDIR%\include\Inventor\nodes\SoVertexAttributeBinding.h
 del %COINDIR%\include\Inventor\nodes\SoVertexShape.h
 del %COINDIR%\include\Inventor\nodes\SoWWWAnchor.h
 del %COINDIR%\include\Inventor\nodes\SoWWWInline.h

@@ -28,13 +28,14 @@
 #define SO_DIRSPOTLIGHT_GLSL_H
 
 static const char DIRSPOTLIGHT_shadersource[] =
-  "float DirSpotLight(in int i, \n"
-  "      		      	     in vec3 eye, \n"
-  "			     in vec3 ecPosition3,\n"
-  "                       	     in vec3 normal,\n"
-  "                       	     inout vec4 ambient,\n"
-  "                       	     inout vec4 diffuse,\n"
-  "                       	     inout vec4 specular)\n"
+  "\n"
+  "float DirSpotLight(in int i,\n"
+  "                   in vec3 eye,\n"
+  "                   in vec3 ecPosition3,\n"
+  "                   in vec3 normal,\n"
+  "                   inout vec4 ambient,\n"
+  "                   inout vec4 diffuse,\n"
+  "                   inout vec4 specular)\n"
   "{\n"
   "  float nDotVP;\n"
   "  float nDotHV;\n"
@@ -48,11 +49,12 @@ static const char DIRSPOTLIGHT_shadersource[] =
   "    pf = 0.0;\n"
   "  else\n"
   "    pf = pow(nDotHV, shininess);\n"
-  " \n"
+  "\n"
   "  ambient += gl_LightSource[i].ambient;\n"
   "  diffuse += gl_LightSource[i].diffuse * nDotVP;\n"
   "  specular += gl_LightSource[i].specular * pf;\n"
   "  return length(vec3(gl_LightSource[i].position) - ecPosition3);\n"
-  "}\n";
+  "}\n"
+  "\n";
 
 #endif /* ! SO_DIRSPOTLIGHT_GLSL_H */

@@ -163,6 +163,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\annex\Profiler\SoProfiler.h %COINDIR%\i
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoBundle.h %COINDIR%\include\Inventor\bundles\SoBundle.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoMaterialBundle.h %COINDIR%\include\Inventor\bundles\SoMaterialBundle.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoNormalBundle.h %COINDIR%\include\Inventor\bundles\SoNormalBundle.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoVertexAttributeBundle.h %COINDIR%\include\Inventor\bundles\SoVertexAttributeBundle.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\bundles\SoTextureCoordinateBundle.h %COINDIR%\include\Inventor\bundles\SoTextureCoordinateBundle.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoBoundingBoxCache.h %COINDIR%\include\Inventor\caches\SoBoundingBoxCache.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoCache.h %COINDIR%\include\Inventor\caches\SoCache.h >nul:
@@ -170,6 +171,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoConvexDataCache.h %COINDIR%\in
 copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoGLCacheList.h %COINDIR%\include\Inventor\caches\SoGLCacheList.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoGLRenderCache.h %COINDIR%\include\Inventor\caches\SoGLRenderCache.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoNormalCache.h %COINDIR%\include\Inventor\caches\SoNormalCache.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoPrimitiveVertexCache.h %COINDIR%\include\Inventor\caches\SoPrimitiveVertexCache.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\caches\SoTextureCoordinateCache.h %COINDIR%\include\Inventor\caches\SoTextureCoordinateCache.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\collision\SoIntersectionDetectionAction.h %COINDIR%\include\Inventor\collision\SoIntersectionDetectionAction.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\details\SoSubDetail.h %COINDIR%\include\Inventor\details\SoSubDetail.h >nul:
@@ -279,6 +281,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoLineWidthElement.h %COINDIR%
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoLocalBBoxMatrixElement.h %COINDIR%\include\Inventor\elements\SoLocalBBoxMatrixElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoLongElement.h %COINDIR%\include\Inventor\elements\SoLongElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoMaterialBindingElement.h %COINDIR%\include\Inventor\elements\SoMaterialBindingElement.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoVertexAttributeBindingElement.h %COINDIR%\include\Inventor\elements\SoVertexAttributeBindingElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoModelMatrixElement.h %COINDIR%\include\Inventor\elements\SoModelMatrixElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoMultiTextureCoordinateElement.h %COINDIR%\include\Inventor\elements\SoMultiTextureCoordinateElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoMultiTextureEnabledElement.h %COINDIR%\include\Inventor\elements\SoMultiTextureEnabledElement.h >nul:
@@ -325,6 +328,8 @@ copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoSoundElement.h %COINDIR%\inc
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoGLShaderProgramElement.h %COINDIR%\include\Inventor\elements\SoGLShaderProgramElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoDepthBufferElement.h %COINDIR%\include\Inventor\elements\SoDepthBufferElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoGLDepthBufferElement.h %COINDIR%\include\Inventor\elements\SoGLDepthBufferElement.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoVertexAttributeElement.h %COINDIR%\include\Inventor\elements\SoVertexAttributeElement.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\elements\SoGLVertexAttributeElement.h %COINDIR%\include\Inventor\elements\SoGLVertexAttributeElement.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoSubEngine.h %COINDIR%\include\Inventor\engines\SoSubEngine.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoSubNodeEngine.h %COINDIR%\include\Inventor\engines\SoSubNodeEngine.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\engines\SoEngines.h %COINDIR%\include\Inventor\engines\SoEngines.h >nul:
@@ -697,6 +702,8 @@ copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoTransparencyType.h %COINDIR%\in
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoTriangleStripSet.h %COINDIR%\include\Inventor\nodes\SoTriangleStripSet.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoUnits.h %COINDIR%\include\Inventor\nodes\SoUnits.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoVertexProperty.h %COINDIR%\include\Inventor\nodes\SoVertexProperty.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoVertexAttribute.h %COINDIR%\include\Inventor\nodes\SoVertexAttribute.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoVertexAttributeBinding.h %COINDIR%\include\Inventor\nodes\SoVertexAttributeBinding.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoVertexShape.h %COINDIR%\include\Inventor\nodes\SoVertexShape.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoWWWAnchor.h %COINDIR%\include\Inventor\nodes\SoWWWAnchor.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoWWWInline.h %COINDIR%\include\Inventor\nodes\SoWWWInline.h >nul:

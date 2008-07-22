@@ -231,32 +231,6 @@ SOURCE=..\..\src\xml\expat\xmltok.c
 # PROP Intermediate_Dir "StaticDebug\xml\expat"
 !ENDIF
 # End Source File
-# Begin Source File
-
-SOURCE=..\..\src\xml\expat\xmltok_impl.c
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\xml\expat"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\xml\expat"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\xml\expat"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\xml\expat"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\xml\expat\xmltok_ns.c
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\xml\expat"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\xml\expat"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\xml\expat"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\xml\expat"
-!ENDIF
-# End Source File
 # End Group
 # Begin Group "xml sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
@@ -1532,6 +1506,19 @@ SOURCE=..\..\src\bundles\SoNormalBundle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\bundles\SoVertexAttributeBundle.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\bundles"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\bundles"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\bundles\SoTextureCoordinateBundle.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\bundles"
@@ -2519,6 +2506,19 @@ SOURCE=..\..\src\elements\GL\SoGLDisplayList.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\elements\GL\SoGLVertexAttributeElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\elements\GL"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\elements\GL"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\elements\GL\SoResetMatrixElement.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
@@ -3030,6 +3030,19 @@ SOURCE=..\..\src\elements\SoLocalBBoxMatrixElement.cpp
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoMaterialBindingElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\elements"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\elements\SoVertexAttributeBindingElement.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -3615,6 +3628,19 @@ SOURCE=..\..\src\elements\SoListenerDopplerElement.cpp
 # Begin Source File
 
 SOURCE=..\..\src\elements\SoSoundElement.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\elements"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\elements"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\elements\SoVertexAttributeElement.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -8892,6 +8918,32 @@ SOURCE=..\..\src\nodes\SoVertexProperty.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoVertexAttribute.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\nodes\SoVertexAttributeBinding.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoWWWAnchor.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -11628,7 +11680,7 @@ SOURCE=..\..\src\foreignfiles\SoSTLFileKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\foreignfiles\steel.c
+SOURCE=..\..\src\foreignfiles\steel.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\foreignfiles"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -12641,6 +12693,10 @@ SOURCE=..\..\include\Inventor\bundles\SoNormalBundle.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\bundles\SoVertexAttributeBundle.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\bundles\SoTextureCoordinateBundle.h
 # End Source File
 # End Group
@@ -12669,6 +12725,10 @@ SOURCE=..\..\include\Inventor\caches\SoGLRenderCache.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\caches\SoNormalCache.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\caches\SoPrimitiveVertexCache.h
 # End Source File
 # Begin Source File
 
@@ -13120,6 +13180,10 @@ SOURCE=..\..\include\Inventor\elements\SoMaterialBindingElement.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\elements\SoVertexAttributeBindingElement.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\elements\SoModelMatrixElement.h
 # End Source File
 # Begin Source File
@@ -13301,6 +13365,14 @@ SOURCE=..\..\include\Inventor\elements\SoDepthBufferElement.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\elements\SoGLDepthBufferElement.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\elements\SoVertexAttributeElement.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\elements\SoGLVertexAttributeElement.h
 # End Source File
 # End Group
 # Begin Group "Inventor\engines headers"
@@ -14822,6 +14894,14 @@ SOURCE=..\..\include\Inventor\nodes\SoUnits.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoVertexProperty.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoVertexAttribute.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoVertexAttributeBinding.h
 # End Source File
 # Begin Source File
 

@@ -546,6 +546,7 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\caches\SoGLCacheList.h \
                          ..\..\include\Inventor\caches\SoGLRenderCache.h \
                          ..\..\include\Inventor\caches\SoNormalCache.h \
+                         ..\..\include\Inventor\caches\SoPrimitiveVertexCache.h \
                          ..\..\include\Inventor\caches\SoTextureCoordinateCache.h \
                          ..\..\include\Inventor\details\SoConeDetail.h \
                          ..\..\include\Inventor\details\SoCubeDetail.h \
@@ -806,6 +807,8 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\nodes\SoCube.h \
                          ..\..\include\Inventor\nodes\SoCylinder.h \
                          ..\..\include\Inventor\nodes\SoDepthBuffer.h \
+                         ..\..\include\Inventor\nodes\SoVertexAttribute.h \
+                         ..\..\include\Inventor\nodes\SoVertexAttributeBinding.h \
                          ..\..\include\Inventor\nodes\SoDirectionalLight.h \
                          ..\..\include\Inventor\nodes\SoDrawStyle.h \
                          ..\..\include\Inventor\nodes\SoEnvironment.h \
@@ -1122,6 +1125,7 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\caches\SoGLCacheList.cpp \
                          ..\..\src\caches\SoGLRenderCache.cpp \
                          ..\..\src\caches\SoNormalCache.cpp \
+                         ..\..\src\caches\SoPrimitiveVertexCache.cpp \
                          ..\..\src\caches\SoTextureCoordinateCache.cpp \
                          ..\..\src\details\SoConeDetail.cpp \
                          ..\..\src\details\SoCubeDetail.cpp \
@@ -1394,6 +1398,8 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\shapenodes\SoCube.cpp \
                          ..\..\src\shapenodes\SoCylinder.cpp \
                          ..\..\src\nodes\SoDepthBuffer.cpp \
+                         ..\..\src\nodes\SoVertexAttribute.cpp \
+                         ..\..\src\nodes\SoVertexAttributeBinding.cpp \
                          ..\..\src\nodes\SoDirectionalLight.cpp \
                          ..\..\src\nodes\SoDrawStyle.cpp \
                          ..\..\src\nodes\SoEnvironment.cpp \
