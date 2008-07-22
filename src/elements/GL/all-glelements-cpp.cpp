@@ -50,6 +50,9 @@
 #include "SoGLTextureImageElement.cpp"
 #include "SoGLTextureMatrixElement.cpp"
 #include "SoGLUpdateAreaElement.cpp"
+#include "SoGLVertexAttributeElement.cpp"
 #include "SoGLViewingMatrixElement.cpp"
 #include "SoGLViewportRegionElement.cpp"
 #include "SoGLVBOElement.cpp"
+#include "SoResetMatrixElement.cpp"
+

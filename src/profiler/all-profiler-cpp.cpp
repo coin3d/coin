@@ -31,4 +31,5 @@
 #include "SoProfilerTopKit.cpp"
 #include "SoProfilerVisualizeKit.cpp"
 #include "SoScrollingGraphKit.cpp"
+#include "SoProfilingReportGenerator.cpp"
 

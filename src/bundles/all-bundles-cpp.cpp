@@ -23,4 +23,7 @@
 
 #include "SoBundle.cpp"
 #include "SoMaterialBundle.cpp"
+#include "SoNormalBundle.cpp"
 #include "SoTextureCoordinateBundle.cpp"
+#include "SoVertexAttributeBundle.cpp"
+

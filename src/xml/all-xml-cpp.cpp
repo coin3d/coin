@@ -21,10 +21,10 @@
  *
 \**************************************************************************/
 
+#include "attribute.cpp"
 #include "document.cpp"
 #include "element.cpp"
-#include "attribute.cpp"
-#include "path.cpp"
-#include "types.cpp"
-#include "utils.cpp"
 #include "entity.cpp"
+#include "path.cpp"
+#include "utils.cpp"
+

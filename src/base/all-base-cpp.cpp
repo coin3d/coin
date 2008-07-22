@@ -47,6 +47,7 @@
 #include "SbName.cpp"
 #include "SbOctTree.cpp"
 #include "SbPlane.cpp"
+#include "SbDPPlane.cpp"
 #include "SbRotation.cpp"
 #include "SbDPRotation.cpp"
 #include "SbSphere.cpp"
@@ -84,5 +85,16 @@
 #include "SbDPViewVolume.cpp"
 #include "SbViewportRegion.cpp"
 
+#include "dict.cpp"
 #include "dynarray.cpp"
+#include "hash.cpp"
+#include "heap.cpp"
+#include "list.cpp"
+#include "memalloc.cpp"
+#include "namemap.cpp"
+#include "rbptree.cpp"
+#include "string.cpp"
+#include "time.cpp"
+
+
 

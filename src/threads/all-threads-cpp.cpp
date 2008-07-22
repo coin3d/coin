@@ -39,4 +39,7 @@
 #include "wpool.cpp"
 #include "worker.cpp"
 #include "barrier.cpp"
+#include "fifo.cpp"
 #endif /* HAVE_THREADS */
+
+

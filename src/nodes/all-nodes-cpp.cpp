@@ -85,6 +85,7 @@
 #include "SoRotor.cpp"
 #include "SoScale.cpp"
 #include "SoSceneTexture2.cpp"
+#include "SoSceneTextureCubeMap.cpp"
 #include "SoSelection.cpp"
 #include "SoSeparator.cpp"
 #include "SoShapeHints.cpp"
@@ -127,3 +128,5 @@
 #include "SoWWWInline.cpp"
 #include "SoViewerNavigationMode.cpp"
 #include "SoVertexAttribute.cpp"
+#include "SoVertexAttributeBinding.cpp"
+

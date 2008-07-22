@@ -25,6 +25,7 @@
 #include "win32.cpp"
 #include "freetype.cpp"
 
+#include "glyph.cpp"
 #include "glyph2d.cpp"
 #include "glyph3d.cpp"
 

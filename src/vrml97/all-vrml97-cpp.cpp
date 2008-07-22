@@ -94,6 +94,7 @@
 #include "vrml97/Viewpoint.cpp"
 #include "vrml97/VisibilitySensor.cpp"
 #include "vrml97/WorldInfo.cpp"
+#include "vrml97/JS_VRMLClasses.cpp"
 
 #endif // HAVE_VRML97
 

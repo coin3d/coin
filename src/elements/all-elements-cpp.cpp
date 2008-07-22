@@ -101,7 +101,10 @@
 #include "SoTextureUnitElement.cpp"
 #include "SoTransparencyElement.cpp"
 #include "SoUnitsElement.cpp"
+#include "SoVertexAttributeBindingElement.cpp"
+#include "SoVertexAttributeElement.cpp"
 #include "SoViewVolumeElement.cpp"
 #include "SoViewingMatrixElement.cpp"
 #include "SoViewportRegionElement.cpp"
 #include "SoWindowElement.cpp"
+
