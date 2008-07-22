@@ -374,7 +374,7 @@ GLUWrapper(void)
       NULL
     };
     possiblelibnames[0] = coin_getenv("COIN_GLU_LIBNAME");
-    idx = possiblelibnames[0] ? 0 : 1;
+    int idx = possiblelibnames[0] ? 0 : 1;
 
     while (!GLU_libhandle && possiblelibnames[idx]) {
       GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
