@@ -90,3 +90,5 @@ ScXMLOnEntry::invoke(ScXMLStateMachine * statemachine)
     ++it;
   }
 }
+
+#undef PRIVATE

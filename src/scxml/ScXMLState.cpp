@@ -323,3 +323,6 @@ ScXMLState::isTask(void) const
 {
   return this->istask;
 }
+
+#undef PRIVATE
+
