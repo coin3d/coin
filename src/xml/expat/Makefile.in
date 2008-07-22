@@ -268,9 +268,7 @@ target_vendor = @target_vendor@
 RegularSources = \
 	xmlparse.c \
 	xmlrole.c \
-	xmltok.c \
-	xmltok_impl.c \
-	xmltok_ns.c
+	xmltok.c
 
 LinkHackSources = \
 	all-expat-c.c
@@ -355,48 +353,43 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 expat_lst_AR = $(AR) cru
 expat_lst_LIBADD =
-am__expat_lst_SOURCES_DIST = xmlparse.c xmlrole.c xmltok.c xmltok_impl.c \
-	xmltok_ns.c all-expat-c.c
+am__expat_lst_SOURCES_DIST = xmlparse.c xmlrole.c xmltok.c all-expat-c.c
 am__objects_1 = all-expat-c.$(OBJEXT)
-am__objects_2 = xmlparse.$(OBJEXT) xmlrole.$(OBJEXT) xmltok.$(OBJEXT) \
-	xmltok_impl.$(OBJEXT) xmltok_ns.$(OBJEXT)
+am__objects_2 = xmlparse.$(OBJEXT) xmlrole.$(OBJEXT) xmltok.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_expat_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_expat_lst_SOURCES_DIST = amigaconfig.h ascii.h asciitab.h \
 	expat.h expat_external.h iasciitab.h internal.h latin1tab.h \
 	macconfig.h nametab.h utf8tab.h winconfig.h xmlrole.h xmltok.h \
-	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c \
-	xmltok_impl.c xmltok_ns.c
+	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c
 expat_lst_OBJECTS = $(am_expat_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libexpat_la_LDFLAGS =
 libexpat_la_LIBADD =
 am__libexpat_la_SOURCES_DIST = xmlparse.c xmlrole.c xmltok.c \
-	xmltok_impl.c xmltok_ns.c all-expat-c.c
+	all-expat-c.c
 am__objects_6 = all-expat-c.lo
-am__objects_7 = xmlparse.lo xmlrole.lo xmltok.lo xmltok_impl.lo \
-	xmltok_ns.lo
+am__objects_7 = xmlparse.lo xmlrole.lo xmltok.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libexpat_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libexpat_la_SOURCES_DIST = amigaconfig.h ascii.h asciitab.h \
 	expat.h expat_external.h iasciitab.h internal.h latin1tab.h \
 	macconfig.h nametab.h utf8tab.h winconfig.h xmlrole.h xmltok.h \
-	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c \
-	xmltok_impl.c xmltok_ns.c
+	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c
 libexpat_la_OBJECTS = $(am_libexpat_la_OBJECTS)
 libexpat@SUFFIX@LINKHACK_la_LDFLAGS =
 libexpat@SUFFIX@LINKHACK_la_LIBADD =
 am__libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = xmlparse.c xmlrole.c \
-	xmltok.c xmltok_impl.c xmltok_ns.c all-expat-c.c
+	xmltok.c all-expat-c.c
 am_libexpat@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = amigaconfig.h \
 	ascii.h asciitab.h expat.h expat_external.h iasciitab.h \
 	internal.h latin1tab.h macconfig.h nametab.h utf8tab.h \
 	winconfig.h xmlrole.h xmltok.h xmltok_impl.h all-expat-c.c \
-	xmlparse.c xmlrole.c xmltok.c xmltok_impl.c xmltok_ns.c
+	xmlparse.c xmlrole.c xmltok.c
 libexpat@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libexpat@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -405,9 +398,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/all-expat-c.Po ./$(DEPDIR)/xmlparse.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/xmlparse.Po ./$(DEPDIR)/xmlrole.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/xmlrole.Po ./$(DEPDIR)/xmltok.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/xmltok.Po ./$(DEPDIR)/xmltok_impl.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/xmltok_impl.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xmltok_ns.Plo ./$(DEPDIR)/xmltok_ns.Po
+@AMDEP_TRUE@	./$(DEPDIR)/xmltok.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -495,10 +486,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmlrole.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_impl.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_impl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_ns.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_ns.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

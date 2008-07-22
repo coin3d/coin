@@ -4,9 +4,7 @@
 RegularSources = \
 	xmlparse.c \
 	xmlrole.c \
-	xmltok.c \
-	xmltok_impl.c \
-	xmltok_ns.c
+	xmltok.c
 LinkHackSources = \
 	all-expat-c.c
 PublicHeaders =
