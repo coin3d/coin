@@ -1127,5 +1127,7 @@ SoNormalCache::clearGenerator(void)
   PRIVATE(this)->numNormals = 0;
 }
 
+#undef NORMAL_EPSILON
+#undef NORMALCACHE_DEBUG
 #undef PRIVATE
 

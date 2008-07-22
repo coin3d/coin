@@ -50,7 +50,6 @@ SoVertexAttributeBundle::SoVertexAttributeBundle(SoAction * action, SbBool forre
 */
 SoVertexAttributeBundle::~SoVertexAttributeBundle()
 {
-
 }
 
 SbBool 
@@ -68,6 +67,4 @@ SoVertexAttributeBundle::send(int index) const
   assert(this->glelem);
   this->glelem->send(index);
 }
-
-#undef THIS
 

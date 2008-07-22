@@ -451,3 +451,11 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   assert(this->defaultsize[1] > 0.0f);
 }
 
+#undef FLAG_FUNCTION
+#undef FLAG_NEEDCOORDS
+#undef FLAG_DEFAULT
+#undef FLAG_DIDPUSH
+#undef FLAG_3DTEXTURES
+#undef FLAG_DIDINITDEFAULT
+#undef FLAG_NEEDINDICES
+

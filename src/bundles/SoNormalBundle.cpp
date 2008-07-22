@@ -213,5 +213,3 @@ SoNormalBundle::send(int index) const
   this->glelem->send(index);
 }
 
-#undef THIS
-

@@ -1446,3 +1446,6 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
                            "intersection checks = %d", nrisectchks);
   }
 }
+
+#undef PRIVATE
+
