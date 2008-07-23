@@ -294,10 +294,16 @@ SoEventManager::setOrigin(const SbVec2s & newOrigin)
   PRIVATE(this)->handleeventaction->setViewportRegion(region);
 }
 
-void 
-SoEventManager::setViewportRegion(const SbViewportRegion & newregion) 
+void
+SoEventManager::setViewportRegion(const SbViewportRegion & newregion)
 {
   PRIVATE(this)->handleeventaction->setViewportRegion(newregion);
+}
+
+const SbViewportRegion &
+SoEventManager::getViewportRegion(void) const
+{
+  return PRIVATE(this)->handleeventaction->getViewportRegion();
 }
 
 SbBool 

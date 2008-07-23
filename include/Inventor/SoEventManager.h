@@ -73,6 +73,7 @@ class COIN_DLL_API SoEventManager {
   void setSize(const SbVec2s & newsize);
   void setOrigin(const SbVec2s & newOrigin);
   void setViewportRegion(const SbViewportRegion & newregion);
+  const SbViewportRegion & getViewportRegion(void) const;
 
 protected:
   virtual SbBool actuallyProcessEvent(const SoEvent * const event);
