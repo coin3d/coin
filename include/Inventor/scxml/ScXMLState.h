@@ -38,7 +38,6 @@ class ScXMLHistory;
 class ScXMLAnchor;
 class ScXMLEvent;
 class ScXMLStateMachine;
-class ScXMLStateP;
 
 class COIN_DLL_API ScXMLState : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -134,7 +133,8 @@ private:
   ScXMLState(const ScXMLState & rhs); // N/A
   ScXMLState & operator = (const ScXMLState & rhs); // N/A
 
-  SbPimplPtr<ScXMLStateP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLState
 

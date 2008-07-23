@@ -46,12 +46,12 @@
   \ingroup scxml
 */
 
-class SoScXMLStateMachineP {
+class SoScXMLStateMachine::PImpl {
 public:
-  SoScXMLStateMachineP(void)
+  PImpl(void)
     : scenegraphroot(NULL), activecamera(NULL), viewport(100, 100)
   { }
-  ~SoScXMLStateMachineP(void) { }
+  ~PImpl(void) { }
 
   // hold a couple of custom non-SoEvent-based events
   boost::scoped_ptr<ScXMLEvent> preGLRenderEvent;
@@ -150,3 +150,4 @@ SoScXMLStateMachine::processSoEvent(const SoEvent * event)
 }
 
 #undef PRIVATE
+

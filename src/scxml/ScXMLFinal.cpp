@@ -38,7 +38,7 @@
   \ingroup scxml
 */
 
-class ScXMLFinalP {
+class ScXMLFinal::PImpl {
 public:
 
 };

@@ -25,10 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
-#include <Inventor/tools/SbLazyPimplPtr.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class ScXMLTransition;
-class ScXMLInitialP;
 
 class COIN_DLL_API ScXMLInitial : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -53,13 +52,12 @@ public:
 protected:
   char * id;
 
-  ScXMLTransition * transitionptr;
-
 private:
   ScXMLInitial(const ScXMLInitial & rhs); // N/A
   ScXMLInitial & operator = (const ScXMLInitial & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLInitialP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLInitial
 

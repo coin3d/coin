@@ -32,7 +32,6 @@
 class ScXMLEvent;
 class ScXMLDocument;
 class ScXMLStateMachine;
-class ScXMLStateMachineP;
 
 typedef void ScXMLStateMachineDeleteCB(void * userdata,
                                        ScXMLStateMachine * statemachine);
@@ -92,7 +91,8 @@ private:
   ScXMLStateMachine(const ScXMLStateMachine & rhs); // N/A
   ScXMLStateMachine & operator = (const ScXMLStateMachine & rhs); // N/A
 
-  SbPimplPtr<ScXMLStateMachineP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLStateMachine
 

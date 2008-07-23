@@ -36,7 +36,7 @@
   \ingroup scxml
 */
 
-class ScXMLInvokeP {
+class ScXMLInvoke::PImpl {
 public:
 };
 

@@ -30,7 +30,6 @@
 class ScXMLEvent;
 class ScXMLInvoke;
 class ScXMLStateMachine;
-class ScXMLTransitionP;
 
 class COIN_DLL_API ScXMLTransition : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -90,7 +89,8 @@ private:
   ScXMLTransition(const ScXMLTransition & rhs); // N/A
   ScXMLTransition & operator = (const ScXMLTransition & rhs); // N/A
 
-  SbPimplPtr<ScXMLTransitionP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLTransition
 

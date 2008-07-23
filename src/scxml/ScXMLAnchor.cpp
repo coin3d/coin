@@ -41,7 +41,7 @@
   \ingroup scxml
 */
 
-class ScXMLAnchorP {
+class ScXMLAnchor::PImpl {
 public:
 };
 

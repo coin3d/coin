@@ -29,8 +29,6 @@
 #include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/scxml/ScXMLSubObject.h>
 
-class ScXMLObjectP;
-
 class COIN_DLL_API ScXMLObject {
   SCXML_OBJECT_ABSTRACT_HEADER(ScXMLObject);
 
@@ -66,7 +64,8 @@ private:
   ScXMLObject(const ScXMLObject & rhs); // N/A
   ScXMLObject & operator = (const ScXMLObject & rhs); // N/A
 
-  SbPimplPtr<ScXMLObjectP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLObject
 

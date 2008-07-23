@@ -42,12 +42,21 @@
   \ingroup scxml
 */
 
-class ScXMLObjectP {
+class ScXMLObject::PImpl {
 public:
   typedef std::map<const char *, char *> AttributeMap;
   typedef std::pair<const char *, char *> AttributeEntry;
   AttributeMap attributemap;
 
+  ~PImpl(void)
+  {
+    AttributeMap::iterator it = this->attributemap.begin();
+    while (it != this->attributemap.end()) {
+      delete [] it->second;
+      ++it;
+    }
+    this->attributemap.clear();
+  }
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -69,15 +78,7 @@ ScXMLObject::ScXMLObject(void)
 
 ScXMLObject::~ScXMLObject(void)
 {
-  {
-    ScXMLObjectP::AttributeMap::iterator it =
-      PRIVATE(this)->attributemap.begin();
-    while (it != PRIVATE(this)->attributemap.end()) {
-      delete [] it->second;
-      ++it;
-    }
-    PRIVATE(this)->attributemap.clear();
-  }
+  this->containerptr = NULL;
 }
 
 SbBool
@@ -99,14 +100,14 @@ ScXMLObject::setXMLAttribute(const char * attribute, const char * value)
 {
   assert(attribute);
   const SbName attrname(attribute); // uniqify on string pointer
-  ScXMLObjectP::AttributeMap::iterator it =
+  PImpl::AttributeMap::iterator it =
     PRIVATE(this)->attributemap.find(attrname.getString());
   if (it == PRIVATE(this)->attributemap.end()) {
     if (value) {
       char * valuedup = new char [ strlen(value) + 1 ];
       strcpy(valuedup, value);
       PRIVATE(this)->attributemap.insert(
-        ScXMLObjectP::AttributeEntry(attrname.getString(), valuedup));
+        PImpl::AttributeEntry(attrname.getString(), valuedup));
     }
   } else {
     delete [] it->second;
@@ -128,7 +129,7 @@ const char *
 ScXMLObject::getXMLAttribute(const char * attribute) const
 {
   const SbName attrname(attribute);
-  ScXMLObjectP::AttributeMap::const_iterator it =
+  PImpl::AttributeMap::const_iterator it =
     PRIVATE(this)->attributemap.find(attrname.getString());
   if (it != PRIVATE(this)->attributemap.end()) {
     return it->second;

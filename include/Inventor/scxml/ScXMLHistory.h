@@ -26,10 +26,9 @@
 
 #include <Inventor/scxml/ScXMLObject.h>
 
-#include <Inventor/tools/SbLazyPimplPtr.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
 class ScXMLTransition;
-class ScXMLHistoryP;
 
 class COIN_DLL_API ScXMLHistory : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -57,13 +56,12 @@ protected:
   char * id;
   char * type;
 
-  ScXMLTransition * transitionptr;
-
 private:
   ScXMLHistory(const ScXMLHistory & rhs); // N/A
   ScXMLHistory & operator = (const ScXMLHistory & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLHistoryP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLHistory
 

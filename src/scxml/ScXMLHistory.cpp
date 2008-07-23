@@ -26,6 +26,8 @@
 #include <assert.h>
 #include <string.h>
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLTransition.h>
 
@@ -44,10 +46,14 @@
   \ingroup scxml
 */
 
-class ScXMLHistoryP {
+class ScXMLHistory::PImpl {
 public:
+  boost::scoped_ptr<ScXMLTransition> transitionptr;
+
 
 };
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_SOURCE(ScXMLHistory);
 
@@ -58,8 +64,7 @@ ScXMLHistory::initClass(void)
 }
 
 ScXMLHistory::ScXMLHistory(void)
-  : id(NULL), type(NULL),
-    transitionptr(NULL)
+  : id(NULL), type(NULL)
 {
 }
 
@@ -67,11 +72,6 @@ ScXMLHistory::~ScXMLHistory(void)
 {
   this->setIdAttribute(NULL);
   this->setTypeAttribute(NULL);
-
-  if (this->transitionptr) {
-    delete this->transitionptr;
-    this->transitionptr = NULL;
-  }
 }
 
 void
@@ -122,4 +122,7 @@ ScXMLHistory::handleXMLAttributes(void)
 
 // *************************************************************************
 
-SCXML_SINGLE_OBJECT_API_IMPL(ScXMLHistory, ScXMLTransition, transitionptr, Transition);
+SCXML_SINGLE_OBJECT_API_IMPL(ScXMLHistory, ScXMLTransition, PRIVATE(this)->transitionptr, Transition);
+
+#undef PRIVATE
+

@@ -28,8 +28,6 @@
 
 #include <Inventor/tools/SbLazyPimplPtr.h>
 
-class ScXMLAnchorP;
-
 class COIN_DLL_API ScXMLAnchor : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLAnchor);
@@ -56,7 +54,8 @@ private:
   ScXMLAnchor(const ScXMLAnchor & rhs); // N/A
   ScXMLAnchor & operator = (const ScXMLAnchor & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLAnchorP> pimpl;
+  class PImpl;
+  SbLazyPimplPtr<PImpl> pimpl;
 
 }; // ScXMLAnchor
 

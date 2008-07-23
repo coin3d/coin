@@ -28,13 +28,13 @@
 void                                                                    \
 classname::SO__CONCAT(set,singular)(objtype * obj)                      \
 {                                                                       \
-  pointer = obj;                                                        \
+  pointer.reset(obj);                                                   \
 }                                                                       \
                                                                         \
 objtype *                                                               \
 classname::SO__CONCAT(get,singular)(void) const                         \
 {                                                                       \
-  return pointer;                                                       \
+  return pointer.get();                                                 \
 }
 
 #define SCXML_LIST_OBJECT_API_IMPL(classname, objtype, objlist, singular, plural) \

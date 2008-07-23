@@ -27,6 +27,8 @@
 #include <cassert>
 #include <cstring>
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLTransition.h>
 
@@ -42,12 +44,15 @@
   \ingroup scxml
 */
 
-class ScXMLInitialP {
+class ScXMLInitial::PImpl {
 public:
+  boost::scoped_ptr<ScXMLTransition> transitionptr;
 
 };
 
 SCXML_OBJECT_SOURCE(ScXMLInitial);
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 void
 ScXMLInitial::initClass(void)
@@ -56,19 +61,13 @@ ScXMLInitial::initClass(void)
 }
 
 ScXMLInitial::ScXMLInitial(void)
-  : id(NULL),
-    transitionptr(NULL)
+  : id(NULL)
 {
 }
 
 ScXMLInitial::~ScXMLInitial(void)
 {
   this->setIdAttribute(NULL);
-
-  if (this->transitionptr) {
-    delete this->transitionptr;
-    this->transitionptr = NULL;
-  }
 }
 
 void
@@ -100,5 +99,7 @@ ScXMLInitial::handleXMLAttributes(void)
 
 // *************************************************************************
 
-SCXML_SINGLE_OBJECT_API_IMPL(ScXMLInitial, ScXMLTransition, transitionptr, Transition);
+SCXML_SINGLE_OBJECT_API_IMPL(ScXMLInitial, ScXMLTransition, PRIVATE(this)->transitionptr, Transition);
+
+#undef PRIVATE
 

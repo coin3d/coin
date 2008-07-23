@@ -62,9 +62,9 @@ struct EventInfo {
   SbBool deallocate;
 };
 
-class ScXMLStateMachineP {
+class ScXMLStateMachine::PImpl {
 public:
-  ScXMLStateMachineP(void)
+  PImpl(void)
     : pub(NULL),
       active(FALSE), finished(FALSE),
       name(SbName::empty()), description(NULL),
@@ -72,6 +72,14 @@ public:
       isprocessingqueue(FALSE),
       initializer(NULL)
   {
+  }
+
+  ~PImpl(void)
+  {
+    if (this->description) {
+      delete this->description;
+      this->description = NULL;
+    }
   }
 
   ScXMLStateMachine * pub;
@@ -124,7 +132,7 @@ public:
   void exitState(ScXMLObject * object);
   void enterState(ScXMLObject * object);
 
-}; // ScXMLStateMachineP
+}; // ScXMLStateMachine::PImpl
 
 // *************************************************************************
 
@@ -148,10 +156,6 @@ ScXMLStateMachine::~ScXMLStateMachine(void)
 {
   PRIVATE(this)->invokeDeleteCallbacks();
 
-  if (PRIVATE(this)->description) {
-    delete PRIVATE(this)->description;
-    PRIVATE(this)->description = NULL;
-  }
 }
 
 // *************************************************************************
@@ -230,7 +234,7 @@ ScXMLStateMachine::queueEvent(const SbName & eventid)
 /*
 */
 void
-ScXMLStateMachineP::queueInternalEvent(const ScXMLEvent * event, SbBool dealloc)
+ScXMLStateMachine::PImpl::queueInternalEvent(const ScXMLEvent * event, SbBool dealloc)
 {
   EventInfo info;
   info.eventptr = event;
@@ -241,7 +245,7 @@ ScXMLStateMachineP::queueInternalEvent(const ScXMLEvent * event, SbBool dealloc)
 /*
 */
 void
-ScXMLStateMachineP::queueInternalEvent(const SbName & eventid)
+ScXMLStateMachine::PImpl::queueInternalEvent(const SbName & eventid)
 {
   ScXMLEvent * event = new ScXMLEvent;
   event->setIdentifier(eventid);
@@ -317,13 +321,13 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     }
   }
                       
-  ScXMLStateMachineP::TransitionList transitions;
+  PImpl::TransitionList transitions;
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransition);
       PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getXMLAttribute("initialstate"));
     }
-    transitions.push_back(ScXMLStateMachineP::StateTransition(NULL, PRIVATE(this)->initializer.get()));
+    transitions.push_back(PImpl::StateTransition(NULL, PRIVATE(this)->initializer.get()));
   } else {
     for (int c = 0; c < static_cast<int>(PRIVATE(this)->activestatelist.size()); ++c) {
       // containers are also active states and must be checked
@@ -343,7 +347,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
 
   // we handle all targetless transitions first
   {
-    ScXMLStateMachineP::TransitionList::iterator transit = transitions.begin();
+    PImpl::TransitionList::iterator transit = transitions.begin();
     while (transit != transitions.end()) {
       if (transit->second->isTargetLess()) {
         transit->second->invoke(this);
@@ -355,7 +359,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   // handle self-targeting transitions next (not sure this is the right
   // place, but it's not improbable either)...
   {
-    ScXMLStateMachineP::TransitionList::iterator transit = transitions.begin();
+    PImpl::TransitionList::iterator transit = transitions.begin();
     while (transit != transitions.end()) {
       if (transit->second->isSelfReferencing()) {
         ScXMLObject * containerobj = transit->second->getContainer();
@@ -377,7 +381,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   std::vector<ScXMLObject *> newstateslist;
 
   // handle those with other targets next
-  ScXMLStateMachineP::TransitionList::iterator transit = transitions.begin();
+  PImpl::TransitionList::iterator transit = transitions.begin();
   while (transit != transitions.end()) {
     if (transit->second->isTargetLess() ||
         transit->second->isSelfReferencing()) {
@@ -659,7 +663,7 @@ ScXMLStateMachine::getState(const char * identifier) const
 void
 ScXMLStateMachine::addDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * userdata)
 {
-  PRIVATE(this)->deletecallbacklist.push_back(ScXMLStateMachineP::DeleteCBInfo(cb, userdata));
+  PRIVATE(this)->deletecallbacklist.push_back(PImpl::DeleteCBInfo(cb, userdata));
 }
 
 /*!
@@ -669,10 +673,10 @@ ScXMLStateMachine::addDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * user
 void
 ScXMLStateMachine::removeDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * userdata)
 {
-  ScXMLStateMachineP::DeleteCallbackList::iterator it =
+  PImpl::DeleteCallbackList::iterator it =
     std::find(PRIVATE(this)->deletecallbacklist.begin(),
               PRIVATE(this)->deletecallbacklist.end(),
-              ScXMLStateMachineP::DeleteCBInfo(cb, userdata));
+              PImpl::DeleteCBInfo(cb, userdata));
   if (it != PRIVATE(this)->deletecallbacklist.end()) {
     PRIVATE(this)->deletecallbacklist.erase(it);
   }
@@ -683,7 +687,7 @@ ScXMLStateMachine::removeDeleteCallback(ScXMLStateMachineDeleteCB * cb, void * u
 */
 
 void
-ScXMLStateMachineP::invokeDeleteCallbacks(void)
+ScXMLStateMachine::PImpl::invokeDeleteCallbacks(void)
 {
   DeleteCallbackList::const_iterator it = this->deletecallbacklist.begin();
   while (it != this->deletecallbacklist.end()) {
@@ -714,7 +718,7 @@ ScXMLStateMachineP::invokeDeleteCallbacks(void)
 void
 ScXMLStateMachine::addStateChangeCallback(ScXMLStateChangeCB * callback, void * userdata)
 {
-  PRIVATE(this)->statechangecallbacklist.push_back(ScXMLStateMachineP::StateChangeCBInfo(callback, userdata));
+  PRIVATE(this)->statechangecallbacklist.push_back(PImpl::StateChangeCBInfo(callback, userdata));
 }
 
 /*!
@@ -724,10 +728,10 @@ ScXMLStateMachine::addStateChangeCallback(ScXMLStateChangeCB * callback, void * 
 void
 ScXMLStateMachine::removeStateChangeCallback(ScXMLStateChangeCB * callback, void * userdata)
 {
-  ScXMLStateMachineP::StateChangeCallbackList::iterator findit =
+  PImpl::StateChangeCallbackList::iterator findit =
     std::find(PRIVATE(this)->statechangecallbacklist.begin(),
               PRIVATE(this)->statechangecallbacklist.end(),
-              ScXMLStateMachineP::StateChangeCBInfo(callback, userdata));
+              PImpl::StateChangeCBInfo(callback, userdata));
   if (findit != PRIVATE(this)->statechangecallbacklist.end()) {
     PRIVATE(this)->statechangecallbacklist.erase(findit);
   }
@@ -737,7 +741,7 @@ ScXMLStateMachine::removeStateChangeCallback(ScXMLStateChangeCB * callback, void
   Invoke all the state change callbacks.
 */
 void
-ScXMLStateMachineP::invokeStateChangeCallbacks(const char * identifier, SbBool enterstate)
+ScXMLStateMachine::PImpl::invokeStateChangeCallbacks(const char * identifier, SbBool enterstate)
 {
   StateChangeCallbackList::const_iterator it =
     this->statechangecallbacklist.begin();
@@ -750,7 +754,7 @@ ScXMLStateMachineP::invokeStateChangeCallbacks(const char * identifier, SbBool e
 // *************************************************************************
 
 void
-ScXMLStateMachineP::fillIdentifierMap(ScXMLObject * object)
+ScXMLStateMachine::PImpl::fillIdentifierMap(ScXMLObject * object)
 {
   assert(object);
 
@@ -855,7 +859,7 @@ ScXMLStateMachineP::fillIdentifierMap(ScXMLObject * object)
 }
 
 ScXMLObject *
-ScXMLStateMachineP::getObjectByIdentifier(SbName identifier) const
+ScXMLStateMachine::PImpl::getObjectByIdentifier(SbName identifier) const
 {
   std::map<const char *, ScXMLObject *>::const_iterator it =
     this->identifiermap.find(identifier.getString());
@@ -866,7 +870,7 @@ ScXMLStateMachineP::getObjectByIdentifier(SbName identifier) const
 }
 
 void
-ScXMLStateMachineP::findTransitions(TransitionList & transitions, ScXMLObject * stateobj, const ScXMLEvent * event)
+ScXMLStateMachine::PImpl::findTransitions(TransitionList & transitions, ScXMLObject * stateobj, const ScXMLEvent * event)
 {
   assert(stateobj);
 
@@ -915,7 +919,7 @@ ScXMLStateMachineP::findTransitions(TransitionList & transitions, ScXMLObject * 
 // *************************************************************************
 
 void
-ScXMLStateMachineP::exitState(ScXMLObject * object)
+ScXMLStateMachine::PImpl::exitState(ScXMLObject * object)
 {
   assert(object);
   if (object->isOfType(ScXMLState::getClassTypeId())) {
@@ -932,7 +936,7 @@ ScXMLStateMachineP::exitState(ScXMLObject * object)
 }
 
 void
-ScXMLStateMachineP::enterState(ScXMLObject * object)
+ScXMLStateMachine::PImpl::enterState(ScXMLObject * object)
 {
   assert(object);
 
@@ -949,7 +953,7 @@ ScXMLStateMachineP::enterState(ScXMLObject * object)
         this->finished = TRUE;
         this->active = FALSE;
       } else {
-        SoDebugError::post("ScXMLStateMachineP::enterState",
+        SoDebugError::post("ScXMLStateMachine::PImpl::enterState",
                            "<final> container has no id - can't post done-event");
       }
       return;
@@ -975,3 +979,4 @@ ScXMLStateMachineP::enterState(ScXMLObject * object)
 
 #undef PUBLIC
 #undef PRIVATE
+

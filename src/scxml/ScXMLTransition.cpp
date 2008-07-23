@@ -44,9 +44,19 @@
   \ingroup scxml
 */
 
-class ScXMLTransitionP {
+class ScXMLTransition::PImpl {
 public:
   std::vector<ScXMLInvoke *> invokelist;
+
+  ~PImpl(void)
+  {
+    std::vector<ScXMLInvoke *>::iterator it = this->invokelist.begin();
+    while (it != this->invokelist.end()) {
+      delete *it;
+      ++it;
+    }
+    this->invokelist.clear();
+  }
 
 };
 
@@ -75,16 +85,6 @@ ScXMLTransition::~ScXMLTransition(void)
   this->setCondAttribute(NULL);
   this->setTargetAttribute(NULL);
   this->setAnchorAttribute(NULL);
-
-  {
-    std::vector<ScXMLInvoke *>::iterator invokeit =
-      PRIVATE(this)->invokelist.begin();
-    while (invokeit != PRIVATE(this)->invokelist.end()) {
-      delete *invokeit;
-      ++invokeit;
-    }
-    PRIVATE(this)->invokelist.clear();
-  }
 }
 
 // *************************************************************************

@@ -27,8 +27,6 @@
 #include <Inventor/scxml/ScXMLObject.h>
 #include <Inventor/tools/SbLazyPimplPtr.h>
 
-class ScXMLFinalP;
-
 class COIN_DLL_API ScXMLFinal : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLFinal);
@@ -52,7 +50,8 @@ private:
   ScXMLFinal(const ScXMLFinal & rhs); // N/A
   ScXMLFinal & operator = (const ScXMLFinal & rhs); // N/A
 
-  SbLazyPimplPtr<ScXMLFinalP> pimpl;
+  class PImpl;
+  SbLazyPimplPtr<PImpl> pimpl;
 
 }; // ScXMLFinal
 

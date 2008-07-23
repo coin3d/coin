@@ -44,12 +44,41 @@
   \ingroup scxml
 */
 
-class ScXMLDocumentP {
+class ScXMLDocument::PImpl {
 public:
   std::vector<ScXMLState *> statelist;
   std::vector<ScXMLState *> parallellist;
   std::vector<ScXMLFinal *> finallist;
-  // datamodel
+
+  ~PImpl(void)
+  {
+    {
+      std::vector<ScXMLState *>::iterator it = this->statelist.begin();
+      while (it != this->statelist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->statelist.clear();
+    }
+
+    {
+      std::vector<ScXMLState *>::iterator it = this->parallellist.begin();
+      while (it != this->parallellist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->parallellist.clear();
+    }
+
+    {
+      std::vector<ScXMLFinal *>::iterator it = this->finallist.begin();
+      while (it != this->finallist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->finallist.clear();
+    }
+  }
 
 };
 
@@ -74,36 +103,6 @@ ScXMLDocument::~ScXMLDocument(void)
   this->setXMLNSAttribute(NULL);
   this->setVersionAttribute(NULL);
   this->setInitialStateAttribute(NULL);
-
-  {
-    std::vector<ScXMLState *>::iterator stateit =
-      PRIVATE(this)->statelist.begin();
-    while (stateit != PRIVATE(this)->statelist.end()) {
-      delete *stateit;
-      ++stateit;
-    }
-    PRIVATE(this)->statelist.clear();
-  }
-
-  {
-    std::vector<ScXMLState *>::iterator parallelit =
-      PRIVATE(this)->parallellist.begin();
-    while (parallelit != PRIVATE(this)->parallellist.end()) {
-      delete *parallelit;
-      ++parallelit;
-    }
-    PRIVATE(this)->parallellist.clear();
-  }
-
-  {
-    std::vector<ScXMLFinal *>::iterator finalit =
-      PRIVATE(this)->finallist.begin();
-    while (finalit != PRIVATE(this)->finallist.end()) {
-      delete *finalit;
-      ++finalit;
-    }
-    PRIVATE(this)->finallist.clear();
-  }
 }
 
 // *************************************************************************

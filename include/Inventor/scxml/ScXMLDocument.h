@@ -30,7 +30,6 @@
 
 class ScXMLState;
 class ScXMLFinal;
-class ScXMLDocumentP;
 
 class COIN_DLL_API ScXMLDocument : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -89,7 +88,8 @@ private:
   ScXMLDocument(const ScXMLDocument & rhs); // N/A
   ScXMLDocument & operator = (const ScXMLDocument & rhs); // N/A
 
-  SbPimplPtr<ScXMLDocumentP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLDocument
 

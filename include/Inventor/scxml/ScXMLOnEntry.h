@@ -30,7 +30,6 @@
 class ScXMLInvoke;
 class ScXMLEvent;
 class ScXMLStateMachine;
-class ScXMLOnEntryP;
 
 class COIN_DLL_API ScXMLOnEntry : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -56,7 +55,8 @@ private:
   ScXMLOnEntry(const ScXMLOnEntry & rhs); // N/A
   ScXMLOnEntry & operator = (const ScXMLOnEntry & rhs); // N/A
 
-  SbPimplPtr<ScXMLOnEntryP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLOnEntry
 

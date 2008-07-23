@@ -30,7 +30,6 @@ class SoEvent;
 class SoNode;
 class SoCamera;
 class SbViewportRegion;
-class SoScXMLStateMachineP;
 
 class COIN_DLL_API SoScXMLStateMachine : public ScXMLStateMachine {
   typedef ScXMLStateMachine inherited;
@@ -60,7 +59,8 @@ private:
   SoScXMLStateMachine(const SoScXMLStateMachine & rhs); // N/A
   SoScXMLStateMachine & operator = (const SoScXMLStateMachine & rhs); // N/A
 
-  SbPimplPtr<SoScXMLStateMachineP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // SoScXMLStateMachine
 

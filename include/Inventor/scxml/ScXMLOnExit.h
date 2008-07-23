@@ -30,7 +30,6 @@
 class ScXMLInvoke;
 class ScXMLEvent;
 class ScXMLStateMachine;
-class ScXMLOnExitP;
 
 class COIN_DLL_API ScXMLOnExit : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -56,7 +55,8 @@ private:
   ScXMLOnExit(const ScXMLOnExit & rhs); // N/A
   ScXMLOnExit & operator = (const ScXMLOnExit & rhs); // N/A
 
-  SbPimplPtr<ScXMLOnExitP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
 }; // ScXMLOnExit
 

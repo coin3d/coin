@@ -28,6 +28,8 @@
 #include <algorithm>
 #include <vector>
 
+#include <boost/scoped_ptr.hpp>
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/ScXMLOnExit.h>
@@ -52,25 +54,81 @@
   \ingroup scxml
 */
 
-class ScXMLStateP {
+class ScXMLState::PImpl {
 public:
-  ScXMLStateP(void)
-    : onentryptr(NULL), onexitptr(NULL), initialptr(NULL), invokeptr(NULL)
-  {
-  }
-
-  ScXMLOnEntry * onentryptr;
-  ScXMLOnExit * onexitptr;
+  boost::scoped_ptr<ScXMLOnEntry> onentryptr;
+  boost::scoped_ptr<ScXMLOnExit> onexitptr;
   std::vector<ScXMLTransition *> transitionlist;
-  ScXMLInitial * initialptr;
+  boost::scoped_ptr<ScXMLInitial> initialptr;
   std::vector<ScXMLState *> statelist;
   std::vector<ScXMLState *> parallellist;
   std::vector<ScXMLFinal *> finallist;
   std::vector<ScXMLHistory *> historylist;
   std::vector<ScXMLAnchor *> anchorlist;
   // datamodel
-  ScXMLInvoke * invokeptr;
+  boost::scoped_ptr<ScXMLInvoke> invokeptr;
 
+  PImpl(void)
+    : onentryptr(NULL), onexitptr(NULL), initialptr(NULL), invokeptr(NULL)
+  {
+  }
+
+  ~PImpl(void)
+  {
+    {
+      std::vector<ScXMLTransition *>::iterator it = this->transitionlist.begin();
+      while (it != this->transitionlist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->transitionlist.clear();
+    }
+
+    {
+      std::vector<ScXMLState *>::iterator it = this->statelist.begin();
+      while (it != this->statelist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->statelist.clear();
+    }
+
+    {
+      std::vector<ScXMLState *>::iterator it = this->parallellist.begin();
+      while (it != this->parallellist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->parallellist.clear();
+    }
+
+    {
+      std::vector<ScXMLFinal *>::iterator it = this->finallist.begin();
+      while (it != this->finallist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->finallist.clear();
+    }
+
+    {
+      std::vector<ScXMLHistory *>::iterator it = this->historylist.begin();
+      while (it != this->historylist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->historylist.clear();
+    }
+
+    {
+      std::vector<ScXMLAnchor *>::iterator it = this->anchorlist.begin();
+      while (it != this->anchorlist.end()) {
+        delete *it;
+        ++it;
+      }
+      this->anchorlist.clear();
+    }
+  }
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -98,86 +156,6 @@ ScXMLState::~ScXMLState(void)
   this->setIdAttribute(NULL);
   this->setSrcAttribute(NULL);
   this->setTaskAttribute(NULL);
-
-  if (PRIVATE(this)->onentryptr) {
-    delete PRIVATE(this)->onentryptr;
-    PRIVATE(this)->onentryptr = NULL;
-  }
-
-  if (PRIVATE(this)->onexitptr) {
-    delete PRIVATE(this)->onexitptr;
-    PRIVATE(this)->onexitptr = NULL;
-  }
-
-  {
-    std::vector<ScXMLTransition *>::iterator transitionit =
-      PRIVATE(this)->transitionlist.begin();
-    while (transitionit != PRIVATE(this)->transitionlist.end()) {
-      delete *transitionit;
-      ++transitionit;
-    }
-    PRIVATE(this)->transitionlist.clear();
-  }
-
-  if (PRIVATE(this)->initialptr) {
-    delete PRIVATE(this)->initialptr;
-    PRIVATE(this)->initialptr = NULL;
-  }
-
-  {
-    std::vector<ScXMLState *>::iterator stateit =
-      PRIVATE(this)->statelist.begin();
-    while (stateit != PRIVATE(this)->statelist.end()) {
-      delete *stateit;
-      ++stateit;
-    }
-    PRIVATE(this)->statelist.clear();
-  }
-
-  {
-    std::vector<ScXMLState *>::iterator parallelit =
-      PRIVATE(this)->parallellist.begin();
-    while (parallelit != PRIVATE(this)->parallellist.end()) {
-      delete *parallelit;
-      ++parallelit;
-    }
-    PRIVATE(this)->parallellist.clear();
-  }
-
-  {
-    std::vector<ScXMLFinal *>::iterator finalit =
-      PRIVATE(this)->finallist.begin();
-    while (finalit != PRIVATE(this)->finallist.end()) {
-      delete *finalit;
-      ++finalit;
-    }
-    PRIVATE(this)->finallist.clear();
-  }
-
-  {
-    std::vector<ScXMLHistory *>::iterator historyit =
-      PRIVATE(this)->historylist.begin();
-    while (historyit != PRIVATE(this)->historylist.end()) {
-      delete *historyit;
-      ++historyit;
-    }
-    PRIVATE(this)->historylist.clear();
-  }
-
-  {
-    std::vector<ScXMLAnchor *>::iterator anchorit =
-      PRIVATE(this)->anchorlist.begin();
-    while (anchorit != PRIVATE(this)->anchorlist.end()) {
-      delete *anchorit;
-      ++anchorit;
-    }
-    PRIVATE(this)->anchorlist.clear();
-  }
-
-  if (PRIVATE(this)->invokeptr) {
-    delete PRIVATE(this)->invokeptr;
-    PRIVATE(this)->invokeptr = NULL;
-  }
 }
 
 // *************************************************************************
@@ -292,7 +270,7 @@ SCXML_SINGLE_OBJECT_API_IMPL(ScXMLState, ScXMLInvoke, PRIVATE(this)->invokeptr, 
 void
 ScXMLState::invoke(ScXMLStateMachine * statemachine)
 {
-  if (PRIVATE(this)->invokeptr) {
+  if (PRIVATE(this)->invokeptr.get()) {
     PRIVATE(this)->invokeptr->invoke(statemachine);
   }
 }
@@ -308,7 +286,7 @@ ScXMLState::isAtomicState(void) const
 {
   return ((PRIVATE(this)->statelist.size() == 0) &&
           (PRIVATE(this)->parallellist.size() == 0) &&
-          (PRIVATE(this)->invokeptr != NULL));
+          (PRIVATE(this)->invokeptr.get() != NULL));
 }
 
 /*!
