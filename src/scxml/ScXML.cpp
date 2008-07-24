@@ -65,9 +65,9 @@
 
   The ScXML part of Coin is a basic, non-conformant, partial
   implementation of State Chart XML, based on the W3C Working Draft 21
-  February 2007 of SCXML <http://www.w3.org/TR/scxml/>.  Read that
-  document for a basic understanding how SCXML documents should be
-  constructed.
+  February 2007 of SCXML <http://www.w3.org/TR/2007/WD-scxml-20070221/>.  
+  Read that document for a basic understanding how SCXML documents
+  should be constructed.
 
   NOTE: A new version of the draft has just been released (May 2008).
   The code here does not reflect any changes done to the draft SCXML
