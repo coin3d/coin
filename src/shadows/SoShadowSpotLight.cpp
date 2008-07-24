@@ -165,7 +165,7 @@ SoShadowSpotLight::~SoShadowSpotLight()
 void
 SoShadowSpotLight::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoShadowSpotLight, SO_FROM_COIN_2_5);
+  SO_NODE_INTERNAL_INIT_CLASS(SoShadowSpotLight, SO_FROM_COIN_3_0);
 }
 
 // Doc from superclass.
