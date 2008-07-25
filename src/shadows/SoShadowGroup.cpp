@@ -1638,7 +1638,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
         first = 0;
         SbString msg("Unable to render shadows.");
         if (!SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT)) msg += " Frame buffer objects not supported.";
-        if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) " OpenGL version < 2.0.";
+        if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) msg += " OpenGL version < 2.0.";
         if (!SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float")) msg += " Floating point textures not supported.";
         SoDebugError::postWarning("SoShadowGroupP::GLRender",
                                   msg.getString());
@@ -1814,8 +1814,6 @@ SoShadowSpotLightCache::shadowmap_glcallback(void * closure, SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     SoState * state = action->getState();
-    SoShadowSpotLightCache * thisp = (SoShadowSpotLightCache*) closure;
-
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
     SoTextureQualityElement::set(state, 0.0f);
     SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL);
