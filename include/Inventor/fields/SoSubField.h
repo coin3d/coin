@@ -434,13 +434,13 @@ _class_::allocValues(int newnum) \
  \
       if (oldmaxnum != this->maxNum) { \
         newblock = new _valtype_[this->maxNum]; \
-        this->userDataIsUsed = FALSE; \
  \
         for (i=0; i < SbMin(this->num, newnum); i++) \
           newblock[i] = this->values[i]; \
  \
         delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
         this->setValuesPtr(newblock); \
+        this->userDataIsUsed = FALSE; \
       } \
     } \
     else { \
