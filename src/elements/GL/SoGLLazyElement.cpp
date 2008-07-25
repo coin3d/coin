@@ -492,7 +492,7 @@ SoGLLazyElement::init(SoState * stateptr)
 void
 SoGLLazyElement::push(SoState * stateptr)
 {
-  inherited::push(stateptr);;
+  inherited::push(stateptr);
   SoGLLazyElement * prev = (SoGLLazyElement*) this->getNextInStack();
   this->state = stateptr; // needed to send GL texture
   this->glstate = prev->glstate;
