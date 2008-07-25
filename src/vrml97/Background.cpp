@@ -772,7 +772,6 @@ SoVRMLBackgroundP::buildGeometry(void)
   this->rootnode->addChild(scale);
   this->rootnode->addChild(cubedata);
   
-  const int tindices[] = {1, 2, 3, 0, -1};
   this->frontface = NULL;
   this->backface = NULL;
   this->leftface = NULL;

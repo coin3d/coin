@@ -723,9 +723,6 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
   SoState * state = action->getState();
   state->push();
 
-  SbBool ccw = this->ccw.getValue();
-  SbBool solid = this->solid.getValue();
-
   if (SoTextureCoordinateElement::getType(state) !=
       SoTextureCoordinateElement::FUNCTION) {
     SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),

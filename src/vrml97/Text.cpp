@@ -301,7 +301,6 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
   glBegin(GL_TRIANGLES);
   glNormal3f(0.0f, 0.0f, 1.0f);
 
-  int glyphidx = 0;
   const float spacing = PRIVATE(this)->textspacing * PRIVATE(this)->textsize;
   int maxstringchars = 0;
   float ypos = 0.0f;
@@ -596,7 +595,6 @@ SoVRMLText::computeBBox(SoAction * action,
     return; 
   }
   
-  float maxglyphsize = PRIVATE(this)->maxglyphheight;  
   float maxlength = 0.0f;
 
   for (i = 0; i < this->length.getNum();++i) 
@@ -774,7 +772,6 @@ SoVRMLText::generatePrimitives(SoAction * action)
   vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
 
   float ypos = 0.0f;
-  int glyphidx = 0;
   int maxstringchars = 0;
   for (i = 0; i < n; ++i) 
     maxstringchars = SbMax(maxstringchars, this->string[i].getLength());
@@ -1079,7 +1076,6 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     
     const unsigned int len = textnode->string[i].getLength();
     float stringwidth = 0.0f;
-    float glyphwidth = 0.0f;
     const float * maxbbox;
     float kerningx = 0;
     float kerningy = 0;

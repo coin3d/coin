@@ -1963,8 +1963,6 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     return;
   }
 
-  SbBool onlyrect = thisp->primcbdata.onlyrect;
-
   SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
 

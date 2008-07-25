@@ -147,8 +147,6 @@ SoVRMLPointLight::GLRender(SoGLRenderAction * action)
     return;
   }
 
-  SoState * state = action->getState();
-
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
   SbVec3f att = this->attenuation.getValue();

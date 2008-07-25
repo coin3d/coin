@@ -403,8 +403,6 @@ SoVertexAttribute::copyContents(const SoFieldContainer * from,
                                 SbBool copyConn)
 {
   assert(from->isOfType(SoVertexAttribute::getClassTypeId()));
-  const SoVertexAttribute * fromnode = (SoVertexAttribute*) from;
-
   SoField * valuesfield = NULL;
 
   // copy fields

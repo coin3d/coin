@@ -736,7 +736,6 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   // get listener stuff
   const SbVec3f &listenerpos = SoListenerPositionElement::get(state);
   const SbRotation &listenerorientation = SoListenerOrientationElement::get(state);
-  const SbVec3f &listenervelocity = SoListenerDopplerElement::getDopplerVelocity(state);
   float listenergain = SoListenerGainElement::get(state);
 
 #if COIN_DEBUG && 0 // debug

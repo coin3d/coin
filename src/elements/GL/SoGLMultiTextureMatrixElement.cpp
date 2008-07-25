@@ -93,9 +93,6 @@ SoGLMultiTextureMatrixElement::pop(SoState * state,
 {
   inherited::pop(state, prevTopElement);
 
-  SoGLMultiTextureMatrixElement * prev = (SoGLMultiTextureMatrixElement*)
-    prevTopElement;
-
   for (int i = 0; i < MAX_UNITS; i++) {
     const UnitData & thisud = this->getUnitData(i);
     const UnitData & prevud = this->getUnitData(i);
