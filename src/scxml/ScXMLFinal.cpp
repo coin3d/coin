@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLFinal.h>
+#include "scxml/ScXMLFinal.h"
 
 #include <assert.h>
 #include <string.h>

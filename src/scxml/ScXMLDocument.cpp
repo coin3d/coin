@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLDocument.h>
+#include "scxml/ScXMLDocument.h"
 
 #include <algorithm>
 #include <cassert>
@@ -29,9 +29,9 @@
 #include <vector>
 
 #include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/ScXMLState.h>
-#include <Inventor/scxml/ScXMLFinal.h>
 
+#include "scxml/ScXMLState.h"
+#include "scxml/ScXMLFinal.h"
 #include "scxml/ScXMLCommonP.h"
 
 // *************************************************************************

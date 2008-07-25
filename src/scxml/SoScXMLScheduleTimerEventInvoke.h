@@ -26,7 +26,7 @@
 
 #include <Inventor/scxml/ScXMLInvoke.h>
 
-class COIN_DLL_API SoScXMLScheduleTimerEventInvoke : public ScXMLInvoke {
+class SoScXMLScheduleTimerEventInvoke : public ScXMLInvoke {
   typedef ScXMLInvoke inherited;
   SCXML_OBJECT_HEADER(SoScXMLScheduleTimerEventInvoke);
 

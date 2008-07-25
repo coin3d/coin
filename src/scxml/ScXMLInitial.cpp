@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLInitial.h>
+#include "scxml/ScXMLInitial.h"
 
 #include <algorithm>
 #include <cassert>
@@ -30,8 +30,8 @@
 #include <boost/scoped_ptr.hpp>
 
 #include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/ScXMLTransition.h>
 
+#include "scxml/ScXMLTransition.h"
 #include "scxml/ScXMLCommonP.h"
 
 // *************************************************************************

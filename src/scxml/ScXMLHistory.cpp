@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLHistory.h>
+#include "scxml/ScXMLHistory.h"
 
 #include <assert.h>
 #include <string.h>
@@ -29,8 +29,8 @@
 #include <boost/scoped_ptr.hpp>
 
 #include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/ScXMLTransition.h>
 
+#include "scxml/ScXMLTransition.h"
 #include "scxml/ScXMLCommonP.h"
 
 // *************************************************************************

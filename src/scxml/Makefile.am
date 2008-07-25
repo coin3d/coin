@@ -31,7 +31,17 @@ PrivateHeaders = \
         ScXMLFallbackInvoke.h \
         SoScXMLDebugInfoInvoke.h \
         SoScXMLScheduleRedrawInvoke.h \
-        SoScXMLScheduleTimerEventInvoke.h
+        SoScXMLScheduleTimerEventInvoke.h \
+        \
+        ScXMLDocument.h \
+        ScXMLAnchor.h \
+        ScXMLState.h \
+        ScXMLOnEntry.h \
+        ScXMLOnExit.h \
+        ScXMLInitial.h \
+        ScXMLFinal.h \
+        ScXMLHistory.h \
+        ScXMLTransition.h
 
 ObsoleteHeaders =
 

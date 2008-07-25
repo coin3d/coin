@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLOnExit.h>
+#include "scxml/ScXMLOnExit.h"
 
 #include <assert.h>
 #include <algorithm>

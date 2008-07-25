@@ -34,18 +34,18 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/ScXMLDocument.h>
-#include <Inventor/scxml/ScXMLState.h>
-#include <Inventor/scxml/ScXMLInitial.h>
-#include <Inventor/scxml/ScXMLFinal.h>
-#include <Inventor/scxml/ScXMLOnEntry.h>
-#include <Inventor/scxml/ScXMLOnExit.h>
 #include <Inventor/scxml/ScXMLInvoke.h>
-#include <Inventor/scxml/ScXMLTransition.h>
-#include <Inventor/scxml/ScXMLAnchor.h>
-#include <Inventor/scxml/ScXMLHistory.h>
-
 #include <Inventor/scxml/ScXMLEvent.h>
+
+#include "scxml/ScXMLDocument.h"
+#include "scxml/ScXMLState.h"
+#include "scxml/ScXMLInitial.h"
+#include "scxml/ScXMLFinal.h"
+#include "scxml/ScXMLOnEntry.h"
+#include "scxml/ScXMLOnExit.h"
+#include "scxml/ScXMLTransition.h"
+#include "scxml/ScXMLAnchor.h"
+#include "scxml/ScXMLHistory.h"
 
 // *************************************************************************
 

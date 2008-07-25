@@ -31,7 +31,7 @@ class ScXMLEvent;
 class ScXMLInvoke;
 class ScXMLStateMachine;
 
-class COIN_DLL_API ScXMLTransition : public ScXMLObject {
+class ScXMLTransition : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLTransition);
 public:

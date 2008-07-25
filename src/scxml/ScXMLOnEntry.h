@@ -1,5 +1,5 @@
-#ifndef COIN_SCXMLINITIAL_H
-#define COIN_SCXMLINITIAL_H
+#ifndef COIN_SCXMLONENTRY_H
+#define COIN_SCXMLONENTRY_H
 
 /**************************************************************************\
  *
@@ -27,38 +27,37 @@
 #include <Inventor/scxml/ScXMLObject.h>
 #include <Inventor/tools/SbPimplPtr.h>
 
-class ScXMLTransition;
+class ScXMLInvoke;
+class ScXMLEvent;
+class ScXMLStateMachine;
 
-class COIN_DLL_API ScXMLInitial : public ScXMLObject {
+class ScXMLOnEntry : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLInitial);
+  SCXML_OBJECT_HEADER(ScXMLOnEntry);
 
 public:
   static void initClass(void);
 
-  ScXMLInitial(void);
-  virtual ~ScXMLInitial(void);
- 
-  // XML attributes
-  virtual void setIdAttribute(const char * id);
-  const char * getIdAttribute(void) const { return this->id; }
+  ScXMLOnEntry(void);
+  virtual ~ScXMLOnEntry(void);
 
-  virtual SbBool handleXMLAttributes(void);
+  // executable content
+  virtual int getNumInvokes(void) const;
+  virtual ScXMLInvoke * getInvoke(int idx) const;
+  virtual void addInvoke(ScXMLInvoke * invoke);
+  virtual void removeInvoke(ScXMLInvoke * invoke);
+  virtual void clearAllInvokes(void);
 
-  // transition
-  virtual void setTransition(ScXMLTransition * transition);
-  virtual ScXMLTransition * getTransition(void) const;
-
-protected:
-  char * id;
-
+  // invoke
+  virtual void invoke(ScXMLStateMachine * statemachine);
+  
 private:
-  ScXMLInitial(const ScXMLInitial & rhs); // N/A
-  ScXMLInitial & operator = (const ScXMLInitial & rhs); // N/A
+  ScXMLOnEntry(const ScXMLOnEntry & rhs); // N/A
+  ScXMLOnEntry & operator = (const ScXMLOnEntry & rhs); // N/A
 
   class PImpl;
   SbPimplPtr<PImpl> pimpl;
 
-}; // ScXMLInitial
+}; // ScXMLOnEntry
 
-#endif // !COIN_SCXMLINITIAL_H
+#endif // !COIN_SCXMLONENTRY_H

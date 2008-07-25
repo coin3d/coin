@@ -27,7 +27,7 @@
 #include <Inventor/scxml/ScXMLObject.h>
 #include <Inventor/tools/SbLazyPimplPtr.h>
 
-class COIN_DLL_API ScXMLFinal : public ScXMLObject {
+class ScXMLFinal : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLFinal);
 

@@ -26,7 +26,7 @@
 
 #include <Inventor/scxml/ScXMLInvoke.h>
 
-class COIN_DLL_API ScXMLFallbackInvoke : public ScXMLInvoke {
+class ScXMLFallbackInvoke : public ScXMLInvoke {
   typedef ScXMLInvoke inherited;
   SCXML_OBJECT_HEADER(ScXMLFallbackInvoke);
 

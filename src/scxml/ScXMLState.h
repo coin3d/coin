@@ -39,7 +39,7 @@ class ScXMLAnchor;
 class ScXMLEvent;
 class ScXMLStateMachine;
 
-class COIN_DLL_API ScXMLState : public ScXMLObject {
+class ScXMLState : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLState);
 

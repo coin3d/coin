@@ -299,7 +299,17 @@ PrivateHeaders = \
         ScXMLFallbackInvoke.h \
         SoScXMLDebugInfoInvoke.h \
         SoScXMLScheduleRedrawInvoke.h \
-        SoScXMLScheduleTimerEventInvoke.h
+        SoScXMLScheduleTimerEventInvoke.h \
+        \
+        ScXMLDocument.h \
+        ScXMLAnchor.h \
+        ScXMLState.h \
+        ScXMLOnEntry.h \
+        ScXMLOnExit.h \
+        ScXMLInitial.h \
+        ScXMLFinal.h \
+        ScXMLHistory.h \
+        ScXMLTransition.h
 
 
 ObsoleteHeaders = 
@@ -394,9 +404,11 @@ am_scxml_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_scxml_lst_SOURCES_DIST = ScXMLP.h ScXMLCommonP.h \
 	ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
 	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
-	all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
-	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLDocument.h ScXMLAnchor.h ScXMLState.h ScXMLOnEntry.h \
+	ScXMLOnExit.h ScXMLInitial.h ScXMLFinal.h ScXMLHistory.h \
+	ScXMLTransition.h all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp \
+	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
+	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
@@ -429,9 +441,11 @@ am_libscxml_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml_la_SOURCES_DIST = ScXMLP.h ScXMLCommonP.h \
 	ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
 	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
-	all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
-	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLDocument.h ScXMLAnchor.h ScXMLState.h ScXMLOnEntry.h \
+	ScXMLOnExit.h ScXMLInitial.h ScXMLFinal.h ScXMLHistory.h \
+	ScXMLTransition.h all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp \
+	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
+	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
@@ -452,9 +466,11 @@ am_libscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = ScXMLP.h \
 	ScXMLCommonP.h ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
 	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
-	all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
-	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
+	ScXMLDocument.h ScXMLAnchor.h ScXMLState.h ScXMLOnEntry.h \
+	ScXMLOnExit.h ScXMLInitial.h ScXMLFinal.h ScXMLHistory.h \
+	ScXMLTransition.h all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp \
+	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
+	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
 	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
 	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \

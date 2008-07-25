@@ -1,5 +1,5 @@
-#ifndef COIN_SCXMLHISTORY_H
-#define COIN_SCXMLHISTORY_H
+#ifndef COIN_SCXMLONEXIT_H
+#define COIN_SCXMLONEXIT_H
 
 /**************************************************************************\
  *
@@ -25,44 +25,39 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
-
 #include <Inventor/tools/SbPimplPtr.h>
 
-class ScXMLTransition;
+class ScXMLInvoke;
+class ScXMLEvent;
+class ScXMLStateMachine;
 
-class COIN_DLL_API ScXMLHistory : public ScXMLObject {
+class ScXMLOnExit : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLHistory);
+  SCXML_OBJECT_HEADER(ScXMLOnExit);
 
 public:
   static void initClass(void);
 
-  ScXMLHistory(void);
-  virtual ~ScXMLHistory(void);
+  ScXMLOnExit(void);
+  virtual ~ScXMLOnExit(void);
 
-  // XML attributes
-  virtual void setIdAttribute(const char * id);
-  const char * getIdAttribute(void) const { return this->id; }
-  virtual void setTypeAttribute(const char * type);
-  const char * getTypeAttribute(void) const { return this->type; }
+  // executable content
+  virtual int getNumInvokes(void) const;
+  virtual ScXMLInvoke * getInvoke(int idx) const;
+  virtual void addInvoke(ScXMLInvoke * invoke);
+  virtual void removeInvoke(ScXMLInvoke * invoke);
+  virtual void clearAllInvokes(void);
 
-  virtual SbBool handleXMLAttributes(void);
-
-  // transition
-  virtual void setTransition(ScXMLTransition * transition);
-  virtual ScXMLTransition * getTransition(void) const;
-
-protected:
-  char * id;
-  char * type;
-
+  // invoke
+  virtual void invoke(ScXMLStateMachine * statemachine);
+  
 private:
-  ScXMLHistory(const ScXMLHistory & rhs); // N/A
-  ScXMLHistory & operator = (const ScXMLHistory & rhs); // N/A
+  ScXMLOnExit(const ScXMLOnExit & rhs); // N/A
+  ScXMLOnExit & operator = (const ScXMLOnExit & rhs); // N/A
 
   class PImpl;
   SbPimplPtr<PImpl> pimpl;
 
-}; // ScXMLHistory
+}; // ScXMLOnExit
 
-#endif // !COIN_SCXMLHISTORY_H
+#endif // !COIN_SCXMLONEXIT_H

@@ -266,27 +266,16 @@ PublicHeaders = \
         ScXML.h \
         ScXMLObject.h \
         ScXMLSubObject.h \
-        ScXMLDocument.h \
-        ScXMLState.h \
-        ScXMLOnEntry.h \
-        ScXMLOnExit.h \
-        ScXMLInitial.h \
-        ScXMLFinal.h \
-        ScXMLHistory.h \
-        ScXMLTransition.h \
         ScXMLEvent.h \
         ScXMLInvoke.h \
         ScXMLStateMachine.h \
-        ScXMLAnchor.h \
         SoScXMLEvent.h \
         SoScXMLStateMachine.h
 
 
 PrivateHeaders = 
 
-ObsoleteHeaders = \
-        ScXMLStateBase.h
-
+ObsoleteHeaders = 
 
 
 # **************************************************************************

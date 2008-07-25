@@ -1,5 +1,5 @@
-#ifndef COIN_SCXMLANCHOR_H
-#define COIN_SCXMLANCHOR_H
+#ifndef COIN_SCXMLINITIAL_H
+#define COIN_SCXMLINITIAL_H
 
 /**************************************************************************\
  *
@@ -25,38 +25,40 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
+#include <Inventor/tools/SbPimplPtr.h>
 
-#include <Inventor/tools/SbLazyPimplPtr.h>
+class ScXMLTransition;
 
-class COIN_DLL_API ScXMLAnchor : public ScXMLObject {
+class ScXMLInitial : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLAnchor);
+  SCXML_OBJECT_HEADER(ScXMLInitial);
 
 public:
   static void initClass(void);
 
-  ScXMLAnchor(void);
-  virtual ~ScXMLAnchor(void);
-
-  virtual void setTypeAttribute(const char * type);
-  const char * getTypeAttribute(void) const { return this->type; }
-
-  virtual void setSnapshotAttribute(const char * snapshot);
-  const char * getSnapshotAttribute(void) const { return this->snapshot; }
+  ScXMLInitial(void);
+  virtual ~ScXMLInitial(void);
+ 
+  // XML attributes
+  virtual void setIdAttribute(const char * id);
+  const char * getIdAttribute(void) const { return this->id; }
 
   virtual SbBool handleXMLAttributes(void);
 
+  // transition
+  virtual void setTransition(ScXMLTransition * transition);
+  virtual ScXMLTransition * getTransition(void) const;
+
 protected:
-  char * type;
-  char * snapshot;
+  char * id;
 
 private:
-  ScXMLAnchor(const ScXMLAnchor & rhs); // N/A
-  ScXMLAnchor & operator = (const ScXMLAnchor & rhs); // N/A
+  ScXMLInitial(const ScXMLInitial & rhs); // N/A
+  ScXMLInitial & operator = (const ScXMLInitial & rhs); // N/A
 
   class PImpl;
-  SbLazyPimplPtr<PImpl> pimpl;
+  SbPimplPtr<PImpl> pimpl;
 
-}; // ScXMLAnchor
+}; // ScXMLInitial
 
-#endif // !COIN_SCXMLANCHOR_H
+#endif // !COIN_SCXMLINITIAL_H

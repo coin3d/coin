@@ -1,5 +1,5 @@
-#ifndef COIN_SCXMLONENTRY_H
-#define COIN_SCXMLONENTRY_H
+#ifndef COIN_SCXMLANCHOR_H
+#define COIN_SCXMLANCHOR_H
 
 /**************************************************************************\
  *
@@ -25,39 +25,38 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
-#include <Inventor/tools/SbPimplPtr.h>
 
-class ScXMLInvoke;
-class ScXMLEvent;
-class ScXMLStateMachine;
+#include <Inventor/tools/SbLazyPimplPtr.h>
 
-class COIN_DLL_API ScXMLOnEntry : public ScXMLObject {
+class ScXMLAnchor : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLOnEntry);
+  SCXML_OBJECT_HEADER(ScXMLAnchor);
 
 public:
   static void initClass(void);
 
-  ScXMLOnEntry(void);
-  virtual ~ScXMLOnEntry(void);
+  ScXMLAnchor(void);
+  virtual ~ScXMLAnchor(void);
 
-  // executable content
-  virtual int getNumInvokes(void) const;
-  virtual ScXMLInvoke * getInvoke(int idx) const;
-  virtual void addInvoke(ScXMLInvoke * invoke);
-  virtual void removeInvoke(ScXMLInvoke * invoke);
-  virtual void clearAllInvokes(void);
+  virtual void setTypeAttribute(const char * type);
+  const char * getTypeAttribute(void) const { return this->type; }
 
-  // invoke
-  virtual void invoke(ScXMLStateMachine * statemachine);
-  
+  virtual void setSnapshotAttribute(const char * snapshot);
+  const char * getSnapshotAttribute(void) const { return this->snapshot; }
+
+  virtual SbBool handleXMLAttributes(void);
+
+protected:
+  char * type;
+  char * snapshot;
+
 private:
-  ScXMLOnEntry(const ScXMLOnEntry & rhs); // N/A
-  ScXMLOnEntry & operator = (const ScXMLOnEntry & rhs); // N/A
+  ScXMLAnchor(const ScXMLAnchor & rhs); // N/A
+  ScXMLAnchor & operator = (const ScXMLAnchor & rhs); // N/A
 
   class PImpl;
-  SbPimplPtr<PImpl> pimpl;
+  SbLazyPimplPtr<PImpl> pimpl;
 
-}; // ScXMLOnEntry
+}; // ScXMLAnchor
 
-#endif // !COIN_SCXMLONENTRY_H
+#endif // !COIN_SCXMLANCHOR_H

@@ -31,7 +31,7 @@
 class ScXMLState;
 class ScXMLFinal;
 
-class COIN_DLL_API ScXMLDocument : public ScXMLObject {
+class ScXMLDocument : public ScXMLObject {
   typedef ScXMLObject inherited;
   SCXML_OBJECT_HEADER(ScXMLDocument);
 

@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLTransition.h>
+#include "scxml/ScXMLTransition.h"
 
 #include <assert.h>
 #include <string.h>

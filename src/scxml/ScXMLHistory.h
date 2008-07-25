@@ -1,5 +1,5 @@
-#ifndef COIN_SCXMLONEXIT_H
-#define COIN_SCXMLONEXIT_H
+#ifndef COIN_SCXMLHISTORY_H
+#define COIN_SCXMLHISTORY_H
 
 /**************************************************************************\
  *
@@ -25,39 +25,44 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
+
 #include <Inventor/tools/SbPimplPtr.h>
 
-class ScXMLInvoke;
-class ScXMLEvent;
-class ScXMLStateMachine;
+class ScXMLTransition;
 
-class COIN_DLL_API ScXMLOnExit : public ScXMLObject {
+class ScXMLHistory : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLOnExit);
+  SCXML_OBJECT_HEADER(ScXMLHistory);
 
 public:
   static void initClass(void);
 
-  ScXMLOnExit(void);
-  virtual ~ScXMLOnExit(void);
+  ScXMLHistory(void);
+  virtual ~ScXMLHistory(void);
 
-  // executable content
-  virtual int getNumInvokes(void) const;
-  virtual ScXMLInvoke * getInvoke(int idx) const;
-  virtual void addInvoke(ScXMLInvoke * invoke);
-  virtual void removeInvoke(ScXMLInvoke * invoke);
-  virtual void clearAllInvokes(void);
+  // XML attributes
+  virtual void setIdAttribute(const char * id);
+  const char * getIdAttribute(void) const { return this->id; }
+  virtual void setTypeAttribute(const char * type);
+  const char * getTypeAttribute(void) const { return this->type; }
 
-  // invoke
-  virtual void invoke(ScXMLStateMachine * statemachine);
-  
+  virtual SbBool handleXMLAttributes(void);
+
+  // transition
+  virtual void setTransition(ScXMLTransition * transition);
+  virtual ScXMLTransition * getTransition(void) const;
+
+protected:
+  char * id;
+  char * type;
+
 private:
-  ScXMLOnExit(const ScXMLOnExit & rhs); // N/A
-  ScXMLOnExit & operator = (const ScXMLOnExit & rhs); // N/A
+  ScXMLHistory(const ScXMLHistory & rhs); // N/A
+  ScXMLHistory & operator = (const ScXMLHistory & rhs); // N/A
 
   class PImpl;
   SbPimplPtr<PImpl> pimpl;
 
-}; // ScXMLOnExit
+}; // ScXMLHistory
 
-#endif // !COIN_SCXMLONEXIT_H
+#endif // !COIN_SCXMLHISTORY_H

@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLAnchor.h>
+#include "scxml/ScXMLAnchor.h"
 
 #include <assert.h>
 #include <string.h>
