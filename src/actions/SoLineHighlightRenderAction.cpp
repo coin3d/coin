@@ -183,15 +183,32 @@ SoLineHighlightRenderAction::apply(SoNode * node)
     // Coin, and SGI Inventor, only supports one Selection node in a
     // graph, so just search for the first one to avoid that the whole
     // scene graph is searched
+    const SbBool searchall = FALSE;
     PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
-    PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
+    PRIVATE(this)->searchaction->setInterest(searchall ? SoSearchAction::ALL : SoSearchAction::FIRST);
     PRIVATE(this)->searchaction->apply(node);
-    SoPath * path = PRIVATE(this)->searchaction->getPath();
-    if (path) {
-      SoSelection * selection = (SoSelection *) path->getTail();
-      assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
-      if (selection->getNumSelected() > 0) {
-        PRIVATE(this)->drawBoxes(path, selection->getList());
+    if (searchall) {
+      const SoPathList & pathlist = PRIVATE(this)->searchaction->getPaths();
+      if (pathlist.getLength() > 0) {
+        int i;
+        for (i = 0; i < pathlist.getLength(); i++) {
+          SoFullPath * path = static_cast<SoFullPath *>(pathlist[i]);
+          assert(path);
+          SoSelection * selection = static_cast<SoSelection *>(path->getTail());
+          if (selection->getNumSelected() > 0)
+            PRIVATE(this)->drawBoxes(path, selection->getList());
+        }
+      }
+    }
+    else {
+      SoFullPath * path =
+        static_cast<SoFullPath *>(PRIVATE(this)->searchaction->getPath());
+      if (path) {
+        SoSelection * selection = static_cast<SoSelection *>(path->getTail());
+        assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
+        if (selection->getNumSelected() > 0) {
+          PRIVATE(this)->drawBoxes(path, selection->getList());
+        }
       }
     }
     // reset action to clear path

@@ -259,7 +259,7 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
     if (PRIVATE(this)->searchaction == NULL) {
       PRIVATE(this)->searchaction = new SoSearchAction;
     }
-    SbBool searchall = FALSE;
+    const SbBool searchall = FALSE;
     PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
     PRIVATE(this)->searchaction->setInterest(searchall ? SoSearchAction::ALL : SoSearchAction::FIRST);
     PRIVATE(this)->searchaction->apply(node);
@@ -269,18 +269,19 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
       if (pathlist.getLength() > 0) {
         int i;
         for (i = 0; i < pathlist.getLength(); i++) {
-          SoFullPath * path = (SoFullPath*) pathlist[i];
+          SoFullPath * path = static_cast<SoFullPath *>(pathlist[i]);
           assert(path);
-          SoSelection * selection = (SoSelection *) path->getTail();
+          SoSelection * selection = static_cast<SoSelection *>(path->getTail());
           if (selection->getNumSelected() > 0)
             this->drawBoxes(path, selection->getList());
         }
       }
     }
     else {
-      SoFullPath * path = (SoFullPath*) PRIVATE(this)->searchaction->getPath();
+      SoFullPath * path =
+        static_cast<SoFullPath *>(PRIVATE(this)->searchaction->getPath());
       if (path) {
-        SoSelection * selection = (SoSelection *) path->getTail();
+        SoSelection * selection = static_cast<SoSelection *>(path->getTail());
         if (selection->getNumSelected()) {
           this->drawBoxes(path, selection->getList());
         }
