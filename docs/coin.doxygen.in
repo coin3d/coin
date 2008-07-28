@@ -913,6 +913,7 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeometryShader.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderParameter.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoViewerNavigationMode.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWAnchor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWInline.h \
                          @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderPlaneProjector.h \
@@ -1499,6 +1500,7 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/shaders/SoVertexShader.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoVertexShape.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoViewerNavigationMode.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWAnchor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWInline.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbCylinderPlaneProjector.cpp \
