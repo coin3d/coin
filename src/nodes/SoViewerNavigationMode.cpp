@@ -35,6 +35,8 @@
   \class SoViewerNavigationMode Inventor/nodes/SoViewerNavigationMode.h
   \brief Node for setting the default viewer navigation mode for a scene graph.
 
+  FIXME: This documentation is outdated and should be rewritten.
+
   This node provides a way to hint to the SoSceneManager which
   navigation mode you want to use with a scene graph.
 
