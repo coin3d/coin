@@ -141,12 +141,19 @@ SoScXMLStateMachine::postGLRender(void)
 SbBool
 SoScXMLStateMachine::processSoEvent(const SoEvent * event)
 {
-  boost::scoped_ptr<SoScXMLEvent> wrapperevent;
-  wrapperevent.reset(new SoScXMLEvent);
-  wrapperevent->setSoEvent(event);
-  wrapperevent->setUpIdentifier();
-  this->queueEvent(wrapperevent.get(), FALSE);
-  return this->processEventQueue();
+  // FIXME: Not sure if this check should be here and not somewhere else,
+  // but removing this again makes us crash on NULL scenegraphs. kintel 20080729.
+  if (PRIVATE(this)->scenegraphroot.get()) {
+    boost::scoped_ptr<SoScXMLEvent> wrapperevent;
+    wrapperevent.reset(new SoScXMLEvent);
+    wrapperevent->setSoEvent(event);
+    wrapperevent->setUpIdentifier();
+    this->queueEvent(wrapperevent.get(), FALSE);
+    return this->processEventQueue();
+  }
+  else {
+    return false;
+  }
 }
 
 #undef PRIVATE
