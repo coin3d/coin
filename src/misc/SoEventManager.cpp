@@ -215,13 +215,11 @@ SoEventManager::setSceneGraph(SoNode * const sceneroot)
   
   if (PRIVATE(this)->navigationsystem) {
     PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
-    PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
   }
 
   for (int c = 0; c < this->getNumSoScXMLStateMachines(); ++c) {
     SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(c);
     sm->setSceneGraphRoot(PRIVATE(this)->scene);
-    sm->setActiveCamera(PRIVATE(this)->camera);
   }
 }
 
