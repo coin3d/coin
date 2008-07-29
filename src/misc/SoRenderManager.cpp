@@ -147,6 +147,7 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
   
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
+    // FIXME: WTF? Did someone forget to read the coding guidelines? kintel 20080729
     //PRIVATE(this)->camera = PRIVATE(this)->searchForCamera(PRIVATE(this)->scene);
     
     this->attachRootSensor(PRIVATE(this)->scene);
@@ -818,6 +819,7 @@ SoRenderManager::setWindowSize(const SbVec2s & newsize)
   region.setWindowSize(newsize[0], newsize[1]);
   PRIVATE(this)->glaction->setViewportRegion(region);
 
+    // FIXME: WTF? Did someone forget to read the coding guidelines? kintel 20080729
 //   region = PRIVATE(this)->handleeventaction->getViewportRegion();
 //   region.setWindowSize(newsize[0], newsize[1]);
 //   PRIVATE(this)->handleeventaction->setViewportRegion(region);
