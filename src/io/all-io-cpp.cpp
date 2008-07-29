@@ -29,6 +29,6 @@
 #include "SoOutput_Writer.cpp"
 #include "SoTranReceiver.cpp"
 #include "SoTranSender.cpp"
-#include "SoWriteRefCounter.cpp"
+#include "SoWriterefCounter.cpp"
 #include "gzmemio.cpp"
 
