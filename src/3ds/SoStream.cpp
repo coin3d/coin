@@ -89,7 +89,7 @@ static _type_ ntoh_##_type_(char *buf, const SbBool needConv) \
       b[i] = buf[j--]; \
     return v; \
   } else \
-    return *(static_cast<_type_ * >(buf)); \
+    return *((_type_*)buf); \
 }
 
 inline static void hton_uint8_t(uint8_t value, char *buf, const SbBool needConv)  { buf[0] = value; }
@@ -127,11 +127,11 @@ SbBool SoStream::write##_suffix_(const _type_ value) \
   if (isBinary()) { \
     char temp[sizeof(_type_)]; \
     hton_##_type_(value, temp, needEndianConversion); \
-    writeBinaryArray(static_cast<void*>(&value), sizeof(_type_)); \
+    writeBinaryArray((void*)&value, sizeof(_type_)); \
   } else { \
     SbString s; \
     s.sprintf(_printString_, value); \
-    writeBinaryArray(static_cast<void * >(s).getString(), static_cast<size_t>(s.getLength())); \
+    writeBinaryArray((void*)s.getString(), (size_t)s.getLength()); \
   } \
   return !isBad(); \
 }
@@ -603,7 +603,7 @@ SbBool SoStream::reallocBuffer(size_t newSize)
   if (newAllocSize < newSize)
     newAllocSize = newSize;
 
-  char * newBuffer = static_cast<char*>(realloc(buffer, newAllocSize));
+  char *newBuffer = (char*)realloc(buffer, newAllocSize);
   if (newBuffer != NULL) {
     buffer = newBuffer;
     bufferSize = newSize;
@@ -645,7 +645,7 @@ void SoStream::emptyBuffer(size_t streamSize)
   if (streamSize == 0) {
     buffer = NULL;
   } else {
-    buffer = static_cast<char *>(malloc(streamSize));
+    buffer = (char*)malloc(streamSize);
   }
   bufferSize = 0;
   bufferAllocSize = streamSize;
@@ -755,7 +755,7 @@ void SoStream::setFilePointer(FILE *newFP)
 FILE* SoStream::getFilePointer()  const
 {
   assert(streamType == FILE_STREAM);
-  return static_cast<FILE *>(&filep);
+  return (FILE*)&filep;
 }
 
 SbBool SoStream::openFile(const char *const fileName)
