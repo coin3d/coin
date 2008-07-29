@@ -16,6 +16,11 @@ DEF transformerLocateMaterial Material { diffuseColor 0.8 0.3 0  emissiveColor 0
 
 ##########################################################################
 
+# We use 1.001 instead of 1.0 for the geometry to avoid picking
+# problems when the dragger is used in a manipulator and the geometry
+# fills the manipulator box. If we use 1.0, it's "random" if the ray
+# hits the manipulated geometry or the dragger.
+
 # These are the sides of the transformerbox. They are rendered with
 # facesets, so they can be picked and thereby activate the box for
 # dragging. The faces are made invisible (i.e. rendered with lines) so
@@ -27,8 +32,8 @@ DEF transformerLocateMaterial Material { diffuseColor 0.8 0.3 0  emissiveColor 0
 DEF TRANSFORMER_SIDE_COORDS Group {
    Coordinate3 {
       point [
-       -1 -1 1, 1 -1 1, 1 1 1, -1 1 1,     # front face, ccw, from bottom left
-       -1 -1 -1, 1 -1 -1, 1 1 -1, -1 1 -1  # back face, cw, from bottom left
+       -1.001 -1.001 1.001, 1.001 -1.001 1.001, 1.001 1.001 1.001, -1.001 1.001 1.001,     # front face, ccw, from bottom left
+       -1.001 -1.001 -1.001, 1.001 -1.001 -1.001, 1.001 1.001 -1.001, -1.001 1.001 -1.001  # back face, cw, from bottom left
       ]
    }
 }
@@ -114,7 +119,7 @@ DEF transformerTranslateBoxFeedback Separator {
    DrawStyle { style LINES }
    Cube { }
    USE TRANSFORMER_TRANSLATOR_ACTIVE
-   Coordinate3 { point [ -1 1 1, 1 1 1, 1 1 -1, -1 1 -1 ] }
+   Coordinate3 { point [ -1.001 1.001 1.001, 1.001 1.001 1.001, 1.001 1.001 -1.001, -1.001 1.001 -1.001 ] }
    IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, -1 ] }
 }
 
@@ -287,7 +292,7 @@ DEF transformerZCircleFeedback Separator {
 
 DEF TRANSFORMER_ROUNDWALL_MARKER Group {
    USE TRANSFORMER_FEEDBACK_MATERIAL
-   Coordinate3 { point [ 1 0 0, -1 0 0, 0 1 0, 0 -1 0, 0 0 1, 0 0 -1 ] }
+   Coordinate3 { point [ 1.001 0 0, -1.001 0 0, 0 1.001 0, 0 -1.001 0, 0 0 1.001, 0 0 -1.001 ] }
    IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ] }
 }
 
@@ -411,7 +416,7 @@ DEF transformerScale8Active Separator {
 ## Feedback geometries.
 
 DEF TRANSFORMER_SCALE_DIAGONAL Group {
-   Coordinate3 { point [ -1 1 1, 1 -1 -1 ] }
+   Coordinate3 { point [ -1.001 1.001 1.001, 1.001 -1.001 -1.001 ] }
    IndexedLineSet { coordIndex [ 0, 1, -1 ] }
 }
 
