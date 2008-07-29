@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
 #include "3dsLoader.cpp"
 #include "SoStream.cpp"
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
 
