@@ -115,7 +115,7 @@ static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_re
 #define YY_DECL          int stl_scan(stl_reader * reader)
 %}
 
-%option outfile="steel.c"
+%option outfile="steel.cpp"
 %option prefix="stl_yy"
 %option case-insensitive
 %option never-interactive
