@@ -360,6 +360,7 @@ AC_ARG_ENABLE(
   AC_HELP_STRING([--enable-java-wrapper], [enable building java wrapper]), [
   case $enableval in
     yes | true) sim_ac_enable_java_wrapper=true ;;
+    no | false) sim_ac_enable_java_wrapper=false ;;
     *) ;;
   esac])
 
@@ -381,6 +382,7 @@ AC_ARG_ENABLE(
   AC_HELP_STRING([--enable-3ds-import], [enable 3ds import capabilities]), [
   case $enableval in
     yes | true) sim_ac_enable_3ds_import=true ;;
+    no | false) sim_ac_enable_3ds_import=false ;;
     *) ;;
   esac])
 
@@ -404,9 +406,10 @@ AM_CONDITIONAL([BUILD_3DS_CAPABILITIES], [$sim_ac_enable_3ds_import])
 sim_ac_enable_javascript=true
 AC_ARG_ENABLE(
   [javascript-api],
-  AC_HELP_STRING([--enable-javascript-api], [enable javascript capabilities]), [
+  AC_HELP_STRING([--disable-javascript-api], [disable javascript capabilities]), [
   case $enableval in
     yes | true) sim_ac_enable_javascript=true ;;
+    no | false) sim_ac_enable_javascript=false ;;
     *) ;;
   esac])
 

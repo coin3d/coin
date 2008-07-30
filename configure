@@ -1055,7 +1055,8 @@ Optional Features:
                           [default=yes]
   --enable-java-wrapper   enable building java wrapper
   --enable-3ds-import     enable 3ds import capabilities
-  --enable-javascript-api enable javascript capabilities
+  --disable-javascript-api
+                          disable javascript capabilities
   --disable-vrml97        disable VRML97 support
   --disable-threads       disable platform-independent multithreading
                           abstraction classes
@@ -5194,7 +5195,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5197 "configure"' > conftest.$ac_ext
+  echo '#line 5198 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -6329,7 +6330,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:6332:" \
+echo "$as_me:6333:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -7392,11 +7393,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7395: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7396: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7399: \$? = $ac_status" >&5
+   echo "$as_me:7400: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7660,11 +7661,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7663: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7664: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7667: \$? = $ac_status" >&5
+   echo "$as_me:7668: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7764,11 +7765,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7767: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7768: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7771: \$? = $ac_status" >&5
+   echo "$as_me:7772: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10109,7 +10110,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10112 "configure"
+#line 10113 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10209,7 +10210,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10212 "configure"
+#line 10213 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12549,11 +12550,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12552: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12553: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12556: \$? = $ac_status" >&5
+   echo "$as_me:12557: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -12653,11 +12654,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12656: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12657: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12660: \$? = $ac_status" >&5
+   echo "$as_me:12661: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14223,11 +14224,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14226: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14227: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14230: \$? = $ac_status" >&5
+   echo "$as_me:14231: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14327,11 +14328,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14330: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14331: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14334: \$? = $ac_status" >&5
+   echo "$as_me:14335: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16530,11 +16531,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16533: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16534: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16537: \$? = $ac_status" >&5
+   echo "$as_me:16538: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -16798,11 +16799,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16801: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16802: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16805: \$? = $ac_status" >&5
+   echo "$as_me:16806: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -16902,11 +16903,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16905: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16906: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:16909: \$? = $ac_status" >&5
+   echo "$as_me:16910: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -20464,6 +20465,7 @@ if test "${enable_java_wrapper+set}" = set; then
 
   case $enableval in
     yes | true) sim_ac_enable_java_wrapper=true ;;
+    no | false) sim_ac_enable_java_wrapper=false ;;
     *) ;;
   esac
 fi;
@@ -20512,6 +20514,7 @@ if test "${enable_3ds_import+set}" = set; then
 
   case $enableval in
     yes | true) sim_ac_enable_3ds_import=true ;;
+    no | false) sim_ac_enable_3ds_import=false ;;
     *) ;;
   esac
 fi;
@@ -20565,6 +20568,7 @@ if test "${enable_javascript_api+set}" = set; then
 
   case $enableval in
     yes | true) sim_ac_enable_javascript=true ;;
+    no | false) sim_ac_enable_javascript=false ;;
     *) ;;
   esac
 fi;
