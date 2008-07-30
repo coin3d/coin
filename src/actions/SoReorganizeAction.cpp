@@ -837,7 +837,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 #ifdef HAVE_VRML97
   SoNode * parent = path->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId()) &&
-      !parent->isOfType(SoVRMLShape::getClassTypeId()) {
+      !parent->isOfType(SoVRMLShape::getClassTypeId())) {
     return;
   }
 

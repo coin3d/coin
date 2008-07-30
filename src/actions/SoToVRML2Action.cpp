@@ -109,12 +109,6 @@
 
 // *************************************************************************
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_VRML97
-
 #include <Inventor/actions/SoToVRML2Action.h>
 
 #include <stdio.h>
@@ -146,6 +140,9 @@
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTransform.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
 #include "actions/SoSubActionP.h"
 #include "misc/SbHash.h"
 
@@ -262,6 +259,7 @@ SoToVRML2Action::initClass(void)
 
 // *************************************************************************
 
+#ifndef HAVE_VRML97
 SoToVRML2Action::SoToVRML2Action(void)
 {
   SO_ACTION_CONSTRUCTOR(SoToVRML2Action);
