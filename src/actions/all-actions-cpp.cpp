@@ -24,6 +24,10 @@
 // Note: there are more source files in this directory, but those are
 // for action classes not fully implemented yet.
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif HAVE_CONFIG_H
+
 #include "SoAction.cpp"
 #include "SoBoxHighlightRenderAction.cpp"
 #include "SoCallbackAction.cpp"
@@ -39,8 +43,10 @@
 #include "SoSearchAction.cpp"
 #include "SoSimplifyAction.cpp"
 #include "SoToVRMLAction.cpp"
-#include "SoToVRML2Action.cpp"
 #include "SoWriteAction.cpp"
 #include "SoAudioRenderAction.cpp"
+#ifdef HAVE_VRML97
+#include "SoToVRML2Action.cpp"
+#endif // HAVE_VRML97
 // #include "SoIntersectionDetectionAction.cpp"
 

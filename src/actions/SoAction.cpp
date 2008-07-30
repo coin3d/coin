@@ -203,7 +203,12 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#ifndef HAVE_VRML97
+// exclude SoToVRML2Action if VRML97 is disabled
+#define COIN_SOTOVRML2ACTION_H
+#endif // HAVE_VRML97
 #include <Inventor/actions/SoActions.h>
+
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
@@ -419,7 +424,9 @@ SoAction::initClasses(void)
   SoSimplifyAction::initClass();
   SoReorganizeAction::initClass();
   SoToVRMLAction::initClass();
+#ifdef HAVE_VRML97
   SoToVRML2Action::initClass();
+#endif // HAVE_VRML97
 }
 
 /*!

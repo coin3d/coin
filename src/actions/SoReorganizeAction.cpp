@@ -241,6 +241,10 @@
 
 #include <Inventor/actions/SoReorganizeAction.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <string.h>
 #include <assert.h>
 
@@ -251,14 +255,6 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
-#include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
-#include <Inventor/VRMLnodes/SoVRMLTextureCoordinate.h>
-#include <Inventor/VRMLnodes/SoVRMLNormal.h>
-#include <Inventor/VRMLnodes/SoVRMLColor.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -279,6 +275,17 @@
 #include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/SbColor4f.h>
 
+#ifdef HAVE_VRML97
+#include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
+#include <Inventor/VRMLnodes/SoVRMLTextureCoordinate.h>
+#include <Inventor/VRMLnodes/SoVRMLNormal.h>
+#include <Inventor/VRMLnodes/SoVRMLColor.h>
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
+#include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+#include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
+#endif // HAVE_VRML97
+
 #include "coindefs.h" // COIN_STUB()
 #include "actions/SoSubActionP.h"
 
@@ -297,25 +304,29 @@ class SoReorganizeActionP {
     cbaction.addTriangleCallback(SoVertexShape::getClassTypeId(), triangle_cb, this);
     cbaction.addLineSegmentCallback(SoVertexShape::getClassTypeId(), line_segment_cb, this);
 
+#ifdef HAVE_VRML97
     cbaction.addTriangleCallback(SoVRMLIndexedFaceSet::getClassTypeId(), triangle_cb, this);
     cbaction.addLineSegmentCallback(SoVRMLIndexedLineSet::getClassTypeId(), line_segment_cb, this);
-    
+#endif // HAVE_VRML97
+
     cbaction.addPreCallback(SoVertexShape::getClassTypeId(),
                             pre_shape_cb, this);
     cbaction.addPostCallback(SoVertexShape::getClassTypeId(),
                              post_shape_cb, this);
-    
+
+#ifdef HAVE_VRML97
     cbaction.addPreCallback(SoVRMLIndexedFaceSet::getClassTypeId(),
                             pre_shape_cb, this);
     cbaction.addPostCallback(SoVRMLIndexedFaceSet::getClassTypeId(),
                              post_shape_cb, this);
-    
+
 
     cbaction.addPreCallback(SoVRMLIndexedLineSet::getClassTypeId(),
                             pre_shape_cb, this);
     cbaction.addPostCallback(SoVRMLIndexedLineSet::getClassTypeId(),
                              post_shape_cb, this);
-    
+#endif // HAVE_VRML97
+
   } 
   SoReorganizeAction * master;
   SbBool gennormals;
@@ -477,7 +488,8 @@ SoReorganizeAction::apply(SoNode * root)
     this->apply(pl[i]);
   }
   PRIVATE(this)->sa.reset();
-  
+
+#ifdef HAVE_VMRL97
   PRIVATE(this)->sa.setType(SoVRMLIndexedFaceSet::getClassTypeId());
   PRIVATE(this)->sa.setSearchingAll(TRUE);
   PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
@@ -497,6 +509,7 @@ SoReorganizeAction::apply(SoNode * root)
     this->apply(pl3[i]);
   }
   PRIVATE(this)->sa.reset();
+#endif // HAVE_VMRL97
 }
 
 void 
@@ -539,7 +552,10 @@ SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * action, co
 {
   SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
   thisp->didinit = FALSE;
-  thisp->isvrml  = node->isOfType(SoVRMLGeometry::getClassTypeId());
+  thisp->isvrml = FALSE;
+#ifdef HAVE_VRML97
+  thisp->isvrml = node->isOfType(SoVRMLGeometry::getClassTypeId());
+#endif // HAVE_VRML97
   thisp->numtriangles = 0;
   thisp->numpoints = 0;
   thisp->numlines = 0;
@@ -818,9 +834,10 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
 void 
 SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 {
+#ifdef HAVE_VRML97
   SoNode * parent = path->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId()) &&
-      !parent->isOfType(SoVRMLShape::getClassTypeId())) {
+      !parent->isOfType(SoVRMLShape::getClassTypeId()) {
     return;
   }
 
@@ -910,6 +927,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   }
   path->push(idx);
   ifs->unrefNoDelete();
+#endif // HAVE_VRML97
 }
 
 void 
@@ -951,6 +969,7 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
 void 
 SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
 {
+#ifdef HAVE_VRML97
   SoNode * parent = path->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId()) &&
       !parent->isOfType(SoVRMLShape::getClassTypeId())) {
@@ -1007,6 +1026,7 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   }
   path->push(idx);
   ils->unrefNoDelete();
+#endif // HAVE_VRML97
 }
 
 #undef PRIVATE
