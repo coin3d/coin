@@ -1066,7 +1066,10 @@ glsymbols_handle_cleanup(void)
        20070105 mortene.
     */
     /* cc_dl_close(glsymbols_handle); */
-
+    // FIXME: Quickfix to plug leak. When above bug is fixed, remove the next two lines
+    if (&glsymbols_handle->libname) cc_string_clean(&glsymbols_handle->libname);
+    free(glsymbols_handle);
+    // End of quickfix
     glsymbols_handle = NULL;
   }
 
