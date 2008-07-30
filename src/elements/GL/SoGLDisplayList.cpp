@@ -74,7 +74,7 @@ class SoGLDisplayListP {
 SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
                                  SbBool mipmaptexobj)
 {
-  PRIVATE(this)= new SoGLDisplayListP;
+  PRIVATE(this) = new SoGLDisplayListP;
   PRIVATE(this)->type = type;
   PRIVATE(this)->numalloc = allocnum;
   PRIVATE(this)->context = SoGLCacheContextElement::get(state);
