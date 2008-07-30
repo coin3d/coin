@@ -152,6 +152,9 @@ SoScXMLEndSpin::initClass(void)
                           SCXML_COIN_NS, "sim.coin3d.coin", "EndSpin");
 }
 
+// FIXME: This is never called if we exit while spinning, causing us to leak memory.
+// This is probably caused by a more general failure to clean up
+// ScXML state on exit.
 void
 SoScXMLEndSpin::invoke(ScXMLStateMachine * statemachinearg)
 {
