@@ -102,11 +102,9 @@ SoEventManager::~SoEventManager()
     delete sm;
   }
 
-  if (PRIVATE(this)->camera)
-    PRIVATE(this)->camera->unref();
+  assert(PRIVATE(this)->camera == NULL); // Should have been cleared earlier
   if (PRIVATE(this)->scene)
     PRIVATE(this)->scene->unref();
-
 }
 
 /*!

@@ -120,8 +120,7 @@ SoRenderManager::~SoRenderManager()
 
   if (PRIVATE(this)->scene) 
     PRIVATE(this)->scene->unref();
-  if (PRIVATE(this)->camera) 
-    PRIVATE(this)->camera->unref();
+  this->setCamera(NULL);
 
   delete PRIVATE(this);
 }
