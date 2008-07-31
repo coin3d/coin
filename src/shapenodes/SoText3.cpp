@@ -340,7 +340,6 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
 
   SbBox2f maxbox;
-  float maxglyphsize = 1;
 
   float maxy = fontspec->size;
   float miny = -this->spacing.getValue() * fontspec->size * (n-1);
@@ -633,10 +632,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     farz = -1.0;
   }
 
-
-  int glyphidx = 0;
   float ypos = 0.0f;
-
   for (i = 0; i < n; i++) {
 
     float xpos = 0.0f;
@@ -1055,9 +1051,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
     farz = -1.0;
   }
 
-  int glyphidx = 0;
   float ypos = 0.0f;
-
   for (i = 0; i < n; i++) {
     detail.setStringIndex(i);
     float xpos = 0.0f;

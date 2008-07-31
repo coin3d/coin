@@ -736,7 +736,6 @@ SbProfilingData::setNodeTiming(int idx, SbTime timing)
   PRIVATE(this)->nodeData[idx].traversalcount = 1;
 
   // 2) set for type
-  SbProfilingNodeKey tailnode = PRIVATE(this)->nodeData[idx].node;
   SbProfilingNodeTypeKey typekey = PRIVATE(this)->nodeData[idx].nodetype;
   std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::iterator typeit =
     PRIVATE(this)->nodeTypeData.find(typekey);

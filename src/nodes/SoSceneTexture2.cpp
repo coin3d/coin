@@ -807,7 +807,8 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
 
   SoGLRenderAction * glaction = (SoGLRenderAction*) state->getAction();
 
-  SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
+  // FIXME: Don't leave commented out code in here without an explanation.
+  //SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
   //if (type == SoSceneTexture2::DEPTH) glColorMask(0,0,0,0);
   glaction->switchToNodeTraversal(scene);
   // if (type == SoSceneTexture2::DEPTH) glColorMask(1,1,1,1);
@@ -886,8 +887,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
 
   if (this->glcontext == NULL) {
     this->glcontextsize = size;
-    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-    // disabled until an pbuffer extension is available to create a
+     // disabled until an pbuffer extension is available to create a
     // render-to-texture pbuffer that has a non power of two size.
     // pederb, 2003-12-05
     if (1) {

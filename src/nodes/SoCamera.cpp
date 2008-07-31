@@ -876,8 +876,6 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   if (action->handleTransparency(FALSE))
     return;
   
-  const cc_glglue * glw = cc_glglue_instance(action->getCacheContext());
-
   SoState *state = action->getState();
   state->push();
 

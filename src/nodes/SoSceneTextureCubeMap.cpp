@@ -418,7 +418,6 @@ SoSceneTextureCubeMapP::updatePBuffer(SoState * state, const float quality)
 
   if (this->glcontext == NULL) {
     this->glcontextsize = size;
-    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
     // disabled until an pbuffer extension is available to create a
     // render-to-texture pbuffer that has a non power of two size.
     // pederb, 2003-12-05

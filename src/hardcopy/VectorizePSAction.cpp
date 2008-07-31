@@ -565,8 +565,6 @@ SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const fl
 void
 SoVectorizePSActionP::printPoint(const SoVectorizePoint * item) const
 {
-  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
-
   SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
@@ -642,8 +640,6 @@ SoVectorizePSActionP::printTriangle(const SbVec3f * v, const SbColor * c)
 void
 SoVectorizePSActionP::printTriangle(const SoVectorizeTriangle * item)
 {
-  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
-
   SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 

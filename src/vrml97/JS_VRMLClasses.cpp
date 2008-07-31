@@ -1732,7 +1732,7 @@ static void SFString_field2jsval(JSContext * cx, const SoField * f, jsval * v)
 static void SFTime_field2jsval(JSContext * cx, const SoField * f, jsval * v)
 {
   const SbTime & time = ((SoSFTime *)f)->getValue();
-  JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, time.getValue(), v);
+  spidermonkey()->JS_NewDoubleValue(cx, time.getValue(), v);
 }
 
 static void SFVec2f_field2jsval(JSContext * cx, const SoField * f, jsval *v)

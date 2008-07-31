@@ -416,8 +416,6 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
 cc_xml_element *
 SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendorstring) 
 {
-  cc_xml_element * vendor = NULL;
-
   unsigned int numvendors = cc_xml_elt_get_num_children_of_type(platform, "vendor");
 
   for(unsigned int i = 0; i < numvendors; i++) {

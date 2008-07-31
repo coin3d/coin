@@ -320,7 +320,6 @@ SoText2::GLRender(SoGLRenderAction * action)
     mb.sendFirst();
     SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
-    const SbViewVolume & vv = SoViewVolumeElement::get(state);
     const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
                                    SoProjectionMatrixElement::get(state));
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
@@ -580,7 +579,6 @@ SoText2::rayPick(SoRayPickAction * action)
     int strlength = this->string[stringidx].getLength();
     short minx, miny, maxx, maxy;
     PRIVATE(this)->bbox.getBounds(minx, miny, maxx, maxy);
-    float bbleft = minx;
     float bbwidth = (float)(maxx - minx);
     float strleft = (bbwidth - PRIVATE(this)->stringwidth[stringidx]) / bbwidth;
     float strright = 1.0;
@@ -809,7 +807,6 @@ SoText2P::buildGlyphCache(SoState * state)
     const unsigned int length = str.getLength();
     this->positions.append(SbList<SbVec2s>());
 
-    int glyphwidth = 0;
     int actuallength = 0;
     int kerningx = 0;
     int kerningy = 0;
