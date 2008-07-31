@@ -755,7 +755,7 @@ void SoStream::setFilePointer(FILE *newFP)
 FILE* SoStream::getFilePointer()  const
 {
   assert(streamType == FILE_STREAM);
-  return (FILE*)&filep;
+  return (FILE*)filep;
 }
 
 SbBool SoStream::openFile(const char *const fileName)
