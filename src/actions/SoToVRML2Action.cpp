@@ -260,6 +260,10 @@ SoToVRML2Action::initClass(void)
 // *************************************************************************
 
 #ifndef HAVE_VRML97
+class SoToVRML2ActionP {
+public:
+};
+
 SoToVRML2Action::SoToVRML2Action(void)
 {
   SO_ACTION_CONSTRUCTOR(SoToVRML2Action);
