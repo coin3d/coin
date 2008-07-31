@@ -31,7 +31,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
 
-#include "../vrml97/JS_VRMLClasses.h"
+#ifdef HAVE_VRML97
+#include "vrml97/JS_VRMLClasses.h"
+#endif // HAVE_VRML97
 
 // *************************************************************************
 
@@ -234,7 +236,9 @@ SoJavaScriptEngine::SoJavaScriptEngine()
   // Make the engine accessable from within the context
   spidermonkey()->JS_SetContextPrivate(cx, this);
 
+#ifdef HAVE_VRML97
   JS_addVRMLclasses(this);
+#endif // HAVE_VRML97
 }
 
 /*!
