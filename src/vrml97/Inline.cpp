@@ -670,10 +670,10 @@ SoVRMLInline::urlFieldModified(void * userdata, SoSensor * sensor)
     (void)thisp->readLocalFile(&in);
   }
   else {
+    thisp->requestURLData();
+  }
+}
 
 #undef PRIVATE
 
 #endif // HAVE_VRML97
-    thisp->requestURLData();
-  }
-}
