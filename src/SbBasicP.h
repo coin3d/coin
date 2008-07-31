@@ -31,6 +31,8 @@ To
 coin_safe_cast(SoBase * ptr)
 {
   To retVal;
+  //We need to use retVal->getClassTypeId() syntax, as To is a
+  //pointer, eg. To::getClassTypeId() will not work
   if((ptr != NULL) && ptr->isOfType(retVal->getClassTypeId()))
     return static_cast<To>(ptr);
   return NULL;

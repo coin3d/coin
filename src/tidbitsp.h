@@ -33,7 +33,6 @@
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/string.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

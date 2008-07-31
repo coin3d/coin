@@ -34,16 +34,16 @@ public:
   SbIntList(const int sizehint) : SbPList(sizehint) { }
   
   void append(const int item) {
-    ((SbPList*)this)->append((void*)((uintptr_t)item));
+    this->SbPList::append(reinterpret_cast<void*>(static_cast<uintptr_t>(item)));
   }
   int find(const int item) {
-    return ((SbPList*)this)->find((void *)((uintptr_t)item));
+    return this->SbPList::find(reinterpret_cast<void *>(static_cast<uintptr_t>(item)));
   }
   void insert(const int item, const int addbefore) {
-    ((SbPList*)this)->insert((void *)((uintptr_t)item), addbefore);
+    this->SbPList::insert(reinterpret_cast<void *>(static_cast<uintptr_t>(item)), addbefore);
   }
   int & operator[](const int idx) const {
-    return (int&) ((*(const SbPList*)this)[idx]);
+    return reinterpret_cast<int&>(((*static_cast<const SbPList *>(this))[idx]));
   }
 };
 

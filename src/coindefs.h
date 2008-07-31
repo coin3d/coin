@@ -125,6 +125,13 @@
 
 #endif /* !COIN_DEBUG */
 
+#ifdef __GNUC__
+#define COIN_UNUSED(x) x __attribute__((__unused__))
+#else
+#define COIN_UNUSED(x) x
+#endif
+
+
 /* COIN_CT_ASSERT() - a macro for doing compile-time asserting */
 #define COIN_CT_ASSERT(expr) \
   do { switch ( 0 ) { case 0: case (expr): break; } } while ( 0 )

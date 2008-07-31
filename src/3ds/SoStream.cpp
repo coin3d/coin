@@ -25,15 +25,19 @@
 //
 //  developed originally by PC John (peciva@fit.vutbr.cz)
 
+#include "SoStream.h"
+
+#include "coindefs.h"
+
 #include <Inventor/SbString.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbits.h>
 
-#include "SoStream.h"
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstring>
+#include <cassert>
+
 #define STUB assert(FALSE && "Unimplemented SoStream behaviour.")
 
 
@@ -89,21 +93,21 @@ static _type_ ntoh_##_type_(char *buf, const SbBool needConv) \
       b[i] = buf[j--]; \
     return v; \
   } else \
-    return *((_type_*)buf); \
+    return *(reinterpret_cast<_type_*>(buf)); \
 }
 
-inline static void hton_uint8_t(uint8_t value, char *buf, const SbBool needConv)  { buf[0] = value; }
-inline static uint8_t ntoh_uint8_t(char *buf, const SbBool needConv)  { return buf[0]; }
-inline static void hton_int8_t(int8_t value, char *buf, const SbBool needConv)  { buf[0] = value; }
-inline static int8_t ntoh_int8_t(char *buf, const SbBool needConv)  { return buf[0]; }
+inline static void hton_uint8_t(uint8_t value, char *buf, const SbBool COIN_UNUSED(needConv))  { buf[0] = value; }
+inline static uint8_t ntoh_uint8_t(char *buf, const SbBool COIN_UNUSED(needConv))  { return buf[0]; }
+inline static void hton_int8_t(int8_t value, char *buf, const SbBool COIN_UNUSED(needConv))  { buf[0] = value; }
+inline static int8_t ntoh_int8_t(char *buf, const SbBool COIN_UNUSED(needConv))  { return buf[0]; }
 HTON(uint16_t);
 NTOH(uint16_t);
 inline static void hton_int16_t(int16_t value, char *buf, const SbBool needConv)  { hton_uint16_t(value, buf, needConv); }
-inline static int16_t ntoh_int16_t(char *buf, const SbBool needConv)  { return (int16_t)ntoh_uint16_t(buf, needConv); }
+inline static int16_t ntoh_int16_t(char *buf, const SbBool needConv)  { return static_cast<int16_t>(ntoh_uint16_t(buf, needConv)); }
 HTON(uint32_t);
 NTOH(uint32_t);
 inline static void hton_int32_t(int32_t value, char *buf, const SbBool needConv)  { hton_uint32_t(value, buf, needConv); }
-inline static int32_t ntoh_int32_t(char *buf, const SbBool needConv)  { return (int32_t)ntoh_uint32_t(buf, needConv); }
+inline static int32_t ntoh_int32_t(char *buf, const SbBool needConv)  { return static_cast<int32_t>(ntoh_uint32_t(buf, needConv)); }
 HTON(float);
 NTOH(float);
 HTON(double);
@@ -127,11 +131,11 @@ SbBool SoStream::write##_suffix_(const _type_ value) \
   if (isBinary()) { \
     char temp[sizeof(_type_)]; \
     hton_##_type_(value, temp, needEndianConversion); \
-    writeBinaryArray((void*)&value, sizeof(_type_)); \
+    writeBinaryArray(const_cast<void *>(reinterpret_cast<const void*>(&value)), sizeof(_type_)); \
   } else { \
     SbString s; \
     s.sprintf(_printString_, value); \
-    writeBinaryArray((void*)s.getString(), (size_t)s.getLength()); \
+    writeBinaryArray(const_cast<void *>(static_cast<const void*>(s.getString())), static_cast<size_t>(s.getLength())); \
   } \
   return !isBad(); \
 }
@@ -179,7 +183,7 @@ do { \
     assert(FALSE && "Wrong integer number buffer parsing."); \
  \
   _check_ \
-  value = (_retType_)tempVal; \
+  value = static_cast<_retType_>(tempVal); \
 } while(0)
 
 
@@ -275,7 +279,7 @@ gotAll: \
   if (ce != s) \
     assert(FALSE && "Wrong float number buffer parsing."); \
  \
-  value = (_retType_)tempVal; \
+  value = static_cast<_retType_>(tempVal); \
 } while(0)
 
 
@@ -376,7 +380,7 @@ size_t SoStream::readBinaryArray(void *buf, size_t size)
     return fread(buf, 1, size, filep);
   case SO_INPUT_WRAP: {
     size_t pos = soinput->getNumBytesRead();
-    if (soinput->readBinaryArray((unsigned char*)buf, size))  return size;
+    if (soinput->readBinaryArray(static_cast<unsigned char*>(buf), size))  return size;
     else  return soinput->getNumBytesRead() - pos;
   }
   default:
@@ -422,14 +426,14 @@ SOSTREAM_RW_OP(UInt32, uint32_t, "0x%x", SOSTREAM_INT_READ(strtoul, uint32_t, ui
 
 
 
-SbBool SoStream::readDigInt(char *s, const char *e)
+SbBool SoStream::readDigInt(char COIN_UNUSED(*s), const char COIN_UNUSED(*e))
 {
   STUB;
   return FALSE;
 }
 
 
-SbBool SoStream::readHexInt(char *s, const char *e)
+SbBool SoStream::readHexInt(char COIN_UNUSED(*s), const char COIN_UNUSED(*e))
 {
   STUB;
   return FALSE;
@@ -508,12 +512,12 @@ SbBool SoStream::writeZString(const char *buf)
 
 
 
-SbBool SoStream::readStream(SoStream &stream)
+SbBool SoStream::readStream(SoStream COIN_UNUSED(&stream))
 {
   STUB;
   return FALSE;
 }
-SbBool SoStream::writeStream(const SoStream &stream)
+SbBool SoStream::writeStream(const SoStream COIN_UNUSED(&stream))
 {
   STUB;
   return FALSE;
@@ -603,7 +607,7 @@ SbBool SoStream::reallocBuffer(size_t newSize)
   if (newAllocSize < newSize)
     newAllocSize = newSize;
 
-  char *newBuffer = (char*)realloc(buffer, newAllocSize);
+  char *newBuffer = static_cast<char*>(realloc(buffer, newAllocSize));
   if (newBuffer != NULL) {
     buffer = newBuffer;
     bufferSize = newSize;
@@ -628,7 +632,7 @@ SbBool SoStream::getBuffer(void *&buf, size_t &size) const
 }
 size_t SoStream::getBufferSize() const  { return bufferSize; }
 
-void SoStream::setBuffer(void *buf, size_t size)
+void SoStream::setBuffer(void COIN_UNUSED(*buf), size_t COIN_UNUSED(size))
 {
   emptyBuffer();
   STUB;
@@ -645,7 +649,7 @@ void SoStream::emptyBuffer(size_t streamSize)
   if (streamSize == 0) {
     buffer = NULL;
   } else {
-    buffer = (char*)malloc(streamSize);
+    buffer = static_cast<char*>(malloc(streamSize));
   }
   bufferSize = 0;
   bufferAllocSize = streamSize;
@@ -755,7 +759,7 @@ void SoStream::setFilePointer(FILE *newFP)
 FILE* SoStream::getFilePointer()  const
 {
   assert(streamType == FILE_STREAM);
-  return (FILE*)filep;
+  return static_cast<FILE*>(filep);
 }
 
 SbBool SoStream::openFile(const char *const fileName)

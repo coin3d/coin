@@ -111,7 +111,9 @@ public:
   SbString & vsprintf(const char * formatstr, va_list args)
   { cc_string_vsprintf(&this->str, formatstr, args); return *this; }
 
-  void apply(char (*func)(char input)) { cc_string_apply(&this->str, (cc_apply_f)func); }
+  void apply(char (*func)(char input)) {
+    cc_string_apply(&this->str, static_cast<cc_apply_f>(func));
+  }
 
   int find(const SbString & s) const;
   SbBool findAll(const SbString & s, SbIntList & found) const;

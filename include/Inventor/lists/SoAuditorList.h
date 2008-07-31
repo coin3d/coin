@@ -77,8 +77,8 @@ private:
   void push(const void *) { }
   void * pop(void) { return NULL; }
   SbPList & operator=(const SbPList &) { return *this; }
-  operator void ** (void) { return (void **) NULL; }
-  operator const void ** (void) const { return (const void **) NULL; }
+  operator void ** (void) { return static_cast<void **> (NULL); }
+  operator const void ** (void) const { return static_cast<const void **>(NULL); }
   void * operator[](const int) const { return NULL; }
   void * & operator[](const int) { return SbPList::operator[](0); }
   int operator==(const SbPList &) const { return 0; }

@@ -45,7 +45,7 @@ private:
   float red(void) const { return (*this)[0]; }
   float green(void) const { return (*this)[1]; }
   float blue(void) const { return (*this)[2]; }
-  uint32_t convertToUInt(const float val) { return (uint32_t)(val*255.0f);}
+  uint32_t convertToUInt(const float val) { return static_cast<uint32_t>(val*255.0f);}
 };
 
 #endif // !COIN_SBCOLOR_H

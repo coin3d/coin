@@ -81,6 +81,10 @@
 //
 
 
+#include "SoStream.h"
+
+#include "coindefs.h"
+
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -100,8 +104,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbits.h>
-#include <string.h>
-#include "SoStream.h"
+#include <cstring>
 
 
 
@@ -510,10 +513,9 @@ CHUNK_DECL(LoadMapUOffset);
 CHUNK_DECL(LoadMapVOffset);
 static int coin_debug_3ds();
 
-
 static SbBool
 read3dsFile(SoStream *in, SoSeparator *&root,
-            int appendNormals, float creaseAngle,
+            int appendNormals, float COIN_UNUSED(creaseAngle),
             SbBool loadMaterials, SbBool loadTextures,
             SbBool loadObjNames, SbBool indexedTriSet,
             SbBool centerModel, float modelSize)
@@ -660,9 +662,14 @@ read3dsFile(SoStream *in, SoSeparator *&root,
     return; \
  \
   uint32_t size; \
-  con->s >> size; \
-  uint32_t cpos = (uint32_t)con->s.getPos(); \
+  con->s >> size;
+
+#define FULLHEADER \
+  HEADER \
+  uint32_t cpos = static_cast<uint32_t>(con->s.getPos()); \
   uint32_t stopPos = cpos + size - 6;
+  
+
 
 
 #define READ_SUBCHUNKS(_subChunkSwitch_) \
@@ -685,7 +692,7 @@ while (con->s.getPos() < stopPos) { \
 
 CHUNK(SkipChunk)
 {
-  HEADER;
+  FULLHEADER;
 
   // move on the position of the next chunk
   con->s.setPos(stopPos);
@@ -695,7 +702,7 @@ CHUNK(SkipChunk)
 
 CHUNK(LoadM3DMagic)
 {
-  HEADER;
+  FULLHEADER;
   con->stopPos = con->s.getPos() + size - 6;
 
   if (coin_debug_3ds() >= 2)
@@ -727,7 +734,7 @@ CHUNK(LoadM3DVersion)
 
 CHUNK(LoadMData)
 {
-  HEADER;
+  FULLHEADER;
 
   READ_SUBCHUNKS(
     case MESH_VERSION: LoadMeshVersion(con); break;
@@ -754,7 +761,7 @@ CHUNK(LoadMeshVersion)
 
 CHUNK(LoadNamedObject)
 {
-  HEADER;
+  FULLHEADER;
 
   assert(!con->cObj && "Forgot to free the current object.");
 
@@ -788,7 +795,7 @@ CHUNK(LoadNamedObject)
 
 CHUNK(LoadNTriObject)
 {
-  HEADER;
+  FULLHEADER;
 
   assert(con->faceGroupList.getLength() == 0);
   con->numVertices = 0;
@@ -1015,7 +1022,7 @@ CHUNK(LoadPointArray)
 
 CHUNK(LoadFaceArray)
 {
-  HEADER;
+  FULLHEADER;
 
   // number of faces
   uint16_t num;
@@ -1099,7 +1106,7 @@ CHUNK(LoadFaceArray)
 
 CHUNK(LoadMshMatGroup)
 {
-  HEADER;
+  FULLHEADER;
 
   if (!con->loadMaterials && !con->loadTextures) {
     // move on the position of the next chunk
@@ -1195,7 +1202,7 @@ CHUNK(LoadTexVerts)
 
 CHUNK(LoadMatEntry)
 {
-  HEADER;
+  FULLHEADER;
 
   if (!con->loadMaterials && !con->loadTextures) {
     // move on the position of the next chunk
@@ -1204,7 +1211,6 @@ CHUNK(LoadMatEntry)
   }
 
   assert(con->cMat == NULL);
-  int index = con->matList.getLength();
   con->cMat = new Material;
   con->matList.append(con->cMat);
 
@@ -1252,7 +1258,7 @@ CHUNK(LoadMatName)
 
 CHUNK(LoadMatAmbient)
 {
-  HEADER;
+  FULLHEADER;
 
   READ_SUBCHUNKS(
     case COLOR_24:     LoadColor24(con); break;
@@ -1265,7 +1271,7 @@ CHUNK(LoadMatAmbient)
 
 CHUNK(LoadMatDiffuse)
 {
-  HEADER;
+  FULLHEADER;
 
   READ_SUBCHUNKS(
     case COLOR_24:     LoadColor24(con); break;
@@ -1278,7 +1284,7 @@ CHUNK(LoadMatDiffuse)
 
 CHUNK(LoadMatSpecular)
 {
-  HEADER;
+  FULLHEADER;
 
   READ_SUBCHUNKS(
     case COLOR_24:     LoadColor24(con); break;
@@ -1291,7 +1297,7 @@ CHUNK(LoadMatSpecular)
 
 CHUNK(LoadShininess)
 {
-  HEADER;
+  FULLHEADER;
 
   con->cColorFloat = 0.f;
 
@@ -1315,7 +1321,7 @@ CHUNK(LoadMatTwoSide)
 
 CHUNK(LoadTransparency)
 {
-  HEADER;
+  FULLHEADER;
 
   con->cColorFloat = 0.f;
 
@@ -1330,7 +1336,7 @@ CHUNK(LoadTransparency)
 
 CHUNK(LoadTexMap)
 {
-  HEADER;
+  FULLHEADER;
 
   if (!con->loadTextures) {
     // move on the position of the next chunk
@@ -1883,27 +1889,27 @@ void Material::updateSoMaterial(int index, SoMaterial *m)
 
 
 
-SoMaterial* Material::getSoMaterial(Context *con)
+SoMaterial* Material::getSoMaterial(Context COIN_UNUSED(*con))
 { return matCache; }
 
 
 
-SbBool Material::hasTexture2(tagContext *con)
+SbBool Material::hasTexture2(tagContext COIN_UNUSED(*con))
 { return (texture2Cache != NULL); }
 
 
 
-SoTexture2* Material::getSoTexture2(tagContext *con)
+SoTexture2* Material::getSoTexture2(tagContext COIN_UNUSED(*con))
 { return texture2Cache; }
 
 
 
-SbBool Material::hasTexture2Transform(tagContext *con)
+SbBool Material::hasTexture2Transform(tagContext COIN_UNUSED(*con))
 { return (texture2TransformCache != NULL); }
 
 
 
-SoTexture2Transform* Material::getSoTexture2Transform(tagContext *con)
+SoTexture2Transform* Material::getSoTexture2Transform(tagContext COIN_UNUSED(*con))
 { return texture2TransformCache; }
 
 

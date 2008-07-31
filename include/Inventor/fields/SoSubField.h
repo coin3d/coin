@@ -228,7 +228,7 @@ public: \
   Returns a pointer to the values array. \
 */ \
   const _valtype_ * getValues(const int start) const \
-    { this->evaluate(); return (const _valtype_ *)(this->values + start); } \
+    { this->evaluate(); return const_cast<const _valtype_ *>(this->values + start); } \
   int find(_valref_ value, SbBool addifnotfound = FALSE); \
   void setValues(const int start, const int num, const _valtype_ * newvals); \
   void set1Value(const int idx, _valref_ value); \
