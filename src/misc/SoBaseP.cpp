@@ -30,6 +30,8 @@
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/nodes/SoNode.h>
 
+#include "threads/threadsutilp.h"
+
 // Create a new SoNode-derived instance from the input stream.
 SoNode *
 SoBaseP::readNode(SoInput * in)
