@@ -58,6 +58,9 @@ public:
   static void auditordict_cb(const SoBase * const & key, SoAuditorList * const & value, void * closure);
   static void cleanup_auditordict(void);
 
+  static void removeName2Obj(SoBase * const base, const char * const name);
+  static void removeObj2Name(SoBase * const base, const char * const name);
+
   static void emptyName2ObjHash(const char * const & n, SbPList * const & l, void * closure);
 
   static void check_for_leaks(void);

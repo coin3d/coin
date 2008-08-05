@@ -303,11 +303,11 @@ sobase_sensor_add_cb(void * auditor, void * type, void * closure)
 void
 SoBase::destroy(void)
 {
+  SbName name = this->getName();
 #if COIN_DEBUG && 0 // debug
-  SbName dn = this->getName();
   SoType t = this->getTypeId();
   SoDebugError::postInfo("SoBase::destroy", "start -- %p '%s' ('%s')",
-                         this, t.getName().getString(), dn.getString());
+                         this, t.getName().getString(), name.getString());
 #endif // debug
 
 
@@ -329,19 +329,21 @@ SoBase::destroy(void)
     auditingsensors[j]->dyingReference();
 
   // Link out instance name from the list of all SoBase instances.
-  SbName n = this->getName();
-  if (n.getLength()) this->removeName(this, n.getString());
+  if (name != SbName::empty()) SoBaseP::removeName2Obj(this, name.getString());
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::destroy", "delete this %p", this);
 #endif // debug
 
-  // Harakiri
+  // Harakiri!
   delete this;
+
+  // Link out obj-pointer to name reference now that object is dead.
+  if (name != SbName::empty()) SoBaseP::removeObj2Name(this, name.getString());
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::destroy", "done -- %p '%s' ('%s')",
-                         this, t.getName().getString(), dn.getString());
+                         this, t.getName().getString(), name.getString());
 #endif // debug
 }
 
@@ -679,7 +681,7 @@ SoBase::setName(const SbName & newname)
 {
   // remove old name first
   SbName oldName = this->getName();
-  if (oldName.getLength()) this->removeName(this, oldName.getString());
+  if (oldName.getLength()) SoBase::removeName(this, oldName.getString());
 
   // check for bad characters
   const char * str = newname.getString();
@@ -708,10 +710,10 @@ SoBase::setName(const SbName & newname)
                               str, goodstring.getString());
 #endif // COIN_DEBUG
 
-    this->addName(this, SbName(goodstring.getString()));
+    SoBase::addName(this, SbName(goodstring.getString()));
   }
   else {
-    this->addName(this, newname.getString());
+    SoBase::addName(this, newname.getString());
   }
 }
 
@@ -743,22 +745,10 @@ SoBase::addName(SoBase * const b, const char * const name)
   Removes a name<->object mapping from the global dictionary.
 */
 void
-SoBase::removeName(SoBase * const b, const char * const name)
+SoBase::removeName(SoBase * const base, const char * const name)
 {
-  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
-  SbPList * l = NULL;
-  SbBool found = SoBaseP::name2obj->get(name, l);
-  assert(found);
-
-  const int i = l->find(b);
-  assert(i >= 0);
-  l->remove(i);
-
-  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
-
-  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
-  SoBaseP::obj2name->remove(b);
-  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
+  SoBaseP::removeObj2Name(base, name);
+  SoBaseP::removeName2Obj(base, name);
 }
 
 /*!

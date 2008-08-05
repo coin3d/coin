@@ -42,6 +42,31 @@ SoBaseP::readNode(SoInput * in)
   return (SoNode *) node;
 }
 
+// Remove reference from a name to the instance pointer.
+void
+SoBaseP::removeName2Obj(SoBase * const base, const char * const name)
+{
+  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
+  SbPList * l = NULL;
+  SbBool found = SoBaseP::name2obj->get(name, l);
+  assert(found);
+
+  const int i = l->find(base);
+  assert(i >= 0);
+  l->remove(i);
+
+  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
+}
+
+// Remove a reference from an instance pointer to its associated name.
+void
+SoBaseP::removeObj2Name(SoBase * const base, const char * const name)
+{
+  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
+  SoBaseP::obj2name->remove(base);
+  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
+}
+
 // Used to free the SbPLists in the name<->object dict.
 void
 SoBaseP::emptyName2ObjHash(const char * const &, SbPList * const & l, void *)
