@@ -477,8 +477,7 @@ SoBase::ref(void) const
 {
   if (COIN_DEBUG) this->assertAlive();
 
-  // Cast away constness.
-  SoBase * base = (SoBase *)this;
+  SoBase * base = const_cast<SoBase *>(this);
 
   CC_MUTEX_LOCK(SoBaseP::mutex);
 #if COIN_DEBUG
@@ -530,8 +529,7 @@ SoBase::unref(void) const
 {
   if (COIN_DEBUG) this->assertAlive();
 
-  // Cast away constness.
-  SoBase * base = (SoBase *)this;
+  SoBase * base = const_cast<SoBase *>(this);
   CC_MUTEX_LOCK(SoBaseP::mutex);
   base->objdata.referencecount--;
   int refcount = base->objdata.referencecount;
@@ -568,8 +566,7 @@ SoBase::unrefNoDelete(void) const
 {
   if (COIN_DEBUG) this->assertAlive();
 
-  // Cast away constness.
-  SoBase * base = (SoBase *)this;
+  SoBase * base = const_cast<SoBase *>(this);
   base->objdata.referencecount--;
 #if COIN_DEBUG
   if (SoBase::tracerefs) {
