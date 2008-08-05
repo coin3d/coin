@@ -38,6 +38,7 @@ class SoCamera;
 class SoNodeSensor;
 class SoOneShotSensor;
 class SoSensor;
+class SoRenderManagerP;
 
 typedef void SoRenderManagerRenderCB(void * userdata, class SoRenderManager * mgr);
 
@@ -218,9 +219,10 @@ protected:
   void clearBuffers(SbBool color, SbBool depth);  
 
 private:
-  class SoRenderManagerP * pimpl;
+  SoRenderManagerP * pimpl;
   friend class SoRenderManagerP;
   friend class SoSceneManager;
+  friend class Superimposition;
 };
 
 
