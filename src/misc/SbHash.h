@@ -84,7 +84,7 @@ public:
 //Create an uint of an arbitrary length datatype
 template <class T>
 inline unsigned int toUint(T in) {
-  if (sizeof(T)>sizeof(uint)) {
+  if (sizeof(T)>sizeof(unsigned int)) {
     T retVal=in;
     for (size_t i = sizeof(T)/sizeof(unsigned int)-1; i>0; i--) {
       retVal^=in>>(i * 8 * sizeof(unsigned int));
