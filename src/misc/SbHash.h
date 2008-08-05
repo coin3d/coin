@@ -101,7 +101,11 @@ inline unsigned int SbHashFunc(unsigned int key) { return key; }
 
 //Some implementation of other basetypes
 inline unsigned int SbHashFunc(int key) { return static_cast<unsigned int>(key); }
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1300) // 'long long' not in vc6
 inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+#endif
+
 inline unsigned int SbHashFunc(unsigned long key) { return toUint<unsigned long>(key); }
 
 //String has its own implementation
