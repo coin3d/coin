@@ -80,10 +80,47 @@ public:
 
 // *************************************************************************
 
+//Create an uint of an arbitrary length datatype
+template <class T>
+inline unsigned int toUint(T in) {
+  if (sizeof(T)>sizeof(uint)) {
+    T retVal=in;
+    for (size_t i = sizeof(T)/sizeof(unsigned int)-1; i>0; i--) {
+      retVal^=in>>(i * 8 * sizeof(unsigned int));
+    }
+    return static_cast<unsigned int>(retVal);
+  }
+  else {
+    return static_cast<unsigned int>(in);
+  }
+}
+
+//The identity hash function
+inline unsigned int SbHashFunc(unsigned int key) { return key; }
+
+//Some implementation of other basetypes
+inline unsigned int SbHashFunc(int key) { return static_cast<unsigned int>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long key) { return toUint<unsigned long>(key); }
+
+//String has its own implementation
+class SbString;
+unsigned int SbHashFunc(const SbString & key);
+
+/*
+  Some implementations of pointers, all functions are per writing only reinterpret_casts to size_t
+*/
+//FIXME: Don't hold these definitions here, but where they are used - BFG 20080729
+class SoBase;
+class SoOutput;
+class SoSensor;
+unsigned int SbHashFunc(const SoBase * key);
+unsigned int SbHashFunc(const SoOutput * key);
+unsigned int SbHashFunc(const SoSensor * key);
+
 template <class Type, class Key>
 class SbHash {
 public:
-  typedef uintptr_t SbHashFunc(const Key & key);
   typedef void SbHashApplyFunc(const Key & key, const Type & obj, void * closure);
 
 public:
@@ -210,15 +247,9 @@ public:
 
   unsigned int getNumElements(void) const { return this->elements; }
 
-  void setHashFunc(SbHashFunc * func) { this->hashfunc = func; }
-
 protected:
-  static uintptr_t default_hash_func(const Key & key) {
-    return (uintptr_t) key;
-  }
-
   unsigned int getIndex(const Key & key) const {
-    unsigned int idx = this->hashfunc(key);
+    unsigned int idx = SbHashFunc(key);
     return (idx % this->size);
   }
 
@@ -261,7 +292,6 @@ private:
     this->loadfactor = loadfactorarg;
     this->buckets = new SbHashEntry<Type, Key> * [this->size];
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
-    this->hashfunc = default_hash_func;
   }
 
   void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
@@ -303,7 +333,6 @@ private:
   unsigned int threshold;
 
   SbHashEntry<Type, Key> ** buckets;
-  SbHashFunc * hashfunc;
   cc_memalloc * memhandler;
 };
 

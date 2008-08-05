@@ -125,7 +125,12 @@
 #include "tidbitsp.h"
 #include "threads/threadsutilp.h"
 #include "io/SoWriterefCounter.h"
+inline unsigned int SbHashFunc(const void * key);
 #include "misc/SbHash.h"
+inline unsigned int SbHashFunc(const void * key)
+{ 
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 #include "coindefs.h" // COIN_STUB()
 
 #ifdef COIN_THREADSAFE

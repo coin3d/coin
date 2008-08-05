@@ -187,6 +187,9 @@ uint32_t SoBase::writecounter = 0;
 // <mortene@sim.no>
 #define ALIVE_PATTERN 0xd
 
+unsigned int SbHashFunc(const SoBase * key) {
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 
 /*!
   Constructor. The initial reference count will be set to zero.

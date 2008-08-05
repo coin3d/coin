@@ -61,6 +61,27 @@ compute_prefix_function(SbList <int> & pi, const SbString & str)
   }
 }
 
+/* 
+   This is a reimplementation of sdbm hash algorithm from the sdbm project
+*/
+static unsigned int hash(const unsigned char * str, int n)
+{
+  unsigned long hash = 0;
+  int c;
+  
+  while (n--) {
+    hash = (*str++) + (hash << 6) + (hash << 16) - hash;
+  }
+  
+  return hash;
+}
+
+unsigned int SbHashFunc(const SbString & key) {
+  const unsigned char * cKey = reinterpret_cast<const unsigned char *>(key.getString());
+  return hash(cKey,key.getLength());
+}
+
+
 /*!
   If \a s is found, the method returns the first index where \a s
   starts. Otherwise it returns -1.

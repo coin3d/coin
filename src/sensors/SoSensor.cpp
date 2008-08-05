@@ -54,6 +54,7 @@
 #include <Inventor/sensors/SoSensor.h>
 #include <stdlib.h> // NULL
 #include <coindefs.h> // COIN_OBSOLETED()
+#include "misc/SbHash.h"
 
 /*!
   \var SoSensorCB * SoSensor::func
@@ -100,6 +101,9 @@
   registering with SoSensor.
 */
 
+unsigned int SbHashFunc(const SoSensor * key) {
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 
 /*!
   Constructor.
