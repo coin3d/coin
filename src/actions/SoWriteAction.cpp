@@ -104,6 +104,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#include "coindefs.h"
 #include "actions/SoSubActionP.h"
 #include "io/SoWriterefCounter.h"
 
@@ -200,7 +201,7 @@ SoWriteAction::continueToApply(SoPath * path)
 }
 
 #if COIN_DEBUG
-static void sensorCB(void * data, SoSensor * sensor)
+static void sensorCB(void * COIN_UNUSED(data), SoSensor * COIN_UNUSED(sensor))
 {
   SoDebugError::postWarning("SoWriteAction::SoWriteAction", 
                             "Scenegraph changed during SoWriteAction().");

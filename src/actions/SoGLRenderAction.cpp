@@ -59,8 +59,8 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>
@@ -112,9 +112,11 @@
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
 
+#include "coindefs.h"
+#include "tidbitsp.h"
+#include "SbBasicP.h"
 #include "actions/SoActionP.h"
 #include "actions/SoSubActionP.h"
-#include "tidbitsp.h"
 #include "glue/glp.h"
 #include "glue/simage_wrapper.h"
 #include "misc/SoGL.h"
@@ -1007,7 +1009,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
 {
   if (PRIVATE(this)->cachedprofilingsg == NULL) {
     if (node->isOfType(SoGroup::getClassTypeId()) &&
-        ((SoGroup *)node)->getNumChildren() > 0) {
+        (coin_assert_cast<SoGroup *>(node))->getNumChildren() > 0) {
       PRIVATE(this)->cachedprofilingsg = node;
       
       SoNode * kit = SoActionP::getProfilerOverlay();
@@ -1022,11 +1024,11 @@ SoGLRenderAction::beginTraversal(SoNode * node)
         SoBaseKit::setSearchingChildren(oldchildsearch);
         SoPathList plist = sa.getPaths();
         for (int i = 0, n = plist.getLength(); i < n; ++i) {
-          SoFullPath * path = (SoFullPath *)plist[i];
+          SoFullPath * path = reclassify_cast<SoFullPath *>(plist[i]);
           SoNode * tail = path->getTail();
           if ((tail != NULL) &&
               (tail->isOfType(SoProfilerVisualizeKit::getClassTypeId()))) {
-            SoProfilerVisualizeKit * viskit = (SoProfilerVisualizeKit *)tail;
+            SoProfilerVisualizeKit * viskit = coin_assert_cast<SoProfilerVisualizeKit *>(tail);
             viskit->root.setValue(node);
           }
         }
@@ -1110,7 +1112,7 @@ SoGLRenderAction::endTraversal(SoNode * node)
       }
       PRIVATE(this)->redrawSensor->setFunction(SoGLRenderActionP::redrawSensorCB);
       PRIVATE(this)->redrawSensor->setData(node);
-      PRIVATE(this)->redrawSensor->setTimeFromNow(SbTime((double) delay));
+      PRIVATE(this)->redrawSensor->setTimeFromNow(SbTime(static_cast<double>(delay)));
       PRIVATE(this)->redrawSensor->schedule();
       if (PRIVATE(this)->deleteSensor.get() == NULL) {
         PRIVATE(this)->deleteSensor.reset(new SoNodeSensor);
@@ -1127,7 +1129,7 @@ SoGLRenderAction::endTraversal(SoNode * node)
   scene graph profiling subsystem.
 */
 void
-SoGLRenderActionP::redrawSensorCB(void * userdata, SoSensor * sensor)
+SoGLRenderActionP::redrawSensorCB(void * userdata, SoSensor * COIN_UNUSED(sensor))
 {
   // FIXME: the node needs to be referenced to avoid touching a deleted node here.
   // or use a delete-callback at least to abort the sensor.
@@ -1142,7 +1144,7 @@ SoGLRenderActionP::redrawSensorCB(void * userdata, SoSensor * sensor)
   disabled automatically when the node in question is deleted.
 */
 void
-SoGLRenderActionP::deleteNodeCB(void * userdata, SoSensor * sensor)
+SoGLRenderActionP::deleteNodeCB(void * userdata, SoSensor * COIN_UNUSED(sensor))
 {
   assert(userdata);
   SoGLRenderActionP * thisp = static_cast<SoGLRenderActionP *>(userdata);
@@ -1164,8 +1166,9 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   const cc_glglue *glue = sogl_glue_instance(thestate);
 
   SoGLRenderAction::TransparencyType transptype = 
-    (SoGLRenderAction::TransparencyType)
-    SoShapeStyleElement::getTransparencyType(thestate);
+    static_cast<SoGLRenderAction::TransparencyType>(
+    SoShapeStyleElement::getTransparencyType(thestate)
+    );
 
 
   if (PRIVATE(this)->transparencytype == SORTED_LAYERS_BLEND) {
@@ -1417,16 +1420,17 @@ SoGLRenderAction::invalidateState(void)
 void
 SoGLRenderActionP::doPathSort(void)
 {
-  // need to cast to SbPList to avoid ref/unref problems
-  SbPList * plist = (SbPList *)&this->sorttranspobjpaths;
-  float * darray = (float *)this->sorttranspobjdistances.getArrayPtr();
+  // need to cast to SbPList to avoid ref/unref problems, since
+  // operator[] is overloaded with non-virtual inheritance.
+  SbPList * plist = &this->sorttranspobjpaths;
+  float * darray = const_cast<float *>(this->sorttranspobjdistances.getArrayPtr());
 
   int i, j, distance, n = this->sorttranspobjdistances.getLength();
   void * ptmp;
   float dtmp;
 
   // shell sort algorithm (O(nlog(n))
-  for (distance = 1; distance <= n/9; distance = 3*distance + 1);
+  for (distance = 1; distance <= n/9; distance = 3*distance + 1) ;
   for (; distance > 0; distance /= 3) {
     for (i = distance; i < n; i++) {
       dtmp = darray[i];
@@ -1468,7 +1472,7 @@ SoGLRenderActionP::doPathSort(void)
 void
 SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  PRIVATE(this)->precblist.addCallback((SoCallbackListCB*) func, userdata);
+  PRIVATE(this)->precblist.addCallback(reinterpret_cast<SoCallbackListCB *>(func), userdata);
 }
 
 /*!
@@ -1481,7 +1485,7 @@ SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 void
 SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  PRIVATE(this)->precblist.removeCallback((SoCallbackListCB*) func, userdata);
+  PRIVATE(this)->precblist.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), userdata);
 }
 
 /*!
@@ -1533,14 +1537,14 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
   }
  
   SoState * state = action->getState();
-  SoNode * tail = ((SoFullPath*)path)->getTail();
+  SoNode * tail = reclassify_cast<SoFullPath *>(path)->getTail();
   float dist;
   SbBox3f bbox;
   // test if we can find the bbox using SoShape::getBoundingBoxCache()
   // or SoShape::computeBBox. This is the common case, and quite a lot
   // faster than using an SoGetBoundingBoxAction.
   if (tail->isOfType(SoShape::getClassTypeId())) { // common case
-    SoShape * tailshape = (SoShape *) tail;
+    SoShape * tailshape = coin_assert_cast<SoShape *>(tail);
     const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
     SbVec3f center;
     
@@ -1640,7 +1644,7 @@ SoGLRenderActionP::render(SoNode * node)
                             SoDepthBufferElement::LEQUAL,
                             SbVec2f(0.0f, 1.0f));
   SoLazyElement::setTransparencyType(state,
-                                     (int32_t)this->transparencytype);
+                                     static_cast<int32_t>(this->transparencytype));
 
   if (this->transparencytype == SoGLRenderAction::SORTED_LAYERS_BLEND) {
     SoOverrideElement::setTransparencyTypeOverride(state, node, TRUE);
@@ -1655,7 +1659,7 @@ SoGLRenderActionP::render(SoNode * node)
                                FALSE, !this->isDirectRendering(state));
   SoGLRenderPassElement::set(state, 0);
 
-  this->precblist.invokeCallbacks((void*) this->action);
+  this->precblist.invokeCallbacks(static_cast<void *>(this->action));
 
   if (this->action->getNumPasses() > 1) {
     // Check if the current OpenGL context has an accumulation buffer
@@ -2161,7 +2165,7 @@ SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
     glue->glGenProgramsARB(1, &this->sortedlayersblendprogramid);
     glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, this->sortedlayersblendprogramid);
     glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             (GLsizei)strlen(sortedlayersblendprogram),
+                             static_cast<GLsizei>(strlen(sortedlayersblendprogram)),
                              sortedlayersblendprogram);
    
     // FIXME: Maybe a wrapper for catching fragment program errors
@@ -2212,7 +2216,7 @@ SoGLRenderActionP::setupFragmentProgram()
   glScalef(this->viewportwidth, this->viewportheight, 1);
   glTranslatef(0.5, 0.5, 0.5);
   glScalef(0.5, 0.5, 0.5);
-  glMultMatrixf((float *) this->sortedlayersblendprojectionmatrix);  
+  glMultMatrixf(static_cast<float *>(this->sortedlayersblendprojectionmatrix));
   glMatrixMode(GL_MODELVIEW);
     
   glAlphaFunc(GL_GREATER, 0);
@@ -2256,7 +2260,7 @@ SoGLRenderActionP::setupRegisterCombinersNV()
   glLoadIdentity();
   glTranslatef(0.0f, 0.0f, 0.5f);
   glScalef(0.0f, 0.0f, 0.5f);
-  glMultMatrixf((float *) this->sortedlayersblendprojectionmatrix);
+  glMultMatrixf(static_cast<float *>(this->sortedlayersblendprojectionmatrix));
   glMatrixMode(GL_MODELVIEW);
      
   // UNIT #2
@@ -2278,7 +2282,7 @@ SoGLRenderActionP::setupRegisterCombinersNV()
   m[2*4 + 0] = 0; m[2*4 + 1] = 0; m[2*4 + 2] = 0; m[2*4 + 3] = 0; 
   m[3*4 + 0] = 0; m[3*4 + 1] = 0; m[3*4 + 2] = 1; m[3*4 + 3] = 0;
   glLoadMatrixd(m);
-  glMultMatrixf((float *) this->sortedlayersblendprojectionmatrix);
+  glMultMatrixf(static_cast<float *>(this->sortedlayersblendprojectionmatrix));
   glMatrixMode(GL_MODELVIEW);
         
   // UNIT #0
@@ -2301,7 +2305,7 @@ SoGLRenderActionP::setupRegisterCombinersNV()
     glScalef(this->viewportwidth, this->viewportheight, 1);
     glTranslatef(.5,.5,.5);
     glScalef(.5,.5,.5);
-    glMultMatrixf((float *) this->sortedlayersblendprojectionmatrix);
+    glMultMatrixf(static_cast<float *>(this->sortedlayersblendprojectionmatrix));
     glMatrixMode(GL_MODELVIEW);
     
     glBindTexture(GL_TEXTURE_RECTANGLE_NV, this->depthtextureid);

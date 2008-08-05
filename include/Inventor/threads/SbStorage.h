@@ -38,7 +38,7 @@ public:
   void * get(void) { return cc_storage_get(this->storage); }
   void applyToAll(SbStorageApplyFunc * func, void * closure) {
     cc_storage_apply_to_all(this->storage, 
-                            (cc_storage_apply_func*)func, closure);
+                            static_cast<cc_storage_apply_func *>(func), closure);
   }
 
 private:

@@ -74,7 +74,7 @@ public:
   virtual SoElement * copyMatchInfo(void) const;
 
   static uint32_t getFlags(SoState * const state) {
-    return ((SoOverrideElement*)getConstElement(state, classStackIndex))->flags;
+    return (static_cast<const SoOverrideElement*>(getConstElement(state, classStackIndex)))->flags;
   }
 
   static SbBool getAmbientColorOverride(SoState * const state);

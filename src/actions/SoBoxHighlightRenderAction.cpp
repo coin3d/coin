@@ -50,9 +50,10 @@
 #include <Inventor/nodes/SoComplexity.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoBaseColor.h>
-#include <assert.h>
+#include <cassert>
 
 #include "actions/SoSubActionP.h"
+#include "SbBasicP.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -135,7 +136,7 @@ SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
   this->camerasearch->setFind(SoSearchAction::TYPE);
   this->camerasearch->setInterest(SoSearchAction::FIRST); // find first camera to break out asap
   this->camerasearch->setType(SoCamera::getClassTypeId());
-  this->camerasearch->apply((SoPath*) path);
+  this->camerasearch->apply(const_cast<SoPath*>( path));
 
   if (this->camerasearch->getPath()) {
     this->bboxseparator->insertChild(this->camerasearch->getPath()->getTail(), 0);
@@ -146,7 +147,7 @@ SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
     this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
   }
   this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
-  this->bboxaction->apply((SoPath*) path);
+  this->bboxaction->apply(const_cast<SoPath*>( path));
 
   SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
 
@@ -396,7 +397,7 @@ void
 SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pathlist)
 {
   int i;
-  int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
+  int thispos = reclassify_cast<SoFullPath *>(pathtothis)->getLength()-1;
   assert(thispos >= 0);
   PRIVATE(this)->postprocpath->truncate(0); // reset
 
@@ -412,7 +413,7 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   thestate->push();
 
   for (i = 0; i < pathlist->getLength(); i++) {
-    SoFullPath * path = (SoFullPath *)(*pathlist)[i];
+    SoFullPath * path = reclassify_cast<SoFullPath *>((*pathlist)[i]);
 
     for (int j = 0; j < path->getLength(); j++) {
       PRIVATE(this)->postprocpath->append(path->getNode(j));

@@ -200,8 +200,8 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/actions/SoActions.h>
 
@@ -381,7 +381,7 @@ SoAction::initClass(void)
   }
 
   SoAction::initClasses();
-  coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f*>( SoAction::atexit_cleanup), CC_ATEXIT_NORMAL);
 }
 
 // private cleanup method
@@ -1095,8 +1095,8 @@ SoAction::getState(void) const
 {
   if (this->state == NULL) {
     // cast away constness to set state
-    ((SoAction *)this)->state =
-      new SoState((SoAction*)this, this->getEnabledElements().getElements());
+    const_cast<SoAction*>(this)->state =
+      new SoState(const_cast<SoAction*>(this), this->getEnabledElements().getElements());
     SoActionP * pimpl = const_cast<SoActionP *>(&PRIVATE(this).get());
     pimpl->prevenabledelementscounter = this->getEnabledElements().getCounter();
   }
@@ -1182,7 +1182,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 void
 SoAction::pushCurPath(void)
 {
-  this->currentpath.simpleAppend((SoNode*) NULL, -1);
+  this->currentpath.simpleAppend(static_cast<SoNode*>( NULL), -1);
 }
 
 /*!
@@ -1279,7 +1279,7 @@ SoAction::beginTraversal(SoNode * node)
   scene graph traversal.  Default method does nothing.
 */
 void
-SoAction::endTraversal(SoNode * node)
+SoAction::endTraversal(SoNode * COIN_UNUSED(node))
 {
 }
 

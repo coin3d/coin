@@ -35,20 +35,20 @@ public:
   SoFieldList(const SoFieldList & l) : SbPList(l) { }
   
   void append(SoField * field) { 
-    SbPList::append((void *) field); 
+    SbPList::append(static_cast<void *>(field)); 
   }
   void insert(SoField * field, const int insertbefore) {
-    SbPList::insert((void *) field, insertbefore); 
+    SbPList::insert(static_cast<void *>(field), insertbefore); 
   }
 
   SoField * operator [](const int idx) const {
-    return (SoField*) SbPList::operator[](idx);
+    return static_cast<SoField *>(SbPList::operator[](idx));
   }
   void set(const int idx, SoField * field) {
-    SbPList::operator[](idx) = (void*) field;
+    SbPList::operator[](idx) = static_cast<void *>(field);
   }
   SoField * get(const int idx) const {
-    return (SoField*) SbPList::get(idx);
+    return static_cast<SoField*>(SbPList::get(idx));
   }
 };
 

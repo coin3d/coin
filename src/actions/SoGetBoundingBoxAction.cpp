@@ -84,6 +84,7 @@
 #endif // COIN_DEBUG
 
 #include "actions/SoSubActionP.h"
+#include "SbBasicP.h"
 
 // FIXME: kristian investigated the assumed bug-cases listed below,
 // and found that it is fundamentally impossible making a perfect fit
@@ -336,7 +337,7 @@ SoGetBoundingBoxAction::getCenter(void) const
 {
   if (!this->isCenterSet()) {
     // Cast away constness and set.
-    SoGetBoundingBoxAction * action = (SoGetBoundingBoxAction *)this;
+    SoGetBoundingBoxAction * action = const_cast<SoGetBoundingBoxAction *>(this);
     action->center.setValue(0.0f, 0.0f, 0.0f);
   }
   // Center point should not be affected by the current
@@ -437,8 +438,8 @@ void
 SoGetBoundingBoxAction::checkResetBefore(void)
 {
   if (this->resetpath && this->isResetBefore()) {
-    const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
-    const SoFullPath * theresetpath = (const SoFullPath *) this->resetpath;
+    const SoFullPath * curpath = reclassify_cast<const SoFullPath *>(this->getCurPath());
+    const SoFullPath * theresetpath = reclassify_cast<const SoFullPath *>(this->resetpath);
     if ((curpath->getTail() == theresetpath->getTail()) &&
         curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
@@ -461,8 +462,8 @@ void
 SoGetBoundingBoxAction::checkResetAfter(void)
 {
   if (this->resetpath && !this->isResetBefore()) {
-    const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
-    const SoFullPath * theresetpath = (const SoFullPath *) this->resetpath;
+    const SoFullPath * curpath = reclassify_cast<const SoFullPath *>(this->getCurPath());
+    const SoFullPath * theresetpath = reclassify_cast<const SoFullPath *>(this->resetpath);
     if ((curpath->getTail() == theresetpath->getTail()) &&
         curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {

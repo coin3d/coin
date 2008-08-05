@@ -111,10 +111,10 @@
 
 #include <Inventor/actions/SoToVRML2Action.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <float.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cfloat>
 
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SbName.h>
@@ -143,6 +143,8 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
+
+#include "SbBasicP.h"
 #include "actions/SoSubActionP.h"
 #include "misc/SbHash.h"
 
@@ -170,8 +172,8 @@ static SoNode * tovrml2_new_node(SoNode * newnode, const SoNode * oldnode)
 // conversion process.
 
 #define NEW_NODE(_type_, _oldnode_) \
-        (_type_*) tovrml2_new_node((SoNode *)_type_::getClassTypeId().createInstance(), \
-                                   _oldnode_)
+        coin_assert_cast<_type_*>(tovrml2_new_node(static_cast<SoNode *>(_type_::getClassTypeId().createInstance()), \
+                                   _oldnode_))
 
 // *************************************************************************
 
@@ -324,7 +326,7 @@ public:
     if (this->vrml2path) {
       this->vrml2path->unref();
     }
-    this->vrml2path = (SoFullPath*) new SoPath;
+    this->vrml2path = reclassify_cast<SoFullPath *>(new SoPath);
     this->vrml2path->ref();
 
     if (this->vrml2root) {
@@ -615,7 +617,7 @@ SoToVRML2Action::apply(const SoPathList & pathlist, SbBool obeysrules)
 
 // Documented in superclass.
 void
-SoToVRML2Action::beginTraversal(SoNode * node)
+SoToVRML2Action::beginTraversal(SoNode * COIN_UNUSED(node))
 {
   assert(0 && "should never get here");
 }
@@ -627,15 +629,17 @@ SoToVRML2Action::getVRML2SceneGraph(void) const
 }
 
 void
-SoToVRML2Action::reuseAppearanceNodes(SbBool appearance)
+SoToVRML2Action::reuseAppearanceNodes(SbBool COIN_UNUSED(appearance))
 {
   // FIXME: not implemented yet. 20020808 mortene.
+  COIN_STUB();
 }
 
 SbBool
 SoToVRML2Action::doReuseAppearanceNodes(void) const
 {
   // FIXME: not implemented yet. 20020808 mortene.
+  COIN_STUB();
   return FALSE;
 }
 
@@ -652,9 +656,10 @@ SoToVRML2Action::doReusePropertyNodes(void) const
 }
 
 void
-SoToVRML2Action::reuseGeometryNodes(SbBool geometry)
+SoToVRML2Action::reuseGeometryNodes(SbBool COIN_UNUSED(geometry))
 {
   // FIXME: not implemented yet. 20020808 mortene.
+  COIN_STUB();
 }
 
 SbBool
@@ -675,10 +680,10 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   SbBool old = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
 
-  this->searchaction.apply((SoPath *)action->getCurPath());
+  this->searchaction.apply(const_cast<SoPath *>(action->getCurPath()));
 
   SoNode * tail = NULL;
-  SoFullPath * path = (SoFullPath*) this->searchaction.getPath();
+  SoFullPath * path = reclassify_cast<SoFullPath *>(this->searchaction.getPath());
   if (path) {
     tail = path->getTail();
   }
@@ -695,7 +700,7 @@ SoToVRML2ActionP::get_current_tail(void)
   assert(node->isOfType(SoVRMLGroup::getClassTypeId()) ||
          node->isOfType(SoVRMLSwitch::getClassTypeId()) ||
          node->isOfType(SoVRMLLOD::getClassTypeId()));
-  return (SoGroup*) node;
+  return coin_assert_cast<SoGroup *>(node);
 }
 
 SoVRMLCoordinate *
@@ -848,7 +853,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
 
     // Texture
     if (this->recentTex2 == NULL) {
-      this->recentTex2 = (SoTexture2 *) search_for_recent_node(action, SoTexture2::getClassTypeId());
+      this->recentTex2 = coin_assert_cast<SoTexture2 *>(search_for_recent_node(action, SoTexture2::getClassTypeId()));
     }
 
     if (this->recentTex2 != NULL) {
@@ -861,10 +866,10 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
           tex = new SoVRMLImageTexture;
           SbString url = this->master->getUrlName();
           url += this->recentTex2->filename.getValue();
-          ((SoVRMLImageTexture *)tex)->url.setValue(url);
+          coin_assert_cast<SoVRMLImageTexture *>(tex)->url.setValue(url);
         } else {
           tex = new SoVRMLPixelTexture;
-          ((SoVRMLPixelTexture *)tex)->image.setValue(size, numComponents, image);
+          coin_assert_cast<SoVRMLPixelTexture *>(tex)->image.setValue(size, numComponents, image);
         }
         tex->repeatS = this->recentTex2->wrapS.getValue() == SoTexture2::REPEAT;
         tex->repeatT = this->recentTex2->wrapT.getValue() == SoTexture2::REPEAT;
@@ -884,7 +889,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
           SbVec3f axis;
           float radians;
           rotation.getValue(axis, radians);
-          if (axis[2] < 0) radians = 2.0f*(float)M_PI - radians;
+          if (axis[2] < 0) radians = static_cast<float>(2*M_PI) - radians;
           textrans->rotation = radians;
 
           textrans->scale = SbVec2f(scaleFactor[0], scaleFactor[1]);
@@ -902,10 +907,10 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  SoGroup * prevgroup = THISP(closure)->get_current_tail();
+  SoToVRML2ActionP * thisp = THISP(closure);
+  SoGroup * prevgroup = thisp->get_current_tail();
 
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -918,7 +923,7 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
   SoVRMLGroup * newgroup = NULL;
 
   if (node->isOfType(SoVRMLTransform::getClassTypeId())) {
-    SoVRMLTransform * oldtrans = (SoVRMLTransform*) node;
+    const SoVRMLTransform * oldtrans = coin_assert_cast<const SoVRMLTransform*>(node);
     SoVRMLTransform * newtrans = NEW_NODE(SoVRMLTransform, node);    
 
     newgroup = newtrans;
@@ -943,7 +948,7 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * action, const S
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -966,8 +971,8 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * action, const So
 SoCallbackAction::Response
 SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  SoGroup * prevgroup = THISP(closure)->get_current_tail();
+  SoToVRML2ActionP * thisp = THISP(closure);
+  SoGroup * prevgroup = thisp->get_current_tail();
 
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -976,7 +981,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
     return SoCallbackAction::PRUNE;
   }
 
-  const SoSwitch * oldswitch = (const SoSwitch *) node;
+  const SoSwitch * oldswitch = coin_assert_cast<const SoSwitch *>(node);
   SoVRMLSwitch * newswitch = NEW_NODE(SoVRMLSwitch, node);
 
   // SO_SWITCH_INHERIT is not supported in VRML97, so just translate
@@ -1020,7 +1025,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -1033,7 +1038,7 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
     THISP(closure)->vrml2path->pop();
   } while (grp->getTypeId() != SoVRMLSwitch::getClassTypeId());
 
-  SoVRMLSwitch * sw = (SoVRMLSwitch *) grp;
+  SoVRMLSwitch * sw = coin_assert_cast<SoVRMLSwitch *>(grp);
   int wc = sw->whichChoice.getValue();
 
   if (wc == SO_SWITCH_ALL) {
@@ -1057,8 +1062,8 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
 SoCallbackAction::Response
 SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  SoGroup * prevgroup = THISP(closure)->get_current_tail();
+  SoToVRML2ActionP * thisp = THISP(closure);
+  SoGroup * prevgroup = thisp->get_current_tail();
 
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -1067,7 +1072,7 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
     return SoCallbackAction::PRUNE;
   }
 
-  const SoLevelOfDetail * oldlod = (const SoLevelOfDetail *) node;
+  const SoLevelOfDetail * oldlod = coin_assert_cast<const SoLevelOfDetail *>(node);
   SoVRMLLOD * newlod = NEW_NODE(SoVRMLLOD, node);
 
   // calculate bbox of children to find a reasonable conversion to range 
@@ -1079,7 +1084,7 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
   // reset path so that we get the local bounding box for the nodes
   // below this node.
   bboxAction->setResetPath(action->getCurPath());
-  bboxAction->apply((SoPath*) action->getCurPath()); // find bbox of all children
+  bboxAction->apply(const_cast<SoPath*>(action->getCurPath())); // find bbox of all children
   SbBox3f bbox = bboxAction->getBoundingBox();
 
   float dx, dy, dz;
@@ -1117,8 +1122,8 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
 SoCallbackAction::Response
 SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
-  SoGroup * prevgroup = THISP(closure)->get_current_tail();
+  SoToVRML2ActionP * thisp = THISP(closure);
+  SoGroup * prevgroup = thisp->get_current_tail();
 
   SoGroup * vp;
   if (THISP(closure)->dict.get(node, vp)) {
@@ -1127,7 +1132,7 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
     return SoCallbackAction::PRUNE;
   }
 
-  const SoLOD * oldlod = (const SoLOD *) node;
+  const SoLOD * oldlod = coin_assert_cast<const SoLOD *>(node);
   SoVRMLLOD * newlod = NEW_NODE(SoVRMLLOD, node);
 
   newlod->range.setValues(0, oldlod->range.getNum(), oldlod->range.getValues(0));
@@ -1148,7 +1153,7 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::unsupported_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::unsupported_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoVRMLWorldInfo * info = NEW_NODE(SoVRMLWorldInfo, node);
   SbString str;
@@ -1172,7 +1177,7 @@ SoToVRML2ActionP::soasciitext_cb(void * closure, SoCallbackAction * action, cons
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoVRMLText * text = NEW_NODE(SoVRMLText, node);
-  const SoAsciiText * oldtext = (const SoAsciiText*) node;
+  const SoAsciiText * oldtext = coin_assert_cast<const SoAsciiText *>(node);
 
   text->string = oldtext->string;
   text->length = oldtext->width;
@@ -1193,7 +1198,7 @@ SoToVRML2ActionP::socube_cb(void * closure, SoCallbackAction * action, const SoN
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoVRMLBox * box = NEW_NODE(SoVRMLBox, node);
-  const SoCube * cube = (const SoCube*) node;
+  const SoCube * cube = coin_assert_cast<const SoCube *>(node);
   if (box->size.getValue()[0] != cube->width.getValue() ||
       box->size.getValue()[1] != cube->height.getValue() ||
       box->size.getValue()[2] != cube->depth.getValue()) {
@@ -1210,7 +1215,7 @@ SoToVRML2ActionP::socone_cb(void * closure, SoCallbackAction * action, const SoN
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoVRMLCone * cone = NEW_NODE(SoVRMLCone, node);
-  const SoCone * oldcone = (const SoCone*) node;
+  const SoCone * oldcone = coin_assert_cast<const SoCone *>(node);
 
   if (oldcone->bottomRadius != cone->bottomRadius)
     cone->bottomRadius = oldcone->bottomRadius.getValue();
@@ -1232,7 +1237,7 @@ SoToVRML2ActionP::socylinder_cb(void * closure, SoCallbackAction * action, const
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoVRMLCylinder * cyl = NEW_NODE(SoVRMLCylinder, node);
-  const SoCylinder * oldcyl = (const SoCylinder*) node;
+  const SoCylinder * oldcyl = coin_assert_cast<const SoCylinder *>(node);
 
   if (oldcyl->radius != cyl->radius)
     cyl->radius = oldcyl->radius.getValue();
@@ -1256,13 +1261,13 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   if (action->getDrawStyle() != SoDrawStyle::FILLED) {
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
-  const SoIndexedFaceSet * oldifs = (const SoIndexedFaceSet*) node;
+  const SoIndexedFaceSet * oldifs = coin_assert_cast<const SoIndexedFaceSet*>(node);
 
   if (oldifs->coordIndex.getNum() == 0 ||
       oldifs->coordIndex[0] < 0)
     return SoCallbackAction::CONTINUE;
 
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
   SoVRMLIndexedFaceSet * ifs = NEW_NODE(SoVRMLIndexedFaceSet, node);
 
   // Set the values from the current ShapeHints
@@ -1273,9 +1278,7 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldifs->vertexProperty.getValue();
-  SoVertexProperty *vp = 
-    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
-    (SoVertexProperty *)vpnode : NULL;
+  SoVertexProperty * vp = coin_safe_cast<SoVertexProperty *>(vpnode);
   if (vp) {
     action->getState()->push();
     vp->callback(action);
@@ -1361,9 +1364,9 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
 {
   // FIXME: test for drawstyle == POINTS and convert to a point set
   // instead.  pederb, 20060327
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
 
-  const SoIndexedLineSet * oldils = (const SoIndexedLineSet*) node;
+  const SoIndexedLineSet * oldils = coin_assert_cast<const SoIndexedLineSet *>(node);
 
   if (oldils->coordIndex.getNum() == 0 ||
       oldils->coordIndex[0] < 0)
@@ -1373,9 +1376,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldils->vertexProperty.getValue();
-  SoVertexProperty *vp = 
-    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
-    (SoVertexProperty *)vpnode : NULL;
+  SoVertexProperty *vp = coin_safe_cast<SoVertexProperty *>(vpnode);
   if (vp) {
     action->getState()->push();
     vp->callback(action);
@@ -1422,7 +1423,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     int n = oldils->coordIndex.getNum();
     const int32_t * src = oldils->coordIndex.getValues(0);
 
-    SbVec3f * c = (SbVec3f*) coordElem->getArrayPtr3();
+    SbVec3f * c = const_cast<SbVec3f*>(coordElem->getArrayPtr3());
     if (c == NULL) {
       SbVec3f * vec3f = new SbVec3f[coordElem->getNum()];
       const SbVec4f * coord4 = coordElem->getArrayPtr4();
@@ -1466,7 +1467,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     SbList <int32_t> coordIdx;
     SbBSPTree bsp;
     int32_t colidx = 0;
-    SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
+    SoVRMLColor * color = coin_assert_cast<SoVRMLColor *>(ils->color.getValue());
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
       SbVec3f curcol, nextcol(0.0f, 0.0f, 0.0f);
@@ -1499,7 +1500,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
       }
     }
 
-    ils->color = thisp->get_or_create_color((const SbColor *)bsp.getPointsArrayPtr(),
+    ils->color = thisp->get_or_create_color(static_cast<const SbColor *>(bsp.getPointsArrayPtr()),
                                             bsp.numPoints());
 
     ils->colorIndex.setValues(0, coordIdx.getLength(),
@@ -1524,9 +1525,9 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
 {
   // FIXME: test for drawstyle == POINTS and convert to a point set
   // instead.  pederb, 20060327
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
 
-  const SoLineSet * oldls = (const SoLineSet*) node;
+  const SoLineSet * oldls = coin_assert_cast<const SoLineSet *>(node);
 
   if (oldls->numVertices.getNum() == 0)
     return SoCallbackAction::CONTINUE;
@@ -1535,9 +1536,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldls->vertexProperty.getValue();
-  SoVertexProperty *vp = 
-    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
-    (SoVertexProperty *)vpnode : NULL;
+  SoVertexProperty *vp = coin_safe_cast<SoVertexProperty *>(vpnode);
   if (vp) {
     action->getState()->push();
     vp->callback(action);
@@ -1600,7 +1599,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     SbList <int32_t> coordIdx;
     SbBSPTree bsp;
     int32_t colidx = 0;
-    SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
+    SoVRMLColor * color = coin_assert_cast<SoVRMLColor *>(ils->color.getValue());
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
       SbVec3f curcol, nextcol(0.0f, 0.0f, 0.0f);
@@ -1627,7 +1626,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
       }
     }
 
-    ils->color = thisp->get_or_create_color((const SbColor *)bsp.getPointsArrayPtr(),
+    ils->color = thisp->get_or_create_color(static_cast<const SbColor *>(bsp.getPointsArrayPtr()),
                                             bsp.numPoints());
 
     ils->colorIndex.setValues(0, coordIdx.getLength(),
@@ -1649,17 +1648,15 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
 SoCallbackAction::Response
 SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
 
-  const SoPointSet * oldps = (const SoPointSet*) node;
+  const SoPointSet * oldps = coin_assert_cast<const SoPointSet *>(node);
 
   SoVRMLPointSet * ps = NEW_NODE(SoVRMLPointSet, node);
 
   // If there is a VertexProperty node set we need to put it on the state stack
   SoNode *vpnode = oldps->vertexProperty.getValue();
-  SoVertexProperty *vp = 
-    (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
-    (SoVertexProperty *)vpnode : NULL;
+  SoVertexProperty *vp = coin_safe_cast<SoVertexProperty *>(vpnode);
   if (vp) {
     action->getState()->push();
     vp->callback(action);
@@ -1712,7 +1709,7 @@ SoToVRML2ActionP::sosphere_cb(void * closure, SoCallbackAction * action, const S
       return SoToVRML2ActionP::sotoifs_cb(closure, action, node);
   }
   SoVRMLSphere * sphere = NEW_NODE(SoVRMLSphere, node);
-  const SoSphere * oldsphere = (const SoSphere*) node;
+  const SoSphere * oldsphere = coin_assert_cast<const SoSphere *>(node);
   if (oldsphere->radius != sphere->radius)
     sphere->radius = oldsphere->radius.getValue();
   THISP(closure)->insert_shape(action, sphere);
@@ -1721,9 +1718,9 @@ SoToVRML2ActionP::sosphere_cb(void * closure, SoCallbackAction * action, const S
 
 // Property nodes
 SoCallbackAction::Response
-SoToVRML2ActionP::soinfo_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::soinfo_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoInfo * oldinfo = (const SoInfo*) node;
+  const SoInfo * oldinfo = coin_assert_cast<const SoInfo *>(node);
   SoVRMLWorldInfo * info = NEW_NODE(SoVRMLWorldInfo, node);
   info->title = oldinfo->string;
   THISP(closure)->get_current_tail()->addChild(info);
@@ -1732,9 +1729,9 @@ SoToVRML2ActionP::soinfo_cb(void * closure, SoCallbackAction * action, const SoN
 
 // Property nodes
 SoCallbackAction::Response
-SoToVRML2ActionP::solabel_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::solabel_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoLabel * oldlabel = (const SoLabel*) node;
+  const SoLabel * oldlabel = coin_assert_cast<const SoLabel *>(node);
   SoVRMLWorldInfo * info = NEW_NODE(SoVRMLWorldInfo, node);
   info->title = oldlabel->label.getValue().getString();
   THISP(closure)->get_current_tail()->addChild(info);
@@ -1742,9 +1739,9 @@ SoToVRML2ActionP::solabel_cb(void * closure, SoCallbackAction * action, const So
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::somattrans_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::somattrans_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoMatrixTransform * oldt = (const SoMatrixTransform*) node;
+  const SoMatrixTransform * oldt = coin_assert_cast<const SoMatrixTransform *>(node);
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
 
   SbVec3f translation, scaleFactor;
@@ -1761,9 +1758,9 @@ SoToVRML2ActionP::somattrans_cb(void * closure, SoCallbackAction * action, const
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sorotation_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sorotation_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoRotation * oldt = (const SoRotation*) node;
+  const SoRotation * oldt = coin_assert_cast<const SoRotation *>(node);
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
   newt->rotation = oldt->rotation.getValue();
   THISP(closure)->get_current_tail()->addChild(newt);
@@ -1772,9 +1769,9 @@ SoToVRML2ActionP::sorotation_cb(void * closure, SoCallbackAction * action, const
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sorotationxyz_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sorotationxyz_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoRotationXYZ * oldt = (const SoRotationXYZ*) node;
+  const SoRotationXYZ * oldt = coin_assert_cast<const SoRotationXYZ *>(node);
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
   newt->rotation = oldt->getRotation();
   THISP(closure)->get_current_tail()->addChild(newt);
@@ -1783,9 +1780,9 @@ SoToVRML2ActionP::sorotationxyz_cb(void * closure, SoCallbackAction * action, co
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::soscale_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::soscale_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoScale * oldt = (const SoScale*) node;
+  const SoScale * oldt = coin_assert_cast<const SoScale *>(node);
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
   newt->scale = oldt->scaleFactor.getValue();
   THISP(closure)->get_current_tail()->addChild(newt);
@@ -1794,9 +1791,9 @@ SoToVRML2ActionP::soscale_cb(void * closure, SoCallbackAction * action, const So
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sotransform_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sotransform_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoTransform * oldt = (const SoTransform*) node;
+  const SoTransform * oldt = coin_assert_cast<const SoTransform *>(node);
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
 
   newt->translation = oldt->translation.getValue();
@@ -1810,9 +1807,9 @@ SoToVRML2ActionP::sotransform_cb(void * closure, SoCallbackAction * action, cons
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sotranslation_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sotranslation_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  const SoTranslation * oldt = (const SoTranslation*) node;
+  const SoTranslation * oldt = coin_assert_cast<const SoTranslation *>(node);
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
   newt->translation = oldt->translation.getValue();
   THISP(closure)->get_current_tail()->addChild(newt);
@@ -1821,14 +1818,14 @@ SoToVRML2ActionP::sotranslation_cb(void * closure, SoCallbackAction * action, co
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sounits_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sounits_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
   
   // apply an SoGetMatrixAction to the node to find the scale factor
   SbViewportRegion dummy(100,100);
   SoGetMatrixAction gma(dummy);
-  gma.apply((SoNode*)node);
+  gma.apply(const_cast<SoNode *>(node));
   
   const SbMatrix & m = gma.getMatrix();
 
@@ -1849,10 +1846,10 @@ SoToVRML2ActionP::sopercam_cb(void * closure, SoCallbackAction * action, const S
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sodirlight_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sodirlight_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoVRMLDirectionalLight * dl = NEW_NODE(SoVRMLDirectionalLight, node);
-  const SoDirectionalLight * olddl = (const SoDirectionalLight *) node;
+  const SoDirectionalLight * olddl = coin_assert_cast<const SoDirectionalLight *>(node);
 
   dl->direction = olddl->direction.getValue();
   dl->on = olddl->on.getValue();
@@ -1866,10 +1863,10 @@ SoToVRML2ActionP::sodirlight_cb(void * closure, SoCallbackAction * action, const
 }
 
 SoCallbackAction::Response
-SoToVRML2ActionP::sowwwinl_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+SoToVRML2ActionP::sowwwinl_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoVRMLInline * inl = NEW_NODE(SoVRMLInline, node);
-  const SoWWWInline * oldinl = (const SoWWWInline *) node;
+  const SoWWWInline * oldinl = coin_assert_cast<const SoWWWInline *>(node);
 
   inl->url = oldinl->name.getValue();
   inl->bboxCenter = oldinl->bboxCenter.getValue();
@@ -1883,15 +1880,13 @@ SoToVRML2ActionP::sowwwinl_cb(void * closure, SoCallbackAction * action, const S
 SoCallbackAction::Response
 SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
 
   thisp->didpush = FALSE;
   // push state to handle SoVertexProperty node
   if (node->isOfType(SoVertexShape::getClassTypeId())) {
-    SoNode *vpnode = ((SoVertexShape *) node)->vertexProperty.getValue();
-    SoVertexProperty *vp =
-      (vpnode && vpnode->isOfType(SoVertexProperty::getClassTypeId())) ?
-      (SoVertexProperty *)vpnode : NULL;
+    SoNode * vpnode = coin_assert_cast<const SoVertexShape *>(node)->vertexProperty.getValue();
+    SoVertexProperty * vp = coin_safe_cast<SoVertexProperty *>(vpnode);
     if (vp) {
       action->getState()->push();
       vp->callback(action);
@@ -1912,7 +1907,7 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
   }
 
   thisp->recentTex2 =
-      (SoTexture2 *) thisp->search_for_recent_node(action, SoTexture2::getClassTypeId());
+      coin_assert_cast<SoTexture2 *>(thisp->search_for_recent_node(action, SoTexture2::getClassTypeId()));
   if (thisp->recentTex2) {
     thisp->bsptreetex = new SbBSPTree;
     thisp->texidx = new SbList <int32_t>;
@@ -1924,12 +1919,12 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
 }
 
 void
-SoToVRML2ActionP::triangle_cb(void * closure, SoCallbackAction * action,
+SoToVRML2ActionP::triangle_cb(void * closure, SoCallbackAction * COIN_UNUSED(action),
                              const SoPrimitiveVertex * v1,
                              const SoPrimitiveVertex * v2,
                              const SoPrimitiveVertex * v3)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
   assert(thisp->bsptree);
   assert(thisp->bsptreenormal);
 
@@ -1954,7 +1949,7 @@ SoToVRML2ActionP::triangle_cb(void * closure, SoCallbackAction * action,
 SoCallbackAction::Response
 SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  SoToVRML2ActionP * thisp = (SoToVRML2ActionP*) closure;
+  SoToVRML2ActionP * thisp = THISP(closure);
   if (!thisp->do_post_primitives) return SoCallbackAction::CONTINUE;
   thisp->do_post_primitives = FALSE;
 

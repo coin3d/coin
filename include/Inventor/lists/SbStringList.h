@@ -34,19 +34,19 @@ public:
   SbStringList(const int sizehint) : SbPList(sizehint) { }
 
   void append(SbString * string) {
-    SbPList::append((void*)string);
+    SbPList::append(static_cast<void *>(string));
   }
   int find(SbString * string) const {
-    return SbPList::find((void*) string);
+    return SbPList::find(static_cast<void *>(string));
   }
   void insert(SbString * string, int insertbefore) {
-    SbPList::insert((void*)string, insertbefore);
+    SbPList::insert(static_cast<void *>(string), insertbefore);
   }
   SbString *& operator[](const int idx) const {
-    return (SbString*&) ((*(const SbPList*)this)[idx]);
+    return reinterpret_cast<SbString*&> (this->SbPList::operator[](idx));
   }
   const SbString ** getArrayPtr(void) const {
-    return (const SbString**) SbPList::getArrayPtr();
+    return const_cast<const SbString **>(reinterpret_cast<SbString **>(SbPList::getArrayPtr()));
   }
 };
 

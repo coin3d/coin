@@ -60,6 +60,7 @@
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #endif // HAVE_VRML97
 
+#include "SbBasicP.h"
 #include "actions/SoSubActionP.h"
 
 class SoAudioRenderActionP
@@ -106,22 +107,22 @@ void SoAudioRenderAction::callDoAction(SoAction *action, SoNode *node)
 
 void SoAudioRenderAction::callAudioRender(SoAction *action, SoNode *node)
 {
-  SoAudioRenderAction *audioRenderAction = (SoAudioRenderAction *) action;
+  SoAudioRenderAction * audioRenderAction = coin_assert_cast<SoAudioRenderAction *>(action);
 
   if (node->isOfType(SoListener::getClassTypeId())) {
     SoListener *listener;
-    listener = (SoListener *)node;
+    listener = coin_assert_cast<SoListener *>(node);
     listener->audioRender(audioRenderAction);
   }
 #ifdef HAVE_VRML97
   else if (node->isOfType(SoVRMLSound::getClassTypeId())) {
     SoVRMLSound *sound;
-    sound = (SoVRMLSound *)node;
+    sound = coin_assert_cast<SoVRMLSound *>(node);
     sound->audioRender(audioRenderAction);
   }
   else if (node->isOfType(SoVRMLAudioClip::getClassTypeId())) {
     SoVRMLAudioClip *clip;
-    clip = (SoVRMLAudioClip *)node;
+    clip = coin_assert_cast<SoVRMLAudioClip *>(node);
     clip->audioRender(audioRenderAction);
   }
 #endif // HAVE_VRML97

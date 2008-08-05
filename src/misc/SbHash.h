@@ -42,6 +42,7 @@
 #include <Inventor/C/base/memalloc.h>
 
 #include "tidbitsp.h"
+#include "coindefs.h"
 
 // *************************************************************************
 
@@ -57,17 +58,17 @@ template <class Type, class Key>
 class SbHashEntry {
 public:
   
-  void * operator new(size_t size, cc_memalloc * memhandler) {
-    SbHashEntry<Type, Key> * entry = (SbHashEntry<Type, Key> *)
-      cc_memalloc_allocate(memhandler);
+  void * operator new(size_t COIN_UNUSED(size), cc_memalloc * memhandler) {
+    SbHashEntry<Type, Key> * entry = static_cast<SbHashEntry<Type, Key> *>(
+      cc_memalloc_allocate(memhandler));
     entry->memhandler = memhandler;    
-    return (void*) entry;
+    return static_cast<void *>(entry);
   }
   void operator delete(void * ptr, cc_memalloc * memhandler) {
     cc_memalloc_deallocate(memhandler, ptr);
   }
   void operator delete(void * ptr) {
-    SbHashEntry<Type, Key> * entry = (SbHashEntry<Type, Key> *) ptr;
+    SbHashEntry<Type, Key> * entry = static_cast<SbHashEntry<Type, Key> *>( ptr);
     cc_memalloc_deallocate(entry->memhandler, ptr);
   }
   SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
@@ -184,7 +185,7 @@ public:
     this->buckets[i] = entry;
 
     if (this->elements++ >= this->threshold) { 
-      this->resize((unsigned int) coin_geq_prime_number(this->size + 1)); 
+      this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1))); 
     }
     return TRUE;
   }
@@ -262,7 +263,7 @@ protected:
 
     this->size = newsize;
     this->elements = 0;
-    this->threshold = (unsigned int) (newsize * this->loadfactor);
+    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
     this->buckets = new SbHashEntry<Type, Key> * [newsize];
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
 
@@ -288,7 +289,7 @@ private:
     this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry<Type, Key>));
     this->size = s;
     this->elements = 0;
-    this->threshold = (unsigned int) (s * loadfactorarg);
+    this->threshold = static_cast<unsigned int> (s * loadfactorarg);
     this->loadfactor = loadfactorarg;
     this->buckets = new SbHashEntry<Type, Key> * [this->size];
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
@@ -312,18 +313,18 @@ private:
     }
     buckets = this->size;
     elements = this->elements;
-    chain_length_avg = (float) this->elements / buckets_used;
+    chain_length_avg = static_cast<float>( this->elements / buckets_used);
   }
 
   static void copy_data(const Key & key, const Type & obj, void * closure)
   {
-    SbHash * thisp = (SbHash *)closure;
+    SbHash * thisp = static_cast<SbHash *>(closure);
     thisp->put(key, obj);
   }
 
   static void add_to_list(const Key & key, const Type & obj, void * closure)
   {
-    SbList<Key> * l = (SbList<Key> *)closure;
+    SbList<Key> * l = static_cast<SbList<Key> *>(closure);
     l->append(key);
   }
 

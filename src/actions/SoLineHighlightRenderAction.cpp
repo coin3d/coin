@@ -40,7 +40,7 @@
 
 #include <Inventor/actions/SoLineHighlightRenderAction.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -61,6 +61,7 @@
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/threads/SbStorage.h>
 
+#include "SbBasicP.h"
 #include "actions/SoSubActionP.h"
 
 // *************************************************************************
@@ -111,11 +112,11 @@ public:
 
 private:
   static void alloc_colorpacker(void * data) {
-    SoColorPacker ** cptr = (SoColorPacker**) data;
+    SoColorPacker ** cptr = static_cast<SoColorPacker ** >(data);
     *cptr = new SoColorPacker;
   }
   static void free_colorpacker(void * data) {
-    SoColorPacker ** cptr = (SoColorPacker**) data;
+    SoColorPacker ** cptr = static_cast<SoColorPacker ** >(data);
     delete *cptr;
   }
 };
@@ -321,7 +322,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
                                         const SoPathList * pathlist)
 {
   int i;
-  int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
+  int thispos = reclassify_cast<SoFullPath *>(pathtothis)->getLength()-1;
   assert(thispos >= 0);
   this->postprocpath->truncate(0); // reset
 
@@ -338,7 +339,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
 
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   
-  SoColorPacker ** cptr = (SoColorPacker**) this->colorpacker_storage.get();
+  SoColorPacker ** cptr = static_cast<SoColorPacker **>(this->colorpacker_storage.get());
 
   SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &this->color, *cptr);
   // FIXME: we should check this versus the actual max line width
@@ -362,7 +363,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
 
   for (i = 0; i < pathlist->getLength(); i++) {
-    SoFullPath * path = (SoFullPath *)(*pathlist)[i];
+    SoFullPath * path = reclassify_cast<SoFullPath *>((*pathlist)[i]);
 
     for (int j = 0; j < path->getLength(); j++) {
       this->postprocpath->append(path->getNode(j));

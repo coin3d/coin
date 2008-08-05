@@ -81,7 +81,7 @@
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoNode.h>

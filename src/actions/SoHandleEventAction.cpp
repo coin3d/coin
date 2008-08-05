@@ -380,7 +380,7 @@ SoHandleEventActionP::doPick(SoRayPickAction * ra)
   if (this->owner->getWhatAppliedTo() == SoAction::PATH) {
     const SoPath * path = this->owner->getPathAppliedTo();
     if (path->getHead() == this->pickroot) {
-      ra->apply((SoPath*)path);
+      ra->apply(const_cast<SoPath *>(path));
       didapply = TRUE;
     }
     else { // make subpath if pickroot can be found in path

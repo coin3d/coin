@@ -36,10 +36,10 @@ public:
   ~SoDetailList();
 
   void append(SoDetail * detail) {
-    SbPList::append((void*) detail);
+    SbPList::append(static_cast<void *>(detail));
   }
   void insert(SoDetail * detail, const int insertbefore) {
-    SbPList::insert((void*) detail, insertbefore);
+    SbPList::insert(static_cast<void *>(detail), insertbefore);
   }
   void truncate(const int length, const int fit = 0); 
   void copy(const SoDetailList & l);
@@ -48,7 +48,7 @@ public:
     return *this;
   }
   SoDetail * operator[](const int idx) const {
-    return (SoDetail*) ((*(const SbPList*)this)[idx]);
+    return static_cast<SoDetail *>(this->SbPList::operator[](idx));
   }
   void set(const int index, SoDetail * item);
 };

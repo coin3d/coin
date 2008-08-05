@@ -147,8 +147,8 @@
   #include <Inventor/SoOutput.h>
   #include <Inventor/SoInteraction.h>
   #include <Inventor/actions/SoReorganizeAction.h>
-  #include <assert.h>
-  #include <stdio.h>
+  #include <cassert>
+  #include <cstdio>
   
   static void strip_node(SoType type, SoNode * root) 
   {
@@ -245,8 +245,8 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -287,6 +287,7 @@
 #endif // HAVE_VRML97
 
 #include "coindefs.h" // COIN_STUB()
+#include "SbBasicP.h"
 #include "actions/SoSubActionP.h"
 
 class SoReorganizeActionP {
@@ -389,7 +390,7 @@ SoReorganizeAction::initClass(void)
   A constructor.
 */
 
-SoReorganizeAction::SoReorganizeAction(SoSimplifier * simplifier)
+SoReorganizeAction::SoReorganizeAction(SoSimplifier * COIN_UNUSED(simplifier))
 {
   PRIVATE(this)->master = this;
   SO_ACTION_CONSTRUCTOR(SoReorganizeAction);
@@ -516,11 +517,11 @@ void
 SoReorganizeAction::apply(SoPath * path)
 {
   PRIVATE(this)->cbaction.apply(path);
-  PRIVATE(this)->replaceNode((SoFullPath*) path);
+  PRIVATE(this)->replaceNode(reclassify_cast<SoFullPath *>(path));
 }
 
 void 
-SoReorganizeAction::apply(const SoPathList & pathlist, SbBool obeysrules)
+SoReorganizeAction::apply(const SoPathList & pathlist, SbBool COIN_UNUSED(obeysrules))
 {
   for (int i = 0; i < pathlist.getLength(); i++) {
     this->apply(pathlist[i]);
@@ -528,7 +529,7 @@ SoReorganizeAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 }
 
 void 
-SoReorganizeAction::startReport(const char * msg)
+SoReorganizeAction::startReport(const char * COIN_UNUSED(msg))
 {
   COIN_STUB();
 }
@@ -548,9 +549,9 @@ SoReorganizeAction::beginTraversal(SoNode * /* node */)
 
 
 SoCallbackAction::Response 
-SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
+SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
-  SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
+  SoReorganizeActionP * thisp = static_cast<SoReorganizeActionP *>(userdata);
   thisp->didinit = FALSE;
   thisp->isvrml = FALSE;
 #ifdef HAVE_VRML97
@@ -563,7 +564,7 @@ SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * action, co
 }
 
 SoCallbackAction::Response 
-SoReorganizeActionP::post_shape_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
+SoReorganizeActionP::post_shape_cb(void * COIN_UNUSED(userdata), SoCallbackAction * COIN_UNUSED(action), const SoNode * COIN_UNUSED(node))
 {
 #if 0 // debug
   SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
@@ -581,7 +582,7 @@ SoReorganizeActionP::triangle_cb(void * userdata, SoCallbackAction * action,
                                  const SoPrimitiveVertex * v2,
                                  const SoPrimitiveVertex * v3) 
 {
-  SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
+  SoReorganizeActionP * thisp = static_cast<SoReorganizeActionP *>(userdata);
   
   if (!thisp->didinit) {
     if (thisp->initShape(action)) {
@@ -602,7 +603,7 @@ SoReorganizeActionP::line_segment_cb(void * userdata, SoCallbackAction * action,
                                      const SoPrimitiveVertex * v1,
                                      const SoPrimitiveVertex * v2)
 {
-  SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
+  SoReorganizeActionP * thisp = static_cast<SoReorganizeActionP *>(userdata);
   
   if (!thisp->didinit) {
     if (thisp->initShape(action)) {
@@ -653,7 +654,7 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
 
   if (canrenderasvertexarray && texture0enabled) {
     const SoTextureCoordinateElement * celem =
-      (const SoTextureCoordinateElement *) SoTextureCoordinateElement::getInstance(state);
+      static_cast<const SoTextureCoordinateElement *>(SoTextureCoordinateElement::getInstance(state));
     switch (celem->getType()) {
     case SoTextureCoordinateElement::DEFAULT:
     case SoTextureCoordinateElement::EXPLICIT:
@@ -780,7 +781,7 @@ SoReorganizeActionP::createVertexProperty(const SbBool forlines)
   
   if (this->pvcache->colorPerVertex()) {
     vp->materialBinding = SoVertexProperty::PER_VERTEX_INDEXED;
-    uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
+    uint8_t * src = const_cast<uint8_t *>(this->pvcache->getColorArray());
     vp->orderedRGBA.setNum(numv);
     uint32_t * dst = vp->orderedRGBA.startEditing();
     for (int i = 0; i < numv; i++) {
@@ -816,16 +817,16 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
 
   
   for (int i = 0; i < numtri; i++) {
-    *ptr++ = (int32_t) indices[i*3];
-    *ptr++ = (int32_t) indices[i*3+1];
-    *ptr++ = (int32_t) indices[i*3+2];
+    *ptr++ = static_cast<int32_t>(indices[i*3]);
+    *ptr++ = static_cast<int32_t>(indices[i*3+1]);
+    *ptr++ = static_cast<int32_t>(indices[i*3+2]);
     *ptr++ = -1;
   }
   ifs->coordIndex.finishEditing();
 
   int idx = path->getIndexFromTail(0);
   path->pop();
-  SoGroup * g = (SoGroup*)parent;
+  SoGroup * g = coin_assert_cast<SoGroup *>(parent);
   g->replaceChild(idx, ifs);
   path->push(idx);
   ifs->unrefNoDelete();
@@ -841,7 +842,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
     return;
   }
 
-  SoVRMLIndexedFaceSet * oldifs = (SoVRMLIndexedFaceSet*) path->getTail();
+  SoVRMLIndexedFaceSet * oldifs = coin_assert_cast<SoVRMLIndexedFaceSet *>(path->getTail());
   assert(oldifs->isOfType(SoVRMLIndexedFaceSet::getClassTypeId()));
   SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
   ifs->ref();
@@ -886,7 +887,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   if (this->pvcache->colorPerVertex()) {
     SoVRMLColor * col = new SoVRMLColor;
     col->color.setNum(numv);
-    uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
+    uint8_t * src = const_cast<uint8_t *>(this->pvcache->getColorArray());
     SbColor * dst = col->color.startEditing();
     for (int i = 0; i < numv; i++) {
       dst[i] = SbColor(src[0]/255.0f,
@@ -908,9 +909,9 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   int32_t * ptr = ifs->coordIndex.startEditing();
 
   for (int i = 0; i < numtri; i++) {
-    *ptr++ = (int32_t) indices[i*3];
-    *ptr++ = (int32_t) indices[i*3+1];
-    *ptr++ = (int32_t) indices[i*3+2];
+    *ptr++ = static_cast<int32_t>(indices[i*3]);
+    *ptr++ = static_cast<int32_t>(indices[i*3+1]);
+    *ptr++ = static_cast<int32_t>(indices[i*3+2]);
     *ptr++ = -1;
   }
   ifs->coordIndex.finishEditing();
@@ -918,11 +919,11 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   int idx = path->getIndexFromTail(0);
   path->pop();
   if (parent->isOfType(SoGroup::getClassTypeId())) {
-    SoGroup * g = (SoGroup*)parent;
+    SoGroup * g = coin_assert_cast<SoGroup *>(parent);
     g->replaceChild(idx, ifs);
   }
   else {
-    SoVRMLShape * shape = (SoVRMLShape*) parent;
+    SoVRMLShape * shape = coin_assert_cast<SoVRMLShape *>(parent);
     shape->geometry = ifs;
   }
   path->push(idx);
@@ -952,15 +953,15 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
   int32_t * ptr = ils->coordIndex.startEditing();
   
   for (int i = 0; i < numlines; i++) {
-    *ptr++ = (int32_t) indices[i*2];
-    *ptr++ = (int32_t) indices[i*2+1];
+    *ptr++ = static_cast<int32_t>(indices[i*2]);
+    *ptr++ = static_cast<int32_t>(indices[i*2+1]);
     *ptr++ = -1;
   }
   ils->coordIndex.finishEditing();
 
   int idx = path->getIndexFromTail(0);  
   path->pop();
-  SoGroup * g = (SoGroup*)parent;
+  SoGroup * g = coin_assert_cast<SoGroup *>(parent);
   g->replaceChild(idx, ils);
   path->push(idx);
   ils->unrefNoDelete();
@@ -986,8 +987,8 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   int32_t * ptr = ils->coordIndex.startEditing();
   
   for (int i = 0; i < numlines; i++) {
-    *ptr++ = (int32_t) indices[i*2];
-    *ptr++ = (int32_t) indices[i*2+1];
+    *ptr++ = static_cast<int32_t>(indices[i*2]);
+    *ptr++ = static_cast<int32_t>(indices[i*2+1]);
     *ptr++ = -1;
   }
   ils->coordIndex.finishEditing();
@@ -1001,7 +1002,7 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
     ils->colorPerVertex = TRUE;
     SoVRMLColor * col = new SoVRMLColor;
     col->color.setNum(numv);
-    uint8_t * src = (uint8_t*) this->pvcache->getColorArray();
+    uint8_t * src = const_cast<uint8_t *>(this->pvcache->getColorArray());
     SbColor * dst = col->color.startEditing();
     for (int i = 0; i < numv; i++) {
       dst[i] = SbColor(src[0]/255.0f,
@@ -1017,11 +1018,11 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   int idx = path->getIndexFromTail(0);
   path->pop();
   if (parent->isOfType(SoGroup::getClassTypeId())) {
-    SoGroup * g = (SoGroup*)parent;
+    SoGroup * g = coin_assert_cast<SoGroup *>(parent);
     g->replaceChild(idx, ils);
   }
   else {
-    SoVRMLShape * shape = (SoVRMLShape*) parent;
+    SoVRMLShape * shape = coin_assert_cast<SoVRMLShape *>(parent);
     shape->geometry = ils;
   }
   path->push(idx);

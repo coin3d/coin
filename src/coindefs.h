@@ -54,8 +54,10 @@
 #ifdef __cplusplus
 #ifdef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
 #define COIN_STUB_FUNC HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
+#define COIN_STUB_FUNC_STRING  COIN_STUB_FUNC
 #else
 #define COIN_STUB_FUNC ((const char *)0L)
+#define COIN_STUB_FUNC_STRING  "<>"
 #endif
 #else /* !__cplusplus */
 #ifdef HAVE_C_COMPILER_FUNCTION_NAME_VAR
@@ -86,7 +88,7 @@
     s.sprintf("%s:%u:%s", \
               COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
               COIN_STUB_LINE, \
-              COIN_STUB_FUNC ? COIN_STUB_FUNC : "<>"); \
+              COIN_STUB_FUNC_STRING); \
     SoDebugError::postWarning(s.getString(), \
                               "STUB: functionality not yet completed"); \
   } while (0)
@@ -99,7 +101,7 @@
       s.sprintf("%s:%u:%s", \
                 COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
                 COIN_STUB_LINE, \
-                COIN_STUB_FUNC ? COIN_STUB_FUNC : "<>"); \
+                COIN_STUB_FUNC_STRING); \
       SoDebugError::postWarning(s.getString(), \
                                 "STUB: functionality not yet completed"); \
       first = 0; \
@@ -112,7 +114,7 @@
     s.sprintf("%s:%u:%s", \
               COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
               COIN_STUB_LINE, \
-              COIN_STUB_FUNC ? COIN_STUB_FUNC : "<>"); \
+              COIN_STUB_FUNC_STRING); \
     SoDebugError::post(s.getString(), \
                        "OBSOLETED: functionality not supported (any more)"); \
   } while (0)

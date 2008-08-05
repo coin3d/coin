@@ -26,10 +26,9 @@
 
 #include <Inventor/misc/SoBase.h>
 
-template<typename To>
+template<typename To,typename From>
 To
-coin_safe_cast(SoBase * ptr)
-{
+coin_internal_safe_cast(From * ptr) {
   To retVal;
   //We need to use retVal->getClassTypeId() syntax, as To is a
   //pointer, eg. To::getClassTypeId() will not work
@@ -37,14 +36,40 @@ coin_safe_cast(SoBase * ptr)
     return static_cast<To>(ptr);
   return NULL;
 }
-
+     
 template<typename To>
+To coin_safe_cast(const SoBase * ptr) { return coin_internal_safe_cast<To>(ptr); }
+template<typename To>
+To coin_safe_cast(SoBase * ptr) { return coin_internal_safe_cast<To>(ptr); }
+template<typename To>
+To coin_safe_cast(SoAction * ptr) { return coin_internal_safe_cast<To>(ptr); }
+
+
+template<typename To,typename From>
 To
-coin_assert_cast(SoBase * ptr)
-{
+coin_internal_assert_cast(From * ptr) {
   To retVal = coin_safe_cast<To>(ptr);
   assert(retVal && "ptr was not of correct type");
   return retVal;
-} 
+}
 
+template<typename To>
+To coin_assert_cast(const SoBase * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(SoBase * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(SoAction * ptr) { return coin_internal_assert_cast<To>(ptr); }
+
+//FIXME Should we remove this? - BFG 20080801
+//Strictly for internal use, untill we know exactly how to handle these
+template <typename To>
+To 
+reclassify_cast(SoPath * ptr) {
+  return reinterpret_cast<To>(ptr);
+}
+template <typename To>
+To 
+reclassify_cast(const SoPath * ptr) {
+  return reinterpret_cast<To>(ptr);
+}
 #endif // !COIN_SBBASICP_H

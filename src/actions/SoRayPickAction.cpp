@@ -120,7 +120,7 @@
 
 #include <Inventor/actions/SoRayPickAction.h>
 
-#include <float.h>
+#include <cfloat>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -414,15 +414,15 @@ SoRayPickAction::getPickedPointList(void) const
 {
   int n = PRIVATE(this)->pickedpointlist.getLength();
   if (!PRIVATE(this)->isFlagSet(SoRayPickActionP::PPLIST_IS_SORTED) && n > 1) {
-    SoPickedPoint ** pparray = (SoPickedPoint**) PRIVATE(this)->pickedpointlist.getArrayPtr();
-    double * darray = (double*) PRIVATE(this)->ppdistance.getArrayPtr();
+    SoPickedPoint ** pparray = reinterpret_cast<SoPickedPoint **>(PRIVATE(this)->pickedpointlist.getArrayPtr());
+    double * darray = const_cast<double*>(PRIVATE(this)->ppdistance.getArrayPtr());
 
     int i, j, distance;
     SoPickedPoint * pptmp;
     double dtmp;
 
     // shell sort algorithm (O(nlog(n))
-    for (distance = 1; distance <= n/9; distance = 3*distance + 1);
+    for (distance = 1; distance <= n/9; distance = 3*distance + 1) ;
     for (; distance > 0; distance /= 3) {
       for (i = distance; i < n; i++) {
         dtmp = darray[i];
@@ -642,9 +642,9 @@ SoRayPickAction::intersect(const SbVec3f & v0_in,
   intersection.setValue(itmp);
 
   // set the barycentric coordinates before returning
-  barycentric[0] = (float) w;
-  barycentric[1] = (float) u;
-  barycentric[2] = (float) v;
+  barycentric[0] = static_cast<float>(w);
+  barycentric[1] = static_cast<float>(u);
+  barycentric[2] = static_cast<float>(v);
 
   return TRUE;
 }
@@ -693,8 +693,8 @@ SoRayPickAction::intersect(const SbVec3f & v0_in, const SbVec3f & v1_in,
 
   double raypos = PRIVATE(this)->nearplane.getDistance(p0);
 
-  double radius = (float) (PRIVATE(this)->rayradiusstart +
-                           PRIVATE(this)->rayradiusdelta * raypos);
+  double radius = static_cast<float>((PRIVATE(this)->rayradiusstart +
+                           PRIVATE(this)->rayradiusdelta * raypos));
   
   if (radius >= distance) {
     intersection.setValue(op1);
@@ -727,8 +727,8 @@ SoRayPickAction::intersect(const SbVec3f & point_in) const
 
   double raypos = PRIVATE(this)->nearplane.getDistance(ptonline);
 
-  double radius = (double) (PRIVATE(this)->rayradiusstart +
-                            PRIVATE(this)->rayradiusdelta * raypos);
+  double radius = static_cast<double>((PRIVATE(this)->rayradiusstart +
+                            PRIVATE(this)->rayradiusdelta * raypos));
 
   return (radius >= distance);
 }
@@ -883,8 +883,8 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
     double distance = (wptonray-wptonbox).length();
 
     // find ray radius at wptonray
-    double radius = (float) (PRIVATE(this)->rayradiusstart +
-                             PRIVATE(this)->rayradiusdelta * raypos);
+    double radius = static_cast<float>((PRIVATE(this)->rayradiusstart +
+                             PRIVATE(this)->rayradiusdelta * raypos));
     
     // test for cone intersection
     if (radius >= distance) {
@@ -919,19 +919,37 @@ SoRayPickAction::getViewVolume(void)
     PRIVATE(this)->osvolume = SoPickRayElement::get(this->getState());
     if (PRIVATE(this)->isFlagSet(SoRayPickActionP::EXTRA_MATRIX)) {
       SbDPMatrix m = PRIVATE(this)->world2obj * PRIVATE(this)->extramatrix;
-      SbMatrix tmp((float) m[0][0], (float) m[0][1], (float) m[0][2], (float) m[0][3],
-                   (float) m[1][0], (float) m[1][1], (float) m[1][2], (float) m[1][3],
-                   (float) m[2][0], (float) m[2][1], (float) m[2][2], (float) m[2][3],
-                   (float) m[2][0], (float) m[3][1], (float) m[3][2], (float) m[3][3]);
+      SbMatrix tmp(
+		   static_cast<float>(m[0][0]), static_cast<float>(m[0][1]), 
+		   static_cast<float>(m[0][2]), static_cast<float>(m[0][3]),
+
+                   static_cast<float>(m[1][0]), static_cast<float>(m[1][1]),
+		   static_cast<float>(m[1][2]), static_cast<float>(m[1][3]),
+
+                   static_cast<float>(m[2][0]), static_cast<float>(m[2][1]),
+		   static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
+		   
+                   static_cast<float>(m[2][0]), static_cast<float>(m[3][1]),
+		   static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
+		   );
 
       PRIVATE(this)->osvolume.transform(tmp);
     }
     else {
       const SbDPMatrix & m = PRIVATE(this)->world2obj;
-      SbMatrix tmp((float) m[0][0], (float) m[0][1], (float) m[0][2], (float) m[0][3],
-                   (float) m[1][0], (float) m[1][1], (float) m[1][2], (float) m[1][3],
-                   (float) m[2][0], (float) m[2][1], (float) m[2][2], (float) m[2][3],
-                   (float) m[2][0], (float) m[3][1], (float) m[3][2], (float) m[3][3]);
+      SbMatrix tmp(
+		   static_cast<float>(m[0][0]), static_cast<float>(m[0][1]),
+		   static_cast<float>(m[0][2]), static_cast<float>(m[0][3]),
+		   
+                   static_cast<float>(m[1][0]), static_cast<float>(m[1][1]),
+		   static_cast<float>(m[1][2]), static_cast<float>(m[1][3]),
+		   
+                   static_cast<float>(m[2][0]), static_cast<float>(m[2][1]),
+		   static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
+		   
+                   static_cast<float>(m[2][0]), static_cast<float>(m[3][1]),
+		   static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
+		   );
 
 
       PRIVATE(this)->osvolume.transform(tmp);
