@@ -913,6 +913,7 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\nodes\SoGeometryShader.h \
                          ..\..\include\Inventor\nodes\SoShaderParameter.h \
                          ..\..\include\Inventor\nodes\SoVertexShape.h \
+                         ..\..\include\Inventor\nodes\SoViewerNavigationMode.h \
                          ..\..\include\Inventor\nodes\SoWWWAnchor.h \
                          ..\..\include\Inventor\nodes\SoWWWInline.h \
                          ..\..\include\Inventor\projectors\SbCylinderPlaneProjector.h \
@@ -1499,6 +1500,7 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\shaders\SoVertexShader.cpp \
                          ..\..\src\nodes\SoVertexProperty.cpp \
                          ..\..\src\shapenodes\SoVertexShape.cpp \
+                         ..\..\src\nodes\SoViewerNavigationMode.cpp \
                          ..\..\src\nodes\SoWWWAnchor.cpp \
                          ..\..\src\nodes\SoWWWInline.cpp \
                          ..\..\src\projectors\SbCylinderPlaneProjector.cpp \

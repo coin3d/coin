@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{BB857FFD-7CEF-4B9B-846D-2710241753C7}"
+	ProjectGUID="{52AA74A8-2125-49EB-825B-FC8FC788C91A}"
 	>
 	<Platforms>
 		<Platform
@@ -553,106 +553,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\xml\expat\xmltok.c"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\xml\expat/"
-							ProgramDataBaseFileName="StaticDebug\xml\expat/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Release\xml\expat/"
-							ProgramDataBaseFileName="Release\xml\expat/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\xml\expat/"
-							ProgramDataBaseFileName="StaticRelease\xml\expat/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Debug\xml\expat/"
-							ProgramDataBaseFileName="Debug\xml\expat/"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\xml\expat\xmltok_impl.c"
-					>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticDebug\xml\expat/"
-							ProgramDataBaseFileName="StaticDebug\xml\expat/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Release\xml\expat/"
-							ProgramDataBaseFileName="Release\xml\expat/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="2"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\xml\expat/"
-							ProgramDataBaseFileName="StaticRelease\xml\expat/"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\Debug\xml\expat/"
-							ProgramDataBaseFileName="Debug\xml\expat/"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\xml\expat\xmltok_ns.c"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -5621,6 +5521,56 @@
 						/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath="..\..\src\bundles\SoVertexAttributeBundle.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\bundles/"
+							ProgramDataBaseFileName="StaticDebug\bundles/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\bundles/"
+							ProgramDataBaseFileName="Release\bundles/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\bundles/"
+							ProgramDataBaseFileName="StaticRelease\bundles/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\bundles/"
+							ProgramDataBaseFileName="Debug\bundles/"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 			<Filter
 				Name="caches sources"
@@ -9193,6 +9143,56 @@
 				</File>
 				<File
 					RelativePath="..\..\src\elements\GL\SoGLVBOElement.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\elements\GL/"
+							ProgramDataBaseFileName="StaticDebug\elements\GL/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\elements\GL/"
+							ProgramDataBaseFileName="Release\elements\GL/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\elements\GL/"
+							ProgramDataBaseFileName="StaticRelease\elements\GL/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\elements\GL/"
+							ProgramDataBaseFileName="Debug\elements\GL/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\elements\GL\SoGLVertexAttributeElement.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -13348,6 +13348,106 @@
 				</File>
 				<File
 					RelativePath="..\..\src\elements\SoUnitsElement.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\elements/"
+							ProgramDataBaseFileName="StaticDebug\elements/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\elements/"
+							ProgramDataBaseFileName="Release\elements/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\elements/"
+							ProgramDataBaseFileName="StaticRelease\elements/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\elements/"
+							ProgramDataBaseFileName="Debug\elements/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\elements\SoVertexAttributeBindingElement.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\elements/"
+							ProgramDataBaseFileName="StaticDebug\elements/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\elements/"
+							ProgramDataBaseFileName="Release\elements/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\elements/"
+							ProgramDataBaseFileName="StaticRelease\elements/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\elements/"
+							ProgramDataBaseFileName="Debug\elements/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\elements\SoVertexAttributeElement.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -33712,6 +33812,106 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\nodes\SoVertexAttribute.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\nodes\SoVertexAttributeBinding.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\nodes\SoVertexProperty.cpp"
 					>
 					<FileConfiguration
@@ -44187,7 +44387,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\foreignfiles\steel.c"
+					RelativePath="..\..\src\foreignfiles\steel.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -46041,6 +46241,10 @@
 					RelativePath="..\..\include\Inventor\bundles\SoTextureCoordinateBundle.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\include\Inventor\bundles\SoVertexAttributeBundle.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Inventor\caches headers"
@@ -46067,6 +46271,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\caches\SoNormalCache.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\caches\SoPrimitiveVertexCache.h"
 					>
 				</File>
 				<File
@@ -46482,6 +46690,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\elements\SoGLVertexAttributeElement.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\elements\SoGLViewingMatrixElement.h"
 					>
 				</File>
@@ -46687,6 +46899,14 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\elements\SoUnitsElement.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\elements\SoVertexAttributeBindingElement.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\elements\SoVertexAttributeElement.h"
 					>
 				</File>
 				<File
@@ -48250,6 +48470,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\nodes\SoVertexAttribute.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoVertexAttributeBinding.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\nodes\SoVertexProperty.h"
 					>
 				</File>
@@ -48470,27 +48698,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLAnchor.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLDocument.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLEvent.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLFinal.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLHistory.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLInitial.h"
 					>
 				</File>
 				<File
@@ -48502,27 +48710,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLOnEntry.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLOnExit.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLState.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLStateMachine.h"
 					>
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLSubObject.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLTransition.h"
 					>
 				</File>
 				<File

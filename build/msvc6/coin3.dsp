@@ -11984,7 +11984,6 @@ SOURCE=..\..\src\share\gl\CoinGLPerformance.cpp
 !ENDIF
 # End Source File
 # End Group
-# End Group
 # Begin Group "Public Headers"
 
 # PROP Default_Filter "h;ic;icc"
@@ -15139,38 +15138,6 @@ SOURCE=..\..\include\Inventor\scxml\ScXMLSubObject.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\scxml\ScXMLDocument.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLState.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLOnEntry.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLOnExit.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLInitial.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLFinal.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLHistory.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLTransition.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\include\Inventor\scxml\ScXMLEvent.h
 # End Source File
 # Begin Source File
@@ -15180,10 +15147,6 @@ SOURCE=..\..\include\Inventor\scxml\ScXMLInvoke.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\scxml\ScXMLStateMachine.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\scxml\ScXMLAnchor.h
 # End Source File
 # Begin Source File
 
