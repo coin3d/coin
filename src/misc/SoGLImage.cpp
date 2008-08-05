@@ -2072,7 +2072,7 @@ void
 SoGLImage::endFrame(SoState *state)
 {
   if (glimage_reglist) {
-    list<pair<void (*)(void *), void *> > cb_list;
+    std::list<std::pair<void (*)(void *), void *> > cb_list;
     LOCK_GLIMAGE;
     int n = glimage_reglist->getLength();
     for (int i = 0; i < n; i++) {
@@ -2086,7 +2086,7 @@ SoGLImage::endFrame(SoState *state)
 
     // the actual invocation of the callbacks should be performed outside 
     // the locked region to avoid deadlocks
-    for (list<pair<void (*)(void *), void *> >::iterator it = cb_list.begin(),
+    for (std::list<std::pair<void (*)(void *), void *> >::iterator it = cb_list.begin(),
            end = cb_list.end(); it != end; ++it)
       it->first(it->second);
   }
