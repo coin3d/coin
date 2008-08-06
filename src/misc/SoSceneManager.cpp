@@ -184,6 +184,8 @@ SoSceneManager::setCamera(SoCamera * camera)
   }
   PRIVATE(this)->camera = camera;
   if (camera) camera->ref();
+  PRIVATE(this)->rendermanager->setCamera(PRIVATE(this)->camera);
+  PRIVATE(this)->eventmanager->setCamera(PRIVATE(this)->camera);
 }
 
 /*!
@@ -257,9 +259,7 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
-    PRIVATE(this)->camera = PRIVATE(this)->searchForCamera(PRIVATE(this)->scene);
-    PRIVATE(this)->rendermanager->setCamera(PRIVATE(this)->camera);
-    PRIVATE(this)->eventmanager->setCamera(PRIVATE(this)->camera);
+    this->setCamera(PRIVATE(this)->searchForCamera(PRIVATE(this)->scene));
   }
   
   if (oldroot) oldroot->unref();
