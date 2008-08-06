@@ -25,13 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/lists/SbList.h>
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/SbVec3f.h>
 #include <stddef.h>
-
-struct SbTVertex;
-class SbHeap;
-class SbVec3f;
 
 typedef void SbTesselatorCB(void * v0, void * v1, void * v2, void * data);
 
@@ -47,39 +43,9 @@ public:
   void setCallback(SbTesselatorCB * func, void * data);
 
 private:
-  struct SbTVertex * newVertex(void);
-  void cleanUp(void);
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
-  int currVertex;
-  SbList <struct SbTVertex*> vertexStorage;
-  SbHeap * heap;
-
-  SbTVertex * headV, * tailV;
-  int numVerts;
-  SbVec3f polyNormal;
-  int X,Y;
-  int polyDir;
-  void (*callback)(void * v0,void * v1,void * v2,void * data);
-  void * callbackData;
-  SbBool hasNormal;
-  SbBool keepVertices;
-
-  void emitTriangle(SbTVertex * v);
-  void cutTriangle(SbTVertex * t);
-  void calcPolygonNormal(void);
-
-  SbBool circleCenter(const SbVec3f &a, const SbVec3f &b,
-                      const SbVec3f &c, float &cx, float &cy);
-  float circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c);
-  float circleSize(SbTVertex * v);
-  float dot2D(const SbVec3f &v1, const SbVec3f &v2);
-  SbBool clippable(SbTVertex * v);
-  SbBool isTriangle(SbTVertex * v);
-  SbBool pointInTriangle(SbTVertex * p, SbTVertex * t);
-  float area(SbTVertex * t);
-
-  static float heap_evaluate(void * v);
-  static int heap_compare(void * v0, void * v1);
-};
+}; // SbTessellator
 
 #endif // !COIN_SBTESSELATOR_H

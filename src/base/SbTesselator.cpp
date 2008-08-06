@@ -103,31 +103,68 @@
 #include <assert.h>
 #include <float.h>
 
-struct SbTVertex {
-  float weight;
-  int dirtyweight;
-  SbTVertex *prev;
-  SbTesselator *thisp;
-  SbVec3f v;
-  void *data;
-  SbTVertex *next;
-};
-
-class SbTesselatorP {
+class SbTesselator::PImpl {
 public:
-  SbTesselatorP(void) : bsptree(256) { }
+  struct Vertex {
+    SbTesselator::PImpl * thisp;
+
+    SbVec3f v;
+    void * data;
+
+    float weight;
+    int dirtyweight;
+
+    SbTesselator::PImpl::Vertex * prev, * next;
+  }; // Vertex
+
+  PImpl(void) : bsptree(256) { }
   cc_heap * heap;
   SbBSPTree bsptree;
   SbList <int> clippablelist;
   float epsilon;
   SbBox3f bbox;
-};
 
-// FIXME: replace with standard pimpl member in Coin-3. pederb, 2003-10-06
-#define PRIVATE(obj) ((SbTesselatorP*)(obj->heap))
+  Vertex * newVertex(void);
+  void cleanUp(void);
+
+  int currVertex;
+  SbList <struct Vertex *> vertexStorage;
+
+  Vertex * headV, * tailV;
+  int numVerts;
+  SbVec3f polyNormal;
+  int X,Y;
+  int polyDir;
+  void (*callback)(void * v0,void * v1,void * v2,void * data);
+  void * callbackData;
+  SbBool hasNormal;
+  SbBool keepVertices;
+
+  void emitTriangle(Vertex * v);
+  void cutTriangle(Vertex * t);
+  void calcPolygonNormal(void);
+
+  SbBool circleCenter(const SbVec3f &a, const SbVec3f &b,
+                      const SbVec3f &c, float &cx, float &cy);
+  float circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c);
+  float circleSize(Vertex * v);
+  float dot2D(const SbVec3f &v1, const SbVec3f &v2);
+  SbBool clippable(Vertex * v);
+  SbBool isTriangle(Vertex * v);
+  SbBool pointInTriangle(Vertex * p, Vertex * t);
+  float area(Vertex * t);
+
+  static float heap_evaluate(void * v);
+  static int heap_compare(void * v0, void * v1);
+
+}; // SbTessellator::PImpl
+
+typedef struct SbTesselator::PImpl::Vertex SbTVertex;
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 int
-SbTesselator::heap_compare(void * h0, void * h1)
+SbTesselator::PImpl::heap_compare(void * h0, void * h1)
 {
   if (heap_evaluate(h0) > heap_evaluate(h1)) return -1;
   return 1;
@@ -135,12 +172,12 @@ SbTesselator::heap_compare(void * h0, void * h1)
 
 
 float
-SbTesselator::heap_evaluate(void *v)
+SbTesselator::PImpl::heap_evaluate(void * v)
 {
-  SbTVertex *vertex = (SbTVertex*)v;
+  SbTVertex * vertex = static_cast<SbTVertex *>(v);
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
-    if ((vertex->thisp->area(vertex) > PRIVATE(vertex->thisp)->epsilon) &&
+    if ((vertex->thisp->area(vertex) > vertex->thisp->epsilon) &&
         vertex->thisp->isTriangle(vertex) &&
         vertex->thisp->clippable(vertex)) {
 #if 0 // testing code to avoid empty triangles
@@ -165,7 +202,7 @@ SbTesselator::heap_evaluate(void *v)
 
 
 //projection enums
-enum {OXY,OXZ,OYZ};
+enum { OXY, OXZ, OYZ };
 
 /*!
   Initializes a tessellator. The \a callback argument specifies a
@@ -177,12 +214,11 @@ enum {OXY,OXZ,OYZ};
 SbTesselator::SbTesselator(SbTesselatorCB * func, void * data)
 {
   this->setCallback(func, data);
-  this->headV = this->tailV = NULL;
-  this->currVertex = 0;
+  PRIVATE(this)->headV = PRIVATE(this)->tailV = NULL;
+  PRIVATE(this)->currVertex = 0;
 
-  this->heap = (SbHeap *) new SbTesselatorP;
   PRIVATE(this)->heap =
-    cc_heap_construct(256, (cc_heap_compare_cb *) heap_compare, TRUE);
+    cc_heap_construct(256, (cc_heap_compare_cb *) PImpl::heap_compare, TRUE);
   PRIVATE(this)->epsilon = FLT_EPSILON;
 }
 
@@ -191,12 +227,11 @@ SbTesselator::SbTesselator(SbTesselatorCB * func, void * data)
 */
 SbTesselator::~SbTesselator()
 {
-  cleanUp();
-  int i, n = this->vertexStorage.getLength();
-  for (i = 0; i < n; i++) { delete this->vertexStorage[i]; }
+  PRIVATE(this)->cleanUp();
+  int i, n = PRIVATE(this)->vertexStorage.getLength();
+  for (i = 0; i < n; i++) { delete PRIVATE(this)->vertexStorage[i]; }
 
   cc_heap_destruct(PRIVATE(this)->heap);
-  delete PRIVATE(this);
 }
 
 /*!
@@ -212,17 +247,17 @@ SbTesselator::~SbTesselator()
 void
 SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
 {
-  this->cleanUp();
-  this->keepVertices = keepVerts;
+  PRIVATE(this)->cleanUp();
+  PRIVATE(this)->keepVertices = keepVerts;
   if (normal != SbVec3f(0.0f, 0.0f, 0.0f)) {
-    this->polyNormal = normal;
-    this->hasNormal = TRUE;
+    PRIVATE(this)->polyNormal = normal;
+    PRIVATE(this)->hasNormal = TRUE;
   }
   else {
-    this->hasNormal = FALSE;
+    PRIVATE(this)->hasNormal = FALSE;
   }
-  this->headV = this->tailV = NULL;
-  this->numVerts=0;
+  PRIVATE(this)->headV = PRIVATE(this)->tailV = NULL;
+  PRIVATE(this)->numVerts = 0;
   PRIVATE(this)->bbox.makeEmpty();
 }
 
@@ -233,22 +268,25 @@ SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
 void
 SbTesselator::addVertex(const SbVec3f &v,void *data)
 {
-  if (this->tailV && !this->keepVertices && v == this->tailV->v) return;
+  if (PRIVATE(this)->tailV &&
+      !PRIVATE(this)->keepVertices &&
+      v == PRIVATE(this)->tailV->v)
+    return;
 
   PRIVATE(this)->bbox.extendBy(v);
 
-  SbTVertex *newv = this->newVertex();
+  SbTVertex *newv = PRIVATE(this)->newVertex();
   newv->v = v;
   newv->data = data;
   newv->next = NULL;
   newv->dirtyweight = 1;
   newv->weight = FLT_MAX;
-  newv->prev = this->tailV;
-  newv->thisp = this;
-  if (!this->headV) this->headV = newv;
-  if (this->tailV) this->tailV->next = newv;
-  this->tailV = newv;
-  this->numVerts++;
+  newv->prev = PRIVATE(this)->tailV;
+  newv->thisp = &(PRIVATE(this).get());
+  if (!PRIVATE(this)->headV) PRIVATE(this)->headV = newv;
+  if (PRIVATE(this)->tailV) PRIVATE(this)->tailV->next = newv;
+  PRIVATE(this)->tailV = newv;
+  PRIVATE(this)->numVerts++;
 }
 
 /*!
@@ -261,61 +299,61 @@ void
 SbTesselator::endPolygon()
 {
   // check for special case when last point equals the first point
-  if (!this->keepVertices && this->numVerts >= 3) {
-    SbTVertex * first = this->headV;
-    SbTVertex * last = this->tailV;
+  if (!PRIVATE(this)->keepVertices && PRIVATE(this)->numVerts >= 3) {
+    SbTVertex * first = PRIVATE(this)->headV;
+    SbTVertex * last = PRIVATE(this)->tailV;
     if (first->v == last->v) {
       SbTVertex * newlast = last->prev;
       newlast->next = NULL;
       // don't delete old tail. We have some special memory handling
       // in this class
-      this->tailV = newlast;
-      this->numVerts--;
+      PRIVATE(this)->tailV = newlast;
+      PRIVATE(this)->numVerts--;
     }
   }
 
   SbTVertex *v;
 
-  if (this->numVerts > 3) {
-    this->calcPolygonNormal();
+  if (PRIVATE(this)->numVerts > 3) {
+    PRIVATE(this)->calcPolygonNormal();
 
     // Find best projection plane
     int projection;
-    if (fabs(polyNormal[0]) > fabs(polyNormal[1]))
-      if (fabs(polyNormal[0]) > fabs(polyNormal[2]))
+    if (fabs(PRIVATE(this)->polyNormal[0]) > fabs(PRIVATE(this)->polyNormal[1]))
+      if (fabs(PRIVATE(this)->polyNormal[0]) > fabs(PRIVATE(this)->polyNormal[2]))
         projection=OYZ;
       else projection=OXY;
     else
-      if (fabs(polyNormal[1]) > fabs(polyNormal[2]))
+      if (fabs(PRIVATE(this)->polyNormal[1]) > fabs(PRIVATE(this)->polyNormal[2]))
         projection=OXZ;
       else projection=OXY;
 
     switch (projection) {
     case OYZ:
-      this->X=1;
-      this->Y=2;
-      polyDir=(int)(polyNormal[0]/fabs(polyNormal[0]));
+      PRIVATE(this)->X=1;
+      PRIVATE(this)->Y=2;
+      PRIVATE(this)->polyDir=(int)(PRIVATE(this)->polyNormal[0]/fabs(PRIVATE(this)->polyNormal[0]));
       break;
     case OXY:
-      this->X=0;
-      this->Y=1;
-      polyDir=(int)(polyNormal[2]/fabs(polyNormal[2]));
+      PRIVATE(this)->X=0;
+      PRIVATE(this)->Y=1;
+      PRIVATE(this)->polyDir=(int)(PRIVATE(this)->polyNormal[2]/fabs(PRIVATE(this)->polyNormal[2]));
       break;
     case OXZ:
-      this->X=2;
-      this->Y=0;
-      polyDir=(int)(polyNormal[1]/fabs(polyNormal[1]));
+      PRIVATE(this)->X=2;
+      PRIVATE(this)->Y=0;
+      PRIVATE(this)->polyDir=(int)(PRIVATE(this)->polyNormal[1]/fabs(PRIVATE(this)->polyNormal[1]));
       break;
     }
 
     // find epsilon based on bbox
     SbVec3f d;
     PRIVATE(this)->bbox.getSize(d[0],d[1],d[2]);
-    PRIVATE(this)->epsilon = SbMin(d[X], d[Y]) * FLT_EPSILON * FLT_EPSILON;
+    PRIVATE(this)->epsilon = SbMin(d[PRIVATE(this)->X], d[PRIVATE(this)->Y]) * FLT_EPSILON * FLT_EPSILON;
 
     //Make loop
-    this->tailV->next = this->headV;
-    this->headV->prev = this->tailV;
+    PRIVATE(this)->tailV->next = PRIVATE(this)->headV;
+    PRIVATE(this)->headV->prev = PRIVATE(this)->tailV;
 
     // add all vertices to heap.
     cc_heap_clear(PRIVATE(this)->heap);
@@ -324,28 +362,28 @@ SbTesselator::endPolygon()
     // use two loops to add points to bsptree and heap, since the heap
     // requires that the bsptree is fully set up to evaluate
     // correctly.
-    v = this->headV;
+    v = PRIVATE(this)->headV;
     do {
-      PRIVATE(this)->bsptree.addPoint(SbVec3f(v->v[X],
-                                              v->v[Y],
+      PRIVATE(this)->bsptree.addPoint(SbVec3f(v->v[PRIVATE(this)->X],
+                                              v->v[PRIVATE(this)->Y],
                                               0.0f), v);
       v = v->next;
-    } while (v != this->headV);
+    } while (v != PRIVATE(this)->headV);
 
     do {
       cc_heap_add(PRIVATE(this)->heap, v);
       v = v->next;
-    } while (v != this->headV);
+    } while (v != PRIVATE(this)->headV);
 
-    while (this->numVerts > 4) {
+    while (PRIVATE(this)->numVerts > 4) {
       v = (SbTVertex*) cc_heap_get_top(PRIVATE(this)->heap);
-      if (heap_evaluate(v) == FLT_MAX) break;
+      if (PImpl::heap_evaluate(v) == FLT_MAX) break;
       cc_heap_remove(PRIVATE(this)->heap, v->next);
-      PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[X],
-                                                 v->next->v[Y],
+      PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[PRIVATE(this)->X],
+                                                 v->next->v[PRIVATE(this)->Y],
                                                  0.0f));
-      this->emitTriangle(v); // will remove v->next
-      this->numVerts--;
+      PRIVATE(this)->emitTriangle(v); // will remove v->next
+      PRIVATE(this)->numVerts--;
 
       v->prev->dirtyweight = 1;
       v->dirtyweight = 1;
@@ -362,35 +400,35 @@ SbTesselator::endPolygon()
     //
     // must handle special case when only four vertices remain
     //
-    if (this->numVerts == 4) {
-      float v0 = SbMax(heap_evaluate(v), heap_evaluate(v->next->next));
-      float v1 = SbMax(heap_evaluate(v->next), heap_evaluate(v->prev));
+    if (PRIVATE(this)->numVerts == 4) {
+      float v0 = SbMax(PImpl::heap_evaluate(v), PImpl::heap_evaluate(v->next->next));
+      float v1 = SbMax(PImpl::heap_evaluate(v->next), PImpl::heap_evaluate(v->prev));
 
       // abort if vertices should not be kept
-      if (v0 == v1 && v0 == FLT_MAX && !this->keepVertices) return;
+      if (v0 == v1 && v0 == FLT_MAX && !PRIVATE(this)->keepVertices) return;
 
       if (v0 < v1) {
-        this->emitTriangle(v);
-        this->emitTriangle(v);
+        PRIVATE(this)->emitTriangle(v);
+        PRIVATE(this)->emitTriangle(v);
       }
       else {
         v = v->next;
-        this->emitTriangle(v);
-        this->emitTriangle(v);
+        PRIVATE(this)->emitTriangle(v);
+        PRIVATE(this)->emitTriangle(v);
       }
-      this->numVerts -= 2;
+      PRIVATE(this)->numVerts -= 2;
     }
 
     // Emit the empty triangles that might lay around
-    if (this->keepVertices) {
-      while (numVerts>=3) {
-        this->emitTriangle(v);
-        this->numVerts--;
+    if (PRIVATE(this)->keepVertices) {
+      while (PRIVATE(this)->numVerts>=3) {
+        PRIVATE(this)->emitTriangle(v);
+        PRIVATE(this)->numVerts--;
       }
     }
   }
-  else if (this->numVerts==3) {   //only one triangle
-    this->emitTriangle(headV);
+  else if (PRIVATE(this)->numVerts==3) {   //only one triangle
+    PRIVATE(this)->emitTriangle(PRIVATE(this)->headV);
   }
 }
 
@@ -400,8 +438,8 @@ SbTesselator::endPolygon()
 void
 SbTesselator::setCallback(SbTesselatorCB * func, void *data)
 {
-  this->callback = func;
-  this->callbackData = data;
+  PRIVATE(this)->callback = func;
+  PRIVATE(this)->callbackData = data;
 }
 
 
@@ -438,7 +476,7 @@ point_on_edge(const float x, const float y,
 // Algorithm from comp.graphics.algorithms FAQ
 //
 SbBool
-SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
+SbTesselator::PImpl::pointInTriangle(SbTVertex *p, SbTVertex *t)
 {
   float x,y;
   SbBool tst = FALSE;
@@ -493,15 +531,15 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   //    coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1]
   if (!tst) {
     if (point_on_edge(x, y, t->v.getValue(),
-                      t->next->v.getValue(), X, Y, PRIVATE(this)->epsilon)) {
+                      t->next->v.getValue(), X, Y, this->epsilon)) {
       return TRUE;
     }
     if (point_on_edge(x, y, t->next->v.getValue(),
-                      t->next->next->v.getValue(), X, Y, PRIVATE(this)->epsilon)) {
+                      t->next->next->v.getValue(), X, Y, this->epsilon)) {
       return TRUE;
     }
     if (point_on_edge(x, y, t->next->next->v.getValue(),
-                      t->v.getValue(), X, Y, PRIVATE(this)->epsilon)) {
+                      t->v.getValue(), X, Y, this->epsilon)) {
       return TRUE;
     }
   }
@@ -514,7 +552,7 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
 // (i.e convex or concave corner)
 //
 SbBool
-SbTesselator::isTriangle(SbTVertex *v)
+SbTesselator::PImpl::isTriangle(Vertex * v)
 {
   return (((v->next->v[X]-v->v[X]) * (v->next->next->v[Y]-v->v[Y]) -
            (v->next->v[Y]-v->v[Y]) * (v->next->next->v[X]-v->v[X])) *
@@ -526,7 +564,7 @@ SbTesselator::isTriangle(SbTVertex *v)
 // pointed to by v. (no other vertices are inside the triangle)
 //
 SbBool
-SbTesselator::clippable(SbTVertex *v)
+SbTesselator::PImpl::clippable(Vertex * v)
 {
   SbBox3f bbox;
   bbox.makeEmpty();
@@ -537,11 +575,11 @@ SbTesselator::clippable(SbTVertex *v)
   SbSphere sphere;
   sphere.circumscribe(bbox);
 
-  SbList <int> & l = PRIVATE(this)->clippablelist;
+  SbList <int> & l = this->clippablelist;
   l.truncate(0);
-  PRIVATE(this)->bsptree.findPoints(sphere, l);
+  this->bsptree.findPoints(sphere, l);
   for (int i = 0; i < l.getLength(); i++) {
-    SbTVertex * vtx = (SbTVertex*) PRIVATE(this)->bsptree.getUserData(l[i]);
+    SbTVertex * vtx = static_cast<SbTVertex*>(this->bsptree.getUserData(l[i]));
     if (vtx != v && vtx != v->next && vtx != v->next->next) {
       if (pointInTriangle(vtx, v)) { return FALSE; }
     }
@@ -555,7 +593,7 @@ SbTesselator::clippable(SbTVertex *v)
 // Call the callback-function for the triangle starting with t
 //
 void
-SbTesselator::emitTriangle(SbTVertex *t)
+SbTesselator::PImpl::emitTriangle(Vertex * t)
 {
   assert(t);
   assert(t->next);
@@ -572,7 +610,7 @@ SbTesselator::emitTriangle(SbTVertex *t)
 // FIXME: bad design, this should have been a method on
 // SbTVertex. 20031007 mortene.
 void
-SbTesselator::cutTriangle(SbTVertex * t)
+SbTesselator::PImpl::cutTriangle(Vertex * t)
 {
   t->next->next->prev = t;
   t->next = t->next->next;
@@ -582,7 +620,7 @@ SbTesselator::cutTriangle(SbTVertex * t)
 // Return the area of the triangle starting with v
 //
 float
-SbTesselator::area(SbTVertex *v)
+SbTesselator::PImpl::area(Vertex * v)
 {
   return (float)fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
                      (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
@@ -592,8 +630,8 @@ SbTesselator::area(SbTVertex *v)
 // Returns the center of the circle through points a, b, c.
 //
 SbBool
-SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
-                           const SbVec3f &c, float &cx, float &cy)
+SbTesselator::PImpl::circleCenter(const SbVec3f &a, const SbVec3f &b,
+                                  const SbVec3f &c, float &cx, float &cy)
 {
   float d1, d2, d3, c1, c2, c3;
   SbVec3f tmp1, tmp2;
@@ -637,7 +675,7 @@ SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
 // Returns the square of the radius of the circle through a, b, c
 //
 float
-SbTesselator::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
+SbTesselator::PImpl::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
 {
   float cx, cy;
   if (circleCenter(a, b, c, cx, cy)) {
@@ -650,19 +688,19 @@ SbTesselator::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
 }
 
 float
-SbTesselator::circleSize(SbTVertex *v)
+SbTesselator::PImpl::circleSize(SbTVertex *v)
 {
   return circleSize(v->v, v->next->v, v->next->next->v);
 }
 
 float
-SbTesselator::dot2D(const SbVec3f &v1, const SbVec3f &v2)
+SbTesselator::PImpl::dot2D(const SbVec3f &v1, const SbVec3f &v2)
 {
   return v1[X] * v2[X] + v1[Y] * v2[Y];
 }
 
 void
-SbTesselator::calcPolygonNormal()
+SbTesselator::PImpl::calcPolygonNormal()
 {
   assert(this->numVerts > 3);
 
@@ -699,19 +737,19 @@ SbTesselator::calcPolygonNormal()
 // way, the SbTVertexes will not be deleted until the tessellator
 // is destructed, and SbTVertexes can be reused.
 //
-struct SbTVertex *
-SbTesselator::newVertex()
+SbTVertex *
+SbTesselator::PImpl::newVertex()
 {
   assert(this->currVertex <= this->vertexStorage.getLength());
   if (this->currVertex == this->vertexStorage.getLength()) {
-    struct SbTVertex *v = new SbTVertex;
+    Vertex * v = new Vertex;
     this->vertexStorage.append(v);
   }
   return this->vertexStorage[currVertex++];
 }
 
 void
-SbTesselator::cleanUp()
+SbTesselator::PImpl::cleanUp()
 {
   this->headV = this->tailV = NULL;
   this->currVertex = 0;
