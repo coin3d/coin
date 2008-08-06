@@ -46,6 +46,9 @@ private:
   class PImpl;
   SbPimplPtr<PImpl> pimpl;
 
+  SbTesselator(const SbTesselator & rhs); // N/A
+  SbTesselator & operator = (const SbTesselator & rhs); // N/A
+
 }; // SbTessellator
 
 #endif // !COIN_SBTESSELATOR_H
