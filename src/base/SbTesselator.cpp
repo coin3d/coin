@@ -159,10 +159,7 @@ public:
 
 }; // SbTessellator::PImpl
 
-typedef struct SbTesselator::PImpl::Vertex SbTVertex;
-
 #define PRIVATE(obj) ((obj)->pimpl)
-
 int
 SbTesselator::PImpl::heap_compare(void * h0, void * h1)
 {
@@ -174,7 +171,7 @@ SbTesselator::PImpl::heap_compare(void * h0, void * h1)
 float
 SbTesselator::PImpl::heap_evaluate(void * v)
 {
-  SbTVertex * vertex = static_cast<SbTVertex *>(v);
+  Vertex * vertex = static_cast<Vertex *>(v);
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
     if ((vertex->thisp->area(vertex) > vertex->thisp->epsilon) &&
@@ -182,7 +179,7 @@ SbTesselator::PImpl::heap_evaluate(void * v)
         vertex->thisp->clippable(vertex)) {
 #if 0 // testing code to avoid empty triangles
       vertex->weight = vertex->thisp->circleSize(vertex);
-      SbTVertex *v2 = vertex->next;
+      Vertex *v2 = vertex->next;
       if (vertex->weight != FLT_MAX &&
           v2->thisp->keepVertices &&
           v2->thisp->numVerts > 4 &&
@@ -275,7 +272,7 @@ SbTesselator::addVertex(const SbVec3f &v,void *data)
 
   PRIVATE(this)->bbox.extendBy(v);
 
-  SbTVertex *newv = PRIVATE(this)->newVertex();
+  PImpl::Vertex *newv = PRIVATE(this)->newVertex();
   newv->v = v;
   newv->data = data;
   newv->next = NULL;
@@ -300,10 +297,10 @@ SbTesselator::endPolygon()
 {
   // check for special case when last point equals the first point
   if (!PRIVATE(this)->keepVertices && PRIVATE(this)->numVerts >= 3) {
-    SbTVertex * first = PRIVATE(this)->headV;
-    SbTVertex * last = PRIVATE(this)->tailV;
+    PImpl::Vertex * first = PRIVATE(this)->headV;
+    PImpl::Vertex * last = PRIVATE(this)->tailV;
     if (first->v == last->v) {
-      SbTVertex * newlast = last->prev;
+      PImpl::Vertex * newlast = last->prev;
       newlast->next = NULL;
       // don't delete old tail. We have some special memory handling
       // in this class
@@ -312,7 +309,7 @@ SbTesselator::endPolygon()
     }
   }
 
-  SbTVertex *v;
+  PImpl::Vertex *v;
 
   if (PRIVATE(this)->numVerts > 3) {
     PRIVATE(this)->calcPolygonNormal();
@@ -376,7 +373,7 @@ SbTesselator::endPolygon()
     } while (v != PRIVATE(this)->headV);
 
     while (PRIVATE(this)->numVerts > 4) {
-      v = (SbTVertex*) cc_heap_get_top(PRIVATE(this)->heap);
+      v = (PImpl::Vertex*) cc_heap_get_top(PRIVATE(this)->heap);
       if (PImpl::heap_evaluate(v) == FLT_MAX) break;
       cc_heap_remove(PRIVATE(this)->heap, v->next);
       PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[PRIVATE(this)->X],
@@ -476,7 +473,7 @@ point_on_edge(const float x, const float y,
 // Algorithm from comp.graphics.algorithms FAQ
 //
 SbBool
-SbTesselator::PImpl::pointInTriangle(SbTVertex *p, SbTVertex *t)
+SbTesselator::PImpl::pointInTriangle(Vertex *p, Vertex *t)
 {
   float x,y;
   SbBool tst = FALSE;
@@ -579,7 +576,7 @@ SbTesselator::PImpl::clippable(Vertex * v)
   l.truncate(0);
   this->bsptree.findPoints(sphere, l);
   for (int i = 0; i < l.getLength(); i++) {
-    SbTVertex * vtx = static_cast<SbTVertex*>(this->bsptree.getUserData(l[i]));
+    Vertex * vtx = static_cast<Vertex*>(this->bsptree.getUserData(l[i]));
     if (vtx != v && vtx != v->next && vtx != v->next->next) {
       if (pointInTriangle(vtx, v)) { return FALSE; }
     }
@@ -608,7 +605,7 @@ SbTesselator::PImpl::emitTriangle(Vertex * t)
 // Cuts t->next out of the triangle vertex list.
 //
 // FIXME: bad design, this should have been a method on
-// SbTVertex. 20031007 mortene.
+// Vertex. 20031007 mortene.
 void
 SbTesselator::PImpl::cutTriangle(Vertex * t)
 {
@@ -688,7 +685,7 @@ SbTesselator::PImpl::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3
 }
 
 float
-SbTesselator::PImpl::circleSize(SbTVertex *v)
+SbTesselator::PImpl::circleSize(Vertex *v)
 {
   return circleSize(v->v, v->next->v, v->next->next->v);
 }
@@ -706,7 +703,7 @@ SbTesselator::PImpl::calcPolygonNormal()
 
   this->polyNormal.setValue(0.0f, 0.0f, 0.0f);
   SbVec3f vert1, vert2;
-  SbTVertex *currvertex = this->headV;
+  Vertex *currvertex = this->headV;
   vert2 = currvertex->v;
 
   while (currvertex->next != NULL && currvertex != tailV) {
@@ -732,12 +729,12 @@ SbTesselator::PImpl::calcPolygonNormal()
 }
 
 //
-// makes sure SbTVertexes are not allocated and deallocated
+// makes sure Vertexes are not allocated and deallocated
 // all the time, by storing them in a growable array. This
-// way, the SbTVertexes will not be deleted until the tessellator
-// is destructed, and SbTVertexes can be reused.
+// way, the Vertexes will not be deleted until the tessellator
+// is destructed, and Vertexes can be reused.
 //
-SbTVertex *
+SbTesselator::PImpl::Vertex *
 SbTesselator::PImpl::newVertex()
 {
   assert(this->currVertex <= this->vertexStorage.getLength());
