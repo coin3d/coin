@@ -330,7 +330,7 @@ SbXfBox3d::extendBy(const SbXfBox3d & bb)
                                corner[0], corner[1], corner[2],
                                dst[0], dst[1], dst[2]);
 #endif // debug
-        ((SbBox3d *)&box1)->extendBy(dst);
+        static_cast<SbBox3d *>(&box1)->extendBy(dst);
 #if 0 // debug
         SoDebugError::postInfo("SbXfBox3d::extendBy",
                                "dst: <%f, %f, %f>  ->   "
@@ -367,7 +367,7 @@ SbXfBox3d::extendBy(const SbXfBox3d & bb)
                                corner[0], corner[1], corner[2],
                                dst[0], dst[1], dst[2]);
 #endif // debug
-        ((SbBox3d *)&box2)->extendBy(dst);
+        static_cast<SbBox3d *>(&box2)->extendBy(dst);
 #if 0 // debug
         SoDebugError::postInfo("SbXfBox3d::extendBy",
                                "dst: <%f, %f, %f>  ->   "

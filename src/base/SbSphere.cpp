@@ -31,7 +31,7 @@
 
   \sa SbCylinder */
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>

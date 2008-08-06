@@ -68,8 +68,8 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
-#include <assert.h>
-#include <float.h>
+#include <cassert>
+#include <cfloat>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -142,7 +142,7 @@ SbRotation::SbRotation(const SbMatrix & m)
   \code
   #include <Inventor/SbRotation.h>
   #include <Inventor/SbVec3f.h>
-  #include <stdio.h>
+  #include <cstdio>
   
   int
   main(void)
@@ -229,7 +229,7 @@ SbRotation::getValue(SbVec3f & axis, float & radians) const
 {
   if((this->quat[3] >= -1.0f) && (this->quat[3] <= 1.0f)) {
     radians = float(acos(this->quat[3])) * 2.0f;
-    float scale = (float)sin(radians / 2.0f);
+    float scale = static_cast<float>(sin(radians / 2.0f));
 
     if(scale != 0.0f) {
       axis[0] = this->quat[0] / scale;
@@ -369,7 +369,7 @@ SbRotation::setValue(const SbMatrix & m)
   float scalerow = m[0][0] + m[1][1] + m[2][2];
 
   if (scalerow > 0.0f) {
-    float s = (float)sqrt(scalerow + m[3][3]);
+    float s = static_cast<float>(sqrt(scalerow + m[3][3]));
     this->quat[3] = s * 0.5f;
     s = 0.5f / s;
 
@@ -385,7 +385,7 @@ SbRotation::setValue(const SbMatrix & m)
     int j = (i+1)%3;
     int k = (j+1)%3;
 
-    float s = (float)sqrt((m[i][i] - (m[j][j] + m[k][k])) + m[3][3]);
+    float s = static_cast<float>(sqrt((m[i][i] - (m[j][j] + m[k][k])) + m[3][3]));
 
     this->quat[i] = s * 0.5f;
     s = 0.5f / s;
@@ -395,7 +395,7 @@ SbRotation::setValue(const SbMatrix & m)
     this->quat[k] = (m[i][k] + m[k][i]) * s;
   }
 
-  if (m[3][3] != 1.0f) this->operator*=(1.0f/(float)(sqrt(m[3][3])));
+  if (m[3][3] != 1.0f) this->operator*=(1.0f/static_cast<float>(sqrt(m[3][3])));
   return *this;
 }
 
@@ -418,9 +418,9 @@ SbRotation::setValue(const SbVec3f & axis, const float radians)
 
   // From <http://www.automation.hut.fi/~jaro/thesis/hyper/node9.html>.
 
-  this->quat[3] = (float)cos(radians/2);
+  this->quat[3] = static_cast<float>(cos(radians/2));
 
-  const float sineval = (float)sin(radians/2);
+  const float sineval = static_cast<float>(sin(radians/2));
   SbVec3f a = axis;
   // we test for a null vector above
   (void) a.normalize();
@@ -488,11 +488,11 @@ SbRotation::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
   else { // Vectors are not parallel
     // The fabs() wrapping is to avoid problems when `dot' "overflows"
     // a tiny wee bit, which can lead to sqrt() returning NaN.
-    crossvec *= (float)sqrt(0.5f * fabs(1.0f - dot));
+    crossvec *= static_cast<float>(sqrt(0.5f * fabs(1.0f - dot)));
     // The fabs() wrapping is to avoid problems when `dot' "underflows"
     // a tiny wee bit, which can lead to sqrt() returning NaN.
     this->setValue(crossvec[0], crossvec[1], crossvec[2],
-                   (float)sqrt(0.5 * fabs(1.0 + dot)));
+                   static_cast<float>(sqrt(0.5 * fabs(1.0 + dot))));
   }
 
   return *this;
@@ -655,8 +655,8 @@ SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
   float scale1 = t;
 
   if ((1.0f - dot) > FLT_EPSILON) {
-    float angle = (float)acos(dot);
-    float sinangle = (float)sin(angle);
+    float angle = static_cast<float>(acos(dot));
+    float sinangle = static_cast<float>(sin(angle));
     if (sinangle > FLT_EPSILON) {
       // calculate spherical interpolation
       scale0 = float(sin((1.0 - t) * angle)) / sinangle;

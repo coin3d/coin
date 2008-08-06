@@ -35,12 +35,12 @@
   \since Coin 2.0
 */
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <Inventor/SbDPPlane.h>
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbDPMatrix.h>
-#include <float.h>
+#include <cfloat>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -324,7 +324,7 @@ SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line) const
     return FALSE;
 
   xpt *= invdet;
-  invdet = 1.0f / (double) sqrt(dir2[0] + dir2[1] + dir2[2]);
+  invdet = 1.0f / static_cast<double>(sqrt(dir2[0] + dir2[1] + dir2[2]));
 
   xdir *= invdet;
   line = SbDPLine(xpt, xpt+xdir);

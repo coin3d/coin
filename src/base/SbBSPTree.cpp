@@ -23,10 +23,12 @@
 
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SbSphere.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <float.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
+#include <cfloat>
+
+#include "coindefs.h"
 
 // define this to do a sorted split (slower, but more efficient?)
 //#define BSP_SORTED_SPLIT
@@ -319,7 +321,7 @@ coin_bspnode::sort()
   const SbVec3f * points = this->pointsArray->getArrayPtr();
   int i, j, distance;
   int idx;
-  for (distance = 1; distance <= num/9; distance = 3*distance + 1);
+  for (distance = 1; distance <= num/9; distance = 3*distance + 1) ;
   for (; distance > 0; distance /= 3) {
     for (i = distance; i < num; i++) {
       idx = this->indices[i];
@@ -470,7 +472,7 @@ SbBSPTree::findPoint(const SbVec3f &pos) const
   Will empty all points from the BSP tree.
 */
 void
-SbBSPTree::clear(const int initsize)
+SbBSPTree::clear(const int COIN_UNUSED(initsize))
 {
   delete this->topnode;
   this->topnode = NULL;

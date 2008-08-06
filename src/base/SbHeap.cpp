@@ -57,9 +57,9 @@
   called whenever the element is moved in the heap.  */
 
 #include <Inventor/SbHeap.h>
-#include <string.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstring>
+#include <cstdio>
+#include <cassert>
 
 /*!
   Constructor. \a hFuncs specifies the functions for modifying
@@ -234,7 +234,7 @@ SbHeap::buildHeap(SbBool (*progresscb)(float percentage, void *data),
   for (int i = nrelems; (i >= 1) && ok; i--) {
     this->heapify(i);
     if(progresscb && ((i & 31) == 0))
-      ok = progresscb(((float)(nrelems - i))/((float)nrelems), data);
+      ok = progresscb(static_cast<float>(nrelems - i)/static_cast<float>(nrelems), data);
   }
   return ok;
 }

@@ -120,7 +120,7 @@
 // of the "viewport-within-a-window" concept which this class
 // represents. 20020103 mortene.
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -327,10 +327,10 @@ SbViewportRegion::setViewportPixels(short left, short bottom,
   }
 #endif // COIN_DEBUG
 
-  this->vporigin.setValue(((float)left)/((float)this->winsize[0]),
-                          ((float)bottom)/((float)this->winsize[1]));
-  this->vpsize.setValue(((float)width)/((float)this->winsize[0]),
-                        ((float)height)/((float)this->winsize[1]));
+  this->vporigin.setValue(static_cast<float>(left)/static_cast<float>(this->winsize[0]),
+                          static_cast<float>(bottom)/static_cast<float>(this->winsize[1]));
+  this->vpsize.setValue(static_cast<float>(width)/static_cast<float>(this->winsize[0]),
+                        static_cast<float>(height)/static_cast<float>(this->winsize[1]));
 }
 
 /*!
@@ -385,7 +385,7 @@ SbViewportRegion::getViewportOrigin(void) const
 static inline short
 round2short(float a)
 {
-  if (a == (float) (short(a))) return short(a);
+  if (a == static_cast<float>(short(a))) return short(a);
   else return (a>0.0f) ? short(a+0.5f) : -short(0.5f-a);
 }
 
@@ -398,7 +398,7 @@ const SbVec2s &
 SbViewportRegion::getViewportOriginPixels(void) const
 {
   // Cast away constness. Ugly.
-  SbViewportRegion * thisp = (SbViewportRegion *)this;
+  SbViewportRegion * thisp = const_cast<SbViewportRegion *>(this);
   // FIXME: the tmp storage seems totally unnecessary? 20040213 mortene.
   thisp->vporigin_s.setValue(round2short(this->winsize[0] * this->vporigin[0]),
                              round2short(this->winsize[1] * this->vporigin[1]));
@@ -425,7 +425,7 @@ const SbVec2s &
 SbViewportRegion::getViewportSizePixels(void) const
 {
   // Cast away constness. Ugly.
-  SbViewportRegion * thisp = (SbViewportRegion *)this;
+  SbViewportRegion * thisp = const_cast<SbViewportRegion *>(this);
   // FIXME: the tmp storage seems totally unnecessary? 20040213 mortene.
   thisp->vpsize_s = SbVec2s(round2short(this->winsize[0] * this->vpsize[0]),
                             round2short(this->winsize[1] * this->vpsize[1]));

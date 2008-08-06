@@ -24,7 +24,7 @@
 #include <Inventor/SbVec3s.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbVec3us.h>
 #include <Inventor/SbVec3b.h>

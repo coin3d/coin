@@ -31,9 +31,9 @@
 
 // *************************************************************************
 
-#include <assert.h>
-#include <float.h>
-#include <stddef.h>
+#include <cassert>
+#include <cfloat>
+#include <cstddef>
 
 #include <Inventor/SbOctTree.h>
 #include <Inventor/SbSphere.h>
@@ -126,7 +126,7 @@ box_inside_planes(const SbBox3f & box, const SbPlane * const planes,
   // Uses box "radius" for speed.
   // FIXME: consider just checking all 8 points of the box. pederb, 20000811
   SbVec3f size = (box.getMax() - box.getMin()) * 0.5f;
-  float radius = (float)sqrt(size[0]*size[0] + size[1]*size[1] + size[2]*size[2]);
+  float radius = static_cast<float>(sqrt(size[0]*size[0] + size[1]*size[1] + size[2]*size[2]));
 
   SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
 

@@ -24,7 +24,7 @@
 #include <Inventor/SbVec4d.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec4b.h>
@@ -174,7 +174,7 @@ SbVec4d::getReal(SbVec3d & v) const
 double
 SbVec4d::length(void) const
 {
-  return (double)sqrt(this->sqrLength());
+  return static_cast<double>(sqrt(this->sqrLength()));
 }
 
 /*!

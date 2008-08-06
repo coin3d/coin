@@ -54,9 +54,9 @@
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbMatrix.h>
 #include <coindefs.h> // COIN_STUB()
-#include <assert.h>
-#include <string.h>
-#include <float.h>
+#include <cassert>
+#include <cstring>
+#include <cfloat>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -357,9 +357,9 @@ SbDPMatrix::inverse(void) const
 
   // use local pointers for speed
   double (*dst)[4];
-  dst = (double (*)[4]) result.matrix[0];
-  double (*src)[4];
-  src = (double (*)[4]) this->matrix[0];
+  dst = reinterpret_cast<double (*)[4]>(result.matrix[0]);
+  const double (*src)[4];
+  src = reinterpret_cast<const double (*)[4]>(this->matrix[0]);
 
   // check for affine matrix (common case)
   if (src[0][3] == 0.0 && src[1][3] == 0.0 &&
@@ -920,8 +920,8 @@ SbDPMatrix::getTransform(SbVec3d & translation,
   \sa getTransform()
  */
 SbBool
-SbDPMatrix::factor(SbDPMatrix & r, SbVec3d & s, SbDPMatrix & u, SbVec3d & t,
-                 SbDPMatrix & proj)
+SbDPMatrix::factor(SbDPMatrix & COIN_UNUSED(r), SbVec3d & COIN_UNUSED(s), SbDPMatrix & COIN_UNUSED(u), SbVec3d & COIN_UNUSED(t),
+                 SbDPMatrix & COIN_UNUSED(proj))
 {
   // FIXME: not implemented, not documented. 1998MMDD mortene.
   COIN_STUB();
@@ -1358,8 +1358,8 @@ mat_norm(HMatrix M, int tpose)
   double sum, max;
   max = 0.0;
   for (i=0; i<3; i++) {
-    if (tpose) sum = (double)(fabs(M[0][i])+fabs(M[1][i])+fabs(M[2][i]));
-    else sum = (double)(fabs(M[i][0])+fabs(M[i][1])+fabs(M[i][2]));
+    if (tpose) sum = static_cast<double>(fabs(M[0][i])+fabs(M[1][i])+fabs(M[2][i]));
+    else sum = static_cast<double>(fabs(M[i][0])+fabs(M[i][1])+fabs(M[i][2]));
     if (max<sum) max = sum;
   }
   return max;
@@ -1386,10 +1386,10 @@ find_max_col(HMatrix M)
 static void
 make_reflector(double * v, double * u)
 {
-  double s = (double)sqrt(vdot(v, v));
+  double s = static_cast<double>(sqrt(vdot(v, v)));
   u[0] = v[0]; u[1] = v[1];
   u[2] = v[2] + ((v[2]<0.0) ? -s : s);
-  s = (double)sqrt(2.0/vdot(u, u));
+  s = static_cast<double>(sqrt(2.0/vdot(u, u)));
   u[0] = u[0]*s; u[1] = u[1]*s; u[2] = u[2]*s;
 }
 
@@ -1449,11 +1449,11 @@ do_rank2(HMatrix M, HMatrix MadjT, HMatrix Q)
   make_reflector(v2, v2); reflect_rows(M, v2);
   w = M[0][0]; x = M[0][1]; y = M[1][0]; z = M[1][1];
   if (w*z>x*y) {
-    c = z+w; s = y-x; d = (double)sqrt(c*c+s*s); c = c/d; s = s/d;
+    c = z+w; s = y-x; d = static_cast<double>(sqrt(c*c+s*s)); c = c/d; s = s/d;
     Q[0][0] = Q[1][1] = c; Q[0][1] = -(Q[1][0] = s);
   }
   else {
-    c = z-w; s = y+x; d = (double)sqrt(c*c+s*s); c = c/d; s = s/d;
+    c = z-w; s = y+x; d = static_cast<double>(sqrt(c*c+s*s)); c = c/d; s = s/d;
     Q[0][0] = -(Q[1][1] = c); Q[0][1] = Q[1][0] = s;
   }
   Q[0][2] = Q[2][0] = Q[1][2] = Q[2][1] = 0.0; Q[2][2] = 1.0;
@@ -1483,7 +1483,7 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
     det = vdot(Mk[0], MadjTk[0]);
     if (det==0.0) {do_rank2(Mk, MadjTk, Mk); break;}
     MadjT_one = norm_one(MadjTk); MadjT_inf = norm_inf(MadjTk);
-    gamma = (double)sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
+    gamma = static_cast<double>(sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det)));
     g1 = gamma*0.5;
     g2 = 0.5/(gamma*det);
     mat_copy(Ek, =, Mk, 3);
@@ -1518,7 +1518,7 @@ spect_decomp(HMatrix S, HMatrix U)
   Diag[X] = S[X][X]; Diag[Y] = S[Y][Y]; Diag[Z] = S[Z][Z];
   OffD[X] = S[Y][Z]; OffD[Y] = S[Z][X]; OffD[Z] = S[X][Y];
   for (sweep=20; sweep>0; sweep--) {
-    double sm = (double)(fabs(OffD[X])+fabs(OffD[Y])+fabs(OffD[Z]));
+    double sm = static_cast<double>(fabs(OffD[X])+fabs(OffD[Y])+fabs(OffD[Z]));
     if (sm==0.0) break;
     for (i=Z; i>=X; i--) {
       int p = nxt[i]; int q = nxt[p];
@@ -1544,13 +1544,15 @@ spect_decomp(HMatrix S, HMatrix U)
         OffD[p] += s*(OffDq   - tau*OffD[p]);
         for (j=Z; j>=X; j--) {
           a = U[j][p]; b = U[j][q];
-          U[j][p] -= (double)(s*(b + tau*a));
-          U[j][q] += (double)(s*(a - tau*b));
+          U[j][p] -= static_cast<double>(s*(b + tau*a));
+          U[j][q] += static_cast<double>(s*(a - tau*b));
         }
       }
     }
   }
-  kv[X] = (double)Diag[X]; kv[Y] = (double)Diag[Y]; kv[Z] = (double)Diag[Z];
+  kv[X] = static_cast<double>(Diag[X]);
+  kv[Y] = static_cast<double>(Diag[Y]);
+  kv[Z] = static_cast<double>(Diag[Z]);
   kv[W] = 1.0;
   return (kv);
 }
@@ -1608,9 +1610,9 @@ snuggle(SbDPRotation q, SbVec4d & k)
     case Z: qtoz = q0001; break;
     }
     q.invert();
-    mag[0] = (double)q.getValue()[Z]*q.getValue()[Z]+(double)q.getValue()[W]*q.getValue()[W]-0.5;
-    mag[1] = (double)q.getValue()[X]*q.getValue()[Z]-(double)q.getValue()[Y]*q.getValue()[W];
-    mag[2] = (double)q.getValue()[Y]*q.getValue()[Z]+(double)q.getValue()[X]*q.getValue()[W];
+    mag[0] = static_cast<double>(q.getValue()[Z]*q.getValue()[Z])+static_cast<double>(q.getValue()[W]*q.getValue()[W]-0.5);
+    mag[1] = static_cast<double>(q.getValue()[X]*q.getValue()[Z])-static_cast<double>(q.getValue()[Y]*q.getValue()[W]);
+    mag[2] = static_cast<double>(q.getValue()[Y]*q.getValue()[Z]+static_cast<double>(q.getValue()[X]*q.getValue()[W]));
     for (i=0; i<3; i++) if ((neg[i] = (mag[i] < 0.0))) mag[i] = -mag[i];
     if (mag[0]>mag[1]) {if (mag[0]>mag[2]) win = 0; else win = 2;}
     else {if (mag[1]>mag[2]) win = 1; else win = 2;}
@@ -1621,7 +1623,7 @@ snuggle(SbDPRotation q, SbVec4d & k)
     }
     qp = p * q;
     t = sqrt(mag[win]+0.5);
-    p = SbDPRotation(0.0, 0.0, -qp.getValue()[Z]/(double)t, qp.getValue()[W]/(double)t) * p;
+    p = SbDPRotation(0.0, 0.0, -qp.getValue()[Z]/static_cast<double>(t), qp.getValue()[W]/static_cast<double>(t)) * p;
     p = SbDPRotation(p).invert() * qtoz;
   }
   else {
@@ -1690,12 +1692,12 @@ decomp_affine(HMatrix A, AffineParts * parts)
 
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
-  SbDPMatrix TQ((const SbDPMat *) &Q);
+  SbDPMatrix TQ(static_cast<const SbDPMat *>(&Q));
   parts->q = SbDPRotation(TQ.transpose());
   parts->k = spect_decomp(S, U);
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
-  SbDPMatrix TU((const SbDPMat *) &U);
+  SbDPMatrix TU(static_cast<const SbDPMat *>(&U));
   parts->u = SbDPRotation(TU.transpose());
   p = snuggle(parts->u, parts->k);
   parts->u = p * parts->u;

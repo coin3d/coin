@@ -36,7 +36,7 @@
 #include <Inventor/SbDict.h>
 #undef COIN_ALLOW_SBDICT
 
-#include <assert.h>
+#include <cassert>
 
 #define COIN_ALLOW_CC_HASH /* Hack to get around include protection
                               for obsoleted ADT. */
@@ -100,7 +100,7 @@ SbDict::operator=(const SbDict & from)
 void
 SbDict::copyval(Key key, void * value, void * data)
 {
-  SbDict * thisp = (SbDict *)data;
+  SbDict * thisp = static_cast<SbDict *>(data);
   thisp->enter(key, value);
 }
 
@@ -169,7 +169,7 @@ sbdict_dummy_apply(SbDict::Key key, void * value, void * closure)
 void
 SbDict::applyToAll(void (* rtn)(Key key, void * value)) const
 {
-  cc_hash_apply(this->hashtable, sbdict_dummy_apply, (void*) rtn);
+  cc_hash_apply(this->hashtable, sbdict_dummy_apply, reinterpret_cast<void *>(rtn));
 }
 
 /*!
@@ -179,7 +179,7 @@ void
 SbDict::applyToAll(void (* rtn)(Key key, void * value, void * data),
                    void * data) const
 {
-  cc_hash_apply(this->hashtable, (cc_hash_apply_func*)rtn, data);
+  cc_hash_apply(this->hashtable, static_cast<cc_hash_apply_func *>(rtn), data);
 }
 
 typedef struct {
@@ -191,8 +191,8 @@ typedef struct {
 static void
 sbdict_makeplist_cb(SbDict::Key key, void * value, void * closure)
 {
-  sbdict_makeplist_data * data = (sbdict_makeplist_data*) closure;
-  data->keys->append((void *) key);
+  sbdict_makeplist_data * data = static_cast<sbdict_makeplist_data *>(closure);
+  data->keys->append(reinterpret_cast<void *>(key));
   data->values->append(value);
 }
 
@@ -206,7 +206,7 @@ SbDict::makePList(SbPList & keys, SbPList & values)
   applydata.keys = &keys;
   applydata.values = &values;
 
-  cc_hash_apply(this->hashtable, (cc_hash_apply_func*)sbdict_makeplist_cb, &applydata);
+  cc_hash_apply(this->hashtable, static_cast<cc_hash_apply_func *>(sbdict_makeplist_cb), &applydata);
 }
 
 /*!
@@ -224,5 +224,5 @@ SbDict::makePList(SbPList & keys, SbPList & values)
 void
 SbDict::setHashingFunction(Key (*func)(const Key key))
 {
-  cc_hash_set_hash_func(this->hashtable, (cc_hash_func *)func);
+  cc_hash_set_hash_func(this->hashtable, static_cast<cc_hash_func *>(func));
 }

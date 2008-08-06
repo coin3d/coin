@@ -98,17 +98,17 @@ SbBox3i32::setBounds(const SbBox3d & box)
 }
 
 void
-SbBox3i32::extendBy(const SbVec3i32 & pt)
+SbBox3i32::extendBy(const SbVec3i32 & point)
 {
   if (isEmpty()) {
-    minpt = maxpt = pt;
+    minpt = maxpt = point;
   } else {
-    minpt.setValue(SbMin((int32_t)pt[0], (int32_t)minpt[0]),
-                   SbMin((int32_t)pt[1], (int32_t)minpt[1]),
-                   SbMin((int32_t)pt[2], (int32_t)minpt[2]));
-    maxpt.setValue(SbMax((int32_t)pt[0], (int32_t)maxpt[0]),
-                   SbMax((int32_t)pt[1], (int32_t)maxpt[1]),
-                   SbMax((int32_t)pt[2], (int32_t)maxpt[2]));
+    this->minpt.setValue(SbMin(static_cast<int32_t>(point[0]), static_cast<int32_t>(this->minpt[0])),
+			 SbMin(static_cast<int32_t>(point[1]), static_cast<int32_t>(this->minpt[1])),
+			 SbMin(static_cast<int32_t>(point[2]), static_cast<int32_t>(this->minpt[2])));
+    this->maxpt.setValue(SbMax(static_cast<int32_t>(point[0]), static_cast<int32_t>(this->maxpt[0])),
+			 SbMax(static_cast<int32_t>(point[1]), static_cast<int32_t>(this->maxpt[1])),
+			 SbMax(static_cast<int32_t>(point[2]), static_cast<int32_t>(this->maxpt[2])));
   }
 }
 

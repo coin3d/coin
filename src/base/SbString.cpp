@@ -67,7 +67,6 @@ compute_prefix_function(SbList <int> & pi, const SbString & str)
 static unsigned int hash(const unsigned char * str, int n)
 {
   unsigned long hash = 0;
-  int c;
   
   while (n--) {
     hash = (*str++) + (hash << 6) + (hash << 16) - hash;

@@ -38,8 +38,8 @@
 
 #include <Inventor/SbImage.h>
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
@@ -260,7 +260,7 @@ SbImage::setValuePtr(const SbVec3s & size, const int bytesperpixel,
   PRIVATE(this)->schedulename = "";
   PRIVATE(this)->schedulecb = NULL;
   PRIVATE(this)->freeData();
-  PRIVATE(this)->bytes = (unsigned char *) bytes;
+  PRIVATE(this)->bytes = const_cast<unsigned char *>(bytes);
   PRIVATE(this)->datatype = SbImageP::SETVALUEPTR_DATA;
   PRIVATE(this)->size = size;
   PRIVATE(this)->bpp = bytesperpixel;
@@ -355,9 +355,8 @@ SbImage::getValue(SbVec3s & size, int & bytesperpixel) const
 {
   PRIVATE(this)->readLock();
   if (PRIVATE(this)->schedulecb) {
-    SbImage * thisp = (SbImage*) this;
     // start a thread to read the image.
-    SbBool scheduled = PRIVATE(this)->schedulecb(PRIVATE(this)->schedulename, thisp, 
+    SbBool scheduled = PRIVATE(this)->schedulecb(PRIVATE(this)->schedulename, const_cast<SbImage *>(this), 
                                         PRIVATE(this)->scheduleclosure);
     if (scheduled) {
       PRIVATE(this)->schedulecb = NULL;
@@ -392,7 +391,7 @@ SbImage::searchForFile(const SbString & basename,
   SbStringList subdirectories;
 
   for (i = 0; i < numdirs; i++) {
-    directories.append((SbString*) dirlist[i]);
+    directories.append(const_cast<SbString *>(dirlist[i]));
   }
   subdirectories.append(new SbString("texture"));
   subdirectories.append(new SbString("textures"));
@@ -468,7 +467,12 @@ SbImage::readFile(const SbString & filename,
                                         &w, &h, &nc);
   if (simagedata) {
     //FIXME: Add 3'rd dimension (kintel 20011110)
-    this->setValuePtr(SbVec3s((short)w, (short)h, (short)0), nc, simagedata);
+    this->setValuePtr(
+		      SbVec3s(static_cast<short>(w),
+			      static_cast<short>(h), 
+			      static_cast<short>(0)
+			      ),
+		      nc, simagedata);
     // NB, this is a trick. We use setValuePtr() to set the size
     // and data pointer, and then we change the data type to simage
     // peder, 2002-03-22
@@ -644,7 +648,7 @@ SbImage::addReadImageCB(SbImageReadImageCB * cb, void * closure)
 {
   if (!SbImageP::readimagecallbacks) {
     SbImageP::readimagecallbacks = new SbList <SbImageP::ReadImageCBData>;
-    cc_coin_atexit((coin_atexit_f*) SbImageP::cleanup_callbacks);
+    cc_coin_atexit(static_cast<coin_atexit_f*>(SbImageP::cleanup_callbacks));
   }
   SbImageP::ReadImageCBData data;
   data.cb = cb;

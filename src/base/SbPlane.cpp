@@ -31,12 +31,12 @@
   distance from the origin of the coordinate system.
 */
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbMatrix.h>
-#include <float.h>
+#include <cfloat>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -325,7 +325,7 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line) const
     return FALSE;
 
   xpt *= invdet;
-  invdet = 1.0f / (float) sqrt(dir2[0] + dir2[1] + dir2[2]);
+  invdet = 1.0f / static_cast<float>(sqrt(dir2[0] + dir2[1] + dir2[2]));
 
   xdir *= invdet;
   line = SbLine(xpt, xpt + xdir);

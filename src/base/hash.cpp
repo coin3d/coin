@@ -32,9 +32,9 @@
 
 #include <Inventor/C/base/hash.h>
 
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
+#include <cassert>
+#include <cstdio>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>

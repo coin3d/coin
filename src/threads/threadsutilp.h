@@ -43,20 +43,20 @@
   do { \
     cc_mutex_global_lock(); \
     if (_mymutex_ == NULL) { \
-      _mymutex_ = (void*) cc_mutex_construct(); \
+      _mymutex_ = static_cast<void*>(cc_mutex_construct()); \
     } \
     cc_mutex_global_unlock(); \
   } while (0)
 
 #define CC_MUTEX_DESTRUCT(_mymutex_) \
-  cc_mutex_destruct((cc_mutex*) _mymutex_);     \
+  cc_mutex_destruct(static_cast<cc_mutex*>(_mymutex_));     \
   _mymutex_ = NULL
 
 #define CC_MUTEX_LOCK(_mymutex_) \
-  cc_mutex_lock((cc_mutex*) _mymutex_)
+  cc_mutex_lock(static_cast<cc_mutex *>(_mymutex_))
 
 #define CC_MUTEX_UNLOCK(_mymutex_) \
-  cc_mutex_unlock((cc_mutex*) _mymutex_)
+  cc_mutex_unlock(static_cast<cc_mutex *>(_mymutex_))
 
 #define CC_SYNC_BEGIN(_myid_) \
   void * coin_mydummysyncptr = cc_sync_begin((void*) _myid_)

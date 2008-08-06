@@ -45,7 +45,7 @@
   \sa SbColor
 */
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
 #if COIN_DEBUG
@@ -184,10 +184,10 @@ SbColor4f::setPackedValue(const uint32_t rgba)
 uint32_t
 SbColor4f::getPackedValue() const
 {
-  return (((uint32_t)(red()*255.0f + 0.5f) << 24) |
-          ((uint32_t)(green()*255.0f + 0.5f) << 16) |
-          ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
-          (uint32_t)(alpha()*255.0f + 0.5f));
+  return ((static_cast<uint32_t>(red()*255.0f + 0.5f) << 24) |
+          (static_cast<uint32_t>(green()*255.0f + 0.5f) << 16) |
+          (static_cast<uint32_t>(blue()*255.0f + 0.5f) << 8) |
+          static_cast<uint32_t>(alpha()*255.0f + 0.5f));
 }
 
 /*!

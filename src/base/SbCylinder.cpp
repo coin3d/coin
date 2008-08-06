@@ -33,7 +33,7 @@
 
   \sa SbLine, SbSphere */
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/SbCylinder.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -223,7 +223,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   // Check the closest distance from the ray to the cylinder axis. If
   // this distance is larger than the radius of the cylinder, there's
   // of course no intersection.
-  float d = (float)fabs(cv.dot(n));
+  float d = static_cast<float>(fabs(cv.dot(n)));
   if (d > this->radius) return FALSE;
 
   // There's an intersection, now find the parameter for the plane
@@ -234,8 +234,8 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   // we know that n is not parallel with axis, just normalize
   (void) tmp.normalize();
 
-  float s = (float)fabs(sqrt(this->radius*this->radius - d*d) /
-                        l.getDirection().dot(tmp));
+  float s = static_cast<float>(fabs(sqrt(this->radius*this->radius - d*d) /
+                        l.getDirection().dot(tmp)));
 
   float enterparam = t - s;
   float exitparam = t + s;

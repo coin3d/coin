@@ -53,8 +53,8 @@
 
 // *************************************************************************
 
-#include <ctype.h>
-#include <string.h>
+#include <cctype>
+#include <cstring>
 
 #include <Inventor/SbName.h>
 
@@ -138,7 +138,7 @@ SbName::getLength(void) const
   // UPDATE 20030606 mortene: this can easily be done by storing an
   // extra value in the memory chunk allocated inside namemap.c, right
   // before the string itself.
-  return (int)strlen(this->permaaddress);
+  return static_cast<int>(strlen(this->permaaddress));
 }
 
 /*!
@@ -159,7 +159,7 @@ SbName::isIdentStartChar(const char c)
   //
   // FIXME: this needs to be fixed other places isdigit() is used,
   // aswell as for other is*() function. 20021124 mortene.
-  const unsigned char uc = (unsigned char)c;
+  const unsigned char uc = static_cast<unsigned char>(c);
 
   if (isdigit(uc)) return FALSE;
   return SbName::isIdentChar(c);

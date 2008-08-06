@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2006 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2006, 2008 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,19 +32,19 @@
 
 // *************************************************************************
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <errno.h>
-#include <math.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cerrno>
+#include <cmath>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #ifdef HAVE_TIME_H
-#include <time.h> // struct timeval (Linux)
+#include <ctime> // struct timeval (Linux)
 #endif // HAVE_TIME_H
 
 #ifdef HAVE_SYS_TIME_H
@@ -176,7 +176,7 @@ SbTime::zero(void)
 SbTime
 SbTime::maxTime(void)
 {
-  return SbTime(((double)INT_MAX) + 0.999999);
+  return SbTime(static_cast<double>(INT_MAX) + 0.999999);
 }
 
 
@@ -235,7 +235,7 @@ SbTime::setValue(const double sec)
 void
 SbTime::setValue(const int32_t sec, const long usec)
 {
-  this->dtime = ((double)sec) + ((double)usec)/1000000.0;
+  this->dtime = static_cast<double>(sec) + static_cast<double>(usec)/1000000.0;
 }
 
 /*!
@@ -249,7 +249,7 @@ void
 SbTime::setValue(const struct timeval * const tv)
 {
   this->dtime = tv->tv_sec;
-  this->dtime += ((double)(tv->tv_usec))/1000000.0;
+  this->dtime += static_cast<double>(tv->tv_usec)/1000000.0;
 }
 
 /*!
@@ -260,7 +260,7 @@ SbTime::setValue(const struct timeval * const tv)
 void
 SbTime::setMsecValue(const unsigned long msec)
 {
-  this->setValue(((double)msec) / 1000.0);
+  this->setValue(static_cast<double>(msec) / 1000.0);
 }
 
 /*!
@@ -283,9 +283,9 @@ SbTime::getValue(void) const
 void
 SbTime::getValue(time_t & sec, long & usec) const
 {
-  sec = (time_t)(this->dtime);
+  sec = static_cast<time_t>(this->dtime);
   double us = fmod(this->dtime, 1.0) * 1000000.0;
-  usec = (long)(us + (us < 0.0 ? -0.5 : 0.5));
+  usec = static_cast<long>(us + (us < 0.0 ? -0.5 : 0.5));
 }
 
 /*!
@@ -303,9 +303,9 @@ SbTime::getValue(struct timeval * tv) const
   //
   // I guess we need a configure check to find the correct type to
   // cast to here, but investigate. 20050525 mortene.
-  tv->tv_sec = (SIM_TIMEVAL_TV_SEC_T) this->dtime;
+  tv->tv_sec = static_cast<SIM_TIMEVAL_TV_SEC_T>(this->dtime);
   double us = fmod(this->dtime, 1.0) * 1000000.0;
-  tv->tv_usec = (SIM_TIMEVAL_TV_USEC_T) (us + (us < 0.0 ? -0.5 : 0.5));
+  tv->tv_usec = static_cast<SIM_TIMEVAL_TV_USEC_T>(us + (us < 0.0 ? -0.5 : 0.5));
 }
 
 /*!
@@ -332,7 +332,7 @@ SbTime::getMsecValue(void) const
   double d = this->dtime * 1000.0;
 
   // Check for overflow in the double->ulong cast at return.
-  if (d > (double)ULONG_MAX) {
+  if (d > static_cast<double>(ULONG_MAX)) {
 #if COIN_DEBUG
     static SbBool first = TRUE;
     if (first) {
@@ -363,7 +363,7 @@ SbTime::getMsecValue(void) const
   }
 
 
-  return (unsigned long)d;
+  return static_cast<unsigned long>(d);
 }
 
 /*!
@@ -445,7 +445,7 @@ SbTime::format(const char * const fmt) const
         dtmp = dtmp / 60.0 / 60.0;
         dtmp = floor(dtmp);
         if (dtmp < 10.0) str += '0';
-        str.addIntString((int)dtmp);
+        str.addIntString(static_cast<int>(dtmp));
         break;
 
       case 'm':
@@ -454,7 +454,7 @@ SbTime::format(const char * const fmt) const
         dtmp = dtmp / 60.0;
         dtmp = floor(dtmp);
         if (dtmp < 10.0) str += '0';
-        str.addIntString((int)dtmp);
+        str.addIntString(static_cast<int>(dtmp));
         break;
 
       case 's':
@@ -462,7 +462,7 @@ SbTime::format(const char * const fmt) const
         dtmp = this->dtime - floor(dtmp) * 60.0;
         dtmp = floor(dtmp);
         if (dtmp < 10.0) str += '0';
-        str.addIntString((int)dtmp);
+        str.addIntString(static_cast<int>(dtmp));
         break;
 
       case 'i':
@@ -471,7 +471,7 @@ SbTime::format(const char * const fmt) const
         dtmp = floor(dtmp);
         if (dtmp < 100.0) str += '0';
         if (dtmp < 10.0) str += '0';
-        str.addIntString((int)dtmp);
+        str.addIntString(static_cast<int>(dtmp));
         break;
 
       case 'u':
@@ -483,7 +483,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 1000.0) str += '0';
         if (dtmp < 100.0) str += '0';
         if (dtmp < 10.0) str += '0';
-        str.addIntString((int)dtmp);
+        str.addIntString(static_cast<int>(dtmp));
         break;
 
       default:
@@ -538,7 +538,7 @@ SbTime::formatDate(const char * const fmt) const
   const size_t buffersize = 256;
   char buffer[buffersize];
   char * bufferpt = buffer;
-  time_t secs = (time_t)(this->dtime);
+  time_t secs = static_cast<time_t>(this->dtime);
   size_t currentsize = buffersize;
 
   struct tm * ts = localtime(&secs);
@@ -762,7 +762,7 @@ SbTime::parsedate(const char * const date)
     time.tm_isdst = 0;
   }
 
-  this->dtime = (double)(mktime(&time));
+  this->dtime = static_cast<double>(mktime(&time));
   return TRUE;
 }
 
@@ -1012,19 +1012,19 @@ SbTime::addToString(SbString & str, const double v) const
     return;
   }
 
-  while (val > (double)INT_MAX) {
+  while (val > static_cast<double>(INT_MAX)) {
     int steps = 0;
     double vcopy = val;
 
     // "Clamp" value to within bounds of an integer.
-    while (val > (double)INT_MAX) {
+    while (val > static_cast<double>(INT_MAX)) {
       val /= 10.0;
       steps++;
     }
 
     // Add to string.
     val = floor(val);
-    str.addIntString((int)val);
+    str.addIntString(static_cast<int>(val));
 
     int scopy = steps;
 
@@ -1044,7 +1044,7 @@ SbTime::addToString(SbString & str, const double v) const
     }
   }
 
-  if (val != 0.0) str.addIntString((int)val);
+  if (val != 0.0) str.addIntString(static_cast<int>(val));
 }
 
 
@@ -1060,8 +1060,8 @@ SbTime::print(FILE * fp) const
   this->getValue(&tm);
   SbString str = this->formatDate();
   (void)fprintf(fp, "%s", str.getString());
-  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", (long int)tm.tv_sec,
-               (long int)tm.tv_usec);
+  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", static_cast<long int>(tm.tv_sec),
+               static_cast<long int>(tm.tv_usec));
 #endif // COIN_DEBUG
 }
 

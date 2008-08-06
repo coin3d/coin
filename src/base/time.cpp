@@ -34,7 +34,7 @@
 #endif /* HAVE_SYS_TIME_H */
 
 #ifdef HAVE_TIME_H
-#include <time.h>
+#include <ctime>
 #endif /* HAVE_TIME_H */
 
 /* On Mac OS X / Darwin, timeb.h uses time_t from time.h, so the order
@@ -47,10 +47,12 @@
 #include <unistd.h> /* gettimeofday() */
 #endif /* HAVE_UNISTD_H */
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/errors/debugerror.h>
+
+#include "coindefs.h"
 
 /* ********************************************************************** */
 
@@ -63,7 +65,7 @@ static double highperf_tick = -1;
 /* The Win32 QueryPerformanceCounter() strategy is based on code
    submitted by Jan Peciva (aka PCJohn). */
 static SbBool
-cc_internal_queryperformancecounter(cc_time * t)
+cc_internal_queryperformancecounter(cc_time * COIN_UNUSED(t))
 {
 #ifdef HAVE_QUERYPERFORMANCECOUNTER
   if (highperf_available == -1) {
@@ -106,7 +108,7 @@ cc_internal_gettimeofday(cc_time * t)
                               "setting?). Result is undefined.");
   }
   *t = tv.tv_sec;
-  *t += ((double)(tv.tv_usec))/1000000.0;
+  *t += static_cast<double>((tv.tv_usec))/1000000.0;
   return TRUE;
 #else /* !HAVE_GETTIMEOFDAY */
   return FALSE;
@@ -126,7 +128,7 @@ cc_internal_ftime(cc_time * t)
   struct timeb timebuffer;
   /* FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene. */
   ftime(&timebuffer);
-  *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;
+  *t = static_cast<double>(timebuffer.time) + static_cast<double>(timebuffer.millitm) / 1000.0;
   return TRUE;
 #else /* HAVE_FTIME */
   return FALSE;

@@ -61,7 +61,7 @@
 #endif // COIN_DEBUG
 
 #include <coindefs.h> // COIN_OBSOLETED()
-#include <assert.h>
+#include <cassert>
 
 /*!
   \enum SbViewVolume::ProjectionType
@@ -133,7 +133,7 @@ copy_matrix(const SbDPMatrix & src, SbMatrix & dst)
   const double * s = src[0];
   float * d = dst[0];
   for (int i = 0; i < 16; i++) {
-    d[i] = (float) s[i];
+    d[i] = static_cast<float>(s[i]);
   }
 }
 
@@ -143,20 +143,20 @@ copy_matrix(const SbMatrix & src, SbDPMatrix & dst)
   const float * s = src[0];
   double * d = dst[0];
   for (int i = 0; i < 16; i++) {
-    d[i] = (double) s[i];
+    d[i] = static_cast<double>(s[i]);
   }
 }
 
 static SbVec3f 
 to_sbvec3f(const SbVec3d & v)
 {
-  return SbVec3f((float) v[0], (float) v[1], (float) v[2]);
+  return SbVec3f(static_cast<float>(v[0]), static_cast<float>(v[1]), static_cast<float>(v[2]));
 }
 
 static SbVec2f 
 to_sbvec2f(const SbVec2d & v)
 {
-  return SbVec2f((float) v[0], (float) v[1]);
+  return SbVec2f(static_cast<float>(v[0]), static_cast<float>(v[1]));
 }
 
 /*!
@@ -339,7 +339,7 @@ SbViewVolume::getAlignRotation(SbBool rightangleonly) const
   const double * src = rot.getValue();
   float q[4];
   for (int i = 0; i < 4; i++){
-    q[i] = (float) src[i];
+    q[i] = static_cast<float>(src[i]);
   }
   return SbRotation(q);
 }
@@ -354,7 +354,7 @@ SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
                                     float normRadius) const
 {
   SbVec3d dpworldCenter(worldCenter[0], worldCenter[1], worldCenter[2]);
-  return (float) this->dpvv.getWorldToScreenScale(dpworldCenter, normRadius);
+  return static_cast<float>(this->dpvv.getWorldToScreenScale(dpworldCenter, normRadius));
 }
 
 /*!
@@ -631,7 +631,7 @@ SbViewVolume::getNearDist(void) const
 float
 SbViewVolume::getWidth(void) const
 {
-  return (float) this->dpvv.getWidth();
+  return static_cast<float>(this->dpvv.getWidth());
 }
 
 /*!
@@ -642,7 +642,7 @@ SbViewVolume::getWidth(void) const
 float
 SbViewVolume::getHeight(void) const
 {
-  return (float) this->dpvv.getHeight();
+  return static_cast<float>(this->dpvv.getHeight());
 }
 
 /*!
@@ -665,7 +665,7 @@ void
 SbViewVolume::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  fprintf( fp, "  projtype: %d\n", (int) this->getProjectionType() );
+  fprintf( fp, "  projtype: %d\n", static_cast<int>(this->getProjectionType()) );
   fprintf( fp, "  projpt:   " );
   this->getProjectionPoint().print(fp);
   fprintf( fp, "\n" );

@@ -207,12 +207,12 @@ SbBox3f::extendBy(const SbVec3f & point)
     // The explicit casts are done to humour the HPUX aCC compiler,
     // which will otherwise say ``Template deduction failed to find a
     // match for the call to 'SbMin'''. mortene.
-    this->minpt.setValue(SbMin((float)point[0], (float)this->minpt[0]),
-                         SbMin((float)point[1], (float)this->minpt[1]),
-                         SbMin((float)point[2], (float)this->minpt[2]));
-    this->maxpt.setValue(SbMax((float)point[0], (float)this->maxpt[0]),
-                         SbMax((float)point[1], (float)this->maxpt[1]),
-                         SbMax((float)point[2], (float)this->maxpt[2]));
+  this->minpt.setValue(SbMin(static_cast<float>(point[0]), static_cast<float>(this->minpt[0])),
+                       SbMin(static_cast<float>(point[1]), static_cast<float>(this->minpt[1])),
+                       SbMin(static_cast<float>(point[2]), static_cast<float>(this->minpt[2])));
+  this->maxpt.setValue(SbMax(static_cast<float>(point[0]), static_cast<float>(this->maxpt[0])),
+                       SbMax(static_cast<float>(point[1]), static_cast<float>(this->maxpt[1])),
+                       SbMax(static_cast<float>(point[2]), static_cast<float>(this->maxpt[2])));
   }
 }
 

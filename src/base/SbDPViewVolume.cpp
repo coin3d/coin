@@ -52,7 +52,7 @@
 #endif // COIN_DEBUG
 
 #include <coindefs.h> // COIN_OBSOLETED()
-#include <assert.h>
+#include <cassert>
 
 /*!
   \enum SbDPViewVolume::ProjectionType
@@ -120,13 +120,13 @@
 static SbVec3f 
 dp_to_sbvec3f(const SbVec3d & v)
 {
-  return SbVec3f((float)v[0], (float)v[1], (float)v[2]);
+  return SbVec3f(static_cast<float>(v[0]), static_cast<float>(v[1]), static_cast<float>(v[2]));
 }
 
 static SbVec3d 
 dp_to_sbvec3d(const SbVec3f & v)
 {
-  return SbVec3d((double)v[0], (double)v[1], (double)v[2]);
+  return SbVec3d(static_cast<double>(v[0]), static_cast<double>(v[1]), static_cast<double>(v[2]));
 }
 
 /*!
@@ -619,7 +619,7 @@ SbDPViewVolume::projectBox(const SbBox3f& box) const
                        j ? mincorner[1] : maxcorner[1],
                        k ? mincorner[2] : maxcorner[2]);
         this->projectToScreen(corner, corner);
-        span.extendBy(SbVec2f((float)corner[0], (float)corner[1]));
+        span.extendBy(SbVec2f(static_cast<float>(corner[0]), static_cast<float>(corner[1])));
       }
     }
   }
@@ -1129,7 +1129,7 @@ void
 SbDPViewVolume::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  fprintf( fp, "  projtype: %d\n", (int) this->getProjectionType() );
+  fprintf( fp, "  projtype: %d\n", static_cast<int>(this->getProjectionType()) );
   fprintf( fp, "  projpt:   " );
   this->getProjectionPoint().print(fp);
   fprintf( fp, "\n" );
@@ -1346,11 +1346,11 @@ SbDPViewVolume::getPlaneRectangle(const double distance, SbVec3d & lowerleft,
 void 
 SbDPViewVolume::copyValues(SbViewVolume & vv)
 {
-  vv.type = (SbViewVolume::ProjectionType) this->type;
+  vv.type = static_cast<SbViewVolume::ProjectionType>(this->type);
   vv.projPoint = dp_to_sbvec3f(this->projPoint);
   vv.projDir = dp_to_sbvec3f(this->projDir);
-  vv.nearDist = (float) this->nearDist;
-  vv.nearToFar = (float) this->nearToFar;
+  vv.nearDist = static_cast<float>(this->nearDist);
+  vv.nearToFar = static_cast<float>(this->nearToFar);
   vv.llf = dp_to_sbvec3f(this->llf + this->projPoint);
   vv.lrf = dp_to_sbvec3f(this->lrf + this->projPoint);
   vv.ulf = dp_to_sbvec3f(this->ulf + this->projPoint);

@@ -22,10 +22,10 @@
 \**************************************************************************/
 
 #include <Inventor/C/base/memalloc.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <assert.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstddef>
+#include <cassert>
+#include <cstdio>
 
 /* ********************************************************************** */
 

@@ -112,10 +112,10 @@ uint32_t
 SbColor::getPackedValue(const float transparency) const
 {
   // Should work regardless of endianness on run-time architecture.
-  return (((uint32_t)(red()*255.0f + 0.5f) << 24) |
-          ((uint32_t)(green()*255.0f + 0.5f) << 16) |
-          ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
-          (uint32_t)((1.0f - transparency)*255.0f + 0.5f));
+  return ((static_cast<uint32_t>(red()*255.0f + 0.5f) << 24) |
+          (static_cast<uint32_t>(green()*255.0f + 0.5f) << 16) |
+          (static_cast<uint32_t>(blue()*255.0f + 0.5f) << 8) |
+          static_cast<uint32_t>((1.0f - transparency)*255.0f + 0.5f));
 }
 
 /*!
@@ -154,8 +154,8 @@ SbColor::setHSVValue(float hue, float saturation,
 
   if(h == 1.0f) h = 0.0f;
   h *= 6.0f;
-  int i = (int)floor(h);
-  float fraction = h - (float)i;
+  int i = static_cast<int>(floor(h));
+  float fraction = h - static_cast<float>(i);
   float p = v * (1.0f - s);
   float q = v * (1.0f - (s * fraction));
   float t = v * (1.0f - (s * (1.0f - fraction)));

@@ -65,7 +65,7 @@ SbGLUTessellator::~SbGLUTessellator()
 void APIENTRY
 SbGLUTessellator::cb_begin(GLenum mode, void * x)
 {
-  SbGLUTessellator * t = (SbGLUTessellator *)x;
+  SbGLUTessellator * t = static_cast<SbGLUTessellator *>(x);
 
   t->triangletessmode = mode;
   t->vertexidx = 0;
@@ -75,7 +75,7 @@ SbGLUTessellator::cb_begin(GLenum mode, void * x)
 void APIENTRY
 SbGLUTessellator::cb_vertex(void * vertex_data, void * x)
 {
-  SbGLUTessellator * t = (SbGLUTessellator *)x;
+  SbGLUTessellator * t = static_cast<SbGLUTessellator *>(x);
 
   switch (t->triangletessmode) {
   case GL_TRIANGLE_FAN:
@@ -157,9 +157,9 @@ SbGLUTessellator::beginPolygon(const SbVec3f & normal)
     coin_GLUtessellator * t = this->tessobj = GLUWrapper()->gluNewTess();
 
     const gluTessCallback_t f = GLUWrapper()->gluTessCallback;
-    (*f)(t, GLU_TESS_BEGIN_DATA, (gluTessCallback_cb_t)SbGLUTessellator::cb_begin);
-    (*f)(t, GLU_TESS_VERTEX_DATA, (gluTessCallback_cb_t)SbGLUTessellator::cb_vertex);
-    (*f)(t, GLU_TESS_ERROR_DATA, (gluTessCallback_cb_t)SbGLUTessellator::cb_error);
+    (*f)(t, GLU_TESS_BEGIN_DATA, reinterpret_cast<gluTessCallback_cb_t>(SbGLUTessellator::cb_begin));
+    (*f)(t, GLU_TESS_VERTEX_DATA, reinterpret_cast<gluTessCallback_cb_t>(SbGLUTessellator::cb_vertex));
+    (*f)(t, GLU_TESS_ERROR_DATA, reinterpret_cast<gluTessCallback_cb_t>(SbGLUTessellator::cb_error));
   }
 
   GLUWrapper()->gluTessBeginPolygon(this->tessobj, this);

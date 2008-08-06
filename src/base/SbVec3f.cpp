@@ -36,7 +36,7 @@
 #include <Inventor/SbVec3f.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbVec3d.h>
 #include <Inventor/SbVec3b.h>
@@ -242,9 +242,9 @@ SbVec3f
 SbVec3f::getClosestAxis(void) const
 {
   SbVec3f closest(0.0f, 0.0f, 0.0f);
-  float xabs = (float)fabs(this->vec[0]);
-  float yabs = (float)fabs(this->vec[1]);
-  float zabs = (float)fabs(this->vec[2]);
+  float xabs = static_cast<float>(fabs(this->vec[0]));
+  float yabs = static_cast<float>(fabs(this->vec[1]));
+  float zabs = static_cast<float>(fabs(this->vec[2]));
 
   if (xabs>=yabs && xabs>=zabs) closest[0] = (this->vec[0] > 0.0f) ? 1.0f : -1.0f;
   else if (yabs>=zabs) closest[1] = (this->vec[1] > 0.0f) ? 1.0f : -1.0f;
@@ -277,7 +277,7 @@ SbVec3f::getClosestAxis(void) const
 float
 SbVec3f::length(void) const
 {
-  return (float)sqrt(this->sqrLength());
+  return static_cast<float>(sqrt(this->sqrLength()));
 }
 
 /*!

@@ -24,8 +24,8 @@
 #include <Inventor/SbClip.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbPlane.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 /*!
   \class SbClip SbClip.h include/Inventor/base/SbClip.h

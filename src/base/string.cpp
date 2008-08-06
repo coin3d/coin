@@ -25,11 +25,11 @@
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
-#include <assert.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
+#include <cassert>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+#include <cstdarg>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -62,7 +62,7 @@
 void
 cc_string_remove_substring(cc_string * me, int start, int end)
 {
-  const int len = (int)strlen(me->pointer);
+  const int len = static_cast<int>(strlen(me->pointer));
   if ( end == -1 ) end = len - 1;
 
   assert(!(start < 0 || start >= len || end < 0 || end >= len || start > end) &&
@@ -97,7 +97,7 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
   /* FIXME: should first try the vastly more efficient realloc() (if
      the current memory buffer is not the default static, of course).
      20050425 mortene. */
-  newbuf = (char *) malloc(newsize);
+  newbuf = static_cast<char *>(malloc(newsize));
   if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
   assert(newbuf != NULL);
 
@@ -137,7 +137,7 @@ cc_string *
 cc_string_construct_new(void)
 {
   cc_string * me;
-  me = (cc_string *) malloc(sizeof(cc_string));
+  me = static_cast<cc_string *>(malloc(sizeof(cc_string)));
   assert(me != NULL);
   cc_string_construct(me);
   return me;
@@ -195,7 +195,7 @@ cc_string_set_text(cc_string * me, const char * text)
   if ( text >= me->pointer && text < (me->pointer + me->bufsize) ) {
     /* text is within own buffer */
     const ptrdiff_t range = text - me->pointer;
-    cc_string_remove_substring(me, 0, (int)range);
+    cc_string_remove_substring(me, 0, static_cast<int>(range));
     return;
   }
   size = strlen(text) + 1;
@@ -215,7 +215,7 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   size_t size;
 
   if ( text == NULL ) text = emptystring;
-  len = (int)strlen(text);
+  len = static_cast<int>(strlen(text));
   if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG
@@ -258,7 +258,7 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   if ( size >= me->bufsize ) {
     if ( me->pointer != me->buffer )
       free(me->pointer);
-    me->pointer = (char *) malloc(size + 1);
+    me->pointer = static_cast<char *>(malloc(size + 1));
     me->bufsize = size + 1;
   }
   (void) strncpy(me->pointer, text + start, size);
@@ -349,7 +349,7 @@ unsigned int
 cc_string_length(const cc_string * me)
 {
   /* FIXME: should cache the length of the string. 20020513 mortene. */
-  return (unsigned int)strlen(me->pointer);
+  return static_cast<unsigned int>(strlen(me->pointer));
 }
 
 /*!

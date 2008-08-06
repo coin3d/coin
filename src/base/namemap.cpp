@@ -23,9 +23,9 @@
 
 #include "base/namemap.h"
 
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
+#include <cstdlib>
+#include <cassert>
+#include <cstring>
 
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
@@ -91,7 +91,7 @@ namemap_cleanup(void)
     }
   }
   free(nametable);
-  nametable = (struct NamemapBucketEntry **)NULL;
+  nametable = static_cast<struct NamemapBucketEntry **>(NULL);
 
   CC_MUTEX_DESTRUCT(access_mutex);
 }
@@ -102,13 +102,13 @@ namemap_init(void)
 {
   unsigned int i;
 
-  nametable = (struct NamemapBucketEntry **)
-    malloc(sizeof(struct NamemapBucketEntry *) * NAME_TABLE_SIZE);
+  nametable = static_cast<struct NamemapBucketEntry **>(
+    malloc(sizeof(struct NamemapBucketEntry *) * NAME_TABLE_SIZE));
   for (i = 0; i < NAME_TABLE_SIZE; i++) { nametable[i] = NULL; }
 
   headchunk = NULL;
 
-  coin_atexit((coin_atexit_f *)namemap_cleanup, CC_ATEXIT_SBNAME);
+  coin_atexit(static_cast<coin_atexit_f *>(namemap_cleanup), CC_ATEXIT_SBNAME);
 }
 
 static const char *
@@ -120,8 +120,9 @@ find_string_address(const char * s)
   assert(len < CHUNK_SIZE);
 
   if (headchunk == NULL || headchunk->bytesleft < len) {
-    struct NamemapMemChunk * newchunk = (struct NamemapMemChunk *)
-      malloc(sizeof(struct NamemapMemChunk));
+    struct NamemapMemChunk * newchunk = static_cast<struct NamemapMemChunk *>(
+      malloc(sizeof(struct NamemapMemChunk))
+      );
 
     newchunk->curbyte = newchunk->mem;
     newchunk->bytesleft = CHUNK_SIZE;
@@ -149,7 +150,7 @@ namemap_find_or_add_string(const char * str, SbBool addifnotfound)
   CC_MUTEX_LOCK(access_mutex);
 
   if (nametable == NULL) { namemap_init(); }
-  assert(nametable != (struct NamemapBucketEntry **)NULL && "name hash dead");
+  assert(nametable != static_cast<struct NamemapBucketEntry **>(NULL) && "name hash dead");
 
   h = cc_string_hash_text(str);
   i = h % NAME_TABLE_SIZE;
@@ -161,7 +162,7 @@ namemap_find_or_add_string(const char * str, SbBool addifnotfound)
   }
 
   if ((entry == NULL) && addifnotfound) {
-    entry = (struct NamemapBucketEntry *)malloc(sizeof(struct NamemapBucketEntry));
+    entry = static_cast<struct NamemapBucketEntry *>(malloc(sizeof(struct NamemapBucketEntry)));
     entry->str = find_string_address(str);
     entry->hashvalue = h;
     entry->next = nametable[i];

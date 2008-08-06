@@ -35,7 +35,7 @@
 */
 
 #include <Inventor/SbXfBox3f.h>
-#include <float.h>
+#include <cfloat>
 #include <Inventor/errors/SoDebugError.h>
 
 // this value is used to signal an invalid inverse matrix
@@ -48,15 +48,15 @@ SbXfBox3f_get_scaled_span_vec(const SbXfBox3f & xfbox)
 
   // FIXME: is this really correct? Won't we get the wrong result if
   // there are rotations in the transformation matrix? 20020209 mortene.
-  float scalex = (float)sqrt(m[0][0] * m[0][0] +
+  float scalex = static_cast<float>(sqrt(m[0][0] * m[0][0] +
                              m[1][0] * m[1][0] +
-                             m[2][0] * m[2][0]);
-  float scaley = (float)sqrt(m[0][1] * m[0][1] +
+                             m[2][0] * m[2][0]));
+  float scaley = static_cast<float>(sqrt(m[0][1] * m[0][1] +
                              m[1][1] * m[1][1] +
-                             m[2][1] * m[2][1]);
-  float scalez = (float)sqrt(m[0][2] * m[0][2] +
+                             m[2][1] * m[2][1]));
+  float scalez = static_cast<float>(sqrt(m[0][2] * m[0][2] +
                              m[1][2] * m[1][2] +
-                             m[2][2] * m[2][2]);
+                             m[2][2] * m[2][2]));
 
   SbVec3f min, max;
   xfbox.getBounds(min, max);
@@ -266,12 +266,12 @@ SbXfBox3f::extendBy(const SbBox3f & bb)
     SbVec3f s1 = SbXfBox3f_get_scaled_span_vec(xfbox);
     SbVec3f s2 = SbXfBox3f_get_scaled_span_vec(box2);
 
-    float v1 = (float)fabs((s1[0] != 0.0f ? s1[0] : 1.0f) *
+    float v1 = static_cast<float>(fabs((s1[0] != 0.0f ? s1[0] : 1.0f) *
                            (s1[1] != 0.0f ? s1[1] : 1.0f) *
-                           (s1[2] != 0.0f ? s1[2] : 1.0f));
-    float v2 = (float)fabs((s2[0] != 0.0f ? s2[0] : 1.0f) *
+                           (s1[2] != 0.0f ? s1[2] : 1.0f)));
+    float v2 = static_cast<float>(fabs((s2[0] != 0.0f ? s2[0] : 1.0f) *
                            (s2[1] != 0.0f ? s2[1] : 1.0f) *
-                           (s2[2] != 0.0f ? s2[2] : 1.0f));
+                           (s2[2] != 0.0f ? s2[2] : 1.0f)));
 
     firstsmaller = (v1 < v2);
   }
@@ -342,7 +342,7 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
                                corner[0], corner[1], corner[2],
                                dst[0], dst[1], dst[2]);
 #endif // debug
-        ((SbBox3f *)&box1)->extendBy(dst);
+        static_cast<SbBox3f *>(&box1)->extendBy(dst);
 #if 0 // debug
         SoDebugError::postInfo("SbXfBox3f::extendBy",
                                "dst: <%f, %f, %f>  ->   "
@@ -379,7 +379,7 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
                                corner[0], corner[1], corner[2],
                                dst[0], dst[1], dst[2]);
 #endif // debug
-        ((SbBox3f *)&box2)->extendBy(dst);
+        static_cast<SbBox3f *>(&box2)->extendBy(dst);
 #if 0 // debug
         SoDebugError::postInfo("SbXfBox3f::extendBy",
                                "dst: <%f, %f, %f>  ->   "
@@ -414,12 +414,12 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
     SbVec3f s1 = SbXfBox3f_get_scaled_span_vec(box1);
     SbVec3f s2 = SbXfBox3f_get_scaled_span_vec(box2);
 
-    float v1 = (float)fabs((s1[0] != 0.0f ? s1[0] : 1.0f) *
+    float v1 = static_cast<float>(fabs((s1[0] != 0.0f ? s1[0] : 1.0f) *
                            (s1[1] != 0.0f ? s1[1] : 1.0f) *
-                           (s1[2] != 0.0f ? s1[2] : 1.0f));
-    float v2 = (float)fabs((s2[0] != 0.0f ? s2[0] : 1.0f) *
+                           (s1[2] != 0.0f ? s1[2] : 1.0f)));
+    float v2 = static_cast<float>(fabs((s2[0] != 0.0f ? s2[0] : 1.0f) *
                            (s2[1] != 0.0f ? s2[1] : 1.0f) *
-                           (s2[2] != 0.0f ? s2[2] : 1.0f));
+                           (s2[2] != 0.0f ? s2[2] : 1.0f)));
 
     firstsmaller = (v1 < v2);
   }
@@ -503,7 +503,7 @@ SbBool intersect_box_edges(const SbVec3f & min,
 
           // find what we need to multiply coordinate j by to
           // put it onto the current plane
-          float delta = (float)fabs((boxpts[k][j] - l1[j]) / dir[j]);
+          float delta = static_cast<float>(fabs((boxpts[k][j] - l1[j]) / dir[j]));
           // calculate the two other coordinates
           float v1 = l1[t1] + delta*dir[t1];
           float v2 = l1[t2] + delta*dir[t2];
@@ -790,7 +790,7 @@ SbXfBox3f::calcInverse(void) const
   
   if (this->invertedmatrix[0][0] == INVALID_TAG) {
     if (SbAbs(this->matrix.det4()) > VALID_LIMIT) {
-      ((SbXfBox3f *)this)->invertedmatrix = this->matrix.inverse();
+      const_cast<SbXfBox3f *>(this)->invertedmatrix = this->matrix.inverse();
     }
     else {
 #if COIN_DEBUG && 0 // disabled
@@ -814,7 +814,7 @@ SbXfBox3f::calcInverse(void) const
       // Degenerate transforms are fixed by projecting box. This will
       // transform the min and max points (using the normal matrix,
       // not the inverse), and leave us with an identity transform.
-      SbXfBox3f * thisp = (SbXfBox3f*) this; // cast away constness
+      SbXfBox3f * thisp = const_cast<SbXfBox3f *>(this); // cast away constness
       *thisp = SbXfBox3f(this->project());
 
       // FIXME: this degenerate-transform fix looks like bad

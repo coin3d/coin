@@ -98,10 +98,10 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <stdio.h>
-#include <limits.h>
-#include <assert.h>
-#include <float.h>
+#include <cstdio>
+#include <climits>
+#include <cassert>
+#include <cfloat>
 
 class SbTesselator::PImpl {
 public:
@@ -167,7 +167,6 @@ SbTesselator::PImpl::heap_compare(void * h0, void * h1)
   return 1;
 }
 
-
 float
 SbTesselator::PImpl::heap_evaluate(void * v)
 {
@@ -215,7 +214,7 @@ SbTesselator::SbTesselator(SbTesselatorCB * func, void * data)
   PRIVATE(this)->currVertex = 0;
 
   PRIVATE(this)->heap =
-    cc_heap_construct(256, (cc_heap_compare_cb *) PImpl::heap_compare, TRUE);
+    cc_heap_construct(256, static_cast<cc_heap_compare_cb *>(PImpl::heap_compare), TRUE);
   PRIVATE(this)->epsilon = FLT_EPSILON;
 }
 
@@ -329,17 +328,17 @@ SbTesselator::endPolygon()
     case OYZ:
       PRIVATE(this)->X=1;
       PRIVATE(this)->Y=2;
-      PRIVATE(this)->polyDir=(int)(PRIVATE(this)->polyNormal[0]/fabs(PRIVATE(this)->polyNormal[0]));
+      PRIVATE(this)->polyDir=static_cast<int>(PRIVATE(this)->polyNormal[0]/fabs(PRIVATE(this)->polyNormal[0]));
       break;
     case OXY:
       PRIVATE(this)->X=0;
       PRIVATE(this)->Y=1;
-      PRIVATE(this)->polyDir=(int)(PRIVATE(this)->polyNormal[2]/fabs(PRIVATE(this)->polyNormal[2]));
+      PRIVATE(this)->polyDir=static_cast<int>(PRIVATE(this)->polyNormal[2]/fabs(PRIVATE(this)->polyNormal[2]));
       break;
     case OXZ:
       PRIVATE(this)->X=2;
       PRIVATE(this)->Y=0;
-      PRIVATE(this)->polyDir=(int)(PRIVATE(this)->polyNormal[1]/fabs(PRIVATE(this)->polyNormal[1]));
+      PRIVATE(this)->polyDir=static_cast<int>(PRIVATE(this)->polyNormal[1]/fabs(PRIVATE(this)->polyNormal[1]));
       break;
     }
 
@@ -373,7 +372,7 @@ SbTesselator::endPolygon()
     } while (v != PRIVATE(this)->headV);
 
     while (PRIVATE(this)->numVerts > 4) {
-      v = (PImpl::Vertex*) cc_heap_get_top(PRIVATE(this)->heap);
+      v = static_cast<PImpl::Vertex *>(cc_heap_get_top(PRIVATE(this)->heap));
       if (PImpl::heap_evaluate(v) == FLT_MAX) break;
       cc_heap_remove(PRIVATE(this)->heap, v->next);
       PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[PRIVATE(this)->X],
@@ -619,8 +618,8 @@ SbTesselator::PImpl::cutTriangle(Vertex * t)
 float
 SbTesselator::PImpl::area(Vertex * v)
 {
-  return (float)fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
-                     (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
+  return static_cast<float>(fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
+                     (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X]))));
 }
 
 //

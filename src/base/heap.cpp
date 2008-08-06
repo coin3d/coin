@@ -23,9 +23,9 @@
 
 #include <Inventor/C/base/heap.h>
 
-#include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
 
 #include "base/dict.h"
 #include "base/heapp.h"
@@ -44,7 +44,7 @@ heap_resize(cc_heap * h, unsigned int newsize)
   if (h->size >= newsize)
     return;
 
-  h->array = (void **) realloc(h->array, newsize * sizeof(void *));
+  h->array = static_cast<void **>(realloc(h->array, newsize * sizeof(void *)));
   assert(h->array);
   h->size = newsize;
 }
@@ -73,8 +73,8 @@ heap_heapify(cc_heap * h, uintptr_t i)
     h->array[i] = tmp;
 
     if (h->support_remove) {
-      cc_dict_put(h->hash, (uintptr_t) h->array[i], (void *) i);
-      cc_dict_put(h->hash, (uintptr_t) h->array[largest], (void *) largest);
+      cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]), reinterpret_cast<void *>(i));
+      cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[largest]), reinterpret_cast<void *>(largest));
     }
 
     heap_heapify(h, largest);
@@ -105,12 +105,12 @@ cc_heap_construct(unsigned int size,
                   cc_heap_compare_cb * comparecb,
                   SbBool support_remove)
 {
-  cc_heap * h = (cc_heap *) malloc(sizeof(cc_heap));
+  cc_heap * h = static_cast<cc_heap *>(malloc(sizeof(cc_heap)));
   assert(h);
 
   h->size = size;
   h->elements = 0;
-  h->array = (void **) malloc(size * sizeof(void *));
+  h->array = static_cast<void **>(malloc(size * sizeof(void *)));
   assert(h->array);
   h->compare = comparecb;
   h->support_remove = support_remove;
@@ -162,7 +162,7 @@ cc_heap_add(cc_heap * h, void * o)
     h->array[i] = h->array[HEAP_PARENT(i)];
 
     if (h->support_remove) {
-      cc_dict_put(h->hash, (uintptr_t) h->array[i], (void *) i);
+      cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]), reinterpret_cast<void *>(i));
     }
 
     i = HEAP_PARENT(i);
@@ -170,7 +170,7 @@ cc_heap_add(cc_heap * h, void * o)
   h->array[i] = o;
 
   if (h->support_remove) {
-    cc_dict_put(h->hash, (uintptr_t) o, (void *) i);
+    cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(o), reinterpret_cast<void *>(i));
   }
 }
 
@@ -199,8 +199,8 @@ cc_heap_extract_top(cc_heap * h)
   h->array[0] = h->array[--h->elements];
 
   if (h->support_remove) {
-    cc_dict_put(h->hash, (uintptr_t) h->array[0], (void *) 0);
-    cc_dict_remove(h->hash, (uintptr_t) top);
+    cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[0]), reinterpret_cast<void *>(0));
+    cc_dict_remove(h->hash, reinterpret_cast<uintptr_t>(top));
   }
 
   heap_heapify(h, 0);
@@ -223,20 +223,20 @@ cc_heap_remove(cc_heap * h, void * o)
 
   if (!h->support_remove) return FALSE;
 
-  if (!cc_dict_get(h->hash, (uintptr_t) o, &tmp))
+  if (!cc_dict_get(h->hash, reinterpret_cast<uintptr_t>(o), &tmp))
     return FALSE;
 
-  i = (uintptr_t) tmp;
+  i = reinterpret_cast<uintptr_t>(tmp);
   assert(i < h->elements);
   assert(h->array[i] == o);
 
   h->array[i] = h->array[--h->elements];
   if (h->support_remove) {
-    cc_dict_put(h->hash, (uintptr_t) h->array[i], (void *) i);
+    cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]), reinterpret_cast<void *>(i));
   }
   heap_heapify(h, i);
 
-  cc_dict_remove(h->hash, (uintptr_t) o);
+  cc_dict_remove(h->hash, reinterpret_cast<uintptr_t>(o));
 
   return TRUE;
 }

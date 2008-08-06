@@ -23,9 +23,9 @@
 
 #include <Inventor/C/base/list.h>
 
-#include <assert.h>
-#include <stddef.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstddef>
+#include <cstdlib>
 
 #define CC_LIST_DEFAULT_SIZE 4
 
@@ -49,7 +49,7 @@ list_grow(cc_list * list)
   void ** newbuffer;
   list->itembuffersize <<= 1;
 
-  newbuffer = (void**) malloc(list->itembuffersize*sizeof(void*));
+  newbuffer = static_cast<void**>(malloc(list->itembuffersize*sizeof(void*)));
   
   n = list->numitems;
   for (i = 0; i < n; i++) newbuffer[i] = list->itembuffer[i];
@@ -70,10 +70,10 @@ cc_list_construct(void)
 cc_list *
 cc_list_construct_sized(int size)
 {
-  cc_list * list = (cc_list*) malloc(sizeof(cc_list));
+  cc_list * list = static_cast<cc_list*>(malloc(sizeof(cc_list)));
   assert(list);
   if (size > CC_LIST_DEFAULT_SIZE) {
-    list->itembuffer = (void**) malloc(sizeof(void*)*size);
+    list->itembuffer = static_cast<void**>(malloc(sizeof(void*)*size));
     assert(list->itembuffer);
     list->itembuffersize = size;
   }
@@ -184,7 +184,7 @@ cc_list_fit(cc_list * list)
   
   if (items < list->itembuffersize) {
     void ** newitembuffer = list->builtinbuffer;
-    if (items > CC_LIST_DEFAULT_SIZE) newitembuffer = (void**) malloc(sizeof(void*)*items);
+    if (items > CC_LIST_DEFAULT_SIZE) newitembuffer = static_cast<void**>(malloc(sizeof(void*)*items));
     
     if (newitembuffer != list->itembuffer) {
       for (i = 0; i < items; i++) {

@@ -37,7 +37,7 @@
 #include <Inventor/SbVec2i32.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbVec2ui32.h>
 #include <Inventor/SbVec2b.h>

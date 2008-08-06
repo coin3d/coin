@@ -43,7 +43,7 @@
 // class" around this with inline functions, using with TGS' name for
 // it. 20020225 mortene.
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/SbDPLine.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

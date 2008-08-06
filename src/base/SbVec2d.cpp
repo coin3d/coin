@@ -37,7 +37,7 @@
 #include <Inventor/SbVec2d.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2b.h>
@@ -155,7 +155,7 @@ SbVec2d::equals(const SbVec2d& v, double tolerance) const
 double
 SbVec2d::length(void) const
 {
-  return (double)sqrt(this->sqrLength());
+  return static_cast<double>(sqrt(this->sqrLength()));
 }
 
 /*!

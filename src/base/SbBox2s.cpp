@@ -38,7 +38,7 @@
 #include <Inventor/SbBox2s.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbBox2i32.h>
 #include <Inventor/SbBox2f.h>
@@ -197,10 +197,10 @@ SbBox2s::extendBy(const SbVec2s & point)
   // The explicit casts are done to humour the HPUX aCC compiler,
   // which will otherwise say ``Template deduction failed to find a
   // match for the call to 'SbMin'''. mortene.
-  this->minpt.setValue(SbMin((short)point[0], (short)this->minpt[0]),
-                       SbMin((short)point[1], (short)this->minpt[1]));
-  this->maxpt.setValue(SbMax((short)point[0], (short)this->maxpt[0]),
-                       SbMax((short)point[1], (short)this->maxpt[1]));
+  this->minpt.setValue(SbMin(static_cast<short>(point[0]), static_cast<short>(this->minpt[0])),
+                       SbMin(static_cast<short>(point[1]), static_cast<short>(this->minpt[1])));
+  this->maxpt.setValue(SbMax(static_cast<short>(point[0]), static_cast<short>(this->maxpt[0])),
+                       SbMax(static_cast<short>(point[1]), static_cast<short>(this->maxpt[1])));
 }
 
 /*!

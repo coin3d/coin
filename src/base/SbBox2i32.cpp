@@ -38,7 +38,7 @@
 #include <Inventor/SbBox2i32.h>
 
 #include <limits>
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbBox2f.h>

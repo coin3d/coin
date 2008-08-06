@@ -40,7 +40,7 @@
 */
 
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/errors/SoDebugError.h>
