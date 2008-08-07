@@ -72,9 +72,9 @@ public:
 
   inline SbBool readChar(char &value)  { return readUInt8(*reinterpret_cast<uint8_t*>(&value)); }
   inline SbBool writeChar(const char value)  { return writeUInt8(value); }
-  inline SbBool readSChar(signed char &value)  { return readInt8(*static_cast<int8_t*>(&value)); }
+  inline SbBool readSChar(signed char &value)  { return readInt8(*reinterpret_cast<int8_t*>(&value)); }
   inline SbBool writeSChar(const signed char value)  { return writeInt8(value); }
-  inline SbBool readUChar(unsigned char &value)  { return readUInt8(*static_cast<uint8_t*>(&value)); }
+  inline SbBool readUChar(unsigned char &value)  { return readUInt8(*reinterpret_cast<uint8_t*>(&value)); }
   inline SbBool writeUChar(const unsigned char value)  { return writeUInt8(value); }
 
   virtual SbBool readInt8(int8_t &value);
