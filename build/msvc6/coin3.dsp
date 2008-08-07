@@ -45,8 +45,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "NDEBUG"
 # ADD RSC /l 0x414 /d "NDEBUG"
@@ -71,8 +71,8 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "_DEBUG"
 # ADD RSC /l 0x414 /d "_DEBUG"
@@ -97,8 +97,8 @@ LIB32=link.exe -lib
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -126,8 +126,8 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -11983,6 +11983,7 @@ SOURCE=..\..\src\share\gl\CoinGLPerformance.cpp
 # PROP Intermediate_Dir "StaticDebug\share\gl"
 !ENDIF
 # End Source File
+# End Group
 # End Group
 # Begin Group "Public Headers"
 
