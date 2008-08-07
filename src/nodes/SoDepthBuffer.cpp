@@ -137,7 +137,7 @@ SoDepthBuffer::initClass(void)
 */
 SoDepthBuffer::SoDepthBuffer(void)
 {
-  SO_NODE_CONSTRUCTOR(SoDepthBuffer);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoDepthBuffer);
 
   SO_NODE_ADD_FIELD(test, (TRUE));
   SO_NODE_ADD_FIELD(write, (TRUE));
