@@ -26,13 +26,33 @@
 
 #include <Inventor/misc/SoBase.h>
 
+#if !defined(_MSC_VER) || (_MSC_VER < 1300) //coin_depointer does not work with MSVC 6
+#define COIN_DEPOINTER_AVAILABLE
+#endif
+
+#ifdef COIN_DEPOINTER_AVAILABLE
+template <typename Type>
+struct coin_depointer {
+  enum { valid = false };
+};
+
+template <typename Type>
+struct coin_depointer<Type *> {
+  enum { valid = true };
+  typedef Type type;
+};
+#endif //COIN_DEPOINTER_AVAILABLE
+
 template<typename To,typename From>
 To
 coin_internal_safe_cast(From * ptr) {
+#ifdef COIN_DEPOINTER_AVAILABLE
+  if((ptr != NULL) && ptr->isOfType(coin_depointer<To>::type::getClassTypeId()))
+#else
+  //FIXME Can we avoid declaring an unused variable also for MSVC6? - BFG 20080807
   To retVal;
-  //We need to use retVal->getClassTypeId() syntax, as To is a
-  //pointer, eg. To::getClassTypeId() will not work
   if((ptr != NULL) && ptr->isOfType(retVal->getClassTypeId()))
+#endif //OLDMSVC
     return static_cast<To>(ptr);
   return NULL;
 }
