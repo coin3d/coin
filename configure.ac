@@ -583,8 +583,11 @@ AC_SUBST([HAVE_THREADSAFE])
 # to indicate non-emptiness.)
 AC_CHECK_HEADERS(
   [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h strings.h ieeefp.h],
-  [], [],
-  [ ])
+  [], [], [])
+
+if test x"$ac_cv_header_unistd_h" != x"yes"; then
+  CPPFLAGS="$CPPFLAGS -DYY_NO_UNISTD_H"
+fi
 
 SIM_AC_CHECK_HEADER_TLHELP32_H
 SIM_AC_CHECK_FUNC__SPLITPATH

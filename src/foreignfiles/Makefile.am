@@ -49,7 +49,6 @@ endif
 
 if BUILD_WITH_MSVC
 noinst_LIBRARIES = foreignfiles.lst
-AM_CPPFLAGS = -DYY_NO_UNISTD_H
 else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libforeignfiles@SUFFIX@LINKHACK.la
