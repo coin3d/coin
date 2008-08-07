@@ -34,7 +34,6 @@ class SoInput;
 class SoOutput;
 
 class COIN_DLL_API SoBase {
-
 public:
   static void initClass(void);
 
@@ -106,35 +105,19 @@ protected:
   static void staticDataUnlock(void);
 
 private:
-  static SbBool readReference(SoInput * in, SoBase *& base);
-  static SbBool readBase(SoInput * in, SbName & classname, SoBase *& base);
-  static SbBool readBaseInstance(SoInput * in, const SbName & classname,
-                                 const SbName & refname, SoBase *& base);
-
-  static SoBase * createInstance(SoInput * in, const SbName & classname);
-  static void flushInput(SoInput * in);
-
   static void cleanClass(void);
 
   static SoType classTypeId;
 
   struct {
-    int32_t referencecount  : 28;
-    unsigned int alive      :  4;
-    // The number of bits should sum up to 32, so we don't allocate
-    // more than one machine word on a 32-bit platform.
+    mutable int referencecount  : 28;
+    mutable unsigned int alive  :  4;
   } objdata;
 
   void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);
-  static void rbptree_notify_cb(void * auditor, void * type, void * closure);
   cc_rbptree auditortree;
 
-  static SbString * refwriteprefix;
-
-  static SbBool tracerefs;
-  static uint32_t writecounter;
-
-  friend class SoBaseP;
+  class PImpl;
 };
 
 // support for boost::intrusive_ptr<SoBase>

@@ -152,27 +152,9 @@
   \COININTERNAL
 */
 
-
 // *************************************************************************
 
-// Strings and character tokens used in parsing.
-static const char OPEN_BRACE = '{';
-static const char CLOSE_BRACE = '}';
-static const char END_OF_LINE[] = "\n";
-static const char DEF_KEYWORD[] = "DEF";
-static const char USE_KEYWORD[] = "USE";
-static const char NULL_KEYWORD[] = "NULL";
-static const char ROUTE_KEYWORD[] = "ROUTE";
-
-static const char PROTO_KEYWORD[] = "PROTO";
-static const char EXTERNPROTO_KEYWORD[] = "EXTERNPROTO";
-
-SbString * SoBase::refwriteprefix = NULL;
-
 SoType SoBase::classTypeId STATIC_SOTYPE_INIT;
-
-SbBool SoBase::tracerefs = FALSE;
-uint32_t SoBase::writecounter = 0;
 
 /**********************************************************************/
 
@@ -218,12 +200,12 @@ SoBase::SoBase(void)
 
   // For debugging, store a pointer to all SoBase-instances.
 #if COIN_DEBUG
-  if (SoBaseP::trackbaseobjects) {
-    CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
+  if (SoBase::PImpl::trackbaseobjects) {
+    CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
     void * dummy;
-    assert(!SoBaseP::allbaseobj->get(this, dummy));
-    SoBaseP::allbaseobj->put(this, NULL);
-    CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
+    assert(!SoBase::PImpl::allbaseobj->get(this, dummy));
+    SoBase::PImpl::allbaseobj->put(this, NULL);
+    CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
 #endif // COIN_DEBUG
 }
@@ -245,21 +227,21 @@ SoBase::~SoBase()
   // used to check that we are still alive.
   this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
 
-  if (SoBaseP::auditordict) {
+  if (SoBase::PImpl::auditordict) {
     SoAuditorList * l;
-    if (SoBaseP::auditordict->get(this, l)) {
-      SoBaseP::auditordict->remove(this);
+    if (SoBase::PImpl::auditordict->get(this, l)) {
+      SoBase::PImpl::auditordict->remove(this);
       delete l;
     }
   }
   cc_rbptree_clean(&this->auditortree);
 
 #if COIN_DEBUG
-  if (SoBaseP::trackbaseobjects) {
-    CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
-    const SbBool ok = SoBaseP::allbaseobj->remove(this);
+  if (SoBase::PImpl::trackbaseobjects) {
+    CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
+    const SbBool ok = SoBase::PImpl::allbaseobj->remove(this);
     assert(ok && "something fishy going on in debug object tracking");
-    CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
+    CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
 #endif // COIN_DEBUG
 }
@@ -312,7 +294,7 @@ SoBase::destroy(void)
 
 
 #if COIN_DEBUG
-  if (SoBase::tracerefs) {
+  if (SoBase::PImpl::tracerefs) {
     SoDebugError::postInfo("SoBase::destroy",
                            "%p ('%s')",
                            this, this->getTypeId().getName().getString());
@@ -329,7 +311,7 @@ SoBase::destroy(void)
     auditingsensors[j]->dyingReference();
 
   // Link out instance name from the list of all SoBase instances.
-  if (name != SbName::empty()) SoBaseP::removeName2Obj(this, name.getString());
+  if (name != SbName::empty()) SoBase::PImpl::removeName2Obj(this, name.getString());
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::destroy", "delete this %p", this);
@@ -339,7 +321,7 @@ SoBase::destroy(void)
   delete this;
 
   // Link out obj-pointer to name reference now that object is dead.
-  if (name != SbName::empty()) SoBaseP::removeObj2Name(this, name.getString());
+  if (name != SbName::empty()) SoBase::PImpl::removeObj2Name(this, name.getString());
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::destroy", "done -- %p '%s' ('%s')",
@@ -367,28 +349,28 @@ SoBase::initClass(void)
   // should be safe).
   //
   // -mortene.
-  coin_atexit((coin_atexit_f *)SoBaseP::check_for_leaks, CC_ATEXIT_TRACK_SOBASE_INSTANCES);
+  coin_atexit((coin_atexit_f *)SoBase::PImpl::check_for_leaks, CC_ATEXIT_TRACK_SOBASE_INSTANCES);
 
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());
 
   SoBase::classTypeId = SoType::createType(SoType::badType(), "Base");
 
-  SoBaseP::name2obj = new SbHash<SbPList *, const char *>;
-  SoBaseP::obj2name = new SbHash<const char *, const SoBase *>();
-  SoBase::refwriteprefix = new SbString("+");
-  SoBaseP::allbaseobj = new SoBaseSet;
+  SoBase::PImpl::name2obj = new SbHash<SbPList *, const char *>;
+  SoBase::PImpl::obj2name = new SbHash<const char *, const SoBase *>();
+  SoBase::PImpl::refwriteprefix = new SbString("+");
+  SoBase::PImpl::allbaseobj = new SoBaseSet;
 
-  CC_MUTEX_CONSTRUCT(SoBaseP::mutex);
-  CC_MUTEX_CONSTRUCT(SoBaseP::obj2name_mutex);
-  CC_MUTEX_CONSTRUCT(SoBaseP::name2obj_mutex);
-  CC_MUTEX_CONSTRUCT(SoBaseP::allbaseobj_mutex);
-  CC_MUTEX_CONSTRUCT(SoBaseP::auditor_mutex);
-  CC_MUTEX_CONSTRUCT(SoBaseP::global_mutex);
+  CC_MUTEX_CONSTRUCT(SoBase::PImpl::mutex);
+  CC_MUTEX_CONSTRUCT(SoBase::PImpl::obj2name_mutex);
+  CC_MUTEX_CONSTRUCT(SoBase::PImpl::name2obj_mutex);
+  CC_MUTEX_CONSTRUCT(SoBase::PImpl::allbaseobj_mutex);
+  CC_MUTEX_CONSTRUCT(SoBase::PImpl::auditor_mutex);
+  CC_MUTEX_CONSTRUCT(SoBase::PImpl::global_mutex);
 
   // debug
   const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
-  SoBaseP::trackbaseobjects = str && atoi(str) > 0;  
+  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;  
 
   SoWriterefCounter::initClass();
 }
@@ -398,29 +380,30 @@ SoBase::initClass(void)
 void
 SoBase::cleanClass(void)
 {
-  assert(SoBaseP::name2obj);
-  assert(SoBaseP::obj2name);
+  assert(SoBase::PImpl::name2obj);
+  assert(SoBase::PImpl::obj2name);
 
   // Delete the SbPLists in the dictionaries.
-  SoBaseP::name2obj->apply(SoBaseP::emptyName2ObjHash, NULL);
+  SoBase::PImpl::name2obj->apply(SoBase::PImpl::emptyName2ObjHash, NULL);
 
-  delete SoBaseP::allbaseobj; SoBaseP::allbaseobj = NULL;
+  delete SoBase::PImpl::allbaseobj; SoBase::PImpl::allbaseobj = NULL;
 
-  delete SoBaseP::name2obj; SoBaseP::name2obj = NULL;
-  delete SoBaseP::obj2name; SoBaseP::obj2name = NULL;
+  delete SoBase::PImpl::name2obj; SoBase::PImpl::name2obj = NULL;
+  delete SoBase::PImpl::obj2name; SoBase::PImpl::obj2name = NULL;
 
-  delete SoBase::refwriteprefix;
+  delete SoBase::PImpl::refwriteprefix; SoBase::PImpl::refwriteprefix = NULL;
+
   SoBase::classTypeId STATIC_SOTYPE_INIT;
 
-  CC_MUTEX_DESTRUCT(SoBaseP::mutex);
-  CC_MUTEX_DESTRUCT(SoBaseP::obj2name_mutex);
-  CC_MUTEX_DESTRUCT(SoBaseP::allbaseobj_mutex);
-  CC_MUTEX_DESTRUCT(SoBaseP::name2obj_mutex);
-  CC_MUTEX_DESTRUCT(SoBaseP::auditor_mutex);
-  CC_MUTEX_DESTRUCT(SoBaseP::global_mutex);
+  CC_MUTEX_DESTRUCT(SoBase::PImpl::mutex);
+  CC_MUTEX_DESTRUCT(SoBase::PImpl::obj2name_mutex);
+  CC_MUTEX_DESTRUCT(SoBase::PImpl::allbaseobj_mutex);
+  CC_MUTEX_DESTRUCT(SoBase::PImpl::name2obj_mutex);
+  CC_MUTEX_DESTRUCT(SoBase::PImpl::auditor_mutex);
+  CC_MUTEX_DESTRUCT(SoBase::PImpl::global_mutex);
 
-  SoBase::tracerefs = FALSE;
-  SoBase::writecounter = 0;
+  SoBase::PImpl::tracerefs = FALSE;
+  SoBase::PImpl::writecounter = 0;
 }
 
 /*!
@@ -477,17 +460,15 @@ SoBase::ref(void) const
 {
   if (COIN_DEBUG) this->assertAlive();
 
-  SoBase * base = const_cast<SoBase *>(this);
-
-  CC_MUTEX_LOCK(SoBaseP::mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::mutex);
 #if COIN_DEBUG
-  int32_t currentrefcount = base->objdata.referencecount;
+  int32_t currentrefcount = this->objdata.referencecount;
 #endif // COIN_DEBUG
-  base->objdata.referencecount++;
-  CC_MUTEX_UNLOCK(SoBaseP::mutex);
+  this->objdata.referencecount++;
+  CC_MUTEX_UNLOCK(SoBase::PImpl::mutex);
 
 #if COIN_DEBUG
-  if (base->objdata.referencecount < currentrefcount) {
+  if (this->objdata.referencecount < currentrefcount) {
     SoDebugError::post("SoBase::ref",
                        "%p ('%s') - referencecount overflow!: %d -> %d",
                        this, this->getTypeId().getName().getString(),
@@ -506,7 +487,7 @@ SoBase::ref(void) const
 #endif // COIN_DEBUG
 
 #if COIN_DEBUG
-  if (SoBase::tracerefs) {
+  if (SoBase::PImpl::tracerefs) {
     SoDebugError::postInfo("SoBase::ref",
                            "%p ('%s') - referencecount: %d",
                            this, this->getTypeId().getName().getString(),
@@ -529,15 +510,14 @@ SoBase::unref(void) const
 {
   if (COIN_DEBUG) this->assertAlive();
 
-  SoBase * base = const_cast<SoBase *>(this);
-  CC_MUTEX_LOCK(SoBaseP::mutex);
-  base->objdata.referencecount--;
-  int refcount = base->objdata.referencecount;
+  CC_MUTEX_LOCK(SoBase::PImpl::mutex);
+  this->objdata.referencecount--;
+  int refcount = this->objdata.referencecount;
  
-  CC_MUTEX_UNLOCK(SoBaseP::mutex);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::mutex);
 
 #if COIN_DEBUG
-  if (SoBase::tracerefs) {
+  if (SoBase::PImpl::tracerefs) {
     SoDebugError::postInfo("SoBase::unref",
                            "%p ('%s') - referencecount: %d",
                            this, this->getTypeId().getName().getString(),
@@ -552,7 +532,10 @@ SoBase::unref(void) const
                               this->getTypeId().getName().getString(), this);
   }
 #endif // COIN_DEBUG
-  if (refcount == 0) base->destroy();
+  if (refcount == 0) {
+    SoBase * base = const_cast<SoBase *>(this);
+    base->destroy();
+  }
 }
 
 /*!
@@ -566,10 +549,9 @@ SoBase::unrefNoDelete(void) const
 {
   if (COIN_DEBUG) this->assertAlive();
 
-  SoBase * base = const_cast<SoBase *>(this);
-  base->objdata.referencecount--;
+  this->objdata.referencecount--;
 #if COIN_DEBUG
-  if (SoBase::tracerefs) {
+  if (SoBase::PImpl::tracerefs) {
     SoDebugError::postInfo("SoBase::unrefNoDelete",
                            "%p ('%s') - referencecount: %d",
                            this, this->getTypeId().getName().getString(),
@@ -646,12 +628,12 @@ SoBase::getName(void) const
   // If this assert fails, SoBase::initClass() has probably not been
   // called, or you have objects on the stack that is destroyed after
   // you have invoked SoDB::cleanup().
-  assert(SoBaseP::obj2name);
+  assert(SoBase::PImpl::obj2name);
 
   const char * value = NULL;
-  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
-  SbBool found = SoBaseP::obj2name->get(this, value);
-  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
+  SbBool found = SoBase::PImpl::obj2name->get(this, value);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
   return SbName(found ? value : "");
 }
 
@@ -678,16 +660,17 @@ SoBase::setName(const SbName & newname)
 {
   // remove old name first
   SbName oldName = this->getName();
-  if (oldName.getLength()) SoBase::removeName(this, oldName.getString());
+  if (oldName != SbName::empty()) SoBase::removeName(this, oldName.getString());
 
   // check for bad characters
   const char * str = newname.getString();
   SbBool isbad = FALSE;
 
-  isbad = (newname.getLength() > 0) && !SbName::isBaseNameStartChar(str[0]);
+  isbad = (newname != SbName::empty()) && !SbName::isBaseNameStartChar(str[0]);
 
   int i;
-  for (i = 1; i < newname.getLength() && !isbad; i++) {
+  const int newnamelen = newname.getLength();
+  for (i = 1; i < newnamelen && !isbad; i++) {
     isbad = !SbName::isBaseNameChar(str[i]);
   }
 
@@ -697,7 +680,7 @@ SoBase::setName(const SbName & newname)
 
     if (!SbName::isBaseNameStartChar(str[0])) goodstring += '_';
 
-    for (i = 0; i < newname.getLength(); i++) {
+    for (i = 0; i < newnamelen; i++) {
       goodstring += SbName::isBaseNameChar(str[i]) ? str[i] : '_';
     }
 
@@ -721,21 +704,21 @@ void
 SoBase::addName(SoBase * const b, const char * const name)
 {
   SbPList * l;
-  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
-  if (!SoBaseP::name2obj->get(name, l)) {
+  CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
+  if (!SoBase::PImpl::name2obj->get(name, l)) {
     // name not used before, create new list
     l = new SbPList;
-    SoBaseP::name2obj->put(name, l);
+    SoBase::PImpl::name2obj->put(name, l);
   }
 
   // append this to the list
   l->append(b);
-  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::name2obj_mutex);
 
-  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
   // set name of object. SbHash::put() will overwrite old name
-  (void)SoBaseP::obj2name->put(b, name);
-  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
+  (void)SoBase::PImpl::obj2name->put(b, name);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
 
 /*!
@@ -744,8 +727,8 @@ SoBase::addName(SoBase * const b, const char * const name)
 void
 SoBase::removeName(SoBase * const base, const char * const name)
 {
-  SoBaseP::removeObj2Name(base, name);
-  SoBaseP::removeName2Obj(base, name);
+  SoBase::PImpl::removeObj2Name(base, name);
+  SoBase::PImpl::removeName2Obj(base, name);
 }
 
 /*!
@@ -768,42 +751,6 @@ SoBase::startNotify(void)
   SoDB::endNotify();
 }
 
-// only needed for the callback from cc_rbptree_traverse
-typedef struct {
-  int cnt;
-  int total;
-  SoNotList * list;
-  SoBase * thisp;
-  SbList <void*> notified;
-} sobase_notify_data;
-
-//
-// Callback from cc_rbptree_traverse().
-//
-void
-SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
-{
-  sobase_notify_data * data = (sobase_notify_data*) closure;
-  data->cnt--;
-
-  // MSVC7 on 64-bit Windows wants to go through this type when
-  // casting from void*.
-  const uintptr_t tmptype = (uintptr_t)type;
-
-  if (data->notified.find(auditor) < 0) {
-    if (data->cnt == 0) {
-      data->thisp->doNotify(data->list, auditor, (SoNotRec::Type) tmptype);
-    }
-    else {
-      assert(data->cnt > 0);
-      // use a copy of 'l', since the notification list might change
-      // when auditors are notified
-      SoNotList listcopy(data->list);
-      data->thisp->doNotify(&listcopy, auditor, (SoNotRec::Type) tmptype);
-    }
-  }
-}
-
 /*!
   Notifies all auditors for this instance when changes are made.
 */
@@ -816,12 +763,12 @@ SoBase::notify(SoNotList * l)
   SoDebugError::postInfo("SoBase::notify", "base %p, list %p", this, l);
 #endif // debug
 
-  sobase_notify_data notdata;
+  SoBase::PImpl::NotifyData notdata;
   notdata.cnt = cc_rbptree_size(&this->auditortree);
   notdata.list = l;
   notdata.thisp = this;
 
-  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::rbptree_notify_cb, &notdata);
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::PImpl::rbptree_notify_cb, &notdata);
   assert(notdata.cnt == 0);
 }
 
@@ -871,15 +818,15 @@ sobase_audlist_add(void * pointer, void * type, void * closure)
 const SoAuditorList &
 SoBase::getAuditors(void) const
 {
-  CC_MUTEX_LOCK(SoBaseP::auditor_mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::auditor_mutex);
 
-  if (SoBaseP::auditordict == NULL) {
-    SoBaseP::auditordict = new SbHash<SoAuditorList *, const SoBase *>();
-    coin_atexit((coin_atexit_f*)SoBaseP::cleanup_auditordict, CC_ATEXIT_NORMAL);
+  if (SoBase::PImpl::auditordict == NULL) {
+    SoBase::PImpl::auditordict = new SbHash<SoAuditorList *, const SoBase *>();
+    coin_atexit((coin_atexit_f*)SoBase::PImpl::cleanup_auditordict, CC_ATEXIT_NORMAL);
   }
 
   SoAuditorList * l = NULL;
-  if (SoBaseP::auditordict->get(this, l)) {
+  if (SoBase::PImpl::auditordict->get(this, l)) {
     // empty list before copying in new values
     for (int i = 0; i < l->getLength(); i++) {
       l->remove(i);
@@ -887,11 +834,11 @@ SoBase::getAuditors(void) const
   }
   else {
     l = new SoAuditorList;
-    SoBaseP::auditordict->put(this, l);
+    SoBase::PImpl::auditordict->put(this, l);
   }
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) l);
 
-  CC_MUTEX_UNLOCK(SoBaseP::auditor_mutex);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::auditor_mutex);
 
   return *l;
 }
@@ -950,7 +897,7 @@ SoBase::shouldWrite(void)
 void
 SoBase::incrementCurrentWriteCounter(void)
 {
-  SoBase::writecounter++;
+  ++SoBase::PImpl::writecounter;
 }
 
 /*!
@@ -959,7 +906,7 @@ SoBase::incrementCurrentWriteCounter(void)
 void
 SoBase::decrementCurrentWriteCounter(void)
 {
-  SoBase::writecounter--;
+  --SoBase::PImpl::writecounter;
 }
 
 /*!
@@ -973,18 +920,18 @@ SoBase::decrementCurrentWriteCounter(void)
 SoBase *
 SoBase::getNamedBase(const SbName & name, SoType type)
 {
-  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
   SbPList * l;
-  if (SoBaseP::name2obj->get((const char *)name, l)) {
+  if (SoBase::PImpl::name2obj->get((const char *)name, l)) {
     if (l->getLength()) {
       SoBase * b = (SoBase *)((*l)[l->getLength() - 1]);
       if (b->isOfType(type)) {
-        CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
+        CC_MUTEX_UNLOCK(SoBase::PImpl::name2obj_mutex);
         return b;
       }
     }
   }
-  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::name2obj_mutex);
   return NULL;
 }
 
@@ -997,12 +944,12 @@ SoBase::getNamedBase(const SbName & name, SoType type)
 int
 SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 {
-  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
 
   int matches = 0;
 
   SbPList * l;
-  if (SoBaseP::name2obj->get((const char *)name, l)) {
+  if (SoBase::PImpl::name2obj->get((const char *)name, l)) {
     for (int i=0; i < l->getLength(); i++) {
       SoBase * b = (SoBase *)((*l)[i]);
       if (b->isOfType(type)) {
@@ -1011,7 +958,7 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
       }
     }
   }
-  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::name2obj_mutex);
 
   return matches;
 }
@@ -1051,7 +998,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   // We need to keep it like this, though, to be compatible with SGI
   // Inventor. What we however /could/ do about it is:
   //
-  // First, split out the SoBaseP class definition to a separate
+  // First, split out the SoBase::PImpl class definition to a separate
   // interface, which can be accessed internally from Coin lirbary
   // code.
   //
@@ -1059,11 +1006,11 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   // which implements the actually needed functionality of this
   // method.
   //
-  // Third, make this function use those new functions in SoBaseP (to
+  // Third, make this function use those new functions in SoBase::PImpl (to
   // avoid code duplication) -- and mangle the results so that this
   // function still conforms to the SGI Inventor behavior.
   //
-  // Finally, start using the SoBaseP::read()-function(s) from
+  // Finally, start using the SoBase::PImpl::read()-function(s) from
   // internal Coin code instead, to clean up the messy interaction
   // with this function from everywhere else.
   //
@@ -1087,7 +1034,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   // read all (vrml97) routes. Do this also for non-vrml97 files,
   // since in Coin we can have a mix of Inventor and VRML97 nodes in
   // the same file.
-  while (result && name == ROUTE_KEYWORD) {
+  while (result && name == PImpl::ROUTE_KEYWORD) {
     result = SoBase::readRoute(in);
     // read next ROUTE keyword
     if (result) result = in->read(name, TRUE);
@@ -1102,9 +1049,9 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   // from SbInput::read(SbName&,TRUE) _should_ also be FALSE.
   assert(name != "");
 
-  if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
-  else if (name == NULL_KEYWORD) return TRUE;
-  else result = SoBase::readBase(in, name, base);
+  if (name == PImpl::USE_KEYWORD) result = SoBase::PImpl::readReference(in, base);
+  else if (name == PImpl::NULL_KEYWORD) return TRUE;
+  else result = SoBase::PImpl::readBase(in, name, base);
 
   // Check type correctness.
   if (result) {
@@ -1122,7 +1069,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   }
 
   // Make sure we don't leak memory.
-  if (!result && base && (name != USE_KEYWORD)) {
+  if (!result && base && (name != PImpl::USE_KEYWORD)) {
     base->ref();
     base->unref();
   }
@@ -1150,7 +1097,7 @@ void
 SoBase::setInstancePrefix(const SbString & c)
 {
   SoWriterefCounter::setInstancePrefix(c);
-  (*SoBase::refwriteprefix) = c;
+  (*SoBase::PImpl::refwriteprefix) = c;
 }
 
 /*!
@@ -1165,7 +1112,7 @@ SoBase::setInstancePrefix(const SbString & c)
 void
 SoBase::setTraceRefs(SbBool trace)
 {
-  SoBase::tracerefs = trace;
+  SoBase::PImpl::tracerefs = trace;
 }
 
 /*!
@@ -1176,7 +1123,7 @@ SoBase::setTraceRefs(SbBool trace)
 SbBool
 SoBase::getTraceRefs(void)
 {
-  return SoBase::tracerefs;
+  return SoBase::PImpl::tracerefs;
 }
 
 /*!
@@ -1217,7 +1164,7 @@ SbBool
 SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 {
   if (!out->isBinary()) {
-    out->write(END_OF_LINE);
+    out->write(PImpl::END_OF_LINE);
     out->indent();
   }
 
@@ -1229,7 +1176,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 
   // Write the node
   if (!firstwrite) {
-    out->write(USE_KEYWORD);
+    out->write(PImpl::USE_KEYWORD);
     if (!out->isBinary()) out->write(' ');
     out->write(writename.getString());
 
@@ -1241,8 +1188,8 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     }
   }
   else {
-    if (name.getLength() || multiref) {
-      out->write(DEF_KEYWORD);
+    if (name != SbName::empty() || multiref) {
+      out->write(PImpl::DEF_KEYWORD);
       if (!out->isBinary()) out->write(' ');
 
       out->write(writename.getString());
@@ -1295,7 +1242,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
                     SoWriterefCounter::instance(out)->getWriteref(this));
         out->write(tmp.getString());
       }
-      out->write(END_OF_LINE);
+      out->write(PImpl::END_OF_LINE);
       out->incrementIndent();
     }
   }
@@ -1340,11 +1287,11 @@ SoBase::writeFooter(SoOutput * out) const
     // FIXME: if we last wrote a field, this EOF is superfluous -- so
     // we are getting a lot of empty lines in the files. Should
     // improve output formatting further. 20031223 mortene.
-    if (!oldstyle) { out->write(END_OF_LINE); }
+    if (!oldstyle) { out->write(PImpl::END_OF_LINE); }
 
     out->decrementIndent();
     out->indent();
-    out->write(CLOSE_BRACE);
+    out->write(PImpl::CLOSE_BRACE);
   }
 }
 
@@ -1367,363 +1314,7 @@ SoBase::getFileFormatName(void) const
 uint32_t
 SoBase::getCurrentWriteCounter(void)
 {
-  return SoBase::writecounter;
-}
-
-// Reads the name of a reference after a "USE" keyword and finds the
-// ptr to the object which is being referenced.
-SbBool
-SoBase::readReference(SoInput * in, SoBase *& base)
-{
-  SbName refname;
-  if (!in->read(refname, FALSE)) {
-    SoReadError::post(in, "Premature end of file after \"%s\"", USE_KEYWORD);
-    return FALSE;
-  }
-
-  // This code to handles cases where USE ref name is
-  // immediately followed by a "." and a fieldname, as can occur
-  // when reading field-to-field connections.
-  if (!in->isBinary()) {
-    SbString refstr = refname.getString();
-
-    // NOTE:
-    // If the name ends with a }. E.g.
-    //
-    // USE mesh+0}
-    //
-    // then we are in trouble, but so is Open Inventor.
-    // This is due to the ability for "}" to be a character
-    // in the name of a node.
-    const size_t index = strcspn(refstr.getString(), ".");
-    SbString startstr = refstr.getSubString(0, (int)(index - 1));
-    SbString endstr = refstr.getSubString((int)index);
-    in->putBack(endstr.getString());
-
-    refname = startstr;
-  }
-
-  if ((base = in->findReference(refname)) == NULL) {
-    SoReadError::post(in, "Unknown reference \"%s\"", refname.getString());
-    return FALSE;
-  }
-
-  // when referencing an SoProtoInstance, we need to return the proto
-  // instance's root node, not the actual proto instance node.
-  if (base->isOfType(SoProtoInstance::getClassTypeId())) {
-    base = ((SoProtoInstance*) base)->getRootNode();
-  }
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoBase::readReference",
-                         "USE: '%s'", refname.getString());
-#endif // debug
-
-  return TRUE;
-}
-
-// Read the SoBase instance.
-SbBool
-SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
-{
-  assert(classname != "");
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoBase::readBase", "classname: '%s'",
-                         classname.getString());
-#endif // debug
-
-  SbBool ret = TRUE;
-  base = NULL;
-
-  SbName refname;
-
-  if (in->isFileVRML2()) {
-    if (classname == PROTO_KEYWORD ||
-        classname == EXTERNPROTO_KEYWORD) { // special case to handle [EXTERN]PROTO definitions
-      SoProto * proto = new SoProto(classname == EXTERNPROTO_KEYWORD);
-      proto->ref();
-      ret = proto->readInstance(in, 0);
-      if (ret) {
-        proto->unrefNoDelete();
-        in->addProto(proto);
-      }
-      else {
-        proto->unref();
-        return FALSE;
-      }
-      base = proto;
-      return TRUE;
-    }
-  }
-
-  if (classname == DEF_KEYWORD) {
-    if (!in->read(refname, FALSE) || !in->read(classname, TRUE)) {
-      if (in->eof()) {
-        SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
-      }
-      else {
-        SoReadError::post(in, "Unable to read identifier after %s keyword", DEF_KEYWORD);
-      }
-      ret = FALSE;
-    }
-
-    if (!refname) {
-      SoReadError::post(in, "No name given after %s", DEF_KEYWORD);
-      ret = FALSE;
-    }
-
-    if (!classname) {
-      SoReadError::post(in, "Invalid definition of %s", refname.getString());
-      ret = FALSE;
-    }
-  }
-
-  if (ret) {
-    SbBool gotchar = FALSE; // Unnecessary, but kills a compiler warning.
-    char c;
-    if (!in->isBinary() && (!(gotchar = in->read(c)) || c != OPEN_BRACE)) {
-      if (gotchar)
-        SoReadError::post(in, "Expected '%c'; got '%c'", OPEN_BRACE, c);
-      else
-        SoReadError::post(in, "Expected '%c'; got EOF", OPEN_BRACE);
-      ret = FALSE;
-    }
-    else {
-      ret = SoBase::readBaseInstance(in, classname, refname, base);
-
-      if (ret && !in->isBinary()) {
-        if (!(gotchar = in->read(c)) || c != CLOSE_BRACE) {
-          if (gotchar)
-            SoReadError::post(in, "Expected '%c'; got '%c' for %s", CLOSE_BRACE, c, classname.getString());
-          else
-            SoReadError::post(in, "Expected '%c'; got EOF for %s", CLOSE_BRACE, classname.getString());
-          ret = FALSE;
-        }
-      }
-    }
-  }
-
-  return ret;
-}
-
-// Read the SoBase instance.
-SbBool
-SoBase::readBaseInstance(SoInput * in, const SbName & classname,
-                         const SbName & refname, SoBase *& base)
-{
-  assert(classname != "");
-
-  SbBool needupgrade = FALSE;
-
-  // first, try creating an upgradable node, based on the version of
-  // the input file.
-  base = SoUpgrader::tryCreateNode(classname, in->getIVVersion());
-  if (base) {
-    // we need to upgrade the node after reading it
-    needupgrade = TRUE;
-  }
-  else {
-    // create normal Coin node
-    base = SoBase::createInstance(in, classname);
-  }
-
-  if (!base) { goto failed; }
-
-  if (!(!refname)) {
-    // Set up new entry in reference hash -- with full name.
-    in->addReference(refname, base);
-
-    // Remove reference counter suffix, if any (i.e. "goldsphere+2"
-    // becomes "goldsphere").
-    SbString instancename = refname.getString();
-    const char * strp = instancename.getString();
-    const char * occ = strstr(strp, SoBase::refwriteprefix->getString());
-
-    if (occ != strp) { // They will be equal if the name is only a refcount.
-      const ptrdiff_t offset = occ - strp - 1;
-      if (occ) instancename = instancename.getSubString(0, (int)offset);
-      // Set name identifier for newly created SoBase instance.
-      base->setName(instancename);
-    }
-  }
-
-  // The "flags" argument to readInstance is only checked during
-  // import from binary format files.
-  {
-    unsigned short flags = 0;
-    if (in->isBinary() && (in->getIVVersion() > 2.0f)) {
-      const SbBool ok = in->read(flags);
-      if (!ok) { goto failed; }
-    }
-
-    const SbBool ok = base->readInstance(in, flags);
-    if (!ok) { goto failed; }
-  }
-
-  // Make sure global fields are unique
-  if (base->isOfType(SoGlobalField::getClassTypeId())) {
-    SoGlobalField * globalfield = (SoGlobalField *)base;
-
-    // The global field is removed from the global field list
-    // because we have to check if there is already a global field
-    // in the list with the same name.  This is because
-    // SoGlobalField's constructor automatically adds itself to the
-    // list of global fields without checking if the field already
-    // exists.
-    globalfield->ref(); // increase refcount to 1, so the next call will not destruct the node
-    SoGlobalField::removeGlobalFieldContainer(globalfield);
-    globalfield->unrefNoDelete(); // corrects ref count back to zero
-
-    // A read-error sanity check should have been done in
-    // SoGlobalField::readInstance().
-    assert(globalfield->getFieldData()->getNumFields() == 1);
-
-    // Now, see if the global field is in the database already.
-    SoField * f = SoDB::getGlobalField(globalfield->getName());
-    if (f) {
-      SoField * basefield = globalfield->getFieldData()->getField(globalfield, 0);
-      assert(basefield && "base (SoGlobalField) does not appear to have a field");
-
-      if (!f->isOfType(basefield->getClassTypeId())) {
-        SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s",
-                          f->getTypeId().getName().getString(), basefield->getTypeId().getName().getString());
-        goto failed;
-      }
-
-      SoGlobalField * container = (SoGlobalField *)f->getContainer();
-
-      // Copy new field values into the existing field. Open Inventor
-      // apparently does not copy the new values into the old field,
-      // but it seems logical to do so.
-      SoFieldContainer::initCopyDict();
-      container->copyFieldValues(globalfield, TRUE); // Assign new global field values to old global field
-      SoFieldContainer::copyDone();
-
-      // Make sure to update the mapping in SoInput if necessary
-      if (!(!refname)) {
-        // Set up new entry in reference hash -- with full name.
-        in->removeReference(refname);
-        in->addReference(refname, container);
-      }
-
-      // Remove newly made SoGlobalField, use the existing one instead.
-      // Add it to the global field list before deleting it (we
-      // manually removed it earlier to test it the field was already
-      // in the database)
-      SoGlobalField::addGlobalFieldContainer((SoGlobalField*) base);
-      base->ref(); base->unref(); // this will delete the global field, and remove it from the database
-      base = container;
-      container->getFieldData()->getField(container, 0)->touch();
-    }
-    else {
-      // The global field was first removed to check the existence
-      // of an equal named item. If no such global field exists, the
-      // removed global field has to be added again, which is done
-      // by this code:
-      SoGlobalField::addGlobalFieldContainer(globalfield);
-    }
-  }
-
-  if (needupgrade) {
-    SoBase * oldbase = base;
-    oldbase->ref();
-    base = SoUpgrader::createUpgrade(oldbase);
-    assert(base && "should never happen (since needupgrade == TRUE)");
-    oldbase->unref();
-  }
-
-  if (base->isOfType(SoProtoInstance::getClassTypeId())) {
-    base = ((SoProtoInstance*) base)->getRootNode();
-  }
-
-  return TRUE;
-
-failed:
-  if (base) {
-    if (!(!refname)) { in->removeReference(refname); }
-
-    base->ref();
-    base->unref();
-    base = NULL;
-  }
-
-  return FALSE;
-}
-
-// Create a new instance of the "classname" type.
-SoBase *
-SoBase::createInstance(SoInput * in, const SbName & classname)
-{
-  assert(classname != "");
-
-  SoType type = SoType::badType();
-  if (in->isFileVRML2()) {
-    SbString newname;
-    newname.sprintf("VRML%s", classname.getString());
-    type = SoType::fromName(SbName(newname.getString()));
-#if COIN_DEBUG && 0 // debug
-    if (type != SoType::badType()) {
-      SoDebugError::postInfo("SoBase::createInstance",
-                             "Created VRML V2.0 type: %s",
-                             type.getName().getString());
-    }
-#endif // debug
-  }
-
-  // search for PROTO in current SoInput instance
-  SoProto * proto = in->findProto(classname);
-  if (!proto) {
-    // search in global PROTO list
-    proto = SoProto::findProto(classname);
-  }
-  if (proto) return proto->createProtoInstance();
-
-  if (type == SoType::badType())
-    type = SoType::fromName(classname);
-
-  SoBase * instance = NULL;
-
-  if (type == SoType::badType() ||
-      type == SoUnknownNode::getClassTypeId()) {
-    // Default to SoUnknownNode for now.. FIXME: what if we're dealing
-    // with an unknown engine? 20000105 mortene.
-    SoUnknownNode * unknownnode = new SoUnknownNode;
-    unknownnode->setNodeClassName(classname);
-    instance = unknownnode;
-    if (SoInputP::debug()) {
-      SoDebugError::postInfo("SoBase::createInstance",
-                             "created SoUnknownNode for '%s'",
-                             classname.getString());
-    }
-  }
-  else if (!type.canCreateInstance()) {
-    SoReadError::post(in, "Class \"%s\" is abstract", classname.getString());
-  }
-  else {
-    instance = (SoBase *)type.createInstance();
-  }
-
-  return instance;
-}
-
-// Hmm.
-void
-SoBase::flushInput(SoInput * in)
-{
-#if 0 // FIXME: obsoleted, see comment at the end of SoBase::readBase(). 20020531 mortene.
-  assert(FALSE);
-#else // obsoleted
-  assert(!in->isBinary());
-
-  int nestlevel = 1;
-  char c;
-
-  while (nestlevel > 0 && in->read(c)) {
-    if (c == CLOSE_BRACE) nestlevel--;
-    else if (c == OPEN_BRACE) nestlevel++;
-  }
-#endif // obsoleted
+  return SoBase::PImpl::writecounter;
 }
 
 /*!
@@ -1893,7 +1484,7 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 void
 SoBase::staticDataLock(void)
 {
-  CC_MUTEX_LOCK(SoBaseP::global_mutex);
+  CC_MUTEX_LOCK(SoBase::PImpl::global_mutex);
 }
 
 /*!
@@ -1903,7 +1494,7 @@ SoBase::staticDataLock(void)
 void
 SoBase::staticDataUnlock(void)
 {
-  CC_MUTEX_UNLOCK(SoBaseP::global_mutex);
+  CC_MUTEX_UNLOCK(SoBase::PImpl::global_mutex);
 }
 
 #undef ALIVE_PATTERN

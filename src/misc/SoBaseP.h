@@ -36,14 +36,22 @@ class SoInput;
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
-
 // FIXME: should implement and use a proper set-abstraction
 // datatype. 20050524 mortene.
 typedef SbHash<void *, const SoBase *> SoBaseSet;
 
-class SoBaseP {
+class SoBase::PImpl {
 public:
-  static SoNode * readNode(SoInput * in);
+  static const char OPEN_BRACE;
+  static const char CLOSE_BRACE;
+
+  static const char END_OF_LINE[];
+  static const char DEF_KEYWORD[];
+  static const char USE_KEYWORD[];
+  static const char NULL_KEYWORD[];
+  static const char ROUTE_KEYWORD[];
+  static const char PROTO_KEYWORD[];
+  static const char EXTERNPROTO_KEYWORD[];
 
   static void * mutex;
   static void * name2obj_mutex;
@@ -55,6 +63,14 @@ public:
   static SbHash<SbPList *, const char *> * name2obj;
   static SbHash<const char *, const SoBase *> * obj2name;
 
+  static SbBool trackbaseobjects;
+  static void * allbaseobj_mutex;
+  static SoBaseSet * allbaseobj; // maps from SoBase * to NULL
+
+  static SbString * refwriteprefix;
+  static SbBool tracerefs;
+  static uint32_t writecounter;
+
   static void auditordict_cb(const SoBase * const & key, SoAuditorList * const & value, void * closure);
   static void cleanup_auditordict(void);
 
@@ -64,9 +80,28 @@ public:
   static void emptyName2ObjHash(const char * const & n, SbPList * const & l, void * closure);
 
   static void check_for_leaks(void);
-  static SbBool trackbaseobjects;
-  static void * allbaseobj_mutex;
-  static SoBaseSet * allbaseobj; // maps from SoBase * to NULL
-};
+
+  static SbBool readReference(SoInput * in, SoBase *& base);
+  static SbBool readBase(SoInput * in, SbName & classname, SoBase *& base);
+  static SbBool readBaseInstance(SoInput * in, const SbName & classname,
+                                 const SbName & refname, SoBase *& base);
+
+  static SoBase * createInstance(SoInput * in, const SbName & classname);
+  static void flushInput(SoInput * in);
+
+  static void rbptree_notify_cb(void * auditor, void * type, void * closure);
+
+  static SoNode * readNode(SoInput * in);
+
+  // only needed for the callback from cc_rbptree_traverse
+  struct NotifyData {
+    int cnt;
+    int total;
+    SoNotList * list;
+    SoBase * thisp;
+    SbList <void*> notified;
+  };
+
+}; // SoBase::PImpl
 
 #endif // !COIN_SOBASEP_H
