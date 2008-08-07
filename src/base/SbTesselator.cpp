@@ -114,7 +114,7 @@ public:
     float weight;
     int dirtyweight;
 
-    SbTesselator::PImpl::Vertex * prev, * next;
+    Vertex * prev, * next;
   }; // Vertex
 
   PImpl(void) : bsptree(256) { }
