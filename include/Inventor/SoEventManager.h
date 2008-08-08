@@ -41,7 +41,7 @@ class COIN_DLL_API SoEventManager {
  public:
   SoEventManager(void);
   virtual ~SoEventManager();
-  
+
   enum NavigationState {
     NO_NAVIGATION,
     JUST_NAVIGATION,
@@ -69,7 +69,7 @@ class COIN_DLL_API SoEventManager {
 
   void setNavigationSystem(SoNavigationSystem * system);
   NavigationState getNavigationState(void) const;
-  
+
   void setSize(const SbVec2s & newsize);
   void setOrigin(const SbVec2s & newOrigin);
   void setViewportRegion(const SbViewportRegion & newregion);
@@ -83,6 +83,7 @@ private:
 
   SoEventManager(const SoEventManager & rhs); // N/A
   SoEventManager & operator = (const SoEventManager & rhs); // N/A
-};
+
+}; // SoEventManager
 
 #endif // !COIN_SOEVENTMANAGER_H

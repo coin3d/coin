@@ -101,6 +101,7 @@ protected:
 private:
   friend class SoSceneManagerP;
   class SoSceneManagerP * pimpl;
-};
+
+}; // SoSceneManager
 
 #endif // !COIN_SOSCENEMANAGER_H

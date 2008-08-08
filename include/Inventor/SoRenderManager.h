@@ -53,18 +53,18 @@ public:
       AUTOREDRAW   = 0x0004,
       BACKGROUND   = 0x0008
     };
-    
+
     Superimposition(SoNode * scene,
                     SbBool enabled,
                     SoRenderManager * manager,
                     uint32_t flags);
     ~Superimposition();
-    
+
     void render(SoGLRenderAction * action, SbBool clearcolorbuffer = FALSE);
     void setEnabled(SbBool yes);
     int getStateFlags(void) const;
     void setTransparencyType(SoGLRenderAction::TransparencyType transparencytype);
-    
+
   private:
     static void changeCB(void * data, SoSensor * sensor);
     class SuperimpositionP * pimpl;
@@ -103,21 +103,18 @@ public:
 
   virtual void render(const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
-  
+
   virtual void render(SoGLRenderAction * action,
                       const SbBool initmatrices = TRUE,
                       const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
 
-
-
-
   Superimposition * addSuperimposition(SoNode * scene, 
                                        uint32_t flags = 
-                                       Superimposition::AUTOREDRAW | 
+                                       Superimposition::AUTOREDRAW |
                                        Superimposition::ZBUFFERON  |
                                        Superimposition::CLEARZBUFFER);
-  
+
   void removeSuperimposition(Superimposition * s);
 
   virtual void setSceneGraph(SoNode * const sceneroot);
@@ -204,26 +201,26 @@ protected:
                       const SbBool initmatrices = TRUE,
                       const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
-  
+
   void renderSingle(SoGLRenderAction * action,
                     SbBool initmatrices,
                     SbBool clearwindow,
                     SbBool clearzbuffer);
-  
+
   void renderStereo(SoGLRenderAction * action,
                     SbBool initmatrices,
                     SbBool clearwindow,
                     SbBool clearzbuffer);
 
   void initStencilBufferForInterleavedStereo(void);
-  void clearBuffers(SbBool color, SbBool depth);  
+  void clearBuffers(SbBool color, SbBool depth);
 
 private:
   SoRenderManagerP * pimpl;
   friend class SoRenderManagerP;
   friend class SoSceneManager;
   friend class Superimposition;
-};
 
+}; // SoRenderManager
 
 #endif // !COIN_SORENDERMANAGER_H
