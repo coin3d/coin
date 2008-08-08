@@ -29,13 +29,18 @@ pushd data
 
 if exist draggerDefaults\*.* goto draggerdefaultsexists
 echo mkdir %COINDIR%\data\draggerDefaults
-mkdir draggerDefaults
+mkdir draggerDefalts
 :draggerdefaultsexists
 
 if exist shaders\*.* goto shadersexists
 echo mkdir %COINDIR%\data\shaders
 mkdir shaders
 :shadersexists
+
+if exist scxml\*.* goto scxmlexists
+echo mkdir %COINDIR%\data\scxml
+mkdir scxml
+:scxmlexists
 
 popd
 
@@ -50,6 +55,15 @@ if exist vsm\*.* goto vsmexists
 echo mkdir %COINDIR%\data\shaders\vsm
 mkdir vsm
 :vsmexists
+
+popd
+
+pushd data\scxml
+
+if exist navigation\*.* goto scxmlnavigationexists
+echo mkdir %COINDIR%\data\scxml\navigation
+mkdir navigation
+:cxsmlnavigationexists
 
 popd
 
@@ -179,6 +193,11 @@ echo mkdir %COINDIR%\include\Inventor\projectors
 mkdir projectors
 :projectorsexists
 
+if exist scxml\*.* goto scxmlexists
+echo mkdir %COINDIR%\include\Inventor\scxml
+mkdir scxml
+:scxmlexists
+
 if exist sensors\*.* goto sensorsexists
 echo mkdir %COINDIR%\include\Inventor\sensors
 mkdir sensors
@@ -247,12 +266,33 @@ echo mkdir %COINDIR%\include\Inventor\annex\ForeignFiles
 mkdir ForeignFiles
 :foreignfilesexists
 
+if exist FXViz\*.* goto fxvizexists
+echo mkdir %COINDIR%\include\Inventor\annex\FXViz
+mkdir FXViz
+:fxvizexists
+
 if exist Profiler\*.* goto profilerexists
 echo mkdir %COINDIR%\include\Inventor\annex\Profiler
 mkdir Profiler
 :profilerexists
 
-pushd Profiler
+popd
+
+pushd include\Inventor\annex\FXViz
+
+if exist nodes\*.* goto fxviznodesexists
+echo mkdir %COINDIR%\include\Inventor\annex\FXViz\nodes
+mkdir nodes
+:fxviznodesexists
+
+if exist elements\*.* goto fxvizelementsexists
+echo mkdir %COINDIR%\include\Inventor\annex\FXViz\elements
+mkdir elements
+:fxvizelementsexists
+
+popd
+
+pushd include\Inventor\annex\Profiler
 
 if exist nodes\*.* goto pnodesexists
 echo mkdir %COINDIR%\include\Inventor\annex\Profiler\nodes
@@ -278,27 +318,6 @@ if exist utils\*.* goto putilsexists
 echo mkdir %COINDIR%\include\Inventor\annex\Profiler\utils
 mkdir utils
 :putilsexists
-
-popd
-
-if exist FXViz\*.* goto fxvizexists
-echo mkdir %COINDIR%\include\Inventor\annex\FXViz
-mkdir FXViz
-:fxvizexists
-
-popd
-
-pushd include\Inventor\annex\FXViz
-
-if exist nodes\*.* goto fxviznodesexists
-echo mkdir %COINDIR%\include\Inventor\annex\FXViz\nodes
-mkdir nodes
-:fxviznodesexists
-
-if exist elements\*.* goto fxvizelementsexists
-echo mkdir %COINDIR%\include\Inventor\annex\FXViz\elements
-mkdir elements
-:fxvizelementsexists
 
 popd
 
