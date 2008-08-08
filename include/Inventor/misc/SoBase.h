@@ -118,6 +118,7 @@ private:
   cc_rbptree auditortree;
 
   class PImpl;
+  friend class PImpl; // MSVC6
 };
 
 // support for boost::intrusive_ptr<SoBase>
