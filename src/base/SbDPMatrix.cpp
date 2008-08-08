@@ -1693,14 +1693,16 @@ decomp_affine(HMatrix A, AffineParts * parts)
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
 
-  // reinterpret_cast to humor MSVC6, this should have no effect other places.
+  // reinterpret_cast to humor MSVC6, this should have no effect on
+  // other compilers.
   SbDPMatrix TQ(reinterpret_cast<const SbDPMat *>(&Q));
   parts->q = SbDPRotation(TQ.transpose());
   parts->k = spect_decomp(S, U);
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
 
-  // reinterpret_cast to humor MSVC6, this should have no effect other places.
+  // reinterpret_cast to humor MSVC6, this should have no effect on
+  // other compilers.
   SbDPMatrix TU(reinterpret_cast<const SbDPMat *>(&U));
   parts->u = SbDPRotation(TU.transpose());
   p = snuggle(parts->u, parts->k);

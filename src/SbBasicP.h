@@ -26,7 +26,7 @@
 
 #include <Inventor/misc/SoBase.h>
 
-#if !defined(_MSC_VER) || (_MSC_VER < 1300) //coin_depointer does not work with MSVC 6
+#if !defined(_MSC_VER) || (_MSC_VER >= 1300) //coin_depointer does not work with MSVC 6
 #define COIN_DEPOINTER_AVAILABLE
 #endif
 

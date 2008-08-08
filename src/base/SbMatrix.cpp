@@ -1977,12 +1977,12 @@ SbMatrixP::decomp_affine(SbMatrixP::HMatrix A, SbMatrixP::AffineParts * parts)
 
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
-  SbMatrix TQ(static_cast<const SbMat *>(&Q));
+  SbMatrix TQ(reinterpret_cast<const SbMat *>(&Q));
   parts->q = SbRotation(TQ.transpose());
   parts->k = spect_decomp(S, U);
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
-  SbMatrix TU(static_cast<const SbMat *>(&U));
+  SbMatrix TU(reinterpret_cast<const SbMat *>(&U));
   parts->u = SbRotation(TU.transpose());
   p = snuggle(parts->u, parts->k);
   parts->u = p * parts->u;
