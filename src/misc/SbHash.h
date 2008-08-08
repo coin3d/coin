@@ -103,7 +103,10 @@ inline unsigned int SbHashFunc(unsigned int key) { return key; }
 inline unsigned int SbHashFunc(int key) { return static_cast<unsigned int>(key); }
 
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) // 'long long' not in vc6
+#ifndef COIN_INTERNAL //Not available for internal use, as this is not
+		      //available on all platforms.
 inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+#endif //COIN_INTERNAL
 #endif
 
 inline unsigned int SbHashFunc(unsigned long key) { return toUint<unsigned long>(key); }
