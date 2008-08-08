@@ -3167,12 +3167,6 @@ echo "${ECHO_T}$sim_ac_msvcrt" >&6
     # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
 
 
-
-  case "$sim_ac_msc_major_version" in
-  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE" ;;
-  *)
-  esac
-
 fi
 
 COIN_MSVC_LIBC=$sim_ac_msvcrt
@@ -4599,6 +4593,7 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
+
 if $BUILD_WITH_MSVC; then
 
 
@@ -4639,6 +4634,11 @@ rm -f conftest.c
 echo "$as_me:$LINENO: result: $sim_ac_msc_major_version.$sim_ac_msc_minor_version" >&5
 echo "${ECHO_T}$sim_ac_msc_major_version.$sim_ac_msc_minor_version" >&6
 
+
+  case "$sim_ac_msc_major_version" in
+  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE" ;;
+  *)
+  esac
 fi
 
 
