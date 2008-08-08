@@ -218,6 +218,12 @@ if $BUILD_WITH_MSVC; then
     # sim_ac_msvcrt_LIBLIBS is set up at the end
     # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
   ])
+
+  case "$sim_ac_msc_major_version" in
+  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE" ;;
+  *)
+  esac
+
 fi
 
 AC_SUBST([COIN_MSVC_LIBC], [$sim_ac_msvcrt])
