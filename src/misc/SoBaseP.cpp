@@ -526,11 +526,13 @@ SoBase::PImpl::createInstance(SoInput * in, const SbName & classname)
     SoUnknownNode * unknownnode = new SoUnknownNode;
     unknownnode->setNodeClassName(classname);
     instance = unknownnode;
+#if COIN_DEBUG && 0 // debug
     if (SoInputP::debug()) {
       SoDebugError::postInfo("SoBase::createInstance",
                              "created SoUnknownNode for '%s'",
                              classname.getString());
     }
+#endif // debug
   }
   else if (!type.canCreateInstance()) {
     SoReadError::post(in, "Class \"%s\" is abstract", classname.getString());
