@@ -262,7 +262,9 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 
-scxmldefdatadir = $(datadir)/Coin/scxml/navigation
+@MAC_FRAMEWORK_TRUE@scxmldefdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/scxml/navigation
+@MAC_FRAMEWORK_FALSE@scxmldefdatadir = $(datadir)/Coin/scxml/navigation
+
 dist_scxmldefdata_DATA = \
 	examiner.xml
 

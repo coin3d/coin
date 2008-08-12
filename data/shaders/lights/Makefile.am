@@ -13,7 +13,12 @@ DISTCLEANFILES = \
 	$(BUILT_SOURCES) \
 	glsl2h.sh
 
+if MAC_FRAMEWORK
+shaderslightsdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/shaders/lights
+else
 shaderslightsdatadir = $(datadir)/Coin/shaders/lights
+endif
+
 dist_shaderslightsdata_DATA = \
 	PointLight.glsl \
 	SpotLight.glsl \

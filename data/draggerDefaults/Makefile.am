@@ -30,7 +30,12 @@ DISTCLEANFILES = \
 	$(BUILT_SOURCES) \
 	iv2h.sh
 
+if MAC_FRAMEWORK
+draggerdefdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/draggerDefaults
+else
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
+endif
+
 dist_draggerdefdata_DATA = \
 	translate1Dragger.iv \
 	translate2Dragger.iv \

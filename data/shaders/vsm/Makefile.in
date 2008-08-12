@@ -271,7 +271,9 @@ DISTCLEANFILES = \
 	glsl2h.sh
 
 
-shadersvsmdatadir = $(datadir)/Coin/shaders/vsm
+@MAC_FRAMEWORK_TRUE@shadersvsmdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/shaders/vsm
+@MAC_FRAMEWORK_FALSE@shadersvsmdatadir = $(datadir)/Coin/shaders/vsm
+
 dist_shadersvsmdata_DATA = \
 	VsmLookup.glsl
 
