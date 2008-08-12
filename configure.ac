@@ -244,53 +244,6 @@ if $BUILD_WITH_MSVC; then
   export RANLIB
 fi
 
-# Detect Mac OS X
-case $host_os in
-darwin6.* ) # Mac OS 10.2 "Jaguar"
-  sim_ac_macosx=true
-  sim_ac_macosx_10_2ff=true
-  sim_ac_macosx_10_3ff=false
-  sim_ac_macosx_name="Jaguar"
-  ;;
-darwin7.* ) # Mac OS 10.3 "Panther"
-  sim_ac_macosx=true
-  sim_ac_macosx_10_2ff=true
-  sim_ac_macosx_10_3ff=true
-  sim_ac_macosx_name="Panther"
-  ;;
-darwin8.* ) # Mac OS 10.4 "Tiger"
-  sim_ac_macosx=true
-  sim_ac_macosx_10_2ff=true
-  sim_ac_macosx_10_3ff=true
-  sim_ac_macosx_name="Tiger"
-  ;;
-darwin9.* ) # Mac OS 10.5 "Leopard"
-  sim_ac_macosx=true
-  sim_ac_macosx_10_2ff=true
-  sim_ac_macosx_10_3ff=true
-  sim_ac_macosx_name="Leopard"
-  ;;
-darwin* ) # earlier Mac OS X versions 
-  sim_ac_macosx=true
-  sim_ac_macosx_10_2ff=false
-  sim_ac_macosx_10_3ff=false
-  sim_ac_macosx_name=""
-  ;;
-* ) # not a Mac OS X
-  sim_ac_macosx=false
-  sim_ac_macosx_10_2ff=false 
-  sim_ac_macosx_10_3ff=false
-  sim_ac_macosx_name=""
-  ;;
-esac
-
-AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
-AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
-AM_CONDITIONAL([MACOSX_10_3FF], [$sim_ac_macosx_10_3ff])
-AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
-AC_SUBST([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
-AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
-
 # **************************************************************************
 #  Locate C++ compiler and set C++ as the default language to use
 #  in tests. The configure script will automatically terminate if
@@ -308,6 +261,10 @@ AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
+# Since the plan is to not compile pure C anymore, we can simplify by always
+# setting C++ mode in Coin's configure script.
+AC_LANG([C++])
+
 if $BUILD_WITH_MSVC; then
   SIM_AC_MSC_VERSION
 
@@ -319,8 +276,54 @@ fi
 
 SIM_AC_STRIP_EXIT_DECLARATION
 
-# we only interface with C libraries
-AC_LANG(C)
+# **************************************************************************
+
+SIM_AC_MACOS10_DEPLOYMENT_TARGET
+
+if test x"$sim_ac_macos10_deployment_target_major_version" = x"10"; then
+  # AC_DEFINE() COIN_MACOS_10_# as needed here...
+  sim_ac_macosx=true
+  AC_DEFINE([COIN_MACOS_10], 1, [Define for Mac OS X builds])
+  if test 1 -le $sim_ac_macos10_deployment_target_minor_version; then
+    AC_DEFINE([COIN_MACOS_10_1], 1, [Define for Mac OS 10.1 builds])
+    sim_ac_macosx_10_2ff=false
+    sim_ac_macosx_10_3ff=false
+  fi
+  if test 2 -le $sim_ac_macos10_deployment_target_minor_version; then
+    AC_DEFINE([COIN_MACOS_10_2], 1, [Define for Mac OS 10.2 builds])
+    sim_ac_macosx_10_2ff=true
+    sim_ac_macosx_10_3ff=false
+    sim_ac_macosx_name="Jaguar"
+  fi
+  if test 3 -le $sim_ac_macos10_deployment_target_minor_version; then
+    #AC_DEFINE([COIN_MACOS_10_3], 1, [Define for Mac OS 10.3 builds])
+    sim_ac_macosx_10_2ff=true
+    sim_ac_macosx_10_3ff=true
+    sim_ac_macosx_name="Panther"
+  fi
+  if test 4 -le $sim_ac_macos10_deployment_target_minor_version; then
+    #AC_DEFINE([COIN_MACOS_10_4], 1, [Define for Mac OS 10.4 builds])
+    sim_ac_macosx_10_2ff=true
+    sim_ac_macosx_10_3ff=true
+    sim_ac_macosx_name="Tiger"
+  fi
+  if test 5 -le $sim_ac_macos10_deployment_target_minor_version; then
+    #AC_DEFINE([COIN_MACOS_10_5], 1, [Define for Mac OS 10.5 builds])
+    sim_ac_macosx_10_2ff=true
+    sim_ac_macosx_10_3ff=true
+    sim_ac_macosx_name="Leopard"
+  fi
+else
+  sim_ac_macosx=false
+  sim_ac_macosx_name=""
+fi
+
+AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
+AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
+AM_CONDITIONAL([MACOSX_10_3FF], [$sim_ac_macosx_10_3ff])
+AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
+AC_SUBST([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
+AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 
 # **************************************************************************
 #  Initialize libtool
@@ -591,9 +594,15 @@ AC_CHECK_HEADERS(
   [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h strings.h ieeefp.h],
   [], [], [])
 
+AC_MSG_CHECKING([for flex file adjustments])
 if test x"$ac_cv_header_unistd_h" != x"yes"; then
+  AC_MSG_RESULT([-DYY_NO_UNISTD_H])
   CPPFLAGS="$CPPFLAGS -DYY_NO_UNISTD_H"
+else
+  AC_MSG_RESULT([none])
 fi
+
+AC_CHECK_HEADERS([CoreFoundation/CFBundle.h CoreFoundation/CFURL.h], [], [], [])
 
 SIM_AC_CHECK_HEADER_TLHELP32_H
 SIM_AC_CHECK_FUNC__SPLITPATH
@@ -1491,26 +1500,12 @@ fi
 AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
 
 # *******************************************************************
-# * Mathlib stuff.
+# * Math library
 # *******************************************************************
 
-# Need to check necessity of including "-lm" on the link-line for both
-# C and C++ compiled code, as it could differ. We've had a gcc/g++
-# on AIX problem with missing "-lm" on the final link-line which I
-# suspect to stem from this. <mortene@sim.no>.
-
-AC_LANG_PUSH(C)
 SIM_AC_CHECK_MATHLIB(
   [COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"],
   [SIM_AC_ERROR([no-math-library])])
-AC_LANG_POP(C)
-
-AC_LANG_PUSH(C++)
-SIM_AC_MATHLIB_READY_IFELSE([], [
-  SIM_AC_CHECK_MATHLIB(
-    [COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"],
-    [SIM_AC_ERROR([no-math-library])])])
-AC_LANG_POP(C++)
 
 # *******************************************************************
 # * Check for ilogb() after mathlib test
