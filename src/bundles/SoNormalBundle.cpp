@@ -34,7 +34,9 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#include <assert.h>
+#include <cassert>
+
+#include "SbBasicP.h"
 
 /*!
   Constructor.
@@ -48,7 +50,7 @@ SoNormalBundle::SoNormalBundle(SoAction * action, SbBool forrendering)
   this->elem = SoNormalElement::getInstance(this->state);
   this->glelem = NULL;
   if (forrendering) {
-    this->glelem = (const SoGLNormalElement*) this->elem;
+    this->glelem = static_cast<const SoGLNormalElement *>(this->elem);
   }
 }
 
@@ -190,7 +192,7 @@ SoNormalBundle::set(int32_t num, const SbVec3f * normals)
   // refetch element since we pushed
   this->elem = SoNormalElement::getInstance(this->state);
   if (this->glelem) {
-    this->glelem = (const SoGLNormalElement*) this->elem;
+    this->glelem = static_cast<const SoGLNormalElement *>(this->elem);
   }
 }
 

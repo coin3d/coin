@@ -41,6 +41,8 @@
 
 #include <Inventor/system/gl.h>
 
+#include "SbBasicP.h"
+
 #include "glue/glp.h"
 #include "misc/SoGL.h"
 
@@ -145,13 +147,14 @@ SoMaterialBundle::reallySend(const int index)
 {
   this->lazyelem->sendDiffuseByIndex(index);
 }
+
 //
 // private method. Stores info and element pointers.
 //
 void
 SoMaterialBundle::setupElements(const SbBool isbetweenbeginend)
 {
-  this->lazyelem = (const SoGLLazyElement*) SoLazyElement::getInstance(this->state);
+  this->lazyelem = static_cast<const SoGLLazyElement *>(SoLazyElement::getInstance(this->state));
   this->currindex = 0;
   
   if (isbetweenbeginend || (this->coloronly & FLAG_COLORONLY)) {

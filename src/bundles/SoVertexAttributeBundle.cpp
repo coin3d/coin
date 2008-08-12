@@ -30,7 +30,8 @@
 
 #include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/actions/SoAction.h>
-#include <assert.h>
+#include <cassert>
+#include "SbBasicP.h"
 
 /*!
   Constructor.
@@ -41,7 +42,7 @@ SoVertexAttributeBundle::SoVertexAttributeBundle(SoAction * action, SbBool forre
   this->elem = SoVertexAttributeElement::getInstance(this->state);
   this->glelem = NULL;
   if (forrendering) {
-    this->glelem = (const SoGLVertexAttributeElement*) this->elem;
+    this->glelem = static_cast<const SoGLVertexAttributeElement *> (this->elem);
   }
 }
 

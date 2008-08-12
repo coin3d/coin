@@ -56,7 +56,9 @@
 
 #include <Inventor/system/gl.h>
 
-#include <assert.h>
+#include <cassert>
+#include "SbBasicP.h"
+#include "coindefs.h"
 
 #define FLAG_FUNCTION           0x01
 #define FLAG_NEEDCOORDS         0x02
@@ -101,7 +103,7 @@ SoTextureCoordinateBundle(SoAction * const action,
 
   // It is safe to assume that shapenode is of type SoShape, so we
   // cast to SoShape before doing any operations on the node.
-  this->shapenode = (SoShape *)action->getCurPathTail();
+  this->shapenode = coin_assert_cast<SoShape *>(action->getCurPathTail());
 
   this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
   switch (this->coordElt->getType()) {
@@ -163,7 +165,7 @@ SoTextureCoordinateBundle(SoAction * const action,
       }
     }
     if (needindices && this->isFunction()) this->flags |= FLAG_NEEDINDICES;
-    this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
+    this->glElt = static_cast<const SoGLTextureCoordinateElement *>(this->coordElt);
     this->glElt->initMulti(action->getState());
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
@@ -272,7 +274,7 @@ SoTextureCoordinateBundle::get(const int index)
 //
 void
 SoTextureCoordinateBundle::initDefault(SoAction * const action,
-                                       const SbBool forRendering)
+                                       const SbBool COIN_UNUSED(forRendering))
 {
   this->flags |= FLAG_NEEDCOORDS;
   this->flags |= FLAG_DEFAULT;
@@ -322,7 +324,7 @@ SoTextureCoordinateBundle::defaultCB(void * userdata,
                                      const SbVec3f & point,
                                      const SbVec3f & normal)
 {
-  return ((SoTextureCoordinateBundle*)userdata)->get(point, normal);
+  return static_cast<SoTextureCoordinateBundle *>(userdata)->get(point, normal);
 }
 
 //
@@ -331,9 +333,9 @@ SoTextureCoordinateBundle::defaultCB(void * userdata,
 const SbVec4f &
 SoTextureCoordinateBundle:: defaultCBMulti(void * userdata,
                                            const SbVec3f & point,
-                                           const SbVec3f & normal)
+                                           const SbVec3f & COIN_UNUSED(normal))
 {
-  SoTextureCoordinateBundle * thisp = (SoTextureCoordinateBundle*) userdata;
+  SoTextureCoordinateBundle * thisp = static_cast<SoTextureCoordinateBundle *>(userdata);
 
   SbVec3f pt;
   if (thisp->flags & FLAG_3DTEXTURES) {
@@ -366,7 +368,7 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   // texture coordinate mapping shouldn't be used. We might optimize this
   // by using a SoTextureCoordinateCache soon though. pederb, 20000218
 
-  SoShape * shape = (SoShape *)this->shapenode;
+  SoShape * shape = coin_assert_cast<SoShape *>(this->shapenode);
   const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
   if (bboxcache && bboxcache->isValid(action->getState())) {
     box = bboxcache->getProjectedBox();
