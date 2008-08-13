@@ -9,6 +9,8 @@ LinkHackSources = \
 	all-expat-c.c
 PublicHeaders =
 PrivateHeaders = \
+        xmltok_ns.c \
+        xmltok_impl.c \
         amigaconfig.h\
         ascii.h \
         asciitab.h \

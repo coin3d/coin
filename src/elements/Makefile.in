@@ -288,7 +288,7 @@ RegularSources = \
 	SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp \
 	SoDecimationTypeElement.cpp \
-        SoDepthBufferElement.cpp \
+	SoDepthBufferElement.cpp \
 	SoDiffuseColorElement.cpp \
 	SoDrawStyleElement.cpp \
 	SoElement.cpp \
@@ -353,7 +353,7 @@ RegularSources = \
 	SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp \
 	SoSoundElement.cpp \
-        SoVertexAttributeElement.cpp
+	SoVertexAttributeElement.cpp
 
 
 LinkHackSources = \
@@ -365,7 +365,8 @@ PublicHeaders =
 PrivateHeaders = \
 	SoTextureScalePolicyElement.h \
 	SoTextureScaleQualityElement.h \
-        SoVertexAttributeElement.cpp
+	SoVertexAttributeData.h \
+	SoVertexAttributeElement.cpp
 
 
 ObsoletedHeaders = 
@@ -539,9 +540,10 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_elements_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_elements_lst_SOURCES_DIST = SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h SoVertexAttributeElement.cpp \
-	all-elements-cpp.cpp SoAccumulatedElement.cpp \
-	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
+	SoTextureScaleQualityElement.h SoVertexAttributeData.h \
+	SoVertexAttributeElement.cpp all-elements-cpp.cpp \
+	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
+	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -683,9 +685,10 @@ am__objects_8 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libelements_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libelements_la_SOURCES_DIST = SoTextureScalePolicyElement.h \
-	SoTextureScaleQualityElement.h SoVertexAttributeElement.cpp \
-	all-elements-cpp.cpp SoAccumulatedElement.cpp \
-	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
+	SoTextureScaleQualityElement.h SoVertexAttributeData.h \
+	SoVertexAttributeElement.cpp all-elements-cpp.cpp \
+	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
+	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -782,9 +785,9 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTextureScalePolicyElement.h SoTextureScaleQualityElement.h \
-	SoVertexAttributeElement.cpp all-elements-cpp.cpp \
-	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
-	SoAnnoText3CharOrientElement.cpp \
+	SoVertexAttributeData.h SoVertexAttributeElement.cpp \
+	all-elements-cpp.cpp SoAccumulatedElement.cpp \
+	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \

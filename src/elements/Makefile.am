@@ -24,7 +24,7 @@ RegularSources = \
 	SoCullElement.cpp \
 	SoDecimationPercentageElement.cpp \
 	SoDecimationTypeElement.cpp \
-        SoDepthBufferElement.cpp \
+	SoDepthBufferElement.cpp \
 	SoDiffuseColorElement.cpp \
 	SoDrawStyleElement.cpp \
 	SoElement.cpp \
@@ -89,7 +89,7 @@ RegularSources = \
 	SoListenerGainElement.cpp \
 	SoListenerDopplerElement.cpp \
 	SoSoundElement.cpp \
-        SoVertexAttributeElement.cpp
+	SoVertexAttributeElement.cpp
 
 LinkHackSources = \
 	all-elements-cpp.cpp
@@ -99,7 +99,8 @@ PublicHeaders =
 PrivateHeaders = \
 	SoTextureScalePolicyElement.h \
 	SoTextureScaleQualityElement.h \
-        SoVertexAttributeElement.cpp
+	SoVertexAttributeData.h \
+	SoVertexAttributeElement.cpp
 
 ObsoletedHeaders =
 
