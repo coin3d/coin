@@ -283,6 +283,8 @@ SIM_AC_MACOS10_DEPLOYMENT_TARGET
 if test x"$sim_ac_macos10_deployment_target_major_version" = x"10"; then
   # AC_DEFINE() COIN_MACOS_10_# as needed here...
   sim_ac_macosx=true
+  sim_ac_macosx_10_2ff=false
+  sim_ac_macosx_10_3ff=false
   AC_DEFINE([COIN_MACOS_10], 1, [Define for Mac OS X builds])
   if test 1 -le $sim_ac_macos10_deployment_target_minor_version; then
     AC_DEFINE([COIN_MACOS_10_1], 1, [Define for Mac OS 10.1 builds])
@@ -315,10 +317,16 @@ if test x"$sim_ac_macos10_deployment_target_major_version" = x"10"; then
   fi
 else
   sim_ac_macosx=false
+  sim_ac_macosx_10_2ff=false
+  sim_ac_macosx_10_3ff=false
   sim_ac_macosx_name=""
 fi
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
+if $sim_ac_framework; then
+  AC_DEFINE([COIN_MACOSX_FRAMEWORK], 1, [Define when building Mac OS X framework])
+fi
+
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AM_CONDITIONAL([MACOSX_10_3FF], [$sim_ac_macosx_10_3ff])
 AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
@@ -601,8 +609,6 @@ if test x"$ac_cv_header_unistd_h" != x"yes"; then
 else
   AC_MSG_RESULT([none])
 fi
-
-AC_CHECK_HEADERS([CoreFoundation/CFBundle.h CoreFoundation/CFURL.h], [], [], [])
 
 SIM_AC_CHECK_HEADER_TLHELP32_H
 SIM_AC_CHECK_FUNC__SPLITPATH
