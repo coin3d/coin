@@ -35,9 +35,14 @@
 
   The resource locators take the form "coin:path/to/resource.ext".
   The "coin:" prefix is for Coin to differentiate a resource locator from
-  a filename (for multipurpose function usage).  The path/to/resource.ext
-  is the path under the environment variable $COINDIR where the file
-  should be present. This file can be an updated version, compared to the
+  a filename (for multipurpose function usage).
+  
+  The path/to/resource.ext is for most platforms the path under the
+  environment variable $COINDIR where the file should be present.  For
+  Mac OS X, the path is under the Inventor framework bundle Resources/
+  directory, if Coin was installed as a framework that is.
+
+  The file on disk can be an updated version, compared to the
   compiled-in buffer, which is why the externalized files are prioritized
   over the builtin buffers.
 
@@ -56,6 +61,19 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/C/tidbits.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#if defined(COIN_MACOS_10) && defined(COIN_MACOSX_FRAMEWORK)
+#include <CoreFoundation/CFBundle.h>
+#include <CoreFoundation/CFURL.h>
+#endif // COIN_MACOS_10 && COIN_MACOSX_FRAMEWORK
+
+#ifndef MAXPATHLEN
+#define MAXPATHLEN 2048
+#endif // !MAXPATHLEN
 
 // internal data
 class ResourceHandle {
@@ -119,54 +137,94 @@ CoinResources::cleanup(void)
 SbBool
 CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
 {
-  if (strncmp(resloc, "coin:", 5) != 0) return FALSE;
+  if (strncmp(resloc, "coin:", 5) != 0) {
+    return FALSE;
+  }
 
   ResourceHandle * handle = CoinResourcesP::getResourceHandle(resloc);
-  if (!handle) return FALSE;
+  if (!handle) {
+    return FALSE;
+  }
 
   if (handle->loadedbuf == NULL && handle->canbefile && !handle->filenotfound) {
     // try loading file from COINDIR/...
-    do {
+    do { // to 'break' out of this try-file-loading sequence
+      SbString filename;
+#if defined(COIN_MACOS_10) && defined(COIN_MACOSX_FRAMEWORK)
+      // CFBundleIdentifier in Info.plist
+      CFStringRef identifier =
+        CFStringCreateWithCString(kCFAllocatorDefault,
+                                  "org.coin3d.Coin.framework", kCFStringEncodingASCII);
+      CFBundleRef coinbundle = CFBundleGetBundleWithIdentifier(identifier);
+      CFRelease(identifier);
+      if (!coinbundle) {
+        handle->filenotfound = TRUE;
+        break;
+      }
+
+      // search app-bundle as well? probably not
+      // CFBundleRef mainbundle = CFBundleGetMainBundle();
+
+      CFURLRef url = CFBundleCopyResourcesDirectoryURL(coinbundle);
+      UInt8 buf[MAXPATHLEN];
+
+      if (!CFURLGetFileSystemRepresentation(url, true, buf, MAXPATHLEN-1)) {
+        handle->filenotfound = TRUE;
+        CFRelease(url);
+        break;
+      }
+      filename.sprintf("%s/%s", buf, resloc + 5);
+      CFRelease(url);
+#else // !COIN_MACOSX_FRAMEWORK
       static const char * coindirenv = coin_getenv("COINDIR");
-      if (coindirenv != NULL) {
-        SbString filename;
-        filename.sprintf("%s/share/Coin/%s", coindirenv, resloc + 5);
+      if (coindirenv == NULL) {
+        handle->filenotfound = TRUE;
+        break;
+      }
+      filename.sprintf("%s/share/Coin/%s", coindirenv, resloc + 5);
+#endif // !COIN_MACOSX_FRAMEWORK
+      if (COIN_DEBUG && 0) {
+        SoDebugError::postInfo("CoinResources::get", "trying to load '%s'.",
+                               filename.getString());
+      }
+      FILE * fp = fopen(filename.getString(), "rb");
+      if (!fp) {
+        handle->filenotfound = TRUE;
+        break;
+      }
 
-        FILE * fp = fopen(filename.getString(), "rb");
-        if (!fp) {
-          handle->filenotfound = TRUE;
-          break;
-        }
-
-        fseek(fp, 0, SEEK_END);
-        long size = ftell(fp);
-        if (size < 0) {
-          fclose(fp);
-          handle->filenotfound = TRUE;
-          break;
-        }
-
-        fseek(fp, 0, SEEK_SET);
-
-        char * buffer = new char [ size + 1 ];
-        buffer[size] = '\0';
-
-        size_t num = fread(buffer, size, 1, fp);
+      fseek(fp, 0, SEEK_END);
+      long size = ftell(fp);
+      if (size < 0) {
         fclose(fp);
-        fp = NULL;
+        handle->filenotfound = TRUE;
+        break;
+      }
 
-        if (num == 1) {
-          // FIXME: at this point we can check if this is the first
-          // load, and if so hook up freeLoadedExternals() to atexit()
-          // to clean up those buffers automatically.  Or we can maybe
-          // hook up something that clears out everything instead.
-          handle->loadedbuf = buffer;
-          handle->loadedbufsize = size;
-        } else {
-          handle->filenotfound = TRUE;
-          delete [] buffer;
-          break;
+      fseek(fp, 0, SEEK_SET);
+
+      char * buffer = new char [ size + 1 ];
+      buffer[size] = '\0';
+
+      size_t num = fread(buffer, size, 1, fp);
+      fclose(fp);
+      fp = NULL;
+
+      if (num == 1) {
+        // FIXME: at this point we can check if this is the first
+        // load, and if so hook up freeLoadedExternals() to atexit()
+        // to clean up those buffers automatically.  Or we can maybe
+        // hook up something that clears out everything instead.
+        handle->loadedbuf = buffer;
+        handle->loadedbufsize = size;
+        if (COIN_DEBUG && 0) {
+          SoDebugError::postInfo("CoinResources::get", "load '%s' ok.",
+                                 filename.getString());
         }
+      } else {
+        handle->filenotfound = TRUE;
+        delete [] buffer;
+        break;
       }
     } while ( FALSE );
   }
@@ -201,6 +259,7 @@ CoinResources::set(const char * resloc, const char * buffer, size_t bufsize, uns
 {
   ResourceHandle * handle = CoinResourcesP::getResourceHandle(resloc);
   if (handle) { // already set
+    SoDebugError::post("CoinResources::set", "Resource already set.");
     return FALSE;
   }
   handle = CoinResourcesP::createResourceHandle(resloc);
@@ -260,3 +319,4 @@ CoinResourcesP::createResourceHandle(const char * resloc)
   CoinResourcesP::resourcemap->insert(mapentry);
   return handle;
 }
+
