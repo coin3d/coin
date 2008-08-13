@@ -260,6 +260,8 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
     this->setCamera(PRIVATE(this)->searchForCamera(PRIVATE(this)->scene));
+  } else {
+    this->setCamera(NULL);
   }
   
   if (oldroot) oldroot->unref();
