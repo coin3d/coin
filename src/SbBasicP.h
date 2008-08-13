@@ -81,7 +81,8 @@ template<typename To>
 To coin_assert_cast(SoAction * ptr) { return coin_internal_assert_cast<To>(ptr); }
 
 //FIXME Should we remove this? - BFG 20080801
-//Strictly for internal use, untill we know exactly how to handle these
+//Strictly for internal use, until we know exactly how to handle these
+class SoPath;
 template <typename To>
 To 
 reclassify_cast(SoPath * ptr) {
