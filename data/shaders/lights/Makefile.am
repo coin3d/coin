@@ -14,7 +14,7 @@ DISTCLEANFILES = \
 	glsl2h.sh
 
 if MAC_FRAMEWORK
-shaderslightsdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/shaders/lights
+shaderslightsdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/shaders/lights
 else
 shaderslightsdatadir = $(datadir)/Coin/shaders/lights
 endif

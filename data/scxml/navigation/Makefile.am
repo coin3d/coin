@@ -4,7 +4,7 @@
 ## files to C/C++ header files).
 
 if MAC_FRAMEWORK
-scxmldefdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/scxml/navigation
+scxmldefdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/scxml/navigation
 else
 scxmldefdatadir = $(datadir)/Coin/scxml/navigation
 endif

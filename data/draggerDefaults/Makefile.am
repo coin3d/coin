@@ -31,7 +31,7 @@ DISTCLEANFILES = \
 	iv2h.sh
 
 if MAC_FRAMEWORK
-draggerdefdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/draggerDefaults
+draggerdefdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/draggerDefaults
 else
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 endif

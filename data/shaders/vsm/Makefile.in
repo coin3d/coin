@@ -271,7 +271,7 @@ DISTCLEANFILES = \
 	glsl2h.sh
 
 
-@MAC_FRAMEWORK_TRUE@shadersvsmdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/shaders/vsm
+@MAC_FRAMEWORK_TRUE@shadersvsmdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/shaders/vsm
 @MAC_FRAMEWORK_FALSE@shadersvsmdatadir = $(datadir)/Coin/shaders/vsm
 
 dist_shadersvsmdata_DATA = \

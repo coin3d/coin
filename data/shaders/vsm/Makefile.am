@@ -11,7 +11,7 @@ DISTCLEANFILES = \
 	glsl2h.sh
 
 if MAC_FRAMEWORK
-shadersvsmdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Contents/Resources/shaders/vsm
+shadersvsmdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/shaders/vsm
 else
 shadersvsmdatadir = $(datadir)/Coin/shaders/vsm
 endif
