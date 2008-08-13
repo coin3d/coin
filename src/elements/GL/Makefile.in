@@ -270,7 +270,7 @@ RegularSources = \
 	SoGLClipPlaneElement.cpp \
 	SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp \
-        SoGLDepthBufferElement.cpp \
+	SoGLDepthBufferElement.cpp \
 	SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp \
@@ -298,15 +298,19 @@ RegularSources = \
 	SoGLViewingMatrixElement.cpp \
 	SoGLViewportRegionElement.cpp \
 	SoGLDisplayList.cpp \
-        SoGLVertexAttributeElement.cpp \
+	SoGLVertexAttributeElement.cpp \
 	SoResetMatrixElement.cpp
+
 
 LinkHackSources = \
 	all-glelements-cpp.cpp
 
+
 PublicHeaders = 
+
 PrivateHeaders = \
 	SoResetMatrixElement.h
+
 
 ObsoletedHeaders = 
 
@@ -326,6 +330,10 @@ ObsoletedHeaders =
 # within the Makefile.am itself. 19991201 mortene.
 DISTCLEANFILES = \
 	ii_files/*.ii
+
+
+CLEANFILES = \
+	vc*.pdb
 
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
@@ -948,6 +956,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)

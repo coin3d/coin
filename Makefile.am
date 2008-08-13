@@ -255,6 +255,41 @@ EXTRA_DIST = \
 	build/msvc8/src/config-debug.h \
 	build/msvc8/src/config-release.h \
 	build/msvc8/src/setup.h \
+	build/msvc9/data/draggerDefaults/centerballDragger.h \
+	build/msvc9/data/draggerDefaults/directionalLightDragger.h \
+	build/msvc9/data/draggerDefaults/dragPointDragger.h \
+	build/msvc9/data/draggerDefaults/handleBoxDragger.h \
+	build/msvc9/data/draggerDefaults/jackDragger.h \
+	build/msvc9/data/draggerDefaults/pointLightDragger.h \
+	build/msvc9/data/draggerDefaults/rotateCylindricalDragger.h \
+	build/msvc9/data/draggerDefaults/rotateDiscDragger.h \
+	build/msvc9/data/draggerDefaults/rotateSphericalDragger.h \
+	build/msvc9/data/draggerDefaults/scale1Dragger.h \
+	build/msvc9/data/draggerDefaults/scale2Dragger.h \
+	build/msvc9/data/draggerDefaults/scale2UniformDragger.h \
+	build/msvc9/data/draggerDefaults/scaleUniformDragger.h \
+	build/msvc9/data/draggerDefaults/spotLightDragger.h \
+	build/msvc9/data/draggerDefaults/tabBoxDragger.h \
+	build/msvc9/data/draggerDefaults/tabPlaneDragger.h \
+	build/msvc9/data/draggerDefaults/trackballDragger.h \
+	build/msvc9/data/draggerDefaults/transformBoxDragger.h \
+	build/msvc9/data/draggerDefaults/transformerDragger.h \
+	build/msvc9/data/draggerDefaults/translate1Dragger.h \
+	build/msvc9/data/draggerDefaults/translate2Dragger.h \
+	build/msvc9/data/shaders/lights/DirectionalLight.h \
+	build/msvc9/data/shaders/lights/PointLight.h \
+	build/msvc9/data/shaders/lights/SpotLight.h \
+	build/msvc9/data/shaders/lights/DirSpotLight.h \
+	build/msvc9/data/shaders/vsm/VsmLookup.h \
+	build/msvc9/coin3.sln \
+	build/msvc9/coin3.vcproj \
+	build/msvc9/include/Inventor/C/basic.h \
+	build/msvc9/include/Inventor/system/gl-headers.h \
+	build/msvc9/include/Inventor/system/inttypes.h \
+	build/msvc9/src/config.h \
+	build/msvc9/src/config-debug.h \
+	build/msvc9/src/config-release.h \
+	build/msvc9/src/setup.h \
 	testsuite/Makefile.in \
 	testsuite/StandardTests.cpp \
 	testsuite/TestSuiteInit.cpp \

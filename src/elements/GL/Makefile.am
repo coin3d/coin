@@ -6,7 +6,7 @@ RegularSources = \
 	SoGLClipPlaneElement.cpp \
 	SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp \
-        SoGLDepthBufferElement.cpp \
+	SoGLDepthBufferElement.cpp \
 	SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp \
@@ -34,13 +34,17 @@ RegularSources = \
 	SoGLViewingMatrixElement.cpp \
 	SoGLViewportRegionElement.cpp \
 	SoGLDisplayList.cpp \
-        SoGLVertexAttributeElement.cpp \
+	SoGLVertexAttributeElement.cpp \
 	SoResetMatrixElement.cpp
+
 LinkHackSources = \
 	all-glelements-cpp.cpp
+
 PublicHeaders =
+
 PrivateHeaders = \
 	SoResetMatrixElement.h
+
 ObsoletedHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(glelements, elements)
@@ -60,6 +64,9 @@ ObsoletedHeaders =
 
 DISTCLEANFILES = \
 	ii_files/*.ii
+
+CLEANFILES = \
+	vc*.pdb
 
 if HACKING_COMPACT_BUILD
 BuildSources = $(LinkHackSources)

@@ -12,7 +12,7 @@ RegularSources = \
 	SoSTLFileKit.cpp \
 	steel.cpp
 LinkHackSources = \
-	all-foreignfiles-cpp.cpp \
+	all-foreignfiles-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
 	steel.h

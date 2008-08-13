@@ -278,9 +278,9 @@ RegularSources = \
 	steel.cpp
 
 LinkHackSources = \
-	all-foreignfiles-cpp.cpp \
-PublicHeaders =
+	all-foreignfiles-cpp.cpp
 
+PublicHeaders = 
 PrivateHeaders = \
 	steel.h
 
@@ -350,8 +350,7 @@ LIBRARIES = $(noinst_LIBRARIES)
 foreignfiles_lst_AR = $(AR) cru
 foreignfiles_lst_LIBADD =
 am__foreignfiles_lst_SOURCES_DIST = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp \
-	PublicHeaders =
+	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp
 am__objects_1 = all-foreignfiles-cpp.$(OBJEXT)
 am__objects_2 = SoForeignFileKit.$(OBJEXT) SoSTLFileKit.$(OBJEXT) \
 	steel.$(OBJEXT)
@@ -359,34 +358,33 @@ am__objects_2 = SoForeignFileKit.$(OBJEXT) SoSTLFileKit.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_foreignfiles_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_foreignfiles_lst_SOURCES_DIST = steel.h \
-	all-foreignfiles-cpp.cpp PublicHeaders = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp
+	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
+	steel.cpp
 foreignfiles_lst_OBJECTS = $(am_foreignfiles_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libforeignfiles_la_LDFLAGS =
 libforeignfiles_la_LIBADD =
 am__libforeignfiles_la_SOURCES_DIST = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp \
-	PublicHeaders =
-am__objects_7 = all-foreignfiles-cpp.lo
-am__objects_8 = SoForeignFileKit.lo SoSTLFileKit.lo steel.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
-am_libforeignfiles_la_OBJECTS = $(am__objects_9)
+	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp
+am__objects_6 = all-foreignfiles-cpp.lo
+am__objects_7 = SoForeignFileKit.lo SoSTLFileKit.lo steel.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
+am_libforeignfiles_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libforeignfiles_la_SOURCES_DIST = steel.h \
-	all-foreignfiles-cpp.cpp PublicHeaders = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp
+	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
+	steel.cpp
 libforeignfiles_la_OBJECTS = $(am_libforeignfiles_la_OBJECTS)
 libforeignfiles@SUFFIX@LINKHACK_la_LDFLAGS =
 libforeignfiles@SUFFIX@LINKHACK_la_LIBADD =
 am__libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.cpp \
-	all-foreignfiles-cpp.cpp PublicHeaders =
-am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
+	all-foreignfiles-cpp.cpp
+am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = steel.h \
-	all-foreignfiles-cpp.cpp PublicHeaders = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp
+	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
+	steel.cpp
 libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
