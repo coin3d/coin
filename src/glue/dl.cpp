@@ -131,12 +131,16 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
-
 #ifdef HAVE_WIN32_API
 /* Conditional inclusion, as the functions in win32api.h will not be
    implemented unless the Win32 API is available. */
 #include "glue/win32api.h"
 #endif /* HAVE_WIN32_API */
+
+#ifdef COIN_MACOS_10
+#include <CoreFoundation/CFBundle.h>
+#include <CoreFoundation/CFURL.h>
+#endif // COIN_MACOS_10
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
@@ -145,6 +149,10 @@
 
 #include "glue/dlp.h"
 #include "tidbitsp.h"
+
+#ifndef MAXPATHLEN
+#define MAXPATHLEN (4096)
+#endif // !MAXPATHLEN
 
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
 
@@ -405,38 +413,78 @@ cc_dirname(const char *path) {
 static cc_string * 
 cc_build_search_list(const char * libname)
 {
-  int i, image_count = _dyld_image_count();
-  cc_string res_path, framework_path, dyld_path;
+/* We search for libraries in several locations:
+
+   for COIN_MACOS_10 && COIN_MACOSX_FRAMEWORK
+   (1) Bundled with Coin framework
+
+   for COIN_MACOS_10
+   (2) Bundled on the application level, if application is bundled
+       Application.app/Contents/MacOS/lib/
+       Application.app/Contents/MacOS/
+
+   for *
+   (3) the default search paths for libraries
+
+   for COIN_MACOS_10
+   (4) We check if the library exists as a framework in
+       /Library/Frameworks/$libname.framework/$libname.
+       (This is actually quite an ugly hack, since frameworks
+       are not meant to be dlopen'ed -- but we need this for
+       dynamic loading of OpenAL symbols.)
+*/
+
   cc_string * path = cc_string_construct_new();
 
-  /* We search for libraries in 3 locations: 
+  int i, image_count = _dyld_image_count();
+  cc_string res_path, framework_path, dyld_path;
 
-    (1) We check if the library exists as a framework in 
-        /Library/Frameworks/$libname.framework/$libname.     
-        (This is actually quite an ugly hack, since frameworks 
-        are not meant to be dlopen'ed -- but we need this for 
-        dynamic loading of OpenAL symbols.)
+#if defined(COIN_MACOS_10) && defined(COIN_MACOSX_FRAMEWORK)
+  /* (1) Bundled with Coin framework, inside Libraries/ */
+  do {
+    char buf[MAXPATHLEN];
+    UInt8 * bufptr = reinterpret_cast<UInt8 *>(buf);
 
-    (2) the default search paths for libraries
+    CFStringRef identifier =
+      CFStringCreateWithCString(kCFAllocatorDefault,
+                                COIN_MAC_FRAMEWORK_IDENTIFIER_CSTRING,
+                                kCFStringEncodingASCII);
+    CFBundleRef coinbundle = CFBundleGetBundleWithIdentifier(identifier);
+    CFRelease(identifier);
+    if (!coinbundle) break;
 
-    (3) If we cannot find the library on the system, we might have a
-        fallback shipped with Coin / the Inventor.framework: Get the
-        file system path to the actually loaded Inventor.framework,
-        and look for the library in its Resources folder.
-  */ 
+    CFURLRef coinbundleurl = CFBundleCopyBundleURL(coinbundle);
+    if (!coinbundleurl) break;
+    if (!CFURLGetFileSystemRepresentation(coinbundleurl, true, bufptr, MAXPATHLEN-1)) {
+      CFRelease(coinbundleurl);
+      break;
+    }
+    CFRelease(coinbundleurl);
+    strcat(buf, "/Libraries:");
+    cc_string_append_text(path, buf);
+  } while (FALSE);
+#endif // COIN_MACOSX_FRAMEWORK
 
-  /* (1) check if library exists as framework */
+#ifdef COIN_MACOS_10
+  /* (2) Bundled on the application level, if application is bundled */
+  do {
+    char buf[MAXPATHLEN];
+    UInt8 * bufptr = reinterpret_cast<UInt8 *>(buf);
 
-  cc_string_construct(&framework_path);
-  const char * framework_prefix = "/Library/Frameworks/";
-  const char * framework_ext = ".framework";
-  cc_string_sprintf(&framework_path, "%s%s%s%s", framework_prefix,
-                    libname, framework_ext, ":");
-  cc_string_append_string(path, &framework_path);
-  cc_string_clean(&framework_path); 
+    CFBundleRef appbundle = CFBundleGetMainBundle();
+    CFURLRef appbundleurl = CFBundleCopyBundleURL(appbundle);
+    if (!appbundleurl) break;
+    if (!CFURLGetFileSystemRepresentation(appbundleurl, true, bufptr, MAXPATHLEN-1)) {
+      CFRelease(appbundleurl);
+      break;
+    }
+    CFRelease(appbundleurl);
+    strcat(buf, "/Contents/MacOS:");
+    cc_string_append_text(path, buf);
+  } while (FALSE);
+#endif // COIN_MACOS_10
 
-  /* (2) default library search path  */
-
+  /* (3) default library search path  */
   cc_string_construct(&dyld_path);
   char * dyld_library_path = getenv("DYLD_LIBRARY_PATH"); 
   if (dyld_library_path) {
@@ -444,7 +492,7 @@ cc_build_search_list(const char * libname)
     if (dyld_library_path[strlen(dyld_library_path)-1] != ':') {
       cc_string_append_text(&dyld_path, ":");
     }
-  } 
+  }
   char * dyld_fallback_library_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
   if (dyld_fallback_library_path) {
     cc_string_append_text(&dyld_path, dyld_fallback_library_path);
@@ -455,24 +503,23 @@ cc_build_search_list(const char * libname)
     cc_string_append_text(&dyld_path, "/lib:/usr/lib:");
   }
   cc_string_append_string(path, &dyld_path);
-  cc_string_clean(&dyld_path); 
+  cc_string_clean(&dyld_path);
 
-  /* (3) the Resources folder of the Inventor framework */
-
-  cc_string_construct(&res_path);
-  for (i = 0; i < image_count; i++) {
-    const char * p = _dyld_get_image_name(i);
-    if (strstr(p, "Inventor.framework")) {
-      /* We get /path/to/Foo.framework/Versions/A/Foo
-         but want /path/to/Foo.framework/Versions/A/Resources */
-      char * path_to_version_dir = cc_dirname(p);
-      cc_string_sprintf(&res_path, "%s%s", 
-                        path_to_version_dir, "/Resources");
-      break;
-    }
+#ifdef COIN_MACOS_10
+  /* (4) Check if library exists as framework (as in OS Xs 'OpenAL') */
+  if ((strstr(libname, ".dylib") == NULL) &&
+      (strstr(libname, ".so") == NULL) &&
+      (strstr(libname, ".dll") == NULL)) {
+    cc_string_construct(&framework_path);
+    const char * framework_prefix = "/Library/Frameworks/";
+    const char * framework_ext = ".framework";
+    cc_string_sprintf(&framework_path, "%s%s%s:", framework_prefix,
+                      libname, framework_ext);
+    cc_string_append_string(path, &framework_path);
+    cc_string_clean(&framework_path);
   }
-  cc_string_append_string(path, &res_path);
-  cc_string_clean(&res_path); 
+#endif // COIN_MACOS_10
+
   return path;
 }
 
