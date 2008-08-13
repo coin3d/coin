@@ -248,6 +248,8 @@ enum CoinOSType {
 
 int coin_runtime_os(void);
 
+#define COIN_MAC_FRAMEWORK_IDENTIFIER_CSTRING ("org.coin3d.Coin.framework")
+
 /* ********************************************************************** */
 
 int coin_debug_extra(void);

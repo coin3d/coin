@@ -71,6 +71,8 @@
 #include <CoreFoundation/CFURL.h>
 #endif // COIN_MACOS_10 && COIN_MACOSX_FRAMEWORK
 
+#include "tidbitsp.h"
+
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 2048
 #endif // !MAXPATHLEN
@@ -154,7 +156,8 @@ CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
       // CFBundleIdentifier in Info.plist
       CFStringRef identifier =
         CFStringCreateWithCString(kCFAllocatorDefault,
-                                  "org.coin3d.Coin.framework", kCFStringEncodingASCII);
+                                  COIN_MAC_FRAMEWORK_IDENTIFIER_CSTRING,
+                                  kCFStringEncodingASCII);
       CFBundleRef coinbundle = CFBundleGetBundleWithIdentifier(identifier);
       CFRelease(identifier);
       if (!coinbundle) {
