@@ -39,6 +39,9 @@
 /* define this to a type of the indicated bitwidth */
 #undef COIN_INTPTR_T
 
+/* Define when building Mac OS X framework */
+#undef COIN_MACOSX_FRAMEWORK
+
 /* Define for Mac OS X builds */
 #undef COIN_MACOS_10
 
@@ -125,12 +128,6 @@
 
 /* Define to use bzip2 */
 #undef HAVE_BZIP2
-
-/* Define to 1 if you have the <CoreFoundation/CFBundle.h> header file. */
-#undef HAVE_COREFOUNDATION_CFBUNDLE_H
-
-/* Define to 1 if you have the <CoreFoundation/CFURL.h> header file. */
-#undef HAVE_COREFOUNDATION_CFURL_H
 
 /* The CPP compiler has a variable containing the current function name */
 #undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
