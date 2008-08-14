@@ -104,9 +104,19 @@ To
 reclassify_cast(const SoPath * ptr) {
   return reinterpret_cast<To>(ptr);
 }
+
+//NOTE What we are doing here is strictly not supported by the C++
+//standard. So we need to do some duck and dive between different
+//compilers. BFG 20080814
 template <typename To, typename From>
 To 
 function_to_object_cast(From ptr) {
+#if defined(__GNUC__) && ( __GNUC__ >= 4)
+  //Add compilers which support this style explicitly
+  return reinterpret_cast<To>(ptr);
+#else
+  //This is not C++ correct, but we default to this, as most compilers will accept it.
   return (To) ptr;
+#endif
 }
 #endif // !COIN_SBBASICP_H
