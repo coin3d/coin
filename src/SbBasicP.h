@@ -104,4 +104,9 @@ To
 reclassify_cast(const SoPath * ptr) {
   return reinterpret_cast<To>(ptr);
 }
+template <typename To, typename From>
+To 
+function_to_object_cast(From ptr) {
+  return (To) ptr;
+}
 #endif // !COIN_SBBASICP_H

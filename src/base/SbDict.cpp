@@ -45,6 +45,8 @@
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/C/base/memalloc.h>
 
+#include "SbBasicP.h"
+
 // *************************************************************************
 
 /*!
@@ -169,7 +171,7 @@ sbdict_dummy_apply(SbDict::Key key, void * value, void * closure)
 void
 SbDict::applyToAll(void (* rtn)(Key key, void * value)) const
 {
-  cc_hash_apply(this->hashtable, sbdict_dummy_apply, reinterpret_cast<void *>(rtn));
+  cc_hash_apply(this->hashtable, sbdict_dummy_apply, function_to_object_cast<void *>(rtn));
 }
 
 /*!
