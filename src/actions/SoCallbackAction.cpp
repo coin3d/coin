@@ -224,7 +224,7 @@ SoCallbackData::doNodeCallbacks(SoCallbackAction * action,
   while (cbdata) {
     assert(cbdata->func != NULL);
     SoCallbackAction::SoCallbackActionCB * cbfunc =
-      function_to_object_cast<SoCallbackAction::SoCallbackActionCB *>( cbdata->func);
+      object_to_function_cast<SoCallbackAction::SoCallbackActionCB *>( cbdata->func);
     SoCallbackAction::Response ret = cbfunc(cbdata->data, action, node);
     if (ret == SoCallbackAction::ABORT) return SoCallbackAction::ABORT;
     if (ret == SoCallbackAction::PRUNE) response = ret;
@@ -242,7 +242,7 @@ SoCallbackData::doTriangleCallbacks(SoCallbackAction * action,
   SoCallbackData * cbdata = this;
   while (cbdata) {
     assert(cbdata->func != NULL);
-    SoTriangleCB * tricb = function_to_object_cast<SoTriangleCB *> (cbdata->func);
+    SoTriangleCB * tricb = object_to_function_cast<SoTriangleCB *> (cbdata->func);
     tricb(cbdata->data, action, v1, v2, v3);
     cbdata = cbdata->next;
   }
@@ -256,7 +256,7 @@ SoCallbackData::doLineSegmentCallbacks(SoCallbackAction * action,
   SoCallbackData * cbdata = this;
   while (cbdata) {
     assert(cbdata->func != NULL);
-    SoLineSegmentCB * linecb = function_to_object_cast<SoLineSegmentCB *>( cbdata->func);
+    SoLineSegmentCB * linecb = object_to_function_cast<SoLineSegmentCB *>( cbdata->func);
     linecb(cbdata->data, action, v1, v2);
     cbdata = cbdata->next;
   }
@@ -269,7 +269,7 @@ SoCallbackData::doPointCallbacks(SoCallbackAction * action,
   SoCallbackData * cbdata = this;
   while (cbdata) {
     assert(cbdata->func != NULL);
-    SoPointCB * ptcb = function_to_object_cast<SoPointCB *>( cbdata->func);
+    SoPointCB * ptcb = object_to_function_cast<SoPointCB *>( cbdata->func);
     ptcb(cbdata->data, action, v);
     cbdata = cbdata->next;
   }

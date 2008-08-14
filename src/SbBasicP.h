@@ -119,4 +119,11 @@ function_to_object_cast(From ptr) {
   return (To) ptr;
 #endif
 }
+
+//Casting the other way of function_to_object_cast, implemented by
+//calling function_to_object_cast.
+template <typename To, typename From>
+object_to_function_cast(From obj) {
+  return function_to_object_cast<To>(obj);
+}
 #endif // !COIN_SBBASICP_H
