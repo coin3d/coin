@@ -61,6 +61,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
