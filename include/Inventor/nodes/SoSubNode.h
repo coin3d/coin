@@ -101,7 +101,7 @@ SoFieldData * _class_::fieldData = NULL; \
 const SoFieldData ** \
 _class_::getFieldDataPtr(void) \
 { \
-  return (const SoFieldData **)(&_class_::fieldData); \
+  return const_cast<const SoFieldData **>(&_class_::fieldData); \
 } \
  \
 const SoFieldData * \

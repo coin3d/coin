@@ -82,7 +82,7 @@ _class_::getNodekitCatalog(void) const \
 const SoNodekitCatalog ** \
 _class_::getClassNodekitCatalogPtr(void) \
 { \
-  return (const class SoNodekitCatalog **)&_class_::classcatalog; \
+  return const_cast<const class SoNodekitCatalog **>(&_class_::classcatalog); \
 } \
  \
 void \

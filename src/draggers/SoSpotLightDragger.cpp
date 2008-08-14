@@ -52,8 +52,8 @@
 
 #include <Inventor/draggers/SoSpotLightDragger.h>
 
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
@@ -69,6 +69,7 @@
 #include <data/draggerDefaults/spotLightDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFRotation SoSpotLightDragger::rotation
@@ -115,6 +116,8 @@
   \var SbPlaneProjector * SoSpotLightDragger::planeProj
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoSpotLightDragger *>(d)
 
 class SoSpotLightDraggerP {
 public:
@@ -202,7 +205,7 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("spotLightDragger.iv",
                                        SPOTLIGHTDRAGGER_draggergeometry,
-                                       (int)strlen(SPOTLIGHTDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(SPOTLIGHTDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -272,7 +275,7 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    SoDragger *therotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    SoDragger * therotator = coin_assert_cast<SoDragger *>(this->getAnyPart("rotator", FALSE));
     therotator->setPartAsDefault("rotator", "spotLightRotatorRotator");
     therotator->setPartAsDefault("rotatorActive",
                               "spotLightRotatorRotatorActive");
@@ -281,7 +284,7 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     therotator->setPartAsDefault("feedbackActive",
                               "spotLightRotatorFeedbackActive");
 
-    SoDragger *thetranslator = (SoDragger*) this->getAnyPart("translator", FALSE);
+    SoDragger *thetranslator = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     thetranslator->setPartAsDefault("yzTranslator.translator",
                                  "spotLightTranslatorPlaneTranslator");
     thetranslator->setPartAsDefault("xzTranslator.translator",
@@ -318,9 +321,9 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       this->rotFieldSensor->attach(&this->rotation);
   }
   else {
-    SoDragger *thetranslator = (SoDragger*) this->getAnyPart("translator", FALSE);
+    SoDragger *thetranslator = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     this->unregisterChildDragger(thetranslator);
-    SoDragger *therotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    SoDragger * therotator = coin_assert_cast<SoDragger *>(this->getAnyPart("rotator", FALSE));
     this->unregisterChildDragger(therotator);
 
     if (this->angleFieldSensor->getAttachedField() != NULL)
@@ -355,13 +358,13 @@ SoSpotLightDragger::setDefaultOnNonWritingFields(void)
 void
 SoSpotLightDragger::fieldSensorCB(void * d, SoSensor * s)
 {
-  SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
+  SoSpotLightDragger * thisp = THISP(d);
  
-  if (s == (SoSensor*) thisp->angleFieldSensor) {
+  if (s == static_cast<SoSensor *>(thisp->angleFieldSensor)) {
     // need to update the beamScale geometry
     SoScale * scale = SO_GET_ANY_PART(thisp, "beamScale", SoScale);
     SbVec3f scaleFactor;
-    scaleFactor[0] = scaleFactor[1] = (float)tan(thisp->angle.getValue());
+    scaleFactor[0] = scaleFactor[1] = static_cast<float>(tan(thisp->angle.getValue()));
     scaleFactor[2] = 1.0f;
     scale->scaleFactor = scaleFactor;
     thisp->valueChanged();
@@ -377,7 +380,7 @@ SoSpotLightDragger::fieldSensorCB(void * d, SoSensor * s)
 void
 SoSpotLightDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
+  SoSpotLightDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
@@ -401,7 +404,7 @@ SoSpotLightDragger::valueChangedCB(void *, SoDragger * d)
 void
 SoSpotLightDragger::startCB(void *, SoDragger * d)
 {
-  SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
+  SoSpotLightDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -409,7 +412,7 @@ SoSpotLightDragger::startCB(void *, SoDragger * d)
 void
 SoSpotLightDragger::motionCB(void *, SoDragger * d)
 {
-  SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
+  SoSpotLightDragger * thisp = THISP(d);
   thisp->drag();
 }
 
@@ -417,7 +420,7 @@ SoSpotLightDragger::motionCB(void *, SoDragger * d)
 void
 SoSpotLightDragger::doneCB(void *, SoDragger * d)
 {
-  SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
+  SoSpotLightDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -457,7 +460,7 @@ SoSpotLightDragger::drag(void)
   SbVec3f vec = projPt - apex;
   float dot = SbVec3f(0.0f, 0.0f, -1.0f).dot(vec) / vec.length();
   if (dot < 0.0f) dot = 0.01f; // FIXME: pederb, 20000209
-  this->setBeamScaleFromAngle((float)acos(dot));
+  this->setBeamScaleFromAngle(static_cast<float>(acos(dot)));
 }
 
 /*! \COININTERNAL
@@ -482,8 +485,10 @@ SoSpotLightDragger::setBeamScaleFromAngle(float beamangle)
 {
   SoScale *scale = SO_GET_ANY_PART(this, "beamScale", SoScale);
   SbVec3f scaleFactor;
-  scaleFactor[0] = scaleFactor[1] = (float)tan(beamangle);
+  scaleFactor[0] = scaleFactor[1] = static_cast<float>(tan(beamangle));
   scaleFactor[2] = 1.0f;
   scale->scaleFactor = scaleFactor;
   this->angle = beamangle;
 }
+
+#undef THISP

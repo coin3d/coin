@@ -71,7 +71,7 @@
 
 #include <Inventor/draggers/SoTransformerDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
@@ -96,6 +96,7 @@
 
 #include "coindefs.h" // COIN_STUB() & COIN_OBSOLETED()
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 // FIXME, bugs or missing features (pederb, 20000224):
 // o some feedback is missing (mostly crosshair)
@@ -388,6 +389,7 @@ SoTransformerDragger::build_catalog6(void)
 }
 
 #define PRIVATE(obj) ((obj)->pimpl)
+#define THISP(d) static_cast<SoTransformerDragger *>(d)
 
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
@@ -706,7 +708,7 @@ SoTransformerDragger::SoTransformerDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("transformerDragger.iv",
                                        TRANSFORMERDRAGGER_draggergeometry,
-                                       (int)strlen(TRANSFORMERDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(TRANSFORMERDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -928,7 +930,7 @@ SoTransformerDragger::setDefaultOnNonWritingFields(void)
 void
 SoTransformerDragger::fieldSensorCB(void *d, SoSensor *)
 {
-  SoTransformerDragger *thisp = (SoTransformerDragger*)d;
+  SoTransformerDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -938,7 +940,7 @@ SoTransformerDragger::fieldSensorCB(void *d, SoSensor *)
 void
 SoTransformerDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoTransformerDragger *thisp = (SoTransformerDragger*)d;
+  SoTransformerDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
@@ -1056,7 +1058,7 @@ SoTransformerDragger::getInteractiveCenterInBoxSpace(void)
 void
 SoTransformerDragger::startCB(void *, SoDragger * d)
 {
-  SoTransformerDragger *thisp = (SoTransformerDragger*)d;
+  SoTransformerDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -1064,7 +1066,7 @@ SoTransformerDragger::startCB(void *, SoDragger * d)
 void
 SoTransformerDragger::motionCB(void *, SoDragger * d)
 {
-  SoTransformerDragger *thisp = (SoTransformerDragger*)d;
+  SoTransformerDragger * thisp = THISP(d);
   thisp->drag();
 }
 
@@ -1072,7 +1074,7 @@ SoTransformerDragger::motionCB(void *, SoDragger * d)
 void
 SoTransformerDragger::finishCB(void *, SoDragger * d)
 {
-  SoTransformerDragger *thisp = (SoTransformerDragger*)d;
+  SoTransformerDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -1080,7 +1082,7 @@ SoTransformerDragger::finishCB(void *, SoDragger * d)
 void
 SoTransformerDragger::metaKeyChangeCB(void *, SoDragger *d)
 {
-  SoTransformerDragger *thisp = (SoTransformerDragger*)d;
+  SoTransformerDragger * thisp = THISP(d);
   if (!thisp->isActive.getValue()) return;
 
   const SoEvent *event = thisp->getEvent();
@@ -1096,8 +1098,9 @@ SoTransformerDragger::metaKeyChangeCB(void *, SoDragger *d)
 static void
 invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = (SoSurroundScale*)
-    kit->getPart("surroundScale", FALSE);
+  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>(
+    kit->getPart("surroundScale", FALSE)
+    );
   if (ss) ss->invalidate();
 }
 
@@ -1128,7 +1131,7 @@ SoTransformerDragger::dragStart(void)
     }
     if (i <= 6) {
       found = TRUE;
-      this->state = (State)(int(RIT_TRANSLATE) + (i-1));
+      this->state = static_cast<State>((int(RIT_TRANSLATE) + (i-1)));
       PRIVATE(this)->whatkind = WHATKIND_TRANSLATE;
       PRIVATE(this)->whatnum = i;
       if (i <= 2) PRIVATE(this)->dimension = 1;
@@ -1145,7 +1148,7 @@ SoTransformerDragger::dragStart(void)
     }
     if (i <= 6) {
       found = TRUE;
-      this->state = (State)(int(RIT_X_ROTATE) + (i-1));
+      this->state = static_cast<State>((int(RIT_X_ROTATE) + (i-1)));
       PRIVATE(this)->whatkind = WHATKIND_ROTATE;
       PRIVATE(this)->whatnum = i;
       if (i <= 2) PRIVATE(this)->dimension = 1;
@@ -1161,7 +1164,7 @@ SoTransformerDragger::dragStart(void)
     }
     if (i <= 8) {
       found = TRUE;
-      this->state = (State) (int(PX_PY_PZ_3D_SCALE) + (i-1));
+      this->state = static_cast<State>((int(PX_PY_PZ_3D_SCALE) + (i-1)));
       PRIVATE(this)->whatkind = WHATKIND_SCALE;
       PRIVATE(this)->whatnum = i;
     }
@@ -1192,7 +1195,7 @@ SoTransformerDragger::dragStart(void)
       str.sprintf("translator%dSwitch", PRIVATE(this)->whatnum);
       this->setSwitchValue(str.getString(), 1);
       this->setSwitchValue("translateBoxFeedbackSwitch", SO_SWITCH_ALL);
-      SoRotation * feedbackrot = (SoRotation*) this->getAnyPart("translateBoxFeedbackRotation", TRUE);
+      SoRotation * feedbackrot = coin_assert_cast<SoRotation *>(this->getAnyPart("translateBoxFeedbackRotation", TRUE));
       assert(feedbackrot);
       switch (PRIVATE(this)->whatnum) {
       default:
@@ -1431,8 +1434,10 @@ SoTransformerDragger::dragScale()
     const SbViewVolume &vv = this->getViewVolume();
     const SbViewportRegion &vp = this->getViewportRegion();
     SbVec2s move = this->getLocaterPosition() - this->getStartLocaterPosition();
-    SbVec2f normmove((float)move[0]/(float)vp.getViewportSizePixels()[0],
-                     (float)move[1]/(float)vp.getViewportSizePixels()[1]);
+    SbVec2f normmove(
+		     static_cast<float>(move[0])/static_cast<float>(vp.getViewportSizePixels()[0]),
+                     static_cast<float>(move[1])/static_cast<float>(vp.getViewportSizePixels()[1])
+		     );
     SbVec3f tmp = vv.getPlanePoint(vv.getNearDist(), SbVec2f(0.5f, 0.5f));
     SbVec3f dir = vv.getPlanePoint(vv.getNearDist(), SbVec2f(0.5f, 0.5f) + normmove);
     dir -= tmp;
@@ -1832,8 +1837,8 @@ SoTransformerDragger::updateAntiSquishList(void)
 
     SoPathList &pl = sa.getPaths();
     for (int i = 0; i < pl.getLength(); i++) {
-      SoFullPath *path = (SoFullPath*)pl[i];
-      SoNode *tail = path->getTail();
+      SoFullPath * path = reclassify_cast<SoFullPath *>(pl[i]);
+      SoNode * tail = path->getTail();
       int j, n = this->antiSquishList.getLength();
       for (j = 0; j < n; j++) {
         if (this->antiSquishList[j] == tail) break;
@@ -1844,7 +1849,7 @@ SoTransformerDragger::updateAntiSquishList(void)
   }
   int n = this->antiSquishList.getLength();
   for (int i = 0; i < n; i++) {
-    SoAntiSquish *squishy = (SoAntiSquish*) this->antiSquishList[i];
+    SoAntiSquish * squishy = coin_assert_cast<SoAntiSquish *>(this->antiSquishList[i]);
     squishy->recalc();
   }
 }
@@ -1878,7 +1883,7 @@ SoTransformerDragger::setAllPartSwitches(int scalewhich, int rotatewhich, int tr
   Open Inventor API.  We'll consider to implement it if requested.
 */
 int
-SoTransformerDragger::getMouseGestureDirection(SbBool x_ok, SbBool y_ok, SbBool z_ok)
+SoTransformerDragger::getMouseGestureDirection(SbBool COIN_UNUSED(x_ok), SbBool COIN_UNUSED(y_ok), SbBool COIN_UNUSED(z_ok))
 {
   COIN_OBSOLETED();
   return -1;
@@ -1889,7 +1894,7 @@ SoTransformerDragger::getMouseGestureDirection(SbBool x_ok, SbBool y_ok, SbBool 
   Open Inventor API.  We'll consider to implement it if requested.
 */
 int
-SoTransformerDragger::getIgnoreAxis(SbVec2f axis[3][2], SbBool x_ok, SbBool y_ok, SbBool z_ok)
+SoTransformerDragger::getIgnoreAxis(SbVec2f COIN_UNUSED(axis[3][2]), SbBool COIN_UNUSED(x_ok), SbBool COIN_UNUSED(y_ok), SbBool COIN_UNUSED(z_ok))
 {
   COIN_OBSOLETED();
   return -1;
@@ -1900,7 +1905,7 @@ SoTransformerDragger::getIgnoreAxis(SbVec2f axis[3][2], SbBool x_ok, SbBool y_ok
   Open Inventor API.  We'll consider to implement it if requested.
 */
 void
-SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f origin, SbVec2f axisends[3][2], int index_a, int index_b)
+SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f COIN_UNUSED(origin), SbVec2f COIN_UNUSED(axisends[3][2]), int COIN_UNUSED(index_a), int COIN_UNUSED(index_b))
 {
   COIN_OBSOLETED();
 }
@@ -1910,7 +1915,7 @@ SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f origin, SbVec
   Open Inventor API.  We'll consider to implement it if requested.
 */
 SbBool
-SoTransformerDragger::isColinear(SbVec2f a1[2], SbVec2f a2[2], int pixels)
+SoTransformerDragger::isColinear(SbVec2f COIN_UNUSED(a1[2]), SbVec2f COIN_UNUSED(a2[2]), int COIN_UNUSED(pixels))
 {
   COIN_OBSOLETED();
   return FALSE;
@@ -1933,8 +1938,8 @@ SoTransformerDragger::getNodeFieldNode(const char *fieldname)
   SoField *field = this->getField(fieldname);
   assert(field != NULL);
   assert(field->isOfType(SoSFNode::getClassTypeId()));
-  assert(((SoSFNode*)field)->getValue() != NULL);
-  return ((SoSFNode*)field)->getValue();
+  assert(coin_assert_cast<SoSFNode *>(field)->getValue() != NULL);
+  return coin_assert_cast<SoSFNode *>(field)->getValue();
 }
 
 SbMatrix

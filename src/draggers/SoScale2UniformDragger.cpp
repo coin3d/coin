@@ -49,7 +49,7 @@
 
 #include <Inventor/draggers/SoScale2UniformDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -80,6 +80,8 @@
   \var SbLineProjector * SoScale2UniformDragger::lineProj
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoScale2UniformDragger *>(d)
 
 class SoScale2UniformDraggerP {
 public:
@@ -153,7 +155,7 @@ SoScale2UniformDragger::SoScale2UniformDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("scale2UniformDragger.iv",
                                        SCALE2UNIFORMDRAGGER_draggergeometry,
-                                       (int)strlen(SCALE2UNIFORMDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(SCALE2UNIFORMDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
@@ -232,7 +234,7 @@ void
 SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
 {
   assert(d);
-  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SoScale2UniformDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f t, s;
@@ -248,7 +250,7 @@ SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SoScale2UniformDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -264,7 +266,7 @@ SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
 void
 SoScale2UniformDragger::startCB(void *, SoDragger * d)
 {
-  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SoScale2UniformDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -272,7 +274,7 @@ SoScale2UniformDragger::startCB(void *, SoDragger * d)
 void
 SoScale2UniformDragger::motionCB(void *, SoDragger * d)
 {
-  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SoScale2UniformDragger * thisp = THISP(d);
   thisp->drag();
 }
 
@@ -280,7 +282,7 @@ SoScale2UniformDragger::motionCB(void *, SoDragger * d)
 void
 SoScale2UniformDragger::finishCB(void *, SoDragger * d)
 {
-  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SoScale2UniformDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -340,3 +342,5 @@ SoScale2UniformDragger::dragFinish(void)
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
 }
+
+#undef THISP

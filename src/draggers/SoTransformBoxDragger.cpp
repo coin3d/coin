@@ -53,7 +53,7 @@
 
 #include <Inventor/draggers/SoTransformBoxDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/draggers/SoScaleUniformDragger.h>
@@ -68,6 +68,7 @@
 #include <data/draggerDefaults/transformBoxDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFRotation SoTransformBoxDragger::rotation
@@ -100,6 +101,8 @@
   \var SoFieldSensor * SoTransformBoxDragger::scaleFieldSensor
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoTransformBoxDragger *>(d)
 
 class SoTransformBoxDraggerP {
 public:
@@ -245,7 +248,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("transformBoxDragger.iv",
                                        TRANSFORMBOXDRAGGER_draggergeometry,
-                                       (int)strlen(TRANSFORMBOXDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(TRANSFORMBOXDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -267,31 +270,31 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
 
   SoRotation *rot;
   rot = SO_GET_ANY_PART(this, "rotator1Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), ((float) M_PI)/2.0f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), static_cast<float>(M_PI)/2.0f);
   this->rotator1Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "rotator2Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)/2.0f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI)/2.0f);
   this->rotator2Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "rotator3Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
   this->rotator3Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator1Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)/2.0f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), static_cast<float>(M_PI)/2.0f);
   this->translator1Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "translator2Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) -M_PI)/2.0f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), -static_cast<float>(M_PI)/2.0f);
   this->translator2Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator3Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)/2.0f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI)/2.0f);
   this->translator3Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "translator4Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) -M_PI)/2.0f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -static_cast<float>(M_PI)/2.0f);
   this->translator4Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator5Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (float) M_PI);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI));
   this->translator5Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator6Rot", SoRotation);
@@ -340,7 +343,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     int i;
     SbString str;
     inherited::setUpConnections(onoff, doitalways);
-    SoDragger *child = (SoDragger*) this->getAnyPart("scaler", FALSE);
+    SoDragger *child = coin_assert_cast<SoDragger *>(this->getAnyPart("scaler", FALSE));
     child->setPartAsDefault("scaler", "transformBoxScalerScaler");
     child->setPartAsDefault("scalerActive", "transformBoxScalerScalerActive");
     child->setPartAsDefault("feedback", "transformBoxScalerFeedback");
@@ -349,7 +352,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
     for (i = 1; i <= 3; i++) {
       str.sprintf("rotator%d", i);
-      child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
+      child = coin_assert_cast<SoDragger *>(this->getAnyPart(str.getString(), FALSE));
       child->setPartAsDefault("rotator", "transformBoxRotatorRotator");
       child->setPartAsDefault("rotatorActive", "transformBoxRotatorRotatorActive");
       child->setPartAsDefault("feedback", "transformBoxRotatorFeedback");
@@ -359,7 +362,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
     for (i = 1; i <= 6; i++) {
       str.sprintf("translator%d", i);
-      child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
+      child = coin_assert_cast<SoDragger *>(this->getAnyPart(str.getString(), FALSE));
       child->setPartAsDefault("translator", "transformBoxTranslatorTranslator");
       child->setPartAsDefault("translatorActive", "transformBoxTranslatorTranslatorActive");
       child->setPartAsDefault("xAxisFeedback", "transformBoxTranslatorXAxisFeedback");
@@ -377,16 +380,16 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     }
   }
   else {
-    this->removeChildDragger((SoDragger*)this->getAnyPart("scaler", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("rotator1", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("rotator2", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("rotator3", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("translator1", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("translator2", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("translator3", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("translator4", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("translator5", FALSE));
-    this->removeChildDragger((SoDragger*)this->getAnyPart("translator6", FALSE));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("scaler", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("rotator1", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("rotator2", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("rotator3", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("translator1", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("translator2", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("translator3", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("translator4", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("translator5", FALSE)));
+    this->removeChildDragger(coin_assert_cast<SoDragger *>(this->getAnyPart("translator6", FALSE)));
 
     if (this->translFieldSensor->getAttachedField() != NULL) {
       this->translFieldSensor->detach();
@@ -438,7 +441,7 @@ SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
 void
 SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoTransformBoxDragger *thisp = (SoTransformBoxDragger*)d;
+  SoTransformBoxDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -448,7 +451,7 @@ SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoTransformBoxDragger *thisp = (SoTransformBoxDragger*)d;
+  SoTransformBoxDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -493,10 +496,12 @@ SoTransformBoxDragger::removeChildDragger(SoDragger * child)
 void
 SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
 {
-  SoTransformBoxDragger * thisp = (SoTransformBoxDragger*) d;
+  SoTransformBoxDragger * thisp = THISP(d);
   SoSurroundScale * surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
   if (surround) surround->invalidate();
 
   SoAntiSquish * squish = SO_CHECK_ANY_PART(thisp, "antiSquish", SoAntiSquish);
   if (squish) squish->recalc();
 }
+
+#undef THISP

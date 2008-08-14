@@ -50,7 +50,7 @@
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
@@ -62,6 +62,7 @@
 #include <data/draggerDefaults/directionalLightDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFRotation SoDirectionalLightDragger::rotation
@@ -166,7 +167,7 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("directionalLightDragger.iv",
                                        DIRECTIONALLIGHTDRAGGER_draggergeometry,
-                                       (int)strlen(DIRECTIONALLIGHTDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(DIRECTIONALLIGHTDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -216,7 +217,7 @@ SoDirectionalLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    SoDragger *therotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    SoDragger * therotator = coin_assert_cast<SoDragger *>(this->getAnyPart("rotator", FALSE));
     therotator->setPartAsDefault("rotator", "directionalLightRotatorRotator");
     therotator->setPartAsDefault("rotatorActive",
                               "directionalLightRotatorRotatorActive");
@@ -225,7 +226,7 @@ SoDirectionalLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     therotator->setPartAsDefault("feedbackActive",
                               "directionalLightRotatorFeedbackActive");
 
-    SoDragger *thetranslator = (SoDragger*) this->getAnyPart("translator", FALSE);
+    SoDragger *thetranslator = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     thetranslator->setPartAsDefault("yzTranslator.translator",
                                  "directionalLightTranslatorPlaneTranslator");
     thetranslator->setPartAsDefault("xzTranslator.translator",
@@ -260,9 +261,9 @@ SoDirectionalLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       this->rotFieldSensor->attach(&this->rotation);
   }
   else {
-    SoDragger *thetranslator = (SoDragger*) this->getAnyPart("translator", FALSE);
+    SoDragger * thetranslator = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     this->unregisterChildDragger(thetranslator);
-    SoDragger *therotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    SoDragger * therotator = coin_assert_cast<SoDragger *>(this->getAnyPart("rotator", FALSE));
     this->unregisterChildDragger(therotator);
 
     if (this->rotFieldSensor->getAttachedField() != NULL)
@@ -290,7 +291,7 @@ SoDirectionalLightDragger::setDefaultOnNonWritingFields(void)
 void
 SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoDirectionalLightDragger *thisp = (SoDirectionalLightDragger*)d;
+  SoDirectionalLightDragger * thisp = static_cast<SoDirectionalLightDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -300,7 +301,7 @@ SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoDirectionalLightDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoDirectionalLightDragger *thisp = (SoDirectionalLightDragger*)d;
+  SoDirectionalLightDragger *thisp = static_cast<SoDirectionalLightDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;

@@ -52,7 +52,7 @@
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
@@ -68,6 +68,7 @@
 #include <data/draggerDefaults/dragPointDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFVec3f SoDragPointDragger::translation
@@ -249,7 +250,7 @@ SoDragPointDragger::SoDragPointDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("dragPointDragger.iv",
                                        DRAGPOINTDRAGGER_draggergeometry,
-                                       (int)strlen(DRAGPOINTDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(DRAGPOINTDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
@@ -275,13 +276,13 @@ SoDragPointDragger::SoDragPointDragger(void)
 
   // set rotations to align draggers to their respective axis/planes
   SoRotation *xrot = new SoRotation;
-  xrot->rotation.setValue(SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f));
+  xrot->rotation.setValue(SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (static_cast<float>(M_PI))*0.5f));
   this->setAnyPartAsDefault("rotX", xrot);
   SoRotation *yrot = new SoRotation;
-  yrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)*0.5f));
+  yrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), (static_cast<float>(M_PI))*0.5f));
   this->setAnyPartAsDefault("rotY", yrot);
   SoRotation *zrot = new SoRotation;
-  zrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), ((float) M_PI)*0.5f));
+  zrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), (static_cast<float>(M_PI))*0.5f));
   this->setAnyPartAsDefault("rotZ", zrot);
 
   // initialize switch nodes
@@ -331,32 +332,32 @@ SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
 
-    SoDragger *xdragger = (SoDragger*) this->getAnyPart("xTranslator", FALSE);
+    SoDragger * xdragger = coin_assert_cast<SoDragger *>(this->getAnyPart("xTranslator", FALSE));
     xdragger->setPartAsDefault("translator", "dragPointXTranslatorTranslator");
     xdragger->setPartAsDefault("translatorActive", "dragPointXTranslatorTranslatorActive");
     this->registerDragger(xdragger);
 
-    SoDragger *ydragger = (SoDragger*) this->getAnyPart("yTranslator", FALSE);
+    SoDragger * ydragger = coin_assert_cast<SoDragger *>(this->getAnyPart("yTranslator", FALSE));
     ydragger->setPartAsDefault("translator", "dragPointYTranslatorTranslator");
     ydragger->setPartAsDefault("translatorActive", "dragPointYTranslatorTranslatorActive");
     this->registerDragger(ydragger);
 
-    SoDragger *zdragger = (SoDragger*) this->getAnyPart("zTranslator", FALSE);
+    SoDragger * zdragger = coin_assert_cast<SoDragger *>(this->getAnyPart("zTranslator", FALSE));
     zdragger->setPartAsDefault("translator", "dragPointZTranslatorTranslator");
     zdragger->setPartAsDefault("translatorActive", "dragPointZTranslatorTranslatorActive");
     this->registerDragger(zdragger);
 
-    SoDragger *xydragger = (SoDragger*) this->getAnyPart("xyTranslator", FALSE);
+    SoDragger * xydragger = coin_assert_cast<SoDragger *>(this->getAnyPart("xyTranslator", FALSE));
     xydragger->setPartAsDefault("translator", "dragPointXYTranslatorTranslator");
     xydragger->setPartAsDefault("translatorActive", "dragPointXYTranslatorTranslatorActive");
     this->registerDragger(xydragger);
 
-    SoDragger *xzdragger = (SoDragger*) this->getAnyPart("xzTranslator", FALSE);
+    SoDragger * xzdragger = coin_assert_cast<SoDragger *>(this->getAnyPart("xzTranslator", FALSE));
     xzdragger->setPartAsDefault("translator", "dragPointXZTranslatorTranslator");
     xzdragger->setPartAsDefault("translatorActive", "dragPointXZTranslatorTranslatorActive");
     this->registerDragger(xzdragger);
 
-    SoDragger *yzdragger = (SoDragger*) this->getAnyPart("yzTranslator", FALSE);
+    SoDragger * yzdragger = coin_assert_cast<SoDragger *>(this->getAnyPart("yzTranslator", FALSE));
     yzdragger->setPartAsDefault("translator", "dragPointYZTranslatorTranslator");
     yzdragger->setPartAsDefault("translatorActive", "dragPointYZTranslatorTranslatorActive");
     this->registerDragger(yzdragger);
@@ -406,7 +407,7 @@ SoDragPointDragger::setDefaultOnNonWritingFields(void)
 void
 SoDragPointDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoDragPointDragger *thisp = (SoDragPointDragger*)d;
+  SoDragPointDragger * thisp = static_cast<SoDragPointDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -416,7 +417,7 @@ SoDragPointDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoDragPointDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoDragPointDragger *thisp = (SoDragPointDragger*)d;
+  SoDragPointDragger * thisp = static_cast<SoDragPointDragger *>(d);
 
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f t;
@@ -540,7 +541,7 @@ SoDragPointDragger::dragFinish(void)
 void
 SoDragPointDragger::startCB(void *d, SoDragger *)
 {
-  SoDragPointDragger *thisp = (SoDragPointDragger*)d;
+  SoDragPointDragger * thisp = static_cast<SoDragPointDragger *>(d);
   thisp->dragStart();
 }
 
@@ -548,7 +549,7 @@ SoDragPointDragger::startCB(void *d, SoDragger *)
 void
 SoDragPointDragger::motionCB(void *d, SoDragger *)
 {
-  SoDragPointDragger *thisp = (SoDragPointDragger*)d;
+  SoDragPointDragger * thisp = static_cast<SoDragPointDragger *>(d);
   thisp->drag();
 }
 
@@ -556,7 +557,7 @@ SoDragPointDragger::motionCB(void *d, SoDragger *)
 void
 SoDragPointDragger::finishCB(void *d, SoDragger *)
 {
-  SoDragPointDragger *thisp = (SoDragPointDragger*)d;
+  SoDragPointDragger * thisp = static_cast<SoDragPointDragger *>(d);
   thisp->dragFinish();
 }
 
@@ -564,7 +565,7 @@ SoDragPointDragger::finishCB(void *d, SoDragger *)
 void
 SoDragPointDragger::metaKeyChangeCB(void * d, SoDragger *)
 {
-  SoDragPointDragger *thisp = (SoDragPointDragger*)d;
+  SoDragPointDragger * thisp = static_cast<SoDragPointDragger *>(d);
   // we're only interested if dragger is _not_ active
   if (thisp->getActiveChildDragger()) return;
   const SoEvent *event = thisp->getEvent();
@@ -583,7 +584,7 @@ SoDragPointDragger::registerDragger(SoDragger *dragger)
 void
 SoDragPointDragger::unregisterDragger(const char *name)
 {
-  SoDragger *dragger = (SoDragger*) this->getAnyPart(name, FALSE);
+  SoDragger * dragger = coin_assert_cast<SoDragger *>(this->getAnyPart(name, FALSE));
   this->unregisterChildDragger(dragger);
 }
 

@@ -41,7 +41,7 @@
 
 #include <Inventor/draggers/SoScale1Dragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -52,6 +52,7 @@
 #include <data/draggerDefaults/scale1Dragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
 
 /*!
   \var SoSFVec3f SoScale1Dragger::scaleFactor
@@ -71,6 +72,8 @@
   \var SbLineProjector * SoScale1Dragger::lineProj
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoScale1Dragger *>(d)
 
 class SoScale1DraggerP {
 public:
@@ -144,7 +147,7 @@ SoScale1Dragger::SoScale1Dragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("scale1Dragger.iv",
                                        SCALE1DRAGGER_draggergeometry,
-                                       (int)strlen(SCALE1DRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(SCALE1DRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
@@ -223,7 +226,7 @@ void
 SoScale1Dragger::fieldSensorCB(void * d, SoSensor *)
 {
   assert(d);
-  SoScale1Dragger *thisp = (SoScale1Dragger*)d;
+  SoScale1Dragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f t, s;
@@ -237,9 +240,9 @@ SoScale1Dragger::fieldSensorCB(void * d, SoSensor *)
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::valueChangedCB(void * f, SoDragger * d)
+SoScale1Dragger::valueChangedCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoScale1Dragger *thisp = (SoScale1Dragger*)d;
+  SoScale1Dragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -253,25 +256,25 @@ SoScale1Dragger::valueChangedCB(void * f, SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::startCB(void * f, SoDragger * d)
+SoScale1Dragger::startCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoScale1Dragger *thisp = (SoScale1Dragger*)d;
+  SoScale1Dragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::motionCB(void * f, SoDragger * d)
+SoScale1Dragger::motionCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoScale1Dragger *thisp = (SoScale1Dragger*)d;
+  SoScale1Dragger * thisp = THISP(d);
   thisp->drag();
 }
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::finishCB(void * f, SoDragger * d)
+SoScale1Dragger::finishCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoScale1Dragger *thisp = (SoScale1Dragger*)d;
+  SoScale1Dragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -312,7 +315,7 @@ SoScale1Dragger::drag(void)
   if (motion < 0.0f) motion = 0.0f;
 
   this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
-                                          SbVec3f((float) fabs(motion), 1.0f, 1.0f),
+                                          SbVec3f(static_cast<float>(fabs(motion)), 1.0f, 1.0f),
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
@@ -329,3 +332,5 @@ SoScale1Dragger::dragFinish(void)
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
 }
+
+#undef THISP

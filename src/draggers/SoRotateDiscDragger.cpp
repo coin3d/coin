@@ -49,8 +49,8 @@
 
 #include <Inventor/draggers/SoRotateDiscDragger.h>
 
-#include <string.h>
-#include <math.h>
+#include <cstring>
+#include <cmath>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -60,6 +60,7 @@
 #include <data/draggerDefaults/rotateDiscDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
 
 /*!
   \var SoSFRotation SoRotateDiscDragger::rotation
@@ -80,6 +81,8 @@
   \var SbPlaneProjector * SoRotateDiscDragger::planeProj
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoRotateDiscDragger *>(d)
 
 class SoRotateDiscDraggerP {
 public:
@@ -153,7 +156,7 @@ SoRotateDiscDragger::SoRotateDiscDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("rotateDiscDragger.iv",
                                        ROTATEDISCDRAGGER_draggergeometry,
-                                       (int)strlen(ROTATEDISCDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(ROTATEDISCDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -231,7 +234,7 @@ void
 SoRotateDiscDragger::fieldSensorCB(void * d, SoSensor *)
 {
   assert(d);
-  SoRotateDiscDragger *thisp = (SoRotateDiscDragger*)d;
+  SoRotateDiscDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f t, s;
@@ -247,7 +250,7 @@ SoRotateDiscDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoRotateDiscDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoRotateDiscDragger *thisp = (SoRotateDiscDragger*)d;
+  SoRotateDiscDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -263,7 +266,7 @@ SoRotateDiscDragger::valueChangedCB(void *, SoDragger * d)
 void
 SoRotateDiscDragger::startCB(void *, SoDragger * d)
 {
-  SoRotateDiscDragger *thisp = (SoRotateDiscDragger*)d;
+  SoRotateDiscDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -271,15 +274,15 @@ SoRotateDiscDragger::startCB(void *, SoDragger * d)
 void
 SoRotateDiscDragger::motionCB(void *, SoDragger * d)
 {
-  SoRotateDiscDragger *thisp = (SoRotateDiscDragger*)d;
+  SoRotateDiscDragger * thisp = THISP(d);
   thisp->drag();
 }
 
 /*! \COININTERNAL */
 void
-SoRotateDiscDragger::doneCB(void * f, SoDragger * d)
+SoRotateDiscDragger::doneCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoRotateDiscDragger *thisp = (SoRotateDiscDragger*)d;
+  SoRotateDiscDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -322,7 +325,7 @@ SoRotateDiscDragger::drag(void)
   (void) startPt.normalize();
   (void) projPt.normalize();
   SbVec3f dir = startPt.cross(projPt);
-  float angle = (float) acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f));
+  float angle = static_cast<float>(acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f)));
   if (dir[2] < 0.0f) angle = -angle;
 
   this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
@@ -343,3 +346,5 @@ SoRotateDiscDragger::dragFinish(void)
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
 }
+
+#undef THISP

@@ -46,7 +46,7 @@
 
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -62,6 +62,8 @@
 #include <data/draggerDefaults/handleBoxDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFVec3f SoHandleBoxDragger::scaleFactor
@@ -392,7 +394,7 @@ SoHandleBoxDragger::SoHandleBoxDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("handleBoxDragger.iv",
                                        HANDLEBOXDRAGGER_draggergeometry,
-                                       (int)strlen(HANDLEBOXDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(HANDLEBOXDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
@@ -536,7 +538,7 @@ SoHandleBoxDragger::setDefaultOnNonWritingFields(void)
 void
 SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -544,9 +546,9 @@ SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
 
 /*! \COININTERNAL */
 void
-SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
+SoHandleBoxDragger::valueChangedCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
@@ -567,7 +569,7 @@ SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
 void
 SoHandleBoxDragger::startCB(void *, SoDragger * d)
 {
-  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   thisp->dragStart();
 }
 
@@ -575,7 +577,7 @@ SoHandleBoxDragger::startCB(void *, SoDragger * d)
 void
 SoHandleBoxDragger::motionCB(void *, SoDragger * d)
 {
-  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   thisp->drag();
 }
 
@@ -583,7 +585,7 @@ SoHandleBoxDragger::motionCB(void *, SoDragger * d)
 void
 SoHandleBoxDragger::finishCB(void *, SoDragger * d)
 {
-  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   thisp->dragFinish();
 }
 
@@ -591,7 +593,7 @@ SoHandleBoxDragger::finishCB(void *, SoDragger * d)
 void
 SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
-  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   if (!thisp->isActive.getValue()) return;
 
   const SoEvent *event = thisp->getEvent();
@@ -615,8 +617,9 @@ SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 static void 
 SoHandleBoxDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = (SoSurroundScale*) 
-    kit->getPart("surroundScale", FALSE);
+  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>( 
+    kit->getPart("surroundScale", FALSE)
+    );
   if (ss) ss->invalidate();
 }
 
@@ -865,11 +868,10 @@ SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)
 SoNode *
 SoHandleBoxDragger::getNodeFieldNode(const char * fieldname)
 {
-  SoField *field = this->getField(fieldname);
+  SoField * field = this->getField(fieldname);
   assert(field != NULL);
-  assert(field->isOfType(SoSFNode::getClassTypeId()));
-  assert(((SoSFNode*)field)->getValue() != NULL);
-  return ((SoSFNode*)field)->getValue();
+  assert(coin_assert_cast<SoSFNode *>(field)->getValue() != NULL);
+  return coin_assert_cast<SoSFNode *>(field)->getValue();
 }
 
 void

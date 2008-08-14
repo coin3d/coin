@@ -43,8 +43,8 @@
 
 #include <Inventor/draggers/SoTabPlaneDragger.h>
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -70,6 +70,7 @@
 
 #include "coindefs.h" // COIN_STUB()
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFVec3f SoTabPlaneDragger::translation
@@ -115,6 +116,8 @@ static float cornertab_lookup[] = {
 // FIXME: find a better solution than this lame Z_OFFSET hack, pederb 20000301
 #define Z_OFFSET 0.01f       // dummy offset for tabs to get "correct" picking
 #define TABSIZE 10.0f        // size (in pixels when projected to screen) of tabs
+
+#define THISP(d) static_cast<SoTabPlaneDragger *>(d)
 
 class SoTabPlaneDraggerP {
 public:
@@ -223,7 +226,7 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("tabPlaneDragger.iv",
                                        TABPLANEDRAGGER_draggergeometry,
-                                       (int)strlen(TABPLANEDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(TABPLANEDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
@@ -321,7 +324,7 @@ SoTabPlaneDragger::setDefaultOnNonWritingFields(void)
 void
 SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SoTabPlaneDragger * thisp = static_cast<SoTabPlaneDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -331,7 +334,7 @@ SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SoTabPlaneDragger * thisp = static_cast<SoTabPlaneDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
@@ -415,8 +418,8 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
 
     // Take absolute value to allow scales to be negative (which is a
     // common trick when e.g. using a left-handed coordinate system).
-    sizex = (float)fabs(sizex / scale[0]);
-    sizey = (float)fabs(sizey / scale[1]);
+    sizex = static_cast<float>(fabs(sizex / scale[0]));
+    sizey = static_cast<float>(fabs(sizey / scale[1]));
   }
 
   if (sizex == this->prevsizex && this->prevsizey == sizey) return;
@@ -484,9 +487,9 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
   Not implemented.
 */
 void
-SoTabPlaneDragger::getXYScreenLengths(SbVec2f & lengths,
-                                      const SbMatrix & localtoscreen,
-                                      const SbVec2s & winsize)
+SoTabPlaneDragger::getXYScreenLengths(SbVec2f & COIN_UNUSED(lengths),
+                                      const SbMatrix & COIN_UNUSED(localtoscreen),
+                                      const SbVec2s & COIN_UNUSED(winsize))
 {
   // FIXME: I found this method just defined in the header file, but
   // not implemented (!). We should obviously implement it if it's
@@ -677,7 +680,7 @@ SoTabPlaneDragger::dragFinish(void)
 void
 SoTabPlaneDragger::startCB(void *, SoDragger * d)
 {
-  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SoTabPlaneDragger * thisp = static_cast<SoTabPlaneDragger *>(d);
   thisp->dragStart();
 }
 
@@ -685,7 +688,7 @@ SoTabPlaneDragger::startCB(void *, SoDragger * d)
 void
 SoTabPlaneDragger::motionCB(void *, SoDragger * d)
 {
-  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SoTabPlaneDragger * thisp = static_cast<SoTabPlaneDragger *>(d);
   thisp->drag();
 }
 
@@ -693,7 +696,7 @@ SoTabPlaneDragger::motionCB(void *, SoDragger * d)
 void
 SoTabPlaneDragger::finishCB(void *, SoDragger * d)
 {
-  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SoTabPlaneDragger * thisp = static_cast<SoTabPlaneDragger *>(d);
   thisp->dragFinish();
 }
 
@@ -701,7 +704,7 @@ SoTabPlaneDragger::finishCB(void *, SoDragger * d)
 void
 SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
-  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SoTabPlaneDragger * thisp = static_cast<SoTabPlaneDragger *>(d);
   if (!thisp->isActive.getValue()) return;
   if (!(thisp->whatkind == WHATKIND_TRANSLATE)) return;
 
@@ -746,7 +749,7 @@ SoTabPlaneDragger::createPrivateParts(void)
       str.sprintf("edgeScaleTab%d", i);
     else
       str.sprintf("cornerScaleTab%d", i-4);
-    fs = (SoIndexedFaceSet*) this->getAnyPart(SbName(str.getString()), TRUE);
+    fs = coin_assert_cast<SoIndexedFaceSet *>(this->getAnyPart(SbName(str.getString()), TRUE));
     fs->coordIndex.setNum(5);
 
     ptr = fs->coordIndex.startEditing();
@@ -778,11 +781,10 @@ SoTabPlaneDragger::createPrivateParts(void)
 SoNode *
 SoTabPlaneDragger::getNodeFieldNode(const char *fieldname)
 {
-  SoField *field = this->getField(fieldname);
+  SoField * field = this->getField(fieldname);
   assert(field != NULL);
-  assert(field->isOfType(SoSFNode::getClassTypeId()));
-  assert(((SoSFNode*)field)->getValue() != NULL);
-  return ((SoSFNode*)field)->getValue();
+  assert(coin_assert_cast<SoSFNode *>(field)->getValue() != NULL);
+  return coin_assert_cast<SoSFNode *>(field)->getValue();
 }
 
 // Undefine these again, as some of them are also used in other
@@ -800,3 +802,4 @@ SoTabPlaneDragger::getNodeFieldNode(const char *fieldname)
 #undef Z_OFFSET
 #undef TABSIZE
 
+#undef THISP

@@ -46,7 +46,7 @@
 
 #include <Inventor/draggers/SoPointLightDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -55,6 +55,7 @@
 #include <data/draggerDefaults/pointLightDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFVec3f SoPointLightDragger::translation
@@ -129,7 +130,7 @@ SoPointLightDragger::SoPointLightDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("pointLightDragger.iv",
                                        POINTLIGHTDRAGGER_draggergeometry,
-                                       (int)strlen(POINTLIGHTDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(POINTLIGHTDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
@@ -166,7 +167,7 @@ SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    SoDragger *child = (SoDragger*) this->getAnyPart("translator", FALSE);
+    SoDragger * child = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     child->setPartAsDefault("yzTranslator.translator",
                             "pointLightTranslatorPlaneTranslator");
     child->setPartAsDefault("xzTranslator.translator",
@@ -200,7 +201,7 @@ SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     }
   }
   else {
-    SoDragger *child = (SoDragger*) this->getAnyPart("translator", FALSE);
+    SoDragger * child = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     this->unregisterChildDragger(child);
     if (this->fieldSensor->getAttachedField() != NULL) {
       this->fieldSensor->detach();
@@ -223,7 +224,7 @@ SoPointLightDragger::setDefaultOnNonWritingFields(void)
 void
 SoPointLightDragger::fieldSensorCB(void *d, SoSensor *)
 {
-  SoPointLightDragger *thisp = (SoPointLightDragger*)d;
+  SoPointLightDragger * thisp = static_cast<SoPointLightDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -233,7 +234,7 @@ SoPointLightDragger::fieldSensorCB(void *d, SoSensor *)
 void
 SoPointLightDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoPointLightDragger *thisp = (SoPointLightDragger*)d;
+  SoPointLightDragger * thisp = static_cast<SoPointLightDragger *>(d);
 
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f t;

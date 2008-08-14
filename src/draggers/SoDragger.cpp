@@ -242,6 +242,7 @@
 
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoPickedPoint.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -249,12 +250,13 @@
 #include "coindefs.h" // COIN_OBSOLETED
 #include "tidbitsp.h"
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 // Internal helper class.
 class SoDraggerCache {
 public:
   SoDraggerCache(SoDragger * parent) :
-    path((SoFullPath*)new SoPath(4)),
+    path(reclassify_cast<SoFullPath *>(new SoPath(4))),
     dragger(parent),
     matrixAction(new SoGetMatrixAction(dragger->getViewportRegion())),
     draggerToWorld(SbMatrix::identity()),
@@ -601,7 +603,7 @@ SoDragger::getProjectorEpsilon(void) const
 void
 SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->startCB.addCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->startCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -612,7 +614,7 @@ SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeStartCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->startCB.removeCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->startCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -622,7 +624,7 @@ SoDragger::removeStartCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->motionCB.addCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->motionCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -633,7 +635,7 @@ SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeMotionCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->motionCB.removeCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->motionCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -642,7 +644,7 @@ SoDragger::removeMotionCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->finishCB.addCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->finishCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -653,7 +655,7 @@ SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->finishCB.removeCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->finishCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -665,7 +667,7 @@ SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->valueChangedCB.addCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->valueChangedCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -676,7 +678,7 @@ SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeValueChangedCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->valueChangedCB.removeCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->valueChangedCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -734,7 +736,7 @@ SoDragger::getMotionMatrix(void)
 void
 SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->otherEventCB.addCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->otherEventCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -745,7 +747,7 @@ SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeOtherEventCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->otherEventCB.removeCallback((SoCallbackListCB *)func, data);
+  PRIVATE(this)->otherEventCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
 }
 
 /*!
@@ -867,7 +869,7 @@ SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalm
   SoPath * pathtothis = this->createPathToThis();
   assert(pathtothis);
   pathtothis->ref();
-  SoPath * path = (SoPath *)this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis);
+  SoPath * path = reclassify_cast<SoPath *>(this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis));
   assert(path);
   pathtothis->unref();
 
@@ -1006,7 +1008,7 @@ SoDragger::createPathToThis(void)
 {
   assert(PRIVATE(this)->draggercache);
   assert(PRIVATE(this)->draggercache->path);
-  SoPath * orgpath = (SoPath *) PRIVATE(this)->draggercache->path;
+  SoPath * orgpath = reclassify_cast<SoPath *>(PRIVATE(this)->draggercache->path);
   return new SoPath(*orgpath);
 }
 
@@ -1163,19 +1165,19 @@ SoDragger::workFieldsIntoTransform(SbMatrix & matrix)
   const SbRotation * scaleOrientation = NULL;
   const SbVec3f * center = NULL;
 
-  vecfield = (SoSFVec3f *)this->getField("translation");
+  vecfield = coin_assert_cast<SoSFVec3f *>(this->getField("translation"));
   if (vecfield) translation = &vecfield->getValue();
 
-  vecfield = (SoSFVec3f *)this->getField("scaleFactor");
+  vecfield = coin_assert_cast<SoSFVec3f *>(this->getField("scaleFactor"));
   if (vecfield) scaleFactor = &vecfield->getValue();
 
-  vecfield = (SoSFVec3f *)this->getField("center");
+  vecfield = coin_assert_cast<SoSFVec3f *>(this->getField("center"));
   if (vecfield) center = &vecfield->getValue();
 
-  rotfield = (SoSFRotation *)this->getField("rotation");
+  rotfield = coin_assert_cast<SoSFRotation *>(this->getField("rotation"));
   if (rotfield) rotation = &rotfield->getValue();
 
-  rotfield = (SoSFRotation *)this->getField("scaleOrientation");
+  rotfield = coin_assert_cast<SoSFRotation *>(this->getField("scaleOrientation"));
   if (rotfield) scaleOrientation = &rotfield->getValue();
 
   this->workValuesIntoTransform(matrix, translation, rotation,
@@ -1309,9 +1311,9 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
   // otherwise say ``Template deduction failed to find a match for the
   // call to 'SbMax'''.  mortene.
   SbVec3f clampedscale;
-  clampedscale[0] = SbMax((float)scale[0], SoDragger::minscale);
-  clampedscale[1] = SbMax((float)scale[1], SoDragger::minscale);
-  clampedscale[2] = SbMax((float)scale[2], SoDragger::minscale);
+  clampedscale[0] = SbMax(static_cast<float>(scale[0]), SoDragger::minscale);
+  clampedscale[1] = SbMax(static_cast<float>(scale[1]), SoDragger::minscale);
+  clampedscale[2] = SbMax(static_cast<float>(scale[2]), SoDragger::minscale);
 
   SbMatrix transform, tmp;
   // Calculate the scaled matrix without doing any testing if the
@@ -1503,7 +1505,7 @@ SoDragger::isAdequateConstraintMotion(void)
   // or "float sqrt(float)".  mortene.
   double len = sqrt(double(delta[0]*delta[0] + delta[1]*delta[1]));
 
-  if (len >= (double) PRIVATE(this)->mingesture) return TRUE;
+  if (len >= static_cast<double>(PRIVATE(this)->mingesture)) return TRUE;
   return FALSE;
 }
 
@@ -1517,8 +1519,8 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
 {
   if (!pickpath->containsPath(surrogatepath)) return FALSE;
 
-  SoFullPath * pick = (SoFullPath*) pickpath;
-  SoFullPath * surr = (SoFullPath*) surrogatepath;
+  const SoFullPath * pick = reclassify_cast<const SoFullPath *>(pickpath);
+  const SoFullPath * surr = reclassify_cast<const SoFullPath *>(surrogatepath);
 
   SoNode * tail = surr->getTail();
   SoType draggertype = SoDragger::getClassTypeId();
@@ -1539,9 +1541,9 @@ typedef struct {
 static sodragger_vv_data * vvdata = NULL;
 
 static SoCallbackAction::Response
-sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
+sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_UNUSED(node))
 {
-  sodragger_vv_data * data = (sodragger_vv_data*) userdata;
+  sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
   data->vv = SoViewVolumeElement::get(action->getState());
   return SoCallbackAction::CONTINUE;
 }
@@ -1569,7 +1571,7 @@ SoDragger::setCameraInfo(SoAction * action)
   if (PRIVATE(this)->draggercache && PRIVATE(this)->draggercache->path) {
     if (vvdata == NULL) {
       vvdata = new sodragger_vv_data;
-      coin_atexit((coin_atexit_f*) vv_data_cleanup, CC_ATEXIT_NORMAL);
+      coin_atexit(static_cast<coin_atexit_f *>(vv_data_cleanup), CC_ATEXIT_NORMAL);
     }
     if (PRIVATE(this)->cbaction == NULL) {
       PRIVATE(this)->cbaction = new SoCallbackAction;
@@ -1780,9 +1782,9 @@ SoDragger::setDefaultOnNonWritingFields(void)
 {
 #define CHECK_DEFAULT(name, type, val) \
   do { \
-    SoField * f = (SoField*) this->getField(name); \
+    SoField * f = coin_assert_cast<SoField *>(this->getField(name)); \
     if (f) { \
-      if (((type*)f)->getValue() == val) f->setDefault(TRUE); \
+      if ((coin_assert_cast<type *>(f))->getValue() == val) f->setDefault(TRUE); \
     } \
   } while (0)
 
@@ -1807,7 +1809,7 @@ SoDragger::setDefaultOnNonWritingFields(void)
 void
 SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
 {
-  SoDragger * thisp = (SoDragger *)data;
+  SoDragger * thisp = static_cast<SoDragger *>(data);
   child->removeValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
   thisp->transferMotion(child);
   child->addValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
@@ -1817,9 +1819,9 @@ SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
   \COININTERNAL
 */
 void
-SoDragger::childValueChangedCB(void * data, SoDragger * child)
+SoDragger::childValueChangedCB(void * data, SoDragger * COIN_UNUSED(child))
 {
-  SoDragger * thisp = (SoDragger *)data;
+  SoDragger * thisp = static_cast<SoDragger *>(data);
   thisp->valueChanged();
 }
 
@@ -1829,7 +1831,7 @@ SoDragger::childValueChangedCB(void * data, SoDragger * child)
 void
 SoDragger::childStartCB(void * data, SoDragger * child)
 {
-  SoDragger * thisp = (SoDragger *)data;
+  SoDragger * thisp = static_cast<SoDragger *>(data);
   thisp->saveStartParameters();
   thisp->setActiveChildDragger(child);
   PRIVATE(thisp)->startCB.invokeCallbacks(thisp);
@@ -1839,9 +1841,9 @@ SoDragger::childStartCB(void * data, SoDragger * child)
   \COININTERNAL
 */
 void
-SoDragger::childMotionCB(void * data, SoDragger * child)
+SoDragger::childMotionCB(void * data, SoDragger * COIN_UNUSED(child))
 {
-  SoDragger * thisp = (SoDragger *)data;
+  SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->motionCB.invokeCallbacks(thisp);
 }
 
@@ -1849,9 +1851,9 @@ SoDragger::childMotionCB(void * data, SoDragger * child)
   \COININTERNAL
 */
 void
-SoDragger::childFinishCB(void * data, SoDragger * child)
+SoDragger::childFinishCB(void * data, SoDragger * COIN_UNUSED(child))
 {
-  SoDragger * thisp = (SoDragger *)data;
+  SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->finishCB.invokeCallbacks(thisp);
   thisp->setActiveChildDragger(NULL);
   if (PRIVATE(thisp)->draggercache) PRIVATE(thisp)->draggercache->truncatePath();
@@ -1863,7 +1865,7 @@ SoDragger::childFinishCB(void * data, SoDragger * child)
 void
 SoDragger::childOtherEventCB(void * data, SoDragger * child)
 {
-  SoDragger * thisp = (SoDragger *)data;
+  SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->currentevent = child->pimpl->currentevent;
   PRIVATE(thisp)->eventaction = child->pimpl->eventaction;
   PRIVATE(thisp)->otherEventCB.invokeCallbacks(thisp);
@@ -1874,7 +1876,7 @@ SbBool
 SoDragger::isPicked(SoPath * path)
 {
   // last dragger in path must be this one
-  SoFullPath * fullpath = (SoFullPath *)path;
+  SoFullPath * fullpath = reclassify_cast<SoFullPath *>(path);
 
   int i = fullpath->findNode(this);
   if (i < 0) return FALSE;
@@ -1906,7 +1908,7 @@ SoDragger::updateDraggerCache(const SoPath * path)
 {
   if (PRIVATE(this)->draggercache == NULL)
     PRIVATE(this)->draggercache = new SoDraggerCache(this);
-  if (path) PRIVATE(this)->draggercache->update((const SoFullPath *)path, path->findNode(this));
+  if (path) PRIVATE(this)->draggercache->update(reclassify_cast<const SoFullPath *>(path), path->findNode(this));
   else PRIVATE(this)->draggercache->updateMatrix();
 }
 

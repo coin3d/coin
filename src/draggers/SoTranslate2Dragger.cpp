@@ -45,7 +45,7 @@
 
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -57,6 +57,7 @@
 #include <data/draggerDefaults/translate2Dragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
 
 #define CONSTRAINT_OFF  0
 #define CONSTRAINT_WAIT 1
@@ -128,6 +129,7 @@ public:
 SO_KIT_SOURCE(SoTranslate2Dragger);
 
 #define PRIVATE(obj) ((obj)->pimpl)
+#define THISP(d) static_cast<SoTranslate2Dragger *>(d)
 
 // doc in superclass
 void
@@ -204,7 +206,7 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("translate2Dragger.iv",
                                        TRANSLATE2DRAGGER_draggergeometry,
-                                       (int)strlen(TRANSLATE2DRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(TRANSLATE2DRAGGER_draggergeometry)));
   }
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_ADD_FIELD(minTranslation, (1.0f, 1.0f));
@@ -286,10 +288,10 @@ SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
 /*! \COININTERNAL */
 void
-SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
+SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * COIN_UNUSED(s))
 {
   assert(d);
-  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SoTranslate2Dragger * thisp = THISP(d);
   const SbVec2f minv = thisp->minTranslation.getValue();
   const SbVec2f maxv = thisp->maxTranslation.getValue();
 
@@ -311,7 +313,7 @@ SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
 void
 SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SoTranslate2Dragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans = thisp->clampMatrix(matrix);
   thisp->fieldSensor->detach();
@@ -333,7 +335,7 @@ SoTranslate2Dragger::setMotionMatrix(const SbMatrix & matrix)
 void
 SoTranslate2Dragger::startCB(void *, SoDragger * d)
 {
-  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SoTranslate2Dragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -341,7 +343,7 @@ SoTranslate2Dragger::startCB(void *, SoDragger * d)
 void
 SoTranslate2Dragger::motionCB(void *, SoDragger * d)
 {
-  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SoTranslate2Dragger * thisp = THISP(d);
   thisp->drag();
 }
 
@@ -349,7 +351,7 @@ SoTranslate2Dragger::motionCB(void *, SoDragger * d)
 void
 SoTranslate2Dragger::finishCB(void *, SoDragger * d)
 {
-  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SoTranslate2Dragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -357,7 +359,7 @@ SoTranslate2Dragger::finishCB(void *, SoDragger * d)
 void
 SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger *d)
 {
-  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SoTranslate2Dragger * thisp = THISP(d);
   if (!thisp->isActive.getValue()) return;
 
   const SoEvent *event = thisp->getEvent();
@@ -508,9 +510,9 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
   return t;
 }
 
+#undef THISP
 #undef PRIVATE
 #undef CONSTRAINT_OFF
 #undef CONSTRAINT_WAIT
 #undef CONSTRAINT_X
 #undef CONSTRAINT_Y
-

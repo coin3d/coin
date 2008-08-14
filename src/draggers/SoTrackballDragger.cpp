@@ -58,7 +58,7 @@
 
 #include <Inventor/draggers/SoTrackballDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -84,6 +84,7 @@
 #endif // COIN_DEBUG
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFRotation SoTrackballDragger::rotation
@@ -157,7 +158,7 @@ get_current_time(void)
 {
   SoField * realtime = SoDB::getGlobalField("realTime");
   if (realtime && realtime->isOfType(SoSFTime::getClassTypeId())) {
-    return ((SoSFTime*)realtime)->getValue();
+    return coin_assert_cast<SoSFTime *>(realtime)->getValue();
   }
   return SbTime::getTimeOfDay();
 }
@@ -173,6 +174,7 @@ SoTrackballDragger::initClass(void)
 }
 
 #define PRIVATE(obj) ((obj)->pimpl)
+#define THISP(d) static_cast<SoTrackballDragger *>(d)
 
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
@@ -279,7 +281,7 @@ SoTrackballDragger::SoTrackballDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("trackballDragger.iv",
                                        TRACKBALLDRAGGER_draggergeometry,
-                                       (int)strlen(TRACKBALLDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(TRACKBALLDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -383,12 +385,12 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
   this->antiSquish.setDefault(TRUE);
   this->surroundScale.setDefault(TRUE);
 
-  SoRotation * rot = (SoRotation*) this->getAnyPart("userAxisRotation", FALSE);
+  SoRotation * rot = coin_assert_cast<SoRotation *>(this->getAnyPart("userAxisRotation", FALSE));
   if (rot && rot->rotation.getValue() == SbRotation::identity()) {
     this->userAxisRotation.setDefault(TRUE);
   }
 
-  SoSwitch * sw = (SoSwitch*) this->userAxisSwitch.getValue();
+  SoSwitch * sw = coin_assert_cast<SoSwitch *>(this->userAxisSwitch.getValue());
   if (sw && sw->whichChild.getValue() == SO_SWITCH_NONE)
     this->userAxisSwitch.setDefault(TRUE);
 
@@ -399,7 +401,7 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
 void
 SoTrackballDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoTrackballDragger *thisp = (SoTrackballDragger*)d;
+  SoTrackballDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -409,7 +411,7 @@ SoTrackballDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoTrackballDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoTrackballDragger *thisp = (SoTrackballDragger*)d;
+  SoTrackballDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
@@ -462,8 +464,9 @@ SoTrackballDragger::setAnimationEnabled(SbBool newval)
 static void
 SoTrackballDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = (SoSurroundScale*)
-    kit->getPart("surroundScale", FALSE);
+  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>(
+    kit->getPart("surroundScale", FALSE)
+    );
   if (ss) ss->invalidate();
 }
 
@@ -731,7 +734,7 @@ SoTrackballDragger::dragFinish(void)
 void
 SoTrackballDragger::timerSensorCB(void *d, SoSensor *)
 {
-  SoTrackballDragger *thisp = (SoTrackballDragger*)d;
+  SoTrackballDragger * thisp = THISP(d);
 
   SbTime currtime = get_current_time();
   SbTime difftime = currtime - PRIVATE(thisp)->prevTime;
@@ -767,7 +770,7 @@ SoTrackballDragger::setAllPartsActive(SbBool onoroff)
 void
 SoTrackballDragger::startCB(void *, SoDragger * d)
 {
-  SoTrackballDragger *thisp = (SoTrackballDragger*)d;
+  SoTrackballDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -775,7 +778,7 @@ SoTrackballDragger::startCB(void *, SoDragger * d)
 void
 SoTrackballDragger::motionCB(void *, SoDragger * d)
 {
-  SoTrackballDragger *thisp = (SoTrackballDragger*)d;
+  SoTrackballDragger * thisp = THISP(d);
   thisp->drag();
 }
 
@@ -783,7 +786,7 @@ SoTrackballDragger::motionCB(void *, SoDragger * d)
 void
 SoTrackballDragger::finishCB(void *, SoDragger * d)
 {
-  SoTrackballDragger *thisp = (SoTrackballDragger*)d;
+  SoTrackballDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -802,9 +805,8 @@ SoTrackballDragger::getNodeFieldNode(const char *fieldname)
 {
   SoField *field = this->getField(fieldname);
   assert(field != NULL);
-  assert(field->isOfType(SoSFNode::getClassTypeId()));
-  assert(((SoSFNode*)field)->getValue() != NULL);
-  return ((SoSFNode*)field)->getValue();
+  assert(coin_assert_cast<SoSFNode *>(field)->getValue() != NULL);
+  return coin_assert_cast<SoSFNode *>(field)->getValue();
 }
 
 // private

@@ -47,7 +47,7 @@
 
 #include <Inventor/draggers/SoTranslate1Dragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -111,6 +111,8 @@
   \var SoFieldSensor * SoTranslate1Dragger::fieldSensor
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoTranslate1Dragger *>(d)
 
 class SoTranslate1DraggerP {
 public:
@@ -184,7 +186,7 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("translate1Dragger.iv",
                                        TRANSLATE1DRAGGER_draggergeometry,
-                                       (int)strlen(TRANSLATE1DRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(TRANSLATE1DRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
@@ -265,7 +267,7 @@ void
 SoTranslate1Dragger::fieldSensorCB(void *d, SoSensor *)
 {
   assert(d);
-  SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
+  SoTranslate1Dragger * thisp = THISP(d);
   const float minv = thisp->minTranslation.getValue();
   const float maxv = thisp->maxTranslation.getValue();
   if (minv <= maxv) {
@@ -293,7 +295,7 @@ SoTranslate1Dragger::setMotionMatrix(const SbMatrix & matrix)
 void
 SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
+  SoTranslate1Dragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans = thisp->clampMatrix(matrix);
   thisp->fieldSensor->detach();
@@ -306,7 +308,7 @@ SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 void
 SoTranslate1Dragger::startCB(void *, SoDragger * d)
 {
-  SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
+  SoTranslate1Dragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -314,7 +316,7 @@ SoTranslate1Dragger::startCB(void *, SoDragger * d)
 void
 SoTranslate1Dragger::motionCB(void *, SoDragger * d)
 {
-  SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
+  SoTranslate1Dragger * thisp = THISP(d);
   thisp->drag();
 }
 
@@ -322,7 +324,7 @@ SoTranslate1Dragger::motionCB(void *, SoDragger * d)
 void
 SoTranslate1Dragger::finishCB(void *, SoDragger * d)
 {
-  SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
+  SoTranslate1Dragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -393,3 +395,5 @@ SoTranslate1Dragger::clampMatrix(SbMatrix & m) const
   }
   return trans;
 }
+
+#undef THISP

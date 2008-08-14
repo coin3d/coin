@@ -42,7 +42,7 @@
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -52,6 +52,10 @@
 #include <data/draggerDefaults/rotateCylindricalDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
+#include "SbBasicP.h"
+
+#define THISP(d) static_cast<SoRotateCylindricalDragger *>(d)
 
 class SoRotateCylindricalDraggerP {
 public:
@@ -149,7 +153,7 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("rotateCylindricalDragger.iv",
                                        ROTATECYLINDRICALDRAGGER_draggergeometry,
-                                       (int)strlen(ROTATECYLINDRICALDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(ROTATECYLINDRICALDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -228,7 +232,7 @@ void
 SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
 {
   assert(d);
-  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SoRotateCylindricalDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f t, s;
@@ -244,7 +248,7 @@ SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoRotateCylindricalDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SoRotateCylindricalDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -291,15 +295,16 @@ SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc,
   inherited::copyContents(fromfc, copyconnections);
   
   assert(fromfc->isOfType(SoRotateCylindricalDragger::getClassTypeId()));
-  SoRotateCylindricalDragger *from = (SoRotateCylindricalDragger *)fromfc;
+  const SoRotateCylindricalDragger * from = coin_assert_cast<const SoRotateCylindricalDragger *>(fromfc);
   if (!this->userProj) {
     delete this->cylinderProj; 
   }
   this->cylinderProj = NULL;
   
   if (from->cylinderProj) {
-    this->cylinderProj = (SbCylinderProjector*) 
-      from->cylinderProj->copy();
+    this->cylinderProj = static_cast<SbCylinderProjector *>(
+      from->cylinderProj->copy()
+      );
   }
   else {
     // just create a new one
@@ -311,25 +316,25 @@ SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc,
 
 /*! \COININTERNAL */
 void
-SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
+SoRotateCylindricalDragger::startCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SoRotateCylindricalDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
 /*! \COININTERNAL */
 void
-SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
+SoRotateCylindricalDragger::motionCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SoRotateCylindricalDragger * thisp = THISP(d);
   thisp->drag();
 }
 
 /*! \COININTERNAL */
 void
-SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
+SoRotateCylindricalDragger::doneCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SoRotateCylindricalDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -399,3 +404,5 @@ SoRotateCylindricalDragger::dragFinish(void)
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
 }
+
+#undef THISP

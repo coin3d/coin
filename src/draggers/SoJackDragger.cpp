@@ -67,7 +67,7 @@
 
 #include <Inventor/draggers/SoJackDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
@@ -79,6 +79,8 @@
 #include <data/draggerDefaults/jackDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "SbBasicP.h"
+#include "coindefs.h"
 
 /*!
   \var SoSFVec3f SoJackDragger::translation
@@ -192,7 +194,7 @@ SoJackDragger::SoJackDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("jackDragger.iv",
                                        JACKDRAGGER_draggergeometry,
-                                       (int)strlen(JACKDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(JACKDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -244,7 +246,7 @@ SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
     SoDragger *child;
-    child = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    child = coin_assert_cast<SoDragger *>(this->getAnyPart("rotator", FALSE));
     child->setPartAsDefault("rotator",
                             "jackRotatorRotator");
     child->setPartAsDefault("rotatorActive",
@@ -253,14 +255,14 @@ SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
                             "jackRotatorFeedback");
     this->addChildDragger(child);
 
-    child = (SoDragger*) this->getAnyPart("scaler", FALSE);
+    child = coin_assert_cast<SoDragger *>(this->getAnyPart("scaler", FALSE));
     child->setPartAsDefault("scaler", "jackScalerScaler");
     child->setPartAsDefault("scalerActive", "jackScalerScalerActive");
     child->setPartAsDefault("feedback", "jackScalerFeedback");
     child->setPartAsDefault("feedbackActive", "jackScalerFeedbackActive");
     this->addChildDragger(child);
 
-    child = (SoDragger*) this->getAnyPart("translator", FALSE);
+    child = coin_assert_cast<SoDragger *>(this->getAnyPart("translator", FALSE));
     child->setPartAsDefault("xTranslator.translator", "jackTranslatorLineTranslator");
     child->setPartAsDefault("yTranslator.translator", "jackTranslatorLineTranslator");
     child->setPartAsDefault("zTranslator.translator", "jackTranslatorLineTranslator");
@@ -327,7 +329,7 @@ SoJackDragger::setDefaultOnNonWritingFields(void)
 void
 SoJackDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoJackDragger *thisp = (SoJackDragger*)d;
+  SoJackDragger * thisp = static_cast<SoJackDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -337,7 +339,7 @@ SoJackDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoJackDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoJackDragger *thisp = (SoJackDragger*)d;
+  SoJackDragger * thisp = static_cast<SoJackDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -365,10 +367,10 @@ SoJackDragger::valueChangedCB(void *, SoDragger * d)
   a child dragger starts or finishes dragging.
 */
 void
-SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
+SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * COIN_UNUSED(d))
 {
-  SoJackDragger *thisp = (SoJackDragger*) f;
-  SoSurroundScale *surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
+  SoJackDragger * thisp = static_cast<SoJackDragger *>(f);
+  SoSurroundScale * surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
   if (surround) surround->invalidate();
   SoAntiSquish *squish = SO_CHECK_PART(thisp, "antiSquish", SoAntiSquish);
   if (squish) squish->recalc();
@@ -391,7 +393,7 @@ SoJackDragger::addChildDragger(SoDragger *child)
 void
 SoJackDragger::removeChildDragger(const char *childname)
 {
-  SoDragger *child = (SoDragger*) this->getAnyPart(childname, FALSE);
+  SoDragger * child = coin_assert_cast<SoDragger *>(this->getAnyPart(childname, FALSE));
   child->removeStartCallback(SoJackDragger::invalidateSurroundScaleCB, this);
   child->removeFinishCallback(SoJackDragger::invalidateSurroundScaleCB, this);
   this->unregisterChildDragger(child);

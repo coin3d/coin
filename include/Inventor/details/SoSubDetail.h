@@ -61,7 +61,7 @@ SoType _class_::classTypeId STATIC_SOTYPE_INIT
     /* FIXME: internal code should not use this function, but use the coin_atexit() function */ \
     /* with priority set to CC_ATEXIT_NORMAL. As it is now, the clean-up functions for */ \
     /* these classes will always be run before all other Coin at-exit clean-ups. 20070126 mortene */ \
-    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
+    cc_coin_atexit(static_cast<coin_atexit_f *>(_class_::cleanupClass)); \
   } while (0)
 
 // *************************************************************************

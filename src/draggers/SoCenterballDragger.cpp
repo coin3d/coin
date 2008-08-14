@@ -91,7 +91,7 @@
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
@@ -108,6 +108,8 @@
 #include <data/draggerDefaults/centerballDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFRotation SoCenterballDragger::rotation
@@ -243,7 +245,7 @@ SoCenterballDragger::SoCenterballDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("centerballDragger.iv",
                                        CENTERBALLDRAGGER_draggergeometry,
-                                       (int)strlen(CENTERBALLDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(CENTERBALLDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -268,11 +270,11 @@ SoCenterballDragger::SoCenterballDragger(void)
   // initialize some nodes
   SoRotation *rot;
   rot = SO_GET_ANY_PART(this, "rot2X90", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (static_cast<float>(M_PI))*0.5f);
   rot = SO_GET_ANY_PART(this, "rotX90", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (static_cast<float>(M_PI))*0.5f);
   rot = SO_GET_ANY_PART(this, "rotY90", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)*0.5f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), (static_cast<float>(M_PI))*0.5f);
 
   // reset default flags for parts we set to a default value
   this->rot2X90.setDefault(TRUE);
@@ -325,9 +327,9 @@ SoCenterballDragger::saveStartParameters(void)
 void
 SoCenterballDragger::transferCenterDraggerMotion(SoDragger * childdragger)
 {
-  if ((SoNode*)childdragger == XCenterChanger.getValue() ||
-      (SoNode*)childdragger == YCenterChanger.getValue() ||
-      (SoNode*)childdragger == ZCenterChanger.getValue()) {
+  if (coin_assert_cast<SoNode *>(childdragger) == XCenterChanger.getValue() ||
+      coin_assert_cast<SoNode *>(childdragger) == YCenterChanger.getValue() ||
+      coin_assert_cast<SoNode *>(childdragger) == ZCenterChanger.getValue()) {
     // translate part of matrix should not change. Move motion
     // into center instead.
 
@@ -372,7 +374,7 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
 {
   SoSwitch *sw;
 
-  if (activechild == NULL || (SoNode*)activechild == rotator.getValue()) {
+  if (activechild == NULL || coin_assert_cast<SoNode *>(activechild) == rotator.getValue()) {
     // special feedback when rotator is activated/deactiveated
     int switchval = activechild != NULL ? 1 : 0;
     sw = SO_GET_ANY_PART(this, "XCenterChanger.translatorSwitch", SoSwitch);
@@ -392,13 +394,13 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
   // internal feedback
   int vals[3] = { SO_SWITCH_NONE, SO_SWITCH_NONE, SO_SWITCH_NONE };
 
-  if ((SoNode*)activechild == XRotator.getValue()) {
+  if (coin_assert_cast<SoNode *>(activechild) == XRotator.getValue()) {
     vals[0] = 0;
   }
-  else if ((SoNode*)activechild == YRotator.getValue()) {
+  else if (coin_assert_cast<SoNode *>(activechild) == YRotator.getValue()) {
     vals[1] = 0;
   }
-  else if ((SoNode*)activechild == ZRotator.getValue()) {
+  else if (coin_assert_cast<SoNode *>(activechild) == ZRotator.getValue()) {
     vals[2] = 0;
   }
   else if (activechild != NULL) {
@@ -426,7 +428,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
     SoDragger *child;
-    child = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    child = coin_assert_cast<SoDragger *>(this->getAnyPart("rotator", FALSE));
     child->setPartAsDefault("rotator",
                             "centerballRotator");
     child->setPartAsDefault("rotatorActive",
@@ -437,7 +439,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
     for (i = 0; i < 3; i++) {
       str.sprintf("%cRotator", 'X' + i);
-      child = (SoDragger*) this->getAnyPart(str.getString(), FALSE);
+      child = static_cast<SoDragger *>(this->getAnyPart(str.getString(), FALSE));
       child->setPartAsDefault("rotator",
                               "centerballStripe");
       child->setPartAsDefault("rotatorActive",
@@ -449,7 +451,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
     for (i = 0; i < 3; i++) {
       str.sprintf("%cCenterChanger", 'X' + i);
-      child = (SoDragger*) this->getAnyPart(str.getString(), FALSE);
+      child = coin_assert_cast<SoDragger *>(this->getAnyPart(str.getString(), FALSE));
       child->setPartAsDefault("translator",
                               "centerballCenterChanger");
       child->setPartAsDefault("translatorActive",
@@ -514,7 +516,7 @@ SoCenterballDragger::setDefaultOnNonWritingFields(void)
 void
 SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  SoCenterballDragger *thisp = (SoCenterballDragger*)d;
+  SoCenterballDragger * thisp = static_cast<SoCenterballDragger *>(d);
 
   // Save center variable and translate dragger to correct position
   thisp->savedcenter = thisp->center.getValue();
@@ -533,7 +535,7 @@ SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
 void
 SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoCenterballDragger *thisp = (SoCenterballDragger*)d;
+  SoCenterballDragger * thisp = static_cast<SoCenterballDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f t, s;
   SbRotation r, so;
@@ -577,11 +579,12 @@ SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
 void
 SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
 {
-  SoCenterballDragger *thisp = (SoCenterballDragger*)d;
+  SoCenterballDragger * thisp = static_cast<SoCenterballDragger *>(d);
   thisp->setSwitches(child);
 
-  SoSurroundScale * scale = (SoSurroundScale*)
-    thisp->getPart("surroundScale", FALSE);
+  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+    thisp->getPart("surroundScale", FALSE)
+    );
   if (scale) scale->invalidate();
 }
 
@@ -590,13 +593,14 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
   Needed to deactive some feedback.
 */
 void
-SoCenterballDragger::kidFinishCB(void * d, SoDragger * child)
+SoCenterballDragger::kidFinishCB(void * d, SoDragger * COIN_UNUSED(child))
 {
-  SoCenterballDragger *thisp = (SoCenterballDragger*)d;
+  SoCenterballDragger * thisp = static_cast<SoCenterballDragger *>(d);
   thisp->setSwitches(NULL);
 
-  SoSurroundScale * scale = (SoSurroundScale*)
-    thisp->getPart("surroundScale", FALSE);
+  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+    thisp->getPart("surroundScale", FALSE)
+    );
   if (scale) scale->invalidate();
 }
 
@@ -616,7 +620,7 @@ SoCenterballDragger::addChildDragger(SoDragger *child)
 void
 SoCenterballDragger::removeChildDragger(const char *childname)
 {
-  SoDragger *child = (SoDragger*) this->getAnyPart(childname, FALSE);
+  SoDragger * child = coin_assert_cast<SoDragger *>(this->getAnyPart(childname, FALSE));
   child->removeStartCallback(SoCenterballDragger::kidStartCB, this);
   child->removeFinishCallback(SoCenterballDragger::kidFinishCB, this);
   this->unregisterChildDragger(child);
@@ -626,8 +630,9 @@ SoCenterballDragger::removeChildDragger(const char *childname)
 void
 SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoSurroundScale * scale = (SoSurroundScale*)
-    this->getPart("surroundScale", FALSE);
+  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+    this->getPart("surroundScale", FALSE)
+    );
   if (scale) {
     SbBool dotrans = scale->isDoingTranslations();
     scale->setDoingTranslations(FALSE);
@@ -641,8 +646,9 @@ SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoCenterballDragger::getMatrix(SoGetMatrixAction * action)
 {
-  SoSurroundScale * scale = (SoSurroundScale*)
-    this->getPart("surroundScale", FALSE);
+  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+    this->getPart("surroundScale", FALSE)
+    );
   if (scale) {
     SbBool dotrans = scale->isDoingTranslations();
     scale->setDoingTranslations(FALSE);

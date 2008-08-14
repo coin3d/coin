@@ -43,7 +43,7 @@
 
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -53,6 +53,8 @@
 #include <data/draggerDefaults/rotateSphericalDragger.h>
 
 #include "nodekits/SoSubKitP.h"
+#include "coindefs.h"
+#include "SbBasicP.h"
 
 /*!
   \var SoSFRotation SoRotateSphericalDragger::rotation
@@ -85,6 +87,8 @@
   \var SbVec3f SoRotateSphericalDragger::prevWorldHitPt
   \COININTERNAL
 */
+
+#define THISP(d) static_cast<SoRotateSphericalDragger *>(d)
 
 class SoRotateSphericalDraggerP {
 public:
@@ -158,7 +162,7 @@ SoRotateSphericalDragger::SoRotateSphericalDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("rotateSphericalDragger.iv",
                                        ROTATESPHERICALDRAGGER_draggergeometry,
-                                       (int)strlen(ROTATESPHERICALDRAGGER_draggergeometry));
+                                       static_cast<int>(strlen(ROTATESPHERICALDRAGGER_draggergeometry)));
   }
 
   SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -237,7 +241,7 @@ void
 SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
 {
   assert(d);
-  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SoRotateSphericalDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
@@ -250,7 +254,7 @@ SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
 void
 SoRotateSphericalDragger::valueChangedCB(void *, SoDragger * d)
 {
-  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SoRotateSphericalDragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
 
   SbVec3f trans, scale;
@@ -296,14 +300,13 @@ SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc,
                                        SbBool copyconnections)
 {
   inherited::copyContents(fromfc, copyconnections);
-  assert(fromfc->isOfType(SoRotateSphericalDragger::getClassTypeId()));
-  SoRotateSphericalDragger *from = (SoRotateSphericalDragger*) fromfc;
+  const SoRotateSphericalDragger * from = coin_assert_cast<const SoRotateSphericalDragger *>(fromfc);
 
   if (!this->userProj) {
     delete this->sphereProj;
   }
   if (from->sphereProj) {
-    this->sphereProj = (SbSphereProjector*)from->sphereProj->copy();
+    this->sphereProj = static_cast<SbSphereProjector *>(from->sphereProj->copy());
   }
   else {
     this->sphereProj = new SbSpherePlaneProjector();
@@ -316,7 +319,7 @@ SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc,
 void
 SoRotateSphericalDragger::startCB(void *, SoDragger * d)
 {
-  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SoRotateSphericalDragger * thisp = THISP(d);
   thisp->dragStart();
 }
 
@@ -324,15 +327,15 @@ SoRotateSphericalDragger::startCB(void *, SoDragger * d)
 void
 SoRotateSphericalDragger::motionCB(void *, SoDragger * d)
 {
-  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SoRotateSphericalDragger * thisp = THISP(d);
   thisp->drag();
 }
 
 /*! \COININTERNAL */
 void
-SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
+SoRotateSphericalDragger::doneCB(void * COIN_UNUSED(f), SoDragger * d)
 {
-  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SoRotateSphericalDragger * thisp = THISP(d);
   thisp->dragFinish();
 }
 
@@ -407,3 +410,5 @@ SoRotateSphericalDragger::dragFinish(void)
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
 }
+
+#undef THISP
