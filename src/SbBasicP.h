@@ -26,6 +26,10 @@
 
 #include <Inventor/misc/SoBase.h>
 
+class SoAction;
+class SoDetail;
+class SoPath;
+
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) //coin_depointer does not work with MSVC 6
 #define COIN_DEPOINTER_AVAILABLE
 #endif
@@ -63,6 +67,10 @@ template<typename To>
 To coin_safe_cast(SoBase * ptr) { return coin_internal_safe_cast<To>(ptr); }
 template<typename To>
 To coin_safe_cast(SoAction * ptr) { return coin_internal_safe_cast<To>(ptr); }
+template<typename To>
+To coin_safe_cast(const SoDetail * ptr) { return coin_internal_safe_cast<To>(ptr); }
+template<typename To>
+To coin_safe_cast(SoField * ptr) { return coin_internal_safe_cast<To>(ptr); }
 
 
 template<typename To,typename From>
@@ -79,10 +87,13 @@ template<typename To>
 To coin_assert_cast(SoBase * ptr) { return coin_internal_assert_cast<To>(ptr); }
 template<typename To>
 To coin_assert_cast(SoAction * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(const SoDetail * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(SoField * ptr) { return coin_internal_assert_cast<To>(ptr); }
 
 //FIXME Should we remove this? - BFG 20080801
 //Strictly for internal use, until we know exactly how to handle these
-class SoPath;
 template <typename To>
 To 
 reclassify_cast(SoPath * ptr) {
