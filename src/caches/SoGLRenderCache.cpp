@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -134,8 +134,9 @@ SoGLRenderCache::call(SoState * state)
                                       &PRIVATE(this)->prestate,
                                       &PRIVATE(this)->poststate);
       
-      SoGLRenderCache* parentCache = (SoGLRenderCache*)
-        SoCacheElement::getCurrentCache(state);
+      SoGLRenderCache* parentCache = static_cast<SoGLRenderCache *>(
+        SoCacheElement::getCurrentCache(state)
+	);
       parentCache->addNestedCache(PRIVATE(this)->displaylist);
     }
     else {

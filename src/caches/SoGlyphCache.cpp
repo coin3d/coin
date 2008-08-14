@@ -30,7 +30,7 @@
 
 #include "caches/SoGlyphCache.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/elements/SoFontNameElement.h>

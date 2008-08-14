@@ -38,7 +38,7 @@
 
 #include <Inventor/caches/SoConvexDataCache.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbTesselator.h>
@@ -320,8 +320,8 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 
       SbVec3f v = coords->get3(vind[i]);
       if (!identity) matrix.multVecMatrix(v,v);
-      if (gt) { glutess.addVertex(v, (void*)&tessdata.vertexInfo[i]); }
-      else { tess.addVertex(v, (void*)&tessdata.vertexInfo[i]); }
+      if (gt) { glutess.addVertex(v, static_cast<void *>(&tessdata.vertexInfo[i])); }
+      else { tess.addVertex(v, static_cast<void *>(&tessdata.vertexInfo[i])); }
     }
   }
   
@@ -375,11 +375,11 @@ vertex_tri(tVertexInfo *info, tTessData *tessdata)
 static void
 do_triangle(void *v0, void *v1, void *v2, void *data)
 {
-  tTessData *tessdata = (tTessData*)data;
+  tTessData *tessdata = static_cast<tTessData *>(data);
   tessdata->firstvertex = TRUE;
-  vertex_tri((tVertexInfo*)v0, tessdata);
-  vertex_tri((tVertexInfo*)v1, tessdata);
-  vertex_tri((tVertexInfo*)v2, tessdata);
+  vertex_tri(static_cast<tVertexInfo *>(v0), tessdata);
+  vertex_tri(static_cast<tVertexInfo *>(v1), tessdata);
+  vertex_tri(static_cast<tVertexInfo *>(v2), tessdata);
 
   tessdata->vertexIndex->append(-1);
   if (tessdata->matIndex &&

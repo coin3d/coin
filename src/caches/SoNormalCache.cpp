@@ -40,7 +40,7 @@
 
 #include <Inventor/caches/SoNormalCache.h>
 
-#include <float.h> // FLT_EPSILON
+#include <cfloat> // FLT_EPSILON
 
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/lists/SbList.h>
@@ -261,7 +261,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 
   int numfacenorm = numfacenormals;
   SoNormalCache tempcache(NULL);
-  const SbVec3f * facenorm = (SbVec3f *) facenormals;
+  const SbVec3f * facenorm = const_cast<SbVec3f *>(facenormals);
   if (facenorm == NULL) {
     // use a SoNormalCache to store temporary data
     if (tristrip) {
@@ -299,7 +299,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     i = 0;
     while (i + 2 < numvi) {
       temp = vindex[i];
-      if (temp >= 0 && (unsigned int)temp < numcoords) {
+      if (temp >= 0 && static_cast<unsigned int>(temp) < numcoords) {
         vertexFaceArray[temp].append(numfaces);
       }
       else {
@@ -309,7 +309,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       }
 
       temp = vindex[i+1];
-      if (temp >= 0 && (unsigned int)temp < numcoords) {
+      if (temp >= 0 && static_cast<unsigned int>(temp) < numcoords) {
         vertexFaceArray[temp].append(numfaces);
       }
       else {
@@ -319,7 +319,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       }
 
       temp = vindex[i+2];
-      if (temp >= 0 && (unsigned int)temp < numcoords) {
+      if (temp >= 0 && static_cast<unsigned int>(temp) < numcoords) {
         vertexFaceArray[temp].append(numfaces);
       }
       else {
@@ -329,7 +329,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       }
 
       temp = i+3 < numvi ? vindex[i+3] : -1;
-      if (temp < 0 || (unsigned int)temp >= numcoords) {
+      if (temp < 0 || static_cast<unsigned int>(temp) >= numcoords) {
         i = i + 4; // Jump to next possible face
         numfaces++;
         continue;
@@ -342,7 +342,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
   else { // !tristrip
     for (i = 0; i < numvi; i++) {
       temp = vindex[i];
-      if (temp >= 0 && (unsigned int)temp < numcoords) {
+      if (temp >= 0 && static_cast<unsigned int>(temp) < numcoords) {
         vertexFaceArray[temp].append(numfaces);
       }
       else {
@@ -351,7 +351,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     }
   }
 
-  float threshold = (float)cos(SbClamp(crease_angle, 0.0f, (float) M_PI));
+  float threshold = static_cast<float>(cos(SbClamp(crease_angle, 0.0f, static_cast<float>(M_PI))));
   SbBool found;
   int currindex = 0; // current normal index
   int nindex = 0;
@@ -361,7 +361,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 
   for (i = 0; i < numvi; i++) {
     currindex = vindex[i];
-    if (currindex >= 0 && (unsigned int)currindex < numcoords) {
+    if (currindex >= 0 && static_cast<unsigned int>(currindex) < numcoords) {
       if (tristrip) {
         if (++stripcnt > 3) facenum++; // next face
       }
@@ -975,7 +975,7 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
   
 #if COIN_DEBUG
   if (vPerRow <= 1 || vPerColumn <= 1 || 
-      (unsigned int)(vPerRow * vPerColumn) > numcoords) {
+      static_cast<unsigned int>(vPerRow * vPerColumn) > numcoords) {
 
     SoDebugError::postWarning("SoNormalCache::generatePerFaceQuad", "Illegal "
                               "facequad dimension: [%d %d] with %d coordinates "
@@ -1060,7 +1060,7 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 
 #if COIN_DEBUG
   if (vPerRow <= 1 || vPerColumn <= 1 || 
-      (unsigned int)(vPerRow * vPerColumn) > numcoords) {
+      static_cast<unsigned int>(vPerRow * vPerColumn) > numcoords) {
     SoDebugError::postWarning("SoNormalCache::generatePerRowQuad", "Illegal "
                               "facequad dimension: [%d %d] with %d coordinates "
                               "available. verticesPerRow and verticesPerColumn "

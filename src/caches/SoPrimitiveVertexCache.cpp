@@ -30,9 +30,9 @@
 
 #include <Inventor/caches/SoPrimitiveVertexCache.h>
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstddef>
+#include <cstdlib>
+#include <cstring>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
@@ -63,6 +63,7 @@
 #include "misc/SoGL.h"
 #include "misc/SoVBO.h"
 #include "misc/SoVertexArrayIndexer.h"
+#include "SbBasicP.h"
 
 /*!
   \class SoPrimtiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
@@ -305,7 +306,7 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
   }
 
   const uint32_t contextid = SoGLCacheContextElement::get(state);
-  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  const cc_glglue * glue = cc_glglue_instance(static_cast<int>(contextid));
   
   SbBool renderasvbo = 
     PRIVATE(this)->vertexvbo || 
@@ -469,14 +470,15 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     v.rgba[2] = (col>>8)&0xff;
     v.rgba[3] = col&0xff;
 
-    SoDetail * d = (SoDetail*) vp[i]->getDetail();
+    const SoDetail * d = coin_assert_cast<const SoDetail *>(vp[i]->getDetail());
     
     if (d && d->isOfType(SoFaceDetail::getClassTypeId()) && pointdetailidx) {
-      SoFaceDetail * fd = (SoFaceDetail*) d;
+      const SoFaceDetail * fd = coin_assert_cast<const SoFaceDetail *>(d);
       assert(pointdetailidx[i] < fd->getNumPoints());
 
-      SoPointDetail * pd = (SoPointDetail*)
-        fd->getPoint(pointdetailidx[i]);
+      const SoPointDetail * pd = coin_assert_cast<const SoPointDetail *>(
+        fd->getPoint(pointdetailidx[i])
+	);
 
       int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
       if (PRIVATE(this)->numbumpcoords) {
@@ -554,15 +556,15 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
     v.rgba[2] = (col>>8)&0xff;
     v.rgba[3] = col&0xff;
 
-    SoDetail * d = (SoDetail*) vp[i]->getDetail();
+    const SoDetail * d = coin_assert_cast<const SoDetail *>(vp[i]->getDetail());
 
     if (d && d->isOfType(SoLineDetail::getClassTypeId())) {
-      SoLineDetail * ld = (SoLineDetail*) d;
+      const SoLineDetail * ld = coin_assert_cast<const SoLineDetail *>(d);
       const SoPointDetail * pd;
       if (i == 0) pd = ld->getPoint0();
       else pd = ld->getPoint1();
 
-      int tidx  = v.texcoordidx = ((SoPointDetail*)pd)->getTextureCoordIndex();
+      int tidx  = v.texcoordidx = coin_assert_cast<const SoPointDetail *>(pd)->getTextureCoordIndex();
       if (PRIVATE(this)->numbumpcoords) {
         v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords-1)];
       }
@@ -630,10 +632,10 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
   v.rgba[2] = (col>>8)&0xff;
   v.rgba[3] = col&0xff;
 
-  SoDetail * d = (SoDetail*) v0->getDetail();
+  const SoDetail * d = coin_assert_cast<const SoDetail *>(v0->getDetail());
 
   if (d && d->isOfType(SoPointDetail::getClassTypeId())) {
-    SoPointDetail * pd = (SoPointDetail*) d;
+    const SoPointDetail * pd = coin_assert_cast<const SoPointDetail *>(d);
     int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
     if (PRIVATE(this)->numbumpcoords) {
       v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords-1)];
@@ -814,7 +816,7 @@ SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
     int itmp[3];
 
     // shell sort algorithm (O(nlog(n))
-    for (distance = 1; distance <= numtri/9; distance = 3*distance + 1);
+    for (distance = 1; distance <= numtri/9; distance = 3*distance + 1) ;
     for (; distance > 0; distance /= 3) {
       for (i = distance; i < numtri; i++) {
         dtmp = darray[i];
@@ -842,10 +844,10 @@ SoPrimitiveVertexCacheP::Vertex::operator unsigned long(void) const
 {
   unsigned long key = 0;
   // create an xor key based on coordinates, normal and texcoords
-  const unsigned char * ptr = (const unsigned char *) this;
+  const unsigned char * ptr = reinterpret_cast<const unsigned char *>(this);
   
   // a bit hackish. Stop xor'ing at bumpcoord
-  const unsigned char * stop = (const unsigned char*) &this->bumpcoord;
+  const unsigned char * stop = reinterpret_cast<const unsigned char *>(&this->bumpcoord);
   const ptrdiff_t size = stop-ptr;
   
   for (int i = 0; i < size; i++) {
@@ -891,32 +893,32 @@ SoPrimitiveVertexCacheP::enableArrays(const cc_glglue * glue,
   int i;
   if (color) {
     cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0,
-                             (GLvoid*) this->rgbalist.getArrayPtr());
+                             reinterpret_cast<const GLvoid *>(this->rgbalist.getArrayPtr()));
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
   }
 
   if (texture) {
     cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
-                                (GLvoid*) this->texcoordlist.getArrayPtr());
+                                reinterpret_cast<const GLvoid *>(this->texcoordlist.getArrayPtr()));
     cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
     for (i = 1; i <= lastenabled; i++) {
       if (enabled[i]) {
         cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
         cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
-                                    (GLvoid*) this->multitexcoords[i].getArrayPtr());
+                                    reinterpret_cast<const GLvoid *>(this->multitexcoords[i].getArrayPtr()));
         cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
       }
     }
   }
   if (normal) {
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
-                              (GLvoid*) this->normallist.getArrayPtr());
+                              reinterpret_cast<const GLvoid *>(this->normallist.getArrayPtr()));
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            (GLvoid*) this->vertexlist.getArrayPtr());
+                            reinterpret_cast<const GLvoid *>(this->vertexlist.getArrayPtr()));
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 }
 
@@ -1054,24 +1056,24 @@ SoPrimitiveVertexCacheP::renderImmediate(const cc_glglue * glue,
   for (int i = 0; i < numindices; i++) {
     const int idx = indices[i];
     if (normal) {
-      glNormal3fv((const GLfloat*) &normalptr[idx]);
+      glNormal3fv(reinterpret_cast<const GLfloat *>(&normalptr[idx]));
     }
     if (color) {
-      glColor3ubv((const GLubyte*) &colorptr[idx*4]);
+      glColor3ubv(reinterpret_cast<const GLubyte *>(&colorptr[idx*4]));
     }
     if (texture) {
-      glTexCoord4fv((const GLfloat*) &texcoordptr[idx]);
+      glTexCoord4fv(reinterpret_cast<const GLfloat *>(&texcoordptr[idx]));
       
       for (int j = 1; j <= lastenabled; j++) {
         if (enabled[j]) {
           const SbVec4f * mt = this->multitexcoords[j].getArrayPtr();
           cc_glglue_glMultiTexCoord4fv(glue,
                                        GL_TEXTURE0 + j,
-                                       (const GLfloat *) &mt[idx]);
+                                       reinterpret_cast<const GLfloat *>(&mt[idx]));
         }
       }
       }
-    glVertex3fv((const GLfloat*) &vertexptr[idx]);
+    glVertex3fv(reinterpret_cast<const GLfloat *>(&vertexptr[idx]));
   }
 }
 

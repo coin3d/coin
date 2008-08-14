@@ -105,8 +105,8 @@
 
 #include <Inventor/caches/SoCache.h>
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoElement.h>

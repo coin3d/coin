@@ -83,12 +83,12 @@ public:
   // Callback from SoContextHandler
   //
   static void contextCleanup(uint32_t context, void * closure) {
-    SoGLCacheListP * thisp = (SoGLCacheListP*) closure;
+    SoGLCacheListP * thisp = static_cast<SoGLCacheListP *>(closure);
 
     int i = 0;
     int n = thisp->itemlist.getLength();
     while (i < n) {
-      if (thisp->itemlist[i]->getCacheContext() == (int) context) {
+      if (thisp->itemlist[i]->getCacheContext() == static_cast<int>(context)) {
         thisp->itemlist[i]->unref();
         thisp->itemlist.remove(i);
         n--;
@@ -509,7 +509,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 
   if (shouldcreate && autocache) {
     // determine if we really should create a new cache, based on numused and numdiscarded
-    double docreate = (double) (PRIVATE(this)->numframesok + PRIVATE(this)->numused);
+    double docreate = static_cast<double>(PRIVATE(this)->numframesok + PRIVATE(this)->numused);
     double dontcreate = (PRIVATE(this)->numdiscarded);
     
     dontcreate *= dontcreate;

@@ -164,11 +164,12 @@ SoBoundingBoxCache::getCenter(void) const
 void
 SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 {
-  SoCacheElement * elem = (SoCacheElement*)
-    state->getElementNoPush(SoCacheElement::getClassStackIndex());
+  SoCacheElement * elem = static_cast<SoCacheElement *>(
+    state->getElementNoPush(SoCacheElement::getClassStackIndex())
+    );
 
   while (elem) {
-    SoBoundingBoxCache * cache = (SoBoundingBoxCache*) elem->getCache();
+    SoBoundingBoxCache * cache = static_cast<SoBoundingBoxCache *>(elem->getCache());
     if (cache) { PRIVATE(cache)->linesorpoints = TRUE; }
     elem = elem->getNextCacheElement();
   }
