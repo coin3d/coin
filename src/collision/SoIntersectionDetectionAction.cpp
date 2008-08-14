@@ -40,7 +40,7 @@
   against each other for the loaded file.
 
   \code
-  #include <stdlib.h>
+  #include <cstdlib>
   #include <Inventor/SbTime.h>
   #include <Inventor/SoDB.h>
   #include <Inventor/SoInteraction.h>
@@ -151,6 +151,7 @@
 
 #include "actions/SoSubActionP.h"
 #include "collision/SbTri3f.h"
+#include "SbBasicP.h"
 
 // *************************************************************************
 
@@ -517,7 +518,7 @@ void
 SoIntersectionDetectionAction::addVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure)
 {
   PRIVATE(this)->traversaltypes->append(type);
-  PRIVATE(this)->traversalcallbacks->append((void *) cb);
+  PRIVATE(this)->traversalcallbacks->append(reinterpret_cast<void *>(cb));
   PRIVATE(this)->traversalcallbacks->append(closure);
 }
 
@@ -535,7 +536,7 @@ SoIntersectionDetectionAction::removeVisitationCallback(SoType type, SoIntersect
   int idx = 0;
   while ( idx < PRIVATE(this)->traversaltypes->getLength() ) {
     if ( (*(PRIVATE(this)->traversaltypes))[idx] == type ) {
-      if ( ((*(PRIVATE(this)->traversalcallbacks))[idx*2] == (void *) cb) &&
+      if ( ((*(PRIVATE(this)->traversalcallbacks))[idx*2] == reinterpret_cast<void *>(cb)) &&
            ((*(PRIVATE(this)->traversalcallbacks))[idx*2+1] == closure) ) {
         PRIVATE(this)->traversaltypes->remove(idx);
         PRIVATE(this)->traversalcallbacks->remove(idx*2+1);
@@ -587,7 +588,7 @@ SoIntersectionDetectionAction::setFilterCallback(SoIntersectionFilterCB * cb, vo
 void
 SoIntersectionDetectionAction::addIntersectionCallback(SoIntersectionCB * cb, void * closure)
 {
-  PRIVATE(this)->callbacks->append((void *) cb);
+  PRIVATE(this)->callbacks->append(reinterpret_cast<void *>(cb));
   PRIVATE(this)->callbacks->append(closure);
 }
 
@@ -602,7 +603,7 @@ SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb,
 {
   int i;
   for ( i = 0; i < PRIVATE(this)->callbacks->getLength(); i += 2 ) {
-    if ( ((*PRIVATE(this)->callbacks)[i] == (void *) cb) &&
+    if ( ((*PRIVATE(this)->callbacks)[i] == reinterpret_cast<void *>(cb)) &&
          ((*PRIVATE(this)->callbacks)[i+1] == closure) ) {
       PRIVATE(this)->callbacks->remove(i+1);
       PRIVATE(this)->callbacks->remove(i);
@@ -780,7 +781,7 @@ private:
 SbBool
 PrimitiveData::insideboxfunc(void * const item, const SbBox3f & box)
 {
-  SbTri3f * tri = (SbTri3f *)item;
+  SbTri3f * tri = static_cast<SbTri3f *>(item);
   return box.intersect(tri->getBoundingBox());
 }
 
@@ -818,7 +819,7 @@ ShapeData::triangleCB(void * closure, SoCallbackAction *,
                       const SoPrimitiveVertex * v2,
                       const SoPrimitiveVertex * v3)
 {
-  PrimitiveData * primitives = (PrimitiveData *) closure;
+  PrimitiveData * primitives = static_cast<PrimitiveData *>(closure);
   const SbVec3f & oa = v1->getPoint();
   const SbVec3f & ob = v2->getPoint();
   const SbVec3f & oc = v3->getPoint();
@@ -903,7 +904,9 @@ SoCallbackAction::Response
 SoIntersectionDetectionActionP::shapeCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   assert(node && node->isOfType(SoShape::getClassTypeId()));
-  return ((SoIntersectionDetectionActionP *) closure)->shape(action, (SoShape *) node);
+  //FIXME Should SoIntersectionDetectionActionP::shape not take shape
+  //as a const argument? - 20080814 BFG
+  return static_cast<SoIntersectionDetectionActionP *>(closure)->shape(action, const_cast<SoShape *>(coin_assert_cast<const SoShape *>(node)));
 }
 
 SoCallbackAction::Response
@@ -914,8 +917,9 @@ SoIntersectionDetectionActionP::traverse(SoCallbackAction * action, const SoNode
   for ( i = 0; i < this->traversaltypes->getLength(); i++ ) {
     if ( node->getTypeId().isDerivedFrom((*(this->traversaltypes))[i]) ) {
       SoIntersectionDetectionAction::SoIntersectionVisitationCB * cb =
-        (SoIntersectionDetectionAction::SoIntersectionVisitationCB *)
-        (*(this->traversalcallbacks))[i*2];
+        reinterpret_cast<SoIntersectionDetectionAction::SoIntersectionVisitationCB *>(
+        (*(this->traversalcallbacks))[i*2]
+	);
       SoCallbackAction::Response response = cb((*(this->traversalcallbacks))[i*2+1], curpath);
       if ( response != SoCallbackAction::CONTINUE ) return response;
     }
@@ -926,7 +930,7 @@ SoIntersectionDetectionActionP::traverse(SoCallbackAction * action, const SoNode
 SoCallbackAction::Response
 SoIntersectionDetectionActionP::traverseCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  return ((SoIntersectionDetectionActionP *) closure)->traverse(action, node);
+  return static_cast<SoIntersectionDetectionActionP *>(closure)->traverse(action, node);
 }
 
 SoCallbackAction::Response
@@ -951,7 +955,7 @@ SoIntersectionDetectionActionP::dragger(SoCallbackAction * action, const SoNode 
 SoCallbackAction::Response
 SoIntersectionDetectionActionP::draggerCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  return ((SoIntersectionDetectionActionP *) closure)->dragger(action, node);
+  return static_cast<SoIntersectionDetectionActionP *>(closure)->dragger(action, node);
 }
 
 SoCallbackAction::Response
@@ -981,6 +985,8 @@ SoIntersectionDetectionActionP::reset(void)
   this->traverser->addPreCallback(SoShape::getClassTypeId(),
                                   shapeCB, this);
 }
+
+#if 0 //Do not compile debug functions normally
 
 // This is a helper function for debugging purposes: it sets up an
 // SoCoordinate3 + SoIndexedLineSet pair of nodes exposing the
@@ -1047,7 +1053,7 @@ make_scene_graph(const SbXfBox3f & xfbox, const char * tag)
   transform->matrix = xfbox.getTransform();
   root->addChild(transform);
 
-  const SbBox3f & box3f = (const SbBox3f &)xfbox;
+  const SbBox3f & box3f = static_cast<const SbBox3f &>(xfbox);
   SoCoordinate3 * xfcoord3;
   SoIndexedLineSet * xfils;
   make_scene_graph(box3f, xfcoord3, xfils);
@@ -1072,6 +1078,7 @@ make_scene_graph(const SbXfBox3f & xfbox, const char * tag)
 
   return root;
 }
+#endif //0
 
 // Expand SbXfBox3f in all directions with an epsilon value.
 static SbXfBox3f
@@ -1095,7 +1102,7 @@ expand_SbXfBox3f(const SbXfBox3f & box, float epsilon)
 
   // Get superclass-pointer, so we can modify the box corners
   // directly.
-  SbBox3f * extboxp = (SbBox3f *)&extbox;
+  SbBox3f * extboxp = static_cast<SbBox3f *>(&extbox);
 
   extboxp->getMin() -= epsilonvec;
   extboxp->getMax() += epsilonvec;
@@ -1107,7 +1114,7 @@ expand_SbXfBox3f(const SbXfBox3f & box, float epsilon)
 static SbBool
 shapeinsideboxfunc(void * const item, const SbBox3f & box)
 {
-  ShapeData * shape = (ShapeData *)item;
+  ShapeData * shape = static_cast<ShapeData *>(item);
   return shape->xfbbox.intersect(box);
 }
 
@@ -1236,7 +1243,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     else { xfboxchk = shape1->xfbbox; }
 
     for (int j = 0; j < candidateshapes.getLength(); j++) {
-      ShapeData * shape2 = (ShapeData * )candidateshapes[j];
+      ShapeData * shape2 = static_cast<ShapeData *>(candidateshapes[j]);
 
       if (!xfboxchk.intersect(shape2->xfbbox)) {
         if (ida_debug()) {
@@ -1300,7 +1307,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
   const SbVec3f e(theepsilon, theepsilon, theepsilon);
 
   for (unsigned int i = 0; i < iterationprims->numTriangles(); i++) {
-    SbTri3f * t1 = (SbTri3f *) iterationprims->getTriangle(i);
+    SbTri3f * t1 = static_cast<SbTri3f *>(iterationprims->getTriangle(i));
 
     SbBox3f tribbox = t1->getBoundingBox();
     if (theepsilon > 0.0f) {
@@ -1313,7 +1320,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
     octtree->findItems(tribbox, candidatetris);
 
     for (int j = 0; j < candidatetris.getLength(); j++) {
-      SbTri3f * t2 = (SbTri3f *) candidatetris[j];
+      SbTri3f * t2 = static_cast<SbTri3f *>(candidatetris[j]);
 
       nrisectchks++;
 
@@ -1339,7 +1346,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
         int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
-            (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
+            reinterpret_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
           switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             // Break out of the switch, invoke next callback.
@@ -1399,9 +1406,9 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
   cont = TRUE;
   const int numprimitives = primitives->numTriangles();
   for (int i = 0; i < numprimitives; i++ ) {
-    SbTri3f * t1 = (SbTri3f *) primitives->getTriangle(i);
+    SbTri3f * t1 = static_cast<SbTri3f *>(primitives->getTriangle(i));
     for (int j = i + 1; j < numprimitives; j++ ) {
-      SbTri3f * t2 = (SbTri3f *) primitives->getTriangle(j);
+      SbTri3f * t2 = static_cast<SbTri3f *>(primitives->getTriangle(j));
       nrisectchks++;
       if ( t1->intersect(*t2) ) {
         SoIntersectingPrimitive p1;
@@ -1422,7 +1429,7 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
         int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
-            (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
+            reinterpret_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
           switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             break;

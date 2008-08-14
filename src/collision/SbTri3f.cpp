@@ -41,8 +41,8 @@
 // FIXME: clean up the code -- there's lots of stuff that has been
 // commented out without any explanation, for instance. 20030603 mortene.
 
-#include <assert.h>
-#include <float.h>
+#include <cassert>
+#include <cfloat>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbPlane.h>
@@ -441,7 +441,7 @@ SbTri3f::getDistance(const SbVec3f & p) const
       SbPlane edgepl(thisp[i], thisp[i]+n, thisp[(i+1)%3]);
       if (!edgepl.isInHalfSpace(intersect)) break;
     }
-    if (i == 3) dist = (float) fabs(pl.getDistance(p));
+    if (i == 3) dist = static_cast<float>(fabs(pl.getDistance(p)));
     else { // We didn't project inside triangle
       for (int j=0;j<3;j++) {
         float d = SbTri3f::getDistance(p, thisp[j], thisp[(j+1)%3]);
@@ -878,7 +878,7 @@ SbTri3f::getDistance(const SbVec3f & p1, const SbVec3f & p2) const
 //    if (pfTriP0) *pfTriP0 = fS;
 //    if (pfTriP1) *pfTriP1 = fT;
 
-  return (float)sqrt(fSqrDist);
+  return static_cast<float>(sqrt(fSqrDist));
 }
 
 /*!
@@ -897,7 +897,7 @@ SbTri3f::sqrDistance(const SbVec3f & a1, const SbVec3f & a2,
   float fA11 = dir1.sqrLength();
   float fB0 = kDiff.dot(dir0);
   float fC = kDiff.sqrLength();
-  float fDet = (float)fabs(fA00*fA11-fA01*fA01);
+  float fDet = static_cast<float>(fabs(fA00*fA11-fA01*fA01));
   float fB1, fS, fT, fSqrDist, fTmp;
 
   if (fDet >= gs_fTolerance) {
@@ -1166,7 +1166,7 @@ SbTri3f::sqrDistance(const SbVec3f & a1, const SbVec3f & a2,
 
   if (pfSegP1) *pfSegP1 = fT;
 
-  return (float)fabs(fSqrDist);
+  return static_cast<float>(fabs(fSqrDist));
 
   //FIXME: Old code. not for segments but lines.
 #if 0
@@ -1278,7 +1278,7 @@ SbTri3f::sqrDistance (const SbVec3f & p1,
   float fB0 = kDiff.dot(edge0);
   float fB1 = kDiff.dot(edge1);
   float fC = kDiff.sqrLength();
-  float fDet = (float)fabs(fA00*fA11-fA01*fA01);
+  float fDet = static_cast<float>(fabs(fA00*fA11-fA01*fA01));
   float fS = fA01*fB1-fA11*fB0;
   float fT = fA01*fB0-fA00*fB1;
   float fSqrDist;
@@ -1495,7 +1495,7 @@ SbTri3f::sqrDistance (const SbVec3f & p1,
   if (pfTParam)
     *pfTParam = fT;
 
-  return (float)fabs(fSqrDist);
+  return static_cast<float>(fabs(fSqrDist));
 }
 
 // *************************************************************************
