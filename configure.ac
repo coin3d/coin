@@ -269,7 +269,7 @@ if $BUILD_WITH_MSVC; then
   SIM_AC_MSC_VERSION
 
   case "$sim_ac_msc_major_version" in
-  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE" ;;
+  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS" ;;
   *)
   esac
 fi
