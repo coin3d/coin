@@ -518,7 +518,7 @@ void
 SoIntersectionDetectionAction::addVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure)
 {
   PRIVATE(this)->traversaltypes->append(type);
-  PRIVATE(this)->traversalcallbacks->append(reinterpret_cast<void *>(cb));
+  PRIVATE(this)->traversalcallbacks->append(function_to_object_cast<void *>(cb));
   PRIVATE(this)->traversalcallbacks->append(closure);
 }
 
@@ -536,7 +536,7 @@ SoIntersectionDetectionAction::removeVisitationCallback(SoType type, SoIntersect
   int idx = 0;
   while ( idx < PRIVATE(this)->traversaltypes->getLength() ) {
     if ( (*(PRIVATE(this)->traversaltypes))[idx] == type ) {
-      if ( ((*(PRIVATE(this)->traversalcallbacks))[idx*2] == reinterpret_cast<void *>(cb)) &&
+      if ( ((*(PRIVATE(this)->traversalcallbacks))[idx*2] == function_to_object_cast<void *>(cb)) &&
            ((*(PRIVATE(this)->traversalcallbacks))[idx*2+1] == closure) ) {
         PRIVATE(this)->traversaltypes->remove(idx);
         PRIVATE(this)->traversalcallbacks->remove(idx*2+1);
@@ -588,7 +588,7 @@ SoIntersectionDetectionAction::setFilterCallback(SoIntersectionFilterCB * cb, vo
 void
 SoIntersectionDetectionAction::addIntersectionCallback(SoIntersectionCB * cb, void * closure)
 {
-  PRIVATE(this)->callbacks->append(reinterpret_cast<void *>(cb));
+  PRIVATE(this)->callbacks->append(function_to_object_cast<void *>(cb));
   PRIVATE(this)->callbacks->append(closure);
 }
 
@@ -603,7 +603,7 @@ SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb,
 {
   int i;
   for ( i = 0; i < PRIVATE(this)->callbacks->getLength(); i += 2 ) {
-    if ( ((*PRIVATE(this)->callbacks)[i] == reinterpret_cast<void *>(cb)) &&
+    if ( ((*PRIVATE(this)->callbacks)[i] == function_to_object_cast<void *>(cb)) &&
          ((*PRIVATE(this)->callbacks)[i+1] == closure) ) {
       PRIVATE(this)->callbacks->remove(i+1);
       PRIVATE(this)->callbacks->remove(i);
@@ -917,7 +917,7 @@ SoIntersectionDetectionActionP::traverse(SoCallbackAction * action, const SoNode
   for ( i = 0; i < this->traversaltypes->getLength(); i++ ) {
     if ( node->getTypeId().isDerivedFrom((*(this->traversaltypes))[i]) ) {
       SoIntersectionDetectionAction::SoIntersectionVisitationCB * cb =
-        reinterpret_cast<SoIntersectionDetectionAction::SoIntersectionVisitationCB *>(
+        object_to_function_cast<SoIntersectionDetectionAction::SoIntersectionVisitationCB *>(
         (*(this->traversalcallbacks))[i*2]
 	);
       SoCallbackAction::Response response = cb((*(this->traversalcallbacks))[i*2+1], curpath);
@@ -1346,7 +1346,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
         int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
-            reinterpret_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
+            object_to_function_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
           switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             // Break out of the switch, invoke next callback.
@@ -1429,7 +1429,7 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
         int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
-            reinterpret_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
+            function_to_object_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
           switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             break;
