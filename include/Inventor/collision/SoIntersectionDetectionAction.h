@@ -24,6 +24,7 @@
  *
 \**************************************************************************/
 
+#include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -38,8 +39,6 @@ struct SoIntersectingPrimitive {
   SbVec3f vertex[3];
   SbVec3f xf_vertex[3];
 };
-
-class SoIntersectionDetectionActionP;
 
 class COIN_DLL_API SoIntersectionDetectionAction : public SoAction {
   typedef SoAction hinherited;
@@ -89,7 +88,12 @@ public:
   virtual void removeIntersectionCallback(SoIntersectionCB * cb, void * closure  = NULL);
 
 private:
-  SoIntersectionDetectionActionP * pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
+
+  SoIntersectionDetectionAction(const SoIntersectionDetectionAction & rhs); // N/A
+  SoIntersectionDetectionAction & operator = (const SoIntersectionDetectionAction & rhs); // N/A
+
 };
 
 #endif // !COIN_SOINTERSECTIONDETECTIONACTION_H

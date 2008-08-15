@@ -120,6 +120,9 @@
 
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 
+#include <list>
+#include <vector>
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbOctTree.h>
 #include <Inventor/SbTime.h>
@@ -184,10 +187,10 @@
 class ShapeData;
 class PrimitiveData;
 
-class SoIntersectionDetectionActionP {
+class SoIntersectionDetectionAction :: PImpl {
 public:
-  SoIntersectionDetectionActionP(void);
-  ~SoIntersectionDetectionActionP();
+  PImpl(void);
+  ~PImpl();
 
   static float staticepsilon;
   float epsilon;
@@ -200,7 +203,10 @@ public:
 
   SoIntersectionDetectionAction::SoIntersectionFilterCB * filtercb;
   void * filterclosure;
-  SbPList * callbacks;
+  
+  typedef std::pair<SoIntersectionCB *, void *> SoIntersectionCallback;
+  std::vector<SoIntersectionCallback> callbacks;
+
   SoCallbackAction * traverser;
 
   SoCallbackAction::Response shape(SoCallbackAction * action, SoShape * shape);
@@ -219,15 +225,17 @@ public:
   SoTypeList * prunetypes;
 
   SoTypeList * traversaltypes;
-  SbPList * traversalcallbacks;
+
+  typedef std::pair<SoIntersectionVisitationCB *, void *> SoIntersectionVisitationCallback;
+  std::vector<SoIntersectionVisitationCallback> traversalcallbacks;
 
   SbList<ShapeData*> shapedata;
   SbXfBox3f fullxfbbox;
 };
 
-float SoIntersectionDetectionActionP::staticepsilon = 0.0f;
+float SoIntersectionDetectionAction::PImpl::staticepsilon = 0.0f;
 
-SoIntersectionDetectionActionP::SoIntersectionDetectionActionP(void)
+SoIntersectionDetectionAction::PImpl::PImpl(void)
 {
   this->epsilon = 0.0f;
   this->epsilonset = FALSE;
@@ -236,28 +244,24 @@ SoIntersectionDetectionActionP::SoIntersectionDetectionActionP(void)
   this->internalsenabled = FALSE;
   this->filtercb = NULL;
   this->filterclosure = NULL;
-  this->callbacks = new SbPList;
   this->traverser = NULL;
   this->prunetypes = new SoTypeList;
   this->traversaltypes = new SoTypeList;
-  this->traversalcallbacks = new SbPList;
 }
 
-SoIntersectionDetectionActionP::~SoIntersectionDetectionActionP(void)
+SoIntersectionDetectionAction::PImpl::~PImpl(void)
 {
   this->reset();
-  delete this->callbacks;
   delete this->traverser;
   delete this->prunetypes;
   delete this->traversaltypes;
-  delete this->traversalcallbacks;
 }
 
 float
-SoIntersectionDetectionActionP::getEpsilon(void) const
+SoIntersectionDetectionAction::PImpl::getEpsilon(void) const
 {
   if ( this->epsilonset ) return this->epsilon;
-  return SoIntersectionDetectionActionP::staticepsilon;
+  return SoIntersectionDetectionAction::PImpl::staticepsilon;
 }
 
 // *************************************************************************
@@ -285,17 +289,15 @@ void
 SoIntersectionDetectionAction::initClass(void)
 {
   SO_ACTION_INTERNAL_INIT_CLASS(SoIntersectionDetectionAction, SoAction);
-  SoIntersectionDetectionActionP::staticepsilon = 0.0f;
+  SoIntersectionDetectionAction::PImpl::staticepsilon = 0.0f;
 }
 
 SoIntersectionDetectionAction::SoIntersectionDetectionAction(void)
 {
-  PRIVATE(this) = new SoIntersectionDetectionActionP;
 }
 
 SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
 {
-  delete PRIVATE(this);
 }
 
 /*!
@@ -319,7 +321,7 @@ void
 SoIntersectionDetectionAction::setIntersectionEpsilon(float epsilon) // static
 {
   assert(epsilon >= 0.0f);
-  SoIntersectionDetectionActionP::staticepsilon = epsilon;
+  SoIntersectionDetectionAction::PImpl::staticepsilon = epsilon;
 }
 
 /*!
@@ -329,7 +331,7 @@ SoIntersectionDetectionAction::setIntersectionEpsilon(float epsilon) // static
 float
 SoIntersectionDetectionAction::getIntersectionEpsilon(void) // static
 {
-  return SoIntersectionDetectionActionP::staticepsilon;
+  return SoIntersectionDetectionAction::PImpl::staticepsilon;
 }
 
 /*!
@@ -518,8 +520,8 @@ void
 SoIntersectionDetectionAction::addVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure)
 {
   PRIVATE(this)->traversaltypes->append(type);
-  PRIVATE(this)->traversalcallbacks->append(function_to_object_cast<void *>(cb));
-  PRIVATE(this)->traversalcallbacks->append(closure);
+  PImpl::SoIntersectionVisitationCallback cbpair(cb, closure);
+  PRIVATE(this)->traversalcallbacks.push_back(cbpair);
 }
 
 /*!
@@ -534,18 +536,21 @@ void
 SoIntersectionDetectionAction::removeVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure)
 {
   int idx = 0;
-  while ( idx < PRIVATE(this)->traversaltypes->getLength() ) {
-    if ( (*(PRIVATE(this)->traversaltypes))[idx] == type ) {
-      if ( ((*(PRIVATE(this)->traversalcallbacks))[idx*2] == function_to_object_cast<void *>(cb)) &&
-           ((*(PRIVATE(this)->traversalcallbacks))[idx*2+1] == closure) ) {
+  const PImpl::SoIntersectionVisitationCallback cbpair(cb, closure);
+  std::vector<PImpl::SoIntersectionVisitationCallback>::iterator it =
+    PRIVATE(this)->traversalcallbacks.begin();
+  while (idx < PRIVATE(this)->traversaltypes->getLength()) {
+    if ((*(PRIVATE(this)->traversaltypes))[idx] == type) {
+      if (cbpair == *it) {
         PRIVATE(this)->traversaltypes->remove(idx);
-        PRIVATE(this)->traversalcallbacks->remove(idx*2+1);
-        PRIVATE(this)->traversalcallbacks->remove(idx*2);
+        it = PRIVATE(this)->traversalcallbacks.erase(it);
       } else {
-        idx += 1;
+        ++idx;
+        ++it;
       }
     } else {
-      idx += 1;
+      ++idx;
+      ++it;
     }
   }
 }
@@ -588,8 +593,8 @@ SoIntersectionDetectionAction::setFilterCallback(SoIntersectionFilterCB * cb, vo
 void
 SoIntersectionDetectionAction::addIntersectionCallback(SoIntersectionCB * cb, void * closure)
 {
-  PRIVATE(this)->callbacks->append(function_to_object_cast<void *>(cb));
-  PRIVATE(this)->callbacks->append(closure);
+  PImpl::SoIntersectionCallback cbpair(cb, closure);
+  PRIVATE(this)->callbacks.push_back(cbpair);
 }
 
 /*!
@@ -601,12 +606,14 @@ SoIntersectionDetectionAction::addIntersectionCallback(SoIntersectionCB * cb, vo
 void
 SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb, void * closure)
 {
-  int i;
-  for ( i = 0; i < PRIVATE(this)->callbacks->getLength(); i += 2 ) {
-    if ( ((*PRIVATE(this)->callbacks)[i] == function_to_object_cast<void *>(cb)) &&
-         ((*PRIVATE(this)->callbacks)[i+1] == closure) ) {
-      PRIVATE(this)->callbacks->remove(i+1);
-      PRIVATE(this)->callbacks->remove(i);
+  const PImpl::SoIntersectionCallback cbpair(cb, closure);
+  std::vector<PImpl::SoIntersectionCallback>::iterator it =
+    PRIVATE(this)->callbacks.begin();
+  while (it != PRIVATE(this)->callbacks.end()) {
+    if (cbpair == *it) {
+      it = PRIVATE(this)->callbacks.erase(it);
+    } else {
+      ++it;
     }
   }
 }
@@ -877,7 +884,7 @@ ShapeData::getPrimitives(void)
 // *************************************************************************
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::shape(SoCallbackAction * action, SoShape * shape)
+SoIntersectionDetectionAction::PImpl::shape(SoCallbackAction * action, SoShape * shape)
 {
   SbBox3f bbox;
   SbVec3f center;
@@ -901,26 +908,23 @@ SoIntersectionDetectionActionP::shape(SoCallbackAction * action, SoShape * shape
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::shapeCB(void * closure, SoCallbackAction * action, const SoNode * node)
+SoIntersectionDetectionAction::PImpl::shapeCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   assert(node && node->isOfType(SoShape::getClassTypeId()));
-  //FIXME Should SoIntersectionDetectionActionP::shape not take shape
+  //FIXME Should SoIntersectionDetectionAction::PImpl::shape not take shape
   //as a const argument? - 20080814 BFG
-  return static_cast<SoIntersectionDetectionActionP *>(closure)->shape(action, const_cast<SoShape *>(coin_assert_cast<const SoShape *>(node)));
+  return static_cast<SoIntersectionDetectionAction::PImpl *>(closure)->shape(action, const_cast<SoShape *>(coin_assert_cast<const SoShape *>(node)));
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::traverse(SoCallbackAction * action, const SoNode * node)
+SoIntersectionDetectionAction::PImpl::traverse(SoCallbackAction * action, const SoNode * node)
 {
   const SoPath * curpath = action->getCurPath();
   int i;
   for ( i = 0; i < this->traversaltypes->getLength(); i++ ) {
     if ( node->getTypeId().isDerivedFrom((*(this->traversaltypes))[i]) ) {
-      SoIntersectionDetectionAction::SoIntersectionVisitationCB * cb =
-        object_to_function_cast<SoIntersectionDetectionAction::SoIntersectionVisitationCB *>(
-        (*(this->traversalcallbacks))[i*2]
-	);
-      SoCallbackAction::Response response = cb((*(this->traversalcallbacks))[i*2+1], curpath);
+      PImpl::SoIntersectionVisitationCallback cbpair = this->traversalcallbacks.at(i);
+      SoCallbackAction::Response response = cbpair.first(cbpair.second, curpath);
       if ( response != SoCallbackAction::CONTINUE ) return response;
     }
   }
@@ -928,13 +932,13 @@ SoIntersectionDetectionActionP::traverse(SoCallbackAction * action, const SoNode
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::traverseCB(void * closure, SoCallbackAction * action, const SoNode * node)
+SoIntersectionDetectionAction::PImpl::traverseCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  return static_cast<SoIntersectionDetectionActionP *>(closure)->traverse(action, node);
+  return static_cast<SoIntersectionDetectionAction::PImpl *>(closure)->traverse(action, node);
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::dragger(SoCallbackAction * action, const SoNode *)
+SoIntersectionDetectionAction::PImpl::dragger(SoCallbackAction * action, const SoNode *)
 {
   if ( !this->draggersenabled ) // dragger setting overrides setting for manipulators
     return SoCallbackAction::PRUNE;
@@ -953,19 +957,19 @@ SoIntersectionDetectionActionP::dragger(SoCallbackAction * action, const SoNode 
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::draggerCB(void * closure, SoCallbackAction * action, const SoNode * node)
+SoIntersectionDetectionAction::PImpl::draggerCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
-  return static_cast<SoIntersectionDetectionActionP *>(closure)->dragger(action, node);
+  return static_cast<SoIntersectionDetectionAction::PImpl *>(closure)->dragger(action, node);
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::pruneCB(void *, SoCallbackAction *, const SoNode *)
+SoIntersectionDetectionAction::PImpl::pruneCB(void *, SoCallbackAction *, const SoNode *)
 {
   return SoCallbackAction::PRUNE;
 }
 
 void
-SoIntersectionDetectionActionP::reset(void)
+SoIntersectionDetectionAction::PImpl::reset(void)
 {
   int i;
   for (i = 0; i < this->shapedata.getLength(); i++) {
@@ -1121,10 +1125,10 @@ shapeinsideboxfunc(void * const item, const SbBox3f & box)
 // Execute full set of intersection detection operations on all the
 // primitives that has been souped up from the scene graph.
 void
-SoIntersectionDetectionActionP::doIntersectionTesting(void)
+SoIntersectionDetectionAction::PImpl::doIntersectionTesting(void)
 {
-  if (this->callbacks->getLength() == 0) {
-    SoDebugError::postWarning("SoIntersectionDetectionActionP::doIntersectionTesting",
+  if (this->callbacks.empty()) {
+    SoDebugError::postWarning("SoIntersectionDetectionAction::PImpl::doIntersectionTesting",
                               "intersection testing invoked, but no callbacks set up");
     return;
   }
@@ -1133,7 +1137,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
   this->traverser = NULL;
 
   if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doIntersectionTesting",
                            "total number of shapedata items == %d",
                            this->shapedata.getLength());
 
@@ -1207,7 +1211,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     shapetree.findItems(shapebbox, candidateshapes);
 
     if (ida_debug()) {
-      SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
+      SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doIntersectionTesting",
                              "shape %d intersects %d other shapes",
                              i, candidateshapes.getLength());
 
@@ -1247,7 +1251,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
 
       if (!xfboxchk.intersect(shape2->xfbbox)) {
         if (ida_debug()) {
-          SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
+          SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doIntersectionTesting",
                                  "shape %d intersecting %d is a miss when tried with SbXfBox3f::intersect(SbXfBox3f)",
                                  i, j);
         }
@@ -1266,7 +1270,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
 
  done:
   if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doIntersectionTesting",
                            "shape-shape intersections: %d, shape self-intersections: %d",
                            nrshapeshapeisects, nrselfisects);
   }
@@ -1274,7 +1278,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
 
 // Intersection testing between primitives of different shapes.
 void
-SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * primitives1,
+SoIntersectionDetectionAction::PImpl::doPrimitiveIntersectionTesting(PrimitiveData * primitives1,
                                                              PrimitiveData * primitives2,
                                                              SbBool & cont)
 {
@@ -1282,7 +1286,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
 
   // for debugging
   if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doPrimitiveIntersectionTesting",
                            "primitives1 (%p) = %d tris, primitives2 (%p) = %d tris",
                            primitives1, primitives1->numTriangles(),
                            primitives2, primitives2->numTriangles());
@@ -1343,11 +1347,9 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
         octtreeprims->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
         octtreeprims->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
 
-        int c;
-        for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
-          SoIntersectionDetectionAction::SoIntersectionCB * cb =
-            object_to_function_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
-          switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
+        std::vector<SoIntersectionCallback>::iterator it = this->callbacks.begin();
+        while (it != this->callbacks.end()) {
+          switch ( (*it).first((*it).second, &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             // Break out of the switch, invoke next callback.
             break;
@@ -1362,6 +1364,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
           default:
             assert(0);
           }
+          ++it;
         }
       }
     }
@@ -1371,13 +1374,13 @@ done:
   // for debugging
   if (ida_debug()) {
     const unsigned int total = primitives1->numTriangles() + primitives2->numTriangles();
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doPrimitiveIntersectionTesting",
                            "intersection checks = %d (pr primitive: %f)",
                            nrisectchks, float(nrisectchks) / total);
     SbString chksprhit;
     if (nrhits == 0) { chksprhit = "-"; }
     else { chksprhit.sprintf("%f", float(nrisectchks) / nrhits); }
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doPrimitiveIntersectionTesting",
                            "hits = %d (chks pr hit: %s)", nrhits, chksprhit.getString());
   }
 }
@@ -1388,12 +1391,12 @@ done:
 // Can ignore epsilon setting, as that only indicates a distance
 // between distinct shapes.
 void
-SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives,
+SoIntersectionDetectionAction::PImpl::doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives,
                                                                      SbBool & cont)
 {
   // for debugging
   if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doInternalPrimitiveIntersectionTesting",
                            "triangles shape = %d", primitives->numTriangles());
   }
   unsigned int nrisectchks = 0;
@@ -1426,11 +1429,10 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
         primitives->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
         primitives->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
         primitives->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
-        int c;
-        for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
-          SoIntersectionDetectionAction::SoIntersectionCB * cb =
-            function_to_object_cast<SoIntersectionDetectionAction::SoIntersectionCB *>((*(this->callbacks))[c]);
-          switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
+
+        std::vector<SoIntersectionCallback>::iterator it = this->callbacks.begin();
+        while (it != this->callbacks.end()) {
+          switch ( (*it).first((*it).second, &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             break;
           case SoIntersectionDetectionAction::NEXT_SHAPE:
@@ -1442,6 +1444,7 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
           default:
             assert(0);
           }
+          ++it;
         }
       }
     }
@@ -1449,7 +1452,7 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
  done:
   // for debugging
   if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting",
+    SoDebugError::postInfo("SoIntersectionDetectionAction::PImpl::doInternalPrimitiveIntersectionTesting",
                            "intersection checks = %d", nrisectchks);
   }
 }
