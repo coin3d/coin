@@ -53,9 +53,7 @@ coin_internal_safe_cast(From * ptr) {
 #ifdef COIN_DEPOINTER_AVAILABLE
   if((ptr != NULL) && ptr->isOfType(coin_depointer<To>::type::getClassTypeId()))
 #else
-  //FIXME Can we avoid declaring an unused variable also for MSVC6? - BFG 20080807
-  To retVal;
-  if((ptr != NULL) && ptr->isOfType(retVal->getClassTypeId()))
+  if((ptr != NULL) && ptr->isOfType(((To) NULL)->getClassTypeId()))
 #endif //OLDMSVC
     return static_cast<To>(ptr);
   return NULL;
