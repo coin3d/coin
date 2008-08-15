@@ -48,10 +48,10 @@ class SoPath;
  (static_cast<_classname_ *>(_kit_->getPart(_name_, FALSE)))
 
 #define SO_GET_ANY_PART(_kit_, _name_, _classname_) \
- static_cast<_classname_ *>(_kit_->getAnyPart(_name_, TRUE, FALSE, FALSE))
+ (static_cast<_classname_ *>(_kit_->getAnyPart(_name_, TRUE, FALSE, FALSE)))
 
 #define SO_CHECK_ANY_PART(_kit_, _name_, _classname_) \
- static_cast<_classname_ *>(_kit_->getAnyPart(_name_, FALSE, FALSE, FALSE))
+ (static_cast<_classname_ *>(_kit_->getAnyPart(_name_, FALSE, FALSE, FALSE)))
 
 
 class COIN_DLL_API SoBaseKit : public SoNode {

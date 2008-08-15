@@ -1165,19 +1165,19 @@ SoDragger::workFieldsIntoTransform(SbMatrix & matrix)
   const SbRotation * scaleOrientation = NULL;
   const SbVec3f * center = NULL;
 
-  vecfield = coin_assert_cast<SoSFVec3f *>(this->getField("translation"));
+  vecfield = coin_safe_cast<SoSFVec3f *>(this->getField("translation"));
   if (vecfield) translation = &vecfield->getValue();
 
-  vecfield = coin_assert_cast<SoSFVec3f *>(this->getField("scaleFactor"));
+  vecfield = coin_safe_cast<SoSFVec3f *>(this->getField("scaleFactor"));
   if (vecfield) scaleFactor = &vecfield->getValue();
 
-  vecfield = coin_assert_cast<SoSFVec3f *>(this->getField("center"));
+  vecfield = coin_safe_cast<SoSFVec3f *>(this->getField("center"));
   if (vecfield) center = &vecfield->getValue();
 
-  rotfield = coin_assert_cast<SoSFRotation *>(this->getField("rotation"));
+  rotfield = coin_safe_cast<SoSFRotation *>(this->getField("rotation"));
   if (rotfield) rotation = &rotfield->getValue();
 
-  rotfield = coin_assert_cast<SoSFRotation *>(this->getField("scaleOrientation"));
+  rotfield = coin_safe_cast<SoSFRotation *>(this->getField("scaleOrientation"));
   if (rotfield) scaleOrientation = &rotfield->getValue();
 
   this->workValuesIntoTransform(matrix, translation, rotation,
