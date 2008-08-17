@@ -119,7 +119,7 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
 
   Returns the rgba packed color for the given vertex.
 
-  \since 2007-04-24
+  \since Coin 3.0
 */
 
 /*!
@@ -194,8 +194,7 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
   Covenience function. Will fill in 1 in the last coord.
 
   \COIN_FUNCTION_EXTENSION
-
-  \since 2007-04-24
+  \since Coin 2.5
 */
 
 /*!

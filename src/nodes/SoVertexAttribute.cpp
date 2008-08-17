@@ -96,9 +96,9 @@ The vertex shader (vertex.glsl)
   \endcode
 
   \sa SoVertexAttributeBinding
-
   \ingroup shaders
-  \since 2008-03-15
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 class SoVertexAttributeP {

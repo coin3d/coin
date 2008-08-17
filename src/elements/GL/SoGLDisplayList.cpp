@@ -351,7 +351,7 @@ SoGLDisplayList::getContext(void) const
 
 /*!
   Sets the texture object target
-  \since 2005-02-17
+  \since Coin 2.5
 */
 void
 SoGLDisplayList::setTextureTarget(int target)
@@ -361,7 +361,7 @@ SoGLDisplayList::setTextureTarget(int target)
 
 /*!
   Returns the texture target
-  \since 2005-02-17
+  \since Coin 2.5
 */
 int
 SoGLDisplayList::getTextureTarget(void) const

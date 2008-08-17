@@ -1331,7 +1331,7 @@ SoGLImage::getWrapR(void) const
 /*!
   Returns the texture quality for this texture image.
 
-  \since 2005-02-19
+  \since Coin 2.5
 */
 float
 SoGLImage::getQuality(void) const

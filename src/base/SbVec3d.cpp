@@ -82,7 +82,7 @@
 
   Constructs an SbVec3d instance from an SbVec3b instance.
 
-  \since 2007-05-13
+  \Coin 2.5
 */
 
 /*!
@@ -90,7 +90,7 @@
 
   Constructs an SbVec3d instance from an SbVec3s instance.
 
-  \since 2007-05-13
+  \Coin 2.5
 */
 
 /*!
@@ -98,7 +98,7 @@
 
   Constructs an SbVec3d instance from an SbVec3i32 instance.
 
-  \since 2007-05-13
+  \Coin 2.5
 */
 
 /*!
@@ -370,7 +370,7 @@ SbVec3d::setValue(const SbVec3f & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \since 2007-05-13
+  \Coin 2.5
 */
 
 SbVec3d &
@@ -385,7 +385,7 @@ SbVec3d::setValue(const SbVec3b & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \since 2007-05-13
+  \Coin 2.5
 */
 
 SbVec3d &
@@ -400,7 +400,7 @@ SbVec3d::setValue(const SbVec3s & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \since 2007-05-13
+  \Coin 2.5
 */
 
 SbVec3d &

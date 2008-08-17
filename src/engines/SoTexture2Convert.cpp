@@ -29,7 +29,8 @@
   \brief Abstract base class for texture filtering engines.
 
   \ingroup engines
-  \since 2008-06-25
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 SO_ENGINE_ABSTRACT_SOURCE(SoTexture2Convert);

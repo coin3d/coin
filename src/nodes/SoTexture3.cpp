@@ -164,7 +164,7 @@
   Using compressed textures usually reduces texture memory usage
   for a texture by 4-6 times.
 
-  \since 2005-06-03
+  \since Coin 2.4.2
   \since TGS Inventor 4.0
 */
 

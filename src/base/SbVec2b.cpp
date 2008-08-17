@@ -39,7 +39,7 @@
   \brief a vector class for containing two byte integers.
 
   \sa SbVec2ub
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2b &

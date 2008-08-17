@@ -24,11 +24,14 @@
 /*!
   \class SoTextureUnitElement Inventor/elements/SoTextureUnitElement.h
   \brief The SoTextureUnitElement class is yet to be documented.
-  \ingroup elements
+
+  This element is used for keeping control of multitexturing usage.
 
   FIXME: write doc.
 
-  \since 2003-10-27
+  \ingroup elements
+  \COIN_CLASS_EXTENSION
+  \since Coin 2.2
 */
 
 #include <Inventor/elements/SoTextureUnitElement.h>

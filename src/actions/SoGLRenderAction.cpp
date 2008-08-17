@@ -825,7 +825,7 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
   Returns the abort callback settings.
 
   \sa setAbortCallback
-  \since 2008-03-13
+  \since Coin 3.0
 */
 void
 SoGLRenderAction::getAbortCallback(SoGLRenderAbortCB * & func_out,

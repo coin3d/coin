@@ -112,7 +112,8 @@ SoButtonEvent::getState(void) const
   Converts from an enum value of type SoButtonEvent::State to a
   string containing the enum symbol.
 
-  \since 2008-03-22
+  \COIN_FUNCTION_EXTENSION
+  \since Coin 3.0
 */
 // Should we add stringToEnum as well perhaps?
 SbBool

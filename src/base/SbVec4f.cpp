@@ -80,7 +80,7 @@
 
   Constructs an SbVec4f instance from an SbVec4b instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -88,7 +88,7 @@
 
   Constructs an SbVec4f instance from an SbVec4s instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -96,7 +96,7 @@
 
   Constructs an SbVec4f instance from an SbVec4i32 instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -246,7 +246,7 @@ SbVec4f::setValue(const SbVec4d & v)
 }
 
 /*!
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 SbVec4f &
@@ -260,7 +260,7 @@ SbVec4f::setValue(const SbVec4b & v)
 }
 
 /*!
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 SbVec4f &
@@ -274,7 +274,7 @@ SbVec4f::setValue(const SbVec4s & v)
 }
 
 /*!
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 SbVec4f &

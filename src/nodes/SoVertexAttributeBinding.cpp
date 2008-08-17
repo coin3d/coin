@@ -94,6 +94,10 @@
         value PER_VERTEX_INDEXED
     }
   \endcode
+
+  \sa SoVertexAttribute
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 // *************************************************************************

@@ -75,7 +75,7 @@
 
   Constructs an SbVec2d instance from an SbVec2f instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -83,7 +83,7 @@
 
   Constructs an SbVec2d instance from an SbVec2b instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -91,7 +91,7 @@
 
   Constructs an SbVec2d instance from an SbVec2s instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -99,7 +99,7 @@
 
   Constructs an SbVec2d instance from an SbVec2i32 instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -207,7 +207,7 @@ SbVec2d::normalize(void)
   Sets the value from an SbVec2f instance.
   Returns reference to itself.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2d &
@@ -222,7 +222,7 @@ SbVec2d::setValue(const SbVec2f & v)
   Sets the value from an SbVec2b instance.
   Returns reference to itself.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 SbVec2d &
@@ -237,7 +237,7 @@ SbVec2d::setValue(const SbVec2b & v)
   Sets the value from an SbVec2s instance.
   Returns reference to itself.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 SbVec2d &
@@ -251,7 +251,7 @@ SbVec2d::setValue(const SbVec2s & v)
   Sets the value from an SbVec2i32 instance.
   Returns reference to itself.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 SbVec2d &

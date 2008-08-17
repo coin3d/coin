@@ -28,6 +28,7 @@
   \brief Common base class for texture nodes.
 
   \ingroup nodes
+  \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */
 

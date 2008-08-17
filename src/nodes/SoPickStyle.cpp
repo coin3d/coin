@@ -85,7 +85,7 @@
   does not affect the SoPickedPoint pick coordinate though, just the
   sorting by depth done on the picked point list.
 
-  \since 2008-03-11
+  \since Coin 3.0
 */
 /*!
   \var SoPickStyle::Style SoPickStyle::BOUNDING_BOX_ON_TOP
@@ -96,7 +96,7 @@
   the SoPickedPoint pick coordinate though, just the sorting by depth
   done on the picked point list.
 
-  \since 2008-03-11
+  \since Coin 3.0
 */
 /*!
   \var SoPickStyle::Style SoPickStyle::SHAPE_FRONTFACES
@@ -110,7 +110,7 @@
   frontfaces to become backfaces and vice versa and to turn backface
   culling on and off.
 
-  \since 2008-03-11
+  \since Coin 3.0
 */
 
 /*!

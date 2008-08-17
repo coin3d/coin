@@ -730,7 +730,7 @@ SbViewVolume::getViewUp(void) const
 /*!
   Returns TRUE if \a p is inside the view volume.
 
-  \since 2004-02-12
+  \since Coin 2.3
 */
 SbBool 
 SbViewVolume::intersect(const SbVec3f & p) const
@@ -751,7 +751,7 @@ SbViewVolume::intersect(const SbVec3f & p) const
   \a closestpoint is set to the closest point on the line
   to the center ray of the view volume.
   
-  \since 2004-02-12
+  \since Coin 2.3
 */
 SbBool 
 SbViewVolume::intersect(const SbVec3f & p0, const SbVec3f & p1,
@@ -774,7 +774,7 @@ SbViewVolume::intersect(const SbVec3f & p0, const SbVec3f & p1,
 /*!
   Returns TRUE if \a box may be inside the view volume.
 
-  \since 2004-02-12
+  \since Coin 2.3
  */
 SbBool 
 SbViewVolume::intersect(const SbBox3f & box) const

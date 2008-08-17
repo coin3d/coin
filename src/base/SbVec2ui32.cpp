@@ -30,7 +30,7 @@
 /*!
   \class SbVec2ui32 Inventor/SbVec2ui32.h
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2ui32 &

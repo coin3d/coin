@@ -71,31 +71,31 @@
 /*!
   \fn SbVec2i32::SbVec2i32(const SbVec2ui32 & v)
   
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec2i32::SbVec2i32(const SbVec2b & v)
   
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec2i32::SbVec2i32(const SbVec2s & v)
   
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec2i32::SbVec2i32(const SbVec2f & v)
   
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec2i32::SbVec2i32(const SbVec2d & v)
   
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -146,7 +146,7 @@
 */
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2i32 &
@@ -158,7 +158,7 @@ SbVec2i32::setValue(const SbVec2ui32 & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2i32 &
@@ -170,7 +170,7 @@ SbVec2i32::setValue(const SbVec2b & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2i32 &
@@ -182,7 +182,7 @@ SbVec2i32::setValue(const SbVec2s & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2i32 &
@@ -200,7 +200,7 @@ SbVec2i32::setValue(const SbVec2f & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2i32 &

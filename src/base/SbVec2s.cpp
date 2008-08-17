@@ -73,7 +73,7 @@
 
   Constructs an SbVec2s instance from the value in an SbVec2us instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -81,7 +81,7 @@
 
   Constructs an SbVec2s instance from the value in an SbVec2b instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -89,7 +89,7 @@
 
   Constructs an SbVec2s instance from the value in an SbVec2i32 instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -97,7 +97,7 @@
 
   Constructs an SbVec2s instance from the value in an SbVec2f instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -105,7 +105,7 @@
 
   Constructs an SbVec2s instance from the value in an SbVec2d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -156,7 +156,7 @@
 */
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2s &
@@ -168,7 +168,7 @@ SbVec2s::setValue(const SbVec2us & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2s &
@@ -180,7 +180,7 @@ SbVec2s::setValue(const SbVec2b & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2s &
@@ -198,7 +198,7 @@ SbVec2s::setValue(const SbVec2i32 & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2s &
@@ -216,7 +216,7 @@ SbVec2s::setValue(const SbVec2f & v)
 }
 
 /*!
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2s &

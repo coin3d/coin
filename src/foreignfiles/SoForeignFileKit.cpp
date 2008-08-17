@@ -67,6 +67,8 @@
   Abstract base class for foreign file format support in Coin.
 
   \relates foreignfilesupport
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 /*

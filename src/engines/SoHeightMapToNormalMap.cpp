@@ -50,8 +50,9 @@
   though only the "outer" Texture2 node is needed. This can give quite
   a big memory use overhead.
 
-  \since 2008-06-25
   \ingroup engines
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 /*!

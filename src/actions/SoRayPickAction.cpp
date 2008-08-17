@@ -1018,7 +1018,7 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in, SbBool fro
 /*!
   Truncates the internal picked points list.
 
-  \since 2003-09-30
+  \since Coin 2.2
 */
 void 
 SoRayPickAction::reset(void)

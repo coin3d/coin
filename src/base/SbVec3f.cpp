@@ -79,21 +79,21 @@
   \fn SbVec3f::SbVec3f(const SbVec3b & v)
   Constructs an SbVec3f instance from an SbVec3b instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec3f::SbVec3f(const SbVec3s & v)
   Constructs an SbVec3f instance from an SbVec3s instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec3f::SbVec3f(const SbVec3i32 & v)
   Constructs an SbVec3f instance from an SbVec3i32 instance.
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -421,7 +421,7 @@ SbVec3f::setValue(const SbVec3d & v)
 }
 
 /*!
-  \since 2007-05-13
+  \since Coin 2.5
   \sa getValue()
 */
 
@@ -435,7 +435,7 @@ SbVec3f::setValue(const SbVec3b & v)
 }
 
 /*!
-  \since 2007-05-13
+  \since Coin 2.5
   \sa getValue()
 */
 
@@ -449,7 +449,7 @@ SbVec3f::setValue(const SbVec3s & v)
 }
 
 /*!
-  \since 2007-05-13
+  \since Coin 2.5
   \sa getValue()
 */
 

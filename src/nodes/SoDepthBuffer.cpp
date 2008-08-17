@@ -42,7 +42,8 @@
   depth buffer value range can give you.
 
   \ingroup nodes
-  \since 2008-03-13
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 #include <Inventor/nodes/SoDepthBuffer.h>

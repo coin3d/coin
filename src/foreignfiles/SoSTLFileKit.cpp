@@ -131,9 +131,9 @@ public:
   is not collected either when converting Open Inventor scene graphs to
   SoSTLFileKits.
 
-  \since 2005-10-10
-
   \relates foreignfileformats
+  \COIN_CLASS_EXTENSION
+  \since Coin 3.0
 */
 
 #define PRIVATE(obj) ((obj)->pimpl)

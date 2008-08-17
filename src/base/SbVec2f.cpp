@@ -76,7 +76,7 @@
 
   Constructs an instance from an SbVec2d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -84,7 +84,7 @@
 
   Constructs an instance from an SbVec2d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -92,7 +92,7 @@
 
   Constructs an instance from an SbVec2d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -100,7 +100,7 @@
 
   Constructs an instance from an SbVec2d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -164,7 +164,7 @@ SbVec2f::length(void) const
 
   Returns the square of the length of the vector.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 /*!
@@ -216,7 +216,7 @@ SbVec2f::normalize(void)
 /*!
   Sets the value from an SbVec2d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2f &
@@ -230,7 +230,7 @@ SbVec2f::setValue(const SbVec2d & v)
 /*!
   Sets the value from an SbVec2b instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2f &
@@ -244,7 +244,7 @@ SbVec2f::setValue(const SbVec2b & v)
 /*!
   Sets the value from an SbVec2s instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2f &
@@ -258,7 +258,7 @@ SbVec2f::setValue(const SbVec2s & v)
 /*!
   Sets the value from an SbVec2i32 instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec2f &

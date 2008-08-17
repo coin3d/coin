@@ -74,31 +74,31 @@
 /*!
   \fn SbVec3s::SbVec3s(const SbVec3us & v)
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec3s::SbVec3s(const SbVec3b & v)
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec3s::SbVec3s(const SbVec3i32 & v)
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec3s::SbVec3s(const SbVec3f & v)
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
   \fn SbVec3s::SbVec3s(const SbVec3d & v)
 
-  \since 2007-05-13
+  \since Coin 2.5
 */
 
 /*!
@@ -151,7 +151,7 @@
 /*!
   Sets the value from an SbVec3us instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec3s &
@@ -166,7 +166,7 @@ SbVec3s::setValue(const SbVec3us & v)
 /*!
   Sets the value from an SbVec3b instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec3s &
@@ -181,7 +181,7 @@ SbVec3s::setValue(const SbVec3b & v)
 /*!
   Sets the value from an SbVec3i32 instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec3s &
@@ -203,7 +203,7 @@ SbVec3s::setValue(const SbVec3i32 & v)
 /*!
   Sets the value from an SbVec3f instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec3s &
@@ -225,7 +225,7 @@ SbVec3s::setValue(const SbVec3f & v)
 /*!
   Sets the value from an SbVec3d instance.
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec3s &

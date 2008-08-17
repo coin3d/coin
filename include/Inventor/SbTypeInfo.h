@@ -47,7 +47,7 @@
   
   If the type is a primitive type that has
 
-  \since 2007-05-20
+  \since Coin 2.5
 */
 
 #include <Inventor/system/inttypes.h>

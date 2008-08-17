@@ -343,7 +343,7 @@ namespace {
 /*!
   Returns an empty-string SbName instance.
 
-  \since Coin 20080114
+  \since Coin 3.0
 */
 
 const SbName &

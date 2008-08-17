@@ -34,7 +34,7 @@
 /*!
   \class SbVec3b Inventor/SbVec3b.h
 
-  \since 2007-04-28
+  \since Coin 2.5
 */
 
 SbVec3b &
