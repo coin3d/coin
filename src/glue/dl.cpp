@@ -507,7 +507,8 @@ cc_build_search_list(const char * libname)
 
 #ifdef COIN_MACOS_10
   /* (4) Check if library exists as framework (as in OS Xs 'OpenAL') */
-  if ((strstr(libname, ".dylib") == NULL) &&
+  if ((libname != NULL) &&
+      (strstr(libname, ".dylib") == NULL) &&
       (strstr(libname, ".so") == NULL) &&
       (strstr(libname, ".dll") == NULL)) {
     cc_string_construct(&framework_path);
@@ -581,15 +582,15 @@ cc_dl_open(const char * filename)
 
 #ifdef HAVE_DL_LIB
 
-  h->nativehnd = dlopen(filename, RTLD_LAZY);
-
 #ifdef HAVE_DYLD_RUNTIME_BINDING
-  /* Mac OS X: Search for library shipped with Inventor framework. */
+  /* Mac OS X: Search for library shipped with bundled Inventor framework
+     or directly in application bundle. */
+
   if (h->nativehnd == NULL) {
     cc_string * path = cc_find_file(filename);
     if (cc_string_length(path) > 0) {
       if (cc_dl_debugging()) {
-        cc_debugerror_postinfo("cc_dlopen", "opening: %s", 
+        cc_debugerror_postinfo("cc_dl_open", "opening: %s", 
                                cc_string_get_text(path));
       }
       h->nativehnd = dlopen(cc_string_get_text(path), 
@@ -598,6 +599,11 @@ cc_dl_open(const char * filename)
     cc_string_destruct(path);
   }
 #endif /* HAVE_DYLD_RUNTIME_BINDING */
+
+  if (h->nativehnd == NULL) {
+    /* try loading path-less */
+    h->nativehnd = dlopen(filename, RTLD_LAZY);
+  }
 
   /*
     If dlopen() fails for any reason than not being able to find the
