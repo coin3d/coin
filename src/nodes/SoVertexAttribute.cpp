@@ -158,6 +158,9 @@ SoVertexAttribute::initClass(void)
 
 SoVertexAttribute::SoVertexAttribute(void)
 {
+  // We don't use SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexAttribute) here because
+  // the fieldData setup has to be overriden in custom ways for this node...
+
   this->setNodeType(SoNode::COIN_3_0);
   this->isBuiltIn = TRUE;
   assert(SoVertexAttribute::classTypeId != SoType::badType());
@@ -468,7 +471,6 @@ SoVertexAttributeP::setDataPtr(void)
     SoDebugError::postInfo("SoVertexAttributeP::setDataPtr",
                            "Typename '%s' is not a supported type.",
                            PUBLIC(this)->typeName.getValue().getString());
-    assert(0 && "unknown attribute type");
   }
 }
 
