@@ -7366,246 +7366,12 @@ SOURCE=..\..\src\navigation\SoScXMLViewUtils.cpp
 # PROP Intermediate_Dir "StaticDebug\navigation"
 !ENDIF
 # End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoCenterMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoIdleMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoNavigationControl.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoNavigationMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoNavigationState.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoNavigationSystem.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoOrthoCenterMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoPanMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoPickMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoPitchMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoRollMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoRotateMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoYawMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoZoomMode.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoEvent.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoNavigation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\navigation"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\navigation"
-!ENDIF
-# End Source File
 # End Group
 # Begin Group "nodes sources"
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoAnnotation.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\nodes"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\nodes\SoAnnoText3.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\nodes"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\nodes\SoAnnoText3Property.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -8204,19 +7970,6 @@ SOURCE=..\..\src\nodes\SoPackedColor.cpp
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoPathSwitch.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\nodes"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\nodes\SoPattern.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -8958,19 +8711,6 @@ SOURCE=..\..\src\nodes\SoWWWAnchor.cpp
 # Begin Source File
 
 SOURCE=..\..\src\nodes\SoWWWInline.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\nodes"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\nodes"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\nodes\SoViewerNavigationMode.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -9797,45 +9537,6 @@ SOURCE=..\..\src\hardcopy\PSVectorOutput.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\hardcopy\CGMVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\hardcopy"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\hardcopy\HPGLVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\hardcopy"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\hardcopy\GDIVectorOutput.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\hardcopy"
-!ENDIF
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\hardcopy\VectorOutput.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
@@ -9876,45 +9577,6 @@ SOURCE=..\..\src\hardcopy\VectorizeActionP.cpp
 # Begin Source File
 
 SOURCE=..\..\src\hardcopy\VectorizePSAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\hardcopy"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\hardcopy\VectorizeCGMAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\hardcopy"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\hardcopy\VectorizeHPGLAction.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\hardcopy"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\hardcopy"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\hardcopy\VectorizeGDIAction.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -10322,35 +9984,6 @@ SOURCE=..\..\src\threads\barrier.cpp
 # PROP Intermediate_Dir "StaticRelease\threads"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
 # PROP Intermediate_Dir "StaticDebug\threads"
-!ENDIF
-# End Source File
-# End Group
-# Begin Group "mpeg sources"
-# PROP Default_Filter "c;cpp;ic;icc;h"
-# Begin Source File
-
-SOURCE=..\..\src\mpeg\SoMPEGRenderer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\mpeg"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\mpeg\SoMPEGFrameRenderer.cpp
-!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\mpeg"
-!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\mpeg"
 !ENDIF
 # End Source File
 # End Group
@@ -12150,17 +11783,6 @@ SOURCE=include\Inventor\C\basic.h
 SOURCE=..\..\include\Inventor\C\tidbits.h
 # End Source File
 # End Group
-# Begin Group "Inventor\MPEG headers"
-# Set Default_Filter "h"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\MPEG\SoMPEGRenderer.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\MPEG\SoMPEGFrameRenderer.h
-# End Source File
-# End Group
 # Begin Group "Inventor\VRMLnodes headers"
 # Set Default_Filter "h"
 # Begin Source File
@@ -12539,18 +12161,6 @@ SOURCE=..\..\include\Inventor\annex\HardCopy\SoPSVectorOutput.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\annex\HardCopy\SoCGMVectorOutput.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\annex\HardCopy\SoHPGLVectorOutput.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\annex\HardCopy\SoGDIVectorOutput.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorOutput.h
 # End Source File
 # Begin Source File
@@ -12560,18 +12170,6 @@ SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizeAction.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizePSAction.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizeCGMAction.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizeHPGLAction.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\annex\HardCopy\SoVectorizeGDIAction.h
 # End Source File
 # End Group
 # Begin Group "ForeignFiles headers"
@@ -14239,73 +13837,6 @@ SOURCE=..\..\include\Inventor\misc\SoJavaScriptEngine.h
 SOURCE=..\..\include\Inventor\misc\SoGLDriverDatabase.h
 # End Source File
 # End Group
-# Begin Group "Inventor\navigation headers"
-# Set Default_Filter "h"
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoCenterMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoIdleMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationControl.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationState.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigationSystem.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoOrthoCenterMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoPanMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoPickMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoPitchMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoRollMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoRotateMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoSubMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoYawMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoZoomMode.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\navigation\SoNavigation.h
-# End Source File
-# End Group
 # Begin Group "Inventor\nodekits headers"
 # Set Default_Filter "h"
 # Begin Source File
@@ -14366,14 +13897,6 @@ SOURCE=..\..\include\Inventor\nodekits\SoWrapperKit.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoAnnotation.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodes\SoAnnoText3.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodes\SoAnnoText3Property.h
 # End Source File
 # Begin Source File
 
@@ -14650,10 +14173,6 @@ SOURCE=..\..\include\Inventor\nodes\SoPackedColor.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoPathSwitch.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodes\SoPattern.h
 # End Source File
 # Begin Source File
 
@@ -14934,10 +14453,6 @@ SOURCE=..\..\include\Inventor\nodes\SoShaderProgram.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoVertexShader.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\nodes\SoViewerNavigationMode.h
 # End Source File
 # End Group
 # Begin Group "Inventor\projectors headers"
@@ -16165,16 +15680,6 @@ SOURCE=..\..\src\misc\cppmangle.icc
 # Begin Source File
 
 SOURCE=..\..\src\misc\systemsanity.icc
-
-# PROP Exclude_From_Build 1
-# End Source File
-# End Group
-# Begin Group "navigation local includes"
-
-# PROP Default_Filter "h;ic;icc"
-# Begin Source File
-
-SOURCE=..\..\src\navigation\SoEvent.h
 
 # PROP Exclude_From_Build 1
 # End Source File

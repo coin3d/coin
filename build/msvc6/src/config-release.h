@@ -11,7 +11,7 @@
 
 
 /* define this to the libCoin beta version letter */
-#define COIN_BETA_VERSION a
+/* #undef COIN_BETA_VERSION */
 
 /* Build system. */
 #define COIN_CONFIGURE_BUILD I686_PC_CYGWIN
@@ -36,6 +36,18 @@
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_INTPTR_T int
+
+/* Define when building Mac OS X framework */
+/* #undef COIN_MACOSX_FRAMEWORK */
+
+/* Define for Mac OS X builds */
+/* #undef COIN_MACOS_10 */
+
+/* Define for Mac OS 10.1 builds */
+/* #undef COIN_MACOS_10_1 */
+
+/* Define for Mac OS 10.2 builds */
+/* #undef COIN_MACOS_10_2 */
 
 /* define this to the libCoin major version number */
 #define COIN_MAJOR_VERSION 3
@@ -71,7 +83,7 @@
 /* #undef COIN_UNDEF_IN_PATH_HACK */
 
 /* define this to the full libCoin major.minor.micro version number */
-#define COIN_VERSION "3.0.0a"
+#define COIN_VERSION "3.0.0"
 
 /* define this to the dynamic library extension suffix on this system */
 #define DYNAMIC_LIBRARY_EXTENSION ".dll"
@@ -104,7 +116,7 @@
 /* #undef HAVE_ASSERT_WITH_BUILTIN_EXPECT */
 
 /* define if bcopy() is available */
-#define HAVE_BCOPY 1
+/* #undef HAVE_BCOPY */
 
 /* Define to use bzip2 */
 /* #undef HAVE_BZIP2 */
@@ -371,10 +383,10 @@
 /* #undef HAVE_ZLIB */
 
 /* whether or not _finite() is available */
-#define HAVE__FINITE 1
+/* #undef HAVE__FINITE */
 
 /* whether or not _fpclass() is available */
-#define HAVE__FPCLASS 1
+/* #undef HAVE__FPCLASS */
 
 /* Define to use Win32 _ftime() */
 #define HAVE__FTIME 1
@@ -383,7 +395,7 @@
 #define HAVE__GETCWD 1
 
 /* whether or not _isnan() is available */
-#define HAVE__ISNAN 1
+/* #undef HAVE__ISNAN */
 
 /* Define to use Win32 _logb() */
 #define HAVE__LOGB 1
@@ -419,13 +431,13 @@
 #define PACKAGE_NAME "Coin"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Coin 3.0.0a"
+#define PACKAGE_STRING "Coin 3.0.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "coin"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "3.0.0a"
+#define PACKAGE_VERSION "3.0.0"
 
 /* define for runtime linking with simage */
 #define SIMAGE_RUNTIME_LINKING 1
@@ -449,7 +461,7 @@
 #define USE_W32THREAD 
 
 /* Version number of package */
-#define VERSION "3.0.0a"
+#define VERSION "3.0.0"
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #define X_DISPLAY_MISSING 1
