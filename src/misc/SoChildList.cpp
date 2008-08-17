@@ -255,27 +255,26 @@ SoChildList::traverseInPath(SoAction * const action,
                             const int * indices)
 {
   assert(action->getCurPathCode() == SoAction::IN_PATH);
-  
+
   // only traverse nodes in path list, and nodes off path that
   // affects state.
   int childidx = 0;
-  SoNode * node;
 
   for (int i = 0; i < numindices && !action->hasTerminated(); i++) {
     int stop = indices[i];
     for (; childidx < stop && !action->hasTerminated(); childidx++) {
       // we are off path. Check if node affects state before traversing
-      node = (*this)[childidx];
+      SoNode * node = (*this)[childidx];
       if (node->affectsState()) {
         action->pushCurPath(childidx, node);
         action->traverse(node);
         action->popCurPath(SoAction::IN_PATH);
       }
     }
-    
+
     if (!action->hasTerminated()) {
       // here we are in path. Always traverse
-      node = (*this)[childidx];
+      SoNode * node = (*this)[childidx];
       action->pushCurPath(childidx, node);
       action->traverse(node);
       action->popCurPath(SoAction::IN_PATH);

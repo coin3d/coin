@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoVertexAttributeBindingElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoVertexAttributeBindingElement::Binding

@@ -52,7 +52,7 @@ public:
   void traverse(SoAction * const action, const int index);
   void traverse(SoAction * const action, SoNode * node);
   void traverse(SoAction * const action, const int first, const int last);
-  
+
 public:
   void addPathAuditor(SoPath * const path);
   void removePathAuditor(SoPath * const path);
