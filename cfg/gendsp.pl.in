@@ -526,12 +526,12 @@ if ( $ARGV[0] eq "--register-public-header" ) {
   $installheadersfile = $studiofile;
   $installheadersfile =~ s,([^\\/0-9]*)[0-9][^\\/]*\.dsp,install-headers.bat,;
  
-  $installheadersfile =~ m,(msvc[678]),;
+  $installheadersfile =~ m,(msvc[6789]),;
   $msvc = $1;
 
   # don't generate inside misc/ to be able to generate concurrently in several
   # msvc*/-directories...
-  # $installheadersfile =~ s,msvc[678]/,misc/,;
+  # $installheadersfile =~ s,msvc[6789]/,misc/,;
 
   # sourcedirq=`echo "$sourcedir" | sed -e 's,\\\\,\\\\,g'`
   # builddirq=`echo "$builddir" | sed -e 's,\\\\,\\\\,g'`
@@ -671,6 +671,9 @@ $vcproj7file =~ s/\.dsp$/.vcproj/;
 $vcproj8file = $studiofile;
 $vcproj8file =~ s/msvc6/msvc8/;
 $vcproj8file =~ s/\.dsp$/.vcproj/;
+$vcproj9file = $studiofile;
+$vcproj9file =~ s/msvc6/msvc9/;
+$vcproj9file =~ s/\.dsp$/.vcproj/;
 
 if ( $sourcefile ne "" ) {
   if ( $objectfile eq "" ) {
@@ -698,7 +701,7 @@ if ( -f $studiofile ) {
   # files do not exist yet, open project
   ClearVars();
 
-  $studiofile =~ m,(msvc[678]),;
+  $studiofile =~ m,(msvc[6789]),;
   $msvc = $1;
 
   @installrcfiles = (
@@ -1183,10 +1186,7 @@ if ( $outputfile =~ /\.so\./ ) {
   close(OUT);
 
   # "close" the dsp file
-  # (this if-block should (custom edit) only be enabled for Coin)
-  if ( $group ne "" && $LIBRARY eq "COIN" ) {
-    print DSP "# End Group\n";
-  }
+  print DSP "# End Group\n";
   print DSP "# End Group\n";
 
   # We need to know about the root build dir and source dir to trigger the
@@ -1408,7 +1408,7 @@ _EODSW
   $installheadersfile =~ s,([^\\/0-9]*)[0-9][^\\/]*\.dsp,install-headers.bat,;
   # don't generate install-headers inside misc/ to be able to generate
   # concurrently inside several msvc*/-directories.
-  # $installheadersfile =~ s,msvc[678]/,misc/,;
+  # $installheadersfile =~ s,msvc[6789]/,misc/,;
   $uninstallheadersfile = $installheadersfile;
   $uninstallheadersfile =~ s/install-hea/uninstall-hea/;
   SubstBatFile($installheadersfile);
