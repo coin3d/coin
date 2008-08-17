@@ -1761,12 +1761,14 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
 
 BOOST_AUTO_TEST_CASE(testInitCleanup)
 {
-  BOOST_CHECK_MESSAGE(false, "Check Disabled since it crashes the test driver");
-  return;
+  // init already called
   SoDB::cleanup();
 
   SoDB::init();
   SoDB::cleanup();
+
+  SoDB::init();
+  // init for the conntinuing test running
 }
 
 #endif // COIN_TEST_SUITE
