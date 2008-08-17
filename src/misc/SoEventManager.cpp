@@ -30,7 +30,6 @@
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoViewerNavigationMode.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/misc/SoState.h>
