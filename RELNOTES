@@ -36,6 +36,9 @@ Statechart XML engine, which has been used to implement examiner-mode
 viewer navigation at the Coin level (earlier this functionality was
 implemented over and over again in the various GUI libraries).
 
+Foreign file format support through SoForeignFileKit, with an example
+SoSTLFileKit implementation for STL import.
+
 There is a testsuite framework based on Boost.Test
 
 Translation draggers (1D/2D) are now fitted with new fields minTranslation
