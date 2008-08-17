@@ -89,7 +89,6 @@
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
 #include <Inventor/scxml/ScXML.h>
 #include "navigation/SoScXMLNavigation.h"
-#include <Inventor/navigation/SoNavigation.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "SoVBO.h"
@@ -313,7 +312,6 @@ SoDB::init(void)
   // FIXME: probably temporary. Add FXViz::init() or something? pederb, 2007-03-09
   SoShadowGroup::init();
   SoGeo::init();
-  SoNavigation::init();
 
 #ifdef HAVE_VRML97
   so_vrml_init();

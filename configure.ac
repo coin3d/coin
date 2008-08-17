@@ -16,7 +16,7 @@
 m4_define([COIN_MAJOR], [3])
 m4_define([COIN_MINOR], [0])
 m4_define([COIN_MICRO], [0])
-m4_define([COIN_BETA], [a])
+m4_define([COIN_BETA], [b])
 
 # This is probably a more correct setup, but will be harder to keep if
 # we want major and minor to grow slowly (but is that any point?)
@@ -2179,7 +2179,6 @@ AC_CONFIG_FILES([
         include/Inventor/lock/Makefile
         include/Inventor/manips/Makefile
         include/Inventor/misc/Makefile
-        include/Inventor/navigation/Makefile
         include/Inventor/nodekits/Makefile
         include/Inventor/nodes/Makefile
         include/Inventor/projectors/Makefile

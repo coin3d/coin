@@ -62,7 +62,6 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/system/gl.h>
-#include <Inventor/navigation/SoNavigationSystem.h>
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/SoEventManager.h>
 

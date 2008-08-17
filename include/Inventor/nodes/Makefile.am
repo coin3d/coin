@@ -138,8 +138,7 @@ PublicHeaders = \
 	SoShaderObject.h \
 	SoShaderParameter.h \
 	SoShaderProgram.h \
-	SoVertexShader.h \
-        SoViewerNavigationMode.h
+	SoVertexShader.h
 
 PrivateHeaders =
 

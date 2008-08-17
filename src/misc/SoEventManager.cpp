@@ -33,21 +33,22 @@
 #include <Inventor/nodes/SoViewerNavigationMode.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/navigation/SoNavigationSystem.h>
 #include <Inventor/misc/SoState.h>
 
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
 
-class SoEventManagerP {
-public:
-  SoEventManagerP(void) { }
-  ~SoEventManagerP() {}
-  SoNavigationSystem * searchForNavigationMode(SoNode * root, 
-                                               SoNavigationSystem * defsys);
+#include "SbBasicP.h"
 
+/*!
+  \class SoEventManager SoEventManager.h Inventor/SoEventManager.h
+  \brief Manager object for event processing for a viewer.
+
+*/
+
+class SoEventManager::PImpl {
+public:
   SoEventManager::NavigationState navigationstate;
-  SoNavigationSystem * navigationsystem;
   SoHandleEventAction * handleeventaction;
   SoSearchAction * searchaction;
   SbBool deletehandleeventaction;
@@ -55,14 +56,13 @@ public:
   SoNode * scene;
 
   std::vector<SoScXMLStateMachine *> statemachines;
-};
+}; // PImpl
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
 SoEventManager::SoEventManager(void)
 {
-  PRIVATE(this)->navigationsystem = SoNavigationSystem::createByName(SO_EXAMINER_SYSTEM);
   PRIVATE(this)->navigationstate = SoEventManager::NO_NAVIGATION;
   PRIVATE(this)->handleeventaction = new SoHandleEventAction(SbViewportRegion(400, 400));
   PRIVATE(this)->deletehandleeventaction = TRUE;
@@ -70,28 +70,15 @@ SoEventManager::SoEventManager(void)
 
   PRIVATE(this)->camera = NULL;
   PRIVATE(this)->scene = NULL;
-
-#if 0
-  ScXMLStateMachine * sm = ScXML::readFile("coin:scxml/navigation/examiner.xml");
-  if (sm && sm->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    sm->initialize();
-    this->addSoScXMLStateMachine(static_cast<SoScXMLStateMachine *>(sm));
-  } else {
-    SoDebugError::post("SoEventManager",
-                       "failed to created default camera control state machine");
-  }
-#endif
 }
 
 SoEventManager::~SoEventManager()
 {
   this->setCamera(NULL);
+  this->setSceneGraph(NULL);
+
   delete PRIVATE(this)->searchaction;
 
-  if (PRIVATE(this)->navigationsystem) {
-    delete PRIVATE(this)->navigationsystem;
-    PRIVATE(this)->navigationsystem = NULL;
-  }
   if (PRIVATE(this)->deletehandleeventaction) {
     delete PRIVATE(this)->handleeventaction;
     PRIVATE(this)->handleeventaction = NULL;
@@ -101,10 +88,6 @@ SoEventManager::~SoEventManager()
     this->removeSoScXMLStateMachine(sm);
     delete sm;
   }
-
-  assert(PRIVATE(this)->camera == NULL); // Should have been cleared earlier
-  if (PRIVATE(this)->scene)
-    PRIVATE(this)->scene->unref();
 }
 
 /*!
@@ -134,58 +117,12 @@ SoEventManager::getNavigationState(void) const
 }
 
 /*!
-  This method sets the navigation system to use.
-
-  \param system The SoEventManager keeps its own copy of the system,
-  remember to delete your own.
-
-  \sa SoNavigationSystem, getNavigationSystem
-*/
-
-void
-SoEventManager::setNavigationSystem(SoNavigationSystem * system)
-{
-  if (PRIVATE(this)->navigationsystem) {
-    PRIVATE(this)->navigationsystem->setCamera(NULL);
-    PRIVATE(this)->navigationsystem->setSceneGraph(NULL);
-    //NOTE: Need to delete this, as we may hold the navigationsystem
-    //from our constructor, which is the only one of its kind.
-    delete PRIVATE(this)->navigationsystem;
-  }
-
-  if (!system) {
-    PRIVATE(this)->navigationsystem = NULL; // SoNavigationSystem::getByName(SO_IDLER_SYSTEM);
-    return;
-  }
-
-  //Keep a unique copy.
-  PRIVATE(this)->navigationsystem = system->clone();
-  PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
-  PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
-  PRIVATE(this)->navigationsystem->setViewport(PRIVATE(this)->handleeventaction->getViewportRegion());
-  PRIVATE(this)->navigationsystem->invokeModeChangeCallbacks();
-}
-
-/*!
-  This method returns the current navigation system in use.
-  NULL means that no navigation system is in use.
-
-  \sa SoNavigationSystem, setNavigationSystem
-*/
-
-SoNavigationSystem *
-SoEventManager::getNavigationSystem(void) const
-{
-  return PRIVATE(this)->navigationsystem;
-}
-
-/*!
   Set the node which is top of the scene graph we're managing.  The \a
   sceneroot node reference count will be increased by 1, and any
   previously set scene graph top node will have it's reference count
   decreased by 1.
 
-  \sa getSceneGraph()
+  \sa getSceneGraph
 */
 void
 SoEventManager::setSceneGraph(SoNode * const sceneroot)
@@ -193,27 +130,14 @@ SoEventManager::setSceneGraph(SoNode * const sceneroot)
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
   SoNode * oldroot = PRIVATE(this)->scene;
-  
+
   PRIVATE(this)->scene = sceneroot;
 
-  if (PRIVATE(this)->scene) {
+  if (PRIVATE(this)->scene)
     PRIVATE(this)->scene->ref();
-   
-    // set up navigation mode if scene graph contains a navigation
-    // mode node.
-    SoNavigationSystem * navsys = 
-      PRIVATE(this)->searchForNavigationMode(sceneroot, PRIVATE(this)->navigationsystem);
 
-    if (navsys) {
-      this->setNavigationSystem(navsys);
-    }
-  }
-  
-  if (oldroot) oldroot->unref();
-  
-  if (PRIVATE(this)->navigationsystem) {
-    PRIVATE(this)->navigationsystem->setSceneGraph(PRIVATE(this)->scene);
-  }
+  if (oldroot)
+    oldroot->unref();
 
   for (int c = 0; c < this->getNumSoScXMLStateMachines(); ++c) {
     SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(c);
@@ -223,28 +147,28 @@ SoEventManager::setSceneGraph(SoNode * const sceneroot)
 
 /*!
   Returns pointer to root of scene graph.
- */
+*/
 SoNode *
 SoEventManager::getSceneGraph(void) const
 {
   return PRIVATE(this)->scene;
 }
 
-/*!  
+/*!
   Sets the camera to be used.
 */
-void 
+void
 SoEventManager::setCamera(SoCamera * camera)
 {
-  if (PRIVATE(this)->camera) {
-    PRIVATE(this)->camera->unref();
-  }
-  PRIVATE(this)->camera = camera;
-  if (camera) camera->ref();
+  SoCamera * oldcamera = PRIVATE(this)->camera;
 
-  if (PRIVATE(this)->navigationsystem) {
-    PRIVATE(this)->navigationsystem->setCamera(PRIVATE(this)->camera);
-  }
+  PRIVATE(this)->camera = camera;
+
+  if (PRIVATE(this)->camera)
+    PRIVATE(this)->camera->ref();
+
+  if (oldcamera)
+    oldcamera->unref();
 
   for (int i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
     SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
@@ -255,7 +179,7 @@ SoEventManager::setCamera(SoCamera * camera)
 /*!
   Returns the current camera.
 */
-SoCamera * 
+SoCamera *
 SoEventManager::getCamera(void) const
 {
   return PRIVATE(this)->camera;
@@ -302,7 +226,7 @@ SoEventManager::getViewportRegion(void) const
   return PRIVATE(this)->handleeventaction->getViewportRegion();
 }
 
-SbBool 
+SbBool
 SoEventManager::processEvent(const SoEvent * const event)
 {
   const SbViewportRegion & vp =
@@ -311,16 +235,11 @@ SoEventManager::processEvent(const SoEvent * const event)
   SbBool status = FALSE;
 
   int i = 0;
-  switch (PRIVATE(this)->navigationstate) { 
+  switch (PRIVATE(this)->navigationstate) {
   case SoEventManager::NO_NAVIGATION:
     status = this->actuallyProcessEvent(event);
     break;
   case SoEventManager::JUST_NAVIGATION:
-    if (PRIVATE(this)->navigationsystem) {
-      PRIVATE(this)->navigationsystem->setViewport(vp); 
-      if (PRIVATE(this)->navigationsystem->processEvent(event))
-        status = TRUE;
-    }
     for (i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
       SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
       if (sm->isActive()) {
@@ -335,11 +254,6 @@ SoEventManager::processEvent(const SoEvent * const event)
       status = TRUE;
       break;
     }
-    if (PRIVATE(this)->navigationsystem) {
-      PRIVATE(this)->navigationsystem->setViewport(vp);
-      if (PRIVATE(this)->navigationsystem->processEvent(event))
-        status = TRUE;
-    }
     for (i = this->getNumSoScXMLStateMachines() - 1; i >= 0; --i) {
       SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(i);
       if (sm->isActive()) {
@@ -352,11 +266,11 @@ SoEventManager::processEvent(const SoEvent * const event)
   return status;
 }
 
-SbBool 
+SbBool
 SoEventManager::actuallyProcessEvent(const SoEvent * const event)
 {
   assert(PRIVATE(this)->handleeventaction);
-  
+
   SbBool handled = FALSE;
   if ( PRIVATE(this)->handleeventaction->getState() != NULL &&
        PRIVATE(this)->handleeventaction->getState()->getDepth() != 0 ) {
@@ -373,7 +287,7 @@ SoEventManager::actuallyProcessEvent(const SoEvent * const event)
     PRIVATE(this)->handleeventaction->apply(PRIVATE(this)->scene);
     handled = PRIVATE(this)->handleeventaction->isHandled();
   }
-  
+
   return handled;
 }
 
@@ -403,42 +317,6 @@ SoHandleEventAction *
 SoEventManager::getHandleEventAction(void) const
 {
   return PRIVATE(this)->handleeventaction;
-}
-
-//********************************************************************************
-// defsys is the default system returned if none is found in root
-
-SoNavigationSystem *
-SoEventManagerP::searchForNavigationMode(SoNode * root, 
-                                         SoNavigationSystem * defsys)
-{
-  this->searchaction->reset();
-  this->searchaction->setType(SoCamera::getClassTypeId());
-  this->searchaction->setInterest(SoSearchAction::FIRST);
-  this->searchaction->apply(root);
-  SoPath * path = this->searchaction->getPath();
-  
-  if (!path) return NULL;
-  
-  path->ref();
-  this->searchaction->reset();
-  this->searchaction->setType(SoViewerNavigationMode::getClassTypeId());
-  this->searchaction->setInterest(SoSearchAction::FIRST);
-  this->searchaction->apply(path);
-  path->unref();
-  path = this->searchaction->getPath();
-
-  if (!path) return NULL;
-
-  path->ref();
-  SoViewerNavigationMode * mode = (SoViewerNavigationMode *) path->getTail();
-  assert(mode && mode->isOfType(SoViewerNavigationMode::getClassTypeId()));
-  SbString modestring = mode->mode.getValue();
-  path->unref();
-
-  if (modestring.getLength() == 0) return NULL;
-
-  return SoNavigationSystem::createByName(modestring.getString());
 }
 
 int

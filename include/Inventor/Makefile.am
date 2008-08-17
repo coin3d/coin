@@ -1,8 +1,7 @@
 
 SUBDIRS = C VRMLnodes XML actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
-          misc navigation nodekits nodes projectors sensors system threads \
-          tools scxml
+          misc nodekits nodes projectors sensors system threads tools scxml
 
 PublicHeaders = \
 	Sb.h \

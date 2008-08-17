@@ -32,13 +32,11 @@ class SbVec2s;
 class SoEvent;
 class SoNode;
 class SbViewportRegion;
-class SoNavigationSystem;
 class SoHandleEventAction;
 class SoScXMLStateMachine;
-class SoEventManagerP;
 
 class COIN_DLL_API SoEventManager {
- public:
+public:
   SoEventManager(void);
   virtual ~SoEventManager();
 
@@ -48,38 +46,36 @@ class COIN_DLL_API SoEventManager {
     MIXED_NAVIGATION
   };
 
-  void setCamera(SoCamera * camera);
-  SoCamera * getCamera(void) const;
-
   virtual void setSceneGraph(SoNode * const sceneroot);
   virtual SoNode * getSceneGraph(void) const;
 
-  virtual void setHandleEventAction(SoHandleEventAction * hea);
-  virtual SoHandleEventAction * getHandleEventAction(void) const;
+  virtual void setCamera(SoCamera * camera);
+  virtual SoCamera * getCamera(void) const;
 
   virtual SbBool processEvent(const SoEvent * const event);
 
-  void setNavigationState(NavigationState state);
-  SoNavigationSystem * getNavigationSystem(void) const;
+  virtual void setNavigationState(NavigationState state);
+  virtual NavigationState getNavigationState(void) const;
 
   int getNumSoScXMLStateMachines(void) const;
   SoScXMLStateMachine * getSoScXMLStateMachine(int idx) const;
   void addSoScXMLStateMachine(SoScXMLStateMachine * sm);
   void removeSoScXMLStateMachine(SoScXMLStateMachine * sm);
 
-  void setNavigationSystem(SoNavigationSystem * system);
-  NavigationState getNavigationState(void) const;
-
-  void setSize(const SbVec2s & newsize);
-  void setOrigin(const SbVec2s & newOrigin);
-  void setViewportRegion(const SbViewportRegion & newregion);
+  virtual void setSize(const SbVec2s & newsize);
+  virtual void setOrigin(const SbVec2s & newOrigin);
+  virtual void setViewportRegion(const SbViewportRegion & newregion);
   const SbViewportRegion & getViewportRegion(void) const;
+
+  virtual void setHandleEventAction(SoHandleEventAction * hea);
+  virtual SoHandleEventAction * getHandleEventAction(void) const;
 
 protected:
   virtual SbBool actuallyProcessEvent(const SoEvent * const event);
 
 private:
-  SbPimplPtr<SoEventManagerP> pimpl;
+  class PImpl;
+  SbPimplPtr<PImpl> pimpl;
 
   SoEventManager(const SoEventManager & rhs); // N/A
   SoEventManager & operator = (const SoEventManager & rhs); // N/A

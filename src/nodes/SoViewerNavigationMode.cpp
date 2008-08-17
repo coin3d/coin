@@ -35,25 +35,15 @@
   \class SoViewerNavigationMode Inventor/nodes/SoViewerNavigationMode.h
   \brief Node for setting the default viewer navigation mode for a scene graph.
 
-  FIXME: This documentation is outdated and should be rewritten.
-
-  This node provides a way to hint to the SoSceneManager which
-  navigation mode you want to use with a scene graph.
+  This node provides a way to hint to the SoSceneManager (or SoEventManager)
+  which navigation mode you want to use with a scene graph.
 
   The node must be placed before the first camera in the scene graph,
   or it will not be found by the system that searches for this node.
 
-  It will only work in cooperation with the SoSceneManager.  If for
-  instance just the regular SoSceneManager is used in the viewer, this
-  node does absolutely nothing.
-
   Currently, the mode field of the node is not monitored for dynamic
   changes, so updating it will not change the viewer mode.  Doing this is
   a possibility for future enhancement.
-
-  Be aware that "navigation mode" in this context translates to a
-  complete navigation system (SoNavigationSystem), and not an atomic
-  navigation submode (SoNavigationMode).
 
   \ingroup nodes
   \ingroup navigation

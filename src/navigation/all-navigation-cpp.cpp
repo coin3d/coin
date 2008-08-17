@@ -30,22 +30,3 @@
 #include "SoScXMLZoomUtils.cpp"
 #include "SoScXMLViewUtils.cpp"
 
-// old system - might not be possible to obsolete this for now
-#include "SoCenterMode.cpp"
-#include "SoIdleMode.cpp"
-#include "SoNavigationControl.cpp"
-#include "SoNavigationMode.cpp"
-#include "SoNavigationState.cpp"
-#include "SoNavigationSystem.cpp"
-#include "SoOrthoCenterMode.cpp"
-#include "SoPanMode.cpp"
-#include "SoPickMode.cpp"
-#include "SoPitchMode.cpp"
-#include "SoRollMode.cpp"
-#include "SoRotateMode.cpp"
-#include "SoYawMode.cpp"
-#include "SoZoomMode.cpp"
-#include "SoNavigation.cpp"
-
-#include "SoEvent.cpp"
-
