@@ -868,4 +868,5 @@ SoTrackballDraggerP::getSpaceMatrices(SbMatrix & ws2wk, SbMatrix & wk2ws,
 
 #undef USER_AXIS_DISAPPEAR_LIMIT
 #undef PRIVATE
+#undef THISP
 

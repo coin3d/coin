@@ -397,3 +397,5 @@ SoTabBoxDragger::adjustScaleTabSize(void)
   SO_GET_ANY_PART(this, "tabPlane5", SoTabPlaneDragger)->adjustScaleTabSize();
   SO_GET_ANY_PART(this, "tabPlane6", SoTabPlaneDragger)->adjustScaleTabSize();
 }
+
+#undef THISP

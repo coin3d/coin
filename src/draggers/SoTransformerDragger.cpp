@@ -2198,3 +2198,5 @@ SoTransformerDragger::setDynamicRotatorSwitches(const SoEvent *event)
 #undef KNOB_DISTANCE
 
 #undef PRIVATE
+#undef THISP
+
