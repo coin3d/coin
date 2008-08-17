@@ -75,7 +75,7 @@ template<typename To,typename From>
 To
 coin_internal_assert_cast(From * ptr) {
   To retVal = coin_safe_cast<To>(ptr);
-  assert(retVal && "ptr was not of correct type");
+  //assert(retVal && "ptr was not of correct type");
   return retVal;
 }
 
