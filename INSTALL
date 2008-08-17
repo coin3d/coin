@@ -1,7 +1,7 @@
 
                           Install Instructions
 
-                 Copyright 2001-2005  Systems in Motion
+                   Copyright 1998-2008  Kongsberg SIM
 
                          http://www.coin3d.org/
 
@@ -28,13 +28,13 @@ are building.
   # 1. Unpack source code and make a build directory somewhere:
 
     cd /tmp
-    gzip -cd Coin-1.0.0.tar.gz | tar xvf -
+    gzip -cd Coin-3.0.0.tar.gz | tar xvf -
     mkdir coin-build
 
   # 2. Run configure from the build directory:
 
     cd coin-build
-    ../Coin-1.0.0/configure
+    ../Coin-3.0.0/configure
 
   # 3. Build the Coin library:
 
@@ -47,7 +47,7 @@ are building.
   # 5. Remove source and object files when you don't need them anymore:
 
     cd ..
-    rm -rf coin-build Coin-1.0.0
+    rm -rf coin-build Coin-3.0.0
 
 
 The Build Environment
