@@ -262,7 +262,7 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 
-SUBDIRS = C MPEG VRMLnodes XML actions annex bundles caches collision details \
+SUBDIRS = C VRMLnodes XML actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
           misc navigation nodekits nodes projectors sensors system threads \
           tools scxml

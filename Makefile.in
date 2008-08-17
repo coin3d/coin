@@ -1360,6 +1360,22 @@ EXTRA_DIST = \
 	docs/ChangeLog.2002 \
 	docs/ChangeLog.2003 \
 	docs/HACKING \
+	docs/announcement-2_0_0.txt \
+	docs/announcement-2_0_1.txt \
+	docs/announcement-2_0_2.txt \
+	docs/announcement-2_1_0.txt \
+	docs/announcement-2_2_0.txt \
+	docs/announcement-2_2_1.txt \
+	docs/announcement-2_3_0.txt \
+	docs/announcement-2_4_0.txt \
+	docs/announcement-2_4_1.txt \
+	docs/announcement-2_4_2.txt \
+	docs/announcement-2_4_3.txt \
+	docs/announcement-2_4_4.txt \
+	docs/announcement-2_4_5.txt \
+	docs/announcement-2_4_6.txt \
+	docs/announcement-2_5_0.txt \
+	docs/announcement-3_0_0.txt \
 	docs/autoexp.dat \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \

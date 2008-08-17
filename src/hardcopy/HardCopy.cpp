@@ -117,9 +117,6 @@
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
 
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
-#include <Inventor/annex/HardCopy/SoVectorizeCGMAction.h>
-#include <Inventor/annex/HardCopy/SoVectorizeHPGLAction.h>
-#include <Inventor/annex/HardCopy/SoVectorizeGDIAction.h>
 
 #include "tidbitsp.h"
 
@@ -144,9 +141,6 @@ SoHardCopy::init(void)
 
   SoVectorizeAction::initClass();
   SoVectorizePSAction::initClass();
-  SoVectorizeCGMAction::initClass();
-  SoVectorizeHPGLAction::initClass();
-  SoVectorizeGDIAction::initClass();
 
   hardcopy_isinitialized = TRUE;
   coin_atexit((coin_atexit_f*)hardcopy_cleanup, CC_ATEXIT_NORMAL);

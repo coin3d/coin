@@ -268,16 +268,10 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 RegularSources = \
 	HardCopy.cpp \
 	PSVectorOutput.cpp \
-	CGMVectorOutput.cpp \
-	HPGLVectorOutput.cpp \
-	GDIVectorOutput.cpp \
 	VectorOutput.cpp \
 	VectorizeAction.cpp \
 	VectorizeActionP.cpp \
-	VectorizePSAction.cpp \
-	VectorizeCGMAction.cpp \
-	VectorizeHPGLAction.cpp \
-	VectorizeGDIAction.cpp
+	VectorizePSAction.cpp
 
 
 LinkHackSources = \
@@ -351,83 +345,53 @@ LIBRARIES = $(noinst_LIBRARIES)
 hardcopy_lst_AR = $(AR) cru
 hardcopy_lst_LIBADD =
 am__hardcopy_lst_SOURCES_DIST = HardCopy.cpp PSVectorOutput.cpp \
-	CGMVectorOutput.cpp HPGLVectorOutput.cpp GDIVectorOutput.cpp \
 	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp VectorizeCGMAction.cpp \
-	VectorizeHPGLAction.cpp VectorizeGDIAction.cpp \
-	all-hardcopy-cpp.cpp
+	VectorizePSAction.cpp all-hardcopy-cpp.cpp
 am__objects_1 = all-hardcopy-cpp.$(OBJEXT)
 am__objects_2 = HardCopy.$(OBJEXT) PSVectorOutput.$(OBJEXT) \
-	CGMVectorOutput.$(OBJEXT) HPGLVectorOutput.$(OBJEXT) \
-	GDIVectorOutput.$(OBJEXT) VectorOutput.$(OBJEXT) \
-	VectorizeAction.$(OBJEXT) VectorizeActionP.$(OBJEXT) \
-	VectorizePSAction.$(OBJEXT) VectorizeCGMAction.$(OBJEXT) \
-	VectorizeHPGLAction.$(OBJEXT) VectorizeGDIAction.$(OBJEXT)
+	VectorOutput.$(OBJEXT) VectorizeAction.$(OBJEXT) \
+	VectorizeActionP.$(OBJEXT) VectorizePSAction.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_hardcopy_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_hardcopy_lst_SOURCES_DIST = VectorizeActionP.h \
 	VectorizeItems.h all-hardcopy-cpp.cpp HardCopy.cpp \
-	PSVectorOutput.cpp CGMVectorOutput.cpp HPGLVectorOutput.cpp \
-	GDIVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp \
-	VectorizeCGMAction.cpp VectorizeHPGLAction.cpp \
-	VectorizeGDIAction.cpp
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 hardcopy_lst_OBJECTS = $(am_hardcopy_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libhardcopy_la_LDFLAGS =
 libhardcopy_la_LIBADD =
 am__libhardcopy_la_SOURCES_DIST = HardCopy.cpp PSVectorOutput.cpp \
-	CGMVectorOutput.cpp HPGLVectorOutput.cpp GDIVectorOutput.cpp \
 	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp VectorizeCGMAction.cpp \
-	VectorizeHPGLAction.cpp VectorizeGDIAction.cpp \
-	all-hardcopy-cpp.cpp
+	VectorizePSAction.cpp all-hardcopy-cpp.cpp
 am__objects_6 = all-hardcopy-cpp.lo
-am__objects_7 = HardCopy.lo PSVectorOutput.lo CGMVectorOutput.lo \
-	HPGLVectorOutput.lo GDIVectorOutput.lo VectorOutput.lo \
-	VectorizeAction.lo VectorizeActionP.lo VectorizePSAction.lo \
-	VectorizeCGMAction.lo VectorizeHPGLAction.lo \
-	VectorizeGDIAction.lo
+am__objects_7 = HardCopy.lo PSVectorOutput.lo VectorOutput.lo \
+	VectorizeAction.lo VectorizeActionP.lo VectorizePSAction.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libhardcopy_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libhardcopy_la_SOURCES_DIST = VectorizeActionP.h \
 	VectorizeItems.h all-hardcopy-cpp.cpp HardCopy.cpp \
-	PSVectorOutput.cpp CGMVectorOutput.cpp HPGLVectorOutput.cpp \
-	GDIVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp \
-	VectorizeCGMAction.cpp VectorizeHPGLAction.cpp \
-	VectorizeGDIAction.cpp
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy_la_OBJECTS = $(am_libhardcopy_la_OBJECTS)
 libhardcopy@SUFFIX@LINKHACK_la_LDFLAGS =
 libhardcopy@SUFFIX@LINKHACK_la_LIBADD =
 am__libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = HardCopy.cpp \
-	PSVectorOutput.cpp CGMVectorOutput.cpp HPGLVectorOutput.cpp \
-	GDIVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp \
-	VectorizeCGMAction.cpp VectorizeHPGLAction.cpp \
-	VectorizeGDIAction.cpp all-hardcopy-cpp.cpp
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp all-hardcopy-cpp.cpp
 am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
-	HardCopy.cpp PSVectorOutput.cpp CGMVectorOutput.cpp \
-	HPGLVectorOutput.cpp GDIVectorOutput.cpp VectorOutput.cpp \
-	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp \
-	VectorizeCGMAction.cpp VectorizeHPGLAction.cpp \
-	VectorizeGDIAction.cpp
+	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
+	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/CGMVectorOutput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CGMVectorOutput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/GDIVectorOutput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/GDIVectorOutput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/HPGLVectorOutput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/HPGLVectorOutput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/HardCopy.Plo ./$(DEPDIR)/HardCopy.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/HardCopy.Plo ./$(DEPDIR)/HardCopy.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/PSVectorOutput.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/PSVectorOutput.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorOutput.Plo \
@@ -436,12 +400,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizeAction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizeActionP.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizeActionP.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/VectorizeCGMAction.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/VectorizeCGMAction.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/VectorizeGDIAction.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/VectorizeGDIAction.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/VectorizeHPGLAction.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/VectorizeHPGLAction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizePSAction.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizePSAction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Plo \
@@ -532,12 +490,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CGMVectorOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CGMVectorOutput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GDIVectorOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GDIVectorOutput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HPGLVectorOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HPGLVectorOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HardCopy.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HardCopy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PSVectorOutput.Plo@am__quote@
@@ -548,12 +500,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeActionP.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeActionP.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeCGMAction.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeCGMAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeGDIAction.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeGDIAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeHPGLAction.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeHPGLAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizePSAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizePSAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Plo@am__quote@

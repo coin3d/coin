@@ -27,6 +27,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 class COIN_DLL_API SoShapeHints : public SoNode {
@@ -54,14 +55,16 @@ public:
     CONVEX = SoShapeHintsElement::CONVEX
   };
 
+  enum WindingType {
+    NO_WINDING_TYPE = 0
+  };
+
   SoSFEnum vertexOrdering;
   SoSFEnum shapeType;
   SoSFEnum faceType;
+  SoSFEnum windingType;
+  SoSFBool useVBO;
   SoSFFloat creaseAngle;
-
-#ifndef COIN_BETA_VERSION
-#error Consider adding the new field "windingType" from TGS OIV4.0 before next major release.
-#endif // COIN_BETA_VERSION
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);

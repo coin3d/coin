@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFUShort.h>
+#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 class COIN_DLL_API SoDrawStyle : public SoNode {
@@ -50,10 +51,7 @@ public:
   SoSFFloat pointSize;
   SoSFFloat lineWidth;
   SoSFUShort linePattern;
-
-#ifndef COIN_BETA_VERSION
-#error Consider adding the new field "linePatternScaleFactor" from TGS OIV4.0 before next major release.
-#endif // COIN_BETA_VERSION
+  SoSFInt32 linePatternScaleFactor;
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);

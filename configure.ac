@@ -2162,7 +2162,6 @@ AC_CONFIG_FILES([
         include/Inventor/C/errors/Makefile
         include/Inventor/C/glue/Makefile
         include/Inventor/C/threads/Makefile
-        include/Inventor/MPEG/Makefile
         include/Inventor/VRMLnodes/Makefile
         include/Inventor/XML/Makefile
         include/Inventor/actions/Makefile
@@ -2244,7 +2243,6 @@ AC_CONFIG_FILES([
         src/extensions/Makefile
         src/vrml97/Makefile
         src/hardcopy/Makefile
-        src/mpeg/Makefile
         src/shaders/Makefile
         src/shadows/Makefile
         src/geo/Makefile

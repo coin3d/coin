@@ -1234,9 +1234,6 @@ void
 SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
 {
   // FIXME: Implement this for TGS compatibility...
-#ifndef COIN_BETA_VERSION
-#error start including this function only at the point of a minor release.
-#endif
   COIN_STUB_ONCE();
 }
 
@@ -1250,9 +1247,6 @@ void
 SoExtSelection::select(SoNode * root, int numcoords, SbVec2f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
 {
   // FIXME: Implement this for TGS compatibility...
-#ifndef COIN_BETA_VERSION
-#error start including this function only at the point of a minor release.
-#endif
   COIN_STUB_ONCE();
 }
 
@@ -1265,9 +1259,6 @@ const SbVec2s *
 SoExtSelection::getLassoCoordsDC (int &numCoords)
 {
   // FIXME: Implement this for TGS compatibility...
-#ifndef COIN_BETA_VERSION
-#error start including this function only at the point of a minor release.
-#endif
   COIN_STUB_ONCE();
   return NULL;
 }
@@ -1281,9 +1272,6 @@ const SbVec3f *
 SoExtSelection::getLassoCoordsWC (int &numCoords)
 {
   // FIXME: Implement this for TGS compatibility...
-#ifndef COIN_BETA_VERSION
-#error start including this function only at the point of a minor release.
-#endif
   COIN_STUB_ONCE();
   return NULL;
 }
@@ -1297,9 +1285,6 @@ const SoPathList &
 SoExtSelection::getSelectionPathList () const
 {
   // FIXME: Implement this for TGS compatibility...
-#ifndef COIN_BETA_VERSION
-#error start including this function only at the point of a minor release.
-#endif
   COIN_STUB_ONCE();
   return PRIVATE(this)->dummypathlist;
 }

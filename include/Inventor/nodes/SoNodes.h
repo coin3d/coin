@@ -57,8 +57,6 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoAnnoText3.h>
-#include <Inventor/nodes/SoAnnoText3Property.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
@@ -70,7 +68,6 @@
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoPathSwitch.h>
-#include <Inventor/nodes/SoPattern.h>
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/nodes/SoAntiSquish.h>

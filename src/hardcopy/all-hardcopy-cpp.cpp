@@ -27,10 +27,4 @@
 #include "VectorizeAction.cpp"
 #include "VectorizeActionP.cpp"
 #include "VectorizePSAction.cpp"
-#include "CGMVectorOutput.cpp"
-#include "HPGLVectorOutput.cpp"
-#include "GDIVectorOutput.cpp"
-#include "VectorizeCGMAction.cpp"
-#include "VectorizeHPGLAction.cpp"
-#include "VectorizeGDIAction.cpp"
 

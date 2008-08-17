@@ -65,10 +65,6 @@ public:
   SoSFColor blendColor;
   SoSFBool enableCompressedTexture;
 
-#ifndef COIN_BETA_VERSION
-#error Consider adding the new field "enableCompressedTexture" from TGS OIV4.0 before next major release.
-#endif // COIN_BETA_VERSION
-
   virtual void doAction(SoAction *action);
   virtual void GLRender(SoGLRenderAction *action);
   virtual void callback(SoCallbackAction *action);

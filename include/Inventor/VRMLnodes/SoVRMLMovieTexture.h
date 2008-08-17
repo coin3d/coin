@@ -30,6 +30,8 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/fields/SoMFString.h>
+#include <Inventor/fields/SoMFEnum.h>
+#include <Inventor/fields/SoSFColor.h>
 
 class SoVRMLMovieTextureP;
 
@@ -46,13 +48,15 @@ public:
   SoSFFloat speed;
   SoSFTime startTime;
   SoSFTime stopTime;
+  SoSFTime pauseTime;
+  SoSFTime resumeTime;
   SoMFString url;
   SoSFTime duration_changed;
   SoSFBool isActive;
-
-#ifndef COIN_BETA_VERSION
-#error Consider adding fields "alpha", "model", "blendColor" and "scaleTexCoord" to be compatible with TGS OIV >= 4.0.
-#endif // COIN_BETA_VERSION
+  SoSFFloat alpha;
+  SoSFEnum model;
+  SoSFColor blendColor;
+  SoSFBool scaleTexCoord;
 
   virtual void GLRender( SoGLRenderAction * action );
 

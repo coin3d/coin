@@ -1,7 +1,5 @@
 PublicHeaders = \
 	SoAnnotation.h \
-	SoAnnoText3.h \
-	SoAnnoText3Property.h \
 	SoAntiSquish.h \
 	SoArray.h \
 	SoAsciiText.h \
@@ -71,7 +69,6 @@ PublicHeaders = \
 	SoOrthographicCamera.h \
 	SoPackedColor.h \
 	SoPathSwitch.h \
-	SoPattern.h \
 	SoPendulum.h \
 	SoPerspectiveCamera.h \
 	SoPickStyle.h \

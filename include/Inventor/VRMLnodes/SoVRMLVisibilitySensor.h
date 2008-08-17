@@ -43,17 +43,15 @@ public:
   SoSFVec3f size;
   SoSFBool enabled;
 
+  SoSFTime enterTime;
+  SoSFTime exitTime;
+  SoSFBool isActive;
+
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
   virtual ~SoVRMLVisibilitySensor();
 
-#ifndef COIN_BETA_VERSION
-#error These are protected to match TGS Inventor, but it seems silly to not have them public, as for the other sensors. Consider making them public before 3.0 release.
-#endif // COIN_BETA_VERSION
-  SoSFTime enterTime;
-  SoSFTime exitTime;
-  SoSFBool isActive;
 };
 
 #endif // ! COIN_SOVRMLVISIBILITYSENSOR_H

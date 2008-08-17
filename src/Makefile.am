@@ -41,7 +41,7 @@ SUBDIRS = \
 	extensions xml actions base bundles caches details draggers elements \
 	engines errors events fields fonts glue io manips misc lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
-	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
+	3ds collision hardcopy shadows geo threads shaders profiler \
 	vrml97 foreignfiles scxml doc .
 endif
 
@@ -79,7 +79,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
 	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
-	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
+	threads/libthreads.la shaders/libshaders.la \
 	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
 	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
 	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
@@ -121,7 +121,6 @@ RegularSources = \
 	collision/all-collision-cpp.cpp \
 	hardcopy/all-hardcopy-cpp.cpp \
 	threads/all-threads-cpp.cpp \
-	mpeg/all-mpeg-cpp.cpp \
 	shaders/all-shaders-cpp.cpp \
 	shadows/all-shadows-cpp.cpp \
 	geo/all-geo-cpp.cpp \
@@ -161,7 +160,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	details/details.lst draggers/draggers.lst manips/manips.lst \
 	upgraders/upgraders.lst \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
-	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
+	threads/threads.lst shaders/shaders.lst \
 	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
 	xml/xml.lst xml/expat/expat.lst profiler/profiler.lst \
 	vrml97/vrml97.lst scxml/scxml.lst $(SUPERGLULSTADD)
@@ -247,7 +246,7 @@ install-symlinks:
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
 	    nodes navigation shapenodes projectors sensors upgraders 3ds \
-	    collision hardcopy threads mpeg shaders shadows geo xml vrml97 \
+	    collision hardcopy threads shaders shadows geo xml vrml97 \
 	    foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 

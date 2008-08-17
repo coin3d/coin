@@ -302,7 +302,7 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)
 @MAC_FRAMEWORK_FALSE@	extensions xml actions base bundles caches details draggers elements \
 @MAC_FRAMEWORK_FALSE@	engines errors events fields fonts glue io manips misc lists nodekits \
 @MAC_FRAMEWORK_FALSE@	navigation nodes shapenodes projectors sensors upgraders \
-@MAC_FRAMEWORK_FALSE@	3ds collision hardcopy shadows geo threads mpeg shaders profiler \
+@MAC_FRAMEWORK_FALSE@	3ds collision hardcopy shadows geo threads shaders profiler \
 @MAC_FRAMEWORK_FALSE@	vrml97 foreignfiles scxml doc .
 
 
@@ -327,7 +327,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la mpeg/libmpeg.la shaders/libshaders.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la shaders/libshaders.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
@@ -371,7 +371,6 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @MAC_FRAMEWORK_TRUE@	collision/all-collision-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	hardcopy/all-hardcopy-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	threads/all-threads-cpp.cpp \
-@MAC_FRAMEWORK_TRUE@	mpeg/all-mpeg-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	shaders/all-shaders-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	shadows/all-shadows-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	geo/all-geo-cpp.cpp \
@@ -412,7 +411,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	details/details.lst draggers/draggers.lst manips/manips.lst \
 	upgraders/upgraders.lst \
 	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
-	threads/threads.lst mpeg/mpeg.lst shaders/shaders.lst \
+	threads/threads.lst shaders/shaders.lst \
 	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
 	xml/xml.lst xml/expat/expat.lst profiler/profiler.lst \
 	vrml97/vrml97.lst scxml/scxml.lst $(SUPERGLULSTADD)
@@ -455,7 +454,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_TRUE@	3ds/format3ds.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	collision/collision.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	hardcopy/hardcopy.lst \
-@BUILD_WITH_SUPERGLU_TRUE@	threads/threads.lst mpeg/mpeg.lst \
+@BUILD_WITH_SUPERGLU_TRUE@	threads/threads.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	shaders/shaders.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	shadows/shadows.lst geo/geo.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	foreignfiles/foreignfiles.lst \
@@ -487,7 +486,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_FALSE@	3ds/format3ds.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	collision/collision.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	hardcopy/hardcopy.lst \
-@BUILD_WITH_SUPERGLU_FALSE@	threads/threads.lst mpeg/mpeg.lst \
+@BUILD_WITH_SUPERGLU_FALSE@	threads/threads.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	shaders/shaders.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	shadows/shadows.lst geo/geo.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	foreignfiles/foreignfiles.lst \
@@ -510,12 +509,11 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 	manips/all-manips-cpp.cpp upgraders/all-upgraders-cpp.cpp \
 	navigation/all-navigation-cpp.cpp 3ds/all-3ds-cpp.cpp \
 	collision/all-collision-cpp.cpp hardcopy/all-hardcopy-cpp.cpp \
-	threads/all-threads-cpp.cpp mpeg/all-mpeg-cpp.cpp \
-	shaders/all-shaders-cpp.cpp shadows/all-shadows-cpp.cpp \
-	geo/all-geo-cpp.cpp foreignfiles/all-foreignfiles-cpp.cpp \
-	xml/all-xml-cpp.cpp xml/expat/all-expat-c.c \
-	profiler/all-profiler-cpp.cpp vrml97/all-vrml97-cpp.cpp \
-	scxml/all-scxml-cpp.cpp tidbits.cpp \
+	threads/all-threads-cpp.cpp shaders/all-shaders-cpp.cpp \
+	shadows/all-shadows-cpp.cpp geo/all-geo-cpp.cpp \
+	foreignfiles/all-foreignfiles-cpp.cpp xml/all-xml-cpp.cpp \
+	xml/expat/all-expat-c.c profiler/all-profiler-cpp.cpp \
+	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp tidbits.cpp \
 	share/gl/CoinGLPerformance.cpp
 @MAC_FRAMEWORK_TRUE@am__objects_1 = all-actions-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-base-cpp.$(OBJEXT) \
@@ -546,7 +544,6 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 @MAC_FRAMEWORK_TRUE@	all-collision-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-hardcopy-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-threads-cpp.$(OBJEXT) \
-@MAC_FRAMEWORK_TRUE@	all-mpeg-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-shaders-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-shadows-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-geo-cpp.$(OBJEXT) \
@@ -594,7 +591,6 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	collision/libcollision.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	hardcopy/libhardcopy.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	mpeg/libmpeg.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	geo/libgeo.la \
@@ -637,7 +633,6 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	collision/libcollision.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	hardcopy/libhardcopy.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la \
-@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	mpeg/libmpeg.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	geo/libgeo.la \
@@ -665,12 +660,11 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
 	manips/all-manips-cpp.cpp upgraders/all-upgraders-cpp.cpp \
 	navigation/all-navigation-cpp.cpp 3ds/all-3ds-cpp.cpp \
 	collision/all-collision-cpp.cpp hardcopy/all-hardcopy-cpp.cpp \
-	threads/all-threads-cpp.cpp mpeg/all-mpeg-cpp.cpp \
-	shaders/all-shaders-cpp.cpp shadows/all-shadows-cpp.cpp \
-	geo/all-geo-cpp.cpp foreignfiles/all-foreignfiles-cpp.cpp \
-	xml/all-xml-cpp.cpp xml/expat/all-expat-c.c \
-	profiler/all-profiler-cpp.cpp vrml97/all-vrml97-cpp.cpp \
-	scxml/all-scxml-cpp.cpp tidbits.cpp \
+	threads/all-threads-cpp.cpp shaders/all-shaders-cpp.cpp \
+	shadows/all-shadows-cpp.cpp geo/all-geo-cpp.cpp \
+	foreignfiles/all-foreignfiles-cpp.cpp xml/all-xml-cpp.cpp \
+	xml/expat/all-expat-c.c profiler/all-profiler-cpp.cpp \
+	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp tidbits.cpp \
 	share/gl/CoinGLPerformance.cpp
 @MAC_FRAMEWORK_TRUE@am__objects_3 = all-actions-cpp.lo all-base-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-bundles-cpp.lo all-caches-cpp.lo \
@@ -687,12 +681,12 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	all-upgraders-cpp.lo all-navigation-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-3ds-cpp.lo all-collision-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-hardcopy-cpp.lo all-threads-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-mpeg-cpp.lo all-shaders-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-shadows-cpp.lo all-geo-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-foreignfiles-cpp.lo all-xml-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-expat-c.lo all-profiler-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.lo all-scxml-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	tidbits.lo CoinGLPerformance.lo
+@MAC_FRAMEWORK_TRUE@	all-shaders-cpp.lo all-shadows-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-geo-cpp.lo all-foreignfiles-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-xml-cpp.lo all-expat-c.lo \
+@MAC_FRAMEWORK_TRUE@	all-profiler-cpp.lo all-vrml97-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-scxml-cpp.lo tidbits.lo \
+@MAC_FRAMEWORK_TRUE@	CoinGLPerformance.lo
 @MAC_FRAMEWORK_FALSE@am__objects_3 = tidbits.lo CoinGLPerformance.lo
 am_libCoin@SUFFIX@_la_OBJECTS = $(am__objects_3)
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
@@ -750,8 +744,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-mpeg-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-mpeg-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-nodekits-cpp.Plo \
@@ -814,7 +806,7 @@ DIST_SUBDIRS = extensions xml actions base bundles caches details \
 	draggers elements engines errors events fields fonts glue io \
 	manips misc lists nodekits navigation nodes shapenodes \
 	projectors sensors upgraders 3ds collision hardcopy shadows geo \
-	threads mpeg shaders profiler vrml97 foreignfiles scxml doc .
+	threads shaders profiler vrml97 foreignfiles scxml doc .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: discard.h config.h setup.h
@@ -991,8 +983,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-mpeg-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-mpeg-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodekits-cpp.Plo@am__quote@
@@ -2116,39 +2106,6 @@ all-threads-cpp.lo: threads/all-threads-cpp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-threads-cpp.lo `test -f 'threads/all-threads-cpp.cpp' || echo '$(srcdir)/'`threads/all-threads-cpp.cpp
 
-all-mpeg-cpp.o: mpeg/all-mpeg-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-mpeg-cpp.o -MD -MP -MF "$(DEPDIR)/all-mpeg-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o all-mpeg-cpp.o `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-mpeg-cpp.Tpo" "$(DEPDIR)/all-mpeg-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-mpeg-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='mpeg/all-mpeg-cpp.cpp' object='all-mpeg-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-mpeg-cpp.Po' tmpdepfile='$(DEPDIR)/all-mpeg-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-mpeg-cpp.o `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp
-
-all-mpeg-cpp.obj: mpeg/all-mpeg-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-mpeg-cpp.obj -MD -MP -MF "$(DEPDIR)/all-mpeg-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o all-mpeg-cpp.obj `if test -f 'mpeg/all-mpeg-cpp.cpp'; then $(CYGPATH_W) 'mpeg/all-mpeg-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/mpeg/all-mpeg-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-mpeg-cpp.Tpo" "$(DEPDIR)/all-mpeg-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-mpeg-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='mpeg/all-mpeg-cpp.cpp' object='all-mpeg-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-mpeg-cpp.Po' tmpdepfile='$(DEPDIR)/all-mpeg-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-mpeg-cpp.obj `if test -f 'mpeg/all-mpeg-cpp.cpp'; then $(CYGPATH_W) 'mpeg/all-mpeg-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/mpeg/all-mpeg-cpp.cpp'; fi`
-
-all-mpeg-cpp.lo: mpeg/all-mpeg-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-mpeg-cpp.lo -MD -MP -MF "$(DEPDIR)/all-mpeg-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o all-mpeg-cpp.lo `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-mpeg-cpp.Tpo" "$(DEPDIR)/all-mpeg-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-mpeg-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='mpeg/all-mpeg-cpp.cpp' object='all-mpeg-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-mpeg-cpp.Plo' tmpdepfile='$(DEPDIR)/all-mpeg-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-mpeg-cpp.lo `test -f 'mpeg/all-mpeg-cpp.cpp' || echo '$(srcdir)/'`mpeg/all-mpeg-cpp.cpp
-
 all-shaders-cpp.o: shaders/all-shaders-cpp.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-shaders-cpp.o -MD -MP -MF "$(DEPDIR)/all-shaders-cpp.Tpo" \
 @am__fastdepCXX_TRUE@	  -c -o all-shaders-cpp.o `test -f 'shaders/all-shaders-cpp.cpp' || echo '$(srcdir)/'`shaders/all-shaders-cpp.cpp; \
@@ -2793,7 +2750,7 @@ install-symlinks:
 	    actions base bundles caches details draggers elements engines \
 	    errors events fields fonts glue io manips misc lists nodekits \
 	    nodes navigation shapenodes projectors sensors upgraders 3ds \
-	    collision hardcopy threads mpeg shaders shadows geo xml vrml97 \
+	    collision hardcopy threads shaders shadows geo xml vrml97 \
 	    foreignfiles ; do \
               (cd $$dir; $(MAKE) install-symlinks;) \
         done ; 

@@ -2,16 +2,10 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 RegularSources = \
 	HardCopy.cpp \
 	PSVectorOutput.cpp \
-	CGMVectorOutput.cpp \
-	HPGLVectorOutput.cpp \
-	GDIVectorOutput.cpp \
 	VectorOutput.cpp \
 	VectorizeAction.cpp \
 	VectorizeActionP.cpp \
-	VectorizePSAction.cpp \
-	VectorizeCGMAction.cpp \
-	VectorizeHPGLAction.cpp \
-	VectorizeGDIAction.cpp
+	VectorizePSAction.cpp
 
 LinkHackSources = \
 	all-hardcopy-cpp.cpp
