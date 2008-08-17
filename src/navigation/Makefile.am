@@ -6,24 +6,7 @@ RegularSources = \
         SoScXMLSeekUtils.cpp \
         SoScXMLSpinUtils.cpp \
         SoScXMLZoomUtils.cpp \
-        SoScXMLViewUtils.cpp \
-        \
-        SoCenterMode.cpp \
-        SoIdleMode.cpp \
-        SoNavigationControl.cpp \
-        SoNavigationMode.cpp \
-        SoNavigationState.cpp \
-        SoNavigationSystem.cpp \
-        SoOrthoCenterMode.cpp \
-        SoPanMode.cpp \
-        SoPickMode.cpp \
-        SoPitchMode.cpp \
-        SoRollMode.cpp \
-        SoRotateMode.cpp \
-        SoYawMode.cpp \
-        SoZoomMode.cpp \
-        SoEvent.cpp \
-        SoNavigation.cpp
+        SoScXMLViewUtils.cpp
 
 LinkHackSources = all-navigation-cpp.cpp
 
@@ -37,9 +20,7 @@ PrivateHeaders = \
         SoScXMLSeekUtils.h \
         SoScXMLSpinUtils.h \
         SoScXMLZoomUtils.h \
-        SoScXMLViewUtils.h \
-        \
-        SoEvent.h
+        SoScXMLViewUtils.h
 
 ObsoleteHeaders =
 
