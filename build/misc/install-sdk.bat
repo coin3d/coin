@@ -21,6 +21,7 @@ goto argproblem
 if "%msvc%"=="msvc6" goto argthreegiven
 if "%msvc%"=="msvc7" goto argthreegiven
 if "%msvc%"=="msvc8" goto argthreegiven
+if "%msvc%"=="msvc9" goto argthreegiven
 goto argproblem
 :argthreegiven
 
@@ -40,7 +41,7 @@ goto argtestdone
 :argproblem
 echo Error with script arguments "%1" "%2" "%3" "%4".
 echo Usage:
-echo   install-sdk.bat {dll,lib} {release,debug} {msvc6,msvc7,msvc8} libname
+echo   install-sdk.bat {dll,lib} {release,debug} {msvc6,msvc7,msvc8,msvc9} libname
 exit
 
 :argtestdone
