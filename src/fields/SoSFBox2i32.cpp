@@ -30,7 +30,7 @@
   needs to store a box.
 
   \COIN_CLASS_EXTENSION
-  \since 20070518
+  \since Coin 2.5
 */
 
 // *************************************************************************

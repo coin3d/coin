@@ -34,6 +34,8 @@
   information on how to use this function.
 
   \sa SbVec2i32, SoSFVec2i32
+  \COIN_CLASS_EXTENSION
+  \since Coin 2.5
 */
 
 // *************************************************************************

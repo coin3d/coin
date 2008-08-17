@@ -30,7 +30,6 @@
   needs to store a single vector with two elements.
 
   \sa SoMFVec2f
-
 */
 
 // *************************************************************************

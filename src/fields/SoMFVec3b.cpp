@@ -34,7 +34,8 @@
   information on how to use this function.
 
   \sa SbVec3b, SoSFVec3b
-  \since 20070519
+  \COIN_CLASS_EXTENSION
+  \since Coin 2.5
 */
 
 // *************************************************************************

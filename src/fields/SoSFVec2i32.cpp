@@ -30,7 +30,8 @@
   needs to store a single vector with two elements.
 
   \sa SbVec2i32, SoMFVec2i32
-  \since 20070519
+  \COIN_CLASS_EXTENSION
+  \since Coin 2.5
 */
 
 // *************************************************************************

@@ -34,7 +34,7 @@
   information on how to use this function.
 
   \sa SoSFDouble
-  \since 2007-05-15
+  \since Coin 2.5
 */
 
 // *************************************************************************

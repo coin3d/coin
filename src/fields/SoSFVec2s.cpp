@@ -29,9 +29,8 @@
   This field is used where nodes, engines or other field containers
   needs to store a single vector with two elements.
 
-  \COIN_CLASS_EXTENSION
-
   \sa SoMFVec2s
+  \COIN_CLASS_EXTENSION
   \since Coin 2.0
 */
 

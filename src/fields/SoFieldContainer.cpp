@@ -1004,7 +1004,7 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
 
   This method is used for memory profiling purposes.
 
-  \since 2008-03-06
+  \since Coin 3.0
 */
 void
 SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) const
