@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin3_install"
-	ProjectGUID="{919736BA-525A-4C4E-908B-F1B1D38685FE}"
+	ProjectGUID="{BB3EC84C-E054-4C7A-8A36-553A373FB2C3}"
 	Keyword="MakeFileProj"
 	TargetFrameworkVersion="0"
 	>
@@ -26,8 +26,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll debug  coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll debug  coin3 "
+				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc9 coin3"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_install.exe"
 				PreprocessorDefinitions=""
@@ -49,8 +49,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib debug  coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib debug  coin3 "
+				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc9 coin3"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_install.exe"
 				PreprocessorDefinitions=""
@@ -72,8 +72,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll release  coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll release  coin3 "
+				BuildCommandLine="..\misc\install-sdk.bat dll release msvc9 coin3"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_install.exe"
 				PreprocessorDefinitions=""
@@ -95,8 +95,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib release  coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib release  coin3 "
+				BuildCommandLine="..\misc\install-sdk.bat lib release msvc9 coin3"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_install.exe"
 				PreprocessorDefinitions=""

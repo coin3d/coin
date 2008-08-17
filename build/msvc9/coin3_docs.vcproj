@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin3_docs"
-	ProjectGUID="{3B0EECC2-97C5-420F-8743-14D31FC91430}"
+	ProjectGUID="{96A50415-2963-4FA4-9D64-21337A13E60F}"
 	Keyword="MakeFileProj"
 	TargetFrameworkVersion="0"
 	>
@@ -26,8 +26,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat lib debug  coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat lib debug  coin3 "
+				BuildCommandLine="..\misc\build-docs.bat lib debug msvc9 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""
@@ -49,8 +49,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat dll release  coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat dll release  coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll release msvc9 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""
@@ -72,8 +72,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat dll debug  coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat dll debug  coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll debug msvc9 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""
@@ -95,8 +95,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat lib release  coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat lib release  coin3 "
+				BuildCommandLine="..\misc\build-docs.bat lib release msvc9 coin3"
+				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc9 coin3 "
 				CleanCommandLine=""
 				Output="coin3_docs.exe"
 				PreprocessorDefinitions=""

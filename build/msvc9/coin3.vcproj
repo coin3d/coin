@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin3"
-	ProjectGUID="{0D6F6053-DAE4-4EF3-AA1D-A2867C9A58EC}"
+	ProjectGUID="{D8E18B8C-D223-4094-A08D-0F2FB39F4B9A}"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
