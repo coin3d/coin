@@ -4,27 +4,28 @@ Subject: Coin 3.0.0 "Buffalo" RC1 Now Available
 Coin 3.0.0 "Buffalo" RC1
 ========================
 
-Kongsberg SIM is proud to make Release Candidate 1 (RC1) of version 3.0.0
-of the Coin 3D graphics library available.  Coin 3.0.0 RC1 will be identical
-to the Coin 3.0.0 "Buffalo" proper release, released shortly, given that no
+Kongsberg SIM is proud to make Release Candidate 1 (RC1) of version 3.0.0 of
+the Coin 3D graphics library available.  Coin 3.0.0 RC1 will be identical to
+the Coin 3.0.0 "Buffalo" proper release, released shortly, given that no
 showstopper bugs are found in the release candidate.
 
 Coin 3.0.0 is a major release.  It breaks binary compatibility with previous
-versions of Coin, but is for the most part upward source code compatible with
-Coin 2.*.  A new major release means it was time for doing cleanup-duties.
-Some dead-end developments were removed, certain ABI-preservation-related hacks
-were rewritten properly.  Certain poor design choices were improved upon.
+versions of Coin, but is for the most part upward source code compatible
+with Coin 2.*.  A new major release means it was time for doing
+cleanup-duties.  Some dead-end developments were removed, certain
+ABI-preservation-related hacks were rewritten properly.  Certain poor design
+choices were improved upon.
 
 Coin 3.0.0 is not a release which is a massive roll-out of new features.
-Resources have at times been stretched, but we have managed to accumulate a decent
-set of features for a release anyway, and internal to Coin we have many new
-subsystems to build future features on.
+Resources have at times been stretched, but we have managed to accumulate a
+decent set of features for a release anyway, and internal to Coin we have
+many new subsystems to build future features on.
 
 While we have your attention, it should also be mentioned that the Coin 3.0
 series will be the last set of releases of Coin to support the archaic
-Microsoft Visual C++ 6.0 compiler, which has become a really a big pain to keep
-supporting at this point, C++-language-wise.  Just a word of warning to VC++6.0
-users out there.  This is the beginning of the end of the line.
+Microsoft Visual C++ 6.0 compiler, which has become a really a big pain to
+keep supporting at this point, C++-language-wise.  Just a word of warning to
+VC++6.0 users out there.  This is the beginning of the end of the line.
 
 
 NEWS File Excerpt:
@@ -36,17 +37,17 @@ NEWS File Excerpt:
   - Shaders: SoVertexAttribute and SoVertexAttributeBinding nodes
   - Shadows: SoShadowSpotLight node
   - SoHeightMapToNormalMap engine
-  - SoPickStyle: new styles SHAPE_ON_TOP, BOUNDING_BOX_ON_TOP, SHAPE_FRONTFACES
+  - SoPickStyle: styles SHAPE_ON_TOP, BOUNDING_BOX_ON_TOP, SHAPE_FRONTFACES
   - New XML-based GL driver feature database for tagging buggy/slow features
     in specific drivers
-  - Statechart XML engine (2007-draft based), used to implement examiner viewer
-    mode at the Coin level
-  - Foreign file format support through SoForeignFileKit w. example SoSTLFileKit
+  - Statechart XML engine (2007-draft based), used to implement examiner
+    viewer mode at the Coin level
+  - Foreign file format support through SoForeignFileKit w. ex. SoSTLFileKit
   - Boost.Test-based testsuite
-  - Draggers: minTranslation/maxTranslation fields in SoTranslate1Dragger and
-    SoTranslate2Dragger
-  - OS X: Coin has become more bundle-aware and will loads external libs bundled
-    with Inventor.framework or the application bundle (better encapsulation)
+  - Draggers: minTranslation/maxTranslation fields in SoTranslate1Dragger
+    and SoTranslate2Dragger
+  - OS X: Coin has become more bundle-aware and will loads external libs
+    bundled with Inventor.framework or the application bundle
   - SoLineHighlightRenderAction and SoBoxHighlightRenderAction now only
     supports one SoSelection node
   - SoBumpMap will now detect height maps stored as rgb(a)
