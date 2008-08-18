@@ -60,6 +60,7 @@ several times as new problems show up.
   http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.guess
   http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.sub
 
+
 * Source and build-system validation:
 
   All of this ought really be done from sources from a "make dist" tarball.
@@ -180,6 +181,8 @@ anything.
   on it to get the build files generated for MSVC7.1.  Commit changes.
   Use an MSVC8.0 Windows box and run build/misc/generate.sh from build/msvc8
   on it to get the build files generated for MSVC8.0.  Commit changes.
+  Use an MSVC9.0 Windows box and run build/misc/generate.sh from build/msvc9
+  on it to get the build files generated for MSVC9.0.  Commit changes.
 
 * Generate up-to-date ChangeLog file for this release.
 

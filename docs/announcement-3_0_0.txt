@@ -1,5 +1,5 @@
 From: "Lars J. Aas" <larsa@sim.no>
-Subject: Coin 3.0.0 "Buffalo" RC1 Available
+Subject: Coin 3.0.0 "Buffalo" RC1 Now Available
  
 Coin 3.0.0 "Buffalo" RC1
 ========================
@@ -11,13 +11,66 @@ showstopper bugs are found in the release candidate.
 
 Coin 3.0.0 is a major release.  It breaks binary compatibility with previous
 versions of Coin, but is for the most part upward source code compatible with
-Coin 2.*.
+Coin 2.*.  A new major release means it was time for doing cleanup-duties.
+Some dead-end developments were removed, certain ABI-preservation-related hacks
+were rewritten properly.  Certain poor design choices were improved upon.
 
-The Coin 3.0 series will be the last releases of Coin to support the
-Microsoft Visual C++ 6.0 compiler.
+Coin 3.0.0 is not a release which is a massive roll-out of new features.
+Resources have at times been stretched, but we have managed to accumulate a decent
+set of features for a release anyway, and internal to Coin we have many new
+subsystems to build future features on.
+
+While we have your attention, it should also be mentioned that the Coin 3.0
+series will be the last set of releases of Coin to support the archaic
+Microsoft Visual C++ 6.0 compiler, which has become a really a big pain to keep
+supporting at this point, C++-language-wise.  Just a word of warning to VC++6.0
+users out there.  This is the beginning of the end of the line.
+
 
 NEWS File Excerpt:
 ------------------
+
+* new:
+  - Scene graph performance profiling subsystem
+  - SoDepthBuffer node for constrolling Z-buffer settings
+  - Shaders: SoVertexAttribute and SoVertexAttributeBinding nodes
+  - Shadows: SoShadowSpotLight node
+  - SoHeightMapToNormalMap engine
+  - SoPickStyle: new styles SHAPE_ON_TOP, BOUNDING_BOX_ON_TOP, SHAPE_FRONTFACES
+  - New XML-based GL driver feature database for tagging buggy/slow features
+    in specific drivers
+  - Statechart XML engine (2007-draft based), used to implement examiner viewer
+    mode at the Coin level
+  - Foreign file format support through SoForeignFileKit w. example SoSTLFileKit
+  - Boost.Test-based testsuite
+  - Draggers: minTranslation/maxTranslation fields in SoTranslate1Dragger and
+    SoTranslate2Dragger
+  - OS X: Coin has become more bundle-aware and will loads external libs bundled
+    with Inventor.framework or the application bundle (better encapsulation)
+  - SoLineHighlightRenderAction and SoBoxHighlightRenderAction now only
+    supports one SoSelection node
+  - SoBumpMap will now detect height maps stored as rgb(a)
+  - SoRayPickAction picking precision improvements
+  - Support SoFieldContainer userdata when doing a deep node copy
+  - Anti-aliasing is now done around the center of each pixel
+* bugfixes:
+  - ATi driver workarounds (VBO rendering related)
+  - Fixed SoToVRML2Action Transform handling bug
+  - SoTimeCounter now handles frequency == 0.0
+  - SoSceneTexture2 now properly restores the previous context
+  - Fix for remote rendering in SoGLDisplayList
+  - Workaround for nVidia texture format bug
+  - SoPathList::uniquify() now properly removes all paths that goes through
+    another path, not just one
+  - SoVRMLAppearance now checks material on the state
+  - SoComposeRotation. Default axis is now (0,0,1)
+  - Various SoShadowGroup fixes
+  - 3ds loader will not normalize the model anymore
+  - Workaround for nVidia line pattern bug
+  - Fixes for SoVRMLBillboard
+  - Correctly load bold/italic version of fonts with a single ttf file
+  - Bugfix for anti aliasing with numpasses > 16
+    ... and more
 
 See the ChangeLog file if you want the really gory details.  See
 the file RELNOTES on changes that might affect Coin usage.
@@ -32,13 +85,13 @@ time.  We will attempt this time to make them available within a day.
 
 
 ChangeLog:
-  http://svn.coin3d.org/repos/Coin-3/trunk/docs/ChangeLog.v3.0.0
+  http://svn.coin3d.org/repos/Coin-3/trunk/ChangeLog
 
 Source Code by FTP: 
   http://ftp.coin3d.org/pub/coin/src/all/Coin-3.0.0-RC1.tar.gz 
   http://ftp.coin3d.org/pub/coin/src/all/Coin-3.0.0-RC1.zip
 
-Precompiled for MS Windows: 
+Precompiled for MS Windows:
   http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc6.zip
   http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc7.zip
   http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc8.zip

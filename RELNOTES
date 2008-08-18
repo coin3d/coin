@@ -7,7 +7,6 @@ elaborate way than can be fit into to the compact NEWS summary file.
 The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
-
 Coin 3.0.0
 ==========
 
@@ -46,8 +45,6 @@ and maxTranslation to add the ability of restricting the range the draggers
 can operate in.  When this feature is used, and draggers are stored to
 file, it has consequences for the file format, and you lose the ability
 to load those files with older versions of Coin.
-FIXME: the same is to be implemented for scale draggers and the drag point
-dragger, so check on that before release.
 
 Slight change in antialiased rendering with SoGLRenderAction::setNumPasses().
 Antialiased rendering is no longer shifted 1/2 pixel to the left compared to
