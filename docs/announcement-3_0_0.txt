@@ -86,22 +86,22 @@ time.  We will attempt this time to make them available within a day.
 
 
 ChangeLog:
-  http://svn.coin3d.org/repos/Coin-3/trunk/ChangeLog
+  http://svn.coin3d.org/repos/Coin/trunk/ChangeLog
 
 Source Code by FTP: 
-  http://ftp.coin3d.org/pub/coin/src/all/Coin-3.0.0-RC1.tar.gz 
-  http://ftp.coin3d.org/pub/coin/src/all/Coin-3.0.0-RC1.zip
+  http://ftp.coin3d.org/coin/src/all/Coin-3.0.0-RC1.tar.gz 
+  http://ftp.coin3d.org/coin/src/all/Coin-3.0.0-RC1.zip
 
 Precompiled for MS Windows:
-  http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc6.zip
-  http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc7.zip
-  http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc8.zip
-  http://ftp.coin3d.org/pub/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc9.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc6.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc7.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc8.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-RC1-bin-msvc9.zip
     or look in
   http://ftp.coin3d.org/coin/bin/win32/ ...
 
 Precompiled for Mac OS X:
-  http://ftp.coin3d.org/pub/coin/bin/macosx/
+  http://ftp.coin3d.org/coin/bin/macosx/
 
 
 Enjoy,
