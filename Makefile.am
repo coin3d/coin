@@ -81,6 +81,10 @@ EXTRA_DIST = \
 	docs/ChangeLog.2001 \
 	docs/ChangeLog.2002 \
 	docs/ChangeLog.2003 \
+	docs/ChangeLog.2004 \
+	docs/ChangeLog.2005 \
+	docs/ChangeLog.2006 \
+	docs/ChangeLog.2007 \
 	docs/HACKING \
 	docs/announcement-2_0_0.txt \
 	docs/announcement-2_0_1.txt \
