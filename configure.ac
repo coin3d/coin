@@ -16,7 +16,7 @@
 m4_define([COIN_MAJOR], [3])
 m4_define([COIN_MINOR], [0])
 m4_define([COIN_MICRO], [0])
-m4_define([COIN_BETA], [b])
+m4_define([COIN_BETA], [-RC1])
 
 # This is probably a more correct setup, but will be harder to keep if
 # we want major and minor to grow slowly (but is that any point?)

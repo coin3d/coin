@@ -1,4 +1,4 @@
-New in Coin v3.0.0a (2008-08-18):
+New in Coin v3.0.0-RC1 (2008-08-18):
 * new:
   - Scene graph performance profiling subsystem
   - SoDepthBuffer node for constrolling Z-buffer settings
