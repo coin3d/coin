@@ -347,6 +347,10 @@ SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
   }
 
   SbVec2s size(0,0);
+  int nc = 0;
+
+  if (this->getImage() != NULL)
+    (void)(this->getImage()->getValue(size, nc));
 
   tls->dim[0] = size[0] / subimagesize[0];
   tls->dim[1] = size[1] / subimagesize[1];
