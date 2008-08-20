@@ -5,7 +5,7 @@ set mode=%2
 set msvc=%3
 set libname=%4
 
-set doxygen=C:\Program Files\doxygen\bin\doxygen.exe
+set doxygen=%ProgramFiles%\doxygen\bin\doxygen.exe
 set htmldir=..\html
 
 rem ************************************************************************
