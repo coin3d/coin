@@ -63,7 +63,7 @@ pushd data\scxml
 if exist navigation\*.* goto scxmlnavigationexists
 echo mkdir %COINDIR%\data\scxml\navigation
 mkdir navigation
-:cxsmlnavigationexists
+:scxmlnavigationexists
 
 popd
 
