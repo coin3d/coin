@@ -415,6 +415,9 @@ SoFile::audioRender(SoAudioRenderAction * action)
 void
 SoFile::search(SoSearchAction * action)
 {
+  SoNode::search(action); // always include this node in the search
+
+  // only search children if the user has requested it
   if (SoFileP::searchok) SoFile::doAction((SoAction *)action);
 }
 
