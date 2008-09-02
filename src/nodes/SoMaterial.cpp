@@ -38,6 +38,14 @@
   values from the traversal state, they will \e not accumulate. That's
   the case even when e.g. material changes are \e implicit in an
   iv-file, as illustrated by the following example:
+  
+  Also note that support for multiple values in ambientColor,
+  emissiveColor, specularColor and shininess was obsoleted in Open
+  Inventor 2.1. The reason for this design change was performance
+  driven, since it's relatively slow to change the OpenGL material
+  properties. Changing the diffuse color value is fast though, so it's
+  still possible to have multiple diffuseColor and transparency
+  values.
 
   \verbatim
   #Inventor V2.1 ascii
@@ -186,6 +194,9 @@
   always photons fizzing around everywhere -- even in a black,
   lightsource-less room, for instance).
 
+  Only the first value in this field will be used. All other values
+  will be ignored.
+
   \sa SoEnvironment::ambientIntensity
 */
 /*!
@@ -210,7 +221,11 @@
 
   Specular material part color values. Defaults to a single color
   value of [0, 0, 0] (black).
+
+  Only the first value in this field will be used. All other values
+  will be ignored.  
 */
+
 /*!
   \var SoMFColor SoMaterial::emissiveColor
 
@@ -219,7 +234,10 @@
 
   Defaults to contain a single color value of [0, 0, 0] (black, ie no
   contribution).
+
+  Only the first value in this field will be used. All other values will be ignored.
 */
+
 /*!
   \var SoMFFloat SoMaterial::shininess
 
@@ -228,7 +246,11 @@
   (which gives a dim appearance), to 1.0 (glossy-looking surfaces).
 
   Defaults to contain a single value of 0.2.
+
+  Only the first value in this field will be used. All other values
+  will be ignored.
 */
+
 /*!
   \var SoMFFloat SoMaterial::transparency
 
@@ -574,4 +596,3 @@ SoMaterial::getMaterialType(void)
 #undef TYPE_UNKNOWN
 #undef TYPE_NORMAL
 #undef TYPE_VRML1_ONLYEMISSIVE
-
