@@ -62,7 +62,6 @@ SbBool aglglue_context_is_using_pbuffer(void * ctx)
   return FALSE;
 }
 
-
 void * aglglue_getprocaddress(const char * fname)
 {
   return NULL;
@@ -647,4 +646,18 @@ aglglue_cleanup(void)
 
   aglglue_context_create = NULL;
 }
+
+// used to look up AGL specific functions
+void * 
+aglglue_getprocaddress(const char * fname)
+{
+  void * ret = NULL;
+  cc_libhandle h = cc_dl_handle_with_gl_symbols();
+  if (h) {
+    ret = cc_dl_sym(h, fname);
+    cc_dl_close(h);
+  }
+  return ret;
+}
+
 #endif /* HAVE_AGL */
