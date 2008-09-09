@@ -71,7 +71,7 @@ void glxglue_init(cc_glglue * w)
   w->glx.glxextensions = NULL;
 }
 
-void * glxglue_getprocaddress(const char * fname) { return NULL; }
+void * glxglue_getprocaddress(const cc_glglue * glue, const char * fname) { return NULL; }
 int glxglue_ext_supported(const cc_glglue * w, const char * extension) { return 0; }
 
 void * glxglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); return NULL; }
@@ -218,7 +218,7 @@ struct glxglue_contextdata {
 /*
 
   We try two different ways of getting the display here.
-  
+
   1) if we have a current context (glw), we try using glXGetCurrentDisplay, if it exists
   2) Fall back to XOpenDisplay()
 
@@ -226,9 +226,9 @@ struct glxglue_contextdata {
 static Display *
 glxglue_get_display(const cc_glglue * currentcontext = NULL)
 {
-  if (currentcontext && currentcontext->glx.glXGetCurrentDisplay) 
+  if (currentcontext && currentcontext->glx.glXGetCurrentDisplay)
     return (Display*) currentcontext->glx.glXGetCurrentDisplay();
-  
+
   if ((glxglue_display == NULL) && !glxglue_opendisplay_failed) {
     /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
     glxglue_display = XOpenDisplay(NULL);
@@ -277,7 +277,7 @@ void *
 glxglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 {
   void * ptr = NULL;
-  
+
   if (!glue_in->glx.glXGetProcAddress && !glue_in->glx.tried_bind_glXGetProcAddress) {
     cc_glglue * glue = const_cast<cc_glglue*> (glue_in);
 
@@ -309,7 +309,7 @@ glxglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 
     glue->glx.tried_bind_glXGetProcAddress = TRUE;
   }
-  
+
   if (glue_in->glx.glXGetProcAddress) {
     ptr = (void *)glue_in->glx.glXGetProcAddress((const GLubyte *)fname);
   }
@@ -681,7 +681,7 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
 
      Rendering to a GLX pixmap is of course exactly what we want to be
      able to do. */
-  
+
   Display * display = glxglue_get_display(NULL);
   context->glxcontext = glXCreateContext(display, context->visinfo, 0,
                                          False);
@@ -958,7 +958,7 @@ glxglue_context_make_current(void * ctx)
                            context->storeddisplay);
   }
 
-  Display * display = glxglue_get_display(NULL); 
+  Display * display = glxglue_get_display(NULL);
   r = glXMakeCurrent(display, context->glxpixmap, context->glxcontext);
 
   if (coin_glglue_debug()) {
