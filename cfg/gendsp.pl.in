@@ -811,8 +811,8 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /GZ /Od /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
-# ADD CPP /nologo /MD /W3 /GX /GZ /Od /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /GX /GZ /Od /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /GZ /Od /Zi \@${LIBRARY}_DSP_INCS\@ /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D ${LIBRARY}_DEBUG=1 \@${LIBRARY}_LIB_DSP_DEFS\@ /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "_DEBUG"
 # ADD RSC /l 0x414 /d "_DEBUG"
