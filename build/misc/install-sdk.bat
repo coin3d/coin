@@ -62,6 +62,46 @@ exit
 
 :coindirexists
 
+rem **********************************************************************
+rem * Check that build has been performed...
+
+if "%1"=="dll" goto checkdll
+goto checklib
+
+:checkdll
+
+if "%2"=="debug" goto checkdlldebug
+goto checkdllrelease
+
+:checkdlldebug
+if exist %libname%d.dll goto checkdone
+goto checkfailed
+
+:checkdllrelease
+if exist %libname%.dll goto checkdone
+goto checkfailed
+
+:checklib
+
+if "%2"=="debug" goto checklibdebug
+goto checklibrelease
+
+:checklibdebug
+if exist %libname%sd.lib goto checkdone
+goto checkfailed
+
+:checklibrelease
+if exist %libname%s.lib goto checkdone
+goto checkfailed
+
+:checkfailed
+echo ERROR: You do not seem to have compiled the %2-version of %libname% yet.
+exit
+
+:checkdone
+
+rem **********************************************************************
+
 echo Installing to %COINDIR%
 
 rem **********************************************************************
