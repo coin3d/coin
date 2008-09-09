@@ -124,9 +124,6 @@ static Display * glxglue_display = NULL;
 static SbBool glxglue_opendisplay_failed = FALSE;
 
 static int glxglue_screen = -1;
-typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
-static COIN_PFNGLXGETPROCADDRESS glxglue_glXGetProcAddress = NULL;
-static SbBool tried_bind_glXGetProcAddress = FALSE;
 
 struct glxglue_contextdata;
 static SbBool (* glxglue_context_create)(struct glxglue_contextdata * context) = NULL;
@@ -277,44 +274,44 @@ glxglue_set_version(const cc_glglue * w, int * major, int * minor)
 }
 
 void *
-glxglue_getprocaddress(const char * fname)
+glxglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 {
   void * ptr = NULL;
+  
+  if (!glue_in->glx.glXGetProcAddress && !glue_in->glx.tried_bind_glXGetProcAddress) {
+    cc_glglue * glue = const_cast<cc_glglue*> (glue_in);
 
-  if (!glxglue_glXGetProcAddress && !tried_bind_glXGetProcAddress) {
-    cc_libhandle h = cc_dl_handle_with_gl_symbols();
+    cc_libhandle h = coin_glglue_dl_handle(glue);
+
     if (h) {
-      glxglue_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
+      glue->glx.glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESSPROC)
         cc_dl_sym(h, "glXGetProcAddress");
 
       if (coin_glglue_debug()) {
         cc_debugerror_postinfo("glxglue_getprocaddress",
                                "%s glXGetProcAddress()",
-                               glxglue_glXGetProcAddress ?
+                               glue->glx.glXGetProcAddress ?
                                "picked up" : "can't use");
       }
 
-      if (!glxglue_glXGetProcAddress) {
-        glxglue_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
+      if (!glue->glx.glXGetProcAddress) {
+        glue->glx.glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESSPROC)
           cc_dl_sym(h, "glXGetProcAddressARB");
       }
 
       if (coin_glglue_debug()) {
         cc_debugerror_postinfo("glxglue_getprocaddress",
                                "%s glXGetProcAddressARB()",
-                               glxglue_glXGetProcAddress ?
+                               glue->glx.glXGetProcAddress ?
                                "picked up" : "can't use");
       }
-
-
-      cc_dl_close(h);
     }
 
-    tried_bind_glXGetProcAddress = TRUE;
+    glue->glx.tried_bind_glXGetProcAddress = TRUE;
   }
-
-  if (glxglue_glXGetProcAddress) {
-    ptr = (void *)glxglue_glXGetProcAddress((const GLubyte *)fname);
+  
+  if (glue_in->glx.glXGetProcAddress) {
+    ptr = (void *)glue_in->glx.glXGetProcAddress((const GLubyte *)fname);
   }
 
   return ptr;
@@ -345,7 +342,7 @@ glxglue_ext_supported(const cc_glglue * w, const char * extension)
 
 #ifdef HAVE_DYNAMIC_LINKING
 
-#define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
+#define PROC(_glue_, _func_) cc_glglue_getprocaddress(_glue_, SO__QUOTE(_func_))
 
 /* The OpenGL library's GLX part which we dynamically pick up symbols
    from /could/ have all these defined. For the code below which tries
@@ -364,7 +361,7 @@ glxglue_ext_supported(const cc_glglue * w, const char * extension)
 
 #else /* static binding */
 
-#define PROC(_func_) (&_func_)
+#define PROC(_glue_, _func_) (&_func_)
 
 #endif /* static binding */
 
@@ -384,22 +381,22 @@ glxglue_resolve_symbols(cc_glglue * w)
 
 #ifdef GLX_EXT_import_context
   if (!g->glXGetCurrentDisplay && glxglue_ext_supported(w, "GLX_EXT_import_context")) {
-    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT);
+    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(w, glXGetCurrentDisplayEXT);
   }
 #endif /* GLX_EXT_import_context */
 
 #ifdef GLX_VERSION_1_3
   if (glx13pbuffer && cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
-    glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(glXChooseFBConfig);
-    glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(glXCreateNewContext);
-    glxglue_glXGetFBConfigAttrib = (COIN_PFNGLXGETFBCONFIGATTRIB)PROC(glXGetFBConfigAttrib);
+    glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(w, glXChooseFBConfig);
+    glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(w, glXCreateNewContext);
+    glxglue_glXGetFBConfigAttrib = (COIN_PFNGLXGETFBCONFIGATTRIB)PROC(w, glXGetFBConfigAttrib);
   }
 #endif /* GLX_VERSION_1_3 */
 #ifdef GLX_SGIX_fbconfig
   if (!glxglue_glXChooseFBConfig && glxglue_ext_supported(w, "GLX_SGIX_fbconfig")) {
-    glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(glXChooseFBConfigSGIX);
-    glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(glXCreateContextWithConfigSGIX);
-    glxglue_glXGetFBConfigAttrib = (COIN_PFNGLXGETFBCONFIGATTRIB)PROC(glXGetFBConfigAttribSGIX);
+    glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(w, glXChooseFBConfigSGIX);
+    glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(w, glXCreateContextWithConfigSGIX);
+    glxglue_glXGetFBConfigAttrib = (COIN_PFNGLXGETFBCONFIGATTRIB)PROC(w, glXGetFBConfigAttribSGIX);
   }
 #endif /* GLX_SGIX_fbconfig */
 
@@ -409,15 +406,15 @@ glxglue_resolve_symbols(cc_glglue * w)
 
 #ifdef GLX_VERSION_1_3
   if (glx13pbuffer && cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
-    glxglue_glXCreatePbuffer_GLX_1_3 = (COIN_PFNGLXCREATEPBUFFER_GLX_1_3)PROC(glXCreatePbuffer);
-    glxglue_glXDestroyPbuffer = (COIN_PFNGLXDESTROYPBUFFER)PROC(glXDestroyPbuffer);
+    glxglue_glXCreatePbuffer_GLX_1_3 = (COIN_PFNGLXCREATEPBUFFER_GLX_1_3)PROC(w, glXCreatePbuffer);
+    glxglue_glXDestroyPbuffer = (COIN_PFNGLXDESTROYPBUFFER)PROC(w, glXDestroyPbuffer);
   }
 #endif /* GLX_VERSION_1_3 */
 
 #ifdef GLX_SGIX_pbuffer
   if (!glxglue_glXCreatePbuffer_GLX_1_3 && glxglue_ext_supported(w, "GLX_SGIX_pbuffer")) {
-    glxglue_glXCreateGLXPbufferSGIX = (COIN_PFNGLXCREATEGLXPBUFFERSGIX)PROC(glXCreateGLXPbufferSGIX);
-    glxglue_glXDestroyPbuffer = (COIN_PFNGLXDESTROYPBUFFER)PROC(glXDestroyGLXPbufferSGIX);
+    glxglue_glXCreateGLXPbufferSGIX = (COIN_PFNGLXCREATEGLXPBUFFERSGIX)PROC(w, glXCreateGLXPbufferSGIX);
+    glxglue_glXDestroyPbuffer = (COIN_PFNGLXDESTROYPBUFFER)PROC(w, glXDestroyGLXPbufferSGIX);
   }
 #endif /* GLX_SGIX_pbuffer */
 }
@@ -459,7 +456,7 @@ glxglue_init(cc_glglue * w)
   struct cc_glxglue * g = &(w->glx);
   g->glXGetCurrentDisplay = NULL;
 #ifdef GLX_VERSION_1_2
-  g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
+  g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(w, glXGetCurrentDisplay);
 #endif /* GLX_VERSION_1_2 */
 
   glxglue_set_version(w, &w->glx.version.major, &w->glx.version.minor);
@@ -1075,9 +1072,6 @@ glxglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 void glxglue_cleanup(void)
 {
   glxglue_screen = -1;
-  glxglue_glXGetProcAddress = NULL;
-  tried_bind_glXGetProcAddress = FALSE;
-
   glxglue_context_create = NULL;
 
   glxglue_glXChooseFBConfig = NULL;

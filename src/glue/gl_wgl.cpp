@@ -50,7 +50,7 @@
 
 /* Dummy implementations, for when WGL is not available: */
 
-void * coin_wgl_getprocaddress(const char * fname) { return NULL; }
+void * coin_wgl_getprocaddress(const cc_glglue * glue, const char * fname) { return NULL; }
 
 void * wglglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); return NULL; }
 SbBool wglglue_context_make_current(void * ctx) { assert(FALSE); return FALSE; }
@@ -153,7 +153,7 @@ static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
 /* ********************************************************************** */
 
 #ifdef HAVE_DYNAMIC_LINKING
-#define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
+#define PROC(_glue_, _func_) cc_glglue_getprocaddress(_glue_, SO__QUOTE(_func_))
 
 /* The OpenGL library's WGL part which we dynamically pick up symbols
    from /could/ have these defined. For the code below which tries to
@@ -174,7 +174,7 @@ static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
 #define WGL_ARB_render_texture 1
 #else /* static binding */
 
-#define PROC(_func_) (&_func_)
+#define PROC(_glue_, _func_) (&_func_)
 
 #endif /* static binding */
 
@@ -185,26 +185,26 @@ static SbBool attemptedextresolved = FALSE;
 /* ********************************************************************** */
 
 void *
-coin_wgl_getprocaddress(const char * fname)
+coin_wgl_getprocaddress(const cc_glglue * glue, const char * fname)
 {
   void * ptr = cstyle_cast<void *>(wglGetProcAddress(fname));
 
   /* wglGetProcAddress() seems to only be able to fetch
      function-addresses for *extension* functions, not "proper" OpenGL
      (1.1+) functions. */
-
+  
   if (ptr == NULL) {
-    cc_libhandle glhnd = cc_dl_handle_with_gl_symbols();
-
+    cc_libhandle glhnd = coin_glglue_dl_handle(glue);
+    
+    
     if (!glhnd && coin_glglue_debug()) {
       cc_debugerror_postwarning("coin_wgl_getprocaddress",
                                 "couldn't get hold of any workable module "
                                 "handle for picking up OpenGL symbols");
     }
-
     if (glhnd) {
       ptr = cc_dl_sym(glhnd, fname);
-
+      
       if (ptr && coin_glglue_debug()) {
         cc_debugerror_postinfo("coin_wgl_getprocaddress",
                                "wglGetProcAddress() missed \"%s\", "
@@ -212,7 +212,6 @@ coin_wgl_getprocaddress(const char * fname)
       }
     }
   }
-
   return ptr;
 }
 
@@ -249,7 +248,7 @@ wglglue_pbuffer_symbols_resolved(void)
 }
 
 static SbBool
-wglglue_ext_supported(struct wglglue_contextdata * context, const char * reqext)
+wglglue_ext_supported(struct wglglue_contextdata * context, const cc_glglue * glue, const char * reqext)
 {
   /*
    * wgl extensions are not necessarily listed in the string returned
@@ -263,11 +262,11 @@ wglglue_ext_supported(struct wglglue_contextdata * context, const char * reqext)
   if (!attemptedextresolved) {
     attemptedextresolved = TRUE;
 #ifdef WGL_ARB_extensions_string
-    wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(wglGetExtensionsStringARB);
+    wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(glue, wglGetExtensionsStringARB);
 #endif /* WGL_ARB_extensions_string */
 #ifdef WGL_EXT_extensions_string
     if (!wglglue_wglGetExtensionsString) {
-      wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(wglGetExtensionsStringEXT);
+      wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(glue, wglGetExtensionsStringEXT);
     }
 #endif /* WGL_EXT_extensions_string */
   }
@@ -291,24 +290,26 @@ wglglue_resolve_symbols(struct wglglue_contextdata * context)
   /* We need a(ny) current context to resolve symbols. */
   if (!wglglue_context_make_current(context)) { return FALSE; }
 
-  /* Attempt to resolve the symbols: */
+  // just create a cc_glglue instance to use for looking up symbols
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::getUniqueCacheContext());
 
+  /* Attempt to resolve the symbols: */
 
   /* Check EXT before ARB, to let the latter override the former if
      both are present, as ARB should always be more recent than
      EXT. */
 
 #ifdef WGL_EXT_pixel_format
-  if (wglglue_ext_supported(context, "WGL_EXT_pixel_format")) {
-    wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(wglChoosePixelFormatEXT);
-    wglglue_wglGetPixelFormatAttribiv = (COIN_PFNWGLGETPIXELFORMATATTRIBIVPROC)PROC(wglGetPixelFormatAttribivEXT);
+  if (wglglue_ext_supported(context, glue, "WGL_EXT_pixel_format")) {
+    wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(glue, wglChoosePixelFormatEXT);
+    wglglue_wglGetPixelFormatAttribiv = (COIN_PFNWGLGETPIXELFORMATATTRIBIVPROC)PROC(glue, wglGetPixelFormatAttribivEXT);
   }
 #endif /* WGL_EXT_pixel_format */
 
 #ifdef WGL_ARB_pixel_format
-  if (wglglue_ext_supported(context, "WGL_ARB_pixel_format")) {
-    wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(wglChoosePixelFormatARB);
-    wglglue_wglGetPixelFormatAttribiv = (COIN_PFNWGLGETPIXELFORMATATTRIBIVPROC)PROC(wglGetPixelFormatAttribivARB);
+  if (wglglue_ext_supported(context, glue, "WGL_ARB_pixel_format")) {
+    wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(glue, wglChoosePixelFormatARB);
+    wglglue_wglGetPixelFormatAttribiv = (COIN_PFNWGLGETPIXELFORMATATTRIBIVPROC)PROC(glue, wglGetPixelFormatAttribivARB);
   }
 #endif /* WGL_ARB_pixel_format */
 
@@ -318,31 +319,31 @@ wglglue_resolve_symbols(struct wglglue_contextdata * context)
 
 #ifdef WGL_ARB_pbuffer
   if (wglglue_wglChoosePixelFormat && /* <- WGL_*_pbuffer depends on WGL_*_pixel_format */
-      wglglue_ext_supported(context, "WGL_ARB_pbuffer")) {
-    wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(wglCreatePbufferARB);
-    wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(wglGetPbufferDCARB);
-    wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(wglReleasePbufferDCARB);
-    wglglue_wglDestroyPbuffer = (COIN_PFNWGLDESTROYPBUFFERPROC)PROC(wglDestroyPbufferARB);
-    wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(wglQueryPbufferARB);
+      wglglue_ext_supported(context, glue, "WGL_ARB_pbuffer")) {
+    wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(glue, wglCreatePbufferARB);
+    wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(glue, wglGetPbufferDCARB);
+    wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(glue, wglReleasePbufferDCARB);
+    wglglue_wglDestroyPbuffer = (COIN_PFNWGLDESTROYPBUFFERPROC)PROC(glue, wglDestroyPbufferARB);
+    wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(glue, wglQueryPbufferARB);
   }
 #endif /* WGL_ARB_pbuffer */
 
 #ifdef WGL_EXT_pbuffer
   if (!wglglue_pbuffer_symbols_resolved() &&
       wglglue_wglChoosePixelFormat && /* <- WGL_*_pbuffer depends on WGL_*_pixel_format */
-      wglglue_ext_supported(context, "WGL_EXT_pbuffer")) {
-    wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(wglCreatePbufferEXT);
-    wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(wglGetPbufferDCEXT);
-    wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(wglReleasePbufferDCEXT);
-    wglglue_wglDestroyPbuffer = (COIN_PFNWGLDESTROYPBUFFERPROC)PROC(wglDestroyPbufferEXT);
-    wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(wglQueryPbufferEXT);
+      wglglue_ext_supported(context, glue, "WGL_EXT_pbuffer")) {
+    wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(glue, wglCreatePbufferEXT);
+    wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(glue, wglGetPbufferDCEXT);
+    wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(glue, wglReleasePbufferDCEXT);
+    wglglue_wglDestroyPbuffer = (COIN_PFNWGLDESTROYPBUFFERPROC)PROC(glue, wglDestroyPbufferEXT);
+    wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(glue, wglQueryPbufferEXT);
   }
 #endif /* WGL_EXT_pbuffer */
 
 #ifdef WGL_ARB_render_texture
-  if (wglglue_ext_supported(context, "WGL_ARB_render_texture")) {
-    wglglue_wglBindTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglBindTexImageARB);
-    wglglue_wglReleaseTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglReleaseTexImageARB);
+  if (wglglue_ext_supported(context, glue, "WGL_ARB_render_texture")) {
+    wglglue_wglBindTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(glue, wglBindTexImageARB);
+    wglglue_wglReleaseTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(glue, wglReleaseTexImageARB);
   }
 #endif /* WGL_ARB_render_texture */
 

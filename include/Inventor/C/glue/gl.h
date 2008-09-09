@@ -111,7 +111,7 @@ COIN_DLL_API SbBool cc_glglue_glext_supported(const cc_glglue * glue, const char
   hardware card (for "unified" drivers from vendors with many
   different types or generations of graphics cards).
  */
-COIN_DLL_API void * cc_glglue_getprocaddress(const char * symname);
+COIN_DLL_API void * cc_glglue_getprocaddress(const cc_glglue * glue, const char * symname);
 
 /* Returns TRUE if rendering is done directly on the display (ie not
    through any software indirection layer over GLX). */

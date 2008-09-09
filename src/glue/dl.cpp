@@ -146,6 +146,7 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/system/gl.h> /* for glGetString */
+#include <Inventor/SbString.h>
 
 #include "glue/dlp.h"
 #include "tidbitsp.h"
@@ -321,14 +322,11 @@ Type cstyle_cast(FARPROC procaddr)
 
 /* ********************************************************************** */
 
-static cc_libhandle glsymbols_handle = NULL;
-static SbBool attempted_glsymbols = FALSE;
-
 static const char * NULL_STR = "(null)";
 
 struct cc_libhandle_struct {
   const void * nativehnd;
-  cc_string libname;
+  SbString libname;
 };
 
 /* ********************************************************************** */
@@ -576,9 +574,9 @@ cc_dl_available(void)
 cc_libhandle
 cc_dl_open(const char * filename)
 {
-  cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
-  /* if (!h), FIXME: exception handling. 20020906 mortene. */
+  cc_libhandle h = new struct cc_libhandle_struct;
   h->nativehnd = NULL;
+  h->libname = NULL_STR;
 
 #ifdef HAVE_DL_LIB
 
@@ -768,12 +766,11 @@ cc_dl_open(const char * filename)
 #endif
 
   if (h->nativehnd == NULL) {
-    free(h);
+    delete h;
     h = NULL;
   }
   else {
-    cc_string_construct(&h->libname);
-    cc_string_set_text(&h->libname, filename ? filename : NULL_STR);
+    h->libname = filename ? filename : NULL_STR;
 
     if (cc_dl_debugging()) {
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
@@ -783,7 +780,7 @@ cc_dl_open(const char * filename)
       libpath[sizeof(libpath) - 1] = 0;
       cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
 #elif defined (HAVE_DL_LIB) || defined (HAVE_DLD_LIB)
-      cc_debugerror_postinfo("cc_dl_open", "Opening library '%s'", cc_string_get_text(&h->libname));
+      cc_debugerror_postinfo("cc_dl_open", "Opening library '%s'", h->libname.getString());
 #endif
     }
   }
@@ -791,7 +788,7 @@ cc_dl_open(const char * filename)
   if (cc_dl_debugging() && h) {
     cc_debugerror_postinfo("cc_dl_open",
                            "\"%s\" success => cc_libhandle==%p, nativehnd==%p", 
-                           cc_string_get_text(&h->libname), h, h->nativehnd);
+                           h->libname.getString(), h, h->nativehnd);
   }
 
   return h;
@@ -811,7 +808,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
     const char * e = dlerror();
     if (e) {
       cc_debugerror_post("cc_dl_sym", "dlsym(\"%s\", \"%s\") failed with: '%s'",
-                         cc_string_get_text(&handle->libname), symbolname, e);
+                         handle->libname.getString(), symbolname, e);
     }
   }
 
@@ -875,7 +872,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
   if (cc_dl_debugging() && (ptr == NULL)) {
     cc_string funcstr;
     cc_string_construct(&funcstr);
-    cc_string_sprintf(&funcstr, "GetProcAddress(\"%s\", \"%s\")", cc_string_get_text(&handle->libname), symbolname);
+    cc_string_sprintf(&funcstr, "GetProcAddress(\"%s\", \"%s\")", handle->libname.getString(), symbolname);
     cc_win32_print_error("cc_dl_sym", cc_string_get_text(&funcstr), GetLastError());
     cc_string_clean(&funcstr);
   }
@@ -888,7 +885,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
     if (cc_dl_debugging() && (retval == -1)) {
       const char * e = strerror(errno);
       cc_debugerror_post("cc_dl_sym", "shl_findsym(\"%s\", \"%s\", ...) failed with: '%s'",
-                         cc_string_get_text(&handle->libname), symbolname, e);
+                         handle->libname.getString(), symbolname, e);
     }
   }
 
@@ -903,7 +900,7 @@ cc_dl_close(cc_libhandle handle)
   if (cc_dl_debugging()) {
     cc_debugerror_postinfo("cc_dl_close",
                            "closing '%s', cc_libhandle==%p, nativehnd==%p",
-                           cc_string_get_text(&handle->libname),
+                           handle->libname.getString(),
                            handle, handle->nativehnd);
   }
 
@@ -916,9 +913,7 @@ cc_dl_close(cc_libhandle handle)
     /* Don't dlclose() on handle to the process image, as HP-UX 11's
        dlclose() will complain with an "invalid handle" error then. */
 
-    is_proc_img =
-      cc_string_compare_text(cc_string_get_text(&handle->libname),
-                             NULL_STR) == 0;
+    is_proc_img = (handle->libname == NULL_STR);
     if (!is_proc_img) {
       result = dlclose((void *)handle->nativehnd);
     }
@@ -927,7 +922,7 @@ cc_dl_close(cc_libhandle handle)
       const char * e = dlerror();
       if (e) {
         cc_debugerror_post("cc_dl_close", "dlclose(\"%s\") failed with: '%s'",
-                           cc_string_get_text(&handle->libname), e);
+                           handle->libname.getString(), e);
       }
     }
   }
@@ -947,7 +942,7 @@ cc_dl_close(cc_libhandle handle)
     if (!result) {
       cc_string funcstr;
       cc_string_construct(&funcstr);
-      cc_string_sprintf(&funcstr, "FreeLibrary(\"%s\")", cc_string_get_text(&handle->libname));
+      cc_string_sprintf(&funcstr, "FreeLibrary(\"%s\")", handle->libname.getString());
       cc_win32_print_error("cc_dl_close", cc_string_get_text(&funcstr), GetLastError());
       cc_string_clean(&funcstr);
     }
@@ -964,14 +959,13 @@ cc_dl_close(cc_libhandle handle)
   if (result == -1) {
     const char * e = strerror(errno);
     cc_debugerror_post("cc_dl_close", "shl_unload(\"%s\") failed with: '%s'",
-                       cc_string_get_text(&handle->libname), e);
+                       handle->libname.getString(), e);
   }
 #endif
 
 #endif
 
-  if (&handle->libname) cc_string_clean(&handle->libname);
-  free(handle);
+  delete handle;
 }
 
 /* ********************************************************************** */
@@ -1088,48 +1082,8 @@ cc_dl_opengl_handle(void)
   return NULL;
 }
 
-static void
-glsymbols_handle_cleanup(void)
-{
-  if (glsymbols_handle) {
-    /* FIXME: the cc_dl_close() below doesn't work on my Linux system,
-       at least. Causes a segfault on exit.
-
-       Closing a handle on our own process is a no-no..? Or is there
-       perhaps something else hiding behind this error? Should
-       investigate.
-
-       The call-stack back-trace when it segfaults:
-
-       Program received signal SIGSEGV, Segmentation fault.
-       [Switching to Thread 46912629269472 (LWP 11931)]
-       0x00002aaaaaabb610 in calloc () from /lib64/ld-linux-x86-64.so.2
-       (gdb) bt
-       #0  0x00002aaaaaabb610 in calloc () from /lib64/ld-linux-x86-64.so.2
-       #1  0x00002aaaaaab5f38 in _dl_rtld_di_serinfo () from /lib64/ld-linux-x86-64.so.2
-       #2  0x00002aaaaf898e4c in _dl_close () from /lib/libc.so.6
-       #3  0x00002aaaaaab6140 in _dl_rtld_di_serinfo () from /lib64/ld-linux-x86-64.so.2
-       #4  0x00002aaaae006542 in dlerror () from /lib/libdl.so.2
-       #5  0x00002aaaae0060cf in dlclose () from /lib/libdl.so.2
-       #6  0x00002aaaac17e361 in cc_dl_close (handle=0x79b630) at /home/mortene/code/Coin/src/glue/dl.c:699
-       #7  0x00002aaaac17e4f3 in glsymbols_handle_cleanup () at /home/mortene/code/Coin/src/glue/dl.c:874
-       #8  0x00002aaaaaff6dd3 in coin_atexit_cleanup () at /home/mortene/code/Coin/src/tidbits.c:1195
-       #9  0x00002aaaac566d29 in SoDB::finish () at /home/mortene/code/Coin/src/misc/SoDB.cpp:675
-       
-       20070105 mortene.
-    */
-    /* cc_dl_close(glsymbols_handle); */
-    // FIXME: Quickfix to plug leak. When above bug is fixed, remove the next two lines
-    if (&glsymbols_handle->libname) cc_string_clean(&glsymbols_handle->libname);
-    free(glsymbols_handle);
-    // End of quickfix
-    glsymbols_handle = NULL;
-  }
-
-  attempted_glsymbols = FALSE;
-}
-
-/* Using the process handle to get at OpenGL symbols is not always
+/* 
+   Using the process handle to get at OpenGL symbols is not always
    workable, there are cases where the process handle will not "lead
    us" to Coin symbols or OpenGL symbols. (Like e.g. when running
    under the Pivy Coin-in-Python binding's interpreter.)
@@ -1150,8 +1104,6 @@ glsymbols_handle_cleanup(void)
    getting a valid handle for the process, than for Coin, which again
    is more likely to be available than one for OpenGL.
 
-   The returned handle will be closed on application exit, so client
-   code should not clean it up.
 */
 cc_libhandle
 cc_dl_handle_with_gl_symbols(void)
@@ -1164,11 +1116,6 @@ cc_dl_handle_with_gl_symbols(void)
     cc_dl_process_handle, cc_dl_coin_handle, cc_dl_opengl_handle
   };
 
-  if (attempted_glsymbols) { return glsymbols_handle; }
-
-  attempted_glsymbols = TRUE;
-  coin_atexit((coin_atexit_f *)glsymbols_handle_cleanup, CC_ATEXIT_NORMAL);
-
   for (i = 0; i < (sizeof(f) / sizeof(f[0])); i++) {
     hnd = (*f[i])();
     if (hnd) {
@@ -1178,11 +1125,10 @@ cc_dl_handle_with_gl_symbols(void)
                                "successfully found image handle for '%s', "
                                "testing OpenGL symbol access: "
                                "cc_dl_sym(..., \"glGetString\") == %p",
-                               cc_string_get_text(&hnd->libname),
+                               hnd->libname.getString(),
                                glchk);
       }
       if (glchk) {
-        glsymbols_handle = hnd;
         return hnd;
       }
       cc_dl_close(hnd); /* OpenGL symbol not found, close again */

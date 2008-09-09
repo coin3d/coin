@@ -29,12 +29,13 @@
 #endif
 
 #include <Inventor/SbBasic.h> // SbBool
+#include <Inventor/C/glue/gl.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-void * coin_wgl_getprocaddress(const char * fname);
+void * coin_wgl_getprocaddress(const cc_glglue * glue, const char * fname);
 
 void * wglglue_context_create_offscreen(unsigned int width, unsigned int height);
 SbBool wglglue_context_make_current(void * ctx);

@@ -479,27 +479,30 @@ coin_glglue_stencil_bits_hack(void)
   return atoi(env);
 }
 
+cc_libhandle 
+coin_glglue_dl_handle(const cc_glglue * glue)
+{
+  if (!glue->dl_handle) {
+    const_cast <cc_glglue *> (glue)->dl_handle = cc_dl_handle_with_gl_symbols();
+  }
+  return glue->dl_handle;
+}
+
 /* doc in header file */
 void *
-cc_glglue_getprocaddress(const char * symname)
+cc_glglue_getprocaddress(const cc_glglue * glue, const char * symname)
 {
   void * ptr = NULL;
-  cc_libhandle gl_handle;
 
-  ptr = coin_wgl_getprocaddress(symname);
+  // FIXME: also supply 'glue' to coin_[x]gl_getprocaddress()
+  ptr = coin_wgl_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
 
-  ptr = glxglue_getprocaddress(symname);
+  ptr = glxglue_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
-
-  ptr = aglglue_getprocaddress(symname);
+  
+  ptr = cc_dl_sym(coin_glglue_dl_handle(glue), symname);
   if (ptr) goto returnpoint;
-
-  gl_handle = cc_dl_handle_with_gl_symbols();
-  if (gl_handle) {
-    ptr = cc_dl_sym(gl_handle, symname);
-    if (ptr) goto returnpoint;
-  }
 
 returnpoint:
   if (coin_glglue_debug()) {
@@ -702,7 +705,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 
 #ifdef HAVE_DYNAMIC_LINKING
 
-#define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
+#define PROC(_glue_, _func_) cc_glglue_getprocaddress(_glue_, SO__QUOTE(_func_))
 
 /* The OpenGL library which we dynamically pick up symbols from
    /could/ have all these defined. For the code below which tries to
@@ -745,7 +748,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 
 #else /* static binding */
 
-#define PROC(_func_) (&_func_)
+#define PROC(_glue_, _func_) (&_func_)
 
 #endif /* static binding */
 
@@ -765,12 +768,12 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glPolygonOffsetEXT = NULL;
 #ifdef GL_VERSION_1_1
   if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
-    w->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)PROC(glPolygonOffset);
+    w->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)PROC(w, glPolygonOffset);
   }
 #endif /* GL_VERSION_1_1 */
 #ifdef GL_EXT_polygon_offset
   if (cc_glglue_glext_supported(w, "GL_EXT_polygon_offset")) {
-    w->glPolygonOffsetEXT = (COIN_PFNGLPOLYGONOFFSETPROC)PROC(glPolygonOffsetEXT);
+    w->glPolygonOffsetEXT = (COIN_PFNGLPOLYGONOFFSETPROC)PROC(w, glPolygonOffsetEXT);
   }
 #endif /* GL_EXT_polygon_offset */
 
@@ -782,16 +785,16 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glDeleteTextures = NULL;
 #ifdef GL_VERSION_1_1
   if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
-    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(glGenTextures);
-    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(glBindTexture);
-    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(glDeleteTextures);
+    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(w, glGenTextures);
+    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(w, glBindTexture);
+    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(w, glDeleteTextures);
   }
 #endif /* GL_VERSION_1_1 */
 #ifdef GL_EXT_texture_object
   if (!w->glGenTextures && cc_glglue_glext_supported(w, "GL_EXT_texture_object")) {
-    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(glGenTexturesEXT);
-    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(glBindTextureEXT);
-    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(glDeleteTexturesEXT);
+    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(w, glGenTexturesEXT);
+    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(w, glBindTextureEXT);
+    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(w, glDeleteTexturesEXT);
   }
 #endif /* GL_EXT_texture_object */
 
@@ -799,12 +802,12 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glTexSubImage2D = NULL;
 #ifdef GL_VERSION_1_1
   if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
-    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(glTexSubImage2D);
+    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(w, glTexSubImage2D);
   }
 #endif /* GL_VERSION_1_1 */
 #ifdef GL_EXT_subtexture
   if (!w->glTexSubImage2D && cc_glglue_glext_supported(w, "GL_EXT_subtexture")) {
-    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(glTexSubImage2DEXT);
+    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(w, glTexSubImage2DEXT);
   }
 #endif /* GL_EXT_subtexture */
 
@@ -813,8 +816,8 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glPopClientAttrib = NULL;
 #ifdef GL_VERSION_1_1
   if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
-    w->glPushClientAttrib = (COIN_PFNGLPUSHCLIENTATTRIBPROC) PROC(glPushClientAttrib);
-    w->glPopClientAttrib = (COIN_PFNGLPOPCLIENTATTRIBPROC) PROC(glPopClientAttrib);
+    w->glPushClientAttrib = (COIN_PFNGLPUSHCLIENTATTRIBPROC) PROC(w, glPushClientAttrib);
+    w->glPopClientAttrib = (COIN_PFNGLPOPCLIENTATTRIBPROC) PROC(w, glPopClientAttrib);
   }
 #endif /* GL_VERSION_1_1 */
 
@@ -824,17 +827,17 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glTexSubImage3D = NULL;
 #ifdef GL_VERSION_1_2
   if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) {
-    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(glTexImage3D);
-    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(glCopyTexSubImage3D);
-    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)PROC(glTexSubImage3D);
+    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(w, glTexImage3D);
+    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(w, glCopyTexSubImage3D);
+    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)PROC(w, glTexSubImage3D);
   }
 #endif /* GL_VERSION_1_2 */
 #ifdef GL_EXT_texture3D
   if (!w->glTexImage3D && cc_glglue_glext_supported(w, "GL_EXT_texture3D")) {
-    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(glTexImage3DEXT);
+    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(w, glTexImage3DEXT);
     /* These are implicitly given if GL_EXT_texture3D is defined. */
-    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(glCopyTexSubImage3DEXT);
-    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)PROC(glTexSubImage3DEXT);
+    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(w, glCopyTexSubImage3DEXT);
+    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)PROC(w, glTexSubImage3DEXT);
   }
 #endif /* GL_EXT_texture3D */
 
@@ -876,22 +879,22 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glMultiTexCoord4fv = NULL;
 #ifdef GL_VERSION_1_3
   if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
-    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTexture);
-    w->glClientActiveTexture = (COIN_PFNGLCLIENTACTIVETEXTUREPROC)PROC(glClientActiveTexture);
-    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2f);
-    w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(glMultiTexCoord2fv);
-    w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(glMultiTexCoord3fv);
-    w->glMultiTexCoord4fv = (COIN_PFNGLMULTITEXCOORD4FVPROC)PROC(glMultiTexCoord4fv);
+    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(w, glActiveTexture);
+    w->glClientActiveTexture = (COIN_PFNGLCLIENTACTIVETEXTUREPROC)PROC(w, glClientActiveTexture);
+    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(w, glMultiTexCoord2f);
+    w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(w, glMultiTexCoord2fv);
+    w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(w, glMultiTexCoord3fv);
+    w->glMultiTexCoord4fv = (COIN_PFNGLMULTITEXCOORD4FVPROC)PROC(w, glMultiTexCoord4fv);
   }
 #endif /* GL_VERSION_1_3 */
 #ifdef GL_ARB_multitexture
   if (!w->glActiveTexture && cc_glglue_glext_supported(w, "GL_ARB_multitexture")) {
-    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTextureARB);
-    w->glClientActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glClientActiveTextureARB);
-    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2fARB);
-    w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(glMultiTexCoord2fvARB);
-    w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(glMultiTexCoord3fvARB);
-    w->glMultiTexCoord4fv = (COIN_PFNGLMULTITEXCOORD4FVPROC)PROC(glMultiTexCoord4fvARB);
+    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(w, glActiveTextureARB);
+    w->glClientActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(w, glClientActiveTextureARB);
+    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(w, glMultiTexCoord2fARB);
+    w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(w, glMultiTexCoord2fvARB);
+    w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(w, glMultiTexCoord3fvARB);
+    w->glMultiTexCoord4fv = (COIN_PFNGLMULTITEXCOORD4FVPROC)PROC(w, glMultiTexCoord4fvARB);
   }
 #endif /* GL_ARB_multitexture */
 
@@ -926,26 +929,26 @@ glglue_resolve_symbols(cc_glglue * w)
 
 #ifdef GL_VERSION_1_3
   if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
-    w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(glCompressedTexImage1D);
-    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2D);
-    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3D);
-    w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(glCompressedTexSubImage1D);
-    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2D);
-    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3D);
-    w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(glGetCompressedTexImage);
+    w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(w, glCompressedTexImage1D);
+    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(w, glCompressedTexImage2D);
+    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(w, glCompressedTexImage3D);
+    w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(w, glCompressedTexSubImage1D);
+    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(w, glCompressedTexSubImage2D);
+    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(w, glCompressedTexSubImage3D);
+    w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(w, glGetCompressedTexImage);
   }
 #endif /* GL_VERSION_1_3 */
 
 #ifdef GL_ARB_texture_compression
   if ((w->glCompressedTexImage1D == NULL) &&
       cc_glglue_glext_supported(w, "GL_ARB_texture_compression")) {
-    w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(glCompressedTexImage1DARB);
-    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2DARB);
-    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3DARB);
-    w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(glCompressedTexSubImage1DARB);
-    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2DARB);
-    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3DARB);
-    w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(glGetCompressedTexImageARB);
+    w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(w, glCompressedTexImage1DARB);
+    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(w, glCompressedTexImage2DARB);
+    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(w, glCompressedTexImage3DARB);
+    w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(w, glCompressedTexSubImage1DARB);
+    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(w, glCompressedTexSubImage2DARB);
+    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(w, glCompressedTexSubImage3DARB);
+    w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(w, glGetCompressedTexImageARB);
   }
 #endif /* GL_ARB_texture_compression */
 
@@ -958,38 +961,38 @@ glglue_resolve_symbols(cc_glglue * w)
 #if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
   if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
       cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
-    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTable);
-    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(glColorSubTable);
-    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTable);
-    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameteriv);
-    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfv);
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(w, glColorTable);
+    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(w, glColorSubTable);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(w, glGetColorTable);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(w, glGetColorTableParameteriv);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(w, glGetColorTableParameterfv);
   }
 #endif /* GL_VERSION_1_2 && GL_ARB_imaging */
 
 #if defined(GL_EXT_color_table)
   if ((w->glColorTable == NULL) &&
       cc_glglue_glext_supported(w, "GL_EXT_color_table")) {
-    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableEXT);
-    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableEXT);
-    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivEXT);
-    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvEXT);
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(w, glColorTableEXT);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(w, glGetColorTableEXT);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(w, glGetColorTableParameterivEXT);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(w, glGetColorTableParameterfvEXT);
   }
 #endif /* GL_EXT_color_table */
 
 #if defined(GL_SGI_color_table)
   if ((w->glColorTable == NULL) &&
       cc_glglue_glext_supported(w, "GL_SGI_color_table")) {
-    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableSGI);
-    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableSGI);
-    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivSGI);
-    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvSGI);
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(w, glColorTableSGI);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(w, glGetColorTableSGI);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(w, glGetColorTableParameterivSGI);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(w, glGetColorTableParameterfvSGI);
   }
 #endif /* GL_SGI_color_table */
 
 #if defined(GL_EXT_color_subtable)
   if ((w->glColorSubTable == NULL) &&
       cc_glglue_glext_supported(w, "GL_EXT_color_subtable")) {
-    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(glColorSubTableEXT);
+    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(w, glColorSubTableEXT);
   }
 #endif /* GL_EXT_color_subtable */
 
@@ -1007,11 +1010,11 @@ glglue_resolve_symbols(cc_glglue * w)
      though. */
   if ((w->glColorTable == NULL) &&
       cc_glglue_glext_supported(w, "GL_EXT_paletted_texture")) {
-    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableEXT);
-    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(glColorSubTableEXT);
-    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableEXT);
-    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivEXT);
-    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvEXT);
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(w, glColorTableEXT);
+    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(w, glColorSubTableEXT);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(w, glGetColorTableEXT);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(w, glGetColorTableParameterivEXT);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(w, glGetColorTableParameterfvEXT);
   }
 #endif /* GL_EXT_paletted_texture */
 
@@ -1056,10 +1059,10 @@ glglue_resolve_symbols(cc_glglue * w)
      though. */
   if ((w->glColorTable == NULL) &&
       cc_glglue_glext_supported(w, "GL_SGI_texture_color_table")) {
-    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableSGI);
-    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableSGI);
-    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivSGI);
-    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvSGI);
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(w, glColorTableSGI);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(w, glGetColorTableSGI);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(w, glGetColorTableParameterivSGI);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(w, glGetColorTableParameterfvSGI);
   }
 #endif /* GL_SGI_texture_color_table */
 #endif /* disabled */
@@ -1070,7 +1073,7 @@ glglue_resolve_symbols(cc_glglue * w)
 
 #if defined(GL_VERSION_1_4)
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
-    w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
+    w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(w, glBlendEquation);
   }
 #endif /* GL_VERSION_1_4 */
 
@@ -1078,38 +1081,38 @@ glglue_resolve_symbols(cc_glglue * w)
 #if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
     if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
         cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
-      w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
+      w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(w, glBlendEquation);
     }
 #endif /* GL_VERSION_1_2 && GL_ARB_imaging */
   }
 
 #ifdef GL_EXT_blend_minmax
   if (cc_glglue_glext_supported(w, "GL_EXT_blend_minmax")) {
-    w->glBlendEquationEXT = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquationEXT);
+    w->glBlendEquationEXT = (COIN_PFNGLBLENDEQUATIONPROC)PROC(w, glBlendEquationEXT);
   }
 #endif /* GL_EXT_blend_minmax */
 
   w->glBlendFuncSeparate = NULL;
 #if defined(GL_VERSION_1_4)
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
-    w->glBlendFuncSeparate = (COIN_PFNGLBLENDFUNCSEPARATEPROC)PROC(glBlendFuncSeparate);
+    w->glBlendFuncSeparate = (COIN_PFNGLBLENDFUNCSEPARATEPROC)PROC(w, glBlendFuncSeparate);
   }
 #endif /* GL_VERSION_1_4 */
 
   w->glVertexPointer = NULL; /* for cc_glglue_has_vertex_array() */
 #if defined(GL_VERSION_1_1)
   if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
-    w->glVertexPointer = (COIN_PFNGLVERTEXPOINTERPROC) PROC(glVertexPointer);
-    w->glTexCoordPointer = (COIN_PFNGLTEXCOORDPOINTERPROC) PROC(glTexCoordPointer);
-    w->glNormalPointer = (COIN_PFNGLNORMALPOINTERPROC) PROC(glNormalPointer);
-    w->glColorPointer = (COIN_PNFGLCOLORPOINTERPROC) PROC(glColorPointer);
-    w->glIndexPointer = (COIN_PFNGLINDEXPOINTERPROC) PROC(glIndexPointer);
-    w->glEnableClientState = (COIN_PFNGLENABLECLIENTSTATEPROC) PROC(glEnableClientState);
-    w->glDisableClientState = (COIN_PFNGLDISABLECLIENTSTATEPROC) PROC(glDisableClientState);
-    w->glInterleavedArrays = (COIN_PFNGLINTERLEAVEDARRAYSPROC) PROC(glInterleavedArrays);
-    w->glDrawArrays = (COIN_PFNGLDRAWARRAYSPROC) PROC(glDrawArrays);
-    w->glDrawElements = (COIN_PFNGLDRAWELEMENTSPROC) PROC(glDrawElements);
-    w->glArrayElement = (COIN_PFNGLARRAYELEMENTPROC) PROC(glArrayElement);
+    w->glVertexPointer = (COIN_PFNGLVERTEXPOINTERPROC) PROC(w, glVertexPointer);
+    w->glTexCoordPointer = (COIN_PFNGLTEXCOORDPOINTERPROC) PROC(w, glTexCoordPointer);
+    w->glNormalPointer = (COIN_PFNGLNORMALPOINTERPROC) PROC(w, glNormalPointer);
+    w->glColorPointer = (COIN_PNFGLCOLORPOINTERPROC) PROC(w, glColorPointer);
+    w->glIndexPointer = (COIN_PFNGLINDEXPOINTERPROC) PROC(w, glIndexPointer);
+    w->glEnableClientState = (COIN_PFNGLENABLECLIENTSTATEPROC) PROC(w, glEnableClientState);
+    w->glDisableClientState = (COIN_PFNGLDISABLECLIENTSTATEPROC) PROC(w, glDisableClientState);
+    w->glInterleavedArrays = (COIN_PFNGLINTERLEAVEDARRAYSPROC) PROC(w, glInterleavedArrays);
+    w->glDrawArrays = (COIN_PFNGLDRAWARRAYSPROC) PROC(w, glDrawArrays);
+    w->glDrawElements = (COIN_PFNGLDRAWELEMENTSPROC) PROC(w, glDrawElements);
+    w->glArrayElement = (COIN_PFNGLARRAYELEMENTPROC) PROC(w, glArrayElement);
   }
   if (w->glVertexPointer) {
     if (!w->glTexCoordPointer ||
@@ -1136,7 +1139,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #if defined(GL_VERSION_1_2)
   w->glDrawRangeElements = NULL;
   if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0))
-    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(glDrawRangeElements);
+    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(w, glDrawRangeElements);
 #endif /* GL_VERSION_1_2 */
 
 
@@ -1145,47 +1148,47 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glMultiDrawElements = NULL;
 #if defined(GL_VERSION_1_4)
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
-    w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(glMultiDrawArrays);
-    w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(glMultiDrawElements);
+    w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(w, glMultiDrawArrays);
+    w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(w, glMultiDrawElements);
   }
 #endif /* GL_VERSION_1_4 */
 #if defined(GL_EXT_multi_draw_arrays)
   if ((w->glMultiDrawArrays == NULL) && cc_glglue_glext_supported(w, "GL_EXT_multi_draw_arrays")) {
-    w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(glMultiDrawArraysEXT);
-    w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(glMultiDrawElementsEXT);
+    w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(w, glMultiDrawArraysEXT);
+    w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(w, glMultiDrawElementsEXT);
   }
 #endif /* GL_EXT_multi_draw_arrays */
 
   w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_objects() works  */
 #if defined(GL_VERSION_1_5)
   if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
-    w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBuffer);
-    w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffers);
-    w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffers);
-    w->glIsBuffer = (COIN_PFNGLISBUFFERPROC) PROC(glIsBuffer);
-    w->glBufferData = (COIN_PFNGLBUFFERDATAPROC) PROC(glBufferData);
-    w->glBufferSubData = (COIN_PFNGLBUFFERSUBDATAPROC) PROC(glBufferSubData);
-    w->glGetBufferSubData = (COIN_PFNGLGETBUFFERSUBDATAPROC) PROC(glGetBufferSubData);
-    w->glMapBuffer = (COIN_PNFGLMAPBUFFERPROC) PROC(glMapBuffer);
-    w->glUnmapBuffer = (COIN_PFNGLUNMAPBUFFERPROC) PROC(glUnmapBuffer);
-    w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameteriv);
-    w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointerv);
+    w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(w, glBindBuffer);
+    w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(w, glDeleteBuffers);
+    w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(w, glGenBuffers);
+    w->glIsBuffer = (COIN_PFNGLISBUFFERPROC) PROC(w, glIsBuffer);
+    w->glBufferData = (COIN_PFNGLBUFFERDATAPROC) PROC(w, glBufferData);
+    w->glBufferSubData = (COIN_PFNGLBUFFERSUBDATAPROC) PROC(w, glBufferSubData);
+    w->glGetBufferSubData = (COIN_PFNGLGETBUFFERSUBDATAPROC) PROC(w, glGetBufferSubData);
+    w->glMapBuffer = (COIN_PNFGLMAPBUFFERPROC) PROC(w, glMapBuffer);
+    w->glUnmapBuffer = (COIN_PFNGLUNMAPBUFFERPROC) PROC(w, glUnmapBuffer);
+    w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(w, glGetBufferParameteriv);
+    w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(w, glGetBufferPointerv);
   }
 #endif /* GL_VERSION_1_5 */
 
 #if defined(GL_ARB_vertex_buffer_object)
   if ((w->glBindBuffer == NULL) && cc_glglue_glext_supported(w, "GL_ARB_vertex_buffer_object")) {
-    w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBufferARB);
-    w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffersARB);
-    w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffersARB);
-    w->glIsBuffer = (COIN_PFNGLISBUFFERPROC) PROC(glIsBufferARB);
-    w->glBufferData = (COIN_PFNGLBUFFERDATAPROC) PROC(glBufferDataARB);
-    w->glBufferSubData = (COIN_PFNGLBUFFERSUBDATAPROC) PROC(glBufferSubDataARB);
-    w->glGetBufferSubData = (COIN_PFNGLGETBUFFERSUBDATAPROC) PROC(glGetBufferSubDataARB);
-    w->glMapBuffer = (COIN_PNFGLMAPBUFFERPROC) PROC(glMapBufferARB);
-    w->glUnmapBuffer = (COIN_PFNGLUNMAPBUFFERPROC) PROC(glUnmapBufferARB);
-    w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameterivARB);
-    w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointervARB);
+    w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(w, glBindBufferARB);
+    w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(w, glDeleteBuffersARB);
+    w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(w, glGenBuffersARB);
+    w->glIsBuffer = (COIN_PFNGLISBUFFERPROC) PROC(w, glIsBufferARB);
+    w->glBufferData = (COIN_PFNGLBUFFERDATAPROC) PROC(w, glBufferDataARB);
+    w->glBufferSubData = (COIN_PFNGLBUFFERSUBDATAPROC) PROC(w, glBufferSubDataARB);
+    w->glGetBufferSubData = (COIN_PFNGLGETBUFFERSUBDATAPROC) PROC(w, glGetBufferSubDataARB);
+    w->glMapBuffer = (COIN_PNFGLMAPBUFFERPROC) PROC(w, glMapBufferARB);
+    w->glUnmapBuffer = (COIN_PFNGLUNMAPBUFFERPROC) PROC(w, glUnmapBufferARB);
+    w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(w, glGetBufferParameterivARB);
+    w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(w, glGetBufferPointervARB);
   }
 
 #if defined(HAVE_GLX)
@@ -1285,7 +1288,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glext_supported(w, "GL_NV_register_combiners")) {
 
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
-   w->_func_ = (_type_)PROC(_func_); \
+   w->_func_ = (_type_)PROC(w, _func_); \
    do { \
      if (!w->_func_) { \
        w->has_nv_register_combiners = FALSE; \
@@ -1367,7 +1370,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glext_supported(w, "GL_ARB_fragment_program")) {
 
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
-   w->_func_ = (_type_)PROC(_func_); \
+   w->_func_ = (_type_)PROC(w, _func_); \
    do { \
      if (!w->_func_) { \
        w->has_arb_fragment_program = FALSE; \
@@ -1478,7 +1481,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glext_supported(w, "GL_ARB_vertex_program")) {
 
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
-   w->_func_ = (_type_)PROC(_func_); \
+   w->_func_ = (_type_)PROC(w, _func_); \
    do { \
      if (!w->_func_) { \
        w->has_arb_vertex_program = FALSE; \
@@ -1572,7 +1575,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glext_supported(w, "GL_ARB_vertex_shader")) {
 
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
-   w->_func_ = (_type_)PROC(_func_); \
+   w->_func_ = (_type_)PROC(w, _func_); \
    do { \
      if (!w->_func_) { \
        w->has_arb_vertex_shader = FALSE; \
@@ -1638,7 +1641,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glext_supported(w, "GL_ARB_shader_objects")) {
 
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
-   w->_func_ = (_type_)PROC(_func_); \
+   w->_func_ = (_type_)PROC(w, _func_); \
    do { \
      if (!w->_func_) { \
        w->has_arb_shader_objects = FALSE; \
@@ -1700,27 +1703,27 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glGenQueries = NULL; /* so that cc_glglue_has_occlusion_query() works  */
 #if defined(GL_VERSION_1_5)
   if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
-    w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(glGenQueries);
-    w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(glDeleteQueries);
-    w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(glIsQuery);
-    w->glBeginQuery = (COIN_PFNGLBEGINQUERYPROC)PROC(glBeginQuery);
-    w->glEndQuery = (COIN_PFNGLENDQUERYPROC)PROC(glEndQuery);
-    w->glGetQueryiv = (COIN_PFNGLGETQUERYIVPROC)PROC(glGetQueryiv);
-    w->glGetQueryObjectiv = (COIN_PFNGLGETQUERYOBJECTIVPROC)PROC(glGetQueryObjectiv);
-    w->glGetQueryObjectuiv = (COIN_PFNGLGETQUERYOBJECTUIVPROC)PROC(glGetQueryObjectuiv);
+    w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(w, glGenQueries);
+    w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(w, glDeleteQueries);
+    w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(w, glIsQuery);
+    w->glBeginQuery = (COIN_PFNGLBEGINQUERYPROC)PROC(w, glBeginQuery);
+    w->glEndQuery = (COIN_PFNGLENDQUERYPROC)PROC(w, glEndQuery);
+    w->glGetQueryiv = (COIN_PFNGLGETQUERYIVPROC)PROC(w, glGetQueryiv);
+    w->glGetQueryObjectiv = (COIN_PFNGLGETQUERYOBJECTIVPROC)PROC(w, glGetQueryObjectiv);
+    w->glGetQueryObjectuiv = (COIN_PFNGLGETQUERYOBJECTUIVPROC)PROC(w, glGetQueryObjectuiv);
   }
 #endif /* GL_VERSION_1_5 */
 
 #if defined(GL_ARB_occlusion_query)
   if ((w->glGenQueries == NULL) && cc_glglue_glext_supported(w, "GL_ARB_occlusion_query")) {
-    w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(glGenQueriesARB);
-    w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(glDeleteQueriesARB);
-    w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(glIsQueryARB);
-    w->glBeginQuery = (COIN_PFNGLBEGINQUERYPROC)PROC(glBeginQueryARB);
-    w->glEndQuery = (COIN_PFNGLENDQUERYPROC)PROC(glEndQueryARB);
-    w->glGetQueryiv = (COIN_PFNGLGETQUERYIVPROC)PROC(glGetQueryivARB);
-    w->glGetQueryObjectiv = (COIN_PFNGLGETQUERYOBJECTIVPROC)PROC(glGetQueryObjectivARB);
-    w->glGetQueryObjectuiv = (COIN_PFNGLGETQUERYOBJECTUIVPROC)PROC(glGetQueryObjectuivARB);
+    w->glGenQueries = (COIN_PFNGLGENQUERIESPROC)PROC(w, glGenQueriesARB);
+    w->glDeleteQueries = (COIN_PFNGLDELETEQUERIESPROC)PROC(w, glDeleteQueriesARB);
+    w->glIsQuery = (COIN_PFNGLISQUERYPROC)PROC(w, glIsQueryARB);
+    w->glBeginQuery = (COIN_PFNGLBEGINQUERYPROC)PROC(w, glBeginQueryARB);
+    w->glEndQuery = (COIN_PFNGLENDQUERYPROC)PROC(w, glEndQueryARB);
+    w->glGetQueryiv = (COIN_PFNGLGETQUERYIVPROC)PROC(w, glGetQueryivARB);
+    w->glGetQueryObjectiv = (COIN_PFNGLGETQUERYOBJECTIVPROC)PROC(w, glGetQueryObjectivARB);
+    w->glGetQueryObjectuiv = (COIN_PFNGLGETQUERYOBJECTUIVPROC)PROC(w, glGetQueryObjectuivARB);
   }
 #endif /* GL_ARB_occlusion_query */
 
@@ -1744,15 +1747,15 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glVertexArrayRangeNV = NULL;
 #if defined(GL_NV_vertex_array_range) && (defined(HAVE_GLX) || defined(HAVE_WGL))
   if (cc_glglue_glext_supported(w, "GL_NV_vertex_array_range")) {
-    w->glVertexArrayRangeNV = (COIN_PFNGLVERTEXARRAYRANGENVPROC) PROC(glVertexArrayRangeNV);
-    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);
+    w->glVertexArrayRangeNV = (COIN_PFNGLVERTEXARRAYRANGENVPROC) PROC(w, glVertexArrayRangeNV);
+    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(w, glFlushVertexArrayRangeNV);
 #ifdef HAVE_GLX
-    w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(glXAllocateMemoryNV);
-    w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(glXFreeMemoryNV);
+    w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(w, glXAllocateMemoryNV);
+    w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(w, glXFreeMemoryNV);
 #endif /* HAVE_GLX */
 #ifdef HAVE_WGL
-    w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(wglAllocateMemoryNV);
-    w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(wglFreeMemoryNV);
+    w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(w, wglAllocateMemoryNV);
+    w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(w, wglFreeMemoryNV);
 #endif /* HAVE_WGL */
     if (w->glVertexArrayRangeNV) {
       if (!w->glFlushVertexArrayRangeNV ||
@@ -1793,24 +1796,24 @@ glglue_resolve_symbols(cc_glglue * w)
 
 
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
-    w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress("glIsRenderbufferEXT");
-    w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress("glBindRenderbufferEXT");
-    w->glDeleteRenderbuffers = (COIN_PFNGLDELETERENDERBUFFERSPROC)cc_glglue_getprocaddress("glDeleteRenderbuffersEXT");
-    w->glGenRenderbuffers = (COIN_PFNGLGENRENDERBUFFERSPROC)cc_glglue_getprocaddress("glGenRenderbuffersEXT");
-    w->glRenderbufferStorage = (COIN_PFNGLRENDERBUFFERSTORAGEPROC)cc_glglue_getprocaddress("glRenderbufferStorageEXT");
-    w->glGetRenderbufferParameteriv = (COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress("glGetRenderbufferParameterivEXT");
-    w->glIsFramebuffer = (COIN_PFNGLISFRAMEBUFFERPROC)cc_glglue_getprocaddress("glIsFramebufferEXT");
-    w->glBindFramebuffer = (COIN_PFNGLBINDFRAMEBUFFERPROC)cc_glglue_getprocaddress("glBindFramebufferEXT");
-    w->glDeleteFramebuffers = (COIN_PFNGLDELETEFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glDeleteFramebuffersEXT");
-    w->glGenFramebuffers = (COIN_PFNGLGENFRAMEBUFFERSPROC)cc_glglue_getprocaddress("glGenFramebuffersEXT");
-    w->glCheckFramebufferStatus = (COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC)cc_glglue_getprocaddress("glCheckFramebufferStatusEXT");
-    w->glFramebufferTexture1D = (COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC)cc_glglue_getprocaddress("glFramebufferTexture1DEXT");
-    w->glFramebufferTexture2D = (COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC)cc_glglue_getprocaddress("glFramebufferTexture2DEXT");
-    w->glFramebufferTexture3D = (COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC)cc_glglue_getprocaddress("glFramebufferTexture3DEXT");
-    w->glFramebufferRenderbuffer = (COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)cc_glglue_getprocaddress("glFramebufferRenderbufferEXT");
+    w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glIsRenderbufferEXT");
+    w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glBindRenderbufferEXT");
+    w->glDeleteRenderbuffers = (COIN_PFNGLDELETERENDERBUFFERSPROC)cc_glglue_getprocaddress(w, "glDeleteRenderbuffersEXT");
+    w->glGenRenderbuffers = (COIN_PFNGLGENRENDERBUFFERSPROC)cc_glglue_getprocaddress(w, "glGenRenderbuffersEXT");
+    w->glRenderbufferStorage = (COIN_PFNGLRENDERBUFFERSTORAGEPROC)cc_glglue_getprocaddress(w, "glRenderbufferStorageEXT");
+    w->glGetRenderbufferParameteriv = (COIN_PFNGLGETRENDERBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress(w, "glGetRenderbufferParameterivEXT");
+    w->glIsFramebuffer = (COIN_PFNGLISFRAMEBUFFERPROC)cc_glglue_getprocaddress(w, "glIsFramebufferEXT");
+    w->glBindFramebuffer = (COIN_PFNGLBINDFRAMEBUFFERPROC)cc_glglue_getprocaddress(w, "glBindFramebufferEXT");
+    w->glDeleteFramebuffers = (COIN_PFNGLDELETEFRAMEBUFFERSPROC)cc_glglue_getprocaddress(w, "glDeleteFramebuffersEXT");
+    w->glGenFramebuffers = (COIN_PFNGLGENFRAMEBUFFERSPROC)cc_glglue_getprocaddress(w, "glGenFramebuffersEXT");
+    w->glCheckFramebufferStatus = (COIN_PFNGLCHECKFRAMEBUFFERSTATUSPROC)cc_glglue_getprocaddress(w, "glCheckFramebufferStatusEXT");
+    w->glFramebufferTexture1D = (COIN_PFNGLFRAMEBUFFERTEXTURE1DPROC)cc_glglue_getprocaddress(w, "glFramebufferTexture1DEXT");
+    w->glFramebufferTexture2D = (COIN_PFNGLFRAMEBUFFERTEXTURE2DPROC)cc_glglue_getprocaddress(w, "glFramebufferTexture2DEXT");
+    w->glFramebufferTexture3D = (COIN_PFNGLFRAMEBUFFERTEXTURE3DPROC)cc_glglue_getprocaddress(w, "glFramebufferTexture3DEXT");
+    w->glFramebufferRenderbuffer = (COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)cc_glglue_getprocaddress(w, "glFramebufferRenderbufferEXT");
     w->glGetFramebufferAttachmentParameteriv = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)
-      cc_glglue_getprocaddress("glGetFramebufferAttachmentParameterivEXT");
-    w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress("glGenerateMipmapEXT");
+      cc_glglue_getprocaddress(w, "glGetFramebufferAttachmentParameterivEXT");
+    w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress(w, "glGenerateMipmapEXT");
 
     if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers ||
         !w->glGenRenderbuffers || !w->glRenderbufferStorage || !w->glGetRenderbufferParameteriv ||
@@ -2395,6 +2398,10 @@ coin_glglue_destruct(uint32_t contextid)
       cc_glglue_glDeleteTextures(glue, 1, &glue->normalizationcubemap);
     }
     (void)cc_dict_remove(gldict, (uintptr_t)contextid);
+
+    if (glue->dl_handle) {
+      cc_dl_close(glue->dl_handle);
+    }
   }
   CC_SYNC_END(cc_glglue_instance);
 }

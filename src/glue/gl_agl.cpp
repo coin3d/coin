@@ -134,18 +134,6 @@ static COIN_AGLTEXIMAGEPBUFFER aglglue_aglTexImagePBuffer = NULL;
 struct aglglue_contextdata;
 static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
 
-/* 
- * Since AGL does not have an aglGetProcAddress() as such, this is
- * simply a wrapper around cc_dl_*. Present here for consistency with
- * WGL and GLX implementations.
- */
-void *
-aglglue_getprocaddress(const char * fname)
-{
-  cc_libhandle glhnd = cc_dl_handle_with_gl_symbols();
-  return glhnd ? cc_dl_sym(glhnd, fname) : NULL;
-}
-
 static void
 aglglue_resolve_symbols()
 {

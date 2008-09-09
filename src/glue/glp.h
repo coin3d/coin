@@ -37,6 +37,7 @@
 #include <Inventor/system/gl.h>
 #include "base/dict.h"
 #include <Inventor/C/base/string.h>
+#include <Inventor/C/glue/dl.h>
 
 /* ********************************************************************** */
 
@@ -529,6 +530,7 @@ typedef void (APIENTRY * COIN_PFNGLGETQUERYOBJECTUIVPROC)(GLuint id, GLenum pnam
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
+typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESSPROC)(const GLubyte *);
 
 
 /* Typedefs for Framebuffer objects */
@@ -575,6 +577,8 @@ struct cc_glxglue {
   const char * glxextensions;
 
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
+  COIN_PFNGLXGETPROCADDRESSPROC glXGetProcAddress;
+  SbBool tried_bind_glXGetProcAddress;
 };
 
 /* ********************************************************************** */
@@ -853,6 +857,8 @@ struct cc_glglue {
   float point_size_range[2];
   int max_texture_size;
   cc_dict * glextdict;
+
+  cc_libhandle dl_handle;
 };
 
 /* ********************************************************************** */
@@ -926,6 +932,7 @@ typedef void coin_glglue_instance_created_cb(const uint32_t contextid, void * cl
 void coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
                                                void * closure);
 
+cc_libhandle coin_glglue_dl_handle(const cc_glglue * glw);
 
 #ifdef __cplusplus
 }

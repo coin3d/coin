@@ -36,7 +36,7 @@ extern "C" {
 
 void glxglue_init(cc_glglue * w);
 
-void * glxglue_getprocaddress(const char * fname);
+void * glxglue_getprocaddress(const cc_glglue * w, const char * fname);
 int glxglue_ext_supported(const cc_glglue * w, const char * extension);
 
 void * glxglue_context_create_offscreen(unsigned int width, unsigned int height);

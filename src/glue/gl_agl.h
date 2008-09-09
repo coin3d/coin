@@ -35,7 +35,6 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-void * aglglue_getprocaddress(const char * fname);
 void * aglglue_context_create_offscreen(unsigned int width,
                                         unsigned int height);
 SbBool aglglue_context_make_current(void * ctx);
