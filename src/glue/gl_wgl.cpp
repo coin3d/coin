@@ -34,6 +34,7 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 
 #include "glue/glp.h"
 #include "glue/dlp.h"
