@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{4B6BAA5C-3F96-486F-B13E-B11FC4BF077C}"
+	ProjectGUID="{863A0AFB-10D6-4A39-B14D-82CC13B224E6}"
 	>
 	<Platforms>
 		<Platform
@@ -43,7 +43,7 @@
 				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="2"
+				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\StaticDebug/coin3.pch"
 				AssemblerListingLocation=".\StaticDebug/"
 				ObjectFile=".\StaticDebug/"

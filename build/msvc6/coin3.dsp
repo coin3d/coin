@@ -71,8 +71,8 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "_DEBUG"
 # ADD RSC /l 0x414 /d "_DEBUG"

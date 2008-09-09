@@ -23,7 +23,7 @@
 				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;YY_NO_UNISTD_H;COIN_INTERNAL"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="2"
+				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\StaticDebug/coin3.pch"
 				AssemblerListingLocation=".\StaticDebug/"
 				ObjectFile=".\StaticDebug/"
