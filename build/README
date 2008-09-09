@@ -19,7 +19,7 @@ msvc9/
 	Directory for building Coin with Visual Studio 9 (2008 Express).
 
 Xcode/
-        Directory for building Coin with Xcode (experimental).
+        Directory for building Coin with Xcode (very experimental).
 
 coin.spec.in
 
