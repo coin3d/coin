@@ -1118,18 +1118,14 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
 void
 SoRayPickActionP::calcMatrices(SoState * state)
 {
-  const double VALID_LIMIT = 1.0e-12;  // FIXME: why not FLT_EPSILON? 20010916 mortene.
   const SbMatrix & tmp = SoModelMatrixElement::get(state); 
   this->obj2world = SbDPMatrix(tmp);
   if (this->isFlagSet(EXTRA_MATRIX)) {
     this->obj2world.multLeft(this->extramatrix);
   }
-  this->objectspacevalid = FALSE;
-  double det = this->obj2world.det4();
-  if (SbAbs(det) > VALID_LIMIT) {
-    this->world2obj = this->obj2world.inverse();
-    this->objectspacevalid = TRUE;
-  }
+  this->world2obj = this->obj2world.inverse();
+  // FIXME: find a safe way to test if we were able to properly calculate the inverse matrix
+  this->objectspacevalid = TRUE;
 }
 
 void
