@@ -1,27 +1,27 @@
-New in Coin v3.0.0-RC1 (2008-08-18):
+New in Coin v3.0.0 (2008-09-11):
 * new:
   - Scene graph performance profiling subsystem
   - SoDepthBuffer node for constrolling Z-buffer settings
   - Shaders: SoVertexAttribute and SoVertexAttributeBinding nodes
   - Shadows: SoShadowSpotLight node
-  - SoHeightMapToNormalMap engine
+  - SoHeightMapToNormalMap texture conversion engine
   - SoPickStyle: new styles SHAPE_ON_TOP, BOUNDING_BOX_ON_TOP, SHAPE_FRONTFACES
   - New XML-based GL driver feature database for tagging buggy/slow features
     in specific drivers
   - Statechart XML engine (2007-draft based), used to implement examiner viewer
     mode at the Coin level
   - Foreign file format support through SoForeignFileKit w. example SoSTLFileKit
-  - Boost.Test-based testsuite
   - Draggers: minTranslation/maxTranslation fields in SoTranslate1Dragger and
     SoTranslate2Dragger
   - OS X: Coin has become more bundle-aware and will loads external libs bundled
     with Inventor.framework or the application bundle (better encapsulation)
   - SoLineHighlightRenderAction and SoBoxHighlightRenderAction now only
-    supports one SoSelection node
+    supports one SoSelection node (performance and OIV-compatibility)
   - SoBumpMap will now detect height maps stored as rgb(a)
   - SoRayPickAction picking precision improvements
-  - Support SoFieldContainer userdata when doing a deep node copy
+  - Include SoFieldContainer userdata when doing a deep node copy
   - Anti-aliasing is now done around the center of each pixel
+  - Boost.Test-based testsuite
 * bugfixes:
   - ATi driver workarounds (VBO rendering related)
   - Fixed SoToVRML2Action Transform handling bug
@@ -34,11 +34,13 @@ New in Coin v3.0.0-RC1 (2008-08-18):
   - SoVRMLAppearance now checks material on the state
   - SoComposeRotation. Default axis is now (0,0,1)
   - Various SoShadowGroup fixes
-  - 3ds loader will not normalize the model anymore
+  - 3ds loader will no longer normalize the model (still not enabled by default)
   - Workaround for nVidia line pattern bug
   - Fixes for SoVRMLBillboard
+  - SoFile-SoSearchAction bugfix
   - Correctly load bold/italic version of fonts with a single ttf file
   - Bugfix for anti aliasing with numpasses > 16
+  - New Visual Studio 9 build files and other VS-related fixes
     ... and more
 
 New in Coin v2.5.0 (2007-10-01):

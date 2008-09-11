@@ -49,6 +49,19 @@ are building.
     cd ..
     rm -rf coin-build Coin-3.0.0
 
+Running "make install" directly instead of "make" first and then
+"make install" is not recomended, since this will lead to partial
+installations in the case where the build breaks for some reason.  Also, if
+you want to launch all the build-commands on one command-line, don't separate
+commands with ; but separate them with && so the failure of one will stop the
+full chain of commands.  Like this:
+
+  .../Coin-3.0.0/configure && make && make install
+
+and not like this
+
+  .../Coin-3.0.0/configure; make; make install
+
 
 The Build Environment
 =====================

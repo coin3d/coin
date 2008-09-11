@@ -7,28 +7,35 @@ Microsoft Visual Studio
 
 The source code archive for Coin comes with Microsoft Visual Studio files
 for building and installing the Coin library.  Visual Studio 6,
-Visual Studio 7/7.1, and Visual Studio 8 are supported.
+Visual Studio 7/7.1, Visual Studio 8, and Visual Studio 9 are supported.
+For later versions in the future, you can probably just "upgrade" one of
+these to get a working set for that version as well.  Visual Studio 6 will
+not be supported (at the C++ language level) for very much longer.
 
-At the last stage of the build, the Coin development kit is automatically
-installed into the directory the COINDIR environment variable points to.
-Set it to "C:\Coin3D" or wherever you want the Coin SDK to reside by using
+A separate target "coin3_install" is provided for copying the built Coin
+library into the directory provided in the COINDIR environment variable.
+Set it to e.g. "C:\Coin3D" or wherever you want the Coin SDK to reside by
+using
 
   Control Panel => System => Advanced => Environment Variables
 
-and make sure you create that directory before starting the build - if the
-variable isn't set or the directory doesn't exist, the installation will
-break and you won't get a functional SDK.  Using the source hierarchy as
-the SDK is not recommended - let Coin be installed, and use COINDIR from
-your other projects that use Coin.
+and make sure you create that directory before starting the build of that
+target - if the variable isn't set or the directory doesn't exist, the
+installation will break and you won't get a functional SDK.  Using the
+source hierarchy as the SDK is not recommended - let Coin be installed, and
+use COINDIR from your other projects that use Coin.
 
 For Microsoft Visual Studio 6, you will find the complete build file setup
 in the directory "build/msvc6/".  Select the dsw file.
 
-For Microsoft Visual Studio 7, you will find the complete build file setup
+For Microsoft Visual Studio 7/7.1, you will find the complete build file setup
 in the directory build/msvc7/.  Select the sln file.
 
 For Microsoft Visual Studio 8, you will find the complete build file setup
 in the directory build/msvc8/.  Select the sln file.
+
+For Microsoft Visual Studio 9, you will find the complete build file setup
+in the directory build/msvc9/.  Select the sln file.
 
 
 Other IDEs
@@ -39,7 +46,7 @@ Studio at this point.
 
 
 ============================================================================
-==                    OLD OBSOLETED INFORMATION BELOW                     ==
+==              OLD INFORMATION ON CYGWIN-BASED BUILDS BELOW              ==
 ============================================================================
 
 This below text is information about building Coin on MS Windows platforms
@@ -443,7 +450,7 @@ Section 07 -- Library Dependencies
         
     depends <app.exe>
   
-  MSVC 7:
+  MSVC 7 and later:
 
     dumpbin /dependents <app.exe>
 

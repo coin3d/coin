@@ -12,7 +12,7 @@ Coin 3.0.0 RC1
 
 New scene graph traversal profiling subsystem.
 
-New node SoVertexAttribute whih provides vertex attribute support for
+New node SoVertexAttribute which provides vertex attribute support for
 shaders.
 
 New SoDepthBuffer node to control depth buffer settings.
@@ -23,10 +23,9 @@ New SoHeightMapToNormalMap engine to convert depthmap images to three-
 component normal maps.
 
 SoPickStyle has three new style settings, SHAPE_ON_TOP,
-BOUNDING_BOX_ON_TOP, and SHAPE_FRONTFACES.  They are documented in the
-SoPickStyle node documentation.
+BOUNDING_BOX_ON_TOP, and SHAPE_FRONTFACES.
 
-Integrated XML parser.
+Integrated XML parser used for various purposes.
 
 GL feature control through a new GLDriverDatabase subsystem which is
 configurable through XML files.

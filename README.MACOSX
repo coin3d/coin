@@ -6,10 +6,12 @@ http://www.coin3d.org/mac/.
 Building Coin
 =============
 
-Building Coin should be straightforward: ./configure && make && sudo
-make install. See the file INSTALL for details. If any of these stages
-fails, it's a bug in Coin. Please let us know about this, and we will
-be glad to fix it.
+Building Coin should be straightforward:
+
+  ./configure && make && sudo make install
+
+See the file INSTALL for details. If any of these stages fails, it's a bug
+in Coin. Please let us know about this, and we will be glad to fix it.
 
 Please make sure that you have the latest version of Apple's developer
 tools installed before building Coin.
@@ -18,7 +20,8 @@ tools installed before building Coin.
 Binary SDKs
 ===========
 
-Precompiled binaries of the Coin framework can be found on our ftp server[0].
+Precompiled binaries of the Coin framework can be found on our ftp server[0]
+or through the www.coin3d.org webserver.
 
 
 Using Coin
@@ -91,6 +94,12 @@ libraries.
 
 Please consult the Coin/Mac FAQ [2] for more information about issues
 related to Mac OS X versions, ABI compatibility, etc.
+
+
+Mac OS 10.4 ("Tiger") and 10.5 ("Leopard")
+------------------------------------------
+
+No particuar notes for these at this time.
 
 
 The Inventor framework
