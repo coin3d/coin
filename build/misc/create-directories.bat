@@ -29,7 +29,7 @@ pushd data
 
 if exist draggerDefaults\*.* goto draggerdefaultsexists
 echo mkdir %COINDIR%\data\draggerDefaults
-mkdir draggerDefalts
+mkdir draggerDefaults
 :draggerdefaultsexists
 
 if exist shaders\*.* goto shadersexists
