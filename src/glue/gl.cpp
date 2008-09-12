@@ -355,6 +355,63 @@ glglue_resolve_envvar(const char * txt)
   return val ? atoi(val) : 0;
 }
 
+/* Returns a flag which indicates whether or not to allow the use of
+   OpenGL 1.1+ features and extensions.
+
+   We default to *not* allowing this if rendering is indirect, as
+   we've seen major problems with at least NVidia GLX when using
+   OpenGL 1.1+ features. It can be forced on by an environment
+   variable, though.
+
+   (A better strategy *might* be to default to allow it, but to smoke
+   out and warn if we detect NVidia GLX, and in addition to provide an
+   environment variable that disables it.)
+*/
+static SbBool
+glglue_allow_newer_opengl(const cc_glglue * w)
+{
+  static SbBool fullindirect = -1;
+  static SbBool force1_0 = -1;
+  static const char * COIN_FULL_INDIRECT_RENDERING = "COIN_FULL_INDIRECT_RENDERING";
+  static const char * COIN_DONT_INFORM_INDIRECT_RENDERING = "COIN_DONT_INFORM_INDIRECT_RENDERING";
+
+  if (fullindirect == -1) {
+    fullindirect = (glglue_resolve_envvar(COIN_FULL_INDIRECT_RENDERING) > 0);
+  }
+
+  if (force1_0 == -1) {
+    force1_0 = (glglue_resolve_envvar("COIN_FORCE_GL1_0_ONLY") > 0);
+  }
+
+  if (force1_0) return FALSE;
+
+  if (!w->glx.isdirect && !fullindirect) {
+    /* We give out a warning, once, when the full OpenGL feature set is not
+       used, in case the end user uses an application with a remote display,
+       and that was not expected by the application programmer. */
+    static int inform = -1;
+    if (inform == -1) { inform = glglue_resolve_envvar(COIN_DONT_INFORM_INDIRECT_RENDERING); }
+    if (inform == 0) {
+      cc_debugerror_postinfo("glglue_allow_newer_opengl",
+                             "\n\nFeatures of OpenGL version > 1.0 has been\n"
+                             "disabled, due to the use of a remote display.\n\n"
+                             "This is so because many common OpenGL drivers\n"
+                             "have problems in this regard.\n\n"
+                             "To force full OpenGL use, set the environment\n"
+                             "variable %s=1 and re-run the application.\n\n"
+                             "If you don't want this message displayed again,\n"
+                             "set the environment variable %s=1.\n",
+                             COIN_FULL_INDIRECT_RENDERING,
+                             COIN_DONT_INFORM_INDIRECT_RENDERING);
+      inform = 1;
+    }
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+
 /* Returns whether or not COIN_GLGLUE_SILENCE_DRIVER_WARNINGS is set
    to a value > 0. If so, all known driver bugs will just be silently
    accepted and attempted worked around. */
@@ -617,9 +674,16 @@ cc_glglue_glversion(const cc_glglue * w,
                     unsigned int * minor,
                     unsigned int * release)
 {
-  *major = w->version.major;
-  *minor = w->version.minor;
-  *release = w->version.release;
+  if (!glglue_allow_newer_opengl(w)) {
+    *major = 1;
+    *minor = 0;
+    *release = 0;
+  }
+  else {
+    *major = w->version.major;
+    *minor = w->version.minor;
+    *release = w->version.release;
+  }
 }
 
 
@@ -629,11 +693,14 @@ cc_glglue_glversion_matches_at_least(const cc_glglue * w,
                                      unsigned int minor,
                                      unsigned int revision)
 {
-  if (w->version.major < major) return FALSE;
-  else if (w->version.major > major) return TRUE;
-  if (w->version.minor < minor) return FALSE;
-  else if (w->version.minor > minor) return TRUE;
-  if (w->version.release < revision) return FALSE;
+  unsigned int glmajor, glminor, glrev;
+  cc_glglue_glversion(w, &glmajor, &glminor, &glrev);
+
+  if (glmajor < major) return FALSE;
+  else if (glmajor > major) return TRUE;
+  if (glminor < minor) return FALSE;
+  else if (glminor > minor) return TRUE;
+  if (glminor < revision) return FALSE;
   return TRUE;
 }
 
@@ -2412,61 +2479,6 @@ cc_glglue_isdirect(const cc_glglue * w)
   return w->glx.isdirect;
 }
 
-/* Returns a flag which indicates whether or not to allow the use of
-   OpenGL 1.1+ features and extensions.
-
-   We default to *not* allowing this if rendering is indirect, as
-   we've seen major problems with at least NVidia GLX when using
-   OpenGL 1.1+ features. It can be forced on by an environment
-   variable, though.
-
-   (A better strategy *might* be to default to allow it, but to smoke
-   out and warn if we detect NVidia GLX, and in addition to provide an
-   environment variable that disables it.)
-*/
-static SbBool
-glglue_allow_newer_opengl(const cc_glglue * w)
-{
-  static SbBool fullindirect = -1;
-  static SbBool force1_0 = -1;
-  static const char * COIN_FULL_INDIRECT_RENDERING = "COIN_FULL_INDIRECT_RENDERING";
-  static const char * COIN_DONT_INFORM_INDIRECT_RENDERING = "COIN_DONT_INFORM_INDIRECT_RENDERING";
-
-  if (fullindirect == -1) {
-    fullindirect = (glglue_resolve_envvar(COIN_FULL_INDIRECT_RENDERING) > 0);
-  }
-
-  if (force1_0 == -1) {
-    force1_0 = (glglue_resolve_envvar("COIN_FORCE_GL1_0_ONLY") > 0);
-  }
-
-  if (force1_0) return FALSE;
-
-  if (!w->glx.isdirect && !fullindirect) {
-    /* We give out a warning, once, when the full OpenGL feature set is not
-       used, in case the end user uses an application with a remote display,
-       and that was not expected by the application programmer. */
-    static int inform = -1;
-    if (inform == -1) { inform = glglue_resolve_envvar(COIN_DONT_INFORM_INDIRECT_RENDERING); }
-    if (inform == 0) {
-      cc_debugerror_postinfo("glglue_allow_newer_opengl",
-                             "\n\nFeatures of OpenGL version > 1.0 has been\n"
-                             "disabled, due to the use of a remote display.\n\n"
-                             "This is so because many common OpenGL drivers\n"
-                             "have problems in this regard.\n\n"
-                             "To force full OpenGL use, set the environment\n"
-                             "variable %s=1 and re-run the application.\n\n"
-                             "If you don't want this message displayed again,\n"
-                             "set the environment variable %s=1.\n",
-                             COIN_FULL_INDIRECT_RENDERING,
-                             COIN_DONT_INFORM_INDIRECT_RENDERING);
-      inform = 1;
-    }
-    return FALSE;
-  }
-
-  return TRUE;
-}
 
 /*!
   Whether glPolygonOffset() is availble or not: either we're on OpenGL
