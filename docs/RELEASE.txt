@@ -197,13 +197,13 @@ anything.
 
 * Tag Source Repository
 
-  $ svn copy https://svn.coin3d.org/repos/Coin-2/trunk \
-             https://svn.coin3d.org/repos/Coin-2/tags/coin-2.5.0 \
-      -m "Tagging the 2.5.0 release of the 'Coin-2' project."
+  $ svn copy https://svn.coin3d.org/repos/Coin/trunk \
+             https://svn.coin3d.org/repos/Coin/tags/coin-3.0.1 \
+      -m "Tagging the 3.0.1 release of the Coin library."
 
 
   | Listing existing tags can be done with:
-  | $ svn list https://svn.coin3d.org/repos/Coin-2/tags
+  | $ svn list https://svn.coin3d.org/repos/Coin/tags
 
 * Version Number Update
 
