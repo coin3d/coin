@@ -33,7 +33,7 @@
 
 #include "elements/SoTextureScaleQualityElement.h"
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextureScaleQualityElement);
 

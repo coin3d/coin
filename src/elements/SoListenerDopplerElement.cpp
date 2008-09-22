@@ -36,14 +36,18 @@
 */
 
 #include <Inventor/elements/SoListenerDopplerElement.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/nodes/SoNode.h>
 
 /*!
   \fn SoListenerDopplerElement::dopplerVelocity
 
   The doppler velocity of the listener.
-  It is the application programmer's responsibility to 
-  set this value. Coin does not update this value 
+  It is the application programmer's responsibility to
+  set this value. Coin does not update this value
   automatically based on changes in a listener's position.
 */
 
@@ -89,33 +93,40 @@ SoListenerDopplerElement::init(SoState * state)
   this->dopplerFactor = 0.0f;
 }
 
-/*! 
+/*!
   Sets the current listener's doppler velocity.
 */
 
 void
 SoListenerDopplerElement::setDopplerVelocity(SoState * const state,
-                                             SoNode * const node,
+                                             SoNode * const COIN_UNUSED(node),
                                              const SbVec3f & velocity)
 {
-  SoListenerDopplerElement *elem =
-    (SoListenerDopplerElement*) SoElement::getElement(state, classStackIndex);
+  SoListenerDopplerElement * elem =
+    coin_safe_cast<SoListenerDopplerElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     elem->dopplerVelocity = velocity;
   }
 }
 
-/*! 
+/*!
   Sets the current listener's doppler factor.
 */
 
 void
 SoListenerDopplerElement::setDopplerFactor(SoState * const state,
-                                             SoNode * const node,
+                                             SoNode * const COIN_UNUSED(node),
                                              float factor)
 {
-  SoListenerDopplerElement *elem =
-    (SoListenerDopplerElement*) SoElement::getElement(state, classStackIndex);
+  SoListenerDopplerElement * elem =
+    coin_safe_cast<SoListenerDopplerElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->dopplerFactor = factor;
   }
@@ -126,8 +137,11 @@ SoListenerDopplerElement::setDopplerFactor(SoState * const state,
 const SbVec3f &
 SoListenerDopplerElement::getDopplerVelocity(SoState * const state)
 {
-  const SoListenerDopplerElement *elem = (SoListenerDopplerElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoListenerDopplerElement * elem =
+    coin_assert_cast<const SoListenerDopplerElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->dopplerVelocity;
 }
 
@@ -136,8 +150,11 @@ SoListenerDopplerElement::getDopplerVelocity(SoState * const state)
 float
 SoListenerDopplerElement::getDopplerFactor(SoState * const state)
 {
-  const SoListenerDopplerElement *elem = (SoListenerDopplerElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoListenerDopplerElement * elem =
+    coin_assert_cast<const SoListenerDopplerElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->dopplerFactor;
 }
 

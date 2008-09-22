@@ -31,8 +31,8 @@
 
 #include <Inventor/elements/SoCacheElement.h>
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -47,6 +47,8 @@
 #endif // COIN_THREADSAFE
 
 #include "tidbitsp.h"
+#include "SbBasicP.h"
+#include "coindefs.h"
 
 // *************************************************************************
 
@@ -117,7 +119,12 @@ SoCacheElement::push(SoState * state)
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-  SoCacheElement * prev = (SoCacheElement*) prevTopElement;
+  SoCacheElement * prev =
+    const_cast<SoCacheElement *>
+    ( coin_assert_cast<const SoCacheElement *>(
+					       prevTopElement
+					      )
+     );
   if (prev->cache) {
     prev->cache->unref();
     prev->cache = NULL;
@@ -133,9 +140,11 @@ SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 void
 SoCacheElement::set(SoState * const state, SoCache * const cache)
 {
-  SoCacheElement * elem = (SoCacheElement*)
-    SoElement::getElement(state, classStackIndex);
-  
+  SoCacheElement * elem = coin_assert_cast<SoCacheElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     if (elem->cache) elem->cache->unref();
     elem->cache = cache;
@@ -163,11 +172,13 @@ SoCacheElement::getCache(void) const
 SbBool
 SoCacheElement::anyOpen(SoState * const state)
 {
-  SoCacheElement * elem = (SoCacheElement*)
-    state->getElementNoPush(classStackIndex);
+  const SoCacheElement * elem = coin_assert_cast<const SoCacheElement *>
+     (
+      state->getElementNoPush(classStackIndex)
+      );
   while (elem) {
     if (elem->cache) return TRUE;
-    elem = (SoCacheElement*) elem->getNextInStack();
+    elem = coin_safe_cast<const SoCacheElement*>(elem->getNextInStack());
   }
   return FALSE;
 }
@@ -190,12 +201,15 @@ SoCacheElement::invalidate(SoState * const state)
   SoCacheElement::invalidated = TRUE;
 #endif // ! COIN_THREADSAFE
 
-  SoCacheElement * elem = (SoCacheElement*)
-    state->getElementNoPush(classStackIndex);
+  const SoCacheElement * elem =
+    coin_assert_cast<const SoCacheElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
 
   while (elem && elem->cache) {
     elem->cache->invalidate();
-    elem = (SoCacheElement*) elem->getNextInStack();
+    elem = coin_safe_cast<const SoCacheElement *>(elem->getNextInStack());
   }
 }
 
@@ -204,7 +218,7 @@ SoCacheElement::invalidate(SoState * const state)
   cache them in the cache.
 */
 SbBool
-SoCacheElement::matches(const SoElement * element) const
+SoCacheElement::matches(const SoElement * COIN_UNUSED(element)) const
 {
   assert(FALSE && "this method should not be called for this element");
   return FALSE;
@@ -225,12 +239,15 @@ SoCacheElement::copyMatchInfo(void) const
 
 /*!
   This method returns the next cache element. That is the next cache
-  element pointing towards the bottom of the state. 
+  element pointing towards the bottom of the state.
 */
 SoCacheElement *
 SoCacheElement::getNextCacheElement(void) const
 {
-  return (SoCacheElement *) this->getNextInStack();
+  return coin_safe_cast<SoCacheElement *>
+    (
+     this->getNextInStack()
+     );
 }
 
 /*!
@@ -242,11 +259,15 @@ void
 SoCacheElement::addElement(SoState * const state,
                            const SoElement * const element)
 {
-  SoCacheElement * elem = (SoCacheElement*)
-    state->getElementNoPush(classStackIndex);
+  SoCacheElement * elem =
+    coin_assert_cast<SoCacheElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
+
   while (elem) {
     if (elem->cache) elem->cache->addElement(element);
-    elem = (SoCacheElement*) elem->getNextInStack();
+    elem = coin_assert_cast<SoCacheElement *>(elem->getNextInStack());
   }
 }
 
@@ -259,11 +280,13 @@ void
 SoCacheElement::addCacheDependency(SoState * const state,
                                    SoCache * const cache)
 {
-  SoCacheElement * elem = (SoCacheElement*)
-    state->getElementNoPush(classStackIndex);
+  SoCacheElement * elem = coin_assert_cast<SoCacheElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
   while (elem && elem->cache) {
     elem->cache->addCacheDependency(state, cache);
-    elem = (SoCacheElement*) elem->getNextInStack();
+    elem = coin_assert_cast<SoCacheElement *>(elem->getNextInStack());
   }
 }
 
@@ -293,5 +316,5 @@ SoCacheElement::setInvalid(const SbBool newvalue)
 SoCache *
 SoCacheElement::getCurrentCache(SoState * const state)
 {
-  return ((SoCacheElement *)(state->getElementNoPush(classStackIndex)))->cache;
+  return (coin_assert_cast<const SoCacheElement *>(state->getElementNoPush(classStackIndex)))->cache;
 }

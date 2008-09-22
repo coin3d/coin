@@ -31,8 +31,8 @@
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoGLDisplayList.h>
@@ -309,7 +309,7 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
   SbBool supported = SoGLDriverDatabase::isSupported(w, info->extname.getString());
   info->context.append(currcontext);
   info->supported.append(supported);
-  
+
   CC_MUTEX_UNLOCK(glcache_mutex);
 
   return supported;

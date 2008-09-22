@@ -31,6 +31,8 @@
   \since Coin 2.2
 */
 
+#include "SbBasicP.h"
+#include "coindefs.h"
 
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
@@ -79,12 +81,15 @@ SoMultiTextureEnabledElement::~SoMultiTextureEnabledElement(void)
 */
 void
 SoMultiTextureEnabledElement::set(SoState * state,
-                                  SoNode * node,
+                                  SoNode * COIN_UNUSED(node),
                                   const int unit,
                                   const SbBool enabled)
 {
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getElement(classStackIndex);
+  SoMultiTextureEnabledElement * elem =
+    coin_assert_cast<SoMultiTextureEnabledElement *>
+    (
+     state->getElement(classStackIndex)
+     );
 
   elem->setElt(unit, enabled);
 }
@@ -92,7 +97,7 @@ SoMultiTextureEnabledElement::set(SoState * state,
 
 // doc from parent
 void
-SoMultiTextureEnabledElement::init(SoState * state)
+SoMultiTextureEnabledElement::init(SoState * COIN_UNUSED(state))
 {
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->mode[i] = DISABLED;
@@ -106,8 +111,11 @@ SoMultiTextureEnabledElement::init(SoState * state)
 SbBool
 SoMultiTextureEnabledElement::get(SoState * state, const int unit)
 {
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoMultiTextureEnabledElement * elem =
+    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->enabled[unit];
@@ -120,25 +128,28 @@ void
 SoMultiTextureEnabledElement::setElt(const int unit, const SbBool enabled)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
-  
-  Mode mode = (Mode) enabled;
-  
-  PRIVATE(this)->enabled[unit] = mode != DISABLED; 
+
+  Mode mode = static_cast<Mode>(enabled);
+
+  PRIVATE(this)->enabled[unit] = mode != DISABLED;
   PRIVATE(this)->mode[unit] = mode;
 }
 
 /*!
   Returns a pointer to a boolean array. TRUE means unit is enabled and
-  that texture coordinates must be sent to the unit. \a lastenabled 
+  that texture coordinates must be sent to the unit. \a lastenabled
   is set to the last enabled unit.
 
 */
 const SbBool *
 SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
                                               int & lastenabled)
-{ 
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
+{
+  const SoMultiTextureEnabledElement * elem =
+    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 
   int i = MAX_UNITS-1;
   while (i >= 0) {
@@ -156,7 +167,7 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
 /*!
   Returns TRUE if unit is enabled (Mode == DISABLED).
 */
-SbBool 
+SbBool
 SoMultiTextureEnabledElement::isEnabled(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -165,10 +176,12 @@ SoMultiTextureEnabledElement::isEnabled(const int unit) const
 
 // doc in parent
 void
-SoMultiTextureEnabledElement::push(SoState * state)
+SoMultiTextureEnabledElement::push(SoState * COIN_UNUSED(state))
 {
-  SoMultiTextureEnabledElement * prev = (SoMultiTextureEnabledElement *)
-    this->getNextInStack();
+  SoMultiTextureEnabledElement * prev = coin_assert_cast<SoMultiTextureEnabledElement *>
+    (
+     this->getNextInStack()
+     );
 
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->mode[i] = PRIVATE(prev)->mode[i];
@@ -179,8 +192,8 @@ SoMultiTextureEnabledElement::push(SoState * state)
 SbBool
 SoMultiTextureEnabledElement::matches(const SoElement * elem) const
 {
-  SoMultiTextureEnabledElement * e =
-    (SoMultiTextureEnabledElement *) elem;
+  const SoMultiTextureEnabledElement * e =
+    coin_assert_cast<const SoMultiTextureEnabledElement *>(elem);
   for (int i = 0; i < MAX_UNITS; i++) {
     if (PRIVATE(e)->mode[i] != PRIVATE(this)->mode[i]) {
       return FALSE;
@@ -193,7 +206,7 @@ SoElement *
 SoMultiTextureEnabledElement::copyMatchInfo(void) const
 {
   SoMultiTextureEnabledElement * elem =
-    (SoMultiTextureEnabledElement *)(getTypeId().createInstance());
+    static_cast<SoMultiTextureEnabledElement *>(getTypeId().createInstance());
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(elem)->mode[i]= PRIVATE(this)->mode[i];
   }
@@ -206,11 +219,14 @@ SoMultiTextureEnabledElement::copyMatchInfo(void) const
 
   \since Coin 2.5
 */
-const SoMultiTextureEnabledElement::Mode * 
+const SoMultiTextureEnabledElement::Mode *
 SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
 {
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoMultiTextureEnabledElement * elem =
+    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    (
+    SoElement::getConstElement(state, classStackIndex)
+    );
 
   int i = MAX_UNITS-1;
   while (i >= 0) {
@@ -229,17 +245,20 @@ SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
 
   \since Coin 2.5
 */
-void 
-SoMultiTextureEnabledElement::enableRectangle(SoState * state, 
-                                              SoNode * node, 
+void
+SoMultiTextureEnabledElement::enableRectangle(SoState * state,
+                                              SoNode * COIN_UNUSED(node),
                                               const int unit)
 {
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getElement(classStackIndex);
+  SoMultiTextureEnabledElement * elem =
+    coin_assert_cast<SoMultiTextureEnabledElement *>
+    (
+     state->getElement(classStackIndex)
+     );
   // FIXME: in Coin-3, make sure the setElt() method is changed to
   // setElt(const int32_t mode). pederb, 2005-01-31
   COMPILE_ONLY_BEFORE(3,1,0);
-  elem->setElt(unit, (SbBool) RECTANGLE);
+  elem->setElt(unit, static_cast<SbBool>(RECTANGLE));
 }
 
 /*!
@@ -247,36 +266,41 @@ SoMultiTextureEnabledElement::enableRectangle(SoState * state,
 
   \since Coin 2.5
 */
-void 
-SoMultiTextureEnabledElement::enableCubeMap(SoState * state, 
-                                            SoNode * node, 
+void
+SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
+                                            SoNode * COIN_UNUSED(node),
                                             const int unit)
 {
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getElement(classStackIndex);
-  
+  SoMultiTextureEnabledElement * elem = coin_assert_cast<SoMultiTextureEnabledElement *>
+    (
+     state->getElement(classStackIndex)
+     );
+
   // FIXME: in Coin-3, make sure the setElt() method is changed to
   // setElt(const int32_t mode). pederb, 2005-01-31
   COMPILE_ONLY_BEFORE(3,1,0);
-  elem->setElt(unit, (SbBool) CUBEMAP);
+  elem->setElt(unit, static_cast<SbBool>(CUBEMAP));
 }
 
 /*!
 
   Disable all active texture units. Convenient when all textures needs
   to be disabled before rendering.
-  
+
   \since Coin 2.5
 */
-void 
+void
 SoMultiTextureEnabledElement::disableAll(SoState * state)
 {
   int lastenabled;
   const SbBool * enabled = getEnabledUnits(state, lastenabled);
   if (enabled) {
-    SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-      state->getElement(classStackIndex);
-    
+    SoMultiTextureEnabledElement * elem =
+      coin_assert_cast<SoMultiTextureEnabledElement *>
+      (
+       state->getElement(classStackIndex)
+       );
+
     for (int i = 1; i <= lastenabled; i++) {
       if (enabled[i]) {
         elem->setElt(i, FALSE);
@@ -290,11 +314,14 @@ SoMultiTextureEnabledElement::disableAll(SoState * state)
 
   \since Coin 2.5
 */
-SoMultiTextureEnabledElement::Mode 
+SoMultiTextureEnabledElement::Mode
 SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
 {
-  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoMultiTextureEnabledElement * elem =
+    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 
   return elem->getMode(unit);
 }
@@ -302,7 +329,7 @@ SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
 //
 // returns the texture mode for a unit.
 //
-SoMultiTextureEnabledElement::Mode 
+SoMultiTextureEnabledElement::Mode
 SoMultiTextureEnabledElement::getMode(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);

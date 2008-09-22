@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoUnitsElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoUnitsElement::Units
@@ -67,7 +67,8 @@ SoUnitsElement::set(SoState * const state,
                     SoNode * const node,
                     const Units unit)
 {
-  assert((int)unit >= (int)METERS && (int)unit <= (int)NAUTICAL_MILES);
+  assert(static_cast<int>(unit) >= static_cast<int>(METERS)
+	 && static_cast<int>(unit) <= static_cast<int>(NAUTICAL_MILES));
   SoInt32Element::set(classStackIndex, state, node, unit);
 }
 
@@ -95,7 +96,7 @@ SoUnitsElement::set(SoState * const state, const Units units)
 SoUnitsElement::Units
 SoUnitsElement::get(SoState * const state)
 {
-  return (Units) SoInt32Element::get(classStackIndex, state);
+  return static_cast<Units>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

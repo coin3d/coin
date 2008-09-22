@@ -42,7 +42,7 @@
 #include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/misc/SoState.h>
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -113,14 +113,14 @@ SoGLColorIndexElement::getInstance(SoState *state)
     state->getElementNoPush(classStackIndex);
 }
 
-int32_t 
+int32_t
 SoGLColorIndexElement::get(const int index) const
 {
   assert(index >= 0 && index < this->getNum());
   return SoLazyElement::getColorIndices(this->state)[index];
 }
 
-int32_t 
+int32_t
 SoGLColorIndexElement::getDefault(void)
 {
   return SoLazyElement::getDefaultColorIndex();

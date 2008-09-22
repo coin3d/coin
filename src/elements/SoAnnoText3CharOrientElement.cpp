@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoAnnoText3CharOrientElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoAnnoText3CharOrientElement);
 
@@ -79,7 +79,7 @@ SoAnnoText3CharOrientElement::set(SoState * const state, SbBool isOriented)
 SbBool
 SoAnnoText3CharOrientElement::get(SoState * state)
 {
-  return (SbBool) SoInt32Element::get(classStackIndex, state);
+  return static_cast<SbBool>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

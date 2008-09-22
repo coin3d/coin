@@ -45,8 +45,11 @@
 */
 
 #include <Inventor/elements/SoReplacedElement.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \var uint32_t SoReplacedElement::nodeId
@@ -83,7 +86,7 @@ SoReplacedElement::init(SoState * state)
 SbBool
 SoReplacedElement::matches(const SoElement * element) const
 {
-  if (((const SoReplacedElement *)(element))->nodeId ==
+  if ((coin_assert_cast<const SoReplacedElement *>(element))->nodeId ==
       this->nodeId)
     return TRUE;
   return FALSE;
@@ -95,7 +98,7 @@ SoReplacedElement::copyMatchInfo(void) const
 {
   assert(getTypeId().canCreateInstance());
   SoReplacedElement * element =
-    (SoReplacedElement *)(getTypeId().createInstance());
+    static_cast<SoReplacedElement *>(getTypeId().createInstance());
   element->nodeId = this->nodeId;
   return element;
 }
@@ -128,7 +131,7 @@ SoReplacedElement::getElement(SoState * const state, const int stackIndex,
                                      SoNode * const node)
 {
   SoReplacedElement * elem =
-    (SoReplacedElement *)SoElement::getElement(state, stackIndex);
+    coin_safe_cast<SoReplacedElement *>(SoElement::getElement(state, stackIndex));
   if (elem) {
     if (node) { elem->nodeId = node->getNodeId(); }
     else { elem->nodeId = 0; }

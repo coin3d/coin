@@ -39,10 +39,12 @@
   \sa SoReplacedElement, SoFloatElement, SoAccumulatedElement
 */
 
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoInt32Element.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoInt32Element::data
@@ -70,7 +72,7 @@ SoInt32Element::matches(const SoElement * element) const
     assert(element);
     if (getTypeId() != element->getTypeId())
         return FALSE;
-    if (((const SoInt32Element *)element)->data != this->data)
+    if (coin_assert_cast<const SoInt32Element *>(element)->data != this->data)
         return FALSE;
     return TRUE;
 }
@@ -81,14 +83,14 @@ SoInt32Element::copyMatchInfo(void) const
 {
     assert(getTypeId().canCreateInstance());
     SoInt32Element * element =
-        (SoInt32Element *)(getTypeId().createInstance());
+        static_cast<SoInt32Element *>(getTypeId().createInstance());
     element->data = this->data;
 
     // DEPRECATED 19980807 pederb. copyMatchInfo should only copy
     // information needed in matches(). An exact copy is not needed.
     //
     //    element->dataNode = this->dataNode;
-    return (SoElement *)element;
+    return element;
 }
 
 // documented in superclass
@@ -107,7 +109,7 @@ SoInt32Element::set(const int index,
                     const int32_t value)
 {
   SoInt32Element * element;
-  element = (SoInt32Element *) getElement(state, index);
+  element = coin_safe_cast<SoInt32Element *>(getElement(state, index));
   if (element)
     element->setElt(value);
 }
@@ -128,8 +130,8 @@ int32_t
 SoInt32Element::get(const int index,
                     SoState * const state)
 {
-  SoInt32Element * element;
-  element = (SoInt32Element *) getConstElement(state, index); //, NULL );
+  const SoInt32Element * element;
+  element = coin_safe_cast<const SoInt32Element *>(getConstElement(state, index)); //, NULL );
   if (element)
     return element->data;
   return 0;

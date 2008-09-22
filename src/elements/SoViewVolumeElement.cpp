@@ -31,8 +31,9 @@
 
 #include <Inventor/elements/SoViewVolumeElement.h>
 
+#include "SbBasicP.h"
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoViewVolumeElement::viewVolume
@@ -67,8 +68,10 @@ SoViewVolumeElement::set(SoState * const state,
                          SoNode * const node,
                          const SbViewVolume & viewVolume)
 {
-  SoViewVolumeElement * element = (SoViewVolumeElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoViewVolumeElement * element = coin_safe_cast<SoViewVolumeElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->viewVolume = viewVolume;
   }
@@ -79,8 +82,10 @@ SoViewVolumeElement::set(SoState * const state,
 const SbViewVolume &
 SoViewVolumeElement::get(SoState * const state)
 {
-  SoViewVolumeElement * element = (SoViewVolumeElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoViewVolumeElement * element = coin_assert_cast<const SoViewVolumeElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->viewVolume;
 }
 

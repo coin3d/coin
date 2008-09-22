@@ -37,7 +37,7 @@
 #include <Inventor/elements/SoPointSizeElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoPointSizeElement);
 

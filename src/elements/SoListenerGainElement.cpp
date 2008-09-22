@@ -26,19 +26,19 @@
   \brief The SoListenerGainElement class stores the SoListener gain during a scene graph traversal.
   \ingroup elements
 
-  This gain is set by SoListener nodes during audio rendering. 
-  The SoListenerGainElement is used when the SoVRMLSound nodes render 
-  themselves. 
+  This gain is set by SoListener nodes during audio rendering.
+  The SoListenerGainElement is used when the SoVRMLSound nodes render
+  themselves.
 
   \COIN_CLASS_EXTENSION
-  
+
   \since Coin 2.0
 */
 
 #include <Inventor/elements/SoListenerGainElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoListenerGainElement);
 
@@ -85,7 +85,7 @@ SoListenerGainElement::set(SoState * const state, const float gain)
   SoListenerGainElement::set(state, NULL, gain);
 }
 
-/*!  
+/*!
   Returns the element value.
 */
 float

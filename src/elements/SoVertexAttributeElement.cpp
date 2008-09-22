@@ -22,12 +22,15 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoVertexAttributeElement.h>
+
+#include "SbBasicP.h"
+#include "elements/SoVertexAttributeData.h"
+#include "misc/SbHash.h"
+
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/gl.h>
-#include "elements/SoVertexAttributeData.h"
-#include "misc/SbHash.h"
 
 class SoVertexAttributeElementP {
 public:
@@ -65,25 +68,25 @@ SoVertexAttributeElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoVertexAttributeElement * prev = 
-    (SoVertexAttributeElement*) this->getNextInStack();
-  
+  const SoVertexAttributeElement * prev =
+    coin_assert_cast<SoVertexAttributeElement *>(this->getNextInStack());
+
   PRIVATE(this)->attribdict = PRIVATE(prev)->attribdict;
   this->copyNodeIds(prev);
 }
 
-void 
-SoVertexAttributeElement::add(SoState * const state, 
+void
+SoVertexAttributeElement::add(SoState * const state,
                               SoVertexAttributeData * attribdata)
 {
-  SoVertexAttributeElement * thisp = 
+  SoVertexAttributeElement * thisp =
     static_cast<SoVertexAttributeElement *>(SoElement::getElement(state, classStackIndex));
-  
+
   thisp->addElt(attribdata);
   thisp->addNodeId(attribdata->nodeid);
 }
 
-void 
+void
 SoVertexAttributeElement::addElt(SoVertexAttributeData * attribdata)
 {
   PRIVATE(this)->attribdict.put(attribdata->name.getString(), attribdata);
@@ -92,7 +95,7 @@ SoVertexAttributeElement::addElt(SoVertexAttributeData * attribdata)
 const SoVertexAttributeElement *
 SoVertexAttributeElement::getInstance(SoState * const state)
 {
-  return (const SoVertexAttributeElement *)
+  return coin_assert_cast<const SoVertexAttributeElement *>
     (getConstElement(state, classStackIndex));
 }
 
@@ -103,7 +106,7 @@ SoVertexAttributeElement::getNumAttributes(void) const
   return PRIVATE(this)->attribdict.getNumElements();
 }
 
-void 
+void
 SoVertexAttributeElement::applyToAttributes(AttributeApplyFunc * func, void * closure) const
 {
   PRIVATE(this)->attribdict.apply(func, closure);

@@ -29,6 +29,8 @@
   FIXME: write doc.
 */
 
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/misc/SoState.h>
 
@@ -80,12 +82,14 @@ SoLocalBBoxMatrixElement::push(SoState * state)
 {
   inherited::push(state);
   SoLocalBBoxMatrixElement * prev =
-    (SoLocalBBoxMatrixElement*) this->getNextInStack();
+    coin_assert_cast<SoLocalBBoxMatrixElement*>(this->getNextInStack());
   this->localMatrix = prev->localMatrix;
-  
+
   // avoid cache dependencies by using the state getElement method
-  const SoModelMatrixElement * modelelem = (const SoModelMatrixElement*)
-    state->getConstElement(SoModelMatrixElement::getClassStackIndex());
+  const SoModelMatrixElement * modelelem = coin_assert_cast<const SoModelMatrixElement*>
+    (
+     state->getConstElement(SoModelMatrixElement::getClassStackIndex())
+     );
   // FIXME: is this really sensible caching? If push() is called more
   // often than set() (the only place where it's actually used), I
   // guess not. 20020905 mortene.
@@ -122,8 +126,10 @@ void
 SoLocalBBoxMatrixElement::makeIdentity(SoState * const state)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *)
-    SoElement::getElement(state, getClassStackIndex());
+  element = coin_safe_cast<SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getElement(state, getClassStackIndex())
+     );
   if (element) {
     element->localMatrix.makeIdentity();
     // inverse model matrix is set in push(), no need to set it here
@@ -136,8 +142,10 @@ void
 SoLocalBBoxMatrixElement::set(SoState * const state,
                               const SbMatrix & matrix)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
-    SoElement::getElement(state, getClassStackIndex());
+  SoLocalBBoxMatrixElement * element = coin_safe_cast<SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getElement(state, getClassStackIndex())
+     );
   if (element) {
     element->localMatrix = matrix * element->modelInverseMatrix;
   }
@@ -149,9 +157,11 @@ void
 SoLocalBBoxMatrixElement::mult(SoState * const state,
                                const SbMatrix & matrix)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
-    SoElement::getElement(state, getClassStackIndex());
-  
+  SoLocalBBoxMatrixElement * element = coin_safe_cast<SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getElement(state, getClassStackIndex())
+     );
+
   if (element) {
     element->localMatrix.multLeft(matrix);
   }
@@ -163,8 +173,10 @@ void
 SoLocalBBoxMatrixElement::translateBy(SoState * const state,
                                       const SbVec3f & translation)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
-    SoElement::getElement(state, getClassStackIndex());
+  SoLocalBBoxMatrixElement * element = coin_safe_cast<SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getElement(state, getClassStackIndex())
+     );
 
   if (element) {
     SbMatrix matrix;
@@ -179,8 +191,10 @@ void
 SoLocalBBoxMatrixElement::rotateBy(SoState * const state,
                                    const SbRotation & rotation)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
-    SoElement::getElement(state, getClassStackIndex());
+  SoLocalBBoxMatrixElement * element = coin_safe_cast<SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getElement(state, getClassStackIndex())
+     );
   if (element) {
     SbMatrix matrix;
     matrix.setRotate(rotation);
@@ -194,9 +208,11 @@ void
 SoLocalBBoxMatrixElement::scaleBy(SoState * const state,
                                   const SbVec3f & scaleFactor)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
-    SoElement::getElement(state, getClassStackIndex());
-  
+  SoLocalBBoxMatrixElement * element = coin_safe_cast<SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getElement(state, getClassStackIndex())
+     );
+
   if (element) {
     SbMatrix matrix;
     matrix.setScale(scaleFactor);
@@ -210,8 +226,10 @@ SbMatrix
 SoLocalBBoxMatrixElement::pushMatrix(SoState * const state)
 {
   // use getElementNoPush to avoid element push
-  SoLocalBBoxMatrixElement * elem = (SoLocalBBoxMatrixElement*)
-    state->getElementNoPush(classStackIndex);
+  SoLocalBBoxMatrixElement * elem = coin_assert_cast<SoLocalBBoxMatrixElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
   return elem->localMatrix;
 }
 
@@ -222,8 +240,10 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
                                     const SbMatrix & matrix)
 {
   // Important: use getElementNoPush to avoid a push on element
-  SoLocalBBoxMatrixElement *elem = (SoLocalBBoxMatrixElement*)
-    state->getElementNoPush(classStackIndex);
+  SoLocalBBoxMatrixElement *elem = coin_assert_cast<SoLocalBBoxMatrixElement*>
+    (
+     state->getElementNoPush(classStackIndex)
+    );
   elem->localMatrix = matrix;
 }
 
@@ -233,10 +253,13 @@ void
 SoLocalBBoxMatrixElement::resetAll(SoState * const state)
 {
   SoLocalBBoxMatrixElement * element =
-    (SoLocalBBoxMatrixElement*) state->getElement(getClassStackIndex());
+    coin_safe_cast<SoLocalBBoxMatrixElement*>
+    (
+     state->getElement(getClassStackIndex())
+     );
   while (element) {
     element->localMatrix.makeIdentity();
-    element = (SoLocalBBoxMatrixElement*) element->getNextInStack();
+    element = coin_safe_cast<SoLocalBBoxMatrixElement*>(element->getNextInStack());
   }
 }
 
@@ -245,7 +268,10 @@ SoLocalBBoxMatrixElement::resetAll(SoState * const state)
 const SbMatrix &
 SoLocalBBoxMatrixElement::get(SoState * const state)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
-    SoElement::getConstElement(state, getClassStackIndex());
+  const SoLocalBBoxMatrixElement * element =
+    coin_assert_cast<const SoLocalBBoxMatrixElement *>
+    (
+     SoElement::getConstElement(state, getClassStackIndex())
+     );
   return element->localMatrix;
 }

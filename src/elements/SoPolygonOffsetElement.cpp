@@ -30,7 +30,10 @@
 */
 
 #include <Inventor/elements/SoPolygonOffsetElement.h>
-#include <assert.h>
+
+#include "SbBasicP.h"
+
+#include <cassert>
 
 /*!
   \fn SoPolygonOffsetElement::Style
@@ -101,8 +104,10 @@ void
 SoPolygonOffsetElement::set(SoState * state, SoNode * node,
                             float factor, float units, Style styles, SbBool on)
 {
-  SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoPolygonOffsetElement * elem = coin_safe_cast<SoPolygonOffsetElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (elem) {
     elem->setElt(factor, units, styles, on);
   }
@@ -114,8 +119,11 @@ void
 SoPolygonOffsetElement::get(SoState * state, float & factor, float & units,
                             Style & styles, SbBool & on)
 {
-  const SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoPolygonOffsetElement * elem =
+    coin_assert_cast<const SoPolygonOffsetElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 
   factor = elem->offsetfactor;
   units = elem->offsetunits;

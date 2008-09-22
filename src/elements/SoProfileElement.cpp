@@ -30,6 +30,9 @@
 */
 
 #include <Inventor/elements/SoProfileElement.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/nodes/SoProfile.h>
 
 /*!
@@ -67,11 +70,13 @@ void
 SoProfileElement::add(SoState * const state,
                       SoProfile * const profile)
 {
-  SoProfileElement * element = (SoProfileElement *)
-    getElement(state, classStackIndex);
+  SoProfileElement * element = coin_safe_cast<SoProfileElement *>
+    (
+     getElement(state, classStackIndex)
+     );
 
   if (element) {
-    switch ((SoProfileElement::Profile)profile->linkage.getValue()) {
+    switch (static_cast<SoProfileElement::Profile>(profile->linkage.getValue())) {
     case START_FIRST:
       element->profiles.truncate(0);
       element->profiles.append(profile);
@@ -95,8 +100,10 @@ SoProfileElement::add(SoState * const state,
 const SoNodeList &
 SoProfileElement::get(SoState * const state)
 {
-  const SoProfileElement * element = (const SoProfileElement *)
-    getConstElement(state, classStackIndex);
+  const SoProfileElement * element = coin_assert_cast<const SoProfileElement *>
+    (
+    getConstElement(state, classStackIndex)
+    );
   return element->profiles;
 }
 
@@ -116,8 +123,8 @@ SoProfileElement::push(SoState * state)
   inherited::push(state);
 
   SoProfileElement * const prev =
-    (SoProfileElement *) this->getNextInStack();
-  
+    coin_assert_cast<SoProfileElement *>(this->getNextInStack());
+
   this->profiles.truncate(0);
   const int numprofiles = prev->profiles.getLength();
   for (int i = 0; i < numprofiles; i++)

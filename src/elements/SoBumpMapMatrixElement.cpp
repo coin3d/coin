@@ -31,7 +31,8 @@
 */
 
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "SbBasicP.h"
 
 /*!
   \fn SoBumpMapMatrixElement::bumpMapMatrix
@@ -62,8 +63,10 @@ void
 SoBumpMapMatrixElement::makeIdentity(SoState * const state,
                                      SoNode * const node)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoBumpMapMatrixElement * elem = coin_assert_cast<SoBumpMapMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->makeEltIdentity();
     if (node) elem->setNodeId(node);
@@ -80,8 +83,11 @@ SoBumpMapMatrixElement::set(SoState * const state,
                             SoNode * const node,
                             const SbMatrix & matrix)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoBumpMapMatrixElement * elem =
+       coin_assert_cast<SoBumpMapMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->setElt(matrix);
     if (node) elem->setNodeId(node);
@@ -96,8 +102,10 @@ SoBumpMapMatrixElement::mult(SoState * const state,
                              SoNode * const node,
                              const SbMatrix & matrix)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoBumpMapMatrixElement * elem = coin_assert_cast< SoBumpMapMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->multElt(matrix);
     if (node) elem->addNodeId(node);
@@ -113,8 +121,10 @@ SoBumpMapMatrixElement::translateBy(SoState * const state,
                                     SoNode * const node,
                                     const SbVec3f & translation)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoBumpMapMatrixElement * elem = coin_assert_cast< SoBumpMapMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->translateEltBy(translation);
     if (node) elem->addNodeId(node);
@@ -129,8 +139,10 @@ SoBumpMapMatrixElement::rotateBy(SoState * const state,
                                  SoNode * const node,
                                  const SbRotation & rotation)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoBumpMapMatrixElement * elem = coin_assert_cast<SoBumpMapMatrixElement*>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->rotateEltBy(rotation);
     if (node) elem->addNodeId(node);
@@ -145,8 +157,10 @@ SoBumpMapMatrixElement::scaleBy(SoState * const state,
                                 SoNode * const node,
                                 const SbVec3f & scaleFactor)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoBumpMapMatrixElement * elem = coin_assert_cast<SoBumpMapMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->scaleEltBy(scaleFactor);
     if (node) elem->addNodeId(node);
@@ -160,8 +174,10 @@ SoBumpMapMatrixElement::scaleBy(SoState * const state,
 const SbMatrix &
 SoBumpMapMatrixElement::get(SoState * const state)
 {
-  SoBumpMapMatrixElement *elem = (SoBumpMapMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoBumpMapMatrixElement * elem = coin_assert_cast<const SoBumpMapMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->getElt();
 }
 
@@ -258,8 +274,8 @@ SoBumpMapMatrixElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoBumpMapMatrixElement * prev =
-    (SoBumpMapMatrixElement *) this->getNextInStack();
+  const SoBumpMapMatrixElement * prev =
+    coin_assert_cast<const SoBumpMapMatrixElement *>(this->getNextInStack());
   this->bumpMapMatrix = prev->bumpMapMatrix;
 
   // make sure node ids are accumulated properly

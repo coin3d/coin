@@ -31,8 +31,8 @@
 
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/errors/SoDebugError.h>

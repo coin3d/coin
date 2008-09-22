@@ -132,7 +132,7 @@ SoGLUpdateAreaElement::copyMatchInfo() const
 }
 
 
-/*!  
+/*!
   Sets the update area. This can, for instance, be used when
   rendering in the front buffer, to only render parts of the scene
   during a window expose event.  \a origin and \a size is in
@@ -153,7 +153,7 @@ SoGLUpdateAreaElement::set(SoState * const state,
     e->screenorigin[1] = (short) (origin[1]*float(winsize[1]));
     e->screensize[0] = (short) (size[0]*float(winsize[0]));
     e->screensize[1] = (short) (size[1]*float(winsize[1]));
-    
+
     e->updategl();
   }
 }

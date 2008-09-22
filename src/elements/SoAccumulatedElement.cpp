@@ -38,7 +38,9 @@
 
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+#include <cassert>
+
+#include "SbBasicP.h"
 
 /*!
   \fn SoAccumulatedElement::nodeIds
@@ -60,7 +62,7 @@ SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
 
-void 
+void
 SoAccumulatedElement::init(SoState * state)
 {
   inherited::init(state);
@@ -68,7 +70,7 @@ SoAccumulatedElement::init(SoState * state)
   this->recursecapture = FALSE;
 }
 
-void 
+void
 SoAccumulatedElement::push(SoState * state)
 {
   inherited::push(state);
@@ -80,7 +82,7 @@ SoAccumulatedElement::push(SoState * state)
 SbBool
 SoAccumulatedElement::matches(const SoElement * element) const
 {
-  const SoAccumulatedElement * elem = (const SoAccumulatedElement *)element;
+  const SoAccumulatedElement * elem = coin_assert_cast<const SoAccumulatedElement *>(element);
   return (elem->nodeIds == this->nodeIds);
 }
 
@@ -121,7 +123,7 @@ SoElement *
 SoAccumulatedElement::copyMatchInfo(void) const
 {
   SoAccumulatedElement * element =
-    (SoAccumulatedElement *) this->getTypeId().createInstance();
+    static_cast<SoAccumulatedElement *>(this->getTypeId().createInstance());
   element->copyNodeIds(this);
   return element;
 }
@@ -136,7 +138,7 @@ void
 SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
 {
   this->nodeIds = copyfrom->nodeIds;
-  
+
   // this elements uses data from previous element in stack
   this->recursecapture = TRUE;
 }
@@ -154,8 +156,9 @@ SoAccumulatedElement::captureThis(SoState * state) const
   // might have a depth that will trigger a dependency.
   //                                              pederb, 2001-02-21
   if (this->recursecapture) {
-    SoAccumulatedElement * elem = (SoAccumulatedElement*)
-      this->getNextInStack();
+    const SoAccumulatedElement * elem = coin_assert_cast<const SoAccumulatedElement *> (
+      this->getNextInStack()
+      );
     if (elem) elem->captureThis(state);
   }
 }

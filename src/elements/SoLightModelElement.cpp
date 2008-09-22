@@ -29,9 +29,12 @@
   FIXME: write doc.
 */
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoLightModelElement::Model
@@ -72,16 +75,16 @@ SoLightModelElement::init(SoState * /* state */)
 void
 SoLightModelElement::set(SoState * const state, const Model model)
 {
-  SoLazyElement::setLightModel(state, (int32_t) model);
+  SoLazyElement::setLightModel(state, static_cast<int32_t>(model));
 }
 
 //! FIXME: write doc.
 
 void
-SoLightModelElement::set(SoState * const state, SoNode * const node,
+SoLightModelElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
                          const Model model)
 {
-  SoLazyElement::setLightModel(state, (int32_t) model);
+  SoLazyElement::setLightModel(state, static_cast<int32_t>(model));
 }
 
 //! FIXME: write doc.
@@ -89,7 +92,7 @@ SoLightModelElement::set(SoState * const state, SoNode * const node,
 SoLightModelElement::Model
 SoLightModelElement::get(SoState * const state)
 {
-  return (SoLightModelElement::Model) SoLazyElement::getLightModel(state);
+  return static_cast<SoLightModelElement::Model>(SoLazyElement::getLightModel(state));
 }
 
 //! FIXME: write doc.
@@ -97,7 +100,7 @@ SoLightModelElement::get(SoState * const state)
 SoLightModelElement::Model
 SoLightModelElement::getDefault()
 {
-  return (SoLightModelElement::Model) SoLazyElement::getDefaultLightModel();
+  return static_cast<SoLightModelElement::Model>(SoLazyElement::getDefaultLightModel());
 }
 
 //! FIXME: write doc
@@ -105,6 +108,10 @@ SoLightModelElement::getDefault()
 const SoLightModelElement *
 SoLightModelElement::getInstance(SoState *state)
 {
-  return (const SoLightModelElement *)
-    state->getElementNoPush(classStackIndex);
+  //FIXME: Can this function or any of the similar functions ever
+  //return NULL? BFG 20080916
+  return coin_assert_cast<const SoLightModelElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
 }

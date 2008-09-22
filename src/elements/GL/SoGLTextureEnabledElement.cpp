@@ -52,7 +52,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoGLTextureEnabledElement);
 
@@ -90,7 +90,7 @@ SoGLTextureEnabledElement::set(SoState * const state,
 
   \since Coin 2.2
 */
-void 
+void
 SoGLTextureEnabledElement::enableRectangle(SoState * state, SoNode * node)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t) RECTANGLE);
@@ -101,7 +101,7 @@ SoGLTextureEnabledElement::enableRectangle(SoState * state, SoNode * node)
   Enables GL_TEXTURE_CUBE+MAP. GL_TEXTURE_2D and/or
   GL_TEXTURE_RECTANGLE will be disabled if it's enabled earlier.
 */
-void 
+void
 SoGLTextureEnabledElement::enableCubeMap(SoState * state, SoNode * node)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t) CUBEMAP);
@@ -113,7 +113,7 @@ SoGLTextureEnabledElement::enableCubeMap(SoState * state, SoNode * node)
   Returns the current texture mode.
 
 */
-SoGLTextureEnabledElement::Mode 
+SoGLTextureEnabledElement::Mode
 SoGLTextureEnabledElement::getMode(SoState * state)
 {
   return (Mode) SoInt32Element::get(classStackIndex, state);
@@ -160,7 +160,7 @@ SoGLTextureEnabledElement::set(SoState * const state, const SbBool enabled)
 
 
 /*!
-  Return current state of this element. 
+  Return current state of this element.
 */
 SbBool
 SoGLTextureEnabledElement::get(SoState * const state)
@@ -198,7 +198,7 @@ SoGLTextureEnabledElement::updategl(void)
   else glDisable(GL_TEXTURE_2D);
 }
 
-void 
+void
 SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
 {
   // FIXME: the code below looks fairly non-optimal. Should at least
@@ -215,7 +215,7 @@ SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
   case RECTANGLE:
     glDisable(GL_TEXTURE_RECTANGLE_EXT);
     break;
-  case CUBEMAP: 
+  case CUBEMAP:
     glDisable(GL_TEXTURE_CUBE_MAP);
     break;
   default:

@@ -30,7 +30,7 @@
 */
 
 #include <Inventor/elements/SoDecimationTypeElement.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoDecimationTypeElement::Type
@@ -66,7 +66,11 @@ SoDecimationTypeElement::set(SoState * const state,
                              SoNode * const node,
                              const Type type)
 {
-  assert((int)type >= (int)AUTOMATIC && (int)type <= (int)PERCENTAGE);
+  assert(
+	 static_cast<int>(type) >= static_cast<int>(AUTOMATIC)
+	 &&
+	 static_cast<int>(type) <= static_cast<int>(PERCENTAGE)
+	 );
   SoInt32Element::set(classStackIndex, state, node, type);
 }
 
@@ -94,7 +98,7 @@ SoDecimationTypeElement::set(SoState * const state, const Type type)
 SoDecimationTypeElement::Type
 SoDecimationTypeElement::get(SoState * const state)
 {
-  return (Type) SoInt32Element::get(classStackIndex, state);
+  return static_cast<Type>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

@@ -30,7 +30,9 @@
 */
 
 #include <Inventor/elements/SoBumpMapElement.h>
-#include <assert.h>
+#include <cassert>
+
+#include "SbBasicP.h"
 
 /*!
   \fn SoBumpMapElement::size
@@ -87,8 +89,10 @@ void
 SoBumpMapElement::set(SoState * state, SoNode * node,
                       SoGLImage * image)
 {
-  SoBumpMapElement * elem = (SoBumpMapElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoBumpMapElement * elem = coin_assert_cast<SoBumpMapElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   elem->setElt(image);
 }
 
@@ -97,8 +101,9 @@ SoBumpMapElement::set(SoState * state, SoNode * node,
 SoGLImage *
 SoBumpMapElement::get(SoState * const state)
 {
-  SoBumpMapElement * elem = (SoBumpMapElement *)
-    getConstElement(state, classStackIndex);
+  const SoBumpMapElement * elem = coin_assert_cast<const SoBumpMapElement *>(
+    getConstElement(state, classStackIndex)
+    );
 
   return elem->image;
 }

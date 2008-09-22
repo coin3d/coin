@@ -49,12 +49,12 @@ SoResetMatrixElement::init(SoState * stateptr)
 void
 SoResetMatrixElement::set(SoState * stateptr, const SbMatrix & matrix)
 {
-  SoResetMatrixElement * elem = (SoResetMatrixElement*) 
+  SoResetMatrixElement * elem = (SoResetMatrixElement*)
     SoElement::getElement(stateptr, SoResetMatrixElement::classStackIndex);
   elem->setElt(matrix);
 }
 
-const SbMatrix  & 
+const SbMatrix  &
 SoResetMatrixElement::get(SoState * state)
 {
   const SoResetMatrixElement * elem = (const SoResetMatrixElement*)
@@ -68,14 +68,14 @@ SoResetMatrixElement::setElt(const SbMatrix & matrix_in)
   this->matrix = matrix_in;
 }
 
-SbBool 
+SbBool
 SoResetMatrixElement::matches(const SoElement * element) const
 {
   const SoResetMatrixElement * other = (const SoResetMatrixElement*) element;
   return this->matrix == other->matrix;
 }
 
-SoElement * 
+SoElement *
 SoResetMatrixElement::copyMatchInfo(void) const
 {
   SoResetMatrixElement * element =

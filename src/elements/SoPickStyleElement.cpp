@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoPickStyleElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoPickStyleElement::Style
@@ -95,7 +95,7 @@ SoPickStyleElement::set(SoState * const state, const Style style)
 SoPickStyleElement::Style
 SoPickStyleElement::get(SoState * const state)
 {
-  return (Style) SoInt32Element::get(classStackIndex, state);
+  return static_cast<Style>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

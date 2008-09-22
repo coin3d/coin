@@ -33,7 +33,10 @@
 #include <Inventor/elements/SoCacheHintElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 
-#include <assert.h>
+#include <cassert>
+
+#include "SbBasicP.h"
+#include "coindefs.h"
 
 // FIXME: make it possible to control this constant. pederb, 2005-01-10
 #define VERTEX_ARRAY_LIMIT 0.51f
@@ -92,7 +95,10 @@ void
 SoCacheHintElement::push(SoState * state)
 {
   inherited::push(state);
-  SoCacheHintElement * prev = (SoCacheHintElement*) this->getNextInStack();
+  SoCacheHintElement * prev = coin_assert_cast<SoCacheHintElement * >
+    (
+     this->getNextInStack()
+     );
   PRIVATE(this)->memvalue = PRIVATE(prev)->memvalue;
   PRIVATE(this)->gfxvalue = PRIVATE(prev)->gfxvalue;
 }
@@ -108,8 +114,8 @@ SoCacheHintElement::pop(SoState * state, const SoElement * prevtopelement)
 SbBool
 SoCacheHintElement::matches(const SoElement * element) const
 {
-  SoCacheHintElement *elem = (SoCacheHintElement*)element;
-  return 
+  const SoCacheHintElement * elem = coin_assert_cast<const SoCacheHintElement *>(element);
+  return
     (PRIVATE(this)->memvalue == PRIVATE(elem)->memvalue) &&
     (PRIVATE(this)->gfxvalue == PRIVATE(elem)->gfxvalue);
 }
@@ -119,8 +125,9 @@ SoCacheHintElement::matches(const SoElement * element) const
 SoElement *
 SoCacheHintElement::copyMatchInfo() const
 {
-  SoCacheHintElement *elem = (SoCacheHintElement*)
-    getTypeId().createInstance();
+  SoCacheHintElement * elem = static_cast<SoCacheHintElement *>(
+    getTypeId().createInstance()
+    );
   PRIVATE(elem)->memvalue = PRIVATE(this)->memvalue;
   PRIVATE(elem)->gfxvalue = PRIVATE(this)->gfxvalue;
   return elem;
@@ -130,12 +137,15 @@ SoCacheHintElement::copyMatchInfo() const
 
 void
 SoCacheHintElement::set(SoState * state,
-                        SoNode * node,
+                        SoNode * COIN_UNUSED(node),
                         const float memvalue,
                         const float gfxvalue)
 {
-  SoCacheHintElement *elem = (SoCacheHintElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoCacheHintElement * elem =
+    coin_assert_cast<SoCacheHintElement * >
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 
   PRIVATE(elem)->memvalue = memvalue;
   PRIVATE(elem)->gfxvalue = gfxvalue;
@@ -148,9 +158,10 @@ SoCacheHintElement::set(SoState * state,
 void
 SoCacheHintElement::get(SoState * const state, float & memvalue, float & gfxvalue)
 {
-  SoCacheHintElement *elem = (SoCacheHintElement*)
-    SoElement::getConstElement(state, classStackIndex);
-  
+  const SoCacheHintElement * elem = coin_assert_cast<const SoCacheHintElement *>(
+    SoElement::getConstElement(state, classStackIndex)
+    );
+
   memvalue = PRIVATE(elem)->memvalue;
   gfxvalue = PRIVATE(elem)->gfxvalue;
 }

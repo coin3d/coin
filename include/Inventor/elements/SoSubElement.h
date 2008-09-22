@@ -85,7 +85,7 @@ PRIVATE_SOELEMENT_VARIABLES(_class_) \
 _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
                          this->setStackIndex(_class_::classStackIndex); } \
 /*! \COININTERNAL */ \
-void * _class_::createInstance(void) { return (void *) new _class_; }
+void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
 
 /*
   Specific to Coin. Added 2003-10-27.
@@ -93,7 +93,7 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
 #define SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(_class_) \
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
 /*! \COININTERNAL */ \
-void * _class_::createInstance(void) { return (void *) new _class_; }
+void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
 
 // *************************************************************************
 
@@ -106,7 +106,7 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
                                               _instantiate_); \
     if (_parent_::getClassStackIndex() < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
     else _class_::classStackIndex = _parent_::getClassStackIndex(); \
-    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::cleanupClass); \
+    cc_coin_atexit_static_internal(static_cast<coin_atexit_f*>(_class_::cleanupClass)); \
   } while (0)
 
 

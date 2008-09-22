@@ -33,8 +33,9 @@
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 
+#include <cassert>
 
-#include <assert.h>
+#include "SbBasicP.h"
 
 /*!
   \fn SoComplexityTypeElement::Type
@@ -101,7 +102,9 @@ SoComplexityTypeElement::set(SoState * const state, const Type type)
 SoComplexityTypeElement::Type
 SoComplexityTypeElement::get(SoState * const state)
 {
-  return (Type)SoInt32Element::get(classStackIndex, state);
+  return static_cast<Type>(
+			   SoInt32Element::get(classStackIndex, state)
+			   );
 }
 
 //! FIXME: write doc.

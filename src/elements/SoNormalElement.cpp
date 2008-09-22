@@ -29,9 +29,11 @@
   FIXME: write doc.
 */
 
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoNormalElement::numNormals
@@ -75,8 +77,10 @@ SoNormalElement::set(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setNormalVBO(state, NULL);
   }
-  SoNormalElement *elem = (SoNormalElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoNormalElement * elem = coin_safe_cast<SoNormalElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (elem) {
     elem->normals = normals;
     elem->numNormals = numNormals;
@@ -100,8 +104,10 @@ SoNormalElement::init(SoState *state)
 const SoNormalElement *
 SoNormalElement::getInstance(SoState * const state)
 {
-  return (const SoNormalElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  return coin_assert_cast<const SoNormalElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 }
 
 //! FIXME: write doc.

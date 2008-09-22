@@ -31,13 +31,14 @@
 
 #include <Inventor/elements/SoCoordinateElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 
 #include "tidbitsp.h"
+#include "SbBasicP.h"
 
 // static variables
 SbVec3f * SoCoordinateElement::initialdefaultcoords = NULL;
@@ -80,7 +81,7 @@ SoCoordinateElement::initClass(void)
 
   SoCoordinateElement::initialdefaultcoords = new SbVec3f(0.0f, 0.0f, 0.0f);
 
-  coin_atexit((coin_atexit_f *)SoCoordinateElement::clean, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoCoordinateElement::clean), CC_ATEXIT_NORMAL);
 }
 
 // Clean up internal resource usage.
@@ -123,8 +124,12 @@ SoCoordinateElement::set3(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setVertexVBO(state, NULL);
   }
-  SoCoordinateElement *elem =
-    (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
+  SoCoordinateElement * elem =
+    coin_safe_cast<SoCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     elem->areCoords3D = TRUE;
     elem->coords3D = coords;
@@ -144,8 +149,10 @@ SoCoordinateElement::set4(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setVertexVBO(state, NULL);
   }
-  SoCoordinateElement *elem =
-    (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
+  SoCoordinateElement * elem = coin_safe_cast<SoCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->areCoords3D = FALSE;
     elem->coords4D = coords;
@@ -164,7 +171,7 @@ SoCoordinateElement::get3(const int index) const
   if (areCoords3D) return this->coords3D[index];
   else {
     // hack around const
-    SoCoordinateElement *elem = (SoCoordinateElement*)this;
+    SoCoordinateElement  * elem = const_cast<SoCoordinateElement *>(this);
     this->coords4D[index].getReal(elem->dummy3D);
     return this->dummy3D;
   }
@@ -180,7 +187,7 @@ SoCoordinateElement::get4(const int index) const
   if (!areCoords3D) return this->coords4D[index];
   else {
     // hack around const
-    SoCoordinateElement *elem = (SoCoordinateElement*)this;
+    SoCoordinateElement * elem = const_cast<SoCoordinateElement *>(this);
     const SbVec3f &vec = this->coords3D[index];
     elem->dummy4D[0] = vec[0];
     elem->dummy4D[1] = vec[1];
@@ -195,8 +202,10 @@ SoCoordinateElement::get4(const int index) const
 const SoCoordinateElement *
 SoCoordinateElement::getInstance(SoState * const state)
 {
-  return (const SoCoordinateElement *)
-    (getConstElement(state, classStackIndex));
+  return coin_assert_cast<const SoCoordinateElement * >
+    (
+     getConstElement(state, classStackIndex)
+     );
 }
 
 //! FIXME: write doc.

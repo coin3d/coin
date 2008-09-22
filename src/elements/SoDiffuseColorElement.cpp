@@ -33,9 +33,10 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
+#include "SbBasicP.h"
 
 SO_ELEMENT_SOURCE(SoDiffuseColorElement);
 
@@ -74,8 +75,10 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
                            const int32_t numcolors,
                            const SbColor * const colors)
 {
-  SoDiffuseColorElement * elem = (SoDiffuseColorElement*)
-    SoDiffuseColorElement::getInstance(state);
+  SoDiffuseColorElement * elem = const_cast<SoDiffuseColorElement *>
+    (
+     SoDiffuseColorElement::getInstance(state)
+     );
 
   SoLazyElement::setDiffuse(state, node, numcolors, colors, &elem->colorpacker);
 }
@@ -172,6 +175,8 @@ SoDiffuseColorElement::hasPackedTransparency(void) const
 const SoDiffuseColorElement *
 SoDiffuseColorElement::getInstance(SoState *state)
 {
-  return (const SoDiffuseColorElement *)
-    state->getElementNoPush(classStackIndex);
+  return coin_assert_cast<const SoDiffuseColorElement *>
+    (
+    state->getElementNoPush(classStackIndex)
+    );
 }

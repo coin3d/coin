@@ -31,12 +31,13 @@
 
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 
 #include "tidbitsp.h"
+#include "SbBasicP.h"
 
 /*!
   \fn SoBumpMapCoordinateElement::numcoords
@@ -90,8 +91,8 @@ SoBumpMapCoordinateElement::set(SoState * state,
                                 const int32_t numcoords,
                                 const SbVec2f * coords)
 {
-  SoBumpMapCoordinateElement * elem =
-    (SoBumpMapCoordinateElement*) SoReplacedElement::getElement(state, classStackIndex, node);
+  SoBumpMapCoordinateElement * elem = coin_assert_cast<SoBumpMapCoordinateElement *>
+    (SoReplacedElement::getElement(state, classStackIndex, node));
   elem->coords = coords;
   elem->numcoords = numcoords;
 }
@@ -111,7 +112,7 @@ SoBumpMapCoordinateElement::get(const int index) const
 const SoBumpMapCoordinateElement *
 SoBumpMapCoordinateElement::getInstance(SoState * state)
 {
-  return (const SoBumpMapCoordinateElement *)
+  return coin_assert_cast<const SoBumpMapCoordinateElement *>
     (getConstElement(state, classStackIndex));
 }
 
@@ -125,7 +126,7 @@ SoBumpMapCoordinateElement::getNum(void) const
 
 //! FIXME: write doc.
 
-const SbVec2f * 
+const SbVec2f *
 SoBumpMapCoordinateElement::getArrayPtr(void) const
 {
   return this->coords;

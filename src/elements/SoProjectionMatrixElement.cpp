@@ -31,8 +31,9 @@
 
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 
+#include "SbBasicP.h"
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoProjectionMatrixElement);
 
@@ -62,8 +63,11 @@ SoProjectionMatrixElement::set(SoState * const state,
                                SoNode * const node,
                                const SbMatrix & projectionMatrix)
 {
-  SoProjectionMatrixElement * element = (SoProjectionMatrixElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoProjectionMatrixElement * element = coin_safe_cast<SoProjectionMatrixElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
+
   if (element) {
     element->setElt(projectionMatrix);
   }
@@ -74,8 +78,11 @@ SoProjectionMatrixElement::set(SoState * const state,
 const SbMatrix &
 SoProjectionMatrixElement::get(SoState * const state)
 {
-  SoProjectionMatrixElement * element = (SoProjectionMatrixElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoProjectionMatrixElement * element =
+    coin_assert_cast<const SoProjectionMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->projectionMatrix;
 }
 

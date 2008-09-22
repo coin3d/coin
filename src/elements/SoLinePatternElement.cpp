@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoLinePatternElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoLinePatternElement);
 

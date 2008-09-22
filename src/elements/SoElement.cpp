@@ -183,7 +183,7 @@
   #include <Inventor/nodes/SoTexture2.h>
   #include <Inventor/nodes/SoShape.h>
   #include <Inventor/misc/SoState.h>
-  #include <stdio.h>
+  #include <cstdio>
 
   #include "texturefilenameelement.h"
 
@@ -276,8 +276,8 @@
 
 #include <Inventor/elements/SoElement.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -299,6 +299,7 @@
 #include "elements/SoTextureScalePolicyElement.h" // internal element
 #include "elements/SoTextureScaleQualityElement.h" // internal  element
 #include "tidbitsp.h"
+#include "coindefs.h"
 
 // *************************************************************************
 
@@ -469,7 +470,7 @@ SoElement::initElements(void)
   SoSoundElement::initClass();
 
   SoTextureUnitElement::initClass();
-  
+
   SoMultiTextureCoordinateElement::initClass();
   SoMultiTextureImageElement::initClass();
   SoMultiTextureEnabledElement::initClass();
@@ -515,7 +516,7 @@ SoElement::initClass(void)
   SoElement::classStackIndex = -1;
   SoElement::initElements();
 
-  coin_atexit((coin_atexit_f *)SoElement::cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoElement::cleanup), CC_ATEXIT_NORMAL);
 }
 
 // atexit callback
@@ -549,7 +550,7 @@ SoElement::~SoElement()
   SoState objects.
 */
 void
-SoElement::init(SoState * state)
+SoElement::init(SoState * COIN_UNUSED(state))
 {
   // virtual method
 }
@@ -566,7 +567,7 @@ SoElement::init(SoState * state)
   SoElement::getNextInStack().
 */
 void
-SoElement::push(SoState * state)
+SoElement::push(SoState * COIN_UNUSED(state))
 {
   // virtual method
 }
@@ -581,7 +582,7 @@ SoElement::push(SoState * state)
   the previous top of stack.
 */
 void
-SoElement::pop(SoState * state, const SoElement * prevTopElement)
+SoElement::pop(SoState * COIN_UNUSED(state), const SoElement * COIN_UNUSED(prevTopElement))
 {
   // virtual method
 }
@@ -605,7 +606,7 @@ SoElement::print(FILE * file) const
   function, it should also have a copyMatchInfo() function.
 */
 SbBool
-SoElement::matches(const SoElement * element) const
+SoElement::matches(const SoElement * COIN_UNUSED(element)) const
 {
   return FALSE;
 }

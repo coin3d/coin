@@ -60,9 +60,9 @@
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
   #include <Inventor/nodes/SoSeparator.h>
   #include <Inventor/nodes/SoMaterial.h>
-  
+
   // *************************************************************************
-  
+
   const char * scene = "#Inventor V2.1 asci\n"
   "\n"
   "Separator {"
@@ -78,39 +78,39 @@
   "   Sphere { }"
   "}"
   ;
-  
+
   int
   main(int argc, char ** argv)
   {
     QWidget * window = SoQt::init(argv[0]);
-  
+
     (void)coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
-  
+
     SoInput * in = new SoInput;
     in->setBuffer((void *)scene, strlen(scene));
     SoSeparator * root = SoDB::readAll(in);
     assert(root);
     delete in;
-  
+
     root->ref();
-  
+
     SoMaterial * overridemat = (SoMaterial *)
       SoBase::getNamedBase("OVERRIDEMATERIAL", SoMaterial::getClassTypeId());
     assert(overridemat);
-  
+
     overridemat->diffuseColor.setIgnored(TRUE);
     overridemat->setOverride(TRUE);
-  
+
     SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
     viewer->setSceneGraph(root);
     viewer->show();
-  
+
     SoQt::show(window);
     SoQt::mainLoop();
-  
+
     delete viewer;
     root->unref();
-  
+
     return 0;
   }
   \endcode
@@ -118,10 +118,12 @@
 
 // *************************************************************************
 
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoOverrideElement.h>
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 
@@ -129,12 +131,15 @@
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \
-  (const SoOverrideElement *) getConstElement(state, classStackIndex); \
+  coin_assert_cast<const SoOverrideElement *>(getConstElement(state, classStackIndex)); \
 return (element->flags & flag)
 
 #define SO_SET_OVERRIDE(flag) \
 SoOverrideElement * const element = \
-  (SoOverrideElement *) getElement(state, classStackIndex); \
+  const_cast<SoOverrideElement * const> \
+  ( \
+   coin_safe_cast<const SoOverrideElement *>(getElement(state, classStackIndex)) \
+    ); \
 if (element && override) \
   element->flags |= flag; \
 else if (element) \
@@ -206,7 +211,10 @@ void
 SoOverrideElement::push(SoState * state)
 {
   inherited::push(state);
-  SoOverrideElement * prev = (SoOverrideElement*) this->getNextInStack();
+  const SoOverrideElement * prev = coin_assert_cast<SoOverrideElement *>
+    (
+     this->getNextInStack()
+     );
   this->flags = prev->flags;
 }
 
@@ -215,7 +223,7 @@ SoOverrideElement::push(SoState * state)
 SbBool
 SoOverrideElement::matches(const SoElement *element) const
 {
-  return ((SoOverrideElement*)element)->flags == this->flags;
+  return (coin_assert_cast<const SoOverrideElement *>(element))->flags == this->flags;
 }
 
 //! FIXME: write doc.
@@ -223,8 +231,10 @@ SoOverrideElement::matches(const SoElement *element) const
 SoElement *
 SoOverrideElement::copyMatchInfo(void) const
 {
-  SoOverrideElement *elem = (SoOverrideElement*)
-    this->getTypeId().createInstance();
+  SoOverrideElement * elem = static_cast<SoOverrideElement *>
+    (
+     this->getTypeId().createInstance()
+     );
   elem->flags = this->flags;
   return elem;
 }
@@ -463,7 +473,7 @@ SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 
   \since Coin 2.0
 */
-SbBool 
+SbBool
 SoOverrideElement::getNormalVectorOverride(SoState * const state)
 {
   SO_GET_OVERRIDE(NORMAL_VECTOR);
@@ -476,7 +486,7 @@ SoOverrideElement::getNormalVectorOverride(SoState * const state)
 
   \since Coin 2.0
 */
-SbBool 
+SbBool
 SoOverrideElement::getNormalBindingOverride(SoState * const state)
 {
   SO_GET_OVERRIDE(NORMAL_BINDING);
@@ -765,7 +775,7 @@ SoOverrideElement::setTransparencyTypeOverride(SoState * const state,
 
   \since Coin 2.0
 */
-void 
+void
 SoOverrideElement::setNormalVectorOverride(SoState * const state,
                                            SoNode * const /* node */,
                                            const SbBool override)
@@ -780,7 +790,7 @@ SoOverrideElement::setNormalVectorOverride(SoState * const state,
 
   \since Coin 2.0
 */
-void 
+void
 SoOverrideElement::setNormalBindingOverride(SoState * const state,
                                             SoNode * const /* node */,
                                             const SbBool override)

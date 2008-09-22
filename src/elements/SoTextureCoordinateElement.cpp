@@ -30,9 +30,12 @@
 */
 
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoTextureCoordinateElement::CoordType
@@ -149,8 +152,10 @@ SoTextureCoordinateElement::setDefault(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
   }
-  SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoTextureCoordinateElement * element = coin_safe_cast<SoTextureCoordinateElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->whatKind = DEFAULT;
     element->numCoords = 0;
@@ -168,8 +173,10 @@ SoTextureCoordinateElement::setFunction(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
   }
-  SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-   SoReplacedElement::getElement(state, classStackIndex, node);
+  SoTextureCoordinateElement * element = coin_safe_cast<SoTextureCoordinateElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->funcCB = func;
     element->funcCBData = userdata;
@@ -192,8 +199,10 @@ SoTextureCoordinateElement::set2(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
   }
-  SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoTextureCoordinateElement * element = coin_assert_cast<SoTextureCoordinateElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->coordsDimension = 2;
     element->numCoords = numCoords;
@@ -220,8 +229,11 @@ SoTextureCoordinateElement::set3(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
   }
-  SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoTextureCoordinateElement * element =
+    coin_assert_cast<SoTextureCoordinateElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->coordsDimension = 3;
     element->numCoords = numCoords;
@@ -243,8 +255,11 @@ SoTextureCoordinateElement::set4(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, 0, NULL);
   }
-  SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoTextureCoordinateElement * element =
+    coin_assert_cast<SoTextureCoordinateElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->coordsDimension = 4;
     element->numCoords = numCoords;
@@ -260,7 +275,7 @@ SoTextureCoordinateElement::set4(SoState * const state,
 const SoTextureCoordinateElement *
 SoTextureCoordinateElement::getInstance(SoState * const state)
 {
-  return (const SoTextureCoordinateElement *)
+  return coin_assert_cast<const SoTextureCoordinateElement *>
     (getConstElement(state, classStackIndex));
 }
 
@@ -293,7 +308,7 @@ SoTextureCoordinateElement::get2(const int index) const
   }
   else {
     // need an instance we can write to
-    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    SoTextureCoordinateElement * elem = const_cast<SoTextureCoordinateElement *>(this);
 
     float tmp = this->coords4[index][3];
     float to2D = tmp == 0.0f ? 1.0f : 1.0f / tmp;
@@ -321,7 +336,7 @@ SoTextureCoordinateElement::get3(const int index) const
   }
   else {
     // need an instance we can write to
-    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    SoTextureCoordinateElement * elem = const_cast<SoTextureCoordinateElement *>(this);
 
     if (this->coordsDimension==2) {
       elem->convert3.setValue(this->coords2[index][0],
@@ -351,10 +366,10 @@ SoTextureCoordinateElement::get4(const int index) const
                          "indication that too few texture coordinates "
                          "were supplied in the scene graph.",
                          index, this->numCoords);
-      
+
     }
     // need an instance we can write to
-    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    SoTextureCoordinateElement * elem = const_cast<SoTextureCoordinateElement *>(this);
     elem->convert4 = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
     return this->convert4;
   }
@@ -363,7 +378,7 @@ SoTextureCoordinateElement::get4(const int index) const
   }
   else {
     // need an instance we can write to
-    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    SoTextureCoordinateElement * elem = const_cast<SoTextureCoordinateElement *>(this);
 
     if (this->coordsDimension==2) {
       elem->convert4.setValue(this->coords2[index][0],
@@ -397,7 +412,7 @@ SoTextureCoordinateElement::CoordType
 SoTextureCoordinateElement::getType(SoState * const state)
 {
   const SoTextureCoordinateElement * element =
-    (const SoTextureCoordinateElement *)
+    coin_assert_cast<const SoTextureCoordinateElement *>
     (getConstElement(state, classStackIndex));
   return element->getType();
 }

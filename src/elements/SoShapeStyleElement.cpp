@@ -30,6 +30,9 @@
 */
 
 #include <Inventor/elements/SoShapeStyleElement.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -37,7 +40,7 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 
 #include <coindefs.h> // COIN_OBSOLETED()
-#include <assert.h>
+#include <cassert>
 
 
 #define DELAYRENDER_MASK \
@@ -82,9 +85,9 @@ SoShapeStyleElement::init(SoState * state)
 //! FIXME: write doc.
 
 void
-SoShapeStyleElement::push(SoState * state)
+SoShapeStyleElement::push(SoState * COIN_UNUSED(state))
 {
-  SoShapeStyleElement * prev = (SoShapeStyleElement *) this->getNextInStack();
+  SoShapeStyleElement * prev = coin_assert_cast<SoShapeStyleElement *>(this->getNextInStack());
   this->flags = prev->flags;
 }
 
@@ -102,7 +105,7 @@ SbBool
 SoShapeStyleElement::matches(const SoElement * element) const
 {
   const SoShapeStyleElement * elem =
-    (const SoShapeStyleElement*) element;
+    coin_assert_cast<const SoShapeStyleElement *>(element);
   return this->flags == elem->flags;
 }
 
@@ -112,7 +115,7 @@ SoElement *
 SoShapeStyleElement::copyMatchInfo(void) const
 {
   SoShapeStyleElement * elem =
-    (SoShapeStyleElement*) this->getTypeId().createInstance();
+    static_cast<SoShapeStyleElement *>(this->getTypeId().createInstance());
   elem->flags = this->flags;
   return elem;
 }
@@ -122,8 +125,10 @@ SoShapeStyleElement::copyMatchInfo(void) const
 const SoShapeStyleElement *
 SoShapeStyleElement::get(SoState * const state)
 {
-  return (const SoShapeStyleElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  return coin_assert_cast<const SoShapeStyleElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 }
 
 //! FIXME: write doc.
@@ -133,7 +138,7 @@ SoShapeStyleElement::setDrawStyle(SoState * const state,
                                   const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value == (int32_t)SoDrawStyleElement::INVISIBLE) {
+  if (value == static_cast<int32_t>(SoDrawStyleElement::INVISIBLE)) {
     elem->flags |= INVISIBLE;
   }
   else {
@@ -148,7 +153,7 @@ SoShapeStyleElement::setComplexityType(SoState * const state,
                                        const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value == (int32_t) SoComplexityTypeElement::BOUNDING_BOX) {
+  if (value == static_cast<int32_t>(SoComplexityTypeElement::BOUNDING_BOX)) {
     elem->flags |= BBOXCMPLX;
   }
   else {
@@ -167,8 +172,8 @@ SoShapeStyleElement::setTransparencyType(SoState * const state,
   elem->flags &= ~TRANSPTYPE_MASK;
   assert(value <= TRANSPTYPE_MASK);
   elem->flags |= (value & TRANSPTYPE_MASK);
-  
-  if ((value == int(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND)) || 
+
+  if ((value == int(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND)) ||
       (value == int(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD))) {
     elem->flags |= TRANSP_SORTED_TRIANGLES;
   }
@@ -234,7 +239,7 @@ SoShapeStyleElement::setLightModel(SoState * const state,
                                    const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value != (int32_t) SoLazyElement::BASE_COLOR) {
+  if (value != static_cast<int32_t>(SoLazyElement::BASE_COLOR)) {
     elem->flags |= LIGHTING;
   }
   else {
@@ -273,11 +278,11 @@ SoShapeStyleElement::isScreenDoor(SoState * const state)
 
   \since Coin 2.0
 */
-int 
+int
 SoShapeStyleElement::getTransparencyType(SoState * const state)
 {
   const SoShapeStyleElement * elem = getConstElement(state);
-  return (int) (elem->flags & TRANSPTYPE_MASK);
+  return static_cast<int>(elem->flags & TRANSPTYPE_MASK);
 }
 
 /*!
@@ -324,7 +329,7 @@ SoShapeStyleElement::getRenderCaseMask(void) const
 /*!
   Returns if texture function is currently enabled.
 */
-SbBool 
+SbBool
 SoShapeStyleElement::isTextureFunction(void) const
 {
   return (this->flags&TEXFUNC) != 0;
@@ -336,8 +341,10 @@ SoShapeStyleElement::isTextureFunction(void) const
 SoShapeStyleElement *
 SoShapeStyleElement::getElement(SoState * const state)
 {
-  return (SoShapeStyleElement *)
-    SoElement::getElement(state, classStackIndex);
+  return coin_assert_cast<SoShapeStyleElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 }
 /*!
   Returns the current read-only instance.
@@ -345,16 +352,18 @@ SoShapeStyleElement::getElement(SoState * const state)
 const SoShapeStyleElement *
 SoShapeStyleElement::getConstElement(SoState * const state)
 {
-  return (const SoShapeStyleElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  return coin_assert_cast<const SoShapeStyleElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 }
 
 /*!
   Sets bumpmap enabled.
-  
+
   \since Coin 2.4
 */
-void 
+void
 SoShapeStyleElement::setBumpmapEnabled(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -368,10 +377,10 @@ SoShapeStyleElement::setBumpmapEnabled(SoState * state, const SbBool value)
 
 /*!
   Sets bigimage enabled.
-  
+
   \since Coin 2.4
 */
-void 
+void
 SoShapeStyleElement::setBigImageEnabled(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -385,10 +394,10 @@ SoShapeStyleElement::setBigImageEnabled(SoState * state, const SbBool value)
 
 /*!
   Sets if vertex array rendering might be used.
-  
+
   \since Coin 2.4
 */
-void 
+void
 SoShapeStyleElement::setVertexArrayRendering(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -402,10 +411,10 @@ SoShapeStyleElement::setVertexArrayRendering(SoState * state, const SbBool value
 
 /*!
   Sets material transparency.
-  
+
   \since Coin 2.4
 */
-void 
+void
 SoShapeStyleElement::setTransparentMaterial(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -419,10 +428,10 @@ SoShapeStyleElement::setTransparentMaterial(SoState * state, const SbBool value)
 
 /*!
   Sets texture transparency.
-  
+
   \since Coin 2.4
 */
-void 
+void
 SoShapeStyleElement::setTransparentTexture(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -439,7 +448,7 @@ SoShapeStyleElement::setTransparentTexture(SoState * state, const SbBool value)
 
   \since Coin 2.5
 */
-void 
+void
 SoShapeStyleElement::setShadowMapRendering(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -456,7 +465,7 @@ SoShapeStyleElement::setShadowMapRendering(SoState * state, const SbBool value)
 
   \since Coin 2.5
 */
-void 
+void
 SoShapeStyleElement::setShadowsRendering(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
@@ -473,7 +482,7 @@ SoShapeStyleElement::setShadowsRendering(SoState * state, const SbBool value)
 
   \ since Coin 2.4
 */
-unsigned int 
+unsigned int
 SoShapeStyleElement::getFlags(void) const
 {
   return this->flags;

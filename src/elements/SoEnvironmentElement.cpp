@@ -32,7 +32,9 @@
 #include <Inventor/elements/SoEnvironmentElement.h>
 
 
-#include <assert.h>
+#include <cassert>
+
+#include "SbBasicP.h"
 
 /*!
   \fn SoEnvironmentElement::FogType
@@ -116,8 +118,11 @@ SoEnvironmentElement::set(SoState * const state,
                           const float fogVisibility,
                           const float fogStart)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoEnvironmentElement * element =
+    coin_safe_cast<SoEnvironmentElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->setElt(state, ambientIntensity, ambientColor, attenuation,
                     fogType, fogColor, fogVisibility, fogStart);
@@ -136,8 +141,11 @@ SoEnvironmentElement::get(SoState * const state,
                           float & fogVisibility,
                           float & fogStart)
 {
-  SoEnvironmentElement *element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+    SoElement::getConstElement(state, classStackIndex)
+    );
+
   ambientIntensity = element->ambientIntensity;
   ambientColor = element->ambientColor;
   attenuation = element->attenuation;
@@ -172,8 +180,10 @@ SoEnvironmentElement::getDefault(float & ambientIntensity,
 float
 SoEnvironmentElement::getAmbientIntensity(SoState * const state)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->ambientIntensity;
 }
 
@@ -182,8 +192,10 @@ SoEnvironmentElement::getAmbientIntensity(SoState * const state)
 float
 SoEnvironmentElement::getFogVisibility(SoState * const state)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->fogVisibility;
 }
 
@@ -192,8 +204,10 @@ SoEnvironmentElement::getFogVisibility(SoState * const state)
 const SbVec3f &
 SoEnvironmentElement::getLightAttenuation(SoState * const state)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->attenuation;
 }
 
@@ -202,8 +216,10 @@ SoEnvironmentElement::getLightAttenuation(SoState * const state)
 const SbColor &
 SoEnvironmentElement::getAmbientColor(SoState * const state)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->ambientColor;
 }
 
@@ -212,8 +228,10 @@ SoEnvironmentElement::getAmbientColor(SoState * const state)
 const SbColor &
 SoEnvironmentElement::getFogColor(SoState * const state)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->fogColor;
 }
 
@@ -222,8 +240,10 @@ SoEnvironmentElement::getFogColor(SoState * const state)
 int32_t
 SoEnvironmentElement::getFogType(SoState * const state)
 {
-  SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->fogType;
 }
 

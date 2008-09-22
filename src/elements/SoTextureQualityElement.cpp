@@ -30,7 +30,7 @@
 */
 
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextureQualityElement);
 

@@ -39,7 +39,7 @@
 
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
-#include <assert.h>
+#include <cassert>
 
 #define MAX_UNITS 16
 
@@ -125,7 +125,7 @@ SoGLMultiTextureEnabledElement::updategl(const int unit)
   cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
 }
 
-void 
+void
 SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, const Mode oldvalue)
 {
   const cc_glglue * glue = cc_glglue_instance(this->cachecontext);
@@ -140,10 +140,10 @@ SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, co
   case RECTANGLE:
     glDisable(GL_TEXTURE_RECTANGLE_EXT);
     break;
-  case CUBEMAP: 
+  case CUBEMAP:
     glDisable(GL_TEXTURE_CUBE_MAP);
     break;
-  case TEXTURE3D: 
+  case TEXTURE3D:
     glDisable(GL_TEXTURE_3D);
     break;
   default:

@@ -33,12 +33,15 @@
   \since Coin 2.2
 */
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
-#include <assert.h>
+#include <cassert>
 
 #define MAX_UNITS 16 // FIXME: make dynamic?????
 
@@ -112,10 +115,14 @@ SoMultiTextureImageElement::setDefaultValues(const int unit)
   Resets this element to its original values.
 */
 void
-SoMultiTextureImageElement::setDefault(SoState * const state, SoNode * const node, const int unit)
+SoMultiTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNUSED(node), const int unit)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getElement(classStackIndex);
+  SoMultiTextureImageElement * elem =
+    coin_safe_cast<SoMultiTextureImageElement *>
+    (
+     state->getElement(classStackIndex)
+     );
+
   if (elem) {
     elem->setDefaultValues(unit);
   }
@@ -127,13 +134,16 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const int unit,
                                 const SbVec2s & size, const int numComponents,
                                 const unsigned char * bytes,
-                                const SoTextureImageElement::Wrap wrapS, 
+                                const SoTextureImageElement::Wrap wrapS,
                                 const SoTextureImageElement::Wrap wrapT,
-                                const SoTextureImageElement::Model model, 
+                                const SoTextureImageElement::Model model,
                                 const SbColor & blendColor)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    state->getElement(classStackIndex);
+  SoMultiTextureImageElement * elem =
+    coin_safe_cast<SoMultiTextureImageElement *>
+    (
+     state->getElement(classStackIndex)
+     );
   if (elem) {
     elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT,
                  model, blendColor);
@@ -153,11 +163,13 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const SoTextureImageElement::Wrap wrapS,
                                 const SoTextureImageElement::Wrap wrapT,
                                 const SoTextureImageElement::Wrap wrapR,
-                                const SoTextureImageElement::Model model, 
+                                const SoTextureImageElement::Model model,
                                 const SbColor & blendColor)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    state->getElement(classStackIndex);
+  SoMultiTextureImageElement * elem = coin_safe_cast<SoMultiTextureImageElement *>
+    (
+     state->getElement(classStackIndex)
+     );
 
   if (elem) {
     elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT, wrapR,
@@ -177,8 +189,11 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 SoTextureImageElement::Model & model,
                                 SbColor &blendColor)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
@@ -208,8 +223,11 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 SoTextureImageElement::Model & model,
                                 SbColor &blendColor)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
@@ -232,8 +250,11 @@ SoMultiTextureImageElement::getImage(SoState * const state,
                                      SbVec2s &size,
                                      int & numComponents)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
 #if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
   if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
@@ -266,8 +287,11 @@ SoMultiTextureImageElement::getImage(SoState * const state,
                                      SbVec3s & size,
                                      int & numComponents)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
 #if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
   if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
@@ -297,8 +321,11 @@ SoMultiTextureImageElement::getImage(SoState * const state,
 SbBool
 SoMultiTextureImageElement::containsTransparency(SoState * const state)
 {
-  const SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   for (int i = 0; i < MAX_UNITS; i++) {
     if (elem->hasTransparency(i)) return TRUE;
@@ -321,7 +348,7 @@ SoMultiTextureImageElement::hasTransparency(const int unit) const
   return (ud.numComponents==2 || ud.numComponents==4);
 }
 
-const SoMultiTextureImageElement::UnitData & 
+const SoMultiTextureImageElement::UnitData &
 SoMultiTextureImageElement::getUnitData(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -352,11 +379,14 @@ SoMultiTextureImageElement::getDefault(SbVec3s & size, int & numComponents)
 }
 
 void
-SoMultiTextureImageElement::push(SoState * state)
+SoMultiTextureImageElement::push(SoState * COIN_UNUSED(state))
 {
-  SoMultiTextureImageElement * prev = (SoMultiTextureImageElement *) 
-    this->getNextInStack();
-  
+  const SoMultiTextureImageElement * prev =
+    coin_assert_cast<SoMultiTextureImageElement *>
+    (
+     this->getNextInStack()
+     );
+
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
   }
@@ -365,8 +395,9 @@ SoMultiTextureImageElement::push(SoState * state)
 SbBool
 SoMultiTextureImageElement::matches(const SoElement * elem) const
 {
-  SoMultiTextureImageElement * e =
-    (SoMultiTextureImageElement *) elem;
+  const SoMultiTextureImageElement * e =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (elem);
   for (int i = 0; i < MAX_UNITS; i++) {
     if (PRIVATE(e)->unitdata[i].nodeid != PRIVATE(this)->unitdata[i].nodeid) {
       return FALSE;
@@ -378,8 +409,8 @@ SoMultiTextureImageElement::matches(const SoElement * elem) const
 SoElement *
 SoMultiTextureImageElement::copyMatchInfo(void) const
 {
-  SoMultiTextureImageElement * elem =
-    (SoMultiTextureImageElement *)(getTypeId().createInstance());
+  SoMultiTextureImageElement * elem = static_cast<SoMultiTextureImageElement *>
+    (getTypeId().createInstance());
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(elem)->unitdata[i].nodeid = PRIVATE(this)->unitdata[i].nodeid;
   }
@@ -393,9 +424,9 @@ void
 SoMultiTextureImageElement::setElt(const int unit,
                                    const uint32_t nodeid,
                                    const SbVec2s &size, const int numComponents,
-                                   const unsigned char * bytes, 
+                                   const unsigned char * bytes,
                                    const SoTextureImageElement::Wrap wrapS,
-                                   const SoTextureImageElement::Wrap wrapT, 
+                                   const SoTextureImageElement::Wrap wrapT,
                                    const SoTextureImageElement::Model model,
                                    const SbColor &blendColor)
 {
@@ -420,9 +451,9 @@ void
 SoMultiTextureImageElement::setElt(const int unit,
                                    const uint32_t nodeid,
                                    const SbVec3s & size, const int numComponents,
-                                   const unsigned char * bytes, 
+                                   const unsigned char * bytes,
                                    const SoTextureImageElement::Wrap wrapS,
-                                   const SoTextureImageElement::Wrap wrapT, 
+                                   const SoTextureImageElement::Wrap wrapT,
                                    const SoTextureImageElement::Wrap wrapR,
                                    const SoTextureImageElement::Model model,
                                    const SbColor &blendColor)
@@ -447,8 +478,11 @@ SoMultiTextureImageElement::setElt(const int unit,
 const SbColor &
 SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].blendColor;
 }
@@ -459,8 +493,11 @@ SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 SoTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].wrapT;
 }
@@ -471,8 +508,11 @@ SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 SoTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].wrapS;
 }
@@ -483,8 +523,11 @@ SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 SoTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].wrapR;
 }
@@ -495,8 +538,11 @@ SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 SoTextureImageElement::Model
 SoMultiTextureImageElement::getModel(SoState * const state, const int unit)
 {
-  SoMultiTextureImageElement * elem = (SoMultiTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoMultiTextureImageElement * elem =
+    coin_assert_cast<const SoMultiTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->unitdata[unit].model;
 }

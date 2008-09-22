@@ -64,7 +64,7 @@
 
 #include <Inventor/system/gl.h>
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoGLShapeHintsElement);
 

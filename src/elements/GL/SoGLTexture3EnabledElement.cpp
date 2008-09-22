@@ -151,7 +151,7 @@ void
 SoGLTexture3EnabledElement::updategl(void)
 {
   const cc_glglue * glw = sogl_glue_instance(this->state);
-  
+
   if (SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) {
     if (this->data) glEnable(GL_TEXTURE_3D);
     else glDisable(GL_TEXTURE_3D);

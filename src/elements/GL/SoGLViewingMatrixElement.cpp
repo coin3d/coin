@@ -125,7 +125,7 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 }
 
 // sends the current viewing matrix to GL. Eliminates the model matrix
-// part of the matrix, since a GL matrix is always located in 0 0 0. 
+// part of the matrix, since a GL matrix is always located in 0 0 0.
 void
 SoGLViewingMatrixElement::updategl(void)
 {
@@ -147,7 +147,7 @@ SoGLViewingMatrixElement::updategl(void)
 
   \since Coin 2.0
 */
-SbMatrix 
+SbMatrix
 SoGLViewingMatrixElement::getResetMatrix(SoState * state)
 {
   if (state->isElementEnabled(SoResetMatrixElement::getClassStackIndex())) {
@@ -155,7 +155,7 @@ SoGLViewingMatrixElement::getResetMatrix(SoState * state)
   }
   const SoGLViewingMatrixElement * element = (const SoGLViewingMatrixElement *)
     SoElement::getConstElement(state, classStackIndex);
-  
+
   SbMatrix mat = element->viewingMatrix;
   if (!element->mmidentity) {
     // first eliminate model matrix part of matrix

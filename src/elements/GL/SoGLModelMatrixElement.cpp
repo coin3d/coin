@@ -90,7 +90,7 @@ SoGLModelMatrixElement::push(SoState * stateptr)
 {
   SoGLModelMatrixElement * prev = (SoGLModelMatrixElement*)
     this->getNextInStack();
-  
+
   // the stackoverflow test makes it possible to have scene graphs
   // with virtually unlimited depth and with transformations inside
   // each separator. If a GL_STACK_OVERFLOW error is encountered,
@@ -100,7 +100,7 @@ SoGLModelMatrixElement::push(SoState * stateptr)
   this->stackoverflow = prev->stackoverflow;
   this->state = prev->state;
   this->viewEltNodeId = prev->viewEltNodeId;
-  
+
   if (COIN_HANDLE_STACK_OVERFLOW > 0) {
     if (!this->stackoverflow) {
       glPushMatrix();

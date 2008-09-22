@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoMaterialBindingElement::Binding
@@ -68,8 +68,9 @@ SoMaterialBindingElement::set(SoState * const state,
                               SoNode * const node,
                               const Binding binding)
 {
-  assert((int)binding >= (int)OVERALL &&
-         (int)binding <= (int)PER_VERTEX_INDEXED);
+  assert(static_cast<int>(binding) >= static_cast<int>(OVERALL) &&
+         static_cast<int>(binding) <= static_cast<int>(PER_VERTEX_INDEXED)
+	 );
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
@@ -97,7 +98,7 @@ SoMaterialBindingElement::set(SoState * const state, const Binding binding)
 SoMaterialBindingElement::Binding
 SoMaterialBindingElement::get(SoState * const state)
 {
-  return (Binding) SoInt32Element::get(classStackIndex, state);
+  return static_cast<Binding>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

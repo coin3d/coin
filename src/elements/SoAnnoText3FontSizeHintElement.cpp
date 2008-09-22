@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoAnnoText3FontSizeHintElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoAnnoText3FontSizeHintElement::FontSizeHint
@@ -96,8 +96,9 @@ SoAnnoText3FontSizeHintElement::set(SoState * const state, const FontSizeHint hi
 SoAnnoText3FontSizeHintElement::FontSizeHint
 SoAnnoText3FontSizeHintElement::get(SoState * const state)
 {
-  return (SoAnnoText3FontSizeHintElement::FontSizeHint)
-    SoInt32Element::get(classStackIndex, state);
+  return static_cast<SoAnnoText3FontSizeHintElement::FontSizeHint>(
+    SoInt32Element::get(classStackIndex, state)
+    );
 }
 
 //! FIXME: write doc.

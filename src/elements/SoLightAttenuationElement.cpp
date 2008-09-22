@@ -29,12 +29,13 @@
   FIXME: write doc.
 */
 
+#include "SbBasicP.h"
+#include "tidbitsp.h"
+
 #include <Inventor/elements/SoLightAttenuationElement.h>
 
-#include <assert.h>
-#include <stdlib.h>
-
-#include "tidbitsp.h"
+#include <cassert>
+#include <cstdlib>
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
@@ -65,7 +66,7 @@ SoLightAttenuationElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
   defaultattenuation = new SbVec3f;
   defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
-  coin_atexit((coin_atexit_f *)SoLightAttenuationElement_cleanup_func, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoLightAttenuationElement_cleanup_func), CC_ATEXIT_NORMAL);
 }
 
 /*!
@@ -83,8 +84,11 @@ SoLightAttenuationElement::set(SoState * const state,
                                SoNode * const node,
                                const SbVec3f & lightAttenuation)
 {
-  SoLightAttenuationElement * element = (SoLightAttenuationElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoLightAttenuationElement * element =
+    coin_safe_cast<SoLightAttenuationElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->lightAttenuation = lightAttenuation;
   }
@@ -95,8 +99,10 @@ SoLightAttenuationElement::set(SoState * const state,
 const SbVec3f &
 SoLightAttenuationElement::get(SoState * const state)
 {
-  SoLightAttenuationElement * element = (SoLightAttenuationElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoLightAttenuationElement * element = coin_assert_cast<const SoLightAttenuationElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->lightAttenuation;
 }
 
@@ -106,7 +112,7 @@ SbBool
 SoLightAttenuationElement::matches(const SoElement * element) const
 {
   if (this->lightAttenuation !=
-      ((SoLightAttenuationElement *)element)->lightAttenuation)
+      coin_assert_cast<const SoLightAttenuationElement *>(element)->lightAttenuation)
     return FALSE;
   return TRUE;
 }
@@ -116,7 +122,7 @@ SoLightAttenuationElement::matches(const SoElement * element) const
 SoElement *
 SoLightAttenuationElement::copyMatchInfo() const
 {
-  SoLightAttenuationElement * element = (SoLightAttenuationElement *)
+  SoLightAttenuationElement * element = static_cast<SoLightAttenuationElement *>
     (SoLightAttenuationElement::getClassTypeId().createInstance());
   element->lightAttenuation = this->lightAttenuation;
   return element;

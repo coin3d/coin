@@ -30,7 +30,7 @@
 
 class SoResetMatrixElement : public SoElement {
   typedef SoElement inherited;
-  
+
   SO_ELEMENT_HEADER(SoResetMatrixElement);
 
 public:

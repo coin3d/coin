@@ -29,11 +29,13 @@
   FIXME: write doc.
 */
 
+#include "tidbitsp.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoFontNameElement.h>
 
-#include <assert.h>
+#include <cassert>
 
-#include "tidbitsp.h"
 
 
 SbName * SoFontNameElement::defaultfontname = NULL;
@@ -58,7 +60,7 @@ SoFontNameElement::initClass(void)
 
   SoFontNameElement::defaultfontname = new SbName("defaultFont");
 
-  coin_atexit((coin_atexit_f *)SoFontNameElement::clean, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoFontNameElement::clean), CC_ATEXIT_NORMAL);
 }
 
 void
@@ -82,8 +84,12 @@ SoFontNameElement::set(SoState * const state,
                        SoNode * const node,
                        const SbName fontName)
 {
-  SoFontNameElement * element = (SoFontNameElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoFontNameElement * element =
+    coin_safe_cast<SoFontNameElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
+
   if (element) {
     element->fontName = fontName;
   }
@@ -94,8 +100,10 @@ SoFontNameElement::set(SoState * const state,
 const SbName &
 SoFontNameElement::get(SoState * const state)
 {
-  SoFontNameElement * element = (SoFontNameElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoFontNameElement * element = coin_assert_cast<const SoFontNameElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->fontName;
 }
 
@@ -104,11 +112,11 @@ SoFontNameElement::get(SoState * const state)
 SbBool
 SoFontNameElement::matches(const SoElement * element) const
 {
-  if ((SoElement *)this == element)
+  if (this == element)
     return TRUE;
   if (element->getTypeId() != SoFontNameElement::getClassTypeId())
     return FALSE;
-  if (this->fontName != ((SoFontNameElement *)element)->fontName)
+  if (this->fontName != coin_assert_cast<const SoFontNameElement *>(element)->fontName)
     return FALSE;
   return TRUE;
 }
@@ -118,8 +126,10 @@ SoFontNameElement::matches(const SoElement * element) const
 SoElement *
 SoFontNameElement::copyMatchInfo(void) const
 {
-  SoFontNameElement * element = (SoFontNameElement *)
-    (SoFontNameElement::getClassTypeId().createInstance());
+  SoFontNameElement * element = static_cast<SoFontNameElement *>
+    (
+     SoFontNameElement::getClassTypeId().createInstance()
+     );
   element->fontName = this->fontName;
   element->nodeId = this->nodeId;
   return element;

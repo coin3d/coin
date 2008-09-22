@@ -33,7 +33,7 @@
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbImage.h>
@@ -129,11 +129,11 @@ SoGLTextureImageElement::pop(SoState * stateptr,
   inherited::pop(stateptr, prevTopElement);
   SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     prevTopElement;
-  
+
   if (prev->glimage && prev->glimage->getImage()) prev->glimage->getImage()->readUnlock();
-  
+
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(stateptr);
-  if (prog) prog->updateCoinParameter(stateptr, SbName("coin_texunit0_model"), 
+  if (prog) prog->updateCoinParameter(stateptr, SbName("coin_texunit0_model"),
                                       this->glimage != NULL ? this->model : 0);
 }
 
@@ -180,9 +180,9 @@ SoGLTextureImageElement::set(SoState * const stateptr, SoNode * const node,
   SoShapeStyleElement::setBigImageEnabled(stateptr,
                                           image && image->isOfType(SoGLBigImage::getClassTypeId()));
   SoShapeStyleElement::setTransparentTexture(stateptr, elem->hasTransparency());
-  
+
   elem->updateLazyElement();
-  
+
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(stateptr);
   if (prog) prog->updateCoinParameter(stateptr, SbName("coin_texunit0_model"), elem->glimage ? elem->model : 0);
 }
@@ -193,7 +193,7 @@ SoGLTextureImageElement::get(SoState * state, Model & model,
 {
   const SoGLTextureImageElement * elem = (const SoGLTextureImageElement*)
     getConstElement(state, classStackIndex);
-  
+
   model = elem->model;
   blendcolor = elem->blendColor;
   return elem->glimage;
@@ -264,18 +264,18 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                                             int bytespertexel)
 {
   const cc_glglue * glw = sogl_glue_instance(this->state);
-  SbBool compress = 
+  SbBool compress =
     this->glimage ? this->glimage->getFlags() & SoGLImage::COMPRESSED : FALSE;
 
-  
+
   GLenum internalformat = coin_glglue_get_internal_texture_format(glw, bytespertexel, compress);
   GLenum format = coin_glglue_get_texture_format(glw, bytespertexel);
 
-  return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
+  return coin_glglue_is_texture_size_legal(glw, xsize, ysize, zsize,
                                            internalformat, format, GL_UNSIGNED_BYTE, TRUE);
 }
 
-void 
+void
 SoGLTextureImageElement::updateLazyElement(void) const
 {
   if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
@@ -283,15 +283,15 @@ SoGLTextureImageElement::updateLazyElement(void) const
     SbBool alphatest = FALSE;
     uint32_t flags = this->glimage ? this->glimage->getFlags() : 0;
     if (flags & SoGLImage::FORCE_ALPHA_TEST_TRUE) {
-      alphatest = TRUE;      
+      alphatest = TRUE;
     }
     else if (flags & SoGLImage::FORCE_ALPHA_TEST_FALSE) {
       alphatest = FALSE;
     }
     else {
-      alphatest = this->glimage && 
-        this->glimage->getImage() && 
-        this->glimage->getImage()->hasData() ? 
+      alphatest = this->glimage &&
+        this->glimage->getImage() &&
+        this->glimage->getImage()->hasData() ?
         this->glimage->useAlphaTest() : FALSE;
     }
     SoLazyElement::setGLImageId(state, glimageid, alphatest);

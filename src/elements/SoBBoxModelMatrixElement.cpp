@@ -63,14 +63,14 @@ SoBBoxModelMatrixElement::init(SoState * stateptr)
 }
 
 //! FIXME: write doc.
-
+#include "SbBasicP.h"
 void
 SoBBoxModelMatrixElement::push(SoState * stateptr)
 {
   inherited::push(stateptr);
 
-  SoBBoxModelMatrixElement * const prev =
-    (SoBBoxModelMatrixElement *)this->getNextInStack();
+  const SoBBoxModelMatrixElement * const prev =
+    coin_assert_cast<const SoBBoxModelMatrixElement *>(this->getNextInStack());
   this->state = prev->state;
 }
 

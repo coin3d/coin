@@ -61,7 +61,7 @@ SoGLVertexAttributeElement::init(SoState * state)
 */
 SoGLVertexAttributeElement::~SoGLVertexAttributeElement()
 {
-  
+
 }
 
 
@@ -78,7 +78,7 @@ typedef SoVertexAttributeData * Type;
 //
 // send attributes to gl
 //
-static void send_attribs(const Key & key, 
+static void send_attribs(const Key & key,
                          const Type & attribdata,
                          void * closure)
 {
@@ -141,14 +141,14 @@ static void send_attribs(const Key & key,
 //
 // get the index of each specified attribute.
 //
-static void query_attribs(const Key & key, 
-                          const Type & attribdata, 
+static void query_attribs(const Key & key,
+                          const Type & attribdata,
                           void * closure)
 {
   SoVertexAttributeData * data = (SoVertexAttributeData *) attribdata;
   const cc_glglue * glue = sogl_glue_instance(data->state);
 
-  SoGLShaderProgram * shaderprogram = 
+  SoGLShaderProgram * shaderprogram =
     static_cast<SoGLShaderProgram *>(SoGLShaderProgramElement::get(data->state));
 
   if (shaderprogram && shaderprogram->glslShaderProgramLinked()) {
@@ -168,9 +168,9 @@ static void query_attribs(const Key & key,
 //
 // enable vertex array rendering, with or without vbo
 //
-static void enable_vbo(const Key & key, 
-                       const Type & attribdata, 
-                       void * closure) 
+static void enable_vbo(const Key & key,
+                       const Type & attribdata,
+                       void * closure)
 {
   SoVertexAttributeData * data = (SoVertexAttributeData *) attribdata;
 
@@ -181,9 +181,9 @@ static void enable_vbo(const Key & key,
   SoGLRenderAction * action = static_cast<SoGLRenderAction *>(closure);
   const cc_glglue * glue = sogl_glue_instance(action->getState());
 
-  const SoCoordinateElement * coords = 
+  const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(action->getState());
-  
+
   assert(coords->getNum() == attribdata->num);
 
   const void * dataptr = NULL;
@@ -194,9 +194,9 @@ static void enable_vbo(const Key & key,
     dataptr = attribdata->dataptr;
   }
 
-  glue->glVertexAttribPointerARB(data->index, 
-                                 attribdata->num, 
-                                 attribdata->gltype, 
+  glue->glVertexAttribPointerARB(data->index,
+                                 attribdata->num,
+                                 attribdata->gltype,
                                  GL_FALSE, 0, dataptr);
 
   glue->glEnableVertexAttribArrayARB(data->index);
@@ -205,9 +205,9 @@ static void enable_vbo(const Key & key,
 //
 // disable vertex array rendering, with or without vbo
 //
-static void disable_vbo(const Key & key, 
-                        const Type & attribdata, 
-                        void * closure) 
+static void disable_vbo(const Key & key,
+                        const Type & attribdata,
+                        void * closure)
 {
   SoVertexAttributeData * data = (SoVertexAttributeData *) attribdata;
   // only disable vertex array rendering for attributes that were
@@ -228,7 +228,7 @@ SoGLVertexAttributeElement::send(const int index) const
 }
 
 //! FIXME: write doc.
-void 
+void
 SoGLVertexAttributeElement::addElt(SoVertexAttributeData * attribdata)
 {
   inherited::addElt(attribdata);
@@ -236,14 +236,14 @@ SoGLVertexAttributeElement::addElt(SoVertexAttributeData * attribdata)
 }
 
 //! FIXME: write doc.
-void 
+void
 SoGLVertexAttributeElement::enableVBO(SoGLRenderAction * action) const
 {
   this->applyToAttributes(enable_vbo, (void *) action);
 }
 
 //! FIXME: write doc.
-void 
+void
 SoGLVertexAttributeElement::disableVBO(SoGLRenderAction * action) const
 {
   this->applyToAttributes(disable_vbo, (void *) action);

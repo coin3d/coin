@@ -27,12 +27,12 @@
   \ingroup elements
 
   This is currently an internal Coin element. The header file is not
-  installed, and the API for this element might change without notice.  
+  installed, and the API for this element might change without notice.
 */
 
 #include "elements/SoTextureScalePolicyElement.h"
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoTextureScalePolicyElement::Policy
@@ -67,7 +67,7 @@ SoTextureScalePolicyElement::set(SoState * const state,
                                  SoNode * const node,
                                  const Policy policy)
 {
-  inherited::set(classStackIndex, state, node, (int) policy);
+  inherited::set(classStackIndex, state, node, static_cast<int>(policy));
 }
 
 //! FIXME: write doc.
@@ -90,7 +90,7 @@ SoTextureScalePolicyElement::set(SoState * const state, const Policy policy)
 SoTextureScalePolicyElement::Policy
 SoTextureScalePolicyElement::get(SoState * const state)
 {
-  return (Policy) SoInt32Element::get(classStackIndex, state);
+  return static_cast<Policy>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

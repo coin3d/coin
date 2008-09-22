@@ -35,7 +35,7 @@
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/C/glue/gl.h>
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

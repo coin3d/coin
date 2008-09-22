@@ -32,8 +32,11 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbColor.h>
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
 
 SO_ELEMENT_SOURCE(SoAmbientColorElement);
 
@@ -68,7 +71,7 @@ SoAmbientColorElement::~SoAmbientColorElement()
 //! FIXME: write doc.
 
 void
-SoAmbientColorElement::set(SoState * const state, SoNode * const node,
+SoAmbientColorElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
                            const int32_t numcolors,
                            const SbColor * const colors)
 {
@@ -109,10 +112,10 @@ SoAmbientColorElement::getArrayPtr(void) const
 }
 
 //! FIXME: write doc.
-
 const SoAmbientColorElement *
 SoAmbientColorElement::getInstance(SoState *state)
 {
-  return (const SoAmbientColorElement *)
-    state->getElementNoPush(classStackIndex);
+  return coin_assert_cast<const SoAmbientColorElement *>(
+    state->getElementNoPush(classStackIndex)
+    );
 }

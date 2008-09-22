@@ -38,8 +38,8 @@
 
 #include <Inventor/elements/SoGLDisplayList.h>
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/caches/SoGLRenderCache.h>

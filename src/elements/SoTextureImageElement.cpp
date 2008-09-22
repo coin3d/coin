@@ -30,11 +30,15 @@
 */
 
 #include <Inventor/elements/SoTextureImageElement.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoTextureImageElement::Model
@@ -148,10 +152,12 @@ SoTextureImageElement::setDefaultValues()
   Resets this element to its original values.
 */
 void
-SoTextureImageElement::setDefault(SoState * const state, SoNode * const node)
+SoTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNUSED(node))
 {
-  SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getElement(classStackIndex);
+  SoTextureImageElement * elem = coin_safe_cast<SoTextureImageElement *>
+    (
+     state->getElement(classStackIndex)
+     );
   if (elem) {
     elem->setDefaultValues();
   }
@@ -159,14 +165,16 @@ SoTextureImageElement::setDefault(SoState * const state, SoNode * const node)
 
 //! FIXME: write doc.
 void
-SoTextureImageElement::set(SoState * const state, SoNode * const node,
+SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
                            const SbVec2s & size, const int numComponents,
                            const unsigned char * bytes,
                            const Wrap wrapS, const Wrap wrapT,
                            const Model model, const SbColor & blendColor)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement *)
-    state->getElement(classStackIndex);
+  SoTextureImageElement * elem = coin_safe_cast<SoTextureImageElement *>
+    (
+     state->getElement(classStackIndex)
+     );
   if (elem) {
     elem->setElt(size, numComponents, bytes, wrapS, wrapT,
                  model, blendColor);
@@ -181,16 +189,18 @@ SoTextureImageElement::set(SoState * const state, SoNode * const node,
   \since Coin 2.0
 */
 void
-SoTextureImageElement::set(SoState * const state, SoNode * const node,
+SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
                            const SbVec3s & size, const int numComponents,
                            const unsigned char * bytes,
-                           const Wrap wrapS, 
-                           const Wrap wrapT, 
+                           const Wrap wrapS,
+                           const Wrap wrapT,
                            const Wrap wrapR,
                            const Model model, const SbColor & blendColor)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement*)
-    state->getElement(classStackIndex);
+  SoTextureImageElement * elem = coin_safe_cast<SoTextureImageElement *>
+    (
+     state->getElement(classStackIndex)
+     );
 
   if (elem) {
     elem->setElt(size, numComponents, bytes, wrapS, wrapT, wrapR,
@@ -225,7 +235,7 @@ void SoTextureImageElement::set(SoState * const state, SoNode * const node,
 void SoTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const SbVec3s & size, const int numComponents,
                                 const unsigned char * bytes, const int wrapS,
-                                const int wrapT, const int wrapR, 
+                                const int wrapT, const int wrapR,
                                 const int model,
                                 const SbColor & blendColor)
 {
@@ -248,14 +258,16 @@ SoTextureImageElement::get(SoState * const state,
                            Model & model,
                            SbColor &blendColor)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem = coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   wrapS = elem->wrapS;
   wrapT = elem->wrapT;
   model = elem->model;
   blendColor = elem->blendColor;
-  
+
   return getImage(state, size, numComponents);
 }
 
@@ -276,15 +288,17 @@ SoTextureImageElement::get(SoState * const state,
                            Model & model,
                            SbColor &blendColor)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem = coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   wrapS = elem->wrapS;
   wrapT = elem->wrapT;
   wrapR = elem->wrapR;
   model = elem->model;
   blendColor = elem->blendColor;
-  
+
   return getImage(state, size, numComponents);
 }
 
@@ -297,11 +311,12 @@ SoTextureImageElement::get(SoState * const state, SbVec2s & size,
                            int & numComponents, int & wrapS,
                            int & wrapT, int & model, SbColor & blendColor)
 {
-  return SoTextureImageElement::get(state, size, numComponents,
-                                    (SoTextureImageElement::Wrap &)wrapS,
-                                    (SoTextureImageElement::Wrap &)wrapT,
-                                    (SoTextureImageElement::Model &)model,
-                                    blendColor);
+  return
+    SoTextureImageElement::get(state, size, numComponents,
+			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapS),
+			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapT),
+			       reinterpret_cast<SoTextureImageElement::Model &>(model),
+			       blendColor);
 }
 /*!
   FIXME: write doc.
@@ -313,15 +328,16 @@ SoTextureImageElement::get(SoState * const state, SbVec2s & size,
 const unsigned char *
 SoTextureImageElement::get(SoState * const state, SbVec3s & size,
                            int & numComponents, int & wrapS,
-                           int & wrapT, int & wrapR, 
+                           int & wrapT, int & wrapR,
                            int & model, SbColor & blendColor)
 {
-  return SoTextureImageElement::get(state, size, numComponents,
-                                    (SoTextureImageElement::Wrap &)wrapS,
-                                    (SoTextureImageElement::Wrap &)wrapT,
-                                    (SoTextureImageElement::Wrap &)wrapR,
-                                    (SoTextureImageElement::Model &)model,
-                                    blendColor);
+  return
+    SoTextureImageElement::get(state, size, numComponents,
+			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapS),
+			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapT),
+			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapR),
+			       reinterpret_cast<SoTextureImageElement::Model &>(model),
+			       blendColor);
 }
 
 //! FIXME: write doc.
@@ -329,8 +345,11 @@ SoTextureImageElement::get(SoState * const state, SbVec3s & size,
 SbBool
 SoTextureImageElement::containsTransparency(SoState * const state)
 {
-  const SoTextureImageElement * elem = (SoTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem =
+    coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   return elem->hasTransparency();
 }
@@ -361,7 +380,7 @@ SoTextureImageElement::getDefault(SbVec2s & size, int & numComponents)
 
 /*!
   FIXME: write doc.
- 
+
   \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
@@ -402,7 +421,7 @@ SoTextureImageElement::setElt(const SbVec2s &sizearg, const int numComponentsarg
 void
 SoTextureImageElement::setElt(const SbVec3s &sizearg, const int numComponentsarg,
                               const unsigned char * bytesarg, const Wrap wrapSarg,
-                              const Wrap wrapTarg, const Wrap wrapRarg, 
+                              const Wrap wrapTarg, const Wrap wrapRarg,
                               const Model modelarg,
                               const SbColor &blendColorarg)
 {
@@ -419,8 +438,10 @@ SoTextureImageElement::setElt(const SbVec3s &sizearg, const int numComponentsarg
 const SbColor &
 SoTextureImageElement::getBlendColor(SoState * const state)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem = coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return elem->blendColor;
 }
 
@@ -429,8 +450,11 @@ SoTextureImageElement::getImage(SoState * const state,
                                 SbVec2s &size,
                                 int &numComponents)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  //FIXME: This function does things which make no sense. BFG 20080919
+  const SoTextureImageElement * elem = static_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   if (elem->getTypeId().isDerivedFrom(SoGLTextureImageElement::getClassTypeId())) {
     Model dummy1;
@@ -459,8 +483,11 @@ SoTextureImageElement::getImage(SoState * const state,
                                 SbVec3s &size,
                                 int &numComponents)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement*)
-    getConstElement(state, classStackIndex);
+  //FIXME: This function does things which make no sense. BFG 20080919
+  const SoTextureImageElement * elem = static_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 
   if (elem->getTypeId().isDerivedFrom(SoGLTextureImageElement::getClassTypeId())) {
     Model dummy1;
@@ -482,20 +509,26 @@ SoTextureImageElement::getImage(SoState * const state,
 SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapS(SoState * const state)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem =
+    coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return elem->wrapT;
 }
 
 SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapT(SoState * const state)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem =
+    coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return elem->wrapS;
 }
 
-/*! 
+/*!
   \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
@@ -503,15 +536,20 @@ SoTextureImageElement::getWrapT(SoState * const state)
 SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapR(SoState * const state)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem = coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return elem->wrapR;
 }
 
 SoTextureImageElement::Model
 SoTextureImageElement::getModel(SoState * const state)
 {
-  SoTextureImageElement * elem = (SoTextureImageElement *)
-    getConstElement(state, classStackIndex);
+  const SoTextureImageElement * elem =
+    coin_assert_cast<const SoTextureImageElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return elem->model;
 }

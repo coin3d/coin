@@ -32,6 +32,8 @@
   \since Coin 2.2
 */
 
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
 
 #define MAX_UNITS 16
@@ -71,11 +73,13 @@ SoMultiTextureMatrixElement::~SoMultiTextureMatrixElement(void)
 }
 
 
-void 
+void
 SoMultiTextureMatrixElement::set(SoState * const state, SoNode * const node, const int unit, const SbMatrix & matrix)
 {
-  SoMultiTextureMatrixElement *elem = (SoMultiTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoMultiTextureMatrixElement * elem = coin_assert_cast<SoMultiTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   elem->setElt(unit, matrix);
   if (node) elem->addNodeId(node);
 }
@@ -90,8 +94,10 @@ SoMultiTextureMatrixElement::mult(SoState * const state,
                                   const int unit,
                                   const SbMatrix & matrix)
 {
-  SoMultiTextureMatrixElement *elem = (SoMultiTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoMultiTextureMatrixElement * elem = coin_assert_cast<SoMultiTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   elem->multElt(unit, matrix);
   if (node) elem->addNodeId(node);
 }
@@ -102,8 +108,11 @@ SoMultiTextureMatrixElement::mult(SoState * const state,
 const SbMatrix &
 SoMultiTextureMatrixElement::get(SoState * const state, const int unit)
 {
-  SoMultiTextureMatrixElement *elem = (SoMultiTextureMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoMultiTextureMatrixElement * elem =
+    coin_assert_cast<const SoMultiTextureMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->getElt(unit);
 }
 
@@ -171,8 +180,12 @@ SoMultiTextureMatrixElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoMultiTextureMatrixElement * prev =
-    (SoMultiTextureMatrixElement *) this->getNextInStack();
+  const SoMultiTextureMatrixElement * prev =
+    coin_assert_cast<const SoMultiTextureMatrixElement *>
+    (
+     this->getNextInStack()
+     );
+
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];;
   }

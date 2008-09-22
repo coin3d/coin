@@ -33,7 +33,7 @@
 
 #include <Inventor/elements/SoGLLightIdElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -115,7 +115,7 @@ SoGLLightIdElement::increment(SoState * const state,
 {
   SoGLLightIdElement * element = (SoGLLightIdElement *)
     getElement(state, getClassStackIndex());
-  
+
   if (element) {
     const cc_glglue * glue = sogl_glue_instance(state);
     element->data++;
@@ -134,7 +134,7 @@ SoGLLightIdElement::increment(SoState * const state,
                                   "number of concurrent light sources "
                                   "supported by this OpenGL implementation. "
                                   "Some light sources will be ignored.\n\n"
-                                  
+
                                   "(Note to application "
                                   "programmers: this error is often caused by "
                                   "a missing SoState::pop() call in extension "
@@ -147,7 +147,7 @@ SoGLLightIdElement::increment(SoState * const state,
       return -1;
     }
     glEnable((GLenum)((int32_t)GL_LIGHT0 + element->data));
-    
+
     return element->data;
   }
   return -1;
@@ -171,8 +171,8 @@ SoGLLightIdElement::getMaxGLSources(void)
 
   GLint val;
   glGetIntegerv(GL_MAX_LIGHTS, &val);
-  
-  GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR; 
+
+  GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
   assert(err == GL_NO_ERROR &&
          "GL error when calling glGetInteger() -- no current GL context?");
 

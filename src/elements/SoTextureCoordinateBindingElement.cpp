@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoTextureCoordinateBindingElement::Binding
@@ -97,7 +97,7 @@ SoTextureCoordinateBindingElement::set(SoState * const state,
 SoTextureCoordinateBindingElement::Binding
 SoTextureCoordinateBindingElement::get(SoState * const state)
 {
-  return (Binding)SoInt32Element::get(classStackIndex, state);
+  return static_cast<Binding>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

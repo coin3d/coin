@@ -31,11 +31,12 @@
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 
-#include <assert.h>
+#include "tidbitsp.h"
+#include "SbBasicP.h"
+
+#include <cassert>
 
 #include <Inventor/nodes/SoNode.h>
-
-#include "tidbitsp.h"
 
 SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;
 
@@ -73,7 +74,7 @@ SoProfileCoordinateElement::initClass(void)
 
   SoProfileCoordinateElement::initdefaultcoords = new SbVec2f(0.0f, 0.0f);
 
-  coin_atexit((coin_atexit_f *)SoProfileCoordinateElement::clean, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoProfileCoordinateElement::clean), CC_ATEXIT_NORMAL);
 }
 
 void
@@ -112,7 +113,7 @@ SoProfileCoordinateElement::set2(SoState * const state,
 {
   assert(numCoords >= 0);
   SoProfileCoordinateElement * element =
-    (SoProfileCoordinateElement *)
+    coin_safe_cast<SoProfileCoordinateElement *>
     (getElement(state, classStackIndex, NULL));
   if (element) {
     element->numCoords = numCoords;
@@ -134,7 +135,7 @@ SoProfileCoordinateElement::set3(SoState * const state,
 {
   assert(numCoords >= 0);
   SoProfileCoordinateElement * element =
-    (SoProfileCoordinateElement *)
+    coin_safe_cast<SoProfileCoordinateElement *>
     (getElement(state, classStackIndex, NULL));
   if (element) {
     element->numCoords = numCoords;
@@ -151,7 +152,7 @@ SoProfileCoordinateElement::set3(SoState * const state,
 const SoProfileCoordinateElement *
 SoProfileCoordinateElement::getInstance(SoState * const state)
 {
-  return (const SoProfileCoordinateElement *)
+  return coin_assert_cast<const SoProfileCoordinateElement *>
     (SoElement::getConstElement(state, classStackIndex));
 }
 
@@ -218,7 +219,7 @@ SoProfileCoordinateElement::getDefault3(void)
 /*!
   Returns a pointer to the 2D coordinates.
 */
-const SbVec2f * 
+const SbVec2f *
 SoProfileCoordinateElement::getArrayPtr2(void) const
 {
   return this->coords2;
@@ -227,7 +228,7 @@ SoProfileCoordinateElement::getArrayPtr2(void) const
 /*!
   Returns a pointer to the 3D coordinates.
 */
-const SbVec3f * 
+const SbVec3f *
 SoProfileCoordinateElement::getArrayPtr3(void) const
 {
   return this->coords3;

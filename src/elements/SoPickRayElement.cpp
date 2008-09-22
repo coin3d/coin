@@ -31,6 +31,8 @@
 
 #include <Inventor/elements/SoPickRayElement.h>
 
+#include "SbBasicP.h"
+
 /*!
   \fn SoPickRayElement::volume
 
@@ -79,10 +81,10 @@ SoPickRayElement::matches(const SoElement * /* element */) const
 SoElement *
 SoPickRayElement::copyMatchInfo() const
 {
-  SoPickRayElement *element =
-    (SoPickRayElement *)(getTypeId().createInstance());
+  SoPickRayElement * element =
+    static_cast<SoPickRayElement *>(getTypeId().createInstance());
   // no use copying any data. matches() will always return false.
-  return (SoElement*)element;
+  return element;
 }
 
 //! FIXME: write doc.
@@ -91,8 +93,10 @@ void
 SoPickRayElement::set(SoState * const state,
                       const SbViewVolume & volume)
 {
-  SoPickRayElement *elem = (SoPickRayElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoPickRayElement * elem = coin_safe_cast<SoPickRayElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->volume = volume;
   }
@@ -103,8 +107,10 @@ SoPickRayElement::set(SoState * const state,
 const SbViewVolume &
 SoPickRayElement::get(SoState * const state)
 {
-  SoPickRayElement *elem = (SoPickRayElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoPickRayElement * elem = coin_assert_cast<const SoPickRayElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->volume;
 }
 

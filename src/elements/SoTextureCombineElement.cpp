@@ -34,11 +34,15 @@
 */
 
 #include <Inventor/elements/SoTextureCombineElement.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/system/gl.h>
-#include <assert.h>
-#include <string.h>
+#include <cassert>
+#include <cstring>
 
 #define MAX_UNITS 16 // FIXME: make dynamic?????
 
@@ -116,10 +120,12 @@ SoTextureCombineElement::set(SoState * const state, SoNode * const node,
                              const float rgbscale,
                              const float alphascale)
 {
-  SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    state->getElement(classStackIndex);
+  SoTextureCombineElement * elem = coin_safe_cast<SoTextureCombineElement *>
+    (
+     state->getElement(classStackIndex)
+     );
   if (elem) {
-    elem->setElt(unit, node->getNodeId(), 
+    elem->setElt(unit, node->getNodeId(),
                  rgboperation,
                  alphaoperation,
                  rgbsource,
@@ -148,9 +154,12 @@ SoTextureCombineElement::get(SoState * const state,
                              float & rgbscale,
                              float & alphascale)
 {
-  SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    getConstElement(state, classStackIndex);
-  
+  const SoTextureCombineElement * elem =
+    coin_assert_cast<const SoTextureCombineElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
+
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
 
@@ -166,20 +175,23 @@ SoTextureCombineElement::get(SoState * const state,
 }
 
 
-SbBool 
+SbBool
 SoTextureCombineElement::isDefault(SoState * const state,
                                    const int unit)
 {
-  SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    getConstElement(state, classStackIndex);
-  
+  const SoTextureCombineElement * elem =
+    coin_assert_cast<const SoTextureCombineElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
+
   assert(unit >= 0 && unit < MAX_UNITS);
-  
+
   return PRIVATE(elem)->unitdata[unit].nodeid == 0;
 }
 
 
-const SoTextureCombineElement::UnitData & 
+const SoTextureCombineElement::UnitData &
 SoTextureCombineElement::getUnitData(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -187,11 +199,13 @@ SoTextureCombineElement::getUnitData(const int unit) const
 }
 
 void
-SoTextureCombineElement::push(SoState * state)
+SoTextureCombineElement::push(SoState * COIN_UNUSED(state))
 {
-  SoTextureCombineElement * prev = (SoTextureCombineElement *) 
-    this->getNextInStack();
-  
+  const SoTextureCombineElement * prev = coin_assert_cast<SoTextureCombineElement *>
+    (
+     this->getNextInStack()
+     );
+
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
   }
@@ -200,8 +214,8 @@ SoTextureCombineElement::push(SoState * state)
 SbBool
 SoTextureCombineElement::matches(const SoElement * elem) const
 {
-  SoTextureCombineElement * e =
-    (SoTextureCombineElement *) elem;
+  const SoTextureCombineElement * e =
+    coin_assert_cast<const SoTextureCombineElement *>(elem);
   for (int i = 0; i < MAX_UNITS; i++) {
     if (PRIVATE(e)->unitdata[i].nodeid != PRIVATE(this)->unitdata[i].nodeid) {
       return FALSE;
@@ -214,7 +228,7 @@ SoElement *
 SoTextureCombineElement::copyMatchInfo(void) const
 {
   SoTextureCombineElement * elem =
-    (SoTextureCombineElement *)(getTypeId().createInstance());
+    static_cast<SoTextureCombineElement *>(getTypeId().createInstance());
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(elem)->unitdata[i].nodeid = PRIVATE(this)->unitdata[i].nodeid;
   }
@@ -253,36 +267,39 @@ SoTextureCombineElement::setElt(const int unit,
   ud.alphascale = alphascale;
 }
 
-void 
+void
 SoTextureCombineElement::apply(SoState * state, const int unit)
 {
-  SoTextureCombineElement * elem = (SoTextureCombineElement *)
-    getConstElement(state, classStackIndex);
-  
+  const SoTextureCombineElement * elem =
+    coin_assert_cast<const SoTextureCombineElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
+
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
 
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
-  glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, (GLenum) ud.rgboperation);
-  glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, (GLenum) ud.alphaoperation);
-   
-  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, (GLenum) ud.rgbsource[0]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, (GLenum) ud.rgbsource[1]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, (GLenum) ud.rgbsource[2]);
+  glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, static_cast<GLenum>(ud.rgboperation));
+  glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, static_cast<GLenum>(ud.alphaoperation));
 
-  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, (GLenum) ud.alphasource[0]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, (GLenum) ud.alphasource[1]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, (GLenum) ud.alphasource[2]);
+  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, static_cast<GLenum>(ud.rgbsource[0]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, static_cast<GLenum>(ud.rgbsource[1]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, static_cast<GLenum>(ud.rgbsource[2]));
 
-  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, (GLenum) ud.rgboperand[0]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, (GLenum) ud.rgboperand[1]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, (GLenum) ud.rgboperand[2]);
+  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, static_cast<GLenum>(ud.alphasource[0]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, static_cast<GLenum>(ud.alphasource[1]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, static_cast<GLenum>(ud.alphasource[2]));
 
-  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, (GLenum) ud.alphaoperand[0]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, (GLenum) ud.alphaoperand[1]);
-  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, (GLenum) ud.alphaoperand[2]);
+  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, static_cast<GLenum>(ud.rgboperand[0]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, static_cast<GLenum>(ud.rgboperand[1]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, static_cast<GLenum>(ud.rgboperand[2]));
 
-  glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, 
+  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, static_cast<GLenum>(ud.alphaoperand[0]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, static_cast<GLenum>(ud.alphaoperand[1]));
+  glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, static_cast<GLenum>(ud.alphaoperand[2]));
+
+  glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
              ud.constantcolor.getValue());
   glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE, ud.rgbscale);
   glTexEnvf(GL_TEXTURE_ENV, GL_ALPHA_SCALE, ud.alphascale);

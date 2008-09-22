@@ -29,7 +29,8 @@
 
 // *************************************************************************
 
-#include <assert.h>
+#include <cassert>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -60,7 +61,7 @@ public:
     TEXCOORD4
   };
   SendLookup sendlookup;
-  
+
   void * texgenData;
   const SoGLMultiTextureCoordinateElement * multielem;
   const SbBool * multienabled;
@@ -69,9 +70,9 @@ public:
 
 // FIXME: before Coin 3.0, replace texgenData with a pimpl member.
 // This is temporary code for Coin-2, but is also in Coin developement
-// to make it easier to sync the files while developing.  
+// to make it easier to sync the files while developing.
 // pederb, 2003-10-27
-COMPILE_ONLY_BEFORE_NOFUNCTION(3,1,0)
+COMPILE_ONLY_BEFORE_NOFUNCTION(3,1,0);
 #define PRIVATE(obj) ((SoGLTextureCoordinateElementP*)(obj->texgenData))
 
 // *************************************************************************
@@ -228,9 +229,9 @@ SoGLTextureCoordinateElement::send(const int index) const
     break;
   }
 
-  const SoGLMultiTextureCoordinateElement * multielem = 
+  const SoGLMultiTextureCoordinateElement * multielem =
     PRIVATE(this)->multielem;
-  
+
   if (multielem) {
     // FIXME: make an optimized loop in SoGLMulteTextureCoordinateElement?
     const int num = PRIVATE(this)->multimax;
@@ -251,8 +252,8 @@ SoGLTextureCoordinateElement::send(const int index,
   // Check for out-of-array-bounds errors.
   switch (PRIVATE(this)->sendlookup) {
   case SoGLTextureCoordinateElementP::TEXCOORD2:
-  case SoGLTextureCoordinateElementP::TEXCOORD3: 
-  case SoGLTextureCoordinateElementP::TEXCOORD4: 
+  case SoGLTextureCoordinateElementP::TEXCOORD3:
+  case SoGLTextureCoordinateElementP::TEXCOORD4:
     assert((index >= 0) && "negative array index, something is seriously wrong");
     if (index >= this->numCoords) {
       static SbBool first = TRUE;
@@ -282,19 +283,19 @@ SoGLTextureCoordinateElement::send(const int index,
   case SoGLTextureCoordinateElementP::TEXCOORD2:
     glTexCoord2fv(coords2[index].getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD3: 
+  case SoGLTextureCoordinateElementP::TEXCOORD3:
     glTexCoord3fv(coords3[index].getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD4: 
+  case SoGLTextureCoordinateElementP::TEXCOORD4:
     glTexCoord4fv(coords4[index].getValue());
     break;
   default:
     assert(0 && "should not happen");
     break;
   }
-  const SoGLMultiTextureCoordinateElement * multielem = 
+  const SoGLMultiTextureCoordinateElement * multielem =
     PRIVATE(this)->multielem;
-  
+
   if (multielem) {
     // FIXME: make am optimized loop in SoGLMulteTextureCoordinateElement?
     const int num = PRIVATE(this)->multimax;
@@ -309,7 +310,7 @@ SoGLTextureCoordinateElement::send(const int index,
 
   \internal
 */
-void 
+void
 SoGLTextureCoordinateElement::initMulti(SoState * state) const
 {
   PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
@@ -348,9 +349,9 @@ SoGLTextureCoordinateElement::initMulti(SoState * state) const
       break;
     }
   }
-  
+
   PRIVATE(this)->multielem = NULL;
-  PRIVATE(this)->multienabled = SoMultiTextureEnabledElement::getEnabledUnits(state, 
+  PRIVATE(this)->multienabled = SoMultiTextureEnabledElement::getEnabledUnits(state,
                                                                               PRIVATE(this)->multimax);
   if (PRIVATE(this)->multienabled && PRIVATE(this)->multimax >= 1) {
     PRIVATE(this)->multielem = SoGLMultiTextureCoordinateElement::getInstance(state);

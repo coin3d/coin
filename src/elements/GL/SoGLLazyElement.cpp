@@ -38,7 +38,7 @@
 
 #include <Inventor/elements/SoGLLazyElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbImage.h>
@@ -206,8 +206,8 @@ inline void
 SoGLLazyElement::sendPackedDiffuse(const uint32_t col) const
 {
   glColor4ub((unsigned char)((col>>24)&0xff),
-             (unsigned char)((col>>16)&0xff), 
-             (unsigned char)((col>>8)&0xff), 
+             (unsigned char)((col>>16)&0xff),
+             (unsigned char)((col>>8)&0xff),
              (unsigned char)(col&0xff));
   ((SoGLLazyElement*)this)->glstate.diffuse = col;
   ((SoGLLazyElement*)this)->cachebitmask |= DIFFUSE_MASK;
@@ -402,21 +402,21 @@ SoGLLazyElement::enableBlending(const int sfactor, const int dfactor) const
   glBlendFunc((GLenum) sfactor, (GLenum) dfactor);
   ((SoGLLazyElement*)this)->glstate.blending = TRUE;
   ((SoGLLazyElement*)this)->glstate.blend_sfactor = sfactor;
-  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;  
+  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;
   ((SoGLLazyElement*)this)->glstate.alpha_blend_sfactor = 0;
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = 0;  
+  ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = 0;
   ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
 }
 
 inline void
 SoGLLazyElement::enableSeparateBlending(const cc_glglue * glue,
-                                        const int sfactor, 
+                                        const int sfactor,
                                         const int dfactor,
                                         const int alpha_sfactor,
                                         const int alpha_dfactor) const
 {
   glEnable(GL_BLEND);
-  
+
   if (cc_glglue_has_blendfuncseparate(glue)) {
     cc_glglue_glBlendFuncSeparate(glue, sfactor, dfactor, alpha_sfactor, alpha_dfactor);
   }
@@ -426,7 +426,7 @@ SoGLLazyElement::enableSeparateBlending(const cc_glglue * glue,
   }
   ((SoGLLazyElement*)this)->glstate.blending = TRUE;
   ((SoGLLazyElement*)this)->glstate.blend_sfactor = sfactor;
-  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;  
+  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;
   ((SoGLLazyElement*)this)->glstate.alpha_blend_sfactor = alpha_sfactor;
   ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = alpha_dfactor;
   ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
@@ -581,7 +581,7 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
     uint32_t col = this->packedpointer[safeindex] | this->transpmask;
     // this test is really not necessary. SoMaterialBundle does the
     // same test.  We also need to send the color here to work around
-    // an nVIDIA bug 
+    // an nVIDIA bug
     // if (col != this->glstate.diffuse)
     this->sendPackedDiffuse(col);
   }
@@ -670,7 +670,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
         break;
       case BLENDING_CASE:
         if (this->coinstate.blending) {
-          if (this->glstate.blending != this->coinstate.blending || 
+          if (this->glstate.blending != this->coinstate.blending ||
               this->coinstate.blend_sfactor != this->glstate.blend_sfactor ||
               this->coinstate.blend_dfactor != this->glstate.blend_dfactor ||
               this->coinstate.alpha_blend_sfactor != this->glstate.alpha_blend_sfactor ||
@@ -678,7 +678,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
             if ((this->coinstate.alpha_blend_sfactor != 0) &&
                 (this->coinstate.alpha_blend_dfactor != 0)) {
               this->enableSeparateBlending(cc_glglue_instance(SoGLCacheContextElement::get((SoState*)stateptr)),
-                                           this->coinstate.blend_sfactor, 
+                                           this->coinstate.blend_sfactor,
                                            this->coinstate.blend_dfactor,
                                            this->coinstate.alpha_blend_sfactor,
                                            this->coinstate.alpha_blend_dfactor);
@@ -1098,7 +1098,7 @@ SoGLLazyElement::endCaching(SoState * state)
   // cache.
   if (elem->opencacheflags & FLAG_DIFFUSE_DEPENDENCY) {
     elem->precachestate->cachebitmask |= DIFFUSE_MASK;
-  } 
+  }
 
   elem->precachestate = NULL;
   elem->postcachestate = NULL;
@@ -1304,7 +1304,7 @@ SoGLLazyElement::lazyDidntSet(uint32_t mask)
   this->didntsetbitmask |= mask&(~this->didsetbitmask);
 }
 
-void 
+void
 SoGLLazyElement::updateColorVBO(SoVBO * vbo)
 {
   if (this->colorpacker) {
@@ -1328,7 +1328,7 @@ SoGLLazyElement::updateColorVBO(SoVBO * vbo)
                                maxid);
         for (int i = 0; i < n; i++) {
           uint32_t tmp = src[i];
-          dst[i] = 
+          dst[i] =
             (tmp << 24) |
             ((tmp & 0xff00) << 8) |
             ((tmp & 0xff0000) >> 8) |
@@ -1339,11 +1339,11 @@ SoGLLazyElement::updateColorVBO(SoVBO * vbo)
   }
 }
 
-/*!  
+/*!
   Merge cache info from a child cache (when doing nested caching)
-  into the current cache.  
+  into the current cache.
 */
-void 
+void
 SoGLLazyElement::mergeCacheInfo(SoState * state,
                                 SoGLLazyElement::GLState * childprestate,
                                 SoGLLazyElement::GLState * childpoststate)
@@ -1352,10 +1352,10 @@ SoGLLazyElement::mergeCacheInfo(SoState * state,
 
   // just add pre-dependencies from child cache
   elt->lazyDidntSet(childprestate->cachebitmask);
-  
+
   // update current element's didsetbitmask
   elt->lazyDidSet(childpoststate->cachebitmask);
-  
+
   // also update cachebitmask so that the current cache knows about the changes
   // done by the child cache
   elt->cachebitmask |= childpoststate->cachebitmask;

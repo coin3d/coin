@@ -34,7 +34,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoDrawStyleElement::Style
@@ -79,8 +79,8 @@ SoDrawStyleElement::set(SoState * const state,
                         SoNode * const node,
                         const Style style)
 {
-  SoInt32Element::set(classStackIndex, state, node, (int32_t)style);
-  SoShapeStyleElement::setDrawStyle(state, (int32_t)style);
+  SoInt32Element::set(classStackIndex, state, node, static_cast<int32_t>(style));
+  SoShapeStyleElement::setDrawStyle(state, static_cast<int32_t>(style));
 }
 
 //! FIXME: write doc.
@@ -98,7 +98,7 @@ SoDrawStyleElement::set(SoState * const state, const Style style)
 SoDrawStyleElement::Style
 SoDrawStyleElement::get(SoState * const state)
 {
-  return (Style) inherited::get(classStackIndex, state);
+  return static_cast<Style>(inherited::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

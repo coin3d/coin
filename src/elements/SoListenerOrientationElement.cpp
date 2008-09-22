@@ -26,29 +26,33 @@
   \brief The SoListenerOrientationElement holds the orientation of the current listener.
   \ingroup elements
 
-  This orientation is set by SoListener nodes and SoCamera Nodes during 
-  audio rendering. When a SoListener is visited by the SoAudioRenderAction, 
-  it will add a new SoListenerOrientationElement to the state, holding it's 
-  orientation and with the setbylistener flag set. When a SoCamera is 
-  visited by SoAudioRenderAction, it will add a new 
-  SoListenerOrientationElement only if there are no previous elements with 
-  the setbylistener flag set. 
+  This orientation is set by SoListener nodes and SoCamera Nodes during
+  audio rendering. When a SoListener is visited by the SoAudioRenderAction,
+  it will add a new SoListenerOrientationElement to the state, holding it's
+  orientation and with the setbylistener flag set. When a SoCamera is
+  visited by SoAudioRenderAction, it will add a new
+  SoListenerOrientationElement only if there are no previous elements with
+  the setbylistener flag set.
 
-  The SoListenerOrientationElement is used when the SoVRMLSound nodes render 
-  themselves. 
+  The SoListenerOrientationElement is used when the SoVRMLSound nodes render
+  themselves.
 
   \COIN_CLASS_EXTENSION
-  
+
   \since Coin 2.0
 */
 
 #include <Inventor/elements/SoListenerOrientationElement.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/nodes/SoNode.h>
 
 /*!
   \fn SoListenerOrientationElement::orientation
 
-  The orientation of the listener. Can be set by the SoListener class 
+  The orientation of the listener. Can be set by the SoListener class
   or the SoCamera class.
 */
 
@@ -73,9 +77,9 @@ SoListenerOrientationElement::~SoListenerOrientationElement(void)
 {
 }
 
-/*! 
-  Initializes the element to it's default value. The default 
-  value for the orientation is (0.0f, 0.0f, 1.0f, 0.0f) and the 
+/*!
+  Initializes the element to it's default value. The default
+  value for the orientation is (0.0f, 0.0f, 1.0f, 0.0f) and the
   default value for the setByListener flag is FALSE.
 */
 
@@ -87,20 +91,22 @@ SoListenerOrientationElement::init(SoState * state)
   this->setbylistener = FALSE;
 }
 
-/*! 
+/*!
   Sets the current listener orientation, and indicates if it was set
   by a SoListener node or a SoCamera node.
 */
 
 void
 SoListenerOrientationElement::set(SoState * const state,
-                                  SoNode * const node,
-                                  const SbRotation & orientation, 
+                                  SoNode * const COIN_UNUSED(node),
+                                  const SbRotation & orientation,
                                   SbBool setbylistener)
 {
   SoListenerOrientationElement *elem =
-    (SoListenerOrientationElement*) SoElement::getElement(state, 
-                                                          classStackIndex);
+    coin_safe_cast<SoListenerOrientationElement *>
+    (
+     SoElement::getElement(state,classStackIndex)
+     );
   if (elem) {
     elem->orientation = orientation;
     elem->setbylistener = setbylistener;
@@ -112,21 +118,27 @@ SoListenerOrientationElement::set(SoState * const state,
 const SbRotation &
 SoListenerOrientationElement::get(SoState * const state)
 {
-  const SoListenerOrientationElement *elem = (SoListenerOrientationElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoListenerOrientationElement * elem =
+    coin_assert_cast<const SoListenerOrientationElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->orientation;
 }
 
-/*! 
-  Returns TRUE if the orientation was set by a SoListener node, 
+/*!
+  Returns TRUE if the orientation was set by a SoListener node,
   and FALSE if it was set by a SoCamera node
 */
 
 SbBool
 SoListenerOrientationElement::isSetByListener(SoState * const state)
 {
-  const SoListenerOrientationElement *elem = (SoListenerOrientationElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoListenerOrientationElement * elem =
+    coin_assert_cast<const SoListenerOrientationElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->setbylistener;
 }
 

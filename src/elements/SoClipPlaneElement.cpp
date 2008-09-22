@@ -31,6 +31,8 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/nodes/SoNode.h>
 
+#include "SbBasicP.h"
+
 //
 // constructor for the internal class
 //
@@ -75,8 +77,12 @@ SoClipPlaneElement::add(SoState * const state,
                         SoNode * const node,
                         const SbPlane & plane)
 {
-  SoClipPlaneElement *element =
-    (SoClipPlaneElement*) SoElement::getElement(state, classStackIndex);
+  SoClipPlaneElement * element =
+    coin_safe_cast<SoClipPlaneElement * >
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (element) {
     element->addToElt(plane, SoModelMatrixElement::get(state));
     if (node) element->addNodeId(node);
@@ -89,8 +95,10 @@ SoClipPlaneElement::add(SoState * const state,
 const SoClipPlaneElement *
 SoClipPlaneElement::getInstance(SoState * const state)
 {
-  return (const SoClipPlaneElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  return coin_assert_cast<const SoClipPlaneElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
 }
 
 /*!
@@ -142,10 +150,10 @@ void
 SoClipPlaneElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoClipPlaneElement * const prev =
-    (SoClipPlaneElement *)this->getNextInStack();
-  
+    coin_assert_cast<SoClipPlaneElement *>(this->getNextInStack());
+
   this->planes.truncate(0);
   for (int i = 0; i < prev->planes.getLength(); i++) {
     this->planes.append(prev->planes[i]);

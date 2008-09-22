@@ -31,7 +31,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
 
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -226,7 +226,7 @@ SoGLMultiTextureCoordinateElement::send(const int unit, const int index) const
   const UnitData & ud = this->getUnitData(unit);
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
   const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
-  
+
   switch (PRIVATE(this)->sendlookup[unit]) {
   case SoGLMultiTextureCoordinateElementP::NONE:
     break;
@@ -268,7 +268,7 @@ SoGLMultiTextureCoordinateElement::send(const int unit,
     assert(ud.funcCB);
     cc_glglue_glMultiTexCoord4fv(glue, glunit,
                                  ud.funcCB(ud.funcCBData, c, n).getValue());
-    
+
     break;
   case SoGLMultiTextureCoordinateElementP::TEXCOORD2:
     cc_glglue_glMultiTexCoord2fv(glue, glunit, ud.coords2[index].getValue());
@@ -390,7 +390,7 @@ SoGLMultiTextureCoordinateElement::initRender(const SbBool * enabled, const int 
         assert(0 && "should not happen");
         break;
       }
-    } 
+    }
   }
 }
 

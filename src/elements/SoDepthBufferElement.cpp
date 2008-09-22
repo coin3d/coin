@@ -32,7 +32,10 @@
 
 #include <Inventor/elements/SoDepthBufferElement.h>
 
-#include <assert.h>
+#include <cassert>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
 
 SO_ELEMENT_SOURCE(SoDepthBufferElement);
 
@@ -71,7 +74,10 @@ SoDepthBufferElement::init(SoState * state)
 void
 SoDepthBufferElement::push(SoState * state)
 {
-  SoDepthBufferElement * prev = (SoDepthBufferElement*)this->getNextInStack();
+  const SoDepthBufferElement * prev = coin_assert_cast<const SoDepthBufferElement *>
+    (
+     this->getNextInStack()
+     );
   this->test = prev->test;
   this->write = prev->write;
   this->function = prev->function;
@@ -83,15 +89,15 @@ SoDepthBufferElement::push(SoState * state)
   Internal Coin method.
 */
 void
-SoDepthBufferElement::pop(SoState * state,
-                          const SoElement * prevTopElement)
+SoDepthBufferElement::pop(SoState * COIN_UNUSED(state),
+                          const SoElement * COIN_UNUSED(prevTopElement))
 {
 }
 
 /*!
   Set this element's values.
 */
-void 
+void
 SoDepthBufferElement::set(SoState * state,
                           SbBool test,
                           SbBool write,
@@ -169,7 +175,7 @@ SoDepthBufferElement::getRange(SoState * state)
 /*!
   Internal Coin method.
 */
-SbBool 
+SbBool
 SoDepthBufferElement::matches(const SoElement * element) const
 {
   const SoDepthBufferElement * elem =
@@ -178,13 +184,13 @@ SoDepthBufferElement::matches(const SoElement * element) const
   return (elem->test == this->test)
     && (elem->write == this->write)
     && (elem->function == this->function)
-    && (elem->range == this->range); 
+    && (elem->range == this->range);
 }
 
 /*!
   Internal Coin method.
 */
-SoElement * 
+SoElement *
 SoDepthBufferElement::copyMatchInfo(void) const
 {
   SoDepthBufferElement * elem =

@@ -31,7 +31,7 @@
 
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -105,12 +105,12 @@ SoGLMultiTextureImageElement::init(SoState * state)
 
   SoAction * action = state->getAction();
   assert(action->isOfType(SoGLRenderAction::getClassTypeId()));
-  
+
   // fetch cache context from action since SoGLCacheContextElement
   // might not be initialized yet.
   SoGLRenderAction * glaction = (SoGLRenderAction*) action;
   PRIVATE(this)->cachecontext = glaction->getCacheContext();
-  
+
   for (int i = 0; i < MAX_UNITS; i++) {
     GLUnitData & ud = PRIVATE(this)->unitdata[i];
     ud.glimage = NULL;
@@ -128,7 +128,7 @@ SoGLMultiTextureImageElement::push(SoState * state)
     this->getNextInStack();
   PRIVATE(this)->state = state;
   PRIVATE(this)->cachecontext = PRIVATE(prev)->cachecontext;
-  
+
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
   }

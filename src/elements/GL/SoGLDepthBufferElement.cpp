@@ -32,7 +32,7 @@
 
 #include <Inventor/elements/SoGLDepthBufferElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/system/gl.h>
 
@@ -97,7 +97,7 @@ SoGLDepthBufferElement::pop(SoState * state,
 /*!
   Set this element's values.
 */
-void 
+void
 SoGLDepthBufferElement::setElt(SbBool test, SbBool write, DepthWriteFunction function, SbVec2f range)
 {
   SbBool update =
@@ -116,7 +116,7 @@ SoGLDepthBufferElement::setElt(SbBool test, SbBool write, DepthWriteFunction fun
 /*!
   This method performs the OpenGL updates.
 */
-void 
+void
 SoGLDepthBufferElement::updategl(void) const
 {
   if (this->test) {
@@ -139,7 +139,7 @@ SoGLDepthBufferElement::updategl(void) const
   case EQUAL:     glDepthFunc(GL_EQUAL);     break;
   case GEQUAL:    glDepthFunc(GL_GEQUAL);    break;
   case GREATER:   glDepthFunc(GL_GREATER);   break;
-  case NOTEQUAL:  glDepthFunc(GL_NOTEQUAL);  break; 
+  case NOTEQUAL:  glDepthFunc(GL_NOTEQUAL);  break;
   default: assert(!"unknown depth function");
   }
 

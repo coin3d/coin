@@ -30,9 +30,12 @@
 */
 
 #include <Inventor/elements/SoShapeHintsElement.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLazyElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoShapeHintsElement);
 
@@ -72,13 +75,14 @@ void
 SoShapeHintsElement::push(SoState * state)
 {
   inherited::push(state);
-  SoShapeHintsElement * prev = (SoShapeHintsElement*) this->getNextInStack();
+  SoShapeHintsElement * prev = coin_assert_cast<SoShapeHintsElement *>
+    (this->getNextInStack());
   this->vertexOrdering = prev->vertexOrdering;
   this->shapeType = prev->shapeType;
   this->faceType = prev->faceType;
 }
 
-void 
+void
 SoShapeHintsElement::pop(SoState * state, const SoElement * prevtopelement)
 {
   inherited::pop(state, prevtopelement);
@@ -89,7 +93,8 @@ SoShapeHintsElement::pop(SoState * state, const SoElement * prevtopelement)
 SbBool
 SoShapeHintsElement::matches(const SoElement * element) const
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)element;
+  const SoShapeHintsElement * elem =
+    coin_assert_cast<const SoShapeHintsElement *>(element);
   return (this->vertexOrdering == elem->vertexOrdering &&
           this->shapeType == elem->shapeType &&
           this->faceType == elem->faceType);
@@ -101,8 +106,10 @@ SoShapeHintsElement::matches(const SoElement * element) const
 SoElement *
 SoShapeHintsElement::copyMatchInfo() const
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)
-    getTypeId().createInstance();
+  SoShapeHintsElement *elem = static_cast<SoShapeHintsElement *>
+    (
+     getTypeId().createInstance()
+     );
   elem->vertexOrdering = this->vertexOrdering;
   elem->shapeType = this->shapeType;
   elem->faceType = this->faceType;
@@ -118,8 +125,10 @@ SoShapeHintsElement::set(SoState * const state,
                          const ShapeType shapeType,
                          const FaceType faceType)
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoShapeHintsElement * elem = coin_safe_cast<SoShapeHintsElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->setElt(vertexOrdering, shapeType, faceType);
     elem->updateLazyElement(state);
@@ -134,8 +143,10 @@ SoShapeHintsElement::get(SoState * const state,
                          ShapeType & shapeType,
                          FaceType & faceType)
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   vertexOrdering = elem->vertexOrdering;
   shapeType = elem->shapeType;
   faceType = elem->faceType;
@@ -146,8 +157,10 @@ SoShapeHintsElement::get(SoState * const state,
 SoShapeHintsElement::VertexOrdering
 SoShapeHintsElement::getVertexOrdering(SoState * const state)
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement*>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->vertexOrdering;
 }
 
@@ -156,8 +169,10 @@ SoShapeHintsElement::getVertexOrdering(SoState * const state)
 SoShapeHintsElement::ShapeType
 SoShapeHintsElement::getShapeType(SoState * const state)
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->shapeType;
 }
 
@@ -166,8 +181,10 @@ SoShapeHintsElement::getShapeType(SoState * const state)
 SoShapeHintsElement::FaceType
 SoShapeHintsElement::getFaceType(SoState * const state)
 {
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->faceType;
 }
 
@@ -234,7 +251,7 @@ SoShapeHintsElement::getDefaultFaceType()
   return CONVEX;
 }
 
-void 
+void
 SoShapeHintsElement::updateLazyElement(SoState * state)
 {
   if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {

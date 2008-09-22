@@ -26,15 +26,18 @@
   \brief The SoWindowElement class is used to store current window attributes.
   \ingroup elements
 
-  In Coin, this element is not API-compatible with SGI Inventor, since 
+  In Coin, this element is not API-compatible with SGI Inventor, since
   it contains platform specific stuff, which we want to avoid.
-  
+
   Instead of the platform specific types we use void pointers. We're
   sorry for any inconvenience this might cause people using this element.
 */
 
 #include <Inventor/elements/SoWindowElement.h>
-#include <assert.h>
+
+#include "SbBasicP.h"
+
+#include <cassert>
 
 /*!
   \fn SoWindowElement::window
@@ -128,8 +131,10 @@ SoWindowElement::set(SoState * state,
                      void * display,
                      SoGLRenderAction * action)
 {
-  SoWindowElement * elem = (SoWindowElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoWindowElement * elem = coin_safe_cast<SoWindowElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->window = window;
     elem->context = context;
@@ -149,9 +154,11 @@ SoWindowElement::get(SoState * state,
                      void * & display,
                      SoGLRenderAction * & action)
 {
-  const SoWindowElement * elem = (const SoWindowElement*)
-    SoElement::getConstElement(state, classStackIndex);
-  
+  const SoWindowElement * elem = coin_assert_cast<const SoWindowElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
+
   window = elem->window;
   context = elem->context;
   display = elem->display;

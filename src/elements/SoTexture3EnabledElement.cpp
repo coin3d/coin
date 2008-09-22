@@ -36,6 +36,8 @@
 
 #include <Inventor/elements/SoTexture3EnabledElement.h>
 
+#include "coindefs.h"
+
 SO_ELEMENT_SOURCE(SoTexture3EnabledElement);
 
 
@@ -61,24 +63,24 @@ SoTexture3EnabledElement::set(SoState * const state,
                                SoNode * const node,
                                const SbBool enabled)
 {
-  inherited::set(classStackIndex, state, node, (int32_t) enabled);
+  inherited::set(classStackIndex, state, node, static_cast<int32_t>(enabled));
 }
 
 
 // doc from parent
 void
-SoTexture3EnabledElement::init(SoState * state)
+SoTexture3EnabledElement::init(SoState * COIN_UNUSED(state))
 {
   this->data = SoTexture3EnabledElement::getDefault();
 }
 
 /*!
-  Return current state of this element. 
+  Return current state of this element.
 */
 SbBool
 SoTexture3EnabledElement::get(SoState * const state)
 {
-  return (SbBool) inherited::get(classStackIndex, state);
+  return static_cast<SbBool>(inherited::get(classStackIndex, state));
 }
 
 /*!

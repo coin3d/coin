@@ -35,7 +35,7 @@
 
 #include <Inventor/elements/SoGLVBOElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/nodes/SoNode.h>
@@ -78,7 +78,7 @@ SoGLVBOElement::initClass()
 SoGLVBOElement::SoGLVBOElement(void)
 {
   PRIVATE(this) = new SoGLVBOElementP;
-  
+
   this->setTypeId(SoGLVBOElement::classTypeId);
   this->setStackIndex(SoGLVBOElement::classStackIndex);
 }
@@ -95,7 +95,7 @@ SoGLVBOElement::~SoGLVBOElement()
 /*!
   Sets the vertex VBO.
 */
-void 
+void
 SoGLVBOElement::setVertexVBO(SoState * state, SoVBO * vbo)
 {
   SoGLVBOElement * elem = getElement(state);
@@ -105,7 +105,7 @@ SoGLVBOElement::setVertexVBO(SoState * state, SoVBO * vbo)
 /*!
   Sets the normal VBO.
 */
-void 
+void
 SoGLVBOElement::setNormalVBO(SoState * state, SoVBO * vbo)
 {
   SoGLVBOElement * elem = getElement(state);
@@ -115,7 +115,7 @@ SoGLVBOElement::setNormalVBO(SoState * state, SoVBO * vbo)
 /*!
   Sets the color VBO.
 */
-void 
+void
 SoGLVBOElement::setColorVBO(SoState * state, SoVBO * vbo)
 {
   SoGLVBOElement * elem = getElement(state);
@@ -125,7 +125,7 @@ SoGLVBOElement::setColorVBO(SoState * state, SoVBO * vbo)
 /*!
   Sets the texture coordinate VBO.
 */
-void 
+void
 SoGLVBOElement::setTexCoordVBO(SoState * state, const int unit, SoVBO * vbo)
 {
   SoGLVBOElement * elem = getElement(state);
@@ -137,7 +137,7 @@ SoGLVBOElement::setTexCoordVBO(SoState * state, const int unit, SoVBO * vbo)
 }
 
 // doc in parent
-void 
+void
 SoGLVBOElement::init(SoState *state)
 {
   PRIVATE(this)->vertexvbo = NULL;
@@ -147,12 +147,12 @@ SoGLVBOElement::init(SoState *state)
 }
 
 // doc in parent
-void 
+void
 SoGLVBOElement::push(SoState *state)
 {
-  SoGLVBOElement * prev = (SoGLVBOElement *) 
+  SoGLVBOElement * prev = (SoGLVBOElement *)
     this->getNextInStack();
-  
+
   PRIVATE(this)->vertexvbo = PRIVATE(prev)->vertexvbo;
   PRIVATE(this)->normalvbo = PRIVATE(prev)->normalvbo;
   PRIVATE(this)->colorvbo = PRIVATE(prev)->colorvbo;
@@ -164,14 +164,14 @@ SoGLVBOElement::push(SoState *state)
 }
 
 // doc in parent
-void 
+void
 SoGLVBOElement::pop(SoState *state, const SoElement * prevtopelement)
 {
   // nothing to do
 }
 
 // doc in parent
-SbBool 
+SbBool
 SoGLVBOElement::matches(const SoElement * elt) const
 {
   assert(0 && "should never get here");
@@ -179,7 +179,7 @@ SoGLVBOElement::matches(const SoElement * elt) const
 }
 
 // doc in parent
-SoElement * 
+SoElement *
 SoGLVBOElement::copyMatchInfo(void) const
 {
   assert(0 && "should never get here");
@@ -189,7 +189,7 @@ SoGLVBOElement::copyMatchInfo(void) const
 /*!
   Returns a writable element instance.
 */
-SoGLVBOElement * 
+SoGLVBOElement *
 SoGLVBOElement::getElement(SoState * state)
 {
   return (SoGLVBOElement*) state->getElement(classStackIndex);
@@ -198,37 +198,37 @@ SoGLVBOElement::getElement(SoState * state)
 /*!
   Returns a read-only element instance.
 */
-const SoGLVBOElement * 
+const SoGLVBOElement *
 SoGLVBOElement::getInstance(SoState * state)
 {
   return (SoGLVBOElement*) state->getConstElement(classStackIndex);
 }
 
-SoVBO * 
+SoVBO *
 SoGLVBOElement::getVertexVBO(void) const
 {
   return PRIVATE(this)->vertexvbo;
 }
 
-SoVBO * 
+SoVBO *
 SoGLVBOElement::getNormalVBO(void) const
 {
   return PRIVATE(this)->normalvbo;
 }
 
-SoVBO * 
+SoVBO *
 SoGLVBOElement::getColorVBO(void) const
 {
   return PRIVATE(this)->colorvbo;
 }
 
-int 
+int
 SoGLVBOElement::getNumTexCoordVBO(void) const
 {
   return PRIVATE(this)->texcoordvbo.getLength();
 }
 
-SoVBO * 
+SoVBO *
 SoGLVBOElement::getTexCoordVBO(const int idx) const
 {
   if (idx < PRIVATE(this)->texcoordvbo.getLength()) {
@@ -242,14 +242,14 @@ SoGLVBOElement::getTexCoordVBO(const int idx) const
   and if numdata is between the limits set for VBO rendering.
 
 */
-SbBool 
+SbBool
 SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
 {
   const cc_glglue * glue = sogl_glue_instance(state);
   // don't use SoGLCacheContextElement to find the current cache
   // context since we don't want this call to create a cache dependecy
-  // on SoGLCacheContextElement. 
-  return 
+  // on SoGLCacheContextElement.
+  return
     SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT) &&
     SoVBO::shouldCreateVBO(state, glue->contextid, numdata);
 }

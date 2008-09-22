@@ -31,7 +31,7 @@
 
 #include <Inventor/elements/SoNormalBindingElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoNormalBindingElement::Binding
@@ -67,7 +67,8 @@ SoNormalBindingElement::set(SoState * const state,
                             SoNode * const node,
                             const Binding binding)
 {
-  assert((int)binding >= OVERALL && (int)binding <= PER_VERTEX_INDEXED);
+  assert(static_cast<int>(binding) >= OVERALL &&
+	 static_cast<int>(binding) <= PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
@@ -95,7 +96,7 @@ SoNormalBindingElement::set(SoState * const state, const Binding binding)
 SoNormalBindingElement::Binding
 SoNormalBindingElement::get(SoState * const state)
 {
-  return (Binding) SoInt32Element::get(classStackIndex, state);
+  return static_cast<Binding>(SoInt32Element::get(classStackIndex, state));
 }
 
 //! FIXME: write doc.

@@ -30,7 +30,10 @@
 */
 
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <assert.h>
+
+#include "SbBasicP.h"
+
+#include <cassert>
 
 /*!
   \fn SoViewingMatrixElement::viewingMatrix
@@ -66,8 +69,10 @@ SoViewingMatrixElement::set(SoState * const state,
                             SoNode * const node,
                             const SbMatrix & viewingMatrix)
 {
-  SoViewingMatrixElement * element = (SoViewingMatrixElement *)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+  SoViewingMatrixElement * element = coin_safe_cast<SoViewingMatrixElement *>
+    (
+     SoReplacedElement::getElement(state, classStackIndex, node)
+     );
   if (element) {
     element->setElt(viewingMatrix);
   }
@@ -78,8 +83,11 @@ SoViewingMatrixElement::set(SoState * const state,
 const SbMatrix &
 SoViewingMatrixElement::get(SoState * const state)
 {
-  SoViewingMatrixElement * element = (SoViewingMatrixElement *)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoViewingMatrixElement * element =
+    coin_assert_cast<const SoViewingMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return element->viewingMatrix;
 }
 

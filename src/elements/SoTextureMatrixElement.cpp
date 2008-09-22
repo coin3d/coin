@@ -31,7 +31,9 @@
 */
 
 #include <Inventor/elements/SoTextureMatrixElement.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "SbBasicP.h"
 
 /*!
   \fn SoTextureMatrixElement::textureMatrix
@@ -62,8 +64,10 @@ void
 SoTextureMatrixElement::makeIdentity(SoState * const state,
                                      SoNode * const node)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoTextureMatrixElement * elem = coin_safe_cast<SoTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->makeEltIdentity();
     if (node) elem->setNodeId(node);
@@ -80,8 +84,10 @@ SoTextureMatrixElement::set(SoState * const state,
                             SoNode * const node,
                             const SbMatrix & matrix)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoTextureMatrixElement * elem = coin_safe_cast<SoTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->setElt(matrix);
     if (node) elem->setNodeId(node);
@@ -96,8 +102,10 @@ SoTextureMatrixElement::mult(SoState * const state,
                            SoNode * const node,
                            const SbMatrix & matrix)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoTextureMatrixElement * elem = coin_safe_cast<SoTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->multElt(matrix);
     if (node) elem->addNodeId(node);
@@ -113,8 +121,10 @@ SoTextureMatrixElement::translateBy(SoState * const state,
                                   SoNode * const node,
                                   const SbVec3f & translation)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoTextureMatrixElement * elem = coin_safe_cast<SoTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->translateEltBy(translation);
     if (node) elem->addNodeId(node);
@@ -129,8 +139,10 @@ SoTextureMatrixElement::rotateBy(SoState * const state,
                                SoNode * const node,
                                const SbRotation & rotation)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoTextureMatrixElement * elem = coin_safe_cast<SoTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->rotateEltBy(rotation);
     if (node) elem->addNodeId(node);
@@ -145,8 +157,10 @@ SoTextureMatrixElement::scaleBy(SoState * const state,
                               SoNode * const node,
                               const SbVec3f & scaleFactor)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoTextureMatrixElement * elem = coin_safe_cast<SoTextureMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->scaleEltBy(scaleFactor);
     if (node) elem->addNodeId(node);
@@ -160,8 +174,11 @@ SoTextureMatrixElement::scaleBy(SoState * const state,
 const SbMatrix &
 SoTextureMatrixElement::get(SoState * const state)
 {
-  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoTextureMatrixElement * elem =
+    coin_assert_cast<const SoTextureMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->getElt();
 }
 
@@ -259,7 +276,7 @@ SoTextureMatrixElement::push(SoState * state)
   inherited::push(state);
 
   SoTextureMatrixElement * prev =
-    (SoTextureMatrixElement *) this->getNextInStack();
+    coin_assert_cast<SoTextureMatrixElement *>(this->getNextInStack());
   this->textureMatrix = prev->textureMatrix;
 
   // make sure node ids are accumulated properly

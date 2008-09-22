@@ -30,11 +30,15 @@
 */
 
 #include <Inventor/elements/SoSpecularColorElement.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbColor.h>
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 
 SO_ELEMENT_SOURCE(SoSpecularColorElement);
@@ -70,7 +74,7 @@ SoSpecularColorElement::init(SoState * stateptr)
 //! FIXME: write doc.
 
 void
-SoSpecularColorElement::set(SoState * const state, SoNode * const node,
+SoSpecularColorElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
                             const int32_t numcolors,
                             const SbColor * const colors)
 {
@@ -116,6 +120,8 @@ SoSpecularColorElement::getArrayPtr(void) const
 const SoSpecularColorElement *
 SoSpecularColorElement::getInstance(SoState *state)
 {
-  return (const SoSpecularColorElement *)
-    state->getElementNoPush(classStackIndex);
+  return coin_assert_cast<const SoSpecularColorElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+    );
 }

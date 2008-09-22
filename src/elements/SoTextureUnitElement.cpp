@@ -35,7 +35,7 @@
 */
 
 #include <Inventor/elements/SoTextureUnitElement.h>
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextureUnitElement);
 
@@ -81,7 +81,7 @@ SoTextureUnitElement::init(SoState * state)
 int
 SoTextureUnitElement::get(SoState * state)
 {
-  return (int) SoInt32Element::get(classStackIndex, state);
+  return static_cast<int>(SoInt32Element::get(classStackIndex, state));
 }
 
 

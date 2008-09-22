@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoGLViewportRegionElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H

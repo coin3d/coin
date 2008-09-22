@@ -50,7 +50,7 @@
 
   \verbatim
 
-  static SoCallbackAction::Response 
+  static SoCallbackAction::Response
   camera_cb(void * data, SoCallbackAction * action, const SoNode * node)
   {
     SoState * state = action->getState();
@@ -67,7 +67,7 @@
   When the view volume is set in SoCullElement in the post camera
   callback, SoCallbackAction will perform culling on Separators and
   other nodes in the same way as SoGLRenderAction.
-  
+
 */
 
 #include <Inventor/elements/SoCullElement.h>
@@ -75,8 +75,11 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbViewVolume.h>
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -100,7 +103,7 @@ SoCullElement::~SoCullElement()
 
 // doc from parent
 void
-SoCullElement::init(SoState * state)
+SoCullElement::init(SoState * COIN_UNUSED(state))
 {
   this->numplanes = 0;
   this->flags = 0;
@@ -109,10 +112,12 @@ SoCullElement::init(SoState * state)
 
 // doc from parent
 void
-SoCullElement::push(SoState * state)
+SoCullElement::push(SoState * COIN_UNUSED(state))
 {
-  SoCullElement * prev = (SoCullElement *)
-    this->getNextInStack();
+  const SoCullElement * prev = coin_assert_cast<const SoCullElement *>
+    (
+     this->getNextInStack()
+     );
 
   this->flags = prev->flags;
   this->numplanes = prev->numplanes;
@@ -129,8 +134,10 @@ SoCullElement::push(SoState * state)
 void
 SoCullElement::setViewVolume(SoState * state, const SbViewVolume & vv)
 {
-  SoCullElement * elem = (SoCullElement *)
-    SoElement::getElement(state, classStackIndex);
+  SoCullElement * elem = coin_safe_cast<SoCullElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     if (elem->numplanes + 6 > SoCullElement::MAXPLANES) { // _very_ unlikely
 #if COIN_DEBUG
@@ -161,8 +168,11 @@ SoCullElement::setViewVolume(SoState * state, const SbViewVolume & vv)
 void
 SoCullElement::addPlane(SoState * state, const SbPlane &newplane)
 {
-  SoCullElement * elem = (SoCullElement *)
-    SoElement::getElement(state, classStackIndex);
+  SoCullElement * elem =
+    coin_safe_cast<SoCullElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     if (elem->numplanes >= SoCullElement::MAXPLANES) {  // _very_ unlikely
 #if COIN_DEBUG
@@ -208,8 +218,10 @@ SbBool
 SoCullElement::completelyInside(SoState * state)
 {
   // use SoState::getConstElement() to avoid cache dependency on this element
-  const SoCullElement * elem = (const SoCullElement *)
-    state->getConstElement(classStackIndex);
+  const SoCullElement * elem = coin_assert_cast<const SoCullElement *>
+    (
+     state->getConstElement(classStackIndex)
+     );
   unsigned int mask = 0x0001 << elem->numplanes;
   return elem->flags == (mask-1);
 }
@@ -240,9 +252,11 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
                       const SbBool updateelem)
 {
   // try to avoid a push if possible
-  SoCullElement * elem = (SoCullElement *)
-    state->getElementNoPush(classStackIndex);
-  
+  const SoCullElement * elem = coin_safe_cast<const SoCullElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+    );
+
   if (!elem) return FALSE;
 
   int i, j;
@@ -272,7 +286,7 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
 
   const int n = elem->numplanes;
   unsigned int flags = elem->flags;
-  SbPlane * planes = elem->plane;
+  const SbPlane * planes = elem->plane;
   unsigned int mask = 0x0001;
 
   for (i = 0; i < n; i++, mask<<=1) {
@@ -293,8 +307,10 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
   }
   if (updateelem && (flags != elem->flags)) {
     // force a push if necessary
-    elem = (SoCullElement *)
-      SoElement::getElement(state, classStackIndex);
+    SoCullElement * elem = coin_assert_cast<SoCullElement *>
+      (
+       SoElement::getElement(state, classStackIndex)
+       );
     elem->flags = flags;
   }
   return FALSE;

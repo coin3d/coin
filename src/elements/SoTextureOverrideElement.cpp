@@ -29,7 +29,11 @@
 
 
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <assert.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextureOverrideElement);
 
@@ -57,7 +61,7 @@ SoTextureOverrideElement::~SoTextureOverrideElement(void)
 SbBool
 SoTextureOverrideElement::matches(const SoElement *element) const
 {
-  return ((SoTextureOverrideElement*)element)->flags == this->flags;
+  return coin_assert_cast<const SoTextureOverrideElement *>(element)->flags == this->flags;
 }
 
 //!
@@ -65,8 +69,8 @@ SoTextureOverrideElement::matches(const SoElement *element) const
 SoElement *
 SoTextureOverrideElement::copyMatchInfo() const
 {
-  SoTextureOverrideElement *elem =
-    (SoTextureOverrideElement*) this->getTypeId().createInstance();
+  SoTextureOverrideElement * elem =
+    static_cast<SoTextureOverrideElement *>(this->getTypeId().createInstance());
   elem->flags = this->flags;
   return elem;
 }
@@ -74,7 +78,7 @@ SoTextureOverrideElement::copyMatchInfo() const
 //!
 
 void
-SoTextureOverrideElement::init(SoState *state)
+SoTextureOverrideElement::init(SoState * COIN_UNUSED(state))
 {
   this->flags = 0;
 }
@@ -85,7 +89,11 @@ void
 SoTextureOverrideElement::push(SoState *state)
 {
   inherited::push(state);
-  SoTextureOverrideElement * prev = (SoTextureOverrideElement*) this->getNextInStack();
+  const SoTextureOverrideElement * prev =
+    coin_assert_cast<SoTextureOverrideElement *>
+    (
+     this->getNextInStack()
+     );
   this->flags = prev->flags;
 }
 
@@ -95,7 +103,10 @@ SbBool
 SoTextureOverrideElement::getQualityOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    (const SoTextureOverrideElement *) getConstElement(state, classStackIndex);
+    coin_assert_cast<const SoTextureOverrideElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return (element->flags & TEXTURE_QUALITY) != 0;
 }
 
@@ -105,7 +116,10 @@ SbBool
 SoTextureOverrideElement::getImageOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    (const SoTextureOverrideElement *) getConstElement(state, classStackIndex);
+    coin_assert_cast<const SoTextureOverrideElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return (element->flags & TEXTURE_IMAGE) != 0;
 }
 
@@ -113,7 +127,10 @@ SbBool
 SoTextureOverrideElement::getBumpMapOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    (const SoTextureOverrideElement *) getConstElement(state, classStackIndex);
+    coin_assert_cast<const SoTextureOverrideElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
   return (element->flags & BUMP_MAP) != 0;
 }
 
@@ -123,7 +140,10 @@ void
 SoTextureOverrideElement::setQualityOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
-    (SoTextureOverrideElement *) getElement(state, classStackIndex);
+    coin_safe_cast<SoTextureOverrideElement *>
+    (
+     getElement(state, classStackIndex)
+     );
   if (element) {
     if (value)
       element->flags |= TEXTURE_QUALITY;
@@ -138,7 +158,7 @@ void
 SoTextureOverrideElement::setImageOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
-    (SoTextureOverrideElement *) getElement(state, classStackIndex);
+    coin_safe_cast<SoTextureOverrideElement *>(getElement(state, classStackIndex));
   if (element) {
     if (value)
       element->flags |= TEXTURE_IMAGE;
@@ -153,7 +173,7 @@ void
 SoTextureOverrideElement::setBumpMapOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
-    (SoTextureOverrideElement *) getElement(state, classStackIndex);
+    coin_safe_cast<SoTextureOverrideElement *>(getElement(state, classStackIndex));
   if (element) {
     if (value)
       element->flags |= BUMP_MAP;

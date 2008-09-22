@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoAnnoText3RenderPrintElement.h>
 
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoAnnoText3RenderPrintElement::RenderPrintType
@@ -97,8 +97,9 @@ SoAnnoText3RenderPrintElement::set(SoState * const state,
 SoAnnoText3RenderPrintElement::RenderPrintType
 SoAnnoText3RenderPrintElement::get(SoState * const state)
 {
-  return (SoAnnoText3RenderPrintElement::RenderPrintType)
-    SoInt32Element::get(classStackIndex, state);
+  return static_cast<SoAnnoText3RenderPrintElement::RenderPrintType>(
+    SoInt32Element::get(classStackIndex, state)
+    );
 }
 
 //! FIXME: write doc.

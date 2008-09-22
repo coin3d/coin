@@ -32,10 +32,14 @@
 */
 
 #include <Inventor/elements/SoShininessElement.h>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoShininessElement);
 
@@ -68,7 +72,7 @@ SoShininessElement::init(SoState * stateptr)
 //! FIXME: write doc.
 
 void
-SoShininessElement::set(SoState * const state, SoNode * const node,
+SoShininessElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
                            const int32_t numvalues,
                            const float * const values)
 {
@@ -105,7 +109,9 @@ SoShininessElement::get(const int index) const
 const float *
 SoShininessElement::getArrayPtr(void) const
 {
-  ((SoShininessElement*)this)->dummyvalue = SoLazyElement::getShininess(this->state);
+  const_cast<SoShininessElement *>(this)->dummyvalue =
+    SoLazyElement::getShininess(this->state);
+
   return &this->dummyvalue;
 }
 
@@ -114,6 +120,8 @@ SoShininessElement::getArrayPtr(void) const
 const SoShininessElement *
 SoShininessElement::getInstance(SoState *state)
 {
-  return (const SoShininessElement *)
-    state->getElementNoPush(classStackIndex);
+  return coin_assert_cast<const SoShininessElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
 }

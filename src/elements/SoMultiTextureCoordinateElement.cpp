@@ -33,10 +33,13 @@
   \since Coin 2.2
 */
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+#include <cassert>
 
 #define MAX_UNITS 16
 #define PRIVATE(obj) obj->pimpl
@@ -66,7 +69,7 @@ SoMultiTextureCoordinateElement::initClass()
 SoMultiTextureCoordinateElement::SoMultiTextureCoordinateElement(void)
 {
   PRIVATE(this) = new SoMultiTextureCoordinateElementP;
-  
+
   this->setTypeId(SoMultiTextureCoordinateElement::classTypeId);
   this->setStackIndex(SoMultiTextureCoordinateElement::classStackIndex);
 }
@@ -84,15 +87,18 @@ SoMultiTextureCoordinateElement::~SoMultiTextureCoordinateElement()
 
 void
 SoMultiTextureCoordinateElement::setDefault(SoState * const state,
-                                            SoNode * const node,
+                                            SoNode * const COIN_UNUSED(node),
                                             const int unit)
 {
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
-  SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
-    SoElement::getElement(state, classStackIndex);
-  
+  SoMultiTextureCoordinateElement * element =
+    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   assert(unit >= 0 && unit < MAX_UNITS);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
   ud.nodeid = 0;
@@ -113,12 +119,15 @@ SoMultiTextureCoordinateElement::setFunction(SoState * const state,
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
 
-  SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
-   SoElement::getElement(state, classStackIndex);
+  SoMultiTextureCoordinateElement * element =
+    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
-  
+
   ud.nodeid = node->getNodeId();
   ud.funcCB = func;
   ud.funcCBData = userdata;
@@ -141,8 +150,10 @@ SoMultiTextureCoordinateElement::set2(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
-  SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
-    SoElement::getElement(state, classStackIndex);
+  SoMultiTextureCoordinateElement * element = coin_assert_cast<SoMultiTextureCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -169,8 +180,11 @@ SoMultiTextureCoordinateElement::set3(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
-  SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
-    SoElement::getElement(state, classStackIndex);
+  SoMultiTextureCoordinateElement * element =
+    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -196,8 +210,11 @@ SoMultiTextureCoordinateElement::set4(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
-  SoMultiTextureCoordinateElement * element = (SoMultiTextureCoordinateElement *)
-    SoElement::getElement(state, classStackIndex);
+  SoMultiTextureCoordinateElement * element =
+    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 
   assert(unit >= 0 && unit < MAX_UNITS);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -216,8 +233,10 @@ SoMultiTextureCoordinateElement::set4(SoState * const state,
 const SoMultiTextureCoordinateElement *
 SoMultiTextureCoordinateElement::getInstance(SoState * const state)
 {
-  return (const SoMultiTextureCoordinateElement *)
-    (getConstElement(state, classStackIndex));
+  return coin_safe_cast<const SoMultiTextureCoordinateElement *>
+    (
+     getConstElement(state, classStackIndex)
+     );
 }
 
 /*!
@@ -236,7 +255,7 @@ SoMultiTextureCoordinateElement::get(const int unit,
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
-  
+
   assert((ud.whatKind == SoTextureCoordinateElement::FUNCTION ||
           ud.whatKind == SoTextureCoordinateElement::TEXGEN) && ud.funcCB);
   return (*(ud.funcCB))(ud.funcCBData, point, normal);
@@ -257,12 +276,12 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
   }
   else {
     // need an instance we can write to
-    SoMultiTextureCoordinateElement * elem = (SoMultiTextureCoordinateElement*) this;
+    SoMultiTextureCoordinateElement * elem = const_cast<SoMultiTextureCoordinateElement *>(this);
 
     if (ud.coordsDimension == 4) {
       float tmp = ud.coords4[index][3];
       float to2D = tmp == 0.0f ? 1.0f : 1.0f / tmp;
-      
+
       elem->convert2.setValue(ud.coords4[index][0] * to2D,
                               ud.coords4[index][1] * to2D);
     }
@@ -291,7 +310,8 @@ SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
   }
   else {
     // need an instance we can write to
-    SoMultiTextureCoordinateElement * elem = (SoMultiTextureCoordinateElement*) this;
+    SoMultiTextureCoordinateElement * elem =
+      const_cast<SoMultiTextureCoordinateElement *>(this);
 
     if (ud.coordsDimension==2) {
       elem->convert3.setValue(ud.coords2[index][0],
@@ -320,7 +340,8 @@ SoMultiTextureCoordinateElement::get4(const int unit, const int index) const
   }
   else {
     // need an instance we can write to
-    SoMultiTextureCoordinateElement * elem = (SoMultiTextureCoordinateElement*) this;
+    SoMultiTextureCoordinateElement * elem =
+      const_cast<SoMultiTextureCoordinateElement *>(this);
     if (ud.coordsDimension == 2) {
       elem->convert4.setValue(ud.coords2[index][0],
                               ud.coords2[index][1],
@@ -353,7 +374,7 @@ SoTextureCoordinateElement::CoordType
 SoMultiTextureCoordinateElement::getType(SoState * const state, const int unit)
 {
   const SoMultiTextureCoordinateElement * element =
-    (const SoMultiTextureCoordinateElement *)
+    coin_assert_cast<const SoMultiTextureCoordinateElement *>
     (getConstElement(state, classStackIndex));
   return element->getType(unit);
 }
@@ -410,7 +431,7 @@ SoMultiTextureCoordinateElement::is2D(const int unit) const
   return (ud.coordsDimension==2);
 }
 
-/*! 
+/*!
   FIXME: write doc.
 */
 int32_t
@@ -457,22 +478,25 @@ SoMultiTextureCoordinateElement::getArrayPtr4(const int unit) const
   return ud.coords4;
 }
 
-void 
-SoMultiTextureCoordinateElement::push(SoState * state)
+void
+SoMultiTextureCoordinateElement::push(SoState * COIN_UNUSED(state))
 {
-  SoMultiTextureCoordinateElement * prev = (SoMultiTextureCoordinateElement *) 
-    this->getNextInStack();
-  
+  SoMultiTextureCoordinateElement * prev =
+    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    (
+     this->getNextInStack()
+    );
+
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
   }
 }
 
-SbBool 
+SbBool
 SoMultiTextureCoordinateElement::matches(const SoElement * elem) const
 {
-  SoMultiTextureCoordinateElement * e =
-    (SoMultiTextureCoordinateElement *) elem;
+  const SoMultiTextureCoordinateElement * e =
+    coin_assert_cast<const SoMultiTextureCoordinateElement *>(elem);
   for (int i = 0; i < MAX_UNITS; i++) {
     if (PRIVATE(e)->unitdata[i].nodeid != PRIVATE(this)->unitdata[i].nodeid) {
       return FALSE;
@@ -481,11 +505,11 @@ SoMultiTextureCoordinateElement::matches(const SoElement * elem) const
   return TRUE;
 }
 
-SoElement * 
+SoElement *
 SoMultiTextureCoordinateElement::copyMatchInfo(void) const
 {
   SoMultiTextureCoordinateElement * elem =
-    (SoMultiTextureCoordinateElement *)(getTypeId().createInstance());
+    static_cast<SoMultiTextureCoordinateElement *>(getTypeId().createInstance());
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(elem)->unitdata[i].nodeid = PRIVATE(this)->unitdata[i].nodeid;
   }
@@ -495,14 +519,14 @@ SoMultiTextureCoordinateElement::copyMatchInfo(void) const
 /*!
   Returns the per-unit data for this element.
 */
-SoMultiTextureCoordinateElement::UnitData & 
+SoMultiTextureCoordinateElement::UnitData &
 SoMultiTextureCoordinateElement::getUnitData(const int unit)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(this)->unitdata[unit];
 }
 
-const SoMultiTextureCoordinateElement::UnitData & 
+const SoMultiTextureCoordinateElement::UnitData &
 SoMultiTextureCoordinateElement::getUnitData(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);

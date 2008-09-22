@@ -53,14 +53,14 @@
 
 #include <Inventor/elements/SoGLLineWidthElement.h>
 
-#include <float.h>
+#include <cfloat>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/errors/SoDebugError.h>
 
 // Important note: do _not_ use a "static const" variable instead, as

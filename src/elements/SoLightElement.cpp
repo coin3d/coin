@@ -27,10 +27,12 @@
   \ingroup elements
 */
 
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/lists/SbList.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoLightElement::lights
@@ -88,9 +90,12 @@ void
 SoLightElement::add(SoState * const state, SoLight * const light,
                     const SbMatrix & matrix)
 {
-  SoLightElement * elem = (SoLightElement*)
-    SoElement::getElement(state, classStackIndex);
-  
+  SoLightElement * elem =
+    coin_safe_cast<SoLightElement*>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     int i = elem->lights.getLength();
     elem->lights.append(light);
@@ -108,8 +113,10 @@ SoLightElement::add(SoState * const state, SoLight * const light,
 const SoNodeList &
 SoLightElement::getLights(SoState * const state)
 {
-  SoLightElement * elem = (SoLightElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoLightElement * elem = coin_assert_cast<const SoLightElement *>
+    (
+    SoElement::getConstElement(state, classStackIndex)
+    );
   return elem->lights;
 }
 
@@ -120,8 +127,10 @@ SoLightElement::getLights(SoState * const state)
 const SbMatrix &
 SoLightElement::getMatrix(SoState * const state, const int index)
 {
-  SoLightElement * elem = (SoLightElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoLightElement * elem = coin_assert_cast<const SoLightElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   assert(index >= 0 && index < elem->matrixlist->getLength());
   return elem->matrixlist->getArrayPtr()[index];
 }
@@ -143,7 +152,10 @@ SoLightElement::push(SoState * state)
   inherited::push(state);
 
   SoLightElement * const prev =
-    (SoLightElement *) this->getNextInStack();
+    coin_assert_cast<SoLightElement *>
+    (
+     this->getNextInStack()
+     );
   this->lights.truncate(0);
   const int numLights = prev->lights.getLength();
   int i;

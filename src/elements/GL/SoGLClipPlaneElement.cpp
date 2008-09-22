@@ -86,7 +86,7 @@ SoGLClipPlaneElement::pop(SoState * state,
   // disable used planes
   for (int i = prev->startIndex; i < prev->getNum(); i++)
     glDisable((GLenum)((int)GL_CLIP_PLANE0 + i));
-  
+
   inherited::pop(state, prevTopElement);
 }
 

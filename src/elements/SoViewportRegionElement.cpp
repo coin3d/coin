@@ -31,8 +31,9 @@
 
 #include <Inventor/elements/SoViewportRegionElement.h>
 
+#include "SbBasicP.h"
 
-#include <assert.h>
+#include <cassert>
 
 /*!
   \fn SoViewportRegionElement::viewportRegion
@@ -75,7 +76,7 @@ SbBool
 SoViewportRegionElement::matches(const SoElement * element) const
 {
   return this->viewportRegion ==
-    ((SoViewportRegionElement*) element)->viewportRegion;
+    coin_assert_cast<const SoViewportRegionElement *>(element)->viewportRegion;
 }
 
 //! FIXME: write doc.
@@ -83,8 +84,10 @@ SoViewportRegionElement::matches(const SoElement * element) const
 SoElement *
 SoViewportRegionElement::copyMatchInfo() const
 {
-  SoViewportRegionElement * elem = (SoViewportRegionElement*)
-    getTypeId().createInstance();
+  SoViewportRegionElement * elem = static_cast<SoViewportRegionElement *>
+    (
+     getTypeId().createInstance()
+     );
   elem->viewportRegion = this->viewportRegion;
   return elem;
 }
@@ -95,8 +98,10 @@ void
 SoViewportRegionElement::set(SoState * const state,
                              const SbViewportRegion &viewportRegion)
 {
-  SoViewportRegionElement *elem = (SoViewportRegionElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoViewportRegionElement * elem = coin_safe_cast<SoViewportRegionElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->setElt(viewportRegion);
   }
@@ -107,8 +112,11 @@ SoViewportRegionElement::set(SoState * const state,
 const SbViewportRegion &
 SoViewportRegionElement::get(SoState * const state)
 {
-  SoViewportRegionElement *elem = (SoViewportRegionElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoViewportRegionElement * elem =
+    coin_assert_cast<const SoViewportRegionElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->viewportRegion;
 }
 

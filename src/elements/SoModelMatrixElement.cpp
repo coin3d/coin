@@ -38,9 +38,12 @@
   \sa SoViewingMatrixElement
 */
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/SbVec3f.h>
-#include <assert.h>
+#include <cassert>
 
 // defines for the flags member
 #define FLG_IDENTITY   0x1  // modelMatrix is identity
@@ -107,8 +110,11 @@ void
 SoModelMatrixElement::makeIdentity(SoState * const state,
                                    SoNode * const node)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement * elem =
+    coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->makeEltIdentity();
     if (node) elem->setNodeId(node);
@@ -123,8 +129,11 @@ SoModelMatrixElement::set(SoState * const state,
                           SoNode * const node,
                           const SbMatrix & matrix)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement *elem =
+    coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
 
   if (elem) {
     elem->setElt(matrix);
@@ -136,11 +145,15 @@ SoModelMatrixElement::set(SoState * const state,
   Sets the current cull matrix.
 */
 void
-SoModelMatrixElement::setCullMatrix(SoState * state, SoNode * node,
+SoModelMatrixElement::setCullMatrix(SoState * state, SoNode * COIN_UNUSED(node),
                                     const SbMatrix & matrix)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement * elem =
+    coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     elem->cullMatrix = matrix;
     elem->flags |= FLG_CULLMATRIX;
@@ -156,8 +169,11 @@ SoModelMatrixElement::mult(SoState * const state,
                            SoNode * const node,
                            const SbMatrix &matrix)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement * elem = coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     elem->multElt(matrix);
     if (node) elem->addNodeId(node);
@@ -173,8 +189,10 @@ SoModelMatrixElement::translateBy(SoState * const state,
                                   SoNode * const node,
                                   const SbVec3f &translation)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement * elem = coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->translateEltBy(translation);
     if (node) elem->addNodeId(node);
@@ -190,8 +208,10 @@ SoModelMatrixElement::rotateBy(SoState * const state,
                                SoNode * const node,
                                const SbRotation & rotation)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement * elem = coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
   if (elem) {
     elem->rotateEltBy(rotation);
     if (node) elem->addNodeId(node);
@@ -206,8 +226,11 @@ SoModelMatrixElement::scaleBy(SoState * const state,
                               SoNode * const node,
                               const SbVec3f & scaleFactor)
 {
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoModelMatrixElement * elem = coin_safe_cast<SoModelMatrixElement *>
+    (
+     SoElement::getElement(state, classStackIndex)
+     );
+
   if (elem) {
     elem->scaleEltBy(scaleFactor);
     if (node) elem->addNodeId(node);
@@ -223,8 +246,10 @@ SoModelMatrixElement::pushMatrix(SoState * const state)
 {
   // use SoState::getElementNoPush() instead of
   // SoElement::getConstElement() to avoid cache dependencies
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    state->getElementNoPush(classStackIndex);
+  SoModelMatrixElement * elem = coin_assert_cast<SoModelMatrixElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
   return elem->pushMatrixElt();
 }
 
@@ -238,8 +263,10 @@ SoModelMatrixElement::popMatrix(SoState * const state,
 {
   // use SoState::getElementNoPush() instead of
   // SoElement::getConstElement() to avoid cache dependencies
-  SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    state->getElementNoPush(classStackIndex);
+  SoModelMatrixElement * elem = coin_assert_cast<SoModelMatrixElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
   elem->popMatrixElt(matrix);
 }
 
@@ -250,13 +277,15 @@ SoModelMatrixElement::popMatrix(SoState * const state,
 const SbMatrix &
 SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
 {
-  const SoModelMatrixElement *elem = (const SoModelMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoModelMatrixElement * elem = coin_assert_cast<const SoModelMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   if (!(elem->flags & FLG_COMBINED)) {
     // Need to change this element, so cast away the const (_don't_
     // use the getElement() method, as it may invoke a
     // push()). --mortene
-    SoModelMatrixElement * e = (SoModelMatrixElement *)elem;
+    SoModelMatrixElement * e = const_cast<SoModelMatrixElement *>(elem);
     e->combinedMatrix = e->modelMatrix;
     if (e->flags & FLG_CULLMATRIX)
       e->combinedMatrix.multRight(e->cullMatrix);
@@ -271,8 +300,10 @@ SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
 const SbMatrix &
 SoModelMatrixElement::get(SoState * const state)
 {
-  const SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoModelMatrixElement * elem = coin_assert_cast<const SoModelMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   return elem->modelMatrix;
 }
 
@@ -284,8 +315,10 @@ const SbMatrix &
 SoModelMatrixElement::get(SoState * const state,
                           SbBool & isIdentity)
 {
-  const SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+  const SoModelMatrixElement * elem = coin_assert_cast<const SoModelMatrixElement *>
+    (
+     SoElement::getConstElement(state, classStackIndex)
+     );
   if (elem->flags & FLG_IDENTITY) isIdentity = TRUE;
   else isIdentity = FALSE;
   return elem->modelMatrix;
@@ -400,8 +433,11 @@ void
 SoModelMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  SoModelMatrixElement * prev =
-    (SoModelMatrixElement *) this->getNextInStack();
+  const SoModelMatrixElement * prev =
+    coin_assert_cast<SoModelMatrixElement *>
+    (
+     this->getNextInStack()
+     );
 
   this->modelMatrix = prev->modelMatrix;
   this->flags = prev->flags;
@@ -415,7 +451,7 @@ SoModelMatrixElement::push(SoState * state)
   this->copyNodeIds(prev);
 }
 
-const SbMatrix & 
+const SbMatrix &
 SoModelMatrixElement::getModelMatrix(void) const
 {
   return this->modelMatrix;

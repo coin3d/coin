@@ -38,8 +38,11 @@
   \sa SoReplacedElement, SoInt32Element, SoAccumulatedElement
 */
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoFloatElement.h>
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoFloatElement);
 
@@ -68,7 +71,9 @@ SoFloatElement::matches(const SoElement * element) const
 {
   assert(element);
   if (getTypeId() != element->getTypeId()) { return FALSE; }
-  if (this->data != ((SoFloatElement *)element)->data) { return FALSE; }
+  if (this->data != (coin_assert_cast<const SoFloatElement *>(element)->data)) {
+    return FALSE;
+  }
   return TRUE;
 }
 
@@ -79,7 +84,7 @@ SoFloatElement::copyMatchInfo(void) const
   // SoElement::copyMatchInfo is abstract
   //    inherited::copyMatchInfo();
   assert(getTypeId().canCreateInstance());
-  SoFloatElement * element = (SoFloatElement *) getTypeId().createInstance();
+  SoFloatElement * element = static_cast<SoFloatElement *>(getTypeId().createInstance());
   element->data = this->data;
   // DEPRECATED 980807 pederb. copyMatchInfo() should only copy
   // information needed in matches(). An exact copy is not needed.
@@ -102,13 +107,16 @@ SoFloatElement::print(FILE * file) const
 void
 SoFloatElement::set(const int index,
                     SoState * const state,
-                    SoNode * const node, // unused
+                    SoNode * const COIN_UNUSED(node),
                     const float value)
 {
-  SoFloatElement * element = (SoFloatElement *)
-    (SoFloatElement::getElement(state, index));
-  if (element) { 
-    element->setElt(value); 
+  SoFloatElement * element =
+    coin_safe_cast<SoFloatElement *>
+    (
+     SoFloatElement::getElement(state, index)
+     );
+  if (element) {
+    element->setElt(value);
   }
 }
 
@@ -130,8 +138,10 @@ SoFloatElement::set(const int stackIndex, SoState * const state,
 float
 SoFloatElement::get(const int index, SoState * const state)
 {
-  SoFloatElement * element = (SoFloatElement *)
-    (getConstElement(state, index)); //, NULL );
+  const SoFloatElement * element = coin_safe_cast<const SoFloatElement *>
+    (
+     getConstElement(state, index)
+     ); //, NULL );
   if (element) { return element->data; }
   return 0.0f;
 }

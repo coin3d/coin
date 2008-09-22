@@ -34,7 +34,7 @@
 
 
 #include <Inventor/elements/SoTextOutlineEnabledElement.h>
-#include <assert.h>
+#include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextOutlineEnabledElement);
 
@@ -84,7 +84,7 @@ SoTextOutlineEnabledElement::set(SoState * const state, const SbBool enabled)
 SbBool
 SoTextOutlineEnabledElement::get(SoState * const state)
 {
-  return (SbBool) SoInt32Element::get(classStackIndex, state);
+  return static_cast<SbBool>(SoInt32Element::get(classStackIndex, state));
 }
 
 /*!

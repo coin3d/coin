@@ -30,8 +30,11 @@
 */
 
 #include <Inventor/elements/SoTransparencyElement.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/elements/SoLazyElement.h>
-#include <assert.h>
+#include <cassert>
 
 
 SO_ELEMENT_SOURCE(SoTransparencyElement);
@@ -70,10 +73,12 @@ SoTransparencyElement::set(SoState * const state, SoNode * const node,
                            const int32_t numvalues,
                            const float * const values)
 {
-  SoTransparencyElement * elem = (SoTransparencyElement*)
-    SoTransparencyElement::getInstance(state);
+  SoTransparencyElement * elem = const_cast<SoTransparencyElement *>
+    (
+     SoTransparencyElement::getInstance(state)
+     );
 
-  SoLazyElement::setTransparency(state, node, numvalues, values, &elem->colorpacker); 
+  SoLazyElement::setTransparency(state, node, numvalues, values, &elem->colorpacker);
 }
 
 //! FIXME: write doc.
@@ -109,6 +114,8 @@ SoTransparencyElement::getArrayPtr(void) const
 const SoTransparencyElement *
 SoTransparencyElement::getInstance(SoState *state)
 {
-  return (const SoTransparencyElement *)
-    state->getElementNoPush(classStackIndex);
+  return coin_assert_cast<const SoTransparencyElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
 }
