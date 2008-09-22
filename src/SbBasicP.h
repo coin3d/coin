@@ -28,6 +28,7 @@
 
 class SoAction;
 class SoDetail;
+class SoElement;
 class SoPath;
 
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) //coin_depointer does not work with MSVC 6
@@ -45,7 +46,21 @@ struct coin_depointer<Type *> {
   enum { valid = true };
   typedef Type type;
 };
+
 #endif //COIN_DEPOINTER_AVAILABLE
+
+template<typename To,typename From>
+To coin_internal_safe_cast2(From * ptr) {
+#ifdef COIN_DEPOINTER_AVAILABLE
+  if((ptr != NULL) && ptr->getTypeId().isDerivedFrom(coin_depointer<To>::type::getClassTypeId()))
+#else
+  //FIXME Can we avoid declaring an unused variable also for MSVC6? - BFG 20080807
+  To retVal;
+  if((ptr != NULL) && ptr->getTypeId().isDerivedFrom(retVal->getClassTypeId()))
+#endif //OLDMSVC
+  return static_cast<To>(ptr);
+  return NULL;
+}
 
 template<typename To,typename From>
 To
@@ -58,7 +73,7 @@ coin_internal_safe_cast(From * ptr) {
     return static_cast<To>(ptr);
   return NULL;
 }
-     
+
 template<typename To>
 To coin_safe_cast(const SoBase * ptr) { return coin_internal_safe_cast<To>(ptr); }
 template<typename To>
@@ -66,16 +81,25 @@ To coin_safe_cast(SoBase * ptr) { return coin_internal_safe_cast<To>(ptr); }
 template<typename To>
 To coin_safe_cast(SoAction * ptr) { return coin_internal_safe_cast<To>(ptr); }
 template<typename To>
+To coin_safe_cast(SoDetail * ptr) { return coin_internal_safe_cast<To>(ptr); }
+template<typename To>
 To coin_safe_cast(const SoDetail * ptr) { return coin_internal_safe_cast<To>(ptr); }
 template<typename To>
 To coin_safe_cast(SoField * ptr) { return coin_internal_safe_cast<To>(ptr); }
-
+template<typename To>
+To coin_safe_cast(SoElement * ptr) { return coin_internal_safe_cast2<To>(ptr); }
+template<typename To>
+To coin_safe_cast(const SoElement * ptr) { return coin_internal_safe_cast2<To>(ptr); }
 
 template<typename To,typename From>
 To
 coin_internal_assert_cast(From * ptr) {
   To retVal = coin_safe_cast<To>(ptr);
-  //assert(retVal && "ptr was not of correct type");
+  //NOTE if we ever get an assert here, the error is on the caller,
+  //not here. Allthough it will be prudent to disable this assert in
+  //any release before we have tested the calling code well enough. -
+  //BFG 20080916
+  assert(retVal && "ptr was not of correct type");
   return retVal;
 }
 
@@ -89,16 +113,20 @@ template<typename To>
 To coin_assert_cast(const SoDetail * ptr) { return coin_internal_assert_cast<To>(ptr); }
 template<typename To>
 To coin_assert_cast(SoField * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(const SoElement * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(SoElement * ptr) { return coin_internal_assert_cast<To>(ptr); }
 
 //FIXME Should we remove this? - BFG 20080801
 //Strictly for internal use, until we know exactly how to handle these
 template <typename To>
-To 
+To
 reclassify_cast(SoPath * ptr) {
   return reinterpret_cast<To>(ptr);
 }
 template <typename To>
-To 
+To
 reclassify_cast(const SoPath * ptr) {
   return reinterpret_cast<To>(ptr);
 }
@@ -107,7 +135,7 @@ reclassify_cast(const SoPath * ptr) {
 //standard. So we need to do some duck and dive between different
 //compilers. BFG 20080814
 template <typename To, typename From>
-To 
+To
 function_to_object_cast(From ptr) {
 #if defined(__GNUC__) && ( __GNUC__ >= 4)
   //Add compilers which support this style explicitly
