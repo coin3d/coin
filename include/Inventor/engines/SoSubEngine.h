@@ -85,7 +85,7 @@ const SoEngineOutputData ** _class_::parentoutputdata = NULL; \
 const SoFieldData ** \
 _class_::getInputDataPtr(void) \
 { \
-  return (const SoFieldData **)&_class_::inputdata; \
+  return const_cast<const SoFieldData **>(&_class_::inputdata); \
 } \
  \
 const SoFieldData * \
@@ -97,7 +97,7 @@ _class_::getFieldData(void) const \
 const SoEngineOutputData ** \
 _class_::getOutputDataPtr(void) \
 { \
-  return (const SoEngineOutputData**)&_class_::outputdata; \
+  return const_cast<const SoEngineOutputData**>(&_class_::outputdata); \
 } \
  \
 const SoEngineOutputData * \
@@ -175,7 +175,8 @@ _class_::createInstance(void) \
     /* Store parent's data pointers for later use in the constructor. */ \
     _class_::parentinputdata = _parentclass_::getInputDataPtr(); \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
-    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanup);  \
+    cc_coin_atexit_static_internal \
+      (static_cast<coin_atexit_f*>(_class_::atexit_cleanup));  \
   } while (0)
 
 
@@ -228,7 +229,8 @@ _class_::createInstance(void) \
       /* to find bugs when _writeop_ contains the same variable */ \
       /* names we are using internally in the macro. */ \
       for (int SO_ENGINE_OUTPUT_i = 0; SO_ENGINE_OUTPUT_i < SO_ENGINE_OUTPUT_numconnections; SO_ENGINE_OUTPUT_i++) { \
-        _fieldtype_ * SO_ENGINE_OUTPUT_field = (_fieldtype_*) _engineout_[SO_ENGINE_OUTPUT_i]; \
+        _fieldtype_ * SO_ENGINE_OUTPUT_field = \
+           static_cast<_fieldtype_*>(_engineout_[SO_ENGINE_OUTPUT_i]); \
         if (!SO_ENGINE_OUTPUT_field->isReadOnly()) { SO_ENGINE_OUTPUT_field->_writeop_; } \
       } \
       /* paranoid assertion */ \

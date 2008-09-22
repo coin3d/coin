@@ -210,7 +210,7 @@ SoOneShot::inputChanged(SoField * which)
   else if (which == &this->disable) {
     if (this->disable.getValue() && this->running) {
       this->holdduration = this->timeIn.getValue() - this->starttime;
-      this->holdramp = (float)
+      this->holdramp = static_cast<float>
         (this->holdduration.getValue() / this->duration.getValue().getValue());
       this->running = FALSE;
       // We need one more evaluation to send correct outputs.

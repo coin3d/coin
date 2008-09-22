@@ -33,18 +33,18 @@ public:
   SoEngineOutputList(void) : SbPList() { }
   SoEngineOutputList(const int sizehint) : SbPList(sizehint) { }
   SoEngineOutputList(const SoEngineOutputList & l) : SbPList(l) { }
-  
+
   void append(SoEngineOutput * output) {
-    SbPList::append((void *) output);
+    SbPList::append(static_cast<void *>(output));
   }
-  void insert(SoEngineOutput * output, const int insertbefore) { 
-    SbPList::insert((void *) output, insertbefore); 
+  void insert(SoEngineOutput * output, const int insertbefore) {
+    SbPList::insert(static_cast<void *>(output), insertbefore);
   }
   SoEngineOutput * operator [](const int idx) const {
-    return (SoEngineOutput*) SbPList::operator[](idx);
+    return static_cast<SoEngineOutput *>(SbPList::operator[](idx));
   }
   void set(const int idx, SoEngineOutput * item) {
-    SbPList::operator[](idx) = (void*) item;
+    SbPList::operator[](idx) = static_cast<void *>(item);
   }
 };
 

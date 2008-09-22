@@ -102,12 +102,13 @@
 
 #include <Inventor/engines/SoTimeCounter.h>
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+#include "engines/SoSubEngineP.h"
+
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-
-#include "engines/SoSubEngineP.h"
-#include "coindefs.h"
 
 // *************************************************************************
 
@@ -138,7 +139,7 @@ SoTimeCounter::SoTimeCounter(void)
   this->syncOut.enable(FALSE);
 
   SoField * realtime = SoDB::getGlobalField("realTime");
-  this->starttime = ((SoSFTime *)realtime)->getValue().getValue();
+  this->starttime = coin_assert_cast<SoSFTime *>(realtime)->getValue().getValue();
   this->firstoutputenable = TRUE;
   this->outputvalue = 0;
   this->cyclelen = 1.0;
@@ -372,12 +373,12 @@ SoTimeCounter::calcDutySteps(void)
     int i;
     double dutysum = 0.0;
     for (i = 0; i < this->numsteps; i++) {
-      dutysum += (double)this->duty[i];
+      dutysum += static_cast<double>(this->duty[i]);
     }
     double currsum = 0.0;
     this->dutylimits.truncate(0);
     for (i = 0; i < this->numsteps; i++) {
-      currsum += (double) this->duty[i];
+      currsum += static_cast<double>(this->duty[i]);
       this->dutylimits.append(currsum/dutysum * this->cyclelen);
     }
   }
@@ -414,10 +415,10 @@ SoTimeCounter::findOutputValue(double timeincycle) const
   else {
     double steptime = this->cyclelen / this->numsteps;
     if (stepval >= 0) {
-      val = minval + (short)(timeincycle / steptime) * stepval;
+      val = minval + static_cast<short>((timeincycle / steptime) * stepval);
     }
     else {
-      val = maxval + (short)(timeincycle / steptime) * stepval;
+      val = maxval + static_cast<short>((timeincycle / steptime) * stepval);
     }
     if (val > maxval) val = maxval;
     if (val < minval) val = minval;

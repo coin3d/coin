@@ -35,7 +35,7 @@
 
   \code
   #Inventor V2.1 ascii
-  
+
   Separator {
      Transform {
         rotation =
@@ -53,6 +53,8 @@
 // *************************************************************************
 
 #include <Inventor/engines/SoElapsedTime.h>
+
+#include "SbBasicP.h"
 
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -81,7 +83,7 @@
 */
 /*!
   \var SoSFBool SoElapsedTime::pause
-  
+
   Shuts timer on and off. Will restart at the position it would have
   been if not paused (i.e. doesn't "lose time").
 */
@@ -128,7 +130,7 @@ SoElapsedTime::SoElapsedTime(void)
   this->timeIn.connectFrom(realtime);
 
   this->currtime = SbTime::zero();
-  this->lasttime = ((SoSFTime *)realtime)->getValue();
+  this->lasttime = coin_assert_cast<SoSFTime *>(realtime)->getValue();
   this->status = SoElapsedTime::RUNNING;
 }
 

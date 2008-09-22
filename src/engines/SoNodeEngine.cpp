@@ -216,7 +216,7 @@ SoNodeEngine::getOutputName(const SoEngineOutput * output,
   when a specific field is changed.
 */
 void
-SoNodeEngine::inputChanged(SoField * which)
+SoNodeEngine::inputChanged(SoField * COIN_UNUSED(which))
 {
 }
 
@@ -321,7 +321,7 @@ SoNodeEngine::writeInstance(SoOutput * out)
   (i.e. engines not built in to Coin).
 */
 void
-SoNodeEngine::writeOutputTypes(SoOutput * out)
+SoNodeEngine::writeOutputTypes(SoOutput * COIN_UNUSED(out))
 {
   COIN_STUB();
 }

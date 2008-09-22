@@ -42,15 +42,15 @@
 
   The expression syntax is quite similar to C/C++, with a very limited
   set of keywords and functions.
-  
+
   An example:
-  
+
   \code
 
   oa = a * (0.5 + b) / c
 
   \endcode
- 
+
   Will multiply the value in \e a with the value in \e b plus 0.5,
   divide that result with \e c, and place the result in \e oa. Since
   this is an engine, the expression will only be evaluated when
@@ -67,13 +67,13 @@
   output values as the input field with the biggest number of
   values. When the index get out of bounds for some other input field,
   the last field value will be used.
-  
+
   Vector expressions are similar to scalar expression. An example:
 
   \code
-  
+
   oA = A + vec3f(1.0, 0.0, 0.0) * B
-  
+
   \endcode
 
   Will take the vector in \e A, add the value in \e B multiplied with
@@ -95,14 +95,14 @@
   \li sinh(x) - hyperbolic sinus function
   \li tanh(x) - hyperbolic tangent function
   \li sqrt(x) - square root function
-  \li pow(x,y) - x raised to the power of y 
+  \li pow(x,y) - x raised to the power of y
   \li exp(x) - e to the power of x
   \li log(x) - natural logarithm of x
   \li log10() - base-10 logarithm of x
   \li ceil(x) - rounds x upwards to the nearest integer
   \li floor(x) - rounds x downwards to the nearest integer
   \li fabs(x) - absolute value
-  \li fmod(x, y) - remainder of dividing x by y 
+  \li fmod(x, y) - remainder of dividing x by y
   \li rand(x) - pseudo-random value between 0 and 1
 
   Vector functions:
@@ -124,7 +124,7 @@
   \li M_PI
   \li M_SQRT2 - sqrt(2)
   \li M_SQRT1_2 - sqrt(1/2)
-  
+
   The only control flow available is the \e ? operator. An example:
 
   \code
@@ -135,7 +135,7 @@
 
   (The parentheses are not necessary, they're there just to make the
   example easier to read)
-  
+
   In addition to the standard comparators (\e <, \e >, \e <=, \e >=,
   \e ==, \e !=), you can also use && (AND) and || (OR) to
   combine expression, and the unary ! (NOT) operator.
@@ -143,14 +143,14 @@
   One final thing worth mentioning is the temporary variables. There
   exists sixteen temporary variables that can be used in expressions.
   \e ta, \e tb, \e tc, \e td, \e te, \e tf, \e tg, and \e th are scalar
-  variables, and \e tA, \e tB, \e tC, \e tD, \e tE, \e tF, \e tG, and \e tH 
+  variables, and \e tA, \e tB, \e tC, \e tD, \e tE, \e tF, \e tG, and \e tH
   are vector variables. They are usually used when you have more than
   one expression that should be evaluated in order.
 
   An example with three expressions:
 
   \code
-  
+
   ta = a * b; tb = c + d; tc = e - f
   tA = vec3f(ta, tb, tc) + A
   oA = tA * B
@@ -161,12 +161,12 @@
   your expressions easier to read. Please note that it's possible to
   have several statements in one expression. You just separate them
   with semicolons.
-  
+
   Here is a simple example of how an SoCalculator engine may be used
   in an .iv file:
-  
+
   \code
-  
+
   DEF mycamera PerspectiveCamera {
     orientation 1 0 0 1.57
   }
@@ -196,7 +196,9 @@
 
 #include <Inventor/engines/SoCalculator.h>
 
-#include <assert.h>
+#include "SbBasicP.h"
+
+#include <cassert>
 
 #include <Inventor/lists/SoEngineOutputList.h>
 
@@ -321,6 +323,7 @@ public:
 };
 
 #define PRIVATE(thisp) (thisp->pimpl)
+#define THISP(POINTER) static_cast<SoCalculator *>(POINTER)
 
 SO_ENGINE_SOURCE(SoCalculator);
 
@@ -434,7 +437,7 @@ SoCalculator::evaluate(void)
       else {
         fieldname[0] = 'A' + (i-8);
       }
-      SoMField *field = (SoMField*)this->getField(fieldname);
+      SoMField * field = coin_assert_cast<SoMField*>(this->getField(fieldname));
       maxnum = SbMax(maxnum, field->getNum());
     }
   }
@@ -492,8 +495,8 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   char outused[8]; /* oa-od and oA-oD */
 
   so_eval_cbdata cbdata;
-  cbdata.readfieldcb = (C_func_read)SoCalculator::readfieldcb;
-  cbdata.writefieldcb = (C_func_write)SoCalculator::writefieldcb;
+  cbdata.readfieldcb = static_cast<C_func_read>(SoCalculator::readfieldcb);
+  cbdata.writefieldcb = static_cast<C_func_write>(SoCalculator::writefieldcb);
   cbdata.userdata = this;
 
   for (i = 0; i < 16; i++) inused[i] = 0;
@@ -505,7 +508,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   for (i = 0; i < 8; i++) {
     if (inused[i]) {
       fieldname[0] = 'a' + i;
-      SoMFFloat *field = (SoMFFloat*) this->getField(fieldname);
+      SoMFFloat * field = coin_assert_cast<SoMFFloat *>(this->getField(fieldname));
       int num = field->getNum();
       if (num) PRIVATE(this)->a_h[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
       else PRIVATE(this)->a_h[i] = 0.0f;
@@ -514,7 +517,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   for (i = 0; i < 8; i++) {
     if (inused[i+8]) {
       fieldname[0] = 'A' + i;
-      SoMFVec3f *field = (SoMFVec3f*) this->getField(fieldname);
+      SoMFVec3f * field = coin_assert_cast<SoMFVec3f *>(this->getField(fieldname));
       int num = field->getNum();
       if (num) PRIVATE(this)->A_H[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
       else PRIVATE(this)->A_H[i] = SbVec3f(0.0f, 0.0f, 0.0f);
@@ -603,7 +606,7 @@ SoCalculator::inputChanged(SoField *which)
 void
 SoCalculator::readfieldcb(const char *fieldname, float *data, void *userdata)
 {
-  SoCalculator *thisp = (SoCalculator*) userdata;
+  SoCalculator * thisp = THISP(userdata);
   if (fieldname[0] == 'o') {
     //
     // FIXME: I'm not quite sure if it should be legal to read from an
@@ -654,7 +657,7 @@ void
 SoCalculator::writefieldcb(const char *fieldname, float *data,
                            int comp, void *userdata)
 {
-  SoCalculator *thisp = (SoCalculator*) userdata;
+  SoCalculator * thisp = THISP(userdata);
   if (fieldname[0] == 'o') {
     if ((fieldname[1] >= 'A') && (fieldname[1] <= 'D')) {
       int idx = fieldname[1] - 'A';
@@ -696,5 +699,6 @@ SoCalculator::writefieldcb(const char *fieldname, float *data,
   }
 }
 
+#undef THISP
 #undef PRIVATE
 

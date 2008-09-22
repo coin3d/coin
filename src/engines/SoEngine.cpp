@@ -50,6 +50,8 @@
 
 #include <Inventor/engines/SoEngine.h>
 
+#include "SbBasicP.h"
+
 #include <Inventor/engines/SoEngines.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
@@ -266,7 +268,7 @@ SoEngine::getOutputName(const SoEngineOutput * output,
 SoEngine *
 SoEngine::getByName(const SbName & name)
 {
-  return (SoEngine *)SoBase::getNamedBase(name, SoEngine::getClassTypeId());
+  return coin_assert_cast<SoEngine *>(SoBase::getNamedBase(name, SoEngine::getClassTypeId()));
 }
 
 /*!
@@ -285,7 +287,7 @@ SoEngine::getByName(const SbName & name, SoEngineList & el)
   when a specific field is changed.
 */
 void
-SoEngine::inputChanged(SoField * which)
+SoEngine::inputChanged(SoField * COIN_UNUSED(which))
 {
 }
 
@@ -350,7 +352,7 @@ SoEngine::evaluateWrapper(void)
   // import. So we need to check for a NULL value here.
   //
   // [*] (So far, that is: SoGate, SoConcatenate, SoSelectOne,
-  //     SoConvertAll.)  
+  //     SoConvertAll.)
   if (!outputs) { return; }
 
   if(!(this->flags & FLAG_ISDIRTY)) { return; }
@@ -412,7 +414,7 @@ SoEngine::writeInstance(SoOutput * out)
   (i.e. engines not built in to Coin).
 */
 void
-SoEngine::writeOutputTypes(SoOutput * out)
+SoEngine::writeOutputTypes(SoOutput * COIN_UNUSED(out))
 {
   COIN_STUB();
 }
@@ -443,9 +445,9 @@ SoEngine::copy(void) const
 
   SoFieldContainer::initCopyDict();
   // This snippet is the same as SoNode::addToCopyDict().
-  SoEngine * cp = (SoEngine *)SoFieldContainer::checkCopy(this);
+  SoEngine * cp = coin_assert_cast<SoEngine *>(SoFieldContainer::checkCopy(this));
   if (!cp) {
-    cp = (SoEngine *)this->getTypeId().createInstance();
+    cp = static_cast<SoEngine *>(this->getTypeId().createInstance());
     assert(cp);
     SoFieldContainer::addCopy(this, cp);
   }
@@ -453,9 +455,9 @@ SoEngine::copy(void) const
   cp->ref();
 
   // Call findCopy() to have copyContents() run once.
-  SoEngine * dummy = (SoEngine *)SoFieldContainer::findCopy(this, TRUE);
+  SoEngine * dummy = coin_assert_cast<SoEngine *>(SoFieldContainer::findCopy(this, TRUE));
   assert(dummy == cp);
-  
+
   SoFieldContainer::copyDone();
   // unrefNoDelete() so that we return a copy with reference count 0
   cp->unrefNoDelete();
@@ -477,10 +479,15 @@ SoEngine::copyThroughConnection(void) const
   if (connfc) return SoFieldContainer::findCopy(this, TRUE);
 
   // If we're outside the scenegraph.
-  if (this->shouldCopy() == FALSE) return (SoFieldContainer *)this;
+  if (this->shouldCopy() == FALSE)
+    return
+      const_cast<SoFieldContainer *>
+      (
+       coin_assert_cast<const SoFieldContainer *>(this)
+       );
 
   // Ok, make the first copy and return its pointer.
-  SoEngine * cp = (SoEngine *)SoFieldContainer::findCopy(this, TRUE);
+  SoEngine * cp = coin_assert_cast<SoEngine *>(SoFieldContainer::findCopy(this, TRUE));
   assert(cp);
   return cp;
 }
@@ -526,7 +533,7 @@ SoEngine::isNotifying(void) const
   return (this->flags & FLAG_ISNOTIFYING) != 0;
 }
 
-void 
+void
 SoEngine::setDirty(void)
 {
   this->flags |= FLAG_ISDIRTY;

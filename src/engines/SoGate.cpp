@@ -52,7 +52,9 @@
 
 #include <Inventor/engines/SoGate.h>
 
-#include <assert.h>
+#include "SbBasicP.h"
+
+#include <cassert>
 
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
@@ -162,7 +164,7 @@ SoGate::initialize(const SoType inputfieldtype)
   SO_ENGINE_ADD_INPUT(enable, (FALSE));
 
   // Instead of SO_ENGINE_ADD_INPUT().
-  this->input = (SoMField *)inputfieldtype.createInstance();
+  this->input = static_cast<SoMField *>(inputfieldtype.createInstance());
   this->input->setNum(0);
   this->input->setContainer(this);
   this->dynamicinput = new SoFieldData(SoGate::inputdata);
@@ -193,7 +195,7 @@ SoGate::evaluate(void)
   // Force update of slave fields.
   this->output->enable(TRUE);
 
-  SO_ENGINE_OUTPUT((*output), SoField, copyFrom(*this->input));  
+  SO_ENGINE_OUTPUT((*output), SoField, copyFrom(*this->input));
 
   // No more updates until either the SoGate::enable field or the
   // SoGate::trigger field is touched.
@@ -266,7 +268,7 @@ SoGate::writeInstance(SoOutput * out)
   out->write("type");
   if (!binarywrite) out->write(' ');
   out->write(this->input->getTypeId().getName());
-  if (binarywrite) out->write((unsigned int)0);
+  if (binarywrite) out->write(static_cast<unsigned int>(0));
   else out->write('\n');
 
   this->getFieldData()->write(out, this);
@@ -277,7 +279,7 @@ SoGate::writeInstance(SoOutput * out)
 void
 SoGate::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  SoGate * gatesrc = (SoGate *)from;
+  const SoGate * gatesrc = coin_assert_cast<const SoGate *>(from);
   if (gatesrc->input) { this->initialize(gatesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

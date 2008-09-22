@@ -52,6 +52,8 @@
 
 #include <Inventor/engines/SoConcatenate.h>
 
+#include "SbBasicP.h"
+
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -153,7 +155,7 @@ SoConcatenate::initialize(const SoType inputfieldtype)
   // Instead of SO_ENGINE_ADD_INPUT().
   this->dynamicinput = new SoFieldData(SoConcatenate::inputdata);
   for (int i=0; i < SoConcatenate::NUMINPUTS; i++) {
-    this->input[i] = (SoMField *)inputfieldtype.createInstance();
+    this->input[i] = static_cast<SoMField *>(inputfieldtype.createInstance());
     this->input[i]->setNum(0);
     this->input[i]->setContainer(this);
     SbString s = "input";
@@ -230,7 +232,7 @@ SoConcatenate::writeInstance(SoOutput * out)
   out->write("type");
   if (!binarywrite) out->write(' ');
   out->write(this->input[0]->getTypeId().getName());
-  if (binarywrite) out->write((unsigned int)0);
+  if (binarywrite) out->write(static_cast<unsigned int>(0));
   else out->write('\n');
 
   this->getFieldData()->write(out, this);
@@ -242,7 +244,8 @@ void
 SoConcatenate::copyContents(const SoFieldContainer * from,
                             SbBool copyconnections)
 {
-  SoConcatenate * concatenatesrc = (SoConcatenate *)from;
+  const SoConcatenate * concatenatesrc =
+    coin_assert_cast<const SoConcatenate *>(from);
   if (concatenatesrc->input[0]) { this->initialize(concatenatesrc->input[0]->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }
@@ -252,9 +255,9 @@ SoConcatenate::copyContents(const SoFieldContainer * from,
 #define TRANSFER_FUNC(_fieldtype_) \
 static void _fieldtype_##_transfer(SoMField * output, int outidx, SoMField * input) \
 { \
-  _fieldtype_ * in = (_fieldtype_ *) input; \
+  _fieldtype_ * in = coin_assert_cast<_fieldtype_ *>(input); \
   assert(in != NULL); \
-  ((_fieldtype_ *)output)->setValues(outidx, in->getNum(), in->getValues(0)); \
+  coin_assert_cast<_fieldtype_ *>(output)->setValues(outidx, in->getNum(), in->getValues(0)); \
 }
 
 // Cover all known SoMField subclasses.
@@ -302,17 +305,17 @@ SoConcatenate::evaluate(void)
       inputstop = i;
     }
   }
-  
+
   const int numconnections = this->output->getNumConnections();
   const SoType type = this->output->getConnectionType();
 
   for (i = 0; i < numconnections; i++) {
-    SoMField * out = (SoMField *)(*this->output)[i];
+    SoMField * out = coin_assert_cast<SoMField *>((*this->output)[i]);
     if (!out->isReadOnly()) {
       int cnt = 0;
       out->setNum(numvalues);
       for (int j = 0; j <= inputstop; j++) {
-        SoMField * in = (SoMField *)input[j];
+        SoMField * in = coin_assert_cast<SoMField *>(input[j]);
 
         if (type == SoMFBitMask::getClassTypeId()) {
           // (Seems safer to use SoMFBitMask's own methods, and not
@@ -379,12 +382,12 @@ SoConcatenate::evaluate(void)
         }
         else if (type == SoMFVec4f::getClassTypeId()) {
           SoMFVec4f_transfer(out, cnt, in);
-        }  
+        }
         else {
           // Slower fallback (copying by going through string
           // conversion and deconversion), in case of new
           // (user-defined) field types.
-          const int num = in->getNum();  
+          const int num = in->getNum();
           SbString strval;
           for (int k = 0; k < num; k++) {
             in->get1(k, strval);

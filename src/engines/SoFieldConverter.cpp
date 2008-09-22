@@ -51,7 +51,7 @@
 
 #include <Inventor/engines/SoFieldConverter.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/fields/SoField.h>
 #include <Inventor/engines/SoOutputData.h>
@@ -113,9 +113,9 @@ SoFieldConverter::initClasses(void)
   SoConvertAll::initClass();
 }
 
-/*!  
+/*!
   This method is obsoleted in Coin. It should probably have been
-  private in OIV.  
+  private in OIV.
 */
 SoField *
 SoFieldConverter::getConnectedInput(void)
@@ -133,7 +133,7 @@ SoFieldConverter::getForwardConnections(SoFieldList & l) const
   SoEngineOutputList outputlist;
   int n = 0;
   (void) this->getOutputs(outputlist);
-  
+
   for (int i = 0; i < outputlist.getLength(); i++) {
     n += outputlist[i]->getForwardConnections(l);
   }

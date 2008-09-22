@@ -33,6 +33,9 @@
  */
 
 #include <Inventor/engines/SoEngineOutput.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
@@ -115,7 +118,7 @@ SoEngineOutput::getForwardConnections(SoFieldList & fl) const
     // test for and skip field converters. Get the real field this
     // output is connected to.
     if (fc && fc->isOfType(SoFieldConverter::getClassTypeId())) {
-      SoFieldConverter * converter = (SoFieldConverter*) fc;
+      SoFieldConverter * converter = coin_assert_cast<SoFieldConverter *>(fc);
       numc += converter->getForwardConnections(fl);
     }
     else {
@@ -190,7 +193,7 @@ SoEngineOutput::getNodeContainer(void) const
 #endif // COIN_DEBUG
     return NULL;
   }
-  return (SoNodeEngine*) this->container;
+  return coin_assert_cast<SoNodeEngine*>(this->container);
 }
 
 /*!
@@ -233,7 +236,7 @@ void
 SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 {
   // FIXME: need a union as member instead of container
-  this->container = (SoEngine*) nodeengine;
+  this->container = coin_assert_cast<SoEngine *>(nodeengine);
 }
 
 /*!
@@ -341,7 +344,7 @@ SoEngineOutput::operator[](int i) const
 void
 SoEngineOutput::prepareToWrite(void) const
 {
-  SoEngineOutput * that = (SoEngineOutput *)this;
+  SoEngineOutput * that = const_cast<SoEngineOutput *>(this);
   that->fieldnotiflist.truncate(0);
 
   int n = this->slaves.getLength();
@@ -419,5 +422,5 @@ SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
 SoFieldContainer *
 SoEngineOutput::getFieldContainer(void)
 {
-  return (SoFieldContainer*) this->container;
+  return coin_assert_cast<SoFieldContainer *>(this->container);
 }

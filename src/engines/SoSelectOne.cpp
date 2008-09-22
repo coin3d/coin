@@ -52,7 +52,9 @@
 
 #include <Inventor/engines/SoSelectOne.h>
 
-#include <string.h>
+#include "SbBasicP.h"
+
+#include <cstring>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -148,7 +150,7 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   SO_ENGINE_ADD_INPUT(index, (0));
 
   // Instead of SO_ENGINE_ADD_INPUT().
-  this->input = (SoMField *)inputfieldtype.createInstance();
+  this->input = static_cast<SoMField *>(inputfieldtype.createInstance());
   this->input->setNum(0);
   this->input->setContainer(this);
   this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
@@ -208,7 +210,7 @@ SoSelectOne::evaluate(void)
 #define IF_TYPE(_var_, _fieldtype_) \
     if(_var_ == SoMF##_fieldtype_::getClassTypeId() ) \
     { \
-        SO_ENGINE_OUTPUT((*output), SoSF##_fieldtype_, setValue((*((SoMF##_fieldtype_ *)this->input))[idx])); \
+        SO_ENGINE_OUTPUT((*output), SoSF##_fieldtype_, setValue((*(coin_assert_cast<SoMF##_fieldtype_ *>(this->input)))[idx])); \
     }
     // end of macro
 
@@ -299,7 +301,7 @@ SoSelectOne::writeInstance(SoOutput * out)
   out->write("type");
   if (!binarywrite) out->write(' ');
   out->write(this->input->getTypeId().getName());
-  if (binarywrite) out->write((unsigned int)0);
+  if (binarywrite) out->write(static_cast<unsigned int>(0));
   else out->write('\n');
 
   this->getFieldData()->write(out, this);
@@ -311,7 +313,7 @@ void
 SoSelectOne::copyContents(const SoFieldContainer * from,
                           SbBool copyconnections)
 {
-  SoSelectOne * selectonesrc = (SoSelectOne *)from;
+  const SoSelectOne * selectonesrc = coin_assert_cast<const SoSelectOne *>(from);
   if (selectonesrc->input) { this->initialize(selectonesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

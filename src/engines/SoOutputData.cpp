@@ -44,6 +44,12 @@
  */
 
 #include <Inventor/engines/SoOutputData.h>
+
+#include "coindefs.h" // COIN_STUB()
+#include "SbBasicP.h"
+
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
@@ -54,7 +60,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include "threads/threadsutilp.h"
-#include "coindefs.h" // COIN_STUB()
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
@@ -141,7 +146,7 @@ SoEngineOutputData::addOutput(const SoEngine *base, const char *name,
 {
   CC_GLOBAL_LOCK;
   if (!this->hasOutput(name)) {
-    this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+    this->addOutputInternal(coin_assert_cast<const SoFieldContainer *>(base), name, output, type);
   }
   CC_GLOBAL_UNLOCK;
 }
@@ -171,7 +176,7 @@ SoEngineOutputData::getOutputName(int index) const
 SoEngineOutput *
 SoEngineOutputData::getOutput(const SoEngine *engine, int index) const
 {
-  return this->getOutputInternal((const SoFieldContainer*) engine, index);
+  return this->getOutputInternal(coin_assert_cast<const SoFieldContainer*>(engine), index);
 }
 
 /*!
@@ -182,7 +187,7 @@ int
 SoEngineOutputData::getIndex(const SoEngine *engine,
                              const SoEngineOutput *output) const
 {
-  return this->getIndexInternal((const SoFieldContainer*) engine, output);
+  return this->getIndexInternal(coin_assert_cast<const SoFieldContainer*>(engine), output);
 }
 
 /*!
@@ -198,7 +203,7 @@ SoEngineOutputData::getType(int index) const
   FIXME: doc
 */
 SbBool
-SoEngineOutputData::readDescriptions(SoInput *in, SoEngine *engine) const
+SoEngineOutputData::readDescriptions(SoInput * COIN_UNUSED(in), SoEngine * COIN_UNUSED(engine)) const
 {
   COIN_STUB();
   return FALSE;
@@ -208,7 +213,9 @@ SoEngineOutputData::readDescriptions(SoInput *in, SoEngine *engine) const
   FIXME: doc.
 */
 void
-SoEngineOutputData::writeDescriptions(SoOutput *out, SoEngine *engine) const
+SoEngineOutputData::writeDescriptions(SoOutput * COIN_UNUSED(out),
+				      SoEngine *COIN_UNUSED(engine)
+				      ) const
 {
   COIN_STUB();
 }
@@ -222,7 +229,7 @@ SoEngineOutputData::addOutput(const SoNodeEngine * base, const char *name,
 {
   CC_GLOBAL_LOCK;
   if (!this->hasOutput(name)) {
-    this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+    this->addOutputInternal(coin_assert_cast<const SoFieldContainer *>(base), name, output, type);
   }
   CC_GLOBAL_UNLOCK;
 }
@@ -233,7 +240,7 @@ SoEngineOutputData::addOutput(const SoNodeEngine * base, const char *name,
 SoEngineOutput *
 SoEngineOutputData::getOutput(const SoNodeEngine * engine, int index) const
 {
-  return this->getOutputInternal((const SoFieldContainer*) engine, index);
+  return this->getOutputInternal(coin_assert_cast<const SoFieldContainer *>(engine), index);
 }
 
 /*!
@@ -242,7 +249,7 @@ SoEngineOutputData::getOutput(const SoNodeEngine * engine, int index) const
 int
 SoEngineOutputData::getIndex(const SoNodeEngine * engine, const SoEngineOutput * output) const
 {
-  return this->getIndexInternal((const SoFieldContainer*) engine, output);
+  return this->getIndexInternal(coin_assert_cast<const SoFieldContainer *>(engine), output);
 }
 
 // does the actual job of adding an engine output
@@ -250,9 +257,9 @@ void
 SoEngineOutputData::addOutputInternal(const SoFieldContainer * base, const char *name,
                                       const SoEngineOutput * output, SoType type)
 {
-  char * vbase = (char *)base;
-  char * voutput = (char *)output;
-  const ptrdiff_t range = voutput - vbase;
+  const ptrdiff_t range =
+    reinterpret_cast<const char *>(output) -
+    reinterpret_cast<const char *>(base);
   this->outputlist.append(new SoOutputDataEntry(name, type, range));
 
 #if COIN_DEBUG
@@ -280,18 +287,22 @@ SoEngineOutput *
 SoEngineOutputData::getOutputInternal(const SoFieldContainer * base, int index) const
 {
   assert(index >= 0 && index < this->outputlist.getLength());
-  char * outputptr = (char *)base;
+  const char * outputptr = reinterpret_cast<const char *>(base);
   outputptr += this->outputlist[index]->ptroffset;
-  return (SoEngineOutput *)outputptr;
+  return
+    const_cast<SoEngineOutput *>
+    (
+     reinterpret_cast<const SoEngineOutput *>(outputptr)
+     );
 }
 
 // does the actual job of returning an engine output index
 int
 SoEngineOutputData::getIndexInternal(const SoFieldContainer * base, const SoEngineOutput * output) const
 {
-  char * vbase = (char *)base;
-  char * voutput = (char *)output;
-  const ptrdiff_t ptroffset = voutput - vbase;
+  const ptrdiff_t ptroffset =
+    reinterpret_cast<const char *>(output) -
+    reinterpret_cast<const char *>(base);
 
   for (int i = 0; i < this->outputlist.getLength(); i++) {
     if (this->outputlist[i]->ptroffset == ptroffset) return i;

@@ -32,7 +32,9 @@
 
 #include "engines/SoConvertAll.h"
 
-#include <assert.h>
+#include "SbBasicP.h"
+
+#include <cassert>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -85,8 +87,8 @@ SoConvertAll::getOutputData(void) const
 // These are unused, but we list them here since they are part of the
 // SO_ENGINE_ABSTRACT_HEADER macro, which we are using for
 // convenience.
-SoFieldData * SoConvertAll::inputdata = (SoFieldData *)0x1;
-SoEngineOutputData * SoConvertAll::outputdata = (SoEngineOutputData *)0x1;
+SoFieldData * SoConvertAll::inputdata = reinterpret_cast<SoFieldData *>(0x1);
+SoEngineOutputData * SoConvertAll::outputdata = reinterpret_cast<SoEngineOutputData *>(0x1);
 const SoFieldData ** SoConvertAll::getInputDataPtr(void) { return NULL; }
 const SoEngineOutputData ** SoConvertAll::getOutputDataPtr(void) { return NULL; }
 
@@ -102,56 +104,56 @@ SoConvertAll::atexit_cleanup(void)
 // Defines functions for converting between vec2*-fields with different primitive types
 #define SOCONVERTALL_SINGLE2SINGLE_VEC2(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  _fromtype_ val(((_from_ *) from)->getValue()); \
-  ((_to_ *) to)->setValue(_totype_((_toprim_) val[0], (_toprim_) val[1])); \
+  _fromtype_ val(coin_assert_cast<_from_ *>(from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(_totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]))); \
 }
 
 #define SOCONVERTALL_SINGLE2MULTI_VEC2(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  _fromtype_ val(((_from_ *) from)->getValue()); \
-  ((_to_ *) to)->setValue(_totype_((_toprim_) val[0], (_toprim_) val[1])); \
+  _fromtype_ val(coin_assert_cast<_from_ *>(from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(_totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]))); \
 }
 
 #define SOCONVERTALL_MULTI2SINGLE_VEC2(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  _fromtype_ val(((_from_ *) from)->operator[](0)); \
-  ((_to_ *) to)->setValue(_totype_((_toprim_) val[0], (_toprim_) val[1])); \
+  _fromtype_ val(coin_assert_cast<_from_ *>(from)->operator[](0)); \
+  coin_assert_cast<_to_ *>(to)->setValue(_totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]))); \
 }
 
 #define SOCONVERTALL_MULTI2MULTI_VEC2(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  const int num = ((_from_ *) from)->getNum(); \
+  const int num = coin_assert_cast<_from_ *>(from)->getNum(); \
   for ( int i = 0; i < num; i++ ) { \
-    _fromtype_ val(((_from_ *) from)->operator[](i)); \
-    ((_to_ *) to)->set1Value(i, _totype_((_toprim_) val[0], (_toprim_) val[1])); \
+    _fromtype_ val(coin_assert_cast<_from_ *>(from)->operator[](i)); \
+    coin_assert_cast<_to_ *>(to)->set1Value(i, _totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]))); \
   } \
 }
 
 // Defines functions for converting between vec3*-fields with different primitive types
 #define SOCONVERTALL_SINGLE2SINGLE_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  _fromtype_ val(((_from_ *) from)->getValue()); \
-  ((_to_ *) to)->setValue(_totype_((_toprim_) val[0], (_toprim_) val[1], (_toprim_) val[2])); \
+  _fromtype_ val(coin_assert_cast<_from_ *>(from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(_totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]), static_cast<_toprim_>(val[2]))); \
 }
 
 #define SOCONVERTALL_SINGLE2MULTI_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  _fromtype_ val(((_from_ *) from)->getValue()); \
-  ((_to_ *) to)->setValue(_totype_((_toprim_) val[0], (_toprim_) val[1], (_toprim_) val[2])); \
+  _fromtype_ val(coin_assert_cast<_from_ *>(from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(_totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]), static_cast<_toprim_>(val[2]))); \
 }
 
 #define SOCONVERTALL_MULTI2SINGLE_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  _fromtype_ val(((_from_ *) from)->operator[](0)); \
-  ((_to_ *) to)->setValue(_totype_((_toprim_) val[0], (_toprim_) val[1], (_toprim_) val[2])); \
+  _fromtype_ val(coin_assert_cast<_from_ *>(from)->operator[](0)); \
+  coin_assert_cast<_to_ *>(to)->setValue(_totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]), static_cast<_toprim_>(val[2]))); \
 }
 
 #define SOCONVERTALL_MULTI2MULTI_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_, _toprim_) \
 static void _fromto_(SoField * from, SoField * to) { \
-  const int num = ((_from_ *) from)->getNum(); \
+  const int num = coin_assert_cast<_from_ *>(from)->getNum(); \
   for ( int i = 0; i < num; i++ ) { \
-    _fromtype_ val(((_from_ *) from)->operator[](i)); \
-    ((_to_ *) to)->set1Value(i, _totype_((_toprim_) val[0], (_toprim_) val[1], (_toprim_) val[2])); \
+    _fromtype_ val(coin_assert_cast<_from_ *>(from)->operator[](i)); \
+    coin_assert_cast<_to_ *>(to)->set1Value(i, _totype_(static_cast<_toprim_>(val[0]), static_cast<_toprim_>(val[1]), static_cast<_toprim_>(val[2]))); \
   } \
 }
 
@@ -210,15 +212,15 @@ SOCONVERTALL_MULTI2SINGLE_VEC3(SoMFVec3d_to_SoSFVec3s, SoMFVec3d, SoSFVec3s, SbV
 #define SOCONVERTALL_SINGLE2MULTI(_fromto_, _from_, _to_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  ((_to_ *)to)->setValue(((_from_ *)from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(coin_assert_cast<_from_ *>(from)->getValue()); \
 }
 
 // Defines function for converting SoMFXXX -> SoSFXXX.
 #define SOCONVERTALL_MULTI2SINGLE(_fromto_, _from_, _to_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  if (((_from_ *)from)->getNum() > 0) \
-    ((_to_ *)to)->setValue((*((_from_ *)from))[0]); \
+  if (coin_assert_cast<_from_ *>(from)->getNum() > 0) \
+    coin_assert_cast<_to_ *>(to)->setValue((*coin_assert_cast<_from_ *>(from))[0]); \
 }
 
 
@@ -278,50 +280,50 @@ static void field_to_sfstring(SoField * from, SoField * to)
 {
   SbString s;
   from->get(s);
-  ((SoSFString *)to)->setValue(s);
+  coin_assert_cast<SoSFString *>(to)->setValue(s);
 }
 
 // Function for converting SoSFString -> SoField.
 static void sfstring_to_field(SoField * from, SoField * to)
 {
-  to->set(((SoSFString *)from)->getValue().getString());
+  to->set(coin_assert_cast<SoSFString *>(from)->getValue().getString());
 }
 
 // Function for converting SoSField -> SoMFString.
 static void sfield_to_mfstring(SoField * from, SoField * to)
 {
   SbString s;
-  ((SoSField *)from)->get(s);
-  ((SoMFString *)to)->setValue(s);
+  coin_assert_cast<SoSField *>(from)->get(s);
+  coin_assert_cast<SoMFString *>(to)->setValue(s);
 }
 
 // Function for converting SoMFString -> SoSField.
 static void mfstring_to_sfield(SoField * from, SoField * to)
 {
-  if (((SoMFString *)from)->getNum() > 0)
-    ((SoSField *)to)->set((*((SoMFString *)from))[0].getString());
+  if (coin_assert_cast<SoMFString *>(from)->getNum() > 0)
+    coin_assert_cast<SoSField *>(to)->set((*coin_assert_cast<SoMFString *>(from))[0].getString());
 }
 
 // Function for converting SoMField -> SoMFString.
 static void mfield_to_mfstring(SoField * from, SoField * to)
 {
-  unsigned int numvals = ((SoMField *)from)->getNum();
-  ((SoMField *)to)->setNum(numvals);
+  unsigned int numvals = coin_assert_cast<SoMField *>(from)->getNum();
+  coin_assert_cast<SoMField *>(to)->setNum(numvals);
   SbString s;
   for (unsigned int i=0; i < numvals; i++) {
-    ((SoMField *)from)->get1(i, s);
-    ((SoMFString *)to)->set1Value(i, s);
+    coin_assert_cast<SoMField *>(from)->get1(i, s);
+    coin_assert_cast<SoMFString *>(to)->set1Value(i, s);
   }
 }
 
 // Function for converting SoMFString -> SoMField.
 static void mfstring_to_mfield(SoField * from, SoField * to)
 {
-  unsigned int numvals = ((SoMField *)from)->getNum();
-  ((SoMField *)to)->setNum(numvals);
+  unsigned int numvals = coin_assert_cast<SoMField *>(from)->getNum();
+  coin_assert_cast<SoMField *>(to)->setNum(numvals);
 
   for (unsigned int i=0; i < numvals; i++)
-    ((SoMField *)to)->set1(i, (*((SoMFString *)from))[i].getString());
+    coin_assert_cast<SoMField *>(to)->set1(i, (*coin_assert_cast<SoMFString *>(from))[i].getString());
 }
 
 // Defines function for converting SoSField -> SoField, where
@@ -329,7 +331,7 @@ static void mfstring_to_mfield(SoField * from, SoField * to)
 #define SOCONVERTALL_CAST_SFIELD2FIELD(_fromto_, _from_, _to_, _tobase_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  ((_to_ *)to)->setValue((_tobase_)((_from_ *)from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(static_cast<_tobase_>(coin_assert_cast<_from_ *>(from)->getValue())); \
 }
 
 SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoSFFloat, SoSFBool, SoSFFloat, float);
@@ -404,8 +406,8 @@ SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFTime, SoSFFloat, SoMFTime, SbTime);
 #define SOCONVERTALL_CAST_MFIELD2SFIELD(_fromto_, _from_, _to_, _tobase_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  if (((_from_ *)from)->getNum() > 0) \
-    ((_to_ *)to)->setValue((_tobase_)((*((_from_ *)from))[0])); \
+  if (coin_assert_cast<_from_ *>(from)->getNum() > 0) \
+    coin_assert_cast<_to_ *>(to)->setValue(static_cast<_tobase_>((*coin_assert_cast<_from_ *>(from))[0])); \
 }
 
 SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFFloat, SoMFBool, SoSFFloat, float);
@@ -447,10 +449,10 @@ SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFTime, SoMFFloat, SoSFTime, SbTime)
 #define SOCONVERTALL_CAST_MFIELD2MFIELD(_fromto_, _from_, _to_, _tobase_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  unsigned int numvals = ((SoMField *)from)->getNum(); \
-  ((SoMField *)to)->setNum(numvals); \
+  unsigned int numvals = coin_assert_cast<SoMField *>(from)->getNum(); \
+  coin_assert_cast<SoMField *>(to)->setNum(numvals); \
   for (unsigned int i=0; i < numvals; i++) \
-    ((_to_ *)to)->set1Value(i, (_tobase_)((*((_from_ *)from))[i])); \
+    coin_assert_cast<_to_ *>(to)->set1Value(i, static_cast<_tobase_>((*coin_assert_cast<_from_ *>(from))[i])); \
 }
 
 SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFBool_SoMFFloat, SoMFBool, SoMFFloat, float);
@@ -492,7 +494,7 @@ SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFTime, SoMFFloat, SoMFTime, SbTime)
 #define SOCONVERTALL_CAST_SFTIME2SFFLOAT(_fromto_, _to_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  ((_to_ *)to)->setValue((float)((SoSFTime *)from)->getValue().getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(static_cast<float>(coin_assert_cast<SoSFTime *>(from)->getValue().getValue())); \
 }
 
 SOCONVERTALL_CAST_SFTIME2SFFLOAT(SoSFTime_SoSFFloat, SoSFFloat);
@@ -501,17 +503,17 @@ SOCONVERTALL_CAST_SFTIME2SFFLOAT(SoSFTime_SoMFFloat, SoMFFloat);
 // Function for converting SoMFTime -> SoSFFloat.
 static void SoMFTime_SoSFFloat(SoField * from, SoField * to)
 {
-  if (((SoMField *)from)->getNum() > 0)
-    ((SoSFFloat *)to)->setValue((float)((*((SoMFTime *)from))[0]).getValue());
+  if (coin_assert_cast<SoMField *>(from)->getNum() > 0)
+    coin_assert_cast<SoSFFloat *>(to)->setValue(static_cast<float>(((*coin_assert_cast<SoMFTime *>(from))[0]).getValue()));
 }
 
 // Function for converting SoMFTime -> SoMFFloat.
 static void SoMFTime_SoMFFloat(SoField * from, SoField * to)
 {
-  unsigned int numvals = ((SoMField *)from)->getNum();
-  ((SoMField *)to)->setNum(numvals);
+  unsigned int numvals = coin_assert_cast<SoMField *>(from)->getNum();
+  coin_assert_cast<SoMField *>(to)->setNum(numvals);
   for (unsigned int i=0; i < numvals; i++)
-    ((SoMFFloat *)to)->set1Value(i, (float)((*((SoMFTime *)from))[i]).getValue());
+    coin_assert_cast<SoMFFloat *>(to)->set1Value(i, static_cast<float>(((*coin_assert_cast<SoMFTime *>(from))[i]).getValue()));
 }
 
 
@@ -520,7 +522,7 @@ static void SoMFTime_SoMFFloat(SoField * from, SoField * to)
 #define SOCONVERTALL_SFMATRIX2ROTATION(_fromto_, _to_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  ((_to_ *)to)->setValue(SbRotation(((SoSFMatrix *)from)->getValue())); \
+  coin_assert_cast<_to_ *>(to)->setValue(SbRotation(coin_assert_cast<SoSFMatrix *>(from)->getValue())); \
 }
 
 SOCONVERTALL_SFMATRIX2ROTATION(SoSFMatrix_SoSFRotation, SoSFRotation);
@@ -529,15 +531,15 @@ SOCONVERTALL_SFMATRIX2ROTATION(SoSFMatrix_SoMFRotation, SoMFRotation);
 // Function for converting SoMFMatrix -> SoSFRotation.
 static void SoMFMatrix_SoSFRotation(SoField * from, SoField * to)
 {
-  if (((SoMField *)from)->getNum() > 0)
-    ((SoSFRotation *)to)->setValue(SbRotation(((*((SoMFMatrix *)from))[0])));
+  if (coin_assert_cast<SoMField *>(from)->getNum() > 0)
+    coin_assert_cast<SoSFRotation *>(to)->setValue(SbRotation(((*coin_assert_cast<SoMFMatrix *>(from))[0])));
 }
 
 // Function for converting SoMFMatrix -> SoMFRotation.
 static void SoMFMatrix_SoMFRotation(SoField * from, SoField * to)
 {
-  for (int i=0; i < ((SoMField *)from)->getNum(); i++)
-    ((SoMFRotation *)to)->set1Value(i, SbRotation(((*((SoMFMatrix *)from))[i])));
+  for (int i=0; i < coin_assert_cast<SoMField *>(from)->getNum(); i++)
+    coin_assert_cast<SoMFRotation *>(to)->set1Value(i, SbRotation(((*coin_assert_cast<SoMFMatrix *>(from))[i])));
 }
 
 
@@ -546,8 +548,8 @@ static void SoMFMatrix_SoMFRotation(SoField * from, SoField * to)
 static void _fromto_(SoField * from, SoField * to) \
 { \
   SbMatrix mat; \
-  mat.setRotate(((SoSFRotation *)from)->getValue()); \
-  ((_to_ *)to)->setValue(mat); \
+  mat.setRotate(coin_assert_cast<SoSFRotation *>(from)->getValue()); \
+  coin_assert_cast<_to_ *>(to)->setValue(mat); \
 }
 
 SOCONVERTALL_SFROTATION2MATRIX(SoSFRotation_SoSFMatrix, SoSFMatrix);
@@ -556,22 +558,22 @@ SOCONVERTALL_SFROTATION2MATRIX(SoSFRotation_SoMFMatrix, SoMFMatrix);
 // Function for converting SoMFRotation -> SoSFMatrix.
 static void SoMFRotation_SoSFMatrix(SoField * from, SoField * to)
 {
-  if (((SoMField *)from)->getNum() > 0) {
+  if (coin_assert_cast<SoMField *>(from)->getNum() > 0) {
     SbMatrix mat;
-    mat.setRotate((*((SoMFRotation *)from))[0]);
-    ((SoSFMatrix *)to)->setValue(mat);
+    mat.setRotate((*coin_assert_cast<SoMFRotation *>(from))[0]);
+    coin_assert_cast<SoSFMatrix *>(to)->setValue(mat);
   }
 }
 
 // Function for converting SoMFRotation -> SoMFMatrix.
 static void SoMFRotation_SoMFMatrix(SoField * from, SoField * to)
 {
-  unsigned int numvals = ((SoMField *)from)->getNum();
-  ((SoMField *)to)->setNum(numvals);
+  unsigned int numvals = coin_assert_cast<SoMField *>(from)->getNum();
+  coin_assert_cast<SoMField *>(to)->setNum(numvals);
   for (unsigned int i=0; i < numvals; i++) {
     SbMatrix mat;
-    mat.setRotate((*((SoMFRotation *)from))[i]);
-    ((SoMFMatrix *)to)->set1Value(i, mat);
+    mat.setRotate((*coin_assert_cast<SoMFRotation *>(from))[i]);
+    coin_assert_cast<SoMFMatrix *>(to)->set1Value(i, mat);
   }
 }
 
@@ -604,45 +606,45 @@ static void time2string(const SbTime & t, SbString & s)
 static void sftime_to_sfstring(SoField * from, SoField * to)
 {
   SbString s;
-  time2string(((SoSFTime *)from)->getValue(), s);
-  ((SoSFString *)to)->setValue(s);
+  time2string(coin_assert_cast<SoSFTime *>(from)->getValue(), s);
+  coin_assert_cast<SoSFString *>(to)->setValue(s);
 }
 
 // Function for converting SoSFTime -> SoMFString.
 static void sftime_to_mfstring(SoField * from, SoField * to)
 {
   SbString s;
-  time2string(((SoSFTime *)from)->getValue(), s);
-  ((SoMFString *)to)->setValue(s);
+  time2string(coin_assert_cast<SoSFTime *>(from)->getValue(), s);
+  coin_assert_cast<SoMFString *>(to)->setValue(s);
 }
 
 // Function for converting SoMFTime -> SoSFString.
 static void mftime_to_sfstring(SoField * from, SoField * to)
 {
-  SoMFTime * ff = (SoMFTime *)from;
+  SoMFTime * ff = coin_assert_cast<SoMFTime *>(from);
   if (ff->getNum() > 0) {
     SbString s;
     time2string((*ff)[0], s);
-    ((SoSFString *)to)->setValue(s);
+    coin_assert_cast<SoSFString *>(to)->setValue(s);
   }
 }
 
 // Function for converting SoMFTime -> SoMFString.
 static void mftime_to_mfstring(SoField * from, SoField * to)
 {
-  SoMFTime * ff = (SoMFTime *)from;
+  SoMFTime * ff = coin_assert_cast<SoMFTime *>(from);
   unsigned int numvals = ff->getNum();
-  ((SoMField *)to)->setNum(numvals);
+  coin_assert_cast<SoMField *>(to)->setNum(numvals);
   SbString s;
   for (unsigned int i=0; i < numvals; i++) {
     time2string((*ff)[i], s);
-    ((SoMFString *)to)->set1Value(i, s);
+    coin_assert_cast<SoMFString *>(to)->set1Value(i, s);
   }
 }
 
 // Function for "converting" SoField -> SoSFTrigger _and_
 // SoSFTrigger -> SoField.
-static void to_and_from_sftrigger(SoField * from, SoField * to)
+static void to_and_from_sftrigger(SoField * COIN_UNUSED(from), SoField * to)
 {
   to->setDirty(FALSE);
 }
@@ -651,7 +653,7 @@ static void
 register_convertfunc(convert_func * f, SoType from, SoType to)
 {
   SoDB::addConverter(from, to, SoConvertAll::getClassTypeId());
-  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  uint32_t val = (static_cast<uint32_t>(from.getKey()) << 16) + to.getKey();
   SbBool nonexist = convertfunc_dict->put(val, f);
   assert(nonexist);
 }
@@ -667,7 +669,7 @@ void
 SoConvertAll::initClass(void)
 {
   convertfunc_dict = new UInt32ToConverterFuncMap;
-  coin_atexit((coin_atexit_f*) convertall_cleanup_dict, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f*>(convertall_cleanup_dict), CC_ATEXIT_NORMAL);
 
   // SoConvertAll doesn't have a createInstance() method (because it
   // doesn't have a default constructor), so use the ABSTRACT macros.
@@ -1118,13 +1120,13 @@ SoConvertAll::SoConvertAll(const SoType from, const SoType to)
 
 
 
-  this->input = (SoField *)from.createInstance();
+  this->input = static_cast<SoField *>(from.createInstance());
 
   this->input->setContainer(this);
   this->output.setContainer(this);
   this->outputdata_instance->addOutput(this, "output", &this->output, to);
 
-  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  uint32_t val = (static_cast<uint32_t>(from.getKey()) << 16) + to.getKey();
   convert_func * ptr;
   if (!convertfunc_dict->get(val, ptr)) { assert(FALSE); }
   this->convertvalue = ptr;

@@ -119,50 +119,50 @@ SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int 
     for (int x = 0; x < width; x++) {
       // do Y Sobel filter
       red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
-      dy  = ((float) red) / 255.0f * -1.0f;
+      dy  = static_cast<float>(red) / 255.0f * -1.0f;
 
       red = GET_PIXEL_RED(x % width, (y+1) % height);
-      dy += ((float) red) / 255.0f * -2.0f;
+      dy += static_cast<float>(red) / 255.0f * -2.0f;
 
       red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
-      dy += ((float) red) / 255.0f * -1.0f;
+      dy += static_cast<float>(red) / 255.0f * -1.0f;
 
       red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
-      dy += ((float) red) / 255.0f *  1.0f;
+      dy += static_cast<float>(red) / 255.0f *  1.0f;
 
       red = GET_PIXEL_RED(x % width, (y-1+height) % height);
-      dy += ((float) red) / 255.0f *  2.0f;
+      dy += static_cast<float>(red) / 255.0f *  2.0f;
 
       red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
-      dy += ((float) red) / 255.0f *  1.0f;
+      dy += static_cast<float>(red) / 255.0f *  1.0f;
 
       // Do X Sobel filter
       red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
-      dx  = ((float) red) / 255.0f * -1.0f;
+      dx  = static_cast<float>(red) / 255.0f * -1.0f;
 
       red = GET_PIXEL_RED((x-1+width) % width, y % height);
-      dx += ((float) red) / 255.0f * -2.0f;
+      dx += static_cast<float>(red) / 255.0f * -2.0f;
 
       red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
-      dx += ((float) red) / 255.0f * -1.0f;
+      dx += static_cast<float>(red) / 255.0f * -1.0f;
 
       red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
-      dx += ((float) red) / 255.0f *  1.0f;
+      dx += static_cast<float>(red) / 255.0f *  1.0f;
 
       red = GET_PIXEL_RED((x+1) % width, y % height);
-      dx += ((float) red) / 255.0f *  2.0f;
+      dx += static_cast<float>(red) / 255.0f *  2.0f;
 
       red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
-      dx += ((float) red) / 255.0f *  1.0f;
+      dx += static_cast<float>(red) / 255.0f *  1.0f;
 
       n[0] = -dx;
       n[1] = -dy;
       n[2] = 1.0f;
       (void) n.normalize();
 
-      *dstptr++ = (unsigned char) SbMin((n[0]+1.0f) * 128.0f, 255.0f);
-      *dstptr++ = (unsigned char) SbMin((n[1]+1.0f) * 128.0f, 255.0f);
-      *dstptr++ = (unsigned char) SbMin((n[2]+1.0f) * 128.0f, 255.0f);
+      *dstptr++ = static_cast<unsigned char>(SbMin((n[0]+1.0f) * 128.0f, 255.0f));
+      *dstptr++ = static_cast<unsigned char>(SbMin((n[1]+1.0f) * 128.0f, 255.0f));
+      *dstptr++ = static_cast<unsigned char>(SbMin((n[2]+1.0f) * 128.0f, 255.0f));
     }
   }
 #undef GET_PIXEL_RED
@@ -186,7 +186,7 @@ SoHeightMapToNormalMap::evaluate(void)
 
   SbImage targetimg;
   SoHeightMapToNormalMap::convert(ptr, size, nc, targetimg);
-  
+
   ptr = static_cast<const unsigned char *>(targetimg.getValue(size, nc));
   SO_ENGINE_OUTPUT(image, SoSFImage, setValue(size, nc, ptr));
 }
