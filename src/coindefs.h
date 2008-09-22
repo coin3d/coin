@@ -38,6 +38,7 @@
 #include <config.h> /* for HAVE_* defines */
 #endif /* HAVE_CONFIG_H */
 
+#include <Inventor/C/basic.h> /* For COMPILE_ONLY_BEFORE */
 
 #ifdef __FILE__
 #define COIN_STUB_FILE __FILE__
@@ -138,4 +139,15 @@
 #define COIN_CT_ASSERT(expr) \
   do { switch ( 0 ) { case 0: case (expr): break; } } while ( 0 )
 
+#define COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO) \
+COIN_CT_ASSERT( (COIN_MAJOR_VERSION < MAJOR) || (COIN_MAJOR_VERSION == MAJOR && ((COIN_MINOR_VERSION < MINOR) || ( COIN_MINOR_VERSION == MINOR && (COIN_MICRO_VERSION < MICRO )))))
+
+#define COIN_CONCAT( X, Y ) COIN_CONCAT_INTERNAL( X, Y )
+#define COIN_CONCAT_INTERNAL( X, Y ) COIN_CONCAT_INTERNAL2(X,Y)
+#define COIN_CONCAT_INTERNAL2( X, Y ) X##Y
+
+#define COMPILE_ONLY_BEFORE_NOFUNCTION(MAJOR,MINOR,MICRO) \
+static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
+COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO); \
+}
 #endif /* !COIN_DEFS_H */

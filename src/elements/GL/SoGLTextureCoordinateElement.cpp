@@ -35,8 +35,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+
+#include "coindefs.h"
+
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTexture3EnabledElement.h>
@@ -68,6 +71,7 @@ public:
 // This is temporary code for Coin-2, but is also in Coin developement
 // to make it easier to sync the files while developing.  
 // pederb, 2003-10-27
+COMPILE_ONLY_BEFORE_NOFUNCTION(3,1,0)
 #define PRIVATE(obj) ((SoGLTextureCoordinateElementP*)(obj->texgenData))
 
 // *************************************************************************

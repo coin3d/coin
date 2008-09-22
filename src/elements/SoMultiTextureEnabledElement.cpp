@@ -34,6 +34,8 @@
 
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
+#include "coindefs.h"
+
 #define MAX_UNITS 16
 
 class SoMultiTextureEnabledElementP {
@@ -236,6 +238,7 @@ SoMultiTextureEnabledElement::enableRectangle(SoState * state,
     state->getElement(classStackIndex);
   // FIXME: in Coin-3, make sure the setElt() method is changed to
   // setElt(const int32_t mode). pederb, 2005-01-31
+  COMPILE_ONLY_BEFORE(3,1,0);
   elem->setElt(unit, (SbBool) RECTANGLE);
 }
 
@@ -254,6 +257,7 @@ SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
   
   // FIXME: in Coin-3, make sure the setElt() method is changed to
   // setElt(const int32_t mode). pederb, 2005-01-31
+  COMPILE_ONLY_BEFORE(3,1,0);
   elem->setElt(unit, (SbBool) CUBEMAP);
 }
 
