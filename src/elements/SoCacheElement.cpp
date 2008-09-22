@@ -267,7 +267,7 @@ SoCacheElement::addElement(SoState * const state,
 
   while (elem) {
     if (elem->cache) elem->cache->addElement(element);
-    elem = coin_assert_cast<SoCacheElement *>(elem->getNextInStack());
+    elem = coin_safe_cast<SoCacheElement *>(elem->getNextInStack());
   }
 }
 
