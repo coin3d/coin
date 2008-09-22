@@ -1637,7 +1637,7 @@ coin_finite(double value)
 
 /* table containing the next prime number for all power of twos from
    2^1 to 2^32 (the 2^32 prime is obviously less than 2^32 though) */
-static unsigned long coin_prime_table[32] = {
+static const unsigned long coin_prime_table[32] = {
   2,
   5,
   11,
