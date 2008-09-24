@@ -59,7 +59,7 @@
 
 #include <Inventor/errors/SoMemoryError.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
@@ -104,7 +104,7 @@ SoMemoryError::setHandlerCallback(SoErrorCB * const function,
   /* FIXME: Overriding the error handler for subclasses of SoError
      doesn't work yet. Use SoError::setHandlerCallback() instead as a
      workaround, but note that this will stop working when callback
-     override is implemented properly. 2003-01-22 thammer.  
+     override is implemented properly. 2003-01-22 thammer.
   */
   SoMemoryError::callback = function;
   SoMemoryError::callbackData = data;

@@ -23,7 +23,7 @@
 
 #include <Inventor/C/errors/debugerror.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -31,14 +31,15 @@
 
 #include "tidbitsp.h"
 
-static cc_debugerror_cb * dbgerr_callback = (cc_debugerror_cb *)cc_error_default_handler_cb;
+static cc_debugerror_cb * dbgerr_callback =
+  reinterpret_cast<cc_debugerror_cb *>(cc_error_default_handler_cb);
 static void * dbgerr_callback_data = NULL;
 static SbBool dbgerr_cleanup_function_set = FALSE;
 
 static void
 debugerror_cleanup(void)
 {
-  dbgerr_callback = (cc_debugerror_cb *)cc_error_default_handler_cb;
+  dbgerr_callback = reinterpret_cast<cc_debugerror_cb *>(cc_error_default_handler_cb);
   dbgerr_callback_data = NULL;
   dbgerr_cleanup_function_set = FALSE;
 }
@@ -46,13 +47,13 @@ debugerror_cleanup(void)
 void
 cc_debugerror_init(cc_debugerror * me)
 {
-  cc_error_init((cc_error *)me);
+  cc_error_init(reinterpret_cast<cc_error *>(me));
 }
 
 void
 cc_debugerror_clean(cc_debugerror * me)
 {
-  cc_error_clean((cc_error *)me);
+  cc_error_clean(reinterpret_cast<cc_error *>(me));
 }
 
 
@@ -69,7 +70,7 @@ cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data)
   dbgerr_callback_data = data;
 
   if (!dbgerr_cleanup_function_set) {
-    coin_atexit((coin_atexit_f*) debugerror_cleanup, CC_ATEXIT_MSG_SUBSYSTEM);
+    coin_atexit(static_cast<coin_atexit_f *>(debugerror_cleanup), CC_ATEXIT_MSG_SUBSYSTEM);
     dbgerr_cleanup_function_set = TRUE;
   }
 }
@@ -102,18 +103,18 @@ cc_debugerror_internal_post(const char * source, cc_string * msg,
   cc_debugerror_init(&deberr);
 
   deberr.severity = sev;
-  cc_error_set_debug_string((cc_error *)&deberr, "Coin ");
-  cc_error_append_to_debug_string((cc_error *)&deberr, type);
-  cc_error_append_to_debug_string((cc_error *)&deberr, " in ");
-  cc_error_append_to_debug_string((cc_error *)&deberr, source);
-  cc_error_append_to_debug_string((cc_error *)&deberr, "(): ");
-  cc_error_append_to_debug_string((cc_error *)&deberr, cc_string_get_text(msg));
+  cc_error_set_debug_string(reinterpret_cast<cc_error *>(&deberr), "Coin ");
+  cc_error_append_to_debug_string(reinterpret_cast<cc_error *>(&deberr), type);
+  cc_error_append_to_debug_string(reinterpret_cast<cc_error *>(&deberr), " in ");
+  cc_error_append_to_debug_string(reinterpret_cast<cc_error *>(&deberr), source);
+  cc_error_append_to_debug_string(reinterpret_cast<cc_error *>(&deberr), "(): ");
+  cc_error_append_to_debug_string(reinterpret_cast<cc_error *>(&deberr), cc_string_get_text(msg));
 
-  if (dbgerr_callback != (cc_debugerror_cb *)cc_error_default_handler_cb) {
+  if (dbgerr_callback != reinterpret_cast<cc_debugerror_cb *>(cc_error_default_handler_cb)) {
     dbgerr_callback(&deberr, dbgerr_callback_data);
   }
   else {
-    cc_error_handle((cc_error *)&deberr);
+    cc_error_handle(reinterpret_cast<cc_error *>(&deberr));
   }
 
   /* FIXME: port to C. 20020524 mortene. */

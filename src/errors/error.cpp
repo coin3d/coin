@@ -27,8 +27,8 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> /* STDERR_FILENO */
 #endif /* HAVE_UNISTD_H */
@@ -38,6 +38,7 @@
 #include "threads/mutexp.h"
 #endif /* COIN_THREADSAFE */
 
+#include "coindefs.h"
 #include "tidbitsp.h"
 
 /* ********************************************************************** */
@@ -59,7 +60,7 @@ static void cc_error_mutex_cleanup(void) {
 /* FIXME: should be hidden from public API, and only visible to
    subclasses. 20020526 mortene. */
 void
-cc_error_default_handler_cb(const cc_error * err, void * data)
+cc_error_default_handler_cb(const cc_error * err, void * COIN_UNUSED(data))
 {
   /* It is not possible to "pass" C library data from the application
      to a MSWin .DLL, so this is necessary to get hold of the stderr

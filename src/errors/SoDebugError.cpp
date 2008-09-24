@@ -64,19 +64,20 @@
 
 #include <Inventor/errors/SoDebugError.h>
 
-#include <assert.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "coindefs.h"
+#include "tidbitsp.h"
+
+#include <cassert>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SbList.h>
-
-#include "tidbitsp.h"
 
 // *************************************************************************
 
@@ -134,7 +135,10 @@ SoDebugError::initClass(void)
       ptr++;
     }
     breakpoints = new char*[num_breakpoints];
-    coin_atexit((coin_atexit_f *)debug_break_cleanup, CC_ATEXIT_MSG_SUBSYSTEM);
+    coin_atexit(
+		static_cast<coin_atexit_f *>(debug_break_cleanup),
+		CC_ATEXIT_MSG_SUBSYSTEM
+		);
     const size_t envstrlen = strlen(env);
     char * cpy = new char[envstrlen + 1];
     (void)strcpy(cpy, env);
@@ -165,7 +169,9 @@ SoDebugError::initClass(void)
 }
 
 void
-SoDebugError::callbackForwarder(const struct cc_debugerror * error, void * data)
+SoDebugError::callbackForwarder(const struct cc_debugerror * error,
+				void * COIN_UNUSED(data)
+				)
 {
   SoDebugError wrappederr;
 
@@ -184,7 +190,8 @@ SoDebugError::callbackForwarder(const struct cc_debugerror * error, void * data)
     break;
   }
 
-  const cc_string * dbgstr = cc_error_get_debug_string((const cc_error *)error);
+  const cc_string * dbgstr =
+    cc_error_get_debug_string(reinterpret_cast<const cc_error *>(error));
   const char * dbgstrc = cc_string_get_text(dbgstr);
   wrappederr.setDebugString(dbgstrc);
 
@@ -201,7 +208,10 @@ SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
     // "converter" callback function that makes an SoDebugError out of
     // an cc_debugerror and forwards control to the callback function
     // given as an argument to setHandlerCallback().
-    cc_debugerror_set_handler_callback((cc_debugerror_cb *) SoDebugError::callbackForwarder, NULL);
+    cc_debugerror_set_handler_callback
+      (
+       static_cast<cc_debugerror_cb *>(SoDebugError::callbackForwarder), NULL
+       );
   }
 
   SoDebugError::callback = function;

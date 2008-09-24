@@ -44,10 +44,12 @@
 
 #include <Inventor/errors/SoErrors.h>
 
-#include <assert.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "coindefs.h"
+
+#include <cassert>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
@@ -75,7 +77,7 @@ SoError::SoError(const cc_error * error)
 }
 
 void
-SoError::callbackForwarder(const cc_error * error, void * data)
+SoError::callbackForwarder(const cc_error * error, void * COIN_UNUSED(data))
 {
   SoError wrappederr(error);
 
@@ -169,7 +171,11 @@ SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
     // "converter" callback function that makes an SoError out of an
     // cc_error and forwards control to the callback function given as
     // an argument to setHandlerCallback().
-    cc_error_set_handler_callback((cc_error_cb*)SoError::callbackForwarder, NULL);
+    cc_error_set_handler_callback
+      (
+       static_cast<cc_error_cb *>(SoError::callbackForwarder),
+       NULL
+       );
   }
 
   SoError::callback = function;
@@ -204,7 +210,7 @@ const SbString &
 SoError::getDebugString(void) const
 {
   // Cast away constness and fetch value from underlying cc_error instance.
-  ((SbString &)this->debugstring) = cc_string_get_text(cc_error_get_debug_string(&this->err));
+  const_cast<SbString &>(this->debugstring) = cc_string_get_text(cc_error_get_debug_string(&this->err));
   return this->debugstring;
 }
 
