@@ -62,7 +62,7 @@ public:
 
 private:
   SbBool enabled;
-  SoEngine * container;
+  SoEngine * container; // FIXME: change to SoFieldContainer pointer
   SoFieldList slaves;
   SbList<SbBool> fieldnotiflist;
 };

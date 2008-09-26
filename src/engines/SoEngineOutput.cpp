@@ -235,8 +235,9 @@ SoEngineOutput::setContainer(SoEngine * engine)
 void
 SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 {
-  // FIXME: need a union as member instead of container
-  this->container = coin_assert_cast<SoEngine *>(nodeengine);
+  // FIXME: hack cast to SoEngine. The type of the container member
+  // needs to be SoFieldContainer, not SoEngine.
+  this->container = (SoEngine *) nodeengine;
 }
 
 /*!
