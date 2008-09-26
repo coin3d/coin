@@ -237,7 +237,7 @@ SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 {
   // FIXME: hack cast to SoEngine. The type of the container member
   // needs to be SoFieldContainer, not SoEngine.
-  this->container = (SoEngine *) nodeengine;
+  this->container = reinterpret_cast<SoEngine*> (nodeengine);
 }
 
 /*!
