@@ -40,7 +40,7 @@
 
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SbName.h>
-#include <assert.h>
+#include <cassert>
 
 
 SO_EVENT_SOURCE(SoLocation2Event);

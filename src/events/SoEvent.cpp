@@ -45,7 +45,7 @@
 
 #include <Inventor/events/SoEvent.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
@@ -90,7 +90,7 @@ SoEvent::initClass(void)
   assert(SoEvent::classTypeId == SoType::badType());
 
   SoEvent::classTypeId = SoType::createType(SoType::badType(), "SoEvent");
-  coin_atexit((coin_atexit_f*)cleanupClass, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
 
   SoEvent::initEvents();
 }
@@ -224,7 +224,10 @@ SoEvent::getNormalizedPosition(const SbViewportRegion & vpRgn) const
   SbVec2s p = this->positionofevent - vpRgn.getViewportOriginPixels();
   SbVec2s s = vpRgn.getViewportSizePixels();
 
-  return SbVec2f((float)p[0]/(float)s[0], (float)p[1]/(float)s[1]);
+  return SbVec2f(
+		 static_cast<float>(p[0])/static_cast<float>(s[0]),
+		 static_cast<float>(p[1])/static_cast<float>(s[1])
+		 );
 }
 
 /*!

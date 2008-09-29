@@ -53,7 +53,7 @@ endif
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
-LIBS = 
+LIBS =
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs) -I$(top_builddir)/src -I$(top_srcdir)/src
 
@@ -110,17 +110,17 @@ install-libeventsincHEADERS: $(libeventsinc_HEADERS)
 	:
 
 if MACOSX
-# When using --enable-hacking, the user tends to manually replace some 
-# of the installed libraries by symlinks back to the build directory. 
-# But Mac OS X's install program refuses to overwrite symlinks => we 
+# When using --enable-hacking, the user tends to manually replace some
+# of the installed libraries by symlinks back to the build directory.
+# But Mac OS X's install program refuses to overwrite symlinks => we
 # have to explicitly remove existing symlinks before installation.
 install-exec-local:
 	@for file in $(DESTDIR)$(lib@nop@dir)/libevents@SUFFIX@LINKHACK*.dylib; do \
 	  if test -L "$$file"; then \
 	    rm -f "$$file"; \
 	  fi \
-	done; 
-else 
+	done;
+else
 install-exec-local:
 endif
 

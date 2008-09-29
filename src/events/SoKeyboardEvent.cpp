@@ -39,12 +39,13 @@
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#include <assert.h>
-
-#include <Inventor/SbName.h>
-
+#include "SbBasicP.h"
 #include "tidbitsp.h"
 #include "misc/SbHash.h"
+
+#include <cassert>
+
+#include <Inventor/SbName.h>
 
 // *************************************************************************
 
@@ -95,7 +96,7 @@ build_convert_dicts(void)
   int i;
   converttoprintable = new SbHash<char, int>();
   converttoprintable_shift = new SbHash<char, int>();
-  coin_atexit((coin_atexit_f *)sokeyboardevent_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(sokeyboardevent_cleanup), CC_ATEXIT_NORMAL);
 
 #define ADD_KEY(x,y) d->put(SoKeyboardEvent::x, y)
 
@@ -142,9 +143,14 @@ build_convert_dicts(void)
   ADD_KEY(BRACKETRIGHT,']');
   ADD_KEY(GRAVE,'`');
 
-  for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
-    d->put(i, ('a' + i - (int) SoKeyboardEvent::A));
-  }
+  for (
+       i = static_cast<int>(SoKeyboardEvent::A);
+       i <= static_cast<int>(SoKeyboardEvent::Z);
+       i++
+       )
+    {
+      d->put(i, ('a' + i - static_cast<int>(SoKeyboardEvent::A)));
+    }
 
   // shift down
   d = converttoprintable_shift;
@@ -189,8 +195,13 @@ build_convert_dicts(void)
   ADD_KEY(BRACKETRIGHT,'}');
   ADD_KEY(GRAVE,'~');
 
-  for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
-    d->put(i, ('A' + i - (int) SoKeyboardEvent::A));
+  for (
+       i = static_cast<int>(SoKeyboardEvent::A);
+       i <= static_cast<int>(SoKeyboardEvent::Z);
+       i++
+       )
+    {
+    d->put(i, ('A' + i - static_cast<int>(SoKeyboardEvent::A)));
   }
 #undef ADD_KEY
 }
@@ -273,8 +284,8 @@ SoKeyboardEvent::isKeyPressEvent(const SoEvent * e,
 {
   return (e->isOfType(SoKeyboardEvent::getClassTypeId()) &&
           (whichKey == SoKeyboardEvent::ANY ||
-           ((SoKeyboardEvent *)e)->getKey() == whichKey) &&
-          ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
+           coin_assert_cast<const SoKeyboardEvent *>(e)->getKey() == whichKey) &&
+          coin_assert_cast<const SoButtonEvent *>(e)->getState() == SoButtonEvent::DOWN);
 }
 
 /*!
@@ -289,8 +300,8 @@ SoKeyboardEvent::isKeyReleaseEvent(const SoEvent * e,
 {
   return (e->isOfType(SoKeyboardEvent::getClassTypeId()) &&
           (whichKey == SoKeyboardEvent::ANY ||
-           ((SoKeyboardEvent *)e)->getKey() == whichKey) &&
-          ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
+           coin_assert_cast<const SoKeyboardEvent *>(e)->getKey() == whichKey) &&
+          coin_assert_cast<const SoButtonEvent *>(e)->getState() == SoButtonEvent::UP);
 }
 
 /*!

@@ -140,7 +140,7 @@ LIBOBJS = @LIBOBJS@
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
-LIBS = 
+LIBS =
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -277,9 +277,9 @@ RegularSources = \
 LinkHackSources = \
 	all-events-cpp.cpp
 
-PublicHeaders = 
-PrivateHeaders = 
-ObsoleteHeaders = 
+PublicHeaders =
+PrivateHeaders =
+ObsoleteHeaders =
 
 
 # **************************************************************************
@@ -476,9 +476,9 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libevents.la: $(libevents_la_OBJECTS) $(libevents_la_DEPENDENCIES) 
+libevents.la: $(libevents_la_OBJECTS) $(libevents_la_DEPENDENCIES)
 	$(CXXLINK)  $(libevents_la_LDFLAGS) $(libevents_la_OBJECTS) $(libevents_la_LIBADD) $(LIBS)
-libevents@SUFFIX@LINKHACK.la: $(libevents@SUFFIX@LINKHACK_la_OBJECTS) $(libevents@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+libevents@SUFFIX@LINKHACK.la: $(libevents@SUFFIX@LINKHACK_la_OBJECTS) $(libevents@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libevents@SUFFIX@LINKHACK_la_LDFLAGS) $(libevents@SUFFIX@LINKHACK_la_OBJECTS) $(libevents@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
@@ -768,16 +768,16 @@ install-libeventsincHEADERS: $(libeventsinc_HEADERS)
 	done; \
 	:
 
-# When using --enable-hacking, the user tends to manually replace some 
-# of the installed libraries by symlinks back to the build directory. 
-# But Mac OS X's install program refuses to overwrite symlinks => we 
+# When using --enable-hacking, the user tends to manually replace some
+# of the installed libraries by symlinks back to the build directory.
+# But Mac OS X's install program refuses to overwrite symlinks => we
 # have to explicitly remove existing symlinks before installation.
 @MACOSX_TRUE@install-exec-local:
 @MACOSX_TRUE@	@for file in $(DESTDIR)$(lib@nop@dir)/libevents@SUFFIX@LINKHACK*.dylib; do \
 @MACOSX_TRUE@	  if test -L "$$file"; then \
 @MACOSX_TRUE@	    rm -f "$$file"; \
 @MACOSX_TRUE@	  fi \
-@MACOSX_TRUE@	done; 
+@MACOSX_TRUE@	done;
 @MACOSX_FALSE@install-exec-local:
 
 install-symlinks:

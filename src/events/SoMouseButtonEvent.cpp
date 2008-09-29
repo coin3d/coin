@@ -35,8 +35,11 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoMouseButtonEvent.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/SbName.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \enum SoMouseButtonEvent::Button
@@ -147,7 +150,7 @@ SoMouseButtonEvent::isButtonPressEvent(const SoEvent * e,
                                        SoMouseButtonEvent::Button whichButton)
 {
   if (e->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-    const SoMouseButtonEvent * me = (const SoMouseButtonEvent *)e;
+    const SoMouseButtonEvent * me = coin_assert_cast<const SoMouseButtonEvent *>(e);
     if ((me->getState() == SoButtonEvent::DOWN) &&
         ((whichButton == SoMouseButtonEvent::ANY) ||
          whichButton == me->getButton())) return TRUE;
@@ -167,7 +170,7 @@ SoMouseButtonEvent::isButtonReleaseEvent(const SoEvent * e,
                                          whichButton)
 {
   if (e->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-    const SoMouseButtonEvent * me = (const SoMouseButtonEvent *)e;
+    const SoMouseButtonEvent * me = coin_assert_cast<const SoMouseButtonEvent *>(e);
     if ((me->getState() == SoButtonEvent::UP) &&
         ((whichButton == SoMouseButtonEvent::ANY) ||
          whichButton == me->getButton())) return TRUE;

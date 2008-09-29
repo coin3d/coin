@@ -23,9 +23,9 @@
 
 #include "CoinGLPerformance.h"
 
-#include <stdlib.h>
-#include <limits.h>
-#include <float.h>
+#include <cstdlib>
+#include <climits>
+#include <cfloat>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/lists/SbList.h>
@@ -60,7 +60,7 @@ get_average_performance_time(const SbList<double> & l)
   unsigned int idxhighest = UINT_MAX, idxlowest = UINT_MAX;
   if (l.getLength() >= 4) {
     double highest = -DBL_MAX, lowest = DBL_MAX;
-    for (i = 0; i < (unsigned int)l.getLength(); ++i) {
+    for (i = 0; i < static_cast<unsigned int>(l.getLength()); ++i) {
       if (l[i] < lowest) {
         idxlowest = i;
         lowest = l[i];
@@ -68,7 +68,7 @@ get_average_performance_time(const SbList<double> & l)
     }
     assert(idxlowest != UINT_MAX);
 
-    for (i = 0; i < (unsigned int)l.getLength(); ++i) {
+    for (i = 0; i < static_cast<unsigned int>(l.getLength()); ++i) {
       if (l[i] > highest) {
         idxhighest = i;
         highest = l[i];
@@ -84,7 +84,7 @@ get_average_performance_time(const SbList<double> & l)
   }
 
   double sum = 0;
-  for (i = 0; i < (unsigned int)l.getLength(); ++i) {
+  for (i = 0; i < static_cast<unsigned int>(l.getLength()); ++i) {
     if (i == idxlowest) { continue; }
     if (i == idxhighest) { continue; }
     sum += l[i];
@@ -119,11 +119,11 @@ cc_perf_gl_timer(const cc_glglue * glue,
   glPixelTransferf(GL_RED_BIAS, 0.0f);
   glPixelTransferf(GL_GREEN_BIAS, 0.0f);
   glPixelTransferf(GL_BLUE_BIAS, 0.0f);
-  glPixelTransferf(GL_ALPHA_BIAS, 0.0f);  
+  glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
   glPixelZoom(1.0f, 1.0f);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-  
+
   // Save the framebuffer for later
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
@@ -148,7 +148,7 @@ cc_perf_gl_timer(const cc_glglue * glue,
   const float fovy = 45.0f;
   const float zNear = 0.1f;
   const float zFar = 10.0f;
-  const float aspect = (float) viewport[2] / (float) viewport[3];
+  const float aspect = static_cast<float>(viewport[2])/static_cast<float>(viewport[3]);
   const double radians = fovy / 2 * M_PI / 180;
   const double deltaZ = zFar - zNear;
   const double sine = sin(radians);
@@ -171,7 +171,7 @@ cc_perf_gl_timer(const cc_glglue * glue,
   glLoadIdentity();
   glTranslatef(0, 0, -0.5f); // Move camera a bit, so polygons can be
                              // rendered at z=0.
-  
+
   static int dbgtimingrendering = -1;
   if (dbgtimingrendering == -1) {
     const char * envstr = coin_getenv("COIN_DEBUG_GL_TIMING_RENDERING");
@@ -182,7 +182,7 @@ cc_perf_gl_timer(const cc_glglue * glue,
     glClearColor(0, 0, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT);
   }
-  
+
   // Make sure we don't drag along the full pipeline into the first
   // test run, by forcing completion of all GL commands currently
   // being processed.
@@ -205,12 +205,12 @@ cc_perf_gl_timer(const cc_glglue * glue,
                                i, j, now.getValue(), t);
       }
     }
-            
+
     // Don't run the test for more than the maximum alloted.
     const SbTime t = SbTime::getTimeOfDay() - starttime;
     if (t > maxtime) { break; }
   }
-  
+
   if (debug_gl_timing() && (nrrendercbs > 0)) {
     SoDebugError::postInfo("gl_performance_timer",
                            "managed %d runs with all render callbacks",
@@ -223,7 +223,7 @@ cc_perf_gl_timer(const cc_glglue * glue,
 
   delete [] timings;
   timings = NULL;
- 
+
   if (postcb) { (*postcb)(glue, userdata); }
 
   // Write back framebuffer
@@ -233,7 +233,7 @@ cc_perf_gl_timer(const cc_glglue * glue,
     glLoadIdentity();
     glOrtho(0, viewport[2], 0, viewport[3], -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
-         
+
     glRasterPos2i(0, 0);
     glDisable(GL_DEPTH_TEST);
     glDrawPixels(viewport[2], viewport[3], GL_RGBA, GL_UNSIGNED_BYTE, framebuf);
@@ -246,7 +246,7 @@ cc_perf_gl_timer(const cc_glglue * glue,
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
-  glPopAttrib(); 
+  glPopAttrib();
 
   return SbTime::getTimeOfDay() - starttime;
 }

@@ -36,7 +36,7 @@
 
 #include <Inventor/events/SoButtonEvent.h>
 #include <Inventor/SbName.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \enum SoButtonEvent::State
