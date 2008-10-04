@@ -91,7 +91,7 @@ SoSFColorRGBA::writeValue(SoOutput * out) const
 void
 SoSFColorRGBA::setValue(const SbVec4f & vec)
 {
-  this->value.setValue(vec[0], vec[1], vec[2], vec[4]);
+  this->value.setValue(vec[0], vec[1], vec[2], vec[3]);
   this->valueChanged();
 }
 
