@@ -113,32 +113,31 @@
   \since Coin 1.0
 */
 
+// *************************************************************************
 
 #include <Inventor/manips/SoClipPlaneManip.h>
 
-#include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/draggers/SoJackDragger.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/SoNodeKitPath.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SoNodeKitPath.h>
-#include <Inventor/nodes/SoAntiSquish.h>
-#include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/SoPickedPoint.h>
 #include <Inventor/draggers/SoDragPointDragger.h>
-
-#if COIN_DEBUG
+#include <Inventor/draggers/SoJackDragger.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+
+// *************************************************************************
 
 #include "nodes/SoSubNodeP.h"
 
@@ -147,6 +146,8 @@ public:
 };
 
 SO_NODE_SOURCE(SoClipPlaneManip);
+
+// *************************************************************************
 
 /*!
   \var SoSFVec3f * SoClipPlaneManip::draggerPosition
@@ -170,6 +171,7 @@ SO_NODE_SOURCE(SoClipPlaneManip);
   \COININTERNAL
 */
 
+// *************************************************************************
 
 // Documented in superclass
 void
@@ -221,6 +223,8 @@ SoClipPlaneManip::~SoClipPlaneManip()
   delete this->children;
 }
 
+// *************************************************************************
+
 /*!
   Sets a dragger to use for this manipulator. The default dragger is
   an SoJackDragger.
@@ -262,6 +266,8 @@ SoClipPlaneManip::getDragger(void)
   }
   return NULL;
 }
+
+// *************************************************************************
 
 // Documented in superclass. Overridden to copy the internal dragger
 // instance.
