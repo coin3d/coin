@@ -1782,7 +1782,7 @@ SoDragger::setDefaultOnNonWritingFields(void)
 {
 #define CHECK_DEFAULT(name, type, val) \
   do { \
-    SoField * f = coin_assert_cast<SoField *>(this->getField(name)); \
+    SoField * f = this->getField(name); \
     if (f) { \
       if ((coin_assert_cast<type *>(f))->getValue() == val) f->setDefault(TRUE); \
     } \
