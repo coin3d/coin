@@ -1,6 +1,6 @@
 //  (C) Copyright Gennadiy Rozental 2001-2005.
 //  Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
@@ -14,6 +14,8 @@
 
 #ifndef BOOST_TEST_TEST_TOOLS_HPP_012705GER
 #define BOOST_TEST_TEST_TOOLS_HPP_012705GER
+
+#include <climits>
 
 // Boost.Test
 #include <boost/test/predicate_result.hpp>
@@ -29,7 +31,7 @@
 // Boost
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/seq/size.hpp>
-#include <boost/preprocessor/seq/enum.hpp> 
+#include <boost/preprocessor/seq/enum.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/punctuation/comma_if.hpp>
 #include <boost/preprocessor/arithmetic/add.hpp>
@@ -268,7 +270,7 @@ namespace tt_detail {
 // ************************************************************************** //
 
 enum check_type {
-    CHECK_PRED, 
+    CHECK_PRED,
     CHECK_MSG,
     CHECK_EQUAL,
     CHECK_CLOSE,
@@ -301,7 +303,7 @@ struct print_log_value {
     void set_precision( std::ostream& ostr, mpl::false_ )
     {
         if( std::numeric_limits<T>::is_specialized && std::numeric_limits<T>::radix == 2 )
-            ostr.precision( 2 + std::numeric_limits<T>::digits * 301/1000 ); 
+            ostr.precision( 2 + std::numeric_limits<T>::digits * 301/1000 );
     }
 
     void set_precision( std::ostream&, mpl::true_ ) {}
@@ -369,7 +371,7 @@ struct print_helper_t {
 
 //____________________________________________________________________________//
 
-#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564)) 
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
 // Borland suffers premature pointer decay passing arrays by reference
 template<typename T, std::size_t N >
 struct print_helper_t< T[N] > {
@@ -387,7 +389,7 @@ inline print_helper_t<T> print_helper( T const& t )
     return print_helper_t<T>( t );
 }
 
-#if BOOST_WORKAROUND(__SUNPRO_CC, < 0x580) 
+#if BOOST_WORKAROUND(__SUNPRO_CC, < 0x580)
 template<typename T, std::size_t N>
 inline print_helper_t<T*> print_helper( T (&t)[N] )
 {
@@ -398,7 +400,7 @@ inline print_helper_t<T*> print_helper( T (&t)[N] )
 //____________________________________________________________________________//
 
 template<typename T>
-inline std::ostream& 
+inline std::ostream&
 operator<<( std::ostream& ostr, print_helper_t<T> const& ph )
 {
     print_log_value<T>()( ostr, ph.m_t );
@@ -412,7 +414,7 @@ operator<<( std::ostream& ostr, print_helper_t<T> const& ph )
 // **************            TOOL BOX Implementation           ************** //
 // ************************************************************************** //
 
-BOOST_TEST_DECL 
+BOOST_TEST_DECL
 void check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
                  const_string file_name, std::size_t line_num,
                  tool_level tl, check_type ct,
@@ -426,7 +428,7 @@ void check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
     , char const* BOOST_JOIN( BOOST_JOIN( arg, m ), _descr )                        \
 /**/
 
-#define PRED_PARAMS( z, m, dummy ) BOOST_PP_COMMA_IF( m ) BOOST_JOIN( arg, m ) 
+#define PRED_PARAMS( z, m, dummy ) BOOST_PP_COMMA_IF( m ) BOOST_JOIN( arg, m )
 
 #define ARG_INFO( z, m, dummy )                                                     \
     , BOOST_JOIN( BOOST_JOIN( arg, m ), _descr )                                    \
