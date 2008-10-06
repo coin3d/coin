@@ -1848,7 +1848,7 @@ if test x"$enable_hacking" = x"yes"; then
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits navigation nodes shapenodes projectors \
     sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
-    mpeg xml xml/expat:expat profiler 3ds:format3ds scxml; \
+    xml xml/expat:expat profiler 3ds:format3ds scxml; \
   do
     case $dir in
     *:* )
