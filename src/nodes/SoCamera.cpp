@@ -39,7 +39,7 @@
 
   Note that the viewer components of the GUI glue libraries of Coin
   (SoXt, SoQt, SoWin, etc) will automatically insert a camera into a
-  scene graph is none has been defined.
+  scene graph if none has been defined.
 
   It is possible to have more than one camera in a scene graph. One
   common trick is for instance to use a second camera to display
