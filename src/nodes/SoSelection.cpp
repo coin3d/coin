@@ -968,9 +968,9 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
           }
           else {
             // mouse release didn't match mouse down
-            ignorepick = TRUE;
             selectionpath->ref();
             selectionpath->unref();
+            selectionpath = NULL;
             ignorepick = TRUE;
           }
         }
@@ -994,3 +994,4 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
   }
   return selectionpath;
 }
+
