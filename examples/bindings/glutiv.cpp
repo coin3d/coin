@@ -97,7 +97,7 @@ winid2idx(const int winid)
 void
 redraw_cb(void * user, SoSceneManager * manager)
 {
-  int idx = (int)user;
+  unsigned int idx = (uintptr_t)user;
 
   glutSetWindow(glutwin[idx]);
 
@@ -231,7 +231,7 @@ main(int argc, char ** argv)
   // lightsource contribution will get accumulated over runs.
   SoSeparator * root[SCENEWINDOWS];
 
-  for (int i=0; i < SCENEWINDOWS; i++) {
+  for (unsigned int i=0; i < SCENEWINDOWS; i++) {
     // set up individual parts of scenegraph
 
     root[i] = new SoSeparator;
