@@ -168,9 +168,10 @@ SoBase::PImpl::check_for_leaks(void)
         const SoType t = base->getTypeId();
         SbString s;
         s.sprintf("\"%s\"", name.getString());
-        (void)printf("\t%p type==(0x%04x, '%s') name=='%s'\n",
+        (void)printf("\t%p type==(0x%04x, '%s') name=='%s' refs==%d\n",
                      base, t.getKey(), t.getName().getString(),
-                     name == "" ? "no name" : s.getString());
+                     name == "" ? "no name" : s.getString(),
+                     base->getRefCount());
       }
       (void)printf("\n");
     }
