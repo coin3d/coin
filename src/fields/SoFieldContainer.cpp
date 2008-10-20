@@ -115,7 +115,6 @@ SoFieldContainer::SoFieldContainer(void)
   : isBuiltIn(TRUE), donotify(FLAG_DONOTIFY) // HACK warning: donotify is used as a bitmask
 {
 }
-
 /*!
   Destructor.
 */
@@ -133,7 +132,46 @@ SoFieldContainer::~SoFieldContainer()
 // Use a stack of dictionaries when copying nodes to allow recursive
 // copying.
 
-typedef SbHash<const SoFieldContainer *, const SoFieldContainer *> SoFieldContainerCopyMap;
+// typedef SbHash<const SoFieldContainer *, const SoFieldContainer *> SoFieldContainerCopyMap;
+
+#define SOFIELDCONTAINER_COPYDICT_DEBUG (COIN_DEBUG && 0)
+
+class SoFieldContainerCopyMap : public SbHash<const SoFieldContainer *, const SoFieldContainer *> {
+  typedef SbHash<const SoFieldContainer *, const SoFieldContainer *> inherited;
+public:
+  SoFieldContainerCopyMap(void) : inherited() {
+#if SOFIELDCONTAINER_COPYDICT_DEBUG
+    SoDebugError::postInfo("SoFieldContainerCopyMap::SoFieldContainerCopyMap",
+                           "%p", this);
+#endif // DEBUG
+  }
+  ~SoFieldContainerCopyMap(void) {
+#if SOFIELDCONTAINER_COPYDICT_DEBUG
+    SoDebugError::postInfo("SoFieldContainerCopyMap::~SoFieldContainerCopyMap",
+                           "%p", this);
+#endif // DEBUG
+  }
+
+  SbBool put(const SoFieldContainer * orig, const SoFieldContainer * copy) {
+#if SOFIELDCONTAINER_COPYDICT_DEBUG
+    SoDebugError::postInfo("SoFieldContainerCopyMap::put",
+                           "%p === %p (setting)\n", orig, copy);
+#endif // DEBUG
+    return inherited::put(orig, copy);
+  }
+  SbBool get(const SoFieldContainer * orig, const SoFieldContainer * & copy)
+  {
+    SbBool ok = inherited::get(orig, copy);
+#if SOFIELDCONTAINER_COPYDICT_DEBUG
+    SoDebugError::postInfo("SoFieldContainerCopyMap::get",
+                           "%p ::= %p%s\n", orig, copy,
+                           ok ? " (found)" : " (NOT FOUND)");
+#endif // DEBUG
+    return ok;
+  }
+};
+
+
 typedef SbHash<SbBool, const SoFieldContainer *> ContentsCopiedMap;
 
 typedef struct {
