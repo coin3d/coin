@@ -155,7 +155,7 @@ public:
   SbBool put(const SoFieldContainer * orig, const SoFieldContainer * copy) {
 #if SOFIELDCONTAINER_COPYDICT_DEBUG
     SoDebugError::postInfo("SoFieldContainerCopyMap::put",
-                           "%p === %p (setting)\n", orig, copy);
+                           "%p === %p (setting)", orig, copy);
 #endif // DEBUG
     return inherited::put(orig, copy);
   }
@@ -164,7 +164,7 @@ public:
     SbBool ok = inherited::get(orig, copy);
 #if SOFIELDCONTAINER_COPYDICT_DEBUG
     SoDebugError::postInfo("SoFieldContainerCopyMap::get",
-                           "%p ::= %p%s\n", orig, copy,
+                           "%p ::= %p%s", orig, copy,
                            ok ? " (found)" : " (NOT FOUND)");
 #endif // DEBUG
     return ok;
