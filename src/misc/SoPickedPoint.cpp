@@ -343,7 +343,7 @@ SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
 {
   int idx = this->path->findNode(node);
   if (idx >= 0) {
-    delete this->detailList[idx];
+    // do not delete the old detail here. SoDetailList will handle it.
     this->detailList.set(idx, detail);
   }
 }
