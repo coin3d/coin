@@ -21,6 +21,11 @@
  *
 \**************************************************************************/
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4786) // symbol truncated
+#endif // _MSC_VER
+
 #include <Inventor/scxml/ScXMLObject.h>
 
 #include <string.h>
