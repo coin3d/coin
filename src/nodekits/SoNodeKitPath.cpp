@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoNodeKitPath SoNodeKitPath.h Inventor/SoNodeKitPath.h
   \brief The SoNodeKitPath class is a path that contains only nodekit nodes.
@@ -343,3 +349,5 @@ void
 SoNodeKitPath::replaceIndex(SoNode *, const int, SoNode *)
 {
 }
+
+#endif // HAVE_NODEKITS

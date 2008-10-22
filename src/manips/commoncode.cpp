@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 // This file is used to avoid duplicating sourcecode for the almost
 // identical replaceManip() functions over the different manipulator
 // classes.
@@ -164,3 +170,4 @@ SOMANIP_REPLACEMANIPBODY(SoClipPlaneManip, SoClipPlane)
 
 #undef SOMANIP_REPLACEMANIPBODY
 
+#endif // HAVE_MANIPULATORS

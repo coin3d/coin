@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoScale2UniformDragger SoScale2UniformDragger.h Inventor/draggers/SoScale2UniformDragger.h
   \brief The SoScale2UniformDragger class provides a mechanism for the end-user to scale in two dimensions.
@@ -344,3 +350,4 @@ SoScale2UniformDragger::dragFinish(void)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoWrapperKit SoWrapperKit.h Inventor/nodekits/SoWrapperKit.h
   \brief The SoWrapperKit class is a simple kit for wrapping a transform and a sub-graph.
@@ -105,3 +111,5 @@ SoWrapperKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoWrapperKit, SO_FROM_INVENTOR_1);
 }
+
+#endif // HAVE_NODEKITS

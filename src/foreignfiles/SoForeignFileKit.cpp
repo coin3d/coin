@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 #include <ForeignFiles/SoForeignFileKit.h>
 
 #include <assert.h>
@@ -309,3 +315,4 @@ SoForeignFileKit::writeScene(SoNode *& root, const char * format)
 // *************************************************************************
 
 #undef PRIVATE
+#endif // HAVE_NODEKITS

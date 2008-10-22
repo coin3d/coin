@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoHandleBoxDragger SoHandleBoxDragger.h Inventor/draggers/SoHandleBoxDragger.h
   \brief The SoHandleBoxDragger class provides support for interactive scaling and translation.
@@ -1017,3 +1023,4 @@ SoHandleBoxDragger::calcCtrlOffset(const SbVec3f startpt)
 #undef CONSTRAINT_Y
 #undef CONSTRAINT_Z
 
+#endif // HAVE_DRAGGERS

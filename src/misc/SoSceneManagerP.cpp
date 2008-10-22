@@ -23,13 +23,19 @@
 
 #include "SoSceneManagerP.h"
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoDB.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#ifdef HAVE_NODEKITS
 #include <Inventor/nodekits/SoBaseKit.h>
+#endif // HAVE_NODEKITS
 
 
 #define PRIVATE(p) (p->pimpl)
@@ -54,10 +60,14 @@ SoSceneManagerP::searchForCamera(SoNode * root,
 {
   this->searchaction->setType(SoCamera::getClassTypeId());
   this->searchaction->setInterest(SoSearchAction::FIRST);
+#ifdef HAVE_NODEKITS
   SbBool old = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
+#endif // HAVE_NODEKITS
   this->searchaction->apply(root);
+#ifdef HAVE_NODEKITS
   SoBaseKit::setSearchingChildren(old);
+#endif // HAVE_NODEKITS
   SoFullPath * path = (SoFullPath*) this->searchaction->getPath();
   if (path) {
     SoNode * tail = path->getTail();

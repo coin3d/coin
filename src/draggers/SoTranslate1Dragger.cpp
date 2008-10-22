@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoTranslate1Dragger SoTranslate1Dragger.h Inventor/draggers/SoTranslate1Dragger.h
   \brief The SoTranslate1Dragger class provides a mechanism for the end-user to translate along an axis.
@@ -397,3 +403,4 @@ SoTranslate1Dragger::clampMatrix(SbMatrix & m) const
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

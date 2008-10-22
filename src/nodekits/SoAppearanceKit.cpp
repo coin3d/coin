@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoAppearanceKit SoAppearanceKit.h Inventor/nodekits/SoAppearanceKit.h
   \brief The SoAppearanceKit class is a node kit catalog that collects miscellaneous appearance node types.
@@ -111,3 +117,5 @@ SoAppearanceKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoAppearanceKit, SO_FROM_INVENTOR_1);
 }
+
+#endif // HAVE_NODEKITS

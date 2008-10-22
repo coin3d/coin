@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoShapeKit SoShapeKit.h Inventor/nodekits/SoShapeKit.h
   \brief The SoShapeKit class provides templates to insert what is usually needed for shape nodes.
@@ -166,3 +172,5 @@ SoShapeKit::setDefaultOnNonWritingFields(void)
   this->shapeSeparator.setDefault(TRUE);
   inherited::setDefaultOnNonWritingFields();
 }
+
+#endif // HAVE_NODEKITS

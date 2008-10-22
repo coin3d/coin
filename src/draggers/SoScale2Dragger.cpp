@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoScale2Dragger SoScale2Dragger.h Inventor/draggers/SoScale2Dragger.h
   \brief The SoScale2Dragger class provides a mechanism for the end-user to scale in two dimensions.
@@ -340,3 +346,4 @@ SoScale2Dragger::dragFinish(void)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

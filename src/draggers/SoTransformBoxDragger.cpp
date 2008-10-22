@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoTransformBoxDragger SoTransformBoxDragger.h Inventor/draggers/SoTransformBoxDragger.h
   \brief The SoTransformBoxDragger provides a box which can be translated, scaled and rotated.
@@ -505,3 +511,4 @@ SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

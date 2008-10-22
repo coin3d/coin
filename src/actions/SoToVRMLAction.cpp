@@ -45,12 +45,15 @@
 #include <cstdlib>
 #include <cstring>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/nodes/SoNodes.h>
-#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbBSPTree.h>
@@ -65,9 +68,9 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/lists/SoNodeList.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
+#ifdef HAVE_NODEKITS
+#include <Inventor/nodekits/SoBaseKit.h>
+#endif // HAVE_NODEKITS
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRMLNodes.h>
@@ -488,8 +491,10 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
   this->searchaction.setInterest(SoSearchAction::LAST);
   this->searchaction.setFind(SoSearchAction::TYPE|SoSearchAction::NAME);
 
+#ifdef HAVE_NODEKITS
   SbBool old = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
+#endif // HAVE_NODEKITS
 
   this->searchaction.apply(root);
   SoNode * tail = NULL;
@@ -498,7 +503,9 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
     tail = path->getTail();
   }
   this->searchaction.reset();
+#ifdef HAVE_NODEKITS
   SoBaseKit::setSearchingChildren(old);
+#endif // HAVE_NODEKITS
   return tail;
 }
 

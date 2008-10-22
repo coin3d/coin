@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoJackManip SoJackManip.h Inventor/manips/SoJackManip.h
   \brief The SoJackManip wraps an SoJackDragger for convenience.
@@ -83,3 +89,5 @@ SoJackManip::SoJackManip(void)
 SoJackManip::~SoJackManip()
 {
 }
+
+#endif // HAVE_MANIPULATORS

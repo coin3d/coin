@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoSpotLightDragger SoSpotLightDragger.h Inventor/draggers/SoSpotLightDragger.h
   \brief The SoSpotLightDragger class provides interactive geometry for manipulating a spotlight.
@@ -492,3 +498,4 @@ SoSpotLightDragger::setBeamScaleFromAngle(float beamangle)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

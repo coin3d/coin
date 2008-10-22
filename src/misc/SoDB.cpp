@@ -84,12 +84,14 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
-#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
 #include <Inventor/scxml/ScXML.h>
 #include "navigation/SoScXMLNavigation.h"
 #include <Inventor/misc/SoGLDriverDatabase.h>
+#ifdef HAVE_NODEKITS
+#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
+#endif // HAVE_NODEKITS
 
 #include "SoVBO.h"
 #include "coindefs.h" // COIN_STUB()
@@ -535,12 +537,14 @@ SoDB::read(SoInput * in, SoBase *& base)
     return (base != NULL);
   }
 
+#ifdef HAVE_NODEKITS
   if ( !valid &&
        SoForeignFileKit::getClassTypeId() != SoType::badType() &&
        SoForeignFileKit::isFileSupported(in) ) {
     base = SoForeignFileKit::createForeignFileKit(in);
     return (base != NULL);
   }
+#endif // NODEKITS
 
   // Header is only required when reading from a stream, if reading from
   // memory no header is required.
@@ -1185,6 +1189,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     }
   }
 
+#ifdef HAVE_NODEKITS
   if ( !valid &&
        SoForeignFileKit::getClassTypeId() != SoType::badType() &&
        SoForeignFileKit::isFileSupported(in) ) {
@@ -1195,6 +1200,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
       return root;
     }
   }
+#endif // HAVE_NODEKITS
 
   if ( !valid ) {
     SoReadError::post(in, "Not a valid Inventor file.");

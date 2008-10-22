@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoTransformerDragger SoTransformerDragger.h Inventor/draggers/SoTransformerDragger.h
   \brief The SoTransformerDragger provides geometry for translation, scaling and rotations.
@@ -2200,3 +2206,4 @@ SoTransformerDragger::setDynamicRotatorSwitches(const SoEvent *event)
 #undef PRIVATE
 #undef THISP
 
+#endif // HAVE_DRAGGERS

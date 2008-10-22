@@ -21,7 +21,14 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include "SoNodeKit.cpp"
+
+#ifdef HAVE_NODEKITS
+
 #include "SoNodeKitPath.cpp"
 #include "SoNodeKitListPart.cpp"
 #include "SoNodekitCatalog.cpp"
@@ -34,3 +41,5 @@
 #include "SoSeparatorKit.cpp"
 #include "SoShapeKit.cpp"
 #include "SoWrapperKit.cpp"
+
+#endif // HAVE_NODEKITS

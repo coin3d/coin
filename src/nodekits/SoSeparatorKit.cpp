@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoSeparatorKit SoSeparatorKit.h Inventor/nodekits/SoSeparatorKit.h
   \brief The SoSeparatorKit class provides a typical set of nodes to influence a shape subgraph.
@@ -280,3 +286,4 @@ SoSeparatorKitP::sensorCB(void * data, SoSensor *)
 }
 
 #endif // DOXYGEN_SKIP_THIS
+#endif // HAVE_NODEKITS

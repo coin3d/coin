@@ -34,8 +34,15 @@
 
 #include <Inventor/nodekits/SoNodeKit.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/C/tidbits.h>
+
+#ifdef HAVE_NODEKITS
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoCameraKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
@@ -44,7 +51,7 @@
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
 #include <ForeignFiles/SoForeignFileKit.h>
-#include <Inventor/C/tidbits.h>
+#endif // HAVE_NODEKITS
 
 #include "tidbitsp.h"
 
@@ -73,6 +80,7 @@ SoNodeKit::init(void)
 
   if (!SoDB::isInitialized()) SoDB::init();
 
+#ifdef HAVE_NODEKITS
   SoNodeKitListPart::initClass();
 
   SoBaseKit::initClass();
@@ -84,7 +92,9 @@ SoNodeKit::init(void)
   SoShapeKit::initClass();
   SoWrapperKit::initClass();
   SoForeignFileKit::initClass();
+#endif // HAVE_NODEKITS
 
   nodekit_isinitialized = TRUE;
   cc_coin_atexit_static_internal((coin_atexit_f*) nodekit_cleanup);
 }
+

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoTransformManip SoTransformManip.h Inventor/manips/SoTransformManip.h
   \brief The SoTransformManip class is used to manipulate transformations.
@@ -556,4 +562,4 @@ SoTransformManip::attachSensors(const SbBool onoff)
   }
 }
 
-// *************************************************************************
+#endif // HAVE_MANIPULATORS

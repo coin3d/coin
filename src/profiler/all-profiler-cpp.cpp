@@ -21,15 +21,23 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include "SoProfiler.cpp"
 #include "SbProfilingData.cpp"
+#include "SoProfilingReportGenerator.cpp"
 #include "SoProfilerElement.cpp"
-#include "SoProfilerOverlayKit.cpp"
 #include "SoProfilerTopEngine.cpp"
 #include "SoProfilerStats.cpp"
+
+#ifdef HAVE_NODEKITS
+
 #include "SoNodeVisualize.cpp"
+#include "SoProfilerOverlayKit.cpp"
 #include "SoProfilerTopKit.cpp"
 #include "SoProfilerVisualizeKit.cpp"
 #include "SoScrollingGraphKit.cpp"
-#include "SoProfilingReportGenerator.cpp"
 
+#endif // HAVE_NODEKITS

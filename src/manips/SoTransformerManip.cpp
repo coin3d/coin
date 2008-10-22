@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoTransformerManip SoTransformerManip.h Inventor/manips/SoTransformerManip.h
   \brief The SoTransformerManip wraps an SoTransformerDragger for convenience.
@@ -144,3 +150,5 @@ SoTransformerManip::unsquishKnobs(void)
 #endif // debug
   }
 }
+
+#endif // HAVE_MANIPULATORS

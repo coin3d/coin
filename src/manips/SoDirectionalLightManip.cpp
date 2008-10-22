@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoDirectionalLightManip SoDirectionalLightManip.h Inventor/manips/SoDirectionalLightManip.h
   \brief The SoDirectionalLightManip class is used to manipulate SoDirectionalLight nodes.
@@ -436,3 +442,5 @@ SoDirectionalLightManip::attachSensors(const SbBool onoff)
     this->colorFieldSensor->detach();
   }
 }
+
+#endif // HAVE_MANIPULATORS

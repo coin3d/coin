@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoDragger SoDragger.h Inventor/draggers/SoDragger.h
   \brief The SoDragger class is the base class for all draggers.
@@ -1913,3 +1919,4 @@ SoDragger::updateDraggerCache(const SoPath * path)
 }
 
 #undef PRIVATE
+#endif // HAVE_DRAGGERS

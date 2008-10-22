@@ -136,9 +136,11 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
 #include <Inventor/lists/SoPathList.h>
-#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTransform.h>
+#ifdef HAVE_NODEKITS
+#include <Inventor/nodekits/SoBaseKit.h>
+#endif // HAVE_NODEKITS
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -677,8 +679,10 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   this->searchaction.setType(type);
   this->searchaction.setInterest(SoSearchAction::LAST);
 
+#ifdef HAVE_NODEKITS
   SbBool old = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
+#endif // HAVE_NODEKITS
 
   this->searchaction.apply(const_cast<SoPath *>(action->getCurPath()));
 
@@ -688,7 +692,9 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
     tail = path->getTail();
   }
   this->searchaction.reset();
+#ifdef HAVE_NODEKITS
   SoBaseKit::setSearchingChildren(old);
+#endif // HAVE_NODEKITS
 
   return tail;
 }

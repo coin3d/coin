@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoCenterballManip SoCenterballManip.h Inventor/manips/SoCenterballManip.h
   \brief The SoCenterballManip wraps an SoCenterballDragger for convenience.
@@ -116,3 +122,5 @@ SoCenterballManip::valueChangedCB(void * f, SoDragger * d)
   // we call the superclass method.
   inherited::valueChangedCB(f, d);
 }
+
+#endif // HAVE_MANIPULATORS

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoNodekitCatalog SoNodekitCatalog.h Inventor/nodekits/SoNodekitCatalog.h
   \brief The SoNodekitCatalog class is a container for nodekit layouts.
@@ -843,3 +849,5 @@ SoNodekitCatalog::hasListItemType(const SbName & name, SoType type) const
 
   return l[part]->itemtypeslist.find( type ) != -1;
 }
+
+#endif // HAVE_NODEKITS

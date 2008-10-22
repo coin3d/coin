@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoTabBoxDragger SoTabBoxDragger.h Inventor/draggers/SoTabBoxDragger.h
   \brief The SoTabBoxDragger wraps a box around geometry you can then translate and scale.
@@ -399,3 +405,4 @@ SoTabBoxDragger::adjustScaleTabSize(void)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

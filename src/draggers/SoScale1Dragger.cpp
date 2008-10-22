@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoScale1Dragger SoScale1Dragger.h Inventor/draggers/SoScale1Dragger.h
   \brief The SoScale1Dragger class provides a mechanism for the end-user to scale in one dimension.
@@ -334,3 +340,4 @@ SoScale1Dragger::dragFinish(void)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

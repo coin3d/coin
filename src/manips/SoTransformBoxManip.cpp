@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoTransformBoxManip SoTransformBoxManip.h Inventor/manips/SoTransformBoxManip.h
   \brief The SoTransformBoxManip wraps an SoTransformBoxDragger for convenience.
@@ -105,3 +111,5 @@ SoTransformBoxManip::SoTransformBoxManip(void)
 SoTransformBoxManip::~SoTransformBoxManip()
 {
 }
+
+#endif // HAVE_MANIPULATORS

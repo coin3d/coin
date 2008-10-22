@@ -60,6 +60,10 @@
 
 /**************************************************************************/
 
+#ifndef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoProfilerP.h"
 
@@ -72,14 +76,16 @@
 #include <Inventor/nodekits/SoNodeKit.h>
 
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
+#include <Inventor/annex/Profiler/engines/SoProfilerTopEngine.h>
+#include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
+#ifdef HAVE_NODEKITS
 #include <Inventor/annex/Profiler/nodekits/SoNodeVisualize.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include <Inventor/annex/Profiler/nodekits/SoScrollingGraphKit.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
-#include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
-#include <Inventor/annex/Profiler/engines/SoProfilerTopEngine.h>
-#include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
+#endif // HAVE_NODEKITS
 
 #include "tidbitsp.h"
 #include "misc/SoDBP.h"
@@ -152,14 +158,17 @@ SoProfiler::init(void)
 {
   if (profiler::initialized) return;
 
+  SoProfilerStats::initClass();
+  SoProfilerTopEngine::initClass();
+
+#ifdef HAVE_NODEKITS
   SoNodeKit::init();
   SoProfilerOverlayKit::initClass();
   SoProfilerVisualizeKit::initClass();
   SoProfilerTopKit::initClass();
-  SoProfilerStats::initClass();
-  SoProfilerTopEngine::initClass();
   SoScrollingGraphKit::initClass();
   SoNodeVisualize::initClass();
+#endif // HAVE_NODEKITS
 
   SoProfilingReportGenerator::init();
 

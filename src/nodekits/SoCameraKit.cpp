@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoCameraKit SoCameraKit.h Inventor/nodekits/SoCameraKit.h
   \brief The SoCameraKit class is a node kit with a transform and a camera.
@@ -94,3 +100,5 @@ SoCameraKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoCameraKit, SO_FROM_INVENTOR_1);
 }
+
+#endif // HAVE_NODEKITS

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoTrackballDragger SoTrackballDragger.h Inventor/draggers/SoTrackballDragger.h
   \brief The SoTrackballDragger provides the end-user with rotation and scaling interaction possibilities.
@@ -870,3 +876,4 @@ SoTrackballDraggerP::getSpaceMatrices(SbMatrix & ws2wk, SbMatrix & wk2ws,
 #undef PRIVATE
 #undef THISP
 
+#endif // HAVE_DRAGGERS

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoLightKit SoLightKit.h Inventor/nodekits/SoLightKit.h
   \brief The SoLightKit class provides a kit with a transform, a light and a shape or subgraph.
@@ -102,3 +108,5 @@ SoLightKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoLightKit, SO_FROM_INVENTOR_1);
 }
+
+#endif // HAVE_NODEKITS

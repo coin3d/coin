@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoTabBoxManip SoTabBoxManip.h Inventor/manips/SoTabBoxManip.h
   \brief The SoTabBoxManip class wraps an SoTabBoxDragger.
@@ -84,3 +90,5 @@ SoTabBoxManip::SoTabBoxManip(void)
 SoTabBoxManip::~SoTabBoxManip()
 {
 }
+
+#endif // HAVE_MANIPULATORS

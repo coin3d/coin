@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoSceneKit SoSceneKit.h Inventor/nodekits/SoSceneKit.h
   \brief The SoSceneKit class collects node kits needed to set up a scene: camera, light and shapes.
@@ -138,3 +144,5 @@ SoSceneKit::affectsState(void) const
 {
   return TRUE;
 }
+
+#endif // HAVE_NODEKITS

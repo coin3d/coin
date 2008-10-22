@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoTranslate2Dragger SoTranslate2Dragger.h Inventor/draggers/SoTranslate2Dragger.h
   \brief The SoTranslate2Dragger class provides a mechanism for the end-user to translate in a plane.
@@ -516,3 +522,4 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
 #undef CONSTRAINT_WAIT
 #undef CONSTRAINT_X
 #undef CONSTRAINT_Y
+#endif // HAVE_DRAGGERS

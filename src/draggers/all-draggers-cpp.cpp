@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 #include "SoDragger.cpp"
 #include "SoCenterballDragger.cpp"
 #include "SoDirectionalLightDragger.cpp"
@@ -43,3 +49,5 @@
 #include "SoTransformerDragger.cpp"
 #include "SoTranslate1Dragger.cpp"
 #include "SoTranslate2Dragger.cpp"
+
+#endif // HAVE_DRAGGERS

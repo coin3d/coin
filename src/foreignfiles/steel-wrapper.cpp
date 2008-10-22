@@ -27,8 +27,6 @@
 
 #ifdef HAVE_NODEKITS
 
-#include "SoForeignFileKit.cpp"
-#include "SoSTLFileKit.cpp"
-#include "steel-wrapper.cpp"
+#include "steel.cpp"
 
 #endif // HAVE_NODEKITS

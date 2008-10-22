@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoBaseKit SoBaseKit.h Inventor/nodekits/SoBaseKit.h
   \brief The SoBaseKit class is the toplevel superclass for nodekits.
@@ -2731,3 +2737,4 @@ SoBaseKitP::readUnknownFields(SoInput *in, SoFieldData *&unknownfielddata)
 #undef PRIVATE
 #undef PUBLIC
 
+#endif // HAVE_NODEKITS

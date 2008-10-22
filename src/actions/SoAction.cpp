@@ -220,10 +220,12 @@
 #include "misc/SoCompactPathList.h"
 
 #include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include "profiler/SoNodeProfiling.h"
+#ifdef HAVE_NODEKITS
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
-#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#endif // HAVE_NODEKITS
 
 // define this to debug path traversal
 // #define DEBUG_PATH_TRAVERSAL
@@ -534,10 +536,12 @@ SoAction::apply(SoNode * root)
       // graph.
 
       SoNode * profileroverlay = SoActionP::getProfilerOverlay();
-      SoProfiler::enable(FALSE);
-      this->beginTraversal(profileroverlay);
-      this->endTraversal(profileroverlay);
-      SoProfiler::enable(TRUE);
+      if (profileroverlay) {
+        SoProfiler::enable(FALSE);
+        this->beginTraversal(profileroverlay);
+        this->endTraversal(profileroverlay);
+        SoProfiler::enable(TRUE);
+      }
 
       // FIXME: if there was a hit on the overlay scene graph view and
       // the scene graph view is modified, then we should schedule a
@@ -1375,24 +1379,27 @@ SoActionP::getProfilerStatsNode(void)
   return pstats;
 }
 
-SoProfilerOverlayKit *
+SoNode *
 SoActionP::getProfilerOverlay(void)
 {
   if (!SoProfiler::isEnabled() || !SoProfiler::isOverlayActive())
     return NULL;
 
-  static SoProfilerOverlayKit * kit = NULL;
-  if (kit == NULL) {
-    kit = new SoProfilerTopKit;
+  static SoNode * nodekit = NULL;
+#ifdef HAVE_NODEKITS
+  if (nodekit == NULL) {
+    SoProfilerTopKit * kit = new SoProfilerTopKit;
     kit->ref();
     kit->setPart("profilingStats",
                  SoActionP::getProfilerStatsNode());
+    nodekit = kit;
 
     SoProfilerVisualizeKit * viskit = new SoProfilerVisualizeKit;
     viskit->stats.setValue(SoActionP::getProfilerStatsNode());
     kit->addOverlayGeometry(viskit);
   }
-  return kit;
+#endif // HAVE_NODEKITS
+  return nodekit;
 }
 
 // *************************************************************************

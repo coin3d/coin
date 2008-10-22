@@ -123,8 +123,13 @@
 #include <list>
 #include <vector>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbOctTree.h>
+#include <Inventor/SbRotation.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbXfBox3f.h>
@@ -135,14 +140,8 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/draggers/SoDragger.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbPList.h>
-#include <Inventor/manips/SoClipPlaneManip.h>
-#include <Inventor/manips/SoDirectionalLightManip.h>
-#include <Inventor/manips/SoPointLightManip.h>
-#include <Inventor/manips/SoSpotLightManip.h>
-#include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
@@ -151,6 +150,18 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
+
+#ifdef HAVE_DRAGGERS
+#include <Inventor/draggers/SoDragger.h>
+#endif // HAVE_DRAGGERS
+
+#ifdef HAVE_MANIPULATORS
+#include <Inventor/manips/SoClipPlaneManip.h>
+#include <Inventor/manips/SoDirectionalLightManip.h>
+#include <Inventor/manips/SoPointLightManip.h>
+#include <Inventor/manips/SoSpotLightManip.h>
+#include <Inventor/manips/SoTransformManip.h>
+#endif // HAVE_MANIPULATORS
 
 #include "actions/SoSubActionP.h"
 #include "collision/SbTri3f.h"
@@ -397,8 +408,11 @@ SoIntersectionDetectionAction::isTypeEnabled(SoType type, SbBool checkgroups) co
   if ( PRIVATE(this)->prunetypes->find(type) != -1 ) return FALSE;
   if ( checkgroups ) {
     // is type a dragger?
+#ifdef HAVE_DRAGGERS
     if ( !PRIVATE(this)->draggersenabled &&
          type.isDerivedFrom(SoDragger::getClassTypeId()) ) return FALSE;
+#endif // HAVE_DRAGGERS
+#ifdef HAVE_MANIPULATORS
     // is type a manip?
     if ( !PRIVATE(this)->manipsenabled ) {
       if ( type.isDerivedFrom(SoTransformManip::getClassTypeId()) ||
@@ -407,6 +421,7 @@ SoIntersectionDetectionAction::isTypeEnabled(SoType type, SbBool checkgroups) co
            type.isDerivedFrom(SoPointLightManip::getClassTypeId()) ||
            type.isDerivedFrom(SoSpotLightManip::getClassTypeId()) ) return FALSE;
     }
+#endif // HAVE_MANIPULATORS
   }
   return TRUE;
 }
@@ -942,6 +957,7 @@ SoIntersectionDetectionAction::PImpl::dragger(SoCallbackAction * action, const S
 {
   if ( !this->draggersenabled ) // dragger setting overrides setting for manipulators
     return SoCallbackAction::PRUNE;
+#ifdef HAVE_MANIPULATORS
   if ( !this->manipsenabled ) {
     const SoPath * path = action->getCurPath();
     SoNode * tail = path->getTail();
@@ -953,6 +969,7 @@ SoIntersectionDetectionAction::PImpl::dragger(SoCallbackAction * action, const S
          type.isDerivedFrom(SoSpotLightManip::getClassTypeId()) )
       return SoCallbackAction::PRUNE;
   }
+#endif // HAVE_MANIPULATORS
   return SoCallbackAction::CONTINUE;
 }
 
@@ -978,9 +995,15 @@ SoIntersectionDetectionAction::PImpl::reset(void)
     delete data;
   }
   this->shapedata.truncate(0);
+  if (this->traverser != NULL) {
+    delete this->traverser;
+    this->traverser = NULL;
+  }
   this->traverser = new SoCallbackAction;
+#ifdef HAVE_DRAGGERS
   this->traverser->addPreCallback(SoDragger::getClassTypeId(),
                                   draggerCB, this);
+#endif // HAVE_DRAGGERS
   this->traverser->addPreCallback(SoNode::getClassTypeId(),
                                   traverseCB, this);
   for (i = 0; i < this->prunetypes->getLength(); i++)

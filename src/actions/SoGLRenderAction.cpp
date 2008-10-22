@@ -1012,6 +1012,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
         (coin_assert_cast<SoGroup *>(node))->getNumChildren() > 0) {
       PRIVATE(this)->cachedprofilingsg = node;
       
+#ifdef HAVE_NODEKITS
       SoNode * kit = SoActionP::getProfilerOverlay();
       if (kit) {
         SoSearchAction sa;
@@ -1033,6 +1034,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
           }
         }
       }
+#endif // HAVE_NODEKITS
     }
   }
 
@@ -1686,12 +1688,14 @@ SoGLRenderActionP::render(SoNode * node)
 
   if (SoProfiler::isOverlayActive()) {
     if (node == this->cachedprofilingsg) {
-      this->isrenderingoverlay = TRUE;
       SoNode * profileroverlay = SoActionP::getProfilerOverlay();
-      SoProfiler::enable(FALSE);
-      this->renderSingle(profileroverlay);
-      SoProfiler::enable(TRUE);
-      this->isrenderingoverlay = FALSE;
+      if (profileroverlay) {
+        this->isrenderingoverlay = TRUE;
+        SoProfiler::enable(FALSE);
+        this->renderSingle(profileroverlay);
+        SoProfiler::enable(TRUE);
+        this->isrenderingoverlay = FALSE;
+      }
     } else {
       static SbBool first = TRUE;
       if (first) { 

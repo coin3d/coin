@@ -39,8 +39,25 @@
 
 #include <Inventor/SoInteraction.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoDB.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoExtSelection.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+
+#include <Inventor/nodekits/SoNodeKit.h>
+#ifdef HAVE_NODEKITS
+#include <Inventor/nodekits/SoInteractionKit.h>
+#endif // HAVE_NODEKITS
+
+#ifdef HAVE_DRAGGERS
 #include <Inventor/draggers/SoDragger.h>
+#endif // HAVE_DRAGGERS
+
+#ifdef HAVE_MANIPULATORS
 #include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/manips/SoDirectionalLightManip.h>
@@ -52,10 +69,7 @@
 #include <Inventor/manips/SoTrackballManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
-#include <Inventor/nodekits/SoNodeKit.h>
-#include <Inventor/nodes/SoAntiSquish.h>
-#include <Inventor/nodes/SoExtSelection.h>
-#include <Inventor/nodes/SoSurroundScale.h>
+#endif // HAVE_MANIPULATORS
 
 #include "tidbitsp.h"
 
@@ -105,17 +119,22 @@ SoInteraction::init(void)
   if (interaction_isinitialized) return;
 
   if (!SoDB::isInitialized()) SoDB::init();
-  SoNodeKit::init();
 
   SoAntiSquish::initClass();
   SoSelection::initClass();
   SoExtSelection::initClass();
   SoSurroundScale::initClass();
 
+  SoNodeKit::init();
+#ifdef HAVE_NODEKITS
   SoInteractionKit::initClass();
+#endif // HAVE_NODEKITS
 
+#ifdef HAVE_DRAGGERS
   SoDragger::initClass();
+#endif // HAVE_DRAGGERS
 
+#ifdef HAVE_MANIPULATORS
   SoClipPlaneManip::initClass();
   SoDirectionalLightManip::initClass();
   SoPointLightManip::initClass();
@@ -128,7 +147,9 @@ SoInteraction::init(void)
   SoTrackballManip::initClass();
   SoTransformBoxManip::initClass();
   SoTransformerManip::initClass();
+#endif // HAVE_MANIPULATORS
 
   interaction_isinitialized = TRUE;
   coin_atexit((coin_atexit_f*)interaction_cleanup, CC_ATEXIT_NORMAL);
 }
+

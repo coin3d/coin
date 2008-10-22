@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoNodeKitListPart SoNodeKitListPart.h Inventor/nodekits/SoNodeKitListPart.h
   \brief The SoNodeKitListPart class is a container node.
@@ -633,3 +639,5 @@ SoNodeKitListPart::getDefaultChildType(void) const
   }
   return SoType::badType();
 }
+
+#endif // HAVE_NODEKITS

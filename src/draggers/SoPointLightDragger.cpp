@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoPointLightDragger SoPointLightDragger.h Inventor/draggers/SoPointLightDragger.h
   \brief The SoPointLightDragger class provides interactive geometry for manipulating a point light source.
@@ -248,3 +254,5 @@ SoPointLightDragger::valueChangedCB(void *, SoDragger * d)
   }
   thisp->fieldSensor->attach(&thisp->translation);
 }
+
+#endif // HAVE_DRAGGERS

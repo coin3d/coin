@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoRotateSphericalDragger SoRotateSphericalDragger.h Inventor/draggers/SoRotateSphericalDragger.h
   \brief The SoRotateSphericalDragger class is for rotating geometry in any direction.
@@ -412,3 +418,4 @@ SoRotateSphericalDragger::dragFinish(void)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoHandleBoxManip SoHandleBoxManip.h Inventor/manips/SoHandleBoxManip.h
   \brief The SoHandleBoxManip class wraps an SoHandleBoxDragger for manipulating a transformation.
@@ -82,3 +88,5 @@ SoHandleBoxManip::SoHandleBoxManip(void)
 SoHandleBoxManip::~SoHandleBoxManip()
 {
 }
+
+#endif // HAVE_MANIPULATORS

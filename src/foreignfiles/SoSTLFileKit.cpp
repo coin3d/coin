@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 #include <ForeignFiles/SoSTLFileKit.h>
 
 #include <Inventor/SbBasic.h>
@@ -790,4 +796,4 @@ SoSTLFileKit::put_facet_cb(void * closure,
 }
 
 #undef PRIVATE
-
+#endif // HAVE_NODEKITS

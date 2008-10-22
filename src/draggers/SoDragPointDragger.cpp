@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoDragPointDragger SoDragPointDragger.h Inventor/draggers/SoDragPointDragger.h
   \brief The SoDragPointDragger class provides mechanisms for moving a point in 3D.
@@ -606,3 +612,5 @@ SoDragPointDragger::updateSwitchNodes()
   sw = SO_GET_ANY_PART(this, "yzTranslatorSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, this->currAxis == 0 ? 0 : SO_SWITCH_NONE);
 }
+
+#endif // HAVE_DRAGGERS

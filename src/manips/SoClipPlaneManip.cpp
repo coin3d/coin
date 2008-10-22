@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_MANIPULATORS
+
 /*!
   \class SoClipPlaneManip SoClipPlaneManip.h Inventor/manips/SoClipPlaneManip.h
   \brief The SoClipPlaneManip class is used to manipulate clip planes.
@@ -620,3 +626,5 @@ SoClipPlaneManip::transferFieldValues(const SoClipPlane * from, SoClipPlane * to
   to->plane = from->plane;
   to->on = from->on;
 }
+
+#endif // HAVE_MANIPULATORS

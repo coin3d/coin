@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoDirectionalLightDragger SoDirectionalLightDragger.h Inventor/draggers/SoDirectionalLightDragger.h
   \brief The SoDirectionalLightDragger class provides interactive geometry for manipulating a directional light source.
@@ -320,3 +326,5 @@ SoDirectionalLightDragger::valueChangedCB(void *, SoDragger * d)
   SoRotation *invRot = SO_GET_ANY_PART(thisp, "translatorRotInv", SoRotation);
   invRot->rotation = rot.inverse();
 }
+
+#endif // HAVE_DRAGGERS

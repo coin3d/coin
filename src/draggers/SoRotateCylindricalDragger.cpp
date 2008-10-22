@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoRotateCylindricalDragger SoRotateCylindricalDragger.h Inventor/draggers/SoRotateCylindricalDragger.h
   \brief The SoRotateCylindricalDragger class is for rotating geometry around a single axis.
@@ -406,3 +412,4 @@ SoRotateCylindricalDragger::dragFinish(void)
 }
 
 #undef THISP
+#endif // HAVE_DRAGGERS

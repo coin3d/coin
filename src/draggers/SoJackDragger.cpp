@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_DRAGGERS
+
 /*!
   \class SoJackDragger SoJackDragger.h Inventor/draggers/SoJackDragger.h
   \brief The SoJackDragger class is a dragger you can translate, rotate and scale.
@@ -398,3 +404,5 @@ SoJackDragger::removeChildDragger(const char *childname)
   child->removeFinishCallback(SoJackDragger::invalidateSurroundScaleCB, this);
   this->unregisterChildDragger(child);
 }
+
+#endif // HAVE_DRAGGERS

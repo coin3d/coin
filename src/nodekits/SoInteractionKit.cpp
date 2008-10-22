@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoInteractionKit SoInteractionKit.h Inventor/nodekits/SoInteractionKit.h
   \brief The SoInteractionKit class is a base class for draggers.
@@ -877,3 +883,4 @@ SoInteractionKitP::sensorCB(void * data, SoSensor *)
 }
 
 #endif // DOXYGEN_SKIP_THIS
+#endif // HAVE_NODEKITS
