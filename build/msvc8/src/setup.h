@@ -14,6 +14,7 @@
  * HAVE_VRML97
  *
  * If you want to disable VRML97 suport in Coin, do not set this define.
+ *
  * The reason to disable this is mostly to avoid compiling a lot of code
  * that causes the Coin library to grow considerably if you need a
  * particularly small version of Coin.
@@ -22,6 +23,52 @@
  */
 
 #define HAVE_VRML97 
+
+/***************************************************************************
+ * HAVE_NODEKITS
+ *
+ * If you want to disable nodekits in Coin, do not set this define.
+ * This will also disable draggers and manipulators, as they are built on
+ * top of the nodekit system.  It also disables the SoForeignFileKit and
+ * its derived classes, and the builtin profiler statistics visualization.
+ *
+ * The reason to disable this is mostly to avoid compiling a lot of code
+ * that causes the Coin library to grow in size if you need a particularly
+ * small version of Coin.
+ *
+ * Default is to have nodekit support enabled.
+ */
+
+#define HAVE_NODEKITS 
+
+/***************************************************************************
+ * HAVE_DRAGGERS
+ *
+ * If you want to disable draggers in Coin, do not set this define.
+ * This will also disable manipulators, as they are heavy users of draggers.
+ *
+ * The reason to disable this is mostly to avoid compiling a lot of code
+ * that causes the Coin library to grow in size if you need a particularly
+ * small version of Coin.
+ *
+ * Default is to have dragger support enabled.
+ */
+
+#define HAVE_DRAGGERS 
+
+/***************************************************************************
+ * HAVE_MANIPULATORS
+ *
+ * If you want to disable manipulators in Coin, do not set this define.
+ *
+ * The reason to disable this is mostly to avoid compiling a lot of code
+ * that causes the Coin library to grow in size if you need a particularly
+ * small version of Coin.
+ *
+ * Default is to have manipulators support enabled.
+ */
+
+#define HAVE_MANIPULATORS 
 
 /***************************************************************************
  * HAVE_SOUND

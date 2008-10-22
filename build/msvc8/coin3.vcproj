@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{863A0AFB-10D6-4A39-B14D-82CC13B224E6}"
+	ProjectGUID="{55E1C473-7DBD-4511-A5D0-0D62CA89EE25}"
 	>
 	<Platforms>
 		<Platform
@@ -42982,7 +42982,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\foreignfiles\steel.cpp"
+					RelativePath="..\..\src\foreignfiles\steel-wrapper.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

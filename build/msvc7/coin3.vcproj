@@ -38581,7 +38581,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\foreignfiles\steel.cpp">
+					RelativePath="..\..\src\foreignfiles\steel-wrapper.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool

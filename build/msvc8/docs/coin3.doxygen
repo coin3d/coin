@@ -23,7 +23,7 @@ PROJECT_NAME           = Coin
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 3.0.0
+PROJECT_NUMBER         = 3.0.1a
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -510,6 +510,7 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\SbXfBox3f.h \
                          ..\..\include\Inventor\SbXfBox3d.h \
                          ..\..\include\Inventor\SoDB.h \
+                         ..\..\include\Inventor\SoEventManager.h \
                          ..\..\include\Inventor\SoFullPath.h \
                          ..\..\include\Inventor\SoInput.h \
                          ..\..\include\Inventor\SoInteraction.h \
@@ -928,19 +929,10 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\projectors\SbSphereSectionProjector.h \
                          ..\..\include\Inventor\projectors\SbSphereSheetProjector.h \
                          ..\..\include\Inventor\scxml\ScXML.h \
-                         ..\..\include\Inventor\scxml\ScXMLAnchor.h \
-                         ..\..\include\Inventor\scxml\ScXMLDocument.h \
                          ..\..\include\Inventor\scxml\ScXMLEvent.h \
-                         ..\..\include\Inventor\scxml\ScXMLFinal.h \
-                         ..\..\include\Inventor\scxml\ScXMLHistory.h \
-                         ..\..\include\Inventor\scxml\ScXMLInitial.h \
                          ..\..\include\Inventor\scxml\ScXMLInvoke.h \
                          ..\..\include\Inventor\scxml\ScXMLObject.h \
-                         ..\..\include\Inventor\scxml\ScXMLOnEntry.h \
-                         ..\..\include\Inventor\scxml\ScXMLOnExit.h \
-                         ..\..\include\Inventor\scxml\ScXMLState.h \
                          ..\..\include\Inventor\scxml\ScXMLStateMachine.h \
-                         ..\..\include\Inventor\scxml\ScXMLTransition.h \
                          ..\..\include\Inventor\scxml\SoScXMLEvent.h \
                          ..\..\include\Inventor\scxml\SoScXMLStateMachine.h \
                          ..\..\include\Inventor\sensors\SoAlarmSensor.h \
@@ -1353,6 +1345,7 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\misc\SoBase.cpp \
                          ..\..\src\misc\SoChildList.cpp \
                          ..\..\src\misc\SoDB.cpp \
+                         ..\..\src\misc\SoEventManager.cpp \
                          ..\..\src\misc\SoFullPath.cpp \
                          ..\..\src\misc\SoInteraction.cpp \
                          ..\..\src\misc\SoLockManager.cpp \
@@ -1515,18 +1508,9 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\projectors\SbSphereSectionProjector.cpp \
                          ..\..\src\projectors\SbSphereSheetProjector.cpp \
                          ..\..\src\scxml\ScXML.cpp \
-                         ..\..\src\scxml\ScXMLAnchor.cpp \
-                         ..\..\src\scxml\ScXMLDocument.cpp \
                          ..\..\src\scxml\ScXMLEvent.cpp \
-                         ..\..\src\scxml\ScXMLFinal.cpp \
-                         ..\..\src\scxml\ScXMLHistory.cpp \
-                         ..\..\src\scxml\ScXMLInitial.cpp \
                          ..\..\src\scxml\ScXMLObject.cpp \
-                         ..\..\src\scxml\ScXMLOnEntry.cpp \
-                         ..\..\src\scxml\ScXMLOnExit.cpp \
-                         ..\..\src\scxml\ScXMLState.cpp \
                          ..\..\src\scxml\ScXMLStateMachine.cpp \
-                         ..\..\src\scxml\ScXMLTransition.cpp \
                          ..\..\src\scxml\SoScXMLEvent.cpp \
                          ..\..\src\scxml\SoScXMLStateMachine.cpp \
                          ..\..\src\sensors\SoAlarmSensor.cpp \
@@ -2199,6 +2183,9 @@ INCLUDE_FILE_PATTERNS  = *.h \
 PREDEFINED             = DOXYGEN_SKIP_THIS=1 \
                          HAVE_CONFIG_H= \
                          HAVE_VRML97= \
+                         HAVE_NODEKITS= \
+                         HAVE_DRAGGERS= \
+                         HAVE_MANIPULATORS= \
                          COIN_DLL_API=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 

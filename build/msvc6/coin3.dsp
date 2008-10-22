@@ -11313,7 +11313,7 @@ SOURCE=..\..\src\foreignfiles\SoSTLFileKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\foreignfiles\steel.cpp
+SOURCE=..\..\src\foreignfiles\steel-wrapper.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\foreignfiles"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
