@@ -116,6 +116,10 @@
 #include <cstring>
 #include <cfloat>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbViewportRegion.h>
@@ -138,13 +142,10 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTransform.h>
+
 #ifdef HAVE_NODEKITS
 #include <Inventor/nodekits/SoBaseKit.h>
 #endif // HAVE_NODEKITS
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
 
 #include "SbBasicP.h"
 #include "actions/SoSubActionP.h"
