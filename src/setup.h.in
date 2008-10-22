@@ -28,7 +28,8 @@
  *
  * If you want to disable nodekits in Coin, do not set this define.
  * This will also disable draggers and manipulators, as they are built on
- * top of the nodekit system.
+ * top of the nodekit system.  It also disables the SoForeignFileKit and
+ * its derived classes, and the builtin profiler statistics visualization.
  *
  * The reason to disable this is mostly to avoid compiling a lot of code
  * that causes the Coin library to grow in size if you need a particularly
