@@ -117,11 +117,14 @@ HACKING_COMPACT_BUILD_TRUE = @HACKING_COMPACT_BUILD_TRUE@
 HACKING_DYNAMIC_MODULES_FALSE = @HACKING_DYNAMIC_MODULES_FALSE@
 HACKING_DYNAMIC_MODULES_TRUE = @HACKING_DYNAMIC_MODULES_TRUE@
 HAVE_3DS_IMPORT_CAPABILITIES = @HAVE_3DS_IMPORT_CAPABILITIES@
+HAVE_DRAGGERS = @HAVE_DRAGGERS@
 HAVE_FONTCONFIG_FALSE = @HAVE_FONTCONFIG_FALSE@
 HAVE_FONTCONFIG_TRUE = @HAVE_FONTCONFIG_TRUE@
 HAVE_FREETYPE_FALSE = @HAVE_FREETYPE_FALSE@
 HAVE_FREETYPE_TRUE = @HAVE_FREETYPE_TRUE@
 HAVE_JAVASCRIPT = @HAVE_JAVASCRIPT@
+HAVE_MANIPULATORS = @HAVE_MANIPULATORS@
+HAVE_NODEKITS = @HAVE_NODEKITS@
 HAVE_SOUND = @HAVE_SOUND@
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE = @HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE@
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE = @HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_TRUE@
@@ -275,7 +278,7 @@ EXTRA_DIST = \
 RegularSources = \
 	SoForeignFileKit.cpp \
 	SoSTLFileKit.cpp \
-	steel.cpp
+	steel-wrapper.cpp
 
 LinkHackSources = \
 	all-foreignfiles-cpp.cpp
@@ -350,41 +353,41 @@ LIBRARIES = $(noinst_LIBRARIES)
 foreignfiles_lst_AR = $(AR) cru
 foreignfiles_lst_LIBADD =
 am__foreignfiles_lst_SOURCES_DIST = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp
+	SoSTLFileKit.cpp steel-wrapper.cpp all-foreignfiles-cpp.cpp
 am__objects_1 = all-foreignfiles-cpp.$(OBJEXT)
 am__objects_2 = SoForeignFileKit.$(OBJEXT) SoSTLFileKit.$(OBJEXT) \
-	steel.$(OBJEXT)
+	steel-wrapper.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_foreignfiles_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_foreignfiles_lst_SOURCES_DIST = steel.h \
 	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
-	steel.cpp
+	steel-wrapper.cpp
 foreignfiles_lst_OBJECTS = $(am_foreignfiles_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libforeignfiles_la_LDFLAGS =
 libforeignfiles_la_LIBADD =
 am__libforeignfiles_la_SOURCES_DIST = SoForeignFileKit.cpp \
-	SoSTLFileKit.cpp steel.cpp all-foreignfiles-cpp.cpp
+	SoSTLFileKit.cpp steel-wrapper.cpp all-foreignfiles-cpp.cpp
 am__objects_6 = all-foreignfiles-cpp.lo
-am__objects_7 = SoForeignFileKit.lo SoSTLFileKit.lo steel.lo
+am__objects_7 = SoForeignFileKit.lo SoSTLFileKit.lo steel-wrapper.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libforeignfiles_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libforeignfiles_la_SOURCES_DIST = steel.h \
 	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
-	steel.cpp
+	steel-wrapper.cpp
 libforeignfiles_la_OBJECTS = $(am_libforeignfiles_la_OBJECTS)
 libforeignfiles@SUFFIX@LINKHACK_la_LDFLAGS =
 libforeignfiles@SUFFIX@LINKHACK_la_LIBADD =
 am__libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	SoForeignFileKit.cpp SoSTLFileKit.cpp steel.cpp \
+	SoForeignFileKit.cpp SoSTLFileKit.cpp steel-wrapper.cpp \
 	all-foreignfiles-cpp.cpp
 am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = steel.h \
 	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
-	steel.cpp
+	steel-wrapper.cpp
 libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -395,7 +398,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoSTLFileKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/steel.Plo ./$(DEPDIR)/steel.Po
+@AMDEP_TRUE@	./$(DEPDIR)/steel-wrapper.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/steel-wrapper.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -488,8 +492,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSTLFileKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel-wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel-wrapper.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
