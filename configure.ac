@@ -445,8 +445,6 @@ AC_SUBST(HAVE_JAVASCRIPT)
 # Query enabling/disabling various subsystems
 
 sim_ac_enable_nodekits=true
-sim_ac_enable_draggers=true
-sim_ac_enable_manipulators=true
 
 AC_ARG_ENABLE(
   [nodekits],
@@ -457,6 +455,8 @@ AC_ARG_ENABLE(
     *) ;;
   esac])
 
+sim_ac_enable_draggers=true
+
 AC_ARG_ENABLE(
   [draggers],
   AC_HELP_STRING([--disable-draggers], [disable dragger support]), [
@@ -465,6 +465,8 @@ AC_ARG_ENABLE(
     no | false) sim_ac_enable_draggers=false ;;
     *) ;;
   esac])
+
+sim_ac_enable_manipulators=true
 
 AC_ARG_ENABLE(
   [manipulators],
@@ -479,7 +481,7 @@ HAVE_NODEKITS=1
 HAVE_DRAGGERS=1
 HAVE_MANIPULATORS=1
 
-if $sim_ac_enable_nodekits ; then
+if $sim_ac_enable_nodekits; then
   AC_DEFINE([HAVE_NODEKITS],, [for setup.h])
   SIM_AC_CONFIGURATION_SETTING([nodekit support], [Yes])
 else
@@ -489,7 +491,7 @@ else
   SIM_AC_CONFIGURATION_SETTING([nodekit support], [No  (this severely cripples Coin)])
 fi
 
-if $sim_ac_enable_draggers && test $HAVE_NODEKITS = 1; then
+if $sim_ac_enable_draggers && test x"$HAVE_NODEKITS" = x"1"; then
   AC_DEFINE([HAVE_DRAGGERS],, [for setup.h])
   SIM_AC_CONFIGURATION_SETTING([dragger support], [Yes])
 else
@@ -498,7 +500,7 @@ else
   SIM_AC_CONFIGURATION_SETTING([dragger support], [No  (this severely cripples Coin)])
 fi
 
-if $sim_ac_enable_manipulators && test $HAVE_DRAGGERS = 1; then
+if $sim_ac_enable_manipulators && test x"$HAVE_DRAGGERS" = x"1"; then
   AC_DEFINE([HAVE_MANIPULATORS],, [for setup.h])
   SIM_AC_CONFIGURATION_SETTING([manipulator support], [Yes])
 else
