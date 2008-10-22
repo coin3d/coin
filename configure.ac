@@ -442,7 +442,75 @@ fi
 AC_SUBST(HAVE_JAVASCRIPT)
 
 # *******************************************************************
-# Query enabling the vrml97 extension
+# Query enabling/disabling various subsystems
+
+sim_ac_enable_nodekits=true
+sim_ac_enable_draggers=true
+sim_ac_enable_manipulators=true
+
+AC_ARG_ENABLE(
+  [nodekits],
+  AC_HELP_STRING([--disable-nodekits], [disable nodekit support]), [
+  case $enableval in
+    yes | true) sim_ac_enable_nodekits=true ;;
+    no | false) sim_ac_enable_nodekits=false ;;
+    *) ;;
+  esac])
+
+AC_ARG_ENABLE(
+  [draggers],
+  AC_HELP_STRING([--disable-draggers], [disable dragger support]), [
+  case $enableval in
+    yes | true) sim_ac_enable_draggers=true ;;
+    no | false) sim_ac_enable_draggers=false ;;
+    *) ;;
+  esac])
+
+AC_ARG_ENABLE(
+  [manipulators],
+  AC_HELP_STRING([--disable-manipulators], [disable manipulator support]), [
+  case $enableval in
+    yes | true) sim_ac_enable_manipulators=true ;;
+    no | false) sim_ac_enable_manipulators=false ;;
+    *) ;;
+  esac])
+
+HAVE_NODEKITS=1
+HAVE_DRAGGERS=1
+HAVE_MANIPULATORS=1
+
+if $sim_ac_enable_nodekits ; then
+  AC_DEFINE([HAVE_NODEKITS],, [for setup.h])
+  SIM_AC_CONFIGURATION_SETTING([nodekit support], [Yes])
+else
+  HAVE_NODEKITS=0
+  HAVE_DRAGGERS=0
+  HAVE_MANIPULATORS=0
+  SIM_AC_CONFIGURATION_SETTING([nodekit support], [No  (this severely cripples Coin)])
+fi
+
+if $sim_ac_enable_draggers && test $HAVE_NODEKITS = 1; then
+  AC_DEFINE([HAVE_DRAGGERS],, [for setup.h])
+  SIM_AC_CONFIGURATION_SETTING([dragger support], [Yes])
+else
+  HAVE_DRAGGERS=0
+  HAVE_MANIPULATORS=0
+  SIM_AC_CONFIGURATION_SETTING([dragger support], [No  (this severely cripples Coin)])
+fi
+
+if $sim_ac_enable_manipulators && test $HAVE_DRAGGERS = 1; then
+  AC_DEFINE([HAVE_MANIPULATORS],, [for setup.h])
+  SIM_AC_CONFIGURATION_SETTING([manipulator support], [Yes])
+else
+  HAVE_MANIPULATORS=0
+  SIM_AC_CONFIGURATION_SETTING([manipulator support], [No  (this severely cripples Coin)])
+fi
+
+AC_SUBST(HAVE_NODEKITS)
+AC_SUBST(HAVE_DRAGGERS)
+AC_SUBST(HAVE_MANIPULATORS)
+
+# *******************************************************************
 
 sim_ac_enable_vrml97=true
 
@@ -459,11 +527,9 @@ HAVE_VRML97=1
 
 if $sim_ac_enable_vrml97 ; then
   AC_DEFINE([HAVE_VRML97],, [for setup.h])
-  VRML97MAKEFILE=src/vrml97/Makefile
   SIM_AC_CONFIGURATION_SETTING([VRML97 support], [Yes])
 else
   HAVE_VRML97=0
-  VRML97MAKEFILE=
   SIM_AC_CONFIGURATION_SETTING([VRML97 support], [No  (enable with --enable-vrml97)])
 fi
 AC_SUBST(HAVE_VRML97)

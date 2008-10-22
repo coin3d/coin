@@ -147,6 +147,9 @@
 /* define if you have the dl library */
 #undef HAVE_DL_LIB
 
+/* for setup.h */
+#undef HAVE_DRAGGERS
+
 /* define if the Mac OS X dyld can be used for runtime binding */
 #undef HAVE_DYLD_RUNTIME_BINDING
 
@@ -252,6 +255,9 @@
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 #undef HAVE_MACH_O_DYLD_H
 
+/* for setup.h */
+#undef HAVE_MANIPULATORS
+
 /* define if memmove() is available */
 #undef HAVE_MEMMOVE
 
@@ -260,6 +266,9 @@
 
 /* Define if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
+
+/* for setup.h */
+#undef HAVE_NODEKITS
 
 /* openal extensions available */
 #undef HAVE_OPENAL
