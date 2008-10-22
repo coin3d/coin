@@ -294,6 +294,34 @@ Configuration Options
   If you don't want Coin to try to load the OpenAL library at
   run-time, but want link-time binding instead, use this option.
 
+--disable-vrml97
+
+  If you want a smaller Coin binary and only need the core functionality,
+  you can use this to disable building the vrml97 part of Coin.
+
+--disable-nodekits
+
+  If you want a smaller Coin binary and only need the core functionality,
+  you can use this to disable building the nodekit part of Coin.  This
+  severely cripples Coin, and Coin will no longer be standard compliant
+  with regards to the Inventor file format.  Disabling nodekits also has
+  additional implications, like disabling some foreign file formats, and
+  the builtin visualization for the scene graph profiler.
+
+--disable-draggers
+
+  If you want a smaller Coin binary and only need the core functionality,
+  you can use this to disable building the dragger part of Coin.  This
+  severely cripples Coin, and Coin will no longer be standard compliant
+  with regards to the Inventor file format.
+
+--disable-manipulators
+
+  If you want a smaller Coin binary and only need the core functionality,
+  you can use this to disable building the manipulator part of Coin.  This 
+  severely cripples Coin, and Coin will no longer be standard compliant
+  with regards to the Inventor file format.
+
 --enable-compact
 
   On some architectures, the final library linkage is done by specifying
@@ -306,6 +334,9 @@ Configuration Options
   be compiled as one gigantic object file, which solves this limitation.
   It will slow down compilation a great deal though, but if you must,
   you must.
+
+  On Mac OS X, this is default behaviour at the moment, done as a workaround
+  for a problem with debugging symbols.
 
 --enable-hacking
 
