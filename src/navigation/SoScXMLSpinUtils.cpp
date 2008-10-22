@@ -170,7 +170,7 @@ SoScXMLEndSpin::invoke(ScXMLStateMachine * statemachinearg)
   assert(data);
 
   assert(data->spinning);
-  
+
   SoScXMLSpinInvoke::freeSpinData(statemachine);
 }
 

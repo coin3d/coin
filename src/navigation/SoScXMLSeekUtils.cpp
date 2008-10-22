@@ -152,27 +152,7 @@ SoScXMLSetSeek::invoke(ScXMLStateMachine * statemachinearg)
     return;
   }
 
-  SbVec2s screenpos;
-
-  if (soev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-    const SoMouseButtonEvent * mbevent =
-      static_cast<const SoMouseButtonEvent *>(soev);
-    screenpos = mbevent->getPosition();
-  }
-  else if (soev->isOfType(SoKeyboardEvent::getClassTypeId())) {
-    const SoKeyboardEvent * kbevent =
-      static_cast<const SoKeyboardEvent *>(soev);
-    screenpos = kbevent->getPosition();
-  }
-  else if (soev->isOfType(SoLocation2Event::getClassTypeId())) {
-    const SoLocation2Event * l2event =
-      static_cast<const SoLocation2Event *>(soev);
-    screenpos = l2event->getPosition();
-  }
-  else {
-    SoDebugError::post("SeekSet", "unsupported event type - no pick pos");
-    return;
-  }
+  SbVec2s screenpos = soev->getPosition();
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
   if (!this->raypickaction) {

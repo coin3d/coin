@@ -125,25 +125,7 @@ SoScXMLSetZoom::invoke(ScXMLStateMachine * statemachinearg)
   }
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
-
-  if (soev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-    const SoMouseButtonEvent * mbevent =
-      static_cast<const SoMouseButtonEvent *>(soev);
-    data->lastposn = mbevent->getNormalizedPosition(vp);
-  }
-  else if (soev->isOfType(SoKeyboardEvent::getClassTypeId())) {
-    const SoKeyboardEvent * kbevent =
-      static_cast<const SoKeyboardEvent *>(soev);
-    data->lastposn = kbevent->getNormalizedPosition(vp);
-  }
-  else if (soev->isOfType(SoLocation2Event::getClassTypeId())) {
-    const SoLocation2Event * l2event =
-      static_cast<const SoLocation2Event *>(soev);
-    data->lastposn = l2event->getNormalizedPosition(vp);
-  }
-  else {
-    return;
-  }
+  data->lastposn = soev->getNormalizedPosition(vp);
 }
 
 // *************************************************************************
@@ -162,7 +144,7 @@ void
 SoScXMLUpdateZoom::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    SoDebugError::post("SetZoom",
+    SoDebugError::post("UpdateZoom",
                        "No support for non-SoScXMLStateMachine objects");
     return;
   }
@@ -191,12 +173,12 @@ SoScXMLUpdateZoom::invoke(ScXMLStateMachine * statemachinearg)
   // get mouse position
   const ScXMLEvent * ev = statemachine->getCurrentEvent();
   if (!ev || !ev->isOfType(SoScXMLEvent::getClassTypeId())) {
-    SoDebugError::post("SetZoom", "Need SoEvent but statemachine has none.");
+    SoDebugError::post("UpdateZoom", "Need SoEvent but statemachine has none.");
     return;
   }
   const SoEvent * soev = static_cast<const SoScXMLEvent *>(ev)->getSoEvent();
   if (!soev) {
-    SoDebugError::post("SetZoom", "Need SoEvent.");
+    SoDebugError::post("UpdateZoom", "Need SoEvent.");
     return;
   }
 
@@ -204,12 +186,8 @@ SoScXMLUpdateZoom::invoke(ScXMLStateMachine * statemachinearg)
   SbVec2f thisposn = data->lastposn;
   const SbViewportRegion & vp = statemachine->getViewportRegion();
 
-  if (soev->isOfType(SoLocation2Event::getClassTypeId())) {
-    const SoLocation2Event * l2event =
-      static_cast<const SoLocation2Event *>(soev);
-    thisposn = l2event->getNormalizedPosition(vp);
-    data->lastposn = thisposn;
-  }
+  thisposn = soev->getNormalizedPosition(vp);
+  data->lastposn = thisposn;
 
   SoCamera * camera = statemachine->getActiveCamera();
   // The value 20.0 is just a value found by trial.

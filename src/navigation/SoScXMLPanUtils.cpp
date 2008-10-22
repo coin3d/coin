@@ -102,23 +102,19 @@ SoScXMLSetPan::invoke(ScXMLStateMachine * statemachinearg)
 {
   SoScXMLStateMachine * statemachine = this->castToSo(statemachinearg);
   if (!statemachine) return;
-  
+
   PanData * data = SoScXMLPanInvoke::getPanData(statemachine);
   assert(data);
 
   // get mouse position
-  const SoEvent * ev = this->getSoEvent(statemachine);
-  if (!ev) return;
-
-  if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-    SoDebugError::post("SetPan", "Need SoMouseButtonEvent.");
+  const SoEvent * soev = this->getSoEvent(statemachine);
+  if (!soev) {
+    SoDebugError::post("SetPan", "Need SoEvent.");
     return;
   }
-  const SoMouseButtonEvent * mbevent =
-    static_cast<const SoMouseButtonEvent *>(ev);
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
-  data->lastpos = mbevent->getNormalizedPosition(vp);
+  data->lastpos = soev->getNormalizedPosition(vp);
 
   // find plane for panning
   SoCamera * camera = statemachine->getActiveCamera();
@@ -160,20 +156,18 @@ SoScXMLUpdatePan::invoke(ScXMLStateMachine * statemachinearg)
   // get mouse position
   const ScXMLEvent * ev = statemachine->getCurrentEvent();
   if (!ev || !ev->isOfType(SoScXMLEvent::getClassTypeId())) {
-    SoDebugError::post("SetRotate", "Need SoEvent but statemachine has none.");
+    SoDebugError::post("UpdatePan", "Need SoEvent but statemachine has none.");
     return;
   }
 
   const SoEvent * soev = static_cast<const SoScXMLEvent *>(ev)->getSoEvent();
-  if (!soev || !soev->isOfType(SoLocation2Event::getClassTypeId())) {
-    SoDebugError::post("SetRotate", "Need SoLocation2Event.");
+  if (!soev) {
+    SoDebugError::post("UpdatePan", "Need SoEvent.");
     return;
   }
-  const SoLocation2Event * l2event =
-    static_cast<const SoLocation2Event *>(soev);
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
-  SbVec2f position = l2event->getNormalizedPosition(vp);
+  SbVec2f position = soev->getNormalizedPosition(vp);
 
   float vpaspect = vp.getViewportAspectRatio();
 

@@ -156,36 +156,11 @@ SoScXMLSetRotate::invoke(ScXMLStateMachine * statemachinearg)
   }
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
-
-  if (soev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-    const SoMouseButtonEvent * mbevent =
-      static_cast<const SoMouseButtonEvent *>(soev);
-    data->downposn = mbevent->getNormalizedPosition(vp);
-    data->mouselog[0].posn = data->downposn;
-    data->mouselog[0].time = mbevent->getTime();
-  }
-  else if (soev->isOfType(SoKeyboardEvent::getClassTypeId())) {
-    const SoKeyboardEvent * kbevent =
-      static_cast<const SoKeyboardEvent *>(soev);
-    data->downposn = kbevent->getNormalizedPosition(vp);
-    data->mouselog[0].posn = data->downposn;
-    data->mouselog[0].time = kbevent->getTime();
-  }
-  else if (soev->isOfType(SoLocation2Event::getClassTypeId())) {
-    const SoLocation2Event * l2event =
-      static_cast<const SoLocation2Event *>(soev);
-    data->downposn = l2event->getNormalizedPosition(vp);
-    data->mouselog[0].posn = data->downposn;
-    data->mouselog[0].time = l2event->getTime();
-  }
-  else {
-    return;
-  }
+  data->downposn = soev->getNormalizedPosition(vp);
+  data->mouselog[0].posn = data->downposn;
+  data->mouselog[0].time = soev->getTime();
 
   data->logsize = 1;
-
-  //SoDebugError::postInfo("SetRotate", "pos: %g %g",
-  //                       data->downposn[0], data->downposn[1]);
 
   // store current camera position
   SoCamera * camera = statemachine->getActiveCamera();
@@ -207,7 +182,7 @@ void
 SoScXMLUpdateRotate::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    SoDebugError::post("SetRotate",
+    SoDebugError::post("UpdateRotate",
                        "No support for non-SoScXMLStateMachine objects");
     return;
   }
@@ -228,19 +203,17 @@ SoScXMLUpdateRotate::invoke(ScXMLStateMachine * statemachinearg)
   // get mouse position
   const ScXMLEvent * ev = statemachine->getCurrentEvent();
   if (!ev || !ev->isOfType(SoScXMLEvent::getClassTypeId())) {
-    SoDebugError::post("SetRotate", "Need SoEvent but statemachine has none.");
+    SoDebugError::post("UpdateRotate", "Need SoEvent but statemachine has none.");
     return;
   }
   const SoEvent * soev = static_cast<const SoScXMLEvent *>(ev)->getSoEvent();
   if (!soev || !soev->isOfType(SoLocation2Event::getClassTypeId())) {
-    SoDebugError::post("SetRotate", "Need SoLocation2Event.");
+    SoDebugError::post("UpdateRotate", "Need SoEvent.");
     return;
   }
-  const SoLocation2Event * l2event =
-    static_cast<const SoLocation2Event *>(soev);
 
   const SbViewportRegion & vp = statemachine->getViewportRegion();
-  SbVec2f currentposn = l2event->getNormalizedPosition(vp);
+  SbVec2f currentposn = soev->getNormalizedPosition(vp);
 
   // update mouse log
   data->mouselog[2].time = data->mouselog[1].time;
@@ -248,7 +221,7 @@ SoScXMLUpdateRotate::invoke(ScXMLStateMachine * statemachinearg)
   data->mouselog[1].time = data->mouselog[0].time;
   data->mouselog[1].posn = data->mouselog[0].posn;
   data->mouselog[0].posn = currentposn;
-  data->mouselog[0].time = l2event->getTime();
+  data->mouselog[0].time = soev->getTime();
   data->logsize += 1;
 
   // find rotation
@@ -294,7 +267,7 @@ void
 SoScXMLEndRotate::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    SoDebugError::post("SetRotate",
+    SoDebugError::post("EndRotate",
                        "No support for non-SoScXMLStateMachine objects");
     return;
   }
