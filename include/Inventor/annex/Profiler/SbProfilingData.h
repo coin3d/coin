@@ -58,7 +58,7 @@ public:
   // profiling setters
   enum FootprintType {
     MEMORY_SIZE,
-    VIDEO_MEMORY_SIZE,
+    VIDEO_MEMORY_SIZE
   };
 
   enum NodeFlag {
