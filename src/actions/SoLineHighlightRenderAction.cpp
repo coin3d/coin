@@ -324,10 +324,11 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   int i;
   int thispos = reclassify_cast<SoFullPath *>(pathtothis)->getLength()-1;
   assert(thispos >= 0);
-  this->postprocpath->truncate(0); // reset
+  this->postprocpath->setHead(pathtothis->getHead()); // reset
 
-  for (i = 0; i < thispos; i++)
-    this->postprocpath->append(pathtothis->getNode(i));
+  for (i = 1; i < thispos; i++) {
+    this->postprocpath->append(pathtothis->getIndex(i));
+  }
 
   SoState * state = PUBLIC(this)->getState();
   state->push();
@@ -366,7 +367,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
     SoFullPath * path = reclassify_cast<SoFullPath *>((*pathlist)[i]);
 
     for (int j = 0; j < path->getLength(); j++) {
-      this->postprocpath->append(path->getNode(j));
+      this->postprocpath->append(path->getIndex(j));
     }
 
     PUBLIC(this)->SoGLRenderAction::apply(this->postprocpath);
