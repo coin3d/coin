@@ -383,7 +383,7 @@ SoAction::initClass(void)
   }
 
   SoAction::initClasses();
-  coin_atexit(static_cast<coin_atexit_f*>( SoAction::atexit_cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f *>(SoAction::atexit_cleanup), CC_ATEXIT_NORMAL);
 }
 
 // private cleanup method
