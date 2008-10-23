@@ -112,7 +112,7 @@ public:
   { cc_string_vsprintf(&this->str, formatstr, args); return *this; }
 
   void apply(char (*func)(char input)) {
-    cc_string_apply(&this->str, static_cast<cc_apply_f>(func));
+    cc_string_apply(&this->str, reinterpret_cast<cc_apply_f>(func));
   }
 
   int find(const SbString & s) const;
