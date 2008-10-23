@@ -2610,7 +2610,6 @@ SoBaseKitP::setParts(SbList <SoNode*> partlist, const SbBool leafparts)
   for (int i = 1; i < n; i++) {
     SoNode * node = partlist[i];
     if (node) {
-      node->ref();
       SbBool leaftst = catalog->isLeaf(i);
       if (leaftst == leafparts) { // correct pass ?
         if (!leaftst) {
