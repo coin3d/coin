@@ -53,7 +53,6 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoListener.h>
-#include <Inventor/nodekits/SoBaseKit.h>
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRMLSound.h>

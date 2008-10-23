@@ -121,10 +121,13 @@
 #include "glue/simage_wrapper.h"
 #include "misc/SoGL.h"
 
-#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
-#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
 #include "profiler/SoProfilerP.h"
+
+#ifdef HAVE_NODEKITS
+#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#endif // HAVE_NODEKITS
 
 // *************************************************************************
 

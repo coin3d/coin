@@ -35,7 +35,21 @@
 
 // *************************************************************************
 
-#include <Inventor/details/SoDetails.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/SbName.h>
+#include <Inventor/details/SoConeDetail.h>
+#include <Inventor/details/SoCubeDetail.h>
+#include <Inventor/details/SoCylinderDetail.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoLineDetail.h>
+#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/details/SoTextDetail.h>
+#ifdef HAVE_NODEKITS
+#include <Inventor/details/SoNodeKitDetail.h>
+#endif // HAVE_NODEKITS
 
 // *************************************************************************
 
@@ -149,7 +163,9 @@ SoDetail::initClasses(void)
   SoCylinderDetail::initClass();
   SoFaceDetail::initClass();
   SoLineDetail::initClass();
-  SoNodeKitDetail::initClass();
   SoPointDetail::initClass();
   SoTextDetail::initClass();
+#ifdef HAVE_NODEKITS
+  SoNodeKitDetail::initClass();
+#endif // HAVE_NODEKITS
 }

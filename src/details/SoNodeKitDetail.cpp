@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_NODEKITS
+
 /*!
   \class SoNodeKitDetail SoNodeKitDetail.h Inventor/details/SoNodeKitDetail.h
   \brief The SoNodeKitDetail class is yet to be documented.
@@ -153,3 +159,5 @@ SoNodeKitDetail::getPartName(void) const
 {
   return this->myPartName;
 }
+
+#endif // HAVE_NODEKITS

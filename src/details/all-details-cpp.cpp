@@ -21,12 +21,19 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include "SoDetail.cpp"
 #include "SoConeDetail.cpp"
 #include "SoCubeDetail.cpp"
 #include "SoCylinderDetail.cpp"
 #include "SoFaceDetail.cpp"
 #include "SoLineDetail.cpp"
-#include "SoNodeKitDetail.cpp"
 #include "SoPointDetail.cpp"
 #include "SoTextDetail.cpp"
+
+#ifdef HAVE_NODEKITS
+#include "SoNodeKitDetail.cpp"
+#endif // HAVE_NODEKITS
