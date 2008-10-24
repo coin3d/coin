@@ -1101,8 +1101,8 @@ SoAction::getState(void) const
     // cast away constness to set state
     const_cast<SoAction*>(this)->state =
       new SoState(const_cast<SoAction*>(this), this->getEnabledElements().getElements());
-    SoActionP * pimpl = const_cast<SoActionP *>(&PRIVATE(this).get());
-    pimpl->prevenabledelementscounter = this->getEnabledElements().getCounter();
+    SoActionP * thisp = const_cast<SoActionP *>(&PRIVATE(this).get());
+    thisp->prevenabledelementscounter = this->getEnabledElements().getCounter();
   }
   return this->state;
 }
