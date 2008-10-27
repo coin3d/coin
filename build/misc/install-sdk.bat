@@ -30,6 +30,7 @@ if "%libname%"=="coin3" goto argfourgiven
 if "%libname%"=="simage1" goto argfourgiven
 if "%libname%"=="smallchange1" goto argfourgiven
 if "%libname%"=="simvoleon1" goto argfourgiven
+if "%libname%"=="simvoleon2" goto argfourgiven
 if "%libname%"=="nutsnbolts0" goto argfourgiven
 if "%libname%"=="soqt1" goto argfourgiven
 if "%libname%"=="sowin1" goto argfourgiven

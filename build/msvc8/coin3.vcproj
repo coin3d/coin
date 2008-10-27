@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{55E1C473-7DBD-4511-A5D0-0D62CA89EE25}"
+	ProjectGUID="{3C375881-34FB-490F-A5E4-6CBC343E9907}"
 	>
 	<Platforms>
 		<Platform
@@ -149,9 +149,9 @@
 				OutputFile="coin3.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/coin3.pdb"
 				OptimizeForWindows98="1"
+				SetChecksum="true"
 				ImportLibrary=".\Release/coin3.lib"
 				TargetMachine="1"
 			/>
