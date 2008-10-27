@@ -849,8 +849,8 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@.dll" /opt:nowin98
+# ADD BASE LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /release /machine:I386 /pdbtype:sept
+# ADD LINK32 \@${LIBRARY}_DSP_LIBS\@ /nologo /dll /release /machine:I386 /pdbtype:sept /out:"${library}\@${LIBRARY}_MAJOR_VERSION\@.dll" /opt:nowin98
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "\$(CFG)" == "${library}\@${LIBRARY}_MAJOR_VERSION@ - Win32 DLL (Debug)"
