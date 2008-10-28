@@ -1448,6 +1448,7 @@ EXTRA_DIST = \
 	build/misc/build-docs.bat \
 	build/misc/config-wrapper.h \
 	build/misc/create-directories.bat \
+	build/misc/install-data.bat \
 	build/misc/install-headers.bat \
 	build/misc/install-sdk.bat \
 	build/misc/uninstall-headers.bat \
