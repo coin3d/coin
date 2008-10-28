@@ -125,7 +125,7 @@ echo Installing header files...
 call ..\misc\install-headers.bat %msvc%
 :doneinstallheaders
 
-if exist ..\misc\install-data.bat goto installdetaexists
+if exist ..\misc\install-data.bat goto installdataexists
 goto doneinstalldata
 :installdataexists
 echo Installing data files...
