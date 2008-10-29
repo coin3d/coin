@@ -24,6 +24,7 @@
 #include "base/dict.h"
 
 #include <cassert>
+#include <cstdlib>
 #include <cstdio>
 #include <cstring>
 
