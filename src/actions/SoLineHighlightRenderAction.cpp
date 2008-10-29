@@ -78,6 +78,11 @@
 #define PRIVATE(obj) ((obj)->pimpl)
 #define PUBLIC(obj) ((obj)->owner)
 
+extern "C" {
+static void alloc_colorpacker(void * data);
+static void free_colorpacker(void * data);
+}
+
 class SoLineHighlightRenderActionP {
 public:
   SoLineHighlightRenderActionP(void)
@@ -110,16 +115,17 @@ public:
 
   SoLineHighlightRenderAction * owner;
 
-private:
-  static void alloc_colorpacker(void * data) {
-    SoColorPacker ** cptr = static_cast<SoColorPacker ** >(data);
-    *cptr = new SoColorPacker;
-  }
-  static void free_colorpacker(void * data) {
-    SoColorPacker ** cptr = static_cast<SoColorPacker ** >(data);
-    delete *cptr;
-  }
 };
+
+void alloc_colorpacker(void * data) {
+  SoColorPacker ** cptr = static_cast<SoColorPacker ** >(data);
+  *cptr = new SoColorPacker;
+}
+
+void free_colorpacker(void * data) {
+  SoColorPacker ** cptr = static_cast<SoColorPacker ** >(data);
+  delete *cptr;
+}
 
 // *************************************************************************
 
