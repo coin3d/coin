@@ -31,14 +31,14 @@ typedef void SbStorageApplyFunc(void * tls, void * closure);
 class SbStorage {
 public:
   SbStorage(unsigned int size) { this->storage = cc_storage_construct(size); }
-  SbStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
+  SbStorage(unsigned int size, cc_storage_f * constr, cc_storage_f * destr)
     { this->storage = cc_storage_construct_etc(size, constr, destr); }
   ~SbStorage(void) { cc_storage_destruct(this->storage); }
 
   void * get(void) { return cc_storage_get(this->storage); }
   void applyToAll(SbStorageApplyFunc * func, void * closure) {
     cc_storage_apply_to_all(this->storage, 
-                            static_cast<cc_storage_apply_func *>(func), closure);
+                            reinterpret_cast<cc_storage_apply_func *>(func), closure);
   }
 
 private:
