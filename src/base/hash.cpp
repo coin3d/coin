@@ -42,20 +42,22 @@
 #include "base/hashp.h"
 #include "tidbitsp.h"
 
-#undef COIN_ALLOW_CC_HASH
+using std::memset;
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#undef COIN_ALLOW_CC_HASH
 
 /* ********************************************************************** */
 /* private functions */
+
+extern "C" {
 
 static cc_hash_key
 hash_default_hashfunc(const cc_hash_key key)
 {
   return key;
 }
+
+} // extern "C"
 
 static unsigned int
 hash_get_index(cc_hash * ht, cc_hash_key key)
@@ -333,7 +335,3 @@ cc_hash_print_stat(cc_hash * ht)
                          (float)ht->elements / used_buckets, max_chain_l);
 }
 
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */

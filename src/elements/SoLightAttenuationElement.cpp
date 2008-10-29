@@ -41,11 +41,15 @@
 // handle static constructors.
 static SbVec3f * defaultattenuation = NULL;
 
+extern "C" {
+
 static void
 SoLightAttenuationElement_cleanup_func(void)
 {
   delete defaultattenuation;
 }
+
+} // extern "C"
 
 /*!
   \fn SoLightAttenuationElement::lightAttenuation
@@ -66,7 +70,7 @@ SoLightAttenuationElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
   defaultattenuation = new SbVec3f;
   defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
-  coin_atexit(static_cast<coin_atexit_f *>(SoLightAttenuationElement_cleanup_func), CC_ATEXIT_NORMAL);
+  coin_atexit(SoLightAttenuationElement_cleanup_func, CC_ATEXIT_NORMAL);
 }
 
 /*!

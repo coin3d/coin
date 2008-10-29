@@ -90,7 +90,7 @@ SoEvent::initClass(void)
   assert(SoEvent::classTypeId == SoType::badType());
 
   SoEvent::classTypeId = SoType::createType(SoType::badType(), "SoEvent");
-  coin_atexit(static_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
 
   SoEvent::initEvents();
 }

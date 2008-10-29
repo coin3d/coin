@@ -44,6 +44,13 @@ class SbPList;
 
 // *************************************************************************
 
+extern "C" {
+typedef uintptr_t SbDictKeyType;
+typedef void SbDictApplyFunc(SbDictKeyType key, void * value);
+typedef void SbDictApplyDataFunc(SbDictKeyType key, void * value, void * data);
+typedef SbDictKeyType SbDictHashingFunc(const SbDictKeyType key);
+}
+
 class COIN_DLL_API SbDict {
 public:
   SbDict(const int entries = 251);
@@ -54,9 +61,8 @@ public:
 
   typedef uintptr_t Key;
 
-  void applyToAll(void (* rtn)(Key key, void * value)) const;
-  void applyToAll(void (* rtn)(Key key, void * value, void * data),
-                  void * data) const;
+  void applyToAll(SbDictApplyFunc * rtn) const;
+  void applyToAll(SbDictApplyDataFunc * rtn, void * data) const;
   void clear(void);
 
   SbBool enter(const Key key, void * const value);
@@ -64,11 +70,11 @@ public:
   void makePList(SbPList & keys, SbPList & values);
   SbBool remove(const Key key);
 
-  void setHashingFunction(Key (*func)(const Key key));
+  void setHashingFunction(SbDictHashingFunc * func);
 
 private:
   struct cc_hash * hashtable;
-  static void copyval(Key key, void * value, void * data);
+
 };
 
 // *************************************************************************

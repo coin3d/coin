@@ -57,11 +57,15 @@ struct cc_rbptree_node {
 static cc_rbptree_node rbptree_sentinel;
 static SbBool rbptree_isinitialized = FALSE;
 
+extern "C" {
+
 static void
 rbptree_atexit_cleanup(void)
 {
   rbptree_isinitialized = FALSE;
 }
+
+}  // extern "C"
 
 /* 
  * left-rotate the subgrap under node 'x'.

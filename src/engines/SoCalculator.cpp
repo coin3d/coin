@@ -495,8 +495,8 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   char outused[8]; /* oa-od and oA-oD */
 
   so_eval_cbdata cbdata;
-  cbdata.readfieldcb = static_cast<C_func_read>(SoCalculator::readfieldcb);
-  cbdata.writefieldcb = static_cast<C_func_write>(SoCalculator::writefieldcb);
+  cbdata.readfieldcb = reinterpret_cast<C_func_read>(SoCalculator::readfieldcb);
+  cbdata.writefieldcb = reinterpret_cast<C_func_write>(SoCalculator::writefieldcb);
   cbdata.userdata = this;
 
   for (i = 0; i < 16; i++) inused[i] = 0;

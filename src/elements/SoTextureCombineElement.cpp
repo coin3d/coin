@@ -41,8 +41,11 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/system/gl.h>
+
 #include <cassert>
 #include <cstring>
+
+using std::memcpy;
 
 #define MAX_UNITS 16 // FIXME: make dynamic?????
 

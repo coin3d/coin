@@ -79,6 +79,12 @@
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SbList.h>
 
+using std::strcmp;
+using std::strlen;
+using std::strcpy;
+using std::strchr;
+using std::memcpy;
+
 // *************************************************************************
 
 SoType SoDebugError::classTypeId STATIC_SOTYPE_INIT;
@@ -93,6 +99,8 @@ void * SoDebugError::callbackData = NULL;
 static int num_breakpoints = 0;
 static char ** breakpoints = NULL;
 
+extern "C" {
+
 static void
 debug_break_cleanup(void)
 {
@@ -103,6 +111,8 @@ debug_break_cleanup(void)
   breakpoints = NULL;
   num_breakpoints = 0;
 }
+
+} // extern "C"
 
 #endif // COIN_DEBUG
 
@@ -135,10 +145,7 @@ SoDebugError::initClass(void)
       ptr++;
     }
     breakpoints = new char*[num_breakpoints];
-    coin_atexit(
-		static_cast<coin_atexit_f *>(debug_break_cleanup),
-		CC_ATEXIT_MSG_SUBSYSTEM
-		);
+    coin_atexit(debug_break_cleanup, CC_ATEXIT_MSG_SUBSYSTEM);
     const size_t envstrlen = strlen(env);
     char * cpy = new char[envstrlen + 1];
     (void)strcpy(cpy, env);
@@ -208,10 +215,8 @@ SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
     // "converter" callback function that makes an SoDebugError out of
     // an cc_debugerror and forwards control to the callback function
     // given as an argument to setHandlerCallback().
-    cc_debugerror_set_handler_callback
-      (
-       static_cast<cc_debugerror_cb *>(SoDebugError::callbackForwarder), NULL
-       );
+    cc_debugerror_set_handler_callback(
+       reinterpret_cast<cc_debugerror_cb *>(SoDebugError::callbackForwarder), NULL);
   }
 
   SoDebugError::callback = function;

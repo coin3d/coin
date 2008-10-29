@@ -53,16 +53,23 @@
 
 // *************************************************************************
 
+#include <Inventor/SbName.h>
+
 #include <cctype>
 #include <cstring>
-
-#include <Inventor/SbName.h>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbString.h>
 
 #include "tidbitsp.h"
 #include "base/namemap.h"
+
+using std::strlen;
+using std::strchr;
+using std::strcmp;
+using std::isdigit;
+using std::isalnum;
+using std::isalpha;
 
 // *************************************************************************
 
@@ -330,14 +337,20 @@ SbName::operator const char * (void) const
 
 /* anonymous namespace for management of the empty SbName instance */
 namespace {
-  SbName * emptyname = NULL;
 
-  void SbName_atexit(void) {
-    if (emptyname != NULL) {
-      delete emptyname;
-      emptyname = NULL;
+  static SbName * emptyname = NULL;
+
+  extern "C" {
+
+    static void SbName_atexit(void) {
+      if (emptyname != NULL) {
+        delete emptyname;
+        emptyname = NULL;
+      }
     }
-  }
+
+  } // extern "C"
+
 }
 
 /*!

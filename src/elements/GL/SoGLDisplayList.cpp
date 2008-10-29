@@ -52,6 +52,8 @@
 #include "glue/glp.h"
 #include "misc/SoGL.h"
 
+using std::strcmp;
+
 class SoGLDisplayListP {
  public:
   SoGLDisplayList::Type type;

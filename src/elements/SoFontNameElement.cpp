@@ -60,7 +60,7 @@ SoFontNameElement::initClass(void)
 
   SoFontNameElement::defaultfontname = new SbName("defaultFont");
 
-  coin_atexit(static_cast<coin_atexit_f *>(SoFontNameElement::clean), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f *>(SoFontNameElement::clean), CC_ATEXIT_NORMAL);
 }
 
 void

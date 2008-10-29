@@ -54,12 +54,18 @@
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbMatrix.h>
 #include <coindefs.h> // COIN_STUB()
+
 #include <cassert>
 #include <cstring>
 #include <cfloat>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+using std::memmove;
+using std::memcmp;
+using std::memcpy;
 
 // FIXME: should merge all the PD code we're using from GGIV into
 // SbDPMatrix, SbDPRotation and SbVec3d proper (for two reasons: 1)

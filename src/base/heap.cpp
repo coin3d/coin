@@ -30,6 +30,10 @@
 #include "base/dict.h"
 #include "base/heapp.h"
 
+using std::realloc;
+using std::malloc;
+using std::free;
+
 /* ********************************************************************** */
 /* private functions */
 

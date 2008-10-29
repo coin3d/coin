@@ -81,7 +81,7 @@ SoCoordinateElement::initClass(void)
 
   SoCoordinateElement::initialdefaultcoords = new SbVec3f(0.0f, 0.0f, 0.0f);
 
-  coin_atexit(static_cast<coin_atexit_f *>(SoCoordinateElement::clean), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f *>(SoCoordinateElement::clean), CC_ATEXIT_NORMAL);
 }
 
 // Clean up internal resource usage.

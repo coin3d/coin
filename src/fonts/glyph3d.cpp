@@ -43,6 +43,9 @@
 #include "fonts/glyph.h"
 #include "fonts/defaultfonts.h"
 
+using std::malloc;
+using std::free;
+
 /* ********************************************************************** */
 
 static SbBool glyph3d_specmatch(const cc_font_specification * spec1, 

@@ -160,6 +160,7 @@ public:
 }; // SbTessellator::PImpl
 
 #define PRIVATE(obj) ((obj)->pimpl)
+
 int
 SbTesselator::PImpl::heap_compare(void * h0, void * h1)
 {
@@ -214,7 +215,7 @@ SbTesselator::SbTesselator(SbTesselatorCB * func, void * data)
   PRIVATE(this)->currVertex = 0;
 
   PRIVATE(this)->heap =
-    cc_heap_construct(256, static_cast<cc_heap_compare_cb *>(PImpl::heap_compare), TRUE);
+    cc_heap_construct(256, reinterpret_cast<cc_heap_compare_cb *>(PImpl::heap_compare), TRUE);
   PRIVATE(this)->epsilon = FLT_EPSILON;
 }
 
@@ -562,14 +563,14 @@ SbTesselator::PImpl::isTriangle(Vertex * v)
 SbBool
 SbTesselator::PImpl::clippable(Vertex * v)
 {
-  SbBox3f bbox;
-  bbox.makeEmpty();
-  bbox.extendBy(SbVec3f(v->v[X], v->v[Y], 0.0f));
-  bbox.extendBy(SbVec3f(v->next->v[X], v->next->v[Y], 0.0f));
-  bbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 0.0f));
+  SbBox3f boundingbox;
+  boundingbox.makeEmpty();
+  boundingbox.extendBy(SbVec3f(v->v[X], v->v[Y], 0.0f));
+  boundingbox.extendBy(SbVec3f(v->next->v[X], v->next->v[Y], 0.0f));
+  boundingbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 0.0f));
 
   SbSphere sphere;
-  sphere.circumscribe(bbox);
+  sphere.circumscribe(boundingbox);
 
   SbList <int> & l = this->clippablelist;
   l.truncate(0);

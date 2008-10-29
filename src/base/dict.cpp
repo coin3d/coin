@@ -34,18 +34,23 @@
 #include "tidbitsp.h"
 #include "base/dictp.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+using std::free;
+using std::malloc;
+using std::calloc;
+using std::memset;
 
 /* ********************************************************************** */
 /* private functions */
+
+extern "C" {
 
 static uintptr_t
 dict_default_hashfunc(const uintptr_t key)
 {
   return key;
 }
+
+} // extern "C"
 
 static unsigned int
 dict_get_index(cc_dict * ht, uintptr_t key)
@@ -319,7 +324,3 @@ cc_dict_print_stat(cc_dict * ht)
                          (float)ht->elements / used_buckets, max_chain_l);
 }
 
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */

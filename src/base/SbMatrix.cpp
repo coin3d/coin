@@ -112,12 +112,18 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
 #include <coindefs.h> // COIN_STUB()
+
 #include <cassert>
 #include <cstring>
 #include <cfloat>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+using std::memmove;
+using std::memcmp;
+using std::memcpy;
 
 class SbMatrixP {
 public:

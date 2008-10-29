@@ -69,6 +69,8 @@
 
 #include "engines/SoSubEngineP.h"
 
+using std::strstr;
+
 /*!
   \var SoMField * SoSelectOne::input
   The multivalue input field which we will select a single value from

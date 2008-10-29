@@ -106,7 +106,7 @@ void * _class_::createInstance(void) { return static_cast<void *>(new _class_); 
                                               _instantiate_); \
     if (_parent_::getClassStackIndex() < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
     else _class_::classStackIndex = _parent_::getClassStackIndex(); \
-    cc_coin_atexit_static_internal(static_cast<coin_atexit_f*>(_class_::cleanupClass)); \
+    cc_coin_atexit_static_internal(reinterpret_cast<coin_atexit_f*>(_class_::cleanupClass)); \
   } while (0)
 
 

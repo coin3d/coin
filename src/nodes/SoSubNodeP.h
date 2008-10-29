@@ -54,7 +54,7 @@
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
-    cc_coin_atexit_static_internal(static_cast<coin_atexit_f *>(_class_::atexit_cleanup)); \
+    cc_coin_atexit_static_internal(reinterpret_cast<coin_atexit_f *>(_class_::atexit_cleanup)); \
   } while (0)
 
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \

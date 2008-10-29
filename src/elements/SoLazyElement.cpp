@@ -79,6 +79,8 @@ static int32_t * lazy_defaultindex = NULL;
 static uint32_t * lazy_defaultpacked = NULL;
 static SbColor * lazy_unpacked = NULL;
 
+extern "C" {
+
 static void
 lazyelement_cleanup(void)
 {
@@ -89,6 +91,8 @@ lazyelement_cleanup(void)
   delete lazy_unpacked;
   lazy_defaultdiffuse = NULL; // Only need to NULL this; see initClass().
 }
+
+} // extern "C"
 
 // helper functions to handle default diffuse/transp values
 static uint32_t
@@ -132,7 +136,7 @@ SoLazyElement::initClass()
     *lazy_defaultindex = getDefaultColorIndex();
     *lazy_defaultpacked = getDefaultPacked();
 
-    coin_atexit(static_cast<coin_atexit_f*>(lazyelement_cleanup), CC_ATEXIT_NORMAL);
+    coin_atexit(lazyelement_cleanup, CC_ATEXIT_NORMAL);
   }
 }
 

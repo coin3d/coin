@@ -60,6 +60,9 @@
 
 #include "glue/simage_wrapper.h"
 
+using std::memcmp;
+using std::memcpy;
+
 class SbImageP {
 public:
   typedef struct {
@@ -142,11 +145,16 @@ public:
   void writeUnlock(void) { }
 #endif // ! COIN_THREADSAFE
 
-  static void cleanup_callbacks(void) {
-    delete SbImageP::readimagecallbacks;
-    SbImageP::readimagecallbacks = NULL;
-  }
 };
+
+extern "C" {
+
+static void SbImage_cleanup_callback(void) {
+  delete SbImageP::readimagecallbacks;
+  SbImageP::readimagecallbacks = NULL;
+}
+
+} // extern "C"
 
 SbList <SbImageP::ReadImageCBData> * SbImageP::readimagecallbacks = NULL;
 
@@ -648,7 +656,7 @@ SbImage::addReadImageCB(SbImageReadImageCB * cb, void * closure)
 {
   if (!SbImageP::readimagecallbacks) {
     SbImageP::readimagecallbacks = new SbList <SbImageP::ReadImageCBData>;
-    cc_coin_atexit(static_cast<coin_atexit_f*>(SbImageP::cleanup_callbacks));
+    cc_coin_atexit(static_cast<coin_atexit_f*>(SbImage_cleanup_callback));
   }
   SbImageP::ReadImageCBData data;
   data.cb = cb;

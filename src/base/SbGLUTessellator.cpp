@@ -43,11 +43,11 @@ SbGLUTessellator::available(void)
 
 // *************************************************************************
 
-SbGLUTessellator::SbGLUTessellator(void (* callback)(void *, void *, void *, void *),
+SbGLUTessellator::SbGLUTessellator(void (* cb)(void *, void *, void *, void *),
                                    void * userdata)
 {
   assert(callback && "tessellation without callback is meaningless");
-  this->callback = callback;
+  this->callback = cb;
   this->cbdata = userdata;
 
   // allocated later on demand, so there is no resource allocation

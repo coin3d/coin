@@ -78,6 +78,21 @@ SbDict::~SbDict()
   cc_hash_destruct(this->hashtable);
 }
 
+extern "C" {
+
+/*
+  Callback for copying values from one SbDict to another.
+*/
+static
+void
+copyval(SbDictKeyType key, void * value, void * data)
+{
+  SbDict * thisp = static_cast<SbDict *>(data);
+  thisp->enter(key, value);
+}
+
+} // extern "C"
+
 /*!
   Make a shallow copy of the contents of dictionary \a from into this
   dictionary.
@@ -93,17 +108,6 @@ SbDict::operator=(const SbDict & from)
   this->hashtable = cc_hash_construct(cc_hash_get_num_elements(from.hashtable), 0.75f);
   from.applyToAll(copyval, this);
   return *this;
-}
-
-/*!
-  \COININTERNAL
-  Callback for copying values from one SbDict to another.
-*/
-void
-SbDict::copyval(Key key, void * value, void * data)
-{
-  SbDict * thisp = static_cast<SbDict *>(data);
-  thisp->enter(key, value);
 }
 
 /*!
@@ -169,7 +173,7 @@ sbdict_dummy_apply(SbDict::Key key, void * value, void * closure)
   Applies \a rtn to all entries in the dictionary.
 */
 void
-SbDict::applyToAll(void (* rtn)(Key key, void * value)) const
+SbDict::applyToAll(SbDictApplyFunc * rtn) const
 {
   cc_hash_apply(this->hashtable, sbdict_dummy_apply, function_to_object_cast<void *>(rtn));
 }
@@ -178,8 +182,7 @@ SbDict::applyToAll(void (* rtn)(Key key, void * value)) const
   \overload
 */
 void
-SbDict::applyToAll(void (* rtn)(Key key, void * value, void * data),
-                   void * data) const
+SbDict::applyToAll(SbDictApplyDataFunc * rtn, void * data) const
 {
   cc_hash_apply(this->hashtable, static_cast<cc_hash_apply_func *>(rtn), data);
 }
@@ -189,6 +192,7 @@ typedef struct {
   SbPList * values;
 } sbdict_makeplist_data;
 
+extern "C" {
 
 static void
 sbdict_makeplist_cb(SbDict::Key key, void * value, void * closure)
@@ -197,6 +201,8 @@ sbdict_makeplist_cb(SbDict::Key key, void * value, void * closure)
   data->keys->append(reinterpret_cast<void *>(key));
   data->values->append(value);
 }
+
+} // extern "C"
 
 /*!
   Creates lists with all entries in the dictionary.
@@ -224,7 +230,7 @@ SbDict::makePList(SbPList & keys, SbPList & values)
   This function is not part of the OIV API.
 */
 void
-SbDict::setHashingFunction(Key (*func)(const Key key))
+SbDict::setHashingFunction(SbDictHashingFunc * func)
 {
   cc_hash_set_hash_func(this->hashtable, static_cast<cc_hash_func *>(func));
 }

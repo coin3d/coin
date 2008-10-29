@@ -40,6 +40,8 @@
 #include "fonts/glyph2d.h"
 #include "fonts/glyph.h"
 
+using std::malloc;
+
 static SbBool glyph2d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
 
 struct cc_glyph2d {

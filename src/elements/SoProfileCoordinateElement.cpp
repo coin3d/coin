@@ -74,7 +74,7 @@ SoProfileCoordinateElement::initClass(void)
 
   SoProfileCoordinateElement::initdefaultcoords = new SbVec2f(0.0f, 0.0f);
 
-  coin_atexit(static_cast<coin_atexit_f *>(SoProfileCoordinateElement::clean), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f *>(SoProfileCoordinateElement::clean), CC_ATEXIT_NORMAL);
 }
 
 void

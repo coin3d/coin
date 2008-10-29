@@ -30,6 +30,12 @@
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 
+using std::malloc;
+using std::free;
+using std::strcpy;
+using std::strlen;
+using std::strcmp;
+
 /* ************************************************************************* */
 
 /*
@@ -69,6 +75,8 @@ static struct NamemapMemChunk * headchunk = NULL;
 
 /* ************************************************************************* */
 
+extern "C" {
+
 /* Deallocates static process resources. */
 static void
 namemap_cleanup(void)
@@ -95,6 +103,8 @@ namemap_cleanup(void)
 
   CC_MUTEX_DESTRUCT(access_mutex);
 }
+
+} // extern "C"
 
 /* Initializes static data. */
 static void

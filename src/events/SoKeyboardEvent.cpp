@@ -81,6 +81,8 @@
 static SbHash<char, int> * converttoprintable = NULL;
 static SbHash<char, int> * converttoprintable_shift = NULL;
 
+extern "C" {
+
 static void
 sokeyboardevent_cleanup(void)
 {
@@ -90,13 +92,15 @@ sokeyboardevent_cleanup(void)
   converttoprintable_shift = NULL;
 }
 
+} // extern "C"
+
 static void
 build_convert_dicts(void)
 {
   int i;
   converttoprintable = new SbHash<char, int>();
   converttoprintable_shift = new SbHash<char, int>();
-  coin_atexit(static_cast<coin_atexit_f *>(sokeyboardevent_cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(sokeyboardevent_cleanup, CC_ATEXIT_NORMAL);
 
 #define ADD_KEY(x,y) d->put(SoKeyboardEvent::x, y)
 

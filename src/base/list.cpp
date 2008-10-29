@@ -29,6 +29,9 @@
 
 #define CC_LIST_DEFAULT_SIZE 4
 
+using std::malloc;
+using std::free;
+
 /* ********************************************************************** */
 
 /* FIXME: consider making this struct public to enable users to have

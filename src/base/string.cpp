@@ -25,6 +25,7 @@
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
+
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
@@ -34,6 +35,18 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
+
+using std::strlen;
+using std::strcpy;
+using std::strncpy;
+using std::strcat;
+using std::strcmp;
+using std::strncmp;
+using std::malloc;
+using std::free;
+using std::memmove;
+using std::atoi;
+using std::printf;
 
 /* ********************************************************************** */
 

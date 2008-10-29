@@ -1554,11 +1554,15 @@ sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_
   return SoCallbackAction::CONTINUE;
 }
 
+extern "C" {
+
 static void vv_data_cleanup(void) 
 {
   delete vvdata;
   vvdata = NULL;
 }
+
+} // extern "C"
 
 /*!
   Store data about the current camera in the given action.

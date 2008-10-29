@@ -22,16 +22,16 @@
 \**************************************************************************/
 
 #include <Inventor/C/base/memalloc.h>
+
 #include <cstdlib>
 #include <cstddef>
 #include <cassert>
 #include <cstdio>
 
-/* ********************************************************************** */
+using std::malloc;
+using std::free;
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+/* ********************************************************************** */
 
 /* internal struct used to store a linked list of free'ed items */
 struct cc_memalloc_free {
@@ -202,6 +202,8 @@ cc_memalloc_clear(cc_memalloc * allocator)
   allocator->memnode = NULL;
 }
 
+extern "C" {
+
 /* default strategy cb */
 static int
 default_strategy(const int numunits_allocated)
@@ -209,6 +211,8 @@ default_strategy(const int numunits_allocated)
   if (numunits_allocated < 64) return 64;
   return numunits_allocated;
 }
+
+} // extern "C"
 
 /*!
   Sets the allocator strategy callback. \cb should be a function that
@@ -227,6 +231,3 @@ cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
   else allocator->strategy = cb;
 }
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */

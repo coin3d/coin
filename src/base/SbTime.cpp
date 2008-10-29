@@ -32,6 +32,8 @@
 
 // *************************************************************************
 
+#include <Inventor/SbTime.h>
+
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
@@ -55,8 +57,6 @@
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
 
-#include <Inventor/SbTime.h>
-
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/tidbits.h>
@@ -69,6 +69,8 @@
 #ifndef SIM_TIMEVAL_TV_USEC_T
 #define SIM_TIMEVAL_TV_USEC_T time_t
 #endif // !SIM_TIMEVAL_TV_USEC_T
+
+using std::strlen;
 
 // *************************************************************************
 

@@ -516,7 +516,7 @@ SoElement::initClass(void)
   SoElement::classStackIndex = -1;
   SoElement::initElements();
 
-  coin_atexit(static_cast<coin_atexit_f *>(SoElement::cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f *>(SoElement::cleanup), CC_ATEXIT_NORMAL);
 }
 
 // atexit callback
