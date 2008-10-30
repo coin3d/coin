@@ -42,6 +42,10 @@
 #include "tidbitsp.h"
 #include "threads/threadsutilp.h"
 
+using std::malloc;
+using std::free;
+
+
 static const int RBPTREE_RED = 0;
 static const int RBPTREE_BLACK = 1;
 
