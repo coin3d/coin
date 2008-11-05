@@ -170,6 +170,9 @@ public:
   virtual SoNode * getCurPathTail(void);
   void setCurrentNode(SoNode * const node);
 
+  void setCallbackAll(SbBool callbackall);
+  SbBool isCallbackAll(void) const;
+
 protected:
   virtual void beginTraversal(SoNode * node);
 

@@ -292,6 +292,8 @@ public:
   SbList <SoCallbackData *> trianglecallback;
   SbList <SoCallbackData *> linecallback;
   SbList <SoCallbackData *> pointcallback;
+
+  SbBool callbackall;
 };
 
 #endif // !DOXYGEN_SKIP_THIS
@@ -387,6 +389,7 @@ SoCallbackAction::commonConstructor(void)
   PRIVATE(this)->pretailcallback = NULL;
   PRIVATE(this)->posttailcallback = NULL;
   PRIVATE(this)->viewportset = FALSE;
+  PRIVATE(this)->callbackall = FALSE;
 }
 
 /*!
@@ -1228,6 +1231,16 @@ SoCallbackAction::beginTraversal(SoNode * node)
     SoViewportRegionElement::set(this->getState(), PRIVATE(this)->viewport);
   }
   this->traverse(node);
+}
+
+void SoCallbackAction::setCallbackAll(SbBool callbackall)
+{
+  PRIVATE(this)->callbackall = callbackall;
+}
+
+SbBool SoCallbackAction::isCallbackAll(void) const
+{
+  return PRIVATE(this)->callbackall;
 }
 
 #undef PRIVATE
