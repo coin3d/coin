@@ -11,7 +11,7 @@ fi
 
 # **************************************************************************
 
-token=`echo $srcdirpath | tr -d '/\\' | sed -e 's/^\.*//g'`
+token=`echo $srcdirpath | sed -e 's/[\/\\]*//g' | sed -e 's/^\.*//g'`
 
 case $token in
 *.cpp)
