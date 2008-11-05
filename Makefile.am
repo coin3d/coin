@@ -460,7 +460,7 @@ svn-update:
 	@cd $(top_srcdir) && svn update
 
 testsuite-run:
-	@cd testsuite && $(MAKE)
+	@$(MAKE) -C testsuite
 
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
