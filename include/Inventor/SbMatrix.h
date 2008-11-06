@@ -50,6 +50,7 @@ public:
   operator float*(void);
   SbMatrix & operator =(const SbMatrix & m);
   void setValue(const SbMat & m);
+  void setValue(const class SbDPMatrix & m);
   const SbMat & getValue(void) const;
 
   void makeIdentity(void);

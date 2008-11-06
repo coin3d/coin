@@ -275,6 +275,20 @@ SbMatrix::setValue(const SbMat & m)
 }
 
 /*!
+  Copies the elements from \a m into the matrix.
+*/
+void
+SbMatrix::setValue(const SbDPMatrix & m)
+{
+  const SbDPMat & dmat = m.getValue();
+  const SbMat smat = { { dmat[0][0], dmat[0][1], dmat[0][2], dmat[0][3] },
+		       { dmat[1][0], dmat[1][1], dmat[1][2], dmat[1][3] },
+		       { dmat[2][0], dmat[2][1], dmat[2][2], dmat[2][3] },
+		       { dmat[3][0], dmat[3][1], dmat[3][2], dmat[3][3] } };
+  this->setValue(smat);
+}
+
+/*!
   Assignment operator. Copies the elements from \a m to the matrix.
  */
 SbMatrix &
