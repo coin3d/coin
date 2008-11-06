@@ -109,6 +109,7 @@
 
 
 #include <Inventor/SbMatrix.h>
+#include <Inventor/SbDPMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
 #include <coindefs.h> // COIN_STUB()
