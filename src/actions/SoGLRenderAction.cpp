@@ -696,7 +696,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->passcallbackdata = NULL;
   PRIVATE(this)->smoothing = FALSE;
   PRIVATE(this)->numpasses = 1;
-  PRIVATE(this)->transparencytype = SoGLRenderAction::SCREEN_DOOR;
+  PRIVATE(this)->transparencytype = SoGLRenderAction::BLEND;
   PRIVATE(this)->delayedpathrender = FALSE;
   PRIVATE(this)->transparencyrender = FALSE;
   PRIVATE(this)->isrendering = FALSE;

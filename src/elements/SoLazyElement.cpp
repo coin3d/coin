@@ -169,7 +169,7 @@ SoLazyElement::init(SoState * COIN_UNUSED(state))
   this->coinstate.transparray = lazy_defaulttransp;
   this->coinstate.colorindexarray = lazy_defaultindex;
   this->coinstate.istransparent = FALSE;
-  this->coinstate.transptype = static_cast<int32_t>(SoGLRenderAction::SCREEN_DOOR);
+  this->coinstate.transptype = static_cast<int32_t>(SoGLRenderAction::BLEND);
   this->coinstate.diffusenodeid = 0;
   this->coinstate.transpnodeid = 0;
   this->coinstate.stipplenum = 0;
