@@ -45,6 +45,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 
 #include "nodes/SoSubNodeP.h"
