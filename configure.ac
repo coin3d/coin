@@ -14,7 +14,7 @@
 
 # release version number info
 m4_define([COIN_MAJOR], [3])
-m4_define([COIN_MINOR], [1)
+m4_define([COIN_MINOR], [1])
 m4_define([COIN_MICRO], [0])
 m4_define([COIN_BETA], [a])
 
