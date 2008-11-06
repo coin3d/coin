@@ -252,7 +252,9 @@ SoSwitch::doAction(SoAction * action)
   const int * indices;
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
 
-  if (idx == SO_SWITCH_ALL) {
+  if (idx == SO_SWITCH_ALL ||
+      (action->isOfType(SoCallbackAction::getClassTypeId()) &&
+       ((SoCallbackAction *)action)->isCallbackAll())) {
     if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
       SoGroup::getBoundingBox((SoGetBoundingBoxAction*) action);
     }

@@ -24,6 +24,7 @@ TEST_SUITE_OBJECTS = \
 	TestSuiteUtils.$(OBJEXT) \
 	TestSuiteMisc.$(OBJEXT) \
 	StandardTests.$(OBJEXT) \
+	actionsSoCallbackAction.$(OBJEXT) \
 	actionsSoWriteAction.$(OBJEXT) \
 	baseSbString.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
@@ -136,6 +137,7 @@ TEST_SUITE_OBJECTS = \
 	$(EMPTY)
 
 TEST_SUITE_BUILT_FILES = \
+	actionsSoCallbackAction.cpp \
 	actionsSoWriteAction.cpp \
 	baseSbString.cpp \
 	fieldsSoMFBitMask.cpp \
@@ -284,6 +286,12 @@ TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h
 
 StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h
 	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
+
+actionsSoCallbackAction.cpp: $(top_srcdir)/src/actions/SoCallbackAction.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/actions/SoCallbackAction.cpp
+
+actionsSoCallbackAction.$(OBJEXT): actionsSoCallbackAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c actionsSoCallbackAction.cpp
 
 actionsSoWriteAction.cpp: $(top_srcdir)/src/actions/SoWriteAction.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/actions/SoWriteAction.cpp

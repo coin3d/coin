@@ -1244,3 +1244,40 @@ SbBool SoCallbackAction::isCallbackAll(void) const
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoCube.h>
+
+static SoCallbackAction::Response
+preCB(void * userdata, SoCallbackAction *, const SoNode * node)
+{
+  SbString *str = (SbString *)userdata;
+  (*str) += node->getName();
+}
+
+BOOST_AUTO_TEST_CASE(callbackall)
+{
+  SbString str;
+  SoSwitch * sw = new SoSwitch;
+  sw->setName("switch");
+  SoCube * cube = new SoCube;
+  cube->setName("cube"); 
+  sw->addChild(cube);
+  sw->ref();
+
+  SoCallbackAction cba;
+  cba.addPreCallback(SoNode::getClassTypeId(), preCB, &str);
+  cba.apply(sw);
+  BOOST_CHECK_MESSAGE(str == "switch", "Should not traverse under switch node");
+
+  str = "";
+  cba.setCallbackAll(true);
+  cba.apply(sw);
+  BOOST_CHECK_MESSAGE(str == "switchcube", "Should traverse under switch node");
+
+  sw->unref();
+}
+
+#endif // COIN_TEST_SUITE

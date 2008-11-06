@@ -48,6 +48,7 @@ public:
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void search(SoSearchAction * action);
+  virtual void callback(SoCallbackAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
 

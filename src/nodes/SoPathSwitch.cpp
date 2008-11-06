@@ -220,6 +220,14 @@ SoPathSwitch::search(SoSearchAction * action)
 
 // doc in parent
 void
+SoPathSwitch::callback(SoCallbackAction *action)
+{
+  if (action->isCallbackAll()) inherited::doAction(action);
+  else SoPathSwitch::doAction(action);
+}
+
+// doc in parent
+void
 SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
