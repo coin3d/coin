@@ -22,6 +22,7 @@ Camera navigation SCXML state machine for Coin 3.0.
 
     <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle"/>
 
+    <transition event="sim.coin3d.coin.navigation.Seek" target="seek_wait"/>
 
     <state id="interact" task="true"> <!-- ** INTERACT MODE **************** -->
       <!-- A "dead state".
