@@ -72,6 +72,7 @@
 
   Example scene graph:
   \code
+  #Inventor V2.1 ascii
 
   # to get some lighting when headlight is turned off in the viewer
   DirectionalLight { direction 0 0 -1 intensity 0.2 }
