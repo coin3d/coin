@@ -658,15 +658,33 @@ SoBase::getName(void) const
 void
 SoBase::setName(const SbName & newname)
 {
+
+  // This may look peculiar, but it is useful in combination with the
+  // COIN_DEBUG_TRACK_SOBASE_INSTANCES envvar to track down where
+  // un-deallocated SoBase-instances were allocated from. (Ie run it
+  // in a debugger and check the backtrace.)  -mortene.
+#if 0 // debug
+  static SbBool checked = FALSE;
+  static const char * tracename = NULL;
+  if (!checked) {
+    tracename = coin_getenv("COIN_DEBUG_ASSERT_SOBASE_SETNAME");
+    checked = TRUE;
+  }
+  if (tracename) { assert(newname != tracename); }
+#endif // debug
+
+
   // remove old name first
   SbName oldName = this->getName();
   if (oldName != SbName::empty()) SoBase::removeName(this, oldName.getString());
 
+  // semantics in the original SGI Inventor is to not build a separate
+  // name list for unnamed SoBase instances
+  if (newname == SbName::empty()) { return; }
+
   // check for bad characters
   const char * str = newname.getString();
-  SbBool isbad = FALSE;
-
-  isbad = (newname != SbName::empty()) && !SbName::isBaseNameStartChar(str[0]);
+  SbBool isbad = !SbName::isBaseNameStartChar(str[0]);
 
   int i;
   const int newnamelen = newname.getLength();
@@ -703,6 +721,8 @@ SoBase::setName(const SbName & newname)
 void
 SoBase::addName(SoBase * const b, const char * const name)
 {
+  assert(name);
+
   SbPList * l;
   CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
   if (!SoBase::PImpl::name2obj->get(name, l)) {
