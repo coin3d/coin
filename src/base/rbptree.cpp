@@ -45,7 +45,6 @@
 using std::malloc;
 using std::free;
 
-
 static const int RBPTREE_RED = 0;
 static const int RBPTREE_BLACK = 1;
 
@@ -613,3 +612,39 @@ cc_rbptree_debug(const cc_rbptree * t)
 
 }
 
+#ifdef COIN_TEST_SUITE
+
+#include <math.h>
+#include <Inventor/lists/SbList.h>
+
+#define FILL_TIMES (50)
+#define FILL_COUNT (10000)
+
+BOOST_AUTO_TEST_CASE(rbptree_stress)
+{
+  srand(123);
+  cc_rbptree tree;
+  cc_rbptree_init(&tree);
+
+  int i, c;
+  for (int c = 0; c < FILL_TIMES; ++c) {
+    SbList<void *> values;
+    for (i = 0; i < FILL_COUNT; ++i) {
+      void * entry = reinterpret_cast<void *>(rand());
+      cc_rbptree_insert(&tree, entry, NULL);
+      values.append(entry);
+    }
+    BOOST_ASSERT(cc_rbptree_size(&tree) == FILL_COUNT);
+  
+    if ((c & 1) == 0) {
+      for (i = (FILL_COUNT - 1); i >= 0; --i) cc_rbptree_remove(&tree, values[i]);
+    } else {
+      for (i = 0; i < FILL_COUNT; ++i) cc_rbptree_remove(&tree, values[i]);
+    }
+    BOOST_ASSERT(cc_rbptree_size(&tree) == 0);
+  }
+
+  cc_rbptree_clean(&tree);
+}
+
+#endif // COIN_TEST_SUITE
