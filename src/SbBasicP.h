@@ -106,8 +106,9 @@ coin_internal_assert_cast(From * ptr) {
   //not here. Allthough it will be prudent to disable this assert in
   //any release before we have tested the calling code well enough. -
   //BFG 20080916
-  COMPILE_ONLY_BEFORE(3,1,0);
+#ifdef COIN_BETA_VERSION // COIN_BETA_VERSION is not defined in release versions
   assert(retVal && "ptr was not of correct type");
+#endif // COIN_BETA_VERSION
   return retVal;
 }
 
