@@ -54,7 +54,7 @@ public:
 
   static SbBool get(SoState * state, const int unit);
 
-  virtual void setElt(const int unit, const SbBool enabled);
+  virtual void setElt(const int unit, const int mode);
 
   virtual void push(SoState * state);
   virtual SbBool matches(const SoElement * elem) const;

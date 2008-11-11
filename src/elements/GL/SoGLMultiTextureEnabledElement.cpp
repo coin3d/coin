@@ -101,7 +101,7 @@ SoGLMultiTextureEnabledElement::pop(SoState * state,
 }
 
 void
-SoGLMultiTextureEnabledElement::setElt(const int unit, const SbBool value)
+SoGLMultiTextureEnabledElement::setElt(const int unit, const int value)
 {
   Mode oldmode = this->getMode(unit);
   Mode newmode = (Mode) value;

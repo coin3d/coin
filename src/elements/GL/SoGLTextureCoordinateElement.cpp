@@ -50,7 +50,7 @@
 
 // *************************************************************************
 
-class SoGLTextureCoordinateElementP {
+class SoGLTextureCoordinateElement::PImpl {
 public:
   // switch/case table for faster rendering.
   enum SendLookup {
@@ -68,12 +68,7 @@ public:
   int multimax;
 };
 
-// FIXME: before Coin 3.0, replace texgenData with a pimpl member.
-// This is temporary code for Coin-2, but is also in Coin developement
-// to make it easier to sync the files while developing.
-// pederb, 2003-10-27
-COMPILE_ONLY_BEFORE_NOFUNCTION(3,1,0);
-#define PRIVATE(obj) ((SoGLTextureCoordinateElementP*)(obj->texgenData))
+#define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
 
@@ -83,7 +78,7 @@ SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLTextureCoordinateElement);
 
 SoGLTextureCoordinateElement::SoGLTextureCoordinateElement(void)
 {
-  this->texgenData = (void*) new SoGLTextureCoordinateElementP;
+  PRIVATE(this) = new SoGLTextureCoordinateElement::PImpl;
 
   this->setTypeId(SoGLTextureCoordinateElement::classTypeId);
   this->setStackIndex(SoGLTextureCoordinateElement::classStackIndex);
@@ -118,7 +113,7 @@ SoGLTextureCoordinateElement::init(SoState * state)
   this->texgenCB = NULL;
   PRIVATE(this)->texgenData = NULL;
   PRIVATE(this)->multielem = NULL;
-  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
+  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::NONE;
 }
 
 // *************************************************************************
@@ -132,7 +127,7 @@ SoGLTextureCoordinateElement::push(SoState * state)
   this->texgenCB = prev->texgenCB;
   PRIVATE(this)->texgenData = PRIVATE(prev)->texgenData;
   PRIVATE(this)->multielem = NULL;
-  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
+  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::NONE;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -207,20 +202,20 @@ void
 SoGLTextureCoordinateElement::send(const int index) const
 {
   switch (PRIVATE(this)->sendlookup) {
-  case SoGLTextureCoordinateElementP::NONE:
+  case SoGLTextureCoordinateElement::PImpl::NONE:
     break;
-  case SoGLTextureCoordinateElementP::FUNCTION:
+  case SoGLTextureCoordinateElement::PImpl::FUNCTION:
     assert(0 && "should not happen");
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD2:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD2:
     assert(index < this->numCoords);
     glTexCoord2fv(coords2[index].getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD3:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD3:
     assert(index < this->numCoords);
     glTexCoord3fv(coords3[index].getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD4:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD4:
     assert(index < this->numCoords);
     glTexCoord4fv(coords4[index].getValue());
     break;
@@ -251,9 +246,9 @@ SoGLTextureCoordinateElement::send(const int index,
 {
   // Check for out-of-array-bounds errors.
   switch (PRIVATE(this)->sendlookup) {
-  case SoGLTextureCoordinateElementP::TEXCOORD2:
-  case SoGLTextureCoordinateElementP::TEXCOORD3:
-  case SoGLTextureCoordinateElementP::TEXCOORD4:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD2:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD3:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD4:
     assert((index >= 0) && "negative array index, something is seriously wrong");
     if (index >= this->numCoords) {
       static SbBool first = TRUE;
@@ -274,19 +269,19 @@ SoGLTextureCoordinateElement::send(const int index,
   }
 
   switch (PRIVATE(this)->sendlookup) {
-  case SoGLTextureCoordinateElementP::NONE:
+  case SoGLTextureCoordinateElement::PImpl::NONE:
     break;
-  case SoGLTextureCoordinateElementP::FUNCTION:
+  case SoGLTextureCoordinateElement::PImpl::FUNCTION:
     assert(this->funcCB);
     glTexCoord4fv(this->funcCB(this->funcCBData, c, n).getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD2:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD2:
     glTexCoord2fv(coords2[index].getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD3:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD3:
     glTexCoord3fv(coords3[index].getValue());
     break;
-  case SoGLTextureCoordinateElementP::TEXCOORD4:
+  case SoGLTextureCoordinateElement::PImpl::TEXCOORD4:
     glTexCoord4fv(coords4[index].getValue());
     break;
   default:
@@ -313,7 +308,7 @@ SoGLTextureCoordinateElement::send(const int index,
 void
 SoGLTextureCoordinateElement::initMulti(SoState * state) const
 {
-  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
+  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::NONE;
   // init the sendloopup variable
   if (SoTextureEnabledElement::get(state) ||
       SoTexture3EnabledElement::get(state)) {
@@ -322,7 +317,7 @@ SoGLTextureCoordinateElement::initMulti(SoState * state) const
       assert(0 && "should not happen");
       break;
     case SoTextureCoordinateElement::FUNCTION:
-      PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::FUNCTION;
+      PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::FUNCTION;
       break;
     case SoTextureCoordinateElement::NONE:
       break;
@@ -330,13 +325,13 @@ SoGLTextureCoordinateElement::initMulti(SoState * state) const
       {
         switch (this->coordsDimension) {
         case 2:
-          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::TEXCOORD2;
+          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::TEXCOORD2;
           break;
         case 3:
-          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::TEXCOORD3;
+          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::TEXCOORD3;
           break;
         case 4:
-          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::TEXCOORD4;
+          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElement::PImpl::TEXCOORD4;
           break;
         default:
           assert(0 && "should not happen");

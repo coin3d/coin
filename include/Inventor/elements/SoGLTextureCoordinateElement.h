@@ -28,7 +28,6 @@
 
 typedef void SoTexCoordTexgenCB(void * data);
 
-
 class COIN_DLL_API SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
   typedef SoTextureCoordinateElement inherited;
 
@@ -66,7 +65,9 @@ protected:
 
 private:
   SoTexCoordTexgenCB *texgenCB;
-  void *texgenData;
+
+  class PImpl;
+  PImpl * pimpl;
 
   void doCallback() const;
 };

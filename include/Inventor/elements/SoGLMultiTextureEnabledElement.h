@@ -43,12 +43,12 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
-  virtual void setElt(const int unit, const SbBool onoff);
+  virtual void setElt(const int unit, const int mode);
 
 private:
   void updategl(const int unit);
   void updategl(const int unit, const Mode oldvalue, const Mode newvalue);
-  
+
   uint32_t cachecontext;
 };
 

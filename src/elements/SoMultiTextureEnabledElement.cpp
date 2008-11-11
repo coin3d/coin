@@ -125,7 +125,7 @@ SoMultiTextureEnabledElement::get(SoState * state, const int unit)
   virtual element set function.
 */
 void
-SoMultiTextureEnabledElement::setElt(const int unit, const SbBool enabled)
+SoMultiTextureEnabledElement::setElt(const int unit, const int enabled)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
 
@@ -255,10 +255,7 @@ SoMultiTextureEnabledElement::enableRectangle(SoState * state,
     (
      state->getElement(classStackIndex)
      );
-  // FIXME: in Coin-3, make sure the setElt() method is changed to
-  // setElt(const int32_t mode). pederb, 2005-01-31
-  COMPILE_ONLY_BEFORE(3,1,0);
-  elem->setElt(unit, static_cast<SbBool>(RECTANGLE));
+  elem->setElt(unit, static_cast<int>(RECTANGLE));
 }
 
 /*!
@@ -276,10 +273,7 @@ SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
      state->getElement(classStackIndex)
      );
 
-  // FIXME: in Coin-3, make sure the setElt() method is changed to
-  // setElt(const int32_t mode). pederb, 2005-01-31
-  COMPILE_ONLY_BEFORE(3,1,0);
-  elem->setElt(unit, static_cast<SbBool>(CUBEMAP));
+  elem->setElt(unit, static_cast<int>(CUBEMAP));
 }
 
 /*!
