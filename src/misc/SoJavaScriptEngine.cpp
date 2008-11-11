@@ -105,7 +105,7 @@ static void printJSException(JSContext *cx)
   jsval val, stack;
   JSObject * obj;
   char * cstr;
-  int len;
+  size_t len;
   JSString *s;
 
   if (!spidermonkey()->JS_GetPendingException(cx, &val)) return;
@@ -140,8 +140,10 @@ static void printJSException(JSContext *cx)
      Note: string might contain \0 => we don't use fputs
   */
   // FIXME: this looks ugly. 20050719 erikgors.
-  fwrite(cstr, 1, spidermonkey()->JS_GetStringLength(s), stderr);
-  fprintf(stderr, "\n");
+  // FIXME: indeed it does. we shouldn't use stderr directly anywhere, for starters.  -mortene.
+  const size_t wrote = fwrite(cstr, 1, len, stderr);
+  assert(wrote == len);
+  (void)fprintf(stderr, "\n");
   ok = spidermonkey()->JS_RemoveRoot(cx, &s);
   assert(ok && "JS_RemoveRoot failed");
 }

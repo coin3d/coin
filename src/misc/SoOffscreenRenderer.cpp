@@ -968,11 +968,13 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
   (void)write_short(fp, (unsigned short) h);
   (void)write_short(fp, (unsigned short) nrcomponents);
 
-  unsigned char buf[500];
-  (void)memset(buf, 0, 500);
+  const size_t BUFSIZE = 500;
+  unsigned char buf[BUFSIZE];
+  (void)memset(buf, 0, BUFSIZE);
   buf[7] = 255; // set maximum pixel value to 255
   strcpy((char *)buf+8, "http://www.coin3d.org");
-  fwrite(buf, 1, 500, fp);
+  const size_t wrote = fwrite(buf, 1, BUFSIZE, fp);
+  assert(wrote == BUFSIZE);
 
   unsigned char * tmpbuf = new unsigned char[w];
 

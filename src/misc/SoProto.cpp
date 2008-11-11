@@ -148,7 +148,7 @@ soproto_fetchextern_default_cb(SoInput * in,
     // protection of SoInput::popFile().
     if (in->getCurFileName() == filename) {
       char dummy;
-      while (!in->eof() && in->get(dummy));
+      while (!in->eof() && in->get(dummy)) { }
 
       assert(in->eof());
 

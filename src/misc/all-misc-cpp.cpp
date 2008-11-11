@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 //Needs to be available before the first include of SbHash.h
+// FIXME: wtf? no way this is the correct fix.  -mortene.
 inline unsigned int SbHashFunc(const void * key);
 
 #include "AudioTools.cpp"
