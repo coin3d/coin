@@ -1051,14 +1051,12 @@ SoGLImage::setData(const SbImage *image,
     SbVec3s size;
     int nc;
     const unsigned char * bytes = image->getValue(size, nc);
-    if (copyok) {
-      if (bytes && size != PRIVATE(this)->glsize || nc != PRIVATE(this)->glcomp) copyok = FALSE;
-    }
+    copyok = copyok && bytes && (size == PRIVATE(this)->glsize) && (nc == PRIVATE(this)->glcomp);
 
     SbBool is3D = (size[2]==0)?FALSE:TRUE;
     SbBool usesubimage = COIN_TEX2_USE_GLTEXSUBIMAGE &&
-      (is3D && SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) ||
-      (!is3D && SoGLDriverDatabase::isSupported(glw, SO_GL_TEXSUBIMAGE));
+      ((is3D && SoGLDriverDatabase::isSupported(glw, SO_GL_3D_TEXTURES)) ||
+       (!is3D && SoGLDriverDatabase::isSupported(glw, SO_GL_TEXSUBIMAGE)));
 
     if (!usesubimage) copyok=FALSE;
     if (PRIVATE(this)->flags & RECTANGLE) copyok = FALSE;
