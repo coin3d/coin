@@ -337,19 +337,18 @@ SoBase::destroy(void)
 void
 SoBase::initClass(void)
 {
-  coin_atexit((coin_atexit_f *)SoBase::cleanClass, CC_ATEXIT_SOBASE);
-
   // check_for_leaks() goes through the allocation list, and checks if
   // all allocated SoBase-derived instances was deallocated before the
   // atexit-routines were run.
   //
-  // Set up to run before other atexit-code, with NORMAL+1 priority,
-  // since we depend on misc parts of Coin still up and running (and
-  // no other code should depend on the allocation list, so this
-  // should be safe).
+  // Set up to run after most other atexit-code, since we depend on
+  // Coin cleaning up internal nodes etc (like the static
+  // sub-scenegraphs in draggers).
   //
   // -mortene.
   coin_atexit((coin_atexit_f *)SoBase::PImpl::check_for_leaks, CC_ATEXIT_TRACK_SOBASE_INSTANCES);
+
+  coin_atexit((coin_atexit_f *)SoBase::cleanClass, CC_ATEXIT_SOBASE);
 
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());
