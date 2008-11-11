@@ -90,6 +90,12 @@
   \endcode
 */
 
+// *************************************************************************
+
+#include <cstdio>
+#include <climits>
+#include <cassert>
+#include <cfloat>
 
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SbHeap.h>
@@ -98,10 +104,8 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <cstdio>
-#include <climits>
-#include <cassert>
-#include <cfloat>
+
+// *************************************************************************
 
 class SbTesselator::PImpl {
 public:
@@ -115,7 +119,7 @@ public:
     int dirtyweight;
 
     Vertex * prev, * next;
-  }; // Vertex
+  };
 
   PImpl(void) : bsptree(256) { }
   cc_heap * heap;
@@ -157,9 +161,14 @@ public:
   static float heap_evaluate(void * v);
   static int heap_compare(void * v0, void * v1);
 
-}; // SbTessellator::PImpl
+  static bool point_on_edge(float x, float y,
+                            const float * v0, const float * v1,
+                            int X, int Y, float eps);
+};
 
 #define PRIVATE(obj) ((obj)->pimpl)
+
+// *************************************************************************
 
 int
 SbTesselator::PImpl::heap_compare(void * h0, void * h1)
@@ -197,9 +206,7 @@ SbTesselator::PImpl::heap_evaluate(void * v)
   return vertex->weight;
 }
 
-
-//projection enums
-enum { OXY, OXZ, OYZ };
+// *************************************************************************
 
 /*!
   Initializes a tessellator. The \a callback argument specifies a
@@ -230,6 +237,8 @@ SbTesselator::~SbTesselator()
 
   cc_heap_destruct(PRIVATE(this)->heap);
 }
+
+// *************************************************************************
 
 /*!
   Initializes new polygon.
@@ -293,8 +302,11 @@ SbTesselator::addVertex(const SbVec3f &v,void *data)
   before returning.
 */
 void
-SbTesselator::endPolygon()
+SbTesselator::endPolygon(void)
 {
+  // projection enums
+  enum { OXY, OXZ, OYZ };
+
   // check for special case when last point equals the first point
   if (!PRIVATE(this)->keepVertices && PRIVATE(this)->numVerts >= 3) {
     PImpl::Vertex * first = PRIVATE(this)->headV;
@@ -429,6 +441,8 @@ SbTesselator::endPolygon()
   }
 }
 
+// *************************************************************************
+
 /*!
   Sets the callback function for this tessellator.
 */
@@ -439,28 +453,29 @@ SbTesselator::setCallback(SbTesselatorCB * func, void *data)
   PRIVATE(this)->callbackData = data;
 }
 
+// *************************************************************************
 
-static SbBool
-point_on_edge(const float x, const float y,
-              const float * const v0, const float * const v1,
-              const int X, const int Y, const float eps)
+bool
+SbTesselator::PImpl::point_on_edge(float x, float y,
+                                   const float * v0, const float * v1,
+                                   int X, int Y, float eps)
 {
-  if (x < v0[X] && x < v1[X]) return FALSE;
-  if (x > v0[X] && x > v1[X]) return FALSE;
-  if (y < v0[Y] && y < v1[Y]) return FALSE;
-  if (y > v0[Y] && y > v1[Y]) return FALSE;
+  if (x < v0[X] && x < v1[X]) return false;
+  if (x > v0[X] && x > v1[X]) return false;
+  if (y < v0[Y] && y < v1[Y]) return false;
+  if (y > v0[Y] && y > v1[Y]) return false;
 
   if (v0[X] == v1[X]) {
-    if (fabs(x-v0[X]) <= eps) return TRUE;
-    return FALSE;
+    if (fabs(x-v0[X]) <= eps) return true;
+    return false;
   }
 
   float ny = v0[Y] + (x-v0[X])*(v1[Y]-v0[Y])/(v1[X]-v0[X]);
 
   if (fabs(y-ny) <= eps) {
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 //
@@ -753,5 +768,6 @@ SbTesselator::PImpl::cleanUp()
   this->numVerts = 0;
 }
 
-#undef PRIVATE
+// *************************************************************************
 
+#undef PRIVATE
