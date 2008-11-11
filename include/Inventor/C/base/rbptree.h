@@ -55,7 +55,7 @@ uint32_t cc_rbptree_size(const cc_rbptree * t);
 typedef void cc_rbptree_traversecb(void * p, void * data, void * closure);
 void cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure);
 
-/* onl;y for debugging */
+/* only for debugging */
 void cc_rbptree_debug(const cc_rbptree * t);
 
 #ifdef __cplusplus
