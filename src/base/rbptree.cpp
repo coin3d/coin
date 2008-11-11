@@ -644,6 +644,25 @@ BOOST_AUTO_TEST_CASE(rbptree_stress)
     BOOST_ASSERT(cc_rbptree_size(&tree) == 0);
   }
 
+  for (int c = 0; c < FILL_TIMES; ++c) {
+    SbList<void *> values;
+    for (i = 0; i < FILL_COUNT; ++i) {
+      void * entry = reinterpret_cast<void *>(((c & 2) == 0) ? i : (FILL_COUNT - i));
+      cc_rbptree_insert(&tree, entry, NULL);
+      values.append(entry);
+    }
+    BOOST_ASSERT(cc_rbptree_size(&tree) == FILL_COUNT);
+  
+    if ((c & 1) == 0) {
+      for (i = (FILL_COUNT - 1); i >= 0; --i) cc_rbptree_remove(&tree, values[i]);
+    } else {
+      for (i = 0; i < FILL_COUNT; ++i) cc_rbptree_remove(&tree, values[i]);
+    }
+    BOOST_ASSERT(cc_rbptree_size(&tree) == 0);
+
+  }
+
+
   cc_rbptree_clean(&tree);
 }
 
