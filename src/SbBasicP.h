@@ -96,6 +96,8 @@ To coin_safe_cast(SoEvent * ptr) { return coin_internal_safe_cast2<To>(ptr); }
 template<typename To>
 To coin_safe_cast(const SoEvent * ptr) { return coin_internal_safe_cast2<To>(ptr); }
 
+#include "coindefs.h"
+
 template<typename To,typename From>
 To
 coin_internal_assert_cast(From * ptr) {
@@ -104,6 +106,7 @@ coin_internal_assert_cast(From * ptr) {
   //not here. Allthough it will be prudent to disable this assert in
   //any release before we have tested the calling code well enough. -
   //BFG 20080916
+  COMPILE_ONLY_BEFORE(3,1,0);
   assert(retVal && "ptr was not of correct type");
   return retVal;
 }
