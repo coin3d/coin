@@ -21,23 +21,23 @@
  *
 \**************************************************************************/
 
-//Needs to be available before the first include of SbHash.h
-// FIXME: wtf? no way this is the correct fix.  -mortene.
-inline unsigned int SbHashFunc(const void * key);
+// FIXME: for some odd reason, order is important between these
+// two. if SoBase.cpp is compiled before SoDebug.cpp, we get a weird
+// error from the SbHash usage in SoDebug.cpp. investigate.  -mortene.
+#include "SoDebug.cpp"
+#include "SoBase.cpp"
 
 #include "AudioTools.cpp"
 #include "CoinOffscreenGLCanvas.cpp"
 #include "CoinResources.cpp"
 #include "CoinStaticObjectInDLL.cpp"
 #include "SoAudioDevice.cpp"
-#include "SoBase.cpp"
 #include "SoBaseP.cpp"
 #include "SoChildList.cpp"
 #include "SoCompactPathList.cpp"
 #include "SoContextHandler.cpp"
 #include "SoDB.cpp"
 #include "SoDBP.cpp"
-#include "SoDebug.cpp"
 #include "SoEventManager.cpp"
 #include "SoFullPath.cpp"
 #include "SoGL.cpp"
