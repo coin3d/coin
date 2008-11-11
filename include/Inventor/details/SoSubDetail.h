@@ -42,9 +42,9 @@ public: \
 // *************************************************************************
 
 #define SO_DETAIL_SOURCE(_class_) \
+SoType _class_::classTypeId STATIC_SOTYPE_INIT; \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
-SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
-SoType _class_::classTypeId STATIC_SOTYPE_INIT
+SoType _class_::getClassTypeId(void) { return _class_::classTypeId; }
 
 // *************************************************************************
 
