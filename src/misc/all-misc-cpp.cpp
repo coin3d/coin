@@ -21,6 +21,9 @@
  *
 \**************************************************************************/
 
+//Needs to be available before the first include of SbHash.h
+inline unsigned int SbHashFunc(const void * key);
+
 #include "AudioTools.cpp"
 #include "CoinOffscreenGLCanvas.cpp"
 #include "CoinResources.cpp"

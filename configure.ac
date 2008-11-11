@@ -1859,10 +1859,14 @@ AC_DEFINE_UNQUOTED([OPENGL_SYSTEM_LIBRARY_NAME], ["$sim_ac_opengl_dll_name"],
 # * where one can bump into the "Arg list too long" problem
 # * (IBM AIX, SGI IRIX 6.2 and IRIX 6.5 with standard settings are
 # * known to fail).
+# *
+# * This nasty hack also have a lot of positivie bieffects, such as
+# * increasing optimization, and memory usage of the compiler, while
+# * reducing the compile time for a release build.
 # *******************************************************************
 
 AC_ARG_ENABLE(compact,
-  AC_HELP_STRING([--enable-compact], [enable hack for compact compilation [[default=no]]]),
+  AC_HELP_STRING([--enable-compact], [enable hack for compact compilation. Has the bieffect of increased optimalization, and reduced compile-time, for increased memory usage for a release build. [[default=no]]]),
   [case "${enableval}" in
     yes | true)  enable_compact=yes ;;
     no | false)  enable_compact=no ;;
