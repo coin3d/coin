@@ -25,7 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbits.h> // for cc_coin_atexit()
+#include <Inventor/SbName.h> // for implicit char* -> SbName cast in
+                             // SoType::createType()
 #include <assert.h>
 
 // *************************************************************************
