@@ -63,9 +63,7 @@ class SoVBO {
   static void context_created(const uint32_t contextid, void * closure);
   static SbBool isVBOFast(const uint32_t contextid);
   static void context_destruction_cb(uint32_t context, void * userdata);
-  static void vbo_schedule(const uint32_t & key,
-                           const GLuint & value,
-                           void * closure);
+  friend struct vbo_schedule;
   static void vbo_delete(void * closure, uint32_t contextid);
 
   GLenum target;

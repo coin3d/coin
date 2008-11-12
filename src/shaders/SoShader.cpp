@@ -199,6 +199,7 @@ static const char * SO_SHADER_DIR = NULL;
 static SbHash <char *, const char *> * shader_dict = NULL;
 static SbHash <char *, const char *> * shader_builtin_dict = NULL;
 
+/*
 static void
 soshader_cleanup_callback(const char * const & key,
                           char * const & obj,
@@ -207,10 +208,26 @@ soshader_cleanup_callback(const char * const & key,
   delete[] obj;
 }
 
+*/
+
+struct soshader_cleanup_callback :
+  public SbHash <char *, const char *>::ApplyFunctor<void *>
+{
+  void operator()(const char * & key,
+                char * & obj,
+                void * closure
+                )
+  {
+    delete[] obj;
+  }
+};
+
+
 static void
 soshader_cleanup(void)
 {
-  shader_dict->apply(soshader_cleanup_callback, NULL);
+  soshader_cleanup_callback functor;
+  shader_dict->apply<void *>(functor, NULL);
   delete shader_dict;
 
   // no need to apply on objects since strings are compiled into the

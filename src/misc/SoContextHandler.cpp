@@ -96,15 +96,15 @@ public:
   int idx;
 };
 
-static void 
-socontexthandler_sbhashcb(const socontexthandler_cbitem & key, 
-                          const uint32_t & obj, void * closure)
+struct socontexthandler_sbhashcb :
+  public SbHash <uint32_t, socontexthandler_cbitem>::ApplyFunctor<SbList <socontexthandler_cbitem> *>
 {
-  SbList <socontexthandler_cbitem> * list = 
-    (SbList <socontexthandler_cbitem> *) closure;
-  
-  list->append(key);
-}
+  void operator()(socontexthandler_cbitem & key,
+            uint32_t & obj, SbList <socontexthandler_cbitem> * list)
+  {
+    list->append(key);
+  }
+};
 
 // "extern C" wrapper is needed with the OSF1/cxx compiler (probably a
 // bug in the compiler, but it doesn't seem to hurt to do this
@@ -173,7 +173,8 @@ SoContextHandler::destructingContext(uint32_t contextid)
   }
 
   SbList <socontexthandler_cbitem> listcopy;
-  socontexthandler_hashlist->apply(socontexthandler_sbhashcb, &listcopy);
+  socontexthandler_sbhashcb functor;
+  socontexthandler_hashlist->apply(functor, &listcopy);
   CC_MUTEX_UNLOCK(socontexthandler_mutex);
 
   qsort((void*) listcopy.getArrayPtr(), 

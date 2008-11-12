@@ -28,6 +28,22 @@
 // This class (SbHash<Type, Key>) is internal and must not be exposed
 // in the Coin API.
 
+/**
+   This function object is an extension of the STL concept "binary function".
+   It is a goal to be as similar as possible to our STL counterpart.
+*/
+//FIXME Move this concept to a separate header. BFG 20081112
+template < typename ARG_ONE, typename ARG_TWO, typename ARG_THREE, typename RETTYPE >
+  struct trinary_function {
+  typedef ARG_ONE first_argument_type;
+  typedef ARG_TWO second_argument_type;
+  typedef ARG_THREE third_argument_type;
+  typedef RETTYPE result_type;
+
+  //RETTYPE operator()(ARG_ONE x, ARG_TWO y, ARG_THREE z);
+};
+
+
 #ifndef COIN_INTERNAL
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
@@ -43,6 +59,7 @@
 
 #include "tidbitsp.h"
 #include "coindefs.h"
+#include "SbBasicP.h"
 
 // *************************************************************************
 
@@ -136,10 +153,14 @@ unsigned int SbHashFunc(const SoSensor * key);
 
 template <class Type, class Key>
 class SbHash {
-public:
-  typedef void SbHashApplyFunc(const Key & key, const Type & obj, void * closure);
+ public:
+  template <typename DType>
+    struct ApplyFunctor : public trinary_function<Key,Type,DType, void> {
+    virtual void operator()(Key & key, Type & obj, DType closure) = 0;
+  };
 
-public:
+ public:
+
   SbHash(unsigned int sizearg = 256, float loadfactorarg = 0.0f)
   {
     this->commonConstructor(sizearg, loadfactorarg);
@@ -154,7 +175,8 @@ public:
   SbHash & operator=(const SbHash & from)
   {
     this->clear();
-    from.apply(SbHash::copy_data, this);
+    copy_data_functor functor;
+    from.apply(functor, this);
     return *this;
   }
 
@@ -243,8 +265,13 @@ public:
     return FALSE;
   }
 
-  void apply(SbHashApplyFunc * func, void * closure) const
+  template<typename PointerType>
+  void apply( ApplyFunctor<PointerType> & func,
+             PointerType closure = NULL) const
   {
+#ifdef COIN_DEPOINTER_AVAILABLE
+    COIN_CT_ASSERT(coin_depointer<PointerType>::valid);
+#endif
     unsigned int i;
     SbHashEntry<Type, Key> * elem;
     for (i = 0; i < this->size; i++) {
@@ -258,7 +285,8 @@ public:
 
   void makeKeyList(SbList<Key> & l) const
   {
-    this->apply(SbHash::add_to_list, &l);
+    add_to_list functor;
+    this->apply(functor, &l);
   }
 
   unsigned int getNumElements(void) const { return this->elements; }
@@ -331,17 +359,23 @@ private:
     chain_length_avg = static_cast<float>( this->elements / buckets_used);
   }
 
+  struct copy_data_functor : public ApplyFunctor<SbHash *> {
+    void operator()(Key & key, Type & obj, SbHash * closure) {
+      copy_data(key,obj,closure);
+    }
+  };
+
   static void copy_data(const Key & key, const Type & obj, void * closure)
   {
     SbHash * thisp = static_cast<SbHash *>(closure);
     thisp->put(key, obj);
   }
 
-  static void add_to_list(const Key & key, const Type & obj, void * closure)
-  {
-    SbList<Key> * l = static_cast<SbList<Key> *>(closure);
-    l->append(key);
-  }
+  struct add_to_list : public ApplyFunctor<SbList<Key> *> {
+    void operator()(Key & key, Type & obj, SbList<Key> * list) {
+      list->append(key);
+    }
+  };
 
   float loadfactor;
   unsigned int size;

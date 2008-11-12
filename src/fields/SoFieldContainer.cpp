@@ -968,15 +968,16 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 //
 // Used to unref() copied instances (we ref() in addCopy()).
 //
-static void
-fieldcontainer_unref_node(const SoFieldContainer * const & key,
-                          const SoFieldContainer * const & fieldcontainer,
-                          void * closure)
+struct fieldcontainer_unref_node :
+  public SbHash<const SoFieldContainer *,
+              const SoFieldContainer *>::ApplyFunctor<void *>
 {
-  // unref() (not unrefNoDelete()) so that unused nodes are
-  // destructed (can happen during nodekit copy)
-  fieldcontainer->unref();
-}
+  void operator()(const SoFieldContainer * & key,
+                const SoFieldContainer * & fieldcontainer,
+                void * closure) {
+    fieldcontainer->unref();
+  }
+};
 
 /*!
   \COININTERNAL
@@ -998,7 +999,8 @@ SoFieldContainer::copyDone(void)
   assert(contentscopied);
 
   // unref all copied instances. See comment in addCopy().
-  copiedinstances->apply(fieldcontainer_unref_node, NULL);
+  fieldcontainer_unref_node functor;
+  copiedinstances->apply<void *>(functor, NULL);
 
   delete copiedinstances;
   delete contentscopied;

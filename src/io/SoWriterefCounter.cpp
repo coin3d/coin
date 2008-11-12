@@ -71,7 +71,8 @@ public:
     }
   }
   void debugCleanup(void) {
-    this->writerefdict.apply(SoWriterefCounterOutputData::debug_dict, NULL);
+    debug_dict functor;
+    this->writerefdict.apply<void *>(functor, NULL);
     this->cleanup();
   }
   
@@ -83,27 +84,36 @@ private:
   int refcount;
 
   void cleanup(void) {
-    this->writerefdict.apply(SoWriterefCounterOutputData::delete_dict_item, NULL);
+    delete_dict_item functor;
+    this->writerefdict.apply<void *>(functor, NULL);
     this->writerefdict.clear();
   }
   
-  static void debug_dict(const SoBase * const & base,
-                         SoWriterefCounterBaseData * const & data,
-                         void * closure) {
+  struct debug_dict :
+    public SbHash<SoWriterefCounterBaseData *, const SoBase *>::ApplyFunctor<void *>
+  {
+    void operator()(const SoBase * & base, SoWriterefCounterBaseData * &,
+                  void * closure) {
 #if COIN_DEBUG
-    SbName name = base->getName();
-    if (name == "") name = "<noname>";
-    
-    SoDebugError::postWarning("SoWriterefCounter::<cleanup>",
-                              "Not removed from writerefdict: %p, %s:%s",
-                              base, base->getTypeId().getName().getString(), name.getString());
+      SbName name = base->getName();
+      if (name == "") name = "<noname>";
+
+      SoDebugError::postWarning("SoWriterefCounter::<cleanup>",
+                                "Not removed from writerefdict: %p, %s:%s",
+                                base, base->getTypeId().getName().getString(), name.getString());
 #endif // COIN_DEBUG
-  }
-  static void delete_dict_item(const SoBase * const & base,
-                               SoWriterefCounterBaseData * const & data,
-                               void * closure) {
-    delete data;
-  }
+    }
+  };
+
+  struct delete_dict_item :
+    public SbHash<SoWriterefCounterBaseData *, const SoBase *>::ApplyFunctor<void *>
+  {
+    void operator()(const SoBase * &, SoWriterefCounterBaseData * & data,
+                  void * closure) {
+      delete data;
+    }
+  };
+
 };
 
 // *************************************************************************

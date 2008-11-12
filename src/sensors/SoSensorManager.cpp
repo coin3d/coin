@@ -493,6 +493,20 @@ SoSensorManager::processTimerQueue(void)
 #endif // debug
 }
 
+struct reinsert_dict_cb :
+  public SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::ApplyFunctor<SoSensorManager * const>
+{
+  void operator()(SoDelayQueueSensor * & key,
+                SoDelayQueueSensor * & sensor,
+                SoSensorManager* const thisp
+                )
+  {
+    //SoSensorManager * thisp = (SoSensorManager *)closure;
+    thisp->insertDelaySensor(sensor);
+  }
+};
+
+/*
 //
 // callback from reinsertdict which will reinsert the sensor
 //
@@ -501,9 +515,8 @@ reinsert_dict_cb(SoDelayQueueSensor * const & key,
                  SoDelayQueueSensor * const & sensor,
                  void * closure)
 {
-  SoSensorManager * thisp = (SoSensorManager *)closure;
-  thisp->insertDelaySensor(sensor);
 }
+*/
 
 /*!
   Trigger all delay queue entries in priority order.
@@ -588,7 +601,8 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // reinsert sensors that couldn't be triggered, either because it
   // was an idle sensor, or because the sensor had already been
   // triggered
-  PRIVATE(this)->reinsertdict.apply(reinsert_dict_cb, this);
+  reinsert_dict_cb functor;
+  PRIVATE(this)->reinsertdict.apply<SoSensorManager* const>(functor, this);
   PRIVATE(this)->reinsertdict.clear();
   PRIVATE(this)->processingdelayqueue = FALSE;
 

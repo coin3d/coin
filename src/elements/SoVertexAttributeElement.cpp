@@ -27,6 +27,13 @@
 #include "elements/SoVertexAttributeData.h"
 #include "misc/SbHash.h"
 
+struct AttribAppFunc : public SbHash<SoVertexAttributeData *,const char *>::ApplyFunctor<void *> {
+  SoVertexAttributeElement::AttributeApplyFunc * func;
+  void operator()(const char * & key, SoVertexAttributeData * & obj, void * closure) {
+    func(key,obj,closure);
+  }
+};
+
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -109,7 +116,9 @@ SoVertexAttributeElement::getNumAttributes(void) const
 void
 SoVertexAttributeElement::applyToAttributes(AttributeApplyFunc * func, void * closure) const
 {
-  PRIVATE(this)->attribdict.apply(func, closure);
+  AttribAppFunc functor;
+  functor.func = func;
+  PRIVATE(this)->attribdict.apply(functor, closure);
 }
 
 #undef PRIVATE

@@ -57,6 +57,19 @@ static int vbo_enabled = -1;
 static int vbo_debug = -1;
 
 static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
+//
+// Callback from SbHash
+//
+/*
+void
+SoVBO::vbo_schedule(const uint32_t & key,
+                    const GLuint & value,
+                    void * closure)
+{
+  void * ptr = (void*) ((uintptr_t) value);
+  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, ptr);
+}
+*/
 
 /*!
   Constructor
@@ -74,6 +87,30 @@ SoVBO::SoVBO(const GLenum target, const GLenum usage)
 }
 
 
+//
+// Callback from SoGLCacheContextElement
+//
+void
+SoVBO::vbo_delete(void * closure, uint32_t contextid)
+{
+  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  GLuint id = (GLuint) ((uintptr_t) closure);
+  cc_glglue_glDeleteBuffers(glue, 1, &id);
+}
+
+struct vbo_schedule :
+  public SbHash <GLuint, uint32_t>::ApplyFunctor<void *>
+{
+  void operator()(uint32_t & key,
+                GLuint & value,
+                void * closure
+                )
+  {
+    void * ptr = (void*) ((uintptr_t) value);
+    SoGLCacheContextElement::scheduleDeleteCallback(key, SoVBO::vbo_delete, ptr);
+  }
+};
+
 /*!
   Destructor
 */
@@ -81,7 +118,8 @@ SoVBO::~SoVBO()
 {
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
-  this->vbohash.apply(vbo_schedule, NULL);
+  vbo_schedule functor;
+  this->vbohash.apply<void *>(functor, NULL);
   if (this->didalloc) {
     char * ptr = (char*) this->data;
     delete[] ptr;
@@ -171,7 +209,8 @@ void *
 SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
-  this->vbohash.apply(vbo_schedule, NULL);
+  vbo_schedule functor;
+  this->vbohash.apply<void *>(functor, NULL);
   // clear hash table
   this->vbohash.clear();
 
@@ -200,7 +239,8 @@ void
 SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
-  this->vbohash.apply(vbo_schedule, NULL);
+  vbo_schedule functor;
+  this->vbohash.apply<void *>(functor, NULL);
   // clear hash table
   this->vbohash.clear();
 
@@ -284,28 +324,7 @@ SoVBO::bindBuffer(uint32_t contextid)
 #endif // COIN_DEBUG
 }
 
-//
-// Callback from SbHash
-//
-void
-SoVBO::vbo_schedule(const uint32_t & key,
-                    const GLuint & value,
-                    void * closure)
-{
-  void * ptr = (void*) ((uintptr_t) value);
-  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, ptr);
-}
 
-//
-// Callback from SoGLCacheContextElement
-//
-void
-SoVBO::vbo_delete(void * closure, uint32_t contextid)
-{
-  const cc_glglue * glue = cc_glglue_instance((int) contextid);
-  GLuint id = (GLuint) ((uintptr_t) closure);
-  cc_glglue_glDeleteBuffers(glue, 1, &id);
-}
 
 //
 // Callback from SoContextHandler

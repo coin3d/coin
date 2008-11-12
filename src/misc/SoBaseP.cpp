@@ -125,24 +125,22 @@ SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const name)
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
 
-// Used to free the SbPLists in the name<->object dict.
-void
-SoBase::PImpl::emptyName2ObjHash(const char * const &, SbPList * const & l, void *)
-{
-  delete l;
-}
 
-void
-SoBase::PImpl::auditordict_cb(const SoBase * const &, SoAuditorList * const & l, void *)
+struct auditordict_cb :
+  public SbHash<SoAuditorList *, const SoBase *>::ApplyFunctor<void *>
 {
-  delete l;
-}
+  void operator()(const SoBase * &, SoAuditorList * & l, void *)
+  {
+    delete l;
+  }
+};
 
 void
 SoBase::PImpl::cleanup_auditordict(void)
 {
   if (SoBase::PImpl::auditordict) {
-    SoBase::PImpl::auditordict->apply(SoBase::PImpl::auditordict_cb, NULL);
+    auditordict_cb functor;
+    SoBase::PImpl::auditordict->apply<void *>(functor, NULL);
     delete SoBase::PImpl::auditordict;
     SoBase::PImpl::auditordict = NULL;
   }
