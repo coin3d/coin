@@ -190,17 +190,15 @@ SoBase::PImpl::rbptree_notify_cb(void * auditor, void * type, void * closure)
   // casting from void*.
   const uintptr_t tmptype = (uintptr_t)type;
 
-  if (data->notified.find(auditor) < 0) {
-    if (data->cnt == 0) {
-      data->thisp->doNotify(data->list, auditor, (SoNotRec::Type) tmptype);
-    }
-    else {
-      assert(data->cnt > 0);
-      // use a copy of 'l', since the notification list might change
-      // when auditors are notified
-      SoNotList listcopy(data->list);
-      data->thisp->doNotify(&listcopy, auditor, (SoNotRec::Type) tmptype);
-    }
+  if (data->cnt == 0) {
+    data->thisp->doNotify(data->list, auditor, (SoNotRec::Type) tmptype);
+  }
+  else {
+    assert(data->cnt > 0);
+    // use a copy of 'l', since the notification list might change
+    // when auditors are notified
+    SoNotList listcopy(data->list);
+    data->thisp->doNotify(&listcopy, auditor, (SoNotRec::Type) tmptype);
   }
 }
 

@@ -98,7 +98,6 @@ public:
     int total;
     SoNotList * list;
     SoBase * thisp;
-    SbList <void*> notified;
   };
 
 }; // SoBase::PImpl
