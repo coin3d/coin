@@ -48,6 +48,12 @@ struct coin_depointer<Type *> {
   typedef Type type;
 };
 
+template <typename Type>
+struct coin_depointer<Type * const> {
+  enum { valid = true };
+  typedef Type type;
+};
+
 #endif //COIN_DEPOINTER_AVAILABLE
 
 template<typename To,typename From>
