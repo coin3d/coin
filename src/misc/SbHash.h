@@ -157,6 +157,7 @@ class SbHash {
   template <typename DType>
     struct ApplyFunctor : public trinary_function<Key,Type,DType, void> {
     virtual void operator()(Key & key, Type & obj, DType closure) = 0;
+    virtual ~ApplyFunctor() { } // silence virtual-func warning
   };
 
  public:
