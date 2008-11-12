@@ -74,11 +74,11 @@ template < typename ARG_ONE, typename ARG_TWO, typename ARG_THREE, typename RETT
 template <class Type, class Key>
 class SbHashEntry {
 public:
-  
+
   void * operator new(size_t COIN_UNUSED(size), cc_memalloc * memhandler) {
     SbHashEntry<Type, Key> * entry = static_cast<SbHashEntry<Type, Key> *>(
       cc_memalloc_allocate(memhandler));
-    entry->memhandler = memhandler;    
+    entry->memhandler = memhandler;
     return static_cast<void *>(entry);
   }
   void operator delete(void * ptr, cc_memalloc * memhandler) {
@@ -89,7 +89,7 @@ public:
     cc_memalloc_deallocate(entry->memhandler, ptr);
   }
   SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
-  
+
   Key key;
   Type obj;
   SbHashEntry<Type, Key> * next;
@@ -175,7 +175,7 @@ class SbHash {
   SbHash & operator=(const SbHash & from)
   {
     this->clear();
-    copy_data_functor functor;
+    copy_data functor;
     from.apply(functor, this);
     return *this;
   }
@@ -221,7 +221,7 @@ class SbHash {
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
-    if (this->elements++ >= this->threshold) { 
+    if (this->elements++ >= this->threshold) {
       this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1)));
     }
     return TRUE;
@@ -359,17 +359,11 @@ private:
     chain_length_avg = static_cast<float>( this->elements / buckets_used);
   }
 
-  struct copy_data_functor : public ApplyFunctor<SbHash *> {
-    void operator()(Key & key, Type & obj, SbHash * closure) {
-      copy_data(key,obj,closure);
+  struct copy_data : public ApplyFunctor<SbHash *> {
+    void operator()(Key & key, Type & obj, SbHash * thisp) {
+      thisp->put(key, obj);
     }
   };
-
-  static void copy_data(const Key & key, const Type & obj, void * closure)
-  {
-    SbHash * thisp = static_cast<SbHash *>(closure);
-    thisp->put(key, obj);
-  }
 
   struct add_to_list : public ApplyFunctor<SbList<Key> *> {
     void operator()(Key & key, Type & obj, SbList<Key> * list) {
