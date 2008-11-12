@@ -338,4 +338,3 @@ SoNodeEngine::isNotifying(void) const
 }
 
 #undef FLAG_ISNOTIFYING
-

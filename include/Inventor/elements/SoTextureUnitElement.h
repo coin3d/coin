@@ -50,4 +50,3 @@ private:
 };
 
 #endif // !COIN_SOTEXTUREUNITELEMENT_H
-

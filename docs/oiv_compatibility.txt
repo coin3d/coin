@@ -25,4 +25,3 @@ Incompatibilities
 * Typed Open Inventor objects can not be created before the type system
   has been initialized (by calling a combination of SoDB::Init(),
   SoNodeKit::init(), SoInteraction::init()).
-

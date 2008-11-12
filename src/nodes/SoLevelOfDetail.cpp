@@ -551,4 +551,3 @@ SoLevelOfDetail::notify(SoNotList * nl)
 }
 
 #undef PRIVATE
-

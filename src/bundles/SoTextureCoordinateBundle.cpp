@@ -460,4 +460,3 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
 #undef FLAG_3DTEXTURES
 #undef FLAG_DIDINITDEFAULT
 #undef FLAG_NEEDINDICES
-

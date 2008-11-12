@@ -1069,4 +1069,3 @@ SbTime::print(FILE * fp) const
 
 #undef SIM_TIMEVAL_TV_SEC_T
 #undef SIM_TIMEVAL_TV_USEC_T
-

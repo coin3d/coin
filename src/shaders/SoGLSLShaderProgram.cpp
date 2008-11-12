@@ -265,4 +265,3 @@ SoGLSLShaderProgram::removeProgramParameters(void)
 {
   this->programParameters.truncate(0);
 }
-

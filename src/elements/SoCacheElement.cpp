@@ -122,8 +122,8 @@ SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
   SoCacheElement * prev =
     const_cast<SoCacheElement *>
     ( coin_assert_cast<const SoCacheElement *>(
-					       prevTopElement
-					      )
+                                          prevTopElement
+                                         )
      );
   if (prev->cache) {
     prev->cache->unref();

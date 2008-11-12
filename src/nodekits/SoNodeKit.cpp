@@ -97,4 +97,3 @@ SoNodeKit::init(void)
   nodekit_isinitialized = TRUE;
   cc_coin_atexit_static_internal((coin_atexit_f*) nodekit_cleanup);
 }
-

@@ -7,4 +7,3 @@
 ./extractfont 14 25 0 2 17 11 16 font25.tif >font25.ic
 
 ./extractfont 19 33 0 3 25 16 16 font33.tif >font33.ic
-

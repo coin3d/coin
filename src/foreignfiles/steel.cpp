@@ -3022,4 +3022,3 @@ stl_writer_get_error(stl_writer * writer)
 } /* stl_writer_get_error() */
 
 /* ********************************************************************** */
-

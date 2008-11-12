@@ -74,4 +74,3 @@
 #include "SoType.cpp"
 #include "SoVBO.cpp"
 #include "SoVertexArrayIndexer.cpp"
-

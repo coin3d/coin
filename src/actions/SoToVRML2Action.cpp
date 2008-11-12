@@ -2109,4 +2109,3 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 #undef THISP
 
 #endif // HAVE_VRML97
-

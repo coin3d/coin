@@ -117,4 +117,3 @@ SoVectorOutput::getFilePointer(void)
 
 #undef PRIVATE
 #undef PUBLIC
-

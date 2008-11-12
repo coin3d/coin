@@ -214,8 +214,8 @@ SoEngineOutputData::readDescriptions(SoInput * COIN_UNUSED(in), SoEngine * COIN_
 */
 void
 SoEngineOutputData::writeDescriptions(SoOutput * COIN_UNUSED(out),
-				      SoEngine *COIN_UNUSED(engine)
-				      ) const
+                                  SoEngine *COIN_UNUSED(engine)
+                                  ) const
 {
   COIN_STUB();
 }

@@ -77,4 +77,3 @@ private:
 };
 
 #endif // !COIN_SOGLMULTITEXTURECOORDINATEELEMENT_H
-

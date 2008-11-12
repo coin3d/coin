@@ -132,4 +132,3 @@ FIXME 20021101 thammer: remember to override invalidateState if we
 keep an internal state at all. Called from 
 SoSceneManager.setAudioRenderAction
 */
- 

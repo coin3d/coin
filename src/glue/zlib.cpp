@@ -426,4 +426,3 @@ cc_zlibglue_crc32(unsigned long crc, const char * buf, unsigned int len)
 
 #undef deflateInit2
 #undef inflateInit2
-

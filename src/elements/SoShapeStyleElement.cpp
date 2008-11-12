@@ -491,4 +491,3 @@ SoShapeStyleElement::getFlags(void) const
 
 #undef DELAYRENDER_MASK
 #undef TRANSPTYPE_MASK
-

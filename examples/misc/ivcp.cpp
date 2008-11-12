@@ -116,4 +116,3 @@ main(int argc, char ** argv)
   // SoDB::cleanup();
   return 0;
 }
-

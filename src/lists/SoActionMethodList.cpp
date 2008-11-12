@@ -188,4 +188,3 @@ SoActionMethodList::setUp(void)
 }
 
 #undef PRIVATE
-

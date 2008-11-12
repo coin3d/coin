@@ -136,7 +136,7 @@ SoGLRenderCache::call(SoState * state)
       
       SoGLRenderCache* parentCache = static_cast<SoGLRenderCache *>(
         SoCacheElement::getCurrentCache(state)
-	);
+       );
       parentCache->addNestedCache(PRIVATE(this)->displaylist);
     }
     else {

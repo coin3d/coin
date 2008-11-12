@@ -83,4 +83,3 @@ SoResetMatrixElement::copyMatchInfo(void) const
   element->matrix = this->matrix;
   return element;
 }
-

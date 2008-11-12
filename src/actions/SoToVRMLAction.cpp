@@ -904,7 +904,7 @@ SoToVRMLActionP::vrmlifs_cb(void * closure, SoCallbackAction * COIN_UNUSED(actio
       coin_assert_cast<SoNormal*>(thisp->search_for_node(thisp->vrmlpath->getHead(),
                                          name,
                                          SoNormal::getClassTypeId())
-				  );
+                              );
     if (!newnormal) {
       newnormal = new SoNormal;
       newnormal->setName(name);

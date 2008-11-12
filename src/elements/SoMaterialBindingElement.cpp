@@ -70,7 +70,7 @@ SoMaterialBindingElement::set(SoState * const state,
 {
   assert(static_cast<int>(binding) >= static_cast<int>(OVERALL) &&
          static_cast<int>(binding) <= static_cast<int>(PER_VERTEX_INDEXED)
-	 );
+        );
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 

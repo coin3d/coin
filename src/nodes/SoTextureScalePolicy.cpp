@@ -237,4 +237,3 @@ SoTextureScalePolicy::GLRender(SoGLRenderAction * action)
                                       this->quality.getValue());
   }
 }
-

@@ -52,6 +52,3 @@ private:
 };
 
 #endif // !COIN_SOGLLINEWIDTHELEMENT_H
-
-
-

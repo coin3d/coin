@@ -311,4 +311,3 @@ SoTextureCoordinatePlane::setupGencache(void)
 }
 
 #undef PRIVATE
-

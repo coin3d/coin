@@ -45,8 +45,3 @@ COIN_DLL_API int cc_barrier_enter(cc_barrier * barrier);
 #endif /* __cplusplus */
 
 #endif /* ! CC_BARRIER_H */
-
-
-
-
-

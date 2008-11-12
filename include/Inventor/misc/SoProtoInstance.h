@@ -76,4 +76,3 @@ private:
 };
 
 #endif // !COIN_SOPROTOINSTANCE_H
-

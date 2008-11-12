@@ -177,8 +177,8 @@ SoDebugError::initClass(void)
 
 void
 SoDebugError::callbackForwarder(const struct cc_debugerror * error,
-				void * COIN_UNUSED(data)
-				)
+                            void * COIN_UNUSED(data)
+                            )
 {
   SoDebugError wrappederr;
 
@@ -364,4 +364,3 @@ SoDebugError::getHandler(void * & data) const
 }
 
 #undef SODEBUGERROR_POST
-

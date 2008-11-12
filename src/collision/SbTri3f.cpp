@@ -1520,4 +1520,3 @@ SbTri3f::getBoundingBox(void) const
 
 #undef SBTRI_DEBUG
 #undef PRIVATE
-

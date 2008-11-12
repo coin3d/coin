@@ -60,5 +60,3 @@ private:
 };
 
 #endif // !COIN_SOSHAPE_TRIANGLESORT_H
-
-

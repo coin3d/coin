@@ -55,4 +55,3 @@
 #include "SoGLViewportRegionElement.cpp"
 #include "SoGLVBOElement.cpp"
 #include "SoResetMatrixElement.cpp"
-

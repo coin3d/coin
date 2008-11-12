@@ -76,4 +76,3 @@ SoTempPath::replaceTail(SoNode * const node, const int index)
   this->nodes.set(i, (SoBase*) node);
   this->indices[i] = index;
 }
-

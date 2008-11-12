@@ -1723,4 +1723,3 @@ decomp_affine(HMatrix A, AffineParts * parts)
 #undef SQRTHALF
 #undef sgn
 #undef swap
-

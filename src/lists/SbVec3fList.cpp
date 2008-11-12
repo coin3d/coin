@@ -81,7 +81,3 @@ SbVec3fList::~SbVec3fList()
 
   Overridden from parent to return an SbVec3f.
 */
-
-
-
-

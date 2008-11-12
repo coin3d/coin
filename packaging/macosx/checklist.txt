@@ -129,4 +129,3 @@ o Symbolic links
   the new version in ftp://ftp.coin3d.org/pub/coin/bin/macosx/
 
 o Update the coin3d.org release page with the links to the files.
-

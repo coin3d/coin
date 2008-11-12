@@ -248,4 +248,3 @@ SoGLVertexAttributeElement::disableVBO(SoGLRenderAction * action) const
 {
   this->applyToAttributes(disable_vbo, (void *) action);
 }
-

@@ -623,7 +623,7 @@ SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 static void 
 SoHandleBoxDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>( 
+  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>(
     kit->getPart("surroundScale", FALSE)
     );
   if (ss) ss->invalidate();

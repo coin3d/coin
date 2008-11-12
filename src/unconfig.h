@@ -117,4 +117,3 @@
 #ifdef COIN_VERSION
 #undef COIN_VERSION
 #endif
-

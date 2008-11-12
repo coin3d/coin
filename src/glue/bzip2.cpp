@@ -298,4 +298,3 @@ cc_bzglue_BZ2_bzWrite(int * bzerror,
   bzglue_init();
   bzlib_instance->BZ2_bzWrite(bzerror, bzfile, buf, len);
 }
-

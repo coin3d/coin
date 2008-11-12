@@ -182,4 +182,3 @@ SwitchboardOperator::handleEvent(SoHandleEventAction * action)
     }
   }
 }
-

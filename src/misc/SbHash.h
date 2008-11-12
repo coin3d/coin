@@ -98,7 +98,7 @@ inline unsigned int toUint(T in) {
 
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) // 'long long' not in vc6
 #ifndef COIN_INTERNAL //Not available for internal use, as this is not
-		      //available on all platforms.
+                    //available on all platforms.
 inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
 #endif //COIN_INTERNAL
 #endif
@@ -200,7 +200,7 @@ public:
     this->buckets[i] = entry;
 
     if (this->elements++ >= this->threshold) { 
-      this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1))); 
+      this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1)));
     }
     return TRUE;
   }

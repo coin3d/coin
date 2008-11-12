@@ -225,9 +225,9 @@ SoEvent::getNormalizedPosition(const SbViewportRegion & vpRgn) const
   SbVec2s s = vpRgn.getViewportSizePixels();
 
   return SbVec2f(
-		 static_cast<float>(p[0])/static_cast<float>(s[0]),
-		 static_cast<float>(p[1])/static_cast<float>(s[1])
-		 );
+               static_cast<float>(p[0])/static_cast<float>(s[0]),
+               static_cast<float>(p[1])/static_cast<float>(s[1])
+               );
 }
 
 /*!

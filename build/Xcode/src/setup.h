@@ -104,4 +104,3 @@
 #ifndef COIN_INTERNAL
 #error this is a private header file
 #endif
-

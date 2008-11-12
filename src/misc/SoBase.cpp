@@ -1517,4 +1517,3 @@ SoBase::staticDataUnlock(void)
 }
 
 #undef ALIVE_PATTERN
-

@@ -73,4 +73,3 @@ int cc_zlibglue_crc32(unsigned long crc, const char * buf, unsigned int len);
 #endif /* __cplusplus */
 
 #endif /* !COIN_GLUE_ZLIB_H */
-

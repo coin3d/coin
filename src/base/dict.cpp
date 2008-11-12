@@ -323,4 +323,3 @@ cc_dict_print_stat(cc_dict * ht)
                          used_buckets, ht->size, ht->elements,
                          (float)ht->elements / used_buckets, max_chain_l);
 }
-

@@ -68,4 +68,3 @@ protected:
 };
 
 #endif // !COIN_SOSOUNDELEMENT_H
-

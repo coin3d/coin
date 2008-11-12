@@ -113,7 +113,7 @@ SoSoundElement::set(SoState * const state,
 
 SbBool
 SoSoundElement::setSceneGraphHasSoundNode(SoState * const state,
-					  SoNode * const COIN_UNUSED(node),
+                                     SoNode * const COIN_UNUSED(node),
                                           SbBool flag)
 {
   SoSoundElement * elem = coin_safe_cast<SoSoundElement *>
@@ -149,8 +149,8 @@ SoSoundElement::sceneGraphHasSoundNode(SoState * const state)
 
 SbBool
 SoSoundElement::setSoundNodeIsPlaying(SoState * const state,
-				      SoNode * const COIN_UNUSED(node),
-				      SbBool flag)
+                                  SoNode * const COIN_UNUSED(node),
+                                  SbBool flag)
 {
   SoSoundElement * elem = coin_safe_cast<SoSoundElement *>
     (
@@ -184,7 +184,7 @@ SoSoundElement::soundNodeIsPlaying(SoState * const state)
 
 SbBool
 SoSoundElement::setIsPartOfActiveSceneGraph(SoState * const state,
-					    SoNode * const COIN_UNUSED(node),
+                                       SoNode * const COIN_UNUSED(node),
                                             SbBool flag)
 {
   SoSoundElement *elem = coin_safe_cast<SoSoundElement *>
@@ -267,4 +267,3 @@ void
 SoSoundElement::print(FILE * /* file */) const
 {
 }
-

@@ -50,4 +50,3 @@
 #include "soshape_primdata.cpp"
 #include "soshape_trianglesort.cpp"
 #include "soshape_bumprender.cpp"
-

@@ -502,4 +502,3 @@ SoNurbsCurveP::tessEnd(void * data)
 
 #undef PRIVATE
 #undef PUBLIC
-

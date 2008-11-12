@@ -342,7 +342,3 @@ SoIndexedShape::getVertexData(SoState * state,
   }
   return TRUE;
 }
-
-
-
-

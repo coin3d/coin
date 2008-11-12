@@ -217,4 +217,3 @@ SoGLModelMatrixElement::popMatrixElt(const SbMatrix &matrix)
   }
   inherited::popMatrixElt(matrix);
 }
-

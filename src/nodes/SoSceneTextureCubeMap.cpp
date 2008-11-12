@@ -704,4 +704,3 @@ SoSceneTextureCubeMapP::prerendercb(void * userdata, SoGLRenderAction * action)
 #undef UNLOCK_GLIMAGE
 #undef PRIVATE
 #undef PUBLIC
-

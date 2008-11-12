@@ -458,4 +458,3 @@ SoProfilerTopEngine::evaluate(void)
 }
 
 #undef PRIVATE
-

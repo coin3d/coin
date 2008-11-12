@@ -117,7 +117,7 @@ SoRenderManager::~SoRenderManager()
 
   delete PRIVATE(this)->clipsensor;
 
-  if (PRIVATE(this)->scene) 
+  if (PRIVATE(this)->scene)
     PRIVATE(this)->scene->unref();
   this->setCamera(NULL);
 

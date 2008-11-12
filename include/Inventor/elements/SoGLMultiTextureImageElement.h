@@ -71,4 +71,3 @@ private:
 };
 
 #endif // !COIN_SOGLMULTITEXTUREIMAGEELEMENT_H
-

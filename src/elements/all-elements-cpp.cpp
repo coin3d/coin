@@ -107,4 +107,3 @@
 #include "SoViewingMatrixElement.cpp"
 #include "SoViewportRegionElement.cpp"
 #include "SoWindowElement.cpp"
-

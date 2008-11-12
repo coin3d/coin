@@ -29,4 +29,3 @@
 #include "SoScXMLSpinUtils.cpp"
 #include "SoScXMLZoomUtils.cpp"
 #include "SoScXMLViewUtils.cpp"
-

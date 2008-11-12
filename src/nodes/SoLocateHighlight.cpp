@@ -330,4 +330,3 @@ SoLocateHighlight::turnoffcurrent(SoAction * action)
 }
 
 #undef PRIVATE
-

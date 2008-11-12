@@ -994,4 +994,3 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
   }
   return selectionpath;
 }
-

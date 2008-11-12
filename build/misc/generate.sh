@@ -114,5 +114,3 @@ echo "If everything seems OK, upgrade the project files (if necessary) with"
 echo "  devenv.exe (for msvc7 and msvc8), or"
 echo "  VCExpress.exe (for msvc9)."
 echo ""
-
-

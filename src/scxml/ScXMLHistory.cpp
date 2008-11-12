@@ -125,4 +125,3 @@ ScXMLHistory::handleXMLAttributes(void)
 SCXML_SINGLE_OBJECT_API_IMPL(ScXMLHistory, ScXMLTransition, PRIVATE(this)->transitionptr, Transition);
 
 #undef PRIVATE
-

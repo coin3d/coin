@@ -1130,4 +1130,3 @@ SoNormalCache::clearGenerator(void)
 #undef NORMAL_EPSILON
 #undef NORMALCACHE_DEBUG
 #undef PRIVATE
-

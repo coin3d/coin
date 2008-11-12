@@ -792,4 +792,3 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   if (this->vertexProperty.getValue())
     state->pop();
 }
-

@@ -359,4 +359,3 @@ SoUnknownNode::copyContents(const SoFieldContainer * from,
 }
 
 #undef PRIVATE
-

@@ -117,4 +117,3 @@ SoDetailList::set(const int idx, SoDetail * detail)
   if (idx < this->getLength()) delete (*this)[idx];
   SbPList::operator[](idx) = (void*) detail;
 }
-

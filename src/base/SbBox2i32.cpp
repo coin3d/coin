@@ -296,4 +296,3 @@ SbBox2i32::intersect(const SbBox2i32 & box) const
 
   Check \a b1 and \a b2 for inequality.
 */
-

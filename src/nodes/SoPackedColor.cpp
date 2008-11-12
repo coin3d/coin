@@ -237,4 +237,3 @@ SoPackedColor::notify(SoNotList *list)
 }
 
 #undef PRIVATE
-

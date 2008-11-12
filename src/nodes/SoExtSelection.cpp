@@ -2769,4 +2769,3 @@ SoExtSelectionP::validateViewportBBox(SbBox2s & bbox,
 
 #undef PRIVATE
 #undef PUBLIC
-

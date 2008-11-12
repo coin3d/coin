@@ -78,4 +78,3 @@
   
   Overridden from parent to return an SbString pointer array.
 */
-

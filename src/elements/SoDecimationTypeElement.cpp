@@ -67,10 +67,10 @@ SoDecimationTypeElement::set(SoState * const state,
                              const Type type)
 {
   assert(
-	 static_cast<int>(type) >= static_cast<int>(AUTOMATIC)
-	 &&
-	 static_cast<int>(type) <= static_cast<int>(PERCENTAGE)
-	 );
+        static_cast<int>(type) >= static_cast<int>(AUTOMATIC)
+        &&
+        static_cast<int>(type) <= static_cast<int>(PERCENTAGE)
+        );
   SoInt32Element::set(classStackIndex, state, node, type);
 }
 

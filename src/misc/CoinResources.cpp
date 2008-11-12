@@ -323,4 +323,3 @@ CoinResourcesP::createResourceHandle(const char * resloc)
   CoinResourcesP::resourcemap->insert(mapentry);
   return handle;
 }
-

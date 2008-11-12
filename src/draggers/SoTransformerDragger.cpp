@@ -1441,9 +1441,9 @@ SoTransformerDragger::dragScale()
     const SbViewportRegion &vp = this->getViewportRegion();
     SbVec2s move = this->getLocaterPosition() - this->getStartLocaterPosition();
     SbVec2f normmove(
-		     static_cast<float>(move[0])/static_cast<float>(vp.getViewportSizePixels()[0]),
+                   static_cast<float>(move[0])/static_cast<float>(vp.getViewportSizePixels()[0]),
                      static_cast<float>(move[1])/static_cast<float>(vp.getViewportSizePixels()[1])
-		     );
+                   );
     SbVec3f tmp = vv.getPlanePoint(vv.getNearDist(), SbVec2f(0.5f, 0.5f));
     SbVec3f dir = vv.getPlanePoint(vv.getNearDist(), SbVec2f(0.5f, 0.5f) + normmove);
     dir -= tmp;

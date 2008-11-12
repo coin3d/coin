@@ -198,4 +198,3 @@ Switchboard::search(SoSearchAction * action)
   if (action->isFound()) return;
   Switchboard::doAction(action);
 }
-

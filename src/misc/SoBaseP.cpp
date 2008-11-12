@@ -563,4 +563,3 @@ SoBase::PImpl::flushInput(SoInput * in)
   }
 #endif // obsoleted
 }
-

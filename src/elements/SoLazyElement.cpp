@@ -1175,8 +1175,3 @@ void
 SoLazyElement::lazyDidntSet(uint32_t COIN_UNUSED(mask))
 {
 }
-
-
-
-
-

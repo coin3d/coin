@@ -185,4 +185,3 @@ SoUpgrader::createUpgrade(const SoBase * base)
 }
 
 #undef SOUPGRADER_ADD_TYPE
-

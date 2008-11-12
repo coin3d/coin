@@ -283,4 +283,3 @@ SoWWWAnchor::redrawHighlighted(SoAction * act, SbBool isNowHighlighting)
 }
 
 #undef PRIVATE
-

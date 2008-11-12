@@ -210,4 +210,3 @@ cc_namemap_peek_string(const char * str)
 }
 
 #undef CHUNK_SIZE
-

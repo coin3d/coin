@@ -46,4 +46,3 @@ public:
 };
 
 #endif // !COIN_SOTEXTURE3ENABLEDELEMENT_H
-

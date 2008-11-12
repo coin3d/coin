@@ -68,7 +68,7 @@ SoUnitsElement::set(SoState * const state,
                     const Units unit)
 {
   assert(static_cast<int>(unit) >= static_cast<int>(METERS)
-	 && static_cast<int>(unit) <= static_cast<int>(NAUTICAL_MILES));
+        && static_cast<int>(unit) <= static_cast<int>(NAUTICAL_MILES));
   SoInt32Element::set(classStackIndex, state, node, unit);
 }
 

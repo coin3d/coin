@@ -27,4 +27,3 @@
 #include "SoShadowSpotLight.cpp"
 #include "SoShadowStyle.cpp"
 #include "SoShadowStyleElement.cpp"
-

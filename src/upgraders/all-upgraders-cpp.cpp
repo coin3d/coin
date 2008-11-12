@@ -24,4 +24,3 @@
 #include "SoUpgrader.cpp"
 #include "SoPackedColorV20.cpp"
 #include "SoShapeHintsV10.cpp"
-

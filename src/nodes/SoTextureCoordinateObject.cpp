@@ -188,4 +188,3 @@ void
 SoTextureCoordinateObject::handleTexgen(void *data)
 {
 }
-

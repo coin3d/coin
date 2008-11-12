@@ -983,4 +983,3 @@ ScXMLStateMachine::PImpl::enterState(ScXMLObject * object)
 
 #undef PUBLIC
 #undef PRIVATE
-

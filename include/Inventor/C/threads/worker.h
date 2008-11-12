@@ -53,8 +53,3 @@ typedef void cc_worker_idle_f(cc_worker *, void *);
 #endif /* __cplusplus */
 
 #endif /* ! CC_WORKER_H */
-
-
-
-
-

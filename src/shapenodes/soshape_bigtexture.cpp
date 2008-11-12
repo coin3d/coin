@@ -472,5 +472,3 @@ soshape_bigtexture::clipcb(const SbVec3f & v0, void * vdata0,
   pv->setMaterialIndex(pv0->getMaterialIndex());
   return pv;
 }
-
-

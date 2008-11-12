@@ -196,4 +196,3 @@ SoGLLineWidthElement::updategl(void)
 }
 
 #undef RANGE_NOT_CHECKED
-

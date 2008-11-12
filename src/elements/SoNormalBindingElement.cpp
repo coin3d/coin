@@ -68,7 +68,7 @@ SoNormalBindingElement::set(SoState * const state,
                             const Binding binding)
 {
   assert(static_cast<int>(binding) >= OVERALL &&
-	 static_cast<int>(binding) <= PER_VERTEX_INDEXED);
+        static_cast<int>(binding) <= PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 

@@ -1472,4 +1472,3 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
 
 #undef PRIVATE
 #undef PUBLIC
-

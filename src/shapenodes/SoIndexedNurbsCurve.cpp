@@ -448,4 +448,3 @@ SoIndexedNurbsCurveP::tessEnd(void * data)
 
 #undef PRIVATE
 #undef PUBLIC
-

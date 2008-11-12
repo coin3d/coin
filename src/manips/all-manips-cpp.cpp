@@ -43,4 +43,3 @@
 #include "commoncode.cpp"
 
 #endif // HAVE_MANIPULATORS
-

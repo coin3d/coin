@@ -415,4 +415,3 @@ SoBumpMap::filenameSensorCB(void * data, SoSensor *)
 }
 
 #undef PRIVATE
-

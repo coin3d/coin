@@ -61,17 +61,17 @@ compute_prefix_function(SbList <int> & pi, const SbString & str)
   }
 }
 
-/* 
+/*
    This is a reimplementation of sdbm hash algorithm from the sdbm project
 */
 static unsigned int hash(const unsigned char * str, int n)
 {
   unsigned long hash = 0;
-  
+
   while (n--) {
     hash = (*str++) + (hash << 6) + (hash << 16) - hash;
   }
-  
+
   return hash;
 }
 

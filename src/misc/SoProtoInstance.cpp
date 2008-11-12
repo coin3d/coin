@@ -273,4 +273,3 @@ SoProtoInstance::sensorCB(void * data, SoSensor *)
 }
 
 #undef PRIVATE
-

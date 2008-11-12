@@ -114,4 +114,3 @@ COIN_DLL_API inline int operator != (SbVec2us v1, SbVec2us v2) {
 }
 
 #endif // !COIN_SBVEC2US_H
-

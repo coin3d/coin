@@ -133,5 +133,3 @@ SoBumpMapCoordinate::pick(SoPickAction * action)
 {
   SoBumpMapCoordinate::doAction((SoAction*) action);
 }
-
-

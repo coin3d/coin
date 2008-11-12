@@ -783,4 +783,3 @@ SoShaderObjectP::setSearchDirectories(const SbStringList & list)
 }
 
 #undef PRIVATE
-

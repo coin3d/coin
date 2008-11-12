@@ -388,4 +388,3 @@ SoLOD::notify(SoNotList * nl)
 
 #undef PRIVATE
 #undef PUBLIC
-

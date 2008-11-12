@@ -888,4 +888,3 @@ SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
 #undef PRIVATE
 #undef PUBLIC
-

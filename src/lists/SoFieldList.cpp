@@ -84,4 +84,3 @@
 
   Overridden from parent to return an SoField pointer.
 */
-

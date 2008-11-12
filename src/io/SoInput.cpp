@@ -2860,4 +2860,3 @@ SoInput::findFile(const char * basename, SbString & fullname)
 #undef READ_UNSIGNED_INTEGER
 #undef READ_REAL
 #undef PRIVATE
-

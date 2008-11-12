@@ -190,4 +190,3 @@ SoHeightMapToNormalMap::evaluate(void)
   ptr = static_cast<const unsigned char *>(targetimg.getValue(size, nc));
   SO_ENGINE_OUTPUT(image, SoSFImage, setValue(size, nc, ptr));
 }
-

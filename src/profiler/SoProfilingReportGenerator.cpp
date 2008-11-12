@@ -1476,4 +1476,3 @@ SoProfilingReportGenerator::stderrCB(void * userdata, int entryidx, const char *
   fprintf(coin_get_stderr(), "%s\n", text);
   return CONTINUE;
 }
-

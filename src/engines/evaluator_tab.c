@@ -1814,5 +1814,3 @@ so_evalerror(const char *myerr)
   root_node = NULL;
   return 0;
 }
-
-

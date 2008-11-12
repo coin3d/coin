@@ -386,4 +386,3 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
 
 #undef PUBLIC
 #undef PRIVATE
-

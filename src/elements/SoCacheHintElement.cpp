@@ -168,4 +168,3 @@ SoCacheHintElement::get(SoState * const state, float & memvalue, float & gfxvalu
 
 #undef PRIVATE
 #undef VERTEX_ARRAY_LIMIT
-

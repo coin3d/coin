@@ -802,4 +802,3 @@ SoTexture2::filenameSensorCB(void * data, SoSensor *)
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
 #undef PRIVATE
-

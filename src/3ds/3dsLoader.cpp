@@ -668,7 +668,7 @@ read3dsFile(SoStream *in, SoSeparator *&root,
   HEADER \
   uint32_t cpos = static_cast<uint32_t>(con->s.getPos()); \
   uint32_t stopPos = cpos + size - 6;
-  
+
 
 
 

@@ -1022,4 +1022,3 @@ SoSeparator::cullTestNoPush(SoState * state)
 #undef PRIVATE
 #undef PUBLIC
 #undef GLCACHE_DEBUG
-

@@ -973,5 +973,3 @@ SoGLBigImageP::resetAllTls(SoState * state)
 #endif // DOXYGEN_SKIP_THIS
 
 #undef LINEAR_LIMIT
-
-

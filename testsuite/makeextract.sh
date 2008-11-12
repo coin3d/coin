@@ -97,4 +97,3 @@ echo "" >&5
 echo "BOOST_AUTO_TEST_SUITE_END();" >&5
 
 exec 5>/dev/null
-

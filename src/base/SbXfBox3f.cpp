@@ -834,4 +834,3 @@ SbXfBox3f::makeInvInvalid(void)
 }
 
 #undef INVALID_TAG
-

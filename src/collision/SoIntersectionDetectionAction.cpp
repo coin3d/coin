@@ -1481,4 +1481,3 @@ SoIntersectionDetectionAction::PImpl::doInternalPrimitiveIntersectionTesting(Pri
 }
 
 #undef PRIVATE
-

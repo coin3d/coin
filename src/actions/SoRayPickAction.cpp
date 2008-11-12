@@ -920,36 +920,36 @@ SoRayPickAction::getViewVolume(void)
     if (PRIVATE(this)->isFlagSet(SoRayPickActionP::EXTRA_MATRIX)) {
       SbDPMatrix m = PRIVATE(this)->world2obj * PRIVATE(this)->extramatrix;
       SbMatrix tmp(
-		   static_cast<float>(m[0][0]), static_cast<float>(m[0][1]), 
-		   static_cast<float>(m[0][2]), static_cast<float>(m[0][3]),
+                 static_cast<float>(m[0][0]), static_cast<float>(m[0][1]),
+                 static_cast<float>(m[0][2]), static_cast<float>(m[0][3]),
 
                    static_cast<float>(m[1][0]), static_cast<float>(m[1][1]),
-		   static_cast<float>(m[1][2]), static_cast<float>(m[1][3]),
+                 static_cast<float>(m[1][2]), static_cast<float>(m[1][3]),
 
                    static_cast<float>(m[2][0]), static_cast<float>(m[2][1]),
-		   static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
-		   
+                 static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
+
                    static_cast<float>(m[2][0]), static_cast<float>(m[3][1]),
-		   static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
-		   );
+                 static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
+                 );
 
       PRIVATE(this)->osvolume.transform(tmp);
     }
     else {
       const SbDPMatrix & m = PRIVATE(this)->world2obj;
       SbMatrix tmp(
-		   static_cast<float>(m[0][0]), static_cast<float>(m[0][1]),
-		   static_cast<float>(m[0][2]), static_cast<float>(m[0][3]),
-		   
+                 static_cast<float>(m[0][0]), static_cast<float>(m[0][1]),
+                 static_cast<float>(m[0][2]), static_cast<float>(m[0][3]),
+
                    static_cast<float>(m[1][0]), static_cast<float>(m[1][1]),
-		   static_cast<float>(m[1][2]), static_cast<float>(m[1][3]),
-		   
+                 static_cast<float>(m[1][2]), static_cast<float>(m[1][3]),
+
                    static_cast<float>(m[2][0]), static_cast<float>(m[2][1]),
-		   static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
-		   
+                 static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
+
                    static_cast<float>(m[2][0]), static_cast<float>(m[3][1]),
-		   static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
-		   );
+                 static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
+                 );
 
 
       PRIVATE(this)->osvolume.transform(tmp);
@@ -1158,4 +1158,3 @@ SoRayPickActionP::setPickStyleFlags(SoState * state)
 }
 
 #undef PRIVATE
-

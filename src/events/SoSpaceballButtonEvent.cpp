@@ -122,13 +122,13 @@ SoSpaceballButtonEvent::isButtonPressEvent(const SoEvent * e,
 {
   return (e->isOfType(SoSpaceballButtonEvent::getClassTypeId()) &&
           (
-	   whichButton == SoSpaceballButtonEvent::ANY ||
+          whichButton == SoSpaceballButtonEvent::ANY ||
            coin_assert_cast<const SoSpaceballButtonEvent *>(e)->getButton()
-	   == whichButton
-	   )
-	  &&
+          == whichButton
+          )
+         &&
           coin_assert_cast<const SoButtonEvent *>(e)->getState() == SoButtonEvent::DOWN
-	  );
+         );
 }
 
 /*!
@@ -144,12 +144,12 @@ SoSpaceballButtonEvent::isButtonReleaseEvent(const SoEvent * e,
 {
   return (e->isOfType(SoSpaceballButtonEvent::getClassTypeId()) &&
           (
-	   whichButton == SoSpaceballButtonEvent::ANY ||
+          whichButton == SoSpaceballButtonEvent::ANY ||
            coin_assert_cast<const SoSpaceballButtonEvent *>(e)->getButton()
-	   == whichButton
-	   ) &&
+          == whichButton
+          ) &&
           coin_assert_cast<const SoButtonEvent *>(e)->getState() == SoButtonEvent::UP
-	  );
+         );
 }
 
 

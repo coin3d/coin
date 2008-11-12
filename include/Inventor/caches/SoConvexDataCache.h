@@ -71,4 +71,3 @@ private:
 };
 
 #endif // !COIN_SOCONVEXDATACACHE_H
-

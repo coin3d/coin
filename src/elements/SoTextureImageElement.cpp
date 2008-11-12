@@ -313,10 +313,10 @@ SoTextureImageElement::get(SoState * const state, SbVec2s & size,
 {
   return
     SoTextureImageElement::get(state, size, numComponents,
-			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapS),
-			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapT),
-			       reinterpret_cast<SoTextureImageElement::Model &>(model),
-			       blendColor);
+                            reinterpret_cast<SoTextureImageElement::Wrap &>(wrapS),
+                            reinterpret_cast<SoTextureImageElement::Wrap &>(wrapT),
+                            reinterpret_cast<SoTextureImageElement::Model &>(model),
+                            blendColor);
 }
 /*!
   FIXME: write doc.
@@ -333,11 +333,11 @@ SoTextureImageElement::get(SoState * const state, SbVec3s & size,
 {
   return
     SoTextureImageElement::get(state, size, numComponents,
-			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapS),
-			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapT),
-			       reinterpret_cast<SoTextureImageElement::Wrap &>(wrapR),
-			       reinterpret_cast<SoTextureImageElement::Model &>(model),
-			       blendColor);
+                            reinterpret_cast<SoTextureImageElement::Wrap &>(wrapS),
+                            reinterpret_cast<SoTextureImageElement::Wrap &>(wrapT),
+                            reinterpret_cast<SoTextureImageElement::Wrap &>(wrapR),
+                            reinterpret_cast<SoTextureImageElement::Model &>(model),
+                            blendColor);
 }
 
 //! FIXME: write doc.

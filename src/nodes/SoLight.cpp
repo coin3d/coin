@@ -134,4 +134,3 @@ SoLight::callback(SoCallbackAction * action)
   SoLightElement::add(state, this, (SoModelMatrixElement::get(state) * 
                                     SoViewingMatrixElement::get(state)));
 }
-

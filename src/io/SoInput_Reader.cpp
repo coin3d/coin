@@ -390,4 +390,3 @@ SoInput_BZ2FileReader::getFilename(void)
 
 #undef BZ_OK
 #undef BZ_STREAM_END
-

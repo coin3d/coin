@@ -68,4 +68,3 @@ SoVertexAttributeBundle::send(int index) const
   assert(this->glelem);
   this->glelem->send(index);
 }
-

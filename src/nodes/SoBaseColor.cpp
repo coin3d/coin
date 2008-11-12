@@ -196,4 +196,3 @@ SoBaseColor::callback(SoCallbackAction * action)
 }
 
 #undef PRIVATE
-

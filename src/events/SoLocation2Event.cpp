@@ -67,4 +67,3 @@ SoLocation2Event::SoLocation2Event(void)
 SoLocation2Event::~SoLocation2Event()
 {
 }
-

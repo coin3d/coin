@@ -297,5 +297,3 @@ SoGLTextureImageElement::updateLazyElement(void) const
     SoLazyElement::setGLImageId(state, glimageid, alphatest);
   }
 }
-
-

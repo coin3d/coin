@@ -303,4 +303,3 @@ ScXMLState::isTask(void) const
 }
 
 #undef PRIVATE
-

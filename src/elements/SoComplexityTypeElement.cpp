@@ -103,8 +103,8 @@ SoComplexityTypeElement::Type
 SoComplexityTypeElement::get(SoState * const state)
 {
   return static_cast<Type>(
-			   SoInt32Element::get(classStackIndex, state)
-			   );
+                        SoInt32Element::get(classStackIndex, state)
+                        );
 }
 
 //! FIXME: write doc.

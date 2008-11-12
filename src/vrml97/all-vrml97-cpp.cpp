@@ -97,4 +97,3 @@
 #include "vrml97/JS_VRMLClasses.cpp"
 
 #endif // HAVE_VRML97
-

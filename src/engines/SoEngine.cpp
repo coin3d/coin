@@ -538,4 +538,3 @@ SoEngine::setDirty(void)
 {
   this->flags |= FLAG_ISDIRTY;
 }
-

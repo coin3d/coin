@@ -168,4 +168,3 @@ SoMaterialBundle::setupElements(const SbBool isbetweenbeginend)
 
 #undef FLAG_COLORONLY
 #undef FLAG_NVIDIA_BUG
-

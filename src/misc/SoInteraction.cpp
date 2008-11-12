@@ -152,4 +152,3 @@ SoInteraction::init(void)
   interaction_isinitialized = TRUE;
   coin_atexit((coin_atexit_f*)interaction_cleanup, CC_ATEXIT_NORMAL);
 }
-

@@ -281,4 +281,3 @@ SoBumpMapMatrixElement::push(SoState * state)
   // make sure node ids are accumulated properly
   this->copyNodeIds(prev);
 }
-

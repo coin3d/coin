@@ -29,4 +29,3 @@
 #include "3dsLoader.cpp"
 #include "SoStream.cpp"
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
-

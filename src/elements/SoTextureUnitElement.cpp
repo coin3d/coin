@@ -83,5 +83,3 @@ SoTextureUnitElement::get(SoState * state)
 {
   return static_cast<int>(SoInt32Element::get(classStackIndex, state));
 }
-
-

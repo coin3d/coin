@@ -347,4 +347,3 @@ SoOutput_BZ2FileWriter::bytesInBuf(void)
 
 #undef BZ_OK
 #undef BZ_IO_ERROR
-

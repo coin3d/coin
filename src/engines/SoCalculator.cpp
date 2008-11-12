@@ -701,4 +701,3 @@ SoCalculator::writefieldcb(const char *fieldname, float *data,
 
 #undef THISP
 #undef PRIVATE
-

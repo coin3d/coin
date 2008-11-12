@@ -347,4 +347,3 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
 }
 
 #undef PRIVATE
-

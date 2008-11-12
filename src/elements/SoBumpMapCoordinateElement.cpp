@@ -131,4 +131,3 @@ SoBumpMapCoordinateElement::getArrayPtr(void) const
 {
   return this->coords;
 }
-

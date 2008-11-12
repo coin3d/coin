@@ -797,4 +797,3 @@ SoVectorizePSActionP::convertToPS(const float mm) const
 
 #undef PRIVATE
 #undef PUBLIC
-

@@ -334,4 +334,3 @@ cc_hash_print_stat(cc_hash * ht)
                          used_buckets, ht->size, ht->elements,
                          (float)ht->elements / used_buckets, max_chain_l);
 }
-

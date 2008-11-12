@@ -364,7 +364,7 @@ SbImage::getValue(SbVec3s & size, int & bytesperpixel) const
   PRIVATE(this)->readLock();
   if (PRIVATE(this)->schedulecb) {
     // start a thread to read the image.
-    SbBool scheduled = PRIVATE(this)->schedulecb(PRIVATE(this)->schedulename, const_cast<SbImage *>(this), 
+    SbBool scheduled = PRIVATE(this)->schedulecb(PRIVATE(this)->schedulename, const_cast<SbImage *>(this),
                                         PRIVATE(this)->scheduleclosure);
     if (scheduled) {
       PRIVATE(this)->schedulecb = NULL;
@@ -476,11 +476,11 @@ SbImage::readFile(const SbString & filename,
   if (simagedata) {
     //FIXME: Add 3'rd dimension (kintel 20011110)
     this->setValuePtr(
-		      SbVec3s(static_cast<short>(w),
-			      static_cast<short>(h), 
-			      static_cast<short>(0)
-			      ),
-		      nc, simagedata);
+                    SbVec3s(static_cast<short>(w),
+                           static_cast<short>(h),
+                           static_cast<short>(0)
+                           ),
+                    nc, simagedata);
     // NB, this is a trick. We use setValuePtr() to set the size
     // and data pointer, and then we change the data type to simage
     // peder, 2002-03-22

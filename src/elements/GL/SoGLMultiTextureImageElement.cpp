@@ -318,4 +318,3 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
 
 #undef MAX_UNITS
 #undef PRIVATE
-

@@ -478,7 +478,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
 
       const SoPointDetail * pd = coin_assert_cast<const SoPointDetail *>(
         fd->getPoint(pointdetailidx[i])
-	);
+       );
 
       int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
       if (PRIVATE(this)->numbumpcoords) {

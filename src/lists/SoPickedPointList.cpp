@@ -102,4 +102,3 @@ SoPickedPointList::set(const int idx, SoPickedPoint * pp)
   if (idx < this->getLength()) delete (*this)[idx];
   SbPList::operator[](idx) = (void*) pp;
 }
-

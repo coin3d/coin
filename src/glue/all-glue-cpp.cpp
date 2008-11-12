@@ -42,4 +42,3 @@
 #include "zlib.cpp"
 
 #include "normalization_cubemap.cpp"
-

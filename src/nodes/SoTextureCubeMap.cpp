@@ -672,4 +672,3 @@ SoTextureCubeMap::getImageField(const int idx)
 #undef UNLOCK_GLIMAGE
 
 #undef PRIVATE
-

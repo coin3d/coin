@@ -1579,4 +1579,3 @@ init_action_methods(void)
 }
 
 #undef SET_UNIQUE_NODE_ID
-

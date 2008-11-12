@@ -97,5 +97,3 @@ SoTexture3EnabledElement::setElt(int32_t value)
 {
   this->data = value;
 }
-
-

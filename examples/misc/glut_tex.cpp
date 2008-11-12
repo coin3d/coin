@@ -222,4 +222,3 @@ main(int argc, char ** argv)
   delete scenemanager;
   return 0;
 }
-

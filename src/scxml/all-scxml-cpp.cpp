@@ -42,4 +42,3 @@
 #include "SoScXMLDebugInfoInvoke.cpp"
 #include "SoScXMLScheduleRedrawInvoke.cpp"
 #include "SoScXMLScheduleTimerEventInvoke.cpp"
-

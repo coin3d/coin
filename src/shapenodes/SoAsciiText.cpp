@@ -882,4 +882,3 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
 // *************************************************************************
 
 #undef PRIVATE
-

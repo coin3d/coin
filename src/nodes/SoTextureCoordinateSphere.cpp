@@ -279,4 +279,3 @@ SoTextureCoordinateSphere::pick(SoPickAction * action)
 
 #undef PRIVATE
 #undef PUBLIC
-

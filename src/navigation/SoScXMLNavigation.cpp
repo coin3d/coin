@@ -70,4 +70,3 @@ SoScXMLNavigation::initClasses(void)
                      reinterpret_cast<const char *>(&(examiner_xml[0])),
                      sizeof(examiner_xml));
 }
-

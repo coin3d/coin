@@ -1116,4 +1116,3 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
 #undef STATUS_CONCAVE
 #undef LOCK_VAINDEXER
 #undef UNLOCK_VAINDEXER
-

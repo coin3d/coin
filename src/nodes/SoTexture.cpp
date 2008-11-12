@@ -71,4 +71,3 @@ SoTexture::callback(SoCallbackAction * action)
 {
   inherited::callback(action);
 }
-

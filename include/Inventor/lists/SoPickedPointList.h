@@ -36,10 +36,10 @@ public:
   ~SoPickedPointList() { this->truncate(0); }
   
   void append(SoPickedPoint * pp) { 
-    SbPList::append(static_cast<void *>(pp)); 
+    SbPList::append(static_cast<void *>(pp));
   }
   void insert(SoPickedPoint * pp, const int insertbefore) { 
-    SbPList::insert(static_cast<void *>(pp), insertbefore); 
+    SbPList::insert(static_cast<void *>(pp), insertbefore);
   }
   SoPickedPoint * operator[](const int idx) const {
     return static_cast<SoPickedPoint *>(SbPList::operator[](idx));

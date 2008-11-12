@@ -390,4 +390,3 @@ SoGLTextureCoordinateElement::doCallback() const
 }
 
 #undef PRIVATE
-

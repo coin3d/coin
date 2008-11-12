@@ -497,4 +497,3 @@ SoIndexedNurbsSurfaceP::tessEnd(void * data)
 
 #undef PRIVATE
 #undef PUBLIC
-

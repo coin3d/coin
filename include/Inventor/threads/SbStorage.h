@@ -46,4 +46,3 @@ private:
 };
 
 #endif // !COIN_SBSTORAGE_H
-

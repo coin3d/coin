@@ -468,4 +468,3 @@ COIN_DLL_API const SpiderMonkey_t * spidermonkey(void);
 #endif /* __cplusplus */
 
 #endif /* !COIN_GLUE_SPIDERMONKEY_H */
-

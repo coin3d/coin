@@ -255,4 +255,3 @@ SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
 }
 
 #undef PRIVATE
-

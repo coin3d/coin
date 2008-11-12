@@ -20,4 +20,3 @@ std::ostream & operator << (std::ostream & os, const class SbVec4ui32 & vec);
 std::ostream & operator << (std::ostream & os, const class SbColor4f & col4);
 
 #endif // !COIN_TESTSUITE_MISC
-

@@ -157,4 +157,3 @@ SoScXMLStateMachine::processSoEvent(const SoEvent * event)
 }
 
 #undef PRIVATE
-

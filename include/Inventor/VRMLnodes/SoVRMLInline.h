@@ -106,5 +106,3 @@ private:
 };
 
 #endif // ! COIN_SOVRMLINLINE_H
-
-

@@ -580,4 +580,3 @@ SoProfilerP::dumpToConsole(const SbProfilingData & data)
   SoProfilingReportGenerator::freeCriteria(sortsettings);
   SoProfilingReportGenerator::freeCriteria(printsettings);
 }
-

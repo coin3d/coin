@@ -125,4 +125,3 @@
 #include "SoWWWInline.cpp"
 #include "SoVertexAttribute.cpp"
 #include "SoVertexAttributeBinding.cpp"
-

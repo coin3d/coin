@@ -342,4 +342,3 @@ SoState::setCacheOpen(const SbBool open)
 }
 
 #undef PRIVATE
-

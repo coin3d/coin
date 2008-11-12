@@ -57,4 +57,3 @@ operator << (std::ostream & os, const SbColor4f & col4)
   os << col4[3];
   return os;
 }
-
