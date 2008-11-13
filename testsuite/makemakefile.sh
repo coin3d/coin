@@ -164,6 +164,16 @@ verbose: testsuite$(EXEEXT)
 	./testsuite --log_level=all --show_progress=no \
 	  --detect_memory_leaks=0
 
+debug: testsuite$(EXEEXT)
+	optionsfile=/tmp/opts.$$; \
+	echo set args --log_level=all --show_progress=no --detect_memory_leaks=0 >$optionsfile; \
+	echo run >>$optionsfile; \
+	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
+	DYLD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$DYLD_LIBRARY_PATH \
+	PATH=$(top_builddir)/src:$$PATH \
+	gdb ./testsuite -x $optionsfile; \
+	rm -f $optionsfile;
+
 clean:
 	rm -f testsuite$(EXEEXT) *.pdb
 	rm -f $(TEST_SUITE_OBJECTS)
