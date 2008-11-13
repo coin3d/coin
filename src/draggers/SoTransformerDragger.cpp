@@ -2222,6 +2222,15 @@ register_cb(void * data, SoCallbackAction * action, const SoNode * node)
   return SoCallbackAction::CONTINUE;
 }
 
+static
+void
+ensure_unique_cb(uintptr_t entry, void * value, void * data)
+{
+  SbDict * copydict = static_cast<SbDict *>(data);
+  void * val = NULL;
+  BOOST_ASSERT(!copydict->find(entry, val));
+}
+
 BOOST_AUTO_TEST_CASE(dragger_deep_copy)
 {
   SbDict origdict, copydict;
@@ -2263,6 +2272,9 @@ BOOST_AUTO_TEST_CASE(dragger_deep_copy)
   const int copydictsize = keys.getLength();
 
   BOOST_ASSERT(origdictsize == copydictsize);
+
+  // make sure pointer sets have an empty union
+  origdict.applyToAll(ensure_unique_cb, &copydict);
 
   root->unref();
   copy->unref();
