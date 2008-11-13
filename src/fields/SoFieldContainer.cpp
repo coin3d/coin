@@ -932,7 +932,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       newinst->copyContents(protoinst, FALSE);
     }
     else {
-      const SoFieldContainer * ccp;
+      const SoFieldContainer * ccp = NULL;
       if (orig->isOfType(SoProto::getClassTypeId())) {
         // just copy the pointer. A PROTO definition is
         // read-only. It's not possible to change it after it has been
@@ -944,6 +944,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       }
       assert(ccp);
       SoFieldContainer::addCopy(orig, ccp);
+      cp = const_cast<SoFieldContainer *>(ccp);
     }
   }
 
