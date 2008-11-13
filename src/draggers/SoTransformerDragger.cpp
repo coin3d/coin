@@ -2264,8 +2264,8 @@ BOOST_AUTO_TEST_CASE(dragger_deep_copy)
 
   BOOST_ASSERT(origdictsize == copydictsize);
 
-  //root->unref();
-  //copy->unref();
+  root->unref();
+  copy->unref();
 }
 
 #endif // COIN_TEST_SUITE
