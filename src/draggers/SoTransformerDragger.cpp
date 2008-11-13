@@ -2206,4 +2206,68 @@ SoTransformerDragger::setDynamicRotatorSwitches(const SoEvent *event)
 #undef PRIVATE
 #undef THISP
 
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/SbDict.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+static
+SoCallbackAction::Response
+register_cb(void * data, SoCallbackAction * action, const SoNode * node)
+{
+  assert(data);
+  SbDict * dict = static_cast<SbDict *>(data);
+  dict->enter(reinterpret_cast<uintptr_t>(node), NULL);
+  return SoCallbackAction::CONTINUE;
+}
+
+BOOST_AUTO_TEST_CASE(dragger_deep_copy)
+{
+  SbDict origdict, copydict;
+
+  SoSeparator * root = new SoSeparator;
+  root->setName("dragger_deep_copy_root");
+  root->ref();
+  root->addChild(new SoTransformerDragger);
+
+  SoSeparator * copy = static_cast<SoSeparator *>(root->copy());
+  assert(copy);
+  copy->setName("dragger_deep_copy_copy");
+  copy->ref();
+
+  {
+    SoCallbackAction cba;
+    cba.setCallbackAll(TRUE);
+
+    cba.addPreCallback(SoNode::getClassTypeId(), register_cb, &origdict);
+    cba.apply(root);
+  }
+
+  {
+    SoCallbackAction cba;
+    cba.setCallbackAll(TRUE);
+
+    cba.addPreCallback(SoNode::getClassTypeId(), register_cb, &copydict);
+    cba.apply(copy);
+  }
+
+  SbPList keys, values;
+
+  origdict.makePList(keys, values);
+  const int origdictsize = keys.getLength();
+
+  keys.truncate(0);
+  values.truncate(0);
+  copydict.makePList(keys, values);
+  const int copydictsize = keys.getLength();
+
+  BOOST_ASSERT(origdictsize == copydictsize);
+
+  //root->unref();
+  //copy->unref();
+}
+
+#endif // COIN_TEST_SUITE
+
 #endif // HAVE_DRAGGERS
