@@ -38,6 +38,8 @@
 #include <config.h> /* for HAVE_* defines */
 #endif /* HAVE_CONFIG_H */
 
+#include <boost/detail/workaround.hpp> /* For BOOST_WORKAROUND */
+
 #include <Inventor/C/basic.h> /* For COMPILE_ONLY_BEFORE */
 
 #ifdef __FILE__
@@ -150,4 +152,18 @@ COIN_CT_ASSERT( (COIN_MAJOR_VERSION < MAJOR) || (COIN_MAJOR_VERSION == MAJOR && 
 static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO); \
 }
+
+#ifdef _MSC_VER
+#define COIN_MSVC _MSC_VER
+#endif /* _MSC_VER */
+
+#define COIN_MSVC_6_0_VERSION 1200
+#define COIN_MSVC_7_0_VERSION 1300
+#define COIN_MSVC_7_1_VERSION 1310
+#define COIN_MSVC_8_0_VERSION 1400
+#define COIN_MSVC_9_0_VERSION 1500
+
+/* see SbTime.cpp for example usage */
+#define COIN_WORKAROUND(def, test) BOOST_WORKAROUND(def, test)
+
 #endif /* !COIN_DEFS_H */

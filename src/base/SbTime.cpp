@@ -62,6 +62,8 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/threads/thread.h>
 
+#include "coindefs.h"
+
 #ifndef SIM_TIMEVAL_TV_SEC_T
 #define SIM_TIMEVAL_TV_SEC_T time_t
 #endif // !SIM_TIMEVAL_TV_SEC_T
@@ -70,7 +72,11 @@
 #define SIM_TIMEVAL_TV_USEC_T time_t
 #endif // !SIM_TIMEVAL_TV_USEC_T
 
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+// VC6.0 doesn't grok (nor need) "using std::<...>"
+#else
 using std::strlen;
+#endif
 
 // *************************************************************************
 
