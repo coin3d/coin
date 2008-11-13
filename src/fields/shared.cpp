@@ -77,6 +77,7 @@
 #include <Inventor/nodes/SoNode.h>
 
 #include "tidbitsp.h"
+#include "SbBasicP.h"
 
 // *************************************************************************
 
@@ -130,7 +131,7 @@ sosfbool_read_value(SoInput * in, SbBool & val)
 void
 sosfbool_write_value(SoOutput * out, SbBool val)
 {
-  if (out->isBinary()) out->write((unsigned int)(val ? 1 : 0));
+  if (out->isBinary()) out->write(static_cast<unsigned int>(val ? 1 : 0));
   else out->write(val ? "TRUE" : "FALSE");
 }
 
@@ -165,7 +166,7 @@ sosfstring_write_value(const SoField * f, SoOutput * out, const SbString & val)
   // not we're writing a VRML97 node.
   const SoFieldContainer * fc = f->getContainer();
   if (fc && fc->isOfType(SoNode::getClassTypeId()) &&
-      (((SoNode *)fc)->getNodeType() & SoNode::VRML2)) {
+      (coin_assert_cast<const SoNode *>(fc)->getNodeType() & SoNode::VRML2)) {
     // FIXME: SbString should have had a replaceAll() method, so we
     // wouldn't have to spell out the iteration loop below. 20040614 mortene.
     SbString ws;
@@ -344,7 +345,7 @@ sosftime_write_value(SoOutput * out, const SbTime & p)
 void
 sosfuint32_write_value(SoOutput * out, uint32_t val)
 {
-  unsigned int tmp = (unsigned int) val;
+  unsigned int tmp = static_cast<unsigned int>(val);
   out->write(tmp);
 }
 
@@ -366,9 +367,9 @@ sosfvec2b_write_value(SoOutput * out, SbVec2b v)
 {
   // FIXME: check how write(char & c) writes it's data (ascii) and see if
   // that can be used.  20070520 larsa
-  out->write((short) v[0]);
+  out->write(static_cast<short>(v[0]));
   if (!out->isBinary()) out->write(' ');
-  out->write((short) v[1]);
+  out->write(static_cast<short>(v[1]));
 }
 
 // Write to output stream. Used from SoSFVec2s and SoMFVec2s.
@@ -425,11 +426,11 @@ sosfvec3d_read_value(SoInput * in, SbVec3d & v)
 void
 sosfvec3b_write_value(SoOutput * out, SbVec3b v)
 {
-  out->write((short) v[0]);
+  out->write(static_cast<short>(v[0]));
   if (!out->isBinary()) out->write(' ');
-  out->write((short) v[1]);
+  out->write(static_cast<short>(v[1]));
   if (!out->isBinary()) out->write(' ');
-  out->write((short) v[2]);
+  out->write(static_cast<short>(v[2]));
 }
 
 // Write to output stream. Used from SoSFVec3s and SoMFVec3s.
@@ -482,26 +483,26 @@ sosfvec3d_write_value(SoOutput * out, const SbVec3d & v)
 void
 sosfvec4b_write_value(SoOutput * out, SbVec4b v)
 {
-  out->write((short) v[0]);
+  out->write(static_cast<short>(v[0]));
   if (!out->isBinary()) out->write(' ');
-  out->write((short) v[1]);
+  out->write(static_cast<short>(v[1]));
   if (!out->isBinary()) out->write(' ');
-  out->write((short) v[2]);
+  out->write(static_cast<short>(v[2]));
   if (!out->isBinary()) out->write(' ');
-  out->write((short) v[3]);
+  out->write(static_cast<short>(v[3]));
 }
 
 // Write to output stream. Used from SoSFVec4b and SoMFVec4b.
 void
 sosfvec4ub_write_value(SoOutput * out, SbVec4ub v)
 {
-  out->write((unsigned short) v[0]);
+  out->write(static_cast<unsigned short>(v[0]));
   if (!out->isBinary()) out->write(' ');
-  out->write((unsigned short) v[1]);
+  out->write(static_cast<unsigned short>(v[1]));
   if (!out->isBinary()) out->write(' ');
-  out->write((unsigned short) v[2]);
+  out->write(static_cast<unsigned short>(v[2]));
   if (!out->isBinary()) out->write(' ');
-  out->write((unsigned short) v[3]);
+  out->write(static_cast<unsigned short>(v[3]));
 }
 
 // Write to output stream. Used from SoSFVec4s and SoMFVec4s.

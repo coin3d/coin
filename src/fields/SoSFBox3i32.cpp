@@ -68,11 +68,11 @@ SoSFBox3i32::readValue(SoInput * in)
 {
   int32_t min[3];
   int32_t max[3];
-  if (!in->read(min[0]) || 
-      !in->read(min[1]) || 
-      !in->read(min[2]) || 
-      !in->read(max[0]) || 
-      !in->read(max[1]) || 
+  if (!in->read(min[0]) ||
+      !in->read(min[1]) ||
+      !in->read(min[2]) ||
+      !in->read(max[0]) ||
+      !in->read(max[1]) ||
       !in->read(max[2])) {
     SoReadError::post(in, "Couldn't read SoSFBox3i32");
     return FALSE;
@@ -109,7 +109,7 @@ SoSFBox3i32::writeValue(SoOutput * out) const
   Set value of vector.
 */
 void
-SoSFBox3i32::setValue(int32_t xmin, int32_t ymin, int32_t zmin, 
+SoSFBox3i32::setValue(int32_t xmin, int32_t ymin, int32_t zmin,
                       int32_t xmax, int32_t ymax, int32_t zmax)
 {
   this->setValue(SbBox3i32(xmin, ymin, zmin, xmax, ymax, zmax));

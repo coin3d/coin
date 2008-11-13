@@ -40,7 +40,7 @@
 
 #include <Inventor/fields/SoMFVec3f.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -74,7 +74,7 @@ SoMFVec3f::read1Value(SoInput * in, int idx)
 {
 #if 1 // 12-25% speed increase when this is activated. pederb, 2004-02-17
   assert(idx < this->maxNum);
-  return 
+  return
     in->read(this->values[idx][0]) &&
     in->read(this->values[idx][1]) &&
     in->read(this->values[idx][2]);

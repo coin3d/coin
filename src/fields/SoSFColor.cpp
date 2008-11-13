@@ -68,7 +68,7 @@ SoSFColor::initClass(void)
 SbBool
 SoSFColor::readValue(SoInput * in)
 {
-  return 
+  return
     in->read(this->value[0]) &&
     in->read(this->value[1]) &&
     in->read(this->value[2]);

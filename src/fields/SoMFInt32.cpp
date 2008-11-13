@@ -38,7 +38,7 @@
 
 #include <Inventor/fields/SoMFInt32.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #if COIN_DEBUG

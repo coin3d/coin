@@ -65,7 +65,7 @@
   bytes in the pixel color values marked as "XX" are ignored and can
   be left out. "GG" is the part which gives a grayscale value and "AA"
   is for opacity.
-  
+
   For 1-component images, the pixel-format is 0xXXXXXXGG, where the
   bytes in the pixel color values marked as "XX" are ignored and can
   be left out.
@@ -82,7 +82,7 @@
   Texture2 {
      image 2 2 4
 
-     0xffffffff 0x00ff0088   # white   semi-transparent green  
+     0xffffffff 0x00ff0088   # white   semi-transparent green
      0xff0000ff 0xffff00ff   #  red    yellow
   }
 
@@ -107,7 +107,9 @@
 
 #include <Inventor/fields/SoSFImage.h>
 
-#include <stdlib.h> // free()
+#include "coindefs.h"
+
+#include <cstdlib> // free()
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -121,13 +123,13 @@
 
 class SoSFImageP {
 public:
-  SoSFImageP(void) { 
-    this->image = new SbImage; 
+  SoSFImageP(void) {
+    this->image = new SbImage;
     this->freeimage = NULL;
     this->deleteimage = NULL;
   }
-  ~SoSFImageP() { 
-    delete this->image; 
+  ~SoSFImageP() {
+    delete this->image;
     if (this->freeimage) free(this->freeimage);
     delete[] this->deleteimage;
   }
@@ -244,7 +246,7 @@ SoSFImage::readValue(SoInput * in)
       }
       for (int j = 0; j < nc; j++) {
         pixblock[byte++] =
-          (unsigned char) ((l >> (8 * (nc-j-1))) & 0xFF);
+          static_cast<unsigned char>((l >> (8 * (nc-j-1))) & 0xFF);
       }
     }
   }
@@ -284,7 +286,7 @@ SoSFImage::writeValue(SoOutput * out) const
       unsigned int data = 0;
       for (int j = 0; j < nc; j++) {
         if (j) data <<= 8;
-        data |= (uint32_t)(pixblock[i * nc + j]);
+        data |= static_cast<uint32_t>(pixblock[i * nc + j]);
       }
       out->write(data);
       if (((i+1)%8 == 0) && (i+1 != numpixels)) {
@@ -398,12 +400,12 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 
   case NO_COPY_AND_DELETE:
     PRIVATE(this)->image->setValuePtr(size, nc, pixels);
-    PRIVATE(this)->deleteimage = (unsigned char*) pixels;
+    PRIVATE(this)->deleteimage = const_cast<unsigned char *>(pixels);
     break;
   case NO_COPY_AND_FREE:
     PRIVATE(this)->image->setValuePtr(size, nc, pixels);
-    PRIVATE(this)->freeimage = (unsigned char*) pixels;
-    break;    
+    PRIVATE(this)->freeimage = const_cast<unsigned char *>(pixels);
+    break;
   }
   this->valueChanged();
 }
@@ -411,7 +413,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 /*!
   Return pixel buffer. Return the image size and components in
   \a size and \a nc.
-  
+
   You can not use this method to set a new image size. Use setValue()
   to change the size of the image buffer.
 
@@ -441,7 +443,11 @@ SoSFImage::finishEditing(void)
   \since TGS Inventor 3.0
  */
 void
-SoSFImage::setSubValue(const SbVec2s & dims, const SbVec2s & offset, unsigned char * pixels)
+SoSFImage::setSubValue(
+		       const SbVec2s & COIN_UNUSED(dims),
+		       const SbVec2s & COIN_UNUSED(offset),
+		       unsigned char * COIN_UNUSED(pixels)
+		       )
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::setSubValue",
@@ -456,7 +462,12 @@ SoSFImage::setSubValue(const SbVec2s & dims, const SbVec2s & offset, unsigned ch
   \since TGS Inventor 3.0
  */
 void
-SoSFImage::setSubValues(const SbVec2s * dims, const SbVec2s * offsets, int num, unsigned char ** pixelblocks)
+SoSFImage::setSubValues(
+			const SbVec2s * COIN_UNUSED(dims),
+			const SbVec2s * COIN_UNUSED(offsets),
+			int COIN_UNUSED(num),
+			unsigned char ** COIN_UNUSED(pixelblocks)
+			)
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::setSubValues",
@@ -471,7 +482,11 @@ SoSFImage::setSubValues(const SbVec2s * dims, const SbVec2s * offsets, int num, 
   \since TGS Inventor 3.0
  */
 unsigned char *
-SoSFImage::getSubTexture(int idx, SbVec2s & dims, SbVec2s & offset) const
+SoSFImage::getSubTexture(
+			 int COIN_UNUSED(idx),
+			 SbVec2s & COIN_UNUSED(dims),
+			 SbVec2s & COIN_UNUSED(offset)
+			 ) const
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::getSubTexture",
@@ -511,7 +526,7 @@ SoSFImage::hasSubTextures(int & numsubtextures)
   \since TGS Inventor ?.?
  */
 void
-SoSFImage::setNeverWrite(SbBool flag)
+SoSFImage::setNeverWrite(SbBool COIN_UNUSED(flag))
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::setNeverWrite",

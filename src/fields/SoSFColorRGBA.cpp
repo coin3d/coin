@@ -68,7 +68,7 @@ SoSFColorRGBA::initClass(void)
 SbBool
 SoSFColorRGBA::readValue(SoInput * in)
 {
-  return 
+  return
     in->read(this->value[0]) &&
     in->read(this->value[1]) &&
     in->read(this->value[2]) &&

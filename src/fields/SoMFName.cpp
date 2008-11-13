@@ -36,7 +36,7 @@
 
 #include <Inventor/fields/SoMFName.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>

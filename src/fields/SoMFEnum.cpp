@@ -39,7 +39,7 @@
 
 #include <Inventor/fields/SoMFEnum.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
@@ -174,7 +174,7 @@ SoMFEnum::write1Value(SoOutput * out, int idx) const
   int val = (*this)[idx];
   const SbName *enumname;
   if (findEnumName(val, enumname)) {
-    out->write((char *)enumname->getString());
+    out->write(const_cast<char *>(enumname->getString()));
     return;
   }
   // If we don't have any legal values for this field,

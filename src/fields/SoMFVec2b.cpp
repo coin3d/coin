@@ -42,7 +42,7 @@
 
 #include <Inventor/fields/SoMFVec2b.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>

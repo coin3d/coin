@@ -69,8 +69,8 @@ SoSFVec4b::initClass(void)
 SbBool
 SoSFVec4b::readValue(SoInput * in)
 {
-  return 
-    in->readByte(this->value[0]) && 
+  return
+    in->readByte(this->value[0]) &&
     in->readByte(this->value[1]) &&
     in->readByte(this->value[2]) &&
     in->readByte(this->value[3]);

@@ -51,6 +51,8 @@
 
 #include <Inventor/fields/SoMFNode.h>
 
+#include "SbBasicP.h"
+
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -106,7 +108,7 @@ SoMFNode::fieldSizeof(void) const
 void *
 SoMFNode::valuesPtr(void)
 {
-  return (void *)this->values;
+  return this->values;
 }
 
 void
@@ -116,7 +118,7 @@ SoMFNode::setValuesPtr(void * ptr)
   // mechanisms set up -- so this function should _only_ be used for
   // initial setup of array memory.  In Coin, it's only used from
   // SoMField::allocValues().
-  this->values = (SoNode **)ptr;
+  this->values = static_cast<SoNode **>(ptr);
 }
 
 int
@@ -143,7 +145,7 @@ SoMFNode::setValues(const int start, const int numarg, const SoNode ** newvals)
 
   // We favor simplicity of code over performance here.
   { for (int i=0; i < numarg; i++)
-    this->set1Value(start+i, (SoNode *)newvals[i]); }
+    this->set1Value(start+i, const_cast<SoNode *>(newvals[i])); }
 
   // unref() to match the initial ref().
   { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->unref(); }
@@ -337,17 +339,17 @@ SoMFNode::write1Value(SoOutput * out, int idx) const
   // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
   // That's why we check for the base type before writing.
 
-  SoBase * base = (SoBase*) this->values[idx];
+  SoBase * base = this->values[idx];
   if (base) {
     if (base->isOfType(SoNode::getClassTypeId())) {
-      ((SoNode*)base)->writeInstance(out);
+      coin_assert_cast<SoNode *>(base)->writeInstance(out);
     }
     else if (base->isOfType(SoPath::getClassTypeId())) {
       SoWriteAction wa(out);
-      wa.continueToApply((SoPath*)base);
+      wa.continueToApply(coin_assert_cast<SoPath *>(base));
     }
     else if (base->isOfType(SoEngine::getClassTypeId())) {
-      ((SoEngine*)base)->writeInstance(out);
+      coin_assert_cast<SoEngine *>(base)->writeInstance(out);
     }
   }
   else {
@@ -372,14 +374,14 @@ SoMFNode::countWriteRefs(SoOutput * out) const
       // That's why we check the base type before writing/counting
 
       if (base->isOfType(SoNode::getClassTypeId())) {
-        ((SoNode*)base)->writeInstance(out);
+        coin_assert_cast<SoNode *>(base)->writeInstance(out);
       }
       else if (base->isOfType(SoEngine::getClassTypeId())) {
-        ((SoEngine*)base)->addWriteReference(out);
+        coin_assert_cast<SoEngine*>(base)->addWriteReference(out);
       }
       else if (base->isOfType(SoPath::getClassTypeId())) {
         SoWriteAction wa(out);
-        wa.continueToApply((SoPath*)base);
+        wa.continueToApply(coin_assert_cast<SoPath *>(base));
       }
     }
   }
@@ -426,7 +428,7 @@ SoMFNode::fixCopy(SbBool copyconnections)
 #if COIN_DEBUG
       if (fc) fc->assertAlive();
 #endif // COIN_DEBUG
-      if (fc) this->set1Value(i, (SoNode *)fc);
+      if (fc) this->set1Value(i, coin_assert_cast<SoNode *>(fc));
 #endif // COIN_INTERNAL_SOMFNODE || COIN_INTERNAL_SOMFENGINE
 
 #ifdef COIN_INTERNAL_SOMFPATH
@@ -450,7 +452,7 @@ SoMFNode::referencesCopy(void) const
     SoNode * item = (*this)[i];
     if (item) {
 #if defined(COIN_INTERNAL_SOMFNODE) || defined(COIN_INTERNAL_SOMFENGINE)
-      if (SoFieldContainer::checkCopy((SoFieldContainer *)item)) return TRUE;
+      if (SoFieldContainer::checkCopy(coin_assert_cast<SoFieldContainer *>(item))) return TRUE;
 #endif // COIN_INTERNAL_SOMFNODE || COIN_INTERNAL_SOMFENGINE
 #ifdef COIN_INTERNAL_SOMFPATH
       if (item->getHead() && SoFieldContainer::checkCopy(item->getHead())) return TRUE;
@@ -506,7 +508,7 @@ SoNode *
 SoMFNode::getNode(int idx) const
 {
   assert(idx >= 0 && idx < this->getNum());
-  return (SoNode*) this->getValues(0)[idx];
+  return const_cast<SoNode *>(this->getValues(0)[idx]);
 }
 
 /*!

@@ -82,7 +82,7 @@
 
 #include <Inventor/fields/SoSField.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -125,9 +125,9 @@ SoSField::initClass(void)
   PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
 }
 
-void 
+void
 SoSField::atexit_cleanup(void)
 {
   SoType::removeType(SoSField::classTypeId.getName());
-  SoSField::classTypeId STATIC_SOTYPE_INIT; 
+  SoSField::classTypeId STATIC_SOTYPE_INIT;
 }

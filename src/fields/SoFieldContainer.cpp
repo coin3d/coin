@@ -40,8 +40,8 @@
 
 #include <Inventor/fields/SoFieldContainer.h>
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -74,6 +74,7 @@
 #include "misc/SbHash.h"
 #include "io/SoWriterefCounter.h"
 #include "coindefs.h" // COIN_STUB()
+#include "SbBasicP.h"
 
 // *************************************************************************
 
@@ -182,7 +183,7 @@ typedef struct {
 static void
 sofieldcontainer_construct_copydict(void * closure)
 {
-  sofieldcontainer_copydict * data = (sofieldcontainer_copydict*) closure;
+  sofieldcontainer_copydict * data = static_cast<sofieldcontainer_copydict *>(closure);
 
   data->copiedinstancestack = new SbList<SoFieldContainerCopyMap *>;
   data->contentscopiedstack = new SbList<ContentsCopiedMap *>;
@@ -191,7 +192,7 @@ sofieldcontainer_construct_copydict(void * closure)
 static void
 sofieldcontainer_destruct_copydict(void * closure)
 {
-  sofieldcontainer_copydict * data = (sofieldcontainer_copydict*) closure;
+  sofieldcontainer_copydict * data = static_cast<sofieldcontainer_copydict *>(closure);
   delete data->copiedinstancestack;
   delete data->contentscopiedstack;
 }
@@ -209,7 +210,7 @@ sofieldcontainer_copydict_cleanup(void)
 static sofieldcontainer_copydict *
 sofieldcontainer_get_copydict(void)
 {
-  return (sofieldcontainer_copydict*) sofieldcontainer_copydictstorage->get();
+  return static_cast<sofieldcontainer_copydict *>(sofieldcontainer_copydictstorage->get());
 }
 
 // *************************************************************************
@@ -227,15 +228,15 @@ SoFieldContainer::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 
   sofieldcontainer_userdata_dict = new UserDataMap;
-  coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(sofieldcontainer_userdata_cleanup), CC_ATEXIT_NORMAL);
 
   sofieldcontainer_copydictstorage =
     new SbStorage(sizeof(sofieldcontainer_copydict),
                   sofieldcontainer_construct_copydict,
                   sofieldcontainer_destruct_copydict);
 
-  coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup, CC_ATEXIT_NORMAL);
-  coin_atexit((coin_atexit_f*) cleanupClass, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(sofieldcontainer_copydict_cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
 }
 
 void
@@ -263,8 +264,8 @@ SoFieldContainer::setToDefaults(void)
   if (!fd) return;
 
   // Allocate a fresh template to retrieve values from.
-  const SoFieldContainer * from = (const SoFieldContainer *)
-    this->getTypeId().createInstance();
+  const SoFieldContainer * from =
+    static_cast<const SoFieldContainer *>(this->getTypeId().createInstance());
   from->ref();
   fd->overlay(this, from, FALSE);
   from->unref();
@@ -285,8 +286,8 @@ SoFieldContainer::hasDefaultValues(void) const
   if (!fd) return TRUE;
 
   // Allocate a fresh template to compare with.
-  const SoFieldContainer * fc = (const SoFieldContainer *)
-    this->getTypeId().createInstance();
+  const SoFieldContainer * fc =
+    static_cast<const SoFieldContainer *>(this->getTypeId().createInstance());
   fc->ref();
   SbBool hasdefaultvalues = fd->isSame(this, fc);
   fc->unref();
@@ -431,7 +432,7 @@ SoFieldContainer::getField(const SbName & name) const
       return fields->getField(this, i);
   }
 
-  return (SoField *)NULL;
+  return NULL;
 }
 
 /*!
@@ -549,7 +550,7 @@ SoFieldContainer::set(const char * fielddata, SoInput * in)
   }
 
   SoInput * readbuf = in ? new SoInput(in) : new SoInput;
-  readbuf->setBuffer((void *)fielddata, strlen(fielddata));
+  readbuf->setBuffer(const_cast<char *>(fielddata), strlen(fielddata));
 
   SbBool dummy;
   SbBool ok = fields->read(readbuf, this, FALSE, dummy);
@@ -604,7 +605,7 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
   // try to strip off the header.
   if (size > 0) {
     // Strip off header.
-    char * start = strstr((char *)buffer, "\n\n");
+    char * start = strstr(static_cast<char *>(buffer), "\n\n");
     if (start != NULL) {
       start += 2;
       fielddata = start;
@@ -637,7 +638,7 @@ SoFieldContainer::notify(SoNotList * l)
       // we were notififed from a field. No need to add a new
       // SoNotRec since the base pointer will point to us.
       assert(l->getLastRec()->getType() == SoNotRec::CONTAINER);
-      assert(l->getLastRec()->getBase() == (SoBase*) this);
+      assert(l->getLastRec()->getBase() == coin_assert_cast<SoBase *>(this));
       inherited::notify(l);
     }
   }
@@ -652,7 +653,8 @@ SoFieldContainer::notify(SoNotList * l)
   no matter what the arguments are.
  */
 SbBool
-SoFieldContainer::validateNewFieldValue(SoField * field, void * newval)
+SoFieldContainer::validateNewFieldValue(SoField * COIN_UNUSED(field),
+					void * COIN_UNUSED(newval))
 {
   COIN_STUB();
   return TRUE;
@@ -788,7 +790,7 @@ SoFieldContainer *
 SoFieldContainer::copyThroughConnection(void) const
 {
   // Cast away const.
-  return (SoFieldContainer *)this;
+  return const_cast<SoFieldContainer *>(this);
 }
 
 /*!
@@ -864,7 +866,10 @@ SoFieldContainer::checkCopy(const SoFieldContainer * orig)
 
   const SoFieldContainer * fccopy;
   // FIXME: ugly constness cast. 20050520 mortene.
-  return (SoFieldContainer *)(copiedinstances->get(orig, fccopy) ? fccopy : NULL);
+  return const_cast<SoFieldContainer *>
+    (
+     copiedinstances->get(orig, fccopy) ? fccopy : NULL
+     );
 }
 
 
@@ -906,7 +911,8 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   assert(copiedinstances);
   assert(contentscopied);
 
-  SoProtoInstance * protoinst = SoProtoInstance::findProtoInstance((SoNode*) orig);
+  SoProtoInstance * protoinst =
+    SoProtoInstance::findProtoInstance(coin_assert_cast<const SoNode *>(orig));
 
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
@@ -926,17 +932,18 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       newinst->copyContents(protoinst, FALSE);
     }
     else {
+      const SoFieldContainer * ccp;
       if (orig->isOfType(SoProto::getClassTypeId())) {
         // just copy the pointer. A PROTO definition is
         // read-only. It's not possible to change it after it has been
         // created so this should be safe.
-        cp = (SoFieldContainer*) orig;
+        ccp = orig;
       }
       else {
-        cp = (SoFieldContainer *)orig->getTypeId().createInstance();
+        ccp = static_cast<const SoFieldContainer *>(orig->getTypeId().createInstance());
       }
-      assert(cp);
-      SoFieldContainer::addCopy(orig, cp);
+      assert(ccp);
+      SoFieldContainer::addCopy(orig, ccp);
     }
   }
 
@@ -972,9 +979,9 @@ struct fieldcontainer_unref_node :
   public SbHash<const SoFieldContainer *,
               const SoFieldContainer *>::ApplyFunctor<void *>
 {
-  void operator()(const SoFieldContainer * & key,
-                const SoFieldContainer * & fieldcontainer,
-                void * closure) {
+  void operator()(const SoFieldContainer * & COIN_UNUSED(key),
+                  const SoFieldContainer * & fieldcontainer,
+                  void * COIN_UNUSED(closure)) {
     fieldcontainer->unref();
   }
 };

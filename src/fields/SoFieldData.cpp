@@ -57,7 +57,7 @@
 
 #include <Inventor/fields/SoFieldData.h>
 
-#include <ctype.h>
+#include <cctype>
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
@@ -93,8 +93,8 @@ public:
     // for fields containers with dynamic fields.
     return (this->name == fe.name);
   }
-  int operator!=(const SoFieldEntry & fe) const { 
-    return ! operator==(&fe); 
+  int operator!=(const SoFieldEntry & fe) const {
+    return ! operator==(&fe);
   }
 
   SbName name;
@@ -113,7 +113,7 @@ public:
   // Copy constructors.
   SoEnumEntry(const SoEnumEntry * ee) { this->copy(ee); }
   SoEnumEntry(const SoEnumEntry & ee) { this->copy(&ee); }
-  
+
   int operator==(const SoEnumEntry & ee) const {
     return ((this->nameoftype == ee.nameoftype) &&
             (this->names == ee.names) && (this->values == ee.values));
@@ -218,9 +218,9 @@ SoFieldData::addField(SoFieldContainer * base, const char * name,
                            base->getTypeId().getName().getString(),
                            name, field, this->fields.getLength());
 #endif // debug
-    
-    char * vbase = (char *)base;
-    char * vfield = (char *)field;
+
+    size_t vbase = reinterpret_cast<size_t>(base);
+    size_t vfield = reinterpret_cast<size_t>(field);
     const ptrdiff_t offs = vfield - vbase;
 
     // FIXME: disabled yet, as we should first make a test program to
@@ -287,7 +287,7 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
     field0->setIgnored(field1->isIgnored());
     field0->enableNotify(field1->isNotifyEnabled());
     field0->setFieldType(field1->getFieldType());
-    
+
     // fix complex fields (node, engine, and path fields)
     field0->fixCopy(copyconnections);
     // handle connections
@@ -321,9 +321,9 @@ SoField *
 SoFieldData::getField(const SoFieldContainer * object, int index) const
 {
   assert(index >= 0 && index < this->fields.getLength());
-  char * fieldptr = (char *)object;
+  size_t fieldptr = reinterpret_cast<size_t>(object);
   fieldptr += this->fields[index]->ptroffset;
-  return (SoField *)fieldptr;
+  return reinterpret_cast<SoField *>(fieldptr);
 }
 
 /*!
@@ -333,8 +333,8 @@ SoFieldData::getField(const SoFieldContainer * object, int index) const
 int
 SoFieldData::getIndex(const SoFieldContainer * fc, const SoField * field) const
 {
-  char * vbase = (char *)fc;
-  char * vfield = (char *)field;
+  size_t vbase = reinterpret_cast<size_t>(fc);
+  size_t vfield = reinterpret_cast<size_t>(field);
   const ptrdiff_t ptroffset = vfield - vbase;
 
   for (int i=0; i < this->fields.getLength(); i++)
@@ -354,22 +354,22 @@ SoFieldData::addEnumValue(const char * enumname, const char * valuename,
   CC_GLOBAL_LOCK;
   if (!this->hasEnumValue(enumname, valuename)) {
     SoEnumEntry * e = NULL;
-    
+
     for (int i=0; !e && (i < this->enums.getLength()); i++) {
       if (this->enums[i]->nameoftype == enumname) e = this->enums[i];
     }
-    
+
     if (e == NULL) {
       e = new SoEnumEntry(enumname);
       this->enums.append(e);
     }
-    
+
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::addEnumValue",
                            "enumname: %s, valuename: %s, value: %d",
                            enumname, valuename, value);
 #endif // debug
-    
+
     assert(e->names.find(valuename) == -1);
     e->names.append(valuename);
     // Note that an enum can have several names mapping to the same
@@ -436,8 +436,8 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
       return FALSE;
     }
 
-    uint8_t numfields = (uint8_t) (fieldsval & 0xff);
-    uint8_t fieldflags = (uint8_t) (fieldsval >> 8);
+    uint8_t numfields = static_cast<uint8_t>(fieldsval & 0xff);
+    uint8_t fieldflags = static_cast<uint8_t>(fieldsval >> 8);
 
     if (SoInputP::debugBinary()) {
       SoDebugError::postInfo("SoFieldData::read",
@@ -501,7 +501,7 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
     while (TRUE) {
       SbName fieldname;
       if (!in->read(fieldname, TRUE)) return TRUE; // Terminates loop on "}"
-      
+
       if (in->isFileVRML2()) {
         // test for the VRML97 ROUTE keyword
         if (fieldname == ROUTE_KEYWORD) {
@@ -521,7 +521,7 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
             SoReadError::post(in, "Error while parsing PROTO definition inside node");
             return FALSE;
           }
-          continue;  // skip to next field/route 
+          continue;  // skip to next field/route
         }
       }
 
@@ -635,7 +635,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   }
   // Ok, we've passed the first write stage and is _really_ writing.
   assert((out->getStage() == SoOutput::WRITE) && "unknown write stage");
-  
+
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
   if (out->isBinary()) {
@@ -658,15 +658,15 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     // FIXME: take care of setting flags for SoUnknownEngines, if
     // necessary. 20000102 mortene.
     if (!object->getIsBuiltIn()) fieldflags |= SoFieldData::NOTBUILTIN;
-    
+
     // use unsigned int to match an SoOutput::write method
-    unsigned int w = (unsigned int) fieldflags;
+    unsigned int w = static_cast<unsigned int>(fieldflags);
     w <<= 8;
     w |= numfields;
 
     out->write(w);
   }
-  
+
   // FIXME: write descriptions for SoUnknownEngine, if
   // necessary. 20000102 mortene.
   if (!object->getIsBuiltIn()) this->writeFieldDescriptions(out, object);
@@ -676,7 +676,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   for (i = 0; i < this->getNumFields(); i++) {
     SoField * f = this->getField(object, i);
     // Test if field has a PROTO IS reference
-    SbName pname = proto ? 
+    SbName pname = proto ?
       proto->findISReference(object, this->getFieldName(i)) : SbName::empty();
     if (pname.getLength()) {
       out->indent();
@@ -760,7 +760,7 @@ SoFieldData::isSame(const SoFieldContainer * c1,
 
   If \a readfieldvalues is \e TRUE (the default), the field initial value
   is expected after the field name in the SoInput stream.
-  
+
 */
 SbBool
 SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
@@ -779,7 +779,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
   const SbName FIELD("field");
   const SbName EXPOSEDFIELD("exposedField");
   const SbName IS("IS");
-  
+
   char c;
   if (!in->isBinary()) {
     READ_CHAR(c);
@@ -798,7 +798,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
 
     SbName fieldtypename;
-    
+
     if (!in->read(fieldtypename, TRUE)) {
       SoReadError::post(in, "Couldn't read name of field type");
       return FALSE;
@@ -808,14 +808,14 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     if (fieldtypename == EVENTIN ||
         fieldtypename == EVENTOUT ||
         fieldtypename == FIELD ||
-        fieldtypename == EXPOSEDFIELD) { 
+        fieldtypename == EXPOSEDFIELD) {
       fieldtype = fieldtypename;
       if (!in->read(fieldtypename, TRUE)) {
         SoReadError::post(in, "Couldn't read name of field type");
         return FALSE;
       }
     }
-    
+
     SoType type = SoType::fromName(fieldtypename.getString());
     if ((type == SoType::badType()) ||
         !type.isDerivedFrom(SoField::getClassTypeId())) {
@@ -827,7 +827,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       SoReadError::post(in, "Abstract class type '%s'", fieldtypename.getString());
       return FALSE;
     }
-    
+
     SbName fieldname;
     if (!in->read(fieldname, TRUE)) {
       SoReadError::post(in, "Couldn't read name of field");
@@ -849,11 +849,11 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
     if (!newfield) {
       // Cast away const -- ugly.
-      SoFieldData * thisp = (SoFieldData *)this;
-      newfield = (SoField *)type.createInstance();
+      SoFieldData * that = const_cast<SoFieldData *>(this);
+      newfield = static_cast<SoField *>(type.createInstance());
       newfield->setContainer(object);
       newfield->setDefault(TRUE);
-      thisp->addField(object, fieldname.getString(), newfield);
+      that->addField(object, fieldname.getString(), newfield);
     }
 
     if (fieldtype == EVENTIN || fieldtype == EVENTOUT) {
@@ -861,7 +861,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
         newfield->setFieldType(SoField::EVENTIN_FIELD);
       }
       else {
-        newfield->setFieldType(SoField::EVENTOUT_FIELD);        
+        newfield->setFieldType(SoField::EVENTOUT_FIELD);
       }
       SbBool readok;
       (void) in->checkISReference(object, fieldname.getString(), readok);
@@ -914,7 +914,7 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
                                     const SoFieldContainer * object) const
 {
   SoFieldList forwardlist;
-  
+
   if (!out->isBinary()) {
     out->indent();
     out->write("fields [ ");
@@ -924,9 +924,9 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
   for (int i = 0; i < this->getNumFields(); i++) {
     const SoField * f = this->getField(object, i);
     if (!out->isBinary() && atleastonewritten) out->write(", ");
-    out->write((const char *)(f->getTypeId().getName()));
+    out->write(static_cast<const char *>(f->getTypeId().getName()));
     if (!out->isBinary()) out->write(' ');
-    out->write((const char *)(this->getFieldName(i)));
+    out->write(static_cast<const char *>(this->getFieldName(i)));
     atleastonewritten = TRUE;
   }
 
@@ -957,7 +957,7 @@ SoFieldData::operator==(const SoFieldData * fd) const
   \internal
   \since Coin 2.3
 */
-SbBool 
+SbBool
 SoFieldData::hasField(const char * name) const
 {
   for (int i = 0; i < this->fields.getLength(); i++) {
@@ -970,7 +970,7 @@ SoFieldData::hasField(const char * name) const
   \internal
   \since Coin 2.3
 */
-SbBool 
+SbBool
 SoFieldData::hasEnumValue(const char * enumname, const char * valuename)
 {
   SoEnumEntry * e = NULL;

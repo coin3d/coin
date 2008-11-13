@@ -67,7 +67,7 @@ SoSFVec3i32::initClass(void)
 SbBool
 SoSFVec3i32::readValue(SoInput * in)
 {
-  return 
+  return
     in->read(this->value[0]) &&
     in->read(this->value[1]) &&
     in->read(this->value[2]);

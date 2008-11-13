@@ -33,14 +33,14 @@
   setValuesPointer() method. See SoMField documentation for
   information on how to use this function.
 
-  \sa SoSFBool 
+  \sa SoSFBool
 */
 
 // *************************************************************************
 
 #include <Inventor/fields/SoMFBool.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 

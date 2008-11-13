@@ -36,7 +36,7 @@
 
 #include <Inventor/fields/SoMFTime.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 

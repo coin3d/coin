@@ -218,7 +218,7 @@ SoSFImage3::readValue(SoInput * in)
       }
       for (int j = 0; j < nc; j++) {
         pixblock[byte++] =
-          (unsigned char) ((l >> (8 * (nc-j-1))) & 0xFF);
+          static_cast<unsigned char>((l >> (8 * (nc-j-1))) & 0xFF);
       }
     }
   }
@@ -260,7 +260,7 @@ SoSFImage3::writeValue(SoOutput * out) const
       unsigned int data = 0;
       for (int j = 0; j < nc; j++) {
         if (j) data <<= 8;
-        data |= (unsigned int)(pixblock[i * nc + j]);
+        data |= static_cast<unsigned int>(pixblock[i * nc + j]);
       }
       out->write(data);
       if (((i+1)%8 == 0) && (i+1 != numpixels)) {

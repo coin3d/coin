@@ -41,8 +41,8 @@
 
 #include "fields/SoGlobalField.h"
 
-#include <assert.h>
-#include <string.h>
+#include <cassert>
+#include <cstring>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
@@ -54,7 +54,9 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
 
+#include "coindefs.h"
 #include "tidbitsp.h"
+#include "SbBasicP.h"
 
 // *************************************************************************
 
@@ -133,7 +135,7 @@ SoGlobalField::initClass(void)
   // go down to 0 to detect when a global field is no longer
   // referenced
   SoGlobalField::allcontainers->addReferences(FALSE);
-  coin_atexit((coin_atexit_f *)SoGlobalField::clean, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoGlobalField::clean), CC_ATEXIT_NORMAL);
 }
 
 // Free up resources.
@@ -148,7 +150,8 @@ SoGlobalField::clean(void)
   // to be dead at this point in time, which then causes havoc when
   // the sensors wants to unschedule themselves).
   for (int i=0; i < SoGlobalField::allcontainers->getLength(); i++) {
-    SoGlobalField * gf = (SoGlobalField *)((*SoGlobalField::allcontainers)[i]);
+    SoGlobalField * gf =
+      coin_assert_cast<SoGlobalField *>((*SoGlobalField::allcontainers)[i]);
     // Can't use SoDebugError here, as SoError et al might have been
     // "cleaned up" already.
     printf("Global field '%s' not deallocated -- use "
@@ -200,7 +203,7 @@ SoGlobalField::getGlobalFieldContainer(const SbName & name)
 {
   int idx = SoGlobalField::getGlobalFieldIndex(name);
   return
-    (idx == -1) ? NULL : (SoGlobalField *)(*SoGlobalField::allcontainers)[idx];
+    (idx == -1) ? NULL : coin_assert_cast<SoGlobalField *>((*SoGlobalField::allcontainers)[idx]);
 }
 
 // Returns the complete set of SoGlobalField instances.
@@ -239,7 +242,7 @@ SoGlobalField::setName(const SbName & newname)
 {
   // Set name of this instance.
   inherited::setName(newname);
-  
+
   if (this->classfielddata) {
     // SoFieldData doesn't have a rename method, so we do a little
     // hack to rename our field.
@@ -251,7 +254,7 @@ SoGlobalField::setName(const SbName & newname)
 
 // Read data for this SoGlobalField instance.
 SbBool
-SoGlobalField::readInstance(SoInput * in, unsigned short flags)
+SoGlobalField::readInstance(SoInput * in, unsigned short COIN_UNUSED(flags))
 {
   // A bit more coding and we could let the readInstance() method be
   // called on already initialized SoGlobalField instances, but I
@@ -305,7 +308,7 @@ SoGlobalField::readInstance(SoInput * in, unsigned short flags)
   READ_VAL(fieldname);
   inherited::setName(fieldname);
 
-  SoField * f = (SoField *)fieldtype.createInstance();
+  SoField * f = static_cast<SoField *>(fieldtype.createInstance());
   if (!f->read(in, fieldname)) {
     delete f;
     return FALSE;
@@ -324,7 +327,7 @@ SoGlobalField::readInstance(SoInput * in, unsigned short flags)
 // though we -- as a container for a global field -- only exists
 // through a field-to-field connection.
 void
-SoGlobalField::addWriteReference(SoOutput * out, SbBool isfromfield)
+SoGlobalField::addWriteReference(SoOutput * out, SbBool COIN_UNUSED(isfromfield))
 {
   assert(this->classfielddata);
   inherited::addWriteReference(out, FALSE);

@@ -77,7 +77,7 @@ SoSFInt32::readValue(SoInput * in)
 void
 sosfint32_write_value(SoOutput * out, int32_t val)
 {
-  out->write((int) val);
+  out->write(static_cast<int>(val));
 }
 
 void

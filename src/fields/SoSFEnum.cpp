@@ -249,7 +249,7 @@ SoSFEnum::writeValue(SoOutput * out) const
 {
   const SbName *enumname;
   if (findEnumName(this->getValue(), enumname)) {
-    out->write((char *)enumname->getString());
+    out->write(const_cast<char *>(enumname->getString()));
     return;
   }
   // If we don't have any legal values for this field,

@@ -42,7 +42,7 @@
 
 #include <Inventor/fields/SoMFVec4d.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -77,7 +77,7 @@ SbBool
 SoMFVec4d::read1Value(SoInput * in, int idx)
 {
   assert(idx < this->maxNum);
-  return 
+  return
     in->read(this->values[idx][0]) &&
     in->read(this->values[idx][1]) &&
     in->read(this->values[idx][2]) &&

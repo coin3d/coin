@@ -35,7 +35,7 @@
 
 #include <Inventor/fields/SoMFBitMask.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/fields/SoSFBitMask.h>
 #if COIN_DEBUG

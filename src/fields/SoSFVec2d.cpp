@@ -68,7 +68,7 @@ SoSFVec2d::initClass(void)
 SbBool
 SoSFVec2d::readValue(SoInput * in)
 {
-  return 
+  return
     in->read(this->value[0]) &&
     in->read(this->value[1]);
 }

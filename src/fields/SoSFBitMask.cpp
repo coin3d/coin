@@ -198,7 +198,7 @@ SoSFBitMask::writeValue(SoOutput * out) const
         paran = TRUE;
       }
       if (out_vals_written++ && !out->isBinary()) out->write(" | ");
-      out->write((const char *)this->enumNames[i].getString());
+      out->write(static_cast<const char *>(this->enumNames[i].getString()));
     }
 
     i++;

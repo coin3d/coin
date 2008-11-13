@@ -54,6 +54,9 @@
 
 #include <Inventor/fields/SoSFPath.h>
 
+#include "coindefs.h"
+#include "SbBasicP.h"
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -176,7 +179,7 @@ SoSFPath::readValue(SoInput * in)
     return FALSE;
   }
 
-  this->setValue((SoPath *)baseptr);
+  this->setValue(coin_assert_cast<SoPath *>(baseptr));
   return TRUE;
 }
 
@@ -189,14 +192,14 @@ SoSFPath::writeValue(SoOutput * out) const
   SoBase * base = this->getValue();
   if (base) {
     if (base->isOfType(SoNode::getClassTypeId())) {
-      ((SoNode*)base)->writeInstance(out);
+      coin_assert_cast<SoNode *>(base)->writeInstance(out);
     }
     else if (base->isOfType(SoPath::getClassTypeId())) {
       SoWriteAction wa(out);
-      wa.continueToApply((SoPath *)base);
+      wa.continueToApply(coin_assert_cast<SoPath *>(base));
     }
     else if (base->isOfType(SoEngine::getClassTypeId())) {
-      ((SoEngine *)base)->writeInstance(out);
+      coin_assert_cast<SoEngine *>(base)->writeInstance(out);
     }
     else {
       assert(0 && "strange internal error");
@@ -225,14 +228,14 @@ SoSFPath::countWriteRefs(SoOutput * out) const
   // That's why we check the base type before writing/counting
 
   if (base->isOfType(SoNode::getClassTypeId())) {
-    ((SoNode*)base)->writeInstance(out);
+    coin_assert_cast<SoNode *>(base)->writeInstance(out);
   }
   else if (base->isOfType(SoEngine::getClassTypeId())) {
-    ((SoEngine*)base)->addWriteReference(out);
+    coin_assert_cast<SoEngine *>(base)->addWriteReference(out);
   }
   else if (base->isOfType(SoPath::getClassTypeId())) {
     SoWriteAction wa(out);
-    wa.continueToApply((SoPath*)base);
+    wa.continueToApply(coin_assert_cast<SoPath *>(base));
   }
 }
 
@@ -254,7 +257,7 @@ SoSFPath::countWriteRefs(SoOutput * out) const
 //
 // <mortene@sim.no>
 void
-SoSFPath::fixCopy(SbBool copyconnections)
+SoSFPath::fixCopy(SbBool COIN_UNUSED(copyconnections))
 {
   SoPath * n = this->getValue();
   if (!n) return;
@@ -291,10 +294,10 @@ SoSFPath::referencesCopy(void) const
 
   if (n->isOfType(SoNode::getClassTypeId()) ||
       n->isOfType(SoEngine::getClassTypeId())) {
-    if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
+    if (SoFieldContainer::checkCopy(coin_assert_cast<SoFieldContainer *>(n))) return TRUE;
   }
   else if (n->isOfType(SoPath::getClassTypeId())) {
-    SoPath * p = (SoPath *)n;
+    SoPath * p = coin_assert_cast<SoPath *>(n);
     if (p->getHead() == NULL) return FALSE;
     if (SoFieldContainer::checkCopy(p->getHead())) return TRUE;
   }

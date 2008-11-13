@@ -39,6 +39,8 @@
 
 #include <Inventor/fields/SoSFTrigger.h>
 
+#include "coindefs.h"
+
 #include "fields/SoSubFieldP.h"
 
 SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);
@@ -51,7 +53,7 @@ PRIVATE_EQUALITY_SOURCE(SoSFTrigger);
 // so don't use Doxygen commenting.)
 #ifndef DOXYGEN_SKIP_THIS
 const SoSFTrigger &
-SoSFTrigger::operator=(const SoSFTrigger & field)
+SoSFTrigger::operator=(const SoSFTrigger & COIN_UNUSED(field))
 {
   this->setValue();
   return *this;
@@ -96,7 +98,7 @@ SoSFTrigger::touch(void)
   equal. So this method always returns \c TRUE.
  */
 int
-SoSFTrigger::operator==(const SoSFTrigger & trigger) const
+SoSFTrigger::operator==(const SoSFTrigger & COIN_UNUSED(trigger)) const
 {
   return 1;
 }
@@ -106,7 +108,7 @@ SoSFTrigger::operator==(const SoSFTrigger & trigger) const
   equal. So this method always returns \c FALSE.
 */
 int
-SoSFTrigger::operator!=(const SoSFTrigger & trigger) const
+SoSFTrigger::operator!=(const SoSFTrigger & COIN_UNUSED(trigger)) const
 {
   return 0;
 }
@@ -129,14 +131,14 @@ SoSFTrigger::notify(SoNotList * l)
 
 // No value to read, so just return TRUE.
 SbBool
-SoSFTrigger::readValue(SoInput * in)
+SoSFTrigger::readValue(SoInput * COIN_UNUSED(in))
 {
   return TRUE;
 }
 
 // No value to write, just return.
 void
-SoSFTrigger::writeValue(SoOutput * out) const
+SoSFTrigger::writeValue(SoOutput * COIN_UNUSED(out)) const
 {
   return;
 }

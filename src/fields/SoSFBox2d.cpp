@@ -68,9 +68,9 @@ SoSFBox2d::readValue(SoInput * in)
 {
   double min[2];
   double max[2];
-  if (!in->read(min[0]) || 
-      !in->read(min[1]) || 
-      !in->read(max[0]) || 
+  if (!in->read(min[0]) ||
+      !in->read(min[1]) ||
+      !in->read(max[0]) ||
       !in->read(max[1])) {
     SoReadError::post(in, "Couldn't read SoSFBox2d");
     return FALSE;

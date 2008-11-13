@@ -40,7 +40,7 @@
 
 #include <Inventor/fields/SoMFUShort.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>

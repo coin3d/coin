@@ -233,9 +233,9 @@
 
 #include <Inventor/fields/SoMField.h>
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -297,14 +297,14 @@ SoMField::initClass(void)
   PRIVATE_FIELD_INIT_CLASS(SoMField, "MField", inherited, NULL);
 
   CC_MUTEX_CONSTRUCT(somfield_mutex);
-  coin_atexit((coin_atexit_f*) somfield_mutex_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(somfield_mutex_cleanup), CC_ATEXIT_NORMAL);
 }
 
-void 
+void
 SoMField::atexit_cleanup(void)
 {
   SoType::removeType(SoMField::classTypeId.getName());
-  SoMField::classTypeId STATIC_SOTYPE_INIT; 
+  SoMField::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!
@@ -350,9 +350,9 @@ SoMField::set1(const int index, const char * const valuestring)
   // make sure the array has room for the new item
   if (index >= this->maxNum) this->allocValues(index+1);
   else if (index >= this->num) this->num = index+1;
-  
+
   SoInput in;
-  in.setBuffer((void *)valuestring, strlen(valuestring));
+  in.setBuffer(const_cast<char *>(valuestring), strlen(valuestring));
   if (!this->read1Value(&in, index)) {
     this->num = oldnum; // restore old number of items in field
     return FALSE;
@@ -405,7 +405,7 @@ SoMField::get1(const int index, SbString & valuestring)
   if (mfield_buffer_size < STARTSIZE) {
     mfield_buffer = malloc(STARTSIZE);
     mfield_buffer_size = STARTSIZE;
-    coin_atexit((coin_atexit_f *)mfield_buffer_cleanup, CC_ATEXIT_NORMAL);
+    coin_atexit(static_cast<coin_atexit_f *>(mfield_buffer_cleanup), CC_ATEXIT_NORMAL);
   }
 
   out.setBuffer(mfield_buffer, mfield_buffer_size,
@@ -426,7 +426,7 @@ SoMField::get1(const int index, SbString & valuestring)
   // ..then read it back into the SbString.
   size_t size;
   out.getBuffer(buffer, size);
-  valuestring = ((char *)buffer) + offset;
+  valuestring = static_cast<char *>(buffer) + offset;
 
   // check if buffer grew too big
   if (mfield_buffer_size >= MAXSIZE) {
@@ -773,7 +773,7 @@ SoMField::allocValues(int newnum)
 
   if (newnum == 0) {
     if (!this->userDataIsUsed) {
-      delete[] (unsigned char *) this->valuesPtr();
+      delete[] static_cast<unsigned char *>(this->valuesPtr());
     }
     this->setValuesPtr(NULL);
     this->userDataIsUsed = FALSE;
@@ -816,7 +816,7 @@ SoMField::allocValues(int newnum)
           (void)memset(newblock + copysize, 0, rest);
         }
         if (!this->userDataIsUsed) {
-          delete[] (unsigned char *) this->valuesPtr();
+          delete[] static_cast<unsigned char *>(this->valuesPtr());
         }
         this->setValuesPtr(newblock);
         this->userDataIsUsed = FALSE;

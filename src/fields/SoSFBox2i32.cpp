@@ -68,9 +68,9 @@ SoSFBox2i32::readValue(SoInput * in)
 {
   int32_t min[2];
   int32_t max[2];
-  if (!in->read(min[0]) || 
-      !in->read(min[1]) || 
-      !in->read(max[0]) || 
+  if (!in->read(min[0]) ||
+      !in->read(min[1]) ||
+      !in->read(max[0]) ||
       !in->read(max[1])) {
     SoReadError::post(in, "Couldn't read SoSFBox2i32");
     return FALSE;

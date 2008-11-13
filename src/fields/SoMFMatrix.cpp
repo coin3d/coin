@@ -36,7 +36,7 @@
 
 #include <Inventor/fields/SoMFMatrix.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
