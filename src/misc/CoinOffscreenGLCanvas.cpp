@@ -197,6 +197,8 @@ CoinOffscreenGLCanvas::clampToPixelSizeRoof(SbVec2s & s)
   unsigned int pixelsize;
   do {
     pixelsize = (unsigned int)s[0] * (unsigned int)s[1];
+    if (pixelsize == 0) { return; } // avoid never-ending loop
+
     if (pixelsize >= CoinOffscreenGLCanvas::tilesizeroof) {
       // halve the largest dimension, and try again:
       if (s[0] > s[1]) { s[0] /= 2; }
@@ -232,7 +234,7 @@ CoinOffscreenGLCanvas::activateGLContext(void)
     // tile sizes later
     const unsigned int failedsize =
       (unsigned int)this->size[0] * (unsigned int)this->size[1];
-    assert(failedsize < CoinOffscreenGLCanvas::tilesizeroof);
+    assert(failedsize <= CoinOffscreenGLCanvas::tilesizeroof);
     CoinOffscreenGLCanvas::tilesizeroof = failedsize;
 
     // keep trying until 32x32 -- if even those dimensions doesn't

@@ -623,6 +623,9 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
   this->glcanvas.setWantedSize(fullsize);
 
+  // check if no possible canvas size was found
+  if (this->glcanvas.getActualSize() == SbVec2s(0, 0)) { return FALSE; }
+
   const uint32_t newcontext = this->glcanvas.activateGLContext();
   if (newcontext == 0) {
     SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
