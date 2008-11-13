@@ -60,8 +60,8 @@ cat >&5 <<EOF
 #include <boost/test/unit_test.hpp>
 #include <boost/intrusive_ptr.hpp>
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <iostream>
 
 #include <TestSuiteUtils.h>
@@ -91,6 +91,9 @@ cat $srcdir/$srcdirpath | egrep -n "*" | \
   sed -e 's,\([0-9]*\):#ifdef.*COIN_TEST_SUITE,#line \1 "'$srcdirpath'",' | \
   sed -e 's,\([0-9]*\):#include.*,#line \1 "'$srcdirpath'",' | \
   egrep -v ":#.*COIN_TEST_SUITE" | \
+  sed -e '/#line/ a\
+\
+' | \
   sed -e 's,[0-9]*:,,' >&5
 
 echo "" >&5
