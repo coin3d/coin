@@ -52,7 +52,7 @@ esac
 exec 5>${token}.cpp
 
 # include the declaration header for the current class
-cat $srcdir/$srcdirpath | grep "^#include" | head -1 >&5
+cat $srcdir/$srcdirpath | grep "^#include" | grep -v config.h | head -1 >&5
 
 cat >&5 <<EOF
 
