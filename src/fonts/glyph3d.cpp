@@ -28,10 +28,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/list.h>
 #include <Inventor/C/base/string.h>
@@ -42,9 +38,12 @@
 #include "fonts/fontlib_wrapper.h"
 #include "fonts/glyph.h"
 #include "fonts/defaultfonts.h"
+#include "coindefs.h"
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::malloc;
 using std::free;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
 

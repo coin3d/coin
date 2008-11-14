@@ -27,20 +27,18 @@
 #include <assert.h>
 #include <stdio.h>
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/C/base/string.h>
 
 #include "base/dict.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
-
 #include "fonts/glyph2d.h"
 #include "fonts/glyph.h"
+#include "coindefs.h"
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::malloc;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 static SbBool glyph2d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
 
