@@ -166,4 +166,8 @@ COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO); \
 /* see SbTime.cpp for example usage */
 #define COIN_WORKAROUND(def, test) BOOST_WORKAROUND(def, test)
 
+#if COIN_WORKAROUND(_MSC_VER, <= COIN_MSVC_6_0_VERSION)
+#define COIN_WORKAROUND_NO_USING_STD_FUNCS
+#endif
+
 #endif /* !COIN_DEFS_H */

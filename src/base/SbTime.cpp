@@ -72,11 +72,9 @@
 #define SIM_TIMEVAL_TV_USEC_T time_t
 #endif // !SIM_TIMEVAL_TV_USEC_T
 
-#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
-// VC6.0 doesn't grok (nor need) "using std::<...>"
-#else
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::strlen;
-#endif
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 // *************************************************************************
 
