@@ -494,11 +494,11 @@ SoSensorManager::processTimerQueue(void)
 }
 
 struct reinsert_dict_cb :
-  public SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::ApplyFunctor<SoSensorManager * const>
+  public SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::ApplyFunctor<SoSensorManager *>
 {
   void operator()(SoDelayQueueSensor * & key,
                 SoDelayQueueSensor * & sensor,
-                SoSensorManager* const thisp
+                SoSensorManager* thisp
                 )
   {
     //SoSensorManager * thisp = (SoSensorManager *)closure;
@@ -602,7 +602,7 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // was an idle sensor, or because the sensor had already been
   // triggered
   reinsert_dict_cb functor;
-  PRIVATE(this)->reinsertdict.apply<SoSensorManager* const>(functor, this);
+  PRIVATE(this)->reinsertdict.apply(functor, this);
   PRIVATE(this)->reinsertdict.clear();
   PRIVATE(this)->processingdelayqueue = FALSE;
 

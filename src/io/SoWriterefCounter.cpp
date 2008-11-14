@@ -72,7 +72,7 @@ public:
   }
   void debugCleanup(void) {
     debug_dict functor;
-    this->writerefdict.apply<void *>(functor, NULL);
+    this->writerefdict.apply(functor, static_cast<void *>(NULL));
     this->cleanup();
   }
   
@@ -85,7 +85,7 @@ private:
 
   void cleanup(void) {
     delete_dict_item functor;
-    this->writerefdict.apply<void *>(functor, NULL);
+    this->writerefdict.apply(functor, static_cast<void *>(NULL));
     this->writerefdict.clear();
   }
   

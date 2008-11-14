@@ -225,7 +225,7 @@ void
 SoDebug_internal::delete_namedict(void)
 {
   delete_namedict_entry functor;
-  namedict->apply<void *>(functor);
+  namedict->apply(functor);
   delete namedict;
   namedict = NULL;
 }

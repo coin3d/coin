@@ -384,7 +384,7 @@ SoBase::cleanClass(void)
 
   // Delete the SbPLists in the dictionaries.
   emptyName2ObjHash functor;
-  SoBase::PImpl::name2obj->apply<void *>(functor, NULL);
+  SoBase::PImpl::name2obj->apply(functor, static_cast<void *>(NULL));
 
   delete SoBase::PImpl::allbaseobj; SoBase::PImpl::allbaseobj = NULL;
 

@@ -119,7 +119,7 @@ SoVBO::~SoVBO()
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
   vbo_schedule functor;
-  this->vbohash.apply<void *>(functor, NULL);
+  this->vbohash.apply(functor, static_cast<void *>(NULL));
   if (this->didalloc) {
     char * ptr = (char*) this->data;
     delete[] ptr;
@@ -210,7 +210,7 @@ SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
   vbo_schedule functor;
-  this->vbohash.apply<void *>(functor, NULL);
+  this->vbohash.apply(functor, static_cast<void *>(NULL));
   // clear hash table
   this->vbohash.clear();
 
@@ -240,7 +240,7 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
   vbo_schedule functor;
-  this->vbohash.apply<void *>(functor, NULL);
+  this->vbohash.apply(functor, static_cast<void *>(NULL));
   // clear hash table
   this->vbohash.clear();
 

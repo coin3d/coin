@@ -1008,7 +1008,7 @@ SoFieldContainer::copyDone(void)
 
   // unref all copied instances. See comment in addCopy().
   fieldcontainer_unref_node functor;
-  copiedinstances->apply<void *>(functor, NULL);
+  copiedinstances->apply(functor, static_cast<void *>(NULL));
 
   delete copiedinstances;
   delete contentscopied;

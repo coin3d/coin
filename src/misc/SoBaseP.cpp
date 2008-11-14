@@ -140,7 +140,7 @@ SoBase::PImpl::cleanup_auditordict(void)
 {
   if (SoBase::PImpl::auditordict) {
     auditordict_cb functor;
-    SoBase::PImpl::auditordict->apply<void *>(functor, NULL);
+    SoBase::PImpl::auditordict->apply(functor, static_cast<void *>(NULL));
     delete SoBase::PImpl::auditordict;
     SoBase::PImpl::auditordict = NULL;
   }

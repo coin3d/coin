@@ -227,7 +227,7 @@ static void
 soshader_cleanup(void)
 {
   soshader_cleanup_callback functor;
-  shader_dict->apply<void *>(functor, NULL);
+  shader_dict->apply(functor, static_cast<void *>(NULL));
   delete shader_dict;
 
   // no need to apply on objects since strings are compiled into the
