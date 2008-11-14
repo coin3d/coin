@@ -118,7 +118,10 @@ public: \
     assert(_class_::classTypeId == SoType::badType()); \
     _class_::classTypeId = \
       SoType::createType(_parent_::getClassTypeId(), _classname_, _createfunc_); \
-    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanup); \
+    cc_coin_atexit_static_internal \
+      ( \
+       static_cast<coin_atexit_f *>(_class_::atexit_cleanup) \
+       ); \
   } while (0)
 
 
@@ -160,14 +163,14 @@ SoType _class_::classTypeId STATIC_SOTYPE_INIT
 void \
 _class_::copyFrom(const SoField & field) \
 { \
-  this->operator=((const _class_ &)field); \
+  this->operator=(static_cast<const _class_ &>(field)); \
 } \
  \
 SbBool \
 _class_::isSame(const SoField & field) const \
 { \
   if (field.getTypeId() != this->getTypeId()) return FALSE; \
-  return this->operator==((const _class_ &) field); \
+  return this->operator==(static_cast<const _class_ &>(field)); \
 }
 
 
@@ -323,13 +326,13 @@ _class_::fieldSizeof(void) const \
 void * \
 _class_::valuesPtr(void) \
 { \
-  return (void *)this->values; \
+  return static_cast<void *>(this->values); \
 } \
  \
 void \
 _class_::setValuesPtr(void * ptr) \
 { \
-  this->values = (_valtype_ *)ptr; \
+  this->values = static_cast<_valtype_ *>(ptr); \
 } \
  \
 int \
@@ -349,7 +352,7 @@ _class_::setValues(const int start, const int numarg, const _valtype_ * newvals)
   else if (start+numarg > this->num) this->num = start+numarg; \
  \
   for (int i=0; i < numarg; i++) \
-    this->values[i+start] = (_valtype_) newvals[i]; \
+    this->values[i+start] = static_cast<_valtype_>(newvals[i]); \
   this->valueChanged(); \
 } \
  \
@@ -489,7 +492,7 @@ _class_::setValuesPointer(const int numarg, _usertype_ * userdata) \
 { \
   this->makeRoom(0); \
   if (numarg > 0 && userdata) { \
-    this->values = (_valtype_*) userdata; \
+    this->values = reinterpret_cast<_valtype_*>(userdata); /* reinterpret_cast is needed for certain special uses of this function, such as SoMFColor */ \
     this->userDataIsUsed = TRUE; \
     this->num = this->maxNum = numarg; \
     this->valueChanged(); \
@@ -498,7 +501,7 @@ _class_::setValuesPointer(const int numarg, _usertype_ * userdata) \
 void \
 _class_::setValuesPointer(const int numarg, const _usertype_ * userdata) \
 { \
-  this->setValuesPointer(numarg, (_usertype_*) userdata); \
+  this->setValuesPointer(numarg, const_cast<_usertype_*>(userdata)); \
 }
 
 #endif // !COIN_SOSUBFIELD_H

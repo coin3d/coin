@@ -199,17 +199,6 @@ static const char * SO_SHADER_DIR = NULL;
 static SbHash <char *, const char *> * shader_dict = NULL;
 static SbHash <char *, const char *> * shader_builtin_dict = NULL;
 
-/*
-static void
-soshader_cleanup_callback(const char * const & key,
-                          char * const & obj,
-                          void * closure)
-{
-  delete[] obj;
-}
-
-*/
-
 struct soshader_cleanup_callback :
   public SbHash <char *, const char *>::ApplyFunctor<void *>
 {

@@ -57,19 +57,6 @@ static int vbo_enabled = -1;
 static int vbo_debug = -1;
 
 static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
-//
-// Callback from SbHash
-//
-/*
-void
-SoVBO::vbo_schedule(const uint32_t & key,
-                    const GLuint & value,
-                    void * closure)
-{
-  void * ptr = (void*) ((uintptr_t) value);
-  SoGLCacheContextElement::scheduleDeleteCallback(key, vbo_delete, ptr);
-}
-*/
 
 /*!
   Constructor
@@ -98,6 +85,9 @@ SoVBO::vbo_delete(void * closure, uint32_t contextid)
   cc_glglue_glDeleteBuffers(glue, 1, &id);
 }
 
+//
+// Callback from SbHash
+//
 struct vbo_schedule :
   public SbHash <GLuint, uint32_t>::ApplyFunctor<void *>
 {
