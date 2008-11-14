@@ -27,10 +27,14 @@
 #include <cstddef>
 #include <cstdlib>
 
+#include "coindefs.h"
+
 #define CC_LIST_DEFAULT_SIZE 4
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::malloc;
 using std::free;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
 

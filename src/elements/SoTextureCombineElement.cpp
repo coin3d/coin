@@ -35,17 +35,19 @@
 
 #include <Inventor/elements/SoTextureCombineElement.h>
 
-#include "coindefs.h"
-#include "SbBasicP.h"
+#include <cassert>
+#include <cstring>
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/system/gl.h>
 
-#include <cassert>
-#include <cstring>
+#include "coindefs.h"
+#include "SbBasicP.h"
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::memcpy;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 #define MAX_UNITS 16 // FIXME: make dynamic?????
 

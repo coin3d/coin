@@ -63,13 +63,16 @@
 
 #include "tidbitsp.h"
 #include "base/namemap.h"
+#include "coindefs.h"
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::strlen;
 using std::strchr;
 using std::strcmp;
 using std::isdigit;
 using std::isalnum;
 using std::isalpha;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 // *************************************************************************
 

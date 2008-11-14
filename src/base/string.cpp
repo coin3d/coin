@@ -23,19 +23,22 @@
 
 #include <Inventor/C/base/string.h>
 
-#include <Inventor/C/errors/debugerror.h>
-#include <Inventor/C/tidbits.h>
-
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
 #include <cstdarg>
 
+#include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/tidbits.h>
+
+#include "coindefs.h"
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::strlen;
 using std::strcpy;
 using std::strncpy;
@@ -47,6 +50,7 @@ using std::free;
 using std::memmove;
 using std::atoi;
 using std::printf;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
 

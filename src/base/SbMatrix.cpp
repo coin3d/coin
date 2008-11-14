@@ -109,22 +109,26 @@
 
 
 #include <Inventor/SbMatrix.h>
-#include <Inventor/SbDPMatrix.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbLine.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <cassert>
 #include <cstring>
 #include <cfloat>
 
+#include <Inventor/SbDPMatrix.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbLine.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h" // COIN_STUB()
+
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::memmove;
 using std::memcmp;
 using std::memcpy;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 class SbMatrixP {
 public:

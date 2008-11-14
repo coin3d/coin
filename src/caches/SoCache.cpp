@@ -116,8 +116,11 @@
 #include <Inventor/C/tidbits.h>
 
 #include "tidbitsp.h"
+#include "coindefs.h"
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::memset;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 // *************************************************************************
 

@@ -33,11 +33,14 @@
 
 #include "tidbitsp.h"
 #include "base/dictp.h"
+#include "coindefs.h"
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::free;
 using std::malloc;
 using std::calloc;
 using std::memset;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
 /* private functions */
