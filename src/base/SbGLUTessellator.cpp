@@ -46,7 +46,7 @@ SbGLUTessellator::available(void)
 SbGLUTessellator::SbGLUTessellator(void (* cb)(void *, void *, void *, void *),
                                    void * userdata)
 {
-  assert(callback && "tessellation without callback is meaningless");
+  assert(cb && "tessellation without callback is meaningless");
   this->callback = cb;
   this->cbdata = userdata;
 
