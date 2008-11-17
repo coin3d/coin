@@ -22,9 +22,14 @@ detect the end of the testsuite block.
 One Coin-component implementation file may have multiple test-suite
 blocks, it is not limited to one.
 
+You can also add/implement utility functions outside the
+BOOST_AUTO_TEST_CASE blocks to structure code better.
+
 Every file that includes test-suite blocks need to have as the first
 #include-file the header that declares the component implemented in
 the cpp-file.  Otherwise the test-suite part won't be able to compile.
+You can add #include-directives in the COIN_TESTSUITE_BLOCK though,
+and get compilation to work that way.
 
 Only public parts of the API can be tested in this test-suite because
 it is built separately outside Coin and then linked with Coin.
@@ -41,6 +46,13 @@ config.status on that makefile to get the Makefile file in the testsuite
 build directory updated.  Commit the updated Makefile.in to svn, but
 remember to also commit the updated files with test-cases as well..
 
+To work with only a subset of the tests in the total testsuite (to
+speed things up while doing development), you can run
+"make makefile-update" with a filter to reduce the number of tests
+the testsuite will be built up of.  Running for instance
+"make makefile-update filter=Dragger" will reduce the test set to
+those fond in files that contain the word "Dragger" in their filename.
+
 Test-case blocks are extracted from the source files by a script.
 This script is hooked into the makefile, with dependencies between
 the original cpp-file and the extracted/generated cpp-file.  Running
@@ -56,8 +68,12 @@ course).
 
 If the test-suite crashes (as opposed to just reporting errors),
 running "make verbose" might be helpful to figure out exactly which
-test-case is the one that causes the problem.
+test-case is the one that causes the problem, or "make debug" to make
+the testsuite run in gdb so you end up in the debugger when the
+testsuite crashes.  This works only on platforms that use gcc and gdb
+as the compiler/debugger suite (Linux, OS X, unixes...) and is not
+supported on Windows for now.
 
 That's it.
 
-/2007-06-10 larsa
+/2008-11-16 larsa
