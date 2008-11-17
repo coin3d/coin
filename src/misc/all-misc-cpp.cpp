@@ -24,6 +24,17 @@
 // FIXME: for some odd reason, order is important between these
 // two. if SoBase.cpp is compiled before SoDebug.cpp, we get a weird
 // error from the SbHash usage in SoDebug.cpp. investigate.  -mortene.
+
+// This is caused by the SbHashFunc(void *) being declared only when
+// used. Hashing on (void *) is extremely dangerous, since we don't
+// have any control over which kind of types are hashed this way.
+// Indeed the very occurence of this problem is a symptom of the
+// problems of hashing on (void *). Since all the implementations for
+// (class *) are identical regardless of class, there shouldn't arise
+// any problems from doing this, but if we change the implementations,
+// we should make very sure that the correct function is picked as the
+// hash function when doing inclusion like this. - BFG 20081117
+
 #include "SoDebug.cpp"
 #include "SoBase.cpp"
 
