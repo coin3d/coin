@@ -452,7 +452,7 @@ SoImage::GLRender(SoGLRenderAction * action)
     // update GL
     glPixelZoom(zx, zy);
 
-    // adjust glDrawImage and glPixelStorage parameters to account for zoom
+    // adjust glDrawPixels and glPixelStorage parameters to account for zoom
     srcw = (int) (srcw / zx);
     srch = (int) (srch / zy);
     skipx = (int) (skipx / zx);
