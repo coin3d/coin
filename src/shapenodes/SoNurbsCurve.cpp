@@ -396,10 +396,9 @@ SoNurbsCurveP::doNurbs(SoAction * action,
   coin_nc_cbdata cbdata;
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    if (glrender) {
-      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, NULL);
-    }
-    else {
+    // if we're just tessellating, the callbacks will be invoked:
+    if (!glrender) {
+      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
       cbdata.action = action;
       cbdata.thisp = PUBLIC(this);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
@@ -407,7 +406,6 @@ SoNurbsCurveP::doNurbs(SoAction * action,
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
       cbdata.vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
       cbdata.vertex.setDetail(NULL);
-      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
     }
   }
 
