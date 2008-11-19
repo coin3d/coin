@@ -1162,7 +1162,21 @@ SoGLRenderActionP::deleteNodeCB(void * userdata, SoSensor * COIN_UNUSED(sensor))
 /*!
   Used by shape nodes or others which need to know whether or not they
   should immediately render themselves or if they should wait until
-  the next pass.
+  the next pass. It also enables/disabled blending based on the \a
+  istransparent parameter.
+  
+  If you're using an SoCallback or a non-shape node to render your
+  geometry, you can use this function to make sure your node is only
+  rendered once. This function consider the \a istransparent
+  parameter, and when TRUE it will return TRUE on the first pass, and
+  FALSE on the second pass. For non-transparent objects it returns
+  FALSE on the first pass, TRUE on the second.
+
+  Please note that this function considers the current transparency
+  type when deciding what to do. It will delay rendering only when the
+  transparency type is DELAYED_* or SORTED_OBJECT_*. For other
+  transparency types, transparent objects are rendered in the same
+  pass as opaque objects.
 */
 SbBool
 SoGLRenderAction::handleTransparency(SbBool istransparent)
