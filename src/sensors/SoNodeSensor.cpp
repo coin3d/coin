@@ -124,6 +124,9 @@ SoNodeSensor::getAttachedNode(void) const
 void
 SoNodeSensor::dyingReference(void)
 {
+  SoNode * dyingnode = this->getAttachedNode();
   this->invokeDeleteCallback();
-  this->detach();
+  if (dyingnode == this->getAttachedNode()) {
+    this->detach();
+  }
 }

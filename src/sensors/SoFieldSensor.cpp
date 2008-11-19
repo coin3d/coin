@@ -138,6 +138,16 @@ SoFieldSensor::notify(SoNotList * l)
 void
 SoFieldSensor::dyingReference(void)
 {
+  SoFieldContainer * dyingcontainer = this->getAttachedField()->getContainer();
+
   this->invokeDeleteCallback();
-  this->detach();
+
+  if (this->getAttachedField() != NULL &&
+      this->getAttachedField()->getContainer() == dyingcontainer) {
+    // sensor is attached, and to the same field-container
+    this->detach();
+    // FIXME: we could maybe do an exception for the globalfield-container,
+    // and for loose fields I assume have NULL for getContainer() - those cases
+    // should be checked at the field-pointer level instead.
+  }
 }
