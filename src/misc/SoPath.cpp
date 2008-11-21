@@ -368,8 +368,20 @@ SoPath::append(SoNode * const node, const int index)
   if (this->isauditing) this->startNotify();
 }
 
-/*!
-  This method returns the tail node of the path.
+/*!  
+  This method returns the tail node of the path. Please note that this
+  method only considers group nodes without hidden children (nodes
+  inheriting SoGroup) when finding the tail.
+
+  If you want to find the real tail node (also below node kits and
+  VRML nodes with hidden children), you have to use
+  SoFullPath::getTail(). You don't have to create an SoFullPath
+  instance to do this, just cast the SoPath instance to SoFullPath
+  before gettting the tail node:
+
+  \code
+  SoNode * tail = static_cast<SoFullPath*>(path)->getTail();
+  \endcode
 */
 SoNode *
 SoPath::getTail(void) const
