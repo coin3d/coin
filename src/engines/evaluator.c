@@ -206,6 +206,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->value = param1.value * param2.value;
     break;
   case ID_DIV:
+    /* FIXME: shouldn't just silently pad over this, but rather signal
+       an error. perhaps also set result->value to NaN or inf?
+       -mortene. */
     if (param2.value == 0.0f) {
       result->value = param1.value / FLT_EPSILON; /* FIXME: is this ok? */
     }
@@ -214,6 +217,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     }
     break;
   case ID_FMOD:
+    /* FIXME: shouldn't just silently pad over this, but rather signal
+       an error. perhaps also set result->value to NaN or inf?
+       -mortene. */
     if (param2.value != 0.0f) {
       result->value = (float) fmod(param1.value, param2.value);
     }
@@ -264,6 +270,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->value = (float)atan(param1.value);
     break;
   case ID_ATAN2:
+    /* FIXME: shouldn't just silently pad over this, but rather signal
+       an error. perhaps also set result->value to NaN or inf?
+       -mortene. */
     if (param2.value == 0.0) {
       result->value = (float) (param1.value >= 0.0f ? M_PI * 0.5 : - M_PI * 0.5);
     }
@@ -321,6 +330,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
   case ID_NORMALIZE:
     {
       float len = (float) sqrt(dot_product(param1.vec, param1.vec));
+      /* FIXME: shouldn't just silently pad over this, but rather
+         signal an error. perhaps also set result->vec to NaNs or inf?
+         -mortene. */
       if (len > 0.0f) {
         result->vec[0] = param1.vec[0] / len;
         result->vec[1] = param1.vec[1] / len;
@@ -396,6 +408,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->trueorfalse = param1.value > param2.value;
     break;
   case ID_POW:
+    /* FIXME: shouldn't just silently pad over this, but rather signal
+       an error. perhaps also set result->value to NaN or inf?
+       -mortene. */
     if (param1.value == 0.0f) result->value = 0.0f;
     else if (param1.value > 0.0f) {
       result->value = (float) pow(param1.value, param2.value);
@@ -412,6 +427,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
   case ID_DIV_VEC_FLT:
     {
       float div = param2.value;
+      /* FIXME: shouldn't just silently pad over this, but rather signal
+         an error. perhaps also set result->vec to NaNs or inf?
+         -mortene. */
       if (div == 0.0f) div = FLT_EPSILON;
       result->vec[0] = param1.vec[0] / div;
       result->vec[1] = param1.vec[1] / div;
