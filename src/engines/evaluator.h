@@ -166,6 +166,7 @@ enum {
   LEX_COMPARE,
   LEX_AND,
   LEX_OR,
+  LEX_ATAN2,
   LEX_POW,
   LEX_FMOD,
   LEX_VEC3F,

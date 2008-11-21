@@ -66,7 +66,7 @@
 %token <id> LEX_COMPARE LEX_FLTFUNC
 
 /* tokens that do not have an associated value */
-%token LEX_POW LEX_FMOD LEX_LEN
+%token LEX_ATAN2 LEX_POW LEX_FMOD LEX_LEN
 %token LEX_CROSS LEX_DOT LEX_NORMALIZE LEX_VEC3F
 %token ',' '[' ']' '(' ')' ';'
 
@@ -136,6 +136,8 @@ fltstatement  : boolstatement '?' fltstatement ':' fltstatement
               | fltstatement '/' fltstatement { $$ = so_eval_create_binary(ID_DIV, $1, $3); }
               | fltstatement '*' fltstatement { $$ = so_eval_create_binary(ID_MUL, $1, $3); }
               | fltstatement '%' fltstatement { $$ = so_eval_create_binary(ID_FMOD, $1, $3); }
+              | LEX_ATAN2 '(' fltstatement ',' fltstatement ')'
+              { $$ = so_eval_create_binary(ID_ATAN2, $3, $5); }
               | LEX_POW '(' fltstatement ',' fltstatement ')'
               { $$ = so_eval_create_binary(ID_POW, $3, $5); }
               | LEX_FMOD '(' fltstatement ',' fltstatement ')'

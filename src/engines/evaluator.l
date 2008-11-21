@@ -83,7 +83,7 @@ tan                             { yylval.id = ID_TAN; return LEX_FLTFUNC; }
 acos                            { yylval.id = ID_ACOS; return LEX_FLTFUNC; }
 asin                            { yylval.id = ID_ASIN; return LEX_FLTFUNC; }
 atan                            { yylval.id = ID_ATAN; return LEX_FLTFUNC; }
-atan2                           { yylval.id = ID_ATAN2; return LEX_FLTFUNC; }
+atan2                           return LEX_ATAN2;
 cosh                            { yylval.id = ID_COSH; return LEX_FLTFUNC; }
 sinh                            { yylval.id = ID_SINH; return LEX_FLTFUNC; }
 tanh                            { yylval.id = ID_TANH; return LEX_FLTFUNC; }
