@@ -560,6 +560,7 @@ SoShaderObjectP::readSource(void)
             delete[] srcstr;
           }
         }
+        fclose(f);
       }
       if (!readok) {
         this->cachedSourceType = SoShaderObject::FILENAME;
