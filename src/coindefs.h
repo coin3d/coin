@@ -170,4 +170,21 @@ COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO); \
 #define COIN_WORKAROUND_NO_USING_STD_FUNCS
 #endif
 
+#ifdef HAVE___BUILTIN_EXPECT
+/* for branch-prediction hint optimization */
+#ifndef likely
+#define likely(cond)      __builtin_expect(!!(cond), 1)
+#endif /* !likely */
+#ifndef unlikely
+#define unlikely(cond)    __builtin_expect(!!(cond), 0)
+#endif /* !unlikely */
+#else /* !HAVE___BUILTIN_EXPECT */
+#ifndef likely
+#define likely(cond)      (cond)
+#endif /* !likely */
+#ifndef unlikely
+#define unlikely(cond)    (cond)
+#endif /* !unlikely */
+#endif /* !HAVE___BUILTIN_EXPECT */
+
 #endif /* !COIN_DEFS_H */
