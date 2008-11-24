@@ -89,13 +89,21 @@
 
 // *************************************************************************
 
+extern "C" {
+static void sofieldcontainer_userdata_cleanup(void);
+static void sofieldcontainer_construct_copydict(void * closure);
+static void sofieldcontainer_destruct_copydict(void * closure);
+static void sofieldcontainer_copydict_cleanup(void);
+static void SoFieldContainer_cleanupClass(void);
+}
+
 SoType SoFieldContainer::classTypeId STATIC_SOTYPE_INIT;
 
 // used by setUserData() and getUserData()
 typedef SbHash<void *, const SoFieldContainer *> UserDataMap;
 static UserDataMap * sofieldcontainer_userdata_dict = NULL;
 
-static void
+void
 sofieldcontainer_userdata_cleanup(void)
 {
   delete sofieldcontainer_userdata_dict;
@@ -180,7 +188,7 @@ typedef struct {
   SbList<ContentsCopiedMap *> * contentscopiedstack;
 } sofieldcontainer_copydict;
 
-static void
+void
 sofieldcontainer_construct_copydict(void * closure)
 {
   sofieldcontainer_copydict * data = static_cast<sofieldcontainer_copydict *>(closure);
@@ -189,7 +197,7 @@ sofieldcontainer_construct_copydict(void * closure)
   data->contentscopiedstack = new SbList<ContentsCopiedMap *>;
 }
 
-static void
+void
 sofieldcontainer_destruct_copydict(void * closure)
 {
   sofieldcontainer_copydict * data = static_cast<sofieldcontainer_copydict *>(closure);
@@ -201,7 +209,7 @@ sofieldcontainer_destruct_copydict(void * closure)
 // Coin
 static SbStorage * sofieldcontainer_copydictstorage;
 
-static void
+void
 sofieldcontainer_copydict_cleanup(void)
 {
   delete sofieldcontainer_copydictstorage;
@@ -228,15 +236,21 @@ SoFieldContainer::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 
   sofieldcontainer_userdata_dict = new UserDataMap;
-  coin_atexit(static_cast<coin_atexit_f *>(sofieldcontainer_userdata_cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(sofieldcontainer_userdata_cleanup, CC_ATEXIT_NORMAL);
 
   sofieldcontainer_copydictstorage =
     new SbStorage(sizeof(sofieldcontainer_copydict),
                   sofieldcontainer_construct_copydict,
                   sofieldcontainer_destruct_copydict);
 
-  coin_atexit(static_cast<coin_atexit_f *>(sofieldcontainer_copydict_cleanup), CC_ATEXIT_NORMAL);
-  coin_atexit(static_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
+  coin_atexit(sofieldcontainer_copydict_cleanup, CC_ATEXIT_NORMAL);
+  coin_atexit(SoFieldContainer_cleanupClass, CC_ATEXIT_NORMAL);
+}
+
+void
+SoFieldContainer_cleanupClass(void)
+{
+  SoFieldContainer::cleanupClass();
 }
 
 void
