@@ -615,11 +615,11 @@ SoField::initClass(void)
   assert(SoField::classTypeId == SoType::badType());
 
   CC_MUTEX_CONSTRUCT(sofield_mutex);
-  coin_atexit(static_cast<coin_atexit_f *>(field_mutex_cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(field_mutex_cleanup, CC_ATEXIT_NORMAL);
 
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
-  coin_atexit(static_cast<coin_atexit_f *>(SoField_cleanupClass), CC_ATEXIT_NORMAL);
+  coin_atexit(SoField_cleanupClass, CC_ATEXIT_NORMAL);
 }
 
 void
