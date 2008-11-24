@@ -363,12 +363,17 @@ public:
   static SbHash<char **, char *> * getReallocHash(void);
   static void * hashRealloc(void * bufptr, size_t size);
 
-private:
-  static void hashExitCleanup(void);
   static SbHash<char **, char *> * ptrhash;
 };
 
 SbHash<char **, char *> * SoFieldP::ptrhash = NULL;
+
+extern "C" {
+// atexit callbacks
+static void SoField_cleanupClass(void);
+static void hashExitCleanup(void);
+static void field_mutex_cleanup(void);
+}
 
 SbHash<char **, char *> *
 SoFieldP::getReallocHash(void)
@@ -376,13 +381,13 @@ SoFieldP::getReallocHash(void)
   // FIXME: protect with mutex?
   if (SoFieldP::ptrhash == NULL) {
     SoFieldP::ptrhash = new SbHash<char **, char *>;
-    coin_atexit(static_cast<coin_atexit_f *>(SoFieldP::hashExitCleanup), CC_ATEXIT_NORMAL);
+    coin_atexit(hashExitCleanup, CC_ATEXIT_NORMAL);
   }
   return SoFieldP::ptrhash;
 }
 
 void
-SoFieldP::hashExitCleanup(void)
+hashExitCleanup(void)
 {
   assert(SoFieldP::ptrhash->getNumElements() == 0);
   delete SoFieldP::ptrhash;
@@ -593,7 +598,7 @@ SoField::~SoField()
 }
 
 // atexit
-static void
+void
 field_mutex_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(sofield_mutex);
@@ -614,7 +619,13 @@ SoField::initClass(void)
 
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
-  coin_atexit(static_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
+  coin_atexit(static_cast<coin_atexit_f *>(SoField_cleanupClass), CC_ATEXIT_NORMAL);
+}
+
+void
+SoField_cleanupClass(void)
+{
+  SoField::cleanupClass();
 }
 
 void
