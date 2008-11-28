@@ -326,7 +326,10 @@ void
 SoShapeP::cleanup(void)
 {
   delete soshape_staticstorage;
+  soshape_staticstorage = NULL;
+
   delete SoShapeP::mutex;
+  SoShapeP::mutex = NULL;
 }
 
 // *************************************************************************
