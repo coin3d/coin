@@ -242,11 +242,11 @@ public:
 
 private:
 #ifdef COIN_THREADSAFE
-  // FIXME: a mutex for every SoSeparator instance seems a bit
-  // excessive, especially since MSWindows might have rather strict
-  // limits on the total amount of mutex resources a process (or even
-  // a user) can allocate. so consider making this a class-wide
-  // instance instead.  -mortene.
+  // FIXME: a mutex for every instance seems a bit excessive,
+  // especially since MSWindows might have rather strict limits on the
+  // total amount of mutex resources a process (or even a user) can
+  // allocate. so consider making this a class-wide instance instead.
+  // -mortene.
   SbMutex mutex;
 #endif // COIN_THREADSAFE
 };
