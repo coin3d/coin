@@ -181,38 +181,34 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include "coindefs.h" // COIN_OBSOLETED()
+#include "elements/SoTextureScalePolicyElement.h"
+#include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoTextureUnitElement.h>
-#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/lists/SbStringList.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SbImage.h>
-#include <Inventor/C/glue/gl.h>
-
-#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
-
-#include "coindefs.h" // COIN_OBSOLETED()
-#include "tidbitsp.h"
-#include "elements/SoTextureScalePolicyElement.h"
-#include "nodes/SoSubNodeP.h"
 
 // *************************************************************************
 
@@ -366,20 +362,20 @@ public:
   SoGLImage * glimage;
   SbBool glimagevalid;
   SoFieldSensor * filenamesensor;
-#ifdef COIN_THREADSAFE
+
   static SbMutex * mutex;
+
   static void cleanup(void) {
-    delete mutex;
-    mutex = NULL;
+    delete SoTexture2P::mutex;
+    SoTexture2P::mutex = NULL;
   }
-#endif // COIN_THREADSAFE
 };
 
-#ifdef COIN_THREADSAFE
-SbMutex * SoTexture2P::mutex;
-#endif // COIN_THREADSAFE
+SbMutex * SoTexture2P::mutex = NULL;
 
-#define PRIVATE(p) (p->pimpl)
+#define PRIVATE(p) ((p)->pimpl)
+
+// *************************************************************************
 
 #ifdef COIN_THREADSAFE
 #define LOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex->lock())
@@ -389,6 +385,7 @@ SbMutex * SoTexture2P::mutex;
 #define UNLOCK_GLIMAGE(_thisp_)
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
 
 SO_NODE_SOURCE(SoTexture2);
 
@@ -468,10 +465,12 @@ SoTexture2::initClass(void)
   SO_ENABLE(SoRayPickAction, SoTexture3EnabledElement);
   SO_ENABLE(SoRayPickAction, SoMultiTextureEnabledElement);
   SO_ENABLE(SoRayPickAction, SoMultiTextureImageElement);
+
 #ifdef COIN_THREADSAFE
   SoTexture2P::mutex = new SbMutex;
-  coin_atexit(SoTexture2P::cleanup, CC_ATEXIT_NORMAL);
 #endif // COIN_THREADSAFE
+
+  coin_atexit(SoTexture2P::cleanup, CC_ATEXIT_NORMAL);
 }
 
 
