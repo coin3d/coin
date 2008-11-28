@@ -152,10 +152,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
-
-#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
 
 #include "caches/SoGlyphCache.h"
 #include "fonts/glyph3d.h"
@@ -235,16 +232,14 @@ public:
 
   SoGlyphCache * cache;
 
-  void lock(void) {
 #ifdef COIN_THREADSAFE
-    this->mutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lock(void) { this->mutex.lock(); }
+  void unlock(void) { this->mutex.unlock(); }
+#else  // ! COIN_THREADSAFE
+  void lock(void) { }
+  void unlock(void) { }
+#endif // ! COIN_THREADSAFE
+
 private:
 #ifdef COIN_THREADSAFE
   SbMutex mutex;

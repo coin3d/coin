@@ -168,6 +168,8 @@
   \sa SoFaceSet, SoIndexedTriangleStripSet
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 
 #include <assert.h>
@@ -176,43 +178,40 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/caches/SoConvexDataCache.h>
-#include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/system/gl.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
-#include <Inventor/elements/SoVertexAttributeBindingElement.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/bundles/SoVertexAttributeBundle.h>
+#include <Inventor/caches/SoConvexDataCache.h>
+#include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
-#include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoVertexAttributeBindingElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbRWMutex.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/system/gl.h>
 #include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "tidbitsp.h"
@@ -220,6 +219,8 @@
 #include "misc/SoVertexArrayIndexer.h"
 #include "misc/SoVBO.h"
 #include "misc/SoGL.h"
+
+// *************************************************************************
 
 // for concavestatus
 #define STATUS_UNKNOWN 0
@@ -229,7 +230,8 @@
 #define LOCK_VAINDEXER(obj) SoBase::staticDataLock()
 #define UNLOCK_VAINDEXER(obj) SoBase::staticDataUnlock()
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
+
 class SoIndexedFaceSetP {
 public:
   SoIndexedFaceSetP(void) 
@@ -244,7 +246,6 @@ public:
 
 #ifdef COIN_THREADSAFE
   SbRWMutex convexmutex;
-  // SbMutex vamutex;
 #endif // COIN_THREADSAFE
 
   void readLockConvexCache(void) {
@@ -268,9 +269,10 @@ public:
 #endif // COIN_THREADSAFE
   }
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
+
+// *************************************************************************
 
 SO_NODE_SOURCE(SoIndexedFaceSet);
 

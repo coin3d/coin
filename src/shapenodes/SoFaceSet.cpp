@@ -90,6 +90,8 @@
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
 
+// *************************************************************************
+
 /*!
   \var SoMFInt32 SoFaceSet::numVertices
   Used to specify faces. Each entry specifies the number of coordinates
@@ -97,10 +99,14 @@
   the vertexProperty node.
 */
 
+// *************************************************************************
+
 // for concavestatus
 #define STATUS_UNKNOWN 0
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
+
+// *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
 class SoFaceSetP {
@@ -112,6 +118,7 @@ public:
   { }
   SoConvexDataCache * convexCache;
   int concavestatus;
+
 #ifdef COIN_THREADSAFE
   SbRWMutex convexmutex;
 #endif // COIN_THREADSAFE
@@ -140,6 +147,8 @@ public:
 #endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) ((obj)->pimpl)
+
+// *************************************************************************
 
 SO_NODE_SOURCE(SoFaceSet);
 
