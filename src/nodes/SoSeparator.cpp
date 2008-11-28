@@ -309,6 +309,11 @@ public:
   uint32_t bboxcache_destroycount;
 
 #ifdef COIN_THREADSAFE
+  // FIXME: a mutex for every SoSeparator instance seems a bit
+  // excessive, especially since MSWindows might have rather strict
+  // limits on the total amount of mutex resources a process (or even
+  // a user) can allocate. so consider making this a class-wide
+  // instance instead.  -mortene.
   SbMutex mutex;
 #endif // !COIN_THREADSAFE
   SbStorage * glcachestorage;
@@ -342,6 +347,11 @@ public:
                        SbBool (* cullfunc)(SoState *, const SbBox3f &, const SbBool));
 };
 
+#define PRIVATE(obj) ((obj)->pimpl)
+#define PUBLIC(obj) ((obj)->pub)
+
+// *************************************************************************
+
 SoGLCacheList *
 SoSeparatorP::getGLCacheList(SbBool createifnull)
 {
@@ -354,9 +364,6 @@ SoSeparatorP::getGLCacheList(SbBool createifnull)
 }
 
 // *************************************************************************
-
-#define PRIVATE(obj) ((obj)->pimpl)
-#define PUBLIC(obj) ((obj)->pub)
 
 SO_NODE_SOURCE(SoSeparator);
 
