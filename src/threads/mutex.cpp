@@ -109,8 +109,10 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
 /* debugging. for instance useful for checking that there's not
    excessive mutex construction. */
 
-static unsigned int debug_mtxcount = 0;
-static const char * COIN_DEBUG_MUTEX_COUNT = "COIN_DEBUG_MUTEX_COUNT";
+/* don't hide 'static' these to hide them in file-scope, as they are
+   used from rwmutex.cpp and recmutex.cpp aswell. */
+unsigned int cc_debug_mtxcount = 0;
+const char * COIN_DEBUG_MUTEX_COUNT = "COIN_DEBUG_MUTEX_COUNT";
 
 /**************************************************************************/
 
@@ -125,8 +127,9 @@ cc_mutex_construct(void)
   { /* debugging */
     const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
     if (env && (atoi(env) > 0)) {
-      debug_mtxcount += 1;
-      (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u\n", debug_mtxcount);
+      cc_debug_mtxcount += 1;
+      (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (mutex++)\n",
+                    cc_debug_mtxcount);
     }
   }
 
@@ -136,18 +139,19 @@ cc_mutex_construct(void)
 void
 cc_mutex_destruct(cc_mutex * mutex)
 {
-  assert(mutex != NULL);
-  cc_mutex_struct_clean(mutex);
-  free(mutex);
-
   { /* debugging */
     const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
     if (env && (atoi(env) > 0)) {
-      assert((debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
-      debug_mtxcount -= 1;
-      (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u\n", debug_mtxcount);
+      assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
+      cc_debug_mtxcount -= 1;
+      (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (mutex--)\n",
+                    cc_debug_mtxcount);
     }
   }
+
+  assert(mutex != NULL);
+  cc_mutex_struct_clean(mutex);
+  free(mutex);
 }
 
 /**************************************************************************/

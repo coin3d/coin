@@ -36,6 +36,15 @@
 
 /* ********************************************************************** */
 
+/* debugging. for instance useful for checking that there's not
+   excessive mutex construction. */
+
+/* these are declared in mutex.cpp */
+extern unsigned int cc_debug_mtxcount;
+extern const char * COIN_DEBUG_MUTEX_COUNT;
+
+/* ********************************************************************** */
+
 /*!
   \internal
 */
@@ -71,6 +80,16 @@ cc_recmutex_construct(void)
   recmutex = (cc_recmutex *) malloc(sizeof(cc_recmutex));
   assert(recmutex != NULL);
   cc_recmutex_struct_init(recmutex);
+
+  { /* debugging */
+    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
+    if (env && (atoi(env) > 0)) {
+      cc_debug_mtxcount += 1;
+      (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (recmutex++)\n",
+                    cc_debug_mtxcount);
+    }
+  }
+
   return recmutex;
 }
 
@@ -82,6 +101,16 @@ cc_recmutex_construct(void)
 void
 cc_recmutex_destruct(cc_recmutex * recmutex)
 {
+  { /* debugging */
+    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
+    if (env && (atoi(env) > 0)) {
+      assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
+      cc_debug_mtxcount -= 1;
+      (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (recmutex--)\n",
+                    cc_debug_mtxcount);
+    }
+  }
+
   assert(recmutex != NULL);
   cc_recmutex_struct_clean(recmutex);
   free(recmutex);

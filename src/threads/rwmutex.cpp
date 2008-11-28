@@ -31,8 +31,18 @@
 #include <Inventor/C/threads/condvar.h>
 
 #include "threads/rwmutexp.h"
+#include "tidbitsp.h"
 
 /* ********************************************************************** */
+
+/* debugging. for instance useful for checking that there's not
+   excessive mutex construction. */
+
+/* these are declared in mutex.cpp */
+extern unsigned int cc_debug_mtxcount;
+extern const char * COIN_DEBUG_MUTEX_COUNT;
+
+/**************************************************************************/
 
 /*!
   \internal
@@ -73,6 +83,16 @@ cc_rwmutex_construct(void)
   rwmutex = (cc_rwmutex *) malloc(sizeof(cc_rwmutex));
   assert(rwmutex != NULL);
   cc_rwmutex_struct_init(rwmutex);
+
+  { /* debugging */
+    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
+    if (env && (atoi(env) > 0)) {
+      cc_debug_mtxcount += 1;
+      (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (rwmutex++)\n",
+                    cc_debug_mtxcount);
+    }
+  }
+
   return rwmutex;
 }
 
@@ -98,6 +118,16 @@ cc_rwmutex_construct_etc(enum cc_precedence policy)
 void
 cc_rwmutex_destruct(cc_rwmutex * rwmutex)
 {
+  { /* debugging */
+    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
+    if (env && (atoi(env) > 0)) {
+      assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
+      cc_debug_mtxcount -= 1;
+      (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (rwmutex--)\n",
+                    cc_debug_mtxcount);
+    }
+  }
+
   assert(rwmutex != NULL);
   cc_rwmutex_struct_clean(rwmutex);
   free(rwmutex);
