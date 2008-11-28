@@ -31,6 +31,7 @@
   code used by the subclasses.
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoShape.h>
 
@@ -54,13 +55,16 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
@@ -70,45 +74,39 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/elements/SoGLVertexAttributeElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoGLVertexAttributeElement.h>
-#include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoLight.h>
-#include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/threads/SbStorage.h>
-#include <Inventor/elements/SoGLVBOElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
+#include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/threads/SbStorage.h>
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
 #include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
 #include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
 #endif // HAVE_VRML97
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
@@ -124,6 +122,8 @@
 #include "soshape_trianglesort.h"
 #include "soshape_bigtexture.h"
 #include "soshape_bumprender.h"
+
+// *************************************************************************
 
 /*!
   \enum SoShape::TriangleShape
@@ -196,9 +196,6 @@ public:
   uint32_t flags : FLAG_BITS;
   // stores the number of frames rendered with no node changes
   uint32_t rendercnt : RENDERCNT_BITS;
-#ifdef COIN_THREADSAFE
-  SbMutex mutex;
-#endif // COIN_THREADSAFE
 
   // needed since some VRML97 nodes change the GL state inside the node
   void testSetupShapeHints(SoShape * shape) {
@@ -221,22 +218,38 @@ public:
     }
 #endif // HAVE_VRML97
   }
-  void lock(void) {
+
+  // we can use a per-instance mutex here instead of this class-wide
+  // one, but we go for the class-wide one since at least MSWindows
+  // might have a rather strict limit on the total amount of mutex
+  // resources a process / user can hold at any one time.
+  //
+  // i haven't looked too hard at the locked code regions, however --
+  // it might be that a class-wide lock can cause significantly less
+  // efficient execution in a multi-threaded environment. if so, we
+  // will have to come up with something smarter than this (a mutex
+  // pool or something, i suppose).
+  //
+  // -mortene.
+  static SbMutex * mutex;
+
 #ifdef COIN_THREADSAFE
-    this->mutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlock(void) {
-#ifdef COIN_THREADSAFE
-    this->mutex.unlock();
-#endif // COIN_THREADSAFE
-  }
+  void lock(void) { SoShapeP::mutex->lock(); }
+  void unlock(void) { SoShapeP::mutex->unlock(); }
+#else // ! COIN_THREADSAFE
+  void lock(void) { }
+  void unlock(void) { }
+#endif // ! COIN_THREADSAFE
+
+  static void cleanup(void);
 };
 
 double SoShapeP::bboxcachetimelimit;
 
+SbMutex * SoShapeP::mutex = NULL;
+
 #undef PRIVATE
-#define PRIVATE(_thisp_) ((_thisp_)->pimpl)
+#define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
 // code/structures to handle static and/or thread safe data
@@ -309,10 +322,11 @@ soshape_get_staticdata(void)
 }
 
 // called by atexit
-static void
-soshape_cleanup(void)
+void
+SoShapeP::cleanup(void)
 {
   delete soshape_staticstorage;
+  delete SoShapeP::mutex;
 }
 
 // *************************************************************************
@@ -344,12 +358,17 @@ SoShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_1);
 
+#ifdef COIN_THREADSAFE
+  SoShapeP::mutex = new SbMutex;
+#endif // COIN_THREADSAFE
+
   soshape_staticstorage =
     new SbStorage(sizeof(soshape_staticdata),
                   soshape_construct_staticdata,
                   soshape_destruct_staticdata);
   SoShapeP::calibrateBBoxCache();
-  coin_atexit((coin_atexit_f*) soshape_cleanup, CC_ATEXIT_NORMAL);
+
+  coin_atexit((coin_atexit_f *)SoShapeP::cleanup, CC_ATEXIT_NORMAL);
 }
 
 // Doc in parent.
@@ -560,7 +579,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   // test if we should sort triangles before rendering
   if (transparent && (shapestyleflags & SoShapeStyleElement::TRANSP_SORTED_TRIANGLES)) {
-    // lock mutex since pvcache is shared among all threads
+    // lock since pvcache is shared among all threads
     PRIVATE(this)->lock();
     this->validatePVCache(action);
 
@@ -641,7 +660,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (shapestyleflags & SoShapeStyleElement::BUMPMAP) {
     const SoNodeList & lights = SoLightElement::getLights(state);
     if (lights.getLength()) {
-      // lock mutex since bumprender and pvcache is shared among all threads
+      // lock since bumprender and pvcache is shared among all threads
       PRIVATE(this)->lock();
       if (PRIVATE(this)->bumprender == NULL) {
         PRIVATE(this)->bumprender = new soshape_bumprender;
@@ -672,9 +691,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         m.multLeft(lm);
 
 
-        // bumprender is shared among all threads, so the mutex needs to
-        // be locked when we get here since some internal arrays are
-        // used while rendering
+        // bumprender is shared among all threads, so we need to lock
+        // when we get here since some internal arrays are used while
+        // rendering
+        //
+        // FIXME: about the above comment; i don't see any locking...?
+        // -mortene.
         PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache,
                                               (SoLight*) lights[i], m);
 
@@ -726,7 +748,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       PRIVATE(this)->unlock();
 
       glPopAttrib();
-      glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
+      // FIXME: temporary for FPS-counter
+      // FIXME: wtf is the above supposed to mean?  -mortene.
+      glDisable(GL_BLEND);
 
       SoGLLazyElement::getInstance(state)->reset(state,
                                                  SoLazyElement::LIGHT_MODEL_MASK|
@@ -738,7 +762,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
 
   if (shapestyleflags & SoShapeStyleElement::VERTEXARRAY) {
-    // lock mutex since pvcache is shared among all threads
+    // lock since pvcache is shared among all threads
     PRIVATE(this)->lock();
     this->validatePVCache(action);
     PRIVATE(this)->unlock();
