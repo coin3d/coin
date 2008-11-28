@@ -32,27 +32,29 @@
   used to set vertex data inside the node.
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoVertexShape.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoCreaseAngleElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoCreaseAngleElement.h>
-
-#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
-#endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
+#include "tidbitsp.h"
+
+// *************************************************************************
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
@@ -74,26 +76,61 @@
   \since SGI Inventor v2.1
 */
 
+// *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
 class SoVertexShapeP {
 public:
-  SoVertexShapeP(void) 
-#ifdef COIN_THREADSAFE
-    : normalcachemutex(SbRWMutex::READ_PRECEDENCE)
-#endif // COIN_THREADSAFE
-  { }
-
   SoNormalCache * normalcache;
-#ifdef COIN_THREADSAFE
-  SbRWMutex normalcachemutex;
-#endif // COIN_THREADSAFE
+
+  // we can use a per-instance mutex here instead of this class-wide
+  // one, but we go for the class-wide one since at least MSWindows
+  // might have a rather strict limit on the total amount of mutex
+  // resources a process / user can hold at any one time.
+  //
+  // i haven't looked too hard at the affected code regions in the
+  // sub-classes, however. it might be that a class-wide lock can
+  // cause significantly less efficient execution in a multi-threaded
+  // environment. if so, we will have to come up with something better
+  // than just a class-wide lock (a mutex pool or something, i
+  // suppose).
+  //
+  // -mortene.
+  static SbRWMutex * normalcachemutex;
+
+  static void cleanup(void);
 };
-#endif // DOXYGEN_SKIP_THIS
+
+// called by atexit
+void
+SoVertexShapeP::cleanup(void)
+{
+  delete SoVertexShapeP::normalcachemutex;
+  SoVertexShapeP::normalcachemutex = NULL;
+}
+
+SbRWMutex * SoVertexShapeP::normalcachemutex = NULL;
+
+#define PRIVATE(obj) ((obj)->pimpl)
+
+// *************************************************************************
 
 SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 
-#define PRIVATE(obj) ((obj)->pimpl)
+// *************************************************************************
+
+
+// doc from superclass
+void
+SoVertexShape::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape, SO_FROM_INVENTOR_1);
+
+#ifdef COIN_THREADSAFE
+  SoVertexShapeP::normalcachemutex = new SbRWMutex(SbRWMutex::READ_PRECEDENCE);
+#endif // COIN_THREADSAFE
+
+  coin_atexit((coin_atexit_f *)SoVertexShapeP::cleanup, CC_ATEXIT_NORMAL);
+}
 
 /*!
   Constructor.
@@ -117,12 +154,7 @@ SoVertexShape::~SoVertexShape()
   delete PRIVATE(this);
 }
 
-// doc from superclass
-void
-SoVertexShape::initClass(void)
-{
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape, SO_FROM_INVENTOR_1);
-}
+// *************************************************************************
 
 // Documented in superclass.
 void
@@ -287,8 +319,9 @@ SoVertexShape::write(SoWriteAction * action)
   inherited::write(action);
 }
 
-/*!
+// *************************************************************************
 
+/*!
   Read lock the normal cache. This method should be called before
   fetching the normal cache (using getNormalCache()). When the cached
   normals are no longer needed, readUnlockNormalCache() must be called.
@@ -303,13 +336,12 @@ SoVertexShape::write(SoWriteAction * action)
 void 
 SoVertexShape::readLockNormalCache(void)
 {
-#ifdef COIN_THREADSAFE
-  PRIVATE(this)->normalcachemutex.readLock();
-#endif // COIN_THREADSAFE
+  if (SoVertexShapeP::normalcachemutex) {
+    SoVertexShapeP::normalcachemutex->readLock();
+  }
 }
 
 /*!
-
   Read unlock the normal cache. Should be called when the read-locked
   cached normals are no longer needed.
 
@@ -319,27 +351,27 @@ SoVertexShape::readLockNormalCache(void)
 void 
 SoVertexShape::readUnlockNormalCache(void)
 {
-#ifdef COIN_THREADSAFE
-  PRIVATE(this)->normalcachemutex.readUnlock();
-#endif // COIN_THREADSAFE
+  if (SoVertexShapeP::normalcachemutex) {
+    SoVertexShapeP::normalcachemutex->readUnlock();
+  }
 }
 
-// write lock normal cache
 void 
 SoVertexShape::writeLockNormalCache(void)
 {
-#ifdef COIN_THREADSAFE
-  PRIVATE(this)->normalcachemutex.writeLock();
-#endif // COIN_THREADSAFE
+  if (SoVertexShapeP::normalcachemutex) {
+    SoVertexShapeP::normalcachemutex->writeLock();
+  }
 }
 
-// write unlock normal cache
 void 
 SoVertexShape::writeUnlockNormalCache(void)
 {
-#ifdef COIN_THREADSAFE
-  PRIVATE(this)->normalcachemutex.writeUnlock();
-#endif // COIN_THREADSAFE
+  if (SoVertexShapeP::normalcachemutex) {
+    SoVertexShapeP::normalcachemutex->writeUnlock();
+  }
 }
+
+// *************************************************************************
 
 #undef PRIVATE
