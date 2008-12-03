@@ -2,6 +2,9 @@ New in Coin v3.0.1a (so far):
 * new:
   - build configurations for building without manipulators, draggers, and
     nodekits
+* bugfixes:
+  - node leaks when copying nodekits
+  - name-dictionary memory fill (leaks) when copying scene graphs
 
 New in Coin v3.0.0 (2008-09-11):
 * new:
