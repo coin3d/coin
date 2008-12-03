@@ -290,7 +290,6 @@ SoDB::init(void)
   SoProfilerElement::initClass();
 
   ScXML::initClasses();
-  SoScXMLNavigation::initClasses();
 
   // Actions must be initialized before nodes (because of SO_ENABLE)
   SoAction::initClass();
@@ -318,6 +317,8 @@ SoDB::init(void)
 #ifdef HAVE_VRML97
   so_vrml_init();
 #endif // HAVE_VRML97
+
+  SoScXMLNavigation::initClasses();
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
