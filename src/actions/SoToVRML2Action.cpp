@@ -860,7 +860,7 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
 
     // Texture
     if (this->recentTex2 == NULL) {
-      this->recentTex2 = coin_assert_cast<SoTexture2 *>(search_for_recent_node(action, SoTexture2::getClassTypeId()));
+      this->recentTex2 = coin_safe_cast<SoTexture2 *>(search_for_recent_node(action, SoTexture2::getClassTypeId()));
     }
 
     if (this->recentTex2 != NULL) {
@@ -1914,7 +1914,7 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
   }
 
   thisp->recentTex2 =
-      coin_assert_cast<SoTexture2 *>(thisp->search_for_recent_node(action, SoTexture2::getClassTypeId()));
+    coin_safe_cast<SoTexture2 *>(thisp->search_for_recent_node(action, SoTexture2::getClassTypeId()));
   if (thisp->recentTex2) {
     thisp->bsptreetex = new SbBSPTree;
     thisp->texidx = new SbList <int32_t>;
@@ -2043,13 +2043,13 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
     ifs->creaseAngle = creaseangle_field ? creaseangle_field->getValue() : action->getCreaseAngle();
     if (node->isOfType(SoVertexShape::getClassTypeId())) {
       ifs->ccw = action->getVertexOrdering() != SoShapeHints::CLOCKWISE;
-    } 
+    }
     else {
       ifs->ccw = ccw_field ? ccw_field->getValue() : TRUE;
     }
     ifs->solid = solid_field ? solid_field->getValue() : (SoShapeHintsElement::getShapeType(action->getState()) == SoShapeHintsElement::SOLID);
     ifs->convex = convex_field ? convex_field->getValue() : (action->getFaceType() == SoShapeHints::CONVEX);
-    
+
     ifs->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
                                                 thisp->bsptree->numPoints());
 
