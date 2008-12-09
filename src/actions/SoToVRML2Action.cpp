@@ -350,13 +350,13 @@ public:
   float getBBoxDistance(const SbViewVolume & vv, const float screenarea, const float h) {
     const float h2 = h * 0.5f; // use half the height for simplicity
     float screenheight = float(sqrt(screenarea)) * 0.5f; // wanted height in pixels
-    float vvheight = vv.getHeight() * 0.5f; // total height of view volume    
+    float vvheight = vv.getHeight() * 0.5f; // total height of view volume
     float neardist = vv.getNearDist();
 
     float projheight = (screenheight / 768.0f) * vvheight; // wanted projected height
 
     // now, find the distance the bbox must be at the achieve this projheight
-    if (projheight > 0.0f) { 
+    if (projheight > 0.0f) {
       return (neardist / projheight) * h2;
     }
     return FLT_MAX; // never switch
@@ -466,7 +466,7 @@ static void add_shape_handled(const SoType & type, SoTypeList & addlist)
   SoTypeList shapes;
   (void) SoType::getAllDerivedFrom(type, shapes);
   int i;
-  
+
   for (i = 0; i < shapes.getLength(); i++) {
     SoType s = shapes[i];
     if (s.canCreateInstance() && (addlist.find(s) < 0)) {
@@ -931,7 +931,7 @@ SoToVRML2ActionP::push_sep_cb(void * closure, SoCallbackAction * COIN_UNUSED(act
 
   if (node->isOfType(SoVRMLTransform::getClassTypeId())) {
     const SoVRMLTransform * oldtrans = coin_assert_cast<const SoVRMLTransform*>(node);
-    SoVRMLTransform * newtrans = NEW_NODE(SoVRMLTransform, node);    
+    SoVRMLTransform * newtrans = NEW_NODE(SoVRMLTransform, node);
 
     newgroup = newtrans;
 
@@ -970,7 +970,7 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * COIN_UNUSED(acti
     grp = THISP(closure)->get_current_tail();
     THISP(closure)->vrml2path->pop();
   } while (grp != pushedgroup);
-  
+
   THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
 }
@@ -1082,7 +1082,7 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
   const SoLevelOfDetail * oldlod = coin_assert_cast<const SoLevelOfDetail *>(node);
   SoVRMLLOD * newlod = NEW_NODE(SoVRMLLOD, node);
 
-  // calculate bbox of children to find a reasonable conversion to range 
+  // calculate bbox of children to find a reasonable conversion to range
   SoGetBoundingBoxAction * bboxAction = thisp->getBBoxAction();
   SbViewportRegion viewport(DEFAULT_VIEWPORT_WIDTH, DEFAULT_VIEWPORT_HEIGHT);
   bboxAction->setViewportRegion(viewport);
@@ -1580,7 +1580,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
   SbList <int32_t> l;
   int n = oldls->numVertices.getNum();
   int32_t curidx = 0;
-  
+
   // check for special case where lineset should render all vertices
   // on the state
   if ((n == 1) && (oldls->numVertices[0] == -1)) {
@@ -1679,7 +1679,7 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   if (numpts) {
     if (coordElem->getArrayPtr3() != NULL) {
       ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr3(), numpts);
-    } 
+    }
     else {
       ps->coord = thisp->get_or_create_coordinate(coordElem->getArrayPtr4(), numpts);
     }
@@ -1691,7 +1691,7 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
       if (colorElem->isPacked()) {
         ps->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
                                                numpts);
-      } 
+      }
       else {
         ps->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
                                                numpts);
@@ -1828,12 +1828,12 @@ SoCallbackAction::Response
 SoToVRML2ActionP::sounits_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
 {
   SoVRMLTransform * newt = NEW_NODE(SoVRMLTransform, node);
-  
+
   // apply an SoGetMatrixAction to the node to find the scale factor
   SbViewportRegion dummy(100,100);
   SoGetMatrixAction gma(dummy);
   gma.apply(const_cast<SoNode *>(node));
-  
+
   const SbMatrix & m = gma.getMatrix();
 
   // we know that the SoUnits node applies an uniform scale, so just
@@ -2025,16 +2025,31 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
     SoVRMLIndexedFaceSet * ifs = NEW_NODE(SoVRMLIndexedFaceSet, node);
     is = ifs;
 
+    // we need some specific handling for VRML nodes, since these
+    // nodes store the state inside the node in fields
+    const SoSFBool * ccw_field = NULL;
+    const SoSFBool * solid_field = NULL;
+    const SoSFBool * convex_field = NULL;
+    const SoSFFloat * creaseangle_field = NULL;
+
+    if (node->isOfType(SoVRMLGeometry::getClassTypeId())) {
+      ccw_field = static_cast<const SoSFBool*>(node->getField("ccw"));
+      solid_field = static_cast<const SoSFBool*>(node->getField("solid"));
+      convex_field = static_cast<const SoSFBool*>(node->getField("convex"));
+      creaseangle_field = static_cast<const SoSFFloat*>(node->getField("creaseAngle"));
+    }
+
     // Set the values from the current ShapeHints
-    ifs->creaseAngle = action->getCreaseAngle();
+    ifs->creaseAngle = creaseangle_field ? creaseangle_field->getValue() : action->getCreaseAngle();
     if (node->isOfType(SoVertexShape::getClassTypeId())) {
       ifs->ccw = action->getVertexOrdering() != SoShapeHints::CLOCKWISE;
-    } else {
-      ifs->ccw = TRUE;
+    } 
+    else {
+      ifs->ccw = ccw_field ? ccw_field->getValue() : TRUE;
     }
-    ifs->solid = SoShapeHintsElement::getShapeType(action->getState()) == SoShapeHintsElement::SOLID;
-    ifs->convex = action->getFaceType() == SoShapeHints::CONVEX;
-
+    ifs->solid = solid_field ? solid_field->getValue() : (SoShapeHintsElement::getShapeType(action->getState()) == SoShapeHintsElement::SOLID);
+    ifs->convex = convex_field ? convex_field->getValue() : (action->getFaceType() == SoShapeHints::CONVEX);
+    
     ifs->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
                                                 thisp->bsptree->numPoints());
 
