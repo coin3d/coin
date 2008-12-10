@@ -156,7 +156,7 @@ SoForeignFileKit::registerFileExtension(SoType handler, SbName extension, SoFore
   assert(SoForeignFileKitP::fileexts != NULL);
   assert(handler.canCreateInstance());
 
-  if ( extension.getString()[0] == '.' ) {
+  if (extension.getString()[0] == '.') {
 #if COIN_DEBUG
     SoDebugError::post("SoForeignFileKit::registerFileExtension",
                        "Do not include the extension separator '.' "
@@ -164,7 +164,7 @@ SoForeignFileKit::registerFileExtension(SoType handler, SbName extension, SoFore
 #endif // COIN_DEBUG
   }
 
-  if ( SoForeignFileKitP::fileexts->put(extension.getString(), handler) ) {
+  if (SoForeignFileKitP::fileexts->put(extension.getString(), handler)) {
     return TRUE;
   }
   return FALSE;
@@ -174,7 +174,7 @@ SbBool
 SoForeignFileKit::isFileSupported(SoInput * in, SbBool exhaust)
 {
   assert(in);
-  if ( in->getCurFileName() == NULL || in->getNumBytesRead() > 0 ) {
+  if (in->getCurFileName() == NULL || in->getNumBytesRead() > 0) {
     // can only read proper files, from the beginning
     return FALSE;
   }
@@ -187,11 +187,11 @@ SoForeignFileKit::isFileSupported(const char * filename, SbBool exhaust)
   assert(SoForeignFileKitP::fileexts != NULL);
 
   const char * extptr = strrchr(filename, '.');
-  if ( extptr ) {
+  if (extptr) {
     extptr++;
-    SbName ext(extptr);
+    SbName ext(SbString(extptr).lower());
     SoType handler = SoType::badType();
-    if ( SoForeignFileKitP::fileexts->get(ext.getString(), handler) ) {
+    if (SoForeignFileKitP::fileexts->get(ext.getString(), handler)) {
       SoForeignFileKit * foreignfile =
         (SoForeignFileKit *) handler.createInstance();
       foreignfile->ref();
@@ -200,7 +200,7 @@ SoForeignFileKit::isFileSupported(const char * filename, SbBool exhaust)
       return canread;
     }
   }
-  if ( exhaust ) {
+  if (exhaust) {
     // SoForeignFileKitP::fileexts->apply()
   }
   return FALSE;
@@ -210,13 +210,13 @@ SoForeignFileKit *
 SoForeignFileKit::createForeignFileKit(SoInput * in, SbBool exhaust)
 {
   assert(in);
-  if ( in->getCurFileName() == NULL || in->getNumBytesRead() > 0 ) {
+  if (in->getCurFileName() == NULL || in->getNumBytesRead() > 0) {
     // can only read proper files, from the beginning
     return FALSE;
   }
   SoForeignFileKit * kit =
     SoForeignFileKit::createForeignFileKit(in->getCurFileName(), exhaust);
-  if ( kit ) {
+  if (kit) {
     if (!in->eof()) {
       // Places the stream at the end of the current file on the
       // stack. This is a "hack-ish", but its done this way
@@ -235,20 +235,20 @@ SoForeignFileKit::createForeignFileKit(const char * filename, SbBool exhaust)
   assert(SoForeignFileKitP::fileexts != NULL);
 
   const char * extptr = strrchr(filename, '.');
-  if ( extptr ) {
+  if (extptr) {
     extptr++;
-    SbName ext(extptr);
+    SbName ext(SbString(extptr).lower());
     SoType handler = SoType::badType();
-    if ( SoForeignFileKitP::fileexts->get(ext.getString(), handler) ) {
+    if (SoForeignFileKitP::fileexts->get(ext.getString(), handler)) {
       SoForeignFileKit * foreignfile =
         (SoForeignFileKit *) handler.createInstance();
       foreignfile->ref();
       SbBool canread = foreignfile->canReadFile(filename);
       SbBool ok = FALSE;
-      if ( canread ) {
+      if (canread) {
         ok = foreignfile->readFile(filename);
       }
-      if ( canread && ok ) {
+      if (canread && ok) {
         foreignfile->unrefNoDelete();
         return foreignfile;
       } else {
