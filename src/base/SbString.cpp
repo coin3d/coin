@@ -39,6 +39,7 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/lists/SbList.h>
+#include <cctype>
 
 // FIXME: translate the find() and findAll() methods to C (will first
 // need a growable array in C to handle the second argument to
