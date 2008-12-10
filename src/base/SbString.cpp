@@ -157,6 +157,37 @@ SbString::findAll(const SbString & strarg, SbIntList & found) const
   return TRUE;
 }
 
+/*!
+  Converts all of the characters to lowercase using tolower().
+
+  \since 2008-12-10
+*/
+SbString
+SbString::lower() const
+{
+  int lenthis = this->getLength();
+  SbString newstr;
+  for (int i=0;i<lenthis;i++) {
+    newstr += tolower((*this)[i]);
+  }
+  return newstr;
+}
+
+/*!
+  Converts all of the characters to uppercase using toupper().
+
+  \since 2008-12-10
+*/
+SbString
+SbString::upper() const
+{
+  int lenthis = this->getLength();
+  SbString newstr;
+  for (int i=0;i<lenthis;i++) {
+    newstr += toupper((*this)[i]);
+  }
+  return newstr;
+}
 
 
 /*!

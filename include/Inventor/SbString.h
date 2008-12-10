@@ -118,6 +118,9 @@ public:
   int find(const SbString & s) const;
   SbBool findAll(const SbString & s, SbIntList & found) const;
 
+  SbString lower() const;
+  SbString upper() const;
+
   friend int operator==(const SbString & sbstr, const char * s);
   friend int operator==(const char * s, const SbString & sbstr);
   friend int operator==(const SbString & str1, const SbString & str2);
