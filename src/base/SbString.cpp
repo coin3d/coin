@@ -41,6 +41,11 @@
 #include <Inventor/lists/SbList.h>
 #include <cctype>
 
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
+using std::tolower;
+using std::toupper;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
+
 // FIXME: translate the find() and findAll() methods to C (will first
 // need a growable array in C to handle the second argument to
 // findAll()). 20020522 mortene.
