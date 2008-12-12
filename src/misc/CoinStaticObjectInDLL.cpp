@@ -258,24 +258,27 @@ CoinStaticObjectInDLL::deactivateMutex(void)
            CoinStaticObjectInDLL::mutexhandle);
   }
 
-  assert(CoinStaticObjectInDLL::mutexhandle);
+  // it's only necessary to close the mutex handle the first time 
+  // CoinStaticObjectInDLL::init() is called. In subsequent calls the handle
+  // will be NULL.
+  if (CoinStaticObjectInDLL::mutexhandle != NULL) {
+    const BOOL ok = CloseHandle((HANDLE)CoinStaticObjectInDLL::mutexhandle);
+    if (!ok) { // just in case
+      if (debug()) {
+        printf("%p %f CoinStaticObjectInDLL::deactivateMutex(), "
+               "ERROR: CloseHandle(%p) failed!\n",
+               CoinStaticObjectInDLL::singleton,
+               SbTime::getTimeOfDay().getValue(),
+               CoinStaticObjectInDLL::mutexhandle);
+      }
 
-  const BOOL ok = CloseHandle((HANDLE)CoinStaticObjectInDLL::mutexhandle);
-  if (!ok) { // just in case
-    if (debug()) {
-      printf("%p %f CoinStaticObjectInDLL::deactivateMutex(), "
-             "ERROR: CloseHandle(%p) failed!\n",
-             CoinStaticObjectInDLL::singleton,
-             SbTime::getTimeOfDay().getValue(),
-             CoinStaticObjectInDLL::mutexhandle);
+      MessageBox(NULL,
+                 "CloseHandle() in CoinStaticObjectInDLL::deactivateMutex()\n"
+                 "failed! Please report to <coin-support@coin3d.org>.\n",
+                 "Warning!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
     }
-
-    MessageBox(NULL,
-               "CloseHandle() in CoinStaticObjectInDLL::deactivateMutex()\n"
-               "failed! Please report to <coin-support@coin3d.org>.\n",
-               "Warning!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+    CoinStaticObjectInDLL::mutexhandle = (HANDLE)NULL;
   }
-  CoinStaticObjectInDLL::mutexhandle = (HANDLE)NULL;
 }
 
 SbString
