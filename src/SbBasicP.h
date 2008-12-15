@@ -31,6 +31,7 @@ class SoDetail;
 class SoElement;
 class SoEvent;
 class SoPath;
+class ScXMLObject;
 
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) //coin_depointer does not work with MSVC 6
 #define COIN_DEPOINTER_AVAILABLE
@@ -101,6 +102,10 @@ template<typename To>
 To coin_safe_cast(SoEvent * ptr) { return coin_internal_safe_cast2<To>(ptr); }
 template<typename To>
 To coin_safe_cast(const SoEvent * ptr) { return coin_internal_safe_cast2<To>(ptr); }
+template<typename To>
+To coin_safe_cast(ScXMLObject * ptr) { return coin_internal_safe_cast2<To>(ptr); }
+template<typename To>
+To coin_safe_cast(const ScXMLObject * ptr) { return coin_internal_safe_cast2<To>(ptr); }
 
 #include "coindefs.h"
 
@@ -136,6 +141,10 @@ template<typename To>
 To coin_assert_cast(SoEvent * ptr) { return coin_internal_assert_cast<To>(ptr); }
 template<typename To>
 To coin_assert_cast(const SoEvent * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(ScXMLObject * ptr) { return coin_internal_assert_cast<To>(ptr); }
+template<typename To>
+To coin_assert_cast(const ScXMLObject * ptr) { return coin_internal_assert_cast<To>(ptr); }
 
 //FIXME Should we remove this? - BFG 20080801
 //Strictly for internal use, until we know exactly how to handle these
