@@ -82,8 +82,10 @@ SIM_AC_SETUP_MSVCPP_IFELSE
 # **************************************************************************
 # Mac OS X: gcc
 
-# FIXME: Shouldn't it be --disable-framework instead of
-# --without-framework? 20041005 kyrah
+# We use --without/with-framework instead of --enable/disable-framework
+# because --with-framework=<> takes an optional argument, which (if set
+# to something other than yes/no/true/false) is used to set the framework
+# name if you want it to be something other than the default "Inventor".
 AC_ARG_WITH([framework],
   [AC_HELP_STRING([--without-framework], 
                   [Do 'UNIX-style' installation on Mac OS X])],
