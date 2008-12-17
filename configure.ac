@@ -82,38 +82,32 @@ SIM_AC_SETUP_MSVCPP_IFELSE
 # **************************************************************************
 # Mac OS X: gcc
 
-# We use --without/with-framework instead of --enable/disable-framework
-# because --with-framework=<> takes an optional argument, which (if set
-# to something other than yes/no/true/false) is used to set the framework
-# name if you want it to be something other than the default "Inventor".
+# old-compat
 AC_ARG_WITH([framework],
-  [AC_HELP_STRING([--without-framework], 
+  [  --without-framework     (deprecated: use --disable-framework)],
+  [case "$withval" in
+  no | false ) enable_framework=false ;;
+  * ) ;;
+  esac])
+
+sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
+AC_ARG_ENABLE([framework],
+  [AC_HELP_STRING([--disable-framework], 
                   [Do 'UNIX-style' installation on Mac OS X])],
-  [sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
-  case $withval in
-  yes | true ) sim_ac_framework=true ;;
+  [case $enableval in
   no | false ) sim_ac_framework=false ;;
-  * ) sim_ac_framework=true; sim_ac_framework_name="$withval" ;;
+  * ) sim_ac_framework=true ;;
   esac],
-  [sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
-  case $host_os in
+  [case $host_os in
   darwin* ) sim_ac_framework=true ;;
   * ) sim_ac_framework=false ;;
   esac])
-
-# don't allow name to be overrided - just toggled on/off
-sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
 
 AC_ARG_WITH([framework-prefix],
   [  --with-framework-prefix=<path>  (default: "MAC_FRAMEWORK_PREFIX_DEFAULT")],
   [sim_ac_framework_prefix="$withval"],
   [sim_ac_framework_prefix="MAC_FRAMEWORK_PREFIX_DEFAULT"])
 
-# don't allow version to be overrided
-# AC_ARG_WITH([framework-version],
-#   [  --with-framework-version=<version>  (default: "MAC_FRAMEWORK_VERSION_DEFAULT")],
-#   [sim_ac_framework_version="$withval"],
-#   [sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"])
 sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"
 
 AC_SUBST([MAC_FRAMEWORK], [$sim_ac_framework])
@@ -125,8 +119,8 @@ AC_SUBST([nop], [])
 
 frameworkdir=
 if $sim_ac_framework; then
-  frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework 
-  includedir=$frameworkdir/Resources/include
+  frameworkdir="${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework"
+  includedir="$frameworkdir/Resources/include"
 fi
 
 ivincludedir=$includedir
