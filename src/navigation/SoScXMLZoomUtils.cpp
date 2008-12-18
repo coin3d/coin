@@ -158,7 +158,7 @@ SoScXMLUpdateZoom::invoke(ScXMLStateMachine * statemachinearg)
     float diffvalue = 0.0f;
     enum LocalConstants { ZOOMVALUELEN = sizeof("zoomvalue=")-1 };
     if (srcexpr.compare(0, ZOOMVALUELEN, "zoomvalue=") == 0) {
-      diffvalue = atof(&(srcexpr.at(ZOOMVALUELEN)));
+      diffvalue = static_cast<float>(atof(&(srcexpr.at(ZOOMVALUELEN))));
     }
     if (!coin_isnan(diffvalue) && diffvalue != 0.0f) {
       SoCamera * camera = statemachine->getActiveCamera();

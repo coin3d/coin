@@ -40,7 +40,7 @@ class SoSearchAction;
 class SoGetMatrixAction;
 class SoRayPickAction;
 
-struct SeekData;
+class SeekData;
 
 // *************************************************************************
 

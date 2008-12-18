@@ -32,7 +32,7 @@
 // UpdateRotate - move camera
 // EndRotate    - figure out if this ends in a spin
 
-struct RotateData;
+class RotateData;
 
 // *************************************************************************
 

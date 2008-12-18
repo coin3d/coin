@@ -270,7 +270,7 @@ SoScXMLUpdateSeek::invoke(ScXMLStateMachine * statemachinearg)
 
   SbTime currenttime = SbTime::getTimeOfDay();
 
-  float t = (currenttime.getValue() - data->seekstart.getValue()) / data->seektime;
+  float t = static_cast<float>((currenttime.getValue() - data->seekstart.getValue()) / data->seektime);
   if (t >= 1.0f) t = 1.0f;
 
   SbBool end = (t == 1.0f);

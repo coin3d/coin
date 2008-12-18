@@ -32,7 +32,7 @@
 // UpdatePan - move camera
 // EndPan    - figure out if this ends in a spin
 
-struct PanData;
+class PanData;
 
 // *************************************************************************
 

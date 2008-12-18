@@ -32,7 +32,7 @@
 // UpdateZoom - move camera
 // EndZoom    - figure out if this ends in a spin
 
-struct ZoomData;
+class ZoomData;
 
 // *************************************************************************
 
