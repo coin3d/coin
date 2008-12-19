@@ -67,8 +67,7 @@ cc_error_default_handler_cb(const cc_error * err, void * COIN_UNUSED(data))
      FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
      directly will result in a crash when Coin has been compiled as a
      .DLL. */
-  static FILE * coin_stderr = NULL;
-  if (!coin_stderr) { coin_stderr = coin_get_stderr(); }
+  FILE * coin_stderr = coin_get_stderr();
 
   if (coin_stderr) {
     const cc_string * str = cc_error_get_debug_string(err);

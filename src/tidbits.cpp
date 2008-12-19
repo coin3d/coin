@@ -1291,34 +1291,67 @@ coin_is_exiting(void)
 static FILE * coin_stdin = NULL;
 static FILE * coin_stdout = NULL;
 static FILE * coin_stderr = NULL;
+static int coin_dup_stdin = -1;
+static int coin_dup_stdout = -1;
+static int coin_dup_stderr = -1;
 
 void
 free_std_fds(void)
 {
   /* Close stdin/stdout/stderr */
-  if (coin_stdin) { fclose(coin_stdin); coin_stdin = NULL; }
-  if (coin_stdout) { fclose(coin_stdout); coin_stdout = NULL; }
-  if (coin_stderr) { fclose(coin_stderr); coin_stderr = NULL; }
+  if (coin_stdin) { 
+    assert(coin_dup_stdin != -1);
+    fclose(coin_stdin); 
+    coin_stdin = NULL; 
+    dup2(coin_dup_stdin, STDIN_FILENO);
+    close(coin_dup_stdin);
+    coin_dup_stdin = -1;
+  }
+  if (coin_stdout) { 
+    assert(coin_dup_stdout != -1);
+    fclose(coin_stdout); 
+    coin_stdout = NULL; 
+    dup2(coin_dup_stdout, STDOUT_FILENO);
+    close(coin_dup_stdout);
+    coin_dup_stdout = -1;
+  }
+  if (coin_stderr) { 
+    assert(coin_dup_stderr != -1);
+    fclose(coin_stderr); 
+    coin_stderr = NULL; 
+    dup2(coin_dup_stderr, STDERR_FILENO);
+    close(coin_dup_stderr);
+    coin_dup_stderr = -1;
+  }
 }
 
 FILE *
 coin_get_stdin(void)
 {
-  if ( ! coin_stdin ) coin_stdin = fdopen(STDIN_FILENO, "r");
+  if ( ! coin_stdin ){
+    coin_dup_stdin = dup(STDIN_FILENO);
+    coin_stdin = fdopen(STDIN_FILENO, "r");
+  }
   return coin_stdin;
 }
 
 FILE *
 coin_get_stdout(void)
 {
-  if ( ! coin_stdout ) coin_stdout = fdopen(STDOUT_FILENO, "w");
+  if ( ! coin_stdout ){
+    coin_dup_stdout = dup(STDOUT_FILENO);
+    coin_stdout = fdopen(STDOUT_FILENO, "w");
+  }
   return coin_stdout;
 }
 
 FILE *
 coin_get_stderr(void)
 {
-  if ( ! coin_stderr ) coin_stderr = fdopen(STDERR_FILENO, "w");
+  if ( ! coin_stderr ){
+    coin_dup_stderr = dup(STDERR_FILENO);
+    coin_stderr = fdopen(STDERR_FILENO, "w");
+  }
   return coin_stderr;
 }
 
