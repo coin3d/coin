@@ -16,15 +16,35 @@ tmplate='#Inventor V2.1 ascii \n
 ctmplate_begin='static const char * @NODE@[] = {'
 ctmplate_end='NULL};'
 
-for i in $(ls *.gif); 
+if [ ! -f inline_texture ]
+then
+   LDFLAGS="-Wl,-rpath,/home/bfg/packages/lib" coin-config --build inline_texture inline_texture.cpp
+fi
+
+OUTPUT=$1
+shift
+
+rm $OUTPUT
+
+for i in $@;
   do
-  fnam=${i%.gif}
+    fnam=${i%.svg}
     echo "Generating source for $i"
-    echo -e $tmplate | sed s/@TEX@/$i/g > texture-$fnam.tmp
-    inline_texture < texture-$fnam.tmp > texture-$fnam.iv
-    rm texture-$fnam.tmp
-    echo "$ctmplate_begin" | sed s/@NODE@/$fnam/g >> $1
-    cat texture-$fnam.iv | sed 's/^/"/g' | sed 's/$/\\n",/g' >> $1
-    echo -e "$ctmplate_end" >> $1
-    rm texture-$fnam.iv
+    if ! [ -f $fnam.gif ]
+    then
+       echo "Converting to gif"
+       #Not sure if this is the best method
+       convert -colors 2 -scale 128x128 $i $fnam.gif
+    fi
+    tmpname=$(echo -e $fnam | sed -e 's/\./\\\./g' | sed -e 's/\//\\\//g').gif
+    buffername=$(basename $fnam)
+
+    echo -e $tmplate | sed -e "s/@TEX@/${tmpname}/g" > $fnam-texture.tmp
+
+    LD_LIBRARY_PATH=/home/bfg/packages/lib ./inline_texture < $fnam-texture.tmp > $fnam-texture.iv
+    rm $fnam-texture.tmp
+    echo "$ctmplate_begin" | sed s/@NODE@/${buffername}/g >> $OUTPUT
+    cat $fnam-texture.iv | sed 's/^/"/g' | sed 's/$/\\n",/g' >> $OUTPUT
+    echo -e "$ctmplate_end" >> $OUTPUT
+    rm $fnam-texture.iv
   done
