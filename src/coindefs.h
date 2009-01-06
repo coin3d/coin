@@ -173,10 +173,10 @@ COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO); \
 #ifdef HAVE___BUILTIN_EXPECT
 /* for branch-prediction hint optimization */
 #ifndef likely
-#define likely(cond)      __builtin_expect(!!(cond), 1)
+#define likely(cond)      (__builtin_expect(!!(cond), 1))
 #endif /* !likely */
 #ifndef unlikely
-#define unlikely(cond)    __builtin_expect(!!(cond), 0)
+#define unlikely(cond)    (__builtin_expect(!!(cond), 0))
 #endif /* !unlikely */
 #else /* !HAVE___BUILTIN_EXPECT */
 #ifndef likely
