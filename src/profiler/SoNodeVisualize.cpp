@@ -128,7 +128,7 @@ namespace {
       this->nodemap.clear();
     }
 
-    SoTexture2 * operator[](const TextureImageData & data) 
+    SoTexture2 * operator[](const TextureImageData & data)
     {
       std::map<const TextureImageData *, SoTexture2 *>::iterator e;
       e = this->nodemap.find(&data);
@@ -142,7 +142,7 @@ namespace {
         return e->second;
       }
     }
-    
+
 
   private:
     std::map<const TextureImageData *, SoTexture2 *> nodemap;
@@ -155,7 +155,7 @@ class SoNodeVisualizeP {
 public:
   SoNodeVisualizeP(void) {
   }
-  
+
   static TextureDict textures;
 };
 
@@ -180,10 +180,10 @@ SO_KIT_SOURCE(SoNodeVisualize);
 SoNodeVisualize::SoNodeVisualize(void)
 {
   SO_KIT_CONSTRUCTOR(SoNodeVisualize);
-  
+
   SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, FALSE, this, "", FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(childrenVisible, SoSwitch, FALSE, topSeparator, shape, FALSE);
-  
+
   //NOTE: This setup also rotates our own geometry, which wasn't by
   //design, but I'm not totally unhappy with the behaviour.
   SO_KIT_ADD_CATALOG_ENTRY(rotSwitch, SoSwitch, FALSE, childrenVisible, lineSep, FALSE);
@@ -192,13 +192,13 @@ SoNodeVisualize::SoNodeVisualize(void)
   SO_KIT_ADD_CATALOG_ENTRY(lines, SoIndexedLineSet, FALSE, lineSep, "", FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(childGeometry, SoSeparator, FALSE, childrenVisible, color, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(color, SoMaterial, FALSE, childrenVisible, "", FALSE);
-  
+
   SO_KIT_ADD_CATALOG_ENTRY(texture, SoTexture2, TRUE, topSeparator, shape, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(textureTransform, SoTexture2Transform, FALSE, topSeparator, shape, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(shape, SoSphere, FALSE, topSeparator, "", FALSE);
-  
+
   SO_KIT_INIT_INSTANCE();
-  
+
   //Setup some default stuff
   SoTexture2Transform *tt=static_cast<SoTexture2Transform*>(this->getAnyPart("textureTransform",FALSE));
   tt->scaleFactor.setValue(2, 1);
@@ -212,7 +212,7 @@ SoNodeVisualize::SoNodeVisualize(void)
 
   sw=static_cast<SoSwitch*>(this->getAnyPart("rotSwitch",TRUE));
   sw->whichChild=SO_SWITCH_NONE;
-  
+
   /*
     ISSUE: Currently we are making all rotations in one direction,
     meaning that the concept of right sibling will have changed by 180
@@ -221,7 +221,7 @@ SoNodeVisualize::SoNodeVisualize(void)
   //FIXME: We should reuse this node, instead of creating it for every single node.
   SoRotation *rot=static_cast<SoRotation*>(this->getAnyPart("rotation",TRUE));
   rot->rotation.setValue(SbVec3f(0, 1, 0), 1.5707963f);
-  
+
   this->parent=NULL;
   this->dirty=true;
   this->node=NULL;
@@ -232,44 +232,38 @@ SoNodeVisualize*
 SoNodeVisualize::visualize(SoNode * node) {
   this->node=node;
   if (node!=NULL) {
-    // FIXME: from what i can see, one can replace this homemade type
-    // hierarchy traversal thing with invocations of
-    // SoType::isDerivedFrom(). -mortene.
-    for (SoType type = node->getTypeId(); type != SoNode::getClassTypeId(); 
-         type = type.getParent()) {
-      //FIXME: Replace this with a switch.
-      //FIXME: Exhange all the named textures, with images
-      //FIXME: Make the images better fitting for its shape
-      //FIXME: Check if cubes are better options for some of the nodetypes
-      //FIXME: Make smaller textures
-      if(type == SoMaterial::getClassTypeId()) {
-        this->setAnyPart("texture", SoNodeVisualizeP::textures[material_1]);
-        SoTexture2Transform * tt = 
-          static_cast<SoTexture2Transform*>(this->getAnyPart("textureTransform",FALSE));
-        tt->scaleFactor.setValue(1,5);
+    SoType type = node->getTypeId();
+    //FIXME: Exhange all the named textures, with images
+    //FIXME: Make the images better fitting for its shape
+    //FIXME: Check if cubes are better options for some of the nodetypes
+    //FIXME: Make smaller textures
+    if(type.isDerivedFrom(SoMaterial::getClassTypeId())) {
+      this->setAnyPart("texture", SoNodeVisualizeP::textures[material_1]);
+      SoTexture2Transform * tt =
+       static_cast<SoTexture2Transform*>(this->getAnyPart("textureTransform",FALSE));
+      tt->scaleFactor.setValue(1,5);
 
-      } else if (type == SoShape::getClassTypeId()) {
-        // FIXME 20071107 rolvs: Currently, this->shape is a SoMFField, and 
-        // ::shape is a const * char. This will be 'resolved' when we change 
-        // ::shape to Shape. And hem... maybe add some prefix to the texture 
-        // names in the staticglobalfile.
-        this->setAnyPart("texture", SoNodeVisualizeP::textures[::shape]);
+    } else if (type.isDerivedFrom(SoShape::getClassTypeId())) {
+      // FIXME 20071107 rolvs: Currently, this->shape is a SoMFField, and
+      // ::shape is a const * char. This will be 'resolved' when we change
+      // ::shape to Shape. And hem... maybe add some prefix to the texture
+      // names in the staticglobalfile.
+      this->setAnyPart("texture", SoNodeVisualizeP::textures[::shape]);
 
-      } else if (type == SoSeparator::getClassTypeId()) {
-        this->setAnyPart("texture", SoNodeVisualizeP::textures[geometry_root]);
+    } else if (type.isDerivedFrom(SoSeparator::getClassTypeId())) {
+      this->setAnyPart("texture", SoNodeVisualizeP::textures[geometry_root]);
 
-      } else if (type == SoBaseKit::getClassTypeId()) {
-        this->setAnyPart("texture", SoNodeVisualizeP::textures[NodeKit]);
+    } else if (type.isDerivedFrom(SoBaseKit::getClassTypeId())) {
+      this->setAnyPart("texture", SoNodeVisualizeP::textures[NodeKit]);
 
-      } else if (type == SoSwitch::getClassTypeId()) {
-        this->setAnyPart("texture", SoNodeVisualizeP::textures[Switch]);
+    } else if (type.isDerivedFrom(SoSwitch::getClassTypeId())) {
+      this->setAnyPart("texture", SoNodeVisualizeP::textures[Switch]);
 
-      } else if (type == SoTransformation::getClassTypeId()) {
-        this->setAnyPart("texture", SoNodeVisualizeP::textures[top_transform]);
+    } else if (type.isDerivedFrom(SoTransformation::getClassTypeId())) {
+      this->setAnyPart("texture", SoNodeVisualizeP::textures[top_transform]);
 
-      } else if (type.isDerivedFrom(SoTexture::getClassTypeId())){
-        this->setAnyPart("texture", node);
-      }
+    } else if (type.isDerivedFrom(SoTexture::getClassTypeId())){
+      this->setAnyPart("texture", node);
     }
   }
   return this;
@@ -355,8 +349,8 @@ SoNodeVisualize::recalculate() {
     for (i = 0; i < nodeChildren->getLength(); ++i) {
       //We translate this node left for half the boundingbox's X component
       SoNodeVisualize * nv = static_cast<SoNodeVisualize*>((*geometryChildren)[2*i+1]);
-      trans->translation = 
-        trans->translation.getValue() + SbVec3f(-1.5f * nv->getWidth()[0], 
+      trans->translation =
+        trans->translation.getValue() + SbVec3f(-1.5f * nv->getWidth()[0],
                                                 0.0f,
                                                 0.0f);
       //If this is not the last node
@@ -367,20 +361,20 @@ SoNodeVisualize::recalculate() {
       }
     }
 
-    SoIndexedLineSet * lineS = 
+    SoIndexedLineSet * lineS =
       static_cast<SoIndexedLineSet*>(this->getAnyPart("lines",FALSE));
 
-    assert(lineS->vertexProperty.getValue()!=NULL && 
+    assert(lineS->vertexProperty.getValue()!=NULL &&
            "No vertexProperty available from setupChildCatalog");
 
     //Sets up the vertices of the lines between the nodes
     SoVertexProperty * vp=
       static_cast<SoVertexProperty*>(lineS->vertexProperty.getValue());
-    
+
     SbVec3f * dst = vp->vertex.startEditing();
     *dst = SbVec3f(0,0,0);
     for (i = 0; i < numNodeChildren; ++i)
-      dst[i + 1] = dst[i] + 
+      dst[i + 1] = dst[i] +
         static_cast<SoTranslation *>((*geometryChildren)[2 * i])->translation.getValue();
     vp->vertex.finishEditing();
   }
@@ -405,15 +399,15 @@ SoNodeVisualize::visualizeSubTree(SoNode * node,int depth) {
   if (depth == 1) {
     //Always display a node without children as expanded
     if (this->nodeNumChildren())
-      static_cast<SoSwitch*>(this->getAnyPart("childrenVisible",TRUE))->whichChild = 
+      static_cast<SoSwitch*>(this->getAnyPart("childrenVisible",TRUE))->whichChild =
         SO_SWITCH_NONE;
     return;
   }
-  
+
   //If we have children set up their catalog as well
   if (this->nodeNumChildren()) {
     SoNodeList *children = this->getChildGeometry();
-    
+
     //Only set up the catalog if we haven't done it before
     if((this->nodeNumChildren() * 2) != (unsigned int)children->getLength())
       this->setupChildCatalog(node, depth);
@@ -425,12 +419,12 @@ SoNodeVisualize::visualizeSubTree(SoNode * node,int depth) {
 void
 SoNodeVisualize::traverse(SoProfilerStats * stats)
 {
-  // FIXME 20071109 rolvs: This is just crammed in here, during the last hours of the hackathon. 
+  // FIXME 20071109 rolvs: This is just crammed in here, during the last hours of the hackathon.
   // And I'm quite sure that a better way to do this alltogeher might be
-  // conjured. its also more than possible that I duplicate some functionality somewhere here... 
-  // And phew. Cut and paste programming. Darn. 
-  
-  // check if this->node is a cache-separator. In that case, find it's material and set it. 
+  // conjured. its also more than possible that I duplicate some functionality somewhere here...
+  // And phew. Cut and paste programming. Darn.
+
+  // check if this->node is a cache-separator. In that case, find it's material and set it.
   //this->getChildrenGeometry()
   assert(stats && "Stats not set.");
   SoMaterial * material = static_cast<SoMaterial *>(this->color.getValue());
@@ -456,8 +450,8 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
     msec = SbMax<unsigned long>(CRITICAL, msec);
     green = 1.0f - (float)msec / (float)CRITICAL;
   }
-               
-  if(this->node->isOfType(SoSeparator::getClassTypeId()) && 
+
+  if(this->node->isOfType(SoSeparator::getClassTypeId()) &&
      0 // FIXME: larsa
      //stats->hasGLCache((SoSeparator *)this->node)
      ) {
@@ -465,7 +459,7 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
     color = SbVec3f(0.0f, green, 1.0f);
     transparency = 0.0f;
   }
-  
+
   if (this->node->getTypeId().getName() == SbName("ScenarioSimulator"))
     color = SbVec3f(1.0f, green, 0.0f);
 
@@ -476,21 +470,21 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
     color->transparency = 0.7;
   }
   */
-  
+
   if (material->diffuseColor[0] != color)
     material->diffuseColor = color;
 
   if (material->transparency[0] != transparency)
     material->transparency = transparency;
-  
+
   SoNodeList * geometryChildren = this->getChildGeometry();
   int numGeometryChildren = geometryChildren->getLength();
-  if( numGeometryChildren == 0 || 
+  if( numGeometryChildren == 0 ||
     static_cast<SoSwitch*>(this->getAnyPart("childrenVisible",FALSE))->whichChild.getValue() == SO_SWITCH_NONE)
     return;
-    
+
   for (int i = 1; i < numGeometryChildren; i += 2) {
-    // FIXME 20071109 using index value to iterate over this geometry is kind of... errh. 
+    // FIXME 20071109 using index value to iterate over this geometry is kind of... errh.
     // sucky.
     SoNodeVisualize * viz = static_cast<SoNodeVisualize*>((*geometryChildren)[i]);
     viz->traverse(stats);
@@ -516,7 +510,7 @@ SoNodeVisualize::recalculateWidth() {
       (childrenswitch == NULL) ||
       (childrenswitch->whichChild.getValue() == SO_SWITCH_NONE))
     return SbVec2s(1,1);
-  
+
   //If we have children, we occupy the maximum of all our children in the z direction
   //and the sum of our children in the x direction
   short accum = 0;
@@ -528,7 +522,7 @@ SoNodeVisualize::recalculateWidth() {
     if (tmp[1] > max)
       max = tmp[1];
   }
-  
+
   return SbVec2s(accum, max);
 
   //If we are alternating, the box should be rotated 90 degrees, before returned
@@ -668,10 +662,10 @@ SoNodeVisualize::setAlternate(bool alternate) {
 void
 SoNodeVisualize::internalAlternating(bool alternate,int direction) {
   PRINT_FUNCTION();
-  
+
   static_cast<SoSwitch*>(this->getAnyPart("rotSwitch",TRUE))
     ->whichChild=(alternate)?SO_SWITCH_ALL:SO_SWITCH_NONE;
-  
+
   SoNodeList * children=this->getChildGeometry();
   int l;
   if (!children ||
