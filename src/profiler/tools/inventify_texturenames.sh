@@ -18,7 +18,7 @@ ctmplate_end='NULL};'
 
 if [ ! -f inline_texture ]
 then
-   LDFLAGS="-Wl,-rpath,/home/bfg/packages/lib" coin-config --build inline_texture inline_texture.cpp
+   coin-config --build inline_texture inline_texture.cpp
 fi
 
 OUTPUT=$1
@@ -41,7 +41,7 @@ for i in $@;
 
     echo -e $tmplate | sed -e "s/@TEX@/${tmpname}/g" > $fnam-texture.tmp
 
-    LD_LIBRARY_PATH=/home/bfg/packages/lib ./inline_texture < $fnam-texture.tmp > $fnam-texture.iv
+    ./inline_texture < $fnam-texture.tmp > $fnam-texture.iv
     rm $fnam-texture.tmp
     echo "$ctmplate_begin" | sed s/@NODE@/${buffername}/g >> $OUTPUT
     cat $fnam-texture.iv | sed 's/^/"/g' | sed 's/$/\\n",/g' >> $OUTPUT
