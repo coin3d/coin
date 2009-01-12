@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -199,7 +199,7 @@ _class_::createInstance(void) \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
 \
     /* Make sure also external nodes are cleaned up */ \
-    cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanup);  \
+    cc_coin_atexit_static_internal(static_cast<coin_atexit_f*>(_class_::atexit_cleanup)); \
   } while (0)
 
 

@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -124,7 +124,7 @@ PRIVATE_KIT_SOURCE(_class_)
     if (_class_::classcatalog == NULL) { \
       SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
       _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
-      cc_coin_atexit_static_internal((coin_atexit_f*)_class_::atexit_cleanupkit); \
+      cc_coin_atexit_static_internal(static_cast<coin_atexit_f*>(_class_::atexit_cleanupkit)); \
     } \
     SoBase::staticDataUnlock(); \
   } while (0)
