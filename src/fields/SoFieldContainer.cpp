@@ -925,8 +925,9 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   assert(copiedinstances);
   assert(contentscopied);
 
-  SoProtoInstance * protoinst =
-    SoProtoInstance::findProtoInstance(coin_assert_cast<const SoNode *>(orig));
+  const SoNode * protonode = coin_safe_cast<const SoNode *>(orig);
+  SoProtoInstance * protoinst = protonode ?
+    SoProtoInstance::findProtoInstance(protonode) : NULL; 
 
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
