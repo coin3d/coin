@@ -147,8 +147,8 @@ fltstatement  : boolstatement '?' fltstatement ':' fltstatement
               | '(' fltstatement ')' { $$ = $2; }
               | LEX_FLTFUNC '(' fltstatement ')' { $$ = so_eval_create_unary($1, $3);}
               | LEX_LEN '(' vecstatement ')' { $$ = so_eval_create_unary(ID_LEN, $3);}
-              | LEX_DOT '(' vecstatement ')' { $$ = so_eval_create_unary(ID_DOT, $3); }
-
+              | LEX_DOT '(' vecstatement ',' vecstatement ')'
+              { $$ = so_eval_create_binary(ID_DOT, $3, $5); }
               | LEX_TMP_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_TMP));}
               | LEX_OUT_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_OUT));}
               | LEX_IN_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_IN));}
