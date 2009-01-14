@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
