@@ -170,6 +170,9 @@ SoRenderManager::getSceneGraph(void) const
 void 
 SoRenderManager::setCamera(SoCamera * camera)
 {
+  // avoid unref() then ref() on the same node
+  if (camera == PRIVATE(this)->camera) return;
+  
   if (PRIVATE(this)->camera) {
     PRIVATE(this)->camera->unref();
   }
