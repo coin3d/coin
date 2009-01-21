@@ -143,7 +143,7 @@ SoProfilerElement::startTraversalClock()
   this->data.setActionStartTime(SbTime::getTimeOfDay());
 }
 
-SbTime 
+SbTime
 SoProfilerElement::timeSinceTraversalStart()
 {
   if (this->data.getActionStartTime() == SbTime::zero())

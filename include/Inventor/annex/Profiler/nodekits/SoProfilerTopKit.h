@@ -54,7 +54,7 @@ public:
 
 protected:
   virtual ~SoProfilerTopKit(void);
-  
+
 private:
   SbPimplPtr<SoProfilerTopKitP> pimpl;
   friend class SoProfilerTopKitP;

@@ -58,6 +58,7 @@ class COIN_DLL_API SoNodeVisualize : public SoBaseKit
 
 public:
   static void initClass(void);
+  static void cleanClass(void);
 
   SoNodeVisualize * visualize(SoNode *);
   static SoNodeVisualize* visualizeTree(SoNode * node,int depth=-1);
@@ -68,7 +69,7 @@ public:
   bool isAlternating() const;
 
   virtual void handleEvent(SoHandleEventAction * action);
-  
+
   void traverse(SoProfilerStats * stats);
 
 protected:

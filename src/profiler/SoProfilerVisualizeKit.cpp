@@ -47,26 +47,26 @@
 #include "nodekits/SoSubKitP.h"
 
 namespace {
-  // anonymous namespace for trigger functions, to change how 
+  // anonymous namespace for trigger functions, to change how
   // visualization occur.
   void cacheSensorCB(void * data, SoSensor * sense){
     SoProfilerVisualizeKit * kit = (SoProfilerVisualizeKit*)data;
     SoNode * root = kit->root.getValue();
     if(!kit->root.getValue())
-      return;      
-    
+      return;
+
     SoNodeVisualize * nv = (SoNodeVisualize*)kit->getPart("visualtree", FALSE);
     if(nv){
       SoProfilerStats * stats = (SoProfilerStats*)kit->stats.getValue();
-      assert(stats->getTypeId() == SoProfilerStats::getClassTypeId() && 
+      assert(stats->getTypeId() == SoProfilerStats::getClassTypeId() &&
              "Wake up and get your act together, will you?");
-      
+
       nv->traverse(stats);
     }
   }
-  
+
   void rootChangedCB(void * data, SoSensor * sense){
-    // FIXME 20071109 rolvs: Is it possible to automatically detect structural changes 
+    // FIXME 20071109 rolvs: Is it possible to automatically detect structural changes
     // in the scenegraph? Perhaps from Inventor/misc/SoNotRec.h or something. Now
     // we build the SoNodeVisualize-tree on every root-change
     SoProfilerVisualizeKit * kit = (SoProfilerVisualizeKit*)data;
@@ -133,12 +133,12 @@ SoProfilerVisualizeKit::SoProfilerVisualizeKit()
   SO_KIT_ADD_CATALOG_ENTRY(pretree, SoGroup, FALSE, top, visualtree, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(visualtree, SoNodeVisualize, TRUE, top, "", TRUE);
   SO_KIT_INIT_INSTANCE();
-  
+
   SO_KIT_ADD_FIELD(stats, (NULL));
   SO_KIT_ADD_FIELD(statsTrigger, ());
   SO_KIT_ADD_FIELD(root, (NULL));
   SO_KIT_ADD_FIELD(separatorsWithGLCaches, (NULL));
-  
+
   this->separatorsWithGLCaches.setNum(0);
   this->separatorsWithGLCaches.setDefault(NULL);
   PRIVATE(this)->cacheSensor.reset(new SoFieldSensor(cacheSensorCB, this));

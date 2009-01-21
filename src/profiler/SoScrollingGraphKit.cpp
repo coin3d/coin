@@ -485,8 +485,8 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
     textnodes[graphidx]->string.setValue(graph->key.getString());
     texttrans[graphidx]->translation.setValue(SbVec3f(0.0f, (maxypos + graph->baseval * 2.0f) * 0.5f, 0.0f));
   }
-  
- 
+
+
   // graph space is now between 0-1 in both directions
 
   {

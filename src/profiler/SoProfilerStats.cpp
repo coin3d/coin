@@ -69,7 +69,7 @@
 
   This field is tightly connected to the \a timePerNodeType field as
   they will contain the same number of elements, and each value
-  in \a timePerNodeType matches the node type with the same index in 
+  in \a timePerNodeType matches the node type with the same index in
   this field.
 
   \sa SoProfilerStats::timePerNodeType
@@ -82,7 +82,7 @@
 
   This field is tightly connected to the \a nodeType field as
   they will contain the same number of elements, and each value
-  in this field matches the node type with the same index in 
+  in this field matches the node type with the same index in
   \a nodeType.
 
   \sa SoProfilerStats::nodeType
@@ -120,12 +120,12 @@ public:
 
   SbHash<SbTime, int16_t> action_timings;
 }; // SoProfilerStatsP
-  
+
 void
 SoProfilerStatsP::doAction(SoAction * action)
 {
   // every SoGLRenderAction traversal will set a flag that causes
-  // the profiling data to be cleared at the next traversal, regardless of 
+  // the profiling data to be cleared at the next traversal, regardless of
   // type
   static SbBool clear_state = FALSE;
   if (clear_state) {
@@ -133,7 +133,7 @@ SoProfilerStatsP::doAction(SoAction * action)
     clear_state = FALSE;
   }
 
-  this->action_timings.put(SoGLRenderAction::getClassTypeId().getKey(), 
+  this->action_timings.put(SoGLRenderAction::getClassTypeId().getKey(),
                            SbTime::zero());
 
   SoState * state = action->getState();
@@ -144,8 +144,8 @@ SoProfilerStatsP::doAction(SoAction * action)
   SoProfilerElement * e = SoProfilerElement::get(state);
   if (!e) { return; }
 
-  
-  std::map<int16_t, SbProfilingData *>::iterator it = 
+
+  std::map<int16_t, SbProfilingData *>::iterator it =
     this->action_map.find(action->getTypeId().getKey());
   if (it != this->action_map.end()) {
     (*((*it).second)) += e->getProfilingData();
@@ -185,7 +185,7 @@ SoProfilerStatsP::clearProfilingData(void)
 } // clearActionMap
 
 void
-SoProfilerStatsP::updateActionTimingMaps(SoProfilerElement * e, 
+SoProfilerStatsP::updateActionTimingMaps(SoProfilerElement * e,
                                          SoAction * action)
 {
   int16_t type = action->getTypeId().getKey();
@@ -195,7 +195,7 @@ SoProfilerStatsP::updateActionTimingMaps(SoProfilerElement * e,
     time += e->getProfilingData().getActionDuration();
   else
     time = e->getProfilingData().getActionDuration();
-  
+
   this->action_timings.put(type, time);
 } // updateActionTimingMaps
 
@@ -321,7 +321,7 @@ SoProfilerStatsP::updateActionTimingFields(SoProfilerElement * e)
   for (int i = 0; i < actionCount; ++i) {
     int16_t type = actions[i];
     profiledActionArr[i] = SoType::fromKey(type).getName();
-      
+
     SbTime time = SbTime::zero();
     this->action_timings.get(type, time);
     profiledActionTimeArr[i] = time;
@@ -361,7 +361,7 @@ SoProfilerStats::SoProfilerStats(void)
   PRIVATE(this)->master = this;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfilerStats);
-  
+
   SO_NODE_ADD_FIELD(renderedNodeType, (""));
   SO_NODE_ADD_FIELD(renderingTimePerNodeType, (0.0f));
   SO_NODE_ADD_FIELD(renderingTimeMaxPerNodeType, (0.0f));
@@ -437,35 +437,35 @@ SoProfilerStats::callback(SoCallbackAction * action)
 }
 
 // Doc from superclass.
-void 
+void
 SoProfilerStats::getMatrix(SoGetMatrixAction * action)
 {
   PRIVATE(this)->doAction(action);
 }
 
 // Doc from superclass.
-void 
+void
 SoProfilerStats::pick(SoPickAction * action)
 {
   PRIVATE(this)->doAction(action);
 }
 
 // Doc from superclass.
-void 
+void
 SoProfilerStats::search(SoSearchAction * action)
 {
   PRIVATE(this)->doAction(action);
 }
 
 // Doc from superclass.
-void 
+void
 SoProfilerStats::write(SoWriteAction * action)
 {
   PRIVATE(this)->doAction(action);
 }
 
 // Doc from superclass.
-void 
+void
 SoProfilerStats::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   PRIVATE(this)->doAction(action);
@@ -486,7 +486,7 @@ SoProfilerStats::notify(SoNotList *l)
 const SbProfilingData &
 SoProfilerStats::getProfilingData(SoType actiontype) const
 {
-  std::map<int16_t, SbProfilingData *>::const_iterator it = 
+  std::map<int16_t, SbProfilingData *>::const_iterator it =
     PRIVATE(this)->action_map.find(actiontype.getKey());
   if (it != PRIVATE(this)->action_map.end()) {
     return (*((*it).second));

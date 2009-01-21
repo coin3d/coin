@@ -65,7 +65,7 @@ public:
   int datasize;
   StatDataItem * data;
   //StatDataItem * tmpdata;
-  
+
   static int qsort_time_dec(const void *, const void *);
   static int qsort_time_avg_dec(const void *, const void *);
   static int qsort_time_max_dec(const void *, const void *);
@@ -105,7 +105,7 @@ SoProfilerTopEngine::SoProfilerTopEngine(void)
   SO_ENGINE_DEFINE_ENUM_VALUE(Column, TIME_PERCENT_AVG);
   SO_ENGINE_SET_SF_ENUM_TYPE(columns, Column);
 
-  SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, TIME_DEC); 
+  SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, TIME_DEC);
   SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, TIME_MAX_DEC);
   SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, TIME_AVG_DEC);
   SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, COUNT_DEC_TIME_DEC);
@@ -113,7 +113,7 @@ SoProfilerTopEngine::SoProfilerTopEngine(void)
   SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, COUNT_DEC_TIME_AVG_DEC);
   SO_ENGINE_DEFINE_ENUM_VALUE(SortOrder, ALPHANUMERIC_INC);
   SO_ENGINE_SET_SF_ENUM_TYPE(sortOrder, SortOrder);
- 
+
   SO_ENGINE_ADD_INPUT(statisticsNames, (SbName::empty()));
   //this->statisticsNames.setNum(0);
   //this->statisticsNames.setDefault(TRUE);
@@ -330,7 +330,7 @@ SoProfilerTopEngine::evaluate(void)
   //            int (*compar)(const void *, const void *));
 
   const SortOrder sorting = static_cast<SortOrder>(this->sortOrder.getValue());
-    
+
   const size_t memsize = sizeof(SoProfilerTopEngineP::StatDataItem);
   switch (sorting) {
   case TIME_DEC:

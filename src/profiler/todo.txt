@@ -68,13 +68,13 @@ Ideas for profiling targets
         - ...more? snoop around, plus ask pederb
 
 * Notifications and field connections
-  
-  It should be possible to expand the 3D scene graph viewer to also 
+
+  It should be possible to expand the 3D scene graph viewer to also
   display field connections as extra lines between nodes that
-  contains connected fields. In addition it would be really cool if 
-  we could visualize notifications in some way, both up through the 
-  hierarchy and through field connections. That would make it 
-  possible to identify parts of the scene graph that generates lots 
+  contains connected fields. In addition it would be really cool if
+  we could visualize notifications in some way, both up through the
+  hierarchy and through field connections. That would make it
+  possible to identify parts of the scene graph that generates lots
   of notifications.
 
 * a wish from some Simian, i don't remember who: include an option to

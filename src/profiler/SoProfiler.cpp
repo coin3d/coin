@@ -47,9 +47,9 @@
 
   The SoProfilerStats node can be used to fetch the profiling data in the
   scene graph. If it is positioned anywhere in the scene graph, the
-  fields of the node will be updated every time SoGLRenderAction is 
-  applied to the scene graph, with profiling data gathered from every 
-  traversal through the scene graph since the last SoGLRenderAction, up 
+  fields of the node will be updated every time SoGLRenderAction is
+  applied to the scene graph, with profiling data gathered from every
+  traversal through the scene graph since the last SoGLRenderAction, up
   to the point where SoProfilerStats is located. Depending of how you
   wish to use the data, either attach sensors to the fields, or connect
   the the fields on other coin nodes to the fields on SoProfilerStats.
@@ -289,7 +289,7 @@ SoProfilerP::getActionType(void)
   return profiler::console::actiontype;
 }
 
-void 
+void
 SoProfilerP::parseCoinProfilerVariable(void)
 {
   // variable COIN_PROFILER
@@ -343,12 +343,12 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
   }
   else if (parameters.size() > 0) {
     // SoDebugError::postInfo("SoProfiler::initialize", "new tokenized parsing");
-    
+
     for (std::vector<std::string>::iterator it = parameters.begin(); it != parameters.end(); ++it) {
       if (it == parameters.begin()) {
         profiler::overlay::active = TRUE;
       }
-      
+
       std::vector<std::string> param, subargs;
       tokenize(*it, "=", param, 2);
       if (param.size() > 1) {
@@ -369,7 +369,7 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
           profiler::rendering::redraw_rate = -1.0f; // -1 exact means no redraws
         }
       }
-      
+
       else if (param[0].compare("stdout") == 0) {
         profiler::overlay::active = FALSE;
         profiler::console::active = TRUE;
@@ -510,7 +510,7 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
       // configure charts
       else if (param[0].compare("graph") == 0) {
       }
-      
+
       // configure scene graph view
       else if (param[0].compare("sceneview") == 0) {
       }

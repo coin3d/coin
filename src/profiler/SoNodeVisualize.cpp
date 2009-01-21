@@ -108,7 +108,13 @@ namespace {
 
     ~TextureDict()
     {
+      //This code should only be called from a static context, so we
+      //cannot do any unreffing of Coin-nodes
+
+      assert(this->nodemap.size()==0);
+#if 0
       clear();
+#endif
     }
 
     SoTexture2 * createTexture(const TextureImageData * data)
@@ -565,11 +571,20 @@ SoNodeVisualize::~SoNodeVisualize()
 void
 SoNodeVisualize::initClass(void)
 {
-  static int first = 1;
-  if (first) {
-    first = 0;
+  if(getClassTypeId() == SoType::badType()) {
     SO_KIT_INIT_CLASS(SoNodeVisualize, SoBaseKit, "BaseKit");
+
+    cc_coin_atexit(cleanClass);
   }
+}
+
+/*!
+   Static cleanup
+*/
+void
+SoNodeVisualize::cleanClass(void)
+{
+  SoNodeVisualizeP::textures.clear();
 }
 
 /*!
@@ -640,7 +655,7 @@ SoNodeVisualize::handleEvent(SoHandleEventAction * action)
 SoNodeVisualize*
 SoNodeVisualize::getSoNodeVisualizeRoot() {
   SoNodeVisualize *nv;
-  for (nv=this;nv->parent;nv=nv->parent);
+  for (nv=this;nv->parent;nv=nv->parent) {}
   assert(nv);
   return nv;
 }

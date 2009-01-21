@@ -46,7 +46,7 @@ namespace {
   {
     glEnable(GL_DEPTH_TEST);
   }
-  
+
   void disableDepthTest(void * userdata, SoAction * action)
   {
     glDisable(GL_DEPTH_TEST);
@@ -97,27 +97,27 @@ SoProfilerOverlayKit::SoProfilerOverlayKit(void)
                            overlaySep, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(overlaySep, SoSeparator, TRUE, topSeparator,
                            depthTestOn, FALSE);
-  SO_KIT_ADD_CATALOG_ENTRY(depthTestOn, SoCallback, TRUE, topSeparator, "", 
+  SO_KIT_ADD_CATALOG_ENTRY(depthTestOn, SoCallback, TRUE, topSeparator, "",
                            FALSE);
 
   SO_KIT_INIT_INSTANCE();
 
   SO_KIT_ADD_FIELD(viewportSize, (SbVec3f(100.0f, 100.0f, 0.0f)));
-  
+
   SoOrthographicCamera * camera =
     static_cast<SoOrthographicCamera *>(this->getAnyPart("overlayCamera", TRUE));
   camera->viewportMapping = SoCamera::LEAVE_ALONE;
-  
-  SoCallback * viewportCB = 
+
+  SoCallback * viewportCB =
     static_cast<SoCallback *>(this->getAnyPart("viewportInfo", TRUE));
   assert(viewportCB &&
          (viewportCB->getTypeId() == SoCallback::getClassTypeId()));
   viewportCB->setCallback(grabViewportInfo, this);
 
-  SoCallback * beforeCB = 
+  SoCallback * beforeCB =
     static_cast<SoCallback *>(this->getAnyPart("depthTestOff", TRUE));
   beforeCB->setCallback(disableDepthTest);
-  SoCallback * afterCB = 
+  SoCallback * afterCB =
     static_cast<SoCallback *>(this->getAnyPart("depthTestOn", TRUE));
   afterCB->setCallback(enableDepthTest);
 }

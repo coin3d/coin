@@ -15,7 +15,7 @@ class COIN_DLL_API SoProfilerOverlayKit : public SoBaseKit {
   SO_KIT_CATALOG_ENTRY_HEADER(depthTestOff);
   SO_KIT_CATALOG_ENTRY_HEADER(overlaySep);
   SO_KIT_CATALOG_ENTRY_HEADER(depthTestOn);
-  
+
 public:
   static void initClass(void);
   SoProfilerOverlayKit(void);

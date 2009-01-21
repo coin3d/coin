@@ -49,8 +49,8 @@
 class SoProfilerTopKitP
 {
 public:
-  SoProfilerTopKitP() 
-    : geometryEngine(NULL), 
+  SoProfilerTopKitP()
+    : geometryEngine(NULL),
       topListEngine(NULL),
       last_stats(NULL)
   { }
@@ -58,7 +58,7 @@ public:
   SoProfilerTopKit * master;
 
   static void statsNodeChanged(void *, SoSensor *);
-  
+
   void detachFromStats();
   void attachToStats();
 
@@ -72,8 +72,8 @@ void
 SoProfilerTopKitP::statsNodeChanged(void * userdata, SoSensor * sensor)
 {
   SoProfilerTopKit * thisp = (SoProfilerTopKit *)userdata;
-  
-  SoProfilerStats * stats = 
+
+  SoProfilerStats * stats =
     (SoProfilerStats *)thisp->getPart("profilingStats", FALSE);
   if (PRIVATE(thisp)->last_stats != stats) {
     PRIVATE(thisp)->last_stats = stats;
@@ -91,7 +91,7 @@ SoProfilerTopKitP::detachFromStats()
   this->topListEngine->statisticsTimingsMax.disconnect();
   this->topListEngine->maxLines.disconnect();
 
-  SoScrollingGraphKit * graph = 
+  SoScrollingGraphKit * graph =
     (SoScrollingGraphKit *) PUBLIC(this)->getAnyPart("graph", TRUE);
   assert(graph && graph->isOfType(SoScrollingGraphKit::getClassTypeId()));
   graph->addKeys.disconnect();
@@ -101,10 +101,10 @@ SoProfilerTopKitP::detachFromStats()
 void
 SoProfilerTopKitP::attachToStats()
 {
-  SoProfilerStats * statsNode = 
-    (SoProfilerStats *)PUBLIC(this)->getPart("profilingStats", 
+  SoProfilerStats * statsNode =
+    (SoProfilerStats *)PUBLIC(this)->getPart("profilingStats",
                                              FALSE);
-  if (statsNode == NULL) 
+  if (statsNode == NULL)
     return ;
 
   this->topListEngine->statisticsNames.connectFrom(&statsNode->renderedNodeType);
@@ -114,7 +114,7 @@ SoProfilerTopKitP::attachToStats()
   this->topListEngine->maxLines.connectFrom(&PUBLIC(this)->lines);
 
 
-  SoScrollingGraphKit * graph = 
+  SoScrollingGraphKit * graph =
     (SoScrollingGraphKit *) PUBLIC(this)->getAnyPart("graph", TRUE);
   assert(graph && graph->isOfType(SoScrollingGraphKit::getClassTypeId()));
   graph->addKeys.connectFrom(&statsNode->profiledAction);
@@ -170,19 +170,19 @@ SoProfilerTopKit::SoProfilerTopKit(void)
   PRIVATE(this)->geometryEngine->A.connectFrom(&viewportSize);
   PRIVATE(this)->geometryEngine->B.connectFrom(&position);
 
-  SoTranslation * transe = (SoTranslation *) this->getAnyPart("translation", 
+  SoTranslation * transe = (SoTranslation *) this->getAnyPart("translation",
                                                               TRUE);
   transe->translation.connectFrom(&(PRIVATE(this)->geometryEngine->oA));
 
   SoText2 * txt = (SoText2 *) this->getAnyPart("text", TRUE);
   txt->string.connectFrom(&PRIVATE(this)->topListEngine->prettyText);
-  
+
   SoBaseColor * colorNd = (SoBaseColor *) this->getAnyPart("color", TRUE);
   colorNd->rgb.connectFrom(&this->txtColor);
 
   PRIVATE(this)->attachToStats();
 
-  PRIVATE(this)->stats_sensor = 
+  PRIVATE(this)->stats_sensor =
     new SoFieldSensor(PRIVATE(this)->statsNodeChanged, this);
   PRIVATE(this)->stats_sensor->attach(&this->profilingStats);
 }

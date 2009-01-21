@@ -39,24 +39,24 @@ class COIN_DLL_API SoProfilerVisualizeKit : public SoBaseKit {
   SO_KIT_CATALOG_ENTRY_HEADER(top);
   SO_KIT_CATALOG_ENTRY_HEADER(pretree);
   SO_KIT_CATALOG_ENTRY_HEADER(visualtree);
-  
+
 public:
   static void initClass(void);
   SoProfilerVisualizeKit(void);
-  
-  /// Set this to be the root of the scenegraph we visualize. 
+
+  /// Set this to be the root of the scenegraph we visualize.
   SoSFNode root;
-  
+
   /// Set this to be the stats field.
   SoSFTrigger statsTrigger;
   SoSFNode stats;
-  
+
   // Fields picked up from SoProfilerStats follow here.
   SoMFNode separatorsWithGLCaches;
-  
+
 protected:
   virtual ~SoProfilerVisualizeKit(void);
-  
+
 private:
   /// NOT IMPLEMENTED
   SoProfilerVisualizeKit(const SoProfilerVisualizeKit&);
