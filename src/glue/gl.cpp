@@ -536,7 +536,7 @@ coin_glglue_stencil_bits_hack(void)
   return atoi(env);
 }
 
-cc_libhandle 
+cc_libhandle
 coin_glglue_dl_handle(const cc_glglue * glue)
 {
   if (!glue->dl_handle) {
@@ -557,7 +557,7 @@ cc_glglue_getprocaddress(const cc_glglue * glue, const char * symname)
 
   ptr = glxglue_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
-  
+
   ptr = cc_dl_sym(coin_glglue_dl_handle(glue), symname);
   if (ptr) goto returnpoint;
 
@@ -584,9 +584,11 @@ free_glglue_instance(uintptr_t key, void * value, void * closure)
 static void
 glglue_cleanup(void)
 {
-  cc_dict_apply(gldict, free_glglue_instance, NULL);
-  cc_dict_destruct(gldict);
-  gldict = NULL;
+  if (gldict) {
+    cc_dict_apply(gldict, free_glglue_instance, NULL);
+    cc_dict_destruct(gldict);
+    gldict = NULL;
+  }
   offscreen_cb = NULL;
 
 #ifdef HAVE_GLX
@@ -2458,16 +2460,18 @@ coin_glglue_destruct(uint32_t contextid)
   SbBool found;
   void * ptr;
   CC_SYNC_BEGIN(cc_glglue_instance);
-  found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
-  if (found) {
-    cc_glglue * glue = (cc_glglue*) ptr;
-    if (glue->normalizationcubemap) {
-      cc_glglue_glDeleteTextures(glue, 1, &glue->normalizationcubemap);
-    }
-    (void)cc_dict_remove(gldict, (uintptr_t)contextid);
-
-    if (glue->dl_handle) {
-      cc_dl_close(glue->dl_handle);
+  if (gldict) { // might happen if a context is destructed without using the cc_glglue interface
+    found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
+    if (found) {
+      cc_glglue * glue = (cc_glglue*) ptr;
+      if (glue->normalizationcubemap) {
+        cc_glglue_glDeleteTextures(glue, 1, &glue->normalizationcubemap);
+      }
+      (void)cc_dict_remove(gldict, (uintptr_t)contextid);
+      
+      if (glue->dl_handle) {
+        cc_dl_close(glue->dl_handle);
+      }
     }
   }
   CC_SYNC_END(cc_glglue_instance);
