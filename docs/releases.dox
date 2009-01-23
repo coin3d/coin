@@ -206,7 +206,7 @@ SoVRMLTransform nodes.
 /*!
 \page coin230 New Features in Coin v2.3.0
 
-\section multitexturing More Multi-Texturing
+\section multitexturing230 More Multi-Texturing
 
 New nodes:
 - SoTextureCombine
@@ -224,7 +224,7 @@ New nodes:
 /*!
 \page coin220 New Features in Coin v2.2.0
 
-\section multitexturing Multi-Texturing
+\section multitexturing220 Multi-Texturing
 
 New nodes:
 - SoTextureUnit
