@@ -453,10 +453,10 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = 
+INPUT                  = \
 		         @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
-                         @path_tag@@coin_src_dir@/docs/releases.dox
+                         @path_tag@@coin_src_dir@/docs/releases.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/attribute.h \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/document.h \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/element.h \
@@ -524,6 +524,7 @@ INPUT                  =
                          @path_tag@@coin_src_dir@/include/Inventor/SoPath.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoPickedPoint.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoPrimitiveVertex.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SoRenderManager.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoSceneManager.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoType.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRML.h \
@@ -1369,6 +1370,7 @@ INPUT                  =
                          @path_tag@@coin_src_dir@/src/misc/SoPath.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPickedPoint.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPrimitiveVertex.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoRenderManager.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoSceneManager.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoState.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoType.cpp \

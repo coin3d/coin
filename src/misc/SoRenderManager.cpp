@@ -49,6 +49,56 @@
 #include "misc/AudioTools.h"
 #include "misc/SoRenderManagerP.h"
 
+//FIXME Improve this doc. BFG 20090123
+/*!
+  \class SoRenderManager
+
+  Manages properties which influences how rendering is done.
+*/
+
+/*!
+  \enum SoRenderManager::RenderMode
+
+  Sets how rendering of primitives is done.
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::AS_IS
+
+  Render primitives as they are described in the scenegraph.
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::WIREFRAME
+
+  Render only the wireframe
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::POINTS
+
+  Render only the vertices of the primitives
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::WIREFRAME_OVERLAY
+
+  Render a wireframe overlay in addition to the AS_IS mode
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::HIDDEN_LINE
+
+  As WIREFRAME, but culls lines which would otherwise not be shown due
+  to geometric culling.
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::BOUNDING_BOX
+
+  Only show the bounding box of each object
+*/
+
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
@@ -59,7 +109,7 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this) = new SoRenderManagerP(this);
 
   PRIVATE(this)->dummynode = new SoInfo;
-  PRIVATE(this)->dummynode->ref();  
+  PRIVATE(this)->dummynode->ref();
 
   PRIVATE(this)->rootsensor = NULL;
   PRIVATE(this)->scene = NULL;
@@ -93,7 +143,7 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   PRIVATE(this)->audiorenderaction = new SoAudioRenderAction;
 
-  PRIVATE(this)->clipsensor = 
+  PRIVATE(this)->clipsensor =
     new SoNodeSensor(SoRenderManagerP::updateClippingPlanesCB, PRIVATE(this));
   PRIVATE(this)->clipsensor->setPriority(this->getRedrawPriority() - 1);
 
@@ -140,18 +190,18 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
   SoNode * oldroot = PRIVATE(this)->scene;
-  
+
   PRIVATE(this)->scene = sceneroot;
-  
+
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
     // FIXME: WTF? Did someone forget to read the coding guidelines? kintel 20080729
     //PRIVATE(this)->camera = PRIVATE(this)->searchForCamera(PRIVATE(this)->scene);
-    
+
     this->attachRootSensor(PRIVATE(this)->scene);
     this->attachClipSensor(PRIVATE(this)->scene);
   }
-  
+
   if (oldroot) oldroot->unref();
 }
 
@@ -164,15 +214,15 @@ SoRenderManager::getSceneGraph(void) const
   return PRIVATE(this)->scene;
 }
 
-/*!  
+/*!
   Sets the camera to be used.
 */
-void 
+void
 SoRenderManager::setCamera(SoCamera * camera)
 {
   // avoid unref() then ref() on the same node
   if (camera == PRIVATE(this)->camera) return;
-  
+
   if (PRIVATE(this)->camera) {
     PRIVATE(this)->camera->unref();
   }
@@ -183,7 +233,7 @@ SoRenderManager::setCamera(SoCamera * camera)
 /*!
   Returns the current camera.
 */
-SoCamera * 
+SoCamera *
 SoRenderManager::getCamera(void) const
 {
   return PRIVATE(this)->camera;
@@ -200,7 +250,7 @@ SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
   ((SoRenderManager *)data)->scheduleRedraw();
 }
 
-void 
+void
 SoRenderManager::attachRootSensor(SoNode * const sceneroot)
 {
   if (!PRIVATE(this)->rootsensor) {
@@ -211,7 +261,7 @@ SoRenderManager::attachRootSensor(SoNode * const sceneroot)
   PRIVATE(this)->rootsensor->attach(sceneroot);
 }
 
-void 
+void
 SoRenderManager::detachRootSensor(void)
 {
   if (PRIVATE(this)->rootsensor) {
@@ -219,7 +269,7 @@ SoRenderManager::detachRootSensor(void)
   }
 }
 
-void 
+void
 SoRenderManager::attachClipSensor(SoNode * const sceneroot)
 {
   PRIVATE(this)->clipsensor->attach(sceneroot);
@@ -228,7 +278,7 @@ SoRenderManager::attachClipSensor(SoNode * const sceneroot)
   }
 }
 
-void 
+void
 SoRenderManager::detachClipSensor(void)
 {
   if (PRIVATE(this)->clipsensor->isScheduled()) {
@@ -239,7 +289,7 @@ SoRenderManager::detachClipSensor(void)
   }
 }
 
-void 
+void
 SoRenderManager::clearBuffers(SbBool color, SbBool depth)
 {
   GLbitfield mask = 0;
@@ -266,7 +316,7 @@ SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
                          "GL_VIEWPORT=<%d, %d, %d, %d>",
                          view[0], view[1], view[2], view[3]);
 #endif // debug
-  
+
   // clear the viewport
   glClear(mask);
 }
@@ -340,7 +390,7 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   //
   // 20050809 mortene.
 
-  if (PRIVATE(this)->scene && 
+  if (PRIVATE(this)->scene &&
       // Order is important below, because we don't want to call
       // SoAudioDevice::instance() unless we need to -- as it triggers
       // loading the OpenAL library, which should only be loaded on
@@ -376,7 +426,7 @@ SoRenderManager::render(SoGLRenderAction * action,
   (this->getStereoMode() == SoRenderManager::MONO) ?
     this->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
     this->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
-  
+
   if (PRIVATE(this)->superimpositions) {
     for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
       Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
@@ -398,7 +448,7 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   GLbitfield mask = 0;
   if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
-  
+
   if (initmatrices) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -443,7 +493,7 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   }
 }
 
-void 
+void
 SoRenderManager::renderScene(SoGLRenderAction * action, SoNode* scene, uint32_t clearmask)
 {
   if (clearmask) {
@@ -466,7 +516,7 @@ SoRenderManager::renderScene(SoGLRenderAction * action, SoNode* scene, uint32_t 
 }
 
 // render once in correct draw style
-void 
+void
 SoRenderManager::renderSingle(SoGLRenderAction * action,
                               SbBool initmatrices,
                               SbBool clearwindow,
@@ -532,8 +582,8 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
       SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
                                   SoPolygonOffsetElement::FILLED, FALSE);
-      
-      SoLazyElement::setDiffuse(state, node, 1, &PRIVATE(this)->overlaycolor, 
+
+      SoLazyElement::setDiffuse(state, node, 1, &PRIVATE(this)->overlaycolor,
                                 &PRIVATE(this)->colorpacker);
       SoLightModelElement::set(state, node, SoLightModelElement::BASE_COLOR);
       SoMaterialBindingElement::set(state, node, SoMaterialBindingElement::OVERALL);
@@ -542,7 +592,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoOverrideElement::setDiffuseColorOverride(state, node, TRUE);
       SoOverrideElement::setMaterialBindingOverride(state, node, TRUE);
       SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
-      this->actuallyRender(action, initmatrices, FALSE, FALSE);    
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
     break;
 
   case SoRenderManager::BOUNDING_BOX:
@@ -562,7 +612,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
 }
 
 // render scene according to current stereo mode
-void 
+void
 SoRenderManager::renderStereo(SoGLRenderAction * action,
                               SbBool initmatrices,
                               SbBool clearwindow,
@@ -572,7 +622,7 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
 
   this->clearBuffers(TRUE, TRUE);
   PRIVATE(this)->camera->setStereoAdjustment(PRIVATE(this)->stereooffset);
-  
+
   SbBool stenciltestenabled = glIsEnabled(GL_STENCIL_TEST);
 
   // left eye
@@ -639,8 +689,8 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
       glEnable(GL_STENCIL_TEST) :
       glDisable(GL_STENCIL_TEST);
     break;
-  default: 
-    assert(0 && "unknown stereo mode"); 
+  default:
+    assert(0 && "unknown stereo mode");
     break;
   }
 }
@@ -784,7 +834,7 @@ SoRenderManager::scheduleRedraw(void)
   PRIVATE(this)->lock();
   if (this->isActive() && PRIVATE(this)->rendercb) {
     if (!PRIVATE(this)->redrawshot) {
-      PRIVATE(this)->redrawshot = 
+      PRIVATE(this)->redrawshot =
         new SoOneShotSensor(SoRenderManagerP::redrawshotTriggeredCB, this);
       PRIVATE(this)->redrawshot->setPriority(this->getRedrawPriority());
     }
@@ -985,7 +1035,7 @@ SoRenderManager::isRGBMode(void) const
 /*!
   Tell the scenemanager that double buffering is used
  */
-void 
+void
 SoRenderManager::setDoubleBuffer(const SbBool enable)
 {
   PRIVATE(this)->doublebuffer = enable;
@@ -994,7 +1044,7 @@ SoRenderManager::setDoubleBuffer(const SbBool enable)
 /*!
   returns if the scenemanager is double buffered
  */
-SbBool 
+SbBool
 SoRenderManager::isDoubleBuffer(void) const
 {
   return PRIVATE(this)->doublebuffer;
@@ -1068,7 +1118,7 @@ SoRenderManager::isAutoRedraw(void) const
 /*!
   Sets the render mode.
 */
-void 
+void
 SoRenderManager::setRenderMode(const RenderMode mode)
 {
   PRIVATE(this)->rendermode = mode;
@@ -1078,7 +1128,7 @@ SoRenderManager::setRenderMode(const RenderMode mode)
 /*!
   Returns the current render mode.
 */
-SoRenderManager::RenderMode 
+SoRenderManager::RenderMode
 SoRenderManager::getRenderMode(void) const
 {
   return PRIVATE(this)->rendermode;
@@ -1087,7 +1137,7 @@ SoRenderManager::getRenderMode(void) const
 /*!
   Sets the stereo mode.
 */
-void 
+void
 SoRenderManager::setStereoMode(const StereoMode mode)
 {
   PRIVATE(this)->stereomode = mode;
@@ -1097,7 +1147,7 @@ SoRenderManager::setStereoMode(const StereoMode mode)
 /*!
   Returns the current stereo mode.
 */
-SoRenderManager::StereoMode 
+SoRenderManager::StereoMode
 SoRenderManager::getStereoMode(void) const
 {
   return PRIVATE(this)->stereomode;
@@ -1106,7 +1156,7 @@ SoRenderManager::getStereoMode(void) const
 /*!
   Sets the stereo offset used when doing stereo rendering.
 */
-void 
+void
 SoRenderManager::setStereoOffset(const float offset)
 {
   PRIVATE(this)->stereooffset = offset;
@@ -1116,7 +1166,7 @@ SoRenderManager::setStereoOffset(const float offset)
 /*!
   Returns the current stereo offset.
 */
-float 
+float
 SoRenderManager::getStereoOffset(void) const
 {
   return PRIVATE(this)->stereooffset;
@@ -1233,7 +1283,7 @@ SoRenderManager::getNearPlaneValue(void) const
   \sa isTexturesEnabled
 */
 
-void 
+void
 SoRenderManager::setTexturesEnabled(const SbBool onoff)
 {
   PRIVATE(this)->texturesenabled = onoff;
@@ -1245,7 +1295,7 @@ SoRenderManager::setTexturesEnabled(const SbBool onoff)
   \sa setTexturesEnabled
 */
 
-SbBool 
+SbBool
 SoRenderManager::isTexturesEnabled(void) const
 {
   return PRIVATE(this)->texturesenabled;
