@@ -9,8 +9,8 @@ Index: include/Inventor/sensors/SoDataSensor.h
 RCS file: /export/cvsroot/Coin/include/Inventor/sensors/SoDataSensor.h,v
 retrieving revision 1.18
 diff -u -b -r1.18 SoDataSensor.h
---- include/Inventor/sensors/SoDataSensor.h	9 Mar 2004 14:38:42 -0000	1.18
-+++ include/Inventor/sensors/SoDataSensor.h	16 Nov 2004 17:12:39 -0000
+--- include/Inventor/sensors/SoDataSensor.h       9 Mar 2004 14:38:42 -0000       1.18
++++ include/Inventor/sensors/SoDataSensor.h       16 Nov 2004 17:12:39 -0000
 @@ -40,12 +40,27 @@
    SoDataSensor(SoSensorCB * func, void * data);
    virtual ~SoDataSensor(void);

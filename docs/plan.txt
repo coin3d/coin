@@ -69,21 +69,21 @@ State of library when milestone is met:
 
 * complete implementations of these action classes:
 
-	- the actions for rendering functionality:
+       - the actions for rendering functionality:
           SoGetBoundingBoxAction, SoBoxHighlightRenderAction,
           SoGLRenderAction, SoLineHighlightRenderAction.
 
-	- actions for event handling, including interaction through
+       - actions for event handling, including interaction through
           "picking": SoHandleEventAction, SoPickAction,
           SoRayPickAction.
 
-	- scene graph export: SoWriteAction. The code belonging to
+       - scene graph export: SoWriteAction. The code belonging to
           this action can export Open Inventor scene graphs in ASCII
           or binary format.
 
-	- actions for miscellaneous scene graph operations:
-	  SoCallbackAction, SoGetMatrixAction, SoSearchAction,
-	  SoGetPrimitiveCountAction.
+       - actions for miscellaneous scene graph operations:
+         SoCallbackAction, SoGetMatrixAction, SoSearchAction,
+         SoGetPrimitiveCountAction.
 
   [Done.]
 
@@ -140,22 +140,22 @@ State of library when milestone is met:
 * node classes implemented according to what SGI Open Inventor 2.1
   provides, with these exceptions and/or limitations:
 
-	- nodes used for rendering various types of 3D text will
+       - nodes used for rendering various types of 3D text will
           support a limited set of import routines for font data (or
           maybe just a single static "inlined" font), as well as a
           limited set of rendering capabilities.
 
-	- SoColorIndex node not supported.
+       - SoColorIndex node not supported.
 
-	- nodes used for rendering nurbs curves and nurbs surfaces
+       - nodes used for rendering nurbs curves and nurbs surfaces
           will only provide the rendering functionality which is
           possible to accomplish with the nurb support in the GLU
           OpenGL companion library.
 
-	- 2D bitmapped fonts will only be supported through native
+       - 2D bitmapped fonts will only be supported through native
           import routines on the system.
 
-	- no network support for URLs in SoWWWAnchor and SoWWWInline.
+       - no network support for URLs in SoWWWAnchor and SoWWWInline.
 
   [Estimate for remaining work: ~ 1 man-month.]
 
@@ -169,13 +169,13 @@ State of library when milestone is met:
   documentation will probably be a little on the sparse side.
 
 * a few simple example programs will accompany the library.
-	
+
 * platform availability:
 
-	- fully supported: Linux, MSWindows (both with Troll Tech's
+       - fully supported: Linux, MSWindows (both with Troll Tech's
           Qt), BeOS (native API)
 
-	- additional: most UNIX platforms (with Troll Tech's Qt)
+       - additional: most UNIX platforms (with Troll Tech's Qt)
 
 
 
@@ -252,7 +252,7 @@ Additional development necessary versus milestone 2:
 
   [Estimate for remaining work: ~ 1 man-month +.]
 
-* 100% completed NURBS support. 
+* 100% completed NURBS support.
 
   [Estimate for remaining work: ~ 1 man-month.]
 
@@ -284,7 +284,7 @@ Additional development necessary versus milestone 2:
 
 * add example programs to show off most of the available features in
   the library.
-	
+
   [Estimate for remaining work: ~ 1 man-month.]
 
 * improve the documentation so it properly covers the functionality of
@@ -314,13 +314,13 @@ Additional development since milestone 3:
 
 * Large Model Viewing:
 
-	- action classes: SoGlobalSimplifyAction, SoReorganizeAction,
-	  SoShapeSimplifyAction and SoSimplifyAction, along with
-	  simplifiers SoSimplifier and SoDecimator.
+       - action classes: SoGlobalSimplifyAction, SoReorganizeAction,
+         SoShapeSimplifyAction and SoSimplifyAction, along with
+         simplifiers SoSimplifier and SoDecimator.
 
-	- SoLevelOfSimplification node.
+       - SoLevelOfSimplification node.
 
-	- SoRenderList and SoOctTreeOrdering for faster rendering.
+       - SoRenderList and SoOctTreeOrdering for faster rendering.
 
 * update the documentation to cover these new features.
 

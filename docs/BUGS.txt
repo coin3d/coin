@@ -106,15 +106,15 @@ library:
 
     Separator{
         CenterballManip {}
-	Array{
-		numElements1 2
-		numElements2 2
-		numElements3 2
+       Array{
+              numElements1 2
+              numElements2 2
+              numElements3 2
                 separation1  2.0 0.0 0.0
                 separation2  0.0 2.0 0.0
                 separation3  0.0 0.0 2.0
-               	Cone {}
-	}
+                      Cone {}
+       }
     }
 
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
@@ -1077,8 +1077,8 @@ Index: src/misc/SoGLnonindexedTristripSetTemplate.icc
 RCS file: /export/cvsroot/Coin/src/misc/SoGLnonindexedTristripSetTemplate.icc,v
 retrieving revision 1.6
 diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
---- src/misc/SoGLnonindexedTristripSetTemplate.icc	14 Feb 2003 17:31:28 -0000	1.6
-+++ src/misc/SoGLnonindexedTristripSetTemplate.icc	20 Nov 2003 12:43:03 -0000
+--- src/misc/SoGLnonindexedTristripSetTemplate.icc       14 Feb 2003 17:31:28 -0000       1.6
++++ src/misc/SoGLnonindexedTristripSetTemplate.icc       20 Nov 2003 12:43:03 -0000
 @@ -67,8 +67,12 @@
 
      glBegin(GL_TRIANGLE_STRIP);
@@ -1486,7 +1486,7 @@ Separator {
       With regard to picking up events from only the same context, I'm
       unsure as to whether we're currently able to detect which
       context an SoHandleEventAction comes from, though.
-    
+
 =====================================================================
 
 135 Elements used by <node>::doAction() functions not automatically
@@ -2305,7 +2305,7 @@ Text2 {
     clipping plane based on the bounding box of the node and each
     character. I'm not sure if we should do culling against clipping
     planes for 2D texts or not. Should investigate how SGI Inventor
-    handles this. 
+    handles this.
 
     20060327 pederb
 
@@ -2320,14 +2320,14 @@ Text2 {
     next Coin bugfixing session.
 
     20060327 pederb
-    
+
 =====================================================================
 
 219 View All doesn't work properly with SoText2 nodes
 
 Pressing "View All" in an examinerviewer with the attached scenegraph
 moves the "ZZZ" string outside the frustum and clips the "YYY" string
-in half. 
+in half.
 The initial view when setting the scenegraph looks correct though.
 
 ----8<-------------- [snip] -------8<-------------- [snip] -------------

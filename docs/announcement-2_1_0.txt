@@ -1,6 +1,6 @@
 From: "Lars J. Aas" <larsa@sim.no>
 Subject: Coin 2.1.0 Released
- 
+
 Coin 2.1.0 Released
 ===================
 
@@ -59,14 +59,14 @@ In that case, try again at a later time.
 ChangeLog:
   http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.1.0
 
-Source Code by FTP: 
-  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.1.0.tar.gz 
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.1.0.tar.gz
 
-Precompiled for Linux (i386): 
+Precompiled for Linux (i386):
   Debian (testing) apt-get:
     $ apt-get install libcoin40-dev
 
-Precompiled for MS Windows: 
+Precompiled for MS Windows:
   ftp://ftp.coin3d.org/pub/coin/bin/win32/coin-v2.1.0-install.exe
 
 Precompiled for Mac OS X:

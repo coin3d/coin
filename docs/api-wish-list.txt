@@ -56,7 +56,7 @@ THE WISH LIST
   alternative to the (IMHO) silly SoVertexProperty node.
 
   The node has the following fields:
- 
+
     SoMFInt32 coordIndex;
     SoMFInt32 rgbaIndex;
     SoMFInt32 normalIndex;
@@ -80,7 +80,7 @@ THE WISH LIST
   way OpenGL renders geometry, this will lead to maximum performance
   OpenGL rendering. Polygons must of course be convex; polygon
   tessellation will not be performed by this node, as it is designed
-  for speed, not flexibility.  
+  for speed, not flexibility.
 
   Default texture coordinates will not be generated. If you want
   texture coordinates, supply them yourself. The same goes for normals;
@@ -93,7 +93,7 @@ THE WISH LIST
   Normal bindings:
 
   NONE               : when normal and normalIndex are empty
-  PER_VERTEX         : when normalIndex is empty              
+  PER_VERTEX         : when normalIndex is empty
   PER_VERTEX_INDEXED : otherwise
 
   color and texture bindings use the same scheme.
@@ -104,10 +104,10 @@ THE WISH LIST
   more readable for the human eye.
 
   It is not possible to specify normals, colors or texcoords
-  per face, but this can be achieved with very little overhead using the 
+  per face, but this can be achieved with very little overhead using the
   index-fields (it is very rarely used anyway, I think).
 
-  I guess this node is most suited to be computer generated since 
+  I guess this node is most suited to be computer generated since
   it is easy to make mistakes with all the different coordIndex codes.
   But, experienced OpenGL programmers should be able to use it quite easily.
 
@@ -115,8 +115,8 @@ THE WISH LIST
 * More nodes and elements to control GL state.
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
-  
-  Alpha test, blending, stencil etc. We should at least have an 
+
+  Alpha test, blending, stencil etc. We should at least have an
   SoGLAlphaTestElement, since Coin supports alpha test rendering of
   textures.
 
@@ -127,9 +127,9 @@ THE WISH LIST
 
   It could be useful to do matrix operations in the calculator, and
   by adding some SoMFMatrix input fields we could do just that.
-  Some new functions would be needed of course, such as 
-  multvecmatrix(), multdirmatrix(), multleft(), multright(), 
-  inverse() and identity(). 
+  Some new functions would be needed of course, such as
+  multvecmatrix(), multdirmatrix(), multleft(), multright(),
+  inverse() and identity().
 
 
 * A better hash/dict class than SbDict.
@@ -146,7 +146,7 @@ THE WISH LIST
   Comment by pederb:
     Remember that all template code should be inline, in the SbDict.h
     header file. Otherwise we will run into tons of problems on
-    different compilers. 
+    different compilers.
 
   Update, mortene:
     Perhaps it would be better in the long run to use a "code
@@ -243,7 +243,7 @@ THE WISH LIST
     COIN_OPTIONS="$COIN_OPTIONS,-RENDER_CACHING"
 
   Using a list to assign values (integers and strings) can also be done
-  quite easily.  (COIN_OPTIONS="ARBITRARY_LIMIT=512").  
+  quite easily.  (COIN_OPTIONS="ARBITRARY_LIMIT=512").
 
   If there are limits to the length of the contents of an environment
   variable, an option is to search the environment for COIN_OPTIONS,
@@ -279,8 +279,8 @@ THE WISH LIST
   It would be useful to have a method to test if it is possible to
   calculate the inverse of a matrix. Right now we check if det4() is
   equal or very close to zero, but I've seen algorithms in GGems
-  that use the floating point precision constant (FLT_EPSILON) to 
-  determine if it's possible to calculate the inverse. 
+  that use the floating point precision constant (FLT_EPSILON) to
+  determine if it's possible to calculate the inverse.
 
   Update 2001-07-03 mortene: just want to mention that
   SbMatrix::invertible() would be a somewhat smoother name. :-)
@@ -348,7 +348,7 @@ THE WISH LIST
   2001-06-07  Peder Blekken <pederb@sim.no>, Morten Eriksen <mortene@sim.no>
 
   Complexity's textureQuality is kind of outdated, since most OpenGL
-  drivers now support linear filtering and mipmapping at no additional 
+  drivers now support linear filtering and mipmapping at no additional
   performance cost when enabled. It would be more useful to be able to
   specify when you want to enable linear filtering and/or mipmapping.
 
@@ -363,7 +363,7 @@ THE WISH LIST
       DONT_SCALE
     };
     SoSFEnum scalePolicy;
-    
+
     enum LoadPolicy {
       IMMEDIATELY,    // default
       DELAY_LOAD,
@@ -564,7 +564,7 @@ THE WISH LIST
   #include <Inventor/nodes/SoSeparator.h>
   #include <Inventor/nodes/SoCube.h>
   #include <Inventor/events/SoKeyboardEvent.h>
-  
+
   static void
   event_cb(void * userdata, SoEventCallback * node)
   {
@@ -572,17 +572,17 @@ THE WISH LIST
     SoKeyboardEvent *keyboardEvent;
     SbBool ctrl = event->wasCtrlDown();
     SbBool shift = event->wasShiftDown();
-  
+
     if (event->isOfType(SoKeyboardEvent::getClassTypeId())) {
       keyboardEvent = (SoKeyboardEvent*) event;
-  
+
       const char c = keyboardEvent->getPrintableCharacter();
       printf("keyboardEvent->getPrintableCharacter() == %c\n", c);
-      
+
       if (SoKeyboardEvent::isKeyPressEvent (keyboardEvent,SoKeyboardEvent::NUMBER_0)) {
         if (ctrl) {
           fprintf(stderr,"ctrl 0\n");
-        } 
+        }
         else {
           if(shift) {
             fprintf(stderr,"shift 0\n");
@@ -594,31 +594,31 @@ THE WISH LIST
       }
     }
   }
-  
+
   int main(int argc, char ** argv)
   {
     @WIDGET@ window = So@Gui@::init(argv[0]);
-    
+
     SoSeparator * root = new SoSeparator;
     root->ref();
     root->addChild(new SoCube);
-   
+
     // create an Inventor viewer
     So@Gui@ExaminerViewer * ex1 = new So@Gui@ExaminerViewer(window);
-   
+
     SoEventCallback * event = new SoEventCallback;
     event->addEventCallback(SoKeyboardEvent::getClassTypeId(),
                             event_cb, ex1);
     root->addChild(event);
-  
+
     ex1->setSceneGraph(root);
     ex1->show();
     So@Gui@::show(window);
     So@Gui@::mainLoop(); // go
     delete ex1;
-  
+
     root->unref();
-  
+
     return 0;
   }
   ---------8<--------------- [snip] ---------------------8<---------------
@@ -699,9 +699,9 @@ THE WISH LIST
 * Support for field value expressions in Inventor ascii files
   2002-03-18  Peder Blekken <pederb@sim.no>
 
-  It would be very useful to allow field value expressions. E.g. for 
+  It would be very useful to allow field value expressions. E.g. for
   an SoSFVec3f, you should be able to write:
-  
+
   SomeNode {
     somefield (3500+4500) (1300+5600) (2300/3.0-1230*1.2)
   }
@@ -720,7 +720,7 @@ THE WISH LIST
   disclosed in API-doc on doc.coin3d.org, don't install header file,
   etc.  Would be a cool and good learning introduction task for a new
   developer, e.g. a summer intern.
-  
+
 
 * SoSearchPathAction (which is part of the TGS Inventor API)
   2002-04-19  Morten Eriksen  <mortene@sim.no>
@@ -848,13 +848,13 @@ THE WISH LIST
 
   The callbacks would look something like this:
 
-  void * (*open_func)  (const char *filename, 
+  void * (*open_func)  (const char *filename,
                         ... maybe some more params here?)
-  size_t (*read_func)  (void *ptr, size_t size, size_t nmemb, 
+  size_t (*read_func)  (void *ptr, size_t size, size_t nmemb,
                         void *datasource);
-        // datasource is whatever open_func returns, 
+        // datasource is whatever open_func returns,
         // could be a filehandle, or not.
-  int    (*seek_func)  (void *datasource, int64 offset, 
+  int    (*seek_func)  (void *datasource, int64 offset,
                         int whence);
   int    (*close_func) (void *datasource);
   int64  (*tell_func)  (void *datasource);
@@ -948,7 +948,7 @@ IMPLEMENTED, RESIDING IN SmallChange
   [upwards compatible extension]
 
   This node renders a skydome which can be connected to the camera
-  to create a nice, global environment in your applications. The 
+  to create a nice, global environment in your applications. The
   node has the following fields:
 
     SoSFFloat startAngle;
@@ -961,5 +961,5 @@ IMPLEMENTED, RESIDING IN SmallChange
   This makes it possible to draw a partial (or full) sphere, and the
   current texture is mapped from startAngle (t=0) to endAngle (t=1).
   The s texture coordinate is mapped in the same way as SoSphere.
-  
+
   This node is partly implemented (only GLRender()-method so far).

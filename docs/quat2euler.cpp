@@ -6,27 +6,27 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
 
-void 
+void
 matrix2euler(float mat[16], float euler[3])
 {
-  // adapted from flipcode FAQ 
+  // adapted from flipcode FAQ
   // http://www.flipcode.com/documents/matrfaq.html#Q37
   euler[1] = asin(mat[2]);
   float C = cos( euler[1] );
-  
+
   float tx, ty;
 
   if (fabs(C) > 0.005f) { // Gimball lock?
     tx = mat[10] / C;
     ty = -mat[6] / C;
-    
+
     euler[0] = atan2(ty, tx);
-    
+
     tx = mat[0] / C;
     ty = -mat[1] / C;
-    
+
     euler[2] = atan2(ty, tx);
-  } 
+  }
   else {
     euler[0] = 0.0f;
     tx = mat[5];
@@ -90,9 +90,9 @@ void print_euler(const SbRotation & rot)
   quat[3] = val[3];
 
   quat2euler(quat, euler);
-  fprintf(stderr,"rot: %g %g %g\n", 
-          to_angle(euler[0]), 
-          to_angle(euler[1]), 
+  fprintf(stderr,"rot: %g %g %g\n",
+          to_angle(euler[0]),
+          to_angle(euler[1]),
           to_angle(euler[2]));
 }
 

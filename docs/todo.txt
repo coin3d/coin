@@ -174,7 +174,7 @@ STUFF TO FIX IN COIN
 
     What we should do is to classify files into no less than 5
     different categories:
-       
+
     0) Fully supported file formats. (Examples: Inventor 2.0 and
        Inventor 2.1 (both of these in both ascii and binary),
        VRML 1.0.)
@@ -182,12 +182,12 @@ STUFF TO FIX IN COIN
     1) File formats that we are likely, but not guaranteed, to read
        without problems. (Examples: any TGS Inventor format from
        versions (>= 2.5?) where they have added nodes that we don't
-       support yet.)  
-       
+       support yet.)
+
        [How should we handle these? Try to load, but spit out a
        warning that there might be problems?]
 
-    2) File formats we know about, but only support in the correct           
+    2) File formats we know about, but only support in the correct
        library configuration. (Example: VRML97, 3DS.)
 
        [Refuse to load if the current configuration of Coin does not
@@ -199,17 +199,17 @@ STUFF TO FIX IN COIN
     3) File formats we know about, but don't support. (Examples:
        Inventor 1.0 ascii & binary. We could also add in all sorts of
        3D file formats here, like Maya, OBJ, etc etc.)
-       
+
        [Refuse to load, with a message that this format is
        unsupported.]
 
     4) Unknown file formats.
-       
-       [Refuse to load, with a message that this format is 
+
+       [Refuse to load, with a message that this format is
        unknown.]
 
-    Morten estimates that it will probably be "a few days work to get 
-    this into lines of code".                         
+    Morten estimates that it will probably be "a few days work to get
+    this into lines of code".
 
 
     UPDATE 2003-05-19 mortene: there's an additional complication,
@@ -478,7 +478,7 @@ STUFF TO FIX IN COIN
     UPDATE 2005-06-21 kyrah: Let us not fool ourselves. Some
     people will always want to be at the bleeding edge, and I just
     don't see binary snapshots of simage (or even regular
-    patchlevel-releases) happening any time soon. What are the 
+    patchlevel-releases) happening any time soon. What are the
     "many good arguments", by the way?
 
     UPDATE 2005-06-28 mortene: I agree it is unlikely that someone
@@ -501,7 +501,7 @@ STUFF TO FIX IN COIN
     UPDATE 2005-06-28 thammer: On the Windows platform, the process of
     building simage and all libraries it depends on is automated
     through the simage/build/build_simage_win32.sh script. The script
-    needs cygwin and VC6. 
+    needs cygwin and VC6.
 
     I believe the right way to proceed with this is to configure a a
     VirtualPC VMWare virtual machine VC6, cygwin, etc - and fine-tune
@@ -1054,16 +1054,16 @@ STUFF TO FIX IN COIN
 
 040 Add built-in version numbers to win32 DLLs.
     2003-09-11 Barbara Langmüller <barbara@sim.no>
-    
+
     win32 DLLs should have built-in version tags to be able to extract
     from which minor version the DLL was built from to avoid possible
     incompatibility issues.
-    
+
     Version information is stored in resource files (.res)
     and is (as the source code) compiled and linked to the DLL.
- 
+
     How to set it up manually in Visual Studio:
-    
+
     1. open the workspace file from which you will build the DLL
     2. File - new - resource script
     3. In the workspace panel there is now a new tab 'ResourceView',
@@ -1071,7 +1071,7 @@ STUFF TO FIX IN COIN
     4. Right click its entry and choose 'insert'
     5. Choose 'Version' and click 'New'
     6. Build the project and you will get a DLL with version information
-    
+
     A resource file typically looks like this (not MSVC generated):
     ------------ begin resource file -------------------
     1 VERSIONINFO
@@ -1082,33 +1082,33 @@ STUFF TO FIX IN COIN
     {
     BLOCK "StringFileInfo"
     {
-    	BLOCK "041404b0"
-    	{
-    		VALUE "Comments", ""
-    		VALUE "CompanyName", "Systems in Motion AS"
-    		VALUE "FileDescription", "coin2d"
-    		VALUE "FileVersion", "1, 0, 0, 1"
-    		VALUE "InternalName", "coin2d"
-    		VALUE "LegalCopyright", "Copyright © 2003"
-    		VALUE "LegalTrademarks", ""
-    		VALUE "OriginalFilename", "coin2d.dll"
-    		VALUE "PrivateBuild", ""
-    		VALUE "ProductName", "Systems in Motion AS coin2d"
-    		VALUE "ProductVersion", "1, 0, 0, 1"
-    		VALUE "SpecialBuild", ""
-    	}
+           BLOCK "041404b0"
+           {
+                  VALUE "Comments", ""
+                  VALUE "CompanyName", "Systems in Motion AS"
+                  VALUE "FileDescription", "coin2d"
+                  VALUE "FileVersion", "1, 0, 0, 1"
+                  VALUE "InternalName", "coin2d"
+                  VALUE "LegalCopyright", "Copyright © 2003"
+                  VALUE "LegalTrademarks", ""
+                  VALUE "OriginalFilename", "coin2d.dll"
+                  VALUE "PrivateBuild", ""
+                  VALUE "ProductName", "Systems in Motion AS coin2d"
+                  VALUE "ProductVersion", "1, 0, 0, 1"
+                  VALUE "SpecialBuild", ""
+           }
     }
-    
+
     BLOCK "VarFileInfo"
     {
-    	VALUE "Translation", 0x0414 0x04B0
+           VALUE "Translation", 0x0414 0x04B0
     }
     }
     ------------ end resource file -------------------
-    
+
     A free utility to view and edit DLL resources can be found at
     http://www.users.on.net/johnson/resourcehacker/
-    
+
     As for the integration with the NSI installer, I would like to
     point to the NSI documentation (Function GetDllVersion) and the
     following interesting post on the NSI forum on winamp.com:
@@ -1189,13 +1189,13 @@ STUFF TO FIX IN COIN
     On cards that support it, we should use the GL_TEXTURE_RECTANGLE_EXT
     OpenGL extension for non-power-of-two textures. In addition to
     the obvious places, this includes creating (and binding)
-    pBuffers. 
+    pBuffers.
 
     Note that even though we will still need fallback code for
     older drivers that don't support this, I believe this would be
     worthwhile. On modern cards, GL_TEXTURE_RECTANGLE_EXT is
-    often faster than GL_TEXTURE_2D, and if somebody is using a  
-    lot of textures (think font rendering), they will appreciate 
+    often faster than GL_TEXTURE_2D, and if somebody is using a
+    lot of textures (think font rendering), they will appreciate
     both the speedup and the savings in texture memory.
 
 

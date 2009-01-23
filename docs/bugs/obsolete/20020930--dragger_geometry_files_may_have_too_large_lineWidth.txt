@@ -14,8 +14,8 @@
     UPDATE 20040804 mortene: my idea mentioned above for a fix had a
     fatal flaw, so this problem is still unresolved.
 
-    UPDATE 20051103 pederb: SoGLLineWidthElement now checks the 
-    supported OpenGL range, and clamps the line width to be inside 
+    UPDATE 20051103 pederb: SoGLLineWidthElement now checks the
+    supported OpenGL range, and clamps the line width to be inside
     that range. Bug seems to be fixed.
 
     UPDATE 20060203 mortene: I consider the fact that we will still

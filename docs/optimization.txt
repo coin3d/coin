@@ -32,7 +32,7 @@ General guidelines:
         4) analyze results
         5) optional: present them for sanity checking
         6) optimize
-        7) submit fixes as patches 
+        7) submit fixes as patches
         8) goto 1
 
     About step 1): it would be good to make testcases which could be

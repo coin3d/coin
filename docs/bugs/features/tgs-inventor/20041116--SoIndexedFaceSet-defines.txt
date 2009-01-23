@@ -10,8 +10,8 @@ Index: include/Inventor/nodes/SoIndexedFaceSet.h
 RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoIndexedFaceSet.h,v
 retrieving revision 1.27
 diff -u -b -r1.27 SoIndexedFaceSet.h
---- include/Inventor/nodes/SoIndexedFaceSet.h	9 Mar 2004 14:38:41 -0000	1.27
-+++ include/Inventor/nodes/SoIndexedFaceSet.h	16 Nov 2004 17:17:08 -0000
+--- include/Inventor/nodes/SoIndexedFaceSet.h       9 Mar 2004 14:38:41 -0000       1.27
++++ include/Inventor/nodes/SoIndexedFaceSet.h       16 Nov 2004 17:17:08 -0000
 @@ -28,6 +28,8 @@
  #include <Inventor/nodes/SoIndexedShape.h>
 

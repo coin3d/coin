@@ -112,7 +112,7 @@ several times as new problems show up.
     * Build SoQt and then build SoQt/test-code/assertdbg/crash.cpp with
       the debug libraries of Coin and SoQt, and ensure that the debugger
       has symbols and can trace through the source code when it comes up.
- 
+
     This step will verify both release and debug builds.
 
   - Mac OS X (GNU make and gcc)

@@ -1,6 +1,6 @@
 From: "Lars J. Aas" <larsa@sim.no>
 Subject: Coin 2.4.6 Released
- 
+
 Coin 2.4.6 Released
 ===================
 
@@ -53,11 +53,11 @@ In that case, try again at a later time.
 ChangeLog:
   http://svn.coin3d.org/repos/Coin-2/trunk/docs/ChangeLog.v2.4.6
 
-Source Code by FTP: 
-  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.6.tar.gz 
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.6.tar.gz
   ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.6.zip
 
-Precompiled for MS Windows: 
+Precompiled for MS Windows:
   ftp://ftp.coin3d.org/pub/coin/bin/win32/Coin-2.4.6-bin-msvc6.zip
   ftp://ftp.coin3d.org/pub/coin/bin/win32/Coin-2.4.6-bin-msvc7.zip
   ftp://ftp.coin3d.org/pub/coin/bin/win32/Coin-2.4.6-bin-msvc8.zip

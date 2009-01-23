@@ -62,7 +62,7 @@ Best regards,
 Morten Eriksen,
 developer @ Systems in Motion
 
--- 
+--
 
 #include <assert.h>
 #include <stdlib.h>
@@ -74,7 +74,7 @@ developer @ Systems in Motion
 #include <GL/glx.h>
 
 
-typedef struct { 
+typedef struct {
   Display * display;
   GLXContext context;
   Window window;
@@ -125,8 +125,8 @@ DrawScene(WindowData * pwdata)
 
 
 /*
- * Create an RGB OpenGL window. 
- * Return the window and context handles. 
+ * Create an RGB OpenGL window.
+ * Return the window and context handles.
  */
 static void
 MakeWindow(Display *dpy, const char *name,

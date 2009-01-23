@@ -1,8 +1,8 @@
 WHAT'S THIS?
 ============
 
-A collection of useful/interesting links for Coin developers. It can, for 
-instance, be resources needed when adding new features to Coin or links to 
+A collection of useful/interesting links for Coin developers. It can, for
+instance, be resources needed when adding new features to Coin or links to
 techniques for optimizing Coin.
 
 THE LINKS
@@ -70,11 +70,11 @@ THE LINKS
 
   For higher quality ? NURBS rendering. Nice license:
 
-   - Commercial use is encouraged  
+   - Commercial use is encouraged
    - The tools, support, and membership are free
-   - There are no restrictions. Neither copyright nor copyleft restrictions 
+   - There are no restrictions. Neither copyright nor copyleft restrictions
      apply
-   - No contribution of effort or technology is required from the members, 
+   - No contribution of effort or technology is required from the members,
      although it is encouraged
 
 * SoXt-like GLUT component

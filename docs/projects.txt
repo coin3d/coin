@@ -20,7 +20,7 @@ projects:
   would probably be the newly released OpenGL library from SGI (which
   contains a separate libnurbs module, it seems).  Avoiding using GLU
   could solve a lot of problems.
-  
+
 * An IVF (MFC-based) GUI-glue library.
 
 * Make simple routines for packaging up Coin for RedHat Linux (.rpm),

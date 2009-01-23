@@ -80,7 +80,7 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-011 Possible resource leak in cc_error_default_handler_cb() 
+011 Possible resource leak in cc_error_default_handler_cb()
 
     The FILE * returned from coin_get_stderr() shouldn't be cached
     as it might be invalid or leak memory the next time we want to use
@@ -93,7 +93,7 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-036 assert on repeated SoDB::init(); SoDB::finish() 
+036 assert on repeated SoDB::init(); SoDB::finish()
 
     Doing this
 
@@ -102,7 +102,7 @@ main(int argc, char ** argv)
       SoDB::init();
       SoDB::finish();
 
-   
+
     results in
 
 

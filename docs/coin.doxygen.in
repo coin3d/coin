@@ -453,23 +453,27 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
-                         @path_tag@@coin_src_dir@/src/doc/modules.dox \
-                         @path_tag@@coin_src_dir@/src/doc/environment.dox \
-                         @path_tag@@coin_src_dir@/src/doc/macros.dox \
-                         @path_tag@@coin_src_dir@/src/doc/books.dox \
+INPUT                  = 
+		         @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBasic.h \
+                         @path_tag@@coin_src_dir@/docs/releases.dox
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/attribute.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/document.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/element.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/parser.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/path.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/types.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBSPTree.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox2s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbBox3s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbClip.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbColor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbColor4f.h \
@@ -488,27 +492,27 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/SbTime.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec2s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3s.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec4b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4ub.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4us.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4ui32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec4d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4ub.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4ui32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec4us.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbViewVolume.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbViewportRegion.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/SbXfBox3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbXfBox3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbXfBox3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoDB.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoEventManager.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoFullPath.h \
@@ -522,440 +526,6 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/SoPrimitiveVertex.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoSceneManager.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SoType.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoBoxHighlightRenderAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoCallbackAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGLRenderAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoAudioRenderAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetBoundingBoxAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetMatrixAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetPrimitiveCountAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoHandleEventAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoLineHighlightRenderAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoPickAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoRayPickAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoSearchAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoSubAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoToVRMLAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoToVRML2Action.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoWriteAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoReorganizeAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/collision/SoIntersectionDetectionAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoBoundingBoxCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoConvexDataCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLCacheList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLRenderCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoNormalCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoPrimitiveVertexCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoTextureCoordinateCache.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoConeDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoCubeDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoCylinderDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoFaceDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoLineDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoNodeKitDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoPointDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoTextDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoCenterballDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDirectionalLightDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragPointDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoHandleBoxDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoJackDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoPointLightDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateCylindricalDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateDiscDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateSphericalDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale1Dragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale2Dragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale2UniformDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScaleUniformDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoSpotLightDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTabBoxDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTabPlaneDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTrackballDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTransformBoxDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTransformerDragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate1Dragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate2Dragger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoAccumulatedElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoOverrideElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoFloatElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoInt32Element.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLColorIndexElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLLineWidthElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLPointSizeElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoLineWidthElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoPointSizeElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoReplacedElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerPositionElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerOrientationElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerGainElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerDopplerElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCalculator.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCompose.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeMatrix.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeRotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeRotationFromTo.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec2f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec4f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComputeBoundingBox.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoConcatenate.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCounter.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeMatrix.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeRotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeVec2f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeVec3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeVec4f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoElapsedTime.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoEngine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoEngineOutput.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoFieldConverter.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoGate.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolate.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateFloat.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateRotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateVec2f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateVec3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateVec4f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoOnOff.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoOneShot.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoSelectOne.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoSubEngine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTimeCounter.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTransformVec3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTriggerAny.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoNodeEngine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTexture2Convert.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoHeightMapToNormalMap.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoDebugError.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoError.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoMemoryError.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoReadError.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoButtonEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoKeyboardEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoLocation2Event.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoMotion3Event.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoMouseButtonEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/events/SoSpaceballButtonEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSubField.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoField.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoFieldContainer.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoFieldData.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFBitMask.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFBool.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFColor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFColorRGBA.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFDouble.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFEngine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFEnum.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFFloat.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFInt32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFMatrix.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFName.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFNode.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFPath.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFPlane.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFRotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFShort.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFString.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFTime.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFUInt32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFUShort.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4ub.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4us.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4ui32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMField.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBitMask.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBool.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFColor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFColorRGBA.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFDouble.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEngine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEnum.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFFloat.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFImage.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFImage3.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFInt32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFMatrix.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFName.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFNode.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFPath.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFPlane.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFRotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFShort.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFString.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFTime.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFTrigger.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFUInt32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFUShort.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4b.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4ub.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4s.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4us.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4i32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4ui32.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4f.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4d.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSField.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbIntList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbPList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbStringList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbVec3fList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoActionMethodList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoAuditorList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoBaseList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoCallbackList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoDetailList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoEnabledElementsList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoEngineList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoEngineOutputList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoFieldList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoNodeList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoPathList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoPickedPointList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoTypeList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/lock/SoLockMgr.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoCenterballManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoHandleBoxManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoJackManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoPointLightManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoSpotLightManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTabBoxManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTrackballManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformBoxManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformerManip.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoAudioDevice.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoGlyph.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoContextHandler.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoBase.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoChildList.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotification.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotRec.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoState.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoAppearanceKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoCameraKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoInteractionKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoLightKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodeKitListPart.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodekitCatalog.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSceneKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSeparatorKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoShapeKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoWrapperKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAntiSquish.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoArray.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAsciiText.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBaseColor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBlinker.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMapCoordinate.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMapTransform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMap.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCallback.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCamera.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoClipPlane.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoColorIndex.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoComplexity.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCone.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCoordinate3.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCoordinate4.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCube.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCylinder.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDepthBuffer.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexAttribute.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexAttributeBinding.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDirectionalLight.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDrawStyle.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoEnvironment.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoEventCallback.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoExtSelection.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFaceSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFile.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFont.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFontStyle.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFrustumCamera.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGroup.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoImage.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedFaceSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedLineSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedNurbsCurve.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedNurbsSurface.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedShape.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoInfo.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLOD.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLabel.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLevelOfDetail.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLight.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLightModel.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLineSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLinearProfile.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoListener.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLocateHighlight.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMarkerSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMaterial.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMaterialBinding.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMatrixTransform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMultipleCopy.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNode.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNonIndexedShape.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNormal.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNormalBinding.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNurbsCurve.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNurbsProfile.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNurbsSurface.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoOrthographicCamera.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPackedColor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPathSwitch.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPendulum.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPerspectiveCamera.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPickStyle.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPointLight.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPointSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPolygonOffset.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoProfile.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoProfileCoordinate2.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoProfileCoordinate3.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoQuadMesh.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoResetTransform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotationXYZ.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoScale.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSceneTexture2.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSelection.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSeparator.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShape.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShapeHints.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShuttle.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSphere.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSpotLight.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSurroundScale.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSwitch.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoText2.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoText3.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2Transform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3Transform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureMatrixTransform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCombine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate2.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate3.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateBinding.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateCube.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateCylinder.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateDefault.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateFunction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinatePlane.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateSphere.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCubeMap.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureScalePolicy.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureUnit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransform.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformSeparator.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTranslation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransparencyType.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTriangleStripSet.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoUnits.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexProperty.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderProgram.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderObject.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShader.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFragmentShader.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeometryShader.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderParameter.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShape.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoViewerNavigationMode.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWAnchor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWInline.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderPlaneProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderSectionProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderSheetProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbLineProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbPlaneProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSpherePlaneProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSectionProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSheetProjector.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXML.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLInvoke.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLObject.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLStateMachine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/SoScXMLEvent.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/scxml/SoScXMLStateMachine.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoAlarmSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoDataSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoDelayQueueSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoFieldSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoIdleSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoNodeSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoOneShotSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoPathSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoSensorManager.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerQueueSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerSensor.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbBarrier.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbCondVar.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbFifo.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbMutex.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbRWMutex.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbStorage.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbThread.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbThreadAutoLock.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbTypedStorage.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRML.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAnchor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAppearance.h \
@@ -1026,33 +596,461 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoAudioRenderAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoBoxHighlightRenderAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoCallbackAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGLRenderAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetBoundingBoxAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetMatrixAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetPrimitiveCountAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoHandleEventAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoLineHighlightRenderAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoPickAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoRayPickAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoReorganizeAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoSearchAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoSubAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoToVRML2Action.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoToVRMLAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoWriteAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowCulling.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowGroup.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowSpotLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoForeignFileKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoSTLFileKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoHardCopy.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorOutput.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizeAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoForeignFileKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/ForeignFiles/SoSTLFileKit.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowGroup.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowSpotLight.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowStyle.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/FXViz/nodes/SoShadowCulling.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/annex/Profiler/SoProfiler.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/Profiler/SbProfilingData.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/Profiler/SoProfiler.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/Profiler/elements/SoProfilerElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/Profiler/nodes/SoProfilerStats.h \
                          @path_tag@@coin_src_dir@/include/Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoBoundingBoxCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoConvexDataCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLCacheList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoGLRenderCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoNormalCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoPrimitiveVertexCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/caches/SoTextureCoordinateCache.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/collision/SoIntersectionDetectionAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoConeDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoCubeDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoCylinderDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoFaceDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoLineDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoNodeKitDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoPointDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoTextDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoCenterballDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDirectionalLightDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragPointDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoHandleBoxDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoJackDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoPointLightDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateCylindricalDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateDiscDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateSphericalDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale1Dragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale2Dragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale2UniformDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScaleUniformDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoSpotLightDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTabBoxDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTabPlaneDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTrackballDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTransformBoxDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTransformerDragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate1Dragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate2Dragger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoAccumulatedElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoFloatElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLColorIndexElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLLineWidthElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLPointSizeElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoInt32Element.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoLineWidthElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerDopplerElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerGainElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerOrientationElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerPositionElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoOverrideElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoPointSizeElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoReplacedElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCalculator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCompose.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeMatrix.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeRotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeRotationFromTo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoComputeBoundingBox.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoConcatenate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCounter.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeMatrix.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeRotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoDecomposeVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoElapsedTime.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoEngine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoEngineOutput.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoFieldConverter.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoGate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoHeightMapToNormalMap.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateFloat.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateRotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoInterpolateVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoNodeEngine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoOnOff.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoOneShot.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoSelectOne.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoSubEngine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTexture2Convert.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTimeCounter.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTransformVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoTriggerAny.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoDebugError.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoError.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoMemoryError.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/errors/SoReadError.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoButtonEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoKeyboardEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoLocation2Event.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoMotion3Event.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoMouseButtonEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/events/SoSpaceballButtonEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoField.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoFieldContainer.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoFieldData.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFBitMask.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFBool.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFColorRGBA.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFDouble.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFEngine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFEnum.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFFloat.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFInt32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFMatrix.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFName.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFNode.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFPath.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFPlane.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFRotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFShort.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFString.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFTime.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFUInt32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFUShort.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4ub.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4ui32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4us.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoMField.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBitMask.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBool.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFBox3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFColorRGBA.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFDouble.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEngine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEnum.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFFloat.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFImage.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFImage3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFInt32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFMatrix.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFName.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFNode.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFPath.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFPlane.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFRotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFShort.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFString.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFTime.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFTrigger.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFUInt32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFUShort.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec2s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec3s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4b.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4d.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4f.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4i32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4s.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4ub.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4ui32.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFVec4us.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSField.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSubField.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbIntList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbPList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbStringList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SbVec3fList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoActionMethodList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoAuditorList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoBaseList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoCallbackList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoDetailList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoEnabledElementsList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoEngineList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoEngineOutputList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoFieldList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoNodeList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoPathList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoPickedPointList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lists/SoTypeList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/lock/SoLockMgr.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoCenterballManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoHandleBoxManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoJackManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoPointLightManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoSpotLightManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTabBoxManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTrackballManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformBoxManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformerManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoAudioDevice.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoBase.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoChildList.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoContextHandler.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoGlyph.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotRec.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotification.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoState.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoAppearanceKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoCameraKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoInteractionKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoLightKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodeKitListPart.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodekitCatalog.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSceneKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoSeparatorKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoShapeKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoWrapperKit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAntiSquish.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoArray.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAsciiText.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBaseColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBlinker.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMap.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMapCoordinate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMapTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCallback.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCamera.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoClipPlane.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoColorIndex.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoComplexity.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCone.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCoordinate3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCoordinate4.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCube.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCylinder.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDepthBuffer.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDirectionalLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoDrawStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoEnvironment.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoEventCallback.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoExtSelection.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFaceSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFile.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFont.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFontStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFragmentShader.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoFrustumCamera.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoCoordinate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoLocation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoOrigin.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoSeparator.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoLocation.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeoCoordinate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGeometryShader.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoGroup.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoImage.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedFaceSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedLineSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedNurbsCurve.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedNurbsSurface.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoIndexedTriangleStripSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoInfo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLOD.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLabel.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLevelOfDetail.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLightModel.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLineSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLinearProfile.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoListener.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLocateHighlight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMarkerSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMaterial.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMaterialBinding.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMatrixTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMultipleCopy.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNode.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNonIndexedShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNormal.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNormalBinding.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNurbsCurve.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNurbsProfile.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoNurbsSurface.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoOrthographicCamera.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPackedColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPathSwitch.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPendulum.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPerspectiveCamera.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPickStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPointLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPointSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPolygonOffset.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoProfile.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoProfileCoordinate2.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoProfileCoordinate3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoQuadMesh.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoResetTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotationXYZ.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoScale.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSceneTexture2.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSelection.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSeparator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderObject.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderParameter.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShaderProgram.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShapeHints.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShuttle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSphere.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSpotLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSurroundScale.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSwitch.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoText2.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoText3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2Transform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3Transform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCombine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate2.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateBinding.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateCube.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateCylinder.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateDefault.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateFunction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinatePlane.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateSphere.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCubeMap.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureMatrixTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureScalePolicy.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureUnit.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformSeparator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTranslation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransparencyType.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTriangleStripSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoUnits.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexAttribute.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexAttributeBinding.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexProperty.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShader.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoViewerNavigationMode.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWAnchor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoWWWInline.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderPlaneProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderSectionProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbCylinderSheetProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbLineProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbPlaneProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSpherePlaneProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSectionProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSheetProjector.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXML.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLInvoke.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLObject.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/ScXMLStateMachine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/SoScXMLEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/scxml/SoScXMLStateMachine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoAlarmSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoDataSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoDelayQueueSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoFieldSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoIdleSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoNodeSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoOneShotSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoPathSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoSensorManager.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerQueueSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbBarrier.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbCondVar.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbFifo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbMutex.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbRWMutex.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbStorage.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbThread.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbThreadAutoLock.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/threads/SbTypedStorage.h \
                          @path_tag@@coin_src_dir@/include/SoDebug.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/types.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/parser.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/document.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/element.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/attribute.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/C/XML/path.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoBoxHighlightRenderAction.cpp \
@@ -1065,19 +1063,18 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/actions/SoLineHighlightRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoPickAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoRayPickAction.cpp \
-                         @path_tag@@coin_src_dir@/src/actions/SoSearchAction.cpp \
-                         @path_tag@@coin_src_dir@/src/actions/SoToVRMLAction.cpp \
-                         @path_tag@@coin_src_dir@/src/actions/SoToVRML2Action.cpp \
-                         @path_tag@@coin_src_dir@/src/actions/SoWriteAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoReorganizeAction.cpp \
-                         @path_tag@@coin_src_dir@/src/collision/SoIntersectionDetectionAction.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoSearchAction.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoToVRML2Action.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoToVRMLAction.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoWriteAction.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBSPTree.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbBox2f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox2d.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbBox2f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox2s.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbBox3s.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbBox3f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbBox3d.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbBox3f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbBox3s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbClip.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbColor.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbColor4f.cpp \
@@ -1094,32 +1091,33 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/base/SbTesselator.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbTime.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2b.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec2s.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec2i32.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec2f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2d.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2i32.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec2s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec2s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec3b.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec3s.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec3i32.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec3d.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3i32.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec4b.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec4s.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec4i32.cpp \
-                         @path_tag@@coin_src_dir@/src/base/SbVec4f.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbVec4d.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4i32.cpp \
+                         @path_tag@@coin_src_dir@/src/base/SbVec4s.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbViewVolume.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbViewportRegion.cpp \
                          @path_tag@@coin_src_dir@/src/base/SbXfBox3f.cpp \
-                         @path_tag@@coin_src_dir@/src/caches/SoCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoBoundingBoxCache.cpp \
+                         @path_tag@@coin_src_dir@/src/caches/SoCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoConvexDataCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoGLCacheList.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoGLRenderCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoNormalCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoPrimitiveVertexCache.cpp \
                          @path_tag@@coin_src_dir@/src/caches/SoTextureCoordinateCache.cpp \
+                         @path_tag@@coin_src_dir@/src/collision/SoIntersectionDetectionAction.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoConeDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoCubeDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoCylinderDetail.cpp \
@@ -1129,6 +1127,10 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/details/SoNodeKitDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoPointDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoTextDetail.cpp \
+                         @path_tag@@coin_src_dir@/src/doc/books.dox \
+                         @path_tag@@coin_src_dir@/src/doc/environment.dox \
+                         @path_tag@@coin_src_dir@/src/doc/macros.dox \
+                         @path_tag@@coin_src_dir@/src/doc/modules.dox \
                          @path_tag@@coin_src_dir@/src/draggers/SoCenterballDragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoDirectionalLightDragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoDragPointDragger.cpp \
@@ -1151,19 +1153,19 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/draggers/SoTransformerDragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoTranslate1Dragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoTranslate2Dragger.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoAccumulatedElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoOverrideElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoFloatElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoInt32Element.cpp \
                          @path_tag@@coin_src_dir@/src/elements/GL/SoGLColorIndexElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/GL/SoGLLineWidthElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/GL/SoGLPointSizeElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoAccumulatedElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoFloatElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoInt32Element.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoLineWidthElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoListenerPositionElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoListenerOrientationElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoListenerGainElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoListenerDopplerElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerGainElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerOrientationElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerPositionElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoOverrideElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoPointSizeElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoReplacedElement.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoBoolOperation.cpp \
@@ -1187,21 +1189,21 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/engines/SoEngineOutput.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoFieldConverter.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoGate.cpp \
+                         @path_tag@@coin_src_dir@/src/engines/SoHeightMapToNormalMap.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoInterpolate.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoInterpolateFloat.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoInterpolateRotation.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoInterpolateVec2f.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoInterpolateVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoInterpolateVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/engines/SoNodeEngine.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoOnOff.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoOneShot.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoSelectOne.cpp \
+                         @path_tag@@coin_src_dir@/src/engines/SoTexture2Convert.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoTimeCounter.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoTransformVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoTriggerAny.cpp \
-                         @path_tag@@coin_src_dir@/src/engines/SoNodeEngine.cpp \
-                         @path_tag@@coin_src_dir@/src/engines/SoTexture2Convert.cpp \
-                         @path_tag@@coin_src_dir@/src/engines/SoHeightMapToNormalMap.cpp \
                          @path_tag@@coin_src_dir@/src/errors/SoDebugError.cpp \
                          @path_tag@@coin_src_dir@/src/errors/SoError.cpp \
                          @path_tag@@coin_src_dir@/src/errors/SoMemoryError.cpp \
@@ -1237,34 +1239,34 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/fields/SoMFUInt32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFUShort.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec2b.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec2d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec2s.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec3b.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec3d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec3s.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec4b.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4ub.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4us.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4ui32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMFVec4d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4ub.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4ui32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoMFVec4us.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoMField.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFBitMask.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFBool.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFBox2d.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox2s.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFBox3d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFBox3s.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFColor.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFColorRGBA.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFDouble.cpp \
@@ -1287,25 +1289,36 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/fields/SoSFUInt32.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFUShort.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec2b.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec2d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec2s.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec3b.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec3d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec3s.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec4b.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4ub.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4s.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4us.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4i32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4ui32.cpp \
-                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec4d.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4f.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4i32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4s.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4ub.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4ui32.cpp \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFVec4us.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSField.cpp \
+                         @path_tag@@coin_src_dir@/src/foreignfiles/SoForeignFileKit.cpp \
+                         @path_tag@@coin_src_dir@/src/foreignfiles/SoSTLFileKit.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoCoordinate.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoLocation.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoOrigin.cpp \
+                         @path_tag@@coin_src_dir@/src/geo/SoGeoSeparator.cpp \
                          @path_tag@@coin_src_dir@/src/glue/dl.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/HardCopy.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/PSVectorOutput.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorOutput.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizeAction.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizePSAction.cpp \
                          @path_tag@@coin_src_dir@/src/io/SoInput.cpp \
                          @path_tag@@coin_src_dir@/src/io/SoOutput.cpp \
                          @path_tag@@coin_src_dir@/src/lists/SbIntList.cpp \
@@ -1340,17 +1353,18 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/manips/SoTransformerManip.cpp \
                          @path_tag@@coin_src_dir@/src/manips/commoncode.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoAudioDevice.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoGlyph.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoContextHandler.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoBase.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoChildList.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoContextHandler.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoDB.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoDebug.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoEventManager.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoFullPath.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoGlyph.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoInteraction.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoLockManager.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoNotification.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoNotRec.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoNotification.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoOffscreenRenderer.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPath.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPickedPoint.cpp \
@@ -1358,7 +1372,6 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/misc/SoSceneManager.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoState.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoType.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoDebug.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoAppearanceKit.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoBaseKit.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoCameraKit.cpp \
@@ -1375,7 +1388,6 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/nodes/SoAnnotation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoAntiSquish.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoArray.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoAsciiText.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBaseColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBlinker.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBumpMap.cpp \
@@ -1386,54 +1398,36 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/nodes/SoClipPlane.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoColorIndex.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoComplexity.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoCone.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCoordinate3.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCoordinate4.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoCube.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoCylinder.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDepthBuffer.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoVertexAttribute.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoVertexAttributeBinding.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDirectionalLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDrawStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoEnvironment.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoEventCallback.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoExtSelection.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoFaceSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFont.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFontStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFrustumCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoGroup.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoImage.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedFaceSet.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedLineSet.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedNurbsCurve.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedNurbsSurface.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedShape.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedTriangleStripSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoInfo.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLOD.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLabel.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLevelOfDetail.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLightModel.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoLineSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLinearProfile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoListener.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLocateHighlight.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoMarkerSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMaterial.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMaterialBinding.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMatrixTransform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMultipleCopy.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNode.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoNonIndexedShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNormal.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNormalBinding.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoNurbsCurve.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNurbsProfile.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoNurbsSurface.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoOrthographicCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPackedColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPathSwitch.cpp \
@@ -1441,12 +1435,10 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/nodes/SoPerspectiveCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPickStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPointLight.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoPointSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPolygonOffset.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoProfile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoProfileCoordinate2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoProfileCoordinate3.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoQuadMesh.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoResetTransform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoRotation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoRotationXYZ.cpp \
@@ -1455,15 +1447,11 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/nodes/SoSceneTexture2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSelection.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSeparator.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoShapeHints.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoShuttle.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoSphere.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSpotLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSurroundScale.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSwitch.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoText2.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoText3.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2Transform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture3.cpp \
@@ -1487,15 +1475,19 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransformation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTranslation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransparencyType.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoTriangleStripSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoUnits.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoVertexAttribute.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoVertexAttributeBinding.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \
-                         @path_tag@@coin_src_dir@/src/shaders/SoVertexShader.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \
-                         @path_tag@@coin_src_dir@/src/shapenodes/SoVertexShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoViewerNavigationMode.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWAnchor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWInline.cpp \
+                         @path_tag@@coin_src_dir@/src/profiler/SbProfilingData.cpp \
+                         @path_tag@@coin_src_dir@/src/profiler/SoProfiler.cpp \
+                         @path_tag@@coin_src_dir@/src/profiler/SoProfilerElement.cpp \
+                         @path_tag@@coin_src_dir@/src/profiler/SoProfilerStats.cpp \
+                         @path_tag@@coin_src_dir@/src/profiler/SoProfilingReportGenerator.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbCylinderPlaneProjector.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbCylinderProjector.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbCylinderSectionProjector.cpp \
@@ -1529,12 +1521,38 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/shaders/SoGeometryShader.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShader.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderObject.cpp \
-                         @path_tag@@coin_src_dir@/src/shaders/SoShaderProgram.cpp \
                          @path_tag@@coin_src_dir@/src/shaders/SoShaderParameter.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoShaderProgram.cpp \
+                         @path_tag@@coin_src_dir@/src/shaders/SoVertexShader.cpp \
+                         @path_tag@@coin_src_dir@/src/shadows/SoShadowCulling.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowGroup.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowSpotLight.cpp \
                          @path_tag@@coin_src_dir@/src/shadows/SoShadowStyle.cpp \
-                         @path_tag@@coin_src_dir@/src/shadows/SoShadowCulling.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoAsciiText.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoCone.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoCube.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoCylinder.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoFaceSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoImage.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedFaceSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedLineSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedNurbsCurve.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedNurbsSurface.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedTriangleStripSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoLineSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoMarkerSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoNonIndexedShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoNurbsCurve.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoNurbsSurface.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoPointSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoQuadMesh.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoSphere.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoText2.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoText3.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoTriangleStripSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoVertexShape.cpp \
                          @path_tag@@coin_src_dir@/src/threads/barrier.cpp \
                          @path_tag@@coin_src_dir@/src/threads/condvar.cpp \
                          @path_tag@@coin_src_dir@/src/threads/fifo.cpp \
@@ -1609,27 +1627,10 @@ INPUT                  = @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_src_dir@/src/vrml97/Viewpoint.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/VisibilitySensor.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/WorldInfo.cpp \
-                         @path_tag@@coin_src_dir@/src/hardcopy/HardCopy.cpp \
-                         @path_tag@@coin_src_dir@/src/hardcopy/PSVectorOutput.cpp \
-                         @path_tag@@coin_src_dir@/src/hardcopy/VectorOutput.cpp \
-                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizeAction.cpp \
-                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizePSAction.cpp \
-                         @path_tag@@coin_src_dir@/src/geo/SoGeoOrigin.cpp \
-                         @path_tag@@coin_src_dir@/src/geo/SoGeoSeparator.cpp \
-                         @path_tag@@coin_src_dir@/src/geo/SoGeoLocation.cpp \
-                         @path_tag@@coin_src_dir@/src/geo/SoGeoCoordinate.cpp \
-                         @path_tag@@coin_src_dir@/src/foreignfiles/SoForeignFileKit.cpp \
-                         @path_tag@@coin_src_dir@/src/foreignfiles/SoSTLFileKit.cpp \
+                         @path_tag@@coin_src_dir@/src/xml/attribute.cpp \
                          @path_tag@@coin_src_dir@/src/xml/document.cpp \
                          @path_tag@@coin_src_dir@/src/xml/element.cpp \
-                         @path_tag@@coin_src_dir@/src/xml/attribute.cpp \
                          @path_tag@@coin_src_dir@/src/xml/path.cpp \
-                         @path_tag@@coin_src_dir@/src/profiler/SoProfiler.cpp \
-                         @path_tag@@coin_src_dir@/src/profiler/SbProfilingData.cpp \
-                         @path_tag@@coin_src_dir@/src/profiler/SoProfilerElement.cpp \
-                         @path_tag@@coin_src_dir@/src/profiler/SoProfilerStats.cpp \
-                         @path_tag@@coin_src_dir@/src/profiler/SoProfilingReportGenerator.cpp \
-                         @path_tag@@coin_src_dir@/docs/releases.dox
 
 
 # If the value of the INPUT tag contains directories, you can use the 
