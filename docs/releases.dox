@@ -298,9 +298,9 @@ SoSFImage::setValue with CopyPolicy::NO_COPY implemented.
 
 \section bigimage Big-Image Support
 
-\section 3dtextures 3D Textures Support
+\section textures3d 3D Textures Support
 
-\section 3dsound 3D Sound Support
+\section sound3d 3D Sound Support
 
 \section vrml97 VRML97 Support
 
