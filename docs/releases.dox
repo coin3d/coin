@@ -140,7 +140,7 @@ The typical use of SoFrustumCamera is in a CAVE or MultiPipe
 environment where it's often necessary to set up cameras based on the
 configuration of the different displays.
 
-\section misc Miscellaneous
+\section misc250 Miscellaneous
 
 Below follows a non-exhaustive list of other, more minor, tweaks and
 tidbits.
@@ -273,7 +273,7 @@ SoIntersectionDetectionAction
 
 \section soselectionhighlight SoLineHighlightRenderAction/SoBoxHighlightRenderAction and Multiple SoSelection Nodes
 
-\section misc Misc
+\section misc210 Misc
 
 \subsection compressedio Compressed File I/O Support
 
