@@ -255,30 +255,41 @@ SbRotation::getValue(SbVec3f & axis, float & radians) const
 void
 SbRotation::getValue(SbMatrix & matrix) const
 {
-  const float x = this->quat[0];
-  const float y = this->quat[1];
-  const float z = this->quat[2];
-  const float w = this->quat[3];
-
-  matrix[0][0] = w*w + x*x - y*y - z*z;
-  matrix[0][1] = 2*x*y + 2*w*z;
-  matrix[0][2] = 2*x*z - 2*w*y;
+  // From:
+  // http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+  float l = this->quat.length();
+  float x,y,z,w;
+  if (l > FLT_EPSILON) {
+    // normalize it
+    x = this->quat[0] / l;
+    y = this->quat[1] / l;
+    z = this->quat[2] / l;
+    w = this->quat[3] / l;
+  }
+  else {
+    // identity
+    x = y = z = 0.0f;
+    w = 1.0f;
+  }
+  matrix[0][0] = 1.0f - 2.0f * (y * y + z * z);
+  matrix[0][1] = 2.0f * (x * y + z * w);
+  matrix[0][2] = 2.0f * (z * x - y * w);
   matrix[0][3] = 0.0f;
 
-  matrix[1][0] = 2*x*y-2*w*z;
-  matrix[1][1] = w*w - x*x + y*y - z*z;
-  matrix[1][2] = 2*y*z + 2*w*x;
-  matrix[1][3] = 0.0f;
+  matrix[1][0] = 2.0f * (x * y - z * w);
+  matrix[1][1] = 1.0f - 2.0f * (z * z + x * x);
+  matrix[1][2] = 2.0f * (y * z + x * w);
+  matrix[1][3] = 0;
 
-  matrix[2][0] = 2*x*z + 2*w*y;
-  matrix[2][1] = 2*y*z - 2*w*x;
-  matrix[2][2] = w*w - x*x - y*y + z*z;
+  matrix[2][0] = 2.0f * (z * x + y * w);
+  matrix[2][1] = 2.0f * (y * z - x * w);
+  matrix[2][2] = 1.0f - 2.0f * (y * y + x * x);
   matrix[2][3] = 0.0f;
 
   matrix[3][0] = 0.0f;
   matrix[3][1] = 0.0f;
   matrix[3][2] = 0.0f;
-  matrix[3][3] = w*w + x*x + y*y + z*z;
+  matrix[3][3] = 1.0f;
 }
 
 /*!
@@ -367,7 +378,7 @@ SbRotation &
 SbRotation::setValue(const SbMatrix & m)
 {
   float scalerow = m[0][0] + m[1][1] + m[2][2];
-
+  
   if (scalerow > 0.0f) {
     float s = static_cast<float>(sqrt(scalerow + m[3][3]));
     this->quat[3] = s * 0.5f;
@@ -455,7 +466,6 @@ SbRotation::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
                               "rotateTo argument has zero length.");
   }
 #endif // COIN_DEBUG
-
   SbVec3f from(rotateFrom);
   // we test for a null vector above
   (void) from.normalize();
@@ -592,12 +602,13 @@ operator*(const SbRotation & q1, const SbRotation & q2)
 void
 SbRotation::multVec(const SbVec3f & src, SbVec3f & dst) const
 {
-  // FIXME: this looks amazingly ineffective. Should
-  // optimize. 20010907 mortene.
-
-  SbMatrix mat;
-  mat.setRotate(*this);
-  mat.multVecMatrix(src, dst);
+  SbVec3f qv(this->quat[0], this->quat[1], this->quat[2]);
+  float r = this->quat[3];
+  
+  SbVec3f a = qv.cross(src);
+  SbVec3f b = qv.cross(a);
+  
+  dst = src + 2.0f * (r * a + b);
 }
 
 /*!
@@ -648,12 +659,12 @@ SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
     dot = -dot;
     to.quat.negate();
   }
-
+  
   // fallback to linear interpolation, in case we run out of floating
   // point precision
   float scale0 = 1.0f - t;
   float scale1 = t;
-
+  
   if ((1.0f - dot) > FLT_EPSILON) {
     float angle = static_cast<float>(acos(dot));
     float sinangle = static_cast<float>(sin(angle));
