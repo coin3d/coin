@@ -82,7 +82,8 @@ public:
   enum StereoMode {
     MONO,
     ANAGLYPH,
-    QUAD_BUFFER,
+    SEPARATE_OUTPUT,
+    QUAD_BUFFER = SEPARATE_OUTPUT,
     INTERLEAVED_ROWS,
     INTERLEAVED_COLUMNS
   };
@@ -109,8 +110,8 @@ public:
                       const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
 
-  Superimposition * addSuperimposition(SoNode * scene, 
-                                       uint32_t flags = 
+  Superimposition * addSuperimposition(SoNode * scene,
+                                       uint32_t flags =
                                        Superimposition::AUTOREDRAW |
                                        Superimposition::ZBUFFERON  |
                                        Superimposition::CLEARZBUFFER);

@@ -99,6 +99,56 @@
   Only show the bounding box of each object
 */
 
+/*!
+  \enum SoRenderManager::StereoMode
+
+  Manages how to render steroscopic images.
+*/
+
+/*!
+  \var SoRenderManager::StereoMode SoRenderManager::MONO
+
+  No stereoscopic rendering
+*/
+
+/*!
+  \var SoRenderManager::StereoMode SoRenderManager::ANAGLYPH
+
+  Anaglyph rendering is used to provide a steroscopic 3D effect, when
+  viewed with 3D glasses. The image is made up of two color layers
+  which are superimposed on each other, and appears as 3 dimensional
+  when viewed through corresponding colored filters(glases)
+*/
+
+/*!
+  \var SoRenderManager::StereoMode SoRenderManager::SEPARATE_OUTPUT
+
+  Send output to separate buffers.
+*/
+
+/*!
+  \var SoRenderManager::StereoMode SoRenderManager::QUAD_BUFFER
+
+  Same as SEPARATE_OUTPUT, SEPARATE_OUTPUT is more commonly known as
+  QUAD_BUFFER, when also using double buffering.
+*/
+
+/*!
+  \var SoRenderManager::StereoMode SoRenderManager::INTERLEAVED_ROWS
+
+  Render every second row as left and right image. If rendered with a
+  polarized projector, polarized filters kan be used to give a 3D
+  effect.
+*/
+
+/*!
+  \var SoRenderManager::StereoMode SoRenderManager::INTERLEAVED_COLUMNS
+
+  Render every second column as left and right image. If rendered with
+  a polarized projector, polarized filters kan be used to give a 3D
+  effect.
+*/
+
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
