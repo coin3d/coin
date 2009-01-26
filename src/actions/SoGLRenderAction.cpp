@@ -534,6 +534,7 @@ public:
   SoGLRenderAction * action;
   SbViewportRegion viewport;
   int numpasses;
+  SbBool internal_multipass;
   SoGLRenderAction::TransparencyType transparencytype;
   SbBool smoothing;
   SbBool passupdate;
@@ -697,6 +698,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->smoothing = FALSE;
   PRIVATE(this)->currentpass = 0;
   PRIVATE(this)->numpasses = 1;
+  PRIVATE(this)->internal_multipass = FALSE;
   PRIVATE(this)->transparencytype = SoGLRenderAction::BLEND;
   PRIVATE(this)->delayedpathrender = FALSE;
   PRIVATE(this)->transparencyrender = FALSE;
@@ -908,6 +910,7 @@ void
 SoGLRenderAction::setNumPasses(const int num)
 {
   PRIVATE(this)->numpasses = num;
+  PRIVATE(this)->internal_multipass = num > 1;
 }
 
 /*!
@@ -1289,22 +1292,23 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 }
 
 /*!
-  Sets the current rendering pass index. This can be used when
+  Sets the current rendering pass to \a passnum. This can be used when
   antialiasing is controlled from outside the SoGLRenderAction
-  instance.
+  instance. \a numpasses is the total number of rendering passes to
+  be used.
 
-  Please note that if you use setNumPasses() to set the number of
-  rendering passes to something > 1, SoGLRenderAction will modify the
-  current pass during its multipass loop. The current rendering pass
-  is restored as soon as the internals multipass loop is finished
-  though.
-
+  Please note that this will disable any antialiasing set using the
+  setNumPasses() method. You can reenable the internal antialiasing
+  again by calling setNumPasses()
+  
   \since Coin 3.1
 */
 void
-SoGLRenderAction::setCurPass(const int passnum)
+SoGLRenderAction::setCurPass(const int passnum, const int numpasses)
 {
   PRIVATE(this)->currentpass = passnum;
+  PRIVATE(this)->numpasses = numpasses;
+  PRIVATE(this)->internal_multipass = FALSE;
 }
 
 /*!
@@ -1698,7 +1702,7 @@ SoGLRenderActionP::render(SoNode * node)
 
   this->precblist.invokeCallbacks(static_cast<void *>(this->action));
 
-  if (this->action->getNumPasses() > 1) {
+  if (this->action->getNumPasses() > 1 && this->internal_multipass) {
     // Check if the current OpenGL context has an accumulation buffer
     // (rendering multiple passes doesn't make much sense otherwise).
     GLint accumbits;
