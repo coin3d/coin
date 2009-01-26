@@ -46,7 +46,7 @@
 #include <Inventor/C/basic.h>
 #include <float.h>
 #include <stdlib.h>
-#include "evaluator.h"
+#include "engines/evaluator.h"
 %}
 
 %option noyywrap

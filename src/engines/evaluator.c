@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include "evaluator.h"
+#include "engines/evaluator.h"
 #include <Inventor/C/basic.h>
 #include <assert.h>
 #include <stdio.h>

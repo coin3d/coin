@@ -48,7 +48,7 @@
 #include <io.h>
 #endif /* HAVE_IO_H */
 #include <Inventor/C/basic.h>
-#include "evaluator.h"
+#include "engines/evaluator.h"
 %}
 
 %union
