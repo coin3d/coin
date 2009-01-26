@@ -695,6 +695,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->passcallback = NULL;
   PRIVATE(this)->passcallbackdata = NULL;
   PRIVATE(this)->smoothing = FALSE;
+  PRIVATE(this)->currentpass = 0;
   PRIVATE(this)->numpasses = 1;
   PRIVATE(this)->transparencytype = SoGLRenderAction::BLEND;
   PRIVATE(this)->delayedpathrender = FALSE;
@@ -1288,6 +1289,25 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 }
 
 /*!
+  Sets the current rendering pass index. This can be used when
+  antialiasing is controlled from outside the SoGLRenderAction
+  instance.
+
+  Please note that if you use setNumPasses() to set the number of
+  rendering passes to something > 1, SoGLRenderAction will modify the
+  current pass during its multipass loop. The current rendering pass
+  is restored as soon as the internals multipass loop is finished
+  though.
+
+  \since Coin 3.1
+*/
+void
+SoGLRenderAction::setCurPass(const int passnum)
+{
+  PRIVATE(this)->currentpass = passnum;
+}
+
+/*!
   Returns the number of the current rendering pass.
 */
 
@@ -1648,8 +1668,6 @@ SoGLRenderActionP::render(SoNode * node)
 {
   this->isrendering = TRUE;
 
-  this->currentpass = 0;
-  
   SoState * state = this->action->getState();
   state->push();
 
@@ -1737,10 +1755,11 @@ SoGLRenderActionP::renderMulti(SoNode * node)
   assert(this->numpasses > 1);
   float fraction = 1.0f / float(this->numpasses);
 
+  int storedpass = this->currentpass;
+
   this->currentpass = 0;
   this->renderSingle(node);
   if (this->action->hasTerminated()) return;
-
   glAccum(GL_LOAD, fraction);
 
   for (int i = 1; i < this->numpasses; i++) {
@@ -1751,10 +1770,14 @@ SoGLRenderActionP::renderMulti(SoNode * node)
     else glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     this->currentpass = i;
     this->renderSingle(node);
-
-    if (this->action->hasTerminated()) return;
+    
+    if (this->action->hasTerminated()) {
+      this->currentpass = storedpass;
+      return;
+    }
     glAccum(GL_ACCUM, fraction);
   }
+  this->currentpass = storedpass;
   glAccum(GL_RETURN, 1.0f);
 }
 

@@ -101,6 +101,7 @@ public:
   SbBool isRenderingDelayedPaths(void) const;
 
   SbBool handleTransparency(SbBool istransparent = FALSE);
+  void setCurPass(const int passnum);
   int getCurPass(void) const;
   SbBool abortNow(void);
 
