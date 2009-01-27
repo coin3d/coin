@@ -1555,8 +1555,7 @@ SoOutput::convertInt32(int32_t l, char * to)
 void
 SoOutput::convertFloat(float f, char * to)
 {
-  const float bigendianfloat = coin_hton_float(f);
-  memcpy(to, &bigendianfloat, sizeof(float));
+  coin_hton_float_bytes(f, to);
 }
 
 /*!
@@ -1569,8 +1568,7 @@ SoOutput::convertFloat(float f, char * to)
 void
 SoOutput::convertDouble(double d, char * to)
 {
-  const double bigendiandouble = coin_hton_double(d);
-  memcpy(to, &bigendiandouble, sizeof(double));
+  coin_hton_double_bytes(d, to);
 }
 
 /*!

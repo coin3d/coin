@@ -155,7 +155,7 @@ static void
 soinput_destruct_tls_data(void * closure)
 {
   soinput_tls_data * data = (soinput_tls_data*) closure;
-  
+
   int n = data->searchlist->getLength();
   for (int i = 0; i < n; i++) {
     delete (*data->searchlist)[i];
@@ -191,7 +191,7 @@ SoInputP::debugBinary(void)
 
 // Helper function that pops the stack when the current file is at
 // EOF.  Then it returns the file at the top of the stack.
-SoInput_FileInfo * 
+SoInput_FileInfo *
 SoInputP::getTopOfStackPopOnEOF(void)
 {
   SoInput_FileInfo * fi = owner->getTopOfStack();
@@ -237,8 +237,8 @@ SoInputP::getTopOfStackPopOnEOF(void)
 //
 // The grammar for VRML2 identifiers is:
 //
-//  nodeNameId ::= Id ; 
-//  nodeTypeId ::= Id ; 
+//  nodeNameId ::= Id ;
+//  nodeTypeId ::= Id ;
 //  fieldId ::= Id ;
 //
 //  Id ::= IdFirstChar | IdFirstChar IdRestChars ;
@@ -344,7 +344,7 @@ SoInputP::isNameStartCharVRML2(unsigned char c, SbBool validIdent)
 
 // Helperfunction to handle different filetypes (Inventor, VRML 1.0
 // and VRML 2.0).
-// 
+//
 // See SoInputP::isIdentStartChar for more information
 SbBool
 SoInputP::isNameChar(unsigned char c, SbBool validIdent)
@@ -460,7 +460,7 @@ SoInput::constructorsCommon(void)
   // possible to construct an SoInput before SoDB::init() has been
   // invoked from app code, as it is common to just have an SoInput on
   // the stack of the main() function.
-  // 
+  //
   // But since SoInput uses threads, which needs to be initialized, we
   // need to check for SoDB::init() here, and invoke it if it was not
   // yet called.
@@ -545,7 +545,7 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
 
   \since Coin 2.3
 */
-SoProto * 
+SoProto *
 SoInput::findProto(const SbName & name)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
@@ -782,13 +782,13 @@ SoInput::pushFile(const char * filename)
   //
   // SoFile * f = new SoFile;
   // f->name = "nonexistant.iv";
-  // 
+  //
   // The name-field has a callback function that calls
   // File::readNamedFile, which calls pushFile. No other files than
   // the pushed file should end up on the stack.
   if (this->filestack.getLength() == 1 &&
       this->filestack[0]->ivFilePointer() == coin_get_stdin() &&
-      !PRIVATE(this)->usingstdin) { 
+      !PRIVATE(this)->usingstdin) {
 
     this->closeFile();
   }
@@ -1339,7 +1339,7 @@ SoInput::read(SbString & s)
 SbBool
 SoInput::read(SbName & n, SbBool validIdent)
 {
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();  
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
   if (!this->checkHeader()) return FALSE;
 
   const enum CodePath { INVENTOR, VRML1, VRML2 } codepath =
@@ -1389,7 +1389,7 @@ SoInput::read(SbName & n, SbBool validIdent)
     char * b = buf;
     char c;
     SbBool gotchar = FALSE;
-    
+
     switch (codepath) {
     case INVENTOR:
       if ((gotchar = fi->get(c)) && SoInputP::isNameStartChar(c, validIdent)) {
@@ -1437,19 +1437,19 @@ SoInput::read(SbName & n, SbBool validIdent)
     // This behavior is pretty silly, but this is how it is supposed
     // to work, apparently -- _not_ returning FALSE upon end-of-file.
     if (gotchar) fi->putBack(c);
-    
+
     *b = '\0';
     s += buf;
     n = SbName(s);
-    
+
 #if 0 // debug
     SoDebugError::postInfo("SoInput::read",
                            "string read: ``%s''", s.getString());
 #endif // debug
-    
+
     if (s.getLength() == 0) return FALSE;
   }
-  
+
   return TRUE;
 }
 
@@ -2029,7 +2029,7 @@ SoInput::removeDirectory(const char * dirName)
     for (; idx >= 0; idx--) {
       if (*((*dirs)[idx]) == dirName) break;
     }
-    
+
     if (idx >=0) {
       delete (*dirs)[idx]; // Dealloc SbString object
       dirs->remove(idx);
@@ -2341,8 +2341,8 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
   // <stdin> is being read from or not, we have a pretty good way of
   // telling if the user want to use <stdin> to read from or not when
   // a new file is pushed on the stack.
-  if (this->filestack.getLength() == 1 && 
-      fi->ivFilePointer() == coin_get_stdin() && 
+  if (this->filestack.getLength() == 1 &&
+      fi->ivFilePointer() == coin_get_stdin() &&
       !PRIVATE(this)->usingstdin) {
 
     PRIVATE(this)->usingstdin = TRUE;
@@ -2528,8 +2528,7 @@ SoInput::makeRoomInBuf(size_t /* nBytes */)
 void
 SoInput::convertShort(char * from, short * s)
 {
-  // Convert MSB -> LSB, if necessary. Ugly hack.
-  *s = (short) coin_ntoh_uint16(*((uint16_t *)from));
+  *s = (short) (coin_ntoh_uint16(*((uint16_t*)from)));
 }
 
 /*!
@@ -2540,9 +2539,7 @@ SoInput::convertShort(char * from, short * s)
 void
 SoInput::convertInt32(char * from, int32_t * l)
 {
-  // Convert MSB -> LSB, if necessary. Ugly hack.
-  // assert(sizeof(int32_t) == sizeof(unsigned long int)); // Fails on 64-bit archs?
-  *l = (int32_t)coin_ntoh_uint32(*((uint32_t *)from));
+  *l = (int32_t) (coin_ntoh_uint32(*((uint32_t*)from)));
 }
 
 /*!
@@ -2553,14 +2550,7 @@ SoInput::convertInt32(char * from, int32_t * l)
 void
 SoInput::convertFloat(char * from, float * f)
 {
-  // Jesus H. Christ -- this unbelievably ugly hack actually kinda
-  // works. Probably because the bitpatterns of the parts of float
-  // numbers are standardized according to IEEE 754 (?).
-  assert(sizeof(uint32_t) == sizeof(float));
-  // FIXME: we now have coin_ntoh_float() and coin_hton_float()
-  // functions in tidbits.c. 20021121 mortene.
-  uint32_t fbitval = coin_ntoh_uint32(*((uint32_t *)from));
-  (void)memcpy(f, &fbitval, sizeof(float));
+  *f = coin_ntoh_float_bytes(from);
 }
 
 /*!
@@ -2571,16 +2561,7 @@ SoInput::convertFloat(char * from, float * f)
 void
 SoInput::convertDouble(char * from, double * d)
 {
-  // This is so ugly it makes Madeleine Albright appear as Miss
-  // Universe, but hey -- it works for me. I think.
-  assert(sizeof(uint32_t) * 2 == sizeof(double));
-  unsigned long int dbitvals[2] = {
-    // FIXME: we now have coin_ntoh_float() and coin_hton_float()
-    // functions in tidbits.c. 20021121 mortene.
-    coin_ntoh_uint32(*((uint32_t *)from)),
-    coin_ntoh_uint32(*((uint32_t *)(from + sizeof(double)/2))),
-  };
-  (void)memcpy(d, dbitvals, sizeof(double));
+  *d = coin_ntoh_double_bytes(from);
 }
 
 /*!

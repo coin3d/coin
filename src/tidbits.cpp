@@ -787,10 +787,34 @@ coin_ntoh_uint32(uint32_t value)
   return coin_hton_uint32(value);
 }
 
+uint64_t
+coin_hton_uint64(uint64_t value)
+{
+  switch (coin_host_get_endianness()) {
+  case COIN_HOST_IS_BIGENDIAN:
+    /* big-endian is the same order as network order */
+    break;
+  case COIN_HOST_IS_LITTLEENDIAN:
+    value = COIN_BSWAP_64(value);
+    break;
+  default:
+    assert(0 && "system has unknown endianness");
+  }
+  return value;
+}
+
+uint64_t
+coin_ntoh_uint64(uint64_t value)
+{
+  return coin_hton_uint64(value);
+}
+
 float
 coin_hton_float(float value)
 {
-  union f32type {
+  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
+  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
+  union f32 {
       float f32;
       uint32_t u32;
   } val;
@@ -815,13 +839,17 @@ coin_hton_float(float value)
 float
 coin_ntoh_float(float value)
 {
+  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
+  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
   return coin_hton_float(value);
 }
 
 double
 coin_hton_double(double value)
 {
-  union d64type {
+  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
+  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
+  union d64 {
       double d64;
       uint64_t u64;
   } val;
@@ -846,9 +874,66 @@ coin_hton_double(double value)
 double
 coin_ntoh_double(double value)
 {
+  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
+  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
   return coin_hton_double(value);
 }
 
+void 
+coin_hton_float_bytes(float value, char * result)
+{
+  union f32 {
+    float f32;
+    uint32_t u32;
+  } val;
+
+  assert(sizeof(float) == sizeof(uint32_t));
+  val.f32 = value;
+  val.u32 = coin_hton_uint32(val.u32);
+  memcpy(result, &val.u32, sizeof(uint32_t));
+}
+
+float 
+coin_ntoh_float_bytes(char * value)
+{
+  union f32 {
+    float f32;
+    uint32_t u32;
+  } val;
+
+  assert(sizeof(float) == sizeof(uint32_t));
+  memcpy(&val.u32, value, sizeof(uint32_t));
+  val.u32 = coin_ntoh_uint32(val.u32);  
+  return val.f32;
+}
+
+void 
+coin_hton_double_bytes(double value, char * result)
+{
+  union d64 {
+    double d64;
+    uint32_t u64;
+  } val;
+
+  assert(sizeof(double) == sizeof(uint64_t));
+  val.d64 = value;
+  val.u64 = coin_hton_uint64(val.u64);
+  memcpy(result, &val.u64, sizeof(uint64_t));
+}
+
+double 
+coin_ntoh_double_bytes(char * value)
+{
+  union d64 {
+    float d64;
+    uint64_t u64;
+  } val;
+
+  assert(sizeof(double) == sizeof(uint64_t));
+  memcpy(&val.u64, value, sizeof(uint64_t));
+  val.u64 = coin_ntoh_uint64(val.u64);  
+  return val.d64;
+}
 
 /**************************************************************************/
 
@@ -1299,26 +1384,26 @@ void
 free_std_fds(void)
 {
   /* Close stdin/stdout/stderr */
-  if (coin_stdin) { 
+  if (coin_stdin) {
     assert(coin_dup_stdin != -1);
-    fclose(coin_stdin); 
-    coin_stdin = NULL; 
+    fclose(coin_stdin);
+    coin_stdin = NULL;
     dup2(coin_dup_stdin, STDIN_FILENO);
     close(coin_dup_stdin);
     coin_dup_stdin = -1;
   }
-  if (coin_stdout) { 
+  if (coin_stdout) {
     assert(coin_dup_stdout != -1);
-    fclose(coin_stdout); 
-    coin_stdout = NULL; 
+    fclose(coin_stdout);
+    coin_stdout = NULL;
     dup2(coin_dup_stdout, STDOUT_FILENO);
     close(coin_dup_stdout);
     coin_dup_stdout = -1;
   }
-  if (coin_stderr) { 
+  if (coin_stderr) {
     assert(coin_dup_stderr != -1);
-    fclose(coin_stderr); 
-    coin_stderr = NULL; 
+    fclose(coin_stderr);
+    coin_stderr = NULL;
     dup2(coin_dup_stderr, STDERR_FILENO);
     close(coin_dup_stderr);
     coin_dup_stderr = -1;

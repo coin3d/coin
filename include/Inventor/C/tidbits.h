@@ -49,15 +49,19 @@ COIN_DLL_API SbBool coin_setenv(const char * name, const char * value, int overw
 COIN_DLL_API void coin_unsetenv(const char * name);
 
 COIN_DLL_API int coin_strncasecmp(const char * str1, const char * str2, int len);
-
+  
 COIN_DLL_API uint16_t coin_hton_uint16(uint16_t value);
 COIN_DLL_API uint16_t coin_ntoh_uint16(uint16_t value);
 COIN_DLL_API uint32_t coin_hton_uint32(uint32_t value);
 COIN_DLL_API uint32_t coin_ntoh_uint32(uint32_t value);
-COIN_DLL_API float coin_hton_float(float value);
-COIN_DLL_API float coin_ntoh_float(float value);
-COIN_DLL_API double coin_hton_double(double value);
-COIN_DLL_API double coin_ntoh_double(double value);
+COIN_DLL_API uint64_t coin_hton_uint64(uint64_t value);
+COIN_DLL_API uint64_t coin_ntoh_uint64(uint64_t value);
+
+COIN_DLL_API void coin_hton_float_bytes(float value, char * result); /* expects room for 4 bytes in result*/
+COIN_DLL_API float coin_ntoh_float_bytes(char * value);   /* expects 4 bytes input */
+
+COIN_DLL_API void coin_hton_double_bytes(double value, char * result); /* expects room for 8 bytes in result */
+COIN_DLL_API double coin_ntoh_double_bytes(char * value); /* expects 8 bytes input */
 
 COIN_DLL_API SbBool coin_isascii(const int c);
 COIN_DLL_API SbBool coin_isspace(const char c);
@@ -73,6 +77,15 @@ COIN_DLL_API void cc_coin_atexit(coin_atexit_f * fp);
 
 /* Used internally to clean up static data. Do not use in application code */
 COIN_DLL_API void cc_coin_atexit_static_internal(coin_atexit_f * fp);
+
+/* ********************************************************************** */
+
+/* OBSOLETED! These are not safe. Don't use them. */
+COIN_DLL_API float coin_hton_float(float value);
+COIN_DLL_API float coin_ntoh_float(float value);
+  
+COIN_DLL_API double coin_hton_double(double value);
+COIN_DLL_API double coin_ntoh_double(double value);
 
 /* ********************************************************************** */
 
