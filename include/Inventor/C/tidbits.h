@@ -58,10 +58,10 @@ COIN_DLL_API uint64_t coin_hton_uint64(uint64_t value);
 COIN_DLL_API uint64_t coin_ntoh_uint64(uint64_t value);
 
 COIN_DLL_API void coin_hton_float_bytes(float value, char * result); /* expects room for 4 bytes in result*/
-COIN_DLL_API float coin_ntoh_float_bytes(char * value);   /* expects 4 bytes input */
+COIN_DLL_API float coin_ntoh_float_bytes(const char * value);   /* expects 4 bytes input */
 
 COIN_DLL_API void coin_hton_double_bytes(double value, char * result); /* expects room for 8 bytes in result */
-COIN_DLL_API double coin_ntoh_double_bytes(char * value); /* expects 8 bytes input */
+COIN_DLL_API double coin_ntoh_double_bytes(const char * value); /* expects 8 bytes input */
 
 COIN_DLL_API SbBool coin_isascii(const int c);
 COIN_DLL_API SbBool coin_isspace(const char c);

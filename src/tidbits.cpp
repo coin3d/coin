@@ -894,7 +894,7 @@ coin_hton_float_bytes(float value, char * result)
 }
 
 float 
-coin_ntoh_float_bytes(char * value)
+coin_ntoh_float_bytes(const char * value)
 {
   union f32 {
     float f32;
@@ -922,7 +922,7 @@ coin_hton_double_bytes(double value, char * result)
 }
 
 double 
-coin_ntoh_double_bytes(char * value)
+coin_ntoh_double_bytes(const char * value)
 {
   union d64 {
     float d64;
