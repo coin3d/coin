@@ -372,8 +372,23 @@ SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
 }
 
 /*!
+  Add a superimposition for this scene graph. A superimposition can
+  either be a scene rendered in the background, or a scene rendered in
+  the front of the actual scene graph.
 
- */
+  This is useful, for instance, if you want to add a gradient or an
+  image in the background, and for having some HUD info in the
+  foreground.
+
+  Please note that if you use superimpositions, multipass antialiasing
+  have to be handled in the render manager, and not in
+  SoGLRenderAction, so the pass update features in SoGLRenderAction
+  will be disabled.
+
+  \sa SoGLRenderAction::setNumPasses()
+  \sa SoGLRenderAction::setPassUpdate()
+  \sa SoGLRenderAction::setPassCallback()
+*/
 SoRenderManager::Superimposition *
 SoRenderManager::addSuperimposition(SoNode * scene,
                                     uint32_t flags)
@@ -387,8 +402,10 @@ SoRenderManager::addSuperimposition(SoNode * scene,
 }
 
 /*!
+  Removes a superimposition.
 
- */
+  \sa addSuperimposition()
+*/
 void
 SoRenderManager::removeSuperimposition(Superimposition * s)
 {
@@ -449,8 +466,47 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
       SoAudioDevice::instance()->haveSound() &&
       SoAudioDevice::instance()->isEnabled())
     PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
+  
+  SoGLRenderAction * action = PRIVATE(this)->glaction;
+  const int numpasses = action->getNumPasses();
+  
+  // extra care has to be taken if the user attempts to do multipass
+  // antialiasing while using superimpositions
+  if (numpasses > 1 &&
+      PRIVATE(this)->superimpositions &&
+      PRIVATE(this)->superimpositions->getLength()) {
+    action->setNumPasses(1);
+    
+    // FIXME: the pass update callback from SoGLRenderAction is not
+    // supported, but this is not a feature anybody is using anymore,
+    // I suspect. We'll document this in the addSuperimposition()
+    // documentation
 
-  this->render(PRIVATE(this)->glaction, TRUE, clearwindow, clearzbuffer);
+    // render the first pass normally
+    action->setCurPass(0, numpasses);
+    this->render(action, TRUE, clearwindow, clearzbuffer);
+    
+    // check if we have an accumulation buffer, and render additional passes
+    GLint accumbits;
+    glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
+    if (!action->hasTerminated() && accumbits > 0) {
+      const float fraction = 1.0f / float(numpasses);
+      glAccum(GL_LOAD, fraction);
+      
+      for (int i = 1; (i < numpasses) && !action->hasTerminated(); i++) {
+        action->setCurPass(i, numpasses);
+        this->render(action, TRUE, TRUE, TRUE);
+        glAccum(GL_ACCUM, fraction);
+      }
+      glAccum(GL_RETURN, 1.0f);
+    }
+    action->setCurPass(0, 1);
+    action->setNumPasses(numpasses);
+  }
+  else {
+    // let SoGLRenderAction handle the accumulation buffer
+    this->render(PRIVATE(this)->glaction, TRUE, clearwindow, clearzbuffer);
+  }
 }
 
 
