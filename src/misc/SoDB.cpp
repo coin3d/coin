@@ -1655,6 +1655,17 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 
 #ifdef COIN_TEST_SUITE
 
+BOOST_AUTO_TEST_CASE(globalRealTimeField)
+{
+  SoField * realTimeField = SoDB::getGlobalField("realTime");
+  BOOST_REQUIRE(realTimeField != NULL);
+  BOOST_REQUIRE(realTimeField->getFieldContainer() != NULL);
+}
+
+#endif // COIN_TEST_SUITE
+
+#ifdef COIN_TEST_SUITE
+
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoGroup.h>
