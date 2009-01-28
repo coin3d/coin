@@ -120,7 +120,7 @@ public: \
       SoType::createType(_parent_::getClassTypeId(), _classname_, _createfunc_); \
     cc_coin_atexit_static_internal \
       ( \
-       static_cast<coin_atexit_f *>(_class_::atexit_cleanup) \
+       _class_::atexit_cleanup \
        ); \
   } while (0)
 

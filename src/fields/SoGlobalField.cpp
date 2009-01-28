@@ -135,7 +135,7 @@ SoGlobalField::initClass(void)
   // go down to 0 to detect when a global field is no longer
   // referenced
   SoGlobalField::allcontainers->addReferences(FALSE);
-  coin_atexit(static_cast<coin_atexit_f *>(SoGlobalField::clean), CC_ATEXIT_NORMAL);
+  coin_atexit(SoGlobalField::clean, CC_ATEXIT_NORMAL);
 }
 
 // Free up resources.

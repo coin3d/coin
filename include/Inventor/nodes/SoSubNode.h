@@ -199,7 +199,7 @@ _class_::createInstance(void) \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
 \
     /* Make sure also external nodes are cleaned up */ \
-    cc_coin_atexit_static_internal(static_cast<coin_atexit_f*>(_class_::atexit_cleanup)); \
+    cc_coin_atexit_static_internal(_class_::atexit_cleanup); \
   } while (0)
 
 

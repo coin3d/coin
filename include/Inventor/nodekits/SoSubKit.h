@@ -124,7 +124,7 @@ PRIVATE_KIT_SOURCE(_class_)
     if (_class_::classcatalog == NULL) { \
       SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
       _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
-      cc_coin_atexit_static_internal(static_cast<coin_atexit_f*>(_class_::atexit_cleanupkit)); \
+      cc_coin_atexit_static_internal(_class_::atexit_cleanupkit); \
     } \
     SoBase::staticDataUnlock(); \
   } while (0)

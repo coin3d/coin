@@ -245,6 +245,13 @@
 
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
+#include "coindefs.h" // COIN_WORKAROUND_*
+
+#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
+using std::memcpy;
+using std::memset;
+using std::strlen;
+#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 // *************************************************************************
 
@@ -297,7 +304,7 @@ SoMField::initClass(void)
   PRIVATE_FIELD_INIT_CLASS(SoMField, "MField", inherited, NULL);
 
   CC_MUTEX_CONSTRUCT(somfield_mutex);
-  coin_atexit(static_cast<coin_atexit_f *>(somfield_mutex_cleanup), CC_ATEXIT_NORMAL);
+  coin_atexit(somfield_mutex_cleanup, CC_ATEXIT_NORMAL);
 }
 
 void
@@ -405,7 +412,7 @@ SoMField::get1(const int index, SbString & valuestring)
   if (mfield_buffer_size < STARTSIZE) {
     mfield_buffer = malloc(STARTSIZE);
     mfield_buffer_size = STARTSIZE;
-    coin_atexit(static_cast<coin_atexit_f *>(mfield_buffer_cleanup), CC_ATEXIT_NORMAL);
+    coin_atexit(mfield_buffer_cleanup, CC_ATEXIT_NORMAL);
   }
 
   out.setBuffer(mfield_buffer, mfield_buffer_size,
