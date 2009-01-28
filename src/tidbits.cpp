@@ -814,7 +814,7 @@ coin_hton_float(float value)
 {
   // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
   assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  union f32 {
+  union {
       float f32;
       uint32_t u32;
   } val;
@@ -849,7 +849,7 @@ coin_hton_double(double value)
 {
   // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
   assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  union d64 {
+  union {
       double d64;
       uint64_t u64;
   } val;
@@ -882,7 +882,7 @@ coin_ntoh_double(double value)
 void 
 coin_hton_float_bytes(float value, char * result)
 {
-  union f32 {
+  union {
     float f32;
     uint32_t u32;
   } val;
@@ -896,7 +896,7 @@ coin_hton_float_bytes(float value, char * result)
 float 
 coin_ntoh_float_bytes(const char * value)
 {
-  union f32 {
+  union {
     float f32;
     uint32_t u32;
   } val;
@@ -910,7 +910,7 @@ coin_ntoh_float_bytes(const char * value)
 void 
 coin_hton_double_bytes(double value, char * result)
 {
-  union d64 {
+  union {
     double d64;
     uint32_t u64;
   } val;
@@ -924,7 +924,7 @@ coin_hton_double_bytes(double value, char * result)
 double 
 coin_ntoh_double_bytes(const char * value)
 {
-  union d64 {
+  union {
     float d64;
     uint64_t u64;
   } val;
