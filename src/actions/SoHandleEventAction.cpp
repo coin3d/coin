@@ -280,9 +280,10 @@ SoHandleEventAction::getGrabber(void) const
 void
 SoHandleEventAction::setPickRoot(SoNode * node)
 {
-  if (PRIVATE(this)->pickroot != NULL) PRIVATE(this)->pickroot->unref();
+  SoNode * oldroot = PRIVATE(this)->pickroot;
   PRIVATE(this)->pickroot = node;
-  PRIVATE(this)->pickroot->ref();
+  if (PRIVATE(this)->pickroot) PRIVATE(this)->pickroot->ref();
+  if (oldroot) oldroot->unref();
   PRIVATE(this)->pickvalid = FALSE;
 }
 
@@ -351,7 +352,7 @@ SoHandleEventAction::beginTraversal(SoNode * node)
     this->traverse(node);
   }
   this->getState()->pop();
-  
+
   // clear the picked point list
   PRIVATE(this)->getPickAction()->reset();
   PRIVATE(this)->pickvalid = FALSE;
