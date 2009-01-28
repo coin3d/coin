@@ -149,6 +149,48 @@
   effect.
 */
 
+/*!
+  \enum SoRenderManager::BufferType
+
+  Buffering strategy
+*/
+
+/*!
+  \var SoRenderManager::BufferType SoRenderManager::BUFFER_SINGLE
+
+  Output to one buffer
+*/
+
+/*!
+  \var SoRenderManager::BufferType SoRenderManager::BUFFER_DOUBLE
+
+  Alternate between output buffers
+*/
+
+/*!
+  \enum SoRenderManager::AutoClippingStrategy
+
+  Strategy for adjusting camera clipping plane
+*/
+
+/*!
+  \var SoRenderManager::AutoClippingStrategy SoRenderManager::NO_AUTO_CLIPPING
+
+  Turn off automatic clipping
+*/
+
+/*!
+  \var SoRenderManager::AutoClippingStrategy SoRenderManager::FIXED_NEAR_PLANE
+
+  Keep near plane at a fixed distance from the camera
+*/
+
+/*!
+  \var SoRenderManager::AutoClippingStrategy SoRenderManager::VARIABLE_NEAR_PLANE
+
+  Variable adjustment of the nearplane relative to the camera.
+*/
+
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
