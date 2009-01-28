@@ -1442,6 +1442,58 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
   return ret ? TRUE : FALSE;
 }
 
+// *************************************************************************
+
+/*!
+  Control whether or not SoOffscreenRenderer can use the "pbuffer"
+  feature of OpenGL to render the scenes with hardware acceleration.
+
+  This is a dummy function in Coin, provided for API compatibility
+  reasons, as it is really superfluous:
+
+  Coin has internal heuristics to figure out if pbuffers are available
+  and can be allocated and used for the SoOffscreenRenderer.  The
+  SoOffscreenRenderer will also automatically fall back on "soft"
+  buffers if it can not use pbuffers (or any other hardware
+  accelerated rendering technique).
+
+  \since Coin 3.1
+*/
+void
+SoOffscreenRenderer::setPbufferEnable(SbBool enable)
+{
+  // FIXME: change the semantics of this function from just ignoring
+  // the input argument, to using it for shutting off pbuffers if
+  // FALSE?
+  //
+  // not sure there's really any good reason to do that, however.
+  //
+  // mortene.
+}
+
+/*!
+  See SoOffscreenRenderer::setPbufferEnable().
+
+  \since Coin 3.1
+*/
+SbBool
+SoOffscreenRenderer::getPbufferEnable(void) const
+{
+  // FIXME: should perhaps return a flag indicating whether or not the
+  // system can use pbuffers. this depends on the GL context, however,
+  // so the design of this Mercury Inventor API function is inherently
+  // flawed.
+  //
+  // hardly any GL driver these days does *not* provide pbuffers,
+  // though, so this is unlikely to be an important issue.
+  //
+  // mortene.
+
+  return TRUE;
+}
+
+// *************************************************************************
+
 // FIXME: this should really be done by SoCamera, on the basis of data
 // from an "SoTileRenderingElement". See BUGS.txt, item #121. 20050712 mortene.
 void

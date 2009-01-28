@@ -87,8 +87,11 @@ public:
                             SbString & description);
   SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const; 
 
+  void setPbufferEnable(SbBool enable);
+  SbBool getPbufferEnable(void) const;
+
   // Please stop using this function. It will be removed in 
-  // Coin 3.0. Use the SbPList version instead.
+  // Coin 4.0. Use the SbPList version instead.
   void getWriteFiletypeInfo(const int idx,
                             SbList <SbName> & extlist,
                             SbString & fullname,
