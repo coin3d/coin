@@ -411,175 +411,26 @@ SoVBO::context_created(const uint32_t contextid, void * closure)
   SoVBO::testGLPerformance(contextid);
 }
 
-/* **********************************************************************************************/
-
-typedef struct {
-  SoVBO * vbo;
-  SbVec3f * vertexarray;
-  int size;
-  SoVertexArrayIndexer * indexer;
-  uint32_t contextid;
-} vbo_performance_test_data;
-
-// how many times the geometry is rendered in the performance test callbacks
-#define PERF_NUM_LOOP 4
-
-// rendering loop used to test vertex array and VBO rendering speed
-static void
-vbo_performance_test(const cc_glglue * glue,
-                     const vbo_performance_test_data * data,
-                     const SbBool do_vbo)
-{
-  if (do_vbo) { data->vbo->bindBuffer(data->contextid); }
-
-  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            do_vbo ? NULL : data->vertexarray);
-
-  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-
-  for (int i = 0; i < PERF_NUM_LOOP; i++) {
-    data->indexer->render(glue, do_vbo, data->contextid);
-  }
-  cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
-
-  if (do_vbo) { cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); }
-}
-
-// callback to test VBO rendering speed
-static void
-vbo_performance_test_vbo(const cc_glglue * glue, void * closure)
-{
-  vbo_performance_test_data * data = (vbo_performance_test_data *) closure;
-  vbo_performance_test(glue, data, TRUE);
-}
-
-// callback to test vertex array rendering speed
-static void
-vbo_performance_test_va(const cc_glglue * glue, void * closure)
-{
-  vbo_performance_test_data * data = (vbo_performance_test_data *) closure;
-  vbo_performance_test(glue, data, FALSE);
-}
-
-// callback to test immediate mode rendering speed
-static void
-vbo_performance_test_immediate(const cc_glglue * glue, void * closure)
-{
-  vbo_performance_test_data * data = (vbo_performance_test_data *) closure;
-
-  int x, y;
-  int size = data->size;
-  SbVec3f * vertexarray = data->vertexarray;
-
-  for (int i = 0; i < PERF_NUM_LOOP; i++) {
-#define IDX(ix, iy) ((iy)*size+ix)
-    glBegin(GL_TRIANGLES);
-    for (y = 0; y < size-1; y++) {
-      for (x = 0; x < size-1; x++) {
-        glVertex3fv((const GLfloat*) &vertexarray[IDX(x,y)]);
-        glVertex3fv((const GLfloat*)&vertexarray[IDX(x+1,y)]);
-        glVertex3fv((const GLfloat*)&vertexarray[IDX(x+1,y+1)]);
-
-        glVertex3fv((const GLfloat*)&vertexarray[IDX(x,y)]);
-        glVertex3fv((const GLfloat*)&vertexarray[IDX(x+1,y+1)]);
-        glVertex3fv((const GLfloat*)&vertexarray[IDX(x,y+1)]);
-      }
-    }
-    glEnd();
-#undef IDX
-  }
-}
-
-#undef PERF_NUM_LOOP
-
 //
 // test OpenGL performance for a context.
 //
 void
 SoVBO::testGLPerformance(const uint32_t contextid)
 {
-  SbBool isfast = FALSE;
+  SbBool isfast;
   // did we alreay test this for this context?
   assert(vbo_isfast_hash != NULL);
   if (vbo_isfast_hash->get(contextid, isfast)) return;
-
-#if 1 // disabled for now. Our test seems to be buggy
-  vbo_isfast_hash->put(contextid, TRUE);
-  return;
-#else // disabled
+  
+  // Run time test disabled. Our old test seemed to be buggy, and
+  // VBO should be fast on all platforms supporting it now. It was
+  // really just one obscure laptop driver that caused problems for
+  // us. This should be handled in the driver database anyway
   const cc_glglue * glue = cc_glglue_instance(contextid);
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_BUFFER_OBJECT)) {
-    // create a regular grid with 128x128 points to test the
-    // performance. This size was chosen since it's fairly quick to
-    // render on most gfx cards (important to avoid that the
-    // application freezes up for too long while running this test).
-    const int size = 128;
-    const int half = size / 2;
-    SbVec3f * vertexarray = new SbVec3f[size*size];
-    SoVertexArrayIndexer * idx = new SoVertexArrayIndexer;
-
-    int x, y;
-
-    for (y = 0; y < size; y++) {
-      for (x = 0; x < size; x++) {
-        vertexarray[y*size+x].setValue(float(x-half)/float(size)*0.1f,
-                                       float(y-half)/float(size)*0.1f, 4.0f);
-      }
-    }
-#define IDX(ix, iy) ((iy)*size+ix)
-    for (y = 0; y < size-1; y++) {
-      for (x = 0; x < size-1; x++) {
-        idx->addTriangle(IDX(x,y), IDX(x+1,y), IDX(x+1, y+1));
-        idx->addTriangle(IDX(x,y), IDX(x+1,y+1), IDX(x, y+1));
-      }
-    }
-#undef IDX
-    idx->close();
-    SoVBO * vbo = new SoVBO();
-    vbo->setBufferData(vertexarray, size*size*sizeof(SbVec3f), 0);
-    vbo_performance_test_data data;
-    data.vbo = vbo;
-    data.vertexarray = vertexarray;
-    data.indexer = idx;
-    data.contextid = contextid;
-    data.size = size;
-    // bind buffer first to create VBO
-    vbo->bindBuffer(contextid);
-    // unset VBO buffer before rendering
-    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-
-    CC_PERF_RENDER_CB * rendercbs[] = {
-      vbo_performance_test_immediate,
-      vbo_performance_test_va,
-      vbo_performance_test_vbo
-    };
-
-    double averagerendertime[3];
-    cc_perf_gl_timer(glue,
-                     sizeof(rendercbs) / sizeof(rendercbs[0]),
-                     rendercbs,
-                     averagerendertime,
-                     NULL, NULL, 10, SbTime(0.2),
-                     &data);
-
-#if defined(COIN_DEBUG) && 0
-    SoDebugError::postInfo("SoVBO::testGLPerformance",
-                           "render times: %g %g %g",
-                           averagerendertime[0],
-                           averagerendertime[1],
-                           averagerendertime[2]);
-#endif
-
-    delete vbo;
-    delete idx;
-    delete[] vertexarray;
-
-    // VBO is considered to be fast if it's 1.5 times faster than vertex
-    // array and immediate mode rendering.
-    if ((1.5f * averagerendertime[2] < averagerendertime[0]) &&
-        (1.5f * averagerendertime[2] < averagerendertime[1])) isfast = TRUE;
-
+    vbo_isfast_hash->put(contextid, TRUE);
   }
-  vbo_isfast_hash->put(contextid, isfast);
-#endif // !disabled
+  else {
+    vbo_isfast_hash->put(contextid, FALSE);
+  }
 }
