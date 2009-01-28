@@ -63,7 +63,7 @@ To coin_internal_safe_cast2(From * ptr) {
   if((ptr != NULL) && ptr->getTypeId().isDerivedFrom(coin_depointer<To>::type::getClassTypeId()))
 #else
   //FIXME Can we avoid declaring an unused variable also for MSVC6? - BFG 20080807
-  To retVal;
+  To retVal = NULL;
   if((ptr != NULL) && ptr->getTypeId().isDerivedFrom(retVal->getClassTypeId()))
 #endif //OLDMSVC
   return static_cast<To>(ptr);
