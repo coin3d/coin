@@ -224,7 +224,7 @@ SoRenderManager::Superimposition::Superimposition(SoNode * scene,
 
   PRIVATE(this)->enabled = enabled;
   PRIVATE(this)->stateflags = flags;
-  
+
   PRIVATE(this)->transparencytype = INHERIT_TRANSPARENCY_TYPE;
 
   PRIVATE(this)->manager = manager;
@@ -270,7 +270,7 @@ SoRenderManager::Superimposition::render(SoGLRenderAction * action, SbBool clear
   zbufferwason ?
     glEnable(GL_DEPTH_TEST):
     glDisable(GL_DEPTH_TEST);
-  
+
   if (PRIVATE(this)->transparencytype != INHERIT_TRANSPARENCY_TYPE) {
     action->setTransparencyType(oldttype);
   }
@@ -292,10 +292,32 @@ SoRenderManager::Superimposition::changeCB(void * data, SoSensor * sensor)
   }
 }
 
-void 
+void
 SoRenderManager::Superimposition::setTransparencyType(SoGLRenderAction::TransparencyType type)
 {
   PRIVATE(this)->transparencytype = (int) type;
+}
+
+void
+SoRenderManagerP::invokePreRenderCallbacks(void)
+{
+  std::vector<RenderCBTouple>::const_iterator cbit =
+    this->preRenderCallbacks.begin();
+  while (cbit != this->preRenderCallbacks.end()) {
+    cbit->first(cbit->second, PUBLIC(this));
+    ++cbit;
+  }
+}
+
+void
+SoRenderManagerP::invokePostRenderCallbacks(void)
+{
+  std::vector<RenderCBTouple>::const_iterator cbit =
+    this->postRenderCallbacks.begin();
+  while (cbit != this->postRenderCallbacks.end()) {
+    cbit->first(cbit->second, PUBLIC(this));
+    ++cbit;
+  }
 }
 
 #undef INHERIT_TRANSPARENCY_TYPE

@@ -466,17 +466,17 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
       SoAudioDevice::instance()->haveSound() &&
       SoAudioDevice::instance()->isEnabled())
     PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
-  
+
   SoGLRenderAction * action = PRIVATE(this)->glaction;
   const int numpasses = action->getNumPasses();
-  
+
   // extra care has to be taken if the user attempts to do multipass
   // antialiasing while using superimpositions
   if (numpasses > 1 &&
       PRIVATE(this)->superimpositions &&
       PRIVATE(this)->superimpositions->getLength()) {
     action->setNumPasses(1);
-    
+
     // FIXME: the pass update callback from SoGLRenderAction is not
     // supported, but this is not a feature anybody is using anymore,
     // I suspect. We'll document this in the addSuperimposition()
@@ -485,14 +485,14 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
     // render the first pass normally
     action->setCurPass(0, numpasses);
     this->render(action, TRUE, clearwindow, clearzbuffer);
-    
+
     // check if we have an accumulation buffer, and render additional passes
     GLint accumbits;
     glGetIntegerv(GL_ACCUM_RED_BITS, &accumbits);
     if (!action->hasTerminated() && accumbits > 0) {
       const float fraction = 1.0f / float(numpasses);
       glAccum(GL_LOAD, fraction);
-      
+
       for (int i = 1; (i < numpasses) && !action->hasTerminated(); i++) {
         action->setCurPass(i, numpasses);
         this->render(action, TRUE, TRUE, TRUE);
@@ -1519,17 +1519,6 @@ SoRenderManager::removePreRenderCallback(SoRenderManagerRenderCB * cb, void * da
 }
 
 void
-SoRenderManagerP::invokePreRenderCallbacks(void)
-{
-  std::vector<RenderCBTouple>::const_iterator cbit =
-    this->preRenderCallbacks.begin();
-  while (cbit != this->preRenderCallbacks.end()) {
-    cbit->first(cbit->second, PUBLIC(this));
-    ++cbit;
-  }
-}
-
-void
 SoRenderManager::addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
   PRIVATE(this)->postRenderCallbacks.push_back(SoRenderManagerP::RenderCBTouple(cb, data));
@@ -1544,17 +1533,6 @@ SoRenderManager::removePostRenderCallback(SoRenderManagerRenderCB * cb, void * d
          SoRenderManagerP::RenderCBTouple(cb, data));
   if (findit != PRIVATE(this)->postRenderCallbacks.end()) {
     PRIVATE(this)->postRenderCallbacks.erase(findit);
-  }
-}
-
-void
-SoRenderManagerP::invokePostRenderCallbacks(void)
-{
-  std::vector<RenderCBTouple>::const_iterator cbit =
-    this->postRenderCallbacks.begin();
-  while (cbit != this->postRenderCallbacks.end()) {
-    cbit->first(cbit->second, PUBLIC(this));
-    ++cbit;
   }
 }
 
