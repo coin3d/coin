@@ -444,10 +444,10 @@ SoSFImage::finishEditing(void)
  */
 void
 SoSFImage::setSubValue(
-		       const SbVec2s & COIN_UNUSED(dims),
-		       const SbVec2s & COIN_UNUSED(offset),
-		       unsigned char * COIN_UNUSED(pixels)
-		       )
+                     const SbVec2s & COIN_UNUSED(dims),
+                     const SbVec2s & COIN_UNUSED(offset),
+                     unsigned char * COIN_UNUSED(pixels)
+                     )
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::setSubValue",
@@ -463,11 +463,11 @@ SoSFImage::setSubValue(
  */
 void
 SoSFImage::setSubValues(
-			const SbVec2s * COIN_UNUSED(dims),
-			const SbVec2s * COIN_UNUSED(offsets),
-			int COIN_UNUSED(num),
-			unsigned char ** COIN_UNUSED(pixelblocks)
-			)
+                     const SbVec2s * COIN_UNUSED(dims),
+                     const SbVec2s * COIN_UNUSED(offsets),
+                     int COIN_UNUSED(num),
+                     unsigned char ** COIN_UNUSED(pixelblocks)
+                     )
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::setSubValues",
@@ -483,10 +483,10 @@ SoSFImage::setSubValues(
  */
 unsigned char *
 SoSFImage::getSubTexture(
-			 int COIN_UNUSED(idx),
-			 SbVec2s & COIN_UNUSED(dims),
-			 SbVec2s & COIN_UNUSED(offset)
-			 ) const
+                      int COIN_UNUSED(idx),
+                      SbVec2s & COIN_UNUSED(dims),
+                      SbVec2s & COIN_UNUSED(offset)
+                      ) const
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::getSubTexture",

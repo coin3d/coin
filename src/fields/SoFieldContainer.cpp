@@ -668,7 +668,7 @@ SoFieldContainer::notify(SoNotList * l)
  */
 SbBool
 SoFieldContainer::validateNewFieldValue(SoField * COIN_UNUSED(field),
-					void * COIN_UNUSED(newval))
+                                   void * COIN_UNUSED(newval))
 {
   COIN_STUB();
   return TRUE;

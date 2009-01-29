@@ -1762,7 +1762,7 @@ SoField::copyConnection(const SoField * fromfield)
       SoNodeEngine * masterengine = master->getNodeContainer();
       (void) masterengine->getOutputName(master, name);
       SoNodeEngine * copyengine =
-	coin_assert_cast<SoNodeEngine *>(masterengine->copyThroughConnection());
+       coin_assert_cast<SoNodeEngine *>(masterengine->copyThroughConnection());
       copyeo = copyengine->getOutput(name);
     }
     else {
@@ -1770,7 +1770,7 @@ SoField::copyConnection(const SoField * fromfield)
       SoEngine * masterengine = master->getContainer();
       (void) masterengine->getOutputName(master, name);
       SoEngine * copyengine =
-	coin_assert_cast<SoEngine *>(masterengine->copyThroughConnection());
+       coin_assert_cast<SoEngine *>(masterengine->copyThroughConnection());
       copyeo = copyengine->getOutput(name);
     }
     assert(copyeo);
