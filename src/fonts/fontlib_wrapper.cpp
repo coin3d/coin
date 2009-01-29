@@ -381,10 +381,8 @@ flw_exit(void)
   fontarray = NULL;
   initialized = FALSE;
 
-  tried_init_win32_fontlib = FALSE;
-  tried_init_freetype_fontlib = FALSE;
-  fontlib_freetype_available = FALSE;
-  fontlib_win32_available = FALSE;
+  tried_init_freetype_fontlib = tried_init_win32_fontlib = FALSE;
+  fontlib_freetype_available = fontlib_win32_available = FALSE;
 
   CC_MUTEX_DESTRUCT(flw_global_lock);
   flw_global_font_index = 0;
