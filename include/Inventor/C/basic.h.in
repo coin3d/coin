@@ -34,11 +34,27 @@
 /* Documented for Doxygen in SoDB.cpp. */
 typedef int SbBool;
 
+#ifdef DOXYGEN_SKIP_THIS
+#ifndef USE_STATIC_CONSTS
+//Using static consts might have some problems with merging on older compilers, so lie for doxygen for now, this is tested and found working on GCC 4.(1-3)
+#define USE_STATIC_CONSTS
+#define //USE_STATIC_CONSTS
+#endif //DOXYGEN_SKIP_THIS
+
 #ifndef FALSE
+#ifdef USE_STATIC_CONSTS
+static const SbBool FALSE = 0;
+#else
 #define FALSE 0
+#endif //USE_STATIC_CONSTS
 #endif /* !FALSE */
+
 #ifndef TRUE
-#define TRUE  1
+#ifdef USE_STATIC_CONSTS
+static const SbBool TRUE = 1;
+#else
+#define TRUE 1
+#endif //USE_STATIC_CONSTS
 #endif /* !TRUE */
 
 /* *********************************************************************** */
