@@ -142,7 +142,7 @@ fcglue_cleanup(void)
     cc_dl_close(fontconfig_libhandle);
     fontconfig_libhandle = NULL;
   }
-#endif /* FREETYPE_RUNTIME_LINKING */
+#endif /* FONTCONFIG_RUNTIME_LINKING */
   assert(fontconfig_instance);
   free(fontconfig_instance);
   fontconfig_instance = NULL;

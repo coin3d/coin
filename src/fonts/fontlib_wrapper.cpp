@@ -58,8 +58,10 @@
 static void * flw_global_lock = NULL;
 static int flw_global_font_index = 0;
 static SbBool initialized = FALSE;
-static SbBool tried_init_fontlib = FALSE;
-static SbBool fontlib_available = FALSE;
+static SbBool tried_init_freetype_fontlib = FALSE;
+static SbBool tried_init_win32_fontlib = FALSE;
+static SbBool fontlib_freetype_available = FALSE;
+static SbBool fontlib_win32_available = FALSE;
 
 
 /* Debug: enable this in case code hangs waiting for a lock.  A hang
@@ -162,21 +164,21 @@ static void freetype_cleanup(void) { cc_flwft_exit(); }
 static SbBool
 using_freetype(void)
 {
-  if (!tried_init_fontlib) {
+  if (!tried_init_freetype_fontlib) {
     const char * env;
 
-    tried_init_fontlib = TRUE;
+    tried_init_freetype_fontlib = TRUE;
 
     env = coin_getenv("COIN_FORCE_FREETYPE_OFF");
-    fontlib_available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
-    fontlib_available = fontlib_available && cc_flwft_initialize();
+    fontlib_freetype_available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
+    fontlib_freetype_available = fontlib_freetype_available && cc_flwft_initialize();
     if (cc_font_debug()) {
       cc_debugerror_postinfo("using_freetype",
                              "FreeType library will%s be used",
-                             fontlib_available ? "" : " not");
+                             fontlib_freetype_available ? "" : " not");
     }
 
-    if (fontlib_available) {
+    if (fontlib_freetype_available) {
       coin_atexit((coin_atexit_f *)freetype_cleanup,
                   /* priority must be lower than for abstraction
                      interface, so don't change this willy-nilly: */
@@ -184,7 +186,7 @@ using_freetype(void)
     }
   }
 
-  return fontlib_available;
+  return fontlib_freetype_available;
 }
 
 static void win32api_cleanup(void) { cc_flww32_exit(); }
@@ -192,18 +194,18 @@ static void win32api_cleanup(void) { cc_flww32_exit(); }
 static SbBool
 using_win32api(void)
 {
-  if (!tried_init_fontlib) {
+  if (!tried_init_win32_fontlib) {
     const char * env;
 
-    tried_init_fontlib = TRUE;
+    tried_init_win32_fontlib = TRUE;
 
     env = coin_getenv("COIN_FORCE_WIN32FONTS_OFF");
-    fontlib_available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
-    fontlib_available = fontlib_available && cc_flww32_initialize();
+    fontlib_win32_available = (env && (atoi(env) > 0)) ? FALSE : TRUE;
+    fontlib_win32_available = fontlib_win32_available && cc_flww32_initialize();
     if (cc_font_debug()) {
       cc_debugerror_postinfo("cc_flw_initialize",
                              "Win32 API can%s be used for font support",
-                             fontlib_available ? "" : " not");
+                             fontlib_win32_available ? "" : " not");
     }
 
     /* Allow only one of the availability flags to be set, as it's too
@@ -215,17 +217,17 @@ using_win32api(void)
        installed for a good reason on the Windows machine in question.
     */
 
-    if (fontlib_available && using_freetype()) {
+    if (fontlib_win32_available && using_freetype()) {
       if (cc_font_debug()) {
         cc_debugerror_postinfo("using_win32api",
                                "FreeType library will take precedence "
                                "over Win32 API");
       }
       cc_flww32_exit();
-      fontlib_available = FALSE;
+      fontlib_win32_available = FALSE;
     }
 
-    if (fontlib_available) {
+    if (fontlib_win32_available) {
       coin_atexit((coin_atexit_f *)win32api_cleanup,
                   /* priority must be lower than for abstraction
                      interface, so don't change this willy-nilly: */
@@ -233,7 +235,7 @@ using_win32api(void)
     }
   }
 
-  return fontlib_available;
+  return fontlib_win32_available;
 }
 
 /* ********************************************************************** */
@@ -379,8 +381,10 @@ flw_exit(void)
   fontarray = NULL;
   initialized = FALSE;
 
-  tried_init_fontlib = FALSE;
-  fontlib_available = FALSE;
+  tried_init_win32_fontlib = FALSE;
+  tried_init_freetype_fontlib = FALSE;
+  fontlib_freetype_available = FALSE;
+  fontlib_win32_available = FALSE;
 
   CC_MUTEX_DESTRUCT(flw_global_lock);
   flw_global_font_index = 0;
