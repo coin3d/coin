@@ -9109,8 +9109,9 @@ fi
 #
 # Description:
 #   Let the user decide if C++ exception handling should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if they have exception handling support.
+#   in. With older compilers the libraries/executables will use a lot
+#   less space if they have exception handling support disabled, on
+#   modern compilers the difference is negligible.
 #
 #   Note: this macro must be placed after AC_PROG_CXX in the
 #   configure.in script.
@@ -9126,13 +9127,13 @@ AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [exceptions],
   AC_HELP_STRING([--enable-exceptions],
-                 [(g++ only) compile with exceptions [[default=no]]]),
+                 [(g++ only) compile with exceptions [[default=yes]]]),
   [case "${enableval}" in
     yes) enable_exceptions=yes ;;
     no)  enable_exceptions=no ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-exceptions) ;;
   esac],
-  [enable_exceptions=no])
+  [enable_exceptions=yes])
 
 if test x"$enable_exceptions" = x"no"; then
   if test "x$GXX" = "xyes"; then

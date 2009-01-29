@@ -1072,7 +1072,7 @@ Optional Features:
   --enable-debug          compile in debug mode [default=yes]
   --enable-symbols        include symbol debug information [default=yes]
   --enable-rtti           (g++ only) compile with RTTI [default=yes]
-  --enable-exceptions     (g++ only) compile with exceptions [default=no]
+  --enable-exceptions     (g++ only) compile with exceptions [default=yes]
   --enable-profile        (GCC only) turn on inclusion of profiling code
                           [default=no]
   --enable-warnings       turn on warnings when compiling [default=yes]
@@ -4565,7 +4565,7 @@ echo "${ECHO_T}$sim_ac_msc_major_version.$sim_ac_msc_minor_version" >&6
 
 
   case "$sim_ac_msc_major_version" in
-  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS" ;;
+  8 | 9) CPPFLAGS="$CPPFLAGS -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS" ;;
   *)
   esac
 fi
@@ -25380,7 +25380,7 @@ echo "$as_me: error: bad value \"${enableval}\" for --enable-exceptions" >&2;}
    { (exit 1); exit 1; }; } ;;
   esac
 else
-  enable_exceptions=no
+  enable_exceptions=yes
 fi;
 
 if test x"$enable_exceptions" = x"no"; then
