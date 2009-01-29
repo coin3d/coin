@@ -105,6 +105,45 @@ HPUX_aCC_initClassMangling(const char * classname)
   return mangling;
 }
 
+#include <iostream>
+#include <ostream>
+
+/*
+  This function returns a string that corresponds to how Sun Ceres C++
+  5.10 mangles "static void <classname>::initClass(void)".
+*/
+static
+SbString
+sunCC_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  size_t len = strlen(classname);
+  SbString mangling;
+  SbString mangled_len;
+
+  while (len > 25) {
+    int digit = len % 26;
+    len /= 26;
+    mangled_len += static_cast<char> ('a' + digit);
+  }
+  mangled_len += static_cast<char> ('a' + len);
+
+  char * mangled_str = strdup(mangled_len.getString());
+  mangled_str[0] = toupper(mangled_str[0]);
+
+  /* reverse */
+  for(int i=0, j=strlen(mangled_str)-1; i<j; i++, j--) {
+    char temp = mangled_str[i];
+    mangled_str[i] = mangled_str[j];
+    mangled_str[j] = temp;
+  }
+
+  mangling.sprintf("__1c%s%sJinitClass6F_v_", mangled_str, classname);
+  free(mangled_str);
+
+  return mangling;
+}
+
 /* ********************************************************************** */
 
 static mangleFunc * manglefunctions[] = {
@@ -113,6 +152,7 @@ static mangleFunc * manglefunctions[] = {
   gcc3_initClassMangling,
   msvc6_initClassMangling,
   MIPSpro_CC_initClassMangling,
+  sunCC_initClassMangling,
   (mangleFunc *) NULL
 };
 
