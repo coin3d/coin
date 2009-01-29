@@ -45,6 +45,7 @@
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoDB.h>
 
+#include "coindefs.h"
 #include "tidbitsp.h"
 #include "misc/AudioTools.h"
 #include "misc/SoRenderManagerP.h"
@@ -331,10 +332,17 @@ SoRenderManager::getCamera(void) const
   return PRIVATE(this)->camera;
 }
 
-// Internal callback.
+/*!
+  Internal callback
+
+  \param[in] data Pointer to SoRenderManager
+
+  \deprecated Will be made private in a later version of Coin
+*/
 void
 SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
+  COMPILE_ONLY_BEFORE(4,0,0,"Should be a purely internal callback");
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoRenderManager::nodesensorCB",
                          "detected change in scene graph");
@@ -342,9 +350,17 @@ SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
   ((SoRenderManager *)data)->scheduleRedraw();
 }
 
+/*!
+  Attaches this SoRenderManagers rootsensor to a scene
+
+  \param[in] sceneroot scene to attach to
+
+  \deprecated Will not be available in Coin 4
+*/
 void
 SoRenderManager::attachRootSensor(SoNode * const sceneroot)
 {
+  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   if (!PRIVATE(this)->rootsensor) {
     (SoRenderManagerRootSensor::debug()) ?
       PRIVATE(this)->rootsensor = new SoRenderManagerRootSensor(SoRenderManager::nodesensorCB, this):
@@ -353,26 +369,46 @@ SoRenderManager::attachRootSensor(SoNode * const sceneroot)
   PRIVATE(this)->rootsensor->attach(sceneroot);
 }
 
+/*!
+  Detaches the rootsensor from all tracked scenes
+
+  \deprecated Will not be available in Coin 4
+*/
 void
 SoRenderManager::detachRootSensor(void)
 {
+  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   if (PRIVATE(this)->rootsensor) {
     PRIVATE(this)->rootsensor->detach();
   }
 }
 
+/*!
+  Attaches this SoRenderManagers clipsensor to a scene
+
+  \param[in] sceneroot scene to attach to
+
+  \deprecated Will not be available in Coin 4
+*/
 void
 SoRenderManager::attachClipSensor(SoNode * const sceneroot)
 {
+  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   PRIVATE(this)->clipsensor->attach(sceneroot);
   if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
     PRIVATE(this)->clipsensor->schedule();
   }
 }
 
+/*!
+  Detaches the clipsensor from all tracked scenes
+
+  \deprecated Will not be available in Coin 4
+*/
 void
 SoRenderManager::detachClipSensor(void)
 {
+  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   if (PRIVATE(this)->clipsensor->isScheduled()) {
     PRIVATE(this)->clipsensor->unschedule();
   }
@@ -381,6 +417,12 @@ SoRenderManager::detachClipSensor(void)
   }
 }
 
+/*!
+  Clears buffers with the backgroundcolor set correctly
+
+  \param[in] color Set to \c TRUE if color buffer should be cleared
+  \param[in] depth Set to \c TRUE if depth buffer should be cleared
+*/
 void
 SoRenderManager::clearBuffers(SbBool color, SbBool depth)
 {
@@ -392,12 +434,21 @@ SoRenderManager::clearBuffers(SbBool color, SbBool depth)
   glClear(mask);
 }
 
+/*!
+  Internal callback
+
+  \param[in] userdata GLbitfield mask
+  \param[in] action Calling action
+
+  \deprecated Will be made private in a later version of Coin
+*/
 void
 SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
 {
+  COMPILE_ONLY_BEFORE(4,0,0,"Should be a purely internal callback");
   // remove callback again
   action->removePreRenderCallback(prerendercb, userdata);
-  // MSVC7 on 64-bit Window wants it to go through this cast.
+  // MSVC7 on 64-bit Windows wants it to go through this cast.
   const uintptr_t bitfield = (uintptr_t)userdata;
   GLbitfield mask = (GLbitfield)bitfield;
 
@@ -471,13 +522,17 @@ SoRenderManager::removeSuperimposition(Superimposition * s)
 /*!
   Render the scene graph.
 
-  If \a clearwindow is \c TRUE, clear the rendering buffer before
-  drawing. If \a clearzbuffer is \c TRUE, clear the depth buffer
-  values before rendering. Both of these arguments should normally be
-  \c TRUE, but they can be set to \c FALSE to optimize for special
-  cases (e.g. when doing wireframe rendering one doesn't need a depth
-  buffer).
- */
+  All SbBool arguments should normally be \c TRUE, but they can be set
+  to \c FALSE to optimize for special cases (e.g. when doing wireframe
+  rendering one doesn't need a depth buffer).
+
+  \param[in] clearwindow If set to \c TRUE, clear the rendering buffer
+  before drawing.
+
+  \param[in] clearzbuffer If set to \c TRUE, clear the depth buffer
+  values before rendering.
+
+*/
 void
 SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
@@ -551,29 +606,35 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   }
 }
 
+/*!
+  \copydetails SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 
+  \param[in] initmatrices if true, the projection and modelview
+  matrices are reset to identity
+  \param[in] action Renders with a user supplied action
+*/
 void
 SoRenderManager::render(SoGLRenderAction * action,
                         const SbBool initmatrices,
-                        const SbBool clearwindow_in,
+                        const SbBool clearwindow,
                         const SbBool clearzbuffer)
 {
-  SbBool clearwindow = clearwindow_in; // make sure we only clear the color buffer once
+  SbBool clearwindow_tmp = clearwindow; // make sure we only clear the color buffer once
   PRIVATE(this)->invokePreRenderCallbacks();
 
   if (PRIVATE(this)->superimpositions) {
     for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
       Superimposition * s = (Superimposition *) (*PRIVATE(this)->superimpositions)[i];
       if (s->getStateFlags() & Superimposition::BACKGROUND) {
-        s->render(action, clearwindow);
-        clearwindow = FALSE;
+        s->render(action, clearwindow_tmp);
+        clearwindow_tmp = FALSE;
       }
     }
   }
 
   (this->getStereoMode() == SoRenderManager::MONO) ?
-    this->renderSingle(action, initmatrices, clearwindow, clearzbuffer):
-    this->renderStereo(action, initmatrices, clearwindow, clearzbuffer);
+    this->renderSingle(action, initmatrices, clearwindow_tmp, clearzbuffer):
+    this->renderStereo(action, initmatrices, clearwindow_tmp, clearzbuffer);
 
   if (PRIVATE(this)->superimpositions) {
     for (int i = 0; i < PRIVATE(this)->superimpositions->getLength(); i++) {
@@ -587,6 +648,20 @@ SoRenderManager::render(SoGLRenderAction * action,
   PRIVATE(this)->invokePostRenderCallbacks();
 }
 
+/*!
+  Convenience function for \ref SoRenderManager::renderScene
+
+  \param[in] action Renders with a user supplied action
+
+  \param[in] initmatrices if true, the projection and modelview
+  matrices are reset to identity
+
+  \param[in] clearwindow If set to \c TRUE, clear the rendering buffer
+  before drawing.
+
+  \param[in] clearzbuffer If set to \c TRUE, clear the depth buffer
+  values before rendering.
+*/
 void
 SoRenderManager::actuallyRender(SoGLRenderAction * action,
                                 const SbBool initmatrices,
@@ -641,8 +716,19 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   }
 }
 
+/*!
+  Renders a scene and applies clear state as given by this renderManager
+
+  \param[in] action Action to apply
+  \param[in] scene Scene to render
+  \param[in] clearmask mask to pass to glClear
+*/
 void
-SoRenderManager::renderScene(SoGLRenderAction * action, SoNode* scene, uint32_t clearmask)
+SoRenderManager::renderScene(
+                          SoGLRenderAction * action,
+                          SoNode * scene,
+                          uint32_t clearmask
+                          )
 {
   if (clearmask) {
     if (clearmask & GL_COLOR_BUFFER_BIT) {
@@ -663,7 +749,11 @@ SoRenderManager::renderScene(SoGLRenderAction * action, SoNode* scene, uint32_t 
   action->apply(scene);
 }
 
-// render once in correct draw style
+/*!
+  \brief Render once in correct draw style
+
+  \copydoc SoRenderManager::actuallyRender
+*/
 void
 SoRenderManager::renderSingle(SoGLRenderAction * action,
                               SbBool initmatrices,
@@ -759,7 +849,11 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
   state->pop();
 }
 
-// render scene according to current stereo mode
+/*!
+  \brief Render scene according to current stereo mode
+
+  \copydoc SoRenderManager::actuallyRender
+*/
 void
 SoRenderManager::renderStereo(SoGLRenderAction * action,
                               SbBool initmatrices,
@@ -843,6 +937,11 @@ SoRenderManager::renderStereo(SoGLRenderAction * action,
   }
 }
 
+/*!
+  Sets strategy for adjusting camera clipping plane
+
+  \see SoRenderManager::AutoClippingStrategy
+*/
 void
 SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
 {
@@ -864,6 +963,9 @@ SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
   }
 }
 
+/*!
+  Initializes stencilbuffers for interleaved stereo
+*/
 void
 SoRenderManager::initStencilBufferForInterleavedStereo(void)
 {
@@ -1542,12 +1644,28 @@ SoRenderManager::isRealTimeUpdateEnabled(void)
 }
 
 
+/*!
+  Adds a function to be called before rendering starts
+
+  \param[in] cb function to be called
+  \param[in] data User specified data to supply to callback function
+*/
 void
 SoRenderManager::addPreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
   PRIVATE(this)->preRenderCallbacks.push_back(SoRenderManagerP::RenderCBTouple(cb, data));
 }
 
+
+/*!
+  Removes a prerendercallback.
+
+  \pre The tuple (cb, data) must exactly match an earlier call to
+  SoRenderManager::addPreRenderCallback
+
+  \param[in] cb function to be called
+  \param[in] data User specified data to supply to callback function
+*/
 void
 SoRenderManager::removePreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
@@ -1555,17 +1673,35 @@ SoRenderManager::removePreRenderCallback(SoRenderManagerRenderCB * cb, void * da
     std::find(PRIVATE(this)->preRenderCallbacks.begin(),
          PRIVATE(this)->preRenderCallbacks.end(),
          SoRenderManagerP::RenderCBTouple(cb, data));
-  if (findit != PRIVATE(this)->preRenderCallbacks.end()) {
-    PRIVATE(this)->preRenderCallbacks.erase(findit);
-  }
+  assert(
+        (findit != PRIVATE(this)->preRenderCallbacks.end())
+        &&
+        "Tried to remove a cb,data tuple which doesn't exist"
+        );
+  PRIVATE(this)->preRenderCallbacks.erase(findit);
 }
 
+/*!
+  Adds a function to be called after rendering is complete
+
+  \param[in] cb function to be called
+  \param[in] data User specified data to supply to callback function
+*/
 void
 SoRenderManager::addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
   PRIVATE(this)->postRenderCallbacks.push_back(SoRenderManagerP::RenderCBTouple(cb, data));
 }
 
+/*!
+  Removes a postrendercallback.
+
+  \pre The tuple (cb, data) must exactly match an earlier call to
+  SoRenderManager::addPostRenderCallback
+
+  \param[in] cb function to be called
+  \param[in] data User specified data to supply to callback function
+*/
 void
 SoRenderManager::removePostRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 {
@@ -1573,9 +1709,12 @@ SoRenderManager::removePostRenderCallback(SoRenderManagerRenderCB * cb, void * d
     std::find(PRIVATE(this)->postRenderCallbacks.begin(),
          PRIVATE(this)->postRenderCallbacks.end(),
          SoRenderManagerP::RenderCBTouple(cb, data));
-  if (findit != PRIVATE(this)->postRenderCallbacks.end()) {
-    PRIVATE(this)->postRenderCallbacks.erase(findit);
-  }
+  assert(
+        (findit != PRIVATE(this)->postRenderCallbacks.end())
+        &&
+        "Tried to remove a cb,data tuple which doesn't exist"
+        );
+  PRIVATE(this)->postRenderCallbacks.erase(findit);
 }
 
 #undef PRIVATE

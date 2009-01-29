@@ -151,7 +151,7 @@ public:
   void setRedrawPriority(const uint32_t priority);
   uint32_t getRedrawPriority(void) const;
 
-  static void nodesensorCB(void * data, SoSensor * sensor);
+  static void nodesensorCB(void * data, SoSensor *);
   static void prerendercb(void * userdata, SoGLRenderAction * action);
 
   void reinitialize(void);
