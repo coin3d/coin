@@ -161,11 +161,15 @@
 // way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
 // are not rewritten to static_cast<> or something similar in the future.
 
+namespace { namespace dl_internal {
+
 template <typename Type>
 Type cstyle_cast(FARPROC procaddr)
 {
   return (Type) procaddr;
 }
+
+} }
 
 #endif // HAVE_WINDLL_RUNTIME_BINDING
 
@@ -867,7 +871,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 
   if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
  
-  ptr = cstyle_cast<void *>(GetProcAddress((HINSTANCE) handle->nativehnd, symbolname));
+  ptr = dl_internal::cstyle_cast<void *>(GetProcAddress((HINSTANCE) handle->nativehnd, symbolname));
 
   if (cc_dl_debugging() && (ptr == NULL)) {
     cc_string funcstr;

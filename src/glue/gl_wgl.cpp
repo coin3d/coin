@@ -73,11 +73,15 @@ SbBool wglglue_context_pbuffer_max(void * ctx, unsigned int * lims) { assert(FAL
 // way (http://www.trilithium.com/johan/2004/12/problem-with-dlsym/) so they
 // are not rewritten to static_cast<> or something similar in the future.
 
+namespace { namespace gl_wgl_internal {
+
 template <typename Type>
 Type cstyle_cast(PROC procaddr)
 {
   return (Type) procaddr;
 }
+
+} }
 
 struct wglglue_contextdata;
 static SbBool (* wglglue_context_create)(struct wglglue_contextdata * context, SbBool warnonerrors) = NULL;
@@ -188,7 +192,7 @@ static SbBool attemptedextresolved = FALSE;
 void *
 coin_wgl_getprocaddress(const cc_glglue * glue, const char * fname)
 {
-  void * ptr = cstyle_cast<void *>(wglGetProcAddress(fname));
+  void * ptr = gl_wgl_internal::cstyle_cast<void *>(wglGetProcAddress(fname));
 
   /* wglGetProcAddress() seems to only be able to fetch
      function-addresses for *extension* functions, not "proper" OpenGL
