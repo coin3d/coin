@@ -34,8 +34,8 @@
  *
  */
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -43,6 +43,7 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -71,18 +72,25 @@ main(int argc, char ** argv)
     return -1;
   }
 
-  SoNode * scene = NULL;
-  if (!SoDB::read(in, scene)) {
+  SoNode * scene = SoDB::readAll(in);
+
+  if (!scene) {
     fprintf(stderr, "error: could not read file '%s'\n", argv[1]);
     delete in;
     SoDB::cleanup();
     return -1;
   }
+  SoInput::FileType inputFileType = in->getFileType();
+
   delete in;
   scene->ref();
 
-  if (scene->isOfType(SoForeignFileKit::getClassTypeId())) {
-    SoForeignFileKit * kit = (SoForeignFileKit *) scene;
+  SoNode * firstChild = static_cast<SoSeparator*>(scene)->getNumChildren()?
+    static_cast<SoSeparator*>(scene)->getChild(0)
+    :NULL;
+
+  if (firstChild && firstChild->isOfType(SoForeignFileKit::getClassTypeId())) {
+    SoForeignFileKit * kit = (SoForeignFileKit *) firstChild;
     if (kit->canWriteScene() ) {
       SoNode * subscene = NULL;
       kit->writeScene(subscene);
@@ -103,7 +111,14 @@ main(int argc, char ** argv)
     SoDB::cleanup();
     return -1;
   }
-  
+  switch (inputFileType) {
+  case SoInput::VRML1:
+    out->setHeaderString("#VRML V1.0 ascii");
+    break;
+  case SoInput::VRML2:
+    out->setHeaderString("#VRML V2.0 utf8");
+  }
+
   SoWriteAction wa(out);
   wa.apply(scene);
 
