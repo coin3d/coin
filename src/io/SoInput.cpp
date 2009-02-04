@@ -79,6 +79,27 @@
   \sa SoOutput, SoDB
 */
 
+/*!
+  \enum SoInput::FileType
+*/
+
+/*!
+  \var SoInput::FileType SoInput::INVENTOR
+
+  File is in the original INVENTOR format, or a recognized extension format
+*/
+
+/*!
+  \var SoInput::FileType SoInput::VRML1
+
+  File is in VRML1 format
+*/
+/*!
+  \var SoInput::FileType SoInput::VRML2
+
+  File is in VRML2 format
+*/
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -2655,7 +2676,21 @@ SoInput::isFileVRML2(void)
 }
 
 /*!
-  This function has been obsoleted in Coin.
+  \COIN_FUNCTION_EXTENSION
+
+  \retval returns the FileType of this file
+*/
+SoInput::FileType
+SoInput::getFileType() {
+  if (this->isFileVRML1())
+    return VRML1;
+  if (this->isFileVRML2())
+    return VRML2;
+  return INVENTOR;
+}
+
+/*!
+  \deprecated This function has been obsoleted in Coin.
 */
 void
 SoInput::resetFilePointer(FILE * /* fptr */)
