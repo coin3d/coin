@@ -40,8 +40,8 @@ struct SbNodeProfilingData {
   SbProfilingNodeKey node;
   SbProfilingNodeNameKey nodename;
   SbProfilingNodeTypeKey nodetype;
-  int16_t parentidx;
-  int16_t childidx;
+  int parentidx;
+  int childidx;
 
   SbTime traversaltime;
   size_t memorysize;
