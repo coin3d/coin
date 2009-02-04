@@ -35,6 +35,8 @@
   \sa SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbBox3d, SbXfBox3f.
 */
 
+// *************************************************************************
+
 #include <Inventor/SbBox2s.h>
 
 #include <limits>
@@ -43,9 +45,9 @@
 #include <Inventor/SbBox2i32.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbBox2d.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 /*!
   \fn SbBox2s::SbBox2s(void)
@@ -210,11 +212,7 @@ SbBox2s::extendBy(const SbVec2s & point)
 void
 SbBox2s::extendBy(const SbBox2s & box)
 {
-#if COIN_DEBUG
-  if (box.minpt[0] > box.maxpt[0] || box.minpt[1] > box.maxpt[1])
-    SoDebugError::postWarning("SbBox2s::extendBy",
-                              "Extending box has negative area.");
-#endif // COIN_DEBUG
+  if (box.isEmpty()) { return; }
 
   this->extendBy(box.getMin());
   this->extendBy(box.getMax());

@@ -21,6 +21,13 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SbBox3i32 Inventor/SbBox3i32.h
+*/
+// FIXME: class doc missing.  -mortene.
+
+// *************************************************************************
+
 #include <Inventor/SbBox3i32.h>
 
 #include <limits>
@@ -29,13 +36,9 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbBox3d.h>
 #include <Inventor/SbMatrix.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
-/*!
-  \class SbBox3i32 Inventor/SbBox3i32.h
-*/
+// *************************************************************************
 
 /*!
   Reset the boundaries to the boundaries of the given \a box.

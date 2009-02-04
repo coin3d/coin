@@ -223,13 +223,7 @@ SbBox3f::extendBy(const SbVec3f & point)
 void
 SbBox3f::extendBy(const SbBox3f & box)
 {
-#if COIN_DEBUG
-  if (box.isEmpty()) {
-    SoDebugError::postWarning("SbBox3f::extendBy",
-                              "The box is not valid.");
-    return;
-  }
-#endif // COIN_DEBUG
+  if (box.isEmpty()) { return; }
 
   if (this->isEmpty()) {
     *this = box;

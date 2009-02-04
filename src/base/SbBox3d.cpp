@@ -34,6 +34,8 @@
   \sa SbBox2s, SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbXfBox3f.
 */
 
+// *************************************************************************
+
 #include <Inventor/SbBox3d.h>
 
 #include <limits>
@@ -42,9 +44,9 @@
 #include <Inventor/SbBox3s.h>
 #include <Inventor/SbBox3i32.h>
 #include <Inventor/SbDPMatrix.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+// *************************************************************************
 
 /*!
   \fn SbBox3d::SbBox3d(void)
@@ -222,13 +224,7 @@ SbBox3d::extendBy(const SbVec3d & point)
 void
 SbBox3d::extendBy(const SbBox3d & box)
 {
-#if COIN_DEBUG
-  if (box.isEmpty()) {
-    SoDebugError::postWarning("SbBox3d::extendBy",
-                              "The box is not valid.");
-    return;
-  }
-#endif // COIN_DEBUG
+  if (box.isEmpty()) { return; }
 
   if (this->isEmpty()) {
     *this = box;

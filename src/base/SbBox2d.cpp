@@ -246,11 +246,8 @@ SbBox2d::extendBy(const SbVec2d & point)
 void
 SbBox2d::extendBy(const SbBox2d & box)
 {
-#if COIN_DEBUG
-  if (box.minpt[0] > box.maxpt[0] || box.minpt[1] > box.maxpt[1])
-    SoDebugError::postWarning("SbBox2d::extendBy",
-                              "Extension box has negative area.");
-#endif // COIN_DEBUG
+  if (box.isEmpty()) { return; }
+
   this->extendBy(box.getMin());
   this->extendBy(box.getMax());
 }
