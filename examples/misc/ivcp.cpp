@@ -50,6 +50,8 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 
+enum FileType { INVENTOR, VRML1, VRML2 };
+
 int
 main(int argc, char ** argv)
 {
@@ -80,7 +82,13 @@ main(int argc, char ** argv)
     SoDB::cleanup();
     return -1;
   }
-  SoInput::FileType inputFileType = in->getFileType();
+  FileType inputFileType;
+  if (in->isFileVRML1())
+    inputFileType = VRML1;
+  else if (in->isFileVRML2())
+    inputFileType = VRML2;
+  else
+    inputFileType = INVENTOR;
 
   delete in;
   scene->ref();
@@ -112,10 +120,10 @@ main(int argc, char ** argv)
     return -1;
   }
   switch (inputFileType) {
-  case SoInput::VRML1:
+  case VRML1:
     out->setHeaderString("#VRML V1.0 ascii");
     break;
-  case SoInput::VRML2:
+  case VRML2:
     out->setHeaderString("#VRML V2.0 utf8");
   }
 

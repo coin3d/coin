@@ -51,8 +51,6 @@ class SoInputP;
 
 class COIN_DLL_API SoInput {
 public:
-  enum FileType { INVENTOR, VRML1, VRML2 };
-
   SoInput(void);
   SoInput(SoInput * dictIn);
 
@@ -106,7 +104,6 @@ public:
   virtual SbBool readBinaryArray(double * d, int length);
   virtual SbBool eof(void) const;
 
-  FileType getFileType();
   SbBool isFileVRML1(void);
   SbBool isFileVRML2(void);
   virtual void resetFilePointer(FILE * fptr);
@@ -139,6 +136,7 @@ public:
   static SbString searchForFile(const SbString & basename,
                                 const SbStringList & directories,
                                 const SbStringList & subdirectories);
+
 
 protected:
   virtual SbBool popFile(void);
