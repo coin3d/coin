@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbVec2s.h>
 
+class SbImage;
 
 class COIN_DLL_API SoSFImage : public SoSField {
   typedef SoSField inherited;
@@ -46,6 +47,8 @@ public:
   static void initClass(void);
 
   const unsigned char * getValue(SbVec2s & size, int & nc) const;
+  const SbImage & getValue() const;
+
   void setValue(const SbVec2s & size, const int nc,
                 const unsigned char * pixels, CopyPolicy copypolicy = COPY);
 

@@ -330,6 +330,16 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
 }
 
 /*!
+  \retval SbImage contained by this SoSFImage
+*/
+const SbImage &
+SoSFImage::getValue() const
+{
+  this->evaluate();
+  return *PRIVATE(this)->image;
+}
+
+/*!
   Initialize this field to \a size and \a nc.
 
   If \a pixels is not \c NULL, the image data is copied from \a pixels
