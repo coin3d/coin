@@ -73,7 +73,7 @@
 /*!
   \var SoSFFloat SoTexture2Transform::rotation
 
-  Texture coordinate rotation (around z-axis, s is x-axis and t is
+  Texture coordinate rotation in radians (around z-axis, s is x-axis and t is
   y-axis).  Defaults to an identity rotation (ie zero rotation).
 */
 /*!
