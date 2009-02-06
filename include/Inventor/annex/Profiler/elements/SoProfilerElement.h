@@ -31,7 +31,7 @@
 
 // *************************************************************************
 
-class SoProfilerElement : public SoElement {
+class COIN_DLL_API SoProfilerElement : public SoElement {
   typedef SoElement inherited;
   SO_ELEMENT_HEADER(SoProfilerElement);
 
