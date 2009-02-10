@@ -105,7 +105,10 @@ AC_ARG_ENABLE([framework],
 
 AC_ARG_WITH([framework-prefix],
   [  --with-framework-prefix=<path>  (default: "MAC_FRAMEWORK_PREFIX_DEFAULT")],
-  [sim_ac_framework_prefix="$withval"],
+  [sim_ac_framework_prefix="$withval"
+  CPPFLAGS="$CPPFLAGS -F$sim_ac_framework_prefix"
+  LDFLAGS="$LDFLAGS -Wl,-F$sim_ac_framework_prefix"
+  ],
   [sim_ac_framework_prefix="MAC_FRAMEWORK_PREFIX_DEFAULT"])
 
 sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"
