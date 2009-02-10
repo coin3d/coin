@@ -2178,7 +2178,7 @@ COIN_COMPILER="$CXX"
 
     # set up the Coin-related flags
     COIN_EXTRA_CPPFLAGS=
-    if test x"$sim_ac_framework_prefix" = x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
+    if test x"$sim_ac_framework_prefix" != x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
       COIN_EXTRA_CPPFLAGS="-F$sim_ac_framework_prefix"
     fi
 
@@ -2191,7 +2191,7 @@ COIN_COMPILER="$CXX"
       # we don't want -lCoin when doing framework build
       COIN_EXTRA_LIBS=
       COIN_EXTRA_LDFLAGS= 
-      if test x"$sim_ac_framework_prefix" = x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
+      if test x"$sim_ac_framework_prefix" != x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
         COIN_EXTRA_FP_LDFLAGS="-Wl,-F$sim_ac_framework_prefix"
       fi
     fi 
