@@ -21,9 +21,7 @@
  *
 \**************************************************************************/
 
-// just fake it somehow to get them into the doxygen doc.
-
-typedef EnvironmentVariable;
+#include "environment.dox.h"
 
 /*!
   \typedef EnvironmentVariable
@@ -46,7 +44,7 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
 /*!
   \page envvars_profiler Scene Graph Profiler
 
-  The scene graph profiler subsystem uses a the following environment
+  The scene graph profiler subsystem uses the following environment
   variables:
   - \ref COIN_PROFILER
   - \ref COIN_PROFILER_OVERLAY
@@ -159,6 +157,9 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
 */
 
 
+/*!
+  \var EnvironmentVariable COIN_PROFILER_OVERLAY
+
 /*
   FIXME: document all variables. pederb, 2004-03-22
 
@@ -170,7 +171,7 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
 
   Debug related:
 
-  COIN_DEBUG_GLU_INFO 
+  COIN_DEBUG_GLU_INFO
   COIN_DEBUG_FONTSUPPORT
   COIN_DEBUG_3DS
   COIN_DEBUG_AUDIO
@@ -252,7 +253,7 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
   COIN_AUTOCACHE_REMOTE_MIN
   COIN_AUTO_CACHING
   COIN_ENABLE_VBO
-  
+
   COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
 
   SO_DRAGGER_DIR
@@ -260,5 +261,583 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
   COINDIR
 */
 
+EnvironmentVariable COIN_DEBUG_GLU_INFO;
+EnvironmentVariable COIN_DEBUG_FONTSUPPORT;
+EnvironmentVariable COIN_DEBUG_3DS;
+EnvironmentVariable COIN_DEBUG_AUDIO;
+EnvironmentVariable COIN_DEBUG_BREAK;
+EnvironmentVariable COIN_DEBUG_CACHING;
+EnvironmentVariable COIN_DEBUG_DL;
+EnvironmentVariable COIN_DEBUG_IMPORT;
+EnvironmentVariable COIN_DEBUG_LISTMODULES;
+EnvironmentVariable COIN_DEBUG_SOINPUT_FINDFILE;
+EnvironmentVariable COIN_DEBUG_SOOFFSCREENRENDERER;
+EnvironmentVariable COIN_DEBUG_WRITEREFS;
+EnvironmentVariable COIN_RANDOMIZE_RENDER_CACHING;
+EnvironmentVariable COIN_FREETYPE2_LIBNAME;
+EnvironmentVariable COIN_FORCE_FREETYPE_OFF;
+EnvironmentVariable COIN_FORCE_WIN32FONTS_OFF;
+EnvironmentVariable COIN_FONT_PATH;
+EnvironmentVariable COIN_GLU_LIBNAME;
+EnvironmentVariable COIN_AGLGLUE_NO_PBUFFERS;
+EnvironmentVariable COIN_DEBUG_DL;
+EnvironmentVariable COIN_SIMAGE_LIBNAME;
+EnvironmentVariable COIN_GLXGLUE_NO_GLX13_PBUFFERS;
+EnvironmentVariable COIN_GLXGLUE_NO_PBUFFERS;
+EnvironmentVariable COIN_ZLIB_LIBNAME;
+EnvironmentVariable COIN_BZIP2_LIBNAME;
+EnvironmentVariable COIN_WGLGLUE_NO_PBUFFERS;
+EnvironmentVariable COIN_DONT_MANGLE_OUTPUT_NAMES;
+EnvironmentVariable COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER;
+EnvironmentVariable COIN_FORCE_TILED_OFFSCREENRENDERING;
+EnvironmentVariable COIN_GLERROR_DEBUGGING;
+EnvironmentVariable COIN_IDA_DEBUG;
+EnvironmentVariable COIN_OFFSCREENRENDERER_MAX_TILESIZE;
+EnvironmentVariable COIN_OFFSCREENRENDERER_TILEHEIGHT;
+EnvironmentVariable COIN_OFFSCREENRENDERER_TILEWIDTH;
+EnvironmentVariable COIN_OLDSTYLE_FORMATTING;
+EnvironmentVariable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE;
+EnvironmentVariable COIN_SOINPUT_SEARCH_GLOBAL_DICT;
+EnvironmentVariable COIN_SOOFFSCREENRENDERER_TILEPREFIX;
+EnvironmentVariable COIN_SORTED_LAYERS_USE_NVIDIA_RC;
+EnvironmentVariable COIN_SOUND_BUFFER_LENGTH;
+EnvironmentVariable COIN_SOUND_DISABLE;
+EnvironmentVariable COIN_SOUND_DRIVER_NAME;
+EnvironmentVariable COIN_SOUND_ENABLE;
+EnvironmentVariable COIN_SOUND_INTRO_PAUSE;
+EnvironmentVariable COIN_SOUND_NUM_BUFFERS;
+EnvironmentVariable COIN_SOUND_THREAD_SLEEP_TIME;
+EnvironmentVariable COIN_OPENAL_LIBNAME;
+EnvironmentVariable COIN_TEX2_LINEAR_LIMIT;
+EnvironmentVariable COIN_TEX2_LINEAR_MIPMAP_LIMIT;
+EnvironmentVariable COIN_TEX2_MIPMAP_LIMIT;
+EnvironmentVariable COIN_TEX2_SCALEUP_LIMIT;
+EnvironmentVariable COIN_TEX2_USE_GLTEXSUBIMAGE;
+EnvironmentVariable COIN_MAXIMUM_TEXTURE2_SIZE;
+EnvironmentVariable COIN_MAXIMUM_TEXTURE3_SIZE;
+EnvironmentVariable COIN_USE_GL_VERTEX_ARRAYS;
+EnvironmentVariable COIN_NORMALIZATION_CUBEMAP_SIZE;
+EnvironmentVariable OIV_NUM_SORTED_LAYERS_PASSES;
+EnvironmentVariable COIN_MAX_VBO_MEMORY;
+EnvironmentVariable COIN_NUM_SORTED_LAYERS_PASSES;
+EnvironmentVariable COIN_QUADMESH_PRECISE_LIGHTING;
+EnvironmentVariable COIN_ENABLE_CONFORMANT_GL_CLAMP;
+EnvironmentVariable IV_SEPARATOR_MAX_CACHES;
+EnvironmentVariable COIN_AUTOCACHE_LOCAL_MAX;
+EnvironmentVariable COIN_AUTOCACHE_LOCAL_MIN;
+EnvironmentVariable COIN_AUTOCACHE_REMOTE_MAX;
+EnvironmentVariable COIN_AUTOCACHE_REMOTE_MIN;
+EnvironmentVariable COIN_AUTO_CACHING;
+EnvironmentVariable COIN_ENABLE_VBO;
+EnvironmentVariable COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG;
+EnvironmentVariable SO_DRAGGER_DIR;
+EnvironmentVariable SO_SHADER_DIR;
+EnvironmentVariable COINDIR;
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_GLU_INFO
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_FONTSUPPORT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_3DS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_AUDIO
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_BREAK
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_CACHING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_DL
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_IMPORT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_LISTMODULES
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_SOINPUT_FINDFILE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_SOOFFSCREENRENDERER
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_WRITEREFS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_RANDOMIZE_RENDER_CACHING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FREETYPE2_LIBNAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FORCE_FREETYPE_OFF
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FORCE_WIN32FONTS_OFF
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FONT_PATH
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLU_LIBNAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AGLGLUE_NO_PBUFFERS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_DL
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SIMAGE_LIBNAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLXGLUE_NO_GLX13_PBUFFERS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLXGLUE_NO_PBUFFERS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_ZLIB_LIBNAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_BZIP2_LIBNAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_WGLGLUE_NO_PBUFFERS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DONT_MANGLE_OUTPUT_NAMES
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FORCE_TILED_OFFSCREENRENDERING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLERROR_DEBUGGING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_IDA_DEBUG
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_OFFSCREENRENDERER_MAX_TILESIZE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_OFFSCREENRENDERER_TILEHEIGHT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_OFFSCREENRENDERER_TILEWIDTH
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_OLDSTYLE_FORMATTING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOINPUT_SEARCH_GLOBAL_DICT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOOFFSCREENRENDERER_TILEPREFIX
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SORTED_LAYERS_USE_NVIDIA_RC
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_BUFFER_LENGTH
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_DISABLE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_DRIVER_NAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_ENABLE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_INTRO_PAUSE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_NUM_BUFFERS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOUND_THREAD_SLEEP_TIME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_OPENAL_LIBNAME
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_LINEAR_LIMIT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_LINEAR_MIPMAP_LIMIT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_MIPMAP_LIMIT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_SCALEUP_LIMIT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_USE_GLTEXSUBIMAGE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_MAXIMUM_TEXTURE2_SIZE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_MAXIMUM_TEXTURE3_SIZE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_USE_GL_VERTEX_ARRAYS
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_NORMALIZATION_CUBEMAP_SIZE
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable OIV_NUM_SORTED_LAYERS_PASSES
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_MAX_VBO_MEMORY
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_NUM_SORTED_LAYERS_PASSES
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_QUADMESH_PRECISE_LIGHTING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_ENABLE_CONFORMANT_GL_CLAMP
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable IV_SEPARATOR_MAX_CACHES
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AUTOCACHE_LOCAL_MAX
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AUTOCACHE_LOCAL_MIN
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AUTOCACHE_REMOTE_MAX
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AUTOCACHE_REMOTE_MIN
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AUTO_CACHING
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_ENABLE_VBO
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable SO_DRAGGER_DIR
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable SO_SHADER_DIR
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COINDIR
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+
 // *************************************************************************
-  
+
