@@ -122,17 +122,17 @@ sunCC_initClassMangling(const char * classname)
   SbString mangled_len;
 
   while (len > 25) {
-    int digit = len % 26;
+    size_t digit = len % 26;
     len /= 26;
-    mangled_len += static_cast<char> ('a' + digit);
+    mangled_len += static_cast<char>('a' + digit);
   }
-  mangled_len += static_cast<char> ('a' + len);
+  mangled_len += static_cast<char>('a' + len);
 
   char * mangled_str = strdup(mangled_len.getString());
   mangled_str[0] = toupper(mangled_str[0]);
 
   /* reverse */
-  for(int i=0, j=strlen(mangled_str)-1; i<j; i++, j--) {
+  for (size_t i=0, j=strlen(mangled_str)-1; i<j; i++, j--) {
     char temp = mangled_str[i];
     mangled_str[i] = mangled_str[j];
     mangled_str[j] = temp;
@@ -153,7 +153,7 @@ static mangleFunc * manglefunctions[] = {
   msvc6_initClassMangling,
   MIPSpro_CC_initClassMangling,
   sunCC_initClassMangling,
-  (mangleFunc *) NULL
+  (mangleFunc *)NULL
 };
 
 /*
@@ -167,20 +167,20 @@ getManglingFunction(void)
 {
   static SbBool initialized = FALSE;
   static mangleFunc * manglefunc = NULL;
-  if ( !initialized ) {
+  if (!initialized) {
     initialized = TRUE;
     int i;
     cc_libhandle handle = cc_dl_open(NULL);
-    if ( handle == NULL ) goto failure;
-    for ( i = 0; (manglefunctions[i] != NULL) && (manglefunc == NULL); i++ ) {
+    if (handle == NULL) goto failure;
+    for (i = 0; (manglefunctions[i] != NULL) && (manglefunc == NULL); i++) {
       mangleFunc * attempt = manglefunctions[i];
       SbString symbol(attempt("SoBase"));
-      if ( cc_dl_sym(handle, symbol.getString()) ) {
+      if (cc_dl_sym(handle, symbol.getString())) {
         manglefunc = manglefunctions[i];
       }
     }
     cc_dl_close(handle);
-    if ( manglefunc == NULL ) goto failure;
+    if (manglefunc == NULL) { goto failure; }
   }
   return manglefunc;
 failure:
