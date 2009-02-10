@@ -37041,7 +37041,7 @@ fi
 
     # set up the Coin-related flags
     COIN_EXTRA_CPPFLAGS=
-    if test x"$sim_ac_framework_prefix" = x"/Library/Frameworks"; then
+    if test x"$sim_ac_framework_prefix" != x"/Library/Frameworks"; then
       COIN_EXTRA_CPPFLAGS="-F$sim_ac_framework_prefix"
     fi
 
@@ -37054,7 +37054,7 @@ fi
       # we don't want -lCoin when doing framework build
       COIN_EXTRA_LIBS=
       COIN_EXTRA_LDFLAGS=
-      if test x"$sim_ac_framework_prefix" = x"/Library/Frameworks"; then
+      if test x"$sim_ac_framework_prefix" != x"/Library/Frameworks"; then
         COIN_EXTRA_FP_LDFLAGS="-Wl,-F$sim_ac_framework_prefix"
       fi
     fi
