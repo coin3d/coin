@@ -105,10 +105,7 @@ AC_ARG_ENABLE([framework],
 
 AC_ARG_WITH([framework-prefix],
   [  --with-framework-prefix=<path>  (default: "MAC_FRAMEWORK_PREFIX_DEFAULT")],
-  [sim_ac_framework_prefix="$withval"
-  CPPFLAGS="$CPPFLAGS -F$sim_ac_framework_prefix"
-  LDFLAGS="$LDFLAGS -Wl,-F$sim_ac_framework_prefix"
-  ],
+  [sim_ac_framework_prefix="$withval"],
   [sim_ac_framework_prefix="MAC_FRAMEWORK_PREFIX_DEFAULT"])
 
 sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"
@@ -2178,18 +2175,27 @@ COIN_COMPILER="$CXX"
   fi
 
   if $sim_ac_framework; then
+
     # set up the Coin-related flags
     COIN_EXTRA_CPPFLAGS=
+    if test x"$sim_ac_framework_prefix" = x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
+      COIN_EXTRA_CPPFLAGS="-F$sim_ac_framework_prefix"
+    fi
+
     COIN_EXTRA_CFLAGS=
     COIN_EXTRA_CXXFLAGS=
+    COIN_EXTRA_FP_LDFLAGS=
     if test x"$enable_hacking" = x"yes"; then
       COIN_EXTRA_LDFLAGS="-L$frameworkdir/Libraries"
     else 
       # we don't want -lCoin when doing framework build
       COIN_EXTRA_LIBS=
       COIN_EXTRA_LDFLAGS= 
+      if test x"$sim_ac_framework_prefix" = x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
+        COIN_EXTRA_FP_LDFLAGS="-Wl,-F$sim_ac_framework_prefix"
+      fi
     fi 
-    COIN_EXTRA_LDFLAGS="-Wl,-framework,$MAC_FRAMEWORK_NAME $COIN_EXTRA_LDFLAGS"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_FP_LDFLAGS -Wl,-framework,$MAC_FRAMEWORK_NAME $COIN_EXTRA_LDFLAGS"
     # adjust for OpenGL usage
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
