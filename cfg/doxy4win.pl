@@ -9,3 +9,4 @@ sub cygpath {
 s/\<PATH\>([^ ]*)/&cygpath($1)/eg;
 s/^HTML_OUTPUT.*/HTML_OUTPUT = html/;
 s/^MAN_OUTPUT.*/MAN_OUTPUT = man/;
+
