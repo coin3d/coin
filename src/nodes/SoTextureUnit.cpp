@@ -29,10 +29,10 @@
   When an SoTextureUnit node is inserted into the scene graph, all
   subsequent texture nodes (SoTexture2, SoTextureCoordinate2,
   SoTextureCoordinate3, SoTexture2Transform, SoTexture3Transform,
-  SoTextureCoordinateEnvironment, and SoTextureCoordinatePlane) will
-  affect the texture unit set in the unit field.
+  SoTextureCoordinateEnvironment, SoTextureCoordinatePlane and SoComplexity)
+  will affect the texture unit set in the unit field.
 
-  See the SoGuiExample CVS module for an usage example for this node.
+  See the SoGuiExample module for an usage example for this node.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
