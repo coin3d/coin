@@ -406,14 +406,9 @@ namespace { namespace SoGL { namespace QuadMesh {
             currnormal = &normals[curridx];
             glNormal3fv((const GLfloat *)currnormal);
           }
-          if ((AttributeBinding)NormalBinding == PER_FACE) {
-            currnormal = normals++;
-            glNormal3fv((const GLfloat *)currnormal);
-          }
           if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
             mb->send(curridx, TRUE);
           }
-
           if (TexturingEnabled == TRUE) {
             tb->send(curridx, coords->get3(start + curridx),
                      *currnormal);
@@ -433,6 +428,12 @@ namespace { namespace SoGL { namespace QuadMesh {
           if ((AttributeBinding)MaterialBinding == PER_FACE) {
             // FIXME: optimize by moving first 2 vertices in row outside loop
             if (j > 0) mb->send(midx++, TRUE);
+          }
+          if ((AttributeBinding)NormalBinding == PER_FACE) {
+            if (j > 0) {
+              currnormal = normals++;
+              glNormal3fv((const GLfloat *)currnormal);
+            }
           }
           SEND_VERTEX(start + curridx);
         }
