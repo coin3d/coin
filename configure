@@ -1072,7 +1072,7 @@ Optional Features:
   --enable-debug          compile in debug mode [default=yes]
   --enable-symbols        include symbol debug information [default=yes]
   --enable-rtti           (g++ only) compile with RTTI [default=yes]
-  --enable-exceptions     (g++ only) compile with exceptions [default=no]
+  --enable-exceptions     (g++ only) compile with exceptions [default=yes]
   --enable-profile        (GCC only) turn on inclusion of profiling code
                           [default=no]
   --enable-warnings       turn on warnings when compiling [default=yes]
@@ -25383,7 +25383,7 @@ echo "$as_me: error: bad value \"${enableval}\" for --enable-exceptions" >&2;}
    { (exit 1); exit 1; }; } ;;
   esac
 else
-  enable_exceptions=no
+  enable_exceptions=yes
 fi;
 
 if test x"$enable_exceptions" = x"no"; then
@@ -39390,7 +39390,7 @@ while test $sim_ac_num_settings -ge 0; do
   sim_ac_description=`echo "$sim_ac_setting" | cut -d: -f1`
   sim_ac_status=`echo "$sim_ac_setting" | cut -d: -f2-`
   # hopefully not too many terminals are too dumb for this
-  echo -e "$sim_ac_padding $sim_ac_status\r  $sim_ac_description:"
+  printf "$sim_ac_padding $sim_ac_status\r  $sim_ac_description:\n"
   sim_ac_configuration_settings=`echo $sim_ac_configuration_settings | cut -d"|" -f2-`
   sim_ac_num_settings=`expr $sim_ac_num_settings - 1`
 done

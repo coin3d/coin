@@ -500,7 +500,7 @@ while test $sim_ac_num_settings -ge 0; do
   sim_ac_description=`echo "$sim_ac_setting" | cut -d: -f1`
   sim_ac_status=`echo "$sim_ac_setting" | cut -d: -f2-`
   # hopefully not too many terminals are too dumb for this
-  echo -e "$sim_ac_padding $sim_ac_status\r  $sim_ac_description:"
+  printf "$sim_ac_padding $sim_ac_status\r  $sim_ac_description:\n"
   sim_ac_configuration_settings=`echo $sim_ac_configuration_settings | cut -d"|" -f2-`
   sim_ac_num_settings=`expr $sim_ac_num_settings - 1`
 done
@@ -9109,8 +9109,9 @@ fi
 #
 # Description:
 #   Let the user decide if C++ exception handling should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if they have exception handling support.
+#   in. With older compilers the libraries/executables will use a lot
+#   less space if they have exception handling support disabled, on
+#   modern compilers the difference is negligible.
 #
 #   Note: this macro must be placed after AC_PROG_CXX in the
 #   configure.in script.
@@ -9126,13 +9127,13 @@ AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [exceptions],
   AC_HELP_STRING([--enable-exceptions],
-                 [(g++ only) compile with exceptions [[default=no]]]),
+                 [(g++ only) compile with exceptions [[default=yes]]]),
   [case "${enableval}" in
     yes) enable_exceptions=yes ;;
     no)  enable_exceptions=no ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-exceptions) ;;
   esac],
-  [enable_exceptions=no])
+  [enable_exceptions=yes])
 
 if test x"$enable_exceptions" = x"no"; then
   if test "x$GXX" = "xyes"; then
