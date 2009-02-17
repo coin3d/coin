@@ -30,7 +30,7 @@
 #include <Inventor/scxml/ScXMLSubObject.h>
 
 class COIN_DLL_API ScXMLObject {
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLObject);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLObject)
 
 public:
   static void initClass(void);

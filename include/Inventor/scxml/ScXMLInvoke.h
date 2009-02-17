@@ -33,7 +33,7 @@ class ScXMLStateMachine;
 
 class COIN_DLL_API ScXMLInvoke : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLInvoke);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLInvoke)
 
 public:
   static void initClass(void);

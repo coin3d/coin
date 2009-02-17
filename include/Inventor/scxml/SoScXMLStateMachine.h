@@ -33,7 +33,7 @@ class SbViewportRegion;
 
 class COIN_DLL_API SoScXMLStateMachine : public ScXMLStateMachine {
   typedef ScXMLStateMachine inherited;
-  SCXML_OBJECT_HEADER(SoScXMLStateMachine);
+  SCXML_OBJECT_HEADER(SoScXMLStateMachine)
 
 public:
   static void initClass(void);

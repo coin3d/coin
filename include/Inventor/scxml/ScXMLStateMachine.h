@@ -43,7 +43,7 @@ typedef void ScXMLStateChangeCB(void * userdata,
 
 class COIN_DLL_API ScXMLStateMachine : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLStateMachine);
+  SCXML_OBJECT_HEADER(ScXMLStateMachine)
 
 public:
   static void initClass(void);

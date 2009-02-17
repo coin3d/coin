@@ -30,7 +30,7 @@ class SoEvent;
 
 class COIN_DLL_API SoScXMLEvent : public ScXMLEvent {
   typedef ScXMLEvent inherited;
-  SCXML_OBJECT_HEADER(SoScXMLEvent);
+  SCXML_OBJECT_HEADER(SoScXMLEvent)
 
 public:
   static void initClass(void);
