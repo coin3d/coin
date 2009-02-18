@@ -226,25 +226,43 @@ struct glxglue_contextdata {
 static Display *
 glxglue_get_display(const cc_glglue * currentcontext = NULL)
 {
-  if (currentcontext && currentcontext->glx.glXGetCurrentDisplay)
-    return (Display*) currentcontext->glx.glXGetCurrentDisplay();
+  if (currentcontext && currentcontext->glx.glXGetCurrentDisplay) {
+    if (glxglue_screen == -1) {
+      glxglue_screen = XScreenNumberOfScreen(
+	XDefaultScreenOfDisplay(
+	  (Display*)currentcontext->glx.glXGetCurrentDisplay()));
+    }
+
+    if (coin_glglue_debug()) {
+      cc_debugerror_postinfo("glxglue_get_display", "got Display*==%p; got Screen==%d",
+			     currentcontext->glx.glXGetCurrentDisplay(),
+			     glxglue_screen);
+    }
+
+    return (Display*)currentcontext->glx.glXGetCurrentDisplay();
+  }
 
   if ((glxglue_display == NULL) && !glxglue_opendisplay_failed) {
     /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
-    glxglue_display = XOpenDisplay(NULL);
-    if (glxglue_display == NULL) {
+
+    /* UPDATE 20090218 tamer: Passing NULL through XOpenDisplay()
+     * makes a POSIX-conformant system default to the value of the
+     * DISPLAY environment variable. Isn't that exactly what we want?
+     * Do you mean that the display_name can potentially be provided
+     * by other means than the DISPLAY envvar? */
+    
+    if (!(glxglue_display = XOpenDisplay(NULL))) {
       cc_debugerror_post("glxglue_init",
                          "Couldn't open NULL display.");
       glxglue_opendisplay_failed = TRUE;
     }
-    else {
-      /* FIXME: should use the real screen number. :-(  20020926 mortene. */
-      glxglue_screen = XDefaultScreen(glxglue_display);
+    
+    glxglue_screen = XScreenNumberOfScreen(
+      XDefaultScreenOfDisplay(glxglue_display));
 
-      if (coin_glglue_debug()) {
-        cc_debugerror_postinfo("glxglue_get_display", "got Display*==%p",
-                               glxglue_display);
-      }
+    if (coin_glglue_debug()) {
+      cc_debugerror_postinfo("glxglue_get_display", "got Display*==%p; got Screen==%d",
+			     glxglue_display, glxglue_screen);
     }
   }
   return glxglue_display;
