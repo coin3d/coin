@@ -254,7 +254,7 @@ void
 SoScXMLUpdateSeek::invoke(ScXMLStateMachine * statemachinearg)
 {
   if (!statemachinearg->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    SoDebugError::post("SetZoom",
+    SoDebugError::post("UpdateSeek",
                        "No support for non-SoScXMLStateMachine objects");
     return;
   }
