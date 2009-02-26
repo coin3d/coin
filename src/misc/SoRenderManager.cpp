@@ -209,7 +209,7 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->camera = NULL;
   PRIVATE(this)->rendercb = NULL;
   PRIVATE(this)->rendercbdata = NULL;
-  PRIVATE(this)->redrawshot = NULL;
+
   PRIVATE(this)->stereostencilmask = NULL;
   PRIVATE(this)->superimpositions = NULL;
 
@@ -232,6 +232,9 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->stereomode = SoRenderManager::MONO;
   PRIVATE(this)->autoclipping = SoRenderManager::NO_AUTO_CLIPPING;
   PRIVATE(this)->redrawpri = SoRenderManager::getDefaultRedrawPriority();
+  PRIVATE(this)->redrawshot = 
+    new SoOneShotSensor(SoRenderManagerP::redrawshotTriggeredCB, this);
+  PRIVATE(this)->redrawshot->setPriority(PRIVATE(this)->redrawpri);
 
   PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   PRIVATE(this)->audiorenderaction = new SoAudioRenderAction;
@@ -1083,12 +1086,6 @@ SoRenderManager::scheduleRedraw(void)
 {
   PRIVATE(this)->lock();
   if (this->isActive() && PRIVATE(this)->rendercb) {
-    if (!PRIVATE(this)->redrawshot) {
-      PRIVATE(this)->redrawshot =
-        new SoOneShotSensor(SoRenderManagerP::redrawshotTriggeredCB, this);
-      PRIVATE(this)->redrawshot->setPriority(this->getRedrawPriority());
-    }
-
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoRenderManager::scheduleRedraw",
                            "scheduling redrawshot (oneshotsensor) %p",
