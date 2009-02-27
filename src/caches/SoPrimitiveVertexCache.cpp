@@ -470,7 +470,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     v.rgba[2] = (col>>8)&0xff;
     v.rgba[3] = col&0xff;
 
-    const SoDetail * d = coin_assert_cast<const SoDetail *>(vp[i]->getDetail());
+    const SoDetail * d = coin_safe_cast<const SoDetail *>(vp[i]->getDetail());
     
     if (d && d->isOfType(SoFaceDetail::getClassTypeId()) && pointdetailidx) {
       const SoFaceDetail * fd = coin_assert_cast<const SoFaceDetail *>(d);
