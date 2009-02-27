@@ -467,7 +467,8 @@ SoGLLazyElement::init(SoState * stateptr)
   this->glstate.diffusenodeid = 0;
   this->glstate.transpnodeid = 0;
   this->packedpointer = NULL;
-  this->transpmask = 0xff;
+  // when doing screen door rendering, we need to always supply 0xff as alpha.
+  this->transpmask = (this->coinstate.transptype == SoGLRenderAction::SCREEN_DOOR) ? 0xff : 0x00;
   this->colorpacker = NULL;
   this->precachestate = NULL;
   this->postcachestate = NULL;
