@@ -232,7 +232,7 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->stereomode = SoRenderManager::MONO;
   PRIVATE(this)->autoclipping = SoRenderManager::NO_AUTO_CLIPPING;
   PRIVATE(this)->redrawpri = SoRenderManager::getDefaultRedrawPriority();
-  PRIVATE(this)->redrawshot = 
+  PRIVATE(this)->redrawshot =
     new SoOneShotSensor(SoRenderManagerP::redrawshotTriggeredCB, this);
   PRIVATE(this)->redrawshot->setPriority(PRIVATE(this)->redrawpri);
 
@@ -368,6 +368,12 @@ SoRenderManager::attachRootSensor(SoNode * const sceneroot)
     (SoRenderManagerRootSensor::debug()) ?
       PRIVATE(this)->rootsensor = new SoRenderManagerRootSensor(SoRenderManager::nodesensorCB, this):
       PRIVATE(this)->rootsensor = new SoNodeSensor(SoRenderManager::nodesensorCB, this);
+    // set a high priority on the root sensor. The actual redraw
+    // scheduling is handled by the redraw sensor at the correct
+    // priority (root sensor callback triggers the redraw sensor). Set
+    // priority to 1 in the normal case, and 0 if the redraw priority
+    // is actually set to 0
+    PRIVATE(this)->rootsensor->setPriority(PRIVATE(this)->redrawpri == 0 ? 0 : 1);
   }
   PRIVATE(this)->rootsensor->attach(sceneroot);
 }
@@ -1559,8 +1565,9 @@ void
 SoRenderManager::setRedrawPriority(const uint32_t priority)
 {
   PRIVATE(this)->redrawpri = priority;
-
+  
   if (PRIVATE(this)->redrawshot) PRIVATE(this)->redrawshot->setPriority(priority);
+  if (PRIVATE(this)->rootsensor) PRIVATE(this)->rootsensor->setPriority(PRIVATE(this)->redrawpri == 0 ? 0 : 1); 
 }
 
 /*!
