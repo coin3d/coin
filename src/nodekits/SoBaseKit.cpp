@@ -96,7 +96,7 @@
       we can instantiate a model of a human by creating an instance of
       the node kit, instead of having to create a possibly large
       amount of nodes needed for such a model.
-  \li A part of the node kit doesn't have one spesific setup. A shape part
+  \li A part of the node kit doesn't have one specific setup. A shape part
       can e.g. be swapped with any other shape, since they are of the same
       type. If the node kit of a human has a part called "head" which is of
       type SoShape, it might default to a sphere. But if the programmer
@@ -106,7 +106,7 @@
   \li Node kits can have as simple or as complex catalogs as needed. The
       nodes included in the node kit can, if needed, represent the
       whole range of Inventor features. One part can as easily be of a
-      node kit type, making it possible to create hierarchys of node kits.
+      node kit type, making it possible to create hierarchies of node kits.
       Having a node kit of a human, it might be feasible to have sub node
       kits describing the different body parts.
   \li Node kits are an efficient way of creating scenegraphs. If some
