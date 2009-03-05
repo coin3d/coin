@@ -509,36 +509,37 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (action->is3DTextCountedAsTriangles()) {        
     PRIVATE(this)->lock();
-    
-    PRIVATE(this)->setUpGlyphs(action->getState(), this);
-    const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
-    const int lines = this->string.getNum();
-    int numtris = 0;      
-    
-    for (int i = 0;i < lines; ++i) {
+    // can't regenerate the cache in this action traversal since SoCacheElement isn't enabled
+    if (PRIVATE(this)->cache) {
+      const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
+      const int lines = this->string.getNum();
+      int numtris = 0;      
       
-      const unsigned int len = this->string[i].getLength();
-      for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
-
-        // Note that the "unsigned char" cast is needed to avoid 8-bit
-        // chars using the highest bit (i.e. characters above the ASCII
-        // set up to 127) be expanded to huge int numbers that turn
-        // negative when casted to integer size.             
-        const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-        cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
-
-        int cnt = 0;
-        const int * ptr = cc_glyph3d_getfaceindices(glyph);
-        while (*ptr++ >= 0) 
-          cnt++;
-
-        numtris += cnt / 3;
+      for (int i = 0;i < lines; ++i) {
         
-        cc_glyph3d_unref(glyph);
+        const unsigned int len = this->string[i].getLength();
+        for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+          
+          // Note that the "unsigned char" cast is needed to avoid 8-bit
+          // chars using the highest bit (i.e. characters above the ASCII
+          // set up to 127) be expanded to huge int numbers that turn
+          // negative when casted to integer size.             
+          const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+          cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+          
+          int cnt = 0;
+          const int * ptr = cc_glyph3d_getfaceindices(glyph);
+          while (*ptr++ >= 0) 
+            cnt++;
+          
+          numtris += cnt / 3;
+          
+          cc_glyph3d_unref(glyph);
+        }
       }
+      action->addNumTriangles(numtris);
+      PRIVATE(this)->unlock();
     }
-    action->addNumTriangles(numtris);
-    PRIVATE(this)->unlock();
   }
   else {
     action->addNumText(this->string.getNum());
@@ -578,7 +579,7 @@ SoVRMLText::computeBBox(SoAction * action,
 
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
   SoCacheElement::addCacheDependency(action->getState(), PRIVATE(this)->cache);
-
+  
   int i;
   const int n = this->string.getNum();
   const float linespacing = PRIVATE(this)->textspacing * PRIVATE(this)->maxglyphheight;
