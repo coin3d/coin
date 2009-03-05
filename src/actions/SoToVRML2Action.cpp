@@ -1012,18 +1012,23 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
     // usually done in SoSwitch::doAction) (don't push before setting
     // this element as it's supposed to be set when traversing the
     // next sibling).
+    action->pushCurPath();
+    
     SoSwitchElement::set(state, wc);
     int n = oldswitch->getNumChildren();
     for (int i = 0; i < n; i++) {
+      SoNode * child = oldswitch->getChild(i);
       if (i != wc) {
         state->push();
-        action->switchToNodeTraversal(oldswitch->getChild(i));
+        action->popPushCurPath(i, child);
+        action->traverse(child);
         state->pop();
       }
       else {
-        action->switchToNodeTraversal(oldswitch->getChild(i));
+        action->traverse(child);
       }
     }
+    action->popCurPath();
     // so that the children will not be traversed
     return SoCallbackAction::PRUNE;
   }
@@ -1115,11 +1120,15 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
   prevgroup->addChild(newlod);
   thisp->vrml2path->append(newlod);
 
-  // Traverse all children separately, that is, save and restore state between each
+  // Traverse all children separately, with normal SoGroup traversal
   int n = oldlod->getNumChildren();
+  action->pushCurPath();
   for (i=0; i < n; i++) {
-    action->switchToNodeTraversal(oldlod->getChild(i));
+    SoNode * child = oldlod->getChild(i);
+    action->popPushCurPath(i, child);
+    action->traverse(child);
   }
+  action->popCurPath();
 
   thisp->vrml2path->pop();
   THISP(closure)->dict.put(node, newlod);
@@ -1148,11 +1157,16 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
   prevgroup->addChild(newlod);
   thisp->vrml2path->append(newlod);
 
-  // Traverse all children separately, that is, save and restore state between each
+  // Traverse all children separately, with a normal SoGroup traversal
   int n = oldlod->getNumChildren();
+  
+  action->pushCurPath();
   for (int i=0; i < n; i++) {
-    action->switchToNodeTraversal(oldlod->getChild(i));
+    SoNode * child = oldlod->getChild(i);
+    action->popPushCurPath(i, child);
+    action->traverse(child);
   }
+  action->popCurPath();
 
   thisp->vrml2path->pop();
   THISP(closure)->dict.put(node, newlod);
