@@ -176,6 +176,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -514,9 +515,18 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   // set to identity before rendering subgraph
   SoModelMatrixElement::makeIdentity(state, this);  
 
-  SbBool depthtest = glIsEnabled(GL_DEPTH_TEST);
-  glDisable(GL_DEPTH_TEST);
+  SbBool test_out, write_out;
+  SoDepthBufferElement::DepthWriteFunction function_out;
+  SbVec2f range_out;
+  
+  SoDepthBufferElement::get(state, test_out, write_out,
+                            function_out, range_out);
+  
+  range_out[0] = 1.0f;
+  range_out[1] = 1.0f;
 
+  SoDepthBufferElement::set(state, test_out, write_out,
+                            function_out, range_out);
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
@@ -525,8 +535,6 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   else {
     PRIVATE(this)->children->traverse((SoAction *) action);
   }
-  if (depthtest)
-    glEnable(GL_DEPTH_TEST);
 
   // pop back to the old model matrix
   state->pop();
