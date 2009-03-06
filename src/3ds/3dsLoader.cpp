@@ -110,6 +110,8 @@
 
 #define DISABLE_BACKFACE_CULLING
 
+#define MATNAME_LENGTH 17 // 16 + \0
+#define OBJNAME_LENGTH 11 // 10 + \0
 
 
 // File Header Chunks
@@ -416,8 +418,7 @@ typedef struct tagContext {
   float minX,maxX;
   float minY,maxY;
   float minZ,maxZ;
-  char objectName[11]; // inconsistence with documentation,
-                       // object name must be 11 chars (3ds doc says 10)
+  char objectName[OBJNAME_LENGTH];
   int totalVertices;
   int totalFaces;
 
@@ -766,14 +767,12 @@ CHUNK(LoadNamedObject)
   assert(!con->cObj && "Forgot to free the current object.");
 
   // read object name
-#if 0 // objectName moved to global structure Context
-  char objectName[11]; // inconsistence with documentation,
-                       // object name must be 11 chars (3ds doc says 10)
-  con->s.readZString(objectName, 11);
-#else
-  con->s.readZString(con->objectName, 11);
-#endif
-
+  con->s.readZString(con->objectName, OBJNAME_LENGTH);
+  
+  if (coin_debug_3ds() >= 3)
+    SoDebugError::postInfo("LoadNamesObject",
+                           "Name: %s.", con->objectName);
+  
   READ_SUBCHUNKS(
     case N_TRI_OBJECT:  LoadNTriObject(con); break;
   )
@@ -802,6 +801,10 @@ CHUNK(LoadNTriObject)
   con->numFaces = 0;
   con->numDefaultDegFaces = 0;
   con->textureCoordsFound = FALSE;
+
+  if (coin_debug_3ds() >= 3)
+    SoDebugError::postInfo("LoadNTriObject",
+                           "About to load");
 
   READ_SUBCHUNKS(
     case POINT_ARRAY:       LoadPointArray(con); break;
@@ -997,6 +1000,11 @@ CHUNK(LoadNTriObject)
 CHUNK(LoadPointArray)
 {
   HEADER;
+  
+  if (coin_debug_3ds() >= 3)
+    SoDebugError::postInfo("LoadPointArray",
+                           "Begin");
+  
 
   // number of vertices
   uint16_t num;
@@ -1024,6 +1032,10 @@ CHUNK(LoadFaceArray)
 {
   FULLHEADER;
 
+  if (coin_debug_3ds() >= 3)
+    SoDebugError::postInfo("LoadFaceArray",
+                           "Begin");
+  
   // number of faces
   uint16_t num;
   con->s >> num;
@@ -1108,6 +1120,10 @@ CHUNK(LoadMshMatGroup)
 {
   FULLHEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatGroup",
+                           "Begin");
+
   if (!con->loadMaterials && !con->loadTextures) {
     // move on the position of the next chunk
     con->s.setPos(stopPos);
@@ -1115,8 +1131,8 @@ CHUNK(LoadMshMatGroup)
   }
 
   // material name
-  char materialName[16];
-  con->s.readZString(materialName, 16);
+  char materialName[MATNAME_LENGTH];
+  con->s.readZString(materialName, MATNAME_LENGTH);
   int matIndex;
   for (matIndex=1; matIndex<con->matList.getLength(); matIndex++) {
     if (strcmp(con->matList[matIndex]->name.getString(), materialName) == 0)
@@ -1173,6 +1189,11 @@ CHUNK(LoadMshMatGroup)
 CHUNK(LoadTexVerts)
 {
   HEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadTexVerts",
+                           "Begin");
+
   con->textureCoordsFound = TRUE;
 
   // number of faces
@@ -1203,6 +1224,10 @@ CHUNK(LoadTexVerts)
 CHUNK(LoadMatEntry)
 {
   FULLHEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatEntry",
+                           "Begin");
 
   if (!con->loadMaterials && !con->loadTextures) {
     // move on the position of the next chunk
@@ -1248,8 +1273,12 @@ CHUNK(LoadMatName)
 {
   HEADER;
 
-  char materialName[16];
-  con->s.readZString(materialName, 16);
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatName",
+                           "Begin");
+
+  char materialName[MATNAME_LENGTH];
+  con->s.readZString(materialName, MATNAME_LENGTH);
 
   con->cMat->name = materialName;
 }
@@ -1259,6 +1288,10 @@ CHUNK(LoadMatName)
 CHUNK(LoadMatAmbient)
 {
   FULLHEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatAmbient",
+                           "Begin");
 
   READ_SUBCHUNKS(
     case COLOR_24:     LoadColor24(con); break;
@@ -1273,6 +1306,10 @@ CHUNK(LoadMatDiffuse)
 {
   FULLHEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatDiffuse",
+                           "Begin");
+
   READ_SUBCHUNKS(
     case COLOR_24:     LoadColor24(con); break;
     case LIN_COLOR_24: LoadLinColor24(con); break;
@@ -1286,6 +1323,10 @@ CHUNK(LoadMatSpecular)
 {
   FULLHEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatSpecular",
+                           "Begin");
+
   READ_SUBCHUNKS(
     case COLOR_24:     LoadColor24(con); break;
     case LIN_COLOR_24: LoadLinColor24(con); break;
@@ -1298,6 +1339,10 @@ CHUNK(LoadMatSpecular)
 CHUNK(LoadShininess)
 {
   FULLHEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatShininesst",
+                           "Begin");
 
   con->cColorFloat = 0.f;
 
@@ -1314,6 +1359,10 @@ CHUNK(LoadMatTwoSide)
 {
   HEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatTwoSide",
+                           "Begin");
+
   con->cMat->twoSided = TRUE;
 }
 
@@ -1322,6 +1371,10 @@ CHUNK(LoadMatTwoSide)
 CHUNK(LoadTransparency)
 {
   FULLHEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadTransparency",
+                           "Begin");
 
   con->cColorFloat = 0.f;
 
@@ -1337,6 +1390,10 @@ CHUNK(LoadTransparency)
 CHUNK(LoadTexMap)
 {
   FULLHEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadTexMap",
+                           "Begin");
 
   if (!con->loadTextures) {
     // move on the position of the next chunk
@@ -1381,6 +1438,10 @@ CHUNK(LoadMapName)
 {
   HEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMapName",
+                           "Begin");
+
   char textureName[13];
   con->s.readZString(textureName, 13);
 
@@ -1392,6 +1453,11 @@ CHUNK(LoadMapName)
 CHUNK(LoadMapUScale)
 {
   HEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMatUScale",
+                           "Begin");
+
   con->s >> con->cMat->uscale;
 }
 
@@ -1400,6 +1466,11 @@ CHUNK(LoadMapUScale)
 CHUNK(LoadMapVScale)
 {
   HEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMapVScale",
+                           "Begin");
+
   con->s >> con->cMat->vscale;
 }
 
@@ -1408,6 +1479,11 @@ CHUNK(LoadMapVScale)
 CHUNK(LoadMapUOffset)
 {
   HEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMapUOffset",
+                           "Begin");
+
   con->s >> con->cMat->uoffset;
 }
 
@@ -1416,6 +1492,10 @@ CHUNK(LoadMapUOffset)
 CHUNK(LoadMapVOffset)
 {
   HEADER;
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadMapVOffset",
+                           "Begin");
+
   con->s >> con->cMat->voffset;
 }
 
@@ -1424,6 +1504,10 @@ CHUNK(LoadMapVOffset)
 CHUNK(LoadColor24)
 {
   HEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadColor24",
+                           "Begin");
 
   uint8_t r,g,b;
   con->s >> r;
@@ -1439,6 +1523,10 @@ CHUNK(LoadLinColor24)
 {
   HEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadLinColor24",
+                           "Begin");
+
   uint8_t r,g,b;
   con->s >> r;
   con->s >> g;
@@ -1453,6 +1541,10 @@ CHUNK(LoadIntPercentage)
 {
   HEADER;
 
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadIntPerscentage",
+                           "Begin");
+
   int16_t i;
   con->s >> i;
 
@@ -1464,6 +1556,10 @@ CHUNK(LoadIntPercentage)
 CHUNK(LoadFloatPercentage)
 {
   HEADER;
+
+  if (coin_debug_3ds() >= 4)
+    SoDebugError::postInfo("LoadFloatPersentage",
+                           "Begin");
 
   con->s >> (con->cColorFloat);
 }
@@ -1612,6 +1708,7 @@ SoNormal* FaceGroup::createSoNormal(tagContext *con)
     }
     normals->vector.finishEditing();
   } else {
+    normals->vector.setNum(0);
 /*  FIXME: This is incomplete implementation of per-vertex normal generator.
 
     normals->vector.setNum(num*3);
