@@ -59,7 +59,7 @@
 
   Separator {
      ShaderProgram {
-        shaderObject [ 
+        shaderObject [
                       VertexShader {
                          sourceProgram "vertex.glsl"
                       }
@@ -132,10 +132,10 @@ SoVertexAttribute::getFieldData(void) const
 {
   return PRIVATE(this)->fielddata.get();
 }
- 
+
 void *
 SoVertexAttribute::createInstance(void)
-{ 
+{
   return new SoVertexAttribute;
 }
 // SO_NODE_SOURCE()
@@ -201,7 +201,7 @@ SoVertexAttribute::getTypeId(void) const
   return SoVertexAttribute::classTypeId;
 }
 
-void 
+void
 SoVertexAttribute::initFieldData(void)
 {
   // initialize fielddata
@@ -210,14 +210,14 @@ SoVertexAttribute::initFieldData(void)
   PRIVATE(this)->fielddata->addField(this, "typeName", &this->typeName);
 }
 
-void 
+void
 SoVertexAttribute::doAction(SoAction * action)
 {
   PRIVATE(this)->attributedata->name = this->name.getValue();
   PRIVATE(this)->attributedata->data = PRIVATE(this)->valuesfield.get();
   PRIVATE(this)->attributedata->state = action->getState();
   PRIVATE(this)->attributedata->nodeid = this;
-      
+
   SoVertexAttributeElement::add(action->getState(), PRIVATE(this)->attributedata);
 }
 
@@ -245,7 +245,7 @@ SoVertexAttribute::GLRender(SoGLRenderAction * action)
 
   // check if there was an SoShaderProgram node before this node in
   // the scenegraph
-  SoGLShaderProgram * shaderprogram = 
+  SoGLShaderProgram * shaderprogram =
     static_cast<SoGLShaderProgram *>(SoGLShaderProgramElement::get(state));
 
   if (!shaderprogram) {
@@ -269,17 +269,17 @@ SoVertexAttribute::GLRender(SoGLRenderAction * action)
       PRIVATE(this)->attributedata->vbo = new SoVBO;
       dirty = TRUE;
     }
-    else if (PRIVATE(this)->attributedata->vbo->getBufferDataId() 
+    else if (PRIVATE(this)->attributedata->vbo->getBufferDataId()
              != this->getNodeId()) {
       dirty = TRUE;
     }
     if (dirty) {
-      PRIVATE(this)->attributedata->vbo->setBufferData(PRIVATE(this)->attributedata->dataptr, 
-                                                       PRIVATE(this)->attributedata->size, 
+      PRIVATE(this)->attributedata->vbo->setBufferData(PRIVATE(this)->attributedata->dataptr,
+                                                       PRIVATE(this)->attributedata->size,
                                                        this->getNodeId());
     }
   }
-  else if (PRIVATE(this)->attributedata->vbo && 
+  else if (PRIVATE(this)->attributedata->vbo &&
            PRIVATE(this)->attributedata->vbo->getBufferDataId()) {
     // clear buffers to deallocate VBO memory
     PRIVATE(this)->attributedata->vbo->setBufferData(NULL, 0, 0);
@@ -287,7 +287,7 @@ SoVertexAttribute::GLRender(SoGLRenderAction * action)
   SoBase::staticDataUnlock();
 }
 
-SoMField * 
+SoMField *
 SoVertexAttribute::getValuesField(void) const
 {
   return PRIVATE(this)->valuesfield.get();
@@ -341,10 +341,10 @@ SoVertexAttribute::readInstance(SoInput * in, unsigned short flags)
         SoType datatype = SoType::fromName(this->typeName.getValue());
         PRIVATE(this)->valuesfield.reset((SoMField *)datatype.createInstance());
         if (PRIVATE(this)->valuesfield.get()) {
-          PRIVATE(this)->fielddata->addField(this, valueskey, 
+          PRIVATE(this)->fielddata->addField(this, valueskey,
                                              PRIVATE(this)->valuesfield.get());
         }
-      } 
+      }
     }
     else if (fieldname == namekey) {
       err = !this->name.read(in, namekey);
@@ -394,7 +394,7 @@ SoVertexAttribute::notify(SoNotList * list)
   if (field == &this->typeName) {
     SoType datatype = SoType::fromName(this->typeName.getValue());
     PRIVATE(this)->valuesfield.reset((SoMField *)datatype.createInstance());
-    PRIVATE(this)->fielddata->addField(this, "values", 
+    PRIVATE(this)->fielddata->addField(this, "values",
                                        PRIVATE(this)->valuesfield.get());
   }
   inherited::notify(list);
@@ -406,7 +406,6 @@ SoVertexAttribute::copyContents(const SoFieldContainer * from,
                                 SbBool copyConn)
 {
   assert(from->isOfType(SoVertexAttribute::getClassTypeId()));
-  SoField * valuesfield = NULL;
 
   // copy fields
   const SoFieldData * src = from->getFieldData();
@@ -416,18 +415,17 @@ SoVertexAttribute::copyContents(const SoFieldContainer * from,
     SoField * cp = (SoField*) f->getTypeId().createInstance();
     cp->setFieldType(f->getFieldType());
     cp->setContainer(this);
-    if (src->getFieldName(i) == SbName("values")) {
-      valuesfield = cp;
-    }
     PRIVATE(this)->fielddata->addField(this, src->getFieldName(i), cp);
   }
+  // disable notification while copying the field values to avoid that
+  // the values field is recreated.
+  this->enableNotify(false);
   inherited::copyContents(from, copyConn);
-
-  PRIVATE(this)->valuesfield.reset((SoMField *) valuesfield);
+  this->enableNotify(true);
 }
 
-void 
-SoVertexAttributeP::setDataPtr(void) 
+void
+SoVertexAttributeP::setDataPtr(void)
 {
   SoType datatype = SoType::fromName(PUBLIC(this)->typeName.getValue().getString());
   this->attributedata->type = datatype;
