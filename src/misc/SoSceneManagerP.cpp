@@ -82,7 +82,9 @@ SoSceneManagerP::renderCB(void * userdata, class SoRenderManager * mgr)
 {
   SoSceneManagerP * thisp = (SoSceneManagerP *) userdata;
   assert(thisp);
-  thisp->rendercb(thisp->rendercbdata, PUBLIC(thisp));
+  if (thisp->rendercb) {
+    thisp->rendercb(thisp->rendercbdata, PUBLIC(thisp));
+  }
 }
 
 #undef PRIVATE
