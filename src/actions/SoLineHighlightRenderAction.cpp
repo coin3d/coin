@@ -355,7 +355,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   SoLinePatternElement::set(state, this->linepattern);
   SoTextureQualityElement::set(state, 0.0f);
   SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
-  SoPolygonOffsetElement::set(state, NULL, -1.0f, 1.0f, SoPolygonOffsetElement::LINES, TRUE);
+  SoPolygonOffsetElement::set(state, NULL, -1.0f, -1.0f, SoPolygonOffsetElement::LINES, TRUE);
   SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL); 
   SoNormalElement::set(state, NULL, 0, NULL, FALSE);
  
