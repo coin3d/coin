@@ -439,6 +439,8 @@ public:
   // Other nodes
   static SoCallbackAction::Response sopercam_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sodirlight_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response sospotlight_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response sopointlight_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sowwwinl_cb(void *, SoCallbackAction *, const SoNode *);
 
   // Convert nodes to SoVRMLIndexedFaceSet via triangle cb
@@ -539,8 +541,8 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_UNSUPPORTED(SoOrthographicCamera);
   ADD_PRE_CB(SoPerspectiveCamera, sopercam_cb);
   ADD_PRE_CB(SoDirectionalLight, sodirlight_cb);
-  ADD_UNSUPPORTED(SoPointLight);
-  ADD_UNSUPPORTED(SoSpotLight);
+  ADD_PRE_CB(SoPointLight, sopointlight_cb);
+  ADD_PRE_CB(SoSpotLight, sospotlight_cb);
   ADD_PRE_CB(SoWWWInline, sowwwinl_cb);
 
   // Coin nodes
@@ -1878,6 +1880,38 @@ SoToVRML2ActionP::sodirlight_cb(void * closure, SoCallbackAction * COIN_UNUSED(a
   dl->color = olddl->color.getValue();
   // FIXME: SoDirectionalLight seems to not support this? 20020805 kristian.
   //dl->ambientIntensity = ambient.getValue()[0] / diffuse.getValue()[0];
+
+  THISP(closure)->get_current_tail()->addChild(dl);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::sopointlight_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+{
+  SoVRMLPointLight * dl = NEW_NODE(SoVRMLPointLight, node);
+  const SoPointLight * olddl = coin_assert_cast<const SoPointLight *>(node);
+
+  dl->location = olddl->location.getValue();
+  dl->on = olddl->on.getValue();
+  dl->intensity = olddl->intensity.getValue();
+  dl->color = olddl->color.getValue();
+
+  THISP(closure)->get_current_tail()->addChild(dl);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::sospotlight_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+{
+  SoVRMLSpotLight * dl = NEW_NODE(SoVRMLSpotLight, node);
+  const SoSpotLight * olddl = coin_assert_cast<const SoSpotLight *>(node);
+
+  dl->location = olddl->location.getValue();
+  dl->direction = olddl->direction.getValue();
+  dl->on = olddl->on.getValue();
+  dl->intensity = olddl->intensity.getValue();
+  dl->color = olddl->color.getValue();
+  dl->cutOffAngle = olddl->cutOffAngle.getValue();
 
   THISP(closure)->get_current_tail()->addChild(dl);
   return SoCallbackAction::CONTINUE;
