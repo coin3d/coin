@@ -716,8 +716,8 @@ ScXMLStateMachine::PImpl::invokeDeleteCallbacks(void)
 */
 
 /*!
-  Registers a callback to be called when the state machine object is being
-  deleted.
+  Registers a callback to be called when the state machine exits or enters
+  a state.
 */
 void
 ScXMLStateMachine::addStateChangeCallback(ScXMLStateChangeCB * callback, void * userdata)
@@ -726,8 +726,8 @@ ScXMLStateMachine::addStateChangeCallback(ScXMLStateChangeCB * callback, void * 
 }
 
 /*!
-  Unregisters a callback to be called when the state machine object is being
-  deleted.
+  Unregisters a callback to be called when the state machine exits or enters
+  a state.
 */
 void
 ScXMLStateMachine::removeStateChangeCallback(ScXMLStateChangeCB * callback, void * userdata)
