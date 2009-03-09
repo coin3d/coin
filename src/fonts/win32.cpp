@@ -290,6 +290,49 @@ cc_flww32_kerninghash_deleteCB3(uintptr_t key, void * val, void * closure)
   free(kerning);
 }
 
+namespace {
+
+  class FontContext {
+  public:
+    FontContext(HDC dc, HFONT font, const char * identifier);
+    ~FontContext();
+  protected:
+    HFONT font;
+    HFONT previous;
+    HDC dc;
+    bool valid;
+    const char * identifier;
+  public:
+    bool isValid() { return this->valid; }
+  };
+
+  FontContext::FontContext(HDC dc, HFONT font, const char * identifier)
+  {
+    this->valid = false;
+    this->dc = dc; 
+    this->font = font;
+    this->identifier = identifier;
+    this->previous = static_cast<HFONT>(SelectObject(this->dc, font));
+    if (this->previous == NULL){
+      cc_win32_print_error(this->identifier, "SelectObject()", GetLastError());
+    }
+    else {
+      this->valid = true;
+    }
+  }
+
+  FontContext::~FontContext()
+  {
+    if (this->valid){
+      HFONT font = static_cast<HFONT>(SelectObject(this->dc, this->previous));
+      if (font != this->font){
+        cc_win32_print_error(this->identifier, "SelectObject()", GetLastError());
+      }
+    }
+  }
+
+} //end anonymous namespace 
+
 /*
   Wrapper for
   int tolower(int)
@@ -360,7 +403,6 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
   cc_dict * khash;
   cc_dict * fontkerninghash;
   float * kerningvalue;
-  HFONT previousfont;
   HFONT wfont, wfont2;
 
   cc_string * realname;
@@ -462,11 +504,8 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
      Constructing a multilevel kerninghash for this font
   */
 
-  previousfont = (HFONT) SelectObject(cc_flww32_globals.devctx, (HFONT)wfont);
-  if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
-    return NULL;
-  }
+  FontContext fontContext(cc_flww32_globals.devctx, (HFONT)wfont, "cc_flww32_get_font");
+  if (!fontContext.isValid()) return NULL;
 
   nrkpairs = GetKerningPairs(cc_flww32_globals.devctx, 0, NULL);
   if (nrkpairs) {
@@ -531,10 +570,9 @@ cc_flww32_get_font_name(void * font, cc_string * str)
   char * s;
 
   /* Connect device context to font. */
-  HFONT previousfont = (HFONT) SelectObject(cc_flww32_globals.devctx, (HFONT)font);
-  if (previousfont == NULL) {
+  FontContext fontContext(cc_flww32_globals.devctx, (HFONT)font, "cc_flww32_get_font_name");
+  if (!fontContext.isValid()) {
     cc_string_set_text(str, "<unknown>");
-    cc_win32_print_error("cc_flww32_get_font_name", "SelectObject()", GetLastError());
     return;
   }
 
@@ -559,11 +597,6 @@ cc_flww32_get_font_name(void * font, cc_string * str)
   }
 
   free(s);
-
-  /* Reconnect device context to default font. */
-  if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
-    cc_win32_print_error("cc_flww32_get_font_name", "SelectObject()", GetLastError());
-  }
 }
 
 /* Deallocates the resources connected with the given font id. Assumes
@@ -622,12 +655,10 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
                                 { 0, 0 }, { 0, 1 } };
   DWORD ret;
   DWORD size = 0;
-  HFONT previousfont;
 
   /* Connect device context to font. */
-  previousfont = (HFONT) SelectObject(cc_flww32_globals.devctx, (HFONT)font);
-  if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_get_vector_advance", "SelectObject()", GetLastError());
+  FontContext fontContext(cc_flww32_globals.devctx, (HFONT)font, "cc_flww32_get_vector_advance");
+  if (!fontContext.isValid()) {
     return;
   }
 
@@ -664,7 +695,6 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 
   *x = (float) gm.gmCellIncX / ((float) size);
   *y = (float) gm.gmCellIncY / ((float) size);
-
 }
 
 /* Returns kerning, in x and y input arguments, for a pair of
@@ -748,12 +778,10 @@ cc_flww32_get_bitmap(void * font, int glyph)
   DWORD ret;
   DWORD size = 0;
   uint8_t * w32bitmap = NULL;
-  HFONT previousfont;
 
   /* Connect device context to font. */
-  previousfont = (HFONT) SelectObject(cc_flww32_globals.devctx, (HFONT)font);
-  if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_get_bitmap", "SelectObject()", GetLastError());
+  FontContext fontContext(cc_flww32_globals.devctx, (HFONT)font, "cc_flww32_get_bitmap");
+  if (!fontContext.isValid()) {
     return NULL;
   }
 
@@ -789,7 +817,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
     cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
     cc_string_clean(&str);
-    goto done;
+    return NULL;
   }
 
   assert((ret < 1024*1024) && "bogus buffer size");
@@ -819,7 +847,8 @@ cc_flww32_get_bitmap(void * font, int glyph)
                         cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
       cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
       cc_string_clean(&str);
-      goto done;
+      free(w32bitmap);
+      return NULL;
     }
   }
 
@@ -859,15 +888,8 @@ cc_flww32_get_bitmap(void * font, int glyph)
       next_row += ((bm->width + 3) >> 2) << 2;
     }
   }
-
- done:
-  if (w32bitmap) free(w32bitmap);
-
-  /* Reconnect device context to default font. */
-  if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
-    cc_win32_print_error("cc_flww32_get_bitmap", "SelectObject()", GetLastError());
-  }
-
+  
+  free(w32bitmap);
   return bm;
 }
 
