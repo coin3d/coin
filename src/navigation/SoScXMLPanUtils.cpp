@@ -156,7 +156,7 @@ SoScXMLUpdatePan::invoke(ScXMLStateMachine * statemachinearg)
   // get mouse position
   const ScXMLEvent * ev = statemachine->getCurrentEvent();
   if (!ev || !ev->isOfType(SoScXMLEvent::getClassTypeId())) {
-    SoDebugError::post("UpdatePan", "Need SoEvent but statemachine has none.");
+    SoDebugError::post("UpdatePan", "Need ScXMLEvent but statemachine has none.");
     return;
   }
 
