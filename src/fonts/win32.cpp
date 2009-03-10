@@ -105,12 +105,13 @@ static int flww32_calcfontsize(float complexity);
 #undef WIN32_LEAN_AND_MEAN
 
 #include <Inventor/C/tidbits.h>
-#include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 
 #include "base/dict.h"
 #include "glue/win32api.h"
 #include "fonts/common.h"
+
+#include <Inventor/errors/SoDebugError.h>
 
 /* ************************************************************************* */
 
@@ -188,7 +189,7 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
   default: cc_string_append_text(&str, "<unknown>"); break;
   }
 
-  cc_debugerror_postinfo("font_enum_proc", "%s", cc_string_get_text(&str));
+  SoDebugError::postInfo("font_enum_proc", "%s", cc_string_get_text(&str));
 
   cc_string_clean(&str);
   return 1; /* non-0 to continue enumeration */
@@ -312,9 +313,22 @@ namespace {
     this->dc = dc; 
     this->font = font;
     this->identifier = identifier;
+    SetLastError(0);
     this->previous = static_cast<HFONT>(SelectObject(this->dc, font));
     if (this->previous == NULL){
-      cc_win32_print_error(this->identifier, "SelectObject()", GetLastError());
+      DWORD lastError = GetLastError();
+      SoDebugError::post(this->identifier, 
+        "Could not select font. HDC: %p, HFONT: %p", this->dc, this->font);
+
+      /* NOTE: 
+      Apparently SelectObject only affects GetLastError if hdc was invalid.
+      If that was not the case, the error message returned from GetLastError
+      will be the last error that occured *before* our call to SelectObject().
+      wiesener 20090310
+      */
+      if (lastError){
+        cc_win32_print_error(this->identifier, "SelectObject()", lastError);
+      }
     }
     else {
       this->valid = true;
@@ -324,9 +338,17 @@ namespace {
   FontContext::~FontContext()
   {
     if (this->valid){
+      SetLastError(0);
       HFONT font = static_cast<HFONT>(SelectObject(this->dc, this->previous));
       if (font != this->font){
-        cc_win32_print_error(this->identifier, "SelectObject()", GetLastError());
+        DWORD lastError = GetLastError();
+        SoDebugError::post(this->identifier, 
+          "Could not revert font. HDC: %p, HFONT: %p", this->dc, this->previous);
+
+        /* See note above about GetLastError() */
+        if (lastError){
+          cc_win32_print_error(this->identifier, "SelectObject()", lastError);
+        }
       }
     }
   }
@@ -447,7 +469,7 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
     Let's try stripping the bold/italic part from the font name and set those as flags instead
     */
     if (cc_font_debug()) {
-      cc_debugerror_postinfo("cc_flww32_get_font",
+      SoDebugError::postInfo("cc_flww32_get_font",
         "Tried fetching '%s', got '%s'. Will try stripping bold/italic.",
         fontname, cc_string_get_text(realname));
     }
@@ -591,7 +613,7 @@ cc_flww32_get_font_name(void * font, cc_string * str)
     /* The returned fontname length is longer than expected. This
        means that the system has cropped the string. Requested font
        will most probably not be found. */
-    cc_debugerror_postwarning("cc_flww32_get_font_name",
+    SoDebugError::postWarning("cc_flww32_get_font_name",
                               "GetTextFace(). The length of the returned fontname is"
                               " >= expected size. Fontname has been cropped.");
   }
@@ -986,7 +1008,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   UINT previous;
 
   if (!GLUWrapper()->available) {
-    cc_debugerror_post("cc_flww32_get_vector_glyph",
+    SoDebugError::post("cc_flww32_get_vector_glyph",
                        "GLU library could not be loaded.");
     return NULL;
   }
@@ -999,7 +1021,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
       (GLUWrapper()->gluDeleteTess == NULL) ||
       (GLUWrapper()->gluTessVertex == NULL) ||
       (GLUWrapper()->gluTessBeginContour == NULL)) {
-    cc_debugerror_post("cc_flww32_get_vector_glyph",
+    SoDebugError::post("cc_flww32_get_vector_glyph",
                        "Unable to bind required GLU tessellation "
                        "functions for 3D Win32 TrueType font support.");
     return NULL;
@@ -1288,7 +1310,7 @@ flww32_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[
 static void CALLBACK
 flww32_errorCallback(GLenum error_code)
 {
-  cc_debugerror_post("flww32_errorCallback","Error when tesselating glyph (GLU errorcode: %d):, investigate.", error_code);
+  SoDebugError::post("flww32_errorCallback","Error when tesselating glyph (GLU errorcode: %d):, investigate.", error_code);
 }
 
 static void
