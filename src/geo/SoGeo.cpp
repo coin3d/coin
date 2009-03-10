@@ -205,14 +205,25 @@ SoGeo::calculateTransform(const SbString * originsystem,
   SbDPMatrix lm = find_coordinate_system(localsystem, numlocalsys, localcoords);
   SbDPMatrix r = lm * om.inverse();
 
+  // start on 1, the first index is always the projection type
+  for (int i = 1; i < numoriginsys; i++) {
+    if (originsystem[i] == "FLAT") {
+      double tx = r[3][0];
+      double ty = r[3][1];
+      r.makeIdentity();
+      r[3][0] = tx;
+      r[3][1] = ty;
+      break;
+    }
+  }
 
   // transform to a single precision matrix.
   return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),
-                    static_cast<float>(r[0][2]), static_cast<float>(r[0][3]),
+                  static_cast<float>(r[0][2]), static_cast<float>(r[0][3]),
                   static_cast<float>(r[1][0]), static_cast<float>(r[1][1]),
-                    static_cast<float>(r[1][2]), static_cast<float>(r[1][3]),
+                  static_cast<float>(r[1][2]), static_cast<float>(r[1][3]),
                   static_cast<float>(r[2][0]), static_cast<float>(r[2][1]),
-                    static_cast<float>(r[2][2]), static_cast<float>(r[2][3]),
+                  static_cast<float>(r[2][2]), static_cast<float>(r[2][3]),
                   static_cast<float>(r[3][0]), static_cast<float>(r[3][1]),
-                    static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));
+                  static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));
 }
