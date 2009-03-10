@@ -181,6 +181,53 @@
   see documentation of SoDB::getGlobalField(),
   SoDB::enableRealTimeSensor(), and
   SoSceneManager::enableRealTimeUpdate().
+
+  If you want to use this class to create snapshots of your current
+  viewer's view, but want to control the size of the snapshot, you
+  need to modify the camera a bit while rendering to be sure that
+  everything you see in the current view is visible in the snapshot.
+
+  Below you'll find some pseude-code that does this. There are
+  probably other ways to do this as well.
+
+  \code
+  void render_offscreen(const SbVec2s size) 
+  {
+    SbVec2s glsize = this->getGLSize(); // size of your normal viewer
+    float glar = float(glsize[0] / float(glsize[1]));
+    float ar = float(size[0]) / float(size[1]);
+    SoCamera * camera = this->getCamera(); // the camera you're using
+    SoCamera::ViewportMapping oldmap = (SoCamera::ViewportMapping) 
+      camera->viewportMapping.getValue();
+    float oldar = camera->aspectRatio.getValue();
+
+    camera->viewportMapping = SoCamera::LEAVE_ALONE;
+    camera->aspectRatio = ar;
+
+    float scaleheight = 1.0f;
+    if (glar > ar) {
+      scaleheight = glar / ar;
+      camera->scaleHeight(scaleheight);
+    }
+    else {
+      scaleheight = ar / glar;
+      camera->scaleHeight(scaleheight);
+    }
+    SoOffscreenRenderer * renderer = new SoOffscreenRenderer(size);
+    renderer->render(root);
+
+    // ... save image
+
+    // restore camera
+    camera->viewportMapping = oldmap;
+    camera->aspectRatio = oldar;
+
+    if (scaleheight != 1.0f) {
+      camera->scaleHeight(1.0f / scaleheight);
+    }
+  }
+  \endcode
+
 */
 
 // As first mentioned to me by kyrah, the functionality of this class
@@ -352,7 +399,7 @@ public:
 
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
-  
+
   // used for lazy readPixels()
   SbBool didreadbuffer;
 private:
