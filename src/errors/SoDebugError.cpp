@@ -275,7 +275,11 @@ check_breakpoints(const char * source)
 {
   for (int i = 0; i < num_breakpoints; i++) {
     if (strcmp(breakpoints[i], source) == 0) {
+#ifdef _MSC_VER
+      __debugbreak();
+#else
       assert(0 && "Coin debug break");
+#endif
     }
   }
 }
