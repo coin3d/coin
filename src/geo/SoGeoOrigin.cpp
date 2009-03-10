@@ -90,6 +90,60 @@
     Translation { translation 0 0 30000 }
     Text2 { string "Washington" }    
   }
+
+  # add a small geogrid
+  GeoCoordinate {
+    geoSystem "GD"
+    point [
+    32 -120 0,
+    32 -110 0,
+    32 -100 0,
+    32 -90 0,
+    32 -80 0,
+    32 -70 0,
+
+    34 -120 0,
+    34 -110 0,
+    34 -100 0,
+    34 -90 0,
+    34 -80 0,
+    34 -70 0,
+
+    36 -120 0,
+    36 -110 0,
+    36 -100 0,
+    36 -90 0,
+    36 -80 0,
+    36 -70 0,
+
+    38 -120 0,
+    38 -110 0,
+    38 -100 0,
+    38 -90 0,
+    38 -80 0,
+    38 -70 0,
+
+    40 -120 0,
+    40 -110 0,
+    40 -100 0,
+    40 -90 0,
+    40 -80 0,
+    40 -70 0
+
+    42 -120 0,
+    42 -110 0,
+    42 -100 0,
+    42 -90 0,
+    42 -80 0,
+    42 -70 0
+    ]
+  }
+  
+  DrawStyle { style LINES }
+  BaseColor {}
+  ShapeHints { vertexOrdering COUNTERCLOCKWISE }
+  QuadMesh { verticesPerRow 6 verticesPerColumn 6 }
+
   \endcode
 
   \since Coin 2.5  
