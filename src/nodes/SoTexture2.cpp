@@ -281,8 +281,10 @@
   fetched from SoTexture2::image and not from disk. (Specify either
   this field or use SoTexture2::image, not both.)
 
+  FIXME: Section about simage is outdated.
+
   For reading texture image files from disk, Coin uses the "simage"
-  library from Systems in Motion. This library must be installed for
+  library from Kongsberg SIM. This library must be installed for
   it to be possible to load any image files at all.
 
   The set of image formats you can actually read with the simage
