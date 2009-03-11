@@ -87,6 +87,28 @@ using std::strchr;
 using std::memcpy;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
+#ifdef HAVE_UNISTD_H
+  #include <sys/types.h>
+  #include <unistd.h>
+#endif
+
+#if defined(_MSC_VER)
+  #include <intrin.h>
+  #define COIN_DEBUGGER_BREAK(x) __debugbreak()
+#else 
+  #if defined (MINGW32) || defined (CYGWIN)
+    #include <windows.h>
+    #define COIN_DEBUGGER_BREAK(x) ::DebugBreak()
+  #else
+    #if defined (_POSIX_VERSION)
+      #include <signal.h>
+      #define COIN_DEBUGGER_BREAK(x) ::raise(SIGINT)
+    #else
+      #define COIN_DEBUGGER_BREAK(x) assert(0 && x)
+    #endif
+  #endif
+#endif
+
 // *************************************************************************
 
 SoType SoDebugError::classTypeId STATIC_SOTYPE_INIT;
@@ -275,11 +297,7 @@ check_breakpoints(const char * source)
 {
   for (int i = 0; i < num_breakpoints; i++) {
     if (strcmp(breakpoints[i], source) == 0) {
-#ifdef _MSC_VER
-      __debugbreak();
-#else
-      assert(0 && "Coin debug break");
-#endif
+      COIN_DEBUGGER_BREAK("Coin debug break");
     }
   }
 }
@@ -370,3 +388,4 @@ SoDebugError::getHandler(void * & data) const
 }
 
 #undef SODEBUGERROR_POST
+#undef COIN_DEBUGGER_BREAK
