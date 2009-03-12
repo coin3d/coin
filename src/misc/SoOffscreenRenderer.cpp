@@ -100,10 +100,11 @@
   pictures for video.
 
   Offscreen rendering is internally done through either a GLX
-  offscreen context (i.e. OpenGL on X11) or a WGL (i.e. OpenGL on
-  Win32) or AGL (i.e. OpenGL on the Mac OS) ditto. If the OpenGL
-  driver supports the pbuffer extension, it is detected and used to
-  provide hardware-accelerated offscreen rendering.
+  offscreen context (i.e. OpenGL on X11), WGL (i.e. OpenGL on
+  Win32), AGL (old-style OpenGL on the Mac OS X) or CGL (new-style Mac OS X).
+
+  If the OpenGL driver supports the pbuffer extension, it is detected
+  and used to provide hardware-accelerated offscreen rendering.
 
   The pixeldata is fetched from the OpenGL buffer with glReadPixels(),
   with the format and type arguments set to GL_RGBA and
@@ -249,9 +250,8 @@
 //        alpha (p-buffers are faster to render into, as they can take
 //        advantage of hardware acceleration)
 //
-//        2) failing that, try to make WGL (or GLX or AGL on
-//        non-MSWindows platforms) set up a buffer with destination
-//        alpha
+//        2) failing that, try to make WGL/GLX/AGL/CGL set up a buffer
+//        with destination alpha
 //
 //        3) failing that, get hold of either a p-buffer or a straight
 //        WGL buffer with only RGB (no destination alpha -- this
@@ -313,9 +313,9 @@
 #include "SoOffscreenGLXData.h"
 #endif // HAVE_GLX
 
-#ifdef HAVE_AGL
-#include "SoOffscreenAGLData.h"
-#endif // HAVE_AGL
+#ifdef __APPLE__
+#include "SoOffscreenCGData.h"
+#endif // __APPLE__
 
 #ifdef HAVE_WGL
 #include "SoOffscreenWGLData.h"
@@ -466,9 +466,9 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
   pixmmres = SoOffscreenGLXData::getResolution();
 #elif defined(HAVE_WGL)
   pixmmres = SoOffscreenWGLData::getResolution();
-#elif defined(HAVE_AGL)
-  pixmmres = SoOffscreenAGLData::getResolution();
-#endif // HAVE_AGL
+#elif defined(__APPLE__)
+  pixmmres = SoOffscreenCGData::getResolution();
+#endif // __APPLE__
 
   // The API-signature of this method is not what it should be: it
   // assumes the same resolution in the vertical and horizontal
@@ -1694,9 +1694,9 @@ SoOffscreenRendererP::offscreenContextsNotSupported(void)
   return FALSE;
 #elif defined(HAVE_WGL)
   return FALSE;
-#elif defined(HAVE_AGL)
+#elif defined(__APPLE__)
   return FALSE;
-#endif // HAVE_AGL
+#endif
 
   // No win-system GL binding was found, so we're sure that offscreen
   // rendering can *not* be done.

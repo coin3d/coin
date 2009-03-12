@@ -1,5 +1,5 @@
-#ifndef COIN_SOOFFSCREENAGLDATA_H
-#define COIN_SOOFFSCREENAGLDATA_H
+#ifndef COIN_SOOFFSCREENCGDATA_H
+#define COIN_SOOFFSCREENCGDATA_H
 
 /**************************************************************************\
  *
@@ -28,22 +28,9 @@
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
-// *************************************************************************
-
-// Stop Carbon from trying to use the CarbonSound.h header that was removed 
-// in QuickTime 7.0. We are not using CarbonSound, so we do not need that 
-// anyway. See http://www.cocoadev.com/index.pl?CarbonSound
-#define __CARBONSOUND__
-#include <Carbon/Carbon.h>
-#include <Inventor/SbVec2f.h>
-
-// *************************************************************************
-
-class SoOffscreenAGLData {
+class SoOffscreenCGData {
 public:
   static SbVec2f getResolution(void);
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SOOFFSCREENAGLDATA_H
+#endif // ! COIN_SOOFFSCREENGLDATA_H

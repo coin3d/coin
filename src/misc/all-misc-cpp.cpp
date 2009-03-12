@@ -65,7 +65,7 @@
 #include "SoNormalGenerator.cpp"
 #include "SoNotRec.cpp"
 #include "SoNotification.cpp"
-#include "SoOffscreenAGLData.cpp"
+#include "SoOffscreenCGData.cpp"
 #include "SoOffscreenGLXData.cpp"
 #include "SoOffscreenRenderer.cpp"
 #include "SoOffscreenWGLData.cpp"

@@ -33,7 +33,7 @@ RegularSources = \
         SoEventManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp \
+	SoOffscreenCGData.cpp \
 	SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp \
 	SoVBO.cpp \
@@ -65,7 +65,7 @@ PrivateHeaders = \
 	CoinOffscreenGLCanvas.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \
-	SoOffscreenAGLData.h \
+	SoOffscreenCGData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h \

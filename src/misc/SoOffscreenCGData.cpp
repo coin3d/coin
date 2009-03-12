@@ -25,17 +25,21 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_AGL
-
-#include "SoOffscreenAGLData.h"
+#include "SoOffscreenCGData.h"
+#ifdef COIN_MACOS_10_3
+#include <ApplicationServices/ApplicationServices.h>
+#endif
 
 // Pixels-pr-mm.
 SbVec2f
-SoOffscreenAGLData::getResolution(void)
+SoOffscreenCGData::getResolution(void)
 {
-  SInt16 hr, vr;
-  ScreenRes(&hr, &vr); 
-  return SbVec2f((float)hr / 25.4f, (float)vr / 25.4f);
+#ifdef COIN_MACOS_10_3
+  CGDirectDisplayID display = CGMainDisplayID();
+  CGSize size = CGDisplayScreenSize(display);
+  return SbVec2f(CGDisplayPixelsWide(display)/size.width,
+                 CGDisplayPixelsHigh(display)/size.height)l
+#else
+  return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
+#endif
 }
-
-#endif // HAVE_AGL
