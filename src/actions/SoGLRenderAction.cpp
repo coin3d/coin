@@ -136,7 +136,7 @@
 
   Various settings for how to do rendering of transparent objects in
   the scene. Some of the settings will provide faster rendering, while
-  others gives you better quality rendering.
+  others give you better quality rendering.
 
   Note that doing correct rendering of \e multiple transparent objects
   often fails, because to be 100% correct, all polygons needs to be

@@ -33,7 +33,7 @@
   \ingroup nodekits
 
   Node kits are collections of nodes and other node kits (from here on
-  node kits which is part of some other node kit, will only be referred
+  node kits which are part of some other node kit, will only be referred
   to as nodes or parts, see catalogs and parts), organized in a way
   that is convenient for its use. A node kit inherits SoNode and can
   thus be inserted into a scenegraph as any other node.
