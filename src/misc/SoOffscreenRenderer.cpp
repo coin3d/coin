@@ -313,9 +313,9 @@
 #include "SoOffscreenGLXData.h"
 #endif // HAVE_GLX
 
-#ifdef __APPLE__
+#ifdef COIN_MACOS_10
 #include "SoOffscreenCGData.h"
-#endif // __APPLE__
+#endif // COIN_MACOS_10
 
 #ifdef HAVE_WGL
 #include "SoOffscreenWGLData.h"
@@ -466,9 +466,9 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
   pixmmres = SoOffscreenGLXData::getResolution();
 #elif defined(HAVE_WGL)
   pixmmres = SoOffscreenWGLData::getResolution();
-#elif defined(__APPLE__)
+#elif defined(COIN_MACOS_10)
   pixmmres = SoOffscreenCGData::getResolution();
-#endif // __APPLE__
+#endif // COIN_MACOS_10
 
   // The API-signature of this method is not what it should be: it
   // assumes the same resolution in the vertical and horizontal
@@ -1694,7 +1694,7 @@ SoOffscreenRendererP::offscreenContextsNotSupported(void)
   return FALSE;
 #elif defined(HAVE_WGL)
   return FALSE;
-#elif defined(__APPLE__)
+#elif defined(COIN_MACOS_10)
   return FALSE;
 #endif
 
