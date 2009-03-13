@@ -6657,7 +6657,7 @@ SOURCE=..\..\src\misc\SoOffscreenRenderer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\misc\SoOffscreenAGLData.cpp
+SOURCE=..\..\src\misc\SoOffscreenCGData.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -15631,7 +15631,7 @@ SOURCE=..\..\src\misc\SoGenerate.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\misc\SoOffscreenAGLData.h
+SOURCE=..\..\src\misc\SoOffscreenCGData.h
 
 # PROP Exclude_From_Build 1
 # End Source File

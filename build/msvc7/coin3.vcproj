@@ -22354,7 +22354,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\misc\SoOffscreenAGLData.cpp">
+					RelativePath="..\..\src\misc\SoOffscreenCGData.cpp">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
 						<Tool
@@ -44757,7 +44757,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\misc\SoOffscreenAGLData.h">
+					RelativePath="..\..\src\misc\SoOffscreenCGData.h">
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
 						ExcludedFromBuild="TRUE">

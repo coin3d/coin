@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{3C375881-34FB-490F-A5E4-6CBC343E9907}"
+	ProjectGUID="{42FB7100-FEE6-44F8-990D-221C6AF3E154}"
 	>
 	<Platforms>
 		<Platform
@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;COIN_DEBUG=1;HAVE_CONFIG_H;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\StaticDebug/coin3.pch"
@@ -121,7 +121,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/coin3.pch"
@@ -211,7 +211,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_LIB;COIN_DEBUG=0;HAVE_CONFIG_H;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_LIB;COIN_DEBUG=0;HAVE_CONFIG_H;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\StaticRelease/coin3.pch"
@@ -290,7 +290,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".,include,..\..\include,src,..\..\src,..\..\include\Inventor\annex"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -24942,7 +24942,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\misc\SoOffscreenAGLData.cpp"
+					RelativePath="..\..\src\misc\SoOffscreenCGData.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -50936,7 +50936,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\misc\SoOffscreenAGLData.h"
+					RelativePath="..\..\src\misc\SoOffscreenCGData.h"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"

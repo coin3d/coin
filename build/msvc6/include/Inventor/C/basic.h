@@ -35,11 +35,31 @@
 /* Documented for Doxygen in SoDB.cpp. */
 typedef int SbBool;
 
+#ifdef DOXYGEN_SKIP_THIS
+#ifndef USE_STATIC_CONSTS
+/*
+  Using static consts might have some problems with merging on older
+  compilers, so lie for doxygen for now, this is tested and found
+  working on GCC 4.(1-3)
+*/
+#define USE_STATIC_CONSTS
+#endif //USE_STATIC_CONSTS
+#endif //DOXYGEN_SKIP_THIS
+
 #ifndef FALSE
+#ifdef USE_STATIC_CONSTS
+static const SbBool FALSE = 0;
+#else
 #define FALSE 0
+#endif //USE_STATIC_CONSTS
 #endif /* !FALSE */
+
 #ifndef TRUE
-#define TRUE  1
+#ifdef USE_STATIC_CONSTS
+static const SbBool TRUE = 1;
+#else
+#define TRUE 1
+#endif //USE_STATIC_CONSTS
 #endif /* !TRUE */
 
 /* *********************************************************************** */
@@ -161,10 +181,10 @@ typedef int SbBool;
 /* These are available for adding or omitting features based on Coin
  * version numbers in client application sources. */
 #define COIN_MAJOR_VERSION 3
-#define COIN_MINOR_VERSION 0
-#define COIN_MICRO_VERSION 1
+#define COIN_MINOR_VERSION 1
+#define COIN_MICRO_VERSION 0
 #define COIN_BETA_VERSION a
-#define COIN_VERSION "3.0.1a"
+#define COIN_VERSION "3.1.0a"
 
 /* This define is set by the configure script if singleprecision math
    functions are available from the C library API headers. */

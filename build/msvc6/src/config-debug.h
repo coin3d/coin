@@ -53,10 +53,10 @@
 #define COIN_MAJOR_VERSION 3
 
 /* define this to the libCoin release version number */
-#define COIN_MICRO_VERSION 1
+#define COIN_MICRO_VERSION 0
 
 /* define this to the libCoin minor version number */
-#define COIN_MINOR_VERSION 0
+#define COIN_MINOR_VERSION 1
 
 /* define this to the dynamic library name of Coin */
 #define COIN_SYSTEM_LIBRARY_NAME "coin3d.dll"
@@ -83,7 +83,7 @@
 /* #undef COIN_UNDEF_IN_PATH_HACK */
 
 /* define this to the full libCoin major.minor.micro version number */
-#define COIN_VERSION "3.0.1a"
+#define COIN_VERSION "3.1.0a"
 
 /* define this to the dynamic library extension suffix on this system */
 #define DYNAMIC_LIBRARY_EXTENSION ".dll"
@@ -431,13 +431,13 @@
 #define PACKAGE_NAME "Coin"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Coin 3.0.1a"
+#define PACKAGE_STRING "Coin 3.1.0a"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "coin"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "3.0.1a"
+#define PACKAGE_VERSION "3.1.0a"
 
 /* define for runtime linking with simage */
 #define SIMAGE_RUNTIME_LINKING 1
@@ -461,7 +461,7 @@
 #define USE_W32THREAD 
 
 /* Version number of package */
-#define VERSION "3.0.1a"
+#define VERSION "3.1.0a"
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #define X_DISPLAY_MISSING 1

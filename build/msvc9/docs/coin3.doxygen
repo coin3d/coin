@@ -23,7 +23,7 @@ PROJECT_NAME           = Coin
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 3.0.1a
+PROJECT_NUMBER         = 3.1.0a
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -137,13 +137,6 @@ JAVADOC_AUTOBRIEF      = YES
 # description. Set this tag to YES if you prefer the old behaviour instead.
 
 MULTILINE_CPP_IS_BRIEF = NO
-
-# If the DETAILS_AT_TOP tag is set to YES then Doxygen 
-# will output the detailed description near the top, like JavaDoc.
-# If set to NO, the detailed description appears after the member 
-# documentation.
-
-DETAILS_AT_TOP         = YES
 
 # If the INHERIT_DOCS tag is set to YES (the default) then an undocumented 
 # member inherits the documentation from any documented member that it 
@@ -453,23 +446,27 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = ..\..\src\doc\main.dox \
-                         ..\..\src\doc\modules.dox \
-                         ..\..\src\doc\environment.dox \
-                         ..\..\src\doc\macros.dox \
-                         ..\..\src\doc\books.dox \
+INPUT                  = \
+		         ..\..\src\doc\main.dox \
                          .\include\Inventor\C\basic.h \
-                         ..\..\include\Inventor\SbBasic.h \
+                         ..\..\docs\releases.dox \
+                         ..\..\include\Inventor\C\XML\attribute.h \
+                         ..\..\include\Inventor\C\XML\document.h \
+                         ..\..\include\Inventor\C\XML\element.h \
+                         ..\..\include\Inventor\C\XML\parser.h \
+                         ..\..\include\Inventor\C\XML\path.h \
+                         ..\..\include\Inventor\C\XML\types.h \
                          ..\..\include\Inventor\SbBSPTree.h \
+                         ..\..\include\Inventor\SbBasic.h \
                          ..\..\include\Inventor\SbBox.h \
-                         ..\..\include\Inventor\SbBox2s.h \
-                         ..\..\include\Inventor\SbBox2i32.h \
-                         ..\..\include\Inventor\SbBox2f.h \
                          ..\..\include\Inventor\SbBox2d.h \
-                         ..\..\include\Inventor\SbBox3s.h \
-                         ..\..\include\Inventor\SbBox3i32.h \
-                         ..\..\include\Inventor\SbBox3f.h \
+                         ..\..\include\Inventor\SbBox2f.h \
+                         ..\..\include\Inventor\SbBox2i32.h \
+                         ..\..\include\Inventor\SbBox2s.h \
                          ..\..\include\Inventor\SbBox3d.h \
+                         ..\..\include\Inventor\SbBox3f.h \
+                         ..\..\include\Inventor\SbBox3i32.h \
+                         ..\..\include\Inventor\SbBox3s.h \
                          ..\..\include\Inventor\SbClip.h \
                          ..\..\include\Inventor\SbColor.h \
                          ..\..\include\Inventor\SbColor4f.h \
@@ -488,27 +485,27 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\SbTime.h \
                          ..\..\include\Inventor\SbVec.h \
                          ..\..\include\Inventor\SbVec2b.h \
-                         ..\..\include\Inventor\SbVec2s.h \
-                         ..\..\include\Inventor\SbVec2i32.h \
-                         ..\..\include\Inventor\SbVec2f.h \
                          ..\..\include\Inventor\SbVec2d.h \
+                         ..\..\include\Inventor\SbVec2f.h \
+                         ..\..\include\Inventor\SbVec2i32.h \
+                         ..\..\include\Inventor\SbVec2s.h \
                          ..\..\include\Inventor\SbVec3b.h \
-                         ..\..\include\Inventor\SbVec3s.h \
-                         ..\..\include\Inventor\SbVec3i32.h \
-                         ..\..\include\Inventor\SbVec3f.h \
                          ..\..\include\Inventor\SbVec3d.h \
+                         ..\..\include\Inventor\SbVec3f.h \
+                         ..\..\include\Inventor\SbVec3i32.h \
+                         ..\..\include\Inventor\SbVec3s.h \
                          ..\..\include\Inventor\SbVec4b.h \
-                         ..\..\include\Inventor\SbVec4ub.h \
-                         ..\..\include\Inventor\SbVec4s.h \
-                         ..\..\include\Inventor\SbVec4us.h \
-                         ..\..\include\Inventor\SbVec4i32.h \
-                         ..\..\include\Inventor\SbVec4ui32.h \
-                         ..\..\include\Inventor\SbVec4f.h \
                          ..\..\include\Inventor\SbVec4d.h \
+                         ..\..\include\Inventor\SbVec4f.h \
+                         ..\..\include\Inventor\SbVec4i32.h \
+                         ..\..\include\Inventor\SbVec4s.h \
+                         ..\..\include\Inventor\SbVec4ub.h \
+                         ..\..\include\Inventor\SbVec4ui32.h \
+                         ..\..\include\Inventor\SbVec4us.h \
                          ..\..\include\Inventor\SbViewVolume.h \
                          ..\..\include\Inventor\SbViewportRegion.h \
-                         ..\..\include\Inventor\SbXfBox3f.h \
                          ..\..\include\Inventor\SbXfBox3d.h \
+                         ..\..\include\Inventor\SbXfBox3f.h \
                          ..\..\include\Inventor\SoDB.h \
                          ..\..\include\Inventor\SoEventManager.h \
                          ..\..\include\Inventor\SoFullPath.h \
@@ -520,442 +517,9 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\SoPath.h \
                          ..\..\include\Inventor\SoPickedPoint.h \
                          ..\..\include\Inventor\SoPrimitiveVertex.h \
+                         ..\..\include\Inventor\SoRenderManager.h \
                          ..\..\include\Inventor\SoSceneManager.h \
                          ..\..\include\Inventor\SoType.h \
-                         ..\..\include\Inventor\actions\SoAction.h \
-                         ..\..\include\Inventor\actions\SoBoxHighlightRenderAction.h \
-                         ..\..\include\Inventor\actions\SoCallbackAction.h \
-                         ..\..\include\Inventor\actions\SoGLRenderAction.h \
-                         ..\..\include\Inventor\actions\SoAudioRenderAction.h \
-                         ..\..\include\Inventor\actions\SoGetBoundingBoxAction.h \
-                         ..\..\include\Inventor\actions\SoGetMatrixAction.h \
-                         ..\..\include\Inventor\actions\SoGetPrimitiveCountAction.h \
-                         ..\..\include\Inventor\actions\SoHandleEventAction.h \
-                         ..\..\include\Inventor\actions\SoLineHighlightRenderAction.h \
-                         ..\..\include\Inventor\actions\SoPickAction.h \
-                         ..\..\include\Inventor\actions\SoRayPickAction.h \
-                         ..\..\include\Inventor\actions\SoSearchAction.h \
-                         ..\..\include\Inventor\actions\SoSubAction.h \
-                         ..\..\include\Inventor\actions\SoToVRMLAction.h \
-                         ..\..\include\Inventor\actions\SoToVRML2Action.h \
-                         ..\..\include\Inventor\actions\SoWriteAction.h \
-                         ..\..\include\Inventor\actions\SoReorganizeAction.h \
-                         ..\..\include\Inventor\collision\SoIntersectionDetectionAction.h \
-                         ..\..\include\Inventor\caches\SoCache.h \
-                         ..\..\include\Inventor\caches\SoBoundingBoxCache.h \
-                         ..\..\include\Inventor\caches\SoConvexDataCache.h \
-                         ..\..\include\Inventor\caches\SoGLCacheList.h \
-                         ..\..\include\Inventor\caches\SoGLRenderCache.h \
-                         ..\..\include\Inventor\caches\SoNormalCache.h \
-                         ..\..\include\Inventor\caches\SoPrimitiveVertexCache.h \
-                         ..\..\include\Inventor\caches\SoTextureCoordinateCache.h \
-                         ..\..\include\Inventor\details\SoConeDetail.h \
-                         ..\..\include\Inventor\details\SoCubeDetail.h \
-                         ..\..\include\Inventor\details\SoCylinderDetail.h \
-                         ..\..\include\Inventor\details\SoDetail.h \
-                         ..\..\include\Inventor\details\SoFaceDetail.h \
-                         ..\..\include\Inventor\details\SoLineDetail.h \
-                         ..\..\include\Inventor\details\SoNodeKitDetail.h \
-                         ..\..\include\Inventor\details\SoPointDetail.h \
-                         ..\..\include\Inventor\details\SoTextDetail.h \
-                         ..\..\include\Inventor\draggers\SoCenterballDragger.h \
-                         ..\..\include\Inventor\draggers\SoDirectionalLightDragger.h \
-                         ..\..\include\Inventor\draggers\SoDragPointDragger.h \
-                         ..\..\include\Inventor\draggers\SoDragger.h \
-                         ..\..\include\Inventor\draggers\SoHandleBoxDragger.h \
-                         ..\..\include\Inventor\draggers\SoJackDragger.h \
-                         ..\..\include\Inventor\draggers\SoPointLightDragger.h \
-                         ..\..\include\Inventor\draggers\SoRotateCylindricalDragger.h \
-                         ..\..\include\Inventor\draggers\SoRotateDiscDragger.h \
-                         ..\..\include\Inventor\draggers\SoRotateSphericalDragger.h \
-                         ..\..\include\Inventor\draggers\SoScale1Dragger.h \
-                         ..\..\include\Inventor\draggers\SoScale2Dragger.h \
-                         ..\..\include\Inventor\draggers\SoScale2UniformDragger.h \
-                         ..\..\include\Inventor\draggers\SoScaleUniformDragger.h \
-                         ..\..\include\Inventor\draggers\SoSpotLightDragger.h \
-                         ..\..\include\Inventor\draggers\SoTabBoxDragger.h \
-                         ..\..\include\Inventor\draggers\SoTabPlaneDragger.h \
-                         ..\..\include\Inventor\draggers\SoTrackballDragger.h \
-                         ..\..\include\Inventor\draggers\SoTransformBoxDragger.h \
-                         ..\..\include\Inventor\draggers\SoTransformerDragger.h \
-                         ..\..\include\Inventor\draggers\SoTranslate1Dragger.h \
-                         ..\..\include\Inventor\draggers\SoTranslate2Dragger.h \
-                         ..\..\include\Inventor\elements\SoElement.h \
-                         ..\..\include\Inventor\elements\SoAccumulatedElement.h \
-                         ..\..\include\Inventor\elements\SoOverrideElement.h \
-                         ..\..\include\Inventor\elements\SoFloatElement.h \
-                         ..\..\include\Inventor\elements\SoInt32Element.h \
-                         ..\..\include\Inventor\elements\SoGLColorIndexElement.h \
-                         ..\..\include\Inventor\elements\SoGLLineWidthElement.h \
-                         ..\..\include\Inventor\elements\SoGLPointSizeElement.h \
-                         ..\..\include\Inventor\elements\SoLineWidthElement.h \
-                         ..\..\include\Inventor\elements\SoPointSizeElement.h \
-                         ..\..\include\Inventor\elements\SoReplacedElement.h \
-                         ..\..\include\Inventor\elements\SoListenerPositionElement.h \
-                         ..\..\include\Inventor\elements\SoListenerOrientationElement.h \
-                         ..\..\include\Inventor\elements\SoListenerGainElement.h \
-                         ..\..\include\Inventor\elements\SoListenerDopplerElement.h \
-                         ..\..\include\Inventor\engines\SoBoolOperation.h \
-                         ..\..\include\Inventor\engines\SoCalculator.h \
-                         ..\..\include\Inventor\engines\SoCompose.h \
-                         ..\..\include\Inventor\engines\SoComposeMatrix.h \
-                         ..\..\include\Inventor\engines\SoComposeRotation.h \
-                         ..\..\include\Inventor\engines\SoComposeRotationFromTo.h \
-                         ..\..\include\Inventor\engines\SoComposeVec2f.h \
-                         ..\..\include\Inventor\engines\SoComposeVec3f.h \
-                         ..\..\include\Inventor\engines\SoComposeVec4f.h \
-                         ..\..\include\Inventor\engines\SoComputeBoundingBox.h \
-                         ..\..\include\Inventor\engines\SoConcatenate.h \
-                         ..\..\include\Inventor\engines\SoCounter.h \
-                         ..\..\include\Inventor\engines\SoDecomposeMatrix.h \
-                         ..\..\include\Inventor\engines\SoDecomposeRotation.h \
-                         ..\..\include\Inventor\engines\SoDecomposeVec2f.h \
-                         ..\..\include\Inventor\engines\SoDecomposeVec3f.h \
-                         ..\..\include\Inventor\engines\SoDecomposeVec4f.h \
-                         ..\..\include\Inventor\engines\SoElapsedTime.h \
-                         ..\..\include\Inventor\engines\SoEngine.h \
-                         ..\..\include\Inventor\engines\SoEngineOutput.h \
-                         ..\..\include\Inventor\engines\SoFieldConverter.h \
-                         ..\..\include\Inventor\engines\SoGate.h \
-                         ..\..\include\Inventor\engines\SoInterpolate.h \
-                         ..\..\include\Inventor\engines\SoInterpolateFloat.h \
-                         ..\..\include\Inventor\engines\SoInterpolateRotation.h \
-                         ..\..\include\Inventor\engines\SoInterpolateVec2f.h \
-                         ..\..\include\Inventor\engines\SoInterpolateVec3f.h \
-                         ..\..\include\Inventor\engines\SoInterpolateVec4f.h \
-                         ..\..\include\Inventor\engines\SoOnOff.h \
-                         ..\..\include\Inventor\engines\SoOneShot.h \
-                         ..\..\include\Inventor\engines\SoSelectOne.h \
-                         ..\..\include\Inventor\engines\SoSubEngine.h \
-                         ..\..\include\Inventor\engines\SoTimeCounter.h \
-                         ..\..\include\Inventor\engines\SoTransformVec3f.h \
-                         ..\..\include\Inventor\engines\SoTriggerAny.h \
-                         ..\..\include\Inventor\engines\SoNodeEngine.h \
-                         ..\..\include\Inventor\engines\SoTexture2Convert.h \
-                         ..\..\include\Inventor\engines\SoHeightMapToNormalMap.h \
-                         ..\..\include\Inventor\errors\SoDebugError.h \
-                         ..\..\include\Inventor\errors\SoError.h \
-                         ..\..\include\Inventor\errors\SoMemoryError.h \
-                         ..\..\include\Inventor\errors\SoReadError.h \
-                         ..\..\include\Inventor\events\SoButtonEvent.h \
-                         ..\..\include\Inventor\events\SoEvent.h \
-                         ..\..\include\Inventor\events\SoKeyboardEvent.h \
-                         ..\..\include\Inventor\events\SoLocation2Event.h \
-                         ..\..\include\Inventor\events\SoMotion3Event.h \
-                         ..\..\include\Inventor\events\SoMouseButtonEvent.h \
-                         ..\..\include\Inventor\events\SoSpaceballButtonEvent.h \
-                         ..\..\include\Inventor\fields\SoSubField.h \
-                         ..\..\include\Inventor\fields\SoField.h \
-                         ..\..\include\Inventor\fields\SoFieldContainer.h \
-                         ..\..\include\Inventor\fields\SoFieldData.h \
-                         ..\..\include\Inventor\fields\SoMFBitMask.h \
-                         ..\..\include\Inventor\fields\SoMFBool.h \
-                         ..\..\include\Inventor\fields\SoMFColor.h \
-                         ..\..\include\Inventor\fields\SoMFColorRGBA.h \
-                         ..\..\include\Inventor\fields\SoMFDouble.h \
-                         ..\..\include\Inventor\fields\SoMFEngine.h \
-                         ..\..\include\Inventor\fields\SoMFEnum.h \
-                         ..\..\include\Inventor\fields\SoMFFloat.h \
-                         ..\..\include\Inventor\fields\SoMFInt32.h \
-                         ..\..\include\Inventor\fields\SoMFMatrix.h \
-                         ..\..\include\Inventor\fields\SoMFName.h \
-                         ..\..\include\Inventor\fields\SoMFNode.h \
-                         ..\..\include\Inventor\fields\SoMFPath.h \
-                         ..\..\include\Inventor\fields\SoMFPlane.h \
-                         ..\..\include\Inventor\fields\SoMFRotation.h \
-                         ..\..\include\Inventor\fields\SoMFShort.h \
-                         ..\..\include\Inventor\fields\SoMFString.h \
-                         ..\..\include\Inventor\fields\SoMFTime.h \
-                         ..\..\include\Inventor\fields\SoMFUInt32.h \
-                         ..\..\include\Inventor\fields\SoMFUShort.h \
-                         ..\..\include\Inventor\fields\SoMFVec2b.h \
-                         ..\..\include\Inventor\fields\SoMFVec2s.h \
-                         ..\..\include\Inventor\fields\SoMFVec2i32.h \
-                         ..\..\include\Inventor\fields\SoMFVec2f.h \
-                         ..\..\include\Inventor\fields\SoMFVec2d.h \
-                         ..\..\include\Inventor\fields\SoMFVec3b.h \
-                         ..\..\include\Inventor\fields\SoMFVec3s.h \
-                         ..\..\include\Inventor\fields\SoMFVec3i32.h \
-                         ..\..\include\Inventor\fields\SoMFVec3f.h \
-                         ..\..\include\Inventor\fields\SoMFVec3d.h \
-                         ..\..\include\Inventor\fields\SoMFVec4b.h \
-                         ..\..\include\Inventor\fields\SoMFVec4ub.h \
-                         ..\..\include\Inventor\fields\SoMFVec4s.h \
-                         ..\..\include\Inventor\fields\SoMFVec4us.h \
-                         ..\..\include\Inventor\fields\SoMFVec4i32.h \
-                         ..\..\include\Inventor\fields\SoMFVec4ui32.h \
-                         ..\..\include\Inventor\fields\SoMFVec4f.h \
-                         ..\..\include\Inventor\fields\SoMFVec4d.h \
-                         ..\..\include\Inventor\fields\SoMField.h \
-                         ..\..\include\Inventor\fields\SoSFBitMask.h \
-                         ..\..\include\Inventor\fields\SoSFBool.h \
-                         ..\..\include\Inventor\fields\SoSFBox2s.h \
-                         ..\..\include\Inventor\fields\SoSFBox2i32.h \
-                         ..\..\include\Inventor\fields\SoSFBox2f.h \
-                         ..\..\include\Inventor\fields\SoSFBox2d.h \
-                         ..\..\include\Inventor\fields\SoSFBox3s.h \
-                         ..\..\include\Inventor\fields\SoSFBox3i32.h \
-                         ..\..\include\Inventor\fields\SoSFBox3f.h \
-                         ..\..\include\Inventor\fields\SoSFBox3d.h \
-                         ..\..\include\Inventor\fields\SoSFColor.h \
-                         ..\..\include\Inventor\fields\SoSFColorRGBA.h \
-                         ..\..\include\Inventor\fields\SoSFDouble.h \
-                         ..\..\include\Inventor\fields\SoSFEngine.h \
-                         ..\..\include\Inventor\fields\SoSFEnum.h \
-                         ..\..\include\Inventor\fields\SoSFFloat.h \
-                         ..\..\include\Inventor\fields\SoSFImage.h \
-                         ..\..\include\Inventor\fields\SoSFImage3.h \
-                         ..\..\include\Inventor\fields\SoSFInt32.h \
-                         ..\..\include\Inventor\fields\SoSFMatrix.h \
-                         ..\..\include\Inventor\fields\SoSFName.h \
-                         ..\..\include\Inventor\fields\SoSFNode.h \
-                         ..\..\include\Inventor\fields\SoSFPath.h \
-                         ..\..\include\Inventor\fields\SoSFPlane.h \
-                         ..\..\include\Inventor\fields\SoSFRotation.h \
-                         ..\..\include\Inventor\fields\SoSFShort.h \
-                         ..\..\include\Inventor\fields\SoSFString.h \
-                         ..\..\include\Inventor\fields\SoSFTime.h \
-                         ..\..\include\Inventor\fields\SoSFTrigger.h \
-                         ..\..\include\Inventor\fields\SoSFUInt32.h \
-                         ..\..\include\Inventor\fields\SoSFUShort.h \
-                         ..\..\include\Inventor\fields\SoSFVec2b.h \
-                         ..\..\include\Inventor\fields\SoSFVec2s.h \
-                         ..\..\include\Inventor\fields\SoSFVec2i32.h \
-                         ..\..\include\Inventor\fields\SoSFVec2f.h \
-                         ..\..\include\Inventor\fields\SoSFVec2d.h \
-                         ..\..\include\Inventor\fields\SoSFVec3b.h \
-                         ..\..\include\Inventor\fields\SoSFVec3s.h \
-                         ..\..\include\Inventor\fields\SoSFVec3i32.h \
-                         ..\..\include\Inventor\fields\SoSFVec3f.h \
-                         ..\..\include\Inventor\fields\SoSFVec3d.h \
-                         ..\..\include\Inventor\fields\SoSFVec4b.h \
-                         ..\..\include\Inventor\fields\SoSFVec4ub.h \
-                         ..\..\include\Inventor\fields\SoSFVec4s.h \
-                         ..\..\include\Inventor\fields\SoSFVec4us.h \
-                         ..\..\include\Inventor\fields\SoSFVec4i32.h \
-                         ..\..\include\Inventor\fields\SoSFVec4ui32.h \
-                         ..\..\include\Inventor\fields\SoSFVec4f.h \
-                         ..\..\include\Inventor\fields\SoSFVec4d.h \
-                         ..\..\include\Inventor\fields\SoSField.h \
-                         ..\..\include\Inventor\lists\SbIntList.h \
-                         ..\..\include\Inventor\lists\SbList.h \
-                         ..\..\include\Inventor\lists\SbPList.h \
-                         ..\..\include\Inventor\lists\SbStringList.h \
-                         ..\..\include\Inventor\lists\SbVec3fList.h \
-                         ..\..\include\Inventor\lists\SoActionMethodList.h \
-                         ..\..\include\Inventor\lists\SoAuditorList.h \
-                         ..\..\include\Inventor\lists\SoBaseList.h \
-                         ..\..\include\Inventor\lists\SoCallbackList.h \
-                         ..\..\include\Inventor\lists\SoDetailList.h \
-                         ..\..\include\Inventor\lists\SoEnabledElementsList.h \
-                         ..\..\include\Inventor\lists\SoEngineList.h \
-                         ..\..\include\Inventor\lists\SoEngineOutputList.h \
-                         ..\..\include\Inventor\lists\SoFieldList.h \
-                         ..\..\include\Inventor\lists\SoNodeList.h \
-                         ..\..\include\Inventor\lists\SoPathList.h \
-                         ..\..\include\Inventor\lists\SoPickedPointList.h \
-                         ..\..\include\Inventor\lists\SoTypeList.h \
-                         ..\..\include\Inventor\lock\SoLockMgr.h \
-                         ..\..\include\Inventor\manips\SoCenterballManip.h \
-                         ..\..\include\Inventor\manips\SoClipPlaneManip.h \
-                         ..\..\include\Inventor\manips\SoDirectionalLightManip.h \
-                         ..\..\include\Inventor\manips\SoHandleBoxManip.h \
-                         ..\..\include\Inventor\manips\SoJackManip.h \
-                         ..\..\include\Inventor\manips\SoPointLightManip.h \
-                         ..\..\include\Inventor\manips\SoSpotLightManip.h \
-                         ..\..\include\Inventor\manips\SoTabBoxManip.h \
-                         ..\..\include\Inventor\manips\SoTrackballManip.h \
-                         ..\..\include\Inventor\manips\SoTransformBoxManip.h \
-                         ..\..\include\Inventor\manips\SoTransformManip.h \
-                         ..\..\include\Inventor\manips\SoTransformerManip.h \
-                         ..\..\include\Inventor\misc\SoAudioDevice.h \
-                         ..\..\include\Inventor\misc\SoGlyph.h \
-                         ..\..\include\Inventor\misc\SoContextHandler.h \
-                         ..\..\include\Inventor\misc\SoBase.h \
-                         ..\..\include\Inventor\misc\SoChildList.h \
-                         ..\..\include\Inventor\misc\SoNotification.h \
-                         ..\..\include\Inventor\misc\SoNotRec.h \
-                         ..\..\include\Inventor\misc\SoState.h \
-                         ..\..\include\Inventor\nodekits\SoAppearanceKit.h \
-                         ..\..\include\Inventor\nodekits\SoBaseKit.h \
-                         ..\..\include\Inventor\nodekits\SoCameraKit.h \
-                         ..\..\include\Inventor\nodekits\SoInteractionKit.h \
-                         ..\..\include\Inventor\nodekits\SoLightKit.h \
-                         ..\..\include\Inventor\nodekits\SoNodeKit.h \
-                         ..\..\include\Inventor\nodekits\SoNodeKitListPart.h \
-                         ..\..\include\Inventor\nodekits\SoNodekitCatalog.h \
-                         ..\..\include\Inventor\nodekits\SoSceneKit.h \
-                         ..\..\include\Inventor\nodekits\SoSeparatorKit.h \
-                         ..\..\include\Inventor\nodekits\SoShapeKit.h \
-                         ..\..\include\Inventor\nodekits\SoWrapperKit.h \
-                         ..\..\include\Inventor\nodes\SoAnnotation.h \
-                         ..\..\include\Inventor\nodes\SoAntiSquish.h \
-                         ..\..\include\Inventor\nodes\SoArray.h \
-                         ..\..\include\Inventor\nodes\SoAsciiText.h \
-                         ..\..\include\Inventor\nodes\SoBaseColor.h \
-                         ..\..\include\Inventor\nodes\SoBlinker.h \
-                         ..\..\include\Inventor\nodes\SoBumpMapCoordinate.h \
-                         ..\..\include\Inventor\nodes\SoBumpMapTransform.h \
-                         ..\..\include\Inventor\nodes\SoBumpMap.h \
-                         ..\..\include\Inventor\nodes\SoCallback.h \
-                         ..\..\include\Inventor\nodes\SoCamera.h \
-                         ..\..\include\Inventor\nodes\SoClipPlane.h \
-                         ..\..\include\Inventor\nodes\SoColorIndex.h \
-                         ..\..\include\Inventor\nodes\SoComplexity.h \
-                         ..\..\include\Inventor\nodes\SoCone.h \
-                         ..\..\include\Inventor\nodes\SoCoordinate3.h \
-                         ..\..\include\Inventor\nodes\SoCoordinate4.h \
-                         ..\..\include\Inventor\nodes\SoCube.h \
-                         ..\..\include\Inventor\nodes\SoCylinder.h \
-                         ..\..\include\Inventor\nodes\SoDepthBuffer.h \
-                         ..\..\include\Inventor\nodes\SoVertexAttribute.h \
-                         ..\..\include\Inventor\nodes\SoVertexAttributeBinding.h \
-                         ..\..\include\Inventor\nodes\SoDirectionalLight.h \
-                         ..\..\include\Inventor\nodes\SoDrawStyle.h \
-                         ..\..\include\Inventor\nodes\SoEnvironment.h \
-                         ..\..\include\Inventor\nodes\SoEventCallback.h \
-                         ..\..\include\Inventor\nodes\SoExtSelection.h \
-                         ..\..\include\Inventor\nodes\SoFaceSet.h \
-                         ..\..\include\Inventor\nodes\SoFile.h \
-                         ..\..\include\Inventor\nodes\SoFont.h \
-                         ..\..\include\Inventor\nodes\SoFontStyle.h \
-                         ..\..\include\Inventor\nodes\SoFrustumCamera.h \
-                         ..\..\include\Inventor\nodes\SoGroup.h \
-                         ..\..\include\Inventor\nodes\SoImage.h \
-                         ..\..\include\Inventor\nodes\SoIndexedFaceSet.h \
-                         ..\..\include\Inventor\nodes\SoIndexedLineSet.h \
-                         ..\..\include\Inventor\nodes\SoIndexedNurbsCurve.h \
-                         ..\..\include\Inventor\nodes\SoIndexedNurbsSurface.h \
-                         ..\..\include\Inventor\nodes\SoIndexedShape.h \
-                         ..\..\include\Inventor\nodes\SoIndexedTriangleStripSet.h \
-                         ..\..\include\Inventor\nodes\SoInfo.h \
-                         ..\..\include\Inventor\nodes\SoLOD.h \
-                         ..\..\include\Inventor\nodes\SoLabel.h \
-                         ..\..\include\Inventor\nodes\SoLevelOfDetail.h \
-                         ..\..\include\Inventor\nodes\SoLight.h \
-                         ..\..\include\Inventor\nodes\SoLightModel.h \
-                         ..\..\include\Inventor\nodes\SoLineSet.h \
-                         ..\..\include\Inventor\nodes\SoLinearProfile.h \
-                         ..\..\include\Inventor\nodes\SoListener.h \
-                         ..\..\include\Inventor\nodes\SoLocateHighlight.h \
-                         ..\..\include\Inventor\nodes\SoMarkerSet.h \
-                         ..\..\include\Inventor\nodes\SoMaterial.h \
-                         ..\..\include\Inventor\nodes\SoMaterialBinding.h \
-                         ..\..\include\Inventor\nodes\SoMatrixTransform.h \
-                         ..\..\include\Inventor\nodes\SoMultipleCopy.h \
-                         ..\..\include\Inventor\nodes\SoNode.h \
-                         ..\..\include\Inventor\nodes\SoNonIndexedShape.h \
-                         ..\..\include\Inventor\nodes\SoNormal.h \
-                         ..\..\include\Inventor\nodes\SoNormalBinding.h \
-                         ..\..\include\Inventor\nodes\SoNurbsCurve.h \
-                         ..\..\include\Inventor\nodes\SoNurbsProfile.h \
-                         ..\..\include\Inventor\nodes\SoNurbsSurface.h \
-                         ..\..\include\Inventor\nodes\SoOrthographicCamera.h \
-                         ..\..\include\Inventor\nodes\SoPackedColor.h \
-                         ..\..\include\Inventor\nodes\SoPathSwitch.h \
-                         ..\..\include\Inventor\nodes\SoPendulum.h \
-                         ..\..\include\Inventor\nodes\SoPerspectiveCamera.h \
-                         ..\..\include\Inventor\nodes\SoPickStyle.h \
-                         ..\..\include\Inventor\nodes\SoPointLight.h \
-                         ..\..\include\Inventor\nodes\SoPointSet.h \
-                         ..\..\include\Inventor\nodes\SoPolygonOffset.h \
-                         ..\..\include\Inventor\nodes\SoProfile.h \
-                         ..\..\include\Inventor\nodes\SoProfileCoordinate2.h \
-                         ..\..\include\Inventor\nodes\SoProfileCoordinate3.h \
-                         ..\..\include\Inventor\nodes\SoQuadMesh.h \
-                         ..\..\include\Inventor\nodes\SoResetTransform.h \
-                         ..\..\include\Inventor\nodes\SoRotation.h \
-                         ..\..\include\Inventor\nodes\SoRotationXYZ.h \
-                         ..\..\include\Inventor\nodes\SoRotor.h \
-                         ..\..\include\Inventor\nodes\SoScale.h \
-                         ..\..\include\Inventor\nodes\SoSceneTexture2.h \
-                         ..\..\include\Inventor\nodes\SoSelection.h \
-                         ..\..\include\Inventor\nodes\SoSeparator.h \
-                         ..\..\include\Inventor\nodes\SoShape.h \
-                         ..\..\include\Inventor\nodes\SoShapeHints.h \
-                         ..\..\include\Inventor\nodes\SoShuttle.h \
-                         ..\..\include\Inventor\nodes\SoSphere.h \
-                         ..\..\include\Inventor\nodes\SoSpotLight.h \
-                         ..\..\include\Inventor\nodes\SoSurroundScale.h \
-                         ..\..\include\Inventor\nodes\SoSwitch.h \
-                         ..\..\include\Inventor\nodes\SoText2.h \
-                         ..\..\include\Inventor\nodes\SoText3.h \
-                         ..\..\include\Inventor\nodes\SoTexture2.h \
-                         ..\..\include\Inventor\nodes\SoTexture2Transform.h \
-                         ..\..\include\Inventor\nodes\SoTexture3.h \
-                         ..\..\include\Inventor\nodes\SoTexture3Transform.h \
-                         ..\..\include\Inventor\nodes\SoTextureMatrixTransform.h \
-                         ..\..\include\Inventor\nodes\SoTextureCombine.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinate2.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinate3.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateBinding.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateCube.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateCylinder.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateDefault.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateEnvironment.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateFunction.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinatePlane.h \
-                         ..\..\include\Inventor\nodes\SoTextureCoordinateSphere.h \
-                         ..\..\include\Inventor\nodes\SoTextureCubeMap.h \
-                         ..\..\include\Inventor\nodes\SoTextureScalePolicy.h \
-                         ..\..\include\Inventor\nodes\SoTextureUnit.h \
-                         ..\..\include\Inventor\nodes\SoTransform.h \
-                         ..\..\include\Inventor\nodes\SoTransformSeparator.h \
-                         ..\..\include\Inventor\nodes\SoTransformation.h \
-                         ..\..\include\Inventor\nodes\SoTranslation.h \
-                         ..\..\include\Inventor\nodes\SoTransparencyType.h \
-                         ..\..\include\Inventor\nodes\SoTriangleStripSet.h \
-                         ..\..\include\Inventor\nodes\SoUnits.h \
-                         ..\..\include\Inventor\nodes\SoVertexProperty.h \
-                         ..\..\include\Inventor\nodes\SoShaderProgram.h \
-                         ..\..\include\Inventor\nodes\SoShaderObject.h \
-                         ..\..\include\Inventor\nodes\SoVertexShader.h \
-                         ..\..\include\Inventor\nodes\SoFragmentShader.h \
-                         ..\..\include\Inventor\nodes\SoGeometryShader.h \
-                         ..\..\include\Inventor\nodes\SoShaderParameter.h \
-                         ..\..\include\Inventor\nodes\SoVertexShape.h \
-                         ..\..\include\Inventor\nodes\SoViewerNavigationMode.h \
-                         ..\..\include\Inventor\nodes\SoWWWAnchor.h \
-                         ..\..\include\Inventor\nodes\SoWWWInline.h \
-                         ..\..\include\Inventor\projectors\SbCylinderPlaneProjector.h \
-                         ..\..\include\Inventor\projectors\SbCylinderProjector.h \
-                         ..\..\include\Inventor\projectors\SbCylinderSectionProjector.h \
-                         ..\..\include\Inventor\projectors\SbCylinderSheetProjector.h \
-                         ..\..\include\Inventor\projectors\SbLineProjector.h \
-                         ..\..\include\Inventor\projectors\SbPlaneProjector.h \
-                         ..\..\include\Inventor\projectors\SbProjector.h \
-                         ..\..\include\Inventor\projectors\SbSpherePlaneProjector.h \
-                         ..\..\include\Inventor\projectors\SbSphereProjector.h \
-                         ..\..\include\Inventor\projectors\SbSphereSectionProjector.h \
-                         ..\..\include\Inventor\projectors\SbSphereSheetProjector.h \
-                         ..\..\include\Inventor\scxml\ScXML.h \
-                         ..\..\include\Inventor\scxml\ScXMLEvent.h \
-                         ..\..\include\Inventor\scxml\ScXMLInvoke.h \
-                         ..\..\include\Inventor\scxml\ScXMLObject.h \
-                         ..\..\include\Inventor\scxml\ScXMLStateMachine.h \
-                         ..\..\include\Inventor\scxml\SoScXMLEvent.h \
-                         ..\..\include\Inventor\scxml\SoScXMLStateMachine.h \
-                         ..\..\include\Inventor\sensors\SoAlarmSensor.h \
-                         ..\..\include\Inventor\sensors\SoDataSensor.h \
-                         ..\..\include\Inventor\sensors\SoDelayQueueSensor.h \
-                         ..\..\include\Inventor\sensors\SoFieldSensor.h \
-                         ..\..\include\Inventor\sensors\SoIdleSensor.h \
-                         ..\..\include\Inventor\sensors\SoNodeSensor.h \
-                         ..\..\include\Inventor\sensors\SoOneShotSensor.h \
-                         ..\..\include\Inventor\sensors\SoPathSensor.h \
-                         ..\..\include\Inventor\sensors\SoSensor.h \
-                         ..\..\include\Inventor\sensors\SoSensorManager.h \
-                         ..\..\include\Inventor\sensors\SoTimerQueueSensor.h \
-                         ..\..\include\Inventor\sensors\SoTimerSensor.h \
-                         ..\..\include\Inventor\threads\SbBarrier.h \
-                         ..\..\include\Inventor\threads\SbCondVar.h \
-                         ..\..\include\Inventor\threads\SbFifo.h \
-                         ..\..\include\Inventor\threads\SbMutex.h \
-                         ..\..\include\Inventor\threads\SbRWMutex.h \
-                         ..\..\include\Inventor\threads\SbStorage.h \
-                         ..\..\include\Inventor\threads\SbThread.h \
-                         ..\..\include\Inventor\threads\SbThreadAutoLock.h \
-                         ..\..\include\Inventor\threads\SbTypedStorage.h \
                          ..\..\include\Inventor\VRMLnodes\SoVRML.h \
                          ..\..\include\Inventor\VRMLnodes\SoVRMLAnchor.h \
                          ..\..\include\Inventor\VRMLnodes\SoVRMLAppearance.h \
@@ -1026,33 +590,461 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\include\Inventor\VRMLnodes\SoVRMLViewpoint.h \
                          ..\..\include\Inventor\VRMLnodes\SoVRMLVisibilitySensor.h \
                          ..\..\include\Inventor\VRMLnodes\SoVRMLWorldInfo.h \
+                         ..\..\include\Inventor\actions\SoAction.h \
+                         ..\..\include\Inventor\actions\SoAudioRenderAction.h \
+                         ..\..\include\Inventor\actions\SoBoxHighlightRenderAction.h \
+                         ..\..\include\Inventor\actions\SoCallbackAction.h \
+                         ..\..\include\Inventor\actions\SoGLRenderAction.h \
+                         ..\..\include\Inventor\actions\SoGetBoundingBoxAction.h \
+                         ..\..\include\Inventor\actions\SoGetMatrixAction.h \
+                         ..\..\include\Inventor\actions\SoGetPrimitiveCountAction.h \
+                         ..\..\include\Inventor\actions\SoHandleEventAction.h \
+                         ..\..\include\Inventor\actions\SoLineHighlightRenderAction.h \
+                         ..\..\include\Inventor\actions\SoPickAction.h \
+                         ..\..\include\Inventor\actions\SoRayPickAction.h \
+                         ..\..\include\Inventor\actions\SoReorganizeAction.h \
+                         ..\..\include\Inventor\actions\SoSearchAction.h \
+                         ..\..\include\Inventor\actions\SoSubAction.h \
+                         ..\..\include\Inventor\actions\SoToVRML2Action.h \
+                         ..\..\include\Inventor\actions\SoToVRMLAction.h \
+                         ..\..\include\Inventor\actions\SoWriteAction.h \
+                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h \
+                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h \
+                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h \
+                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h \
+                         ..\..\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h \
+                         ..\..\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h \
                          ..\..\include\Inventor\annex\HardCopy\SoHardCopy.h \
                          ..\..\include\Inventor\annex\HardCopy\SoPSVectorOutput.h \
                          ..\..\include\Inventor\annex\HardCopy\SoVectorOutput.h \
                          ..\..\include\Inventor\annex\HardCopy\SoVectorizeAction.h \
                          ..\..\include\Inventor\annex\HardCopy\SoVectorizePSAction.h \
-                         ..\..\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h \
-                         ..\..\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h \
-                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h \
-                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h \
-                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h \
-                         ..\..\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h \
-                         ..\..\include\Inventor\annex\Profiler\SoProfiler.h \
                          ..\..\include\Inventor\annex\Profiler\SbProfilingData.h \
+                         ..\..\include\Inventor\annex\Profiler\SoProfiler.h \
                          ..\..\include\Inventor\annex\Profiler\elements\SoProfilerElement.h \
                          ..\..\include\Inventor\annex\Profiler\nodes\SoProfilerStats.h \
                          ..\..\include\Inventor\annex\Profiler\utils\SoProfilingReportGenerator.h \
+                         ..\..\include\Inventor\caches\SoBoundingBoxCache.h \
+                         ..\..\include\Inventor\caches\SoCache.h \
+                         ..\..\include\Inventor\caches\SoConvexDataCache.h \
+                         ..\..\include\Inventor\caches\SoGLCacheList.h \
+                         ..\..\include\Inventor\caches\SoGLRenderCache.h \
+                         ..\..\include\Inventor\caches\SoNormalCache.h \
+                         ..\..\include\Inventor\caches\SoPrimitiveVertexCache.h \
+                         ..\..\include\Inventor\caches\SoTextureCoordinateCache.h \
+                         ..\..\include\Inventor\collision\SoIntersectionDetectionAction.h \
+                         ..\..\include\Inventor\details\SoConeDetail.h \
+                         ..\..\include\Inventor\details\SoCubeDetail.h \
+                         ..\..\include\Inventor\details\SoCylinderDetail.h \
+                         ..\..\include\Inventor\details\SoDetail.h \
+                         ..\..\include\Inventor\details\SoFaceDetail.h \
+                         ..\..\include\Inventor\details\SoLineDetail.h \
+                         ..\..\include\Inventor\details\SoNodeKitDetail.h \
+                         ..\..\include\Inventor\details\SoPointDetail.h \
+                         ..\..\include\Inventor\details\SoTextDetail.h \
+                         ..\..\include\Inventor\draggers\SoCenterballDragger.h \
+                         ..\..\include\Inventor\draggers\SoDirectionalLightDragger.h \
+                         ..\..\include\Inventor\draggers\SoDragPointDragger.h \
+                         ..\..\include\Inventor\draggers\SoDragger.h \
+                         ..\..\include\Inventor\draggers\SoHandleBoxDragger.h \
+                         ..\..\include\Inventor\draggers\SoJackDragger.h \
+                         ..\..\include\Inventor\draggers\SoPointLightDragger.h \
+                         ..\..\include\Inventor\draggers\SoRotateCylindricalDragger.h \
+                         ..\..\include\Inventor\draggers\SoRotateDiscDragger.h \
+                         ..\..\include\Inventor\draggers\SoRotateSphericalDragger.h \
+                         ..\..\include\Inventor\draggers\SoScale1Dragger.h \
+                         ..\..\include\Inventor\draggers\SoScale2Dragger.h \
+                         ..\..\include\Inventor\draggers\SoScale2UniformDragger.h \
+                         ..\..\include\Inventor\draggers\SoScaleUniformDragger.h \
+                         ..\..\include\Inventor\draggers\SoSpotLightDragger.h \
+                         ..\..\include\Inventor\draggers\SoTabBoxDragger.h \
+                         ..\..\include\Inventor\draggers\SoTabPlaneDragger.h \
+                         ..\..\include\Inventor\draggers\SoTrackballDragger.h \
+                         ..\..\include\Inventor\draggers\SoTransformBoxDragger.h \
+                         ..\..\include\Inventor\draggers\SoTransformerDragger.h \
+                         ..\..\include\Inventor\draggers\SoTranslate1Dragger.h \
+                         ..\..\include\Inventor\draggers\SoTranslate2Dragger.h \
+                         ..\..\include\Inventor\elements\SoAccumulatedElement.h \
+                         ..\..\include\Inventor\elements\SoElement.h \
+                         ..\..\include\Inventor\elements\SoFloatElement.h \
+                         ..\..\include\Inventor\elements\SoGLColorIndexElement.h \
+                         ..\..\include\Inventor\elements\SoGLLineWidthElement.h \
+                         ..\..\include\Inventor\elements\SoGLPointSizeElement.h \
+                         ..\..\include\Inventor\elements\SoInt32Element.h \
+                         ..\..\include\Inventor\elements\SoLineWidthElement.h \
+                         ..\..\include\Inventor\elements\SoListenerDopplerElement.h \
+                         ..\..\include\Inventor\elements\SoListenerGainElement.h \
+                         ..\..\include\Inventor\elements\SoListenerOrientationElement.h \
+                         ..\..\include\Inventor\elements\SoListenerPositionElement.h \
+                         ..\..\include\Inventor\elements\SoOverrideElement.h \
+                         ..\..\include\Inventor\elements\SoPointSizeElement.h \
+                         ..\..\include\Inventor\elements\SoReplacedElement.h \
+                         ..\..\include\Inventor\engines\SoBoolOperation.h \
+                         ..\..\include\Inventor\engines\SoCalculator.h \
+                         ..\..\include\Inventor\engines\SoCompose.h \
+                         ..\..\include\Inventor\engines\SoComposeMatrix.h \
+                         ..\..\include\Inventor\engines\SoComposeRotation.h \
+                         ..\..\include\Inventor\engines\SoComposeRotationFromTo.h \
+                         ..\..\include\Inventor\engines\SoComposeVec2f.h \
+                         ..\..\include\Inventor\engines\SoComposeVec3f.h \
+                         ..\..\include\Inventor\engines\SoComposeVec4f.h \
+                         ..\..\include\Inventor\engines\SoComputeBoundingBox.h \
+                         ..\..\include\Inventor\engines\SoConcatenate.h \
+                         ..\..\include\Inventor\engines\SoCounter.h \
+                         ..\..\include\Inventor\engines\SoDecomposeMatrix.h \
+                         ..\..\include\Inventor\engines\SoDecomposeRotation.h \
+                         ..\..\include\Inventor\engines\SoDecomposeVec2f.h \
+                         ..\..\include\Inventor\engines\SoDecomposeVec3f.h \
+                         ..\..\include\Inventor\engines\SoDecomposeVec4f.h \
+                         ..\..\include\Inventor\engines\SoElapsedTime.h \
+                         ..\..\include\Inventor\engines\SoEngine.h \
+                         ..\..\include\Inventor\engines\SoEngineOutput.h \
+                         ..\..\include\Inventor\engines\SoFieldConverter.h \
+                         ..\..\include\Inventor\engines\SoGate.h \
+                         ..\..\include\Inventor\engines\SoHeightMapToNormalMap.h \
+                         ..\..\include\Inventor\engines\SoInterpolate.h \
+                         ..\..\include\Inventor\engines\SoInterpolateFloat.h \
+                         ..\..\include\Inventor\engines\SoInterpolateRotation.h \
+                         ..\..\include\Inventor\engines\SoInterpolateVec2f.h \
+                         ..\..\include\Inventor\engines\SoInterpolateVec3f.h \
+                         ..\..\include\Inventor\engines\SoInterpolateVec4f.h \
+                         ..\..\include\Inventor\engines\SoNodeEngine.h \
+                         ..\..\include\Inventor\engines\SoOnOff.h \
+                         ..\..\include\Inventor\engines\SoOneShot.h \
+                         ..\..\include\Inventor\engines\SoSelectOne.h \
+                         ..\..\include\Inventor\engines\SoSubEngine.h \
+                         ..\..\include\Inventor\engines\SoTexture2Convert.h \
+                         ..\..\include\Inventor\engines\SoTimeCounter.h \
+                         ..\..\include\Inventor\engines\SoTransformVec3f.h \
+                         ..\..\include\Inventor\engines\SoTriggerAny.h \
+                         ..\..\include\Inventor\errors\SoDebugError.h \
+                         ..\..\include\Inventor\errors\SoError.h \
+                         ..\..\include\Inventor\errors\SoMemoryError.h \
+                         ..\..\include\Inventor\errors\SoReadError.h \
+                         ..\..\include\Inventor\events\SoButtonEvent.h \
+                         ..\..\include\Inventor\events\SoEvent.h \
+                         ..\..\include\Inventor\events\SoKeyboardEvent.h \
+                         ..\..\include\Inventor\events\SoLocation2Event.h \
+                         ..\..\include\Inventor\events\SoMotion3Event.h \
+                         ..\..\include\Inventor\events\SoMouseButtonEvent.h \
+                         ..\..\include\Inventor\events\SoSpaceballButtonEvent.h \
+                         ..\..\include\Inventor\fields\SoField.h \
+                         ..\..\include\Inventor\fields\SoFieldContainer.h \
+                         ..\..\include\Inventor\fields\SoFieldData.h \
+                         ..\..\include\Inventor\fields\SoMFBitMask.h \
+                         ..\..\include\Inventor\fields\SoMFBool.h \
+                         ..\..\include\Inventor\fields\SoMFColor.h \
+                         ..\..\include\Inventor\fields\SoMFColorRGBA.h \
+                         ..\..\include\Inventor\fields\SoMFDouble.h \
+                         ..\..\include\Inventor\fields\SoMFEngine.h \
+                         ..\..\include\Inventor\fields\SoMFEnum.h \
+                         ..\..\include\Inventor\fields\SoMFFloat.h \
+                         ..\..\include\Inventor\fields\SoMFInt32.h \
+                         ..\..\include\Inventor\fields\SoMFMatrix.h \
+                         ..\..\include\Inventor\fields\SoMFName.h \
+                         ..\..\include\Inventor\fields\SoMFNode.h \
+                         ..\..\include\Inventor\fields\SoMFPath.h \
+                         ..\..\include\Inventor\fields\SoMFPlane.h \
+                         ..\..\include\Inventor\fields\SoMFRotation.h \
+                         ..\..\include\Inventor\fields\SoMFShort.h \
+                         ..\..\include\Inventor\fields\SoMFString.h \
+                         ..\..\include\Inventor\fields\SoMFTime.h \
+                         ..\..\include\Inventor\fields\SoMFUInt32.h \
+                         ..\..\include\Inventor\fields\SoMFUShort.h \
+                         ..\..\include\Inventor\fields\SoMFVec2b.h \
+                         ..\..\include\Inventor\fields\SoMFVec2d.h \
+                         ..\..\include\Inventor\fields\SoMFVec2f.h \
+                         ..\..\include\Inventor\fields\SoMFVec2i32.h \
+                         ..\..\include\Inventor\fields\SoMFVec2s.h \
+                         ..\..\include\Inventor\fields\SoMFVec3b.h \
+                         ..\..\include\Inventor\fields\SoMFVec3d.h \
+                         ..\..\include\Inventor\fields\SoMFVec3f.h \
+                         ..\..\include\Inventor\fields\SoMFVec3i32.h \
+                         ..\..\include\Inventor\fields\SoMFVec3s.h \
+                         ..\..\include\Inventor\fields\SoMFVec4b.h \
+                         ..\..\include\Inventor\fields\SoMFVec4d.h \
+                         ..\..\include\Inventor\fields\SoMFVec4f.h \
+                         ..\..\include\Inventor\fields\SoMFVec4i32.h \
+                         ..\..\include\Inventor\fields\SoMFVec4s.h \
+                         ..\..\include\Inventor\fields\SoMFVec4ub.h \
+                         ..\..\include\Inventor\fields\SoMFVec4ui32.h \
+                         ..\..\include\Inventor\fields\SoMFVec4us.h \
+                         ..\..\include\Inventor\fields\SoMField.h \
+                         ..\..\include\Inventor\fields\SoSFBitMask.h \
+                         ..\..\include\Inventor\fields\SoSFBool.h \
+                         ..\..\include\Inventor\fields\SoSFBox2d.h \
+                         ..\..\include\Inventor\fields\SoSFBox2f.h \
+                         ..\..\include\Inventor\fields\SoSFBox2i32.h \
+                         ..\..\include\Inventor\fields\SoSFBox2s.h \
+                         ..\..\include\Inventor\fields\SoSFBox3d.h \
+                         ..\..\include\Inventor\fields\SoSFBox3f.h \
+                         ..\..\include\Inventor\fields\SoSFBox3i32.h \
+                         ..\..\include\Inventor\fields\SoSFBox3s.h \
+                         ..\..\include\Inventor\fields\SoSFColor.h \
+                         ..\..\include\Inventor\fields\SoSFColorRGBA.h \
+                         ..\..\include\Inventor\fields\SoSFDouble.h \
+                         ..\..\include\Inventor\fields\SoSFEngine.h \
+                         ..\..\include\Inventor\fields\SoSFEnum.h \
+                         ..\..\include\Inventor\fields\SoSFFloat.h \
+                         ..\..\include\Inventor\fields\SoSFImage.h \
+                         ..\..\include\Inventor\fields\SoSFImage3.h \
+                         ..\..\include\Inventor\fields\SoSFInt32.h \
+                         ..\..\include\Inventor\fields\SoSFMatrix.h \
+                         ..\..\include\Inventor\fields\SoSFName.h \
+                         ..\..\include\Inventor\fields\SoSFNode.h \
+                         ..\..\include\Inventor\fields\SoSFPath.h \
+                         ..\..\include\Inventor\fields\SoSFPlane.h \
+                         ..\..\include\Inventor\fields\SoSFRotation.h \
+                         ..\..\include\Inventor\fields\SoSFShort.h \
+                         ..\..\include\Inventor\fields\SoSFString.h \
+                         ..\..\include\Inventor\fields\SoSFTime.h \
+                         ..\..\include\Inventor\fields\SoSFTrigger.h \
+                         ..\..\include\Inventor\fields\SoSFUInt32.h \
+                         ..\..\include\Inventor\fields\SoSFUShort.h \
+                         ..\..\include\Inventor\fields\SoSFVec2b.h \
+                         ..\..\include\Inventor\fields\SoSFVec2d.h \
+                         ..\..\include\Inventor\fields\SoSFVec2f.h \
+                         ..\..\include\Inventor\fields\SoSFVec2i32.h \
+                         ..\..\include\Inventor\fields\SoSFVec2s.h \
+                         ..\..\include\Inventor\fields\SoSFVec3b.h \
+                         ..\..\include\Inventor\fields\SoSFVec3d.h \
+                         ..\..\include\Inventor\fields\SoSFVec3f.h \
+                         ..\..\include\Inventor\fields\SoSFVec3i32.h \
+                         ..\..\include\Inventor\fields\SoSFVec3s.h \
+                         ..\..\include\Inventor\fields\SoSFVec4b.h \
+                         ..\..\include\Inventor\fields\SoSFVec4d.h \
+                         ..\..\include\Inventor\fields\SoSFVec4f.h \
+                         ..\..\include\Inventor\fields\SoSFVec4i32.h \
+                         ..\..\include\Inventor\fields\SoSFVec4s.h \
+                         ..\..\include\Inventor\fields\SoSFVec4ub.h \
+                         ..\..\include\Inventor\fields\SoSFVec4ui32.h \
+                         ..\..\include\Inventor\fields\SoSFVec4us.h \
+                         ..\..\include\Inventor\fields\SoSField.h \
+                         ..\..\include\Inventor\fields\SoSubField.h \
+                         ..\..\include\Inventor\lists\SbIntList.h \
+                         ..\..\include\Inventor\lists\SbList.h \
+                         ..\..\include\Inventor\lists\SbPList.h \
+                         ..\..\include\Inventor\lists\SbStringList.h \
+                         ..\..\include\Inventor\lists\SbVec3fList.h \
+                         ..\..\include\Inventor\lists\SoActionMethodList.h \
+                         ..\..\include\Inventor\lists\SoAuditorList.h \
+                         ..\..\include\Inventor\lists\SoBaseList.h \
+                         ..\..\include\Inventor\lists\SoCallbackList.h \
+                         ..\..\include\Inventor\lists\SoDetailList.h \
+                         ..\..\include\Inventor\lists\SoEnabledElementsList.h \
+                         ..\..\include\Inventor\lists\SoEngineList.h \
+                         ..\..\include\Inventor\lists\SoEngineOutputList.h \
+                         ..\..\include\Inventor\lists\SoFieldList.h \
+                         ..\..\include\Inventor\lists\SoNodeList.h \
+                         ..\..\include\Inventor\lists\SoPathList.h \
+                         ..\..\include\Inventor\lists\SoPickedPointList.h \
+                         ..\..\include\Inventor\lists\SoTypeList.h \
+                         ..\..\include\Inventor\lock\SoLockMgr.h \
+                         ..\..\include\Inventor\manips\SoCenterballManip.h \
+                         ..\..\include\Inventor\manips\SoClipPlaneManip.h \
+                         ..\..\include\Inventor\manips\SoDirectionalLightManip.h \
+                         ..\..\include\Inventor\manips\SoHandleBoxManip.h \
+                         ..\..\include\Inventor\manips\SoJackManip.h \
+                         ..\..\include\Inventor\manips\SoPointLightManip.h \
+                         ..\..\include\Inventor\manips\SoSpotLightManip.h \
+                         ..\..\include\Inventor\manips\SoTabBoxManip.h \
+                         ..\..\include\Inventor\manips\SoTrackballManip.h \
+                         ..\..\include\Inventor\manips\SoTransformBoxManip.h \
+                         ..\..\include\Inventor\manips\SoTransformManip.h \
+                         ..\..\include\Inventor\manips\SoTransformerManip.h \
+                         ..\..\include\Inventor\misc\SoAudioDevice.h \
+                         ..\..\include\Inventor\misc\SoBase.h \
+                         ..\..\include\Inventor\misc\SoChildList.h \
+                         ..\..\include\Inventor\misc\SoContextHandler.h \
+                         ..\..\include\Inventor\misc\SoGlyph.h \
+                         ..\..\include\Inventor\misc\SoNotRec.h \
+                         ..\..\include\Inventor\misc\SoNotification.h \
+                         ..\..\include\Inventor\misc\SoState.h \
+                         ..\..\include\Inventor\nodekits\SoAppearanceKit.h \
+                         ..\..\include\Inventor\nodekits\SoBaseKit.h \
+                         ..\..\include\Inventor\nodekits\SoCameraKit.h \
+                         ..\..\include\Inventor\nodekits\SoInteractionKit.h \
+                         ..\..\include\Inventor\nodekits\SoLightKit.h \
+                         ..\..\include\Inventor\nodekits\SoNodeKit.h \
+                         ..\..\include\Inventor\nodekits\SoNodeKitListPart.h \
+                         ..\..\include\Inventor\nodekits\SoNodekitCatalog.h \
+                         ..\..\include\Inventor\nodekits\SoSceneKit.h \
+                         ..\..\include\Inventor\nodekits\SoSeparatorKit.h \
+                         ..\..\include\Inventor\nodekits\SoShapeKit.h \
+                         ..\..\include\Inventor\nodekits\SoWrapperKit.h \
+                         ..\..\include\Inventor\nodes\SoAnnotation.h \
+                         ..\..\include\Inventor\nodes\SoAntiSquish.h \
+                         ..\..\include\Inventor\nodes\SoArray.h \
+                         ..\..\include\Inventor\nodes\SoAsciiText.h \
+                         ..\..\include\Inventor\nodes\SoBaseColor.h \
+                         ..\..\include\Inventor\nodes\SoBlinker.h \
+                         ..\..\include\Inventor\nodes\SoBumpMap.h \
+                         ..\..\include\Inventor\nodes\SoBumpMapCoordinate.h \
+                         ..\..\include\Inventor\nodes\SoBumpMapTransform.h \
+                         ..\..\include\Inventor\nodes\SoCallback.h \
+                         ..\..\include\Inventor\nodes\SoCamera.h \
+                         ..\..\include\Inventor\nodes\SoClipPlane.h \
+                         ..\..\include\Inventor\nodes\SoColorIndex.h \
+                         ..\..\include\Inventor\nodes\SoComplexity.h \
+                         ..\..\include\Inventor\nodes\SoCone.h \
+                         ..\..\include\Inventor\nodes\SoCoordinate3.h \
+                         ..\..\include\Inventor\nodes\SoCoordinate4.h \
+                         ..\..\include\Inventor\nodes\SoCube.h \
+                         ..\..\include\Inventor\nodes\SoCylinder.h \
+                         ..\..\include\Inventor\nodes\SoDepthBuffer.h \
+                         ..\..\include\Inventor\nodes\SoDirectionalLight.h \
+                         ..\..\include\Inventor\nodes\SoDrawStyle.h \
+                         ..\..\include\Inventor\nodes\SoEnvironment.h \
+                         ..\..\include\Inventor\nodes\SoEventCallback.h \
+                         ..\..\include\Inventor\nodes\SoExtSelection.h \
+                         ..\..\include\Inventor\nodes\SoFaceSet.h \
+                         ..\..\include\Inventor\nodes\SoFile.h \
+                         ..\..\include\Inventor\nodes\SoFont.h \
+                         ..\..\include\Inventor\nodes\SoFontStyle.h \
+                         ..\..\include\Inventor\nodes\SoFragmentShader.h \
+                         ..\..\include\Inventor\nodes\SoFrustumCamera.h \
+                         ..\..\include\Inventor\nodes\SoGeoCoordinate.h \
+                         ..\..\include\Inventor\nodes\SoGeoLocation.h \
                          ..\..\include\Inventor\nodes\SoGeoOrigin.h \
                          ..\..\include\Inventor\nodes\SoGeoSeparator.h \
-                         ..\..\include\Inventor\nodes\SoGeoLocation.h \
-                         ..\..\include\Inventor\nodes\SoGeoCoordinate.h \
+                         ..\..\include\Inventor\nodes\SoGeometryShader.h \
+                         ..\..\include\Inventor\nodes\SoGroup.h \
+                         ..\..\include\Inventor\nodes\SoImage.h \
+                         ..\..\include\Inventor\nodes\SoIndexedFaceSet.h \
+                         ..\..\include\Inventor\nodes\SoIndexedLineSet.h \
+                         ..\..\include\Inventor\nodes\SoIndexedNurbsCurve.h \
+                         ..\..\include\Inventor\nodes\SoIndexedNurbsSurface.h \
+                         ..\..\include\Inventor\nodes\SoIndexedShape.h \
+                         ..\..\include\Inventor\nodes\SoIndexedTriangleStripSet.h \
+                         ..\..\include\Inventor\nodes\SoInfo.h \
+                         ..\..\include\Inventor\nodes\SoLOD.h \
+                         ..\..\include\Inventor\nodes\SoLabel.h \
+                         ..\..\include\Inventor\nodes\SoLevelOfDetail.h \
+                         ..\..\include\Inventor\nodes\SoLight.h \
+                         ..\..\include\Inventor\nodes\SoLightModel.h \
+                         ..\..\include\Inventor\nodes\SoLineSet.h \
+                         ..\..\include\Inventor\nodes\SoLinearProfile.h \
+                         ..\..\include\Inventor\nodes\SoListener.h \
+                         ..\..\include\Inventor\nodes\SoLocateHighlight.h \
+                         ..\..\include\Inventor\nodes\SoMarkerSet.h \
+                         ..\..\include\Inventor\nodes\SoMaterial.h \
+                         ..\..\include\Inventor\nodes\SoMaterialBinding.h \
+                         ..\..\include\Inventor\nodes\SoMatrixTransform.h \
+                         ..\..\include\Inventor\nodes\SoMultipleCopy.h \
+                         ..\..\include\Inventor\nodes\SoNode.h \
+                         ..\..\include\Inventor\nodes\SoNonIndexedShape.h \
+                         ..\..\include\Inventor\nodes\SoNormal.h \
+                         ..\..\include\Inventor\nodes\SoNormalBinding.h \
+                         ..\..\include\Inventor\nodes\SoNurbsCurve.h \
+                         ..\..\include\Inventor\nodes\SoNurbsProfile.h \
+                         ..\..\include\Inventor\nodes\SoNurbsSurface.h \
+                         ..\..\include\Inventor\nodes\SoOrthographicCamera.h \
+                         ..\..\include\Inventor\nodes\SoPackedColor.h \
+                         ..\..\include\Inventor\nodes\SoPathSwitch.h \
+                         ..\..\include\Inventor\nodes\SoPendulum.h \
+                         ..\..\include\Inventor\nodes\SoPerspectiveCamera.h \
+                         ..\..\include\Inventor\nodes\SoPickStyle.h \
+                         ..\..\include\Inventor\nodes\SoPointLight.h \
+                         ..\..\include\Inventor\nodes\SoPointSet.h \
+                         ..\..\include\Inventor\nodes\SoPolygonOffset.h \
+                         ..\..\include\Inventor\nodes\SoProfile.h \
+                         ..\..\include\Inventor\nodes\SoProfileCoordinate2.h \
+                         ..\..\include\Inventor\nodes\SoProfileCoordinate3.h \
+                         ..\..\include\Inventor\nodes\SoQuadMesh.h \
+                         ..\..\include\Inventor\nodes\SoResetTransform.h \
+                         ..\..\include\Inventor\nodes\SoRotation.h \
+                         ..\..\include\Inventor\nodes\SoRotationXYZ.h \
+                         ..\..\include\Inventor\nodes\SoRotor.h \
+                         ..\..\include\Inventor\nodes\SoScale.h \
+                         ..\..\include\Inventor\nodes\SoSceneTexture2.h \
+                         ..\..\include\Inventor\nodes\SoSelection.h \
+                         ..\..\include\Inventor\nodes\SoSeparator.h \
+                         ..\..\include\Inventor\nodes\SoShaderObject.h \
+                         ..\..\include\Inventor\nodes\SoShaderParameter.h \
+                         ..\..\include\Inventor\nodes\SoShaderProgram.h \
+                         ..\..\include\Inventor\nodes\SoShape.h \
+                         ..\..\include\Inventor\nodes\SoShapeHints.h \
+                         ..\..\include\Inventor\nodes\SoShuttle.h \
+                         ..\..\include\Inventor\nodes\SoSphere.h \
+                         ..\..\include\Inventor\nodes\SoSpotLight.h \
+                         ..\..\include\Inventor\nodes\SoSurroundScale.h \
+                         ..\..\include\Inventor\nodes\SoSwitch.h \
+                         ..\..\include\Inventor\nodes\SoText2.h \
+                         ..\..\include\Inventor\nodes\SoText3.h \
+                         ..\..\include\Inventor\nodes\SoTexture2.h \
+                         ..\..\include\Inventor\nodes\SoTexture2Transform.h \
+                         ..\..\include\Inventor\nodes\SoTexture3.h \
+                         ..\..\include\Inventor\nodes\SoTexture3Transform.h \
+                         ..\..\include\Inventor\nodes\SoTextureCombine.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinate2.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinate3.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateBinding.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateCube.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateCylinder.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateDefault.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateEnvironment.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateFunction.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinatePlane.h \
+                         ..\..\include\Inventor\nodes\SoTextureCoordinateSphere.h \
+                         ..\..\include\Inventor\nodes\SoTextureCubeMap.h \
+                         ..\..\include\Inventor\nodes\SoTextureMatrixTransform.h \
+                         ..\..\include\Inventor\nodes\SoTextureScalePolicy.h \
+                         ..\..\include\Inventor\nodes\SoTextureUnit.h \
+                         ..\..\include\Inventor\nodes\SoTransform.h \
+                         ..\..\include\Inventor\nodes\SoTransformSeparator.h \
+                         ..\..\include\Inventor\nodes\SoTransformation.h \
+                         ..\..\include\Inventor\nodes\SoTranslation.h \
+                         ..\..\include\Inventor\nodes\SoTransparencyType.h \
+                         ..\..\include\Inventor\nodes\SoTriangleStripSet.h \
+                         ..\..\include\Inventor\nodes\SoUnits.h \
+                         ..\..\include\Inventor\nodes\SoVertexAttribute.h \
+                         ..\..\include\Inventor\nodes\SoVertexAttributeBinding.h \
+                         ..\..\include\Inventor\nodes\SoVertexProperty.h \
+                         ..\..\include\Inventor\nodes\SoVertexShader.h \
+                         ..\..\include\Inventor\nodes\SoVertexShape.h \
+                         ..\..\include\Inventor\nodes\SoViewerNavigationMode.h \
+                         ..\..\include\Inventor\nodes\SoWWWAnchor.h \
+                         ..\..\include\Inventor\nodes\SoWWWInline.h \
+                         ..\..\include\Inventor\projectors\SbCylinderPlaneProjector.h \
+                         ..\..\include\Inventor\projectors\SbCylinderProjector.h \
+                         ..\..\include\Inventor\projectors\SbCylinderSectionProjector.h \
+                         ..\..\include\Inventor\projectors\SbCylinderSheetProjector.h \
+                         ..\..\include\Inventor\projectors\SbLineProjector.h \
+                         ..\..\include\Inventor\projectors\SbPlaneProjector.h \
+                         ..\..\include\Inventor\projectors\SbProjector.h \
+                         ..\..\include\Inventor\projectors\SbSpherePlaneProjector.h \
+                         ..\..\include\Inventor\projectors\SbSphereProjector.h \
+                         ..\..\include\Inventor\projectors\SbSphereSectionProjector.h \
+                         ..\..\include\Inventor\projectors\SbSphereSheetProjector.h \
+                         ..\..\include\Inventor\scxml\ScXML.h \
+                         ..\..\include\Inventor\scxml\ScXMLEvent.h \
+                         ..\..\include\Inventor\scxml\ScXMLInvoke.h \
+                         ..\..\include\Inventor\scxml\ScXMLObject.h \
+                         ..\..\include\Inventor\scxml\ScXMLStateMachine.h \
+                         ..\..\include\Inventor\scxml\SoScXMLEvent.h \
+                         ..\..\include\Inventor\scxml\SoScXMLStateMachine.h \
+                         ..\..\include\Inventor\sensors\SoAlarmSensor.h \
+                         ..\..\include\Inventor\sensors\SoDataSensor.h \
+                         ..\..\include\Inventor\sensors\SoDelayQueueSensor.h \
+                         ..\..\include\Inventor\sensors\SoFieldSensor.h \
+                         ..\..\include\Inventor\sensors\SoIdleSensor.h \
+                         ..\..\include\Inventor\sensors\SoNodeSensor.h \
+                         ..\..\include\Inventor\sensors\SoOneShotSensor.h \
+                         ..\..\include\Inventor\sensors\SoPathSensor.h \
+                         ..\..\include\Inventor\sensors\SoSensor.h \
+                         ..\..\include\Inventor\sensors\SoSensorManager.h \
+                         ..\..\include\Inventor\sensors\SoTimerQueueSensor.h \
+                         ..\..\include\Inventor\sensors\SoTimerSensor.h \
+                         ..\..\include\Inventor\threads\SbBarrier.h \
+                         ..\..\include\Inventor\threads\SbCondVar.h \
+                         ..\..\include\Inventor\threads\SbFifo.h \
+                         ..\..\include\Inventor\threads\SbMutex.h \
+                         ..\..\include\Inventor\threads\SbRWMutex.h \
+                         ..\..\include\Inventor\threads\SbStorage.h \
+                         ..\..\include\Inventor\threads\SbThread.h \
+                         ..\..\include\Inventor\threads\SbThreadAutoLock.h \
+                         ..\..\include\Inventor\threads\SbTypedStorage.h \
                          ..\..\include\SoDebug.h \
-                         ..\..\include\Inventor\C\XML\types.h \
-                         ..\..\include\Inventor\C\XML\parser.h \
-                         ..\..\include\Inventor\C\XML\document.h \
-                         ..\..\include\Inventor\C\XML\element.h \
-                         ..\..\include\Inventor\C\XML\attribute.h \
-                         ..\..\include\Inventor\C\XML\path.h \
                          ..\..\src\actions\SoAction.cpp \
                          ..\..\src\actions\SoAudioRenderAction.cpp \
                          ..\..\src\actions\SoBoxHighlightRenderAction.cpp \
@@ -1065,19 +1057,18 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\actions\SoLineHighlightRenderAction.cpp \
                          ..\..\src\actions\SoPickAction.cpp \
                          ..\..\src\actions\SoRayPickAction.cpp \
-                         ..\..\src\actions\SoSearchAction.cpp \
-                         ..\..\src\actions\SoToVRMLAction.cpp \
-                         ..\..\src\actions\SoToVRML2Action.cpp \
-                         ..\..\src\actions\SoWriteAction.cpp \
                          ..\..\src\actions\SoReorganizeAction.cpp \
-                         ..\..\src\collision\SoIntersectionDetectionAction.cpp \
+                         ..\..\src\actions\SoSearchAction.cpp \
+                         ..\..\src\actions\SoToVRML2Action.cpp \
+                         ..\..\src\actions\SoToVRMLAction.cpp \
+                         ..\..\src\actions\SoWriteAction.cpp \
                          ..\..\src\base\SbBSPTree.cpp \
-                         ..\..\src\base\SbBox2f.cpp \
                          ..\..\src\base\SbBox2d.cpp \
+                         ..\..\src\base\SbBox2f.cpp \
                          ..\..\src\base\SbBox2s.cpp \
-                         ..\..\src\base\SbBox3s.cpp \
-                         ..\..\src\base\SbBox3f.cpp \
                          ..\..\src\base\SbBox3d.cpp \
+                         ..\..\src\base\SbBox3f.cpp \
+                         ..\..\src\base\SbBox3s.cpp \
                          ..\..\src\base\SbClip.cpp \
                          ..\..\src\base\SbColor.cpp \
                          ..\..\src\base\SbColor4f.cpp \
@@ -1094,32 +1085,33 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\base\SbTesselator.cpp \
                          ..\..\src\base\SbTime.cpp \
                          ..\..\src\base\SbVec2b.cpp \
-                         ..\..\src\base\SbVec2s.cpp \
-                         ..\..\src\base\SbVec2i32.cpp \
-                         ..\..\src\base\SbVec2f.cpp \
                          ..\..\src\base\SbVec2d.cpp \
+                         ..\..\src\base\SbVec2f.cpp \
+                         ..\..\src\base\SbVec2i32.cpp \
+                         ..\..\src\base\SbVec2s.cpp \
                          ..\..\src\base\SbVec2s.cpp \
                          ..\..\src\base\SbVec3b.cpp \
-                         ..\..\src\base\SbVec3s.cpp \
-                         ..\..\src\base\SbVec3i32.cpp \
-                         ..\..\src\base\SbVec3f.cpp \
                          ..\..\src\base\SbVec3d.cpp \
+                         ..\..\src\base\SbVec3f.cpp \
+                         ..\..\src\base\SbVec3i32.cpp \
+                         ..\..\src\base\SbVec3s.cpp \
                          ..\..\src\base\SbVec4b.cpp \
-                         ..\..\src\base\SbVec4s.cpp \
-                         ..\..\src\base\SbVec4i32.cpp \
-                         ..\..\src\base\SbVec4f.cpp \
                          ..\..\src\base\SbVec4d.cpp \
+                         ..\..\src\base\SbVec4f.cpp \
+                         ..\..\src\base\SbVec4i32.cpp \
+                         ..\..\src\base\SbVec4s.cpp \
                          ..\..\src\base\SbViewVolume.cpp \
                          ..\..\src\base\SbViewportRegion.cpp \
                          ..\..\src\base\SbXfBox3f.cpp \
-                         ..\..\src\caches\SoCache.cpp \
                          ..\..\src\caches\SoBoundingBoxCache.cpp \
+                         ..\..\src\caches\SoCache.cpp \
                          ..\..\src\caches\SoConvexDataCache.cpp \
                          ..\..\src\caches\SoGLCacheList.cpp \
                          ..\..\src\caches\SoGLRenderCache.cpp \
                          ..\..\src\caches\SoNormalCache.cpp \
                          ..\..\src\caches\SoPrimitiveVertexCache.cpp \
                          ..\..\src\caches\SoTextureCoordinateCache.cpp \
+                         ..\..\src\collision\SoIntersectionDetectionAction.cpp \
                          ..\..\src\details\SoConeDetail.cpp \
                          ..\..\src\details\SoCubeDetail.cpp \
                          ..\..\src\details\SoCylinderDetail.cpp \
@@ -1129,6 +1121,10 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\details\SoNodeKitDetail.cpp \
                          ..\..\src\details\SoPointDetail.cpp \
                          ..\..\src\details\SoTextDetail.cpp \
+                         ..\..\src\doc\books.dox \
+                         ..\..\src\doc\environment.dox \
+                         ..\..\src\doc\macros.dox \
+                         ..\..\src\doc\modules.dox \
                          ..\..\src\draggers\SoCenterballDragger.cpp \
                          ..\..\src\draggers\SoDirectionalLightDragger.cpp \
                          ..\..\src\draggers\SoDragPointDragger.cpp \
@@ -1151,19 +1147,19 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\draggers\SoTransformerDragger.cpp \
                          ..\..\src\draggers\SoTranslate1Dragger.cpp \
                          ..\..\src\draggers\SoTranslate2Dragger.cpp \
-                         ..\..\src\elements\SoElement.cpp \
-                         ..\..\src\elements\SoAccumulatedElement.cpp \
-                         ..\..\src\elements\SoOverrideElement.cpp \
-                         ..\..\src\elements\SoFloatElement.cpp \
-                         ..\..\src\elements\SoInt32Element.cpp \
                          ..\..\src\elements\GL\SoGLColorIndexElement.cpp \
                          ..\..\src\elements\GL\SoGLLineWidthElement.cpp \
                          ..\..\src\elements\GL\SoGLPointSizeElement.cpp \
+                         ..\..\src\elements\SoAccumulatedElement.cpp \
+                         ..\..\src\elements\SoElement.cpp \
+                         ..\..\src\elements\SoFloatElement.cpp \
+                         ..\..\src\elements\SoInt32Element.cpp \
                          ..\..\src\elements\SoLineWidthElement.cpp \
-                         ..\..\src\elements\SoListenerPositionElement.cpp \
-                         ..\..\src\elements\SoListenerOrientationElement.cpp \
-                         ..\..\src\elements\SoListenerGainElement.cpp \
                          ..\..\src\elements\SoListenerDopplerElement.cpp \
+                         ..\..\src\elements\SoListenerGainElement.cpp \
+                         ..\..\src\elements\SoListenerOrientationElement.cpp \
+                         ..\..\src\elements\SoListenerPositionElement.cpp \
+                         ..\..\src\elements\SoOverrideElement.cpp \
                          ..\..\src\elements\SoPointSizeElement.cpp \
                          ..\..\src\elements\SoReplacedElement.cpp \
                          ..\..\src\engines\SoBoolOperation.cpp \
@@ -1187,21 +1183,21 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\engines\SoEngineOutput.cpp \
                          ..\..\src\engines\SoFieldConverter.cpp \
                          ..\..\src\engines\SoGate.cpp \
+                         ..\..\src\engines\SoHeightMapToNormalMap.cpp \
                          ..\..\src\engines\SoInterpolate.cpp \
                          ..\..\src\engines\SoInterpolateFloat.cpp \
                          ..\..\src\engines\SoInterpolateRotation.cpp \
                          ..\..\src\engines\SoInterpolateVec2f.cpp \
                          ..\..\src\engines\SoInterpolateVec3f.cpp \
                          ..\..\src\engines\SoInterpolateVec4f.cpp \
+                         ..\..\src\engines\SoNodeEngine.cpp \
                          ..\..\src\engines\SoOnOff.cpp \
                          ..\..\src\engines\SoOneShot.cpp \
                          ..\..\src\engines\SoSelectOne.cpp \
+                         ..\..\src\engines\SoTexture2Convert.cpp \
                          ..\..\src\engines\SoTimeCounter.cpp \
                          ..\..\src\engines\SoTransformVec3f.cpp \
                          ..\..\src\engines\SoTriggerAny.cpp \
-                         ..\..\src\engines\SoNodeEngine.cpp \
-                         ..\..\src\engines\SoTexture2Convert.cpp \
-                         ..\..\src\engines\SoHeightMapToNormalMap.cpp \
                          ..\..\src\errors\SoDebugError.cpp \
                          ..\..\src\errors\SoError.cpp \
                          ..\..\src\errors\SoMemoryError.cpp \
@@ -1237,34 +1233,34 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\fields\SoMFUInt32.cpp \
                          ..\..\src\fields\SoMFUShort.cpp \
                          ..\..\src\fields\SoMFVec2b.cpp \
-                         ..\..\src\fields\SoMFVec2s.cpp \
-                         ..\..\src\fields\SoMFVec2i32.cpp \
-                         ..\..\src\fields\SoMFVec2f.cpp \
                          ..\..\src\fields\SoMFVec2d.cpp \
+                         ..\..\src\fields\SoMFVec2f.cpp \
+                         ..\..\src\fields\SoMFVec2i32.cpp \
+                         ..\..\src\fields\SoMFVec2s.cpp \
                          ..\..\src\fields\SoMFVec3b.cpp \
-                         ..\..\src\fields\SoMFVec3s.cpp \
-                         ..\..\src\fields\SoMFVec3i32.cpp \
-                         ..\..\src\fields\SoMFVec3f.cpp \
                          ..\..\src\fields\SoMFVec3d.cpp \
+                         ..\..\src\fields\SoMFVec3f.cpp \
+                         ..\..\src\fields\SoMFVec3i32.cpp \
+                         ..\..\src\fields\SoMFVec3s.cpp \
                          ..\..\src\fields\SoMFVec4b.cpp \
-                         ..\..\src\fields\SoMFVec4ub.cpp \
-                         ..\..\src\fields\SoMFVec4s.cpp \
-                         ..\..\src\fields\SoMFVec4us.cpp \
-                         ..\..\src\fields\SoMFVec4i32.cpp \
-                         ..\..\src\fields\SoMFVec4ui32.cpp \
-                         ..\..\src\fields\SoMFVec4f.cpp \
                          ..\..\src\fields\SoMFVec4d.cpp \
+                         ..\..\src\fields\SoMFVec4f.cpp \
+                         ..\..\src\fields\SoMFVec4i32.cpp \
+                         ..\..\src\fields\SoMFVec4s.cpp \
+                         ..\..\src\fields\SoMFVec4ub.cpp \
+                         ..\..\src\fields\SoMFVec4ui32.cpp \
+                         ..\..\src\fields\SoMFVec4us.cpp \
                          ..\..\src\fields\SoMField.cpp \
                          ..\..\src\fields\SoSFBitMask.cpp \
                          ..\..\src\fields\SoSFBool.cpp \
-                         ..\..\src\fields\SoSFBox2s.cpp \
-                         ..\..\src\fields\SoSFBox2i32.cpp \
-                         ..\..\src\fields\SoSFBox2f.cpp \
                          ..\..\src\fields\SoSFBox2d.cpp \
-                         ..\..\src\fields\SoSFBox3s.cpp \
-                         ..\..\src\fields\SoSFBox3i32.cpp \
-                         ..\..\src\fields\SoSFBox3f.cpp \
+                         ..\..\src\fields\SoSFBox2f.cpp \
+                         ..\..\src\fields\SoSFBox2i32.cpp \
+                         ..\..\src\fields\SoSFBox2s.cpp \
                          ..\..\src\fields\SoSFBox3d.cpp \
+                         ..\..\src\fields\SoSFBox3f.cpp \
+                         ..\..\src\fields\SoSFBox3i32.cpp \
+                         ..\..\src\fields\SoSFBox3s.cpp \
                          ..\..\src\fields\SoSFColor.cpp \
                          ..\..\src\fields\SoSFColorRGBA.cpp \
                          ..\..\src\fields\SoSFDouble.cpp \
@@ -1287,25 +1283,36 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\fields\SoSFUInt32.cpp \
                          ..\..\src\fields\SoSFUShort.cpp \
                          ..\..\src\fields\SoSFVec2b.cpp \
-                         ..\..\src\fields\SoSFVec2s.cpp \
-                         ..\..\src\fields\SoSFVec2i32.cpp \
-                         ..\..\src\fields\SoSFVec2f.cpp \
                          ..\..\src\fields\SoSFVec2d.cpp \
+                         ..\..\src\fields\SoSFVec2f.cpp \
+                         ..\..\src\fields\SoSFVec2i32.cpp \
+                         ..\..\src\fields\SoSFVec2s.cpp \
                          ..\..\src\fields\SoSFVec3b.cpp \
-                         ..\..\src\fields\SoSFVec3s.cpp \
-                         ..\..\src\fields\SoSFVec3i32.cpp \
-                         ..\..\src\fields\SoSFVec3f.cpp \
                          ..\..\src\fields\SoSFVec3d.cpp \
+                         ..\..\src\fields\SoSFVec3f.cpp \
+                         ..\..\src\fields\SoSFVec3i32.cpp \
+                         ..\..\src\fields\SoSFVec3s.cpp \
                          ..\..\src\fields\SoSFVec4b.cpp \
-                         ..\..\src\fields\SoSFVec4ub.cpp \
-                         ..\..\src\fields\SoSFVec4s.cpp \
-                         ..\..\src\fields\SoSFVec4us.cpp \
-                         ..\..\src\fields\SoSFVec4i32.cpp \
-                         ..\..\src\fields\SoSFVec4ui32.cpp \
-                         ..\..\src\fields\SoSFVec4f.cpp \
                          ..\..\src\fields\SoSFVec4d.cpp \
+                         ..\..\src\fields\SoSFVec4f.cpp \
+                         ..\..\src\fields\SoSFVec4i32.cpp \
+                         ..\..\src\fields\SoSFVec4s.cpp \
+                         ..\..\src\fields\SoSFVec4ub.cpp \
+                         ..\..\src\fields\SoSFVec4ui32.cpp \
+                         ..\..\src\fields\SoSFVec4us.cpp \
                          ..\..\src\fields\SoSField.cpp \
+                         ..\..\src\foreignfiles\SoForeignFileKit.cpp \
+                         ..\..\src\foreignfiles\SoSTLFileKit.cpp \
+                         ..\..\src\geo\SoGeoCoordinate.cpp \
+                         ..\..\src\geo\SoGeoLocation.cpp \
+                         ..\..\src\geo\SoGeoOrigin.cpp \
+                         ..\..\src\geo\SoGeoSeparator.cpp \
                          ..\..\src\glue\dl.cpp \
+                         ..\..\src\hardcopy\HardCopy.cpp \
+                         ..\..\src\hardcopy\PSVectorOutput.cpp \
+                         ..\..\src\hardcopy\VectorOutput.cpp \
+                         ..\..\src\hardcopy\VectorizeAction.cpp \
+                         ..\..\src\hardcopy\VectorizePSAction.cpp \
                          ..\..\src\io\SoInput.cpp \
                          ..\..\src\io\SoOutput.cpp \
                          ..\..\src\lists\SbIntList.cpp \
@@ -1340,25 +1347,26 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\manips\SoTransformerManip.cpp \
                          ..\..\src\manips\commoncode.cpp \
                          ..\..\src\misc\SoAudioDevice.cpp \
-                         ..\..\src\misc\SoGlyph.cpp \
-                         ..\..\src\misc\SoContextHandler.cpp \
                          ..\..\src\misc\SoBase.cpp \
                          ..\..\src\misc\SoChildList.cpp \
+                         ..\..\src\misc\SoContextHandler.cpp \
                          ..\..\src\misc\SoDB.cpp \
+                         ..\..\src\misc\SoDebug.cpp \
                          ..\..\src\misc\SoEventManager.cpp \
                          ..\..\src\misc\SoFullPath.cpp \
+                         ..\..\src\misc\SoGlyph.cpp \
                          ..\..\src\misc\SoInteraction.cpp \
                          ..\..\src\misc\SoLockManager.cpp \
-                         ..\..\src\misc\SoNotification.cpp \
                          ..\..\src\misc\SoNotRec.cpp \
+                         ..\..\src\misc\SoNotification.cpp \
                          ..\..\src\misc\SoOffscreenRenderer.cpp \
                          ..\..\src\misc\SoPath.cpp \
                          ..\..\src\misc\SoPickedPoint.cpp \
                          ..\..\src\misc\SoPrimitiveVertex.cpp \
+                         ..\..\src\misc\SoRenderManager.cpp \
                          ..\..\src\misc\SoSceneManager.cpp \
                          ..\..\src\misc\SoState.cpp \
                          ..\..\src\misc\SoType.cpp \
-                         ..\..\src\misc\SoDebug.cpp \
                          ..\..\src\nodekits\SoAppearanceKit.cpp \
                          ..\..\src\nodekits\SoBaseKit.cpp \
                          ..\..\src\nodekits\SoCameraKit.cpp \
@@ -1375,7 +1383,6 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\nodes\SoAnnotation.cpp \
                          ..\..\src\nodes\SoAntiSquish.cpp \
                          ..\..\src\nodes\SoArray.cpp \
-                         ..\..\src\shapenodes\SoAsciiText.cpp \
                          ..\..\src\nodes\SoBaseColor.cpp \
                          ..\..\src\nodes\SoBlinker.cpp \
                          ..\..\src\nodes\SoBumpMap.cpp \
@@ -1386,54 +1393,36 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\nodes\SoClipPlane.cpp \
                          ..\..\src\nodes\SoColorIndex.cpp \
                          ..\..\src\nodes\SoComplexity.cpp \
-                         ..\..\src\shapenodes\SoCone.cpp \
                          ..\..\src\nodes\SoCoordinate3.cpp \
                          ..\..\src\nodes\SoCoordinate4.cpp \
-                         ..\..\src\shapenodes\SoCube.cpp \
-                         ..\..\src\shapenodes\SoCylinder.cpp \
                          ..\..\src\nodes\SoDepthBuffer.cpp \
-                         ..\..\src\nodes\SoVertexAttribute.cpp \
-                         ..\..\src\nodes\SoVertexAttributeBinding.cpp \
                          ..\..\src\nodes\SoDirectionalLight.cpp \
                          ..\..\src\nodes\SoDrawStyle.cpp \
                          ..\..\src\nodes\SoEnvironment.cpp \
                          ..\..\src\nodes\SoEventCallback.cpp \
                          ..\..\src\nodes\SoExtSelection.cpp \
-                         ..\..\src\shapenodes\SoFaceSet.cpp \
                          ..\..\src\nodes\SoFile.cpp \
                          ..\..\src\nodes\SoFont.cpp \
                          ..\..\src\nodes\SoFontStyle.cpp \
                          ..\..\src\nodes\SoFrustumCamera.cpp \
                          ..\..\src\nodes\SoGroup.cpp \
-                         ..\..\src\shapenodes\SoImage.cpp \
-                         ..\..\src\shapenodes\SoIndexedFaceSet.cpp \
-                         ..\..\src\shapenodes\SoIndexedLineSet.cpp \
-                         ..\..\src\shapenodes\SoIndexedNurbsCurve.cpp \
-                         ..\..\src\shapenodes\SoIndexedNurbsSurface.cpp \
-                         ..\..\src\shapenodes\SoIndexedShape.cpp \
-                         ..\..\src\shapenodes\SoIndexedTriangleStripSet.cpp \
                          ..\..\src\nodes\SoInfo.cpp \
                          ..\..\src\nodes\SoLOD.cpp \
                          ..\..\src\nodes\SoLabel.cpp \
                          ..\..\src\nodes\SoLevelOfDetail.cpp \
                          ..\..\src\nodes\SoLight.cpp \
                          ..\..\src\nodes\SoLightModel.cpp \
-                         ..\..\src\shapenodes\SoLineSet.cpp \
                          ..\..\src\nodes\SoLinearProfile.cpp \
                          ..\..\src\nodes\SoListener.cpp \
                          ..\..\src\nodes\SoLocateHighlight.cpp \
-                         ..\..\src\shapenodes\SoMarkerSet.cpp \
                          ..\..\src\nodes\SoMaterial.cpp \
                          ..\..\src\nodes\SoMaterialBinding.cpp \
                          ..\..\src\nodes\SoMatrixTransform.cpp \
                          ..\..\src\nodes\SoMultipleCopy.cpp \
                          ..\..\src\nodes\SoNode.cpp \
-                         ..\..\src\shapenodes\SoNonIndexedShape.cpp \
                          ..\..\src\nodes\SoNormal.cpp \
                          ..\..\src\nodes\SoNormalBinding.cpp \
-                         ..\..\src\shapenodes\SoNurbsCurve.cpp \
                          ..\..\src\nodes\SoNurbsProfile.cpp \
-                         ..\..\src\shapenodes\SoNurbsSurface.cpp \
                          ..\..\src\nodes\SoOrthographicCamera.cpp \
                          ..\..\src\nodes\SoPackedColor.cpp \
                          ..\..\src\nodes\SoPathSwitch.cpp \
@@ -1441,12 +1430,10 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\nodes\SoPerspectiveCamera.cpp \
                          ..\..\src\nodes\SoPickStyle.cpp \
                          ..\..\src\nodes\SoPointLight.cpp \
-                         ..\..\src\shapenodes\SoPointSet.cpp \
                          ..\..\src\nodes\SoPolygonOffset.cpp \
                          ..\..\src\nodes\SoProfile.cpp \
                          ..\..\src\nodes\SoProfileCoordinate2.cpp \
                          ..\..\src\nodes\SoProfileCoordinate3.cpp \
-                         ..\..\src\shapenodes\SoQuadMesh.cpp \
                          ..\..\src\nodes\SoResetTransform.cpp \
                          ..\..\src\nodes\SoRotation.cpp \
                          ..\..\src\nodes\SoRotationXYZ.cpp \
@@ -1455,15 +1442,11 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\nodes\SoSceneTexture2.cpp \
                          ..\..\src\nodes\SoSelection.cpp \
                          ..\..\src\nodes\SoSeparator.cpp \
-                         ..\..\src\shapenodes\SoShape.cpp \
                          ..\..\src\nodes\SoShapeHints.cpp \
                          ..\..\src\nodes\SoShuttle.cpp \
-                         ..\..\src\shapenodes\SoSphere.cpp \
                          ..\..\src\nodes\SoSpotLight.cpp \
                          ..\..\src\nodes\SoSurroundScale.cpp \
                          ..\..\src\nodes\SoSwitch.cpp \
-                         ..\..\src\shapenodes\SoText2.cpp \
-                         ..\..\src\shapenodes\SoText3.cpp \
                          ..\..\src\nodes\SoTexture2.cpp \
                          ..\..\src\nodes\SoTexture2Transform.cpp \
                          ..\..\src\nodes\SoTexture3.cpp \
@@ -1487,15 +1470,19 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\nodes\SoTransformation.cpp \
                          ..\..\src\nodes\SoTranslation.cpp \
                          ..\..\src\nodes\SoTransparencyType.cpp \
-                         ..\..\src\shapenodes\SoTriangleStripSet.cpp \
                          ..\..\src\nodes\SoUnits.cpp \
+                         ..\..\src\nodes\SoVertexAttribute.cpp \
+                         ..\..\src\nodes\SoVertexAttributeBinding.cpp \
                          ..\..\src\nodes\SoVertexProperty.cpp \
-                         ..\..\src\shaders\SoVertexShader.cpp \
                          ..\..\src\nodes\SoVertexProperty.cpp \
-                         ..\..\src\shapenodes\SoVertexShape.cpp \
                          ..\..\src\nodes\SoViewerNavigationMode.cpp \
                          ..\..\src\nodes\SoWWWAnchor.cpp \
                          ..\..\src\nodes\SoWWWInline.cpp \
+                         ..\..\src\profiler\SbProfilingData.cpp \
+                         ..\..\src\profiler\SoProfiler.cpp \
+                         ..\..\src\profiler\SoProfilerElement.cpp \
+                         ..\..\src\profiler\SoProfilerStats.cpp \
+                         ..\..\src\profiler\SoProfilingReportGenerator.cpp \
                          ..\..\src\projectors\SbCylinderPlaneProjector.cpp \
                          ..\..\src\projectors\SbCylinderProjector.cpp \
                          ..\..\src\projectors\SbCylinderSectionProjector.cpp \
@@ -1529,12 +1516,38 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\shaders\SoGeometryShader.cpp \
                          ..\..\src\shaders\SoShader.cpp \
                          ..\..\src\shaders\SoShaderObject.cpp \
-                         ..\..\src\shaders\SoShaderProgram.cpp \
                          ..\..\src\shaders\SoShaderParameter.cpp \
+                         ..\..\src\shaders\SoShaderProgram.cpp \
+                         ..\..\src\shaders\SoVertexShader.cpp \
+                         ..\..\src\shadows\SoShadowCulling.cpp \
                          ..\..\src\shadows\SoShadowGroup.cpp \
                          ..\..\src\shadows\SoShadowSpotLight.cpp \
                          ..\..\src\shadows\SoShadowStyle.cpp \
-                         ..\..\src\shadows\SoShadowCulling.cpp \
+                         ..\..\src\shapenodes\SoAsciiText.cpp \
+                         ..\..\src\shapenodes\SoCone.cpp \
+                         ..\..\src\shapenodes\SoCube.cpp \
+                         ..\..\src\shapenodes\SoCylinder.cpp \
+                         ..\..\src\shapenodes\SoFaceSet.cpp \
+                         ..\..\src\shapenodes\SoImage.cpp \
+                         ..\..\src\shapenodes\SoIndexedFaceSet.cpp \
+                         ..\..\src\shapenodes\SoIndexedLineSet.cpp \
+                         ..\..\src\shapenodes\SoIndexedNurbsCurve.cpp \
+                         ..\..\src\shapenodes\SoIndexedNurbsSurface.cpp \
+                         ..\..\src\shapenodes\SoIndexedShape.cpp \
+                         ..\..\src\shapenodes\SoIndexedTriangleStripSet.cpp \
+                         ..\..\src\shapenodes\SoLineSet.cpp \
+                         ..\..\src\shapenodes\SoMarkerSet.cpp \
+                         ..\..\src\shapenodes\SoNonIndexedShape.cpp \
+                         ..\..\src\shapenodes\SoNurbsCurve.cpp \
+                         ..\..\src\shapenodes\SoNurbsSurface.cpp \
+                         ..\..\src\shapenodes\SoPointSet.cpp \
+                         ..\..\src\shapenodes\SoQuadMesh.cpp \
+                         ..\..\src\shapenodes\SoShape.cpp \
+                         ..\..\src\shapenodes\SoSphere.cpp \
+                         ..\..\src\shapenodes\SoText2.cpp \
+                         ..\..\src\shapenodes\SoText3.cpp \
+                         ..\..\src\shapenodes\SoTriangleStripSet.cpp \
+                         ..\..\src\shapenodes\SoVertexShape.cpp \
                          ..\..\src\threads\barrier.cpp \
                          ..\..\src\threads\condvar.cpp \
                          ..\..\src\threads\fifo.cpp \
@@ -1609,27 +1622,10 @@ INPUT                  = ..\..\src\doc\main.dox \
                          ..\..\src\vrml97\Viewpoint.cpp \
                          ..\..\src\vrml97\VisibilitySensor.cpp \
                          ..\..\src\vrml97\WorldInfo.cpp \
-                         ..\..\src\hardcopy\HardCopy.cpp \
-                         ..\..\src\hardcopy\PSVectorOutput.cpp \
-                         ..\..\src\hardcopy\VectorOutput.cpp \
-                         ..\..\src\hardcopy\VectorizeAction.cpp \
-                         ..\..\src\hardcopy\VectorizePSAction.cpp \
-                         ..\..\src\geo\SoGeoOrigin.cpp \
-                         ..\..\src\geo\SoGeoSeparator.cpp \
-                         ..\..\src\geo\SoGeoLocation.cpp \
-                         ..\..\src\geo\SoGeoCoordinate.cpp \
-                         ..\..\src\foreignfiles\SoForeignFileKit.cpp \
-                         ..\..\src\foreignfiles\SoSTLFileKit.cpp \
+                         ..\..\src\xml\attribute.cpp \
                          ..\..\src\xml\document.cpp \
                          ..\..\src\xml\element.cpp \
-                         ..\..\src\xml\attribute.cpp \
                          ..\..\src\xml\path.cpp \
-                         ..\..\src\profiler\SoProfiler.cpp \
-                         ..\..\src\profiler\SbProfilingData.cpp \
-                         ..\..\src\profiler\SoProfilerElement.cpp \
-                         ..\..\src\profiler\SoProfilerStats.cpp \
-                         ..\..\src\profiler\SoProfilingReportGenerator.cpp \
-                         ..\..\docs\releases.dox
 
 
 # If the value of the INPUT tag contains directories, you can use the 
@@ -2257,7 +2253,7 @@ EXTERNAL_GROUPS        = YES
 # The PERL_PATH should be the absolute path and name of the perl script 
 # interpreter (i.e. the result of `which perl').
 
-PERL_PATH              = /usr/bin/perl
+PERL_PATH              = /cygdrive/c/Perl/bin/perl
 
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool   
