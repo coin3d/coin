@@ -28,6 +28,8 @@
 #include "SoOffscreenCGData.h"
 #ifdef COIN_MACOS_10_3
 #include <ApplicationServices/ApplicationServices.h>
+#else
+#include <Inventor/SbVec2f.h>
 #endif
 
 // Pixels-pr-mm.
