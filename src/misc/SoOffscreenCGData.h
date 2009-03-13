@@ -28,6 +28,8 @@
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
+#include <Inventor/SbVec2f.h>
+
 class SoOffscreenCGData {
 public:
   static SbVec2f getResolution(void);
