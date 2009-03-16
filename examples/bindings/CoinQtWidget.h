@@ -39,10 +39,10 @@ class CoinQtWidget : public QGLWidget {
 
 public:
   CoinQtWidget(QWidget * parent = NULL, const char * name = NULL,
-               const QGLWidget * shareWidget = NULL, WFlags f = 0);
+               const QGLWidget * shareWidget = NULL, Qt::WindowFlags f = 0);
   CoinQtWidget(const QGLFormat & format, QWidget * parent = NULL,
                const char * name = NULL, const QGLWidget * shareWidget = NULL,
-               WFlags f = 0);
+               Qt::WindowFlags f = 0);
   virtual ~CoinQtWidget(void);
 
   virtual SbBool setSceneGraph(SoNode * root, SbBool managed = FALSE);

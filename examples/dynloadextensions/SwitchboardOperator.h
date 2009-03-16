@@ -34,7 +34,7 @@
 #define SWITCHBOARDOPERATOR_API
 #endif
 
-#include <Switchboard.h>
+#include "Switchboard.h"
 #include <Inventor/fields/SoMFEnum.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/events/SoKeyboardEvent.h>
