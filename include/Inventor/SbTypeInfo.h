@@ -51,6 +51,7 @@
 */
 
 #include <Inventor/system/inttypes.h>
+#include <Inventor/C/basic.h>
 
 // *************************************************************************
 // Predeclarations
@@ -200,6 +201,10 @@ class SoMFVec4i32;
 class SoMFVec4ui32;
 class SoMFVec4f;
 class SoMFVec4d;
+
+class SoEngine;
+class SoNode;
+class SoPath;
 
 // *************************************************************************
 

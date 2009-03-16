@@ -24,7 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbColor.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/actions/SoGLRenderAction.h>
