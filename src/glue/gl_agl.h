@@ -1,5 +1,5 @@
-#ifndef COIN_GLUE_INTERNAL_NSGL_H
-#define COIN_GLUE_INTERNAL_NSGL_H
+#ifndef COIN_GLUE_INTERNAL_AGL_H
+#define COIN_GLUE_INTERNAL_AGL_H
 
 /**************************************************************************\
  *
@@ -50,4 +50,4 @@ void aglglue_cleanup(void);
 }
 #endif /* __cplusplus */
 
-#endif /* !COIN_GLUE_INTERNAL_NSGL_H */
+#endif /* !COIN_GLUE_INTERNAL_AGL_H */
