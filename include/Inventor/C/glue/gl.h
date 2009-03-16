@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 /* Documentation for the cc_glglue OpenGL wrapper abstraction
-   interface can be found at the top of the Coin/src/glue/gl.c source
+   interface can be found at the top of the Coin/src/glue/gl.cpp source
    code file. */
 
 /* ********************************************************************** */
@@ -549,7 +549,7 @@ COIN_DLL_API void cc_glglue_glGetQueryObjectuiv(const cc_glglue * glue,
                                                 GLuint id, GLenum pname, 
                                                 GLuint * params);
 
-/* FBO */
+/* framebuffer_object */
 COIN_DLL_API void cc_glglue_glIsRenderbuffer(const cc_glglue * glue, GLuint renderbuffer);
 COIN_DLL_API void cc_glglue_glBindRenderbuffer(const cc_glglue * glue, GLenum target, GLuint renderbuffer);
 COIN_DLL_API void cc_glglue_glDeleteRenderbuffers(const cc_glglue * glue, GLsizei n, const GLuint *renderbuffers);
