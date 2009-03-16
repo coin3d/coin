@@ -1731,23 +1731,37 @@ SIM_AC_CHECK_OPENGL(
           AC_DEFINE([HAVE_GLX], 1, [define if you have GLX X11 OpenGL bindings])
           ], [SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against GLX (OpenGL on X11) but X linkage was specified. The SoOffscreenRenderer functionality will be disabled. ])])
       else
-        SIM_AC_HAVE_AGL_IFELSE([
-          AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
-          LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-          # indirect linking is not supported in static libs
-          if $COIN_STATIC; then
-            COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
-          fi
-          AC_CHECK_HEADERS(
-            [OpenGL/CGLCurrent.h],
-            [],
-            [AC_MSG_ERROR([AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no.])], [ ]
-          )
-          SIM_AC_HAVE_AGL_PBUFFER([
-            AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
-                               [define if AGL pBuffers are available on the system])
-            ])], [SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against AGL. The SoOffscreenRenderer functionality will be disabled. ])
-        ])
+        AC_ARG_ENABLE([agl],
+          AC_HELP_STRING([--enable-agl],
+                         [enable AGL on Mac OS X [[default=--disable-agl]]]),
+          [case "${enableval}" in
+            yes | true) sim_ac_enable_agl=true ;;
+            no | false) sim_ac_enable_agl=false ;;
+            *) SIM_AC_ENABLE_ERROR([--enable-agl]) ;;
+           esac],
+          [sim_ac_enable_agl=false])
+        if $sim_ac_enable_agl; then
+          SIM_AC_HAVE_AGL_IFELSE([
+            AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
+            LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+            # indirect linking is not supported in static libs
+            if $COIN_STATIC; then
+              COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+            fi
+            AC_CHECK_HEADERS(
+              [OpenGL/CGLCurrent.h],
+              [],
+              [AC_MSG_ERROR([AGL is available but CGL is not? Dude. Something went very wrong here. Please get in touch with us at coin-support@sim.no.])], [ ]
+            )
+            SIM_AC_HAVE_AGL_PBUFFER([AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,[define if AGL pBuffers are available on the system])])
+          ], [])
+        fi
+        SIM_AC_HAVE_CGL_IFELSE(
+          [AC_DEFINE([HAVE_CGL], 1, [define if you have CGL OpenGL bindings])],
+          [])
+        if test x"$sim_cv_have_cgl" != x"true" && test x"$sim_cv_have_agl" != x"false" ; then
+          SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against AGL or CGL. The SoOffscreenRenderer functionality will be disabled.])
+        fi
       fi
     ;;
     * )  
