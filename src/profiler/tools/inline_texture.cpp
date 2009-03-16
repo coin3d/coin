@@ -1,4 +1,5 @@
 #include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/actions/SoSearchAction.h>
