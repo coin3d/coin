@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+// FIXME: this class has not yet been implemented in Coin. this is a
+// placeholder / stub / skeleton code, not yet built (nor installed,
+// obviously).  --mortene.
+
 #include <Inventor/actions/SoSimplifyAction.h>
 #include <Inventor/tools/SbLazyPimplPtr.h>
 

@@ -21,6 +21,10 @@
  *
 \**************************************************************************/
 
+// FIXME: this class has not yet been implemented in Coin. this is a
+// placeholder / stub / skeleton code, not yet built (nor installed,
+// obviously).  --mortene.
+
 /*!
   \class SoShapeSimplifyAction Inventor/include/SoShapeSimplifyAction.h
   \brief The SoShapeSimplifyAction class replaces complex primitives

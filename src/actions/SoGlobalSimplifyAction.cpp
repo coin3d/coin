@@ -21,6 +21,10 @@
  *
 \**************************************************************************/
 
+// FIXME: this class has not yet been implemented in Coin. this is a
+// placeholder / stub / skeleton code, not yet built (nor installed,
+// obviously).  --mortene.
+
 /*!
   \class SoGlobalSimplifyAction Inventor/include/SoGlobalSimplifyAction.h
   \brief The SoGlobalSimplifyAction class is for globally simplifying the
