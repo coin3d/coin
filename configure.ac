@@ -2164,6 +2164,12 @@ COIN_COMPILER="$CXX"
   # Mac OS X tweaks
   #
 
+  # We use CoreFoundation calls multiple places in Coin
+  [case $host_os in
+  darwin* ) LDFLAGS="$LDFLAGS -Wl,-framework,CoreFoundation" ;;
+  * ) ;;
+  esac]
+
   # Disallow static libraries in framework (doesn't make sense)
   if $sim_ac_framework; then
     if test x$enable_static = xyes; then
