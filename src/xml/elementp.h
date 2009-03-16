@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/C/XML/types.h>
+#include <cstdio>
 
 size_t cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincrement);
 size_t cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize, int indent, int indentincrement);

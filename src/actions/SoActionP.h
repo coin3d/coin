@@ -35,6 +35,7 @@
 #include "misc/SoCompactPathList.h"
 
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
+#include <Inventor/actions/SoAction.h>
 
 #ifdef HAVE_NODEKITS
 #include <Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h>

@@ -34,6 +34,7 @@
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/basic.h>
+#include <Inventor/C/glue/dl.h>
 
 /* ********************************************************************** */
 

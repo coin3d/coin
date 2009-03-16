@@ -24,6 +24,8 @@
  *
 \**************************************************************************/
 
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>

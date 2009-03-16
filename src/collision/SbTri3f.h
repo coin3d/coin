@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbBox3f.h>
 
 class SbTri3fP;
 

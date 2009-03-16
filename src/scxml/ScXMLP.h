@@ -30,7 +30,9 @@
 
 struct cc_xml_doc;
 struct cc_xml_elt;
+
 class ScXMLObject;
+class ScXMLStateMachine;
 
 class ScXMLP {
 public:

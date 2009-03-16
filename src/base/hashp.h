@@ -29,6 +29,8 @@
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/base/memalloc.h>
+#define COIN_ALLOW_CC_HASH
+#include <Inventor/C/base/hash.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -29,6 +29,7 @@
 #endif /* !COIN_INTERNAL */
 
 #include "base/dict.h"
+#include <Inventor/C/base/heap.h>
 
 #ifdef __cplusplus
 extern "C" {

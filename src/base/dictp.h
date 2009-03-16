@@ -29,6 +29,7 @@
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/base/memalloc.h>
+#include "dict.h"
 
 #ifdef __cplusplus
 extern "C" {

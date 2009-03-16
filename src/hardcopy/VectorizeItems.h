@@ -28,6 +28,9 @@
 // public data members.
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec2s.h>
 
 class SoVectorizeItem {
 public:
