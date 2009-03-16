@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2009 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@
 //   write should just traverse each child once in ChildList order and
 //   write fields until there's only defaults left in the arrays
 
-#include <SwitchboardOperator.h>
+#include "SwitchboardOperator.h"
 #include <Inventor/nodes/SoSubNode.h>
 
 #include <Inventor/actions/SoHandleEventAction.h>

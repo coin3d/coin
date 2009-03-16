@@ -19,6 +19,7 @@
  */
 
 #include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/SoSceneManager.h>
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/nodes/SoCube.h>
@@ -56,8 +57,6 @@ static char red_cone_iv[] = {
 void
 redraw_cb(void * user, SoSceneManager * manager)
 {
-  int idx = (int)user;
-
   glutSetWindow(glutwin);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
