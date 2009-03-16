@@ -10874,7 +10874,7 @@ fi
 
 AC_DEFUN([SIM_AC_HAVE_AGL_IFELSE], [
 sim_ac_save_ldflags=$LDFLAGS
-sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
+sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL -Wl,-framework,Carbon"
 
 LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
 
@@ -10887,7 +10887,7 @@ AC_CACHE_CHECK(
     [#include <AGL/agl.h>
      #define __CARBONSOUND__
      #include <Carbon/Carbon.h>],
-    [aglGetCurrentContext();],
+    [AGLContext ctx = NULL;WindowRef wref = aglGetWindowRef(ctx);HIViewRef href = HIViewGetRoot(wref);],
     [sim_cv_have_agl=true],
     [sim_cv_have_agl=false]))
 
@@ -10915,6 +10915,33 @@ AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
   fi
 ])
 
+# **************************************************************************
+# SIM_AC_HAVE_CGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether CGL is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_CGL_IFELSE], [
+sim_ac_save_ldflags=$LDFLAGS
+sim_ac_cgl_ldflags="-Wl,-framework,OpenGL"
+
+LDFLAGS="$LDFLAGS $sim_ac_cgl_ldflags"
+
+AC_CACHE_CHECK(
+  [whether CGL is on the system],
+  sim_cv_have_cgl,
+  AC_TRY_LINK(
+    [#include <OpenGL/OpenGL.h>],
+    [CGLGetCurrentContext();],
+    [sim_cv_have_cgl=true],
+    [sim_cv_have_cgl=false]))
+
+LDFLAGS=$sim_ac_save_ldflags
+if ${sim_cv_have_cgl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_CGL_IFELSE()
 
 # Usage:
 #  SIM_AC_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])

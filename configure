@@ -35166,7 +35166,7 @@ fi
       else
 
 sim_ac_save_ldflags=$LDFLAGS
-sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
+sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL -Wl,-framework,Carbon"
 
 LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
 
@@ -35189,7 +35189,7 @@ cat >>conftest.$ac_ext <<_ACEOF
 int
 main ()
 {
-aglGetCurrentContext();
+AGLContext ctx = NULL;WindowRef wref = aglGetWindowRef(ctx);HIViewRef href = HIViewGetRoot(wref);
   ;
   return 0;
 }
