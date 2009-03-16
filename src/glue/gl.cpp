@@ -4322,12 +4322,15 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
  */
 /*
   #include <Inventor/C/glue/gl.h>
+  #include <Inventor/elements/SoGLCacheContextElement.h>
+  #include <Inventor/SoDB.h>
   #include <assert.h>
   #include <stdio.h>
 
   int
   main(void)
   {
+    SoDB::init();
     void * ctx = cc_glglue_context_create_offscreen(128, 128);
     assert(ctx);
     SbBool ok = cc_glglue_context_make_current(ctx);
@@ -4341,11 +4344,13 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
     (void)fprintf(stdout, "glGetString(GL_VENDOR)=='%s'\n", glGetString(GL_VENDOR));
     (void)fprintf(stdout, "glGetString(GL_RENDERER)=='%s'\n", glGetString(GL_RENDERER));
 
+    uint32_t contextid = SoGLCacheContextElement::getUniqueCacheContext();
+    const cc_glglue * glue = cc_glglue_instance(contextid);
     (void)fprintf(stdout, "glGenTextures=='%p'\n",
-                  cc_glglue_getprocaddress("glGenTextures"));
+                  cc_glglue_getprocaddress(glue, "glGenTextures"));
 
     (void)fprintf(stdout, "glGenTexturesEXT=='%p'\n",
-                  cc_glglue_getprocaddress("glGenTexturesEXT"));
+                  cc_glglue_getprocaddress(glue, "glGenTexturesEXT"));
 
     cc_glglue_context_reinstate_previous(ctx);
     cc_glglue_context_destruct(ctx);
