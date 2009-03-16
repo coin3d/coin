@@ -33,16 +33,19 @@ class QDialog;
 
 // *************************************************************************
 
+//FIXME: Split this class in one CoinQt3Widget and one CoinQt4Widget
+//file, and port the last one to Qt4. BFG 20090316
+
 class CoinQtWidget : public QGLWidget {
   typedef QGLWidget inherited;
   Q_OBJECT
 
 public:
   CoinQtWidget(QWidget * parent = NULL, const char * name = NULL,
-               const QGLWidget * shareWidget = NULL, Qt::WindowFlags f = 0);
+               const QGLWidget * shareWidget = NULL, WFlags f = 0);
   CoinQtWidget(const QGLFormat & format, QWidget * parent = NULL,
                const char * name = NULL, const QGLWidget * shareWidget = NULL,
-               Qt::WindowFlags f = 0);
+               WFlags f = 0);
   virtual ~CoinQtWidget(void);
 
   virtual SbBool setSceneGraph(SoNode * root, SbBool managed = FALSE);
