@@ -22,8 +22,8 @@
 \**************************************************************************/
 
 /*!
-  How to use OpenGL / GLX|WGL|AGL inside Coin
-  ===========================================
+  How to use OpenGL / GLX|WGL|AGL|CGL inside Coin
+  ===============================================
 
   Creating portable OpenGL applications can be a complicated matter
   since you have to have both compile-time and run-time tests for
@@ -132,6 +132,11 @@
 
   - COIN_FORCE_GL1_0_ONLY: set to "1" to disallow use of OpenGL1.1+
     and extensions under all circumstances.
+
+  - COIN_FORCE_AGL: set to "1" to prefer using the old AGL bindings over CGL.
+    Note that AGL is not available on 64-bit systems. The AGL code is not
+    compiled into Coin by default, but must be enabled at configure-time using
+    --enable-agl in addition to using the environment variable.
 */
 
 
@@ -177,18 +182,23 @@
 // *************************************************************************
 
 /* The configure script should protect against more than one of
-   HAVE_WGL, HAVE_GLX and HAVE_AGL being defined at the same time, but
+   HAVE_WGL, HAVE_GLX, HAVE_AGL|HAVE_CGL being defined at the same time, but
    we set up this little trip-wire in addition, just in case someone
    is either fiddling manually with config.h, or in case a change is
    made which breaks this protection in the configure script. */
 
-#if defined(HAVE_WGL) && (defined(HAVE_GLX) || defined(HAVE_AGL))
-#error More than one of HAVE_WGL, HAVE_AGL and HAVE_GLX set simultaneously!
-#endif /* HAVE_GLX || HAVE_AGL */
+#if defined(HAVE_WGL) && (defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
+#error More than one of HAVE_WGL, HAVE_GLX and HAVE_AGL|HAVE_CGL set simultaneously!
+#endif
 
-#if defined(HAVE_AGL) && (defined(HAVE_GLX) || defined(HAVE_WGL))
-#error More than one of HAVE_WGL, HAVE_AGL and HAVE_GLX set simultaneously!
-#endif /* HAVE_GLX || HAVE_WGL */
+#if defined(HAVE_GLX) && (defined(HAVE_AGL) || defined(HAVE_CGL))
+#error More than one of HAVE_WGL, HAVE_GLX and HAVE_AGL|HAVE_CGL set simultaneously!
+#endif
+
+// Define HAVE_NOGL if no platform GL binding exists
+#if !defined(HAVE_WGL) && !defined(HAVE_GLX) && !(defined(HAVE_AGL) || defined(HAVE_CGL))
+#define HAVE_NOGL 1
+#endif
 
 // *************************************************************************
 
@@ -199,8 +209,15 @@
 
 #ifdef HAVE_AGL
 #include <AGL/agl.h>
-#include <OpenGL/CGLCurrent.h>  /* for CGLGetCurrentContext */
 #endif /* HAVE_AGL */
+
+#ifdef HAVE_OPENGL_CGLCURRENT_H
+#include <OpenGL/CGLCurrent.h>
+#endif
+
+#ifdef HAVE_CGL
+#include <OpenGL/OpenGL.h>
+#endif
 
 #ifdef HAVE_GLX
 #include <GL/glx.h>
@@ -219,6 +236,7 @@
 #include "glue/glp.h"
 #include "glue/dlp.h"
 #include "glue/gl_agl.h"
+#include "glue/gl_cgl.h"
 #include "glue/gl_glx.h"
 #include "glue/gl_wgl.h"
 #include "threads/threadsutilp.h"
@@ -237,6 +255,7 @@ static cc_list * gl_instance_created_cblist = NULL;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
+static int COIN_USE_AGL = -1;
 
 /* ********************************************************************** */
 
@@ -593,10 +612,17 @@ glglue_cleanup(void)
 
 #ifdef HAVE_GLX
   glxglue_cleanup();
-#elif defined(HAVE_AGL)
-  aglglue_cleanup();
 #elif defined(HAVE_WGL)
   wglglue_cleanup();
+#else
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) aglglue_cleanup(); else
+#endif
+#if defined(HAVE_CGL)
+  cglglue_cleanup();
+#else
+  ;
+#endif
 #endif
 }
 
@@ -1941,7 +1967,7 @@ glglue_check_ati_vbo_in_displaylist_bug(const char * vendor,
    * FIXME: is there a better way to test if we're on Mac OS X
    * pederb, 20051026
    */
-#ifndef HAVE_AGL /* bug is not present on Mac OS X */
+#if !defined(HAVE_AGL) && !defined(HAVE_CGL) /* bug is not present on Mac OS X */
   /*
    * The ATI Windows/Linux driver has a nasty bug which causes a crash
    * in OpenGL whenever a VBO render call is added to a display
@@ -2215,6 +2241,24 @@ glglue_check_driver(const char * vendor, const char * renderer,
   }
 }
 
+static void check_force_agl()
+{
+#ifdef HAVE_AGL
+  if (COIN_USE_AGL == -1) {
+    const char * env = coin_getenv("COIN_FORCE_AGL");
+    if (env) {
+      COIN_USE_AGL = atoi(env);
+    }
+    else
+#ifdef HAVE_CGL
+    COIN_USE_AGL = 0;
+#else
+    COIN_USE_AGL = 1;
+#endif
+  }
+#endif
+}
+
 /* We're basically using the Singleton pattern to instantiate and
    return OpenGL-glue "object structs". We're constructing one
    instance for each OpenGL context, though.  */
@@ -2240,6 +2284,7 @@ cc_glglue_instance(int contextid)
     if (env) COIN_MAXIMUM_TEXTURE3_SIZE = atoi(env);
     else COIN_MAXIMUM_TEXTURE3_SIZE = -1;
   }
+  check_force_agl();
 
   if (!gldict) {  /* First invocation, do initializations. */
     gldict = cc_dict_construct(16, 0.75f);
@@ -4372,15 +4417,23 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
   if (offscreen_cb && offscreen_cb->create_offscreen) {
     return (*offscreen_cb->create_offscreen)(width, height);
   } else {
-#ifdef HAVE_GLX
+#ifdef HAVE_NOGL
+  assert(FALSE && "unimplemented");
+  return NULL;
+#elif defined(HAVE_GLX)
   return glxglue_context_create_offscreen(width, height);
-#elif defined(HAVE_AGL)
-  return aglglue_context_create_offscreen(width, height);
 #elif defined(HAVE_WGL)
   return wglglue_context_create_offscreen(width, height);
 #else
-  assert(FALSE && "unimplemented");
-  return NULL;
+#if defined(HAVE_AGL)
+  check_force_agl();
+  if (COIN_USE_AGL > 0) return aglglue_context_create_offscreen(width, height); else
+#endif
+#if defined(HAVE_CGL)
+  return cglglue_context_create_offscreen(width, height);
+#else
+  ;
+#endif
 #endif
   }
 }
@@ -4391,15 +4444,22 @@ cc_glglue_context_make_current(void * ctx)
   if (offscreen_cb && offscreen_cb->make_current) {
     return (*offscreen_cb->make_current)(ctx);
   } else {
-#ifdef HAVE_GLX
+#ifdef HAVE_NOGL
+  assert(FALSE && "unimplemented");
+  return FALSE;
+#elif defined(HAVE_GLX)
   return glxglue_context_make_current(ctx);
-#elif defined(HAVE_AGL)
-  return aglglue_context_make_current(ctx);
 #elif defined(HAVE_WGL)
   return wglglue_context_make_current(ctx);
 #else
-  assert(FALSE && "unimplemented");
-  return FALSE;
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) return aglglue_context_make_current(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  return cglglue_context_make_current(ctx);
+#else
+  ;
+#endif
 #endif
   }
 }
@@ -4421,14 +4481,21 @@ cc_glglue_context_reinstate_previous(void * ctx)
   if (offscreen_cb && offscreen_cb->reinstate_previous) {
     (*offscreen_cb->reinstate_previous)(ctx);
   } else {
-#ifdef HAVE_GLX
+#ifdef HAVE_NOGL
+  assert(FALSE && "unimplemented");
+#elif defined(HAVE_GLX)
   glxglue_context_reinstate_previous(ctx);
-#elif defined(HAVE_AGL)
-  aglglue_context_reinstate_previous(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_reinstate_previous(ctx);
 #else
-  assert(FALSE && "unimplemented");
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) aglglue_context_reinstate_previous(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  cglglue_context_reinstate_previous(ctx);
+#else
+  ;
+#endif
 #endif
   }
 }
@@ -4439,14 +4506,21 @@ cc_glglue_context_destruct(void * ctx)
   if (offscreen_cb && offscreen_cb->destruct) {
     (*offscreen_cb->destruct)(ctx);
   } else {
-#ifdef HAVE_GLX
+#ifdef HAVE_NOGL
+  assert(FALSE && "unimplemented");
+#elif defined(HAVE_GLX)
   glxglue_context_destruct(ctx);
-#elif defined(HAVE_AGL)
-  aglglue_context_destruct(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_destruct(ctx);
 #else
-  assert(FALSE && "unimplemented");
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) aglglue_context_destruct(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  cglglue_context_destruct(ctx);
+#else
+  ;
+#endif
 #endif
   }
 }
@@ -4559,9 +4633,9 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
     ok = wglglue_context_pbuffer_max(ctx, pbufmax);
 #elif defined(HAVE_GLX)
     ok = glxglue_context_pbuffer_max(ctx, pbufmax);
-#elif defined(HAVE_AGL)
+#elif defined(HAVE_AGL) || defined(HAVE_CGL)
     /* FIXME: implement check on max pbuffer width, height and number
-       of pixels for AGL, if any such limits are imposed there.
+       of pixels for AGL/CGL, if any such limits are imposed there.
        20040713 mortene. */
 #endif
     if (ok) {
@@ -4636,13 +4710,19 @@ cc_glglue_context_can_render_to_texture(void * ctx)
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return FALSE;
 
-#if defined(HAVE_AGL)
-  return aglglue_context_can_render_to_texture(ctx);
+#if defined(HAVE_GLX) || defined(HAVE_NOGL)
+  return FALSE;
 #elif defined(HAVE_WGL)
   return wglglue_context_can_render_to_texture(ctx);
 #else
-  /* GLX */
-  return FALSE;
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) return aglglue_context_can_render_to_texture(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  return cglglue_context_can_render_to_texture(ctx);
+#else
+  ;
+#endif
 #endif
 }
 
@@ -4653,16 +4733,23 @@ cc_glglue_context_bind_pbuffer(void * ctx)
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return;
 
-#if defined(HAVE_AGL)
-  aglglue_context_bind_pbuffer(ctx);
-#elif defined(HAVE_WGL)
-  wglglue_context_bind_pbuffer(ctx);
-#else
+#if defined(HAVE_GLX) || defined(HAVE_NOGL)
   /* FIXME: Implement for GLX.  The problem is that in GLX, there is
      no way to bind a PBuffer as a texture (i.e. there is no
      equivalent to the aglTexImagePBuffer() and wglBindTexImageARB()
      calls).  kyrah 20031123. */
   assert(FALSE && "unimplemented");
+#elif defined(HAVE_WGL)
+  wglglue_context_bind_pbuffer(ctx);
+#else
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) aglglue_context_bind_pbuffer(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  cglglue_context_bind_pbuffer(ctx);
+#else
+  ;
+#endif
 #endif
 }
 
@@ -4672,13 +4759,20 @@ cc_glglue_context_release_pbuffer(void * ctx)
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return;
 
-#if defined(HAVE_AGL)
-  aglglue_context_release_pbuffer(ctx);
+#if defined(HAVE_GLX) || defined(HAVE_NOGL)
+  /* FIXME: Implement for GLX. kyrah 20031123. */
+  assert(FALSE && "unimplemented");
 #elif defined(HAVE_WGL)
   wglglue_context_release_pbuffer(ctx);
 #else
-  /* FIXME: Implement for GLX. kyrah 20031123. */
-  assert(FALSE && "unimplemented");
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) aglglue_context_release_pbuffer(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  cglglue_context_release_pbuffer(ctx);
+#else
+  ;
+#endif
 #endif
 }
 
@@ -4688,14 +4782,21 @@ cc_glglue_context_pbuffer_is_bound(void * ctx)
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return FALSE;
 
-#if defined(HAVE_AGL)
-  return aglglue_context_pbuffer_is_bound(ctx);
-#elif defined(HAVE_WGL)
-  return wglglue_context_pbuffer_is_bound(ctx);
-#else
+#if defined(HAVE_GLX) || defined(HAVE_NOGL)
   /* FIXME: Implement for GLX. kyrah 20031123. */
   assert(FALSE && "unimplemented");
   return FALSE;
+#elif defined(HAVE_WGL)
+  return wglglue_context_pbuffer_is_bound(ctx);
+#else
+#if defined(HAVE_AGL)
+  if (COIN_USE_AGL > 0) return aglglue_context_pbuffer_is_bound(ctx); else
+#endif
+#if defined(HAVE_CGL)
+  return cglglue_context_pbuffer_is_bound(ctx);
+#else
+  return false;
+#endif
 #endif
 }
 
@@ -5013,12 +5114,12 @@ coin_gl_current_context(void)
   ctx = wglGetCurrentContext();
 #endif /* HAVE_WGL */
 
-#ifdef HAVE_AGL
+#if defined(HAVE_AGL) || defined(HAVE_CGL)
   /* Note: We cannot use aglGetCurrentContext() here, since that only
      returns a value != NULL if the context has been set using
      aglSetCurrentContext(). */
   ctx = CGLGetCurrentContext();
-#endif /* HAVE_AGL */
+#endif
 
   return ctx;
 }

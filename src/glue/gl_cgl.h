@@ -1,3 +1,6 @@
+#ifndef COIN_GLUE_INTERNAL_CGL_H
+#define COIN_GLUE_INTERNAL_CGL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,25 +24,30 @@
  *
 \**************************************************************************/
 
-#include "gl.cpp"
-#include "gl_wgl.cpp"
-#include "gl_glx.cpp"
-#include "gl_agl.cpp"
-#include "gl_cgl.cpp"
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
-#include "cg.cpp"
-#include "spidermonkey.cpp"
+#include <Inventor/SbBasic.h> // SbBool
 
-#include "dl.cpp"
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#include "win32api.cpp"
 
-#include "GLUWrapper.cpp"
-#include "simage_wrapper.cpp"
-#include "openal_wrapper.cpp"
+void * cglglue_getprocaddress(const char * fname);
+void * cglglue_context_create_offscreen(unsigned int width,
+                                        unsigned int height);
+SbBool cglglue_context_make_current(void * ctx);
+void cglglue_context_reinstate_previous(void * ctx);
+void cglglue_context_destruct(void * ctx);
+void cglglue_context_bind_pbuffer(void * ctx);
+void cglglue_context_release_pbuffer(void * ctx);
+SbBool cglglue_context_pbuffer_is_bound(void * ctx);
+SbBool cglglue_context_can_render_to_texture(void * ctx);
+void cglglue_cleanup(void);
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
-#include "bzip2.cpp"
-#include "freetype.cpp"
-#include "zlib.cpp"
-
-#include "normalization_cubemap.cpp"
+#endif /* !COIN_GLUE_INTERNAL_CGL_H */
