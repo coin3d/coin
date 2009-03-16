@@ -103,8 +103,8 @@ struct CoinVrmlJs_SensorInfo {
 SbHash <void *, unsigned long> * CoinVrmlJs_sensorinfohash = NULL;
 
 
-char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
-char * CoinVrmlJs_SFRotationAliases[] = {"x", "y", "z", "angle"};
+const char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
+const char * CoinVrmlJs_SFRotationAliases[] = {"x", "y", "z", "angle"};
 float CoinVrmlJs_SFdefaultValues[] = {0.0, 0.0, 0.0, 0.0};
 double CoinVrmlJs_SFdefaultValuesDouble[] = {0.0, 0.0, 0.0, 0.0};
 float CoinVrmlJs_SFRotationDefaultValues[] = {0.0, 1.0, 0.0, 0.0};
@@ -154,7 +154,7 @@ static SbList <JSObject *> * garbagecollectedobjects = NULL;
 static SbList <SoNodeSensor *> * nodesensorstobedeleted = NULL;
 
 // getIndex returns -1 if id is not an alias or in range 0-max
-static JSBool getIndex(JSContext * cx, jsval id, char * aliases[], int max)
+static JSBool getIndex(JSContext * cx, jsval id, const char * aliases[], int max)
 {
   int index;
 
@@ -206,7 +206,7 @@ bool jsval2double(JSContext *cx, const jsval v, double &value)
 
 // FIXME: number of aliases must not be lower than max. This may lead to
 // unsafe programming. 20050721 erikgors.
-template <class Base, int max, char * aliases[], class basetype, basetype defaultValues[]>
+template <class Base, int max, const char * aliases[], class basetype, basetype defaultValues[]>
 struct CoinVrmlJsSFHandler {
   static JSBool get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
   {

@@ -340,4 +340,4 @@ SoScaleUniformDragger::dragFinish(void)
 }
 
 #undef THISP
-#endif HAVE_DRAGGERS
+#endif //HAVE_DRAGGERS

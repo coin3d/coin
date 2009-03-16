@@ -92,14 +92,13 @@
 
 #define PUBLIC(obj) ((obj)->master)
 
-namespace {
-struct TypeTimings {
-  SbTime max, total;
-  int32_t count;
-};
-}
-
 class SoProfilerStatsP {
+private:
+  struct TypeTimings {
+    SbTime max, total;
+    int32_t count;
+  };
+  
 public:
   SoProfilerStatsP(void) : master(NULL) {
   }
