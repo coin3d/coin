@@ -409,7 +409,7 @@ if MAC_FRAMEWORK
 install-exec-local:
 install-data-local:
 	@$(NORMAL_INSTALL)
-	@echo "Setting up Mac OS X Compiler Framework"
+	@echo "Setting up Inventor.framework structure (Mac OS X)"
 	@if test -d "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; then :; else \
 	  echo " $(mkinstalldirs) $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; \
 	  $(mkinstalldirs) "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; \
