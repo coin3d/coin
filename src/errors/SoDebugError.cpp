@@ -93,8 +93,14 @@ using std::memcpy;
 #endif
 
 #if defined(_MSC_VER)
-  #include <intrin.h>
-  #define COIN_DEBUGGER_BREAK(x) __debugbreak()
+  #if _MSC_VER >= COIN_MSVC_8_0_VERSION
+    #include <intrin.h>
+  #endif
+  #if _MSC_VER >= COIN_MSVC_7_0_VERSION
+    #define COIN_DEBUGGER_BREAK(x) __debugbreak()
+  #else
+    #define COIN_DEBUGGER_BREAK(x) __asm { int 3 }
+  #endif
 #else 
   #if defined (MINGW32) || defined (CYGWIN)
     #include <windows.h>
