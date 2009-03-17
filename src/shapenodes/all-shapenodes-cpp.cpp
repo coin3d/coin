@@ -31,6 +31,7 @@
 #include "SoIndexedLineSet.cpp"
 #include "SoIndexedNurbsCurve.cpp"
 #include "SoIndexedNurbsSurface.cpp"
+#include "SoIndexedPointSet.cpp"
 #include "SoIndexedShape.cpp"
 #include "SoIndexedTriangleStripSet.cpp"
 #include "SoLineSet.cpp"

@@ -12,6 +12,7 @@ RegularSources = \
 	SoIndexedLineSet.cpp \
 	SoIndexedNurbsCurve.cpp \
 	SoIndexedNurbsSurface.cpp \
+	SoIndexedPointSet.cpp \
 	SoIndexedShape.cpp \
 	SoIndexedTriangleStripSet.cpp \
 	SoLineSet.cpp \

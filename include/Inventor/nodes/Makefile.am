@@ -19,7 +19,7 @@ PublicHeaders = \
 	SoCoordinate4.h \
 	SoCube.h \
 	SoCylinder.h \
-        SoDepthBuffer.h \
+	SoDepthBuffer.h \
 	SoDirectionalLight.h \
 	SoDrawStyle.h \
 	SoEnvironment.h \
@@ -41,6 +41,7 @@ PublicHeaders = \
 	SoIndexedLineSet.h \
 	SoIndexedNurbsCurve.h \
 	SoIndexedNurbsSurface.h \
+	SoIndexedPointSet.h \
 	SoIndexedShape.h \
 	SoIndexedTriangleStripSet.h \
 	SoInfo.h \

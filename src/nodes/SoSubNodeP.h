@@ -117,6 +117,9 @@
 
 // *************************************************************************
 
+#define SO_FROM_INVENTOR_6_0 \
+  (SoNode::INVENTOR_6_0)
+
 #define SO_FROM_INVENTOR_5_0 \
   (SoNode::INVENTOR_5_0)
 

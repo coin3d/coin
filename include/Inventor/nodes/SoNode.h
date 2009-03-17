@@ -73,7 +73,8 @@ public:
     COIN_2_4     = 0x1000,
     INVENTOR_5_0 = 0x2000,
     COIN_2_5     = 0x4000,
-    COIN_3_0     = 0x8000
+    COIN_3_0     = 0x8000,
+    INVENTOR_6_0 = 0x10000
   };
 
   static uint32_t getCompatibilityTypes(const SoType & nodetype);

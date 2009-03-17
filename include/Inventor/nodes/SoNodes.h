@@ -45,6 +45,7 @@
 #include <Inventor/nodes/SoIndexedShape.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoIndexedNurbsCurve.h>

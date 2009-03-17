@@ -552,6 +552,7 @@ SoNode::initClasses(void)
   SoIndexedShape::initClass();
   SoIndexedFaceSet::initClass();
   SoIndexedLineSet::initClass();
+  SoIndexedPointSet::initClass();
   SoIndexedTriangleStripSet::initClass();
   SoImage::initClass();
   SoIndexedNurbsCurve::initClass();
