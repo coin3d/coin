@@ -33,6 +33,12 @@
   wireframe image onto each shape instead of the bounding box when
   drawing the highlight.
 
+  Note: an important limitation for this rendering action is that the
+  superimposition of a wireframe is only guaranteed to work correctly
+  for filled shapes, due to a limitation in OpenGL's glPolygonOffset()
+  functionality. For more information, see the class documentation of
+  the SoPolygonOffset node.
+
   \sa SoBoxHighlightRenderAction, SoSelection
 */
 
