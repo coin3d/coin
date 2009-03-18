@@ -912,7 +912,7 @@ coin_hton_double_bytes(double value, char * result)
 {
   union {
     double d64;
-    uint32_t u64;
+    uint64_t u64;
   } val;
 
   assert(sizeof(double) == sizeof(uint64_t));
