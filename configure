@@ -21236,6 +21236,7 @@ if test "${enable_threadsafe+set}" = set; then
   enableval="$enable_threadsafe"
   case $enableval in
   yes | true ) sim_ac_enable_threadsafe=true ;;
+  no | false ) sim_ac_enable_threadsafe=false ;;
   *) ;;
   esac
 else

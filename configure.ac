@@ -636,6 +636,7 @@ AC_ARG_ENABLE([threadsafe],
   AC_HELP_STRING([--enable-threadsafe], [enable thread safe traversals]),
   [case $enableval in
   yes | true ) sim_ac_enable_threadsafe=true ;;
+  no | false ) sim_ac_enable_threadsafe=false ;;
   *) ;;
   esac],
   [sim_ac_enable_threadsafe=false])
