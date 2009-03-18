@@ -637,7 +637,7 @@ AC_ARG_ENABLE([threadsafe],
   [case $enableval in
   yes | true ) sim_ac_enable_threadsafe=true ;;
   no | false ) sim_ac_enable_threadsafe=false ;;
-  *) ;;
+  *) AC_MSG_ERROR([invalid arg "$enableval" for --enable-threadsafe option]) ;;
   esac],
   [sim_ac_enable_threadsafe=false])
 

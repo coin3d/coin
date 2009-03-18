@@ -21237,7 +21237,9 @@ if test "${enable_threadsafe+set}" = set; then
   case $enableval in
   yes | true ) sim_ac_enable_threadsafe=true ;;
   no | false ) sim_ac_enable_threadsafe=false ;;
-  *) ;;
+  *) { { echo "$as_me:$LINENO: error: invalid arg \"$enableval\" for --enable-threadsafe option" >&5
+echo "$as_me: error: invalid arg \"$enableval\" for --enable-threadsafe option" >&2;}
+   { (exit 1); exit 1; }; } ;;
   esac
 else
   sim_ac_enable_threadsafe=false
