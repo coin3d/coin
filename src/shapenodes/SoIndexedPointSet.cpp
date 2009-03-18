@@ -219,7 +219,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
   int32_t numpts = this->coordIndex.getNum();
-  if (numpts == 0) return;
+  if (numpts == 0 && !this->vertexProperty.getValue()) return;
 
   SoState * state = action->getState();
 
@@ -252,6 +252,11 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
                       needNormals, normalCacheUsed);
+
+  if (numindices == 0){
+    if (didpush) state->pop();
+    return;
+  }
 
   if (normals == NULL && needNormals) {
     needNormals = FALSE;
@@ -431,7 +436,7 @@ void
 SoIndexedPointSet::generatePrimitives(SoAction *action)
 {
   int32_t numpts = this->coordIndex.getNum();
-  if (numpts == 0) return;
+  if (numpts == 0 && !this->vertexProperty.getValue()) return;
 
   SoState * state = action->getState();
 
@@ -465,6 +470,11 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
                       needNormals, normalCacheUsed);
+
+  if (numindices == 0){
+    if (this->vertexProperty.getValue()) state->pop();
+    return;
+  }
 
   if (normals == NULL) {
     needNormals = FALSE;
