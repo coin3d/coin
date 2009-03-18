@@ -226,6 +226,9 @@ public:
   
   int readstatus;
   class SoGLImage * glimage;
+  // we don't want to delete or update the glimage in the scheduler thread, so use this
+  // member to store whether we need to recreate the glimage in the next GLRender() pass
+  bool glimagevalid; 
   SbImage image;
   SoFieldSensor * urlsensor;
   SbBool allowprequalifycb;
@@ -342,6 +345,7 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
   PRIVATE(this)->glimage = NULL;
+  PRIVATE(this)->glimagevalid = false;
   PRIVATE(this)->readstatus = 1;
   PRIVATE(this)->allowprequalifycb = TRUE;
   PRIVATE(this)->timersensor = 
@@ -506,7 +510,8 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->glimage && 
     PRIVATE(this)->glimage->getTypeId() == SoGLBigImage::getClassTypeId();
   
-  if (!PRIVATE(this)->glimage || (needbig != isbig)) {
+  if (!PRIVATE(this)->glimagevalid ||
+      (!PRIVATE(this)->glimage || (needbig != isbig))) {
     if (PRIVATE(this)->glimage) {
       PRIVATE(this)->glimage->unref(state);
     }
@@ -516,6 +521,7 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
     else {
       PRIVATE(this)->glimage = new SoGLImage();
     }
+    PRIVATE(this)->glimagevalid = true;
     if (scalepolicy == SoTextureScalePolicyElement::SCALE_DOWN) {
       PRIVATE(this)->glimage->setFlags(PRIVATE(this)->glimage->getFlags()|SoGLImage::SCALE_DOWN);
     }
@@ -614,10 +620,7 @@ SbBool
 SoVRMLImageTexture::loadUrl(void)
 {
   PRIVATE(this)->lock_glimage();
-  if (PRIVATE(this)->glimage) {
-    PRIVATE(this)->glimage->unref(NULL);
-    PRIVATE(this)->glimage = NULL;
-  }
+  PRIVATE(this)->glimagevalid = false;
   PRIVATE(this)->unlock_glimage();
 
   SbBool retval = TRUE;
@@ -655,7 +658,7 @@ imagetexture_glimage_delete(void * closure, SoSensor * s)
 }
 
 //
-// used for multithread loading.
+// used for checking if this texture should be purged from memory
 //
 void
 SoVRMLImageTexture::glimage_callback(void * closure)
@@ -670,11 +673,15 @@ SoVRMLImageTexture::glimage_callback(void * closure)
       // delayqueue sensors are processed.
       if (PRIVATE(thisp)->glimage) {
         PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
-        // allocate new sensor. It will be deleted in the sensor callback
+        // allocate new sensor. It will be deleted in the sensor
+        // callback. We do this here since this node might be outside
+        // the view frustum, and GLRender() may not be called anytime
+        // soon.
         SoOneShotSensor * s = new SoOneShotSensor(imagetexture_glimage_delete, PRIVATE(thisp)->glimage);
         s->schedule();
-        // clear the GLImage in this node
+        // clear the GLImage in this node. The sensor has a pointer to it and will delete it
         PRIVATE(thisp)->glimage = NULL;
+        PRIVATE(thisp)->glimagevalid = false;
       }
       PRIVATE(thisp)->unlock_glimage();
       PRIVATE(thisp)->image.setValue(SbVec2s(0,0), 0, NULL);
@@ -770,10 +777,7 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) data;
   
   PRIVATE(thisp)->lock_glimage();
-  if (PRIVATE(thisp)->glimage) {
-    PRIVATE(thisp)->glimage->unref(NULL);
-    PRIVATE(thisp)->glimage = NULL;
-  }
+  PRIVATE(thisp)->glimagevalid = false;
   PRIVATE(thisp)->unlock_glimage();
   
   thisp->setReadStatus(1);
@@ -811,10 +815,7 @@ SoVRMLImageTexture::readImage(const SbString & filename)
     retval = default_prequalify_cb(filename, NULL, this); 
   }
   PRIVATE(this)->lock_glimage();
-  if (PRIVATE(this)->glimage) {
-    PRIVATE(this)->glimage->unref(NULL);
-    PRIVATE(this)->glimage = NULL;
-  }
+  PRIVATE(this)->glimagevalid = false;
   PRIVATE(this)->unlock_glimage();
 
   // set flag that timer sensor will test. 
@@ -831,10 +832,7 @@ SoVRMLImageTexture::setImage(const SbImage & image)
 {
   PRIVATE(this)->image = image;
   PRIVATE(this)->lock_glimage();
-  if (PRIVATE(this)->glimage) {
-    PRIVATE(this)->glimage->unref(NULL);
-    PRIVATE(this)->glimage = NULL;
-  }
+  PRIVATE(this)->glimagevalid = false;
   PRIVATE(this)->unlock_glimage();
   this->touch(); // destroy caches using this node
 }
