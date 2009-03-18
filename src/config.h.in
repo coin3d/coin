@@ -21,9 +21,6 @@
 /* Build target system. */
 #undef COIN_CONFIGURE_TARGET
 
-/* for setup.h */
-#undef COIN_HAVE_JAVASCRIPT
-
 /* define this to a type of the indicated bitwidth */
 #undef COIN_INT16_T
 
@@ -66,9 +63,6 @@
 /* System dependent thread ID type */
 #undef COIN_THREADID_TYPE
 
-/* for setup.h */
-#undef COIN_THREADSAFE
-
 /* define this to a type of the indicated bitwidth */
 #undef COIN_UINT16_T
 
@@ -104,9 +98,6 @@
 
 /* define for runtime linking with GLU */
 #undef GLU_RUNTIME_LINKING
-
-/* for setup.h */
-#undef HAVE_3DS_IMPORT_CAPABILITIES
 
 /* define if you have AGL OpenGL bindings */
 #undef HAVE_AGL
@@ -149,9 +140,6 @@
 
 /* define if you have the dl library */
 #undef HAVE_DL_LIB
-
-/* for setup.h */
-#undef HAVE_DRAGGERS
 
 /* define if the Mac OS X dyld can be used for runtime binding */
 #undef HAVE_DYLD_RUNTIME_BINDING
@@ -258,9 +246,6 @@
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 #undef HAVE_MACH_O_DYLD_H
 
-/* for setup.h */
-#undef HAVE_MANIPULATORS
-
 /* define if memmove() is available */
 #undef HAVE_MEMMOVE
 
@@ -269,9 +254,6 @@
 
 /* Define if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
-
-/* for setup.h */
-#undef HAVE_NODEKITS
 
 /* openal extensions available */
 #undef HAVE_OPENAL
@@ -302,9 +284,6 @@
 
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
-
-/* for setup.h */
-#undef HAVE_SOUND
 
 /* define that the Spidermonkey header is available */
 #undef HAVE_SPIDERMONKEY_H
@@ -383,9 +362,6 @@
 
 /* Define to use va_copy() when available */
 #undef HAVE_VA_COPY_MACRO
-
-/* for setup.h */
-#undef HAVE_VRML97
 
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
