@@ -310,10 +310,12 @@ SoVRMLImageTexture::initClass(void) // static
   SoType type = SoVRMLImageTexture::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
 
+#ifdef COIN_THREADSAFE
   if (cc_thread_implementation() != CC_NO_THREADS) {
     SoVRMLImageTextureP::scheduler = cc_sched_construct(1);
   }
-
+#endif
+  
 #ifdef COIN_THREADSAFE
   SoVRMLImageTextureP::glimagemutex = new SbMutex;
 #endif // COIN_THREADSAFE
