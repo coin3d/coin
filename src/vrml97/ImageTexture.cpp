@@ -306,10 +306,12 @@ SoVRMLImageTexture::initClass(void) // static
   SoVRMLImageTextureP::is_exiting = FALSE;
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLImageTexture, SO_VRML97_NODE_TYPE);
   imagedata_maxage = 500;
-
+  
   SoType type = SoVRMLImageTexture::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
 
+  // only use/create scheduler if COIN_THREADSAFE is defined, since we need
+  // the mutex below for this to be safely used
 #ifdef COIN_THREADSAFE
   if (cc_thread_implementation() != CC_NO_THREADS) {
     SoVRMLImageTextureP::scheduler = cc_sched_construct(1);
