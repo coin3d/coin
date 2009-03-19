@@ -445,13 +445,12 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (action->is3DTextCountedAsTriangles()) {        
+  // don't create an new cache in getPrimitiveCount(). SoCacheElement is not enabled
+  if (action->is3DTextCountedAsTriangles() && PRIVATE(this)->cache) {        
     PRIVATE(this)->lock();
     SoState * state = action->getState();
-    PRIVATE(this)->setUpGlyphs(state, this);
-
     const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
-
+    
     const int lines = this->string.getNum();
     int numtris = 0;      
     for (int i = 0;i < lines; ++i) {
@@ -482,7 +481,6 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   else {
     action->addNumText(this->string.getNum());
   }
-
 }
 
 // This method calculates the stretchfactor needed to make the string
