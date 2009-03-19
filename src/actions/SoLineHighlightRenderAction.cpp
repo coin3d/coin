@@ -378,7 +378,8 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   for (i = 0; i < pathlist->getLength(); i++) {
     SoFullPath * path = reclassify_cast<SoFullPath *>((*pathlist)[i]);
 
-    for (int j = 0; j < path->getLength(); j++) {
+    this->postprocpath->append(path->getHead());
+    for (int j = 1; j < path->getLength(); j++) {
       this->postprocpath->append(path->getIndex(j));
     }
 
