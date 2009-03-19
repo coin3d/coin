@@ -535,21 +535,21 @@ SoText3::generatePrimitives(SoAction * action)
   SoState * state = action->getState();
 
   PRIVATE(this)->lock();
-
   PRIVATE(this)->setUpGlyphs(state, this);
-
-  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
-
-  unsigned int prts = this->parts.getValue();
-
-  if (prts & SoText3::FRONT) {
-    PRIVATE(this)->generate(action, fontspec, SoText3::FRONT);
-  }
-  if (prts & SoText3::SIDES) {
-    PRIVATE(this)->generate(action, fontspec, SoText3::SIDES);
-  }
-  if (prts & SoText3::BACK) {
-    PRIVATE(this)->generate(action, fontspec, SoText3::BACK);
+  
+  if (PRIVATE(this)->cache) {
+    const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
+    unsigned int prts = this->parts.getValue();
+    
+    if (prts & SoText3::FRONT) {
+      PRIVATE(this)->generate(action, fontspec, SoText3::FRONT);
+    }
+    if (prts & SoText3::SIDES) {
+      PRIVATE(this)->generate(action, fontspec, SoText3::SIDES);
+    }
+    if (prts & SoText3::BACK) {
+      PRIVATE(this)->generate(action, fontspec, SoText3::BACK);
+    }
   }
   PRIVATE(this)->unlock();
 }
@@ -1409,6 +1409,8 @@ SoText3::notify(SoNotList * list)
 void
 SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
 {
+  // not all actions have SoCacheElement enabled
+  if (!state->isElementEnabled(SoCacheElement::getClassStackIndex())) return;
   if (this->cache && this->cache->isValid(state)) return;
   SoGlyphCache * oldcache = this->cache;
 
