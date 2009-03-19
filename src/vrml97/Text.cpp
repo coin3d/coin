@@ -538,8 +538,8 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
         }
       }
       action->addNumTriangles(numtris);
-      PRIVATE(this)->unlock();
     }
+    PRIVATE(this)->unlock();
   }
   else {
     action->addNumText(this->string.getNum());
