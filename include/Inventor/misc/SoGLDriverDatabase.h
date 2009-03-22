@@ -84,5 +84,6 @@ private:
 #define SO_GL_SORTED_LAYERS_BLEND   "COIN_sorted_layers_blend"
 #define SO_GL_BUMPMAPPING           "COIN_bumpmapping"
 #define SO_GL_VBO_IN_DISPLAYLIST    "COIN_vbo_in_displaylist"
-
+#define SO_GL_NON_POWER_OF_TWO_TEXTURES "COIN_non_power_of_two_textures"
+#define SO_GL_GENERATE_MIPMAP       "COIN_generate_mipmap"
 #endif // SOGLDATABASE_H

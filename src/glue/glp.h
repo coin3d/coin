@@ -852,6 +852,7 @@ struct cc_glglue {
   SbBool has_fbo;
 
   SbBool vbo_in_displaylist_ok;
+  SbBool non_power_of_two_textures;
   int max_lights;
   float line_width_range[2];
   float point_size_range[2];
@@ -926,6 +927,8 @@ GLint coin_glglue_get_internal_texture_format(const cc_glglue * glw,
 
 GLenum coin_glglue_get_texture_format(const cc_glglue * glw, int numcomponents);
 SbBool coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw);
+SbBool coin_glglue_non_power_of_two_textures(const cc_glglue * glue);
+SbBool coin_glglue_has_generate_mipmap(const cc_glglue * glue);
 
 /* context creation callback */
 typedef void coin_glglue_instance_created_cb(const uint32_t contextid, void * closure);

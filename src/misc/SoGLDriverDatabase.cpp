@@ -240,6 +240,10 @@ SoGLDriverDatabaseP::initFunctions(void)
                        (glglue_feature_test_f *) &cc_glglue_can_do_bumpmapping);
   this->featuremap.put(SbName(SO_GL_VBO_IN_DISPLAYLIST).getString(),
                        (glglue_feature_test_f *) &coin_glglue_vbo_in_displaylist_supported);
+  this->featuremap.put(SbName(SO_GL_NON_POWER_OF_TWO_TEXTURES).getString(),
+                       (glglue_feature_test_f *) &coin_glglue_non_power_of_two_textures);
+  this->featuremap.put(SbName(SO_GL_GENERATE_MIPMAP).getString(),
+                       (glglue_feature_test_f *) &coin_glglue_has_generate_mipmap);
 }
 
 SbBool

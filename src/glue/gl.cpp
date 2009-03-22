@@ -1889,7 +1889,21 @@ glglue_resolve_symbols(cc_glglue * w)
      w->has_shadow) ||
     w->has_arb_fragment_program;
 
+  
+  w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
+    cc_glglue_getprocaddress(w, "glGenerateMipmap");
+  
+  if (!w->glGenerateMipmap) {
+    w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
+      cc_glglue_getprocaddress(w, "glGenerateMipmapARB");
+    
+    if (!w->glGenerateMipmap) {
+      w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
+        cc_glglue_getprocaddress(w, "glGenerateMipmapEXT");
+    }
+  }
 
+  
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
     w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glIsRenderbufferEXT");
     w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glBindRenderbufferEXT");
@@ -1908,7 +1922,6 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glFramebufferRenderbuffer = (COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)cc_glglue_getprocaddress(w, "glFramebufferRenderbufferEXT");
     w->glGetFramebufferAttachmentParameteriv = (COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)
       cc_glglue_getprocaddress(w, "glGetFramebufferAttachmentParameterivEXT");
-    w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)cc_glglue_getprocaddress(w, "glGenerateMipmapEXT");
 
     if (!w->glIsRenderbuffer || !w->glBindRenderbuffer || !w->glDeleteRenderbuffers ||
         !w->glGenRenderbuffers || !w->glRenderbufferStorage || !w->glGetRenderbufferParameteriv ||
@@ -2461,9 +2474,13 @@ cc_glglue_instance(int contextid)
                                                                          gi->versionstr);
 
     glglue_check_driver(gi->vendorstr, gi->rendererstr, gi->versionstr);
-
+    
+    gi->non_power_of_two_textures =
+      (cc_glglue_glversion_matches_at_least(gi, 2, 1, 0) ||
+       cc_glglue_glext_supported(gi, "GL_ARB_texture_non_power_of_two"));
+    
     /* Resolve our function pointers. */
-    glglue_resolve_symbols(gi);
+      glglue_resolve_symbols(gi);
   }
   else {
     gi = (cc_glglue *)ptr;
@@ -4432,10 +4449,11 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
 #if defined(HAVE_CGL)
   return cglglue_context_create_offscreen(width, height);
 #else
-  ;
 #endif
 #endif
   }
+  assert(FALSE && "unimplemented");
+  return NULL;
 }
 
 SbBool
@@ -4462,6 +4480,8 @@ cc_glglue_context_make_current(void * ctx)
 #endif
 #endif
   }
+  assert(FALSE && "unimplemented");
+  return FALSE;
 }
 
 void
@@ -5134,6 +5154,16 @@ coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 
 /* ********************************************************************** */
 
+SbBool 
+coin_glglue_non_power_of_two_textures(const cc_glglue * glue)
+{
+  // FIXME: work in progress. Needs testing on more drivers. pederb, 20090322
+  return FALSE;
+  // return glue->non_power_of_two_textures;
+}
+
+/* ********************************************************************** */
+
 uint32_t
 coin_glglue_get_contextid(const cc_glglue * glue)
 {
@@ -5274,10 +5304,17 @@ cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum t
   glue->glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
 }
 
+SbBool
+coin_glglue_has_generate_mipmap(const cc_glglue * glue)
+{
+  // FIXME: work in progress. Needs testing on more drivers. pederb, 20090322
+  return FALSE;
+  // return (glue->glGenerateMipmap != NULL);
+}
+
 void
 cc_glglue_glGenerateMipmap(const cc_glglue * glue, GLenum target)
 {
-  assert(glue->has_fbo);
   glue->glGenerateMipmap(target);
 }
 

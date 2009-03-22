@@ -1610,13 +1610,22 @@ SoGLImageP::createGLDisplayList(SoState *state)
   uint32_t xsize = size[0];
   uint32_t ysize = size[1];
   uint32_t zsize = size[2];
+  SbBool is3D = (size[2]==0)?FALSE:TRUE;
 
   // these might change if image is resized
   unsigned char *imageptr = (unsigned char *) bytes;
-  if (imageptr) this->resizeImage(state, imageptr, xsize, ysize, zsize);
-
+  
+  const cc_glglue * glw = sogl_glue_instance(state);
   SbBool mipmap = this->shouldCreateMipmap();
 
+  if (imageptr) {
+    if (is3D || 
+        (!SoGLDriverDatabase::isSupported(glw, SO_GL_NON_POWER_OF_TWO_TEXTURES) ||
+         (mipmap && !SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP)))) {
+      this->resizeImage(state, imageptr, xsize, ysize, zsize);
+    }
+  }
+  
   SoGLDisplayList *dl = new SoGLDisplayList(state,
                                             SoGLDisplayList::TEXTURE_OBJECT,
                                             1, mipmap);
@@ -1632,9 +1641,8 @@ SoGLImageP::createGLDisplayList(SoState *state)
                                   GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D));
     }
   }
-
+  
   dl->open(state);
-
 
   if (this->pbuffer) {
     this->reallyBindPBuffer(state);
@@ -1813,13 +1821,15 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else mipmapfilter = FALSE;
     }
-
-    else if (mipmap && COIN_TEX2_USE_SGIS_GENERATE_MIPMAP &&
-             SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
+    
+    else if (mipmap && SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP)) {
+      cc_glglue_glGenerateMipmap(glw, target);
+      mipmapimage = FALSE;
+    }
+    else if (mipmap && SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       mipmapimage = FALSE;
     }
-
     this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) &&
         SoGLDriverDatabase::isSupported(glw, SO_GL_ANISOTROPIC_FILTERING)) {
@@ -1827,8 +1837,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                       cc_glglue_get_max_anisotropy(glw));
     }
     if (!mipmapimage) {
-      // Create only level 0 texture. Mimpamps might be created by GL_SGIS_generate_mipmap
-
+      // Create only level 0 texture. Mimpamps might be created by glGenerateMipmap
       glTexImage2D(target, 0, internalFormat, w, h,
                    border, dataFormat, GL_UNSIGNED_BYTE, texture);
     }
