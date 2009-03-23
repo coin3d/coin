@@ -102,12 +102,12 @@ SoInput_FileInfo::~SoInput_FileInfo()
   delete[] this->readbuf;
 #endif // !(HAVE_THREADS && SOINPUT_ASYNC_IO)
   delete this->reader;
-  // to be safe, delete this after deleting the reader 
+  // to be safe, delete this after deleting the reader
   delete[] this->deletebuffer;
 }
 
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
-void 
+void
 SoInput_FileInfo::sched_cb(void * closure)
 {
   SoInput_FileInfo * thisp = (SoInput_FileInfo*) closure;
@@ -316,12 +316,12 @@ SoInput_FileInfo::skipWhiteSpace(void)
   while (TRUE) {
     char c;
     SbBool gotchar;
-    while ((gotchar = this->get(c)) && this->isSpace(c));
+    while ((gotchar = this->get(c)) && this->isSpace(c)) ;
 
     if (!gotchar) return FALSE;
 
     if (c == COMMENT_CHAR) {
-      while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
+      while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r')) ;
       if (!gotchar) return FALSE;
       if (c == '\r') {
         gotchar = this->get(c);
@@ -427,7 +427,7 @@ SoInput_FileInfo::unrefProtos(void)
 }
 
 // search for PROTO in this SoInput instance
-SoProto * 
+SoProto *
 SoInput_FileInfo::findProto(const SbName & name)
 {
   const int n = this->protolist.getLength();
@@ -440,7 +440,7 @@ SoInput_FileInfo::findProto(const SbName & name)
 
 // wrapper around this->reader. We delay creating the reader if we're
 // reading from stdin (reader == NULL).
-SoInput_Reader * 
+SoInput_Reader *
 SoInput_FileInfo::getReader(void)
 {
   if (this->reader == NULL) {
@@ -453,13 +453,13 @@ SoInput_FileInfo::getReader(void)
   return this->reader;
 }
 
-SbBool 
+SbBool
 SoInput_FileInfo::readUnsignedIntegerString(char * str)
 {
   assert(!this->isBinary());
   int minSize = 1;
   char * s = str;
-  
+
   if (this->readChar(s, '0')) {
     if (this->readChar(s + 1, 'x')) {
       s += 2 + this->readHexDigits(s + 2);
@@ -470,16 +470,16 @@ SoInput_FileInfo::readUnsignedIntegerString(char * str)
   }
   else
     s += this->readDigits(s);
-  
+
   if (s - str < minSize)
     return FALSE;
-  
-  *s = '\0';  
+
+  *s = '\0';
   return TRUE;
 }
 
-SbBool 
-SoInput_FileInfo::readUnsignedInteger(uint32_t & l) 
+SbBool
+SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
 {
   assert(!this->isBinary());
   // FIXME: fixed size buffer for input of unknown
@@ -487,17 +487,17 @@ SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
   char str[512];
   if (! this->readUnsignedIntegerString(str))
     return FALSE;
-  
+
   // FIXME: check man page of strtoul and exploit the functionality
   // provided better -- it looks like we are duplicating some of the
   // effort. 19990530 mortene.
   l = strtoul(str, NULL, 0);
-  
+
   return TRUE;
 }
 
-SbBool 
-SoInput_FileInfo::readInteger(int32_t & l) 
+SbBool
+SoInput_FileInfo::readInteger(int32_t & l)
 {
   assert(!this->isBinary());
   // FIXME: fixed size buffer for input of unknown
@@ -512,7 +512,7 @@ SoInput_FileInfo::readInteger(int32_t & l)
   else if (this->readChar(s, '+')) s++;
   if (! this->readUnsignedIntegerString(s))
     return FALSE;
-  
+
   // FIXME: check man page of strtol and exploit the functionality
   // provided better -- it looks like we are duplicating some of the
   // effort. 19990530 mortene.
@@ -529,10 +529,10 @@ SoInput_FileInfo::readInteger(int32_t & l)
         v += (c-'0') * mul;
       }
       else if (c >= 'a' && c <= 'f') {
-        v += ((c-'a')+10) * mul; 
+        v += ((c-'a')+10) * mul;
       }
       else {
-        v += ((c-'A')+10) * mul; 
+        v += ((c-'A')+10) * mul;
       }
       mul <<= 4;
     }
@@ -553,8 +553,8 @@ SoInput_FileInfo::readInteger(int32_t & l)
   return TRUE;
 }
 
-SbBool 
-SoInput_FileInfo::readReal(double & d) 
+SbBool
+SoInput_FileInfo::readReal(double & d)
 {
   assert(!this->isBinary());
   const int BUFSIZE = 2048;
@@ -563,17 +563,17 @@ SoInput_FileInfo::readReal(double & d)
   int i, n;
   char str[BUFSIZE];
   char * s = str;
-  
+
   double number;
   double exponent;
-  
+
   n = this->readChar(s, '-');
   if (n == 0) {
     n = this->readChar(s, '+');
   }
   else minus = TRUE;
   s += n;
-  
+
   if ((n = this->readDigits(s)) > 0) {
     gotNum = TRUE;
     number = 0.0;
@@ -600,19 +600,19 @@ SoInput_FileInfo::readReal(double & d)
       s += n;
     }
   }
-  
+
   if (! gotNum)
     return FALSE;
 
   if (minus) number = -number;
-  
+
   n = this->readChar(s, 'e');
   if (n == 0)
     n = this->readChar(s, 'E');
-  
+
   if (n > 0) {
     s += n;
-    
+
     minus = FALSE;
     n = this->readChar(s, '-');
     if (n == 0) {
@@ -620,7 +620,7 @@ SoInput_FileInfo::readReal(double & d)
     }
     else minus = TRUE;
     s += n;
-    
+
     if ((n = this->readDigits(s)) > 0) {
       exponent = 0.0;
       double mul = 1.0;
@@ -633,15 +633,15 @@ SoInput_FileInfo::readReal(double & d)
       number *= pow(10.0, exponent);
     }
     else
-      return FALSE; 
+      return FALSE;
   }
 
   d = number;
   return TRUE;
 }
 
-int 
-SoInput_FileInfo::readChar(char * s, char charToRead) 
+int
+SoInput_FileInfo::readChar(char * s, char charToRead)
 {
   int ret = 0;
   char c;
@@ -657,12 +657,12 @@ SoInput_FileInfo::readChar(char * s, char charToRead)
   return ret;
 }
 
-int 
+int
 SoInput_FileInfo::readDigits(char * str)
 {
   assert(!this->isBinary());
   char c, * s = str;
-  
+
   while (this->get(c)) {
     if (isdigit(c))
       *s++ = c;
@@ -675,13 +675,13 @@ SoInput_FileInfo::readDigits(char * str)
   return (int)offset;
 }
 
-int 
-SoInput_FileInfo::readHexDigits(char * str) 
+int
+SoInput_FileInfo::readHexDigits(char * str)
 {
   assert(!this->isBinary());
   char c, * s = str;
   while (this->get(c)) {
-    
+
     if (isxdigit(c)) *s++ = c;
     else {
       this->putBack(c);
