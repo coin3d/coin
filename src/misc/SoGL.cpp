@@ -2098,16 +2098,16 @@ namespace { namespace SoGL { namespace FaceSet {
           } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
             attribs->send(*vertexindices++);
           }
-          
+
           if (dotexture) {
             texcoords->send(texindices ? *texindices++ : texidx++,
                             vertexlist->get3(v5),
                             *currnormal);
-      
+
           }
-          
+
           SEND_VERTEX(v5);
-            
+
           v1 = viptr < viendptr ? *viptr++ : -1;
           while (v1 >= 0) {
             // For robustness upon buggy data sets
@@ -2823,12 +2823,13 @@ sogl_render_pointset_m1n1t1(const SoGLCoordinateElement * coords,
                             int32_t idx)
 {
   int texnr = 0;
-  const SbVec3f currnormal(0.0f,0.0f,1.0f);
-
+  int matnr = 0;
+  
   glBegin(GL_POINTS);
   for (int i = 0; i < numpts; i++) {
+    mb->send(matnr++, TRUE);
+    tb->send(texnr++, coords->get3(idx), *normals);
     glNormal3fv((const GLfloat*)normals++);
-    tb->send(texnr++, coords->get3(idx), currnormal);
     coords->send(idx++);
   }
   glEnd();
