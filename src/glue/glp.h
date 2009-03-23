@@ -287,7 +287,7 @@ typedef void (APIENTRY * COIN_PFNGLCOMBINERINPUTNVPROC)(GLenum stage,
                                                         GLenum mapping,
                                                         GLenum componentUsage);
 typedef void (APIENTRY * COIN_PFNGLCOMBINEROUTPUTNVPROC)(GLenum stage,
-                                                         GLenum portion, 
+                                                         GLenum portion,
                                                          GLenum abOutput,
                                                          GLenum cdOutput,
                                                          GLenum sumOutput,
@@ -311,11 +311,11 @@ typedef void (APIENTRY * COIN_PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC)(GLenum sta
                                                                       GLenum pname,
                                                                       GLint *params);
 typedef void (APIENTRY * COIN_PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC)(GLenum stage,
-                                                                       GLenum portion, 
+                                                                       GLenum portion,
                                                                        GLenum pname,
                                                                        GLfloat *params);
 typedef void (APIENTRY * COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC)(GLenum stage,
-                                                                       GLenum portion, 
+                                                                       GLenum portion,
                                                                        GLenum pname,
                                                                        GLint *params);
 typedef void (APIENTRY * COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC)(GLenum variable,
@@ -325,73 +325,73 @@ typedef void (APIENTRY * COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC)(GLenu
                                                                            GLenum pname,
                                                                            GLint *params);
 /* Typedefs for GL_ARB_fragment_program */
-typedef void (APIENTRY * COIN_PFNGLPROGRAMSTRINGARBPROC)(GLenum target, 
-                                                         GLenum format, 
-                                                         GLsizei len, 
-                                                         const GLvoid *string); 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMSTRINGARBPROC)(GLenum target,
+                                                         GLenum format,
+                                                         GLsizei len,
+                                                         const GLvoid *string);
 
-typedef void (APIENTRY * COIN_PFNGLBINDPROGRAMARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLBINDPROGRAMARBPROC)(GLenum target,
                                                        GLuint program);
 
-typedef void (APIENTRY * COIN_PFNGLDELETEPROGRAMSARBPROC)(GLsizei n, 
+typedef void (APIENTRY * COIN_PFNGLDELETEPROGRAMSARBPROC)(GLsizei n,
                                                           const GLuint *programs);
 
-typedef void (APIENTRY * COIN_PFNGLGENPROGRAMSARBPROC)(GLsizei n, 
+typedef void (APIENTRY * COIN_PFNGLGENPROGRAMSARBPROC)(GLsizei n,
                                                        GLuint *programs);
 
-typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4DARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4DARBPROC)(GLenum target,
                                                                  GLuint index,
-                                                                 GLdouble x, 
-                                                                 GLdouble y, 
-                                                                 GLdouble z, 
+                                                                 GLdouble x,
+                                                                 GLdouble y,
+                                                                 GLdouble z,
                                                                  GLdouble w);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4DVARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4DVARBPROC)(GLenum target,
                                                                   GLuint index,
                                                                   const GLdouble *params);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4FARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4FARBPROC)(GLenum target,
                                                                  GLuint index,
-                                                                 GLfloat x, 
-                                                                 GLfloat y, 
-                                                                 GLfloat z, 
+                                                                 GLfloat x,
+                                                                 GLfloat y,
+                                                                 GLfloat z,
                                                                  GLfloat w);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4FVARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4FVARBPROC)(GLenum target,
                                                                   GLuint index,
                                                                   const GLfloat *params);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4DARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4DARBPROC)(GLenum target,
                                                                    GLuint index,
-                                                                   GLdouble x, 
-                                                                   GLdouble y, 
-                                                                   GLdouble z, 
+                                                                   GLdouble x,
+                                                                   GLdouble y,
+                                                                   GLdouble z,
                                                                    GLdouble w);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4DVARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4DVARBPROC)(GLenum target,
                                                                     GLuint index,
                                                                     const GLdouble *params);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4FARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4FARBPROC)(GLenum target,
                                                                    GLuint index,
-                                                                   GLfloat x, 
-                                                                   GLfloat y, 
-                                                                   GLfloat z, 
+                                                                   GLfloat x,
+                                                                   GLfloat y,
+                                                                   GLfloat z,
                                                                    GLfloat w);
-typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4FVARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4FVARBPROC)(GLenum target,
                                                                     GLuint index,
                                                                     const GLfloat *params);
-typedef void (APIENTRY * COIN_PFNGLGETPROGRAMENVPARAMETERDVARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMENVPARAMETERDVARBPROC)(GLenum target,
                                                                     GLuint index,
                                                                     GLdouble *params);
-typedef void (APIENTRY * COIN_PFNGLGETPROGRAMENVPARAMETERFVARBPROC)(GLenum target, 
-                                                                    GLuint index, 
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMENVPARAMETERFVARBPROC)(GLenum target,
+                                                                    GLuint index,
                                                                     GLfloat *params);
-typedef void (APIENTRY * COIN_PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC)(GLenum target,
                                                                       GLuint index,
                                                                       GLdouble *params);
-typedef void (APIENTRY * COIN_PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC)(GLenum target, 
-                                                                      GLuint index, 
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC)(GLenum target,
+                                                                      GLuint index,
                                                                       GLfloat *params);
-typedef void (APIENTRY * COIN_PFNGLGETPROGRAMIVARBPROC)(GLenum target, 
-                                                        GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMIVARBPROC)(GLenum target,
+                                                        GLenum pname,
                                                         GLint *params);
-typedef void (APIENTRY * COIN_PFNGLGETPROGRAMSTRINGARBPROC)(GLenum target, 
-                                                            GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMSTRINGARBPROC)(GLenum target,
+                                                            GLenum pname,
                                                             GLvoid *string);
 typedef GLboolean (APIENTRY * COIN_PFNGLISPROGRAMARBPROC)(GLuint program);
 
@@ -403,19 +403,19 @@ typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1DARBPROC)(GLuint index, GLdouble
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2SARBPROC)(GLuint index, GLshort x, GLshort y);
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2FARBPROC)(GLuint index, GLfloat x, GLfloat y);
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2DARBPROC)(GLuint index, GLdouble x, GLdouble y);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3SARBPROC)(GLuint index, GLshort x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3SARBPROC)(GLuint index, GLshort x,
                                                           GLshort y, GLshort z);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3FARBPROC)(GLuint index, GLfloat x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3FARBPROC)(GLuint index, GLfloat x,
                                                           GLfloat y, GLfloat z);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3DARBPROC)(GLuint index, GLdouble x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3DARBPROC)(GLuint index, GLdouble x,
                                                           GLdouble y, GLdouble z);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4SARBPROC)(GLuint index, GLshort x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4SARBPROC)(GLuint index, GLshort x,
                                                           GLshort y, GLshort z, GLshort w);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4FARBPROC)(GLuint index, GLfloat x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4FARBPROC)(GLuint index, GLfloat x,
                                                           GLfloat y, GLfloat z, GLfloat w);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4DARBPROC)(GLuint index, GLdouble x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4DARBPROC)(GLuint index, GLdouble x,
                                                           GLdouble y, GLdouble z, GLdouble w);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUBARBPROC)(GLuint index, GLubyte x, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUBARBPROC)(GLuint index, GLubyte x,
                                                             GLubyte y, GLubyte z, GLubyte w);
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1SVARBPROC)(GLuint index, const GLshort *v);
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1FVARBPROC)(GLuint index, const GLfloat *v);
@@ -440,19 +440,19 @@ typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NIVARBPROC)(GLuint index, const 
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUBVARBPROC)(GLuint index, const GLubyte *v);
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUSVARBPROC)(GLuint index, const GLushort *v);
 typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUIVARBPROC)(GLuint index, const GLuint *v);
-typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIBPOINTERARBPROC)(GLuint index, GLint size, 
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIBPOINTERARBPROC)(GLuint index, GLint size,
                                                                GLenum type, GLboolean normalized,
-                                                               GLsizei stride, 
+                                                               GLsizei stride,
                                                                const GLvoid *pointer);
 typedef void (APIENTRY * COIN_PFNGLENABLEVERTEXATTRIBARRAYARBPROC)(GLuint index);
 typedef void (APIENTRY * COIN_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)(GLuint index);
-typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBDVARBPROC)(GLuint index, GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBDVARBPROC)(GLuint index, GLenum pname,
                                                              GLdouble *params);
-typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBFVARBPROC)(GLuint index, GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBFVARBPROC)(GLuint index, GLenum pname,
                                                              GLfloat *params);
-typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBIVARBPROC)(GLuint index, GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBIVARBPROC)(GLuint index, GLenum pname,
                                                              GLint *params);
-typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index, GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index, GLenum pname,
                                                                    GLvoid **pointer);
 
 /* FIXME: according to the GL_ARB_shader_objects doc, these types must
@@ -742,7 +742,7 @@ struct cc_glglue {
   COIN_PFNGLVERTEXATTRIB4NUIVARBPROC glVertexAttrib4NuivARB;
   COIN_PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB;
   COIN_PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB;
-  COIN_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC glDisableVertexAttribArrayARB; 
+  COIN_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC glDisableVertexAttribArrayARB;
   COIN_PFNGLGETVERTEXATTRIBDVARBPROC glGetVertexAttribdvARB;
   COIN_PFNGLGETVERTEXATTRIBFVARBPROC glGetVertexAttribfvARB;
   COIN_PFNGLGETVERTEXATTRIBIVARBPROC glGetVertexAttribivARB;
@@ -774,15 +774,15 @@ struct cc_glglue {
   COIN_PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
   COIN_PFNGLUNIFORM1FVARBPROC glUniform1fvARB;
   COIN_PFNGLUNIFORM2FVARBPROC glUniform2fvARB;
-  COIN_PFNGLUNIFORM3FVARBPROC glUniform3fvARB;  
+  COIN_PFNGLUNIFORM3FVARBPROC glUniform3fvARB;
   COIN_PFNGLUNIFORM4FVARBPROC glUniform4fvARB;
   COIN_PFNGLUNIFORM1IARBPROC glUniform1iARB;
   COIN_PFNGLUNIFORM2IARBPROC glUniform2iARB;
-  COIN_PFNGLUNIFORM3IARBPROC glUniform3iARB;  
+  COIN_PFNGLUNIFORM3IARBPROC glUniform3iARB;
   COIN_PFNGLUNIFORM4IARBPROC glUniform4iARB;
   COIN_PFNGLUNIFORM1IVARBPROC glUniform1ivARB;
   COIN_PFNGLUNIFORM2IVARBPROC glUniform2ivARB;
-  COIN_PFNGLUNIFORM3IVARBPROC glUniform3ivARB;  
+  COIN_PFNGLUNIFORM3IVARBPROC glUniform3ivARB;
   COIN_PFNGLUNIFORM4IVARBPROC glUniform4ivARB;
   COIN_PFNGLUNIFORMMATRIX2FVARBPROC glUniformMatrix2fvARB;
   COIN_PFNGLUNIFORMMATRIX3FVARBPROC glUniformMatrix3fvARB;
@@ -799,7 +799,7 @@ struct cc_glglue {
   COIN_PFNGLGETQUERYIVPROC glGetQueryiv;
   COIN_PFNGLGETQUERYOBJECTIVPROC glGetQueryObjectiv;
   COIN_PFNGLGETQUERYOBJECTUIVPROC glGetQueryObjectuiv;
-  
+
   /* FBO */
   COIN_PFNGLISRENDERBUFFERPROC glIsRenderbuffer;
   COIN_PFNGLBINDRENDERBUFFERPROC glBindRenderbuffer;
@@ -824,6 +824,7 @@ struct cc_glglue {
   SbBool vendor_is_SGI;
   SbBool vendor_is_nvidia;
   SbBool vendor_is_intel;
+  SbBool vendor_is_ati;
   SbBool nvidia_color_per_face_bug;
   const char * rendererstr;
   const char * extensionsstr;
@@ -914,14 +915,14 @@ SbBool cc_glglue_has_arb_shader_objects(const cc_glglue * glue);
 /* Moved from gl.h and added compressed parameter.
    Original function is deprecated for internal use.
 */
-SbBool coin_glglue_is_texture_size_legal(const cc_glglue * glw, 
-                                         int xsize, int ysize, int zsize, 
+SbBool coin_glglue_is_texture_size_legal(const cc_glglue * glw,
+                                         int xsize, int ysize, int zsize,
                                          GLenum internalformat,
                                          GLenum format,
                                          GLenum type,
                                          SbBool mipmap);
 
-GLint coin_glglue_get_internal_texture_format(const cc_glglue * glw, 
+GLint coin_glglue_get_internal_texture_format(const cc_glglue * glw,
                                               int numcomponents,
                                               SbBool compress);
 

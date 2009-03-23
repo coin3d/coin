@@ -1614,14 +1614,15 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
   // these might change if image is resized
   unsigned char *imageptr = (unsigned char *) bytes;
-  
+
   const cc_glglue * glw = sogl_glue_instance(state);
   SbBool mipmap = this->shouldCreateMipmap();
-
+  
   if (imageptr) {
-    if (is3D || 
+    if (is3D ||
         (!SoGLDriverDatabase::isSupported(glw, SO_GL_NON_POWER_OF_TWO_TEXTURES) ||
-         (mipmap && !SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP)))) {
+         (mipmap && (!SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP) &&
+                     !SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap"))))) {
       this->resizeImage(state, imageptr, xsize, ysize, zsize);
     }
   }
@@ -1641,7 +1642,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
                                   GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D));
     }
   }
-  
+
   dl->open(state);
 
   if (this->pbuffer) {
@@ -1805,6 +1806,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
   else { // 2D textures
     SbBool mipmapimage = mipmap;
     SbBool mipmapfilter = mipmap;
+    SbBool generatemipmap = FALSE;
 
     GLenum target = this->flags & SoGLImage::RECTANGLE ?
       GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D;
@@ -1821,10 +1823,10 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else mipmapfilter = FALSE;
     }
-    
+
     else if (mipmap && SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP)) {
-      cc_glglue_glGenerateMipmap(glw, target);
       mipmapimage = FALSE;
+      generatemipmap = TRUE; // delay until after the texture image is set up
     }
     else if (mipmap && SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
@@ -1840,6 +1842,10 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       // Create only level 0 texture. Mimpamps might be created by glGenerateMipmap
       glTexImage2D(target, 0, internalFormat, w, h,
                    border, dataFormat, GL_UNSIGNED_BYTE, texture);
+      
+      if (generatemipmap) {
+        cc_glglue_glGenerateMipmap(glw, target);
+      }
     }
     else { // mipmaps
       // The GLU function invocation has been disabled, for the
@@ -2086,12 +2092,12 @@ SoGLImage::endFrame(SoState *state)
       SoGLImage *img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
       if (img->pimpl->endframecb)
-        cb_list.push_back(make_pair(img->pimpl->endframecb, 
+        cb_list.push_back(make_pair(img->pimpl->endframecb,
                                     img->pimpl->endframeclosure));
     }
     UNLOCK_GLIMAGE;
 
-    // the actual invocation of the callbacks should be performed outside 
+    // the actual invocation of the callbacks should be performed outside
     // the locked region to avoid deadlocks
     for (std::list<std::pair<void (*)(void *), void *> >::iterator it = cb_list.begin(),
            end = cb_list.end(); it != end; ++it)

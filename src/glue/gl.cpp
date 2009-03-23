@@ -1889,21 +1889,21 @@ glglue_resolve_symbols(cc_glglue * w)
      w->has_shadow) ||
     w->has_arb_fragment_program;
 
-  
+
   w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
     cc_glglue_getprocaddress(w, "glGenerateMipmap");
-  
+
   if (!w->glGenerateMipmap) {
     w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
       cc_glglue_getprocaddress(w, "glGenerateMipmapARB");
-    
+
     if (!w->glGenerateMipmap) {
       w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
         cc_glglue_getprocaddress(w, "glGenerateMipmapEXT");
     }
   }
 
-  
+
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
     w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glIsRenderbufferEXT");
     w->glBindRenderbuffer = (COIN_PFNGLBINDRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glBindRenderbufferEXT");
@@ -2382,7 +2382,8 @@ cc_glglue_instance(int contextid)
     gi->vendor_is_intel =
       strstr((const char *)gi->vendorstr, "Tungsten") ||
       strstr((const char *)gi->vendorstr, "Intel");
-
+    gi->vendor_is_ati = (strcmp((const char *) gi->vendorstr, "ATI Technologies Inc.") == 0);
+    
     /* FIXME: update when nVidia fixes their driver. pederb, 2004-09-01 */
     gi->nvidia_color_per_face_bug = gi->vendor_is_nvidia;
     if (gi->nvidia_color_per_face_bug) {
@@ -2474,11 +2475,11 @@ cc_glglue_instance(int contextid)
                                                                          gi->versionstr);
 
     glglue_check_driver(gi->vendorstr, gi->rendererstr, gi->versionstr);
-    
+
     gi->non_power_of_two_textures =
       (cc_glglue_glversion_matches_at_least(gi, 2, 1, 0) ||
        cc_glglue_glext_supported(gi, "GL_ARB_texture_non_power_of_two"));
-    
+
     /* Resolve our function pointers. */
       glglue_resolve_symbols(gi);
   }
@@ -2530,7 +2531,7 @@ coin_glglue_destruct(uint32_t contextid)
         cc_glglue_glDeleteTextures(glue, 1, &glue->normalizationcubemap);
       }
       (void)cc_dict_remove(gldict, (uintptr_t)contextid);
-      
+
       if (glue->dl_handle) {
         cc_dl_close(glue->dl_handle);
       }
@@ -5154,12 +5155,13 @@ coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 
 /* ********************************************************************** */
 
-SbBool 
+SbBool
 coin_glglue_non_power_of_two_textures(const cc_glglue * glue)
 {
   // FIXME: work in progress. Needs testing on more drivers. pederb, 20090322
-  return FALSE;
-  // return glue->non_power_of_two_textures;
+  // we only seem to have problems with ATi
+  if (glue->vendor_is_ati) return FALSE;
+  return glue->non_power_of_two_textures;
 }
 
 /* ********************************************************************** */
@@ -5307,9 +5309,7 @@ cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum t
 SbBool
 coin_glglue_has_generate_mipmap(const cc_glglue * glue)
 {
-  // FIXME: work in progress. Needs testing on more drivers. pederb, 20090322
-  return FALSE;
-  // return (glue->glGenerateMipmap != NULL);
+  return (glue->glGenerateMipmap != NULL);
 }
 
 void
