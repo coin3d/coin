@@ -2062,6 +2062,27 @@ CXXFLAGS="$CXXFLAGS $sim_ac_compiler_CXXFLAGS"
 # **************************************************************************
 # Remaining setup based on platform.
 
+# check if compiler/linker handles __declspec()
+sim_ac_win32_declspec_available=false
+AC_MSG_CHECKING([for __declspec() support])
+AC_TRY_LINK(
+ [],
+ [__declspec(dllimport) int foo;],
+ [sim_ac_win32_declspec_available=true
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
+if $sim_ac_win32_declspec_available; then
+  if $COIN_STATIC; then
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $LIBS"
+    LIBS=
+  else
+    CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
+  fi
+fi
+
 AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 COIN_COMPILER="$CXX"
@@ -2073,19 +2094,11 @@ COIN_COMPILER="$CXX"
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
     LIBS="$LIBS $sim_ac_msvcrt_LIBLIBS"
 
-    if $COIN_STATIC; then
-      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
-      COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $LIBS"
-      LIBS=
-    else
-      CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
-      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
-    fi
-
     debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
     debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
 
     if $COIN_STATIC; then
+      LIBS=
       LIBFLAGS="-LIB $LIBFLAGS"
       LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
       case $enable_symbols in
