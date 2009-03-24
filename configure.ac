@@ -2087,170 +2087,170 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 COIN_COMPILER="$CXX"
 
-  if $BUILD_WITH_MSVC; then
-    COIN_TESTSUITE_EXTRA_CPPFLAGS="/Fdtestsuite.pdb /EHsc"
-    COIN_TESTSUITE_EXTRA_LDFLAGS="/SUBSYSTEM:console /DEBUG"
-    rm -f vc60.pdb
-    LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
-    LIBS="$LIBS $sim_ac_msvcrt_LIBLIBS"
+if $BUILD_WITH_MSVC; then
+  COIN_TESTSUITE_EXTRA_CPPFLAGS="/Fdtestsuite.pdb /EHsc"
+  COIN_TESTSUITE_EXTRA_LDFLAGS="/SUBSYSTEM:console /DEBUG"
+  rm -f vc60.pdb
+  LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
+  LIBS="$LIBS $sim_ac_msvcrt_LIBLIBS"
 
-    debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
-    debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
+  debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
+  debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
 
-    if $COIN_STATIC; then
-      LIBS=
-      LIBFLAGS="-LIB $LIBFLAGS"
-      LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
-      case $enable_symbols in
-      no | false)
-        SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, no symbols])
-        ;;
-      *)
-        SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, with symbols])
-        CFLAGS="-g $CFLAGS"
-        CXXFLAGS="-g $CXXFLAGS"
-        ;;
-      esac
-    else
-      LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
-      case $enable_symbols in
-      no | false)
-        SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                     [dynamic .dll (release) + .pdb])
-        # CFLAGS="-g $CFLAGS"
-        # CXXFLAGS="-g $CXXFLAGS"
-        LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
-        ;;
-      *)
-        SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                     [dynamic .dll + .pdb])
-        CFLAGS="-g $CFLAGS"
-        CXXFLAGS="-g $CXXFLAGS"
-        LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
-        ;;
-      esac
-      LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
-    fi
-    SIM_AC_CONFIGURATION_SETTING([C library version], [$sim_ac_msvcrt])
-  
-    # We use a version suffix on the .dll-file, so several incompatible
-    # (major) versions can be installed on a system.
-    #
-    # BTW, when linking DLLs, the 3rd-party .lib files will be
-    # linked into the .dll file. I believe it is still advisable to
-    # list all libs used upon `coin-config --libs`, as we can then
-    # also use them from "parent" code (remember that their interfaces
-    # is not exposed from the DLL) without any fuss.
-    sim_ac_coin_noextname="coin${COIN_MAJOR_VERSION}${SUFFIX}"
-    if test -n "$COIN_EXTRA_LIBS"; then
-      COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname} $COIN_EXTRA_LIBS"
-    else
-      COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname}"
-    fi
-
-    sim_ac_coin_dll_name="${sim_ac_coin_noextname}${sim_ac_shlibext}"
-
+  if $COIN_STATIC; then
+    LIBS=
+    LIBFLAGS="-LIB $LIBFLAGS"
+    LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
+    case $enable_symbols in
+    no | false)
+      SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, no symbols])
+      ;;
+    *)
+      SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib, with symbols])
+      CFLAGS="-g $CFLAGS"
+      CXXFLAGS="-g $CXXFLAGS"
+      ;;
+    esac
   else
-    COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
-    sim_ac_coin_dll_name="libCoin${SUFFIX}${sim_ac_shlibext}"
+    LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
+    case $enable_symbols in
+    no | false)
+      SIM_AC_CONFIGURATION_SETTING([Coin build type],
+                                   [dynamic .dll (release) + .pdb])
+      # CFLAGS="-g $CFLAGS"
+      # CXXFLAGS="-g $CXXFLAGS"
+      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+      ;;
+    *)
+      SIM_AC_CONFIGURATION_SETTING([Coin build type],
+                                   [dynamic .dll + .pdb])
+      CFLAGS="-g $CFLAGS"
+      CXXFLAGS="-g $CXXFLAGS"
+      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+      ;;
+    esac
+    LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
   fi
+  SIM_AC_CONFIGURATION_SETTING([C library version], [$sim_ac_msvcrt])
 
-  if $BUILD_WITH_MSVC; then
-    # we'll use the installed wrapper when we use the coin-config script later
-    # so we can remove the source code hierarchy
-    COIN_COMPILER="wrapmsvc"
-  fi
-
-  AC_DEFINE_UNQUOTED([COIN_SYSTEM_LIBRARY_NAME], ["$sim_ac_coin_dll_name"],
-                     [define this to the dynamic library name of Coin])
-
-  sim_ac_path_problem=true # until proven otherwise
-  eval "sim_ac_pb_prefix=${prefix}"
-  if test x"$sim_ac_pb_prefix" = x"NONE"; then sim_ac_pb_prefix=/usr/local; fi
-  eval "sim_ac_pb_exec_prefix=${exec_prefix}"
-  if test x"$sim_ac_pb_exec_prefix" = x"NONE"; then sim_ac_pb_exec_prefix="$prefix"; fi
-  eval "sim_ac_pb_bindir=${bindir}"
-  if test -d "${sim_ac_pb_bindir}"; then
-    # search by inode id seems safer than strings because of noncanonical paths
-    ( eval set dummy `ls -id "${sim_ac_pb_bindir}" 2>/dev/null`;
-      findinode=$2;
-      IFS=:; for dir in $PATH; do
-        # inode=`ls -id "$dir" 2>/dev/null | sed 's/^\([ ]*\)\([0-9]*\).*/\2/g'`;
-        eval set dummy `ls -id "$dir" 2>/dev/null`;
-        inode=$2;
-        test x"$inode" = x"$findinode" && exit 0;
-      done; exit 1 ) && sim_ac_path_problem=false
-  fi
-  if $sim_ac_path_problem; then
-    ( IFS=:; for dir in $PATH; do
-        test x"$dir" = x"${sim_ac_pb_bindir}" && exit 0;
-      done; exit 1 ) && sim_ac_path_problem=false
-  fi
-
-
-  # ***********************************************************
-  # Mac OS X tweaks
+  # We use a version suffix on the .dll-file, so several incompatible
+  # (major) versions can be installed on a system.
   #
+  # BTW, when linking DLLs, the 3rd-party .lib files will be
+  # linked into the .dll file. I believe it is still advisable to
+  # list all libs used upon `coin-config --libs`, as we can then
+  # also use them from "parent" code (remember that their interfaces
+  # is not exposed from the DLL) without any fuss.
+  sim_ac_coin_noextname="coin${COIN_MAJOR_VERSION}${SUFFIX}"
+  if test -n "$COIN_EXTRA_LIBS"; then
+    COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname} $COIN_EXTRA_LIBS"
+  else
+    COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname}"
+  fi
 
-  # We use CoreFoundation calls multiple places in Coin
-  [case $host_os in
-  darwin* ) LDFLAGS="$LDFLAGS -Wl,-framework,CoreFoundation" ;;
-  * ) ;;
-  esac]
+  sim_ac_coin_dll_name="${sim_ac_coin_noextname}${sim_ac_shlibext}"
 
-  # Disallow static libraries in framework (doesn't make sense)
-  if $sim_ac_framework; then
-    if test x$enable_static = xyes; then
-      AC_MSG_ERROR([Creation of static libraries requested, but this is incompatible with the Mac OS X framework setup. Use --without-framework to do UNIX-style build.])
+else
+  COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
+  sim_ac_coin_dll_name="libCoin${SUFFIX}${sim_ac_shlibext}"
+fi
+
+if $BUILD_WITH_MSVC; then
+  # we'll use the installed wrapper when we use the coin-config script later
+  # so we can remove the source code hierarchy
+  COIN_COMPILER="wrapmsvc"
+fi
+
+AC_DEFINE_UNQUOTED([COIN_SYSTEM_LIBRARY_NAME], ["$sim_ac_coin_dll_name"],
+                   [define this to the dynamic library name of Coin])
+
+sim_ac_path_problem=true # until proven otherwise
+eval "sim_ac_pb_prefix=${prefix}"
+if test x"$sim_ac_pb_prefix" = x"NONE"; then sim_ac_pb_prefix=/usr/local; fi
+eval "sim_ac_pb_exec_prefix=${exec_prefix}"
+if test x"$sim_ac_pb_exec_prefix" = x"NONE"; then sim_ac_pb_exec_prefix="$prefix"; fi
+eval "sim_ac_pb_bindir=${bindir}"
+if test -d "${sim_ac_pb_bindir}"; then
+  # search by inode id seems safer than strings because of noncanonical paths
+  ( eval set dummy `ls -id "${sim_ac_pb_bindir}" 2>/dev/null`;
+    findinode=$2;
+    IFS=:; for dir in $PATH; do
+      # inode=`ls -id "$dir" 2>/dev/null | sed 's/^\([ ]*\)\([0-9]*\).*/\2/g'`;
+      eval set dummy `ls -id "$dir" 2>/dev/null`;
+      inode=$2;
+      test x"$inode" = x"$findinode" && exit 0;
+    done; exit 1 ) && sim_ac_path_problem=false
+fi
+if $sim_ac_path_problem; then
+  ( IFS=:; for dir in $PATH; do
+      test x"$dir" = x"${sim_ac_pb_bindir}" && exit 0;
+    done; exit 1 ) && sim_ac_path_problem=false
+fi
+
+
+# ***********************************************************
+# Mac OS X tweaks
+#
+
+# We use CoreFoundation calls multiple places in Coin
+[case $host_os in
+darwin* ) LDFLAGS="$LDFLAGS -Wl,-framework,CoreFoundation" ;;
+* ) ;;
+esac]
+
+# Disallow static libraries in framework (doesn't make sense)
+if $sim_ac_framework; then
+  if test x$enable_static = xyes; then
+    AC_MSG_ERROR([Creation of static libraries requested, but this is incompatible with the Mac OS X framework setup. Use --without-framework to do UNIX-style build.])
+  fi
+fi 
+
+if $sim_ac_framework; then
+  SIM_AC_CONFIGURATION_SETTING([Coin build type], [Mac OS X framework])
+elif $sim_ac_path_problem; then
+  SIM_AC_CONFIGURATION_WARNING([Your \$PATH variable does not appear to include \"$prefix/bin\"])
+fi
+
+if $sim_ac_framework; then
+
+  # set up the Coin-related flags
+  COIN_EXTRA_CPPFLAGS=
+  if test x"$sim_ac_framework_prefix" != x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
+    COIN_EXTRA_CPPFLAGS="-F$sim_ac_framework_prefix"
+  fi
+
+  COIN_EXTRA_CFLAGS=
+  COIN_EXTRA_CXXFLAGS=
+  COIN_EXTRA_FP_LDFLAGS=
+  if test x"$enable_hacking" = x"yes"; then
+    COIN_EXTRA_LDFLAGS="-L$frameworkdir/Libraries"
+  else 
+    # we don't want -lCoin when doing framework build
+    COIN_EXTRA_LIBS=
+    COIN_EXTRA_LDFLAGS= 
+    if test x"$sim_ac_framework_prefix" != x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
+      COIN_EXTRA_FP_LDFLAGS="-Wl,-F$sim_ac_framework_prefix"
     fi
   fi 
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_FP_LDFLAGS -Wl,-framework,$MAC_FRAMEWORK_NAME $COIN_EXTRA_LDFLAGS"
+  # adjust for OpenGL usage
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_ogl_libs $COIN_EXTRA_LIBS"
+  # adjust for simage usage
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
+  # adjust for OpenAL usage
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_openal_libs"
+fi
 
-  if $sim_ac_framework; then
-    SIM_AC_CONFIGURATION_SETTING([Coin build type], [Mac OS X framework])
-  elif $sim_ac_path_problem; then
-    SIM_AC_CONFIGURATION_WARNING([Your \$PATH variable does not appear to include \"$prefix/bin\"])
-  fi
-
-  if $sim_ac_framework; then
-
-    # set up the Coin-related flags
-    COIN_EXTRA_CPPFLAGS=
-    if test x"$sim_ac_framework_prefix" != x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
-      COIN_EXTRA_CPPFLAGS="-F$sim_ac_framework_prefix"
-    fi
-
-    COIN_EXTRA_CFLAGS=
-    COIN_EXTRA_CXXFLAGS=
-    COIN_EXTRA_FP_LDFLAGS=
-    if test x"$enable_hacking" = x"yes"; then
-      COIN_EXTRA_LDFLAGS="-L$frameworkdir/Libraries"
-    else 
-      # we don't want -lCoin when doing framework build
-      COIN_EXTRA_LIBS=
-      COIN_EXTRA_LDFLAGS= 
-      if test x"$sim_ac_framework_prefix" != x"MAC_FRAMEWORK_PREFIX_DEFAULT"; then
-        COIN_EXTRA_FP_LDFLAGS="-Wl,-F$sim_ac_framework_prefix"
-      fi
-    fi 
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_FP_LDFLAGS -Wl,-framework,$MAC_FRAMEWORK_NAME $COIN_EXTRA_LDFLAGS"
-    # adjust for OpenGL usage
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_ogl_libs $COIN_EXTRA_LIBS"
-    # adjust for simage usage
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
-    # adjust for OpenAL usage
-    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_openal_libs"
-  fi
-
-  case "$sim_ac_framework:$sim_ac_make_dsp" in
-  true:* | *:true )
-    ;;
-  * )
-    SIM_AC_CONFIGURATION_SETTING([Installation prefix], [$prefix])
-    ;;
-  esac
+case "$sim_ac_framework:$sim_ac_make_dsp" in
+true:* | *:true )
+  ;;
+* )
+  SIM_AC_CONFIGURATION_SETTING([Installation prefix], [$prefix])
+  ;;
+esac
 
 AC_SUBST([COIN_COMPILER])
 AC_SUBST([ac_compiler_gnu])
