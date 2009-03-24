@@ -2,6 +2,11 @@
 #
 # This manages the generation of the Visual Studio build files for Windows.
 
+if test x"$COINDIR" = x""; then
+  echo "error: COINDIR must be set before running this script"
+  exit
+fi
+
 project=coin3
 
 function cleansolution() {
@@ -58,7 +63,7 @@ if $proper; then
     -e "s/$source/..\\\\../g" \
     -e "s/$source_pwd/..\\\\../g" \
     -e 's/$/\r/g' \
-    <coin3.dsp >new.dsp
+    <${project}.dsp >new.dsp
 
   mv new.dsp ${project}.dsp
 

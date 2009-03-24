@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin3"
-	ProjectGUID="{3A5E7744-04B6-4217-A876-B61E890E2026}"
+	ProjectGUID="{0FA3D72A-4085-4B96-87B4-7E519809E4E1}"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -21876,6 +21876,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\glue\gl_cgl.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\glue/"
+							ProgramDataBaseFileName="StaticDebug\glue/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\glue/"
+							ProgramDataBaseFileName="Release\glue/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\glue/"
+							ProgramDataBaseFileName="StaticRelease\glue/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\glue/"
+							ProgramDataBaseFileName="Debug\glue/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\glue\gl_glx.cpp"
 					>
 					<FileConfiguration
@@ -33567,6 +33617,56 @@
 				</File>
 				<File
 					RelativePath="..\..\src\shapenodes\SoIndexedNurbsSurface.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shapenodes/"
+							ProgramDataBaseFileName="StaticDebug\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shapenodes/"
+							ProgramDataBaseFileName="Release\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shapenodes/"
+							ProgramDataBaseFileName="StaticRelease\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shapenodes/"
+							ProgramDataBaseFileName="Debug\shapenodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\shapenodes\SoIndexedPointSet.cpp"
 					>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32"
@@ -46588,6 +46688,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\nodes\SoIndexedPointSet.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\nodes\SoIndexedShape.h"
 					>
 				</File>
@@ -50097,6 +50201,42 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\glue\gl_cgl.h"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\glue\gl_glx.h"
 					>
 					<FileConfiguration
@@ -52926,6 +53066,4 @@
 			>
 		</Filter>
 	</Files>
-	<Globals>
-	</Globals>
 </VisualStudioProject>

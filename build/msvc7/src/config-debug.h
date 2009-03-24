@@ -121,6 +121,9 @@
 /* Define to use bzip2 */
 /* #undef HAVE_BZIP2 */
 
+/* define if you have CGL OpenGL bindings */
+/* #undef HAVE_CGL */
+
 /* The CPP compiler has a variable containing the current function name */
 #define HAVE_CPP_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
 

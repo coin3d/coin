@@ -5790,6 +5790,19 @@ SOURCE=..\..\src\glue\gl_agl.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\glue\gl_cgl.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\glue"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\glue"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\glue\gl_glx.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
@@ -8844,6 +8857,19 @@ SOURCE=..\..\src\shapenodes\SoIndexedNurbsCurve.cpp
 # Begin Source File
 
 SOURCE=..\..\src\shapenodes\SoIndexedNurbsSurface.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\shapenodes\SoIndexedPointSet.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
@@ -14064,6 +14090,10 @@ SOURCE=..\..\include\Inventor\nodes\SoIndexedNurbsSurface.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\nodes\SoIndexedPointSet.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\nodes\SoIndexedShape.h
 # End Source File
 # Begin Source File
@@ -15492,6 +15522,12 @@ SOURCE=..\..\src\glue\freetype.h
 # Begin Source File
 
 SOURCE=..\..\src\glue\gl_agl.h
+
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\glue\gl_cgl.h
 
 # PROP Exclude_From_Build 1
 # End Source File

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3_docs"
-	ProjectGUID="{FB9F2DE2-D0CB-4E74-BDC5-B2D187CF5254}"
+	ProjectGUID="{506D2E43-8F9B-430E-A7C2-EDDAF5E184E4}"
 	Keyword="MakeFileProj"
 	>
 	<Platforms>

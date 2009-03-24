@@ -587,6 +587,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedFaceSet.h %COINDIR%\incl
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedLineSet.h %COINDIR%\include\Inventor\nodes\SoIndexedLineSet.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedNurbsCurve.h %COINDIR%\include\Inventor\nodes\SoIndexedNurbsCurve.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedNurbsSurface.h %COINDIR%\include\Inventor\nodes\SoIndexedNurbsSurface.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedPointSet.h %COINDIR%\include\Inventor\nodes\SoIndexedPointSet.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedShape.h %COINDIR%\include\Inventor\nodes\SoIndexedShape.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoIndexedTriangleStripSet.h %COINDIR%\include\Inventor\nodes\SoIndexedTriangleStripSet.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoInfo.h %COINDIR%\include\Inventor\nodes\SoInfo.h >nul:
