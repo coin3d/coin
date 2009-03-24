@@ -36950,6 +36950,71 @@ CXXFLAGS="$CXXFLAGS $sim_ac_compiler_CXXFLAGS"
 # **************************************************************************
 # Remaining setup based on platform.
 
+# check if compiler/linker handles __declspec()
+sim_ac_win32_declspec_available=false
+echo "$as_me:$LINENO: checking for __declspec() support" >&5
+echo $ECHO_N "checking for __declspec() support... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+__declspec(dllimport) int foo;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_win32_declspec_available=true
+  echo "$as_me:$LINENO: result: available" >&5
+echo "${ECHO_T}available" >&6
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+echo "$as_me:$LINENO: result: not available" >&5
+echo "${ECHO_T}not available" >&6
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
+if $sim_ac_win32_declspec_available; then
+  if $COIN_STATIC; then
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $LIBS"
+    LIBS=
+  else
+    CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
+  fi
+fi
+
 
 
 if $BUILD_WITH_MSVC; then
@@ -36970,19 +37035,11 @@ COIN_COMPILER="$CXX"
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
     LIBS="$LIBS $sim_ac_msvcrt_LIBLIBS"
 
-    if $COIN_STATIC; then
-      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
-      COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $LIBS"
-      LIBS=
-    else
-      CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
-      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
-    fi
-
     debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
     debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
 
     if $COIN_STATIC; then
+      LIBS=
       LIBFLAGS="-LIB $LIBFLAGS"
       LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
       case $enable_symbols in
