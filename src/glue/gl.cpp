@@ -1340,6 +1340,21 @@ glglue_resolve_symbols(cc_glglue * w)
       }
     }
   }
+
+  /*
+    Sylvain Carette reported problems with some old 3DLabs drivers and VBO rendering.
+    The drivers were from 2006, so we disable VBO rendering if 3DLabs and that driver
+    version is detected (the driver version was 2.0)
+   */
+  if (w->glBindBuffer && w->vendor_is_3dlabs
+      && !cc_glglue_glversion_matches_at_least(w, 2,0,1)) {
+    /* Enable users to override this workaround by setting COIN_VBO=1 */
+    const char * env = coin_getenv("COIN_VBO");
+    if (!env || (atoi(env) > 0)) {
+      w->glBindBuffer = NULL;
+    }
+  }
+
 #endif /* GL_ARB_vertex_buffer_object */
 
   if (w->glBindBuffer) {
@@ -2383,6 +2398,7 @@ cc_glglue_instance(int contextid)
       strstr((const char *)gi->vendorstr, "Tungsten") ||
       strstr((const char *)gi->vendorstr, "Intel");
     gi->vendor_is_ati = (strcmp((const char *) gi->vendorstr, "ATI Technologies Inc.") == 0);
+    gi->vendor_is_3dlabs = strcmp((const char *) gi->vendorstr, "3Dlabs") == 0;
     
     /* FIXME: update when nVidia fixes their driver. pederb, 2004-09-01 */
     gi->nvidia_color_per_face_bug = gi->vendor_is_nvidia;

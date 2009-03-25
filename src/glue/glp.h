@@ -825,6 +825,7 @@ struct cc_glglue {
   SbBool vendor_is_nvidia;
   SbBool vendor_is_intel;
   SbBool vendor_is_ati;
+  SbBool vendor_is_3dlabs;
   SbBool nvidia_color_per_face_bug;
   const char * rendererstr;
   const char * extensionsstr;
