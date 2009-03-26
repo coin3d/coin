@@ -61,5 +61,5 @@ $(COINLIB): ../$(COIN) supportlibs/lib/libsimage.dylib supportlibs/lib/libfreety
 	cd $(builddir); $(MAKE) MACOSX_DEPLOYMENT_TARGET=10.2
 	cd $(builddir); $(MAKE) DESTDIR=$(install_prefix) install
 	touch $(COINLIB)
-	cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
-	cp supportlibs/lib/libfreetype.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
+	cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Libraries
+	cp supportlibs/lib/libfreetype.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Libraries
