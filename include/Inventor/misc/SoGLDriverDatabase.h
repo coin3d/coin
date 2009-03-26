@@ -86,4 +86,5 @@ private:
 #define SO_GL_VBO_IN_DISPLAYLIST    "COIN_vbo_in_displaylist"
 #define SO_GL_NON_POWER_OF_TWO_TEXTURES "COIN_non_power_of_two_textures"
 #define SO_GL_GENERATE_MIPMAP       "COIN_generate_mipmap"
+#define SO_GL_GLSL_CLIP_VERTEX_HW   "COIN_GLSL_clip_vertex_hw"
 #endif // SOGLDATABASE_H

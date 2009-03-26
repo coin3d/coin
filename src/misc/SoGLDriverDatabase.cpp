@@ -70,7 +70,7 @@ class SoGLDriverDatabaseP {
 
     SbHash <const char *, const char *> features;
 
-    uint32_t contextid; 
+    uint32_t contextid;
   };
 
   class FeatureID {
@@ -94,7 +94,8 @@ public:
   ~SoGLDriverDatabaseP();
 
   void initFunctions();
-  static SbBool multidraw_elements_wrapper(const cc_glglue * glue); 
+  static SbBool multidraw_elements_wrapper(const cc_glglue * glue);
+  static SbBool glsl_clip_vertex_hw_wrapper(const cc_glglue * glue);
 
   SbBool isSupported(const cc_glglue * context, const SbName & feature);
   SbBool isBroken(const cc_glglue * context, const SbName & feature);
@@ -103,7 +104,7 @@ public:
   SbBool isFast(const cc_glglue * context, const SbName & feature);
 
   SbName getComment(const cc_glglue * context, const SbName & feature);
-  
+
   SbBool addBuffer(const char * buffer);
   SbBool addFile(const SbName & filename);
   SbBool addFeature(const SbName & feature, const SbName & comment);
@@ -119,7 +120,7 @@ private:
   cc_xml_element * findPlatform(const cc_xml_elt * root, const char * platformstring);
   cc_xml_element * findVendor(const cc_xml_elt * platform, const char * vendorstring);
   cc_xml_element * findDriver(const cc_xml_elt * vendor, const cc_glglue * context);
-  SoGLDriver * findGLDriver(const cc_glglue * context);  
+  SoGLDriver * findGLDriver(const cc_glglue * context);
 
   SbBool checkDocumentVersion(cc_xml_doc * document);
   SbBool addDocument(const cc_xml_doc * document);
@@ -149,13 +150,13 @@ private:
 const int SoGLDriverDatabaseP::databaseloaderversion = 1;
 
 
-SoGLDriverDatabaseP::SoGLDriverDatabaseP() 
+SoGLDriverDatabaseP::SoGLDriverDatabaseP()
 {
   this->initFunctions();
   this->database = NULL;
 }
 
-SoGLDriverDatabaseP::~SoGLDriverDatabaseP() 
+SoGLDriverDatabaseP::~SoGLDriverDatabaseP()
 {
   if (this->database != NULL) {
 #if COIN_DEBUG
@@ -170,7 +171,7 @@ SoGLDriverDatabaseP::~SoGLDriverDatabaseP()
 }
 
 SbBool
-SoGLDriverDatabaseP::multidraw_elements_wrapper(const cc_glglue * glue) 
+SoGLDriverDatabaseP::multidraw_elements_wrapper(const cc_glglue * glue)
 {
   // FIXME: I'm not able to make glMultiDrawElement work under OS
   // X. It just crashes inside GL when I try to use it. Investigate
@@ -181,12 +182,22 @@ SoGLDriverDatabaseP::multidraw_elements_wrapper(const cc_glglue * glue)
   return FALSE;
 }
 
+SbBool 
+SoGLDriverDatabaseP::glsl_clip_vertex_hw_wrapper(const cc_glglue * glue)
+{
+  // ATi doesn't support gl_ClipVertex in hardware, according to their own own paper
+  // "ATI OpenGL Programming and Optimization Guide", which can be found at
+  // http://developer.amd.com/media/gpu_assets/ATI_OpenGL_Programming_and_Optimization_Guide.pdf
+  if (glue->vendor_is_ati) return FALSE;
+  return TRUE;
+}
+
 /*
   Initialize tests and reserve some feature names for features that cannot
   be tested directly as a single OpenGL extension test
 */
 void
-SoGLDriverDatabaseP::initFunctions(void) 
+SoGLDriverDatabaseP::initFunctions(void)
 {
   this->featuremap.put(SbName(SO_GL_MULTIDRAW_ELEMENTS).getString(),
                        (glglue_feature_test_f *) &multidraw_elements_wrapper);
@@ -244,10 +255,12 @@ SoGLDriverDatabaseP::initFunctions(void)
                        (glglue_feature_test_f *) &coin_glglue_non_power_of_two_textures);
   this->featuremap.put(SbName(SO_GL_GENERATE_MIPMAP).getString(),
                        (glglue_feature_test_f *) &coin_glglue_has_generate_mipmap);
+  this->featuremap.put(SbName(SO_GL_GLSL_CLIP_VERTEX_HW).getString(),
+                       (glglue_feature_test_f *) &glsl_clip_vertex_hw_wrapper);
 }
 
 SbBool
-SoGLDriverDatabaseP::isSupported(const cc_glglue * context, const SbName & feature) 
+SoGLDriverDatabaseP::isSupported(const cc_glglue * context, const SbName & feature)
 {
   // check if we're asking about an actual GL extension
   const char * str = feature.getString();
@@ -268,7 +281,7 @@ SoGLDriverDatabaseP::isSupported(const cc_glglue * context, const SbName & featu
 }
 
 SbBool
-SoGLDriverDatabaseP::isBroken(const cc_glglue * context, const SbName & feature) 
+SoGLDriverDatabaseP::isBroken(const cc_glglue * context, const SbName & feature)
 {
   FeatureID f;
   f.contextid = context->contextid;
@@ -286,7 +299,7 @@ SoGLDriverDatabaseP::isBroken(const cc_glglue * context, const SbName & feature)
 }
 
 SbBool
-SoGLDriverDatabaseP::isDisabled(const cc_glglue * context, const SbName & feature) 
+SoGLDriverDatabaseP::isDisabled(const cc_glglue * context, const SbName & feature)
 {
   FeatureID f;
   f.contextid = context->contextid;
@@ -304,7 +317,7 @@ SoGLDriverDatabaseP::isDisabled(const cc_glglue * context, const SbName & featur
 }
 
 SbBool
-SoGLDriverDatabaseP::isSlow(const cc_glglue * context, const SbName & feature) 
+SoGLDriverDatabaseP::isSlow(const cc_glglue * context, const SbName & feature)
 {
   if (!this->isSupported(context, feature)) {
     SoDebugError::post("SoGLDriverDatabase::isSlow",
@@ -328,7 +341,7 @@ SoGLDriverDatabaseP::isSlow(const cc_glglue * context, const SbName & feature)
 }
 
 SbBool
-SoGLDriverDatabaseP::isFast(const cc_glglue * context, const SbName & feature) 
+SoGLDriverDatabaseP::isFast(const cc_glglue * context, const SbName & feature)
 {
   if (!this->isSupported(context, feature)) {
     SoDebugError::post("SoGLDriverDatabase::isFast",
@@ -374,7 +387,7 @@ SoGLDriverDatabaseP::getComment(const cc_glglue * context, const SbName & featur
   Used to find a specific platform element, specified with \a platformstring, inside another element
 */
 cc_xml_element *
-SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platformstring) 
+SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platformstring)
 {
   cc_xml_element * platform = NULL;
 
@@ -385,7 +398,7 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
 
     if (platform) {
       cc_xml_element * name = cc_xml_elt_get_child_of_type(platform, "name", 0);
-      
+
       SbName namestr;
 
       if (!name) {
@@ -394,7 +407,7 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
 #endif
         namestr = "undefined";
       }
-      else 
+      else
         namestr = cc_xml_elt_get_cdata(name);
 
       if (strcmp(namestr, platformstring) == 0) {
@@ -407,7 +420,7 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
           if (strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child_of_type(platform, "alias", j)), platformstring) == 0) {
             return platform;
           }
-        }      
+        }
       }
     }
   }
@@ -418,7 +431,7 @@ SoGLDriverDatabaseP::findPlatform(const cc_xml_elt * root, const char * platform
   Used to find a specific vendor element, specified with \a vendorstring, inside a platform element.
 */
 cc_xml_element *
-SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendorstring) 
+SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendorstring)
 {
   unsigned int numvendors = cc_xml_elt_get_num_children_of_type(platform, "vendor");
 
@@ -427,7 +440,7 @@ SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendor
 
     if (vendor) {
       cc_xml_element * name = cc_xml_elt_get_child_of_type(vendor, "name", 0);
-      
+
       SbName namestr;
 
       if (!name) {
@@ -436,10 +449,10 @@ SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendor
 #endif
         namestr = "undefined";
       }
-      else 
+      else
         namestr = cc_xml_elt_get_cdata(name);
 
-      if (strcmp(namestr, vendorstring) == 0) { 
+      if (strcmp(namestr, vendorstring) == 0) {
         return vendor;
       }
       else {
@@ -460,12 +473,12 @@ SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendor
   Used to find a specific driver element inside a vendor element.
 */
 cc_xml_element *
-SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * context) 
+SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * context)
 {
-  unsigned int numDrivers = cc_xml_elt_get_num_children_of_type(vendor, "driver");        
+  unsigned int numDrivers = cc_xml_elt_get_num_children_of_type(vendor, "driver");
 
   for(unsigned int k = 0; k < numDrivers; k++) {
-    cc_xml_element * driver = cc_xml_elt_get_child_of_type(vendor, "driver", k);      
+    cc_xml_element * driver = cc_xml_elt_get_child_of_type(vendor, "driver", k);
     cc_xml_element * versionrange = cc_xml_elt_get_child_of_type(driver, "versionrange", 0);
 
     if (!versionrange) {
@@ -500,7 +513,7 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * con
 
       if (indices.getLength() >= 0)
         minversion_major = atoi(minversion.getString());
-      if (indices.getLength() > 0) 
+      if (indices.getLength() > 0)
         minversion_minor = atoi(minversion.getSubString(indices[0] + 1).getString());
       if (indices.getLength() > 1)
         minversion_micro = atoi(minversion.getSubString(indices[1] + 1).getString());
@@ -511,7 +524,7 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * con
 
       if (indices.getLength() >= 0)
         maxversion_major = atoi(maxversion.getString());
-      if (indices.getLength() > 0) 
+      if (indices.getLength() > 0)
         maxversion_minor = atoi(maxversion.getSubString(indices[0] + 1).getString());
       if (indices.getLength() > 1)
         maxversion_micro = atoi(maxversion.getSubString(indices[1] + 1).getString());
@@ -531,7 +544,7 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * con
   are cached per context.
 */
 SoGLDriverDatabaseP::SoGLDriver *
-SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context) 
+SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context)
 {
   //FIXME: Expand platform search with versioning etc.
   //20080318, oyshole
@@ -572,19 +585,19 @@ SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context)
     driver->contextid = context->contextid;
 
     driverlist.append(driver);
-  
+
     if (this->database) {
       cc_xml_element * root = cc_xml_doc_get_root(this->database);
 
       if (root) {
-        addFeatures(context, root, driver);        
+        addFeatures(context, root, driver);
         const cc_xml_element * platform = findPlatform(root, platformstring);
 
         if (platform) {
           addFeatures(context, platform, driver);
           const cc_xml_element * vendor = findVendor(platform, vendorstring);
 
-          if (vendor) {                 
+          if (vendor) {
             addFeatures(context, vendor, driver);
             const cc_xml_element * driver = findDriver(vendor, context);
 
@@ -601,8 +614,8 @@ SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context)
 /*
   Load the database from the XML file specified in \a filename
 */
-SbBool 
-SoGLDriverDatabaseP::loadFromFile(const SbName & filename) 
+SbBool
+SoGLDriverDatabaseP::loadFromFile(const SbName & filename)
 {
   if (this->database != NULL)
     cc_xml_doc_delete_x(this->database);
@@ -621,8 +634,8 @@ SoGLDriverDatabaseP::loadFromFile(const SbName & filename)
 /*
   Load the database from the buffer specified in \a buffer
 */
-SbBool 
-SoGLDriverDatabaseP::loadFromBuffer(const char * buffer) 
+SbBool
+SoGLDriverDatabaseP::loadFromBuffer(const char * buffer)
 {
   if (this->database != NULL)
     cc_xml_doc_delete_x(this->database);
@@ -642,7 +655,7 @@ SoGLDriverDatabaseP::loadFromBuffer(const char * buffer)
   Merge the feature elements from \a source into \a destination
 */
 SbBool
-SoGLDriverDatabaseP::mergeFeatures(cc_xml_elt * destination, const cc_xml_elt * source) 
+SoGLDriverDatabaseP::mergeFeatures(cc_xml_elt * destination, const cc_xml_elt * source)
 {
   SbBool result = TRUE;
   unsigned int numfeatures = cc_xml_elt_get_num_children_of_type(source, "feature");
@@ -660,11 +673,11 @@ SoGLDriverDatabaseP::mergeFeatures(cc_xml_elt * destination, const cc_xml_elt * 
   Merge the feature element \a feature into \a destination
 */
 SbBool
-SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * feature) 
+SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * feature)
 {
   cc_xml_element * name = cc_xml_elt_get_child_of_type(feature, "name", 0);
   SbName featurename = "undefined";
-  
+
   if (name)
     featurename = cc_xml_elt_get_cdata(name);
 
@@ -676,15 +689,15 @@ SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * f
     cc_xml_element * existingname = cc_xml_elt_get_child_of_type(existingfeature, "name", 0);
 
     SbName existingfeaturename = "undefined";
-    
+
     if (existingname)
       existingfeaturename = cc_xml_elt_get_cdata(existingname);
 
     if (existingfeaturename == featurename) {
-      cc_xml_element * comment = cc_xml_elt_get_child_of_type(feature, "comment", 0);  
+      cc_xml_element * comment = cc_xml_elt_get_child_of_type(feature, "comment", 0);
       SbName commentstr = cc_xml_elt_get_cdata(comment);
 
-      cc_xml_element * existingcomment = cc_xml_elt_get_child_of_type(existingfeature, "comment", 0); 
+      cc_xml_element * existingcomment = cc_xml_elt_get_child_of_type(existingfeature, "comment", 0);
 
       cc_xml_elt_set_cdata_x(existingcomment, commentstr);
 
@@ -699,13 +712,13 @@ SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * f
   Merge the driver element \a driver into the vendor element \a vendor
 */
 SbBool
-SoGLDriverDatabaseP::mergeDriver(cc_xml_elt * vendor, const cc_xml_elt * driver) 
+SoGLDriverDatabaseP::mergeDriver(cc_xml_elt * vendor, const cc_xml_elt * driver)
 {
   return TRUE;
 }
 
 SbBool
-SoGLDriverDatabaseP::mergeVendor(cc_xml_elt * platform, const cc_xml_elt * vendor) 
+SoGLDriverDatabaseP::mergeVendor(cc_xml_elt * platform, const cc_xml_elt * vendor)
 {
   SbBool result = TRUE;
   cc_xml_element * name = cc_xml_elt_get_child_of_type(vendor, "name", 0);
@@ -750,7 +763,7 @@ SoGLDriverDatabaseP::mergeVendor(cc_xml_elt * platform, const cc_xml_elt * vendo
   Merge the platform element \a platform into the database
 */
 SbBool
-SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform) 
+SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform)
 {
   SbBool result = TRUE;
   cc_xml_element * name = cc_xml_elt_get_child_of_type(platform, "name", 0);
@@ -789,7 +802,7 @@ SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform)
       if (!mergeVendor(existingplatform, vendor))
         result = FALSE;
     }
-  }  
+  }
   return result;
 }
 
@@ -797,7 +810,7 @@ SoGLDriverDatabaseP::mergePlatform(const cc_xml_elt * platform)
   Merge the database in \a root into the current database
 */
 SbBool
-SoGLDriverDatabaseP::mergeRoot(const cc_xml_elt * root) 
+SoGLDriverDatabaseP::mergeRoot(const cc_xml_elt * root)
 {
   SbBool result = TRUE;
 
@@ -820,7 +833,7 @@ SoGLDriverDatabaseP::mergeRoot(const cc_xml_elt * root)
   is not created, it will be initialized with an empty root element.
 */
 cc_xml_elt *
-SoGLDriverDatabaseP::getDatabaseRoot() 
+SoGLDriverDatabaseP::getDatabaseRoot()
 {
   if (this->database == NULL)
     this->database = cc_xml_doc_new();
@@ -836,7 +849,7 @@ SoGLDriverDatabaseP::getDatabaseRoot()
 }
 
 /*
-  Check if the version of the XML document is current. This returns TRUE 
+  Check if the version of the XML document is current. This returns TRUE
   if the database is assumed safe for loading, FALSE if not.
 */
 SbBool
@@ -860,7 +873,7 @@ SoGLDriverDatabaseP::checkDocumentVersion(cc_xml_doc * document)
     // 20080325, oyshole
     return TRUE;
   }
-  
+
   const char * versionstring = cc_xml_elt_get_cdata(version);
   int versionnumber = atoi(versionstring);
 
@@ -881,7 +894,7 @@ SoGLDriverDatabaseP::checkDocumentVersion(cc_xml_doc * document)
   Add a XML document \a document to the current database.
 */
 SbBool
-SoGLDriverDatabaseP::addDocument(const cc_xml_doc * document) 
+SoGLDriverDatabaseP::addDocument(const cc_xml_doc * document)
 {
   cc_xml_element * root = cc_xml_doc_get_root(document);
 
@@ -890,7 +903,7 @@ SoGLDriverDatabaseP::addDocument(const cc_xml_doc * document)
   }
 
   SbBool result = TRUE;
-  SbName roottype = cc_xml_elt_get_type(root);    
+  SbName roottype = cc_xml_elt_get_type(root);
 
   if (roottype == "featuredatabase") {
     // Merge on root node
@@ -916,7 +929,7 @@ SoGLDriverDatabaseP::addDocument(const cc_xml_doc * document)
   Add XML data from \a buffer to the database.
 */
 SbBool
-SoGLDriverDatabaseP::addBuffer(const char * buffer) 
+SoGLDriverDatabaseP::addBuffer(const char * buffer)
 {
   cc_xml_doc * doc = cc_xml_doc_new();
   SbBool result = cc_xml_doc_read_buffer_x(doc, buffer, strlen(buffer));
@@ -935,7 +948,7 @@ SoGLDriverDatabaseP::addBuffer(const char * buffer)
   Add XML data from the file specified in \a filename to the database.
 */
 SbBool
-SoGLDriverDatabaseP::addFile(const SbName & filename) 
+SoGLDriverDatabaseP::addFile(const SbName & filename)
 {
   cc_xml_doc * doc = cc_xml_doc_new();
   SbBool result = cc_xml_doc_read_file_x(doc, filename);
@@ -954,7 +967,7 @@ SoGLDriverDatabaseP::addFile(const SbName & filename)
   Add a feature to the database.
 */
 SbBool
-SoGLDriverDatabaseP::addFeature(const SbName & feature, const SbName & comment) 
+SoGLDriverDatabaseP::addFeature(const SbName & feature, const SbName & comment)
 {
   cc_xml_elt * root = getDatabaseRoot();
 
@@ -975,7 +988,7 @@ SoGLDriverDatabaseP::addFeature(const SbName & feature, const SbName & comment)
   Loads default database.
 */
 SbBool
-SoGLDriverDatabaseP::loadDefaultDatabase() 
+SoGLDriverDatabaseP::loadDefaultDatabase()
 {
   // FIXME: Implement default loading of database. This could be from
   // a header file preprocessed and included with Coin, or from a
@@ -988,7 +1001,7 @@ SoGLDriverDatabaseP::loadDefaultDatabase()
   Add the features under \a element to the SoGLDriver specified in \a driver
 */
 void
-SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element * element, SoGLDriver * driver) 
+SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element * element, SoGLDriver * driver)
 {
   unsigned int numfeatures = cc_xml_elt_get_num_children_of_type(element, "feature");
 
@@ -1001,7 +1014,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
     SbName commentstr = "undefined";
 
     if (name && comment) {
-      featurename = cc_xml_elt_get_cdata(name);     
+      featurename = cc_xml_elt_get_cdata(name);
       commentstr = cc_xml_elt_get_cdata(comment);
 
       driver->features.put(featurename, commentstr);
@@ -1092,7 +1105,7 @@ SoGLDriverDatabase::getComment(const cc_glglue * context, const SbName & feature
 }
 
 /*!
-  Load the driver database from \a buffer 
+  Load the driver database from \a buffer
 */
 void
 SoGLDriverDatabase::loadFromBuffer(const char * buffer)
@@ -1167,7 +1180,7 @@ SoGLDriverDatabase::init(void)
   // make sure the private static class is created to avoid race conditions
   (void) pimpl();
 
-  pimpl()->loadDefaultDatabase();  
+  pimpl()->loadDefaultDatabase();
 }
 
 /**************************************************************************/
