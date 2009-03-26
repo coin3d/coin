@@ -277,6 +277,7 @@
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/nodes/SoCallback.h>
+#include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
@@ -291,6 +292,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
+#include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
@@ -499,6 +501,7 @@ public:
     texunit1(NULL),
     lightmodel(NULL),
     numtexunitsinscene(1),
+    hasclipplanes(FALSE),
     subgraphsearchenabled(TRUE)
   {
     this->shaderprogram = new SoShaderProgram;
@@ -613,6 +616,7 @@ public:
   SoShaderParameter1i * lightmodel;
 
   int numtexunitsinscene;
+  SbBool hasclipplanes;
   SbBool subgraphsearchenabled;
 };
 
@@ -771,6 +775,17 @@ SoShadowGroupP::updateSpotLights(SoGLRenderAction * action)
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
     if (this->needscenesearch) {
+      this->hasclipplanes = SoClipPlaneElement::getInstance(state)->getNum() > 0;
+      if (!this->hasclipplanes) {
+        this->searchaction.setType(SoClipPlane::getClassTypeId());
+        this->searchaction.setInterest(SoSearchAction::FIRST);
+        this->searchaction.setSearchingAll(FALSE);
+        this->searchaction.apply(PUBLIC(this));
+        if (this->searchaction.getPath()) {
+          this->hasclipplanes = TRUE;
+        }
+        this->searchaction.reset();
+      }
       // first, search for texture unit nodes
       this->searchaction.setType(SoTextureUnit::getClassTypeId());
       this->searchaction.setInterest(SoSearchAction::ALL);
@@ -1049,6 +1064,8 @@ SoShadowGroupP::setVertexShader(SoState * state)
   this->vertexshadercache = new SoShaderProgramCache(state);
   this->vertexshadercache->ref();
 
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+
   // set active cache to record cache dependencies
   SoCacheElement::set(state, this->vertexshadercache);
   const SoNodeList & lights = SoLightElement::getLights(state);
@@ -1170,9 +1187,14 @@ SoShadowGroupP::setVertexShader(SoState * state)
                        "gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;\n"
                        "gl_TexCoord[1] = gl_TextureMatrix[1] * gl_MultiTexCoord1;\n"
                        "gl_Position = ftransform();\n"
-                       "gl_FrontColor = gl_Color;");
+                       "gl_FrontColor = gl_Color;\n");
 
-
+  if (this->hasclipplanes) {
+    if (SoGLDriverDatabase::isSupported(glue, SO_GL_GLSL_CLIP_VERTEX_HW)) {
+      gen.addMainStatement("gl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;\n");
+    }
+  }
+  
   // never update unless the program has actually changed. Creating a
   // new GLSL program is very slow on current drivers.
   if (this->vertexshader->sourceProgram.getValue() != gen.getShaderProgram()) {
