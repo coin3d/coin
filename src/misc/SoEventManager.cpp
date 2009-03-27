@@ -71,6 +71,12 @@ SoEventManager::SoEventManager(void)
   PRIVATE(this)->scene = NULL;
 }
 
+/*!
+  Destructor.
+
+  The destructor destructs all subobjects it still has handles on when
+  invoked.
+*/
 SoEventManager::~SoEventManager()
 {
   this->setCamera(NULL);
@@ -318,12 +324,23 @@ SoEventManager::getHandleEventAction(void) const
   return PRIVATE(this)->handleeventaction;
 }
 
+/*!
+  Returns the number of SCXML state machines registered on the SoEventManager
+  object.
+*/
 int
 SoEventManager::getNumSoScXMLStateMachines(void) const
 {
   return static_cast<int>(PRIVATE(this)->statemachines.size());
 }
 
+/*!
+  Returns the pointer to the Nth (\a idx) SCXML state machine registered
+  on the SoSceneManager object.
+
+  The \a idx argument must be a valid index, not outside the actual range
+  of SCXML state machine object indices.
+*/
 SoScXMLStateMachine *
 SoEventManager::getSoScXMLStateMachine(int idx) const
 {
@@ -332,12 +349,24 @@ SoEventManager::getSoScXMLStateMachine(int idx) const
   return PRIVATE(this)->statemachines.at(idx);
 }
 
+/*!
+  Adds an SCXML state machine object to the SoEventManager's event pipeline.
+  If it is not removed before SoSceneManager destruction, the SoSceneManager
+  destructor will delete it.
+*/
 void
 SoEventManager::addSoScXMLStateMachine(SoScXMLStateMachine * sm)
 {
   PRIVATE(this)->statemachines.push_back(sm);
 }
 
+/*!
+  Removes the SoSceneManager object reference to an SCXML state machine.
+  It will just be removed, not destructed.
+
+  If no reference to the given SCXML state machine exists, nothing will
+  happen.
+*/
 void
 SoEventManager::removeSoScXMLStateMachine(SoScXMLStateMachine * sm)
 {
