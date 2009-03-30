@@ -5128,8 +5128,19 @@ coin_catch_gl_errors(cc_string * str)
   unsigned int errs = 0;
   GLenum glerr = glGetError();
   while (glerr != GL_NO_ERROR) {
-    if (errs > 0) { cc_string_append_char(str, ' '); }
-    cc_string_append_text(str, coin_glerror_string(glerr));
+    if (errs > 0) {
+      cc_string_append_char(str, ' ');
+    }
+
+    if (errs < 10) {
+      cc_string_append_text(str, coin_glerror_string(glerr));
+    }
+    /* ignore > 10, so we don't run into a situation were we end up
+       practically locking up the app due to vast amounts of errors */
+    else if (errs == 10) {
+      cc_string_append_text(str, "... and more");
+    }
+
     errs++;
     glerr = glGetError();
   }
