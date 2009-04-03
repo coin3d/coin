@@ -175,6 +175,12 @@ static uint32_t a_static_variable = 0xdeadbeef;
 void
 SoDB::init(void)
 {
+  // This is to catch the (unlikely) event that the C++ compiler adds
+  // padding or rtti information to the SbVec3f (or similar) base classes.
+  // We assume this isn't done several places in Coin, so the best thing to
+  // do is just to assert here.
+  assert(sizeof(SbVec3f) == 3*sizeof(float));
+
   // Sanity check that our static variables in Coin has had a chance
   // to init themselves before the first invocation of this function
   // happens. See above documentation on the variable for more
