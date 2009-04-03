@@ -78,7 +78,7 @@
   }
   \endcode
 
-  \since Coin 3.1
+  \since TGS Inventor 6.0, Coin 3.1
 */
 
 #include <Inventor/nodes/SoIndexedPointSet.h>
