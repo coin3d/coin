@@ -492,6 +492,9 @@ _class_::setValuesPointer(const int numarg, _usertype_ * userdata) \
 { \
   this->makeRoom(0); \
   if (numarg > 0 && userdata) { \
+    /* FIXME: The following has potential of epic breakage. */\
+    /* Examples are 64-bit platforms (due to padding), rtti, etc */\
+    /* 20090403 bfg/wiesener */\
     this->values = reinterpret_cast<_valtype_*>(userdata); /* reinterpret_cast is needed for certain special uses of this function, such as SoMFColor */ \
     this->userDataIsUsed = TRUE; \
     this->num = this->maxNum = numarg; \
