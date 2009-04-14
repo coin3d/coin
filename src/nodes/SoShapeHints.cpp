@@ -54,15 +54,15 @@
   <li>vertexOrdering == CLOCKWISE or COUNTERCLOCKWISE, shapeType ==
       SOLID: causes primitives to be backface culled and rendered with
       one-sided lighting.
-  
+
   <li>vertexOrdering == CLOCKWISE or COUNTERCLOCKWISE, shapeType ==
       UNKNOWN_SHAPE_TYPE: primitives are \e not backface culled, and
       they are rendered with two-sided lighting.
-  
+
   <li>vertexOrdering == UNKNOWN_ORDERING, any shapeType: primitives
       are \e not backface culled, and they are rendered with one-sided
-      lighting. The OpenGL vertex ordering will be set to counter clockwise 
-      ordering. 
+      lighting. The OpenGL vertex ordering will be set to counter clockwise
+      ordering.
   </ul>
 
   The UNKNOWN_ORDERING enum has a special and non-intuitive meaning.
@@ -211,6 +211,9 @@
   If the angle between the normals of two neighboring faces is less
   than the value of this field, the faces will be smoothshaded around
   their common edge.
+  
+  The angle is specified in radians, and the default value is 0.0, 
+  meaning no smoothing will be done by default.
 */
 
 // *************************************************************************
