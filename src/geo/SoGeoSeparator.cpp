@@ -30,7 +30,7 @@
   \code
     GeoSeparator {
       geoSystem ["GD", "WE"]
-      geoCoords ""
+      geoCoords 0 0 0
     }
   \endcode
 
@@ -67,7 +67,7 @@
 // *************************************************************************
 
 /*!
-  \var SoSFString SoGeoSeparator::geoCoords
+  \var SoSFVec3d SoGeoSeparator::geoCoords
 
   Used for specifying the geographic coordinates.
 

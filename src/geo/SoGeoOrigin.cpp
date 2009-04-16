@@ -30,7 +30,7 @@
   \code
     GeoOrigin {
       geoSystem ["GD", "WE"]
-      geoCoords ""
+      geoCoords 0 0 0
     }
   \endcode
 
@@ -171,7 +171,7 @@
 // *************************************************************************
 
 /*!
-  \var SoSFString SoGeoOrigin::geoCoords
+  \var SoSFVec3d SoGeoOrigin::geoCoords
 
   Used for specifying the geographic coordinates. For the GD system this should
   be <latitude> <longitude> <elevation>. For UTM it is <easting> <northing> <elevation>,

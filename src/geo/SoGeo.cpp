@@ -32,6 +32,7 @@
 #include <Inventor/SbVec3d.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbDPMatrix.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include "SbGeoProjection.h"
 #include "SbUTMProjection.h"
@@ -201,21 +202,28 @@ SoGeo::calculateTransform(const SbString * originsystem,
                           const int numlocalsys,
                           const SbVec3d & localcoords)
 {
+  // start on 2; the first index is always the projection type, and if UTM the second should always be a zone
+  for (int i = 2; i < numoriginsys; i++) {
+    if (originsystem[i] == "FLAT") {
+      SbMatrix m;
+      m.makeIdentity();
+      bool valid = (originsystem[0] == "UTM" && 
+                    localsystem[0] == originsystem[0] && 
+                    localsystem[1] == originsystem[1]);
+      if (!valid){
+        SoDebugError::post("SoGeo::calculateTransform", "FLAT projections only supported within the same UTM zone");
+        return m;      
+      }
+      double tx = localcoords[0] - geocoords[0];
+      double ty = localcoords[1] - geocoords[1];
+      m.setTranslate(SbVec3f(static_cast<float>(tx), static_cast<float>(ty), 0));
+      return m;
+    }
+  }
+
   SbDPMatrix om = find_coordinate_system(originsystem, numoriginsys, geocoords);
   SbDPMatrix lm = find_coordinate_system(localsystem, numlocalsys, localcoords);
   SbDPMatrix r = lm * om.inverse();
-
-  // start on 1, the first index is always the projection type
-  for (int i = 1; i < numoriginsys; i++) {
-    if (originsystem[i] == "FLAT") {
-      double tx = r[3][0];
-      double ty = r[3][1];
-      r.makeIdentity();
-      r[3][0] = tx;
-      r[3][1] = ty;
-      break;
-    }
-  }
 
   // transform to a single precision matrix.
   return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),
