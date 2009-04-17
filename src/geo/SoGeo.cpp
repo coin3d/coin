@@ -214,9 +214,7 @@ SoGeo::calculateTransform(const SbString * originsystem,
         SoDebugError::post("SoGeo::calculateTransform", "FLAT projections only supported within the same UTM zone");
         return m;      
       }
-      double tx = localcoords[0] - geocoords[0];
-      double ty = localcoords[1] - geocoords[1];
-      m.setTranslate(SbVec3f(static_cast<float>(tx), static_cast<float>(ty), 0));
+      m.setTranslate(SbVec3f(localcoords - geocoords));
       return m;
     }
   }
