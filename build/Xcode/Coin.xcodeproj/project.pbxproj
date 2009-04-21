@@ -946,7 +946,6 @@
 		E0FC4F6F0D92D50900EF3BB3 /* SoUnknownNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4AA10D92D50500EF3BB3 /* SoUnknownNode.cpp */; };
 		E0FC4F700D92D50900EF3BB3 /* SoUnknownNode.h in Headers */ = {isa = PBXBuildFile; fileRef = E0FC4AA20D92D50500EF3BB3 /* SoUnknownNode.h */; };
 		E0FC4F720D92D50900EF3BB3 /* SoVertexProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4AA40D92D50500EF3BB3 /* SoVertexProperty.cpp */; };
-		E0FC4F730D92D50900EF3BB3 /* SoViewerNavigationMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4AA50D92D50500EF3BB3 /* SoViewerNavigationMode.cpp */; };
 		E0FC4F740D92D50900EF3BB3 /* SoWWWAnchor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4AA60D92D50500EF3BB3 /* SoWWWAnchor.cpp */; };
 		E0FC4F750D92D50900EF3BB3 /* SoWWWInline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4AA70D92D50500EF3BB3 /* SoWWWInline.cpp */; };
 		E0FC4F7A0D92D50900EF3BB3 /* SbProfilingData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4AAD0D92D50500EF3BB3 /* SbProfilingData.cpp */; };
@@ -3221,7 +3220,6 @@
 		E0FC4AA10D92D50500EF3BB3 /* SoUnknownNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoUnknownNode.cpp; sourceTree = "<group>"; };
 		E0FC4AA20D92D50500EF3BB3 /* SoUnknownNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoUnknownNode.h; sourceTree = "<group>"; };
 		E0FC4AA40D92D50500EF3BB3 /* SoVertexProperty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoVertexProperty.cpp; sourceTree = "<group>"; };
-		E0FC4AA50D92D50500EF3BB3 /* SoViewerNavigationMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoViewerNavigationMode.cpp; sourceTree = "<group>"; };
 		E0FC4AA60D92D50500EF3BB3 /* SoWWWAnchor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoWWWAnchor.cpp; sourceTree = "<group>"; };
 		E0FC4AA70D92D50500EF3BB3 /* SoWWWInline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoWWWInline.cpp; sourceTree = "<group>"; };
 		E0FC4AAA0D92D50500EF3BB3 /* inventormaps.icc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = inventormaps.icc; sourceTree = "<group>"; };
@@ -6491,7 +6489,6 @@
 				E0FC4AA10D92D50500EF3BB3 /* SoUnknownNode.cpp */,
 				E0FC4AA20D92D50500EF3BB3 /* SoUnknownNode.h */,
 				E0FC4AA40D92D50500EF3BB3 /* SoVertexProperty.cpp */,
-				E0FC4AA50D92D50500EF3BB3 /* SoViewerNavigationMode.cpp */,
 				E0FC4AA60D92D50500EF3BB3 /* SoWWWAnchor.cpp */,
 				E0FC4AA70D92D50500EF3BB3 /* SoWWWInline.cpp */,
 			);
@@ -7889,7 +7886,6 @@
 				E0FC4F6E0D92D50900EF3BB3 /* SoUnits.cpp in Sources */,
 				E0FC4F6F0D92D50900EF3BB3 /* SoUnknownNode.cpp in Sources */,
 				E0FC4F720D92D50900EF3BB3 /* SoVertexProperty.cpp in Sources */,
-				E0FC4F730D92D50900EF3BB3 /* SoViewerNavigationMode.cpp in Sources */,
 				E0FC4F740D92D50900EF3BB3 /* SoWWWAnchor.cpp in Sources */,
 				E0FC4F750D92D50900EF3BB3 /* SoWWWInline.cpp in Sources */,
 				E0FC4F7A0D92D50900EF3BB3 /* SbProfilingData.cpp in Sources */,
