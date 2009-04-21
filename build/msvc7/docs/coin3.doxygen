@@ -1002,7 +1002,6 @@ INPUT                  = \
                          ..\..\include\Inventor\nodes\SoVertexProperty.h \
                          ..\..\include\Inventor\nodes\SoVertexShader.h \
                          ..\..\include\Inventor\nodes\SoVertexShape.h \
-                         ..\..\include\Inventor\nodes\SoViewerNavigationMode.h \
                          ..\..\include\Inventor\nodes\SoWWWAnchor.h \
                          ..\..\include\Inventor\nodes\SoWWWInline.h \
                          ..\..\include\Inventor\projectors\SbCylinderPlaneProjector.h \
@@ -1475,7 +1474,6 @@ INPUT                  = \
                          ..\..\src\nodes\SoVertexAttributeBinding.cpp \
                          ..\..\src\nodes\SoVertexProperty.cpp \
                          ..\..\src\nodes\SoVertexProperty.cpp \
-                         ..\..\src\nodes\SoViewerNavigationMode.cpp \
                          ..\..\src\nodes\SoWWWAnchor.cpp \
                          ..\..\src\nodes\SoWWWInline.cpp \
                          ..\..\src\profiler\SbProfilingData.cpp \
