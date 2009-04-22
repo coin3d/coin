@@ -53,9 +53,6 @@ COIN_DLL_API SbBool cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char 
 COIN_DLL_API cc_xml_path * cc_xml_doc_diff(const cc_xml_doc * doc, const cc_xml_doc * other);
 
 /* document attributes */
-COIN_DLL_API void cc_xml_doc_set_encoding_x(cc_xml_doc * doc, const char * encoding);
-COIN_DLL_API const char * cc_xml_doc_get_encoding(const cc_xml_doc * doc);
-
 COIN_DLL_API void cc_xml_doc_set_filename_x(cc_xml_doc * doc, const char * path);
 COIN_DLL_API const char * cc_xml_doc_get_filename(const cc_xml_doc * doc);
 
