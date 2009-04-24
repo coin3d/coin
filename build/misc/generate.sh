@@ -40,7 +40,8 @@ source_pwd="`(cd ../..; pwd) | sed -e 's/\\//\\\\\\\\/g'`";
 if $proper; then
   ../../configure --with-msvcrt=mtd --with-suffix=d \
     --enable-3ds-import \
-    --enable-debug --enable-symbols || exit 1;
+    --enable-debug --enable-symbols \
+    htmldir=../html || exit 1;
   mv src/config.h src/config-debug.h;
 
   ../../configure --enable-msvcdsp --with-msvcrt=mt \
@@ -97,6 +98,7 @@ sed \
   -e "s/$source_pwd/..\\\\../g" \
   -e "s/GENERATE_HTML.*=.*NO/GENERATE_HTML = YES/g" \
   -e "s/HTML_OUTPUT.*=.*/HTML_OUTPUT = ..\\\\html/g" \
+  -e "s/GENERATE_TAGFILE.*=.*/GENERATE_TAGFILE = ..\\\\html/g" \
   -e 's/$/\r/g' \
   <docs/doxygen.bak >docs/${project}.doxygen
 rm docs/doxygen.bak
