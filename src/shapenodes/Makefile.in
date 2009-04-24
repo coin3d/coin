@@ -277,6 +277,7 @@ RegularSources = \
 	SoImage.cpp \
 	SoIndexedFaceSet.cpp \
 	SoIndexedLineSet.cpp \
+	SoIndexedMarkerSet.cpp \
 	SoIndexedNurbsCurve.cpp \
 	SoIndexedNurbsSurface.cpp \
 	SoIndexedPointSet.cpp \
@@ -374,12 +375,13 @@ shapenodes_lst_AR = $(AR) cru
 shapenodes_lst_LIBADD =
 am__shapenodes_lst_SOURCES_DIST = SoAsciiText.cpp SoCone.cpp SoCube.cpp \
 	SoCylinder.cpp SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
-	SoIndexedLineSet.cpp SoIndexedNurbsCurve.cpp \
-	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
-	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
-	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
-	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
-	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoIndexedLineSet.cpp SoIndexedMarkerSet.cpp \
+	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
+	SoIndexedPointSet.cpp SoIndexedShape.cpp \
+	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
+	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
+	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
+	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp soshape_bumprender.cpp \
 	all-shapenodes-cpp.cpp
@@ -387,13 +389,14 @@ am__objects_1 = all-shapenodes-cpp.$(OBJEXT)
 am__objects_2 = SoAsciiText.$(OBJEXT) SoCone.$(OBJEXT) SoCube.$(OBJEXT) \
 	SoCylinder.$(OBJEXT) SoFaceSet.$(OBJEXT) SoImage.$(OBJEXT) \
 	SoIndexedFaceSet.$(OBJEXT) SoIndexedLineSet.$(OBJEXT) \
-	SoIndexedNurbsCurve.$(OBJEXT) SoIndexedNurbsSurface.$(OBJEXT) \
-	SoIndexedPointSet.$(OBJEXT) SoIndexedShape.$(OBJEXT) \
-	SoIndexedTriangleStripSet.$(OBJEXT) SoLineSet.$(OBJEXT) \
-	SoMarkerSet.$(OBJEXT) SoNonIndexedShape.$(OBJEXT) \
-	SoNurbsCurve.$(OBJEXT) SoNurbsSurface.$(OBJEXT) \
-	SoPointSet.$(OBJEXT) SoQuadMesh.$(OBJEXT) SoShape.$(OBJEXT) \
-	SoSphere.$(OBJEXT) SoText2.$(OBJEXT) SoText3.$(OBJEXT) \
+	SoIndexedMarkerSet.$(OBJEXT) SoIndexedNurbsCurve.$(OBJEXT) \
+	SoIndexedNurbsSurface.$(OBJEXT) SoIndexedPointSet.$(OBJEXT) \
+	SoIndexedShape.$(OBJEXT) SoIndexedTriangleStripSet.$(OBJEXT) \
+	SoLineSet.$(OBJEXT) SoMarkerSet.$(OBJEXT) \
+	SoNonIndexedShape.$(OBJEXT) SoNurbsCurve.$(OBJEXT) \
+	SoNurbsSurface.$(OBJEXT) SoPointSet.$(OBJEXT) \
+	SoQuadMesh.$(OBJEXT) SoShape.$(OBJEXT) SoSphere.$(OBJEXT) \
+	SoText2.$(OBJEXT) SoText3.$(OBJEXT) \
 	SoTriangleStripSet.$(OBJEXT) SoVertexShape.$(OBJEXT) \
 	soshape_primdata.$(OBJEXT) soshape_bigtexture.$(OBJEXT) \
 	soshape_trianglesort.$(OBJEXT) soshape_bumprender.$(OBJEXT)
@@ -405,12 +408,12 @@ am__EXTRA_shapenodes_lst_SOURCES_DIST = soshape_primdata.h \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
-	SoIndexedPointSet.cpp SoIndexedShape.cpp \
-	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
-	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
-	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
-	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
+	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
+	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
+	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
+	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp soshape_bumprender.cpp
 shapenodes_lst_OBJECTS = $(am_shapenodes_lst_OBJECTS)
@@ -421,20 +424,20 @@ libshapenodes_la_LIBADD =
 am__libshapenodes_la_SOURCES_DIST = SoAsciiText.cpp SoCone.cpp \
 	SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
-	SoIndexedPointSet.cpp SoIndexedShape.cpp \
-	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
-	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
-	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
-	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
+	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
+	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
+	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
+	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp soshape_bumprender.cpp \
 	all-shapenodes-cpp.cpp
 am__objects_6 = all-shapenodes-cpp.lo
 am__objects_7 = SoAsciiText.lo SoCone.lo SoCube.lo SoCylinder.lo \
 	SoFaceSet.lo SoImage.lo SoIndexedFaceSet.lo SoIndexedLineSet.lo \
-	SoIndexedNurbsCurve.lo SoIndexedNurbsSurface.lo \
-	SoIndexedPointSet.lo SoIndexedShape.lo \
+	SoIndexedMarkerSet.lo SoIndexedNurbsCurve.lo \
+	SoIndexedNurbsSurface.lo SoIndexedPointSet.lo SoIndexedShape.lo \
 	SoIndexedTriangleStripSet.lo SoLineSet.lo SoMarkerSet.lo \
 	SoNonIndexedShape.lo SoNurbsCurve.lo SoNurbsSurface.lo \
 	SoPointSet.lo SoQuadMesh.lo SoShape.lo SoSphere.lo SoText2.lo \
@@ -449,12 +452,12 @@ am__EXTRA_libshapenodes_la_SOURCES_DIST = soshape_primdata.h \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
-	SoIndexedPointSet.cpp SoIndexedShape.cpp \
-	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
-	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
-	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
-	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
+	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
+	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
+	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
+	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp soshape_bumprender.cpp
 libshapenodes_la_OBJECTS = $(am_libshapenodes_la_OBJECTS)
@@ -463,12 +466,12 @@ libshapenodes@SUFFIX@LINKHACK_la_LIBADD =
 am__libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
-	SoIndexedPointSet.cpp SoIndexedShape.cpp \
-	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
-	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
-	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
-	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
+	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
+	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
+	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
+	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp soshape_bumprender.cpp \
 	all-shapenodes-cpp.cpp
@@ -478,12 +481,12 @@ am__EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
-	SoIndexedPointSet.cpp SoIndexedShape.cpp \
-	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
-	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
-	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
-	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
+	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
+	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
+	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
+	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp soshape_bumprender.cpp
 libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -501,6 +504,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoIndexedFaceSet.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIndexedLineSet.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIndexedLineSet.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoIndexedMarkerSet.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoIndexedMarkerSet.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIndexedNurbsCurve.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIndexedNurbsCurve.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIndexedNurbsSurface.Plo \
@@ -644,6 +649,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedFaceSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedLineSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedLineSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedMarkerSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedMarkerSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedNurbsCurve.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedNurbsCurve.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIndexedNurbsSurface.Plo@am__quote@
