@@ -1,3 +1,6 @@
+#ifndef COIN_SOINDEXEDMARKERSET_H
+#define COIN_SOINDEXEDMARKERSET_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,34 +24,31 @@
  *
 \**************************************************************************/
 
-#include "SoAsciiText.cpp"
-#include "SoCone.cpp"
-#include "SoCube.cpp"
-#include "SoCylinder.cpp"
-#include "SoFaceSet.cpp"
-#include "SoImage.cpp"
-#include "SoIndexedFaceSet.cpp"
-#include "SoIndexedLineSet.cpp"
-#include "SoIndexedMarkerSet.cpp"
-#include "SoIndexedNurbsCurve.cpp"
-#include "SoIndexedNurbsSurface.cpp"
-#include "SoIndexedPointSet.cpp"
-#include "SoIndexedShape.cpp"
-#include "SoIndexedTriangleStripSet.cpp"
-#include "SoLineSet.cpp"
-#include "SoMarkerSet.cpp"
-#include "SoNonIndexedShape.cpp"
-#include "SoNurbsCurve.cpp"
-#include "SoNurbsSurface.cpp"
-#include "SoPointSet.cpp"
-#include "SoQuadMesh.cpp"
-#include "SoShape.cpp"
-#include "SoSphere.cpp"
-#include "SoText2.cpp"
-#include "SoText3.cpp"
-#include "SoTriangleStripSet.cpp"
-#include "SoVertexShape.cpp"
-#include "soshape_bigtexture.cpp"
-#include "soshape_primdata.cpp"
-#include "soshape_trianglesort.cpp"
-#include "soshape_bumprender.cpp"
+#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
+
+class SoGLCoordinateElement;
+class SoTextureCoordinateBundle;
+
+class COIN_DLL_API SoIndexedMarkerSet : public SoIndexedPointSet {
+  typedef SoIndexedPointSet inherited;
+
+  SO_NODE_HEADER(SoIndexedMarkerSet);
+
+public:
+  static void initClass(void);
+  SoIndexedMarkerSet(void);
+
+  SoMFInt32 markerIndex;
+
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void notify(SoNotList * list);
+
+protected:
+  virtual ~SoIndexedMarkerSet();
+
+private:
+
+};
+
+#endif // !COIN_SOINDEXEDMARKERSET_H

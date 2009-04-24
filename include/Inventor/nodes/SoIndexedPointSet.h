@@ -55,7 +55,6 @@ protected:
                                         SoNormalBundle * bundle);
   SoVertexArrayIndexer * vaindexer;
 
-private:
   enum Binding {
     OVERALL,
     PER_VERTEX,

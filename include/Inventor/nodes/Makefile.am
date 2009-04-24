@@ -39,6 +39,7 @@ PublicHeaders = \
 	SoImage.h \
 	SoIndexedFaceSet.h \
 	SoIndexedLineSet.h \
+	SoIndexedMarkerSet.h \
 	SoIndexedNurbsCurve.h \
 	SoIndexedNurbsSurface.h \
 	SoIndexedPointSet.h \

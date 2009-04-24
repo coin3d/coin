@@ -217,9 +217,8 @@ SoIndexedPointSet::findTextureBinding(SoState * const state) const
 void
 SoIndexedPointSet::GLRender(SoGLRenderAction * action)
 {
-  if (!this->shouldGLRender(action)) return;
   int32_t numpts = this->coordIndex.getNum();
-  if (numpts == 0 && !this->vertexProperty.getValue()) return;
+  if (numpts == 0) return;
 
   SoState * state = action->getState();
 
@@ -228,6 +227,11 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     state->push();
     didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
+  }
+
+  if (!this->shouldGLRender(action)){
+    if (didpush) state->pop();
+    return;
   }
 
   SoMaterialBundle mb(action);  
@@ -436,7 +440,7 @@ void
 SoIndexedPointSet::generatePrimitives(SoAction *action)
 {
   int32_t numpts = this->coordIndex.getNum();
-  if (numpts == 0 && !this->vertexProperty.getValue()) return;
+  if (numpts == 0) return;
 
   SoState * state = action->getState();
 

@@ -10,6 +10,7 @@ RegularSources = \
 	SoImage.cpp \
 	SoIndexedFaceSet.cpp \
 	SoIndexedLineSet.cpp \
+	SoIndexedMarkerSet.cpp \
 	SoIndexedNurbsCurve.cpp \
 	SoIndexedNurbsSurface.cpp \
 	SoIndexedPointSet.cpp \
