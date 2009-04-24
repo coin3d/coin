@@ -82,6 +82,8 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+
 #include <Inventor/system/gl.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -1154,6 +1156,8 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     return;
   }
 
+  SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmpcoord;
 
   Binding mbind = this->findMaterialBinding(action->getState());
@@ -1215,7 +1219,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     // probably become a bottleneck. Should really partition marker
     // positions in a oct-tree data structure and cull several at
     // the same time.  20031219 mortene.
-    if (SoCullElement::cullTest(state, bbox, FALSE)) { continue; }
+    if (SoCullElement::cullTest(state, bbox, TRUE)) { continue; }
 
     projmatrix.multVecMatrix(point, point);
     point[0] = (point[0] + 1.0f) * 0.5f * vpsize[0];
