@@ -2,20 +2,12 @@
 # Coin binary packaging for Mac OS X checklist
 #
 
-NB! The instructions below assume that you build the Universal Binary
-(gcc4) version of Coin on an Intel Mac and the Legacy (gcc3) version
-on a PowerPC Mac. 
-
+Note: We can only build binaries on Intel Macs, and we only build universal binaries.
 
 1. Preparation
    -----------
 
 * Remove old Coin installation(s) on your system, if any.
-
-* Choose the compiler version
-
-  Use gcc_select to choose gcc-4.0 (Mac OS 10.4 "Tiger" only) or
-  gcc-3.3 (backwards compatible). Note that UB support requires gcc-4.
 
 * Create working directory. (You can call this whatever you want.)
 
@@ -27,8 +19,7 @@ on a PowerPC Mac.
     wget ftp://ftp.coin3d.org/pub/coin/src/all/Coin-$VERSION.tar.gz
 
 * Configure and build simage:
-
-  Remember to --enable-universal if building the UB package!
+  // FIXME: simage won't build in 64-bits (COIN-168)
 
     mkdir simage-config
     cd simage-config
@@ -44,7 +35,7 @@ on a PowerPC Mac.
     cp /usr/X11R6/lib/libfreetype.* macosx/supportlibs/lib/
 
   Or you can build freetype yourself. Remember that you need to create
-  a Universal Binary if you are building the Coin UB version!
+  a Universal Binary which includes all the correct architectures.
 
 
 2. Build and package Coin
@@ -54,22 +45,18 @@ on a PowerPC Mac.
 
     tar xzf Coin-$VERSION.tar.gz
 
-* Universal Binary support?
-
-  If you want to build Universal Binaries, add --enable-universal
-  to the BUILDOPTIONS in Coin-$VERSION/packaging/macosx/Makefile.in
-
 * Building 
 
   Run
 
-    MACOSX_DEPLOYMENT_TARGET=10.2 ./Coin-$VERSION/configure
-    MACOSX_DEPLOYMENT_TARGET=10.2 make macosx-packages
+    ./Coin-$VERSION/configure
+    make macosx-packages
 
   You will be asked for your root password after the build itself is
   complete, this is because we need to change the permissions of the
   package.
 
+  // FIXME: It should be possible to automate this now (COIN-198):
   The script will then mount the newly created disk image and ask you
   to set the background image. After setting the background image, do
   *NOT* manually unmount the disk image, it will be unmounted
@@ -106,18 +93,6 @@ o Run through some of your pre-release tests both on PowerPC and Intel
 
 4. Publishing
    ----------
-
-o Rename the disk images
-
-  The gcc-4 disk images should be renamed to
-
-    Coin-$VERSION-gcc4.dmg (e.g. Coin-2.4.6-gcc4.dmg)
-    Coin-$VERSION-gcc4-no_inst.dmg
-
-  and the gcc-3 ones to 
-
-    Coin-$VERSION-gcc3.dmg
-    Coin-$VERSION-gcc3-no_inst.dmg
 
 o Upload 
 
