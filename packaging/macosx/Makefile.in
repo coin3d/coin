@@ -30,7 +30,7 @@ builddir = build-shared-release
 COINDIST = Coin-$(VERSION).tar.gz
 COIN = Coin-$(VERSION)
 COINLIB = $(builddir)/src/libCoin.la
-BUILDOPTIONS = --disable-3ds-import --enable-optimization --disable-debug --disable-symbols
+BUILDOPTIONS = --disable-3ds-import --enable-optimization --disable-debug --disable-symbols --enable-universal
 
 # **************************************************************************
 
