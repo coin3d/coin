@@ -48,6 +48,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/engines/SoTimeCounter.h>
+#include <Inventor/engines/SoCalculator.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -93,6 +94,7 @@ public:
   SoBlinker * master;
   int whichvalue;
   SoTimeCounter * counter;
+  SoCalculator * calculator;
   SoOneShotSensor * whichChildSensor;
 };
 
@@ -104,16 +106,24 @@ public:
 SoBlinker::SoBlinker(void)
 {
   PRIVATE(this) = new SoBlinkerP(this);
+
+  PRIVATE(this)->calculator = new SoCalculator;
+  PRIVATE(this)->calculator->ref();
+  PRIVATE(this)->calculator->a.connectFrom(&this->on);
+  PRIVATE(this)->calculator->b.connectFrom(&this->speed);
+  PRIVATE(this)->calculator->expression = "oa = ((b > 0) && (a != 0)) ? 1.0 : 0.0;";
+  
   PRIVATE(this)->counter = new SoTimeCounter;
   PRIVATE(this)->counter->ref();
   PRIVATE(this)->counter->min = SO_SWITCH_NONE;
   PRIVATE(this)->counter->max = SO_SWITCH_NONE;
   PRIVATE(this)->counter->frequency.connectFrom(&this->speed);
-  PRIVATE(this)->counter->on.connectFrom(&this->on);
+  PRIVATE(this)->counter->on.connectFrom(&PRIVATE(this)->calculator->oa);
   PRIVATE(this)->whichChildSensor = 
     new SoOneShotSensor(SoBlinkerP::whichChildCB, PRIVATE(this));
   PRIVATE(this)->whichChildSensor->setPriority(1);
   PRIVATE(this)->whichvalue = SO_SWITCH_NONE;
+
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBlinker);
 
@@ -130,6 +140,7 @@ SoBlinker::~SoBlinker()
 {
   delete PRIVATE(this)->whichChildSensor;
   PRIVATE(this)->counter->unref();
+  PRIVATE(this)->calculator->unref();
   delete PRIVATE(this);
 }
 
