@@ -108,7 +108,7 @@ openal_wrapper(void)
       int idx;
       const char * possiblelibnames[] = {
         NULL, /* is set below */
-        "openal", "openal32", "libopenal.so",
+        "openal", "openal32", "libopenal.so", "libopenal.dylib",
         NULL
       };
 
