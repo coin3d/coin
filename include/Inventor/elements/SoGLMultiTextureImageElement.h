@@ -61,7 +61,7 @@ public:
   public:
     SoGLImage * glimage;
   };
-  
+  static SbBool hasTransparency(SoState * state);
 protected:
   virtual SbBool hasTransparency(const int unit) const;
 

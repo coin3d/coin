@@ -62,6 +62,7 @@
 
 class SoGLMultiTextureImageElementP {
 public:
+  int lastunitset;
   SoGLMultiTextureImageElement::GLUnitData unitdata[MAX_UNITS];
   SoState * state;
   uint32_t cachecontext;
@@ -115,6 +116,7 @@ SoGLMultiTextureImageElement::init(SoState * state)
     GLUnitData & ud = PRIVATE(this)->unitdata[i];
     ud.glimage = NULL;
   }
+  PRIVATE(this)->lastunitset = -1;
 }
 
 
@@ -128,11 +130,13 @@ SoGLMultiTextureImageElement::push(SoState * state)
     this->getNextInStack();
   PRIVATE(this)->state = state;
   PRIVATE(this)->cachecontext = PRIVATE(prev)->cachecontext;
+  PRIVATE(this)->lastunitset = PRIVATE(prev)->lastunitset;
 
+  // copy all units and not just up to lastunitset to make sure that
+  // all units are properly initialized
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
   }
-
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -151,8 +155,8 @@ SoGLMultiTextureImageElement::pop(SoState * state,
 
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   SbString str;
-
-  for (int i = 1; i < MAX_UNITS; i++) {
+  
+  for (int i = 1; i <= PRIVATE(prev)->lastunitset; i++) {
     const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
     // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
     // if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
@@ -189,9 +193,11 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
 
   SoGLMultiTextureImageElement * elem = (SoGLMultiTextureImageElement*)
     state->getElement(classStackIndex);
-
+  if (unit > PRIVATE(elem)->lastunitset) {
+    PRIVATE(elem)->lastunitset = unit;
+  }
   GLUnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
   // if (ud.glimage && ud.glimage->getImage()) ud.glimage->getImage()->readUnlock();
 
@@ -217,6 +223,7 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
     inherited::setDefault(state, node, unit);
   }
   elem->updateGL(unit);
+  sogl_update_shapehints_transparency(state);
 
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   if (prog) {
@@ -251,6 +258,23 @@ SoGLMultiTextureImageElement::get(SoState * state,
   return PRIVATE(elem)->unitdata[unit].glimage;
 }
 
+/*!
+  Returns TRUE if any of the images have at least one transparent pixel.
+  
+  \since Coin 3.1
+*/
+SbBool 
+SoGLMultiTextureImageElement::hasTransparency(SoState * state)
+{
+  const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
+    getConstElement(state, classStackIndex);
+  
+  for (int i = 0; i <= PRIVATE(elem)->lastunitset; i++) {
+    if (elem->hasTransparency(i)) return TRUE;
+  }
+  return FALSE;
+}
+
 // doc from parent
 SbBool
 SoGLMultiTextureImageElement::hasTransparency(const int unit) const
@@ -258,9 +282,7 @@ SoGLMultiTextureImageElement::hasTransparency(const int unit) const
   assert(unit >= 0 && unit< MAX_UNITS);
   const GLUnitData & ud = PRIVATE(this)->unitdata[unit];
   if (ud.glimage) {
-    // only return TRUE if the image has transparency, and if it can't
-    // be rendered using glAlphaTest()
-    return ud.glimage->hasTransparency() && !ud.glimage->useAlphaTest();
+    return ud.glimage->hasTransparency();
   }
   return FALSE;
 }

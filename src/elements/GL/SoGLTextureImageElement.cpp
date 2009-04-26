@@ -179,8 +179,8 @@ SoGLTextureImageElement::set(SoState * const stateptr, SoNode * const node,
   }
   SoShapeStyleElement::setBigImageEnabled(stateptr,
                                           image && image->isOfType(SoGLBigImage::getClassTypeId()));
-  SoShapeStyleElement::setTransparentTexture(stateptr, elem->hasTransparency());
-
+  sogl_update_shapehints_transparency(stateptr);
+  
   elem->updateLazyElement();
 
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(stateptr);
@@ -197,6 +197,21 @@ SoGLTextureImageElement::get(SoState * state, Model & model,
   model = elem->model;
   blendcolor = elem->blendColor;
   return elem->glimage;
+}
+
+/*!
+
+  Return TRUE if at least one pixel in the current texture image is
+  transparent.
+
+  \since Coin 3.1
+ */
+SbBool 
+SoGLTextureImageElement::hasTransparency(SoState * state)
+{
+  const SoGLTextureImageElement * elem = (const SoGLTextureImageElement*)
+    getConstElement(state, classStackIndex);
+  return elem->hasTransparency();
 }
 
 // doc from parent

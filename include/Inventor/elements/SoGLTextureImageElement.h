@@ -55,6 +55,7 @@ public:
   virtual SbBool isTextureSizeLegal(int xsize, int ysize, int zsize, 
                                     int bytespertexel);
 
+  static SbBool hasTransparency(SoState * state);
 protected:
   virtual SbBool hasTransparency(void) const;
 

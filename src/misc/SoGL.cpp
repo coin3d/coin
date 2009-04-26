@@ -50,9 +50,12 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoProfileElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -2964,6 +2967,9 @@ static void offscreenrenderer_cleanup(void)
 // release.
 //
 // 20030519 mortene.
+//
+// SoGL API is private so this function can be taken out any time
+// 20090426 pederb
 
 void
 sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
@@ -2978,3 +2984,13 @@ sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
   offscreencallback->setCallback(cb, closure);
   offscreenrenderer->render(offscreencallback);
 }
+
+// Needed until all logic in SoGLTextureImageElement is moved to SoGLMultiTextureImageElement
+void
+sogl_update_shapehints_transparency(SoState * state)
+{
+  SoShapeStyleElement::setTransparentTexture(state, 
+                                             SoGLTextureImageElement::hasTransparency(state) ||
+                                             SoGLMultiTextureImageElement::hasTransparency(state));
+}
+
