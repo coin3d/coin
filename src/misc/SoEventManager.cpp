@@ -45,6 +45,31 @@
 
 */
 
+/*!
+  \enum SoEventManager::NavigationState
+
+  Sets how events are handled.
+*/
+
+/*!
+  \var SoEventManager::NavigationState SoEventManager::NO_NAVIGATION
+
+  Forwards the events only to the scene graph.
+*/
+
+/*!
+  \var SoEventManager::NavigationState SoEventManager::JUST_NAVIGATION
+
+  Forwards the events to the scene graph first. If it does not get handled,
+  the events get forwarded to the state machines.
+*/
+
+/*!
+  \var SoEventManager::NavigationState SoEventManager::MIXED_NAVIGATION
+
+  Forwards the events only to the state machines.
+*/
+
 class SoEventManager::PImpl {
 public:
   SoEventManager::NavigationState navigationstate;
@@ -219,18 +244,31 @@ SoEventManager::setOrigin(const SbVec2s & newOrigin)
   PRIVATE(this)->handleeventaction->setViewportRegion(region);
 }
 
+/*!
+  Sets the current viewport region. This will overwrite the default viewport region
+  created in the constructor.
+
+  \sa getViewportRegion()
+*/
 void
 SoEventManager::setViewportRegion(const SbViewportRegion & newregion)
 {
   PRIVATE(this)->handleeventaction->setViewportRegion(newregion);
 }
 
+/*!
+  Returns the viewport region used by the event manager. 
+*/
 const SbViewportRegion &
 SoEventManager::getViewportRegion(void) const
 {
   return PRIVATE(this)->handleeventaction->getViewportRegion();
 }
 
+/*!
+  Handles the event. Depending on the navigation state, this forwards the event
+  to the state machines and/or the scene graph.
+*/
 SbBool
 SoEventManager::processEvent(const SoEvent * const event)
 {
@@ -271,6 +309,9 @@ SoEventManager::processEvent(const SoEvent * const event)
   return status;
 }
 
+/*!
+  Forwards the event to the scene graph.
+*/
 SbBool
 SoEventManager::actuallyProcessEvent(const SoEvent * const event)
 {
