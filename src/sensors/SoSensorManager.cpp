@@ -229,7 +229,7 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 
 // Callback called whenever the timeoutsensor triggers
 // beacuse the system hasn't been idle for a while.
-static void 
+static void
 timeoutsensor_cb(void * userdata, SoSensor *)
 {
   SoSensorManager * thisp = (SoSensorManager *)userdata;
@@ -493,21 +493,6 @@ SoSensorManager::processTimerQueue(void)
 #endif // debug
 }
 
-//
-// callback from reinsertdict which will reinsert the sensor
-//
-struct reinsert_dict_cb :
-  public SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::ApplyFunctor<SoSensorManager *>
-{
-  void operator()(SoDelayQueueSensor * & key,
-                SoDelayQueueSensor * & sensor,
-                SoSensorManager* thisp
-                )
-  {
-    thisp->insertDelaySensor(sensor);
-  }
-};
-
 /*!
   Trigger all delay queue entries in priority order.
 
@@ -591,8 +576,14 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // reinsert sensors that couldn't be triggered, either because it
   // was an idle sensor, or because the sensor had already been
   // triggered
-  reinsert_dict_cb functor;
-  PRIVATE(this)->reinsertdict.apply(functor, this);
+  for(
+      SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::const_iterator iter =
+       PRIVATE(this)->reinsertdict.const_begin();
+      iter!=PRIVATE(this)->reinsertdict.const_end();
+      ++iter
+      ) {
+    this->insertDelaySensor(iter->obj);
+  }
   PRIVATE(this)->reinsertdict.clear();
   PRIVATE(this)->processingdelayqueue = FALSE;
 

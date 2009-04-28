@@ -369,7 +369,7 @@ SoBase::initClass(void)
 
   // debug
   const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
-  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;  
+  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;
 
   SoWriterefCounter::initClass();
 }
@@ -383,8 +383,14 @@ SoBase::cleanClass(void)
   assert(SoBase::PImpl::obj2name);
 
   // Delete the SbPLists in the dictionaries.
-  emptyName2ObjHash functor;
-  SoBase::PImpl::name2obj->apply(functor, static_cast<void *>(NULL));
+  for(
+      SbHash<SbPList *, const char *>::const_iterator iter =
+       SoBase::PImpl::name2obj->const_begin();
+      iter!=SoBase::PImpl::name2obj->const_end();
+      ++iter
+      ) {
+    delete iter->obj;
+  }
 
   delete SoBase::PImpl::allbaseobj; SoBase::PImpl::allbaseobj = NULL;
 
@@ -513,7 +519,7 @@ SoBase::unref(void) const
   CC_MUTEX_LOCK(SoBase::PImpl::mutex);
   this->objdata.referencecount--;
   int refcount = this->objdata.referencecount;
- 
+
   CC_MUTEX_UNLOCK(SoBase::PImpl::mutex);
 
 #if COIN_DEBUG
@@ -1266,9 +1272,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       out->incrementIndent();
     }
   }
-  
+
   int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
-  
+
 #if COIN_DEBUG
   if (SoWriterefCounter::debugWriterefs()) {
     SoDebugError::postInfo("SoBase::writeHeader",
@@ -1355,7 +1361,7 @@ SoBase::connectRoute(SoInput * in,
   SoNode * fromnode = SoNode::getByName(fromnodename);
   SoNode * tonode = SoNode::getByName(tonodename);
   if (fromnode && tonode) {
-    SoDB::createRoute(fromnode, fromfieldname.getString(), 
+    SoDB::createRoute(fromnode, fromfieldname.getString(),
                       tonode, tofieldname.getString());
     return TRUE;
   }

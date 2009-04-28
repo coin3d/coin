@@ -927,7 +927,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 
   const SoNode * protonode = coin_safe_cast<const SoNode *>(orig);
   SoProtoInstance * protoinst = protonode ?
-    SoProtoInstance::findProtoInstance(protonode) : NULL; 
+    SoProtoInstance::findProtoInstance(protonode) : NULL;
 
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
@@ -988,20 +988,6 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   return cp;
 }
 
-//
-// Used to unref() copied instances (we ref() in addCopy()).
-//
-struct fieldcontainer_unref_node :
-  public SbHash<const SoFieldContainer *,
-              const SoFieldContainer *>::ApplyFunctor<void *>
-{
-  void operator()(const SoFieldContainer * & COIN_UNUSED(key),
-                  const SoFieldContainer * & fieldcontainer,
-                  void * COIN_UNUSED(closure)) {
-    fieldcontainer->unref();
-  }
-};
-
 /*!
   \COININTERNAL
 
@@ -1022,8 +1008,15 @@ SoFieldContainer::copyDone(void)
   assert(contentscopied);
 
   // unref all copied instances. See comment in addCopy().
-  fieldcontainer_unref_node functor;
-  copiedinstances->apply(functor, static_cast<void *>(NULL));
+  for(
+      SoFieldContainerCopyMap::const_iterator iter =
+       copiedinstances->const_begin();
+      iter!=copiedinstances->const_end();
+      ++iter
+      ) {
+    iter->key->unref();
+  }
+
 
   delete copiedinstances;
   delete contentscopied;

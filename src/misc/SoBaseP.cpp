@@ -125,22 +125,19 @@ SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const name)
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
 
-
-struct auditordict_cb :
-  public SbHash<SoAuditorList *, const SoBase *>::ApplyFunctor<void *>
-{
-  void operator()(const SoBase * &, SoAuditorList * & l, void *)
-  {
-    delete l;
-  }
-};
-
 void
 SoBase::PImpl::cleanup_auditordict(void)
 {
   if (SoBase::PImpl::auditordict) {
-    auditordict_cb functor;
-    SoBase::PImpl::auditordict->apply(functor, static_cast<void *>(NULL));
+    for(
+       SbHash<SoAuditorList *, const SoBase *>::const_iterator iter =
+         SoBase::PImpl::auditordict->const_begin();
+       iter!=SoBase::PImpl::auditordict->const_end();
+       ++iter
+       ) {
+      delete iter->obj;
+    }
+
     delete SoBase::PImpl::auditordict;
     SoBase::PImpl::auditordict = NULL;
   }

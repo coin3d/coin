@@ -57,19 +57,6 @@ namespace {
 struct SoDebug_internal {
   static SbHash<char *, void *> * namedict;
   static void delete_namedict(void);
-  struct delete_namedict_entry :
-    public SbHash <char *, void *>::ApplyFunctor<void *>
-  {
-    void operator()(void * & key,
-                  char * & obj,
-                  void * closure
-                  )
-    {
-      if ( obj ) free((void *) obj);
-    }
-  };
-
-  //static void delete_namedict_entry(void * & key, char * & obj, void * closure);
 };
 
 SbHash<char *, void *> * SoDebug_internal::namedict = NULL;
@@ -224,8 +211,15 @@ SoDebug::printName(SoBase * base)
 void
 SoDebug_internal::delete_namedict(void)
 {
-  delete_namedict_entry functor;
-  namedict->apply(functor);
+  for(
+     SbHash<char *, void *>::const_iterator iter =
+       namedict->const_begin();
+      iter!=namedict->const_end();
+      ++iter
+      ) {
+    if ( iter->obj ) free((void *) iter->obj);
+  }
+
   delete namedict;
   namedict = NULL;
 }
