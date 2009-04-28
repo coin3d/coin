@@ -41,8 +41,15 @@
 
 /*!
   \class SoEventManager SoEventManager.h Inventor/SoEventManager.h
-  \brief Manager object for event processing for a viewer.
+  \brief The SoEventManager class provides event handling for a Coin3D viewer.
 
+  It receives Coin events (typically translated from GUI events by the GUI 
+  binding in use) and passes them to the state machine or directly to the
+  scene graph depending on the navigation mode. SoEventManager implements the
+  event interface for the Coin3D navigation system based on ScXML. 
+  SoEventManager and SoRenderManager together supersede SoSceneManager, 
+  which is now just a wrapper around these classes.
+  The class is used by the QuarterWidget in Quarter (the Qt binding for Coin3D). 
 */
 
 /*!
@@ -60,14 +67,14 @@
 /*!
   \var SoEventManager::NavigationState SoEventManager::JUST_NAVIGATION
 
-  Forwards the events to the scene graph first. If it does not get handled,
-  the events get forwarded to the state machines.
+  Forwards the events only to the state machines.
 */
 
 /*!
   \var SoEventManager::NavigationState SoEventManager::MIXED_NAVIGATION
 
-  Forwards the events only to the state machines.
+  Forwards the events to the scene graph first. If it does not get handled,
+  the events get forwarded to the state machines.
 */
 
 class SoEventManager::PImpl {
