@@ -35,7 +35,7 @@ public:
   SoTranReceiver(SoGroup * root);
   ~SoTranReceiver();
 
-  SbBool interpret(SoInput * in);
+  SbBool interpret(SoInput * input);
 
 private:
   // Placeholder for any data for the instance. Just added for the

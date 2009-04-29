@@ -67,7 +67,7 @@ public:
 
   SbName getProtoName(void) const;
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual SbBool readInstance(SoInput * input, unsigned short flags);
   virtual void write(SoWriteAction * action);
 
 protected:

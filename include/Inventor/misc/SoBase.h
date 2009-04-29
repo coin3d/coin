@@ -71,18 +71,18 @@ public:
   static int getNamedBases(const SbName & name, SoBaseList & baselist,
                            SoType type);
 
-  static SbBool read(SoInput * in, SoBase *& base, SoType expectedtype);
+  static SbBool read(SoInput * input, SoBase *& base, SoType expectedtype);
   static void setInstancePrefix(const SbString & c);
 
   static void setTraceRefs(SbBool trace);
   static SbBool getTraceRefs(void);
 
-  static SbBool connectRoute(SoInput * in,
+  static SbBool connectRoute(SoInput * input,
                              const SbName & fromnodename, const SbName & fromfieldname,
                              const SbName & tonodename, const SbName & tofieldname);
 
   void assertAlive(void) const;
-  static SbBool readRoute(SoInput * in);
+  static SbBool readRoute(SoInput * input);
 
 protected:
   // Note: these are bitflags.
@@ -98,7 +98,7 @@ protected:
   void writeFooter(SoOutput * out) const;
   virtual const char * getFileFormatName(void) const;
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags) = 0;
+  virtual SbBool readInstance(SoInput * input, unsigned short flags) = 0;
 
   static uint32_t getCurrentWriteCounter(void);
   static void staticDataLock(void);

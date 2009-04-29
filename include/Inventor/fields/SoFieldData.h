@@ -59,16 +59,16 @@ public:
   void getEnumData(const char * enumname,
                    int & num, const int *& values, const SbName *& names);
 
-  SbBool read(SoInput * in, SoFieldContainer * object,
+  SbBool read(SoInput * input, SoFieldContainer * object,
               SbBool erroronunknownfield, SbBool & notbuiltin) const;
-  SbBool read(SoInput * in, SoFieldContainer * object,
+  SbBool read(SoInput * input, SoFieldContainer * object,
               const SbName & fieldname, SbBool & foundname) const;
   void write(SoOutput * out, const SoFieldContainer * object) const;
   void copy(const SoFieldData * src);
   SbBool isSame(const SoFieldContainer * c1,
                 const SoFieldContainer * c2) const;
 
-  SbBool readFieldDescriptions(SoInput * in, SoFieldContainer * object,
+  SbBool readFieldDescriptions(SoInput * input, SoFieldContainer * object,
                                int numdescriptionsexpected,
                                const SbBool readfieldvalues = TRUE) const;
   void writeFieldDescriptions(SoOutput * out,

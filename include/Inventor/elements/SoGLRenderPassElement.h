@@ -40,7 +40,7 @@ public:
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
 
-  static void set(SoState * const state, const int pass);
+  static void set(SoState * const state, const int passNumber);
   static int get(SoState * const state);
 
 protected:

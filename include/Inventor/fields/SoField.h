@@ -47,7 +47,7 @@ public:
   void setIgnored(SbBool ignore);
   SbBool isIgnored(void) const;
 
-  void setDefault(SbBool def);
+  void setDefault(SbBool defaultVal);
   SbBool isDefault(void) const;
 
   virtual SoType getTypeId(void) const = 0;
@@ -109,7 +109,7 @@ public:
   virtual SbBool referencesCopy(void) const;
   void copyConnection(const SoField * fromfield);
 
-  virtual SbBool read(SoInput * in, const SbName & name);
+  virtual SbBool read(SoInput * input, const SbName & name);
   virtual void write(SoOutput * out, const SbName & name) const;
 
   virtual void countWriteRefs(SoOutput * out) const;
@@ -129,7 +129,7 @@ public:
   void setDirty(SbBool dirty);
 
   void evaluate(void) const {
-    if ((this->statusbits & (FLAG_EXTSTORAGE|FLAG_NEEDEVALUATION)) == 
+    if ((this->statusbits & (FLAG_EXTSTORAGE|FLAG_NEEDEVALUATION)) ==
         (FLAG_EXTSTORAGE|FLAG_NEEDEVALUATION)) this->evaluateField();
   }
 

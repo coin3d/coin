@@ -41,7 +41,7 @@ public:
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const;
 
-  static void post(const SoInput * const in, const char * const format, ...);
+  static void post(const SoInput * const input, const char * const format, ...);
 
   static void initClass(void);
 

@@ -59,7 +59,7 @@ public:
   SbBool enableNotify(const SbBool flag);
   SbBool isNotifyEnabled(void) const;
 
-  SbBool set(const char * fielddata, SoInput * in);
+  SbBool set(const char * fielddata, SoInput * input);
   void get(SbString & fielddata, SoOutput * out);
 
   virtual void notify(SoNotList * l);

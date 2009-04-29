@@ -40,7 +40,7 @@ class SoSeparator;
 class SoVRMLGroup;
 class SoGroup;
 
-typedef void SoDBHeaderCB(void * data, SoInput * in);
+typedef void SoDBHeaderCB(void * data, SoInput * input);
 
 
 class COIN_DLL_API SoDB {
@@ -50,11 +50,11 @@ public:
   static void cleanup(void);
 
   static const char * getVersion(void);
-  static SbBool read(SoInput * in, SoPath *& path);
-  static SbBool read(SoInput * in, SoBase *& base);
-  static SbBool read(SoInput * in, SoNode *& rootnode);
-  static SoSeparator * readAll(SoInput * in);
-  static SoVRMLGroup * readAllVRML(SoInput * in);
+  static SbBool read(SoInput * input, SoPath *& path);
+  static SbBool read(SoInput * input, SoBase *& base);
+  static SbBool read(SoInput * input, SoNode *& rootnode);
+  static SoSeparator * readAll(SoInput * input);
+  static SoVRMLGroup * readAllVRML(SoInput * input);
   static SbBool isValidHeader(const char * teststring);
   static SbBool registerHeader(const SbString & headerstring,
                                SbBool isbinary,
@@ -111,7 +111,7 @@ public:
                           SoNode * to, const char * eventin);
 
 private:
-  static SoGroup * readAllWrapper(SoInput * in, const SoType & grouptype);
+  static SoGroup * readAllWrapper(SoInput * input, const SoType & grouptype);
 };
 
 #endif // !COIN_SODB_H
