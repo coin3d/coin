@@ -392,7 +392,7 @@ SoMFPath::countWriteRefs(SoOutput * out) const
 //
 // <mortene@sim.no>
 void
-SoMFPath::fixCopy(SbBool COIN_UNUSED(copyconnections))
+SoMFPath::fixCopy(SbBool COIN_UNUSED_ARG(copyconnections))
 {
   // Disable temporarily, so we under no circumstances will send more
   // than one notification about the changes.

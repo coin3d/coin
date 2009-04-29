@@ -356,7 +356,7 @@ SoToVRMLAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 
 // Documented in superclass.
 void
-SoToVRMLAction::beginTraversal(SoNode * COIN_UNUSED(node))
+SoToVRMLAction::beginTraversal(SoNode * COIN_UNUSED_ARG(node))
 {
   assert(0 && "should never get here");
 }
@@ -538,7 +538,7 @@ SoToVRMLActionP::find_or_create_material(void)
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::push_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::push_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoToVRMLActionP * thisp = THISP(closure);
 
@@ -550,14 +550,14 @@ SoToVRMLActionP::push_cb(void * closure, SoCallbackAction * COIN_UNUSED(action),
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::pop_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * COIN_UNUSED(node))
+SoToVRMLActionP::pop_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * COIN_UNUSED_ARG(node))
 {
   THISP(closure)->vrmlpath->pop();
   return SoCallbackAction::CONTINUE;
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::unsupported_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::unsupported_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoInfo * info = NEW_NODE(SoInfo, node);
   SbString str;
@@ -592,7 +592,7 @@ SoToVRMLActionP::init_gen(const SbBool color)
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::post_primitives_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::post_primitives_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoToVRMLActionP * thisp = THISP(closure);
 
@@ -651,7 +651,7 @@ SoToVRMLActionP::post_primitives_cb(void * closure, SoCallbackAction * COIN_UNUS
 }
 
 void
-SoToVRMLActionP::triangle_cb(void * closure, SoCallbackAction * COIN_UNUSED(action),
+SoToVRMLActionP::triangle_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action),
                              const SoPrimitiveVertex * v1,
                              const SoPrimitiveVertex * v2,
                              const SoPrimitiveVertex * v3)
@@ -722,7 +722,7 @@ SoToVRMLActionP::vrmlspotlight_cb(void * closure, SoCallbackAction * action, con
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlpixeltex_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlpixeltex_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoTexture2 * tex = NEW_NODE(SoTexture2, node);
   const SoVRMLPixelTexture * oldtex = coin_assert_cast<const SoVRMLPixelTexture*>(node);
@@ -735,7 +735,7 @@ SoToVRMLActionP::vrmlpixeltex_cb(void * closure, SoCallbackAction * COIN_UNUSED(
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlimagetex_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlimagetex_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoTexture2 * tex = NEW_NODE(SoTexture2, node);
   const SoVRMLImageTexture * oldtex = coin_assert_cast<const SoVRMLImageTexture*>(node);
@@ -747,7 +747,7 @@ SoToVRMLActionP::vrmlimagetex_cb(void * closure, SoCallbackAction * COIN_UNUSED(
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmllod_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmllod_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoLOD * lod = NEW_NODE(SoLOD, node);
   const SoVRMLLOD * oldlod = coin_assert_cast<const SoVRMLLOD*>(node);
@@ -760,7 +760,7 @@ SoToVRMLActionP::vrmllod_cb(void * closure, SoCallbackAction * COIN_UNUSED(actio
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlmaterial_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlmaterial_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoMaterial * mat = NEW_NODE(SoMaterial, node);
   const SoVRMLMaterial * oldmat = coin_assert_cast<const SoVRMLMaterial *>(node);
@@ -779,7 +779,7 @@ SoToVRMLActionP::vrmlmaterial_cb(void * closure, SoCallbackAction * COIN_UNUSED(
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlswitch_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlswitch_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoSwitch * sw = NEW_NODE(SoSwitch, node);
   const SoVRMLSwitch * oldsw = coin_assert_cast<const SoVRMLSwitch *>(node);
@@ -802,7 +802,7 @@ SoToVRMLActionP::vrmlviewpoint_cb(void * closure, SoCallbackAction * action, con
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlbox_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlbox_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoCube * cube = NEW_NODE(SoCube, node);
   const SoVRMLBox * box = coin_assert_cast<const SoVRMLBox *>(node);
@@ -814,7 +814,7 @@ SoToVRMLActionP::vrmlbox_cb(void * closure, SoCallbackAction * COIN_UNUSED(actio
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlcone_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlcone_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoCone * cone = NEW_NODE(SoCone, node);
   const SoVRMLCone * oldcone = coin_assert_cast<const SoVRMLCone *>(node);
@@ -830,7 +830,7 @@ SoToVRMLActionP::vrmlcone_cb(void * closure, SoCallbackAction * COIN_UNUSED(acti
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlcylinder_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlcylinder_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoCylinder * cyl = NEW_NODE(SoCylinder, node);
   const SoVRMLCylinder * oldcyl = coin_assert_cast<const SoVRMLCylinder*>(node);
@@ -846,7 +846,7 @@ SoToVRMLActionP::vrmlcylinder_cb(void * closure, SoCallbackAction * COIN_UNUSED(
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlifs_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlifs_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   const SoVRMLIndexedFaceSet * oldifs = coin_assert_cast<const SoVRMLIndexedFaceSet *>(node);
 
@@ -967,7 +967,7 @@ SoToVRMLActionP::vrmlifs_cb(void * closure, SoCallbackAction * COIN_UNUSED(actio
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlils_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlils_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoToVRMLActionP * thisp = THISP(closure);
 
@@ -1059,7 +1059,7 @@ SoToVRMLActionP::vrmlils_cb(void * closure, SoCallbackAction * COIN_UNUSED(actio
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlpointset_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlpointset_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoToVRMLActionP * thisp = THISP(closure);
 
@@ -1070,7 +1070,7 @@ SoToVRMLActionP::vrmlpointset_cb(void * closure, SoCallbackAction * COIN_UNUSED(
 
   SoVRMLColor * color = coin_assert_cast<SoVRMLColor*>(oldps->color.getValue());
   SoVRMLCoordinate * coord = coin_assert_cast<SoVRMLCoordinate*>(oldps->coord.getValue());
-  
+
   if (coord) {
     SbName name = coord->getName();
     SoCoordinate3 * newcoord = coin_assert_cast<SoCoordinate3 *> (
@@ -1098,7 +1098,7 @@ SoToVRMLActionP::vrmlpointset_cb(void * closure, SoCallbackAction * COIN_UNUSED(
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlsphere_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlsphere_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoSphere * sphere = NEW_NODE(SoSphere, node);
   const SoVRMLSphere * oldsphere = coin_assert_cast<const SoVRMLSphere *>(node);
@@ -1108,7 +1108,7 @@ SoToVRMLActionP::vrmlsphere_cb(void * closure, SoCallbackAction * COIN_UNUSED(ac
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlelevation_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlelevation_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoToVRMLActionP * thisp = THISP(closure);
 
@@ -1137,7 +1137,7 @@ SoToVRMLActionP::vrmlelevation_cb(void * closure, SoCallbackAction * COIN_UNUSED
 }
 
 SoCallbackAction::Response
-SoToVRMLActionP::vrmlextrusion_cb(void * closure, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoToVRMLActionP::vrmlextrusion_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoToVRMLActionP * thisp = THISP(closure);
 

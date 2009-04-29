@@ -128,7 +128,7 @@
 //
 // workingToWorld = surroundScaleMatrix * localToWorld
 // worldToWorking = worldToLocal * surroundScaleMatrix
-// 
+//
 // boxPointInWorldSpace = p * surroundScaleMatrix * localToWorld
 // worldPointInBoxSpace = p * worldToLocal * surroundScaleMatrix
 
@@ -555,146 +555,146 @@ SoTransformerDragger::build_catalog6(void)
 
   \verbatim
   CLASS SoTransformerDragger
-  PVT   "this",  SoTransformerDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-        "surroundScale",  SoSurroundScale  --- 
-  PVT   "overallStyle",  SoGroup  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "translatorSep",  SoSeparator  --- 
-  PVT   "translator1Switch",  SoSwitch  --- 
-  PVT   "translator1LocateGroup",  SoLocateHighlight  --- 
-        "translator1",  SoSeparator  --- 
-        "translator1Active",  SoSeparator  --- 
-  PVT   "translator2Switch",  SoSwitch  --- 
-  PVT   "translator2LocateGroup",  SoLocateHighlight  --- 
-        "translator2",  SoSeparator  --- 
-        "translator2Active",  SoSeparator  --- 
-  PVT   "translator3Switch",  SoSwitch  --- 
-  PVT   "translator3LocateGroup",  SoLocateHighlight  --- 
-        "translator3",  SoSeparator  --- 
-        "translator3Active",  SoSeparator  --- 
-  PVT   "translator4Switch",  SoSwitch  --- 
-  PVT   "translator4LocateGroup",  SoLocateHighlight  --- 
-        "translator4",  SoSeparator  --- 
-        "translator4Active",  SoSeparator  --- 
-  PVT   "translator5Switch",  SoSwitch  --- 
-  PVT   "translator5LocateGroup",  SoLocateHighlight  --- 
-        "translator5",  SoSeparator  --- 
-        "translator5Active",  SoSeparator  --- 
-  PVT   "translator6Switch",  SoSwitch  --- 
-  PVT   "translator6LocateGroup",  SoLocateHighlight  --- 
-        "translator6",  SoSeparator  --- 
-        "translator6Active",  SoSeparator  --- 
-  PVT   "rotatorSep",  SoSeparator  --- 
-  PVT   "rotator1Switch",  SoSwitch  --- 
-  PVT   "rotator1LocateGroup",  SoLocateHighlight  --- 
-        "rotator1",  SoSeparator  --- 
-        "rotator1Active",  SoSeparator  --- 
-  PVT   "rotator2Switch",  SoSwitch  --- 
-  PVT   "rotator2LocateGroup",  SoLocateHighlight  --- 
-        "rotator2",  SoSeparator  --- 
-        "rotator2Active",  SoSeparator  --- 
-  PVT   "rotator3Switch",  SoSwitch  --- 
-  PVT   "rotator3LocateGroup",  SoLocateHighlight  --- 
-        "rotator3",  SoSeparator  --- 
-        "rotator3Active",  SoSeparator  --- 
-  PVT   "rotator4Switch",  SoSwitch  --- 
-  PVT   "rotator4LocateGroup",  SoLocateHighlight  --- 
-        "rotator4",  SoSeparator  --- 
-        "rotator4Active",  SoSeparator  --- 
-  PVT   "rotator5Switch",  SoSwitch  --- 
-  PVT   "rotator5LocateGroup",  SoLocateHighlight  --- 
-        "rotator5",  SoSeparator  --- 
-        "rotator5Active",  SoSeparator  --- 
-  PVT   "rotator6Switch",  SoSwitch  --- 
-  PVT   "rotator6LocateGroup",  SoLocateHighlight  --- 
-        "rotator6",  SoSeparator  --- 
-        "rotator6Active",  SoSeparator  --- 
-  PVT   "scaleSep",  SoSeparator  --- 
-  PVT   "scale1Switch",  SoSwitch  --- 
-  PVT   "scale1LocateGroup",  SoLocateHighlight  --- 
-        "scale1",  SoSeparator  --- 
-        "scale1Active",  SoSeparator  --- 
-  PVT   "scale2Switch",  SoSwitch  --- 
-  PVT   "scale2LocateGroup",  SoLocateHighlight  --- 
-        "scale2",  SoSeparator  --- 
-        "scale2Active",  SoSeparator  --- 
-  PVT   "scale3Switch",  SoSwitch  --- 
-  PVT   "scale3LocateGroup",  SoLocateHighlight  --- 
-        "scale3",  SoSeparator  --- 
-        "scale3Active",  SoSeparator  --- 
-  PVT   "scale4Switch",  SoSwitch  --- 
-  PVT   "scale4LocateGroup",  SoLocateHighlight  --- 
-        "scale4",  SoSeparator  --- 
-        "scale4Active",  SoSeparator  --- 
-  PVT   "scale5Switch",  SoSwitch  --- 
-  PVT   "scale5LocateGroup",  SoLocateHighlight  --- 
-        "scale5",  SoSeparator  --- 
-        "scale5Active",  SoSeparator  --- 
-  PVT   "scale6Switch",  SoSwitch  --- 
-  PVT   "scale6LocateGroup",  SoLocateHighlight  --- 
-        "scale6",  SoSeparator  --- 
-        "scale6Active",  SoSeparator  --- 
-  PVT   "scale7Switch",  SoSwitch  --- 
-  PVT   "scale7LocateGroup",  SoLocateHighlight  --- 
-        "scale7",  SoSeparator  --- 
-        "scale7Active",  SoSeparator  --- 
-  PVT   "scale8Switch",  SoSwitch  --- 
-  PVT   "scale8LocateGroup",  SoLocateHighlight  --- 
-        "scale8",  SoSeparator  --- 
-        "scale8Active",  SoSeparator  --- 
-  PVT   "circleFeedbackSep",  SoSeparator  --- 
-  PVT   "circleFeedbackTransformSwitch",  SoSwitch  --- 
-  PVT   "circleFeedbackAntiSquish",  SoAntiSquish  --- 
-  PVT   "circleFeedbackTransform",  SoTransform  --- 
-  PVT   "xCircleFeedbackSwitch",  SoSwitch  --- 
-        "xCircleFeedback",  SoSeparator  --- 
-  PVT   "yCircleFeedbackSwitch",  SoSwitch  --- 
-        "yCircleFeedback",  SoSeparator  --- 
-  PVT   "zCircleFeedbackSwitch",  SoSwitch  --- 
-        "zCircleFeedback",  SoSeparator  --- 
-  PVT   "axisFeedbackSep",  SoSeparator  --- 
-  PVT   "axisFeedbackLocation",  SoTranslation  --- 
-  PVT   "xAxisFeedbackSwitch",  SoSwitch  --- 
-        "xAxisFeedbackActive",  SoSeparator  --- 
-        "xAxisFeedbackSelect",  SoSeparator  --- 
-        "xCrosshairFeedback",  SoSeparator  --- 
-  PVT   "yAxisFeedbackSwitch",  SoSwitch  --- 
-        "yAxisFeedbackActive",  SoSeparator  --- 
-        "yAxisFeedbackSelect",  SoSeparator  --- 
-        "yCrosshairFeedback",  SoSeparator  --- 
-  PVT   "zAxisFeedbackSwitch",  SoSwitch  --- 
-        "zAxisFeedbackActive",  SoSeparator  --- 
-        "zAxisFeedbackSelect",  SoSeparator  --- 
-        "zCrosshairFeedback",  SoSeparator  --- 
-  PVT   "translateBoxFeedbackSep",  SoSeparator  --- 
-  PVT   "translateBoxFeedbackSwitch",  SoSwitch  --- 
-  PVT   "translateBoxFeedbackRotation",  SoRotation  --- 
-        "translateBoxFeedback",  SoSeparator  --- 
-  PVT   "scaleBoxFeedbackSwitch",  SoSwitch  --- 
-        "scaleBoxFeedback",  SoSeparator  --- 
-  PVT   "posXWallFeedbackSwitch",  SoSwitch  --- 
-        "posXWallFeedback",  SoSeparator  --- 
-        "posXRoundWallFeedback",  SoSeparator  --- 
-  PVT   "posYWallFeedbackSwitch",  SoSwitch  --- 
-        "posYWallFeedback",  SoSeparator  --- 
-        "posYRoundWallFeedback",  SoSeparator  --- 
-  PVT   "posZWallFeedbackSwitch",  SoSwitch  --- 
-        "posZWallFeedback",  SoSeparator  --- 
-        "posZRoundWallFeedback",  SoSeparator  --- 
-  PVT   "negXWallFeedbackSwitch",  SoSwitch  --- 
-        "negXWallFeedback",  SoSeparator  --- 
-        "negXRoundWallFeedback",  SoSeparator  --- 
-  PVT   "negYWallFeedbackSwitch",  SoSwitch  --- 
-        "negYWallFeedback",  SoSeparator  --- 
-        "negYRoundWallFeedback",  SoSeparator  --- 
-  PVT   "negZWallFeedbackSwitch",  SoSwitch  --- 
-        "negZWallFeedback",  SoSeparator  --- 
-        "negZRoundWallFeedback",  SoSeparator  --- 
-  PVT   "radialFeedbackSwitch",  SoSwitch  --- 
-        "radialFeedback",  SoSeparator  --- 
+  PVT   "this",  SoTransformerDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+        "surroundScale",  SoSurroundScale  ---
+  PVT   "overallStyle",  SoGroup  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "translatorSep",  SoSeparator  ---
+  PVT   "translator1Switch",  SoSwitch  ---
+  PVT   "translator1LocateGroup",  SoLocateHighlight  ---
+        "translator1",  SoSeparator  ---
+        "translator1Active",  SoSeparator  ---
+  PVT   "translator2Switch",  SoSwitch  ---
+  PVT   "translator2LocateGroup",  SoLocateHighlight  ---
+        "translator2",  SoSeparator  ---
+        "translator2Active",  SoSeparator  ---
+  PVT   "translator3Switch",  SoSwitch  ---
+  PVT   "translator3LocateGroup",  SoLocateHighlight  ---
+        "translator3",  SoSeparator  ---
+        "translator3Active",  SoSeparator  ---
+  PVT   "translator4Switch",  SoSwitch  ---
+  PVT   "translator4LocateGroup",  SoLocateHighlight  ---
+        "translator4",  SoSeparator  ---
+        "translator4Active",  SoSeparator  ---
+  PVT   "translator5Switch",  SoSwitch  ---
+  PVT   "translator5LocateGroup",  SoLocateHighlight  ---
+        "translator5",  SoSeparator  ---
+        "translator5Active",  SoSeparator  ---
+  PVT   "translator6Switch",  SoSwitch  ---
+  PVT   "translator6LocateGroup",  SoLocateHighlight  ---
+        "translator6",  SoSeparator  ---
+        "translator6Active",  SoSeparator  ---
+  PVT   "rotatorSep",  SoSeparator  ---
+  PVT   "rotator1Switch",  SoSwitch  ---
+  PVT   "rotator1LocateGroup",  SoLocateHighlight  ---
+        "rotator1",  SoSeparator  ---
+        "rotator1Active",  SoSeparator  ---
+  PVT   "rotator2Switch",  SoSwitch  ---
+  PVT   "rotator2LocateGroup",  SoLocateHighlight  ---
+        "rotator2",  SoSeparator  ---
+        "rotator2Active",  SoSeparator  ---
+  PVT   "rotator3Switch",  SoSwitch  ---
+  PVT   "rotator3LocateGroup",  SoLocateHighlight  ---
+        "rotator3",  SoSeparator  ---
+        "rotator3Active",  SoSeparator  ---
+  PVT   "rotator4Switch",  SoSwitch  ---
+  PVT   "rotator4LocateGroup",  SoLocateHighlight  ---
+        "rotator4",  SoSeparator  ---
+        "rotator4Active",  SoSeparator  ---
+  PVT   "rotator5Switch",  SoSwitch  ---
+  PVT   "rotator5LocateGroup",  SoLocateHighlight  ---
+        "rotator5",  SoSeparator  ---
+        "rotator5Active",  SoSeparator  ---
+  PVT   "rotator6Switch",  SoSwitch  ---
+  PVT   "rotator6LocateGroup",  SoLocateHighlight  ---
+        "rotator6",  SoSeparator  ---
+        "rotator6Active",  SoSeparator  ---
+  PVT   "scaleSep",  SoSeparator  ---
+  PVT   "scale1Switch",  SoSwitch  ---
+  PVT   "scale1LocateGroup",  SoLocateHighlight  ---
+        "scale1",  SoSeparator  ---
+        "scale1Active",  SoSeparator  ---
+  PVT   "scale2Switch",  SoSwitch  ---
+  PVT   "scale2LocateGroup",  SoLocateHighlight  ---
+        "scale2",  SoSeparator  ---
+        "scale2Active",  SoSeparator  ---
+  PVT   "scale3Switch",  SoSwitch  ---
+  PVT   "scale3LocateGroup",  SoLocateHighlight  ---
+        "scale3",  SoSeparator  ---
+        "scale3Active",  SoSeparator  ---
+  PVT   "scale4Switch",  SoSwitch  ---
+  PVT   "scale4LocateGroup",  SoLocateHighlight  ---
+        "scale4",  SoSeparator  ---
+        "scale4Active",  SoSeparator  ---
+  PVT   "scale5Switch",  SoSwitch  ---
+  PVT   "scale5LocateGroup",  SoLocateHighlight  ---
+        "scale5",  SoSeparator  ---
+        "scale5Active",  SoSeparator  ---
+  PVT   "scale6Switch",  SoSwitch  ---
+  PVT   "scale6LocateGroup",  SoLocateHighlight  ---
+        "scale6",  SoSeparator  ---
+        "scale6Active",  SoSeparator  ---
+  PVT   "scale7Switch",  SoSwitch  ---
+  PVT   "scale7LocateGroup",  SoLocateHighlight  ---
+        "scale7",  SoSeparator  ---
+        "scale7Active",  SoSeparator  ---
+  PVT   "scale8Switch",  SoSwitch  ---
+  PVT   "scale8LocateGroup",  SoLocateHighlight  ---
+        "scale8",  SoSeparator  ---
+        "scale8Active",  SoSeparator  ---
+  PVT   "circleFeedbackSep",  SoSeparator  ---
+  PVT   "circleFeedbackTransformSwitch",  SoSwitch  ---
+  PVT   "circleFeedbackAntiSquish",  SoAntiSquish  ---
+  PVT   "circleFeedbackTransform",  SoTransform  ---
+  PVT   "xCircleFeedbackSwitch",  SoSwitch  ---
+        "xCircleFeedback",  SoSeparator  ---
+  PVT   "yCircleFeedbackSwitch",  SoSwitch  ---
+        "yCircleFeedback",  SoSeparator  ---
+  PVT   "zCircleFeedbackSwitch",  SoSwitch  ---
+        "zCircleFeedback",  SoSeparator  ---
+  PVT   "axisFeedbackSep",  SoSeparator  ---
+  PVT   "axisFeedbackLocation",  SoTranslation  ---
+  PVT   "xAxisFeedbackSwitch",  SoSwitch  ---
+        "xAxisFeedbackActive",  SoSeparator  ---
+        "xAxisFeedbackSelect",  SoSeparator  ---
+        "xCrosshairFeedback",  SoSeparator  ---
+  PVT   "yAxisFeedbackSwitch",  SoSwitch  ---
+        "yAxisFeedbackActive",  SoSeparator  ---
+        "yAxisFeedbackSelect",  SoSeparator  ---
+        "yCrosshairFeedback",  SoSeparator  ---
+  PVT   "zAxisFeedbackSwitch",  SoSwitch  ---
+        "zAxisFeedbackActive",  SoSeparator  ---
+        "zAxisFeedbackSelect",  SoSeparator  ---
+        "zCrosshairFeedback",  SoSeparator  ---
+  PVT   "translateBoxFeedbackSep",  SoSeparator  ---
+  PVT   "translateBoxFeedbackSwitch",  SoSwitch  ---
+  PVT   "translateBoxFeedbackRotation",  SoRotation  ---
+        "translateBoxFeedback",  SoSeparator  ---
+  PVT   "scaleBoxFeedbackSwitch",  SoSwitch  ---
+        "scaleBoxFeedback",  SoSeparator  ---
+  PVT   "posXWallFeedbackSwitch",  SoSwitch  ---
+        "posXWallFeedback",  SoSeparator  ---
+        "posXRoundWallFeedback",  SoSeparator  ---
+  PVT   "posYWallFeedbackSwitch",  SoSwitch  ---
+        "posYWallFeedback",  SoSeparator  ---
+        "posYRoundWallFeedback",  SoSeparator  ---
+  PVT   "posZWallFeedbackSwitch",  SoSwitch  ---
+        "posZWallFeedback",  SoSeparator  ---
+        "posZRoundWallFeedback",  SoSeparator  ---
+  PVT   "negXWallFeedbackSwitch",  SoSwitch  ---
+        "negXWallFeedback",  SoSeparator  ---
+        "negXRoundWallFeedback",  SoSeparator  ---
+  PVT   "negYWallFeedbackSwitch",  SoSwitch  ---
+        "negYWallFeedback",  SoSeparator  ---
+        "negYRoundWallFeedback",  SoSeparator  ---
+  PVT   "negZWallFeedbackSwitch",  SoSwitch  ---
+        "negZWallFeedback",  SoSeparator  ---
+        "negZRoundWallFeedback",  SoSeparator  ---
+  PVT   "radialFeedbackSwitch",  SoSwitch  ---
+        "radialFeedback",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -853,7 +853,7 @@ SoTransformerDragger::~SoTransformerDragger()
   delete this->lineProj;
   delete this->sphereProj;
   delete this->cylProj;
-  
+
   delete this->translFieldSensor;
   delete this->scaleFieldSensor;
   delete this->rotateFieldSensor;
@@ -1538,31 +1538,31 @@ SoTransformerDragger::dragScale()
 // space). What is basically done is this:
 //
 // Calculates the matrix (as done in SoDragger::appendRotation()):
-// 
+//
 // C := conversion
 // P := rotcenter
 // R := rot
 // M := new motion matrix
 // Mold := previous motionmatrix
-// 
+//
 // M = C^-1 * P^-1 * R * P * C * Mold
-// 
+//
 // What essentially happens is that we transform into C's coordinate
 // system, then we move the rotation center to origo and apply the
 // new rotation.  The rotation has now been applied, but we are in
 // the wrong coordinate system, so we reapply the rotation center
 // and the conversion. Finally we transform the matrix by the old
 // transformation, which gives us the new rotated transformation.
-// 
+//
 // The rotation happens in the local coordinate system of the object
 // if C = P = I, but if P is specified, then the rotation center
 // will be adjusted before the rotation is applied. If the
 // conversion matrix has been specified to be e.g:
-// 
+//
 // C = (Mold * W)^-1
-// 
+//
 // Then the resulting matrix looks something like this:
-// 
+//
 // M = ((Mold * W)^-1)^-1 * P^-1 * R * P * (Mold * W)^-1 * Mold
 //   = Mold * W * P^-1 * R * P * W^-1 * Mold^-1 * Mold
 //   = Mold * W * P^-1 * R * P * W^-1
@@ -1638,26 +1638,26 @@ SoTransformerDragger::dragRotate(void)
 
     // FIXME: Without this test, the rotation behaves very strange,
     // especially at the edge/outside of the sphere. I will
-    // investigate this some more to understand what happens. 
+    // investigate this some more to understand what happens.
     // 20040804 jornskaa
 
     // Normalize the vectors before finding the dotproduct angle
     // between them.
     if ((worldprojpt.normalize() > 0.0f) &&
-        (prevworldprojpt.normalize() > 0.0f) && 
+        (prevworldprojpt.normalize() > 0.0f) &&
         (worldprojpt.dot(prevworldprojpt) > 0.8f)) {
       PRIVATE(this)->prevWorldHitPt = wppt;
-      
+
       // Calculate the rotation from previous prevworldprojpt to
       // worldprojpt
       SbRotation rot(prevworldprojpt, worldprojpt);
-      
+
       // Calculate new motionmatrix by rotating in world space to
       // prevent shearing with non-uniform scale.
       SbMatrix mat = this->getWorldToLocalMatrix();
       PRIVATE(this)->prevMotionMatrix = this->appendRotation(PRIVATE(this)->prevMotionMatrix, rot,
                                                     worldcenter, &mat);
-      
+
       this->setMotionMatrix(PRIVATE(this)->prevMotionMatrix);
     }
   }
@@ -1747,16 +1747,16 @@ SoTransformerDragger::dragRotate(void)
           (worldprojpt.normalize() > 0.0f) &&
           (prevworldprojpt.dot(worldprojpt) > 0.3f)) { // 0.3 == 72.5degrees
         PRIVATE(this)->prevWorldHitPt = wppt;
-        
+
         // Rotate between the two points in the plane
         SbRotation rot(prevworldprojpt, worldprojpt);
-        
+
         // Rotate in world space to prevent shearing when having
         // non-uniform scale.
         SbMatrix mat = this->getWorldToLocalMatrix();
         PRIVATE(this)->prevMotionMatrix = (this->appendRotation(PRIVATE(this)->prevMotionMatrix, rot,
                                                        worldcenter, &mat));
-        
+
         this->setMotionMatrix(PRIVATE(this)->prevMotionMatrix);
       }
     }
@@ -1889,7 +1889,7 @@ SoTransformerDragger::setAllPartSwitches(int scalewhich, int rotatewhich, int tr
   Open Inventor API.  We'll consider to implement it if requested.
 */
 int
-SoTransformerDragger::getMouseGestureDirection(SbBool COIN_UNUSED(x_ok), SbBool COIN_UNUSED(y_ok), SbBool COIN_UNUSED(z_ok))
+SoTransformerDragger::getMouseGestureDirection(SbBool COIN_UNUSED_ARG(x_ok), SbBool COIN_UNUSED_ARG(y_ok), SbBool COIN_UNUSED_ARG(z_ok))
 {
   COIN_OBSOLETED();
   return -1;
@@ -1900,7 +1900,7 @@ SoTransformerDragger::getMouseGestureDirection(SbBool COIN_UNUSED(x_ok), SbBool 
   Open Inventor API.  We'll consider to implement it if requested.
 */
 int
-SoTransformerDragger::getIgnoreAxis(SbVec2f COIN_UNUSED(axis[3][2]), SbBool COIN_UNUSED(x_ok), SbBool COIN_UNUSED(y_ok), SbBool COIN_UNUSED(z_ok))
+SoTransformerDragger::getIgnoreAxis(SbVec2f COIN_UNUSED_ARG(axis[3][2]), SbBool COIN_UNUSED_ARG(x_ok), SbBool COIN_UNUSED_ARG(y_ok), SbBool COIN_UNUSED_ARG(z_ok))
 {
   COIN_OBSOLETED();
   return -1;
@@ -1911,7 +1911,7 @@ SoTransformerDragger::getIgnoreAxis(SbVec2f COIN_UNUSED(axis[3][2]), SbBool COIN
   Open Inventor API.  We'll consider to implement it if requested.
 */
 void
-SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f COIN_UNUSED(origin), SbVec2f COIN_UNUSED(axisends[3][2]), int COIN_UNUSED(index_a), int COIN_UNUSED(index_b))
+SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f COIN_UNUSED_ARG(origin), SbVec2f COIN_UNUSED_ARG(axisends[3][2]), int COIN_UNUSED_ARG(index_a), int COIN_UNUSED_ARG(index_b))
 {
   COIN_OBSOLETED();
 }
@@ -1921,7 +1921,7 @@ SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f COIN_UNUSED(o
   Open Inventor API.  We'll consider to implement it if requested.
 */
 SbBool
-SoTransformerDragger::isColinear(SbVec2f COIN_UNUSED(a1[2]), SbVec2f COIN_UNUSED(a2[2]), int COIN_UNUSED(pixels))
+SoTransformerDragger::isColinear(SbVec2f COIN_UNUSED_ARG(a1[2]), SbVec2f COIN_UNUSED_ARG(a2[2]), int COIN_UNUSED_ARG(pixels))
 {
   COIN_OBSOLETED();
   return FALSE;

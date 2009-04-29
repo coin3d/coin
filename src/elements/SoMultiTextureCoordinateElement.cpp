@@ -87,7 +87,7 @@ SoMultiTextureCoordinateElement::~SoMultiTextureCoordinateElement()
 
 void
 SoMultiTextureCoordinateElement::setDefault(SoState * const state,
-                                            SoNode * const COIN_UNUSED(node),
+                                            SoNode * const COIN_UNUSED_ARG(node),
                                             const int unit)
 {
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
@@ -479,7 +479,7 @@ SoMultiTextureCoordinateElement::getArrayPtr4(const int unit) const
 }
 
 void
-SoMultiTextureCoordinateElement::push(SoState * COIN_UNUSED(state))
+SoMultiTextureCoordinateElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoMultiTextureCoordinateElement * prev =
     coin_assert_cast<SoMultiTextureCoordinateElement *>

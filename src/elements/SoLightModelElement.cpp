@@ -81,7 +81,7 @@ SoLightModelElement::set(SoState * const state, const Model model)
 //! FIXME: write doc.
 
 void
-SoLightModelElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoLightModelElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                          const Model model)
 {
   SoLazyElement::setLightModel(state, static_cast<int32_t>(model));

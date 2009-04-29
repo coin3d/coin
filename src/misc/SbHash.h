@@ -64,7 +64,7 @@ template <class Type, class Key>
 class SbHashEntry {
 public:
 
-  void * operator new(size_t COIN_UNUSED(size), cc_memalloc * memhandler) {
+  void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
     SbHashEntry<Type, Key> * entry = static_cast<SbHashEntry<Type, Key> *>(
       cc_memalloc_allocate(memhandler));
     entry->memhandler = memhandler;

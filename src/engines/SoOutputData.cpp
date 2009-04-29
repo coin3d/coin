@@ -203,7 +203,7 @@ SoEngineOutputData::getType(int index) const
   FIXME: doc
 */
 SbBool
-SoEngineOutputData::readDescriptions(SoInput * COIN_UNUSED(in), SoEngine * COIN_UNUSED(engine)) const
+SoEngineOutputData::readDescriptions(SoInput * COIN_UNUSED_ARG(in), SoEngine * COIN_UNUSED_ARG(engine)) const
 {
   COIN_STUB();
   return FALSE;
@@ -213,8 +213,8 @@ SoEngineOutputData::readDescriptions(SoInput * COIN_UNUSED(in), SoEngine * COIN_
   FIXME: doc.
 */
 void
-SoEngineOutputData::writeDescriptions(SoOutput * COIN_UNUSED(out),
-                                  SoEngine *COIN_UNUSED(engine)
+SoEngineOutputData::writeDescriptions(SoOutput * COIN_UNUSED_ARG(out),
+                                  SoEngine *COIN_UNUSED_ARG(engine)
                                   ) const
 {
   COIN_STUB();

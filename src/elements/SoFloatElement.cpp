@@ -107,7 +107,7 @@ SoFloatElement::print(FILE * file) const
 void
 SoFloatElement::set(const int index,
                     SoState * const state,
-                    SoNode * const COIN_UNUSED(node),
+                    SoNode * const COIN_UNUSED_ARG(node),
                     const float value)
 {
   SoFloatElement * element =

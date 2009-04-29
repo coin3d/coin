@@ -72,7 +72,7 @@ SoEmissiveColorElement::init(SoState * stateptr)
 //! FIXME: write doc.
 
 void
-SoEmissiveColorElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoEmissiveColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                             const int32_t numcolors,
                             const SbColor * const colors)
 {

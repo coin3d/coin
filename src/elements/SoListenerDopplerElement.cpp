@@ -99,7 +99,7 @@ SoListenerDopplerElement::init(SoState * state)
 
 void
 SoListenerDopplerElement::setDopplerVelocity(SoState * const state,
-                                             SoNode * const COIN_UNUSED(node),
+                                             SoNode * const COIN_UNUSED_ARG(node),
                                              const SbVec3f & velocity)
 {
   SoListenerDopplerElement * elem =
@@ -119,7 +119,7 @@ SoListenerDopplerElement::setDopplerVelocity(SoState * const state,
 
 void
 SoListenerDopplerElement::setDopplerFactor(SoState * const state,
-                                             SoNode * const COIN_UNUSED(node),
+                                             SoNode * const COIN_UNUSED_ARG(node),
                                              float factor)
 {
   SoListenerDopplerElement * elem =

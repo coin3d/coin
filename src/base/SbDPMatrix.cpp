@@ -173,7 +173,7 @@ SbDPMatrix::SbDPMatrix(const SbDPMat * matrixptr)
 */
 SbDPMatrix::SbDPMatrix(const SbMatrix & matrixref)
 {
-  
+
   const SbDPMat m = { { matrixref[0][0], matrixref[0][1], matrixref[0][2], matrixref[0][3] },
                       { matrixref[1][0], matrixref[1][1], matrixref[1][2], matrixref[1][3] },
                       { matrixref[2][0], matrixref[2][1], matrixref[2][2], matrixref[2][3] },
@@ -374,7 +374,7 @@ SbDPMatrix::inverse(void) const
   // check for affine matrix (common case)
   if (src[0][3] == 0.0 && src[1][3] == 0.0 &&
       src[2][3] == 0.0 && src[3][3] == 1.0) {
-    
+
     // More or less directly from:
     // Kevin Wu, "Fast Matrix Inversion",  Graphics Gems II
     double det_1;
@@ -388,7 +388,7 @@ SbDPMatrix::inverse(void) const
 
     /*
      * Calculate the determinant of submatrix A and determine if the
-     * the matrix is singular as limited by floating-point data 
+     * the matrix is singular as limited by floating-point data
      * representation.
      */
     pos = neg = 0.0;
@@ -438,7 +438,7 @@ SbDPMatrix::inverse(void) const
                      src[0][2] * src[1][0]) * det_1;
       dst[2][2] =  (src[0][0] * src[1][1] -
                     src[0][1] * src[1][0]) * det_1;
-      
+
       /* Calculate -C * inverse(A) */
       dst[3][0] = - (src[3][0] * dst[0][0] +
                      src[3][1] * dst[1][0] +
@@ -449,7 +449,7 @@ SbDPMatrix::inverse(void) const
       dst[3][2] = - (src[3][0] * dst[0][2] +
                      src[3][1] * dst[1][2] +
                      src[3][2] * dst[2][2]);
-      
+
       /* Fill in last column */
       dst[0][3] = dst[1][3] = dst[2][3] = 0.0;
       dst[3][3] = 1.0;
@@ -462,24 +462,24 @@ SbDPMatrix::inverse(void) const
 
     // algorithm from: Schwarz, "Numerische Mathematik"
     result = *this;
-    
-    for (k = 0; k < 4; k++) { 
+
+    for (k = 0; k < 4; k++) {
       max = 0.0;
       p[k] = 0;
-      
-      for (i = k; i < 4; i++) { 
+
+      for (i = k; i < 4; i++) {
         sum = 0.0;
         for (j = k; j < 4; j++)
           sum += SbAbs(dst[i][j]);
         if (sum > 0.0) {
           tmp = SbAbs(dst[i][k]) / sum;
-          if (tmp > max) { 
-            max = tmp;  
+          if (tmp > max) {
+            max = tmp;
             p[k] = i;
           }
         }
       }
-      
+
       if (max == 0.0) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SbMatrix::inverse",
@@ -487,15 +487,15 @@ SbDPMatrix::inverse(void) const
 #endif // COIN_DEBUG
         return *this;
       }
-      
+
       if (p[k] != k) {
         for (j = 0; j < 4; j++) {
-          tmp = dst[k][j];  
-          dst[k][j] = dst[p[k]][j];  
+          tmp = dst[k][j];
+          dst[k][j] = dst[p[k]][j];
           dst[p[k]][j] = tmp;
         }
       }
-      
+
       inv_pivot = 1.0 / dst[k][k];
       for (j = 0; j < 4; j++) {
         if (j != k) {
@@ -505,16 +505,16 @@ SbDPMatrix::inverse(void) const
           }
         }
       }
-      
+
       for (i = 0; i < 4; i++) dst[i][k] *= inv_pivot;
       dst[k][k] = inv_pivot;
     }
-    
+
     for (k = 2; k >= 0; k--) {
       if (p[k] != k) {
         for (i = 0; i < 4; i++) {
           tmp = dst[i][k];
-          dst[i][k] = dst[i][p[k]]; 
+          dst[i][k] = dst[i][p[k]];
           dst[i][p[k]] = tmp;
         }
       }
@@ -930,8 +930,8 @@ SbDPMatrix::getTransform(SbVec3d & translation,
   \sa getTransform()
  */
 SbBool
-SbDPMatrix::factor(SbDPMatrix & COIN_UNUSED(r), SbVec3d & COIN_UNUSED(s), SbDPMatrix & COIN_UNUSED(u), SbVec3d & COIN_UNUSED(t),
-                 SbDPMatrix & COIN_UNUSED(proj))
+SbDPMatrix::factor(SbDPMatrix & COIN_UNUSED_ARG(r), SbVec3d & COIN_UNUSED_ARG(s), SbDPMatrix & COIN_UNUSED_ARG(u), SbVec3d & COIN_UNUSED_ARG(t),
+                 SbDPMatrix & COIN_UNUSED_ARG(proj))
 {
   // FIXME: not implemented, not documented. 1998MMDD mortene.
   COIN_STUB();

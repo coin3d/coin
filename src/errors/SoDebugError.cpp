@@ -101,7 +101,7 @@ using std::memcpy;
   #else
     #define COIN_DEBUGGER_BREAK(x) __asm { int 3 }
   #endif
-#else 
+#else
   #if defined (MINGW32) || defined (CYGWIN)
     #include <windows.h>
     #define COIN_DEBUGGER_BREAK(x) ::DebugBreak()
@@ -207,7 +207,7 @@ SoDebugError::initClass(void)
 
 void
 SoDebugError::callbackForwarder(const struct cc_debugerror * error,
-                            void * COIN_UNUSED(data)
+                            void * COIN_UNUSED_ARG(data)
                             )
 {
   SoDebugError wrappederr;

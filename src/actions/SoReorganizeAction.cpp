@@ -23,7 +23,7 @@
 
 /*!
   \page vbo_rendering Vertex array and VBO rendering in Coin
-  
+
   Coin 2.5 added improved support for OpenGL vertex array and VBO
   rendering.  This might lead to major rendering performance
   improvements compared to the old rendering code. The new rendering
@@ -51,13 +51,13 @@
     point [
       0 0 0, # 0
       1 0 0, # 1
-      2 0 0, # 2 
+      2 0 0, # 2
       0 1 0, # 3
-      1 1 0, # 4 
+      1 1 0, # 4
       2 1 0, # 5
-      0 2 0, # 6 
-      1 2 0, # 7 
-      2 2 0, # 8 
+      0 2 0, # 6
+      1 2 0, # 7
+      2 2 0, # 8
 
       2 0  0, # 9
       2 0 -1, # 10
@@ -69,7 +69,7 @@
   }
   Normal {
     vector [
-      0 0 1, # 0 
+      0 0 1, # 0
       0 0 1, # 1
       0 0 1, # 2
       0 0 1, # 3
@@ -85,7 +85,7 @@
       1 0 0,  # 12
       1 0 0,  # 13
       1 0 0   # 14
-    ] 
+    ]
   }
 
   IndexedFaceSet {
@@ -94,7 +94,7 @@
       1, 2, 5, 4, -1,
       3, 4, 7, 6, -1,
       4, 5, 8, 7, -1,
-    
+
       9, 10, 12, 11, -1,
       11, 12, 14, 13, -1
     ]
@@ -149,8 +149,8 @@
   #include <Inventor/actions/SoReorganizeAction.h>
   #include <cassert>
   #include <cstdio>
-  
-  static void strip_node(SoType type, SoNode * root) 
+
+  static void strip_node(SoType type, SoNode * root)
   {
     SoSearchAction sa;
     sa.setType(type);
@@ -165,8 +165,8 @@
           SoGroup * g = (SoGroup*) p->getNodeFromTail(1);
           g->removeChild(p->getIndexFromTail(0));
         }
-      } 
-    sa.reset();  
+      }
+    sa.reset();
   }
 
   int
@@ -188,15 +188,15 @@
 
     SoDB::init();
     SoInteraction::init();
-    
+
     SoInput input;
     SbBool ok = input.openFile(argv[1]);
     if (!ok) {
       fprintf(stderr,"Unable to open file.\n");
       return -1;
     }
-    SoSeparator * root = SoDB::readAll(&input); 
-  
+    SoSeparator * root = SoDB::readAll(&input);
+
     SbBool vrml1 = input.isFileVRML1();
     SbBool vrml2 = input.isFileVRML2();
 
@@ -204,7 +204,7 @@
       fprintf(stderr,"VRML2 not supported yet\n");
       return -1;
     }
-  
+
     if (!root) {
       fprintf(stderr,"Unable to read file.\n");
       return -1;
@@ -217,7 +217,7 @@
     fprintf(stderr,"done\n");
 
     SoOutput out;
-    if (out.openFile(argv[2])) {      
+    if (out.openFile(argv[2])) {
       if (strip) { // strip coord3, texcoord and normal nodes
         fprintf(stderr,"stripping old nodes from scene graph\n");
         strip_node(SoCoordinate3::getClassTypeId(), root);
@@ -328,7 +328,7 @@ class SoReorganizeActionP {
                              post_shape_cb, this);
 #endif // HAVE_VRML97
 
-  } 
+  }
   SoReorganizeAction * master;
   SbBool gennormals;
   SbBool gentexcoords;
@@ -362,7 +362,7 @@ class SoReorganizeActionP {
   static void line_segment_cb(void * userdata, SoCallbackAction * action,
                               const SoPrimitiveVertex * v1,
                               const SoPrimitiveVertex * v2);
-    
+
   SbBool initShape(SoCallbackAction * action);
   void replaceNode(SoFullPath * path);
   void replaceIfs(SoFullPath * path);
@@ -390,7 +390,7 @@ SoReorganizeAction::initClass(void)
   A constructor.
 */
 
-SoReorganizeAction::SoReorganizeAction(SoSimplifier * COIN_UNUSED(simplifier))
+SoReorganizeAction::SoReorganizeAction(SoSimplifier * COIN_UNUSED_ARG(simplifier))
 {
   PRIVATE(this)->master = this;
   SO_ACTION_CONSTRUCTOR(SoReorganizeAction);
@@ -404,79 +404,79 @@ SoReorganizeAction::~SoReorganizeAction(void)
 {
 }
 
-SoSeparator * 
+SoSeparator *
 SoReorganizeAction::getSimplifiedSceneGraph(void) const
 {
   return NULL;
 }
 
-void 
+void
 SoReorganizeAction::generateNormals(SbBool onoff)
 {
   PRIVATE(this)->gennormals = onoff;
 }
 
-SbBool 
+SbBool
 SoReorganizeAction::areNormalGenerated(void) const
 {
   return PRIVATE(this)->gennormals;
 }
 
-void 
+void
 SoReorganizeAction::generateTriangleStrips(SbBool onoff)
 {
   PRIVATE(this)->gentristrips = onoff;
 }
 
-SbBool 
+SbBool
 SoReorganizeAction::areTriangleStripGenerated(void) const
 {
   return PRIVATE(this)->gentristrips;
 }
 
-void 
+void
 SoReorganizeAction::generateTexCoords(SbBool onoff)
 {
   PRIVATE(this)->gentexcoords = onoff;
 }
 
-SbBool 
+SbBool
 SoReorganizeAction::areTexCoordsGenerated(void) const
 {
   return PRIVATE(this)->gentexcoords;
 }
 
-void 
+void
 SoReorganizeAction::generateVPNodes(SbBool onoff)
 {
   PRIVATE(this)->genvp = onoff;
 }
 
-SbBool 
+SbBool
 SoReorganizeAction::areVPNodesGenerated(void)
 {
   return PRIVATE(this)->genvp;
 }
 
-void 
+void
 SoReorganizeAction::matchIndexArrays(SbBool onoff)
 {
   PRIVATE(this)->matchidx = onoff;
 }
 
-SbBool 
+SbBool
 SoReorganizeAction::areIndexArraysMatched(void) const
 {
   return PRIVATE(this)->matchidx;
 }
 
-SoSimplifier * 
+SoSimplifier *
 SoReorganizeAction::getSimplifier(void) const
 {
   return NULL;
 }
 
-void 
+void
 SoReorganizeAction::apply(SoNode * root)
 {
   int i;
@@ -513,28 +513,28 @@ SoReorganizeAction::apply(SoNode * root)
 #endif // HAVE_VMRL97
 }
 
-void 
+void
 SoReorganizeAction::apply(SoPath * path)
 {
   PRIVATE(this)->cbaction.apply(path);
   PRIVATE(this)->replaceNode(reclassify_cast<SoFullPath *>(path));
 }
 
-void 
-SoReorganizeAction::apply(const SoPathList & pathlist, SbBool COIN_UNUSED(obeysrules))
+void
+SoReorganizeAction::apply(const SoPathList & pathlist, SbBool COIN_UNUSED_ARG(obeysrules))
 {
   for (int i = 0; i < pathlist.getLength(); i++) {
     this->apply(pathlist[i]);
   }
 }
 
-void 
-SoReorganizeAction::startReport(const char * COIN_UNUSED(msg))
+void
+SoReorganizeAction::startReport(const char * COIN_UNUSED_ARG(msg))
 {
   COIN_STUB();
 }
 
-void 
+void
 SoReorganizeAction::finishReport(void)
 {
   COIN_STUB();
@@ -548,8 +548,8 @@ SoReorganizeAction::beginTraversal(SoNode * /* node */)
 }
 
 
-SoCallbackAction::Response 
-SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * COIN_UNUSED(action), const SoNode * node)
+SoCallbackAction::Response
+SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
 {
   SoReorganizeActionP * thisp = static_cast<SoReorganizeActionP *>(userdata);
   thisp->didinit = FALSE;
@@ -563,8 +563,8 @@ SoReorganizeActionP::pre_shape_cb(void * userdata, SoCallbackAction * COIN_UNUSE
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
-SoReorganizeActionP::post_shape_cb(void * COIN_UNUSED(userdata), SoCallbackAction * COIN_UNUSED(action), const SoNode * COIN_UNUSED(node))
+SoCallbackAction::Response
+SoReorganizeActionP::post_shape_cb(void * COIN_UNUSED_ARG(userdata), SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * COIN_UNUSED_ARG(node))
 {
 #if 0 // debug
   SoReorganizeActionP * thisp = (SoReorganizeActionP*) userdata;
@@ -575,15 +575,15 @@ SoReorganizeActionP::post_shape_cb(void * COIN_UNUSED(userdata), SoCallbackActio
 #endif // debug
   return SoCallbackAction::CONTINUE;
 }
-  
-void 
+
+void
 SoReorganizeActionP::triangle_cb(void * userdata, SoCallbackAction * action,
                                  const SoPrimitiveVertex * v1,
                                  const SoPrimitiveVertex * v2,
-                                 const SoPrimitiveVertex * v3) 
+                                 const SoPrimitiveVertex * v3)
 {
   SoReorganizeActionP * thisp = static_cast<SoReorganizeActionP *>(userdata);
-  
+
   if (!thisp->didinit) {
     if (thisp->initShape(action)) {
       assert(thisp->pvcache == NULL);
@@ -598,13 +598,13 @@ SoReorganizeActionP::triangle_cb(void * userdata, SoCallbackAction * action,
   }
 }
 
-void 
+void
 SoReorganizeActionP::line_segment_cb(void * userdata, SoCallbackAction * action,
                                      const SoPrimitiveVertex * v1,
                                      const SoPrimitiveVertex * v2)
 {
   SoReorganizeActionP * thisp = static_cast<SoReorganizeActionP *>(userdata);
-  
+
   if (!thisp->didinit) {
     if (thisp->initShape(action)) {
       assert(thisp->pvcache == NULL);
@@ -625,25 +625,25 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
   this->didinit = TRUE;
   SoState * state = action->getState();
   SbBool canrenderasvertexarray = TRUE;
-  
+
   unsigned int shapeflags = SoShapeStyleElement::get(state)->getFlags();
-  
+
   this->lighting = SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR;
   this->normalsonstate = SoNormalElement::getInstance(state)->getNum() > 0;
-  
+
   SbBool texture0enabled =
     SoTextureEnabledElement::get(state) != FALSE;
 
   this->hastexture = texture0enabled;
 
   int lastenabled;
-  const SbBool * enabledunits = 
+  const SbBool * enabledunits =
     SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
 
   this->needtexcoords.truncate(0);
   this->needtexcoords.append(FALSE);
 
-  if (shapeflags & 
+  if (shapeflags &
       (SoShapeStyleElement::BUMPMAP|
        SoShapeStyleElement::BBOXCMPLX|
        SoShapeStyleElement::INVISIBLE|
@@ -670,7 +670,7 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
       break;
     }
   }
-  
+
   if (canrenderasvertexarray && enabledunits) {
     const SoMultiTextureCoordinateElement * melem =
       SoMultiTextureCoordinateElement::getInstance(state);
@@ -680,7 +680,7 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
         // FIXME: multitexturing is not supported yet, since it's not
         // supported by SoVertexProperty. We might fix this later by
         // inserting new nodes though. pederb, 2005-04-28
-        canrenderasvertexarray = FALSE; 
+        canrenderasvertexarray = FALSE;
 
         this->hastexture = TRUE;
         switch (melem->getType(i)) {
@@ -704,19 +704,19 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
 
   if (canrenderasvertexarray) {
     SbColor diffuse = SoLazyElement::getDiffuse(state, 0);
-    float transp = SoLazyElement::getTransparency(state, 0); 
+    float transp = SoLazyElement::getTransparency(state, 0);
     this->diffusecolor = SbColor4f(diffuse, 1.0f - transp);
   }
 
   return canrenderasvertexarray;
 }
 
-void 
+void
 SoReorganizeActionP::replaceNode(SoFullPath * path)
 {
-  if (this->pvcache == NULL) return;  
+  if (this->pvcache == NULL) return;
   this->pvcache->fit(); // needed to do optimize-sort of data
-  
+
   if (this->pvcache->getNumTriangleIndices()) {
     if (this->isvrml) {
       this->replaceVrmlIfs(path);
@@ -737,26 +737,26 @@ SoReorganizeActionP::replaceNode(SoFullPath * path)
   this->pvcache = NULL;
 }
 
-SoVertexProperty * 
+SoVertexProperty *
 SoReorganizeActionP::createVertexProperty(const SbBool forlines)
 {
   SoVertexProperty * vp = new SoVertexProperty;
   vp->ref();
   SoVertexProperty::Binding nbind = SoVertexProperty::PER_VERTEX_INDEXED;
 
-  if (!this->lighting || 
+  if (!this->lighting ||
       (forlines && !this->normalsonstate)) {
     nbind = SoVertexProperty::OVERALL;
-  }                                          
+  }
   vp->normalBinding = nbind;
 
   int numv = this->pvcache->getNumVertices();
-  
+
   if (this->hastexture) {
     vp->texCoord.setNum(numv);
     SbVec2f * dst = vp->texCoord.startEditing();
     const SbVec4f * src = this->pvcache->getTexCoordArray();
-    
+
     for (int i = 0; i < numv; i++) {
       SbVec4f tmp = src[i];
       if (tmp[3] != 0.0f) {
@@ -768,17 +768,17 @@ SoReorganizeActionP::createVertexProperty(const SbBool forlines)
     }
     vp->texCoord.finishEditing();
   }
-  
+
   vp->vertex.setValues(0, numv,
                        this->pvcache->getVertexArray());
   if (nbind == SoVertexProperty::PER_VERTEX_INDEXED) {
     vp->normal.setValues(0, numv,
                          this->pvcache->getNormalArray());
-  }  
-  
-  vp->materialBinding = SoVertexProperty::OVERALL;  
+  }
+
+  vp->materialBinding = SoVertexProperty::OVERALL;
   vp->orderedRGBA = this->diffusecolor.getPackedValue();
-  
+
   if (this->pvcache->colorPerVertex()) {
     vp->materialBinding = SoVertexProperty::PER_VERTEX_INDEXED;
     uint8_t * src = const_cast<uint8_t *>(this->pvcache->getColorArray());
@@ -794,7 +794,7 @@ SoReorganizeActionP::createVertexProperty(const SbBool forlines)
   return vp;
 }
 
-void 
+void
 SoReorganizeActionP::replaceIfs(SoFullPath * path)
 {
   SoNode * parent = path->getNodeFromTail(1);
@@ -809,13 +809,13 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
   ifs->normalIndex.setNum(0);
   ifs->materialIndex.setNum(0);
   ifs->textureCoordIndex.setNum(0);
-  
+
   int numtri = this->pvcache->getNumTriangleIndices() / 3;
   const GLint * indices = this->pvcache->getTriangleIndices();
   ifs->coordIndex.setNum(numtri * 4);
   int32_t * ptr = ifs->coordIndex.startEditing();
 
-  
+
   for (int i = 0; i < numtri; i++) {
     *ptr++ = static_cast<int32_t>(indices[i*3]);
     *ptr++ = static_cast<int32_t>(indices[i*3+1]);
@@ -832,7 +832,7 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
   ifs->unrefNoDelete();
 }
 
-void 
+void
 SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 {
 #ifdef HAVE_VRML97
@@ -851,15 +851,15 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   ifs->ccw = oldifs->ccw;
   ifs->solid = oldifs->solid;
   ifs->creaseAngle = oldifs->creaseAngle;
-  
+
   int numv = this->pvcache->getNumVertices();
-  
+
   if (this->hastexture) {
     SoVRMLTextureCoordinate * tc = new SoVRMLTextureCoordinate;
     tc->point.setNum(numv);
     SbVec2f * dst = tc->point.startEditing();
     const SbVec4f * src = this->pvcache->getTexCoordArray();
-    
+
     for (int i = 0; i < numv; i++) {
       SbVec4f tmp = src[i];
       if (tmp[3] != 0.0f) {
@@ -883,7 +883,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
     norm->vector.setValues(0, numv,
                            this->pvcache->getNormalArray());
     ifs->normal = norm;
-  }    
+  }
   if (this->pvcache->colorPerVertex()) {
     SoVRMLColor * col = new SoVRMLColor;
     col->color.setNum(numv);
@@ -902,7 +902,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   ifs->normalIndex.setNum(0);
   ifs->colorIndex.setNum(0);
   ifs->texCoordIndex.setNum(0);
-  
+
   int numtri = this->pvcache->getNumTriangleIndices() / 3;
   const GLint * indices = this->pvcache->getTriangleIndices();
   ifs->coordIndex.setNum(numtri * 4);
@@ -931,7 +931,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 #endif // HAVE_VRML97
 }
 
-void 
+void
 SoReorganizeActionP::replaceIls(SoFullPath * path)
 {
   SoNode * parent = path->getNodeFromTail(1);
@@ -946,12 +946,12 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
   ils->normalIndex.setNum(0);
   ils->materialIndex.setNum(0);
   ils->textureCoordIndex.setNum(0);
-  
+
   int numlines = this->pvcache->getNumLineIndices() / 2;
   const GLint * indices = this->pvcache->getLineIndices();
   ils->coordIndex.setNum(numlines * 3);
   int32_t * ptr = ils->coordIndex.startEditing();
-  
+
   for (int i = 0; i < numlines; i++) {
     *ptr++ = static_cast<int32_t>(indices[i*2]);
     *ptr++ = static_cast<int32_t>(indices[i*2+1]);
@@ -959,7 +959,7 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
   }
   ils->coordIndex.finishEditing();
 
-  int idx = path->getIndexFromTail(0);  
+  int idx = path->getIndexFromTail(0);
   path->pop();
   SoGroup * g = coin_assert_cast<SoGroup *>(parent);
   g->replaceChild(idx, ils);
@@ -967,7 +967,7 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
   ils->unrefNoDelete();
 }
 
-void 
+void
 SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
 {
 #ifdef HAVE_VRML97
@@ -985,7 +985,7 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   const GLint * indices = this->pvcache->getLineIndices();
   ils->coordIndex.setNum(numlines * 3);
   int32_t * ptr = ils->coordIndex.startEditing();
-  
+
   for (int i = 0; i < numlines; i++) {
     *ptr++ = static_cast<int32_t>(indices[i*2]);
     *ptr++ = static_cast<int32_t>(indices[i*2+1]);
@@ -997,7 +997,7 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   c->point.setValues(0, numv,
                      this->pvcache->getVertexArray());
   ils->coord = c;
-  
+
   if (this->pvcache->colorPerVertex()) {
     ils->colorPerVertex = TRUE;
     SoVRMLColor * col = new SoVRMLColor;
@@ -1014,7 +1014,7 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
     ils->color = col;
   }
   ils->colorIndex.setNum(0);
-  
+
   int idx = path->getIndexFromTail(0);
   path->pop();
   if (parent->isOfType(SoGroup::getClassTypeId())) {

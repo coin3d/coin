@@ -233,86 +233,86 @@ SoHandleBoxDragger::initClass(void)
 
   \verbatim
   CLASS SoHandleBoxDragger
-  PVT   "this",  SoHandleBoxDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-        "surroundScale",  SoSurroundScale  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "drawStyle",  SoDrawStyle  --- 
-  PVT   "translator1Switch",  SoSwitch  --- 
-        "translator1",  SoSeparator  --- 
-        "translator1Active",  SoSeparator  --- 
-  PVT   "translator2Switch",  SoSwitch  --- 
-        "translator2",  SoSeparator  --- 
-        "translator2Active",  SoSeparator  --- 
-  PVT   "translator3Switch",  SoSwitch  --- 
-        "translator3",  SoSeparator  --- 
-        "translator3Active",  SoSeparator  --- 
-  PVT   "translator4Switch",  SoSwitch  --- 
-        "translator4",  SoSeparator  --- 
-        "translator4Active",  SoSeparator  --- 
-  PVT   "translator5Switch",  SoSwitch  --- 
-        "translator5",  SoSeparator  --- 
-        "translator5Active",  SoSeparator  --- 
-  PVT   "translator6Switch",  SoSwitch  --- 
-        "translator6",  SoSeparator  --- 
-        "translator6Active",  SoSeparator  --- 
-  PVT   "extruder1Switch",  SoSwitch  --- 
-        "extruder1",  SoSeparator  --- 
-        "extruder1Active",  SoSeparator  --- 
-  PVT   "extruder2Switch",  SoSwitch  --- 
-        "extruder2",  SoSeparator  --- 
-        "extruder2Active",  SoSeparator  --- 
-  PVT   "extruder3Switch",  SoSwitch  --- 
-        "extruder3",  SoSeparator  --- 
-        "extruder3Active",  SoSeparator  --- 
-  PVT   "extruder4Switch",  SoSwitch  --- 
-        "extruder4",  SoSeparator  --- 
-        "extruder4Active",  SoSeparator  --- 
-  PVT   "extruder5Switch",  SoSwitch  --- 
-        "extruder5",  SoSeparator  --- 
-        "extruder5Active",  SoSeparator  --- 
-  PVT   "extruder6Switch",  SoSwitch  --- 
-        "extruder6",  SoSeparator  --- 
-        "extruder6Active",  SoSeparator  --- 
-  PVT   "uniform1Switch",  SoSwitch  --- 
-        "uniform1",  SoSeparator  --- 
-        "uniform1Active",  SoSeparator  --- 
-  PVT   "uniform2Switch",  SoSwitch  --- 
-        "uniform2",  SoSeparator  --- 
-        "uniform2Active",  SoSeparator  --- 
-  PVT   "uniform3Switch",  SoSwitch  --- 
-        "uniform3",  SoSeparator  --- 
-        "uniform3Active",  SoSeparator  --- 
-  PVT   "uniform4Switch",  SoSwitch  --- 
-        "uniform4",  SoSeparator  --- 
-        "uniform4Active",  SoSeparator  --- 
-  PVT   "uniform5Switch",  SoSwitch  --- 
-        "uniform5",  SoSeparator  --- 
-        "uniform5Active",  SoSeparator  --- 
-  PVT   "uniform6Switch",  SoSwitch  --- 
-        "uniform6",  SoSeparator  --- 
-        "uniform6Active",  SoSeparator  --- 
-  PVT   "uniform7Switch",  SoSwitch  --- 
-        "uniform7",  SoSeparator  --- 
-        "uniform7Active",  SoSeparator  --- 
-  PVT   "uniform8Switch",  SoSwitch  --- 
-        "uniform8",  SoSeparator  --- 
-        "uniform8Active",  SoSeparator  --- 
-  PVT   "arrowTranslation",  SoTranslation  --- 
-  PVT   "arrow1Switch",  SoSwitch  --- 
-        "arrow1",  SoSeparator  --- 
-  PVT   "arrow2Switch",  SoSwitch  --- 
-        "arrow2",  SoSeparator  --- 
-  PVT   "arrow3Switch",  SoSwitch  --- 
-        "arrow3",  SoSeparator  --- 
-  PVT   "arrow4Switch",  SoSwitch  --- 
-        "arrow4",  SoSeparator  --- 
-  PVT   "arrow5Switch",  SoSwitch  --- 
-        "arrow5",  SoSeparator  --- 
-  PVT   "arrow6Switch",  SoSwitch  --- 
-        "arrow6",  SoSeparator  --- 
+  PVT   "this",  SoHandleBoxDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+        "surroundScale",  SoSurroundScale  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "drawStyle",  SoDrawStyle  ---
+  PVT   "translator1Switch",  SoSwitch  ---
+        "translator1",  SoSeparator  ---
+        "translator1Active",  SoSeparator  ---
+  PVT   "translator2Switch",  SoSwitch  ---
+        "translator2",  SoSeparator  ---
+        "translator2Active",  SoSeparator  ---
+  PVT   "translator3Switch",  SoSwitch  ---
+        "translator3",  SoSeparator  ---
+        "translator3Active",  SoSeparator  ---
+  PVT   "translator4Switch",  SoSwitch  ---
+        "translator4",  SoSeparator  ---
+        "translator4Active",  SoSeparator  ---
+  PVT   "translator5Switch",  SoSwitch  ---
+        "translator5",  SoSeparator  ---
+        "translator5Active",  SoSeparator  ---
+  PVT   "translator6Switch",  SoSwitch  ---
+        "translator6",  SoSeparator  ---
+        "translator6Active",  SoSeparator  ---
+  PVT   "extruder1Switch",  SoSwitch  ---
+        "extruder1",  SoSeparator  ---
+        "extruder1Active",  SoSeparator  ---
+  PVT   "extruder2Switch",  SoSwitch  ---
+        "extruder2",  SoSeparator  ---
+        "extruder2Active",  SoSeparator  ---
+  PVT   "extruder3Switch",  SoSwitch  ---
+        "extruder3",  SoSeparator  ---
+        "extruder3Active",  SoSeparator  ---
+  PVT   "extruder4Switch",  SoSwitch  ---
+        "extruder4",  SoSeparator  ---
+        "extruder4Active",  SoSeparator  ---
+  PVT   "extruder5Switch",  SoSwitch  ---
+        "extruder5",  SoSeparator  ---
+        "extruder5Active",  SoSeparator  ---
+  PVT   "extruder6Switch",  SoSwitch  ---
+        "extruder6",  SoSeparator  ---
+        "extruder6Active",  SoSeparator  ---
+  PVT   "uniform1Switch",  SoSwitch  ---
+        "uniform1",  SoSeparator  ---
+        "uniform1Active",  SoSeparator  ---
+  PVT   "uniform2Switch",  SoSwitch  ---
+        "uniform2",  SoSeparator  ---
+        "uniform2Active",  SoSeparator  ---
+  PVT   "uniform3Switch",  SoSwitch  ---
+        "uniform3",  SoSeparator  ---
+        "uniform3Active",  SoSeparator  ---
+  PVT   "uniform4Switch",  SoSwitch  ---
+        "uniform4",  SoSeparator  ---
+        "uniform4Active",  SoSeparator  ---
+  PVT   "uniform5Switch",  SoSwitch  ---
+        "uniform5",  SoSeparator  ---
+        "uniform5Active",  SoSeparator  ---
+  PVT   "uniform6Switch",  SoSwitch  ---
+        "uniform6",  SoSeparator  ---
+        "uniform6Active",  SoSeparator  ---
+  PVT   "uniform7Switch",  SoSwitch  ---
+        "uniform7",  SoSeparator  ---
+        "uniform7Active",  SoSeparator  ---
+  PVT   "uniform8Switch",  SoSwitch  ---
+        "uniform8",  SoSeparator  ---
+        "uniform8Active",  SoSeparator  ---
+  PVT   "arrowTranslation",  SoTranslation  ---
+  PVT   "arrow1Switch",  SoSwitch  ---
+        "arrow1",  SoSeparator  ---
+  PVT   "arrow2Switch",  SoSwitch  ---
+        "arrow2",  SoSeparator  ---
+  PVT   "arrow3Switch",  SoSwitch  ---
+        "arrow3",  SoSeparator  ---
+  PVT   "arrow4Switch",  SoSwitch  ---
+        "arrow4",  SoSeparator  ---
+  PVT   "arrow5Switch",  SoSwitch  ---
+        "arrow5",  SoSeparator  ---
+  PVT   "arrow6Switch",  SoSwitch  ---
+        "arrow6",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -552,7 +552,7 @@ SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
 
 /*! \COININTERNAL */
 void
-SoHandleBoxDragger::valueChangedCB(void * COIN_UNUSED(f), SoDragger * d)
+SoHandleBoxDragger::valueChangedCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoHandleBoxDragger * thisp = static_cast<SoHandleBoxDragger *>(d);
   SbMatrix matrix = thisp->getMotionMatrix();
@@ -620,7 +620,7 @@ SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 //
 // FIXME: should collect these methods in a common method visible to
 // all draggers implementing the exact same functionality. 20010826 mortene.
-static void 
+static void
 SoHandleBoxDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
   SoSurroundScale * ss = coin_safe_cast<SoSurroundScale *>(

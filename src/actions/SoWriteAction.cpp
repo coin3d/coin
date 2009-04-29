@@ -201,9 +201,9 @@ SoWriteAction::continueToApply(SoPath * path)
 }
 
 #if COIN_DEBUG
-static void sensorCB(void * COIN_UNUSED(data), SoSensor * COIN_UNUSED(sensor))
+static void sensorCB(void * COIN_UNUSED_ARG(data), SoSensor * COIN_UNUSED_ARG(sensor))
 {
-  SoDebugError::postWarning("SoWriteAction::SoWriteAction", 
+  SoDebugError::postWarning("SoWriteAction::SoWriteAction",
                             "Scenegraph changed during SoWriteAction().");
 }
 #endif
@@ -285,8 +285,8 @@ SoWriteAction::shouldCompactPathLists(void) const
 BOOST_AUTO_TEST_CASE(GlobalField)
 {
   SoDB::init();
-  
-  static const char inlinescenegraph[] = 
+
+  static const char inlinescenegraph[] =
     "#Inventor V2.1 ascii\n"
     "\n"
     "\n"
@@ -299,23 +299,23 @@ BOOST_AUTO_TEST_CASE(GlobalField)
     "    } . realTime \n"
     "  }\n"
     "}\n";
-  
+
   // read scene
   SoInput in;
   in.setBuffer((void *) inlinescenegraph, strlen(inlinescenegraph));
   SoSeparator * top = SoDB::readAll(&in);
   BOOST_REQUIRE(top);
   top->ref();
-  
+
   // write scene
   SoOutput out;
   const int buffer_size = 1024;
   char * buffer = (char *)malloc(buffer_size);
   out.setBuffer(buffer, buffer_size, NULL);
-  
+
   SoWriteAction wa(&out);
   wa.apply((SoNode *)top);
-  
+
   top->unref();
   top = NULL;
 

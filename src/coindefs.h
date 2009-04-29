@@ -131,9 +131,9 @@
 #endif /* !COIN_DEBUG */
 
 #ifdef __GNUC__
-#define COIN_UNUSED(x) x __attribute__((__unused__))
+#define COIN_UNUSED_ARG(x) x __attribute__((__unused__))
 #else
-#define COIN_UNUSED(x) x
+#define COIN_UNUSED_ARG(x) x
 #endif
 
 

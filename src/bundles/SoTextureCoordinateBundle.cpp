@@ -85,16 +85,16 @@ SoTextureCoordinateBundle(SoAction * const action,
   //
   // return immediately if there is no texture
   //
-  SbBool needinit = 
+  SbBool needinit =
     SoTextureEnabledElement::get(this->state) ||
     SoTexture3EnabledElement::get(this->state);
-  
+
   SbBool glrender = forRendering || action->isOfType(SoGLRenderAction::getClassTypeId());
 
   const SbBool * multienabled = NULL;
   int multimax = 0;
   if (glrender) {
-    multienabled = 
+    multienabled =
       SoMultiTextureEnabledElement::getEnabledUnits(this->state, multimax);
   }
   SbBool bumpenabled = glrender && (SoBumpMapElement::get(this->state) != NULL);
@@ -143,14 +143,14 @@ SoTextureCoordinateBundle(SoAction * const action,
     if (multienabled) {
       const SoMultiTextureCoordinateElement * melem =
         SoMultiTextureCoordinateElement::getInstance(state);
-      for (int i = 1; i <= multimax; i++) { 
+      for (int i = 1; i <= multimax; i++) {
         if (multienabled[i]) {
           if ((melem->getType(i) == SoTextureCoordinateElement::DEFAULT) ||
               ((melem->getType(state, i) == SoTextureCoordinateElement::EXPLICIT) &&
                (melem->getNum(i) == 0))) {
             this->initDefaultMulti(action, i);
           }
-          else if (!needindices && 
+          else if (!needindices &&
                    (melem->getType(state, i) == SoTextureCoordinateElement::EXPLICIT)) {
             needindices = TRUE;
           }
@@ -159,7 +159,7 @@ SoTextureCoordinateBundle(SoAction * const action,
     }
     if (!needindices && this->isFunction()) {
       // check if bump mapping needs texture coordinate indices
-      if (bumpenabled && 
+      if (bumpenabled &&
           (SoBumpMapCoordinateElement::getInstance(state)->getNum())) {
         needindices = TRUE;
       }
@@ -208,7 +208,7 @@ SoTextureCoordinateBundle::isFunction() const
 
   \since Coin 2.2
 */
-SbBool 
+SbBool
 SoTextureCoordinateBundle::needIndices(void) const
 {
   return (this->flags & FLAG_NEEDINDICES) != 0;
@@ -274,7 +274,7 @@ SoTextureCoordinateBundle::get(const int index)
 //
 void
 SoTextureCoordinateBundle::initDefault(SoAction * const action,
-                                       const SbBool COIN_UNUSED(forRendering))
+                                       const SbBool COIN_UNUSED_ARG(forRendering))
 {
   this->flags |= FLAG_NEEDCOORDS;
   this->flags |= FLAG_DEFAULT;
@@ -299,7 +299,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
 //
 // initialize default texture coordinates for unit > 0
 //
-void 
+void
 SoTextureCoordinateBundle::initDefaultMulti(SoAction * action, const int unit)
 {
   this->flags |= FLAG_NEEDCOORDS;
@@ -333,7 +333,7 @@ SoTextureCoordinateBundle::defaultCB(void * userdata,
 const SbVec4f &
 SoTextureCoordinateBundle:: defaultCBMulti(void * userdata,
                                            const SbVec3f & point,
-                                           const SbVec3f & COIN_UNUSED(normal))
+                                           const SbVec3f & COIN_UNUSED_ARG(normal))
 {
   SoTextureCoordinateBundle * thisp = static_cast<SoTextureCoordinateBundle *>(userdata);
 
@@ -354,8 +354,8 @@ SoTextureCoordinateBundle:: defaultCBMulti(void * userdata,
 
 //
 // Set up stuff needed for default texture coordinate mapping callback
-// 
-void 
+//
+void
 SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
 {
   this->flags |= FLAG_DIDINITDEFAULT;
@@ -392,7 +392,7 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     this->flags |= FLAG_3DTEXTURES;
     this->defaultdim0 = 0;
     this->defaultdim1 = 1;
-        
+
     this->defaultorigo[2] = origo[2];
     this->defaultsize[2] = size[2];
   }
@@ -409,10 +409,10 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     if (size[2] < smallval) {
       smallest = 2;
     }
-    
+
     this->defaultdim0 = (smallest + 1) % 3;
     this->defaultdim1 = (smallest + 2) % 3;
-    
+
     if (size[this->defaultdim0] == size[this->defaultdim1]) {
       // FIXME: this is probably an OIV bug. The OIV man pages are not
       // clear on this point (surprise), but the VRML specification states
@@ -431,7 +431,7 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     else if (size[this->defaultdim0] < size[this->defaultdim1]) {
       SbSwap(this->defaultdim0, this->defaultdim1);
     }
-  }    
+  }
 
   this->defaultorigo[0] = origo[this->defaultdim0];
   this->defaultorigo[1] = origo[this->defaultdim1];

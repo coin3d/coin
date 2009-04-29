@@ -71,7 +71,7 @@ SoAmbientColorElement::~SoAmbientColorElement()
 //! FIXME: write doc.
 
 void
-SoAmbientColorElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoAmbientColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                            const int32_t numcolors,
                            const SbColor * const colors)
 {

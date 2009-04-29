@@ -66,7 +66,7 @@ SoTextureEnabledElement::set(SoState * const state,
 
 // doc from parent
 void
-SoTextureEnabledElement::init(SoState * COIN_UNUSED(state))
+SoTextureEnabledElement::init(SoState * COIN_UNUSED_ARG(state))
 {
   this->data = SoTextureEnabledElement::getDefault();
 }

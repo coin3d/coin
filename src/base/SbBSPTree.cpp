@@ -472,7 +472,7 @@ SbBSPTree::findPoint(const SbVec3f &pos) const
   Will empty all points from the BSP tree.
 */
 void
-SbBSPTree::clear(const int COIN_UNUSED(initsize))
+SbBSPTree::clear(const int COIN_UNUSED_ARG(initsize))
 {
   delete this->topnode;
   this->topnode = NULL;
@@ -552,7 +552,7 @@ SbBSPTree::getPointsArrayPtr(void) const
 
   \since Coin 2.3
 */
-void 
+void
 SbBSPTree::findPoints(const SbSphere & sphere, SbIntList & array) const
 {
   this->topnode->findPoints(sphere, array);
@@ -566,7 +566,7 @@ SbBSPTree::findPoints(const SbSphere & sphere, SbIntList & array) const
 
   \since Coin 2.3
 */
-int 
+int
 SbBSPTree::findClosest(const SbSphere & sphere, SbIntList & arr) const
 {
   this->findPoints(sphere, arr);
@@ -589,8 +589,8 @@ SbBSPTree::findClosest(const SbSphere & sphere, SbIntList & arr) const
 /*!
   WARNING: Please don't use this function. It can cause hard to find
   bugs on the Windows platform if your application is linked against a
-  different CRT than your Coin DLL. 
-  
+  different CRT than your Coin DLL.
+
   Use int findClosest(const SbSphere &sphere, SbIntList & arr)
   instead.
 */
@@ -617,8 +617,8 @@ SbBSPTree::findClosest(const SbSphere &sphere,
 /*!
   WARNING: Please don't use this function. It can cause hard to find
   bugs on the Windows platform if your application is linked against a
-  different CRT than your Coin DLL. 
-  
+  different CRT than your Coin DLL.
+
   Use void findPoints(const SbSphere &sphere, SbIntList & array)
   instead.
 */

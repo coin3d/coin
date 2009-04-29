@@ -516,7 +516,7 @@ static int coin_debug_3ds();
 
 static SbBool
 read3dsFile(SoStream *in, SoSeparator *&root,
-            int appendNormals, float COIN_UNUSED(creaseAngle),
+            int appendNormals, float COIN_UNUSED_ARG(creaseAngle),
             SbBool loadMaterials, SbBool loadTextures,
             SbBool loadObjNames, SbBool indexedTriSet,
             SbBool centerModel, float modelSize)
@@ -768,11 +768,11 @@ CHUNK(LoadNamedObject)
 
   // read object name
   con->s.readZString(con->objectName, OBJNAME_LENGTH);
-  
+
   if (coin_debug_3ds() >= 3)
     SoDebugError::postInfo("LoadNamesObject",
                            "Name: %s.", con->objectName);
-  
+
   READ_SUBCHUNKS(
     case N_TRI_OBJECT:  LoadNTriObject(con); break;
   )
@@ -1000,11 +1000,11 @@ CHUNK(LoadNTriObject)
 CHUNK(LoadPointArray)
 {
   HEADER;
-  
+
   if (coin_debug_3ds() >= 3)
     SoDebugError::postInfo("LoadPointArray",
                            "Begin");
-  
+
 
   // number of vertices
   uint16_t num;
@@ -1035,7 +1035,7 @@ CHUNK(LoadFaceArray)
   if (coin_debug_3ds() >= 3)
     SoDebugError::postInfo("LoadFaceArray",
                            "Begin");
-  
+
   // number of faces
   uint16_t num;
   con->s >> num;
@@ -1986,27 +1986,27 @@ void Material::updateSoMaterial(int index, SoMaterial *m)
 
 
 
-SoMaterial* Material::getSoMaterial(Context COIN_UNUSED(*con))
+SoMaterial* Material::getSoMaterial(Context COIN_UNUSED_ARG(*con))
 { return matCache; }
 
 
 
-SbBool Material::hasTexture2(tagContext COIN_UNUSED(*con))
+SbBool Material::hasTexture2(tagContext COIN_UNUSED_ARG(*con))
 { return (texture2Cache != NULL); }
 
 
 
-SoTexture2* Material::getSoTexture2(tagContext COIN_UNUSED(*con))
+SoTexture2* Material::getSoTexture2(tagContext COIN_UNUSED_ARG(*con))
 { return texture2Cache; }
 
 
 
-SbBool Material::hasTexture2Transform(tagContext COIN_UNUSED(*con))
+SbBool Material::hasTexture2Transform(tagContext COIN_UNUSED_ARG(*con))
 { return (texture2TransformCache != NULL); }
 
 
 
-SoTexture2Transform* Material::getSoTexture2Transform(tagContext COIN_UNUSED(*con))
+SoTexture2Transform* Material::getSoTexture2Transform(tagContext COIN_UNUSED_ARG(*con))
 { return texture2TransformCache; }
 
 

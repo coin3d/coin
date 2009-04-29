@@ -644,7 +644,7 @@ static void mftime_to_mfstring(SoField * from, SoField * to)
 
 // Function for "converting" SoField -> SoSFTrigger _and_
 // SoSFTrigger -> SoField.
-static void to_and_from_sftrigger(SoField * COIN_UNUSED(from), SoField * to)
+static void to_and_from_sftrigger(SoField * COIN_UNUSED_ARG(from), SoField * to)
 {
   to->setDirty(FALSE);
 }

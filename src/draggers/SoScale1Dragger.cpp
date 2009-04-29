@@ -124,17 +124,17 @@ SoScale1Dragger::initClass(void)
 
   \verbatim
   CLASS SoScale1Dragger
-  PVT   "this",  SoScale1Dragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "scalerSwitch",  SoSwitch  --- 
-        "scaler",  SoSeparator  --- 
-        "scalerActive",  SoSeparator  --- 
-  PVT   "feedbackSwitch",  SoSwitch  --- 
-        "feedback",  SoSeparator  --- 
-        "feedbackActive",  SoSeparator  --- 
+  PVT   "this",  SoScale1Dragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "scalerSwitch",  SoSwitch  ---
+        "scaler",  SoSeparator  ---
+        "scalerActive",  SoSeparator  ---
+  PVT   "feedbackSwitch",  SoSwitch  ---
+        "feedback",  SoSeparator  ---
+        "feedbackActive",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -246,7 +246,7 @@ SoScale1Dragger::fieldSensorCB(void * d, SoSensor *)
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::valueChangedCB(void * COIN_UNUSED(f), SoDragger * d)
+SoScale1Dragger::valueChangedCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoScale1Dragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
@@ -262,7 +262,7 @@ SoScale1Dragger::valueChangedCB(void * COIN_UNUSED(f), SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::startCB(void * COIN_UNUSED(f), SoDragger * d)
+SoScale1Dragger::startCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoScale1Dragger * thisp = THISP(d);
   thisp->dragStart();
@@ -270,7 +270,7 @@ SoScale1Dragger::startCB(void * COIN_UNUSED(f), SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::motionCB(void * COIN_UNUSED(f), SoDragger * d)
+SoScale1Dragger::motionCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoScale1Dragger * thisp = THISP(d);
   thisp->drag();
@@ -278,7 +278,7 @@ SoScale1Dragger::motionCB(void * COIN_UNUSED(f), SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoScale1Dragger::finishCB(void * COIN_UNUSED(f), SoDragger * d)
+SoScale1Dragger::finishCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoScale1Dragger * thisp = THISP(d);
   thisp->dragFinish();

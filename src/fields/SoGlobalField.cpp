@@ -254,7 +254,7 @@ SoGlobalField::setName(const SbName & newname)
 
 // Read data for this SoGlobalField instance.
 SbBool
-SoGlobalField::readInstance(SoInput * in, unsigned short COIN_UNUSED(flags))
+SoGlobalField::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   // A bit more coding and we could let the readInstance() method be
   // called on already initialized SoGlobalField instances, but I
@@ -327,7 +327,7 @@ SoGlobalField::readInstance(SoInput * in, unsigned short COIN_UNUSED(flags))
 // though we -- as a container for a global field -- only exists
 // through a field-to-field connection.
 void
-SoGlobalField::addWriteReference(SoOutput * out, SbBool COIN_UNUSED(isfromfield))
+SoGlobalField::addWriteReference(SoOutput * out, SbBool COIN_UNUSED_ARG(isfromfield))
 {
   assert(this->classfielddata);
   inherited::addWriteReference(out, FALSE);

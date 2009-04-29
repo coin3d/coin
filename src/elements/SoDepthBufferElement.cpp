@@ -89,8 +89,8 @@ SoDepthBufferElement::push(SoState * state)
   Internal Coin method.
 */
 void
-SoDepthBufferElement::pop(SoState * COIN_UNUSED(state),
-                          const SoElement * COIN_UNUSED(prevTopElement))
+SoDepthBufferElement::pop(SoState * COIN_UNUSED_ARG(state),
+                          const SoElement * COIN_UNUSED_ARG(prevTopElement))
 {
 }
 

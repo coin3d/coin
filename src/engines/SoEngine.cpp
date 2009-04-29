@@ -287,7 +287,7 @@ SoEngine::getByName(const SbName & name, SoEngineList & el)
   when a specific field is changed.
 */
 void
-SoEngine::inputChanged(SoField * COIN_UNUSED(which))
+SoEngine::inputChanged(SoField * COIN_UNUSED_ARG(which))
 {
 }
 
@@ -414,7 +414,7 @@ SoEngine::writeInstance(SoOutput * out)
   (i.e. engines not built in to Coin).
 */
 void
-SoEngine::writeOutputTypes(SoOutput * COIN_UNUSED(out))
+SoEngine::writeOutputTypes(SoOutput * COIN_UNUSED_ARG(out))
 {
   COIN_STUB();
 }

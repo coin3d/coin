@@ -133,17 +133,17 @@ SoRotateDiscDragger::initClass(void)
 
   \verbatim
   CLASS SoRotateDiscDragger
-  PVT   "this",  SoRotateDiscDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "rotatorSwitch",  SoSwitch  --- 
-        "rotator",  SoSeparator  --- 
-        "rotatorActive",  SoSeparator  --- 
-  PVT   "feedbackSwitch",  SoSwitch  --- 
-        "feedback",  SoSeparator  --- 
-        "feedbackActive",  SoSeparator  --- 
+  PVT   "this",  SoRotateDiscDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "rotatorSwitch",  SoSwitch  ---
+        "rotator",  SoSeparator  ---
+        "rotatorActive",  SoSeparator  ---
+  PVT   "feedbackSwitch",  SoSwitch  ---
+        "feedback",  SoSeparator  ---
+        "feedbackActive",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -286,7 +286,7 @@ SoRotateDiscDragger::motionCB(void *, SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoRotateDiscDragger::doneCB(void * COIN_UNUSED(f), SoDragger * d)
+SoRotateDiscDragger::doneCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoRotateDiscDragger * thisp = THISP(d);
   thisp->dragFinish();

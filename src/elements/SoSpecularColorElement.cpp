@@ -74,7 +74,7 @@ SoSpecularColorElement::init(SoState * stateptr)
 //! FIXME: write doc.
 
 void
-SoSpecularColorElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoSpecularColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                             const int32_t numcolors,
                             const SbColor * const colors)
 {

@@ -257,7 +257,7 @@ SoSFPath::countWriteRefs(SoOutput * out) const
 //
 // <mortene@sim.no>
 void
-SoSFPath::fixCopy(SbBool COIN_UNUSED(copyconnections))
+SoSFPath::fixCopy(SbBool COIN_UNUSED_ARG(copyconnections))
 {
   SoPath * n = this->getValue();
   if (!n) return;

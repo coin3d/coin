@@ -97,7 +97,7 @@ SoListenerPositionElement::init(SoState * state)
 
 void
 SoListenerPositionElement::set(SoState * const state,
-                               SoNode * const COIN_UNUSED(node),
+                               SoNode * const COIN_UNUSED_ARG(node),
                                const SbVec3f & position,
                                SbBool setbylistener)
 {

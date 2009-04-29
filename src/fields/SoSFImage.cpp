@@ -454,9 +454,9 @@ SoSFImage::finishEditing(void)
  */
 void
 SoSFImage::setSubValue(
-                     const SbVec2s & COIN_UNUSED(dims),
-                     const SbVec2s & COIN_UNUSED(offset),
-                     unsigned char * COIN_UNUSED(pixels)
+                     const SbVec2s & COIN_UNUSED_ARG(dims),
+                     const SbVec2s & COIN_UNUSED_ARG(offset),
+                     unsigned char * COIN_UNUSED_ARG(pixels)
                      )
 {
   // FIXME: unimplemented yet. 20030226 mortene.
@@ -473,10 +473,10 @@ SoSFImage::setSubValue(
  */
 void
 SoSFImage::setSubValues(
-                     const SbVec2s * COIN_UNUSED(dims),
-                     const SbVec2s * COIN_UNUSED(offsets),
-                     int COIN_UNUSED(num),
-                     unsigned char ** COIN_UNUSED(pixelblocks)
+                     const SbVec2s * COIN_UNUSED_ARG(dims),
+                     const SbVec2s * COIN_UNUSED_ARG(offsets),
+                     int COIN_UNUSED_ARG(num),
+                     unsigned char ** COIN_UNUSED_ARG(pixelblocks)
                      )
 {
   // FIXME: unimplemented yet. 20030226 mortene.
@@ -493,9 +493,9 @@ SoSFImage::setSubValues(
  */
 unsigned char *
 SoSFImage::getSubTexture(
-                      int COIN_UNUSED(idx),
-                      SbVec2s & COIN_UNUSED(dims),
-                      SbVec2s & COIN_UNUSED(offset)
+                      int COIN_UNUSED_ARG(idx),
+                      SbVec2s & COIN_UNUSED_ARG(dims),
+                      SbVec2s & COIN_UNUSED_ARG(offset)
                       ) const
 {
   // FIXME: unimplemented yet. 20030226 mortene.
@@ -536,7 +536,7 @@ SoSFImage::hasSubTextures(int & numsubtextures)
   \since TGS Inventor ?.?
  */
 void
-SoSFImage::setNeverWrite(SbBool COIN_UNUSED(flag))
+SoSFImage::setNeverWrite(SbBool COIN_UNUSED_ARG(flag))
 {
   // FIXME: unimplemented yet. 20030226 mortene.
   SoDebugError::postWarning("SoSFImage::setNeverWrite",

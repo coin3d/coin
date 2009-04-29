@@ -152,7 +152,7 @@ SoTextureImageElement::setDefaultValues()
   Resets this element to its original values.
 */
 void
-SoTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNUSED(node))
+SoTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNUSED_ARG(node))
 {
   SoTextureImageElement * elem = coin_safe_cast<SoTextureImageElement *>
     (
@@ -165,7 +165,7 @@ SoTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNU
 
 //! FIXME: write doc.
 void
-SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                            const SbVec2s & size, const int numComponents,
                            const unsigned char * bytes,
                            const Wrap wrapS, const Wrap wrapT,
@@ -189,7 +189,7 @@ SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED(nod
   \since Coin 2.0
 */
 void
-SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoTextureImageElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                            const SbVec3s & size, const int numComponents,
                            const unsigned char * bytes,
                            const Wrap wrapS,

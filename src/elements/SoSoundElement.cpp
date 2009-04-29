@@ -93,7 +93,7 @@ SoSoundElement::init(SoState * state)
 
 void
 SoSoundElement::set(SoState * const state,
-                    SoNode * const COIN_UNUSED(node),
+                    SoNode * const COIN_UNUSED_ARG(node),
                     SbBool scenegraphhassoundnode,
                     SbBool soundnodeisplaying,
                     SbBool ispartofactivescenegraph)
@@ -113,7 +113,7 @@ SoSoundElement::set(SoState * const state,
 
 SbBool
 SoSoundElement::setSceneGraphHasSoundNode(SoState * const state,
-                                     SoNode * const COIN_UNUSED(node),
+                                     SoNode * const COIN_UNUSED_ARG(node),
                                           SbBool flag)
 {
   SoSoundElement * elem = coin_safe_cast<SoSoundElement *>
@@ -149,7 +149,7 @@ SoSoundElement::sceneGraphHasSoundNode(SoState * const state)
 
 SbBool
 SoSoundElement::setSoundNodeIsPlaying(SoState * const state,
-                                  SoNode * const COIN_UNUSED(node),
+                                  SoNode * const COIN_UNUSED_ARG(node),
                                   SbBool flag)
 {
   SoSoundElement * elem = coin_safe_cast<SoSoundElement *>
@@ -184,7 +184,7 @@ SoSoundElement::soundNodeIsPlaying(SoState * const state)
 
 SbBool
 SoSoundElement::setIsPartOfActiveSceneGraph(SoState * const state,
-                                       SoNode * const COIN_UNUSED(node),
+                                       SoNode * const COIN_UNUSED_ARG(node),
                                             SbBool flag)
 {
   SoSoundElement *elem = coin_safe_cast<SoSoundElement *>
@@ -237,7 +237,7 @@ SoSoundElement::push(SoState * state)
  */
 
 void
-SoSoundElement::pop(SoState * COIN_UNUSED(state), const SoElement * prevTopElement)
+SoSoundElement::pop(SoState * COIN_UNUSED_ARG(state), const SoElement * prevTopElement)
 {
   const SoSoundElement * prevtop =
     coin_assert_cast<const SoSoundElement *>(prevTopElement);

@@ -179,29 +179,29 @@ SoTabPlaneDragger::initClass(void)
 
   \verbatim
   CLASS SoTabPlaneDragger
-  PVT   "this",  SoTabPlaneDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "planeSwitch",  SoSwitch  --- 
-        "translator",  SoSeparator  --- 
-  PVT   "scaleTabs",  SoSeparator  --- 
-        "scaleTabMaterial",  SoMaterial  --- 
-        "scaleTabHints",  SoShapeHints  --- 
-  PVT   "scaleTabMaterialBinding",  SoMaterialBinding  --- 
-  PVT   "scaleTabNormalBinding",  SoNormalBinding  --- 
-  PVT   "scaleTabNormal",  SoNormal  --- 
-  PVT   "edgeScaleCoords",  SoCoordinate3  --- 
-  PVT   "edgeScaleTab0",  SoIndexedFaceSet  --- 
-  PVT   "edgeScaleTab1",  SoIndexedFaceSet  --- 
-  PVT   "edgeScaleTab2",  SoIndexedFaceSet  --- 
-  PVT   "edgeScaleTab3",  SoIndexedFaceSet  --- 
-  PVT   "cornerScaleCoords",  SoCoordinate3  --- 
-  PVT   "cornerScaleTab0",  SoIndexedFaceSet  --- 
-  PVT   "cornerScaleTab1",  SoIndexedFaceSet  --- 
-  PVT   "cornerScaleTab2",  SoIndexedFaceSet  --- 
-  PVT   "cornerScaleTab3",  SoIndexedFaceSet  --- 
+  PVT   "this",  SoTabPlaneDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "planeSwitch",  SoSwitch  ---
+        "translator",  SoSeparator  ---
+  PVT   "scaleTabs",  SoSeparator  ---
+        "scaleTabMaterial",  SoMaterial  ---
+        "scaleTabHints",  SoShapeHints  ---
+  PVT   "scaleTabMaterialBinding",  SoMaterialBinding  ---
+  PVT   "scaleTabNormalBinding",  SoNormalBinding  ---
+  PVT   "scaleTabNormal",  SoNormal  ---
+  PVT   "edgeScaleCoords",  SoCoordinate3  ---
+  PVT   "edgeScaleTab0",  SoIndexedFaceSet  ---
+  PVT   "edgeScaleTab1",  SoIndexedFaceSet  ---
+  PVT   "edgeScaleTab2",  SoIndexedFaceSet  ---
+  PVT   "edgeScaleTab3",  SoIndexedFaceSet  ---
+  PVT   "cornerScaleCoords",  SoCoordinate3  ---
+  PVT   "cornerScaleTab0",  SoIndexedFaceSet  ---
+  PVT   "cornerScaleTab1",  SoIndexedFaceSet  ---
+  PVT   "cornerScaleTab2",  SoIndexedFaceSet  ---
+  PVT   "cornerScaleTab3",  SoIndexedFaceSet  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -370,10 +370,10 @@ SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
     // remember to invalidate open caches.
     SbBool oldnotify = this->enableNotify(FALSE);
     SoCacheElement::invalidate(action->getState());
-    
+
     this->reallyAdjustScaleTabSize(action);
     this->adjustTabs = FALSE;
-    
+
     (void) this->enableNotify(oldnotify);
   }
   inherited::GLRender(action);
@@ -429,7 +429,7 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
   }
 
   if (sizex == this->prevsizex && this->prevsizey == sizey) return;
- 
+
   this->prevsizex = sizex;
   this->prevsizey = sizey;
 
@@ -493,9 +493,9 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
   Not implemented.
 */
 void
-SoTabPlaneDragger::getXYScreenLengths(SbVec2f & COIN_UNUSED(lengths),
-                                      const SbMatrix & COIN_UNUSED(localtoscreen),
-                                      const SbVec2s & COIN_UNUSED(winsize))
+SoTabPlaneDragger::getXYScreenLengths(SbVec2f & COIN_UNUSED_ARG(lengths),
+                                      const SbMatrix & COIN_UNUSED_ARG(localtoscreen),
+                                      const SbVec2s & COIN_UNUSED_ARG(winsize))
 {
   // FIXME: I found this method just defined in the header file, but
   // not implemented (!). We should obviously implement it if it's

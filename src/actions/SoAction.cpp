@@ -1283,7 +1283,7 @@ SoAction::beginTraversal(SoNode * node)
   scene graph traversal.  Default method does nothing.
 */
 void
-SoAction::endTraversal(SoNode * COIN_UNUSED(node))
+SoAction::endTraversal(SoNode * COIN_UNUSED_ARG(node))
 {
 }
 

@@ -98,7 +98,7 @@ SoListenerOrientationElement::init(SoState * state)
 
 void
 SoListenerOrientationElement::set(SoState * const state,
-                                  SoNode * const COIN_UNUSED(node),
+                                  SoNode * const COIN_UNUSED_ARG(node),
                                   const SbRotation & orientation,
                                   SbBool setbylistener)
 {

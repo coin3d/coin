@@ -172,16 +172,16 @@ SoJackDragger::initClass(void)
 
   \verbatim
   CLASS SoJackDragger
-  PVT   "this",  SoJackDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-        "surroundScale",  SoSurroundScale  --- 
-        "antiSquish",  SoAntiSquish  --- 
-        "scaler",  SoScaleUniformDragger  --- 
-        "rotator",  SoRotateSphericalDragger  --- 
-        "translator",  SoDragPointDragger  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "this",  SoJackDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+        "surroundScale",  SoSurroundScale  ---
+        "antiSquish",  SoAntiSquish  ---
+        "scaler",  SoScaleUniformDragger  ---
+        "rotator",  SoRotateSphericalDragger  ---
+        "translator",  SoDragPointDragger  ---
+  PVT   "geomSeparator",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -373,7 +373,7 @@ SoJackDragger::valueChangedCB(void *, SoDragger * d)
   a child dragger starts or finishes dragging.
 */
 void
-SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * COIN_UNUSED(d))
+SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * COIN_UNUSED_ARG(d))
 {
   SoJackDragger * thisp = static_cast<SoJackDragger *>(f);
   SoSurroundScale * surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);

@@ -72,7 +72,7 @@ rbptree_atexit_cleanup(void)
 
 }  // extern "C"
 
-/* 
+/*
  * left-rotate the subgrap under node 'x'.
  */
 static void
@@ -83,12 +83,12 @@ rbptree_left_rotate(cc_rbptree * t, cc_rbptree_node * x)
 
   nil = &rbptree_sentinel;
 
-  assert(x != nil);  
+  assert(x != nil);
   y = x->right;
   assert(y != nil);
 
   x->right = y->left;
-  
+
   if (y->left != nil) {
     y->left->parent = x;
   }
@@ -106,7 +106,7 @@ rbptree_left_rotate(cc_rbptree * t, cc_rbptree_node * x)
   x->parent = y;
 }
 
-/* 
+/*
  * right-rotate the subgrap under node 'y'.
  */
 static void
@@ -122,7 +122,7 @@ rbptree_right_rotate(cc_rbptree * t, cc_rbptree_node * y)
   x = y->left;
   assert(x != nil);
   y->left = x->right;
-  
+
   if (x->right != nil) {
     x->right->parent = y;
   }
@@ -142,9 +142,9 @@ rbptree_right_rotate(cc_rbptree * t, cc_rbptree_node * y)
 
 /*
  * return the node with the minimum value.
- */ 
+ */
 static cc_rbptree_node *
-rbptree_tree_minimum(cc_rbptree * COIN_UNUSED(t), cc_rbptree_node * x)
+rbptree_tree_minimum(cc_rbptree * COIN_UNUSED_ARG(t), cc_rbptree_node * x)
 {
   /* page 248 */
   cc_rbptree_node * nil = &rbptree_sentinel;
@@ -154,9 +154,9 @@ rbptree_tree_minimum(cc_rbptree * COIN_UNUSED(t), cc_rbptree_node * x)
   return x;
 }
 
-/* 
+/*
  * return the node with the smallest pointer greater than x->pointer
- */ 
+ */
 static cc_rbptree_node *
 rbptree_tree_successor(cc_rbptree * t, cc_rbptree_node * x)
 {
@@ -213,11 +213,11 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
  * to point to the sentinel.
  */
 static cc_rbptree_node *
-rbptree_new_node(cc_rbptree * COIN_UNUSED(t))
+rbptree_new_node(cc_rbptree * COIN_UNUSED_ARG(t))
 {
   cc_rbptree_node * x = static_cast<cc_rbptree_node*>(
     malloc(sizeof(cc_rbptree_node)));
-  
+
   x->left = &rbptree_sentinel;
   x->right = &rbptree_sentinel;
   x->parent = &rbptree_sentinel;
@@ -292,13 +292,13 @@ rbptree_delete_fixup(cc_rbptree * t, cc_rbptree_node * x)
     }
   }
   x->color = RBPTREE_BLACK;
-} 
+}
 
 
-/* 
+/*
  * remove a node from the tree. the tree is rebalanced
  * when necessary.
- */  
+ */
 static void
 rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
 {
@@ -319,7 +319,7 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
     x = y->right;
   }
   x->parent = y->parent;
-  
+
   if (y->parent == nil) {
     t->root = x;
   }
@@ -347,7 +347,7 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
  * Initialize \a t. This is needed before making any operations
  * on the tree.
  */
-void 
+void
 cc_rbptree_init(cc_rbptree * t)
 {
   CC_GLOBAL_LOCK;
@@ -384,7 +384,7 @@ rbptree_recursive_clean(cc_rbptree_node * x)
  * Delete all nodes in \t. After this call, the tree will
  * be reinitialized to an empty tree.
  */
-void 
+void
 cc_rbptree_clean(cc_rbptree * t)
 {
   if (t->root != &rbptree_sentinel) {
@@ -410,7 +410,7 @@ cc_rbptree_insert(cc_rbptree * t, void * p, void * data)
     t->counter++;
     return;
   }
-  
+
   /* page 268 */
   x = rbptree_new_node(t);
   x->pointer = static_cast<char*>(p);
@@ -467,7 +467,7 @@ cc_rbptree_insert(cc_rbptree * t, void * p, void * data)
 
 /*
  * binary search tree for the pointer value. Returns rbptree_sentinel
- * if pointer is not found.  
+ * if pointer is not found.
 */
 static cc_rbptree_node *
 rbptree_find(cc_rbptree * t, void * pointer)
@@ -478,7 +478,7 @@ rbptree_find(cc_rbptree * t, void * pointer)
 
   x = t->root;
   nil = &rbptree_sentinel;
-  
+
   while (x != nil && x->pointer != p) {
     if (p < x->pointer) {
       x = x->left;
@@ -500,17 +500,17 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
       t->inlinepointer[0] = t->inlinepointer[1];
       t->inlinedata[0] = t->inlinedata[1];
     }
-  }  
+  }
   /* test if some node should be moved into inline slot 1 */
   if (t->counter > 2) {
     /* copy root node data into slot 1 */
     t->inlinepointer[1] = static_cast<void*>(t->root->pointer);
     t->inlinedata[1] = t->root->data;
-    
+
     /* remove root node from tree. This will decrement t->counter */
     rbptree_remove_node(t, t->root);
   }
-  else { 
+  else {
     /* just decrement counter, no need to copy */
     t->counter--;
   }
@@ -520,9 +520,9 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
  * Remove the (first) node with value \a p. Returns \e TRUE if \a p
  * is found and removed, \e FALSE otherwise.
  */
-SbBool 
+SbBool
 cc_rbptree_remove(cc_rbptree * t, void * p)
-{ 
+{
   cc_rbptree_node *z, * nil;
   nil = &rbptree_sentinel;
 
@@ -549,7 +549,7 @@ cc_rbptree_remove(cc_rbptree * t, void * p)
 /*!
   Returns the total numbers of items in the tree
 */
-uint32_t 
+uint32_t
 cc_rbptree_size(const cc_rbptree * t)
 {
   return t->counter;
@@ -559,13 +559,13 @@ static void
 rbptree_rec_traverse(cc_rbptree_node * x, cc_rbptree_traversecb * func, void * closure)
 {
   cc_rbptree_node * nil = &rbptree_sentinel;
-  
+
   func(static_cast<void*>(x->pointer), x->data, closure);
   if (x->left != nil) rbptree_rec_traverse(x->left, func, closure);
   if (x->right != nil) rbptree_rec_traverse(x->right, func, closure);
 }
 
-void 
+void
 cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure)
 {
   if (t->counter > 0) {
@@ -579,7 +579,7 @@ cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * c
   }
 }
 
-static void 
+static void
 rbptree_debug(const cc_rbptree_node * x, const int idx)
 {
   int i;
@@ -605,11 +605,11 @@ rbptree_debug(const cc_rbptree_node * x, const int idx)
 /*!
  * for debugging only. Prints the tree to stdout.
  */
-void 
+void
 cc_rbptree_debug(const cc_rbptree * t)
 {
   const cc_rbptree_node * x = t->root;
-  
+
   if (x != &rbptree_sentinel) rbptree_debug(x, 0);
 
 }
@@ -637,7 +637,7 @@ BOOST_AUTO_TEST_CASE(rbptree_stress)
       values.append(entry);
     }
     BOOST_ASSERT(cc_rbptree_size(&tree) == FILL_COUNT);
-  
+
     if ((c & 1) == 0) {
       for (i = (FILL_COUNT - 1); i >= 0; --i) cc_rbptree_remove(&tree, values[i]);
     } else {
@@ -654,7 +654,7 @@ BOOST_AUTO_TEST_CASE(rbptree_stress)
       values.append(entry);
     }
     BOOST_ASSERT(cc_rbptree_size(&tree) == FILL_COUNT);
-  
+
     if ((c & 1) == 0) {
       for (i = (FILL_COUNT - 1); i >= 0; --i) cc_rbptree_remove(&tree, values[i]);
     } else {

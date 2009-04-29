@@ -218,7 +218,7 @@ SoCacheElement::invalidate(SoState * const state)
   cache them in the cache.
 */
 SbBool
-SoCacheElement::matches(const SoElement * COIN_UNUSED(element)) const
+SoCacheElement::matches(const SoElement * COIN_UNUSED_ARG(element)) const
 {
   assert(FALSE && "this method should not be called for this element");
   return FALSE;

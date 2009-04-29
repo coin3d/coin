@@ -130,17 +130,17 @@ SoRotateCylindricalDragger::initClass(void)
 
   \verbatim
   CLASS SoRotateCylindricalDragger
-  PVT   "this",  SoRotateCylindricalDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "rotatorSwitch",  SoSwitch  --- 
-        "rotator",  SoSeparator  --- 
-        "rotatorActive",  SoSeparator  --- 
-  PVT   "feedbackSwitch",  SoSwitch  --- 
-        "feedback",  SoSeparator  --- 
-        "feedbackActive",  SoSeparator  --- 
+  PVT   "this",  SoRotateCylindricalDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "rotatorSwitch",  SoSwitch  ---
+        "rotator",  SoSeparator  ---
+        "rotatorActive",  SoSeparator  ---
+  PVT   "feedbackSwitch",  SoSwitch  ---
+        "feedback",  SoSeparator  ---
+        "feedbackActive",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -299,14 +299,14 @@ SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc,
                                          SbBool copyconnections)
 {
   inherited::copyContents(fromfc, copyconnections);
-  
+
   assert(fromfc->isOfType(SoRotateCylindricalDragger::getClassTypeId()));
   const SoRotateCylindricalDragger * from = coin_assert_cast<const SoRotateCylindricalDragger *>(fromfc);
   if (!this->userProj) {
-    delete this->cylinderProj; 
+    delete this->cylinderProj;
   }
   this->cylinderProj = NULL;
-  
+
   if (from->cylinderProj) {
     this->cylinderProj = static_cast<SbCylinderProjector *>(
       from->cylinderProj->copy()
@@ -322,7 +322,7 @@ SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc,
 
 /*! \COININTERNAL */
 void
-SoRotateCylindricalDragger::startCB(void * COIN_UNUSED(f), SoDragger * d)
+SoRotateCylindricalDragger::startCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoRotateCylindricalDragger * thisp = THISP(d);
   thisp->dragStart();
@@ -330,7 +330,7 @@ SoRotateCylindricalDragger::startCB(void * COIN_UNUSED(f), SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoRotateCylindricalDragger::motionCB(void * COIN_UNUSED(f), SoDragger * d)
+SoRotateCylindricalDragger::motionCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoRotateCylindricalDragger * thisp = THISP(d);
   thisp->drag();
@@ -338,7 +338,7 @@ SoRotateCylindricalDragger::motionCB(void * COIN_UNUSED(f), SoDragger * d)
 
 /*! \COININTERNAL */
 void
-SoRotateCylindricalDragger::doneCB(void * COIN_UNUSED(f), SoDragger * d)
+SoRotateCylindricalDragger::doneCB(void * COIN_UNUSED_ARG(f), SoDragger * d)
 {
   SoRotateCylindricalDragger * thisp = THISP(d);
   thisp->dragFinish();

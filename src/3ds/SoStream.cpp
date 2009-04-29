@@ -96,10 +96,10 @@ static _type_ ntoh_##_type_(char *buf, const SbBool needConv) \
     return *(reinterpret_cast<_type_*>(buf)); \
 }
 
-inline static void hton_uint8_t(uint8_t value, char *buf, const SbBool COIN_UNUSED(needConv))  { buf[0] = value; }
-inline static uint8_t ntoh_uint8_t(char *buf, const SbBool COIN_UNUSED(needConv))  { return buf[0]; }
-inline static void hton_int8_t(int8_t value, char *buf, const SbBool COIN_UNUSED(needConv))  { buf[0] = value; }
-inline static int8_t ntoh_int8_t(char *buf, const SbBool COIN_UNUSED(needConv))  { return buf[0]; }
+inline static void hton_uint8_t(uint8_t value, char *buf, const SbBool COIN_UNUSED_ARG(needConv))  { buf[0] = value; }
+inline static uint8_t ntoh_uint8_t(char *buf, const SbBool COIN_UNUSED_ARG(needConv))  { return buf[0]; }
+inline static void hton_int8_t(int8_t value, char *buf, const SbBool COIN_UNUSED_ARG(needConv))  { buf[0] = value; }
+inline static int8_t ntoh_int8_t(char *buf, const SbBool COIN_UNUSED_ARG(needConv))  { return buf[0]; }
 HTON(uint16_t);
 NTOH(uint16_t);
 inline static void hton_int16_t(int16_t value, char *buf, const SbBool needConv)  { hton_uint16_t(value, buf, needConv); }
@@ -426,14 +426,14 @@ SOSTREAM_RW_OP(UInt32, uint32_t, "0x%x", SOSTREAM_INT_READ(strtoul, uint32_t, ui
 
 
 
-SbBool SoStream::readDigInt(char COIN_UNUSED(*s), const char COIN_UNUSED(*e))
+SbBool SoStream::readDigInt(char COIN_UNUSED_ARG(*s), const char COIN_UNUSED_ARG(*e))
 {
   STUB;
   return FALSE;
 }
 
 
-SbBool SoStream::readHexInt(char COIN_UNUSED(*s), const char COIN_UNUSED(*e))
+SbBool SoStream::readHexInt(char COIN_UNUSED_ARG(*s), const char COIN_UNUSED_ARG(*e))
 {
   STUB;
   return FALSE;
@@ -512,12 +512,12 @@ SbBool SoStream::writeZString(const char *buf)
 
 
 
-SbBool SoStream::readStream(SoStream COIN_UNUSED(&stream))
+SbBool SoStream::readStream(SoStream COIN_UNUSED_ARG(&stream))
 {
   STUB;
   return FALSE;
 }
-SbBool SoStream::writeStream(const SoStream COIN_UNUSED(&stream))
+SbBool SoStream::writeStream(const SoStream COIN_UNUSED_ARG(&stream))
 {
   STUB;
   return FALSE;
@@ -632,7 +632,7 @@ SbBool SoStream::getBuffer(void *&buf, size_t &size) const
 }
 size_t SoStream::getBufferSize() const  { return bufferSize; }
 
-void SoStream::setBuffer(void COIN_UNUSED(*buf), size_t COIN_UNUSED(size))
+void SoStream::setBuffer(void COIN_UNUSED_ARG(*buf), size_t COIN_UNUSED_ARG(size))
 {
   emptyBuffer();
   STUB;

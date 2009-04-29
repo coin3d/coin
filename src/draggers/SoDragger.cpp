@@ -576,7 +576,7 @@ SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 /*!
   Sets the epsilon used for restricting the draggers when the
   intersection line is almost parallel with the projector direction.
-  
+
   For line projectors this is based on the dot product between the
   picking ray and the projector line. For plane projector, the dot
   product between the plane normal and the picking ray is used.
@@ -585,7 +585,7 @@ SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
   \since Coin 3.0
 */
-void 
+void
 SoDragger::setProjectorEpsilon(const float epsilon)
 {
   PRIVATE(this)->projectorepsilon = epsilon;
@@ -1547,7 +1547,7 @@ typedef struct {
 static sodragger_vv_data * vvdata = NULL;
 
 static SoCallbackAction::Response
-sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_UNUSED(node))
+sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_UNUSED_ARG(node))
 {
   sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
   data->vv = SoViewVolumeElement::get(action->getState());
@@ -1556,7 +1556,7 @@ sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_
 
 extern "C" {
 
-static void vv_data_cleanup(void) 
+static void vv_data_cleanup(void)
 {
   delete vvdata;
   vvdata = NULL;
@@ -1829,7 +1829,7 @@ SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
   \COININTERNAL
 */
 void
-SoDragger::childValueChangedCB(void * data, SoDragger * COIN_UNUSED(child))
+SoDragger::childValueChangedCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
   thisp->valueChanged();
@@ -1851,7 +1851,7 @@ SoDragger::childStartCB(void * data, SoDragger * child)
   \COININTERNAL
 */
 void
-SoDragger::childMotionCB(void * data, SoDragger * COIN_UNUSED(child))
+SoDragger::childMotionCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->motionCB.invokeCallbacks(thisp);
@@ -1861,7 +1861,7 @@ SoDragger::childMotionCB(void * data, SoDragger * COIN_UNUSED(child))
   \COININTERNAL
 */
 void
-SoDragger::childFinishCB(void * data, SoDragger * COIN_UNUSED(child))
+SoDragger::childFinishCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->finishCB.invokeCallbacks(thisp);

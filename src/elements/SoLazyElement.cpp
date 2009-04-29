@@ -149,7 +149,7 @@ SoLazyElement::~SoLazyElement()
 // ! FIXME: write doc
 
 void
-SoLazyElement::init(SoState * COIN_UNUSED(state))
+SoLazyElement::init(SoState * COIN_UNUSED_ARG(state))
 {
   this->coinstate.ambient = this->getDefaultAmbient();
   this->coinstate.specular = this->getDefaultSpecular();
@@ -197,7 +197,7 @@ SoLazyElement::push(SoState *state)
   Will always return TRUE in Coin.
 */
 SbBool
-SoLazyElement::matches(const SoElement * COIN_UNUSED(element)) const
+SoLazyElement::matches(const SoElement * COIN_UNUSED_ARG(element)) const
 {
   assert(0 && "should never happen");
   return TRUE;
@@ -379,7 +379,7 @@ SoLazyElement::setShininess(SoState *state, float value)
 // ! FIXME: write doc
 
 void
-SoLazyElement::setColorMaterial(SoState * COIN_UNUSED(state), SbBool COIN_UNUSED(value))
+SoLazyElement::setColorMaterial(SoState * COIN_UNUSED_ARG(state), SbBool COIN_UNUSED_ARG(value))
 {
 }
 
@@ -540,7 +540,7 @@ SoLazyElement::getShininess(SoState * state)
 // ! FIXME: write doc
 
 SbBool
-SoLazyElement::getColorMaterial(SoState * COIN_UNUSED(state))
+SoLazyElement::getColorMaterial(SoState * COIN_UNUSED_ARG(state))
 {
   return TRUE;
 }
@@ -942,7 +942,7 @@ SoLazyElement::setTransparencyType(SoState *state, int32_t type)
 
 void
 SoLazyElement::setDiffuseElt(SoNode * node,  int32_t numcolors,
-                             const SbColor * colors, SoColorPacker * COIN_UNUSED(packer))
+                             const SbColor * colors, SoColorPacker * COIN_UNUSED_ARG(packer))
 {
   this->coinstate.diffusenodeid = get_diffuse_node_id(node, numcolors, colors);
   this->coinstate.diffusearray = colors;
@@ -967,7 +967,7 @@ SoLazyElement::setPackedElt(SoNode * node, int32_t numcolors,
 }
 
 void
-SoLazyElement::setColorIndexElt(SoNode * COIN_UNUSED(node), int32_t numindices,
+SoLazyElement::setColorIndexElt(SoNode * COIN_UNUSED_ARG(node), int32_t numindices,
                                 const int32_t * indices)
 {
   this->coinstate.colorindexarray = indices;
@@ -977,7 +977,7 @@ SoLazyElement::setColorIndexElt(SoNode * COIN_UNUSED(node), int32_t numindices,
 
 void
 SoLazyElement::setTranspElt(SoNode * node, int32_t numtransp,
-                            const float * transp, SoColorPacker * COIN_UNUSED(packer))
+                            const float * transp, SoColorPacker * COIN_UNUSED_ARG(packer))
 {
   this->coinstate.transpnodeid = get_transp_node_id(node, numtransp, transp);
   this->coinstate.transparray = transp;
@@ -1025,7 +1025,7 @@ SoLazyElement::setShininessElt(float value)
 }
 
 void
-SoLazyElement::setColorMaterialElt(SbBool COIN_UNUSED(value))
+SoLazyElement::setColorMaterialElt(SbBool COIN_UNUSED_ARG(value))
 {
 }
 
@@ -1054,7 +1054,7 @@ SoLazyElement::setLightModelElt(SoState * state, int32_t model)
 
 void
 SoLazyElement::setMaterialElt(SoNode * node, uint32_t bitmask,
-                              SoColorPacker * COIN_UNUSED(packer),
+                              SoColorPacker * COIN_UNUSED_ARG(packer),
                               const SbColor * diffuse, const int numdiffuse,
                               const float * transp, const int numtransp,
                               const SbColor & ambient,
@@ -1167,11 +1167,11 @@ SoColorPacker::reallocate(const int32_t size)
 }
 
 void
-SoLazyElement::lazyDidSet(uint32_t COIN_UNUSED(mask))
+SoLazyElement::lazyDidSet(uint32_t COIN_UNUSED_ARG(mask))
 {
 }
 
 void
-SoLazyElement::lazyDidntSet(uint32_t COIN_UNUSED(mask))
+SoLazyElement::lazyDidntSet(uint32_t COIN_UNUSED_ARG(mask))
 {
 }

@@ -72,7 +72,7 @@ SoShininessElement::init(SoState * stateptr)
 //! FIXME: write doc.
 
 void
-SoShininessElement::set(SoState * const state, SoNode * const COIN_UNUSED(node),
+SoShininessElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
                            const int32_t numvalues,
                            const float * const values)
 {

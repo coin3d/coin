@@ -77,7 +77,7 @@ SoError::SoError(const cc_error * error)
 }
 
 void
-SoError::callbackForwarder(const cc_error * error, void * COIN_UNUSED(data))
+SoError::callbackForwarder(const cc_error * error, void * COIN_UNUSED_ARG(data))
 {
   SoError wrappederr(error);
 

@@ -65,7 +65,7 @@ static double highperf_tick = -1;
 /* The Win32 QueryPerformanceCounter() strategy is based on code
    submitted by Jan Peciva (aka PCJohn). */
 static SbBool
-cc_internal_queryperformancecounter(cc_time * COIN_UNUSED(t))
+cc_internal_queryperformancecounter(cc_time * COIN_UNUSED_ARG(t))
 {
 #ifdef HAVE_QUERYPERFORMANCECOUNTER
   if (highperf_available == -1) {

@@ -167,7 +167,7 @@ SoTranslate2Dragger::initClass(void)
   -->         "axisFeedbackSwitch"
   -->            "xAxisFeedback"
   -->            "yAxisFeedback"
-  
+
   \endverbatim
 
   \NODEKIT_POST_DIAGRAM
@@ -177,20 +177,20 @@ SoTranslate2Dragger::initClass(void)
 
   \verbatim
   CLASS SoTranslate2Dragger
-  PVT   "this",  SoTranslate2Dragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-  PVT   "translatorSwitch",  SoSwitch  --- 
-        "translator",  SoSeparator  --- 
-        "translatorActive",  SoSeparator  --- 
-  PVT   "feedbackSwitch",  SoSwitch  --- 
-        "feedback",  SoSeparator  --- 
-        "feedbackActive",  SoSeparator  --- 
-  PVT   "axisFeedbackSwitch",  SoSwitch  --- 
-        "xAxisFeedback",  SoSeparator  --- 
-        "yAxisFeedback",  SoSeparator  --- 
+  PVT   "this",  SoTranslate2Dragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+  PVT   "translatorSwitch",  SoSwitch  ---
+        "translator",  SoSeparator  ---
+        "translatorActive",  SoSeparator  ---
+  PVT   "feedbackSwitch",  SoSwitch  ---
+        "feedback",  SoSeparator  ---
+        "feedbackActive",  SoSeparator  ---
+  PVT   "axisFeedbackSwitch",  SoSwitch  ---
+        "xAxisFeedback",  SoSeparator  ---
+        "yAxisFeedback",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -294,7 +294,7 @@ SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
 /*! \COININTERNAL */
 void
-SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * COIN_UNUSED(s))
+SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * COIN_UNUSED_ARG(s))
 {
   assert(d);
   SoTranslate2Dragger * thisp = THISP(d);
@@ -303,7 +303,7 @@ SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * COIN_UNUSED(s))
 
   SbVec3f t = thisp->translation.getValue();
   SbVec3f orgt = t;
-  
+
   for (int i = 0; i < 2; i++) {
     if (minv[i] <= maxv[i]) {
       t[i] = SbClamp(t[i], minv[i], maxv[i]);
@@ -329,12 +329,12 @@ SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
 }
 
 // doc in parent
-void 
+void
 SoTranslate2Dragger::setMotionMatrix(const SbMatrix & matrix)
 {
   SbMatrix m = matrix;
   (void) this->clampMatrix(m);
-  inherited::setMotionMatrix(m);  
+  inherited::setMotionMatrix(m);
 }
 
 /*! \COININTERNAL */
@@ -423,23 +423,23 @@ SoTranslate2Dragger::drag(void)
       this->getLocalToWorldMatrix().multVecMatrix(projPt, worldProjPt);
       this->setStartingPoint(worldProjPt);
       PRIVATE(this)->extramotion += PRIVATE(this)->lastmotion;
-      
+
       SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
       SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
       this->constraintState = CONSTRAINT_OFF;
     }
-    
+
     SbVec3f startPt = this->getLocalStartingPoint();
     SbVec3f motion;
     SbVec3f localrestartpt;
-    
+
     if (this->constraintState != CONSTRAINT_OFF) {
       this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt,
                                                   localrestartpt);
       motion = localrestartpt - startPt;
     }
     else motion = projPt - startPt;
-    
+
     switch(this->constraintState) {
     case CONSTRAINT_OFF:
       break;
@@ -493,12 +493,12 @@ SoTranslate2Dragger::dragFinish(void)
   this->constraintState = CONSTRAINT_OFF;
 }
 
-SbVec3f 
+SbVec3f
 SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
 {
   const SbVec2f minv = this->minTranslation.getValue();
   const SbVec2f maxv = this->maxTranslation.getValue();
-  
+
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
   m.getTransform(trans, rot, scale, scaleOrient);

@@ -115,7 +115,7 @@ SoMultiTextureImageElement::setDefaultValues(const int unit)
   Resets this element to its original values.
 */
 void
-SoMultiTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNUSED(node), const int unit)
+SoMultiTextureImageElement::setDefault(SoState * const state, SoNode * const COIN_UNUSED_ARG(node), const int unit)
 {
   SoMultiTextureImageElement * elem =
     coin_safe_cast<SoMultiTextureImageElement *>
@@ -379,7 +379,7 @@ SoMultiTextureImageElement::getDefault(SbVec3s & size, int & numComponents)
 }
 
 void
-SoMultiTextureImageElement::push(SoState * COIN_UNUSED(state))
+SoMultiTextureImageElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoMultiTextureImageElement * prev =
     coin_assert_cast<SoMultiTextureImageElement *>

@@ -1641,7 +1641,7 @@ SoField::shouldWrite(void) const
   something special on connections/deconnections.
 */
 void
-SoField::connectionStatusChanged(int COIN_UNUSED(numconnections))
+SoField::connectionStatusChanged(int COIN_UNUSED_ARG(numconnections))
 {
 }
 
@@ -1674,7 +1674,7 @@ SoField::isReadOnly(void) const
   copy operation.
 */
 void
-SoField::fixCopy(SbBool COIN_UNUSED(copyconnections))
+SoField::fixCopy(SbBool COIN_UNUSED_ARG(copyconnections))
 {
 }
 

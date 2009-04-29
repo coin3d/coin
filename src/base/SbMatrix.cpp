@@ -287,9 +287,9 @@ SbMatrix::setValue(const SbDPMatrix & m)
 {
   const SbDPMat & dmat = m.getValue();
   const SbMat smat = { { dmat[0][0], dmat[0][1], dmat[0][2], dmat[0][3] },
-		       { dmat[1][0], dmat[1][1], dmat[1][2], dmat[1][3] },
-		       { dmat[2][0], dmat[2][1], dmat[2][2], dmat[2][3] },
-		       { dmat[3][0], dmat[3][1], dmat[3][2], dmat[3][3] } };
+                     { dmat[1][0], dmat[1][1], dmat[1][2], dmat[1][3] },
+                     { dmat[2][0], dmat[2][1], dmat[2][2], dmat[2][3] },
+                     { dmat[3][0], dmat[3][1], dmat[3][2], dmat[3][3] } };
   this->setValue(smat);
 }
 
@@ -458,7 +458,7 @@ SbMatrix::inverse(void) const
   // check for affine matrix (common case)
   if (src[0][3] == 0.0f && src[1][3] == 0.0f &&
       src[2][3] == 0.0f && src[3][3] == 1.0f) {
-    
+
     // More or less directly from:
     // Kevin Wu, "Fast Matrix Inversion",  Graphics Gems II
     float det_1;
@@ -472,7 +472,7 @@ SbMatrix::inverse(void) const
 
     /*
      * Calculate the determinant of submatrix A and determine if the
-     * the matrix is singular as limited by floating-point data 
+     * the matrix is singular as limited by floating-point data
      * representation.
      */
     pos = neg = 0.0f;
@@ -522,7 +522,7 @@ SbMatrix::inverse(void) const
                      src[0][2] * src[1][0]) * det_1;
       dst[2][2] =  (src[0][0] * src[1][1] -
                     src[0][1] * src[1][0]) * det_1;
-      
+
       /* Calculate -C * inverse(A) */
       dst[3][0] = - (src[3][0] * dst[0][0] +
                      src[3][1] * dst[1][0] +
@@ -533,7 +533,7 @@ SbMatrix::inverse(void) const
       dst[3][2] = - (src[3][0] * dst[0][2] +
                      src[3][1] * dst[1][2] +
                      src[3][2] * dst[2][2]);
-      
+
       /* Fill in last column */
       dst[0][3] = dst[1][3] = dst[2][3] = 0.0f;
       dst[3][3] = 1.0f;
@@ -546,24 +546,24 @@ SbMatrix::inverse(void) const
 
     // algorithm from: Schwarz, "Numerische Mathematik"
     result = *this;
-    
-    for (k = 0; k < 4; k++) { 
+
+    for (k = 0; k < 4; k++) {
       max = 0.0f;
       p[k] = 0;
-      
-      for (i = k; i < 4; i++) { 
+
+      for (i = k; i < 4; i++) {
         sum = 0.0f;
         for (j = k; j < 4; j++)
           sum += SbAbs(dst[i][j]);
         if (sum > 0.0f) {
           tmp = SbAbs(dst[i][k]) / sum;
-          if (tmp > max) { 
-            max = tmp;  
+          if (tmp > max) {
+            max = tmp;
             p[k] = i;
           }
         }
       }
-      
+
       if (max == 0.0f) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SbMatrix::inverse",
@@ -571,15 +571,15 @@ SbMatrix::inverse(void) const
 #endif // COIN_DEBUG
         return *this;
       }
-      
+
       if (p[k] != k) {
         for (j = 0; j < 4; j++) {
-          tmp = dst[k][j];  
-          dst[k][j] = dst[p[k]][j];  
+          tmp = dst[k][j];
+          dst[k][j] = dst[p[k]][j];
           dst[p[k]][j] = tmp;
         }
       }
-      
+
       inv_pivot = 1.0f / dst[k][k];
       for (j = 0; j < 4; j++) {
         if (j != k) {
@@ -589,23 +589,23 @@ SbMatrix::inverse(void) const
           }
         }
       }
-      
+
       for (i = 0; i < 4; i++) dst[i][k] *= inv_pivot;
       dst[k][k] = inv_pivot;
     }
-    
+
     for (k = 2; k >= 0; k--) {
       if (p[k] != k) {
         for (i = 0; i < 4; i++) {
           tmp = dst[i][k];
-          dst[i][k] = dst[i][p[k]]; 
+          dst[i][k] = dst[i][p[k]];
           dst[i][p[k]] = tmp;
         }
       }
     }
   }
   return result;
-    
+
 #else  // old unoptimized version
 
   float det = this->det4();
@@ -1035,7 +1035,7 @@ SbMatrix::setTransform(const SbVec3f & translation,
     }
     tmp.setScale(scaleFactor);
     this->multRight(tmp);
-    
+
     if (scaleOrientation != identity) {
       tmp.setRotate(scaleOrientation);
       this->multRight(tmp);
@@ -1141,8 +1141,8 @@ SbMatrix::getTransform(SbVec3f & translation,
   \sa getTransform()
  */
 SbBool
-SbMatrix::factor(SbMatrix & COIN_UNUSED(r), SbVec3f & COIN_UNUSED(s), SbMatrix & COIN_UNUSED(u), SbVec3f & COIN_UNUSED(t),
-                 SbMatrix & COIN_UNUSED(proj))
+SbMatrix::factor(SbMatrix & COIN_UNUSED_ARG(r), SbVec3f & COIN_UNUSED_ARG(s), SbMatrix & COIN_UNUSED_ARG(u), SbVec3f & COIN_UNUSED_ARG(t),
+                 SbMatrix & COIN_UNUSED_ARG(proj))
 {
   // FIXME: not implemented, not documented. 1998MMDD mortene.
   COIN_STUB();
@@ -1418,7 +1418,7 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
   vectors, as SbMatrix instances are, by definition, column-order
   matrices.
 
-  \sa multMatrixVec(), multDirMatrix() and multLineMatrix().  
+  \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
 */
 void
 SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
@@ -1808,7 +1808,7 @@ SbMatrixP::spect_decomp(SbMatrixP::HMatrix S, SbMatrixP::HMatrix U)
           //
           //  int
           //  main( int argc, char** argv )
-          //  { 
+          //  {
           //    SoDB::init();
           //
           //    SbVec3f translation, scale, axis;
@@ -1816,7 +1816,7 @@ SbMatrixP::spect_decomp(SbMatrixP::HMatrix S, SbMatrixP::HMatrix U)
           //    SbMatrix matrix (5.96046e-008f,  1.00000f,       -2.98023e-008f, 0.000000f,
           //                     -2.98023e-008f, 5.96046e-008f,  1.00000f,       0.000000f,
           //                     1.00000f,       -2.98023e-008f, 5.96046e-008f,  0.000000f,
-          //                     -162.929f,      -56.2217f,      197.110f,       1.00000f 
+          //                     -162.929f,      -56.2217f,      197.110f,       1.00000f
           //                     );
           //    matrix.getTransform ( translation, rot, scale, scaleRot );
           //    translation.print(stdout); printf(" <- translation\n");

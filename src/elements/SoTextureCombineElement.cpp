@@ -204,7 +204,7 @@ SoTextureCombineElement::getUnitData(const int unit) const
 }
 
 void
-SoTextureCombineElement::push(SoState * COIN_UNUSED(state))
+SoTextureCombineElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoTextureCombineElement * prev = coin_assert_cast<SoTextureCombineElement *>
     (

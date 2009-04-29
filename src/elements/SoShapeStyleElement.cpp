@@ -85,7 +85,7 @@ SoShapeStyleElement::init(SoState * state)
 //! FIXME: write doc.
 
 void
-SoShapeStyleElement::push(SoState * COIN_UNUSED(state))
+SoShapeStyleElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoShapeStyleElement * prev = coin_assert_cast<SoShapeStyleElement *>(this->getNextInStack());
   this->flags = prev->flags;

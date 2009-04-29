@@ -103,7 +103,7 @@ SoCullElement::~SoCullElement()
 
 // doc from parent
 void
-SoCullElement::init(SoState * COIN_UNUSED(state))
+SoCullElement::init(SoState * COIN_UNUSED_ARG(state))
 {
   this->numplanes = 0;
   this->flags = 0;
@@ -112,7 +112,7 @@ SoCullElement::init(SoState * COIN_UNUSED(state))
 
 // doc from parent
 void
-SoCullElement::push(SoState * COIN_UNUSED(state))
+SoCullElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoCullElement * prev = coin_assert_cast<const SoCullElement *>
     (
