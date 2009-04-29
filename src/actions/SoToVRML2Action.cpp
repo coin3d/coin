@@ -368,7 +368,7 @@ public:
   SbBool reuseAppearanceNodes;
   SbBool reusePropertyNodes;
   SbBool reuseGeometryNodes;
-  SbHash<SoGroup *, const SoNode *> dict;
+  SbHash<const SoNode *, SoGroup *> dict;
   SoCallbackAction cbaction;
   SoSearchAction searchaction;
   SbList <SoVRMLGroup*> separatorstack;
@@ -1015,7 +1015,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
     // this element as it's supposed to be set when traversing the
     // next sibling).
     action->pushCurPath();
-    
+
     SoSwitchElement::set(state, wc);
     int n = oldswitch->getNumChildren();
     for (int i = 0; i < n; i++) {
@@ -1161,7 +1161,7 @@ SoToVRML2ActionP::push_lod_cb(void * closure, SoCallbackAction * action, const S
 
   // Traverse all children separately, with a normal SoGroup traversal
   int n = oldlod->getNumChildren();
-  
+
   action->pushCurPath();
   for (int i=0; i < n; i++) {
     SoNode * child = oldlod->getChild(i);

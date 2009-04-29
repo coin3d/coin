@@ -38,7 +38,7 @@ class SoInput;
 
 // FIXME: should implement and use a proper set-abstraction
 // datatype. 20050524 mortene.
-typedef SbHash<void *, const SoBase *> SoBaseSet;
+typedef SbHash<const SoBase *, void *> SoBaseSet;
 
 class SoBase::PImpl {
 public:
@@ -59,9 +59,9 @@ public:
   static void * auditor_mutex;
   static void * global_mutex;
 
-  static SbHash<SoAuditorList *, const SoBase *> * auditordict;
-  static SbHash<SbPList *, const char *> * name2obj;
-  static SbHash<const char *, const SoBase *> * obj2name;
+  static SbHash<const SoBase *, SoAuditorList *> * auditordict;
+  static SbHash<const char *, SbPList *> * name2obj;
+  static SbHash<const SoBase *, const char *> * obj2name;
 
   static SbBool trackbaseobjects;
   static void * allbaseobj_mutex;

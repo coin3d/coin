@@ -282,7 +282,7 @@ int SoNode::nextActionMethodIndex = 0;
 SoType SoNode::classTypeId STATIC_SOTYPE_INIT;
 static void * sonode_mutex = NULL;
 
-typedef SbHash<uint32_t, int16_t> Int16ToUInt32Map;
+typedef SbHash<int16_t, uint32_t> Int16ToUInt32Map;
 static Int16ToUInt32Map * compatibility_dict = NULL;
 
 static void init_action_methods(void);
@@ -341,7 +341,7 @@ SoNode::getState(const unsigned int bits) const
     obj->uniqueId = SoNode::nextUniqueId++; \
   } \
   CC_MUTEX_UNLOCK(sonode_mutex)
- 
+
 // *************************************************************************
 
 /*!
@@ -1233,11 +1233,11 @@ SoNode::write(SoWriteAction * action)
     // SoEngineOutput "field". An engine output might be connected via
     // an IS reference in a PROTO, and we then need to write back this
     // IS reference when exporting the VRML file.
-    SoProto * proto = out->getCurrentProto();    
+    SoProto * proto = out->getCurrentProto();
     if (proto && node->isOfType(SoNodeEngine::getClassTypeId())) {
       SoEngineOutputList l;
       const int num = ((SoNodeEngine*)node)->getOutputs(l);
-      
+
       for (int i = 0; i < num; i++) {
         SbName name;
         if (((SoNodeEngine*)node)->getOutputName(l[i], name)) {
@@ -1557,7 +1557,7 @@ init_action_methods(void)
   SoRayPickAction::addMethod(SoSceneTexture2::getClassTypeId(), SoNode::rayPickS);
   SoRayPickAction::addMethod(SoSceneTextureCubeMap::getClassTypeId(), SoNode::rayPickS);
   SoRayPickAction::addMethod(SoTextureCubeMap::getClassTypeId(), SoNode::rayPickS);
- 
+
   SoSearchAction::addMethod(SoNode::getClassTypeId(), SoNode::searchS);
   SoWriteAction::addMethod(SoNode::getClassTypeId(), SoNode::writeS);
 

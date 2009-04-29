@@ -355,8 +355,8 @@ SoBase::initClass(void)
 
   SoBase::classTypeId = SoType::createType(SoType::badType(), "Base");
 
-  SoBase::PImpl::name2obj = new SbHash<SbPList *, const char *>;
-  SoBase::PImpl::obj2name = new SbHash<const char *, const SoBase *>();
+  SoBase::PImpl::name2obj = new SbHash<const char *, SbPList *>;
+  SoBase::PImpl::obj2name = new SbHash<const SoBase *, const char *>();
   SoBase::PImpl::refwriteprefix = new SbString("+");
   SoBase::PImpl::allbaseobj = new SoBaseSet;
 
@@ -384,7 +384,7 @@ SoBase::cleanClass(void)
 
   // Delete the SbPLists in the dictionaries.
   for(
-      SbHash<SbPList *, const char *>::const_iterator iter =
+      SbHash<const char *, SbPList *>::const_iterator iter =
        SoBase::PImpl::name2obj->const_begin();
       iter!=SoBase::PImpl::name2obj->const_end();
       ++iter
@@ -847,7 +847,7 @@ SoBase::getAuditors(void) const
   CC_MUTEX_LOCK(SoBase::PImpl::auditor_mutex);
 
   if (SoBase::PImpl::auditordict == NULL) {
-    SoBase::PImpl::auditordict = new SbHash<SoAuditorList *, const SoBase *>();
+    SoBase::PImpl::auditordict = new SbHash<const SoBase *, SoAuditorList *>();
     coin_atexit((coin_atexit_f*)SoBase::PImpl::cleanup_auditordict, CC_ATEXIT_NORMAL);
   }
 

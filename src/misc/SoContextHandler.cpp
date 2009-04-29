@@ -111,7 +111,7 @@ socontexthandler_qsortcb(const void * p0, const void * p1)
 
 // *************************************************************************
 
-static SbHash <uint32_t, socontexthandler_cbitem> * socontexthandler_hashlist;
+static SbHash<socontexthandler_cbitem, uint32_t> * socontexthandler_hashlist;
 static uint32_t socontexthandler_idx = 0;
 static void * socontexthandler_mutex;
 
@@ -164,7 +164,7 @@ SoContextHandler::destructingContext(uint32_t contextid)
 
   SbList <socontexthandler_cbitem> listcopy;
   for(
-      SbHash <uint32_t, socontexthandler_cbitem>::const_iterator iter =
+      SbHash<socontexthandler_cbitem, uint32_t>::const_iterator iter =
        socontexthandler_hashlist->const_begin();
       iter!=socontexthandler_hashlist->const_end();
       ++iter
@@ -220,7 +220,7 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
   CC_MUTEX_CONSTRUCT(socontexthandler_mutex);
   CC_MUTEX_LOCK(socontexthandler_mutex);
   if (socontexthandler_hashlist == NULL) {
-    socontexthandler_hashlist = new SbHash <uint32_t, socontexthandler_cbitem> (64);
+    socontexthandler_hashlist = new SbHash<socontexthandler_cbitem, uint32_t> (64);
     // make this callback trigger after the SoGLCacheContext cleanup function
     // by setting priority to -1
     coin_atexit((coin_atexit_f *)socontexthandler_cleanup, CC_ATEXIT_NORMAL_LOWPRIORITY);

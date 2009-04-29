@@ -264,7 +264,7 @@ public:
 
 private:
   // Dictionary of void* -> SoFieldConverter* mappings.
-  SbHash<SoFieldConverter *, const void *> maptoconverter;
+  SbHash<const void *, SoFieldConverter *> maptoconverter;
 
 };
 
@@ -360,13 +360,13 @@ public:
     return s;
   }
 
-  static SbHash<char **, char *> * getReallocHash(void);
+  static SbHash<char *, char **> * getReallocHash(void);
   static void * hashRealloc(void * bufptr, size_t size);
 
-  static SbHash<char **, char *> * ptrhash;
+  static SbHash<char *, char **> * ptrhash;
 };
 
-SbHash<char **, char *> * SoFieldP::ptrhash = NULL;
+SbHash<char *, char **> * SoFieldP::ptrhash = NULL;
 
 extern "C" {
 // atexit callbacks
@@ -375,12 +375,12 @@ static void hashExitCleanup(void);
 static void field_mutex_cleanup(void);
 }
 
-SbHash<char **, char *> *
+SbHash<char *, char **> *
 SoFieldP::getReallocHash(void)
 {
   // FIXME: protect with mutex?
   if (SoFieldP::ptrhash == NULL) {
-    SoFieldP::ptrhash = new SbHash<char **, char *>;
+    SoFieldP::ptrhash = new SbHash<char *, char **>;
     coin_atexit(hashExitCleanup, CC_ATEXIT_NORMAL);
   }
   return SoFieldP::ptrhash;

@@ -46,7 +46,7 @@ public:
 
   static SbBool debug(void);
   static SbBool debugBinary(void);
-  
+
   SoInput_FileInfo * getTopOfStackPopOnEOF(void);
 
   static SbBool isNameStartChar(unsigned char c, SbBool validIdent);
@@ -58,7 +58,7 @@ public:
 
   SbBool usingstdin;
 
-  SbHash<SoBase *, const char *> references;
+  SbHash<const char *, SoBase *> references;
 
 private:
   SoInput * owner;

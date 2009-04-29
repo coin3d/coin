@@ -56,7 +56,7 @@ static int vbo_render_as_vertex_arrays = -1;
 static int vbo_enabled = -1;
 static int vbo_debug = -1;
 
-static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
+static SbHash<uint32_t, SbBool> * vbo_isfast_hash;
 
 /*!
   Constructor
@@ -93,7 +93,7 @@ SoVBO::~SoVBO()
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
   for(
-      SbHash <GLuint, uint32_t>::const_iterator iter =
+      SbHash<uint32_t, GLuint>::const_iterator iter =
        this->vbohash.const_begin();
       iter!=this->vbohash.const_end();
       ++iter
@@ -125,7 +125,7 @@ SoVBO::init(void)
 {
   coin_glglue_add_instance_created_callback(context_created, NULL);
 
-  vbo_isfast_hash = new SbHash <SbBool, uint32_t> (3);
+  vbo_isfast_hash = new SbHash<uint32_t, SbBool> (3);
   coin_atexit(vbo_atexit_cleanup, CC_ATEXIT_NORMAL);
 
   // use COIN_VBO_MAX_LIMIT to set the largest VBO we create
@@ -193,7 +193,7 @@ SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
   for(
-      SbHash <GLuint, uint32_t>::const_iterator iter =
+      SbHash<uint32_t, GLuint>::const_iterator iter =
        this->vbohash.const_begin();
       iter!=this->vbohash.const_end();
       ++iter
@@ -231,7 +231,7 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
   for(
-      SbHash <GLuint, uint32_t>::const_iterator iter =
+      SbHash<uint32_t, GLuint>::const_iterator iter =
        this->vbohash.const_begin();
       iter!=this->vbohash.const_end();
       ++iter

@@ -59,7 +59,7 @@
 
      DrawStyle { pointSize 5 }
 
-     IndexedPointSet { 
+     IndexedPointSet {
         coordIndex [0, 1, 2, 3, 4, 5, 6, 7]
         normalIndex [0, 1, 0, 1, 0, 1, 0, 1]
      }
@@ -69,12 +69,12 @@
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
-  IndexedPointSet { 
-    vertexProperty 	NULL 
-    coordIndex 	0 
-    materialIndex 	-1 
-    normalIndex 	-1 
-    textureCoordIndex 	-1 
+  IndexedPointSet {
+    vertexProperty        NULL
+    coordIndex        0
+    materialIndex        -1
+    normalIndex        -1
+    textureCoordIndex        -1
   }
   \endcode
 
@@ -234,7 +234,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     return;
   }
 
-  SoMaterialBundle mb(action);  
+  SoMaterialBundle mb(action);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
 
   const SbVec3f * normals;
@@ -304,19 +304,19 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
   if (nbind == OVERALL && needNormals) {
     glNormal3fv((const GLfloat *)normals);
   }
-  
+
   mb.sendFirst(); // always do this, even if mbind != OVERALL
 
   const cc_glglue * glue = sogl_glue_instance(state);
   const uint32_t contextid = action->getCacheContext();
 
-  SbBool dova = 
-    SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) && 
+  SbBool dova =
+    SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && (nindices == cindices))) &&
     ((tbind == OVERALL) || ((tbind == PER_VERTEX_INDEXED) && (tindices == cindices))) &&
     ((mbind == OVERALL) || ((mbind == PER_VERTEX_INDEXED) && (mindices == cindices)));
-  
+
   if (dova && (mbind == PER_VERTEX_INDEXED)) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
     if (vboelem->getColorVBO() == NULL) {
@@ -370,7 +370,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
 
       if (mbind == PER_VERTEX_INDEXED) mb.send(mindices[i], TRUE);
       else if (mbind == PER_VERTEX) mb.send(i, TRUE);
-      
+
       if (nbind == PER_VERTEX_INDEXED) currnormal = normals[nindices[i]];
       else if (nbind == PER_VERTEX) currnormal = normals[i];
 
@@ -392,7 +392,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     }
     glEnd();
   }
-  if (didpush) 
+  if (didpush)
     state->pop();
 
   // send approx number of points for autocache handling. Divide
@@ -452,7 +452,7 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
 
   /*
-    FIXME: the following code is almost identical to that in glRender. 
+    FIXME: the following code is almost identical to that in glRender.
     Consider refactoring. wiesener 20090317
   */
   const SbVec3f * normals;
@@ -577,4 +577,3 @@ SoIndexedPointSet::notify(SoNotList * list)
 
 #undef LOCK_VAINDEXER
 #undef UNLOCK_VAINDEXER
-

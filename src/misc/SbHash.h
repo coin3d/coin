@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 // *************************************************************************
-// This class (SbHash<Type, Key>) is internal and must not be exposed
+// This class (SbHash<Key, Type>) is internal and must not be exposed
 // in the Coin API.
 
 /**
@@ -140,7 +140,7 @@ unsigned int SbHashFunc(const SoBase * key);
 unsigned int SbHashFunc(const SoOutput * key);
 unsigned int SbHashFunc(const SoSensor * key);
 
-template <class Type, class Key>
+template <class Key, class Type>
 class SbHash {
  public:
   class iterator {
@@ -162,9 +162,9 @@ class SbHash {
       return *this;
     }
   private:
-    SbHash<Type,Key> * master;
+    SbHash<Key, Type> * master;
     unsigned int index;
-    friend class SbHash<Type,Key>;
+    friend class SbHash<Key, Type>;
   };
 
   class const_iterator {
@@ -194,14 +194,14 @@ class SbHash {
       return *this;
     }
   private:
-  const_iterator(const SbHash<Type,Key> * master_in,unsigned int index_in) :
+  const_iterator(const SbHash<Key, Type> * master_in,unsigned int index_in) :
     master(master_in), index(index_in) {
 
     }
 
-    const SbHash<Type,Key> * master;
+    const SbHash<Key, Type> * master;
     unsigned int index;
-    friend class SbHash<Type,Key>;
+    friend class SbHash<Key, Type>;
   };
 
   SbHash(unsigned int sizearg = 256, float loadfactorarg = 0.0f)

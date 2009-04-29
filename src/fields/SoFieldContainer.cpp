@@ -100,7 +100,7 @@ static void SoFieldContainer_cleanupClass(void);
 SoType SoFieldContainer::classTypeId STATIC_SOTYPE_INIT;
 
 // used by setUserData() and getUserData()
-typedef SbHash<void *, const SoFieldContainer *> UserDataMap;
+typedef SbHash<const SoFieldContainer *, void *> UserDataMap;
 static UserDataMap * sofieldcontainer_userdata_dict = NULL;
 
 void
@@ -181,7 +181,7 @@ public:
 };
 
 
-typedef SbHash<SbBool, const SoFieldContainer *> ContentsCopiedMap;
+typedef SbHash<const SoFieldContainer *, SbBool> ContentsCopiedMap;
 
 typedef struct {
   SbList<SoFieldContainerCopyMap *> * copiedinstancestack;

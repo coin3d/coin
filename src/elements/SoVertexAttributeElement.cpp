@@ -34,7 +34,7 @@
 
 class SoVertexAttributeElementP {
 public:
-  typedef SbHash<SoVertexAttributeData *, const char *> AttribDict;
+  typedef SbHash<const char *, SoVertexAttributeData *> AttribDict;
   AttribDict attribdict;
 };
 

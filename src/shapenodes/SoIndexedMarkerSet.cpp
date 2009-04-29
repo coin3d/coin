@@ -52,7 +52,7 @@
         ]
      }
 
-     IndexedMarkerSet { 
+     IndexedMarkerSet {
         coordIndex [0, 1, 2, 3, 4, 5, 6, 7]
         markerIndex [0, 1, 0, 1, 0, 1, 0, 1]
      }
@@ -62,12 +62,12 @@
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
-  IndexedMarkerSet { 
-    vertexProperty 	NULL 
-    coordIndex 	0 
-    materialIndex 	-1 
-    normalIndex 	-1 
-    textureCoordIndex 	-1
+  IndexedMarkerSet {
+    vertexProperty        NULL
+    coordIndex        0
+    materialIndex        -1
+    normalIndex        -1
+    textureCoordIndex        -1
     markerIndex   -1
   }
   \endcode
@@ -259,7 +259,7 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
 
     projmatrix.multVecMatrix(point, point);
     point[0] = (point[0] + 1.0f) * 0.5f * vpsize[0];
-    point[1] = (point[1] + 1.0f) * 0.5f * vpsize[1];      
+    point[1] = (point[1] + 1.0f) * 0.5f * vpsize[1];
 
     // To have the exact center point of the marker drawn at the
     // projected 3D position.  (FIXME: I haven't actually checked that
@@ -269,8 +269,8 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
     point[0] = point[0] - (size[0] - 1) / 2;
     point[1] = point[1] - (size[1] - 1) / 2;
 
-    //FIXME: this will probably fail if someone has overwritten one of the 
-    //built-in markers. Currently there is no way of fetching a marker's 
+    //FIXME: this will probably fail if someone has overwritten one of the
+    //built-in markers. Currently there is no way of fetching a marker's
     //alignment from outside the SoMarkerSet class though. 20090424 wiesener
     int align = (marker >= SoMarkerSet::NUM_MARKERS) ? 1 : 4;
     glPixelStorei(GL_UNPACK_ALIGNMENT, align);
@@ -299,5 +299,3 @@ SoIndexedMarkerSet::notify(SoNotList * list)
 {
   return;
 }
-
-

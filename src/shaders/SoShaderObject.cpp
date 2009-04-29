@@ -203,7 +203,7 @@ private:
   static void sensorCB(void *data, SoSensor *);
 
   SbStringList searchdirectories;
-  SbHash <SoGLShaderObject *, uint32_t> glshaderobjects;
+  SbHash<uint32_t, SoGLShaderObject *> glshaderobjects;
 
   void checkType(void); // sets cachedSourceType
   void readSource(void); // sets cachedSourceProgram depending on sourceType
@@ -608,8 +608,8 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
   else {
     assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
     if (sourceType == SoShaderObject::GLSL_PROGRAM) {
-      return 
-        SoGLDriverDatabase::isSupported(glue, "GL_EXT_geometry_shader4") && 
+      return
+        SoGLDriverDatabase::isSupported(glue, "GL_EXT_geometry_shader4") &&
         SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
     }
     return FALSE;

@@ -50,7 +50,7 @@ public:
 
 // *************************************************************************
 
-typedef SbHash<SoWriterefCounterBaseData *, const SoBase *> SoBase2SoWriterefCounterBaseDataMap;
+typedef SbHash<const SoBase *, SoWriterefCounterBaseData *> SoBase2SoWriterefCounterBaseDataMap;
 
 class SoWriterefCounterOutputData {
 public:
@@ -116,8 +116,8 @@ private:
 
 // *************************************************************************
 
-typedef SbHash<SoWriterefCounter *, SoOutput *> SoOutput2SoWriterefCounterMap;
-typedef SbHash<int, const SoBase *> SoBase2Id;
+typedef SbHash<SoOutput *, SoWriterefCounter *> SoOutput2SoWriterefCounterMap;
+typedef SbHash<const SoBase *, int> SoBase2Id;
 
 class SoWriterefCounterP {
 public:

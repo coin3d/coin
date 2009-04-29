@@ -159,7 +159,7 @@ unsigned int SbHashFunc(const SoOutput * key) {
 
 // FIXME: should use a real set datatype -- the object mapped to is
 // just a dummy. 20050524 mortene.
-typedef SbHash<void *, const char *> BogusSet;
+typedef SbHash<const char *, void *> BogusSet;
 
 class SoOutputP {
 public:

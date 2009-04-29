@@ -26,7 +26,7 @@
   \brief The SoUpgrader class is used to support Inventor files with version < 2.1.
   \ingroup nodes
 
-  This class is needed since some nodes in earlier versions of 
+  This class is needed since some nodes in earlier versions of
   OpenInventor had different fields than nodes in Inventor V2.1.
 
 */
@@ -57,7 +57,7 @@
 // attempting to load the type from a shared object/dll.  pederb.
 //
 // FIXME: replace this with a real set datatype abstraction. 20050524 mortene.
-typedef SbHash<void *, const char *> NameSet;
+typedef SbHash<const char *, void *> NameSet;
 static NameSet * soupgrader_namedict = NULL;
 static SbBool soupgrader_isinitialized = FALSE;
 
@@ -70,7 +70,7 @@ soupgrader_cleanup(void)
 }
 
 // add a name to the upgrader lookup dict.
-static void 
+static void
 soupgrader_add_to_namedict(const SbString & name)
 {
   assert(soupgrader_namedict);
@@ -98,8 +98,8 @@ soupgrader_add_to_namedict(const SbString & name)
   soupgrader_namedict->put(SbName(tmp.getString()).getString(), NULL);
 }
 
-static SbBool 
-soupgrader_exists(const SbName & name) 
+static SbBool
+soupgrader_exists(const SbName & name)
 {
   assert(soupgrader_namedict);
   void * dummy;
@@ -113,31 +113,31 @@ soupgrader_exists(const SbName & name)
 //
 // init all upgradable classes. Can be called multiple times.
 //
-static void 
+static void
 soupgrader_init_classes(void)
 {
   if (!soupgrader_isinitialized) {
     soupgrader_namedict = new NameSet;
-    
+
     SOUPGRADER_ADD_TYPE(SoPackedColorV20);
     SOUPGRADER_ADD_TYPE(SoShapeHintsV10);
 
     soupgrader_isinitialized = TRUE;
-    coin_atexit((coin_atexit_f*) soupgrader_cleanup, CC_ATEXIT_NORMAL); 
+    coin_atexit((coin_atexit_f*) soupgrader_cleanup, CC_ATEXIT_NORMAL);
   }
 }
 
 /*!
   Try creating a node of name \a name with Inventor version \a ivversion.
-  
+
   Returns NULL if no such node exists.
 */
-SoBase * 
+SoBase *
 SoUpgrader::tryCreateNode(const SbName & name, const float ivversion)
 {
   if ((ivversion == 1.0f) || (ivversion == 2.0f)) {
     soupgrader_init_classes();
-    
+
     SbString s(name.getString());
     s += (ivversion == 1.0f) ? "V10" : "V20";
 
@@ -161,7 +161,7 @@ SoUpgrader::tryCreateNode(const SbName & name, const float ivversion)
   Upgrade \a base, usually created using SoUpgrader::tryCreateNode(),
   to the latest version of the same node.
 */
-SoBase * 
+SoBase *
 SoUpgrader::createUpgrade(const SoBase * base)
 {
   soupgrader_init_classes();

@@ -73,7 +73,7 @@ PRIVATE_NODE_TYPESYSTEM_SOURCE(SoProtoInstance);
 
 // *************************************************************************
 
-typedef SbHash<SoProtoInstance *, const SoNode *> SoNode2SoProtoInstanceMap;
+typedef SbHash<const SoNode *, SoProtoInstance *> SoNode2SoProtoInstanceMap;
 
 static SoNode2SoProtoInstanceMap * protoinstance_dict;
 static void * protoinstance_mutex;
