@@ -995,9 +995,9 @@ struct fieldcontainer_unref_node :
   public SbHash<const SoFieldContainer *,
               const SoFieldContainer *>::ApplyFunctor<void *>
 {
-  void operator()(const SoFieldContainer * & COIN_UNUSED(key),
+  void operator()(const SoFieldContainer * & COIN_UNUSED_ARG(key),
                   const SoFieldContainer * & fieldcontainer,
-                  void * COIN_UNUSED(closure)) {
+                  void * COIN_UNUSED_ARG(closure)) {
     fieldcontainer->unref();
   }
 };
