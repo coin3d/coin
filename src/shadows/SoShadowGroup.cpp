@@ -35,8 +35,9 @@
   shadow casters.
 
   The algorithm used to render the shadows is Variance Shadow Maps
-  (http://www.punkuser.net/vsm/). As an extra bonus, all geometry rendered with shadows can also
-  be rendered with per fragment phong lighting.
+  (http://www.punkuser.net/vsm/). As an extra bonus, all geometry
+  rendered with shadows can also be rendered with per fragment phong
+  lighting.
 
   This node will search its subgraph and calculate shadows for all
   SoSpotLight nodes. The node will use one texture unit for each spot
@@ -575,6 +576,8 @@ public:
     this->spotlights.truncate(0);
   }
 
+  static bool supported(const cc_glglue * glctx, SbString reason);
+
   static void shader_enable_cb(void * closure,
                                SoState * state,
                                const SbBool enable);
@@ -681,6 +684,58 @@ SoShadowGroup::init(void)
   SoShadowSpotLight::initClass();
   SoShadowCulling::initClass();
 }
+
+// *************************************************************************
+
+/*!
+  Reports whether or not the shadow nodes can be used successfully on
+  the current system.
+
+  The result will depend on the specific qualities of the graphics
+  card and OpenGL driver on the system.
+
+  An important note about this function:
+
+  The API design of this function has a serious shortcoming, as
+  features of OpenGL should be tested within an OpenGL context, and
+  this function does not provide any means of specifying the
+  context. It is implemented in this manner to match the function
+  signature in TGS Inventor, for compatibility reasons.
+
+  (A temporary offscreen OpenGL context is set up for the feature
+  tests. This should usually be sufficient to decide whether or not
+  the graphics driver / card supports the features needed for
+  rendering shadows.)
+
+  \since Coin 3.1
+*/
+SbBool
+SoShadowGroup::isSupported(void)
+{
+  static int supp = -1;
+  if (supp != -1) { return supp ? true : false; }
+
+  void * glctx = cc_glglue_context_create_offscreen(256, 256);
+  SbBool ok = cc_glglue_context_make_current(glctx);
+  if (!ok) {
+    SoDebugError::postWarning("SoShadowGroupP::isSupported",
+                              "Could not open an OpenGL context.");
+    return false;
+  }
+
+  const cc_glglue * glue = cc_glglue_instance_from_context_ptr(glctx);
+  
+  SbString unused;
+  const bool supported = SoShadowGroupP::supported(glue, unused);
+  supp = supported ? 1 : 0;
+
+  cc_glglue_context_reinstate_previous(glctx);
+  cc_glglue_context_destruct(glctx);
+
+  return supported;
+}
+
+// *************************************************************************
 
 void
 SoShadowGroup::GLRenderBelowPath(SoGLRenderAction * action)
@@ -1127,7 +1182,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
       }
       else {
         SoDebugError::postWarning("SoShadowGroupP::setVertexShader",
-                                  "Unknown light type: %s\n",
+                                  "Unknown light type: %s",
                                   l->getTypeId().getName().getString());
       }
     }
@@ -1371,7 +1426,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
         }
         else {
           SoDebugError::postWarning("SoShadowGroupP::setFragmentShader",
-                                    "Unknown light type: %s\n",
+                                    "Unknown light type: %s",
                                     l->getTypeId().getName().getString());
         }
       }
@@ -1643,30 +1698,42 @@ SoShadowGroupP::shader_enable_cb(void * closure,
   }
 }
 
+bool
+SoShadowGroupP::supported(const cc_glglue * glue, SbString reason)
+{
+  const bool supported =
+    cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
+    SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT) &&
+    SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float");
+
+  if (supported) { return true; }
+
+  reason = "Unable to render shadows.";
+  if (!SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT)) reason += " Frame buffer objects not supported.";
+  if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) reason += " OpenGL version < 2.0.";
+  if (!SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float")) reason += " Floating point textures not supported.";
+
+  return false;
+}
+
 void
 SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 {
   SoState * state = action->getState();
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
-  SbBool supported =
-    cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
-    SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT) &&
-    SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float");
+  // FIXME: should store results in a "context -> supported" map.  -mortene.
+  SbString reason;
+  const bool supported = SoShadowGroupP::supported(glue, reason);
+  if (!supported && PUBLIC(this)->isActive.getValue()) {
+    static bool first = true;
+    if (first) {
+      first = false;
+      SoDebugError::postWarning("SoShadowGroupP::GLRender", reason.getString());
+    }
+  }
 
   if (!supported || !PUBLIC(this)->isActive.getValue()) {
-    if (!supported && PUBLIC(this)->isActive.getValue()) {
-      static int first = 1;
-      if (first) {
-        first = 0;
-        SbString msg("Unable to render shadows.");
-        if (!SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT)) msg += " Frame buffer objects not supported.";
-        if (!cc_glglue_glversion_matches_at_least(glue, 2, 0, 0)) msg += " OpenGL version < 2.0.";
-        if (!SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_float")) msg += " Floating point textures not supported.";
-        SoDebugError::postWarning("SoShadowGroupP::GLRender",
-                                  msg.getString());
-      }
-    }
     if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
     else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
     return;

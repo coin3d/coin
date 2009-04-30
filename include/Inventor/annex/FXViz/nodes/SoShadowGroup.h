@@ -42,6 +42,8 @@ public:
   static void initClass(void);
   static void init(void);
 
+  static SbBool isSupported(void);
+
   SoShadowGroup(void);
 
   enum VisibilityFlag {
