@@ -339,7 +339,6 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     LOCK_VAINDEXER(this);
     if (this->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
-      int i = 0;
       for (int i = 0; i < numindices; i++) {
         int32_t idx = this->coordIndex[i];
         indexer->addPoint(idx);
