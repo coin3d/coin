@@ -30,15 +30,21 @@
 
 #include "misc/SoVertexArrayIndexer.h"
 
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstring>
+#include <cstdio>
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "tidbitsp.h"
 #include "misc/SoVBO.h"
+#include "coindefs.h"
+
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+// symbol length truncation
+#pragma warning(disable:4786)
+#endif // VC6.0
 
 /*!
   Constructor

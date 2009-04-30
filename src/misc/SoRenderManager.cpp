@@ -48,6 +48,13 @@
 #include "coindefs.h"
 #include "tidbitsp.h"
 #include "misc/AudioTools.h"
+#include "coindefs.h"
+
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+// symbol length truncation
+#pragma warning(disable:4786)
+#endif // VC6.0
+
 #include "misc/SoRenderManagerP.h"
 
 //FIXME Improve this doc. BFG 20090123

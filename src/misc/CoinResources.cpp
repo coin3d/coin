@@ -53,10 +53,9 @@
   \ingroup internal
 */
 
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
-#include <map>
+#include <cassert>
+#include <cstring>
+#include <cstdio>
 
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
@@ -73,6 +72,14 @@
 #endif // COIN_MACOS_10 && COIN_MACOSX_FRAMEWORK
 
 #include "tidbitsp.h"
+#include "coindefs.h"
+
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+// sumbol length truncation
+#pragma warning(disable:4786)
+#endif // VC6.0
+
+#include <map>
 
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 2048

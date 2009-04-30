@@ -175,11 +175,11 @@
 
 #include <Inventor/misc/SoGLImage.h>
 
-#include <assert.h>
+#include <cassert>
 #include <list>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <utility>
 
 #ifdef HAVE_CONFIG_H
@@ -214,10 +214,12 @@
 #include "glue/glp.h"
 #include "glue/simage_wrapper.h"
 #include "threads/threadsutilp.h"
+#include "coindefs.h"
 
-using std::list;
-using std::pair;
-using std::make_pair;
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+// truncating symbol length
+#pragma warning(disable:4786)
+#endif // VC6.0
 
 // *************************************************************************
 
@@ -2092,8 +2094,8 @@ SoGLImage::endFrame(SoState *state)
       SoGLImage *img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
       if (img->pimpl->endframecb)
-        cb_list.push_back(make_pair(img->pimpl->endframecb,
-                                    img->pimpl->endframeclosure));
+        cb_list.push_back(std::make_pair(img->pimpl->endframecb, 
+                                         img->pimpl->endframeclosure));
     }
     UNLOCK_GLIMAGE;
 
