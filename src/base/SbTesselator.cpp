@@ -685,9 +685,9 @@ SbTesselator::PImpl::circleCenter(const SbVec3f &a, const SbVec3f &b,
   SbVec3f tmp4(c);
   tmp1 = a;
   tmp2 = b;
-  tmp1 *= (c2+c3);
-  tmp2 *= (c3+c1);
-  tmp4 *= (c1+c2);
+  tmp1 *= float(c2+c3);
+  tmp2 *= float(c3+c1);
+  tmp4 *= float(c1+c2);
   tmp4 += tmp1;
   tmp4 += tmp2;
 
