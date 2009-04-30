@@ -168,6 +168,7 @@ class SbHash {
   private:
   iterator(const SbHash<Key, Type> * master_in) :
     master(master_in) {
+      this->index=0;
       setNextUsedBucket();
     }
     iterator() {
@@ -231,6 +232,7 @@ class SbHash {
   private:
   const_iterator(const SbHash<Key, Type> * master_in) :
     master(master_in) {
+      this->index=0;
       setNextUsedBucket();
     }
     const_iterator() {
