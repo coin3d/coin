@@ -159,7 +159,7 @@ unsigned int SbHashFunc(const SoOutput * key) {
 
 // FIXME: should use a real set datatype -- the object mapped to is
 // just a dummy. 20050524 mortene.
-typedef SbHash<const char *, void *> BogusSet;
+typedef SbHash<void *, const char *> BogusSet;
 
 class SoOutputP {
 public:
@@ -1361,10 +1361,10 @@ SoOutput::removeDEFNode(SbName name)
   BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
   assert(defnames);
 #if COIN_DEBUG
-  SbBool ret = defnames->erase(name.getString());
+  SbBool ret = defnames->remove(name.getString());
   assert(ret && "Tried to remove nonexisting DEFnode");
 #else
-  (void)defnames->erase(name.getString());
+  (void)defnames->remove(name.getString());
 #endif
 }
 

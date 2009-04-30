@@ -57,7 +57,7 @@ public:
   void * userdata;
 };
 
-typedef SbHash<uint32_t, int16_t> UInt32ToInt16Map;
+typedef SbHash<int16_t, uint32_t> UInt32ToInt16Map;
 
 // *************************************************************************
 

@@ -1819,7 +1819,7 @@ SoInput::removeReference(const SbName & name)
     proto->removeReference(name);
   }
   else {
-    PRIVATE(this)->references.erase(name.getString());
+    PRIVATE(this)->references.remove(name.getString());
   }
 }
 

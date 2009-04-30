@@ -55,7 +55,7 @@
 // *************************************************************************
 
 typedef void convert_func(SoField * from, SoField * to);
-typedef SbHash<uint32_t, convert_func *> UInt32ToConverterFuncMap;
+typedef SbHash<convert_func *, uint32_t> UInt32ToConverterFuncMap;
 
 static UInt32ToConverterFuncMap * convertfunc_dict = NULL;
 

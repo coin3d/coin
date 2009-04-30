@@ -73,7 +73,7 @@ PRIVATE_NODE_TYPESYSTEM_SOURCE(SoProtoInstance);
 
 // *************************************************************************
 
-typedef SbHash<const SoNode *, SoProtoInstance *> SoNode2SoProtoInstanceMap;
+typedef SbHash<SoProtoInstance *, const SoNode *> SoNode2SoProtoInstanceMap;
 
 static SoNode2SoProtoInstanceMap * protoinstance_dict;
 static void * protoinstance_mutex;
@@ -182,7 +182,7 @@ SoProtoInstance::setRootNode(SoNode * root)
 {
   CC_MUTEX_LOCK(protoinstance_mutex);
   if (PRIVATE(this)->root) {
-    protoinstance_dict->erase(PRIVATE(this)->root);
+    protoinstance_dict->remove(PRIVATE(this)->root);
   }
   PRIVATE(this)->root = root;
   if (root) {

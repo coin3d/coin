@@ -204,7 +204,7 @@ soproto_fetchextern_default_cb(SoInput * in,
 
 // *************************************************************************
 
-typedef SbHash<const char *, SoBase *> Name2SoBaseMap;
+typedef SbHash<SoBase *, const char *> Name2SoBaseMap;
 
 class SoProtoP {
 public:
@@ -657,7 +657,7 @@ SoProto::addReference(const SbName & name, SoBase * base)
 void
 SoProto::removeReference(const SbName & name)
 {
-  PRIVATE(this)->refdict.erase(name.getString());
+  PRIVATE(this)->refdict.remove(name.getString());
 }
 
 /*!
@@ -839,12 +839,12 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   if (PRIVATE(this)->extprotonode) {
     return PRIVATE(this)->extprotonode->createInstanceRoot(inst);
   }
-
-  SoNode * root;
-  if (PRIVATE(this)->defroot->getNumChildren() == 1)
-    root = PRIVATE(this)->defroot->getChild(0);
-  else root = PRIVATE(this)->defroot;
-
+  
+  SoNode * root;                                                               
+  if (PRIVATE(this)->defroot->getNumChildren() == 1)                           
+    root = PRIVATE(this)->defroot->getChild(0);                                
+  else root = PRIVATE(this)->defroot;                                          
+  
   SoNode * cpy;
   cpy = root->copy(FALSE);
   cpy->ref();
@@ -902,7 +902,7 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   return cpy;
 }
 
-static SoNode *
+static SoNode * 
 locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
 {
   if (org == NULL) return NULL;
@@ -910,10 +910,10 @@ locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
 
   if (org->getTypeId() != cpy->getTypeId()) return NULL;
   if (org == searchfor) return cpy;
-
+  
   const SoFieldData * fd = org->getFieldData();
   const SoFieldData * fd2 = cpy->getFieldData();
-
+  
   int n = fd->getNumFields();
   int n2 = fd2->getNumFields();
 
@@ -975,7 +975,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 
   for (int i = 0; i < n; i++) {
     SoNode * node = PRIVATE(this)->isnodelist[i];
-
+    
     SbName fieldname = PRIVATE(this)->isfieldlist[i];
     fieldname = soproto_find_fieldname(node, fieldname);
     SoField * dstfield = node->getField(fieldname);
@@ -1012,7 +1012,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
                                 fieldname.getString(), iname.getString(), PRIVATE(this)->name.getString());
       continue;
     }
-
+    
     if (dstfield) {
       if (isprotoinstance) {
         node = SoProtoInstance::findProtoInstance(node);
@@ -1051,7 +1051,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         // investigate more if this bidirectional connection is really
         // necessary and if we should handle this case when counting
         // write references. pederb, 2005-11-15
-
+        
         // update 2005-12-16, pederb:
         // This bidirectional thingie also causes bugs when importing
         // gator_1.wrl (the connections are not set up correctly, or

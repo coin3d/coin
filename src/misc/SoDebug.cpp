@@ -55,11 +55,24 @@ inline unsigned int SbHashFunc(const void * key)
 namespace {
 
 struct SoDebug_internal {
-  static SbHash<void *, char *> * namedict;
+  static SbHash<char *, void *> * namedict;
   static void delete_namedict(void);
+  struct delete_namedict_entry :
+    public SbHash <char *, void *>::ApplyFunctor<void *>
+  {
+    void operator()(void * & key,
+                  char * & obj,
+                  void * closure
+                  )
+    {
+      if ( obj ) free((void *) obj);
+    }
+  };
+
+  //static void delete_namedict_entry(void * & key, char * & obj, void * closure);
 };
 
-SbHash<void *, char *> * SoDebug_internal::namedict = NULL;
+SbHash<char *, void *> * SoDebug_internal::namedict = NULL;
 
 } // anonymous namespace
 
@@ -104,13 +117,13 @@ void
 SoDebug::NamePtr(const char * name, void * ptr)
 {
   if ( SoDebug_internal::namedict == NULL ) {
-    SoDebug_internal::namedict = new SbHash<void *, char *>;
+    SoDebug_internal::namedict = new SbHash<char *, void *>;
     coin_atexit(SoDebug_internal::delete_namedict, CC_ATEXIT_NORMAL);
   }
   char * data = NULL;
   if ( SoDebug_internal::namedict->get(ptr, data) ) {
     free(data);
-    SoDebug_internal::namedict->erase(ptr);
+    SoDebug_internal::namedict->remove(ptr);
   }
   data = strdup(name);
   SoDebug_internal::namedict->put(ptr, data);
@@ -211,15 +224,8 @@ SoDebug::printName(SoBase * base)
 void
 SoDebug_internal::delete_namedict(void)
 {
-  for(
-     SbHash<void *, char *>::const_iterator iter =
-       namedict->const_begin();
-      iter!=namedict->const_end();
-      ++iter
-      ) {
-    if ( iter->obj ) free((void *) iter->obj);
-  }
-
+  delete_namedict_entry functor;
+  namedict->apply(functor);
   delete namedict;
   namedict = NULL;
 }

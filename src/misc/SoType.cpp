@@ -80,12 +80,12 @@
   On UNIX, extensions nodes are regular .so files.
   On Win32, extension nodes are built as DLLs.
   On Mac OS X systems, extension nodes are built as .dylib files. (Note:
-  The extension nodes have to be built using the flag "-dynamiclib",
+  The extension nodes have to be built using the flag "-dynamiclib", 
   not "-bundle".)
 
   Whether the dynamically loadable objects should be named with
   or without the "lib" prefix is optional.  Both schemes will work.
-
+  
   People don't usually program in a way so that they instantiate
   new nodes through the node class' SoType object, but that is the
   way nodes are created when model files are loaded.  This means
@@ -113,7 +113,7 @@
   compilers are of course very welcome.
 
   \sa SoType
-
+  
   \ingroup nodes
   \since Coin 2.0
 */
@@ -184,15 +184,15 @@ template class SbList<SoTypeData *>;
 SbList<SoTypeData *> * SoType::typedatalist = NULL;
 
 // hash map from type name to SoType 'data' id.
-typedef SbHash<const char *, int16_t> Name2IdMap;
+typedef SbHash<int16_t, const char *> Name2IdMap;
 static Name2IdMap * type_dict = NULL;
 
 // hash map from type name to handle for dynamically loaded library
-typedef SbHash<const char *, cc_libhandle> Name2HandleMap;
+typedef SbHash<cc_libhandle, const char *> Name2HandleMap;
 static Name2HandleMap * module_dict = NULL;
 
 // hash map for flagging all the shared library names we have tried
-typedef SbHash<const char *, void *> NameMap;
+typedef SbHash<void *, const char *> NameMap;
 static NameMap * dynload_tries = NULL;
 
 // *************************************************************************
@@ -315,7 +315,7 @@ SoType::removeType(const SbName & name)
     return FALSE;
   }
 
-  type_dict->erase(name.getString());
+  type_dict->remove(name.getString());
   SoTypeData *typedata = (*SoType::typedatalist)[index];
   (*SoType::typedatalist)[index] = NULL;
   delete typedata;
@@ -323,7 +323,7 @@ SoType::removeType(const SbName & name)
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoType::removeType", "%s", name.getString());
 #endif // debug
-
+  
   return TRUE;
 }
 
@@ -580,14 +580,14 @@ SoType::fromName(const SbName name)
         if (dynload_tries->get(module.getString(), dummy))
           continue; // already tried
         dynload_tries->put(module.getString(), NULL);
-
+        
         cc_libhandle idx = NULL;
         if ( module_dict->get(module.getString(), idx) ) {
           // Module has been loaded, but type is not yet finished initializing.
           // SoType::badType() is here the expected return value.  See below.
           return SoType::badType();
         }
-
+        
         // FIXME: should we maybe use a Coin-specific search path variable
         // instead of the LD_LIBRARY_PATH one?  20020216 larsa
 
@@ -609,7 +609,7 @@ SoType::fromName(const SbName name)
       }
 
       if ( handle == NULL ) return SoType::badType();
-
+    
       // find and invoke the initClass() function.
       // FIXME: declspec stuff
       initClassFunction * initClass = (initClassFunction *) cc_dl_sym(handle, mangled.getString());
@@ -772,16 +772,16 @@ SoType::isDerivedFrom(const SoType parent) const
   #include <stdio.h>
   #include <Inventor/SoDB.h>
   #include <Inventor/lists/SoTypeList.h>
-
+  
   static void
   list_subtypes(SoType t, unsigned int indent = 0)
   {
     SoTypeList tl;
     SoType::getAllDerivedFrom(t, tl);
-
-    for (unsigned int i=0; i < indent; i++) { printf("  "); }
+  
+    for (unsigned int i=0; i < indent; i++) { printf("  "); } 
     printf("%s\n", t.getName().getString());
-
+  
     indent++;
     for (int j=0; j < tl.getLength(); j++) {
       if (tl[j].getParent() == t) { // only interested in direct descendents
@@ -789,14 +789,14 @@ SoType::isDerivedFrom(const SoType parent) const
       }
     }
   }
-
+  
   int
   main(void)
   {
     SoDB::init();
-
+  
     list_subtypes(SoType::fromName("SoBase"));
-
+  
     return 0;
   }
   \endcode
@@ -867,7 +867,7 @@ SoType::createInstance(void) const
 int
 SoType::getNumTypes(void)
 {
-  // FIXME: typedatalist can contain entries for removed types, so the number
+  // FIXME: typedatalist can contain entries for removed types, so the number 
   // returned from this method is potentially too high. kintel 20080605.
   return SoType::typedatalist->getLength();
 }

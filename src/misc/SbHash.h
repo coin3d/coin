@@ -25,13 +25,24 @@
 \**************************************************************************/
 
 // *************************************************************************
-// This class (SbHash<Key, Type>) is internal and must not be exposed
+// This class (SbHash<Type, Key>) is internal and must not be exposed
 // in the Coin API.
 
 /**
    This function object is an extension of the STL concept "binary function".
    It is a goal to be as similar as possible to our STL counterpart.
 */
+//FIXME Move this concept to a separate header. BFG 20081112
+template < typename ARG_ONE, typename ARG_TWO, typename ARG_THREE, typename RETTYPE >
+  struct trinary_function {
+  typedef ARG_ONE first_argument_type;
+  typedef ARG_TWO second_argument_type;
+  typedef ARG_THREE third_argument_type;
+  typedef RETTYPE result_type;
+
+  //RETTYPE operator()(ARG_ONE x, ARG_TWO y, ARG_THREE z);
+};
+
 
 #ifndef COIN_INTERNAL
 #error this is a private header file
@@ -59,6 +70,31 @@
 // class.
 
 // *************************************************************************
+
+template <class Type, class Key>
+class SbHashEntry {
+public:
+
+  void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
+    SbHashEntry<Type, Key> * entry = static_cast<SbHashEntry<Type, Key> *>(
+      cc_memalloc_allocate(memhandler));
+    entry->memhandler = memhandler;
+    return static_cast<void *>(entry);
+  }
+  void operator delete(void * ptr, cc_memalloc * memhandler) {
+    cc_memalloc_deallocate(memhandler, ptr);
+  }
+  void operator delete(void * ptr) {
+    SbHashEntry<Type, Key> * entry = static_cast<SbHashEntry<Type, Key> *>( ptr);
+    cc_memalloc_deallocate(entry->memhandler, ptr);
+  }
+  SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
+
+  Key key;
+  Type obj;
+  SbHashEntry<Type, Key> * next;
+  cc_memalloc * memhandler;
+};
 
 // *************************************************************************
 
@@ -115,155 +151,16 @@ unsigned int SbHashFunc(const SoBase * key);
 unsigned int SbHashFunc(const SoOutput * key);
 unsigned int SbHashFunc(const SoSensor * key);
 
-template <class Key, class Type>
+template <class Type, class Key>
 class SbHash {
  public:
-
-  class SbHashEntry {
-  public:
-
-    void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
-      SbHashEntry * entry = static_cast<SbHashEntry *>(cc_memalloc_allocate(memhandler));
-      entry->memhandler = memhandler;
-      return static_cast<void *>(entry);
-    }
-    void operator delete(void * ptr, cc_memalloc * memhandler) {
-      cc_memalloc_deallocate(memhandler, ptr);
-    }
-    void operator delete(void * ptr) {
-      SbHashEntry * entry = static_cast<SbHashEntry *>( ptr);
-      cc_memalloc_deallocate(entry->memhandler, ptr);
-    }
-  SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
-
-    Key key;
-    Type obj;
-    SbHashEntry * next;
-    cc_memalloc * memhandler;
+  template <typename DType>
+    struct ApplyFunctor : public trinary_function<Key,Type,DType, void> {
+    virtual void operator()(Key & key, Type & obj, DType closure) = 0;
+    virtual ~ApplyFunctor() { } // silence virtual-func warning
   };
 
-  class iterator {
-  public:
-    iterator(const iterator & iter) {
-      this->master = iter.master;
-      this->index  = iter.index;
-      this->elem  = iter.elem;
-    }
-    SbHashEntry & operator*() {
-      return *this->elem;
-    }
-    SbHashEntry * operator->() {
-      return this->elem;
-    }
-    bool operator==(const iterator & rhs) const {
-      return rhs.elem == this->elem;
-    }
-    bool operator!=(const iterator & rhs) const {
-      return !((*this)==rhs);
-    }
-    iterator & operator++() {
-      setNext();
-      return *this;
-    }
-  private:
-  iterator(const SbHash<Key, Type> * master_in) :
-    master(master_in) {
-      this->index=0;
-      setNextUsedBucket();
-    }
-    iterator() {
-      this->elem = NULL;
-    }
-
-    inline void setNextUsedBucket() {
-      if (this->index<this->master->size)
-        ++this->index;
-      for (; this->index < this->master->size; ++this->index) {
-        if (this->master->buckets[this->index]) {
-          this->elem = this->master->buckets[this->index];
-          return;
-        }
-      }
-      this->elem = NULL;
-    }
-
-    inline void setNext(){
-      if (this->elem->next) {
-        this->elem = this->elem->next;
-        return;
-      }
-      setNextUsedBucket();
-    }
-
-    SbHash<Key, Type> * master;
-    unsigned int index;
-    SbHashEntry * elem;
-    friend class SbHash<Key, Type>;
-  };
-
-  class const_iterator {
-  public:
-    const_iterator(const iterator & iter) {
-      this->master = iter.master;
-      this->index  = iter.index;
-      this->elem  = iter.elem;
-    }
-    const_iterator(const const_iterator & iter) {
-      this->master = iter.master;
-      this->index  = iter.index;
-      this->elem  = iter.elem;
-    }
-    const SbHashEntry & operator*() {
-      return *this->elem;
-    }
-    const SbHashEntry * operator->() {
-      return this->elem;
-    }
-    bool operator==(const const_iterator & rhs) const {
-      return rhs.elem == this->elem;
-    }
-    bool operator!=(const const_iterator & rhs) const {
-      return !((*this)==rhs);
-    }
-    const_iterator & operator++() {
-      setNext();
-      return *this;
-    }
-  private:
-  const_iterator(const SbHash<Key, Type> * master_in) :
-    master(master_in) {
-      this->index=0;
-      setNextUsedBucket();
-    }
-    const_iterator() {
-      this->elem = NULL;
-    }
-
-    inline void setNextUsedBucket() {
-      if (this->index<this->master->size)
-        ++this->index;
-      for (; this->index < this->master->size; ++this->index) {
-        if (this->master->buckets[this->index]) {
-          this->elem = this->master->buckets[this->index];
-          return;
-        }
-      }
-      this->elem = NULL;
-    }
-
-    inline void setNext(){
-      if (this->elem->next) {
-        this->elem = this->elem->next;
-        return;
-      }
-      setNextUsedBucket();
-    }
-
-    const SbHash<Key, Type> * master;
-    unsigned int index;
-    const SbHashEntry * elem;
-    friend class SbHash<Key, Type>;
-  };
+ public:
 
   SbHash(unsigned int sizearg = 256, float loadfactorarg = 0.0f)
   {
@@ -279,15 +176,8 @@ class SbHash {
   SbHash & operator=(const SbHash & from)
   {
     this->clear();
-    unsigned int i;
-    SbHashEntry * elem;
-    for (i = 0; i < from.size; ++i) {
-      elem = from.buckets[i];
-      while (elem) {
-        this->put(elem->key, elem->obj);
-        elem = elem->next;
-      }
-    }
+    copy_data functor;
+    from.apply(functor, this);
     return *this;
   }
 
@@ -303,45 +193,19 @@ class SbHash {
     unsigned int i;
     for (i = 0; i < this->size; i++) {
       while (this->buckets[i]) {
-        SbHashEntry * entry = this->buckets[i];
+        SbHashEntry<Type, Key> * entry = this->buckets[i];
         this->buckets[i] = entry->next;
         delete entry;
       }
     }
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
     this->elements = 0;
-  }
-
-  iterator begin() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index=0;
-
-    return retVal;
-  }
-
-  iterator end() const {
-    iterator retVal;
-
-    retVal.master=this;
-    retVal.index=this->size;
-
-    return retVal;
-  }
-
-  const_iterator const_begin() const {
-    return const_iterator (this);
-  }
-
-  const_iterator const_end() const {
-    return const_iterator();
   }
 
   SbBool put(const Key & key, const Type & obj)
   {
     unsigned int i = this->getIndex(key);
-    SbHashEntry * entry = this->buckets[i];
+    SbHashEntry<Type, Key> * entry = this->buckets[i];
     while (entry) {
       if (entry->key == key) {
         /* Replace the old value */
@@ -354,7 +218,7 @@ class SbHash {
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
-    entry = new (this->memhandler) SbHashEntry(key, obj);
+    entry = new (this->memhandler) SbHashEntry<Type, Key>(key, obj);
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
@@ -366,7 +230,7 @@ class SbHash {
 
   SbBool get(const Key & key, Type & obj) const
   {
-    SbHashEntry * entry;
+    SbHashEntry<Type, Key> * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
     while (entry) {
@@ -379,10 +243,10 @@ class SbHash {
     return FALSE;
   }
 
-  size_t erase(const Key & key)
+  SbBool remove(const Key & key)
   {
     unsigned int i = this->getIndex(key);
-    SbHashEntry * entry = this->buckets[i], * next, * prev = NULL;
+    SbHashEntry<Type, Key> * entry = this->buckets[i], * next, * prev = NULL;
     while (entry) {
       next = entry->next;
       if (entry->key == key) {
@@ -394,25 +258,36 @@ class SbHash {
           prev->next = next;
         }
         delete entry;
-        return 1;
+        return TRUE;
       }
       prev = entry;
       entry = next;
     }
-    return 0;
+    return FALSE;
+  }
+
+  template<typename PointerType>
+  void apply( ApplyFunctor<PointerType> & func,
+             PointerType closure = NULL) const
+  {
+#ifdef COIN_DEPOINTER_AVAILABLE
+    COIN_CT_ASSERT(coin_depointer<PointerType>::valid);
+#endif
+    unsigned int i;
+    SbHashEntry<Type, Key> * elem;
+    for (i = 0; i < this->size; i++) {
+      elem = this->buckets[i];
+      while (elem) {
+        func(elem->key, elem->obj, closure);
+        elem = elem->next;
+      }
+    }
   }
 
   void makeKeyList(SbList<Key> & l) const
   {
-    unsigned int i;
-    SbHashEntry * elem;
-    for (i = 0; i < this->size; ++i) {
-      elem = this->buckets[i];
-      while (elem) {
-        l.append(elem->key);
-        elem = elem->next;
-      }
-    }
+    add_to_list functor;
+    this->apply(functor, &l);
   }
 
   unsigned int getNumElements(void) const { return this->elements; }
@@ -428,21 +303,21 @@ protected:
     if (this->size >= newsize) return;
 
     unsigned int oldsize = this->size;
-    SbHashEntry ** oldbuckets = this->buckets;
+    SbHashEntry<Type, Key> ** oldbuckets = this->buckets;
 
     this->size = newsize;
     this->elements = 0;
     this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
-    this->buckets = new SbHashEntry * [newsize];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
+    this->buckets = new SbHashEntry<Type, Key> * [newsize];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
 
     /* Transfer all mappings */
     unsigned int i;
     for (i = 0; i < oldsize; i++) {
-      SbHashEntry * entry = oldbuckets[i];
+      SbHashEntry<Type, Key> * entry = oldbuckets[i];
       while (entry) {
         this->put(entry->key, entry->obj);
-        SbHashEntry * preventry = entry;
+        SbHashEntry<Type, Key> * preventry = entry;
         entry = entry->next;
         delete preventry;
       }
@@ -455,13 +330,13 @@ private:
   {
     if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
     unsigned int s = coin_geq_prime_number(sizearg);
-    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry<Type, Key>));
     this->size = s;
     this->elements = 0;
     this->threshold = static_cast<unsigned int> (s * loadfactorarg);
     this->loadfactor = loadfactorarg;
-    this->buckets = new SbHashEntry * [this->size];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
+    this->buckets = new SbHashEntry<Type, Key> * [this->size];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
   }
 
   void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
@@ -471,7 +346,7 @@ private:
     for (i = 0; i < this->size; i++) {
       if (this->buckets[i]) {
         unsigned int chain_l = 0;
-        SbHashEntry * entry = this->buckets[i];
+        SbHashEntry<Type, Key> * entry = this->buckets[i];
         buckets_used++;
         while (entry) {
           chain_l++;
@@ -485,12 +360,24 @@ private:
     chain_length_avg = static_cast<float>( this->elements / buckets_used);
   }
 
+  struct copy_data : public ApplyFunctor<SbHash *> {
+    void operator()(Key & key, Type & obj, SbHash * thisp) {
+      thisp->put(key, obj);
+    }
+  };
+
+  struct add_to_list : public ApplyFunctor<SbList<Key> *> {
+    void operator()(Key & key, Type & obj, SbList<Key> * list) {
+      list->append(key);
+    }
+  };
+
   float loadfactor;
   unsigned int size;
   unsigned int elements;
   unsigned int threshold;
 
-  SbHashEntry ** buckets;
+  SbHashEntry<Type, Key> ** buckets;
   cc_memalloc * memhandler;
 };
 

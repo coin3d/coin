@@ -78,8 +78,8 @@
   given \c KEY.
 */
 
-static SbHash<int, char> * converttoprintable = NULL;
-static SbHash<int, char> * converttoprintable_shift = NULL;
+static SbHash<char, int> * converttoprintable = NULL;
+static SbHash<char, int> * converttoprintable_shift = NULL;
 
 extern "C" {
 
@@ -98,14 +98,14 @@ static void
 build_convert_dicts(void)
 {
   int i;
-  converttoprintable = new SbHash<int, char>();
-  converttoprintable_shift = new SbHash<int, char>();
+  converttoprintable = new SbHash<char, int>();
+  converttoprintable_shift = new SbHash<char, int>();
   coin_atexit(sokeyboardevent_cleanup, CC_ATEXIT_NORMAL);
 
 #define ADD_KEY(x,y) d->put(SoKeyboardEvent::x, y)
 
   // shift not down
-  SbHash<int, char> * d = converttoprintable;
+  SbHash<char, int> * d = converttoprintable;
   ADD_KEY(NUMBER_0, '0');
   ADD_KEY(NUMBER_1, '1');
   ADD_KEY(NUMBER_2, '2');
@@ -348,7 +348,7 @@ SoKeyboardEvent::getPrintableCharacter(void) const
     build_convert_dicts();
   }
 
-  SbHash<int, char> * dict =
+  SbHash<char, int> * dict =
     this->wasShiftDown() ? converttoprintable_shift : converttoprintable;
   char value;
   if (dict->get(this->getKey(), value)) { return value; }

@@ -63,7 +63,7 @@ void * SoBase::PImpl::obj2name_mutex = NULL;
 void * SoBase::PImpl::auditor_mutex = NULL;
 void * SoBase::PImpl::global_mutex = NULL;
 
-SbHash<const SoBase *, SoAuditorList *> * SoBase::PImpl::auditordict = NULL;
+SbHash<SoAuditorList *, const SoBase *> * SoBase::PImpl::auditordict = NULL;
 
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
@@ -71,8 +71,8 @@ SbHash<const SoBase *, SoAuditorList *> * SoBase::PImpl::auditordict = NULL;
 // pointer for each and every object, we'll cut down on a decent
 // amount of memory use this way (SoBase should be kept as slim as
 // possible, as any dead weight is brought along in a lot of objects).
-SbHash<const char *, SbPList *> * SoBase::PImpl::name2obj = NULL;
-SbHash<const SoBase *, const char *> * SoBase::PImpl::obj2name = NULL;
+SbHash<SbPList *, const char *> * SoBase::PImpl::name2obj = NULL;
+SbHash<const char *, const SoBase *> * SoBase::PImpl::obj2name = NULL;
 
 // This is used for debugging purposes: it stores a pointer to all
 // SoBase-derived objects that have been allocated and not
@@ -121,23 +121,26 @@ void
 SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const name)
 {
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
-  SoBase::PImpl::obj2name->erase(base);
+  SoBase::PImpl::obj2name->remove(base);
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
+
+
+struct auditordict_cb :
+  public SbHash<SoAuditorList *, const SoBase *>::ApplyFunctor<void *>
+{
+  void operator()(const SoBase * &, SoAuditorList * & l, void *)
+  {
+    delete l;
+  }
+};
 
 void
 SoBase::PImpl::cleanup_auditordict(void)
 {
   if (SoBase::PImpl::auditordict) {
-    for(
-       SbHash<const SoBase *, SoAuditorList *>::const_iterator iter =
-         SoBase::PImpl::auditordict->const_begin();
-       iter!=SoBase::PImpl::auditordict->const_end();
-       ++iter
-       ) {
-      delete iter->obj;
-    }
-
+    auditordict_cb functor;
+    SoBase::PImpl::auditordict->apply(functor, static_cast<void *>(NULL));
     delete SoBase::PImpl::auditordict;
     SoBase::PImpl::auditordict = NULL;
   }

@@ -109,7 +109,7 @@ public:
 
   void generateStackedBarsChart(void);
 
-  SbHash<const char *, Graph *> graphs;
+  SbHash<Graph *, const char *> graphs;
 
   SoScrollingGraphKit * kit;
   Datum * first;

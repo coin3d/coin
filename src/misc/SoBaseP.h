@@ -38,7 +38,7 @@ class SoInput;
 
 // FIXME: should implement and use a proper set-abstraction
 // datatype. 20050524 mortene.
-typedef SbHash<const SoBase *, void *> SoBaseSet;
+typedef SbHash<void *, const SoBase *> SoBaseSet;
 
 class SoBase::PImpl {
 public:
@@ -59,9 +59,9 @@ public:
   static void * auditor_mutex;
   static void * global_mutex;
 
-  static SbHash<const SoBase *, SoAuditorList *> * auditordict;
-  static SbHash<const char *, SbPList *> * name2obj;
-  static SbHash<const SoBase *, const char *> * obj2name;
+  static SbHash<SoAuditorList *, const SoBase *> * auditordict;
+  static SbHash<SbPList *, const char *> * name2obj;
+  static SbHash<const char *, const SoBase *> * obj2name;
 
   static SbBool trackbaseobjects;
   static void * allbaseobj_mutex;
@@ -75,6 +75,8 @@ public:
 
   static void removeName2Obj(SoBase * const base, const char * const name);
   static void removeObj2Name(SoBase * const base, const char * const name);
+
+  //static void emptyName2ObjHash(const char * const & n, SbPList * const & l, void * closure);
 
   static void check_for_leaks(void);
 
@@ -99,5 +101,15 @@ public:
   };
 
 }; // SoBase::PImpl
+
+// Used to free the SbPLists in the name<->object dict.
+struct emptyName2ObjHash :
+  public SbHash<SbPList *, const char *>::ApplyFunctor<void *>
+{
+  void operator()(const char * &, SbPList * & l, void *)
+  {
+    delete l;
+  }
+};
 
 #endif // !COIN_SOBASEP_H

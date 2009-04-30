@@ -65,45 +65,55 @@
 class socontexthandler_cbitem {
 public:
   socontexthandler_cbitem(void) : func(NULL), closure(NULL), idx(0) { }
-
+  
   int operator==(const socontexthandler_cbitem & theother) {
-    return
+    return 
       this->func == theother.func &&
       this->closure == theother.closure;
   }
-
+  
   operator unsigned long(void) const {
     unsigned long key = 0;
     // create an xor key
     const unsigned char * ptr = (const unsigned char *) this;
-
+    
     // a bit hackish. Stop xor'ing at idx
     const unsigned char * stop = (const unsigned char*) &this->idx;
-
+    
     const ptrdiff_t size = stop - ptr;
-
+    
     for (int i = 0; i < size; i++) {
       int shift = (i%4) * 8;
       key ^= (ptr[i]<<shift);
     }
     return key;
   }
-
+  
   SoContextHandler::ContextDestructionCB * func;
   void * closure;
-
+  
   // this must be last!!
   int idx;
+};
+
+struct socontexthandler_sbhashcb :
+  public SbHash <uint32_t, socontexthandler_cbitem>::ApplyFunctor<SbList <socontexthandler_cbitem> *>
+{
+  void operator()(socontexthandler_cbitem & key,
+            uint32_t & obj, SbList <socontexthandler_cbitem> * list)
+  {
+    list->append(key);
+  }
 };
 
 // "extern C" wrapper is needed with the OSF1/cxx compiler (probably a
 // bug in the compiler, but it doesn't seem to hurt to do this
 // anyway).
-extern "C" { static int
+extern "C" { static int 
 socontexthandler_qsortcb(const void * p0, const void * p1)
 {
-  socontexthandler_cbitem * i0 = (socontexthandler_cbitem *) p0;
-  socontexthandler_cbitem * i1 = (socontexthandler_cbitem *) p1;
+  socontexthandler_cbitem * i0 = (socontexthandler_cbitem *) p0; 
+  socontexthandler_cbitem * i1 = (socontexthandler_cbitem *) p1; 
 
   return int(i0->idx) - int(i1->idx);
 }
@@ -111,7 +121,7 @@ socontexthandler_qsortcb(const void * p0, const void * p1)
 
 // *************************************************************************
 
-static SbHash<socontexthandler_cbitem, uint32_t> * socontexthandler_hashlist;
+static SbHash <uint32_t, socontexthandler_cbitem> * socontexthandler_hashlist;
 static uint32_t socontexthandler_idx = 0;
 static void * socontexthandler_mutex;
 
@@ -129,7 +139,7 @@ socontexthandler_cleanup(void)
     (void)printf("Coin debug: socontexthandler_cleanup(): %d context-bound "
                  "resources not free'd before exit.\n", len);
   }
-#endif // COIN_DEBUG
+#endif // COIN_DEBUG  
   delete socontexthandler_hashlist;
   socontexthandler_hashlist = NULL;
   socontexthandler_idx = 0;
@@ -157,26 +167,19 @@ SoContextHandler::destructingContext(uint32_t contextid)
 {
   CC_MUTEX_CONSTRUCT(socontexthandler_mutex);
   CC_MUTEX_LOCK(socontexthandler_mutex);
-  if (socontexthandler_hashlist == NULL) {
+  if (socontexthandler_hashlist == NULL) { 
     CC_MUTEX_UNLOCK(socontexthandler_mutex);
-    return;
+    return; 
   }
 
   SbList <socontexthandler_cbitem> listcopy;
-  for(
-      SbHash<socontexthandler_cbitem, uint32_t>::const_iterator iter =
-       socontexthandler_hashlist->const_begin();
-      iter!=socontexthandler_hashlist->const_end();
-      ++iter
-      ) {
-    listcopy.append(iter->key);
-  }
-
+  socontexthandler_sbhashcb functor;
+  socontexthandler_hashlist->apply(functor, &listcopy);
   CC_MUTEX_UNLOCK(socontexthandler_mutex);
 
-  qsort((void*) listcopy.getArrayPtr(),
+  qsort((void*) listcopy.getArrayPtr(), 
         socontexthandler_hashlist->getNumElements(),
-        sizeof(socontexthandler_cbitem),
+        sizeof(socontexthandler_cbitem), 
         socontexthandler_qsortcb);
 
   // process callbacks FILO-style so that callbacks registered first
@@ -186,7 +189,7 @@ SoContextHandler::destructingContext(uint32_t contextid)
   // might schedule destruction of GL resources through the methods in
   // SoGLCacheContextElement). This criteria is met as it is now,
   // since it's the only callback added while initializing Coin
-  // (SoDB::init()).
+  // (SoDB::init()). 
 
   // FIXME: We should probably add a new method in
   // SoGLCacheContextElement which this class can call after all the
@@ -206,7 +209,7 @@ SoContextHandler::destructingContext(uint32_t contextid)
   Add a callback which will be called every time a GL context is
   destructed. The callback should delete all GL resources tied to that
   context.
-
+  
   All nodes/classes that allocate GL resources should set up a callback
   like this. Add the callback in the constructor of the node/class,
   and remove it in the destructor.
@@ -220,7 +223,7 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
   CC_MUTEX_CONSTRUCT(socontexthandler_mutex);
   CC_MUTEX_LOCK(socontexthandler_mutex);
   if (socontexthandler_hashlist == NULL) {
-    socontexthandler_hashlist = new SbHash<socontexthandler_cbitem, uint32_t> (64);
+    socontexthandler_hashlist = new SbHash <uint32_t, socontexthandler_cbitem> (64);
     // make this callback trigger after the SoGLCacheContext cleanup function
     // by setting priority to -1
     coin_atexit((coin_atexit_f *)socontexthandler_cleanup, CC_ATEXIT_NORMAL_LOWPRIORITY);
@@ -235,7 +238,7 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
 
 /*!
   Remove a context destruction callback.
-
+  
   \sa addContextDestructionCallback()
 */
 void
@@ -246,9 +249,9 @@ SoContextHandler::removeContextDestructionCallback(ContextDestructionCB * func, 
   socontexthandler_cbitem item;
   item.func = func;
   item.closure = closure;
-
+  
   CC_MUTEX_LOCK(socontexthandler_mutex);
-  int didremove = socontexthandler_hashlist->erase(item);
+  int didremove = socontexthandler_hashlist->remove(item);
   assert(didremove);
   CC_MUTEX_UNLOCK(socontexthandler_mutex);
 }

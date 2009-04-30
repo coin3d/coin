@@ -68,7 +68,7 @@ class SoGLDriverDatabaseP {
     SbList <SbName> fast;
     SbList <SbName> disabled;
 
-    SbHash<const char *, const char *> features;
+    SbHash <const char *, const char *> features;
 
     uint32_t contextid;
   };
@@ -137,13 +137,13 @@ private:
   cc_xml_doc * database;
 
   SbList <SoGLDriver*> driverlist;
-  SbHash<FeatureID, SbBool> brokencache;
-  SbHash<FeatureID, SbBool> slowcache;
-  SbHash<FeatureID, SbBool> fastcache;
-  SbHash<FeatureID, SbBool> disabledcache;
+  SbHash <SbBool, FeatureID> brokencache;
+  SbHash <SbBool, FeatureID> slowcache;
+  SbHash <SbBool, FeatureID> fastcache;
+  SbHash <SbBool, FeatureID> disabledcache;
 
   typedef SbBool glglue_feature_test_f(const cc_glglue * glue);
-  SbHash<const char *, glglue_feature_test_f *> featuremap;
+  SbHash <glglue_feature_test_f *, const char *> featuremap;
 };
 
 // static variables
@@ -182,7 +182,7 @@ SoGLDriverDatabaseP::multidraw_elements_wrapper(const cc_glglue * glue)
   return FALSE;
 }
 
-SbBool
+SbBool 
 SoGLDriverDatabaseP::glsl_clip_vertex_hw_wrapper(const cc_glglue * glue)
 {
   // ATi doesn't support gl_ClipVertex in hardware, according to their own own paper

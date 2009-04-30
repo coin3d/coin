@@ -230,7 +230,7 @@ SoBase::~SoBase()
   if (SoBase::PImpl::auditordict) {
     SoAuditorList * l;
     if (SoBase::PImpl::auditordict->get(this, l)) {
-      SoBase::PImpl::auditordict->erase(this);
+      SoBase::PImpl::auditordict->remove(this);
       delete l;
     }
   }
@@ -239,7 +239,7 @@ SoBase::~SoBase()
 #if COIN_DEBUG
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
-    const SbBool ok = SoBase::PImpl::allbaseobj->erase(this);
+    const SbBool ok = SoBase::PImpl::allbaseobj->remove(this);
     assert(ok && "something fishy going on in debug object tracking");
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
@@ -355,8 +355,8 @@ SoBase::initClass(void)
 
   SoBase::classTypeId = SoType::createType(SoType::badType(), "Base");
 
-  SoBase::PImpl::name2obj = new SbHash<const char *, SbPList *>;
-  SoBase::PImpl::obj2name = new SbHash<const SoBase *, const char *>();
+  SoBase::PImpl::name2obj = new SbHash<SbPList *, const char *>;
+  SoBase::PImpl::obj2name = new SbHash<const char *, const SoBase *>();
   SoBase::PImpl::refwriteprefix = new SbString("+");
   SoBase::PImpl::allbaseobj = new SoBaseSet;
 
@@ -369,7 +369,7 @@ SoBase::initClass(void)
 
   // debug
   const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
-  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;
+  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;  
 
   SoWriterefCounter::initClass();
 }
@@ -383,14 +383,8 @@ SoBase::cleanClass(void)
   assert(SoBase::PImpl::obj2name);
 
   // Delete the SbPLists in the dictionaries.
-  for(
-      SbHash<const char *, SbPList *>::const_iterator iter =
-       SoBase::PImpl::name2obj->const_begin();
-      iter!=SoBase::PImpl::name2obj->const_end();
-      ++iter
-      ) {
-    delete iter->obj;
-  }
+  emptyName2ObjHash functor;
+  SoBase::PImpl::name2obj->apply(functor, static_cast<void *>(NULL));
 
   delete SoBase::PImpl::allbaseobj; SoBase::PImpl::allbaseobj = NULL;
 
@@ -519,7 +513,7 @@ SoBase::unref(void) const
   CC_MUTEX_LOCK(SoBase::PImpl::mutex);
   this->objdata.referencecount--;
   int refcount = this->objdata.referencecount;
-
+ 
   CC_MUTEX_UNLOCK(SoBase::PImpl::mutex);
 
 #if COIN_DEBUG
@@ -847,7 +841,7 @@ SoBase::getAuditors(void) const
   CC_MUTEX_LOCK(SoBase::PImpl::auditor_mutex);
 
   if (SoBase::PImpl::auditordict == NULL) {
-    SoBase::PImpl::auditordict = new SbHash<const SoBase *, SoAuditorList *>();
+    SoBase::PImpl::auditordict = new SbHash<SoAuditorList *, const SoBase *>();
     coin_atexit((coin_atexit_f*)SoBase::PImpl::cleanup_auditordict, CC_ATEXIT_NORMAL);
   }
 
@@ -1272,9 +1266,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       out->incrementIndent();
     }
   }
-
+  
   int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
-
+  
 #if COIN_DEBUG
   if (SoWriterefCounter::debugWriterefs()) {
     SoDebugError::postInfo("SoBase::writeHeader",
@@ -1361,7 +1355,7 @@ SoBase::connectRoute(SoInput * in,
   SoNode * fromnode = SoNode::getByName(fromnodename);
   SoNode * tonode = SoNode::getByName(tonodename);
   if (fromnode && tonode) {
-    SoDB::createRoute(fromnode, fromfieldname.getString(),
+    SoDB::createRoute(fromnode, fromfieldname.getString(), 
                       tonode, tofieldname.getString());
     return TRUE;
   }

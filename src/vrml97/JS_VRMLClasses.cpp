@@ -59,7 +59,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
+#include <Inventor/SoOutput.h> 
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoNodeSensor.h>
@@ -100,7 +100,7 @@ struct CoinVrmlJs {
 struct CoinVrmlJs_SensorInfo {
   SbList <JSObject *> objects;
 };
-SbHash<unsigned long, void *> * CoinVrmlJs_sensorinfohash = NULL;
+SbHash <void *, unsigned long> * CoinVrmlJs_sensorinfohash = NULL;
 
 
 const char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
@@ -181,7 +181,7 @@ static JSBool getIndex(JSContext * cx, jsval id, const char * aliases[], int max
 
 // *************************************************************************
 // handlers
-bool jsval2int(JSContext *cx, const jsval v, int32_t &value)
+bool jsval2int(JSContext *cx, const jsval v, int32_t &value) 
 {
   if (JSVAL_IS_NULL(v)) return false;
   int32_t tempval;
@@ -192,7 +192,7 @@ bool jsval2int(JSContext *cx, const jsval v, int32_t &value)
   return true;
 }
 
-bool jsval2double(JSContext *cx, const jsval v, double &value)
+bool jsval2double(JSContext *cx, const jsval v, double &value) 
 {
   if (JSVAL_IS_NULL(v)) return false;
   double tempval;
@@ -646,13 +646,13 @@ static JSBool SFNode_toString(JSContext * cx, JSObject * obj, uintN argc,
   size_t buffer_size = 1024;
   void *buffer = (void *)malloc(buffer_size);
   out.setBuffer(buffer, buffer_size, buffer_realloc);
-
+  
   SoWriteAction wa(&out);
   wa.apply(node);
-
+  
   out.getBuffer(buffer, buffer_size);
 
-  *rval = STRING_TO_JSVAL(spidermonkey()->JS_NewStringCopyZ(cx,
+  *rval = STRING_TO_JSVAL(spidermonkey()->JS_NewStringCopyZ(cx, 
     (char *)buffer));
 
   free(buffer);
@@ -680,7 +680,7 @@ static void SFNode_deleteCB(void * data, SoSensor * sensor)
 
   // Store the sensor-pointer so that it can be properly deleted later
   nodesensorstobedeleted->append((SoNodeSensor *) sensor);
-  CoinVrmlJs_sensorinfohash->erase((unsigned long) node);
+  CoinVrmlJs_sensorinfohash->remove((unsigned long) node);
   delete si;
 }
 
@@ -1340,7 +1340,7 @@ static JSBool SFNode_get(JSContext * cx, JSObject * obj, jsval id, jsval * rval)
 
      2005-11-23 thammer.
 
-     Update: We should look more closely into the return values
+     Update: We should look more closely into the return values 
      JS_TRUE / JS_FALSE for all getters and setters, and possibly for
      other functions as well. It might be more robust to report the
      error (using JS_ReportError) and return JS_TRUE to allow the
@@ -1418,7 +1418,7 @@ static void attachSensorToNode(SoNode * node, JSObject * obj)
 {
   // Has the hash-table been initialized?
   if (!CoinVrmlJs_sensorinfohash) {
-    CoinVrmlJs_sensorinfohash = new SbHash<unsigned long, void *>;
+    CoinVrmlJs_sensorinfohash = new SbHash <void *, unsigned long>;
     coin_atexit(deleteSensorInfoHash, CC_ATEXIT_NORMAL);
   }
 
@@ -1487,7 +1487,7 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
     input.setStringArray(array);
 
     SoGroup * group;
-
+    
     if (input.isFileVRML2())
       group = SoDB::readAllVRML(&input);
     else
@@ -1939,8 +1939,8 @@ CoinVrmlJs::ClassDescriptor CoinVrmlJs::MFVec3d = {
 
 CoinVrmlJs::ClassDescriptor * CLASSDESCRIPTORS[] = {
   &CoinVrmlJs::SFColor, &CoinVrmlJs::SFNode, &CoinVrmlJs::SFRotation,
-  &CoinVrmlJs::SFVec2f, &CoinVrmlJs::SFVec3f, &CoinVrmlJs::SFVec3d,
-  &CoinVrmlJs::MFColor,
+  &CoinVrmlJs::SFVec2f, &CoinVrmlJs::SFVec3f, &CoinVrmlJs::SFVec3d, 
+  &CoinVrmlJs::MFColor, 
   &CoinVrmlJs::MFFloat, &CoinVrmlJs::MFInt32, &CoinVrmlJs::MFNode,
   &CoinVrmlJs::MFRotation, &CoinVrmlJs::MFString, &CoinVrmlJs::MFTime,
   &CoinVrmlJs::MFVec2f, &CoinVrmlJs::MFVec3f, &CoinVrmlJs::MFVec3d
@@ -2020,7 +2020,7 @@ JS_addVRMLclasses(SoJavaScriptEngine * engine)
     MFInt32Handler::field2jsval,
     MFInt32Handler::jsval2field);
 
-  // Enum
+  // Enum 
   engine->addHandler(
     SoSFEnum::getClassTypeId(), NULL,
     SFEnum_field2jsval, SFEnum_jsval2field);

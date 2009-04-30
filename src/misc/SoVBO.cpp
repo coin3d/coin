@@ -56,7 +56,7 @@ static int vbo_render_as_vertex_arrays = -1;
 static int vbo_enabled = -1;
 static int vbo_debug = -1;
 
-static SbHash<uint32_t, SbBool> * vbo_isfast_hash;
+static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
 
 /*!
   Constructor
@@ -85,6 +85,22 @@ SoVBO::vbo_delete(void * closure, uint32_t contextid)
   cc_glglue_glDeleteBuffers(glue, 1, &id);
 }
 
+//
+// Callback from SbHash
+//
+struct vbo_schedule :
+  public SbHash <GLuint, uint32_t>::ApplyFunctor<void *>
+{
+  void operator()(uint32_t & key,
+                GLuint & value,
+                void * closure
+                )
+  {
+    void * ptr = (void*) ((uintptr_t) value);
+    SoGLCacheContextElement::scheduleDeleteCallback(key, SoVBO::vbo_delete, ptr);
+  }
+};
+
 /*!
   Destructor
 */
@@ -92,17 +108,8 @@ SoVBO::~SoVBO()
 {
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
-  for(
-      SbHash<uint32_t, GLuint>::const_iterator iter =
-       this->vbohash.const_begin();
-      iter!=this->vbohash.const_end();
-      ++iter
-      )
-    {
-      void * ptr = (void*) ((uintptr_t) iter->obj);
-      SoGLCacheContextElement::scheduleDeleteCallback(iter->key, SoVBO::vbo_delete, ptr);
-  }
-
+  vbo_schedule functor;
+  this->vbohash.apply(functor, static_cast<void *>(NULL));
   if (this->didalloc) {
     char * ptr = (char*) this->data;
     delete[] ptr;
@@ -125,7 +132,7 @@ SoVBO::init(void)
 {
   coin_glglue_add_instance_created_callback(context_created, NULL);
 
-  vbo_isfast_hash = new SbHash<uint32_t, SbBool> (3);
+  vbo_isfast_hash = new SbHash <SbBool, uint32_t> (3);
   coin_atexit(vbo_atexit_cleanup, CC_ATEXIT_NORMAL);
 
   // use COIN_VBO_MAX_LIMIT to set the largest VBO we create
@@ -192,16 +199,8 @@ void *
 SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
-  for(
-      SbHash<uint32_t, GLuint>::const_iterator iter =
-       this->vbohash.const_begin();
-      iter!=this->vbohash.const_end();
-      ++iter
-      ) {
-    void * ptr = (void*) ((uintptr_t) iter->obj);
-    SoGLCacheContextElement::scheduleDeleteCallback(iter->key, SoVBO::vbo_delete, ptr);
-  }
-
+  vbo_schedule functor;
+  this->vbohash.apply(functor, static_cast<void *>(NULL));
   // clear hash table
   this->vbohash.clear();
 
@@ -230,17 +229,8 @@ void
 SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
-  for(
-      SbHash<uint32_t, GLuint>::const_iterator iter =
-       this->vbohash.const_begin();
-      iter!=this->vbohash.const_end();
-      ++iter
-      ) {
-    void * ptr = (void*) ((uintptr_t) iter->obj);
-    SoGLCacheContextElement::scheduleDeleteCallback(iter->key, SoVBO::vbo_delete, ptr);
-  }
-
-
+  vbo_schedule functor;
+  this->vbohash.apply(functor, static_cast<void *>(NULL));
   // clear hash table
   this->vbohash.clear();
 
@@ -338,7 +328,7 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
   if (thisp->vbohash.get(context, buffer)) {
     const cc_glglue * glue = cc_glglue_instance((int) context);
     cc_glglue_glDeleteBuffers(glue, 1, &buffer);
-    thisp->vbohash.erase(context);
+    thisp->vbohash.remove(context);
   }
 }
 
@@ -431,7 +421,7 @@ SoVBO::testGLPerformance(const uint32_t contextid)
   // did we alreay test this for this context?
   assert(vbo_isfast_hash != NULL);
   if (vbo_isfast_hash->get(contextid, isfast)) return;
-
+  
   // Run time test disabled. Our old test seemed to be buggy, and
   // VBO should be fast on all platforms supporting it now. It was
   // really just one obscure laptop driver that caused problems for

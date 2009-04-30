@@ -171,7 +171,7 @@ public:
     if (thisp->glshaderobjects.get(cachecontext, oldshader)) {
       // just delete immediately. The context is current
       delete oldshader;
-      thisp->glshaderobjects.erase(cachecontext);
+      thisp->glshaderobjects.remove(cachecontext);
     }
   }
 
@@ -203,7 +203,7 @@ private:
   static void sensorCB(void *data, SoSensor *);
 
   SbStringList searchdirectories;
-  SbHash<uint32_t, SoGLShaderObject *> glshaderobjects;
+  SbHash <SoGLShaderObject *, uint32_t> glshaderobjects;
 
   void checkType(void); // sets cachedSourceType
   void readSource(void); // sets cachedSourceProgram depending on sourceType
@@ -608,8 +608,8 @@ SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType, const cc_glg
   else {
     assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
     if (sourceType == SoShaderObject::GLSL_PROGRAM) {
-      return
-        SoGLDriverDatabase::isSupported(glue, "GL_EXT_geometry_shader4") &&
+      return 
+        SoGLDriverDatabase::isSupported(glue, "GL_EXT_geometry_shader4") && 
         SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_SHADER_OBJECT);
     }
     return FALSE;
