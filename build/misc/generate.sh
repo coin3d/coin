@@ -98,7 +98,7 @@ sed \
   -e "s/$source_pwd/..\\\\../g" \
   -e "s/GENERATE_HTML.*=.*NO/GENERATE_HTML = YES/g" \
   -e "s/HTML_OUTPUT.*=.*/HTML_OUTPUT = ..\\\\html/g" \
-  -e "s/GENERATE_TAGFILE.*=.*/GENERATE_TAGFILE = ..\\\\html/g" \
+  -e "s/GENERATE_TAGFILE.*=.*/GENERATE_TAGFILE = ..\\\\html\\\\coin.tag/g" \
   -e 's/$/\r/g' \
   <docs/doxygen.bak >docs/${project}.doxygen
 rm docs/doxygen.bak

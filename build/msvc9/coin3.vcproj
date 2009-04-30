@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin3"
-	ProjectGUID="{0FA3D72A-4085-4B96-87B4-7E519809E4E1}"
+	ProjectGUID="{A2B47F8B-96DF-4E57-A4AB-E0E5D16EE683}"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -33566,6 +33566,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\shapenodes\SoIndexedMarkerSet.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shapenodes/"
+							ProgramDataBaseFileName="StaticDebug\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shapenodes/"
+							ProgramDataBaseFileName="Release\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shapenodes/"
+							ProgramDataBaseFileName="StaticRelease\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shapenodes/"
+							ProgramDataBaseFileName="Debug\shapenodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\shapenodes\SoIndexedNurbsCurve.cpp"
 					>
 					<FileConfiguration
@@ -46680,6 +46730,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\nodes\SoIndexedMarkerSet.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\nodes\SoIndexedNurbsCurve.h"
 					>
 				</File>
@@ -53066,4 +53120,6 @@
 			>
 		</Filter>
 	</Files>
+	<Globals>
+	</Globals>
 </VisualStudioProject>

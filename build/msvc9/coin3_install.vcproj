@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin3_install"
-	ProjectGUID="{8451ECCF-4970-4126-A3FC-B5B35276CAC6}"
+	ProjectGUID="{4A87045E-7702-43E8-9D65-E78A61F47FE4}"
 	Keyword="MakeFileProj"
 	TargetFrameworkVersion="0"
 	>
@@ -129,4 +129,6 @@
 			</File>
 		</Filter>
 	</Files>
+	<Globals>
+	</Globals>
 </VisualStudioProject>

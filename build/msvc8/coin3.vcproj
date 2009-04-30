@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="coin3"
-	ProjectGUID="{DD735ABD-105B-42E7-8C9C-007FBCDF61DC}"
+	ProjectGUID="{01D0D859-77B8-42D6-97BD-0EAF3EF612A3}"
 	>
 	<Platforms>
 		<Platform
@@ -33567,6 +33567,56 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\shapenodes\SoIndexedMarkerSet.cpp"
+					>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticDebug\shapenodes/"
+							ProgramDataBaseFileName="StaticDebug\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Release\shapenodes/"
+							ProgramDataBaseFileName="Release\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\shapenodes/"
+							ProgramDataBaseFileName="StaticRelease\shapenodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\Debug\shapenodes/"
+							ProgramDataBaseFileName="Debug\shapenodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\shapenodes\SoIndexedNurbsCurve.cpp"
 					>
 					<FileConfiguration
@@ -46678,6 +46728,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\nodes\SoIndexedLineSet.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\nodes\SoIndexedMarkerSet.h"
 					>
 				</File>
 				<File

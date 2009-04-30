@@ -8843,6 +8843,19 @@ SOURCE=..\..\src\shapenodes\SoIndexedLineSet.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\shapenodes\SoIndexedMarkerSet.cpp
+!IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\shapenodes"
+!ELSEIF  "$(CFG)" == "coin3 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\shapenodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\shapenodes\SoIndexedNurbsCurve.cpp
 !IF  "$(CFG)" == "coin3 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
@@ -14079,6 +14092,10 @@ SOURCE=..\..\include\Inventor\nodes\SoIndexedFaceSet.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoIndexedLineSet.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoIndexedMarkerSet.h
 # End Source File
 # Begin Source File
 

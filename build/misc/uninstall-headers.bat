@@ -585,6 +585,7 @@ del %COINDIR%\include\Inventor\nodes\SoGeometryShader.h
 del %COINDIR%\include\Inventor\nodes\SoImage.h
 del %COINDIR%\include\Inventor\nodes\SoIndexedFaceSet.h
 del %COINDIR%\include\Inventor\nodes\SoIndexedLineSet.h
+del %COINDIR%\include\Inventor\nodes\SoIndexedMarkerSet.h
 del %COINDIR%\include\Inventor\nodes\SoIndexedNurbsCurve.h
 del %COINDIR%\include\Inventor\nodes\SoIndexedNurbsSurface.h
 del %COINDIR%\include\Inventor\nodes\SoIndexedPointSet.h
