@@ -143,27 +143,62 @@ unsigned int SbHashFunc(const SoSensor * key);
 template <class Key, class Type>
 class SbHash {
  public:
+
   class iterator {
   public:
-    const SbHashEntry<Key, Type> & operator*() {
-      return *this->master->buckets[this->index];
+    iterator(const iterator & iter) {
+      this->master = iter.master;
+      this->index  = iter.index;
+      this->elem  = iter.elem;
     }
-    const SbHashEntry<Key, Type> * operator->() {
-      return this->master->buckets[this->index];
+    SbHashEntry<Key, Type> & operator*() {
+      return *this->elem;
+    }
+    SbHashEntry<Key, Type> * operator->() {
+      return this->elem;
     }
     bool operator==(const iterator & rhs) const {
-      return rhs.index == this->index && rhs.master == this->master;
+      return rhs.elem == this->elem;
     }
     bool operator!=(const iterator & rhs) const {
       return !((*this)==rhs);
     }
     iterator & operator++() {
-      ++this->index;
+      setNext();
       return *this;
     }
   private:
+  iterator(const SbHash<Key, Type> * master_in) :
+    master(master_in) {
+      setNextUsedBucket();
+    }
+    iterator() {
+      this->elem = NULL;
+    }
+
+    inline void setNextUsedBucket() {
+      if (this->index<this->master->size)
+        ++this->index;
+      for (; this->index < this->master->size; ++this->index) {
+        if (this->master->buckets[this->index]) {
+          this->elem = this->master->buckets[this->index];
+          return;
+        }
+      }
+      this->elem = NULL;
+    }
+
+    inline void setNext(){
+      if (this->elem->next) {
+        this->elem = this->elem->next;
+        return;
+      }
+      setNextUsedBucket();
+    }
+
     SbHash<Key, Type> * master;
     unsigned int index;
+    SbHashEntry<Key, Type> * elem;
     friend class SbHash<Key, Type>;
   };
 
@@ -172,35 +207,61 @@ class SbHash {
     const_iterator(const iterator & iter) {
       this->master = iter.master;
       this->index  = iter.index;
+      this->elem  = iter.elem;
     }
     const_iterator(const const_iterator & iter) {
       this->master = iter.master;
       this->index  = iter.index;
+      this->elem  = iter.elem;
     }
     const SbHashEntry<Key, Type> & operator*() {
-      return *this->master->buckets[this->index];
+      return *this->elem;
     }
     const SbHashEntry<Key, Type> * operator->() {
-      return this->master->buckets[this->index];
+      return this->elem;
     }
     bool operator==(const const_iterator & rhs) const {
-      return rhs.index == this->index && rhs.master == this->master;
+      return rhs.elem == this->elem;
     }
     bool operator!=(const const_iterator & rhs) const {
       return !((*this)==rhs);
     }
     const_iterator & operator++() {
-      ++this->index;
+      setNext();
       return *this;
     }
   private:
-  const_iterator(const SbHash<Key, Type> * master_in,unsigned int index_in) :
-    master(master_in), index(index_in) {
+  const_iterator(const SbHash<Key, Type> * master_in) :
+    master(master_in) {
+      setNextUsedBucket();
+    }
+    const_iterator() {
+      this->elem = NULL;
+    }
 
+    inline void setNextUsedBucket() {
+      if (this->index<this->master->size)
+        ++this->index;
+      for (; this->index < this->master->size; ++this->index) {
+        if (this->master->buckets[this->index]) {
+          this->elem = this->master->buckets[this->index];
+          return;
+        }
+      }
+      this->elem = NULL;
+    }
+
+    inline void setNext(){
+      if (this->elem->next) {
+        this->elem = this->elem->next;
+        return;
+      }
+      setNextUsedBucket();
     }
 
     const SbHash<Key, Type> * master;
     unsigned int index;
+    const SbHashEntry<Key, Type> * elem;
     friend class SbHash<Key, Type>;
   };
 
@@ -264,17 +325,17 @@ class SbHash {
     iterator retVal;
 
     retVal.master=this;
-    retVal.index=size;
+    retVal.index=this->size;
 
     return retVal;
   }
 
   const_iterator const_begin() const {
-    return const_iterator (this, 0);
+    return const_iterator (this);
   }
 
   const_iterator const_end() const {
-    return const_iterator (this, size);
+    return const_iterator();
   }
 
   SbBool put(const Key & key, const Type & obj)

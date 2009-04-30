@@ -1014,7 +1014,7 @@ SoFieldContainer::copyDone(void)
       iter!=copiedinstances->const_end();
       ++iter
       ) {
-    iter->key->unref();
+    iter->obj->unref();
   }
 
 
