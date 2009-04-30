@@ -60,31 +60,6 @@
 
 // *************************************************************************
 
-template <class Key, class Type>
-class SbHashEntry {
-public:
-
-  void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
-    SbHashEntry<Key, Type> * entry = static_cast<SbHashEntry<Key, Type> *>(
-      cc_memalloc_allocate(memhandler));
-    entry->memhandler = memhandler;
-    return static_cast<void *>(entry);
-  }
-  void operator delete(void * ptr, cc_memalloc * memhandler) {
-    cc_memalloc_deallocate(memhandler, ptr);
-  }
-  void operator delete(void * ptr) {
-    SbHashEntry<Key, Type> * entry = static_cast<SbHashEntry<Key, Type> *>( ptr);
-    cc_memalloc_deallocate(entry->memhandler, ptr);
-  }
-  SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
-
-  Key key;
-  Type obj;
-  SbHashEntry<Key, Type> * next;
-  cc_memalloc * memhandler;
-};
-
 // *************************************************************************
 
 //Create an uint of an arbitrary length datatype
@@ -144,6 +119,29 @@ template <class Key, class Type>
 class SbHash {
  public:
 
+  class SbHashEntry {
+  public:
+
+    void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
+      SbHashEntry * entry = static_cast<SbHashEntry *>(cc_memalloc_allocate(memhandler));
+      entry->memhandler = memhandler;
+      return static_cast<void *>(entry);
+    }
+    void operator delete(void * ptr, cc_memalloc * memhandler) {
+      cc_memalloc_deallocate(memhandler, ptr);
+    }
+    void operator delete(void * ptr) {
+      SbHashEntry * entry = static_cast<SbHashEntry *>( ptr);
+      cc_memalloc_deallocate(entry->memhandler, ptr);
+    }
+  SbHashEntry(const Key & key, const Type & obj) : key(key), obj(obj) {}
+
+    Key key;
+    Type obj;
+    SbHashEntry * next;
+    cc_memalloc * memhandler;
+  };
+
   class iterator {
   public:
     iterator(const iterator & iter) {
@@ -151,10 +149,10 @@ class SbHash {
       this->index  = iter.index;
       this->elem  = iter.elem;
     }
-    SbHashEntry<Key, Type> & operator*() {
+    SbHashEntry & operator*() {
       return *this->elem;
     }
-    SbHashEntry<Key, Type> * operator->() {
+    SbHashEntry * operator->() {
       return this->elem;
     }
     bool operator==(const iterator & rhs) const {
@@ -198,7 +196,7 @@ class SbHash {
 
     SbHash<Key, Type> * master;
     unsigned int index;
-    SbHashEntry<Key, Type> * elem;
+    SbHashEntry * elem;
     friend class SbHash<Key, Type>;
   };
 
@@ -214,10 +212,10 @@ class SbHash {
       this->index  = iter.index;
       this->elem  = iter.elem;
     }
-    const SbHashEntry<Key, Type> & operator*() {
+    const SbHashEntry & operator*() {
       return *this->elem;
     }
-    const SbHashEntry<Key, Type> * operator->() {
+    const SbHashEntry * operator->() {
       return this->elem;
     }
     bool operator==(const const_iterator & rhs) const {
@@ -261,7 +259,7 @@ class SbHash {
 
     const SbHash<Key, Type> * master;
     unsigned int index;
-    const SbHashEntry<Key, Type> * elem;
+    const SbHashEntry * elem;
     friend class SbHash<Key, Type>;
   };
 
@@ -280,7 +278,7 @@ class SbHash {
   {
     this->clear();
     unsigned int i;
-    SbHashEntry<Key, Type> * elem;
+    SbHashEntry * elem;
     for (i = 0; i < from.size; ++i) {
       elem = from.buckets[i];
       while (elem) {
@@ -303,12 +301,12 @@ class SbHash {
     unsigned int i;
     for (i = 0; i < this->size; i++) {
       while (this->buckets[i]) {
-        SbHashEntry<Key, Type> * entry = this->buckets[i];
+        SbHashEntry * entry = this->buckets[i];
         this->buckets[i] = entry->next;
         delete entry;
       }
     }
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Key, Type> *));
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
     this->elements = 0;
   }
 
@@ -341,7 +339,7 @@ class SbHash {
   SbBool put(const Key & key, const Type & obj)
   {
     unsigned int i = this->getIndex(key);
-    SbHashEntry<Key, Type> * entry = this->buckets[i];
+    SbHashEntry * entry = this->buckets[i];
     while (entry) {
       if (entry->key == key) {
         /* Replace the old value */
@@ -354,7 +352,7 @@ class SbHash {
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
-    entry = new (this->memhandler) SbHashEntry<Key, Type>(key, obj);
+    entry = new (this->memhandler) SbHashEntry(key, obj);
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
@@ -366,7 +364,7 @@ class SbHash {
 
   SbBool get(const Key & key, Type & obj) const
   {
-    SbHashEntry<Key, Type> * entry;
+    SbHashEntry * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
     while (entry) {
@@ -382,7 +380,7 @@ class SbHash {
   SbBool remove(const Key & key)
   {
     unsigned int i = this->getIndex(key);
-    SbHashEntry<Key, Type> * entry = this->buckets[i], * next, * prev = NULL;
+    SbHashEntry * entry = this->buckets[i], * next, * prev = NULL;
     while (entry) {
       next = entry->next;
       if (entry->key == key) {
@@ -405,7 +403,7 @@ class SbHash {
   void makeKeyList(SbList<Key> & l) const
   {
     unsigned int i;
-    SbHashEntry<Key, Type> * elem;
+    SbHashEntry * elem;
     for (i = 0; i < this->size; ++i) {
       elem = this->buckets[i];
       while (elem) {
@@ -428,21 +426,21 @@ protected:
     if (this->size >= newsize) return;
 
     unsigned int oldsize = this->size;
-    SbHashEntry<Key, Type> ** oldbuckets = this->buckets;
+    SbHashEntry ** oldbuckets = this->buckets;
 
     this->size = newsize;
     this->elements = 0;
     this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
-    this->buckets = new SbHashEntry<Key, Type> * [newsize];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Key, Type> *));
+    this->buckets = new SbHashEntry * [newsize];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
 
     /* Transfer all mappings */
     unsigned int i;
     for (i = 0; i < oldsize; i++) {
-      SbHashEntry<Key, Type> * entry = oldbuckets[i];
+      SbHashEntry * entry = oldbuckets[i];
       while (entry) {
         this->put(entry->key, entry->obj);
-        SbHashEntry<Key, Type> * preventry = entry;
+        SbHashEntry * preventry = entry;
         entry = entry->next;
         delete preventry;
       }
@@ -455,13 +453,13 @@ private:
   {
     if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
     unsigned int s = coin_geq_prime_number(sizearg);
-    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry<Key, Type>));
+    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry));
     this->size = s;
     this->elements = 0;
     this->threshold = static_cast<unsigned int> (s * loadfactorarg);
     this->loadfactor = loadfactorarg;
-    this->buckets = new SbHashEntry<Key, Type> * [this->size];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Key, Type> *));
+    this->buckets = new SbHashEntry * [this->size];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
   }
 
   void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
@@ -471,7 +469,7 @@ private:
     for (i = 0; i < this->size; i++) {
       if (this->buckets[i]) {
         unsigned int chain_l = 0;
-        SbHashEntry<Key, Type> * entry = this->buckets[i];
+        SbHashEntry * entry = this->buckets[i];
         buckets_used++;
         while (entry) {
           chain_l++;
@@ -490,7 +488,7 @@ private:
   unsigned int elements;
   unsigned int threshold;
 
-  SbHashEntry<Key, Type> ** buckets;
+  SbHashEntry ** buckets;
   cc_memalloc * memhandler;
 };
 
