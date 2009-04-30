@@ -120,9 +120,6 @@
 
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 
-#include <list>
-#include <vector>
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -165,7 +162,17 @@
 
 #include "actions/SoSubActionP.h"
 #include "collision/SbTri3f.h"
+#include "coindefs.h"
+
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
+// symbol length truncation
+#pragma warning(disable:4786)
+#endif // VC6.0
+
 #include "SbBasicP.h"
+
+#include <list>
+#include <vector>
 
 // *************************************************************************
 
