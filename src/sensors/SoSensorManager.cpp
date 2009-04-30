@@ -390,7 +390,7 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
   }
   // ..then the reinsert list
   if (idx == -1) {
-    if (PRIVATE(this)->reinsertdict.remove(entry)) {
+    if (PRIVATE(this)->reinsertdict.erase(entry)) {
       idx = 0; // make sure notifyChanged() is called.
     }
   }

@@ -230,7 +230,7 @@ SoBase::~SoBase()
   if (SoBase::PImpl::auditordict) {
     SoAuditorList * l;
     if (SoBase::PImpl::auditordict->get(this, l)) {
-      SoBase::PImpl::auditordict->remove(this);
+      SoBase::PImpl::auditordict->erase(this);
       delete l;
     }
   }
@@ -239,7 +239,7 @@ SoBase::~SoBase()
 #if COIN_DEBUG
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
-    const SbBool ok = SoBase::PImpl::allbaseobj->remove(this);
+    const SbBool ok = SoBase::PImpl::allbaseobj->erase(this);
     assert(ok && "something fishy going on in debug object tracking");
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }

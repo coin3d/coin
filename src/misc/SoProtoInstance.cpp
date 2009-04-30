@@ -182,7 +182,7 @@ SoProtoInstance::setRootNode(SoNode * root)
 {
   CC_MUTEX_LOCK(protoinstance_mutex);
   if (PRIVATE(this)->root) {
-    protoinstance_dict->remove(PRIVATE(this)->root);
+    protoinstance_dict->erase(PRIVATE(this)->root);
   }
   PRIVATE(this)->root = root;
   if (root) {

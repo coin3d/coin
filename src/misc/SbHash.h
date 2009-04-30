@@ -379,7 +379,7 @@ class SbHash {
     return FALSE;
   }
 
-  SbBool remove(const Key & key)
+  size_t erase(const Key & key)
   {
     unsigned int i = this->getIndex(key);
     SbHashEntry * entry = this->buckets[i], * next, * prev = NULL;
@@ -394,12 +394,12 @@ class SbHash {
           prev->next = next;
         }
         delete entry;
-        return TRUE;
+        return 1;
       }
       prev = entry;
       entry = next;
     }
-    return FALSE;
+    return 0;
   }
 
   void makeKeyList(SbList<Key> & l) const

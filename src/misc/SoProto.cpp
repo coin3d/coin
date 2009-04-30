@@ -657,7 +657,7 @@ SoProto::addReference(const SbName & name, SoBase * base)
 void
 SoProto::removeReference(const SbName & name)
 {
-  PRIVATE(this)->refdict.remove(name.getString());
+  PRIVATE(this)->refdict.erase(name.getString());
 }
 
 /*!

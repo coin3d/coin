@@ -217,7 +217,7 @@ SoWriterefCounter::destruct(SoOutput * out)
   assert(inst && "instance not found!");
 
   CC_MUTEX_LOCK(SoWriterefCounterP::mutex);
-  (void) SoWriterefCounterP::outputdict->remove(out);
+  (void) SoWriterefCounterP::outputdict->erase(out);
   delete inst;
   CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
 }
@@ -374,7 +374,7 @@ SoWriterefCounter::removeWriteref(const SoBase * base)
   SoWriterefCounterBaseData * data;
   if (PRIVATE(this)->outputdata->writerefdict.get(base, data)) {
     delete data;
-    (void) PRIVATE(this)->outputdata->writerefdict.remove(base);
+    (void) PRIVATE(this)->outputdata->writerefdict.erase(base);
   }
   else {
     assert(0 && "writedata not found");
@@ -597,7 +597,7 @@ SoWriterefCounter::setReference(const SoBase * base, int refid)
 void
 SoWriterefCounter::removeSoBase2IdRef(const SoBase * base)
 {
-  PRIVATE(this)->sobase2id->remove(base);
+  PRIVATE(this)->sobase2id->erase(base);
 }
 
 /*!

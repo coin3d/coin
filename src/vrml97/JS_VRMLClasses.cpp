@@ -680,7 +680,7 @@ static void SFNode_deleteCB(void * data, SoSensor * sensor)
 
   // Store the sensor-pointer so that it can be properly deleted later
   nodesensorstobedeleted->append((SoNodeSensor *) sensor);
-  CoinVrmlJs_sensorinfohash->remove((unsigned long) node);
+  CoinVrmlJs_sensorinfohash->erase((unsigned long) node);
   delete si;
 }
 

@@ -1361,10 +1361,10 @@ SoOutput::removeDEFNode(SbName name)
   BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
   assert(defnames);
 #if COIN_DEBUG
-  SbBool ret = defnames->remove(name.getString());
+  SbBool ret = defnames->erase(name.getString());
   assert(ret && "Tried to remove nonexisting DEFnode");
 #else
-  (void)defnames->remove(name.getString());
+  (void)defnames->erase(name.getString());
 #endif
 }
 

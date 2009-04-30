@@ -121,7 +121,7 @@ void
 SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const name)
 {
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
-  SoBase::PImpl::obj2name->remove(base);
+  SoBase::PImpl::obj2name->erase(base);
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
 

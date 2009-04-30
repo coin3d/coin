@@ -315,7 +315,7 @@ SoType::removeType(const SbName & name)
     return FALSE;
   }
 
-  type_dict->remove(name.getString());
+  type_dict->erase(name.getString());
   SoTypeData *typedata = (*SoType::typedatalist)[index];
   (*SoType::typedatalist)[index] = NULL;
   delete typedata;

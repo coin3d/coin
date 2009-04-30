@@ -219,7 +219,7 @@ public:
 
   void removeConverter(const void * item)
   {
-    SbBool ok = this->maptoconverter.remove(item);
+    SbBool ok = this->maptoconverter.erase(item);
     assert(ok);
   }
 
@@ -416,7 +416,7 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
     newbuf = static_cast<char *>(realloc(bufptr, size));
   }
   if (newbuf != bufptr) {
-    ok = SoFieldP::ptrhash->remove(static_cast<char *>(bufptr));
+    ok = SoFieldP::ptrhash->erase(static_cast<char *>(bufptr));
     assert(ok);
     *bufptrptr = newbuf;
     SoFieldP::ptrhash->put(newbuf, bufptrptr);
@@ -1354,7 +1354,7 @@ SoField::get(SbString & valuestring)
   if (bufferptr) { free(bufferptr); }
 
   CC_MUTEX_LOCK(sofield_mutex);
-  ok = SoFieldP::getReallocHash()->remove(bufferptr ? bufferptr : initbuffer);
+  ok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);
   assert(ok);
   CC_MUTEX_UNLOCK(sofield_mutex);
 }

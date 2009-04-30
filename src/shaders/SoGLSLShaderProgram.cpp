@@ -60,7 +60,7 @@ SoGLSLShaderProgram::deleteProgram(const cc_glglue * g)
     uintptr_t tmp = (uintptr_t) glhandle;
     SoGLCacheContextElement::scheduleDeleteCallback(g->contextid,
                                                     really_delete_object, (void*) tmp);
-    this->programHandles.remove(g->contextid);
+    this->programHandles.erase(g->contextid);
   }
 }
 
@@ -75,7 +75,7 @@ SoGLSLShaderProgram::deletePrograms(void)
     uintptr_t tmp = (uintptr_t) glhandle;
     SoGLCacheContextElement::scheduleDeleteCallback(keylist[i],
                                                     really_delete_object, (void*) tmp);
-    this->programHandles.remove(keylist[i]);
+    this->programHandles.erase(keylist[i]);
   }
 }
 
@@ -165,10 +165,10 @@ SoGLSLShaderProgram::ensureLinking(const cc_glglue * g)
     }
 
     for (i = 0; i < this->programParameters.getLength(); i += 2) {
-      g->glProgramParameteriEXT(programHandle, 
+      g->glProgramParameteriEXT(programHandle,
                                 (GLenum) this->programParameters[i],
                                 this->programParameters[i+1]);
-      
+
     }
 
     g->glLinkProgramARB(programHandle);
@@ -213,7 +213,7 @@ SoGLSLShaderProgram::getProgramHandle(const cc_glglue * g, const SbBool create)
   return handle;
 }
 
-SbBool 
+SbBool
 SoGLSLShaderProgram::neededLinking(void) const
 {
   return this->neededlinking;
@@ -229,7 +229,7 @@ SoGLSLShaderProgram::context_destruction_cb(uint32_t cachecontext, void * userda
     // just delete immediately. The context is current
     const cc_glglue * glue = cc_glglue_instance(cachecontext);
     glue->glDeleteObjectARB(glhandle);
-    thisp->programHandles.remove(cachecontext);
+    thisp->programHandles.erase(cachecontext);
   }
 }
 
@@ -253,14 +253,14 @@ SoGLSLShaderProgram::updateCoinParameter(SoState * state, const SbName & name, c
   }
 }
 
-void 
+void
 SoGLSLShaderProgram::addProgramParameter(int mode, int value)
 {
   this->programParameters.append(mode);
   this->programParameters.append(value);
 }
 
-void 
+void
 SoGLSLShaderProgram::removeProgramParameters(void)
 {
   this->programParameters.truncate(0);

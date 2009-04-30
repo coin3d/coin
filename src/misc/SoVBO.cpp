@@ -338,7 +338,7 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
   if (thisp->vbohash.get(context, buffer)) {
     const cc_glglue * glue = cc_glglue_instance((int) context);
     cc_glglue_glDeleteBuffers(glue, 1, &buffer);
-    thisp->vbohash.remove(context);
+    thisp->vbohash.erase(context);
   }
 }
 

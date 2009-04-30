@@ -110,7 +110,7 @@ SoDebug::NamePtr(const char * name, void * ptr)
   char * data = NULL;
   if ( SoDebug_internal::namedict->get(ptr, data) ) {
     free(data);
-    SoDebug_internal::namedict->remove(ptr);
+    SoDebug_internal::namedict->erase(ptr);
   }
   data = strdup(name);
   SoDebug_internal::namedict->put(ptr, data);

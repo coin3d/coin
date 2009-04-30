@@ -248,7 +248,7 @@ SoContextHandler::removeContextDestructionCallback(ContextDestructionCB * func, 
   item.closure = closure;
 
   CC_MUTEX_LOCK(socontexthandler_mutex);
-  int didremove = socontexthandler_hashlist->remove(item);
+  int didremove = socontexthandler_hashlist->erase(item);
   assert(didremove);
   CC_MUTEX_UNLOCK(socontexthandler_mutex);
 }

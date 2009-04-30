@@ -134,7 +134,7 @@ SoFieldContainer::~SoFieldContainer()
   // area that this destructed instance is placed at. So we must
   // remove our entry (if any -- we can just ignore the return value,
   // no harm is done if no data was set for this instance).
-  (void)sofieldcontainer_userdata_dict->remove(this);
+  (void)sofieldcontainer_userdata_dict->erase(this);
 }
 
 // *************************************************************************

@@ -171,7 +171,7 @@ public:
     if (thisp->glshaderobjects.get(cachecontext, oldshader)) {
       // just delete immediately. The context is current
       delete oldshader;
-      thisp->glshaderobjects.remove(cachecontext);
+      thisp->glshaderobjects.erase(cachecontext);
     }
   }
 
