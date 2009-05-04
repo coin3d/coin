@@ -4837,6 +4837,16 @@ cc_glglue_context_pbuffer_is_bound(void * ctx)
 #endif
 }
 
+/* This abomination is needed to support SoOffscreenRenderer::getDC(). */
+const void *
+cc_glglue_win32_HDC(void * ctx)
+{
+#if defined(HAVE_WGL)
+  return wglglue_context_win32_HDC(ctx);
+#else /* not WGL */
+  return NULL;
+#endif /* not WGL */
+}
 
 /*** </Offscreen buffer handling.> ******************************************/
 

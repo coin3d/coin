@@ -618,10 +618,14 @@ COIN_DLL_API void * cc_glglue_context_create_offscreen(unsigned int width, unsig
 COIN_DLL_API SbBool cc_glglue_context_make_current(void * ctx);
 COIN_DLL_API void cc_glglue_context_reinstate_previous(void * ctx);
 COIN_DLL_API void cc_glglue_context_destruct(void * ctx);
+
 COIN_DLL_API void cc_glglue_context_bind_pbuffer(void * ctx);
 COIN_DLL_API void cc_glglue_context_release_pbuffer(void * ctx);
 COIN_DLL_API SbBool cc_glglue_context_pbuffer_is_bound(void * ctx);
 COIN_DLL_API SbBool cc_glglue_context_can_render_to_texture(void * ctx);
+
+/* This abomination is needed to support SoOffscreenRenderer::getDC(). */
+COIN_DLL_API const void * cc_glglue_win32_HDC(void * ctx);
 
 /* ********************************************************************** */
 

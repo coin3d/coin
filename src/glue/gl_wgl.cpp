@@ -244,6 +244,14 @@ struct wglglue_contextdata {
   int pixelformat;
 };
 
+/* This abomination is needed to support SoOffscreenRenderer::getDC(). */
+const void *
+wglglue_context_win32_HDC(void * ctx)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  return context->memorydc;
+}
+
 static SbBool
 wglglue_pbuffer_symbols_resolved(void)
 {

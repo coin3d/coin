@@ -42,6 +42,7 @@ CoinOffscreenGLCanvas::CoinOffscreenGLCanvas(void)
 {
   this->size = SbVec2s(0, 0);
   this->context = NULL;
+  this->current_hdc = NULL;
 }
 
 CoinOffscreenGLCanvas::~CoinOffscreenGLCanvas()
@@ -179,6 +180,11 @@ CoinOffscreenGLCanvas::tryActivateGLContext(void)
 
     // Set up mapping from GL context to SoGLRenderAction context id.
     this->renderid = SoGLCacheContextElement::getUniqueCacheContext();
+
+    // need to change this, for the getHDC() function, since a
+    // reference to current_hdc is returned (yes, this is dumb, but
+    // such is the TGS / Mercury Inventor API)
+    this->current_hdc = cc_glglue_win32_HDC(this->context);
   }
 
   if (cc_glglue_context_make_current(this->context) == FALSE) { 
@@ -273,8 +279,19 @@ CoinOffscreenGLCanvas::destructContext(void)
   }
 
   cc_glglue_context_destruct(this->context);
+
   this->context = NULL;
   this->renderid = 0;
+  this->current_hdc = NULL;
+}
+
+// *************************************************************************
+
+/* This abomination is needed to support SoOffscreenRenderer::getDC(). */
+const void * const &
+CoinOffscreenGLCanvas::getHDC(void) const
+{
+  return this->current_hdc;
 }
 
 // *************************************************************************

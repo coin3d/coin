@@ -49,7 +49,11 @@ SbBool wglglue_context_can_render_to_texture(void * ctx);
 
 SbBool wglglue_context_pbuffer_max(void * ctx, unsigned int * lims);
 
+/* This abomination is needed to support SoOffscreenRenderer::getDC(). */
+const void * wglglue_context_win32_HDC(void * ctx);
+
 void wglglue_cleanup(void);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

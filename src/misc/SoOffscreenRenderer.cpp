@@ -968,6 +968,8 @@ SoOffscreenRenderer::render(SoPath * scene)
   return PRIVATE(this)->renderFromBase(scene);
 }
 
+// *************************************************************************
+
 /*!
   Returns the offscreen memory buffer.
 */
@@ -986,6 +988,42 @@ SoOffscreenRenderer::getBuffer(void) const
   }
   return PRIVATE(this)->buffer;
 }
+
+/*!
+  Win32 only:
+
+  returns a direct handle to the internal DC of the offscreen
+  context.
+
+  Useful for efficient access to the raw image under certain special
+  circumstances. getBuffer() might be too slow, for instance due to
+  pixel format conversion (Windows DCs are usually BGRA, while the
+  32-bit buffers returned from getBuffer() are RGBA).
+
+  Notes:
+
+  The return value is a reference to a HDC. The HDC typedef has been
+  unwound to a native C++ type for multiplatform compatibility
+  reasons.
+
+  Returned reference will contain a NULL value on other platforms.
+
+  Important limitation: if the current dimensions of the
+  SoOffscreenRenderer instance are larger than what can be rendered
+  with a single offscreen buffer, tiling will be used by the
+  SoOffscreenRenderer, and the returned HDC will contain only part of
+  the full rendered image.
+
+  \sa getBuffer()
+  \since Coin 3.1
+*/
+const void * const &
+SoOffscreenRenderer::getDC(void) const
+{
+  return PRIVATE(this)->glcanvas.getHDC();
+}
+
+// *************************************************************************
 
 //
 // avoid endian problems (little endian sucks, right? :)

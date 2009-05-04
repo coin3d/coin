@@ -53,6 +53,8 @@ public:
   
   static SbBool allowResourcehog(void);
 
+  const void * const & getHDC(void) const; // ugliness to support SoOffscreenRenderer::getDC()
+
 private:
   static SbBool clampSize(SbVec2s & s);
   static void clampToPixelSizeRoof(SbVec2s & s);
@@ -65,6 +67,7 @@ private:
 
   void * context;
   uint32_t renderid;
+  const void * current_hdc;
 };
 
 // *************************************************************************

@@ -70,6 +70,7 @@ public:
   SbBool render(SoNode * scene);
   SbBool render(SoPath * scene);
   unsigned char * getBuffer(void) const;
+  const void * const & getDC(void) const;
 
   SbBool writeToRGB(FILE * fp) const;
   SbBool writeToPostScript(FILE * fp) const;
