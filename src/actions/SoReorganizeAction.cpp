@@ -651,7 +651,6 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
     canrenderasvertexarray = FALSE;
   }
 
-
   if (canrenderasvertexarray && texture0enabled) {
     const SoTextureCoordinateElement * celem =
       static_cast<const SoTextureCoordinateElement *>(SoTextureCoordinateElement::getInstance(state));
@@ -665,6 +664,7 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
       break;
     case SoTextureCoordinateElement::FUNCTION:
       this->needtexcoords[0] = TRUE;
+      break;
     default:
       canrenderasvertexarray = FALSE;
       break;
@@ -707,7 +707,6 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
     float transp = SoLazyElement::getTransparency(state, 0);
     this->diffusecolor = SbColor4f(diffuse, 1.0f - transp);
   }
-
   return canrenderasvertexarray;
 }
 
