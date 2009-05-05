@@ -811,6 +811,27 @@ EnvironmentVariable COINDIR;
 */
 
 /*!
+  \var EnvironmentVariable COIN_VBO
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_VBO_MAX_LIMIT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_VBO_MIN_LIMIT
+
+  \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
   \var EnvironmentVariable COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
 
   \todo Write documentation for this
