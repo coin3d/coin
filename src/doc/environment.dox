@@ -764,7 +764,12 @@ EnvironmentVariable COINDIR;
 /*!
   \var EnvironmentVariable IV_SEPARATOR_MAX_CACHES
 
-  \todo Write documentation for this
+  Can be used to tune the number of display list caches stored in
+  each SoSeparator. The default value is 2.
+
+  Setting this value to 0 will disable display list caching, and this is often
+  useful if you experience weird rendering bugs which are hard to track down.
+
   \ingroup envvars
 */
 
@@ -813,21 +818,40 @@ EnvironmentVariable COINDIR;
 /*!
   \var EnvironmentVariable COIN_VBO
 
-  \todo Write documentation for this
+  Set COIN_VBO=0 to disable VBO rendering in Coin. This is useful if
+  you suspect bugs in either Coin's VBO code or in the OpenGL driver
+  VBO handling.
+
   \ingroup envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_VBO_MAX_LIMIT
 
-  \todo Write documentation for this
+  Can be used to set the maximum number of items (coordinates,
+  normals, texcoords or colors) allowed when creating a vertex buffer
+  object. On most drivers it's actually slower to render large arrays
+  with VBOs than with normal vertex array rendering.
+
+  The default value is 256000, and when the number of items exceeds
+  this Coin will fall back to normal vertex array or immediate mode
+  rendering.
+
+  \sa COIN_VBO_MIN_LIMIT
+
   \ingroup envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_VBO_MIN_LIMIT
 
-  \todo Write documentation for this
+  Can be used to set the minimum number of items (coordinates,
+  normals, texcoords or colors) allowed when creating a vertex buffer
+  object. It's a bit of overhead setting up the VBOs and the VBO
+  rendering, so we avoid doing this for very small arrays. The default
+  value is 20.
+
+  \sa COIN_VBO_MAX_LIMIT
   \ingroup envvars
 */
 
