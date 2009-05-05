@@ -56,6 +56,9 @@ static int vbo_render_as_vertex_arrays = -1;
 static int vbo_enabled = -1;
 static int vbo_debug = -1;
 
+static const int DEFAULT_MAX_LIMIT = 256000;
+static const int DEFAULT_MIN_LIMIT = 20;
+
 static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
 
 /*!
@@ -142,7 +145,7 @@ SoVBO::init(void)
       vbo_vertex_count_max_limit = atoi(env);
     }
     else {
-      vbo_vertex_count_max_limit = 256000;
+      vbo_vertex_count_max_limit = DEFAULT_MAX_LIMIT;
     }
   }
 
@@ -153,7 +156,7 @@ SoVBO::init(void)
       vbo_vertex_count_min_limit = atoi(env);
     }
     else {
-      vbo_vertex_count_min_limit = 40;
+      vbo_vertex_count_min_limit = DEFAULT_MIN_LIMIT;
     }
   }
 
@@ -421,7 +424,7 @@ SoVBO::testGLPerformance(const uint32_t contextid)
   // did we alreay test this for this context?
   assert(vbo_isfast_hash != NULL);
   if (vbo_isfast_hash->get(contextid, isfast)) return;
-  
+
   // Run time test disabled. Our old test seemed to be buggy, and
   // VBO should be fast on all platforms supporting it now. It was
   // really just one obscure laptop driver that caused problems for
