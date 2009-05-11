@@ -245,6 +245,7 @@ EnvironmentVariable COIN_PROFILER_OVERLAY;
   COIN_NUM_SORTED_LAYERS_PASSES
   COIN_QUADMESH_PRECISE_LIGHTING
   COIN_ENABLE_CONFORMANT_GL_CLAMP
+  COIN_GLBBOX
 
   IV_SEPARATOR_MAX_CACHES
   COIN_AUTOCACHE_LOCAL_MAX
@@ -296,6 +297,7 @@ EnvironmentVariable COIN_FORCE_FREETYPE_OFF;
 EnvironmentVariable COIN_FORCE_TILED_OFFSCREENRENDERING;
 EnvironmentVariable COIN_FORCE_WIN32FONTS_OFF;
 EnvironmentVariable COIN_FREETYPE2_LIBNAME;
+EnvironmentVariable COIN_GLBBOX;
 EnvironmentVariable COIN_GLERROR_DEBUGGING;
 EnvironmentVariable COIN_GLU_LIBNAME;
 EnvironmentVariable COIN_GLXGLUE_NO_GLX13_PBUFFERS;
@@ -458,6 +460,18 @@ EnvironmentVariable SO_SHADER_DIR;
   \var EnvironmentVariable COIN_FONT_PATH
 
   \todo Write documentation for this
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLBBOX
+ 
+  If the environment variable COIN_GLBBOX is set to 1, rendering action
+  traversals will apply a bbox action before rendering.  This will make
+  sure bounding box caches are updated (needed for view frustum culling).
+  The default Quarter/SoQt/SoWin/SoXt viewers will handle this at their
+  end (which is the proper way to do it), so we don't do this by default.
+  
   \ingroup envvars
 */
 
