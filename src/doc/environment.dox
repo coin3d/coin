@@ -37,9 +37,6 @@
   \ingroup envvars
 */
 
-EnvironmentVariable COIN_PROFILER;
-EnvironmentVariable COIN_PROFILER_OVERLAY;
-
 // referencing block that goes to the envvars module
 /*!
   \page envvars_profiler Scene Graph Profiler
@@ -283,6 +280,7 @@ EnvironmentVariable COIN_DEBUG_DL;
 EnvironmentVariable COIN_DEBUG_DL;
 EnvironmentVariable COIN_DEBUG_FONTSUPPORT;
 EnvironmentVariable COIN_DEBUG_GLU_INFO;
+EnvironmentVariable COIN_DEBUG_GLU_VERSION;
 EnvironmentVariable COIN_DEBUG_IMPORT;
 EnvironmentVariable COIN_DEBUG_LISTMODULES;
 EnvironmentVariable COIN_DEBUG_SOINPUT_FINDFILE;
@@ -313,6 +311,8 @@ EnvironmentVariable COIN_OFFSCREENRENDERER_TILEHEIGHT;
 EnvironmentVariable COIN_OFFSCREENRENDERER_TILEWIDTH;
 EnvironmentVariable COIN_OLDSTYLE_FORMATTING;
 EnvironmentVariable COIN_OPENAL_LIBNAME;
+EnvironmentVariable COIN_PROFILER;
+EnvironmentVariable COIN_PROFILER_OVERLAY;
 EnvironmentVariable COIN_QUADMESH_PRECISE_LIGHTING;
 EnvironmentVariable COIN_RANDOMIZE_RENDER_CACHING;
 EnvironmentVariable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE;
@@ -347,7 +347,17 @@ EnvironmentVariable SO_SHADER_DIR;
 /*!
   \var EnvironmentVariable COIN_DEBUG_GLU_INFO
 
-  \todo Write documentation for this
+  \todo Write debug information about the linked GLU library to console, at first use.
+
+  \ingroup envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_GLU_VERSION
+
+  \todo Force the GLU_VERSION string to be the version specified by
+  COIN_DEBUG_GLU_VERSION
+
   \ingroup envvars
 */
 
