@@ -487,7 +487,11 @@ void APIENTRY
 SoNurbsCurveP::tessVertex(float * vertex, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
-  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
+  //The GLU API is not perfectly clear on wether the vertex always
+  //contains 4 datapoints. But for every function where it is
+  //documented, the documentation says 3D homogeneous coordinates are
+  //used.
+  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2])/vertex[3]);
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
