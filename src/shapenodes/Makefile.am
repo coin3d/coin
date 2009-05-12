@@ -29,18 +29,19 @@ RegularSources = \
 	SoText3.cpp \
 	SoTriangleStripSet.cpp \
 	SoVertexShape.cpp \
-	soshape_primdata.cpp \
 	soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp \
-	soshape_bumprender.cpp
+	soshape_bumprender.cpp \
+	soshape_primdata.cpp \
+	soshape_trianglesort.cpp
 LinkHackSources = \
 	all-shapenodes-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
-	soshape_primdata.h \
-	soshape_trianglesort.h \
+	SoNurbsP.h \
 	soshape_bigtexture.h \
 	soshape_bumprender.h
+	soshape_primdata.h \
+	soshape_trianglesort.h \
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(shapenodes, nodes)

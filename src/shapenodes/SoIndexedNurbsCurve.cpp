@@ -71,6 +71,7 @@
 #include "glue/GLUWrapper.h"
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGL.h"
+#include "SoNurbsP.h"
 
 /*!
   \var SoSFInt32 SoIndexedNurbsCurve::numControlPoints
@@ -109,12 +110,6 @@ public:
   void * nurbsrenderer;
 
   void doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints);
-
-  static void APIENTRY tessBegin(int , void * data);
-  static void APIENTRY tessTexCoord(float * texcoord, void * data);
-  static void APIENTRY tessNormal(float * normal, void * data);
-  static void APIENTRY tessVertex(float * vertex, void * data);
-  static void APIENTRY tessEnd(void * data);
 
 private:
   SoIndexedNurbsCurve * owner;
@@ -316,14 +311,7 @@ SoIndexedNurbsCurve::createLineSegmentDetail(SoRayPickAction * /* action */,
   return NULL;
 }
 
-//
-// used only for GLU callbacks
-//
-typedef struct {
-  SoAction * action;
-  SoIndexedNurbsCurve * thisp;
-  SoPrimitiveVertex vertex;
-} coin_inc_cbdata;
+typedef SoNurbsP<SoIndexedNurbsCurve>::coin_nurbs_cbdata coin_inc_cbdata;
 
 void
 SoIndexedNurbsCurveP::doNurbs(SoAction * action,
@@ -346,11 +334,11 @@ SoIndexedNurbsCurveP::doNurbs(SoAction * action,
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
     if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessBegin);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessTexCoord);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessNormal);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessVertex);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessEnd);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsCurve>::tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsCurve>::tessTexCoord);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsCurve>::tessNormal);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsCurve>::tessVertex);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsCurve>::tessEnd);
     }
   }
 
@@ -380,70 +368,6 @@ SoIndexedNurbsCurveP::doNurbs(SoAction * action,
                           drawaspoints,
                           PUBLIC(this)->coordIndex.getNum(),
                           PUBLIC(this)->coordIndex.getValues(0));
-}
-
-void APIENTRY
-SoIndexedNurbsCurveP::tessBegin(int type, void * data)
-{
-  coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
-  SoIndexedNurbsCurve::TriangleShape shapetype;
-  switch ((int)type) {
-  case GL_LINES:
-    shapetype = SoShape::LINES;
-    break;
-  case GL_LINE_STRIP:
-    shapetype = SoShape::LINE_STRIP;
-    break;
-  case GL_LINE_LOOP:
-    shapetype = SoShape::LINE_STRIP; // will not be closed...
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoIndexedNurbsCurve::tessBegin",
-                           "LINE_LOOP is not supported yet");
-#endif // debug
-    break;
-  case GL_POINTS:
-    shapetype = SoShape::POINTS;
-    break;
-  default:
-    shapetype = SoShape::POLYGON; // illegal value
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoIndexedNurbsCurve::tessBegin",
-                           "unsupported GL enum: 0x%x", type);
-#endif // debug
-    break;
-  }
-  if (shapetype != SoShape::POINTS) {
-    cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
-  }
-}
-
-void APIENTRY
-SoIndexedNurbsCurveP::tessTexCoord(float * texcoord, void * data)
-{
-  coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
-  cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
-}
-
-void APIENTRY
-SoIndexedNurbsCurveP::tessNormal(float * normal, void * data)
-{
-  coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
-  cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
-}
-
-void APIENTRY
-SoIndexedNurbsCurveP::tessVertex(float * vertex, void * data)
-{
-  coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
-  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
-  cbdata->thisp->shapeVertex(&cbdata->vertex);
-}
-
-void APIENTRY
-SoIndexedNurbsCurveP::tessEnd(void * data)
-{
-  coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
-  cbdata->thisp->endShape();
 }
 
 #undef PRIVATE

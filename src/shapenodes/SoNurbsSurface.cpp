@@ -50,7 +50,7 @@
   }
 
   Coordinate3 {
-     point [ 
+     point [
        -3 -3 -3, -3 -1 -3, -3  1 -3, -3  3 -3,
        -1 -3 -3, -1 -1  3, -1  1  3, -1  3 -3,
         1 -3 -3,  1 -1  3,  1  1  3,  1  3 -3,
@@ -85,6 +85,47 @@
 */
 
 #include <Inventor/nodes/SoNurbsSurface.h>
+#include "SoNurbsP.h"
+
+//Special case of SoNurbsP for this node, as it is not a line, as the others
+template<>
+void APIENTRY
+SoNurbsP<SoNurbsSurface>::tessBegin(int type, void * data)
+{
+  coin_nurbs_cbdata * cbdata = static_cast<coin_nurbs_cbdata *>(data);
+  SoNurbsSurface::TriangleShape shapetype;
+  switch ((int)type) {
+  case GL_TRIANGLES:
+    shapetype = SoShape::TRIANGLES;
+    break;
+  case GL_TRIANGLE_STRIP:
+    shapetype = SoShape::TRIANGLE_STRIP;
+    break;
+  case GL_TRIANGLE_FAN:
+    shapetype = SoShape::TRIANGLE_FAN;
+    break;
+  case GL_QUADS:
+    shapetype = SoShape::QUADS;
+    break;
+  case GL_QUAD_STRIP:
+    shapetype = SoShape::QUAD_STRIP;
+    break;
+  case GL_POLYGON:
+    shapetype = SoShape::POLYGON;
+    break;
+  default:
+    shapetype = SoShape::POINTS; // illegal value
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoNurbsSurface::tessBegin",
+                           "unsupported GL enum: 0x%x", type);
+#endif // debug
+    break;
+  }
+  if (shapetype != SoShape::POINTS) {
+    cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
+  }
+}
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -145,7 +186,7 @@
 // *************************************************************************
 
 class SoNurbsSurfaceP {
-public: 
+public:
   SoNurbsSurfaceP(SoNurbsSurface * m)
   {
     this->owner = m;
@@ -165,12 +206,6 @@ public:
   void * nurbsrenderer;
 
   void doNurbs(SoAction * action, const SbBool glrender);
-
-  static void APIENTRY tessBegin(int , void * data);
-  static void APIENTRY tessTexCoord(float * texcoord, void * data);
-  static void APIENTRY tessNormal(float * normal, void * data);
-  static void APIENTRY tessVertex(float * vertex, void * data);
-  static void APIENTRY tessEnd(void * data);
 
 private:
   SoNurbsSurface * owner;
@@ -360,14 +395,7 @@ SoNurbsSurface::createTriangleDetail(SoRayPickAction * /* action */,
   return NULL;
 }
 
-//
-// used only for GLU callbacks
-//
-typedef struct {
-  SoAction * action;
-  SoNurbsSurface * thisp;
-  SoPrimitiveVertex vertex;
-} coin_ns_cbdata;
+typedef SoNurbsP<SoNurbsSurface>::coin_nurbs_cbdata coin_ns_cbdata;
 
 //
 // render or generate the NURBS surface
@@ -392,11 +420,11 @@ SoNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
     if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoNurbsSurfaceP::tessBegin);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoNurbsSurfaceP::tessTexCoord);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA,  (gluNurbsCallback_cb_t)SoNurbsSurfaceP::tessNormal);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA,  (gluNurbsCallback_cb_t)SoNurbsSurfaceP::tessVertex);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA,  (gluNurbsCallback_cb_t)SoNurbsSurfaceP::tessEnd);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoNurbsSurface>::tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoNurbsSurface>::tessTexCoord);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA,  (gluNurbsCallback_cb_t)SoNurbsP<SoNurbsSurface>::tessNormal);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA,  (gluNurbsCallback_cb_t)SoNurbsP<SoNurbsSurface>::tessVertex);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA,  (gluNurbsCallback_cb_t)SoNurbsP<SoNurbsSurface>::tessEnd);
     }
   }
 
@@ -450,71 +478,6 @@ SoNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
                             glrender);
 }
 
-void APIENTRY
-SoNurbsSurfaceP::tessBegin(int type, void * data)
-{
-  coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
-  SoNurbsSurface::TriangleShape shapetype;
-  switch ((int)type) {
-  case GL_TRIANGLES:
-    shapetype = SoShape::TRIANGLES;
-    break;
-  case GL_TRIANGLE_STRIP:
-    shapetype = SoShape::TRIANGLE_STRIP;
-    break;
-  case GL_TRIANGLE_FAN:
-    shapetype = SoShape::TRIANGLE_FAN;
-    break;
-  case GL_QUADS:
-    shapetype = SoShape::QUADS;
-    break;
-  case GL_QUAD_STRIP:
-    shapetype = SoShape::QUAD_STRIP;
-    break;
-  case GL_POLYGON:
-    shapetype = SoShape::POLYGON;
-    break;
-  default:
-    shapetype = SoShape::POINTS; // illegal value
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoNurbsSurface::tessBegin",
-                           "unsupported GL enum: 0x%x", type);
-#endif // debug
-    break;
-  }
-  if (shapetype != SoShape::POINTS) {
-    cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
-  }
-}
-
-void APIENTRY
-SoNurbsSurfaceP::tessTexCoord(float * texcoord, void * data)
-{
-  coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
-  cbdata->vertex.setTextureCoords(SbVec2f(texcoord[0], texcoord[1]));
-}
-
-void APIENTRY
-SoNurbsSurfaceP::tessNormal(float * normal, void * data)
-{
-  coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
-  cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
-}
-
-void APIENTRY
-SoNurbsSurfaceP::tessVertex(float * vertex, void * data)
-{
-  coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
-  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
-  cbdata->thisp->shapeVertex(&cbdata->vertex);
-}
-
-void APIENTRY
-SoNurbsSurfaceP::tessEnd(void * data)
-{
-  coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
-  cbdata->thisp->endShape();
-}
 
 #undef PRIVATE
 #undef PUBLIC

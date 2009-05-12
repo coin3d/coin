@@ -296,22 +296,20 @@ RegularSources = \
 	SoText3.cpp \
 	SoTriangleStripSet.cpp \
 	SoVertexShape.cpp \
-	soshape_primdata.cpp \
 	soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp \
-	soshape_bumprender.cpp
+	soshape_bumprender.cpp \
+	soshape_primdata.cpp \
+	soshape_trianglesort.cpp
 
 LinkHackSources = \
 	all-shapenodes-cpp.cpp
 
 PublicHeaders = 
 PrivateHeaders = \
-	soshape_primdata.h \
-	soshape_trianglesort.h \
+	SoNurbsP.h \
 	soshape_bigtexture.h \
 	soshape_bumprender.h
 
-ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -382,8 +380,8 @@ am__shapenodes_lst_SOURCES_DIST = SoAsciiText.cpp SoCone.cpp SoCube.cpp \
 	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
 	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
 	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
-	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp soshape_bumprender.cpp \
+	SoVertexShape.cpp soshape_bigtexture.cpp soshape_bumprender.cpp \
+	soshape_primdata.cpp soshape_trianglesort.cpp \
 	all-shapenodes-cpp.cpp
 am__objects_1 = all-shapenodes-cpp.$(OBJEXT)
 am__objects_2 = SoAsciiText.$(OBJEXT) SoCone.$(OBJEXT) SoCube.$(OBJEXT) \
@@ -398,13 +396,12 @@ am__objects_2 = SoAsciiText.$(OBJEXT) SoCone.$(OBJEXT) SoCube.$(OBJEXT) \
 	SoQuadMesh.$(OBJEXT) SoShape.$(OBJEXT) SoSphere.$(OBJEXT) \
 	SoText2.$(OBJEXT) SoText3.$(OBJEXT) \
 	SoTriangleStripSet.$(OBJEXT) SoVertexShape.$(OBJEXT) \
-	soshape_primdata.$(OBJEXT) soshape_bigtexture.$(OBJEXT) \
-	soshape_trianglesort.$(OBJEXT) soshape_bumprender.$(OBJEXT)
+	soshape_bigtexture.$(OBJEXT) soshape_bumprender.$(OBJEXT) \
+	soshape_primdata.$(OBJEXT) soshape_trianglesort.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_shapenodes_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_shapenodes_lst_SOURCES_DIST = soshape_primdata.h \
-	soshape_trianglesort.h soshape_bigtexture.h \
+am__EXTRA_shapenodes_lst_SOURCES_DIST = SoNurbsP.h soshape_bigtexture.h \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
@@ -414,8 +411,8 @@ am__EXTRA_shapenodes_lst_SOURCES_DIST = soshape_primdata.h \
 	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
 	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
 	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
-	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp soshape_bumprender.cpp
+	SoVertexShape.cpp soshape_bigtexture.cpp soshape_bumprender.cpp \
+	soshape_primdata.cpp soshape_trianglesort.cpp
 shapenodes_lst_OBJECTS = $(am_shapenodes_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -430,8 +427,8 @@ am__libshapenodes_la_SOURCES_DIST = SoAsciiText.cpp SoCone.cpp \
 	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
 	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
 	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
-	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp soshape_bumprender.cpp \
+	SoVertexShape.cpp soshape_bigtexture.cpp soshape_bumprender.cpp \
+	soshape_primdata.cpp soshape_trianglesort.cpp \
 	all-shapenodes-cpp.cpp
 am__objects_6 = all-shapenodes-cpp.lo
 am__objects_7 = SoAsciiText.lo SoCone.lo SoCube.lo SoCylinder.lo \
@@ -442,24 +439,24 @@ am__objects_7 = SoAsciiText.lo SoCone.lo SoCube.lo SoCylinder.lo \
 	SoNonIndexedShape.lo SoNurbsCurve.lo SoNurbsSurface.lo \
 	SoPointSet.lo SoQuadMesh.lo SoShape.lo SoSphere.lo SoText2.lo \
 	SoText3.lo SoTriangleStripSet.lo SoVertexShape.lo \
-	soshape_primdata.lo soshape_bigtexture.lo \
-	soshape_trianglesort.lo soshape_bumprender.lo
+	soshape_bigtexture.lo soshape_bumprender.lo soshape_primdata.lo \
+	soshape_trianglesort.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libshapenodes_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libshapenodes_la_SOURCES_DIST = soshape_primdata.h \
-	soshape_trianglesort.h soshape_bigtexture.h \
-	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
-	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
-	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
-	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
-	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
-	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
-	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
-	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
-	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp soshape_bumprender.cpp
+am__EXTRA_libshapenodes_la_SOURCES_DIST = SoNurbsP.h \
+	soshape_bigtexture.h soshape_bumprender.h \
+	all-shapenodes-cpp.cpp SoAsciiText.cpp SoCone.cpp SoCube.cpp \
+	SoCylinder.cpp SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
+	SoIndexedLineSet.cpp SoIndexedMarkerSet.cpp \
+	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
+	SoIndexedPointSet.cpp SoIndexedShape.cpp \
+	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
+	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
+	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
+	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoVertexShape.cpp soshape_bigtexture.cpp soshape_bumprender.cpp \
+	soshape_primdata.cpp soshape_trianglesort.cpp
 libshapenodes_la_OBJECTS = $(am_libshapenodes_la_OBJECTS)
 libshapenodes@SUFFIX@LINKHACK_la_LDFLAGS =
 libshapenodes@SUFFIX@LINKHACK_la_LIBADD =
@@ -472,23 +469,23 @@ am__libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAsciiText.cpp \
 	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
 	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
 	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
-	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp soshape_bumprender.cpp \
+	SoVertexShape.cpp soshape_bigtexture.cpp soshape_bumprender.cpp \
+	soshape_primdata.cpp soshape_trianglesort.cpp \
 	all-shapenodes-cpp.cpp
 am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	soshape_primdata.h soshape_trianglesort.h soshape_bigtexture.h \
-	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
-	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
-	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
-	SoIndexedMarkerSet.cpp SoIndexedNurbsCurve.cpp \
-	SoIndexedNurbsSurface.cpp SoIndexedPointSet.cpp \
-	SoIndexedShape.cpp SoIndexedTriangleStripSet.cpp SoLineSet.cpp \
-	SoMarkerSet.cpp SoNonIndexedShape.cpp SoNurbsCurve.cpp \
-	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
-	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
-	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp soshape_bumprender.cpp
+am__EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoNurbsP.h \
+	soshape_bigtexture.h soshape_bumprender.h \
+	all-shapenodes-cpp.cpp SoAsciiText.cpp SoCone.cpp SoCube.cpp \
+	SoCylinder.cpp SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
+	SoIndexedLineSet.cpp SoIndexedMarkerSet.cpp \
+	SoIndexedNurbsCurve.cpp SoIndexedNurbsSurface.cpp \
+	SoIndexedPointSet.cpp SoIndexedShape.cpp \
+	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
+	SoNonIndexedShape.cpp SoNurbsCurve.cpp SoNurbsSurface.cpp \
+	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
+	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
+	SoVertexShape.cpp soshape_bigtexture.cpp soshape_bumprender.cpp \
+	soshape_primdata.cpp soshape_trianglesort.cpp
 libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -932,6 +929,9 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libshapenodesincHEADERS
 
+	soshape_primdata.h \
+	soshape_trianglesort.h \
+ObsoleteHeaders =
 
 # this rule causes a make warning, so we remove it when it is not in use
 shapenodes.lst: Makefile $(shapenodes_lst_OBJECTS)
