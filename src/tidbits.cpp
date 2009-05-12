@@ -69,6 +69,7 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "tidbitsp.h"
+#include "coindefs.h"
 
 /**************************************************************************/
 
@@ -814,26 +815,9 @@ coin_hton_float(float value)
 {
   // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
   assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  union {
-      float f32;
-      uint32_t u32;
-  } val;
+  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
 
-  val.f32 = value;
-
-  assert(4 == sizeof(float));
-
-  switch (coin_host_get_endianness()) {
-  case COIN_HOST_IS_BIGENDIAN:
-    /* big-endian is the same order as network order */
-    break;
-  case COIN_HOST_IS_LITTLEENDIAN:
-    val.u32 = COIN_BSWAP_32(val.u32);
-    break;
-  default:
-    assert(0 && "system has unknown endianness");
-  }
-  return val.f32;
+  return 0;
 }
 
 float
@@ -841,6 +825,8 @@ coin_ntoh_float(float value)
 {
   // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
   assert(0 && "don't use this function. It might trigger incorrect results in some cases");
+  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
+
   return coin_hton_float(value);
 }
 
@@ -849,26 +835,8 @@ coin_hton_double(double value)
 {
   // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
   assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  union {
-      double d64;
-      uint64_t u64;
-  } val;
-
-  val.d64 = value;
-
-  assert(8 == sizeof(double));
-
-  switch (coin_host_get_endianness()) {
-  case COIN_HOST_IS_BIGENDIAN:
-    /* big-endian is the same order as network order */
-    break;
-  case COIN_HOST_IS_LITTLEENDIAN:
-    val.u64 = COIN_BSWAP_64(val.u64);
-    break;
-  default:
-    assert(0 && "system has unknown endianness");
-  }
-  return val.d64;
+  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
+  return 0;
 }
 
 double
@@ -876,10 +844,12 @@ coin_ntoh_double(double value)
 {
   // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
   assert(0 && "don't use this function. It might trigger incorrect results in some cases");
+  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
+
   return coin_hton_double(value);
 }
 
-void 
+void
 coin_hton_float_bytes(float value, char * result)
 {
   union {
@@ -893,7 +863,7 @@ coin_hton_float_bytes(float value, char * result)
   memcpy(result, &val.u32, sizeof(uint32_t));
 }
 
-float 
+float
 coin_ntoh_float_bytes(const char * value)
 {
   union {
@@ -903,11 +873,11 @@ coin_ntoh_float_bytes(const char * value)
 
   assert(sizeof(float) == sizeof(uint32_t));
   memcpy(&val.u32, value, sizeof(uint32_t));
-  val.u32 = coin_ntoh_uint32(val.u32);  
+  val.u32 = coin_ntoh_uint32(val.u32);
   return val.f32;
 }
 
-void 
+void
 coin_hton_double_bytes(double value, char * result)
 {
   union {
@@ -921,7 +891,7 @@ coin_hton_double_bytes(double value, char * result)
   memcpy(result, &val.u64, sizeof(uint64_t));
 }
 
-double 
+double
 coin_ntoh_double_bytes(const char * value)
 {
   union {
@@ -931,7 +901,7 @@ coin_ntoh_double_bytes(const char * value)
 
   assert(sizeof(double) == sizeof(uint64_t));
   memcpy(&val.u64, value, sizeof(uint64_t));
-  val.u64 = coin_ntoh_uint64(val.u64);  
+  val.u64 = coin_ntoh_uint64(val.u64);
   return val.d64;
 }
 
