@@ -306,7 +306,7 @@ SoDB::init(void)
 
   SoProto::initClass();
   SoProtoInstance::initClass();
-  
+
   SoGLDriverDatabase::init();
   SoGLImage::initClass();
   SoGLBigImage::initClass();
@@ -393,7 +393,7 @@ SoDB::init(void)
 
   // use a callback to remove the realTime field
   coin_atexit((coin_atexit_f *)SoDBP::removeRealTimeFieldCB, CC_ATEXIT_REALTIME_FIELD);
-  
+
   SoDBP::globaltimersensor = new SoTimerSensor;
   SoDBP::globaltimersensor->setFunction(SoDBP::updateRealTimeFieldCB);
   // An interval of 1/12 is pretty low for today's standards, but this
@@ -653,7 +653,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
-  return (SoSeparator*) 
+  return (SoSeparator*)
     SoDB::readAllWrapper(in, SoSeparator::getClassTypeId());
 }
 
@@ -664,11 +664,11 @@ SoDB::readAll(SoInput * in)
   \sa SoDB::readAll()
   \since Coin 2.0
 */
-SoVRMLGroup * 
+SoVRMLGroup *
 SoDB::readAllVRML(SoInput * in)
 {
 #ifdef HAVE_VRML97
-  return (SoVRMLGroup*) 
+  return (SoVRMLGroup*)
     SoDB::readAllWrapper(in, SoVRMLGroup::getClassTypeId());
 #else // HAVE_VRML97
   return NULL;
@@ -969,7 +969,7 @@ SoDB::setRealTimeInterval(const SbTime & interval)
   SbBool isscheduled = SoDBP::globaltimersensor->isScheduled();
   if (isscheduled) SoDBP::globaltimersensor->unschedule();
   SoDBP::globaltimersensor->setInterval(interval);
-  if (isscheduled && interval != SbTime::zero()) 
+  if (isscheduled && interval != SbTime::zero())
     SoDBP::globaltimersensor->schedule();
 }
 
@@ -1162,8 +1162,8 @@ SoDB::enableRealTimeSensor(SbBool on)
 
   SbBool isscheduled = SoDBP::globaltimersensor->isScheduled();
   if (isscheduled && !on) SoDBP::globaltimersensor->unschedule();
-  else if (!isscheduled && on && 
-           SoDBP::globaltimersensor->getInterval() != SbTime::zero()) 
+  else if (!isscheduled && on &&
+           SoDBP::globaltimersensor->getInterval() != SbTime::zero())
     SoDBP::globaltimersensor->schedule();
 #if COIN_DEBUG
   else SoDebugError::postWarning("SoDB::enableRealTimeSensor",
@@ -1237,7 +1237,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     char dummy = -1; // Set to -1 to make sure the variable has been
                      // read before an error is output
     char buf[2];
-    buf[1] = '\0';  
+    buf[1] = '\0';
     while (!in->eof() && in->read(dummy)) {
       if (readallerrors_termination < 1) {
         buf[0] = dummy;
@@ -1245,7 +1245,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
                           "This message will only be shown once for this file, "
                           "but more errors might be present", dummy != '\0' ? buf : "\\0");
       }
-      
+
       readallerrors_termination++;
     }
     assert(in->eof());
@@ -1268,7 +1268,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 
   // Detect problems with missing pops from the SoInput file stack.
   assert((stackdepth == 1 && in->filestack.getLength() == 1) ||
-         (stackdepth - 1 == in->filestack.getLength())); 
+         (stackdepth - 1 == in->filestack.getLength()));
 
   // Strip off extra root group node if it was unnecessary (i.e. if
   // the file only had a single top-level root, and it was of the same
@@ -1303,7 +1303,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
   The return value is an abort flag indication from the client
   code. Note that the process that is being run can only be aborted if
   the \a interruptible flag is set.
-  
+
   See SoDB::addProgressCallback() for full documentation of how the
   progress notification mechanism works.
 */
@@ -1376,11 +1376,11 @@ SoDB::removeProgressCallback(ProgressCallbackType * func, void * userdata)
   SoDBP::progresscblist->remove(idx);
 }
 
-/*!  
+/*!
   Returns \c TRUE if this is a thread safe version of Coin
   (i.e. it was configured and built with --enable-threadsafe).
 */
-SbBool 
+SbBool
 SoDB::isMultiThread(void)
 {
 #ifdef COIN_THREADSAFE
@@ -1413,11 +1413,11 @@ SoDB::isMultiThread(void)
   \since TGS Inventor 3.0
 */
 void
-SoDB::readlock(void) 
-{ 
+SoDB::readlock(void)
+{
 #ifdef COIN_THREADSAFE
-  SoDBP::globalmutex->readLock(); 
-#endif // COIN_THREADSAFE 
+  SoDBP::globalmutex->readLock();
+#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -1426,8 +1426,8 @@ SoDB::readlock(void)
   \sa SoDB::readlock()
   \since Coin 2.3
   \since TGS Inventor 3.0
-*/ 
-void 
+*/
+void
 SoDB::readunlock(void)
 {
 #ifdef COIN_THREADSAFE
@@ -1435,7 +1435,7 @@ SoDB::readunlock(void)
 #endif // COIN_THREADSAFE
 }
 
-/*!  
+/*!
   Places a write lock on the global SoDB mutex. This can be used to
   prevent that the scene graph is read or traversed while you modify
   the scene graph.
@@ -1445,10 +1445,10 @@ SoDB::readunlock(void)
   that your application locks up.
 
   \sa SoDB::readlock()
-  \since Coin 2.3  
+  \since Coin 2.3
   \since TGS Inventor 3.0
 */
-void 
+void
 SoDB::writelock(void)
 {
 #ifdef COIN_THREADSAFE
@@ -1460,10 +1460,10 @@ SoDB::writelock(void)
   Unlocks the write lock on the global SoDB mutex.
 
   \sa SoDB::writelock()
-  \since Coin 2.3  
+  \since Coin 2.3
   \since TGS Inventor 3.0
 */
-void 
+void
 SoDB::writeunlock(void)
 {
 #ifdef COIN_THREADSAFE
@@ -1554,7 +1554,7 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
 #else // fanIn
     append = TRUE;
 #endif // fanIn fix
-    
+
     // Check if we're already connected.
     SoFieldList fl;
     if (from) from->getForwardConnections(fl);
@@ -1591,7 +1591,7 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
         return;
       }
     }
-    
+
     SbBool ok;
     if (from) ok = to->connectFrom(from, notnotify, append);
     else ok = to->connectFrom(output, notnotify, append);
@@ -1625,10 +1625,10 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 
   SbName fromfieldname(eventout);
   SbName tofieldname(eventin);
-  
+
   SoField * from = find_route_field(fromnode, fromfieldname);
   SoField * to = find_route_field(tonode, tofieldname);
-  
+
   SoEngineOutput * output = NULL;
   if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
     output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
@@ -1665,7 +1665,7 @@ BOOST_AUTO_TEST_CASE(globalRealTimeField)
 {
   SoField * realTimeField = SoDB::getGlobalField("realTime");
   BOOST_REQUIRE(realTimeField != NULL);
-  BOOST_REQUIRE(realTimeField->getFieldContainer() != NULL);
+  BOOST_REQUIRE(realTimeField->getContainer() != NULL);
 }
 
 #endif // COIN_TEST_SUITE
@@ -1789,8 +1789,13 @@ BOOST_AUTO_TEST_CASE(testInitCleanup)
   SoDB::init();
   SoDB::cleanup();
 
-  SoDB::init();
+
+  //FIXME: This is not a true unittest, as it touches state for other functions.
   // init for the conntinuing test running
+  SoDB::init();
+  SoNodeKit::init();
+  SoInteraction::init();
+
 }
 
 #endif // COIN_TEST_SUITE
