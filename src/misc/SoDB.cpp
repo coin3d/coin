@@ -1795,6 +1795,7 @@ BOOST_AUTO_TEST_CASE(testInitCleanup)
   SoDB::init();
   SoNodeKit::init();
   SoInteraction::init();
+  SIM::Coin3D::Coin::TestSuite::Init();
 
 }
 
