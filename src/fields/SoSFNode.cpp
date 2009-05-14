@@ -167,6 +167,11 @@ SoSFNode::readValue(SoInput * in)
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
 
+  if (baseptr == NULL) {
+    SoReadError::post(in, "Invalid node specification");
+    return FALSE;
+  }
+
   if (in->eof()) {
     SoReadError::post(in, "Premature end of file");
     return FALSE;
