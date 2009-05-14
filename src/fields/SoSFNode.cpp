@@ -168,10 +168,10 @@ SoSFNode::readValue(SoInput * in)
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
 
-  if (baseptr == NULL) {
-    SoReadError::post(in, "Invalid node specification");
-    return FALSE;
-  }
+  // Note: do *not* simply check for baseptr==NULL here, as that is a
+  // valid condition for VRML97 files, where nodes can indeed be
+  // explicitly given as a NULL value. See the 'vrml97nullchild' test
+  // case near the end of this file for a valid case that would fail.
 
   if (in->eof()) {
     SoReadError::post(in, "Premature end of file");
