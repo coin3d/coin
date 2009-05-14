@@ -1747,8 +1747,6 @@ BOOST_AUTO_TEST_CASE(readNullChildList)
 
 BOOST_AUTO_TEST_CASE(readInvalidChildList)
 {
-  BOOST_CHECK_MESSAGE(false, "Check Disabled since it freezes up the computer");
-  return;
   // FIXME: We are forced to restore the global state before terminating,
   // or independent tests could fail. (sveinung 20071108)
   SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
