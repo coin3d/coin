@@ -16,6 +16,7 @@
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
 #include "fields/SoGlobalField.h"
+#include "coindefs.h"
 
 #ifdef COIN_THREADSAFE
 // need to include SbRWMutex.h to make C++ call the actual destructor,
@@ -149,7 +150,7 @@ SoDBP::removeRealTimeFieldCB(void)
 // This is the timer sensor callback which updates the realTime global
 // field.
 void
-SoDBP::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
+SoDBP::updateRealTimeFieldCB(void * COIN_UNUSED_ARG(data), SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoField * f = SoDB::getGlobalField("realTime");
   if (f && (f->getTypeId() == SoSFTime::getClassTypeId())) {
