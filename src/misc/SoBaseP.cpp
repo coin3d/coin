@@ -568,6 +568,7 @@ SoBase::PImpl::flushInput(SoInput * in)
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/fields/SoSFTime.h>
 
 // Tests whether or not our mechanisms with the realTime field works
 // correctly upon references to it in imported iv-files.
@@ -582,7 +583,14 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
 {
   SoDB::init(); // (note that realTime global field will be init here)
 
-  SoField * realtime = SoDB::getGlobalField("realTime");
+  SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
+
+  // check that realtime field actually is initialized with something
+  // close to actual time
+  const double clockdiff =
+    fabs(SbTime::getTimeOfDay().getValue() - realtime->getValue().getValue());
+  BOOST_CHECK_MESSAGE(clockdiff < 5.0,
+                      "realTime global field not close to actual time");
 
   char scene[] = 
     "#Inventor V2.1 ascii\n\n"
@@ -604,10 +612,14 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
                       "failed to read scene graph with realTime global field");
   if (!readok) { return; }
 
-  // check that it wasn't changed
-  SoField * realtimeafter = SoDB::getGlobalField("realTime");
+  // check that the global field is still the same instance
+  SoSFTime * realtimeafter = (SoSFTime *)SoDB::getGlobalField("realTime");
   BOOST_CHECK_MESSAGE(realtime == realtimeafter,
                       "internal realTime SoGlobalField value changed upon iv import");
+
+  // supposed to get new value from file
+  BOOST_CHECK_MESSAGE(realtime->getValue().getValue() == 0.0,
+                      "realTime global field unchanged after import");
 
   g->ref();
   g->unref();
