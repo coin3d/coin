@@ -342,7 +342,7 @@ SoBase::PImpl::readBase(SoInput * in, SbName & classname, SoBase *& base)
 // Read the SoBase instance.
 SbBool
 SoBase::PImpl::readBaseInstance(SoInput * in, const SbName & classname,
-                          const SbName & refname, SoBase *& base)
+                                const SbName & refname, SoBase *& base)
 {
   assert(classname != "");
 
@@ -559,3 +559,60 @@ SoBase::PImpl::flushInput(SoInput * in)
   }
 #endif // obsoleted
 }
+
+// *************************************************************************
+
+#ifdef COIN_TEST_SUITE
+
+#include <cstring>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/nodes/SoNode.h>
+
+// Tests whether or not our mechanisms with the realTime field works
+// correctly upon references to it in imported iv-files.
+//
+// (Added this test when it was suspected that a new realTime
+// globalfield was made upon import due to bug(s) in
+// SoBase::PImpl::readBaseInstance()).
+//
+// -mortene
+
+BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
+{
+  SoDB::init(); // (note that realTime global field will be init here)
+
+  SoField * realtime = SoDB::getGlobalField("realTime");
+
+  char scene[] = 
+    "#Inventor V2.1 ascii\n\n"
+    "RotationXYZ {"
+    "   angle = GlobalField {"
+    "      type \"SFTime\""
+    "      realTime 0"
+    "   }"
+    "   . realTime "
+    "}";
+
+  SoInput * in = new SoInput;
+  in->setBuffer(scene, strlen(scene));
+  SoNode * g = NULL;
+  const SbBool readok = SoDB::read(in, g);
+
+  // just to see that we're correct with the syntax
+  BOOST_CHECK_MESSAGE(readok,
+                      "failed to read scene graph with realTime global field");
+  if (!readok) { return; }
+
+  // check that it wasn't changed
+  SoField * realtimeafter = SoDB::getGlobalField("realTime");
+  BOOST_CHECK_MESSAGE(realtime == realtimeafter,
+                      "internal realTime SoGlobalField value changed upon iv import");
+
+  g->ref();
+  g->unref();
+}
+
+#endif // COIN_TEST_SUITE
+
+// *************************************************************************

@@ -51,7 +51,7 @@ speed things up while doing development), you can run
 "make makefile-update" with a filter to reduce the number of tests
 the testsuite will be built up of.  Running for instance
 "make makefile-update filter=Dragger" will reduce the test set to
-those fond in files that contain the word "Dragger" in their filename.
+those found in files that contain the word "Dragger" in their filename.
 
 Test-case blocks are extracted from the source files by a script.
 This script is hooked into the makefile, with dependencies between

@@ -26,8 +26,8 @@ TEST_SUITE_OBJECTS = \
 	StandardTests.$(OBJEXT) \
 	actionsSoCallbackAction.$(OBJEXT) \
 	actionsSoWriteAction.$(OBJEXT) \
-	baseSbString.$(OBJEXT) \
 	baserbptree.$(OBJEXT) \
+	baseSbString.$(OBJEXT) \
 	draggersSoTransformerDragger.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
 	fieldsSoMFBool.$(OBJEXT) \
@@ -83,8 +83,8 @@ TEST_SUITE_OBJECTS = \
 	fieldsSoSFEngine.$(OBJEXT) \
 	fieldsSoSFEnum.$(OBJEXT) \
 	fieldsSoSFFloat.$(OBJEXT) \
-	fieldsSoSFImage.$(OBJEXT) \
 	fieldsSoSFImage3.$(OBJEXT) \
+	fieldsSoSFImage.$(OBJEXT) \
 	fieldsSoSFInt32.$(OBJEXT) \
 	fieldsSoSFMatrix.$(OBJEXT) \
 	fieldsSoSFName.$(OBJEXT) \
@@ -121,6 +121,7 @@ TEST_SUITE_OBJECTS = \
 	geoSoGeoLocation.$(OBJEXT) \
 	geoSoGeoOrigin.$(OBJEXT) \
 	geoSoGeoSeparator.$(OBJEXT) \
+	miscSoBaseP.$(OBJEXT) \
 	miscSoDB.$(OBJEXT) \
 	miscSoType.$(OBJEXT) \
 	nodesSoAnnotation.$(OBJEXT) \
@@ -141,8 +142,8 @@ TEST_SUITE_OBJECTS = \
 TEST_SUITE_BUILT_FILES = \
 	actionsSoCallbackAction.cpp \
 	actionsSoWriteAction.cpp \
-	baseSbString.cpp \
 	baserbptree.cpp \
+	baseSbString.cpp \
 	draggersSoTransformerDragger.cpp \
 	fieldsSoMFBitMask.cpp \
 	fieldsSoMFBool.cpp \
@@ -198,8 +199,8 @@ TEST_SUITE_BUILT_FILES = \
 	fieldsSoSFEngine.cpp \
 	fieldsSoSFEnum.cpp \
 	fieldsSoSFFloat.cpp \
-	fieldsSoSFImage.cpp \
 	fieldsSoSFImage3.cpp \
+	fieldsSoSFImage.cpp \
 	fieldsSoSFInt32.cpp \
 	fieldsSoSFMatrix.cpp \
 	fieldsSoSFName.cpp \
@@ -236,6 +237,7 @@ TEST_SUITE_BUILT_FILES = \
 	geoSoGeoLocation.cpp \
 	geoSoGeoOrigin.cpp \
 	geoSoGeoSeparator.cpp \
+	miscSoBaseP.cpp \
 	miscSoDB.cpp \
 	miscSoType.cpp \
 	nodesSoAnnotation.cpp \
@@ -313,17 +315,17 @@ actionsSoWriteAction.cpp: $(top_srcdir)/src/actions/SoWriteAction.cpp $(srcdir)/
 actionsSoWriteAction.$(OBJEXT): actionsSoWriteAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c actionsSoWriteAction.cpp
 
-baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
-
-baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(TS_CPPFLAGS) -g -c baseSbString.cpp
-
 baserbptree.cpp: $(top_srcdir)/src/base/rbptree.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/rbptree.cpp
 
 baserbptree.$(OBJEXT): baserbptree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c baserbptree.cpp
+
+baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
+
+baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c baseSbString.cpp
 
 draggersSoTransformerDragger.cpp: $(top_srcdir)/src/draggers/SoTransformerDragger.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/draggers/SoTransformerDragger.cpp
@@ -655,17 +657,17 @@ fieldsSoSFFloat.cpp: $(top_srcdir)/src/fields/SoSFFloat.cpp $(srcdir)/makeextrac
 fieldsSoSFFloat.$(OBJEXT): fieldsSoSFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFFloat.cpp
 
-fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
-
-fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
-
 fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
 
 fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
+
+fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
+
+fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
 
 fieldsSoSFInt32.cpp: $(top_srcdir)/src/fields/SoSFInt32.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFInt32.cpp
@@ -882,6 +884,12 @@ geoSoGeoSeparator.cpp: $(top_srcdir)/src/geo/SoGeoSeparator.cpp $(srcdir)/makeex
 
 geoSoGeoSeparator.$(OBJEXT): geoSoGeoSeparator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(TS_CPPFLAGS) -g -c geoSoGeoSeparator.cpp
+
+miscSoBaseP.cpp: $(top_srcdir)/src/misc/SoBaseP.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoBaseP.cpp
+
+miscSoBaseP.$(OBJEXT): miscSoBaseP.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(TS_CPPFLAGS) -g -c miscSoBaseP.cpp
 
 miscSoDB.cpp: $(top_srcdir)/src/misc/SoDB.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoDB.cpp
