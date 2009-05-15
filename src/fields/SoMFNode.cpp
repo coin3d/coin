@@ -327,7 +327,11 @@ SoMFNode::read1Value(SoInput * in, int index)
 #else // buggy version
   SoSFNode sfnode;
   SbBool result = sfnode.readValue(in);
-  if (result) this->set1Value(index, sfnode.getValue());
+  if (result) {
+    SoNode * node = sfnode.getValue();
+    if (!node) return FALSE;
+    this->set1Value(index, node);
+  };
   return result;
 #endif // old version
 }

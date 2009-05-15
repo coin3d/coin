@@ -166,19 +166,40 @@ SbBool
 SoSFNode::readValue(SoInput * in)
 {
   SoBase * baseptr;
-  if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
+  SbBool isVRMLspecialCase = FALSE;
 
   // Note: do *not* simply check for baseptr==NULL here, as that is a
   // valid condition for VRML97 files, where nodes can indeed be
   // explicitly given as a NULL value. See the 'vrml97nullchild' test
   // case near the end of this file for a valid case that would fail.
+  if(in->isFileVRML1() || in->isFileVRML2()) {
+    SbName name;
+    in->read(name, TRUE);
+    if (name == "NULL") {
+      baseptr = NULL;
+      isVRMLspecialCase = TRUE;
+    }
+    else {
+      in->putBack(name.getString());
+    }
+  }
+
+  if (!isVRMLspecialCase) {
+    if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
+    if (baseptr == NULL) {
+      SoReadError::post(in, "Invalid node specification");
+      return FALSE;
+    }
+  }
 
   if (in->eof()) {
     SoReadError::post(in, "Premature end of file");
     return FALSE;
   }
 
-  this->setValue(coin_safe_cast<SoNode *>(baseptr));
+  if (baseptr != NULL) {
+    this->setValue(coin_safe_cast<SoNode *>(baseptr));
+  }
   return TRUE;
 }
 

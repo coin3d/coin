@@ -1757,7 +1757,6 @@ BOOST_AUTO_TEST_CASE(readNullChildList)
 
 BOOST_AUTO_TEST_CASE(readInvalidChildList)
 {
-#if 0 // FIXME: this code triggers a bug that causes a hang. ouch.  -mortene.
   // FIXME: We are forced to restore the global state before terminating,
   // or independent tests could fail. (sveinung 20071108)
   SoErrorCB * prevErrorCB = SoReadError::getHandlerCallback();
@@ -1771,9 +1770,6 @@ BOOST_AUTO_TEST_CASE(readInvalidChildList)
   BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
 
   SoReadError::setHandlerCallback(prevErrorCB, NULL);
-#else
-  BOOST_CHECK_MESSAGE(false, "FIXME * test-case hangs import code in Coin * FIXME");
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(testAlternateRepNull)
@@ -1826,7 +1822,7 @@ BOOST_AUTO_TEST_CASE(testInitCleanup)
 
 BOOST_AUTO_TEST_CASE(globalfield_import)
 {
-  char scene[] = 
+  char scene[] =
     "#Inventor V2.1 ascii\n\n"
     "DEF rotnode RotationXYZ {"
     "   angle = GlobalField {"
