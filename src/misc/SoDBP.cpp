@@ -143,10 +143,7 @@ SoDBP::removeRealTimeFieldCB(void)
 {
   SoGlobalField * field = SoGlobalField::getGlobalFieldContainer("realTime");
 
-  SoGlobalField::removeGlobalFieldContainer
-    (
-     SoGlobalField::getGlobalFieldContainer("realTime")
-     );
+  SoGlobalField::removeGlobalFieldContainer(field);
 }
 
 // This is the timer sensor callback which updates the realTime global
