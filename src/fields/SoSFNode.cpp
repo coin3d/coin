@@ -356,6 +356,7 @@ BOOST_AUTO_TEST_CASE(vrml97nullchild)
   in->setBuffer(scene, strlen(scene));
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
+  delete in;
 
   BOOST_CHECK_MESSAGE(readok,
                       "failed to read VRML97 with NULL child in graph");
