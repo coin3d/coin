@@ -1661,25 +1661,32 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 
 #ifdef COIN_TEST_SUITE
 
-BOOST_AUTO_TEST_CASE(globalRealTimeField)
-{
-  SoField * realTimeField = SoDB::getGlobalField("realTime");
-  BOOST_REQUIRE(realTimeField != NULL);
-  BOOST_REQUIRE(realTimeField->getContainer() != NULL);
-}
-
-#endif // COIN_TEST_SUITE
-
-#ifdef COIN_TEST_SUITE
-
 #include <Inventor/SoInput.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoMFNode.h>
+#include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoRotationXYZ.h>
+
+
+BOOST_AUTO_TEST_CASE(globalRealTimeField)
+{
+  SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
+
+  BOOST_REQUIRE(realtime != NULL);
+  BOOST_REQUIRE(realtime->getContainer() != NULL);
+
+  // check that realtime field actually is initialized with something
+  // close to actual time
+  const double clockdiff =
+    fabs(SbTime::getTimeOfDay().getValue() - realtime->getValue().getValue());
+  BOOST_CHECK_MESSAGE(clockdiff < 5.0,
+                      "realTime global field not close to actual time");
+}
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
@@ -1805,5 +1812,62 @@ BOOST_AUTO_TEST_CASE(testInitCleanup)
   SIM::Coin3D::Coin::TestSuite::Init();
 
 }
+
+// *************************************************************************
+
+// Tests whether or not our mechanisms with the realTime global field
+// works correctly upon references to it in imported iv-files.
+//
+// (This test might be better suited in the SoGlobalField.cpp file,
+// but that code doesn't implement a public API part, which causes
+// hickups for the automated test-suite code-grabbing & setup.)
+//
+// -mortene
+
+BOOST_AUTO_TEST_CASE(globalfield_import)
+{
+  char scene[] = 
+    "#Inventor V2.1 ascii\n\n"
+    "DEF rotnode RotationXYZ {"
+    "   angle = GlobalField {"
+    "      type \"SFTime\""
+    "      realTime 0"
+    "   }"
+    "   . realTime "
+    "}";
+
+  SoInput * in = new SoInput;
+  in->setBuffer(scene, strlen(scene));
+  SoNode * g = NULL;
+  const SbBool readok = SoDB::read(in, g);
+
+  // just to see that we're correct with the syntax
+  BOOST_CHECK_MESSAGE(readok,
+                      "failed to read scene graph with realTime global field");
+  if (!readok) { return; }
+
+  g->ref();
+
+  SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
+
+  // supposed to get new value from file
+  BOOST_CHECK_MESSAGE(realtime->getValue().getValue() == 0.0,
+                      "realTime global field value not updated from imported value");
+
+  SoRotationXYZ * r = (SoRotationXYZ *)
+    SoBase::getNamedBase("rotnode", SoRotationXYZ::getClassTypeId());
+  assert(r);
+
+  // check connection
+  SoField * master;
+  BOOST_CHECK_MESSAGE((r->angle.getNumConnections() == 1) &&
+                      r->angle.getConnectedField(master) &&
+                      (master == realtime),
+                      "connection to realTime global field not set up properly");
+
+  g->unref();
+}
+
+// *************************************************************************
 
 #endif // COIN_TEST_SUITE
