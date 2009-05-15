@@ -138,10 +138,15 @@ SoDBP::clean(void)
 #endif // COIN_THREADSAFE
 }
 
-void 
+void
 SoDBP::removeRealTimeFieldCB(void)
 {
-  SoGlobalField::getGlobalFieldContainer("realTime")->unref();
+  SoGlobalField * field = SoGlobalField::getGlobalFieldContainer("realTime");
+
+  SoGlobalField::removeGlobalFieldContainer
+    (
+     SoGlobalField::getGlobalFieldContainer("realTime")
+     );
 }
 
 // This is the timer sensor callback which updates the realTime global
@@ -278,9 +283,9 @@ SoDBP::read3DSFile(SoInput * in)
 }
 
 
-void 
-SoDBP::progress(const SbName & itemid, 
-                float fraction, 
+void
+SoDBP::progress(const SbName & itemid,
+                float fraction,
                 SbBool interruptible)
 {
   if (SoDBP::progresscblist != NULL) {
@@ -288,5 +293,5 @@ SoDBP::progress(const SbName & itemid,
       SoDBP::ProgressCallbackInfo info = (*SoDBP::progresscblist)[i];
       info.func(itemid, fraction, interruptible, info.userdata);
     }
-  } 
+  }
 }

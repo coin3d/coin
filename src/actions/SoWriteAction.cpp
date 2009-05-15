@@ -332,6 +332,8 @@ BOOST_AUTO_TEST_CASE(GlobalField)
   BOOST_REQUIRE(string);
   BOOST_CHECK_MESSAGE(string->isConnected(), "String field not connected to realTime field in written scene graph");
 
+  free(buffer);
+
   top->unref();
 }
 

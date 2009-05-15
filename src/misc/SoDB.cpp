@@ -1673,12 +1673,13 @@ BOOST_AUTO_TEST_CASE(globalRealTimeField)
 #ifdef COIN_TEST_SUITE
 
 #include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/fields/SoMFNode.h>
-#include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInteraction.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoMFNode.h>
 #include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
@@ -1694,11 +1695,13 @@ BOOST_AUTO_TEST_CASE(readChildList)
   in.setBuffer((void *) scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_REQUIRE(root);
+  root->ref();
   SoGroup * group = (SoGroup *) SoNode::getByName("TestGroup");
   BOOST_REQUIRE_MESSAGE(group->getNumChildren() == 3, "Unexpected number of children");
   for (int i = 0; i < group->getNumChildren(); i++) {
     BOOST_REQUIRE_MESSAGE(group->getChild(i)->isOfType(SoGroup::getClassTypeId()), "Unexpected type");
   }
+  root->unref();
 }
 
 BOOST_AUTO_TEST_CASE(readEmptyChildList)
@@ -1775,6 +1778,8 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
   in.setBuffer((void *) scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root, "Import should succeed");
+  root->ref();
+  root->unref();
 
   SoReadError::setHandlerCallback(prevErrorCB, NULL);
 }
@@ -1782,10 +1787,10 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
 BOOST_AUTO_TEST_CASE(testInitCleanup)
 {
   // init already called
-  SoDB::cleanup();
+  SoDB::finish();
 
   SoDB::init();
-  SoDB::cleanup();
+  SoDB::finish();
 
 
   //FIXME: This is not a true unittest, as it touches state for other functions.
