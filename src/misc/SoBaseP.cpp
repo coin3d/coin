@@ -586,13 +586,6 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
 
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
 
-  // check that realtime field actually is initialized with something
-  // close to actual time
-  const double clockdiff =
-    fabs(SbTime::getTimeOfDay().getValue() - realtime->getValue().getValue());
-  BOOST_CHECK_MESSAGE(clockdiff < 5.0,
-                      "realTime global field not close to actual time");
-
   char scene[] = 
     "#Inventor V2.1 ascii\n\n"
     "RotationXYZ {"
@@ -607,21 +600,14 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   in->setBuffer(scene, strlen(scene));
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
-
-  // just to see that we're correct with the syntax
-  BOOST_CHECK_MESSAGE(readok,
-                      "failed to read scene graph with realTime global field");
-  if (!readok) { return; }
+  assert(readok); // that import is ok is tested by a case in SoDB.cpp
 
   // check that the global field is still the same instance
   SoSFTime * realtimeafter = (SoSFTime *)SoDB::getGlobalField("realTime");
   BOOST_CHECK_MESSAGE(realtime == realtimeafter,
                       "internal realTime SoGlobalField value changed upon iv import");
 
-  // supposed to get new value from file
-  BOOST_CHECK_MESSAGE(realtime->getValue().getValue() == 0.0,
-                      "realTime global field unchanged after import");
-
+  // clean up
   g->ref();
   g->unref();
 }
