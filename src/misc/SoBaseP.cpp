@@ -581,7 +581,8 @@ SoBase::PImpl::flushInput(SoInput * in)
 
 BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
 {
-  SoDB::init(); // (note that realTime global field will be init here)
+  // SoDB::init() already called by test-suite init, and the realTime
+  // global field will be set up there
 
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
 
