@@ -58,7 +58,7 @@ done
 # **************************************************************************
 
 for path in $filelist; do
-  token=`echo $path | tr -d '/\\' | sed -e 's/^\.*//g'`
+  token=$(echo $path | tr -d '/\\' | sed -e 's/^\.*//g')
 
   case $token in
   *.cpp)
