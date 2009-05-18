@@ -160,7 +160,7 @@ SoVRMLParent::commonConstructor(void)
   PRIVATE(this)->removesensor = new SoFieldSensor(field_sensor_cb, this);
   PRIVATE(this)->addsensor->attach(&this->addChildren);
   PRIVATE(this)->removesensor->attach(&this->removeChildren);
-  
+
   // HACK WARNING: All children of this node are stored in the
   // children field. Avoid double notifications (because of
   // notification through SoChildList) be reallocating the SoChildList
@@ -237,7 +237,7 @@ SoVRMLParent::removeChild(int idx)
   else {
     SoGroup::children->truncate(0);
     PRIVATE(this)->childlistvalid = TRUE;
-  }  
+  }
 }
 
 
@@ -292,13 +292,13 @@ SoVRMLParent::getChildren(void) const
     PRIVATE(this)->lockChildList();
     // test again after we've locked
     if (!PRIVATE(this)->childlistvalid) {
-      
+
       SoVRMLParent::updateChildList(this->children.getValues(0),
                                     this->children.getNum(),
                                     *SoGroup::children);
       PRIVATE((SoVRMLParent*)this)->childlistvalid = TRUE;
     }
-    PRIVATE(this)->unlockChildList();    
+    PRIVATE(this)->unlockChildList();
   }
   return SoGroup::children;
 }
@@ -397,7 +397,8 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
 {
   int i;
   SbBool needcopy = TRUE;
-  if (numnodes == cl.getLength()) {
+  unsigned int numChildren = cl.getLength();
+  if (numChildren && (numnodes == numChildren)) {
     const SoNode ** clarr = (const SoNode**) cl.getArrayPtr();
     for (i = 0; i < numnodes; i++) {
       // if the MFNode contains NULL values, we insert a dummy node
@@ -406,7 +407,7 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
       if (clarr[i] == NULL) {
         if (nodes[i] != SoVRMLParentP::getNullNode()) break;
       }
-      else {        
+      else {
         if (clarr[i] != nodes[i]) break;
       }
     }
