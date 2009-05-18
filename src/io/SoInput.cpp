@@ -1037,7 +1037,7 @@ SoInput::getHeader(void)
 float
 SoInput::getIVVersion(void)
 {
-  if (this->filestack.getLength() && !this->checkHeader()) { return 0.0f; }
+  if ( (this->filestack.getLength()==0) || !this->checkHeader()) { return 0.0f; }
   return this->getTopOfStack()->ivVersion();
 }
 
