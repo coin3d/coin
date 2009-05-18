@@ -3,7 +3,7 @@ srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 top_builddir = ..
 CXX = @CXX@
-LDFLAGS = @LDFLAGS@
+LDFLAGS = @LDFLAGS@ -lboost_filesystem
 
 prefix = @prefix@
 OBJEXT = @OBJEXT@
