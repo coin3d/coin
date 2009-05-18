@@ -104,11 +104,14 @@ done
 
 cat <<"EODATA" >&5
 
+@MACOSX_TRUE@macosx_boost_add = -lboost_system$(BOOST_SUFFIX)
+@MACOSX_FALSE@macosx_boost_add =
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 top_builddir = ..
 CXX = @CXX@
-LDFLAGS = @LDFLAGS@ -lboost_filesystem
+LDFLAGS = @LDFLAGS@ -lboost_filesystem$(BOOST_SUFFIX) $(macosx_boost_add)
 
 prefix = @prefix@
 OBJEXT = @OBJEXT@
@@ -184,19 +187,19 @@ makefile-update:
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS)
-	$(CXX) -o $@ $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(TS_LIBS)
+	$(CXX) -o $@ $(AM_LDFLAGS) $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(LIBS) $(TS_LIBS)
 
 TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp $(srcdir)/TestSuiteUtils.h
-	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
 
 TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.h
-	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
 
 TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
 
 StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h
-	$(CXX) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
 
 EODATA
 
@@ -213,7 +216,7 @@ while test x"$e" != x""; do
     echo >&5 "	\$(srcdir)/makeextract.sh \$(top_srcdir) $sourcefile"
     echo >&5 ""
     echo >&5 "$objectfile: $extractfile \$(srcdir)/TestSuiteUtils.h \$(srcdir)/TestSuiteMisc.h"
-    echo >&5 "	\$(CXX) \$(TS_CPPFLAGS) -g -c $extractfile"
+    echo >&5 "	\$(CXX) \$(CPPFLAGS) \$(TS_CPPFLAGS) -g -c $extractfile"
     echo >&5 ""
   fi
 
