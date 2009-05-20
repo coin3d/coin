@@ -586,7 +586,7 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
 
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
 
-  char scene[] = 
+  char scene[] =
     "#Inventor V2.1 ascii\n\n"
     "RotationXYZ {"
     "   angle = GlobalField {"
@@ -601,6 +601,7 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
   assert(readok); // that import is ok is tested by a case in SoDB.cpp
+  delete in;
 
   // check that the global field is still the same instance
   SoSFTime * realtimeafter = (SoSFTime *)SoDB::getGlobalField("realTime");
