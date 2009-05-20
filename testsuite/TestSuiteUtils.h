@@ -24,9 +24,15 @@
  *
 \**************************************************************************/
 
+#include <boost/filesystem.hpp>   // includes all needed Boost.Filesystem declarations
+#include <string>
+#include <vector>
+
 class SoNode;
 
 namespace SIM { namespace Coin3D { namespace Coin { namespace TestSuite {
+
+typedef bool test_files_CB(SoNode * root, std::string & filename);
 
 void Init(void);
 
@@ -50,6 +56,10 @@ int GetMemoryErrorCount(void);
 
 SoNode * ReadInventorFile(const char * filename);
 int WriteInventorFile(const char * filename, SoNode * root);
+
+void test_all_files(const boost::filesystem::path & search_directory,
+                    std::vector<std::string> & suffixes,
+                    test_files_CB * testFunction);
 
 } } } } // namespace
 

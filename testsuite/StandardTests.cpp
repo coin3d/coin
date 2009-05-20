@@ -14,82 +14,50 @@ using namespace boost::filesystem;          // for ease of tutorial presentation
 #include <TestSuiteUtils.h>
 #include <TestSuiteMisc.h>
 
-bool compare_suffix(const std::string & input ,const std::string & suffix) {
-  int suffixLength = suffix.size();
-
-  int n = input.size();
-  if (n<suffixLength)
-    return false;
-
-  std::string toCompare = input.substr(n-suffixLength,suffixLength);
-  return toCompare == suffix;
-}
-
-bool find_file( const path & dir_path,         // in this directory,
-                const std::string & suffix, // search for this name,
-                std::vector<path> & paths )            // placing path here if found
-{
-  bool file_found = false;
-  if ( !exists( dir_path ) ) return false;
-  directory_iterator end_itr; // default construction yields past-the-end
-  for ( directory_iterator itr( dir_path );
-        itr != end_itr;
-        ++itr )
-    {
-      if ( is_directory(itr->status()) )
-        {
-          if ( find_file( itr->path(), suffix, paths ) )
-            file_found = true;
-        }
-      else if ( compare_suffix(itr->leaf(),suffix) ) // see below
-        {
-          paths.push_back(itr->path());
-          file_found = true;
-        }
-    }
-  return file_found;
-}
 
 using namespace SIM::Coin3D::Coin;
 
+
+static bool
+testCorrectFile(SoNode * root, std::string & filename) {
+  BOOST_CHECK_MESSAGE(root != NULL, (std::string("failed to read file ") + filename).c_str() );
+  return root!=NULL;
+}
+
+static bool
+testInCorrectFile(SoNode * root, std::string & filename) {
+  BOOST_CHECK_MESSAGE(root == NULL, (std::string("Managed to read an incorrect file ") + filename).c_str() );
+  return root!=NULL;
+}
+
+static bool
+testOutOfSpecFile(SoNode * root, std::string & filename) {
+  BOOST_CHECK_MESSAGE(root != NULL, (std::string("This out of spec file could be read in an earlier version ") + filename).c_str() );
+  return root!=NULL;
+}
+
+
+namespace {
+  const char * standardSuffixes_initializer [] = { ".wrl", "wrml", "wrl.gz", "wrml.gz", ".iv" };
+  static std::vector<std::string> standardSuffixes(standardSuffixes_initializer,&standardSuffixes_initializer[sizeof(standardSuffixes_initializer)/sizeof(standardSuffixes_initializer[0])]);
+}
+
+
 BOOST_AUTO_TEST_SUITE(StandardTests);
 
-BOOST_AUTO_TEST_CASE(loadfiles)
+BOOST_AUTO_TEST_CASE(loadCorrectfiles)
 {
-  path basepath;
-  {
-    char buf[1024];
-    getcwd(buf,sizeof(buf));
-    basepath=buf;
-  }
-  std::vector<path> paths;
-  find_file("models", ".wrl", paths);
-  find_file("models", ".wrml", paths);
-  find_file("models", ".wrl.gz", paths);
-  find_file("models", ".wrml.gz", paths);
-  find_file("models", ".iv", paths);
-  for (
-       std::vector<path>::const_iterator it = paths.begin();
-       it != paths.end();
-       ++it)
-    {
-      std::string tmp = it->string();
-      int n = tmp.find_last_of('/');
-      path dir = tmp.substr(0,n);
-      path file = tmp.substr(n+1,tmp.size()-n-1);
-      chdir(dir.string().c_str());
-      SoNode * fileroot = TestSuite::ReadInventorFile(file.string().c_str());
-      BOOST_CHECK_MESSAGE(fileroot != NULL, (std::string("failed to read file ") + it->string()).c_str() );
-      /*
-      if (fileroot == NULL)
-        abort();
-      */
-      if (fileroot != NULL) {
-        fileroot->ref();
-        fileroot->unref();
-      }
-      chdir(basepath.string().c_str());
-    }
+  TestSuite::test_all_files("models",standardSuffixes,&testCorrectFile);
+}
+
+BOOST_AUTO_TEST_CASE(loadIncorrectfiles)
+{
+  TestSuite::test_all_files("killers",standardSuffixes,&testInCorrectFile);
+}
+
+BOOST_AUTO_TEST_CASE(loadOutOfSpecFilesWhichWeAccept)
+{
+  TestSuite::test_all_files("slackers",standardSuffixes,&testOutOfSpecFile);
 }
 
 BOOST_AUTO_TEST_SUITE_END();

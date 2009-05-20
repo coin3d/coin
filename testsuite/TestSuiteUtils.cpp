@@ -237,3 +237,87 @@ TestSuite::WriteInventorFile(const char * filename, SoNode * root)
   root->unrefNoDelete();
   return TRUE;
 }
+
+using namespace boost::filesystem;
+
+namespace {
+  bool
+  compare_suffix(const std::string & input ,const std::string & suffix) {
+    int suffixLength = suffix.size();
+
+    int n = input.size();
+    if (n<suffixLength)
+      return false;
+
+    std::string toCompare = input.substr(n-suffixLength,suffixLength);
+    return toCompare == suffix;
+  }
+
+  bool
+  find_file( const path & dir_path,         // in this directory,
+             const std::string & suffix, // search for this suffix,
+             std::vector<path> & paths )            // placing path here if found
+  {
+    bool file_found = false;
+    if ( !exists( dir_path ) ) return false;
+    directory_iterator end_itr;
+    for ( directory_iterator itr( dir_path );
+          itr != end_itr;
+          ++itr )
+      {
+        if ( is_directory(itr->status()) )
+          {
+            if ( find_file( itr->path(), suffix, paths ) )
+              file_found = true;
+          }
+        else if ( compare_suffix(itr->leaf(),suffix) )
+          {
+            paths.push_back(itr->path());
+            file_found = true;
+          }
+      }
+    return file_found;
+  }
+}
+
+void
+TestSuite::test_all_files(const boost::filesystem::path & search_directory,
+                          std::vector<std::string> & suffixes,
+                          test_files_CB * testFunction)
+{
+  path basepath;
+  {
+    char buf[1024];
+    getcwd(buf,sizeof(buf));
+    basepath=buf;
+  }
+
+  std::vector<path> paths;
+  for (
+       std::vector<std::string>::const_iterator it = suffixes.begin();
+       it != suffixes.end();
+       ++it)
+    {
+      find_file(search_directory, *it, paths);
+    }
+
+  for (
+       std::vector<path>::const_iterator it = paths.begin();
+       it != paths.end();
+       ++it)
+    {
+      std::string filename;
+      filename = it->string();
+      int n = filename.find_last_of('/');
+      path dir = filename.substr(0,n);
+      path file = filename.substr(n+1,filename.size()-n-1);
+      chdir(dir.string().c_str());
+      SoNode * fileroot = TestSuite::ReadInventorFile(file.string().c_str());
+      testFunction(fileroot, filename);
+      if (fileroot != NULL) {
+        fileroot->ref();
+        fileroot->unref();
+      }
+      chdir(basepath.string().c_str());
+    }
+}
