@@ -914,8 +914,8 @@ locate_node_copy(SoNode * searchfor, SoNode * org, SoNode * cpy)
   const SoFieldData * fd = org->getFieldData();
   const SoFieldData * fd2 = cpy->getFieldData();
   
-  int n = fd->getNumFields();
-  int n2 = fd2->getNumFields();
+  int n = fd ? fd->getNumFields() : 0;
+  int n2 = fd2 ? fd2->getNumFields() : 0;
 
   if (n != n2) {
     // should never happen (in theory)
