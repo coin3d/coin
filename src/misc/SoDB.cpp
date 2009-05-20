@@ -1837,6 +1837,8 @@ BOOST_AUTO_TEST_CASE(globalfield_import)
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
 
+  delete in;
+
   // just to see that we're correct with the syntax
   BOOST_CHECK_MESSAGE(readok,
                       "failed to read scene graph with realTime global field");
