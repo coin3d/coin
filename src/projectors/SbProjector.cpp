@@ -171,7 +171,7 @@ SbProjector::getWorkingLine(const SbVec2f & point) const
   This method was not part of the Inventor v2.1 API, and is an
   extension specific to Coin.
 
-  \since 1.1.0
+  \since Coin 1.1
 */
 float
 SbProjector::findVanishingDistance(void) const
@@ -219,7 +219,7 @@ SbProjector::findVanishingDistance(void) const
   This method was not part of the Inventor v2.1 API, and is an
   extension specific to Coin.
 
-  \since 1.1.0
+  \since Coin 1.1
 */
 SbBool
 SbProjector::verifyProjection(const SbVec3f & projpt) const

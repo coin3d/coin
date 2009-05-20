@@ -168,7 +168,7 @@ SbString::findAll(const SbString & strarg, SbIntList & found) const
 /*!
   Converts all of the characters to lowercase using tolower().
 
-  \since 2008-12-10
+  \since Coin 3.1
 */
 SbString
 SbString::lower() const
@@ -184,7 +184,7 @@ SbString::lower() const
 /*!
   Converts all of the characters to uppercase using toupper().
 
-  \since 2008-12-10
+  \since Coin 3.1
 */
 SbString
 SbString::upper() const
