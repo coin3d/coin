@@ -67,7 +67,7 @@
   \brief Renders a scene into a texture cube map.
 
   \ingroup nodes
-  \since ????
+  \since Coin 2.5
 */
 
 // FIXME: more detailed description on how the camera is to be set 20050429 martin
