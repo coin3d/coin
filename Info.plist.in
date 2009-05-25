@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Inventor</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Coin framework, copyright Kongsberg SIM 1998-2008</string>
+	<string>Coin framework, copyright Kongsberg SIM 1998-2009</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.coin3d.Coin.framework</string>
 	<key>CFBundleInfoDictionaryVersion</key>
