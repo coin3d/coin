@@ -100,7 +100,7 @@
   // make your own elements for scene graph traversals.
   //
   // Code by Peder Blekken <pederb@sim.no>, 1999-12-09. Copyright
-  // Systems in Motion.
+  // Kongsberg SIM.
 
   #include "texturefilenameelement.h"
 
@@ -173,8 +173,8 @@
   //
   //
   // Code by Peder Blekken <pederb@sim.no>. Cleaned up, integrated in
-  // Coin distribution and commented by Morten Eriksen <mortene@sim.no>.
-  // 1999-12-09. Copyright Systems in Motion.
+  // Coin distribution and commented by Morten Eriksen
+  // <mortene@sim.no>. 1999-12-09. Copyright Kongsberg SIM.
 
   #include <Inventor/SoDB.h>
   #include <Inventor/SoInput.h>

@@ -34,7 +34,7 @@
   complex, due to it's non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
-  directory of Systems in Motion's SoGuiExamples CVS module. Further
+  directory of Kongsberg SIM's SoGuiExamples CVS module. Further
   information and links for downloading and building this module
   should be available at <a href="http://www.coin3d.org">www.coin3d.org</a>.
 

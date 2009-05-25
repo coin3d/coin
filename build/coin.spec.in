@@ -27,7 +27,7 @@ Release: @coin_configure_date@
 Copyright: GNU General Public License ("GPL")
 Group: Development/Libraries
 URL: http://www.coin3d.org
-Vendor: Systems in Motion
+Vendor: Kongsberg SIM
 Packager: Morten Eriksen <mortene@sim.no>
 
 %description

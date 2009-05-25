@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2004-2005 Systems in Motion AS, All rights reserved.
+# Copyright 2004-2009 Kongsberg SIM, All rights reserved.
 #
 # This script creates the Coin-x.x.x-no_inst.dmg file.
 # The dmg file will be put in the current directory.

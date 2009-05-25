@@ -373,7 +373,7 @@
   to actually become activated. If the current rendering canvas does
   not have these properties, Coin will fall back on a simpler
   transparency handling mode. If you are using one of the
-  window-system binding libraries provided by Systems in Motion,
+  window-system binding libraries provided by Kongsberg SIM,
   e.g. SoXt, SoQt or SoWin, you will need to explicitly enable this in
   your viewer. See the API documentation of the \c setAlphaChannel()
   method of either SoXtGLWidget, SoQtGLWidget or SoWinGLWidget.

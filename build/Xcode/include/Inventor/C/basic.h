@@ -145,7 +145,7 @@ typedef int SbBool;
 /* *********************************************************************** */
 
 /* A unique identifier to recognize whether or not we're running under
- * Systems in Motion's Coin library.
+ * Kongsberg SIM's Coin library.
  */
 #define __COIN__
 

@@ -159,8 +159,8 @@ socontexthandler_cleanup(void)
   Before calling this function, the context \e must be made current.
 
   Note that if you are using one of the standard GUI-binding libraries
-  from Systems in Motion, this is taken care of automatically for
-  contexts for canvases set up by SoQt, SoWin, etc.
+  from Kongsberg SIM, this is taken care of automatically for contexts
+  for canvases set up by SoQt, SoWin, etc.
 */
 void
 SoContextHandler::destructingContext(uint32_t contextid)

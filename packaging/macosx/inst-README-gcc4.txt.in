@@ -1,4 +1,4 @@
-This is Coin-@VERSION@ by Systems in Motion. Double-click on Coin.pkg
+This is Coin-@VERSION@ by Kongsberg SIM. Double-click on Coin.pkg
 to start the installation. If you intend to develop without using 
 Xcode, you should also install the CoinTools package, which contains 
 the coin-config commandline utility, its associated man page, and 

@@ -152,7 +152,7 @@ SoHardCopy::init(void)
 const char *
 SoHardCopy::getProductName(void)
 {
-  return "Systems in Motion hard-copy support for Coin.";
+  return "Kongsberg SIM hard-copy support for Coin.";
 }
 
 /*!

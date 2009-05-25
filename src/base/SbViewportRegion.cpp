@@ -42,7 +42,7 @@
   be visible outside it. Click 'Esc' again to use 'U' and 'D'.
 
   \code
-  // Copyright (C) 2000-2008 by Kongsberg SIM. All rights reserved.
+  // Copyright (C) 2000-2009 by Kongsberg SIM. All rights reserved.
 
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>

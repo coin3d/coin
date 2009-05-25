@@ -11,8 +11,8 @@ hints and tips for you.
 First of all, you should make sure you are building from the latest
 sources from the Subversion repository you want to work with. This is
 done by using the Subversion for staying in sync with the sourcecode
-repository we at Systems in Motion are using. Follow the instructions
-on the webpages at <URL:http://www.coin3d.org/doc/svn_access/>.
+repository we at Kongsberg SIM are using. Follow the instructions on
+the webpages at <URL:http://www.coin3d.org/doc/svn_access/>.
 
 Be aware that Coin has three source repositories.  "Coin" is the head
 development repository which is unstable and may contain unportable

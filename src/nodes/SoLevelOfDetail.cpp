@@ -55,7 +55,7 @@
   more application memory resources. Also, generating the set of less
   and less detailed versions of a 3D model from the original is often
   not a trivial task to do properly. The process is often assisted by
-  software like what Systems in Motion offers in their <a
+  software like what Kongsberg SIM offers in their <a
   href="http://www.rational-reducer.com>Rational Reducer</a> package.
 
 

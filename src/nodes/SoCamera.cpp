@@ -204,7 +204,7 @@
   rendering, at least).
 
   If you use one of the viewer components from the So[Xt|Qt|Win|Gtk]
-  GUI libraries provided by Systems in Motion, they will automatically
+  GUI libraries provided by Kongsberg SIM, they will automatically
   update this value for the scene camera according to the scene
   bounding box. Ditto for the far clipping plane.
 

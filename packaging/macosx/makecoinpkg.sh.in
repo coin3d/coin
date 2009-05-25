@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2004-2005 Systems in Motion AS, All rights reserved.
+# Copyright 2004-2009 Kongsberg SIM, All rights reserved.
 #
 # This script creates the main Coin.pkg.
 # The pkg file will be put in the current directory.

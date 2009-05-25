@@ -130,7 +130,7 @@ SoReadError::post(const SoInput * const in, const char * const format, ...)
   if (const_cast<SoInput *>(in)->getIVVersion() == 1.0f) {
     error.appendToDebugString("\nThis operation might have failed due to limited "
                               "support for old Inventor files. If this is the case, "
-                              "please get in touch with Systems in Motion "
+                              "please get in touch with Kongsberg SIM "
                               "at <coin-support@coin3d.org>, and we will "
                               "rectify the situation.");
   }
