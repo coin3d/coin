@@ -112,6 +112,9 @@ void
 SoVRMLOrientationInterpolator::evaluate(void)
 {
   float interp;
+
+  assert(this->key.getNum() == this->keyValue.getNum() && "Number of elements in 'key' should always be identical to number of elements in 'keyValue'");
+
   int idx = this->getKeyValueIndex(interp);
   if (idx < 0) return;
 
