@@ -29,8 +29,9 @@ TEST_SUITE_OBJECTS = \
 	StandardTests.$(OBJEXT) \
 	actionsSoCallbackAction.$(OBJEXT) \
 	actionsSoWriteAction.$(OBJEXT) \
-	baseSbString.$(OBJEXT) \
 	baserbptree.$(OBJEXT) \
+	baseSbBSPTree.$(OBJEXT) \
+	baseSbString.$(OBJEXT) \
 	draggersSoTransformerDragger.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
 	fieldsSoMFBool.$(OBJEXT) \
@@ -86,8 +87,8 @@ TEST_SUITE_OBJECTS = \
 	fieldsSoSFEngine.$(OBJEXT) \
 	fieldsSoSFEnum.$(OBJEXT) \
 	fieldsSoSFFloat.$(OBJEXT) \
-	fieldsSoSFImage.$(OBJEXT) \
 	fieldsSoSFImage3.$(OBJEXT) \
+	fieldsSoSFImage.$(OBJEXT) \
 	fieldsSoSFInt32.$(OBJEXT) \
 	fieldsSoSFMatrix.$(OBJEXT) \
 	fieldsSoSFName.$(OBJEXT) \
@@ -145,8 +146,9 @@ TEST_SUITE_OBJECTS = \
 TEST_SUITE_BUILT_FILES = \
 	actionsSoCallbackAction.cpp \
 	actionsSoWriteAction.cpp \
-	baseSbString.cpp \
 	baserbptree.cpp \
+	baseSbBSPTree.cpp \
+	baseSbString.cpp \
 	draggersSoTransformerDragger.cpp \
 	fieldsSoMFBitMask.cpp \
 	fieldsSoMFBool.cpp \
@@ -202,8 +204,8 @@ TEST_SUITE_BUILT_FILES = \
 	fieldsSoSFEngine.cpp \
 	fieldsSoSFEnum.cpp \
 	fieldsSoSFFloat.cpp \
-	fieldsSoSFImage.cpp \
 	fieldsSoSFImage3.cpp \
+	fieldsSoSFImage.cpp \
 	fieldsSoSFInt32.cpp \
 	fieldsSoSFMatrix.cpp \
 	fieldsSoSFName.cpp \
@@ -318,17 +320,23 @@ actionsSoWriteAction.cpp: $(top_srcdir)/src/actions/SoWriteAction.cpp $(srcdir)/
 actionsSoWriteAction.$(OBJEXT): actionsSoWriteAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c actionsSoWriteAction.cpp
 
-baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
-
-baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbString.cpp
-
 baserbptree.cpp: $(top_srcdir)/src/base/rbptree.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/rbptree.cpp
 
 baserbptree.$(OBJEXT): baserbptree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baserbptree.cpp
+
+baseSbBSPTree.cpp: $(top_srcdir)/src/base/SbBSPTree.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBSPTree.cpp
+
+baseSbBSPTree.$(OBJEXT): baseSbBSPTree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBSPTree.cpp
+
+baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
+
+baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbString.cpp
 
 draggersSoTransformerDragger.cpp: $(top_srcdir)/src/draggers/SoTransformerDragger.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/draggers/SoTransformerDragger.cpp
@@ -660,17 +668,17 @@ fieldsSoSFFloat.cpp: $(top_srcdir)/src/fields/SoSFFloat.cpp $(srcdir)/makeextrac
 fieldsSoSFFloat.$(OBJEXT): fieldsSoSFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFFloat.cpp
 
-fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
-
-fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
-
 fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
 
 fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
+
+fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
+
+fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
 
 fieldsSoSFInt32.cpp: $(top_srcdir)/src/fields/SoSFInt32.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFInt32.cpp

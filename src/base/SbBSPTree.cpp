@@ -664,3 +664,32 @@ SbBSPTree::findPoints(const SbSphere &sphere,
 {
   this->topnode->findPoints(sphere, array);
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(initialized)
+{
+  SbBSPTree bsp;
+  SbVec3f p0(0.0f, 0.0f, 0.0f);
+  SbVec3f p1(1.0f, 0.0f, 0.0f);
+  SbVec3f p2(2.0f, 0.0f, 0.0f);
+
+  BOOST_CHECK_MESSAGE(bsp.addPoint(p0) == 0, "unexpected index");
+  BOOST_CHECK_MESSAGE(bsp.addPoint(p1) == 1, "unexpected index");
+  BOOST_CHECK_MESSAGE(bsp.addPoint(p2) == 2, "unexpected index");
+  BOOST_CHECK_MESSAGE(bsp.findPoint(p0) == 0, "wrong index");
+  BOOST_CHECK_MESSAGE(bsp.findPoint(p1) == 1, "wrong index");
+  BOOST_CHECK_MESSAGE(bsp.findPoint(p2) == 2, "wrong index");
+
+  BOOST_CHECK_MESSAGE(bsp.numPoints() == 3, "wrong number of points in the tree");
+  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[0] == p0, "wrong point at index 0");
+  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[1] == p1, "wrong point at index 1");
+  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[2] == p2, "wrong point at index 2");
+
+  BOOST_CHECK_MESSAGE(bsp.removePoint(p1) == 1, "unable to remove point"); 
+  BOOST_CHECK_MESSAGE(bsp.numPoints() == 2, "wrong number of points after removePoint().");
+  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[0] == p0, "wrong point at index 0");
+  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[1] == p2, "wrong point at index 1");  
+}
+
+#endif // COIN_TEST_SUITE
