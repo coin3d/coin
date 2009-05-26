@@ -6,7 +6,8 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 # Don't put steel.l in PrivateHeaders to avoid Automake complaining about
 # missing lex/flex support.
 EXTRA_DIST = \
-	steel.l
+	steel.l \
+	steel.cpp
 RegularSources = \
 	SoForeignFileKit.cpp \
 	SoSTLFileKit.cpp \
