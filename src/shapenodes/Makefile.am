@@ -41,7 +41,7 @@ PrivateHeaders = \
 	soshape_bigtexture.h \
 	soshape_bumprender.h \
 	soshape_primdata.h \
-	soshape_trianglesort.h \
+	soshape_trianglesort.h
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(shapenodes, nodes)
