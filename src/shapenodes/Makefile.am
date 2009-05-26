@@ -39,7 +39,7 @@ PublicHeaders =
 PrivateHeaders = \
 	SoNurbsP.h \
 	soshape_bigtexture.h \
-	soshape_bumprender.h
+	soshape_bumprender.h \
 	soshape_primdata.h \
 	soshape_trianglesort.h \
 ObsoleteHeaders =
