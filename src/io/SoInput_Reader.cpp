@@ -105,13 +105,17 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 #endif // HAVE_FSTAT
 
   if ( trycompression ) {
-    unsigned char header[4];
+    static const size_t HEADER_SIZE = 4;
+    unsigned char header[HEADER_SIZE];
     long offset = ftell(fp);
-    fread(header, 1, 4, fp);
+    SbBool valid_header = TRUE;
+    if (fread(header, 1, HEADER_SIZE, fp)<HEADER_SIZE) {
+      valid_header = FALSE;
+    }
     (void) fseek(fp, offset, SEEK_SET);
     fflush(fp); // needed since we fetch the file descriptor later
 
-    if (header[0] == 'B' && header[1] == 'Z') {
+    if (valid_header && header[0] == 'B' && header[1] == 'Z') {
       if (!cc_bzglue_available()) {
         SoDebugError::postWarning("SoInput_Reader::createReader",
                                   "File seems to be in bzip2 format, but "
@@ -129,8 +133,8 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
         }
       }
     }
-    if ((reader == NULL) && 
-        (header[0] == 0x1f) && 
+    if ((reader == NULL) && valid_header &&
+        (header[0] == 0x1f) &&
         (header[1] == 0x8b)) {
       if (!cc_zlibglue_available()) {
         SoDebugError::postWarning("SoInput_Reader::createReader",
