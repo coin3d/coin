@@ -58,6 +58,7 @@ public:
   void findPoints(const SbSphere &sphere, SbList <int> &array);
   void findPoints(const SbSphere &sphere, SbIntList & array);
   int removePoint(const SbVec3f &pt);
+  void updateIndex(const SbVec3f & pt, int previdx, int newidx);
 
 private:
   void sort();
@@ -188,6 +189,27 @@ coin_bspnode::findPoints(const SbSphere &sphere, SbIntList & array)
   }
 }
 
+/*
+  Used to update index after a point is removed.
+*/
+void 
+coin_bspnode::updateIndex(const SbVec3f & pt, int previdx, int newidx)
+{
+  if (this->left) {
+    if (this->leftOf(pt)) return this->left->updateIndex(pt, previdx, newidx);
+    else return this->right->updateIndex(pt, previdx, newidx);
+  }
+  else {
+    int i, n = this->indices.getLength();
+    for (i = 0; i < n; i++) {
+      if (this->indices[i] == previdx) {
+        this->indices[i] = newidx;
+        return;
+      }
+    }
+  }
+}
+
 int
 coin_bspnode::removePoint(const SbVec3f &pt)
 {
@@ -201,13 +223,14 @@ coin_bspnode::removePoint(const SbVec3f &pt)
       SbVec3f arrpt = (*pointsArray)[this->indices[i]];
       if (pt == arrpt) {
         int idx = this->indices[i];
+        // just remove point from index array here. The invoker will
+        // remove the point from the pointsArray
         this->indices.removeFast(i);
         return idx;
       }
     }
   }
   return -1;
-
 }
 
 void
@@ -443,7 +466,20 @@ SbBSPTree::addPoint(const SbVec3f &pt, void * const data)
 int
 SbBSPTree::removePoint(const SbVec3f &pt)
 {
-  return this->topnode->removePoint(pt);
+  int idx = this->topnode->removePoint(pt);
+  if (idx >= 0) {
+    // SbList::removeFast() will move the last item onto the removed item
+    // to avoid copying/moving all the data. We need to notify the node that 
+    // has that last point that the index has changed.
+    int lastidx = this->pointsArray.getLength() - 1;
+    if (lastidx != idx) {
+      // update index
+      this->topnode->updateIndex(this->pointsArray[lastidx], lastidx, idx);
+      // actually remove the point (copy lastidx onto idx, decrement size)
+      this->pointsArray.removeFast(idx);
+    }
+  }
+  return idx;
 }
 
 /*!
