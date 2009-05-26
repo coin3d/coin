@@ -35,6 +35,7 @@
 #include <cstdio>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/SbVec3d.h>
 #include <Inventor/SbMatrix.h>
 #include <cfloat>
 
@@ -211,7 +212,7 @@ SbPlane::transform(const SbMatrix& matrix)
 
   // the point should be transformed using the original matrix
   matrix.multVecMatrix(ptInPlane, ptInPlane);
-  
+
   if (this->normal.normalize() == 0.0f) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SbPlane::transform",
@@ -241,7 +242,10 @@ SbPlane::isInHalfSpace(const SbVec3f& point) const
 float
 SbPlane::getDistance(const SbVec3f &point) const
 {
-  return point.dot(this->normal) - this->distance;
+  // convert to double before doing the dot product to increase precision of the result
+  SbVec3d dp(point);
+  SbVec3d dn(this->normal);
+  return static_cast<float> (dp.dot(dn)) - this->distance;
 }
 
 /*!
