@@ -35,7 +35,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#ifdef POSIX
+#ifdef _POSIX_SOURCE
 #define USE_POSIX
 #else //POSIX
 #ifdef _WIN32
@@ -100,11 +100,9 @@ debugerrormsg_handler(const SoError * error, void * data)
   case SoDebugError::WARNING:
     ++debugwarningcount;
     break;
-    /*
   case SoDebugError::ERROR:
     ++debugerrorcount;
     break;
-    */
   default:
     assert(0 && "schizofrene SoDebugError error");
   }
@@ -334,10 +332,7 @@ namespace {
              std::vector<std::string> & paths )            // placing path here if found
   {
     bool file_found = false;
-  puts("Dau!\n");
-  puts(dir_path.c_str());
     if ( !exists( dir_path ) ) return false;
-  puts("Nau!\n");
 #ifdef USE_POSIX
     DIR * dh;
     if (dh = opendir(dir_path.c_str())) {
@@ -372,8 +367,8 @@ namespace {
 #ifdef USE_WIN32
     } while(FindNextFile(h, &f));
 #endif //USE_WIN32
-
   }
+
   return file_found;
 }
 }
