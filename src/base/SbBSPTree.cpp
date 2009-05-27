@@ -192,7 +192,7 @@ coin_bspnode::findPoints(const SbSphere &sphere, SbIntList & array)
 /*
   Used to update index after a point is removed.
 */
-void 
+void
 coin_bspnode::updateIndex(const SbVec3f & pt, int previdx, int newidx)
 {
   if (this->left) {
@@ -469,15 +469,15 @@ SbBSPTree::removePoint(const SbVec3f &pt)
   int idx = this->topnode->removePoint(pt);
   if (idx >= 0) {
     // SbList::removeFast() will move the last item onto the removed item
-    // to avoid copying/moving all the data. We need to notify the node that 
+    // to avoid copying/moving all the data. We need to notify the node that
     // has that last point that the index has changed.
     int lastidx = this->pointsArray.getLength() - 1;
     if (lastidx != idx) {
       // update index
       this->topnode->updateIndex(this->pointsArray[lastidx], lastidx, idx);
-      // actually remove the point (copy lastidx onto idx, decrement size)
-      this->pointsArray.removeFast(idx);
     }
+    // actually remove the point (copy lastidx onto idx, decrement size)
+    this->pointsArray.removeFast(idx);
   }
   return idx;
 }
@@ -677,6 +677,9 @@ BOOST_AUTO_TEST_CASE(initialized)
   BOOST_CHECK_MESSAGE(bsp.addPoint(p0) == 0, "unexpected index");
   BOOST_CHECK_MESSAGE(bsp.addPoint(p1) == 1, "unexpected index");
   BOOST_CHECK_MESSAGE(bsp.addPoint(p2) == 2, "unexpected index");
+  BOOST_CHECK_MESSAGE(bsp.addPoint(p2) == 2, "unexpected index");
+  BOOST_CHECK_MESSAGE(bsp.numPoints() == 3, "wrong number of points in the tree");
+
   BOOST_CHECK_MESSAGE(bsp.findPoint(p0) == 0, "wrong index");
   BOOST_CHECK_MESSAGE(bsp.findPoint(p1) == 1, "wrong index");
   BOOST_CHECK_MESSAGE(bsp.findPoint(p2) == 2, "wrong index");
@@ -686,10 +689,15 @@ BOOST_AUTO_TEST_CASE(initialized)
   BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[1] == p1, "wrong point at index 1");
   BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[2] == p2, "wrong point at index 2");
 
-  BOOST_CHECK_MESSAGE(bsp.removePoint(p1) == 1, "unable to remove point"); 
+  BOOST_CHECK_MESSAGE(bsp.removePoint(p1) == 1, "unable to remove point");
   BOOST_CHECK_MESSAGE(bsp.numPoints() == 2, "wrong number of points after removePoint().");
   BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[0] == p0, "wrong point at index 0");
-  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[1] == p2, "wrong point at index 1");  
+  BOOST_CHECK_MESSAGE(bsp.getPointsArrayPtr()[1] == p2, "wrong point at index 1");
+
+  BOOST_CHECK_MESSAGE(bsp.removePoint(p0) >= 0, "unable to remove point");
+  BOOST_CHECK_MESSAGE(bsp.removePoint(p2) >= 0, "unable to remove point");
+  BOOST_CHECK_MESSAGE(bsp.numPoints() == 0, "wrong number of points after removing all points.");
+
 }
 
 #endif // COIN_TEST_SUITE
