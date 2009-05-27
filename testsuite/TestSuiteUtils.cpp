@@ -25,16 +25,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/errors/SoMemoryError.h>
-#include <Inventor/errors/SoReadError.h>
-
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-
 #ifdef _POSIX_SOURCE
 #define USE_POSIX
 #else //POSIX
@@ -45,17 +35,19 @@
 #endif //_WIN32
 #endif //POSIX
 
-#ifdef USE_POSIX
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <dirent.h>
-#endif //USE_POSIX
-#ifdef USE_WIN32
-#include <windows.h>
-#endif //_WIN32
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoMemoryError.h>
+#include <Inventor/errors/SoReadError.h>
+
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <TestSuiteUtils.h>
+
+
 
 using namespace SIM::Coin3D::Coin;
 
@@ -258,7 +250,19 @@ TestSuite::WriteInventorFile(const char * filename, SoNode * root)
   return TRUE;
 }
 
-#include <iostream>
+/*
+  This strange place to do includes is actually necessary to avoid interference between SoDebugError::ERROR and the windows.h header.
+*/
+#ifdef USE_POSIX
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <dirent.h>
+#endif //USE_POSIX
+#ifdef USE_WIN32
+#include <windows.h>
+#endif //_WIN32
+
 namespace {
   static const char DIRECTORY_SEPARATOR [] = "/";
 
