@@ -1367,6 +1367,7 @@ EXTRA_DIST = \
 	docs/ChangeLog.2006 \
 	docs/ChangeLog.2007 \
 	docs/ChangeLog.v3.0.0 \
+	docs/ChangeLog.v3.1.0 \
 	docs/HACKING \
 	docs/announcement-2_0_0.txt \
 	docs/announcement-2_0_1.txt \
@@ -1384,6 +1385,7 @@ EXTRA_DIST = \
 	docs/announcement-2_4_6.txt \
 	docs/announcement-2_5_0.txt \
 	docs/announcement-3_0_0.txt \
+	docs/announcement-3_1_0.txt \
 	docs/autoexp.dat \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
