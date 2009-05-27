@@ -35,6 +35,11 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <dirent.h>
+
 #include <TestSuiteUtils.h>
 
 using namespace SIM::Coin3D::Coin;
@@ -238,9 +243,10 @@ TestSuite::WriteInventorFile(const char * filename, SoNode * root)
   return TRUE;
 }
 
-using namespace boost::filesystem;
-
+#include <iostream>
 namespace {
+  static const char DIRECTORY_SEPARATOR [] = "/";
+
   bool
   compare_suffix(const std::string & input ,const std::string & suffix) {
     int suffixLength = suffix.size();
@@ -253,46 +259,63 @@ namespace {
     return toCompare == suffix;
   }
 
+  bool exists(const std::string & path) {
+    struct stat st;
+    if (stat(path.c_str(),&st))
+      return false;
+    return true;
+  }
+
+  bool is_directory(const std::string & path) {
+    struct stat st;
+    if (stat(path.c_str(),&st))
+      return false;
+    return S_ISDIR(st.st_mode);
+  }
+
   bool
-  find_file( const path & dir_path,         // in this directory,
+  find_file( const std::string & dir_path,         // in this directory,
              const std::string & suffix, // search for this suffix,
-             std::vector<path> & paths )            // placing path here if found
+             std::vector<std::string> & paths )            // placing path here if found
   {
     bool file_found = false;
     if ( !exists( dir_path ) ) return false;
-    directory_iterator end_itr;
-    for ( directory_iterator itr( dir_path );
-          itr != end_itr;
-          ++itr )
-      {
-        if ( is_directory(itr->status()) )
-          {
-            if ( find_file( itr->path(), suffix, paths ) )
-              file_found = true;
-          }
-        else if ( compare_suffix(itr->leaf(),suffix) )
-          {
-            paths.push_back(itr->path());
+    DIR * dh;
+    if (dh = opendir(dir_path.c_str())) {
+      struct dirent * itr;
+      while (itr = readdir(dh)) {
+        std::string filename = itr->d_name;
+        if ( (filename == ".") || (filename == "..") )
+          continue;
+        std::string full_path = dir_path + DIRECTORY_SEPARATOR + itr->d_name;
+        if (is_directory(full_path)) {
+          if ( find_file( full_path, suffix, paths ) )
             file_found = true;
-          }
+        }
+        else if (compare_suffix(full_path,suffix)) {
+          paths.push_back(full_path);
+          file_found = true;
+        }
       }
+      closedir(dh);
+    }
     return file_found;
   }
 }
 
 void
-TestSuite::test_all_files(const boost::filesystem::path & search_directory,
+TestSuite::test_all_files(const std::string & search_directory,
                           std::vector<std::string> & suffixes,
                           test_files_CB * testFunction)
 {
-  path basepath;
+  std::string basepath;
   {
     char buf[1024];
     getcwd(buf,sizeof(buf));
     basepath=buf;
   }
 
-  std::vector<path> paths;
+  std::vector<std::string> paths;
   for (
        std::vector<std::string>::const_iterator it = suffixes.begin();
        it != suffixes.end();
@@ -302,22 +325,22 @@ TestSuite::test_all_files(const boost::filesystem::path & search_directory,
     }
 
   for (
-       std::vector<path>::const_iterator it = paths.begin();
+       std::vector<std::string>::const_iterator it = paths.begin();
        it != paths.end();
        ++it)
     {
       std::string filename;
-      filename = it->string();
-      int n = filename.find_last_of('/');
-      path dir = filename.substr(0,n);
-      path file = filename.substr(n+1,filename.size()-n-1);
-      chdir(dir.string().c_str());
-      SoNode * fileroot = TestSuite::ReadInventorFile(file.string().c_str());
+      filename = *it;
+      int n = filename.find_last_of(DIRECTORY_SEPARATOR);
+      std::string dir = filename.substr(0,n);
+      std::string file = filename.substr(n+1,filename.size()-n-1);
+      chdir(dir.c_str());
+      SoNode * fileroot = TestSuite::ReadInventorFile(file.c_str());
       testFunction(fileroot, filename);
       if (fileroot != NULL) {
         fileroot->ref();
         fileroot->unref();
       }
-      chdir(basepath.string().c_str());
+      chdir(basepath.c_str());
     }
 }

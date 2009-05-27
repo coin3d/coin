@@ -24,7 +24,6 @@
  *
 \**************************************************************************/
 
-#include <boost/filesystem.hpp>   // includes all needed Boost.Filesystem declarations
 #include <string>
 #include <vector>
 
@@ -57,7 +56,7 @@ int GetMemoryErrorCount(void);
 SoNode * ReadInventorFile(const char * filename);
 int WriteInventorFile(const char * filename, SoNode * root);
 
-void test_all_files(const boost::filesystem::path & search_directory,
+void test_all_files(const std::string & search_directory,
                     std::vector<std::string> & suffixes,
                     test_files_CB * testFunction);
 
