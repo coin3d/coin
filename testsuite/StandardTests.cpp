@@ -1,10 +1,6 @@
 #define BOOST_TEST_NO_LIB 1
 #include <boost/test/unit_test.hpp>
 
-#include <boost/filesystem.hpp>   // includes all needed Boost.Filesystem declarations
-#include <iostream>               // for std::cout
-using namespace boost::filesystem;          // for ease of tutorial presentation;
-                                  //  a namespace alias is preferred practice in real code
 #include <assert.h>
 #include <stdio.h>
 #include <iostream>

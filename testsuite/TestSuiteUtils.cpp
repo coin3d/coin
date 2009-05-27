@@ -35,10 +35,25 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#ifdef POSIX
+#define USE_POSIX
+#else //POSIX
+#ifdef _WIN32
+#define USE_WIN32
+#else //_WIN32
+#error Unknown system
+#endif //_WIN32
+#endif //POSIX
+
+#ifdef USE_POSIX
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
+#endif //USE_POSIX
+#ifdef USE_WIN32
+#include <windows.h>
+#endif //_WIN32
 
 #include <TestSuiteUtils.h>
 
@@ -85,9 +100,11 @@ debugerrormsg_handler(const SoError * error, void * data)
   case SoDebugError::WARNING:
     ++debugwarningcount;
     break;
+    /*
   case SoDebugError::ERROR:
     ++debugerrorcount;
     break;
+    */
   default:
     assert(0 && "schizofrene SoDebugError error");
   }
@@ -247,6 +264,29 @@ TestSuite::WriteInventorFile(const char * filename, SoNode * root)
 namespace {
   static const char DIRECTORY_SEPARATOR [] = "/";
 
+  std::string coin_getcwd()
+  {
+    char buf[1024];
+#ifdef USE_POSIX
+    getcwd(buf,sizeof(buf));
+#endif //USE_POSIX
+#ifdef USE_WIN32
+    GetCurrentDirectory(sizeof(buf),buf);
+#endif //USE_WIN32
+    return buf;
+  }
+
+  int
+  coin_chdir(const std::string & path)
+  {
+#ifdef USE_POSIX
+    return chdir(path.c_str());
+#endif //POSIX
+#ifdef USE_WIN32
+    return SetCurrentDirectory(path.c_str());
+#endif //_WIN32
+  }
+
   bool
   compare_suffix(const std::string & input ,const std::string & suffix) {
     int suffixLength = suffix.size();
@@ -258,19 +298,34 @@ namespace {
     std::string toCompare = input.substr(n-suffixLength,suffixLength);
     return toCompare == suffix;
   }
-
   bool exists(const std::string & path) {
+#ifdef USE_POSIX
     struct stat st;
     if (stat(path.c_str(),&st))
+#endif //USE_POSIX
+#ifdef USE_WIN32
+    DWORD       fileAttr;
+
+    fileAttr = GetFileAttributes(path.c_str());
+    if (INVALID_FILE_ATTRIBUTES == fileAttr)
+#endif //USE_WIN32
       return false;
     return true;
   }
 
   bool is_directory(const std::string & path) {
+#ifdef USE_POSIX
     struct stat st;
     if (stat(path.c_str(),&st))
       return false;
     return S_ISDIR(st.st_mode);
+#endif //USE_POSIX
+#ifdef USE_WIN32
+    DWORD       fileAttr;
+
+    fileAttr = GetFileAttributes(path.c_str());
+    return (fileAttr & FILE_ATTRIBUTE_DIRECTORY);
+#endif //USE_WIN32
   }
 
   bool
@@ -279,28 +334,48 @@ namespace {
              std::vector<std::string> & paths )            // placing path here if found
   {
     bool file_found = false;
+  puts("Dau!\n");
+  puts(dir_path.c_str());
     if ( !exists( dir_path ) ) return false;
+  puts("Nau!\n");
+#ifdef USE_POSIX
     DIR * dh;
     if (dh = opendir(dir_path.c_str())) {
       struct dirent * itr;
       while (itr = readdir(dh)) {
         std::string filename = itr->d_name;
-        if ( (filename == ".") || (filename == "..") )
-          continue;
-        std::string full_path = dir_path + DIRECTORY_SEPARATOR + itr->d_name;
-        if (is_directory(full_path)) {
-          if ( find_file( full_path, suffix, paths ) )
-            file_found = true;
-        }
-        else if (compare_suffix(full_path,suffix)) {
-          paths.push_back(full_path);
+#endif //USE_POSIX
+#ifdef USE_WIN32
+  WIN32_FIND_DATA f;
+  HANDLE h = FindFirstFile((dir_path+"/*").c_str(), &f);
+  if(h != INVALID_HANDLE_VALUE)
+  {
+    do
+    {
+      std::string filename = f.cFileName;
+#endif //USE_WIN32
+      if ( (filename == ".") || (filename == "..") )
+        continue;
+      std::string full_path = dir_path + DIRECTORY_SEPARATOR + filename;
+      if (is_directory(full_path)) {
+        if ( find_file( full_path, suffix, paths ) )
           file_found = true;
-        }
       }
+      else if (compare_suffix(full_path,suffix)) {
+        paths.push_back(full_path);
+        file_found = true;
+      }
+#ifdef USE_POSIX
+            }
       closedir(dh);
-    }
-    return file_found;
+#endif //USE_POSIX
+#ifdef USE_WIN32
+    } while(FindNextFile(h, &f));
+#endif //USE_WIN32
+
   }
+  return file_found;
+}
 }
 
 void
@@ -308,12 +383,7 @@ TestSuite::test_all_files(const std::string & search_directory,
                           std::vector<std::string> & suffixes,
                           test_files_CB * testFunction)
 {
-  std::string basepath;
-  {
-    char buf[1024];
-    getcwd(buf,sizeof(buf));
-    basepath=buf;
-  }
+  std::string basepath = coin_getcwd();
 
   std::vector<std::string> paths;
   for (
@@ -334,13 +404,13 @@ TestSuite::test_all_files(const std::string & search_directory,
       int n = filename.find_last_of(DIRECTORY_SEPARATOR);
       std::string dir = filename.substr(0,n);
       std::string file = filename.substr(n+1,filename.size()-n-1);
-      chdir(dir.c_str());
+      coin_chdir(dir);
       SoNode * fileroot = TestSuite::ReadInventorFile(file.c_str());
       testFunction(fileroot, filename);
       if (fileroot != NULL) {
         fileroot->ref();
         fileroot->unref();
       }
-      chdir(basepath.c_str());
+      coin_chdir(basepath);
     }
 }
