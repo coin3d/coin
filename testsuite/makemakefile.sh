@@ -104,14 +104,14 @@ done
 
 cat <<"EODATA" >&5
 
-@MACOSX_TRUE@macosx_boost_add = -lboost_system$(BOOST_SUFFIX)
+@MACOSX_TRUE@macosx_boost_add = 
 @MACOSX_FALSE@macosx_boost_add =
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 top_builddir = ..
 CXX = @CXX@
-LDFLAGS = @LDFLAGS@ -lboost_filesystem$(BOOST_SUFFIX) $(macosx_boost_add)
+LDFLAGS = @LDFLAGS@ $(macosx_boost_add)
 
 prefix = @prefix@
 OBJEXT = @OBJEXT@
