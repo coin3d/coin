@@ -38,8 +38,8 @@ is the term we use on the larger group of libraries that all fall
 under the same license as Coin.  Coin is the core of Coin3D.
 
 
-Release 3.0.0
-=============
+Latest release
+==============
 
 Coin has historically been released quite infrequently.  To try to
 improve on this, we decided in 2007 to switch from feature-based
@@ -47,18 +47,6 @@ release cycles to date-based release cycles, aiming for a new release
 every six months.  What we haven't switched is the decision to let
 the version number be decided based on ABI compatibility with earlier
 Coin versions.
-
-These two facts have implications for the current release.  First of
-all, we are with this release breaking ABI compatibility with older
-versions of Coin to get rid of a number of "ugly hacks" we had to have
-in Coin 2.x in order for it to stay ABI compatible with older versions
-of itself.  And second of all, only 6 months have passed since the
-previous Coin-release, Coin 2.5.0, which coincidentally have been 6 of
-our most busy months ever in other areas of the Kongsberg SIM
-business.  So what this means is that although we know "Coin 3.0" may
-sound like it is a big leap forward from 2.5, it is actually an
-indication of doing a fresh start, more than pumping Coin full of
-additional features.  Anyway, there are some new, significant ones.
 
 See the file NEWS for the summary of changes, the file RELNOTES for a
 more verbose description of the more significant updates, and the file

@@ -56,16 +56,16 @@ with the Cygwin environment.
 Compilers
 =========
 
-In-house we mostly use the Visual Studio 8 and Visual C++ 6 compilers
-when building on Windows.
+In-house we mostly use the Visual Studio / Visual C++ compilers,
+versions 7 to 9, when building on Windows.
 
 We have also had success reports from users about building Coin with the
 Intel compiler through using the Visual Studio project file setup for
 that.
 
 Building with GCC (primarily the mingw fork) on Windows is possible,
-but this setup is not something we maintain so it might not work out of
-the box at times.
+but this setup is not something we maintain as actively as the Visual
+C++ support so it might not work out of the box at times.
 
 
 Environments
@@ -367,22 +367,6 @@ Microsoft's Developer Knowledge Base:
   http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore/html/_core_cl_environment_variable.asp
 
 
-* FIXME: explain how to build release versions of the
-  libraries. 20011019 mortene.
-
-  (One snippet of information wrt release builds: "-O2" (or whatever
-  optimization level is wanted) should be manually added by the user
-  to CFLAGS/CXXFLAGS.)
-
-
-* FIXME: explain how to build static versions of the
-  libraries. 20011019 mortene.
-
-
-* FIXME: explain how to build the full library-chain on top of other
-  versions of the Microsoft C libraries than the default one. 20011019 mortene.
-
-
 Section 05 -- Static versus dynamic libraries
 =============================================
 
@@ -454,26 +438,6 @@ Section 07 -- Library Dependencies
 
     dumpbin /dependents <app.exe>
 
-
-INCOMING
-
-[Sven-Kåre Evenseth]
-
-I ran into some problems building Coin 2.1.1 on windows today. We use
-cygwin, and // to prefix drives. It seems that use of // isn't very
-popular anymore...
-
-When running make install, it tries to do a
-mkdir -p -- //driveletter/some/long/path/being/created
-and fails, complaining about
-//driveletter: no such file or directory
-
-The problem is solved when changing how drives are prefixed in the
-registry key:
-HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2
-
-It looks like anything goes, as long as there is something inbetween two
-slashes (/cygdrive/, /c/, /sunday_bloody_sunday/ etc).
 
 
 See also:

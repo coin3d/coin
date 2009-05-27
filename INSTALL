@@ -21,20 +21,18 @@ Cookbook Procedure
 If you are impatient and just want a standard installation, you can go
 ahead and run through the following cookbook procedure.  If you get into
 trouble following it, please read through the rest of this document
-before contacting The Coin Team for technical support.  Remember to
-substitute "1.0.0" with the version identifier for the Coin library you
-are building.
+before contacting The Coin Team for technical support.
 
   # 1. Unpack source code and make a build directory somewhere:
 
     cd /tmp
-    gzip -cd Coin-3.0.0.tar.gz | tar xvf -
+    gzip -cd Coin-3.1.0.tar.gz | tar xvf -
     mkdir coin-build
 
   # 2. Run configure from the build directory:
 
     cd coin-build
-    ../Coin-3.0.0/configure
+    ../Coin-3.1.0/configure
 
   # 3. Build the Coin library:
 
@@ -47,7 +45,7 @@ are building.
   # 5. Remove source and object files when you don't need them anymore:
 
     cd ..
-    rm -rf coin-build Coin-3.0.0
+    rm -rf coin-build Coin-3.1.0
 
 Running "make install" directly instead of "make" first and then
 "make install" is not recomended, since this will lead to partial
@@ -56,11 +54,11 @@ you want to launch all the build-commands on one command-line, don't separate
 commands with ; but separate them with && so the failure of one will stop the
 full chain of commands.  Like this:
 
-  .../Coin-3.0.0/configure && make && make install
+  .../Coin-3.1.0/configure && make && make install
 
 and not like this
 
-  .../Coin-3.0.0/configure; make; make install
+  .../Coin-3.1.0/configure; make; make install
 
 
 The Build Environment

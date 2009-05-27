@@ -7,8 +7,40 @@ elaborate way than can be fit into to the compact NEWS summary file.
 The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
-Coin 3.0.0 RC1
-==============
+
+Coin 3.1.0
+==========
+
+Default transparency type for SoGLRenderAction changed from
+SCREEN_DOOR to BLEND.
+
+SoBase will not keep a list of unnamed / empty named nodes any
+more. This is both an optimization and improves conformance to SGI /
+TGS Inventor.
+
+SbTesselator does better when handed certain polygons, due to improved
+precision in internal calculations.
+
+Resource usage pressure significantly lower for common case scene
+graphs with regard to mutex allocations. A not entirely uncommon
+problem on MS Windows systems for huge scene graphs was that the
+run-time system ran out of available mutexes -- this is now very
+unlikely to happen.
+
+Builds with G++ and MSVC will have C++ exception support enabled by
+default.
+
+SoSceneManager render callback can be set to NULL to disable it.
+
+Non-power-of-two textures are automatically supported if the OpenGL
+driver has that feature.
+
+No other intentional differences in semantics, other than for any bugs
+fixed.
+
+
+Coin 3.0.0
+==========
 
 New scene graph traversal profiling subsystem.
 
