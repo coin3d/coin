@@ -43,6 +43,7 @@
 
 #include "nodekits/SoSubKitP.h"
 #include "misc/SbHash.h"
+#include "tidbitsp.h"
 
 /*!
   \page foreignfilesupport Foreign File Format Support
