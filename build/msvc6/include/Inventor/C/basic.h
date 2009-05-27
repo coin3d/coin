@@ -183,8 +183,8 @@ static const SbBool TRUE = 1;
 #define COIN_MAJOR_VERSION 3
 #define COIN_MINOR_VERSION 1
 #define COIN_MICRO_VERSION 0
-#define COIN_BETA_VERSION a
-#define COIN_VERSION "3.1.0a"
+/* #undef COIN_BETA_VERSION */
+#define COIN_VERSION "3.1.0"
 
 /* This define is set by the configure script if singleprecision math
    functions are available from the C library API headers. */
