@@ -99,6 +99,7 @@
 #include "threads/threadsutilp.h"
 #include "io/SoWriterefCounter.h"
 #include "misc/SbHash.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

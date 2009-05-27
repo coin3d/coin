@@ -49,6 +49,7 @@
 
 #include "misc/SbHash.h"
 #include "glue/glp.h"
+#include "tidbitsp.h"
 
 class SoGLDriverDatabaseP {
   class SoGLDriver {

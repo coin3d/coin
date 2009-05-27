@@ -65,6 +65,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 
 #include "misc/SbHash.h"
+#include "tidbitsp.h"
 
 // FIXME: toString() missing for all classes
 

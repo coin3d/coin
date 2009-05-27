@@ -184,6 +184,7 @@
 
 #include "glue/cg.h"
 #include "misc/SbHash.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 

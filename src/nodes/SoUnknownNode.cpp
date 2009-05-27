@@ -48,6 +48,7 @@
 
 #include "io/SoWriterefCounter.h"
 #include "io/SoInputP.h"
+#include "tidbitsp.h"
 
 // *************************************************************************
 
