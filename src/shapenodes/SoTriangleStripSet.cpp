@@ -297,25 +297,21 @@ namespace { namespace SoGL { namespace TriStripSet {
       glBegin(GL_TRIANGLE_STRIP);
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
+          (AttributeBinding)NormalBinding == PER_FACE ||
           (AttributeBinding)NormalBinding == PER_STRIP) {
         currnormal = normals++;
         glNormal3fv((const GLfloat *)currnormal);
       }
       if ((AttributeBinding)MaterialBinding == PER_STRIP ||
+          (AttributeBinding)MaterialBinding == PER_FACE ||
           (AttributeBinding)MaterialBinding == PER_VERTEX) {
         mb->send(matnr++, TRUE);
       }
-
-      // workaround for nvidia color-per-face-bug
-      if ((AttributeBinding)MaterialBinding == PER_FACE) {
-        mb->send(matnr, TRUE);
-      }
-      // end of nvidia workaround
-
+      
       if (TexturingEnabled == TRUE) {
         tb->send(texnr++, coords->get3(idx), *currnormal);
       }
-      SEND_VERTEX(idx);
+      SEND_VERTEX(idx); // vertex 1
       idx++;
 
       if ((AttributeBinding)NormalBinding == PER_VERTEX) {
@@ -327,9 +323,8 @@ namespace { namespace SoGL { namespace TriStripSet {
       }
 
       // workaround for nvidia color-per-face-bug
-      if ((AttributeBinding)MaterialBinding == PER_FACE) {
-        mb->send(matnr, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+      if ((AttributeBinding)MaterialBinding == PER_FACE ||
+          (AttributeBinding)MaterialBinding == PER_STRIP) {
         mb->send(matnr-1, TRUE);
       }
       // end of nvidia workaround
@@ -337,7 +332,7 @@ namespace { namespace SoGL { namespace TriStripSet {
       if (TexturingEnabled == TRUE) {
         tb->send(texnr++, coords->get3(idx), *currnormal);
       }
-      SEND_VERTEX(idx);
+      SEND_VERTEX(idx); // vertex 2
       idx++;
 
       while (n--) {
@@ -360,7 +355,7 @@ namespace { namespace SoGL { namespace TriStripSet {
         if (TexturingEnabled == TRUE) {
           tb->send(texnr++, coords->get3(idx), *currnormal);
         }
-        SEND_VERTEX(idx);
+        SEND_VERTEX(idx); // vertex 3-n
         idx++;
       }
       glEnd();
