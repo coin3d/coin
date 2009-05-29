@@ -1255,6 +1255,7 @@ preCB(void * userdata, SoCallbackAction *, const SoNode * node)
 {
   SbString *str = (SbString *)userdata;
   (*str) += node->getName();
+  return SoCallbackAction::CONTINUE;
 }
 
 BOOST_AUTO_TEST_CASE(callbackall)
