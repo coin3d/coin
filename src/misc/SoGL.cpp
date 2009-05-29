@@ -2409,26 +2409,21 @@ namespace { namespace SoGL { namespace TriStripSet {
 
       /* vertex 1 *********************************************************/
       if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-          (AttributeBinding)MaterialBinding == PER_STRIP) {
+          (AttributeBinding)MaterialBinding == PER_STRIP ||
+          (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
         materials->send(matnr++, TRUE);
       } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-                 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+                 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED ||
+                 (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
         materials->send(*matindices++, TRUE);
-      }
-
-      // needed for nvidia color-per-face-bug workaround
-      if ((AttributeBinding)MaterialBinding == PER_TRIANGLE) {
-        materials->send(matnr, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
-        materials->send(*matindices, TRUE);
-      }
-      // end of nvidia workaround
-
+      }      
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-          (AttributeBinding)NormalBinding == PER_STRIP) {
+          (AttributeBinding)NormalBinding == PER_STRIP ||
+          (AttributeBinding)NormalBinding == PER_TRIANGLE) {
         currnormal = normals++;
         glNormal3fv((const GLfloat*)currnormal);
       } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+                 (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED ||
                  (AttributeBinding)NormalBinding == PER_STRIP_INDEXED) {
         currnormal = &normals[*normalindices++];
         glNormal3fv((const GLfloat*)currnormal);
@@ -2448,13 +2443,11 @@ namespace { namespace SoGL { namespace TriStripSet {
       }
 
       // needed for nvidia color-per-face-bug workaround
-      if ((AttributeBinding)MaterialBinding == PER_TRIANGLE) {
-        materials->send(matnr, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
-        materials->send(*matindices, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+      if ((AttributeBinding)MaterialBinding == PER_TRIANGLE ||
+          (AttributeBinding)MaterialBinding == PER_STRIP) {
         materials->send(matnr-1, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+      } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED ||
+                 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
         materials->send(matindices[-1], TRUE);
       }
       // end of nvidia workaround
@@ -2474,28 +2467,26 @@ namespace { namespace SoGL { namespace TriStripSet {
       SEND_VERTEX_TRISTRIP(v2);
 
       /* vertex 3 *********************************************************/
-      if ((AttributeBinding)MaterialBinding == PER_VERTEX ||
-          (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
+      if ((AttributeBinding)MaterialBinding == PER_VERTEX) {
         materials->send(matnr++, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED ||
-                 (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
+      } else if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
         materials->send(*matindices++, TRUE);
       }
 
       // needed for nvidia color-per-face-bug workaround
-      if ((AttributeBinding)MaterialBinding == PER_STRIP) {
+      if ((AttributeBinding)MaterialBinding == PER_STRIP ||
+          (AttributeBinding)MaterialBinding == PER_TRIANGLE) {
         materials->send(matnr-1, TRUE);
-      } else if ((AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
+      } else if ((AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED ||
+                 (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED) {
         materials->send(matindices[-1], TRUE);
       }
       // end of nvidia workaround
 
-      if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-          (AttributeBinding)NormalBinding == PER_TRIANGLE) {
+      if ((AttributeBinding)NormalBinding == PER_VERTEX) {
         currnormal = normals++;
         glNormal3fv((const GLfloat*)currnormal);
-      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-                 (AttributeBinding)NormalBinding == PER_TRIANGLE_INDEXED) {
+      } else if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
         currnormal = &normals[*normalindices++];
         glNormal3fv((const GLfloat*)currnormal);
       }
@@ -2827,7 +2818,7 @@ sogl_render_pointset_m1n1t1(const SoGLCoordinateElement * coords,
 {
   int texnr = 0;
   int matnr = 0;
-  
+
   glBegin(GL_POINTS);
   for (int i = 0; i < numpts; i++) {
     mb->send(matnr++, TRUE);
@@ -2989,8 +2980,7 @@ sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
 void
 sogl_update_shapehints_transparency(SoState * state)
 {
-  SoShapeStyleElement::setTransparentTexture(state, 
+  SoShapeStyleElement::setTransparentTexture(state,
                                              SoGLTextureImageElement::hasTransparency(state) ||
                                              SoGLMultiTextureImageElement::hasTransparency(state));
 }
-
