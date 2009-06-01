@@ -281,7 +281,7 @@ Section 01 -- Basic build instructions.
 ---
 [1] <URL:http://www.cygwin.com>
 
-[2] 'bash', 'binutils', and 'make' may not be part of the standard
+[2] 'bash', 'binutils', 'diffutils' and 'make' may not be part of the standard
     package set, but need to be present. Include 'cvs' if you want to
     stay in sync with the development source code of Coin, plus 'perl'
     and 'doxygen' if you want to build a local copy of the API
