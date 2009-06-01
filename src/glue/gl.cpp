@@ -3399,6 +3399,7 @@ cc_glglue_glArrayElement(const cc_glglue * glue, GLint i)
 SbBool
 cc_glglue_has_multidraw_vertex_arrays(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->glMultiDrawArrays && glue->glMultiDrawElements;
 }
 
@@ -5092,6 +5093,7 @@ float cc_glglue_get_max_anisotropy(const cc_glglue * glue)
 SbBool
 cc_glglue_can_do_anisotropic_filtering(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->can_do_anisotropic_filtering;
 }
 
@@ -5346,6 +5348,7 @@ cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum t
 SbBool
 coin_glglue_has_generate_mipmap(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return (glue->glGenerateMipmap != NULL);
 }
 
@@ -5358,6 +5361,7 @@ cc_glglue_glGenerateMipmap(const cc_glglue * glue, GLenum target)
 SbBool
 cc_glglue_has_framebuffer_objects(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_fbo;
 }
 
