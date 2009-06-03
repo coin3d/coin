@@ -1903,21 +1903,22 @@ glglue_resolve_symbols(cc_glglue * w)
      w->has_depth_texture &&
      w->has_shadow) ||
     w->has_arb_fragment_program;
-
-
-  w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
-    cc_glglue_getprocaddress(w, "glGenerateMipmap");
-
-  if (!w->glGenerateMipmap) {
+  
+  if (cc_glglue_glext_supported(w, "GL_ARB_framebuffer_object") ||
+      cc_glglue_glversion_matches_at_least(w, 3, 0, 0)) {
     w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
-      cc_glglue_getprocaddress(w, "glGenerateMipmapARB");
-
+      cc_glglue_getprocaddress(w, "glGenerateMipmap");
     if (!w->glGenerateMipmap) {
+      w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
+        cc_glglue_getprocaddress(w, "glGenerateMipmapARB");
+    }
+  }
+  if (!w->glGenerateMipmap) {
+    if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
       w->glGenerateMipmap = (COIN_PFNGLGENERATEMIPMAPPROC)
         cc_glglue_getprocaddress(w, "glGenerateMipmapEXT");
     }
   }
-
 
   if (cc_glglue_glext_supported(w, "GL_EXT_framebuffer_object")) {
     w->glIsRenderbuffer = (COIN_PFNGLISRENDERBUFFERPROC) cc_glglue_getprocaddress(w, "glIsRenderbufferEXT");
