@@ -490,12 +490,13 @@ SoReorganizeAction::apply(SoNode * root)
   }
   PRIVATE(this)->sa.reset();
 
-#ifdef HAVE_VMRL97
+#ifdef HAVE_VRML97
   PRIVATE(this)->sa.setType(SoVRMLIndexedFaceSet::getClassTypeId());
   PRIVATE(this)->sa.setSearchingAll(TRUE);
   PRIVATE(this)->sa.setInterest(SoSearchAction::ALL);
   PRIVATE(this)->sa.apply(root);
   SoPathList & pl2 = PRIVATE(this)->sa.getPaths();
+
   for (i = 0; i < pl2.getLength(); i++) {
     this->apply(pl2[i]);
   }
@@ -510,7 +511,7 @@ SoReorganizeAction::apply(SoNode * root)
     this->apply(pl3[i]);
   }
   PRIVATE(this)->sa.reset();
-#endif // HAVE_VMRL97
+#endif // HAVE_VRML97
 }
 
 void
