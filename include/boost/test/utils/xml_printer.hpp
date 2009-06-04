@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2004-2005.
+//  (C) Copyright Gennadiy Rozental 2004-2008.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: xml_printer.hpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.7 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : common code used by any agent serving as XML printer
 // ***************************************************************************
@@ -67,7 +67,7 @@ print_escaped( std::ostream& where_to, const_string value )
 inline void
 print_escaped( std::ostream& where_to, std::string const& value )
 {
-        print_escaped( where_to, const_string( value ) );
+    print_escaped( where_to, const_string( value ) );
 }
 
 //____________________________________________________________________________//
@@ -76,7 +76,7 @@ template<typename T>
 inline void
 print_escaped( std::ostream& where_to, T const& value )
 {
-        where_to << value;
+    where_to << value;
 }
 
 //____________________________________________________________________________//
@@ -87,11 +87,11 @@ template<typename T>
 inline std::ostream&
 operator<<( custom_printer<attr_value> const& p, T const& value )
 {
-        *p << "=\"";
-        print_escaped( *p, value );
-        *p << '"';
+    *p << "=\"";
+    print_escaped( *p, value );
+    *p << '"';
 
-        return *p;
+    return *p;
 }
 
 //____________________________________________________________________________//
@@ -115,39 +115,5 @@ operator<<( custom_printer<pcdata> const& p, const_string value )
 //____________________________________________________________________________//
 
 #include <boost/test/detail/enable_warnings.hpp>
-
-// ***************************************************************************
-//  Revision History :
-//
-//  $Log: xml_printer.hpp,v $
-//  Revision 1.7  2005/07/14 15:50:28  dgregor
-//  Untabify
-//
-//  Revision 1.6  2005/04/29 06:31:18  rogeeff
-//  bug fix for incorrect XML output
-//
-//  Revision 1.5  2005/02/20 08:27:08  rogeeff
-//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
-//
-//  Revision 1.4  2005/02/01 06:40:08  rogeeff
-//  copyright update
-//  old log entries removed
-//  minor stilistic changes
-//  depricated tools removed
-//
-//  Revision 1.3  2005/01/23 09:59:34  vawjr
-//  Changed - all the \r\r\n to \r\n in the windows flavor of the file
-//            because VC++ 8.0 complains and refuses to compile
-//
-//  Revision 1.2  2005/01/22 19:22:13  rogeeff
-//  implementation moved into headers section to eliminate dependency of included/minimal component on src directory
-//
-//  Revision 1.1  2005/01/22 18:21:40  rogeeff
-//  moved sharable staff into utils
-//
-//  Revision 1.3  2005/01/21 07:31:44  rogeeff
-//  xml helper facilities reworked to present manipulator interfaces
-//
-// ***************************************************************************
 
 #endif // BOOST_TEST_XML_PRINTER_HPP_071894GER

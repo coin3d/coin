@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2004-2005.
+//  (C) Copyright Gennadiy Rozental 2004-2008.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: istream_line_iterator.hpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.5 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : 
 // ***************************************************************************
@@ -59,11 +59,7 @@ public:
     }
     explicit basic_istream_line_iterator( istream_type& input )
     : m_input_stream( &input ) 
-#if BOOST_WORKAROUND(__GNUC__, < 3) && !defined(__SGI_STL_PORT) && !defined(_STLPORT_VERSION)
-    , m_delimeter( '\n' )
-#else
     , m_delimeter( input.widen( '\n' ) )
-#endif
     {
         this->init();
     }
@@ -74,7 +70,7 @@ private:
     // increment implementation
     bool                     get()
     {
-        return std::getline( *m_input_stream, this->m_value, m_delimeter );
+        return !!std::getline( *m_input_stream, this->m_value, m_delimeter );
     }
 
     // Data members
@@ -92,30 +88,6 @@ typedef basic_istream_line_iterator<wchar_t>    wistream_line_iterator;
 //____________________________________________________________________________//
 
 #include <boost/test/detail/enable_warnings.hpp>
-
-// ***************************************************************************
-//  Revision History :
-//  
-//  $Log: istream_line_iterator.hpp,v $
-//  Revision 1.5  2005/12/14 05:01:13  rogeeff
-//  *** empty log message ***
-//
-//  Revision 1.4  2005/02/20 08:27:09  rogeeff
-//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
-//
-//  Revision 1.3  2005/02/01 06:40:08  rogeeff
-//  copyright update
-//  old log entries removed
-//  minor stilistic changes
-//  depricated tools removed
-//
-//  Revision 1.2  2005/01/22 19:22:14  rogeeff
-//  implementation moved into headers section to eliminate dependency of included/minimal component on src directory
-//
-//  Revision 1.1  2005/01/22 18:21:40  rogeeff
-//  moved sharable staff into utils
-//
-// ***************************************************************************
 
 #endif // BOOST_ISTREAM_LINE_ITERATOR_HPP_071894GER
 

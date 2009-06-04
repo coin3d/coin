@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2005.
+//  (C) Copyright Gennadiy Rozental 2005-2008.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: interaction_based.hpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.3 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : Facilities to perform interaction-based testing
 // ***************************************************************************
@@ -115,8 +115,8 @@ public:
                                    std::size_t /*line_num*/, 
                                    void* /*p*/, std::size_t /*s*/ )         {}
     virtual void        freed( void* /*p*/ )                                {}
-    virtual void        data_flow( const_string d )                         {}
-    virtual std::string return_value( const_string default_value )          { return ""; }
+    virtual void        data_flow( const_string /*d*/ )                     {}
+    virtual std::string return_value( const_string /*default_value */ )     { return ""; }
 
     template<typename T>
     void                generic_data_flow( T const& t )
@@ -201,6 +201,9 @@ struct location {
 # ifdef BOOST_NO_STDC_NAMESPACE
 namespace std { using ::malloc; using ::free; }
 # endif
+# ifdef _CRTDBG_MAP_ALLOC
+namespace std { using ::_malloc_dbg; using ::_free_dbg; }
+# endif
 
 inline void*
 operator new( std::size_t s, ::boost::itest::location const& l )
@@ -255,23 +258,5 @@ operator delete[]( void* p, ::boost::itest::location const& )
 #endif
 
 #include <boost/test/detail/enable_warnings.hpp>
-
-// ***************************************************************************
-//  Revision History :
-//  
-//  $Log: interaction_based.hpp,v $
-//  Revision 1.3  2006/01/28 08:52:35  rogeeff
-//  operator new overloads made inline to:
-//  1. prevent issues with export them from DLL
-//  2. release link issue fixed
-//
-//  Revision 1.2  2006/01/15 11:14:38  rogeeff
-//  simpl_mock -> mock_object<>::prototype()
-//  operator new need to be rethinked
-//
-//  Revision 1.1  2005/12/14 05:09:21  rogeeff
-//  interraction based testing is introdused
-//
-// ***************************************************************************
 
 #endif // BOOST_TEST_INTERACTION_BASED_HPP_112105GER

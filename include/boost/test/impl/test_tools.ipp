@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2005.
+//  (C) Copyright Gennadiy Rozental 2005-2008.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: test_tools.ipp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.12 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : supplies offline implementation for the Test Tools
 // ***************************************************************************
@@ -32,9 +32,8 @@
 #include <cstring>
 #include <cctype>
 #include <cwchar>
-#ifdef BOOST_STANDARD_IOSTREAMS
+#include <stdexcept>
 #include <ios>
-#endif
 
 // !! should we use #include <cstdarg>
 #include <stdarg.h>
@@ -54,19 +53,76 @@ namespace boost {
 
 namespace test_tools {
 
+// ************************************************************************** //
+// **************                print_log_value               ************** //
+// ************************************************************************** //
+
+void
+print_log_value<char>::operator()( std::ostream& ostr, char t )
+{
+    if( (std::isprint)( (unsigned char)t ) )
+        ostr << '\'' << t << '\'';
+    else
+        ostr << std::hex
+#if BOOST_TEST_USE_STD_LOCALE
+        << std::showbase
+#else
+        << "0x"
+#endif
+        << (int)t;
+}
+
+//____________________________________________________________________________//
+
+void
+print_log_value<unsigned char>::operator()( std::ostream& ostr, unsigned char t )
+{
+    ostr << std::hex
+        // showbase is only available for new style streams:
+#if BOOST_TEST_USE_STD_LOCALE
+        << std::showbase
+#else
+        << "0x"
+#endif
+        << (int)t;
+}
+
+//____________________________________________________________________________//
+
+void
+print_log_value<char const*>::operator()( std::ostream& ostr, char const* t )
+{
+    ostr << ( t ? t : "null string" );
+}
+
+//____________________________________________________________________________//
+
+void
+print_log_value<wchar_t const*>::operator()( std::ostream& ostr, wchar_t const* t )
+{
+    ostr << ( t ? t : L"null string" );
+}
+
+//____________________________________________________________________________//
+
 namespace tt_detail {
 
 // ************************************************************************** //
 // **************            TOOL BOX Implementation           ************** //
 // ************************************************************************** //
 
-void
-check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
+using ::boost::unit_test::lazy_ostream;
+
+bool
+check_impl( predicate_result const& pr, lazy_ostream const& check_descr,
             const_string file_name, std::size_t line_num,
             tool_level tl, check_type ct,
             std::size_t num_of_args, ... )
 {
     using namespace unit_test;
+
+    if( !framework::is_initialized() )
+        throw std::runtime_error( "can't use testing tools before framework is initialized" );
 
     if( !!pr )
         tl = PASS;
@@ -97,13 +153,13 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
         suffix  = " failed";
         break;
     default:
-        return;
+        return true;
     }
 
     switch( ct ) {
     case CHECK_PRED:
         unit_test_log << unit_test::log::begin( file_name, line_num ) 
-                      << ll << prefix << check_descr.str() << suffix;
+                      << ll << prefix << check_descr << suffix;
         
         if( !pr.has_empty_message() )
             unit_test_log << ". " << pr.message();
@@ -115,9 +171,9 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
         unit_test_log << unit_test::log::begin( file_name, line_num ) << ll;
         
         if( tl == PASS )
-            unit_test_log << prefix << "'" << check_descr.str() << "'" << suffix;
+            unit_test_log << prefix << "'" << check_descr << "'" << suffix;
         else
-            unit_test_log << check_descr.str();
+            unit_test_log << check_descr;
         
         if( !pr.has_empty_message() )
             unit_test_log << ". " << pr.message();
@@ -125,20 +181,28 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
         unit_test_log << unit_test::log::end();
         break;
 
-    case CHECK_EQUAL: {
+    case CHECK_EQUAL: 
+    case CHECK_NE: 
+    case CHECK_LT: 
+    case CHECK_LE: 
+    case CHECK_GT: 
+    case CHECK_GE: {
+        static char const* check_str [] = { " == ", " != ", " < " , " <= ", " > " , " >= " };
+        static char const* rever_str [] = { " != ", " == ", " >= ", " > " , " <= ", " < "  };
+
         va_list args;
 
         va_start( args, num_of_args );
-        char const* arg1_descr  = va_arg( args, char const* );
-        char const* arg1_val    = va_arg( args, char const* );
-        char const* arg2_descr  = va_arg( args, char const* );
-        char const* arg2_val    = va_arg( args, char const* );
+        char const*         arg1_descr  = va_arg( args, char const* );
+        lazy_ostream const* arg1_val    = va_arg( args, lazy_ostream const* );
+        char const*         arg2_descr  = va_arg( args, char const* );
+        lazy_ostream const* arg2_val    = va_arg( args, lazy_ostream const* );
 
         unit_test_log << unit_test::log::begin( file_name, line_num ) 
-                      << ll << prefix << arg1_descr << " == " << arg2_descr << suffix;
+                      << ll << prefix << arg1_descr << check_str[ct-CHECK_EQUAL] << arg2_descr << suffix;
 
         if( tl != PASS )
-            unit_test_log << " [" << arg1_val << " != " << arg2_val << "]" ;
+            unit_test_log << " [" << *arg1_val << rever_str[ct-CHECK_EQUAL] << *arg2_val << "]" ;
 
         va_end( args );
         
@@ -154,19 +218,19 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
         va_list args;
 
         va_start( args, num_of_args );
-        char const* arg1_descr  = va_arg( args, char const* );
-        char const* arg1_val    = va_arg( args, char const* );
-        char const* arg2_descr  = va_arg( args, char const* );
-        char const* arg2_val    = va_arg( args, char const* );
-        /* toler_descr = */       va_arg( args, char const* );
-        char const* toler_val   = va_arg( args, char const* );
+        char const*         arg1_descr  = va_arg( args, char const* );
+        lazy_ostream const* arg1_val    = va_arg( args, lazy_ostream const* );
+        char const*         arg2_descr  = va_arg( args, char const* );
+        lazy_ostream const* arg2_val    = va_arg( args, lazy_ostream const* );
+        /* toler_descr = */               va_arg( args, char const* );
+        lazy_ostream const* toler_val   = va_arg( args, lazy_ostream const* );
 
         unit_test_log << unit_test::log::begin( file_name, line_num ) << ll;
 
-        unit_test_log << "difference between " << arg1_descr << "{" << arg1_val << "}" 
-                      << " and "               << arg2_descr << "{" << arg2_val << "}"
+        unit_test_log << "difference between " << arg1_descr << "{" << *arg1_val << "}" 
+                      << " and "               << arg2_descr << "{" << *arg2_val << "}"
                       << ( tl == PASS ? " doesn't exceed " : " exceeds " )
-                      << toler_val;
+                      << *toler_val;
         if( ct == CHECK_CLOSE )
             unit_test_log << "%";
 
@@ -182,16 +246,16 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
         va_list args;
 
         va_start( args, num_of_args );
-        char const* arg1_descr  = va_arg( args, char const* );
-        char const* arg1_val    = va_arg( args, char const* );
-        /* toler_descr = */       va_arg( args, char const* );
-        char const* toler_val   = va_arg( args, char const* );
+        char const*         arg1_descr  = va_arg( args, char const* );
+        lazy_ostream const* arg1_val    = va_arg( args, lazy_ostream const* );
+        /* toler_descr = */               va_arg( args, char const* );
+        lazy_ostream const* toler_val   = va_arg( args, lazy_ostream const* );
 
         unit_test_log << unit_test::log::begin( file_name, line_num ) << ll;
 
-        unit_test_log << "absolute value of " << arg1_descr << "{" << arg1_val << "}" 
+        unit_test_log << "absolute value of " << arg1_descr << "{" << *arg1_val << "}" 
                       << ( tl == PASS ? " doesn't exceed " : " exceeds " )
-                      << toler_val;
+                      << *toler_val;
 
         va_end( args );
         
@@ -204,7 +268,7 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
 
     case CHECK_PRED_WITH_ARGS: {
         unit_test_log << unit_test::log::begin( file_name, line_num ) 
-                      << ll << prefix << check_descr.str();
+                      << ll << prefix << check_descr;
 
         // print predicate call description
         {
@@ -214,7 +278,7 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
             unit_test_log << "( ";
             for( std::size_t i = 0; i < num_of_args; ++i ) {
                 unit_test_log << va_arg( args, char const* );
-                va_arg( args, char const* ); // skip argument value;
+                va_arg( args, lazy_ostream const* ); // skip argument value;
                 
                 if( i != num_of_args-1 )
                     unit_test_log << ", ";
@@ -230,7 +294,7 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
             unit_test_log << " for ( ";
             for( std::size_t i = 0; i < num_of_args; ++i ) {
                 va_arg( args, char const* ); // skip argument description;            
-                unit_test_log << va_arg( args, char const* );
+                unit_test_log << *va_arg( args, lazy_ostream const* );
                 
                 if( i != num_of_args-1 )
                     unit_test_log << ", ";
@@ -293,14 +357,14 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
     switch( tl ) {
     case PASS:
         framework::assertion_result( true );
-        break;
+        return true;
 
     case WARN:
-        break;
+        return false;
 
     case CHECK:
         framework::assertion_result( false );
-        break;
+        return false;
         
     case REQUIRE:
         framework::assertion_result( false );
@@ -309,6 +373,8 @@ check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
 
         throw execution_aborted();
     }
+
+    return true;
 }
 
 //____________________________________________________________________________//
@@ -338,59 +404,6 @@ is_defined_impl( const_string symbol_name, const_string symbol_value )
 {
     symbol_value.trim_left( 2 );
     return symbol_name != symbol_value;
-}
-
-//____________________________________________________________________________//
-
-// ************************************************************************** //
-// **************               log print helper               ************** //
-// ************************************************************************** //
-
-void
-print_log_value<char>::operator()( std::ostream& ostr, char t )
-{
-    if( (std::isprint)( t ) )
-        ostr << '\'' << t << '\'';
-    else
-        ostr << std::hex
-        // showbase is only available for new style streams:
-#ifndef BOOST_NO_STD_LOCALE
-        << std::showbase
-#else
-        << "0x"
-#endif
-        << (int)t;
-}
-
-//____________________________________________________________________________//
-
-void
-print_log_value<unsigned char>::operator()( std::ostream& ostr, unsigned char t )
-{
-    ostr << std::hex
-        // showbase is only available for new style streams:
-#ifndef BOOST_NO_STD_LOCALE
-        << std::showbase
-#else
-        << "0x"
-#endif
-       << (int)t;
-}
-
-//____________________________________________________________________________//
-
-void
-print_log_value<char const*>::operator()( std::ostream& ostr, char const* t )
-{
-    ostr << ( t ? t : "null string" );
-}
-
-//____________________________________________________________________________//
-
-void
-print_log_value<wchar_t const*>::operator()( std::ostream& ostr, wchar_t const* t )
-{
-    ostr << ( t ? t : L"null string" );
 }
 
 //____________________________________________________________________________//
@@ -439,7 +452,7 @@ output_test_stream::output_test_stream( const_string pattern_file_name, bool mat
 
         BOOST_WARN_MESSAGE( m_pimpl->m_pattern.is_open(),
                              "Couldn't open pattern file " << pattern_file_name
-                                << " for " << (m_pimpl->m_match_or_save ? "reading" : "writing") );
+                                << " for " << (match_or_save ? "reading" : "writing") );
     }
 
     m_pimpl->m_match_or_save    = match_or_save;
@@ -515,7 +528,7 @@ output_test_stream::match_pattern( bool flush_stream )
 
     if( !m_pimpl->m_pattern.is_open() ) {
         result = false;
-        result.message() << "Pattern file could not be open!";
+        result.message() << "Pattern file could not be opened!";
     }
     else {
         if( m_pimpl->m_match_or_save ) {
@@ -599,8 +612,6 @@ output_test_stream::sync()
 #ifdef BOOST_NO_STRINGSTREAM
     m_pimpl->m_synced_string.assign( str(), pcount() );
     freeze( false );
-#elif BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x530) )
-    m_pimpl->m_synced_string.assign( str().c_str(), tellp() );
 #else
     m_pimpl->m_synced_string = str();
 #endif
@@ -615,63 +626,5 @@ output_test_stream::sync()
 //____________________________________________________________________________//
 
 #include <boost/test/detail/enable_warnings.hpp>
-
-// ***************************************************************************
-//  Revision History :
-//
-//  $Log: test_tools.ipp,v $
-//  Revision 1.12  2006/02/01 07:58:25  rogeeff
-//  critical message made more consistent with rest
-//
-//  Revision 1.11  2006/01/28 07:01:25  rogeeff
-//  message error fixed
-//
-//  Revision 1.10  2005/12/14 05:33:47  rogeeff
-//  use simplified log API
-//  assertion_result call moved pass log statement
-//  Binary output test stream support implemented
-//
-//  Revision 1.9  2005/06/22 22:03:05  dgregor
-//  More explicit scoping needed for GCC 2.95.3
-//
-//  Revision 1.8  2005/04/30 17:56:31  rogeeff
-//  switch to stdarg.h to workarround como issues
-//
-//  Revision 1.7  2005/03/23 21:02:23  rogeeff
-//  Sunpro CC 5.3 fixes
-//
-//  Revision 1.6  2005/02/21 10:14:04  rogeeff
-//  CHECK_SMALL tool implemented
-//
-//  Revision 1.5  2005/02/20 08:27:07  rogeeff
-//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
-//
-//  Revision 1.4  2005/02/02 12:08:14  rogeeff
-//  namespace log added for log manipulators
-//
-//  Revision 1.3  2005/02/01 06:40:07  rogeeff
-//  copyright update
-//  old log entries removed
-//  minor stilistic changes
-//  depricated tools removed
-//
-//  Revision 1.2  2005/01/30 03:18:27  rogeeff
-//  test tools implementation completely reworked. All tools inplemented through single vararg function
-//
-//  Revision 1.1  2005/01/22 19:22:12  rogeeff
-//  implementation moved into headers section to eliminate dependency of included/minimal component on src directory
-//
-//  Revision 1.43  2005/01/19 06:40:05  vawjr
-//  deleted redundant \r in many \r\r\n sequences of the source.  VC8.0 doesn't like them
-//
-//  Revision 1.42  2005/01/18 08:30:08  rogeeff
-//  unit_test_log rework:
-//     eliminated need for ::instance()
-//     eliminated need for << end and ...END macro
-//     straitend interface between log and formatters
-//     change compiler like formatter name
-//     minimized unit_test_log interface and reworked to use explicit calls
-//
-// ***************************************************************************
 
 #endif // BOOST_TEST_TEST_TOOLS_IPP_012205GER

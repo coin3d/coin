@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2005.
+//  (C) Copyright Gennadiy Rozental 2005-2008.
 //  Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: xml_log_formatter.hpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.2 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : contains XML Log formatter definition
 // ***************************************************************************
@@ -50,6 +50,7 @@ public:
     void    log_exception( std::ostream&, log_checkpoint_data const&, const_string explanation );
 
     void    log_entry_start( std::ostream&, log_entry_data const&, log_entry_types let );
+    using   unit_test_log_formatter::log_entry_value; // bring base class functions into overload set
     void    log_entry_value( std::ostream&, const_string value );
     void    log_entry_finish( std::ostream& );
 
@@ -67,18 +68,5 @@ private:
 //____________________________________________________________________________//
 
 #include <boost/test/detail/enable_warnings.hpp>
-
-// ***************************************************************************
-//  Revision History :
-//  
-//  $Log: xml_log_formatter.hpp,v $
-//  Revision 1.2  2005/02/20 08:27:08  rogeeff
-//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
-//
-//  Revision 1.1  2005/02/01 08:59:39  rogeeff
-//  supplied_log_formatters split
-//  change formatters interface to simplify result interface
-//
-// ***************************************************************************
 
 #endif // BOOST_TEST_XML_LOG_FORMATTER_020105GER

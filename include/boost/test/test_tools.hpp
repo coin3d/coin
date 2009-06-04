@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2001-2005.
+//  (C) Copyright Gennadiy Rozental 2001-2008.
 //  Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy at
+//  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: test_tools.hpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.60.2.7 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : contains definition for all test tools in test toolbox
 // ***************************************************************************
@@ -15,11 +15,10 @@
 #ifndef BOOST_TEST_TEST_TOOLS_HPP_012705GER
 #define BOOST_TEST_TEST_TOOLS_HPP_012705GER
 
-#include <climits>
-
 // Boost.Test
 #include <boost/test/predicate_result.hpp>
 #include <boost/test/unit_test_log.hpp>
+#include <boost/test/floating_point_comparison.hpp>
 
 #include <boost/test/detail/config.hpp>
 #include <boost/test/detail/global_typedef.hpp>
@@ -27,14 +26,16 @@
 
 #include <boost/test/utils/wrap_stringstream.hpp>
 #include <boost/test/utils/basic_cstring/io.hpp>
+#include <boost/test/utils/lazy_ostream.hpp>
 
 // Boost
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/seq/size.hpp>
-#include <boost/preprocessor/seq/enum.hpp>
+#include <boost/preprocessor/seq/enum.hpp> 
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/punctuation/comma_if.hpp>
 #include <boost/preprocessor/arithmetic/add.hpp>
+
 #include <boost/limits.hpp>
 
 #include <boost/type_traits/is_array.hpp>
@@ -46,6 +47,12 @@
 // STL
 #include <cstddef>          // for std::size_t
 #include <iosfwd>
+#include <ios>              // for std::boolalpha
+#include <climits>          // for CHAR_BIT
+
+#ifdef BOOST_MSVC
+# pragma warning(disable: 4127) // conditional expression is constant
+#endif
 
 #include <boost/test/detail/suppress_warnings.hpp>
 
@@ -66,14 +73,14 @@
 // CT - check type
 // ARGS - arguments list
 
-#define BOOST_TEST_TOOL_IMPL( func, P, check_descr, TL, CT ) \
-    ::boost::test_tools::tt_detail::func(                    \
-        P,                                                   \
-        ::boost::wrap_stringstream().ref() << check_descr,   \
-        BOOST_TEST_L(__FILE__),                              \
-        (std::size_t)__LINE__,                               \
-        ::boost::test_tools::tt_detail::TL,                  \
-        ::boost::test_tools::tt_detail::CT                   \
+#define BOOST_TEST_TOOL_IMPL( func, P, check_descr, TL, CT )            \
+    ::boost::test_tools::tt_detail::func(                               \
+        P,                                                              \
+        ::boost::unit_test::lazy_ostream::instance() << check_descr,    \
+        BOOST_TEST_L(__FILE__),                                         \
+        (std::size_t)__LINE__,                                          \
+        ::boost::test_tools::tt_detail::TL,                             \
+        ::boost::test_tools::tt_detail::CT                              \
 /**/
 
 //____________________________________________________________________________//
@@ -156,20 +163,58 @@ do {                                                                \
 
 //____________________________________________________________________________//
 
-// The argument version of the following macros are causing "Internal Compiler Errors"
-// on MSVC 6.5 when inlining is turned on (i.e. usually in release builds)
-#if BOOST_WORKAROUND(BOOST_MSVC, <=1200) && defined(NDEBUG)
-#define BOOST_WARN_EQUAL( L, R ) BOOST_WARN( (L) == (R) )
-#define BOOST_CHECK_EQUAL( L, R ) BOOST_CHECK( (L) == (R) )
-#define BOOST_REQUIRE_EQUAL( L, R ) BOOST_REQUIRE( (L) == (R) )
-#else
 #define BOOST_WARN_EQUAL( L, R ) \
     BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::equal_impl_frwd(), "", WARN, CHECK_EQUAL, (L)(R) )
 #define BOOST_CHECK_EQUAL( L, R ) \
     BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::equal_impl_frwd(), "", CHECK, CHECK_EQUAL, (L)(R) )
 #define BOOST_REQUIRE_EQUAL( L, R ) \
     BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::equal_impl_frwd(), "", REQUIRE, CHECK_EQUAL, (L)(R) )
-#endif
+
+//____________________________________________________________________________//
+
+#define BOOST_WARN_NE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::ne_impl(), "", WARN, CHECK_NE, (L)(R) )
+#define BOOST_CHECK_NE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::ne_impl(), "", CHECK, CHECK_NE, (L)(R) )
+#define BOOST_REQUIRE_NE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::ne_impl(), "", REQUIRE, CHECK_NE, (L)(R) )
+
+//____________________________________________________________________________//
+
+#define BOOST_WARN_LT( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::lt_impl(), "", WARN, CHECK_LT, (L)(R) )
+#define BOOST_CHECK_LT( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::lt_impl(), "", CHECK, CHECK_LT, (L)(R) )
+#define BOOST_REQUIRE_LT( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::lt_impl(), "", REQUIRE, CHECK_LT, (L)(R) )
+
+//____________________________________________________________________________//
+
+#define BOOST_WARN_LE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::le_impl(), "", WARN, CHECK_LE, (L)(R) )
+#define BOOST_CHECK_LE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::le_impl(), "", CHECK, CHECK_LE, (L)(R) )
+#define BOOST_REQUIRE_LE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::le_impl(), "", REQUIRE, CHECK_LE, (L)(R) )
+
+//____________________________________________________________________________//
+
+#define BOOST_WARN_GT( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::gt_impl(), "", WARN, CHECK_GT, (L)(R) )
+#define BOOST_CHECK_GT( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::gt_impl(), "", CHECK, CHECK_GT, (L)(R) )
+#define BOOST_REQUIRE_GT( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::gt_impl(), "", REQUIRE, CHECK_GT, (L)(R) )
+
+//____________________________________________________________________________//
+
+#define BOOST_WARN_GE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::ge_impl(), "", WARN, CHECK_GE, (L)(R) )
+#define BOOST_CHECK_GE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::ge_impl(), "", CHECK, CHECK_GE, (L)(R) )
+#define BOOST_REQUIRE_GE( L, R ) \
+    BOOST_CHECK_WITH_ARGS_IMPL( ::boost::test_tools::tt_detail::ge_impl(), "", REQUIRE, CHECK_GE, (L)(R) )
+
 //____________________________________________________________________________//
 
 #define BOOST_WARN_CLOSE( L, R, T ) \
@@ -261,38 +306,19 @@ namespace test_tools {
 
 typedef unit_test::const_string      const_string;
 
-namespace { bool dummy_cond = false; }
-
-namespace tt_detail {
+namespace { bool const dummy_cond = false; }
 
 // ************************************************************************** //
-// **************              tools classification            ************** //
-// ************************************************************************** //
-
-enum check_type {
-    CHECK_PRED,
-    CHECK_MSG,
-    CHECK_EQUAL,
-    CHECK_CLOSE,
-    CHECK_CLOSE_FRACTION,
-    CHECK_SMALL,
-    CHECK_BITWISE_EQUAL,
-    CHECK_PRED_WITH_ARGS,
-    CHECK_EQUAL_COLL
-};
-
-enum tool_level {
-    WARN, CHECK, REQUIRE, PASS
-};
-
-// ************************************************************************** //
-// **************               log print helper               ************** //
+// **************                print_log_value               ************** //
 // ************************************************************************** //
 
 template<typename T>
 struct print_log_value {
     void    operator()( std::ostream& ostr, T const& t )
     {
+        // avoid warning: 'boost::test_tools::<unnamed>::dummy_cond' defined but not used 
+        if (::boost::test_tools::dummy_cond) {}
+
         typedef typename mpl::or_<is_array<T>,is_function<T>,is_abstract<T> >::type couldnt_use_nl;
 
         set_precision( ostr, couldnt_use_nl() );
@@ -303,7 +329,7 @@ struct print_log_value {
     void set_precision( std::ostream& ostr, mpl::false_ )
     {
         if( std::numeric_limits<T>::is_specialized && std::numeric_limits<T>::radix == 2 )
-            ostr.precision( 2 + std::numeric_limits<T>::digits * 301/1000 );
+            ostr.precision( 2 + std::numeric_limits<T>::digits * 301/1000 ); 
     }
 
     void set_precision( std::ostream&, mpl::true_ ) {}
@@ -311,13 +337,13 @@ struct print_log_value {
 
 //____________________________________________________________________________//
 
-#define BOOST_TEST_DONT_PRINT_LOG_VALUE( the_type )                 \
-namespace boost { namespace test_tools { namespace tt_detail {      \
-template<>                                                          \
-struct print_log_value<the_type > {                                 \
-    void operator()( std::ostream& ostr, the_type const& t ) {}     \
-};                                                                  \
-}}}                                                                 \
+#define BOOST_TEST_DONT_PRINT_LOG_VALUE( the_type )         \
+namespace boost { namespace test_tools {                    \
+template<>                                                  \
+struct print_log_value<the_type > {                         \
+    void operator()( std::ostream&, the_type const& ) {}    \
+};                                                          \
+}}                                                          \
 /**/
 
 //____________________________________________________________________________//
@@ -331,6 +357,16 @@ struct print_log_value< T[N] > {
     }
 };
 #endif
+
+//____________________________________________________________________________//
+
+template<>
+struct BOOST_TEST_DECL print_log_value<bool> {
+    void    operator()( std::ostream& ostr, bool t )
+    {
+         ostr << std::boolalpha << t;
+    }
+};
 
 //____________________________________________________________________________//
 
@@ -362,6 +398,39 @@ struct BOOST_TEST_DECL print_log_value<wchar_t const*> {
 
 //____________________________________________________________________________//
 
+namespace tt_detail {
+
+// ************************************************************************** //
+// **************              tools classification            ************** //
+// ************************************************************************** //
+
+enum check_type {
+    CHECK_PRED, 
+    CHECK_MSG,
+    CHECK_EQUAL,
+    CHECK_NE,
+    CHECK_LT,
+    CHECK_LE,
+    CHECK_GT,
+    CHECK_GE,
+    CHECK_CLOSE,
+    CHECK_CLOSE_FRACTION,
+    CHECK_SMALL,
+    CHECK_BITWISE_EQUAL,
+    CHECK_PRED_WITH_ARGS,
+    CHECK_EQUAL_COLL
+};
+
+enum tool_level {
+    WARN, CHECK, REQUIRE, PASS
+};
+
+// ************************************************************************** //
+// **************                 print_helper                 ************** //
+// ************************************************************************** //
+// Adds level of indirection to the output operation, allowing us to customize 
+// it for types that do not support operator << directly or for any other reason
+
 template<typename T>
 struct print_helper_t {
     explicit    print_helper_t( T const& t ) : m_t( t ) {}
@@ -371,7 +440,7 @@ struct print_helper_t {
 
 //____________________________________________________________________________//
 
-#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
+#if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564)) 
 // Borland suffers premature pointer decay passing arrays by reference
 template<typename T, std::size_t N >
 struct print_helper_t< T[N] > {
@@ -389,18 +458,10 @@ inline print_helper_t<T> print_helper( T const& t )
     return print_helper_t<T>( t );
 }
 
-#if BOOST_WORKAROUND(__SUNPRO_CC, < 0x580)
-template<typename T, std::size_t N>
-inline print_helper_t<T*> print_helper( T (&t)[N] )
-{
-    return print_helper_t<T*>( &t[0] );
-}
-#endif
-
 //____________________________________________________________________________//
 
 template<typename T>
-inline std::ostream&
+inline std::ostream& 
 operator<<( std::ostream& ostr, print_helper_t<T> const& ph )
 {
     print_log_value<T>()( ostr, ph.m_t );
@@ -414,8 +475,8 @@ operator<<( std::ostream& ostr, print_helper_t<T> const& ph )
 // **************            TOOL BOX Implementation           ************** //
 // ************************************************************************** //
 
-BOOST_TEST_DECL
-void check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
+BOOST_TEST_DECL 
+bool check_impl( predicate_result const& pr, ::boost::unit_test::lazy_ostream const& check_descr,
                  const_string file_name, std::size_t line_num,
                  tool_level tl, check_type ct,
                  std::size_t num_args, ... );
@@ -428,25 +489,25 @@ void check_impl( predicate_result const& pr, wrap_stringstream& check_descr,
     , char const* BOOST_JOIN( BOOST_JOIN( arg, m ), _descr )                        \
 /**/
 
-#define PRED_PARAMS( z, m, dummy ) BOOST_PP_COMMA_IF( m ) BOOST_JOIN( arg, m )
+#define PRED_PARAMS( z, m, dummy ) BOOST_PP_COMMA_IF( m ) BOOST_JOIN( arg, m ) 
 
 #define ARG_INFO( z, m, dummy )                                                     \
     , BOOST_JOIN( BOOST_JOIN( arg, m ), _descr )                                    \
-    , (boost::wrap_stringstream().ref()                                             \
-        << ::boost::test_tools::tt_detail::                                         \
-            print_helper( BOOST_JOIN( arg, m ) )).str().c_str()                     \
+    , &(const unit_test::lazy_ostream&)(unit_test::lazy_ostream::instance()         \
+        << ::boost::test_tools::tt_detail::print_helper( BOOST_JOIN( arg, m ) ))    \
 /**/
 
 #define IMPL_FRWD( z, n, dummy )                                                    \
 template<typename Pred                                                              \
          BOOST_PP_REPEAT_ ## z( BOOST_PP_ADD( n, 1 ), TEMPL_PARAMS, _ )>            \
-inline void                                                                         \
-check_frwd( Pred P, wrap_stringstream& check_descr,                                 \
+inline bool                                                                         \
+check_frwd( Pred P, unit_test::lazy_ostream const& check_descr,                     \
             const_string file_name, std::size_t line_num,                           \
             tool_level tl, check_type ct                                            \
             BOOST_PP_REPEAT_ ## z( BOOST_PP_ADD( n, 1 ), FUNC_PARAMS, _ )           \
 )                                                                                   \
 {                                                                                   \
+    return                                                                          \
     check_impl( P( BOOST_PP_REPEAT_ ## z( BOOST_PP_ADD( n, 1 ), PRED_PARAMS, _ ) ), \
                 check_descr, file_name, line_num, tl, ct,                           \
                 BOOST_PP_ADD( n, 1 )                                                \
@@ -478,22 +539,20 @@ predicate_result equal_impl( Left const& left, Right const& right )
 //____________________________________________________________________________//
 
 predicate_result        BOOST_TEST_DECL equal_impl( char const* left, char const* right );
-inline predicate_result BOOST_TEST_DECL equal_impl( char* left, char const* right ) { return equal_impl( (char const*)left, (char const*)right ); }
-inline predicate_result BOOST_TEST_DECL equal_impl( char const* left, char* right ) { return equal_impl( (char const*)left, (char const*)right ); }
-inline predicate_result BOOST_TEST_DECL equal_impl( char* left, char* right )       { return equal_impl( (char const*)left, (char const*)right ); }
+inline predicate_result equal_impl( char* left, char const* right ) { return equal_impl( (char const*)left, (char const*)right ); }
+inline predicate_result equal_impl( char const* left, char* right ) { return equal_impl( (char const*)left, (char const*)right ); }
+inline predicate_result equal_impl( char* left, char* right )       { return equal_impl( (char const*)left, (char const*)right ); }
 
 #if !defined( BOOST_NO_CWCHAR )
-predicate_result        equal_impl( wchar_t const* left, wchar_t const* right );
+predicate_result        BOOST_TEST_DECL equal_impl( wchar_t const* left, wchar_t const* right );
 inline predicate_result equal_impl( wchar_t* left, wchar_t const* right ) { return equal_impl( (wchar_t const*)left, (wchar_t const*)right ); }
 inline predicate_result equal_impl( wchar_t const* left, wchar_t* right ) { return equal_impl( (wchar_t const*)left, (wchar_t const*)right ); }
 inline predicate_result equal_impl( wchar_t* left, wchar_t* right )       { return equal_impl( (wchar_t const*)left, (wchar_t const*)right ); }
 #endif
 
 //____________________________________________________________________________//
-//
-// Declaring this class as exported causes linker errors when building
-// the serialisation tests with VC6, disable this for now. (JM 2006/10/30)
-struct /*BOOST_TEST_DECL*/ equal_impl_frwd {
+
+struct equal_impl_frwd {
     template <typename Left, typename Right>
     inline predicate_result
     call_impl( Left const& left, Right const& right, mpl::false_ ) const
@@ -514,6 +573,56 @@ struct /*BOOST_TEST_DECL*/ equal_impl_frwd {
     {
         typedef typename is_array<Left>::type left_is_array;
         return call_impl( left, right, left_is_array() );
+    }
+};
+
+//____________________________________________________________________________//
+
+struct ne_impl {
+    template <class Left, class Right>
+    predicate_result operator()( Left const& left, Right const& right )
+    {
+        return !equal_impl_frwd()( left, right );
+    }
+};
+
+//____________________________________________________________________________//
+
+struct lt_impl {
+    template <class Left, class Right>
+    predicate_result operator()( Left const& left, Right const& right )
+    {
+        return left < right;
+    }
+};
+
+//____________________________________________________________________________//
+
+struct le_impl {
+    template <class Left, class Right>
+    predicate_result operator()( Left const& left, Right const& right )
+    {
+        return left <= right;
+    }
+};
+
+//____________________________________________________________________________//
+
+struct gt_impl {
+    template <class Left, class Right>
+    predicate_result operator()( Left const& left, Right const& right )
+    {
+        return left > right;
+    }
+};
+
+//____________________________________________________________________________//
+
+struct ge_impl {
+    template <class Left, class Right>
+    predicate_result operator()( Left const& left, Right const& right )
+    {
+        return left >= right;
     }
 };
 
@@ -569,13 +678,13 @@ bitwise_equal_impl( Left const& left, Right const& right )
     std::size_t left_bit_size  = sizeof(Left)*CHAR_BIT;
     std::size_t right_bit_size = sizeof(Right)*CHAR_BIT;
 
-    static Left const  L1( 1 );
-    static Right const R1( 1 );
+    static Left const leftOne( 1 );
+    static Right const rightOne( 1 );
 
     std::size_t total_bits = left_bit_size < right_bit_size ? left_bit_size : right_bit_size;
 
     for( std::size_t counter = 0; counter < total_bits; ++counter ) {
-        if( ( left & ( L1 << counter ) ) != ( right & ( R1 << counter ) ) ) {
+        if( ( left & ( leftOne << counter ) ) != ( right & ( rightOne << counter ) ) ) {
             res = false;
             res.message() << "\nMismatch in a position " << counter;
         }
@@ -607,88 +716,4 @@ namespace test_toolbox = test_tools;
 
 #include <boost/test/detail/enable_warnings.hpp>
 
-// ***************************************************************************
-//  Revision History :
-//
-//  $Log: test_tools.hpp,v $
-//  Revision 1.60.2.7  2007/02/22 17:57:29  speedsnail
-//  Make the msvc-6.5 hack even more specific, i.e. apply only in release builds.
-//
-//  Revision 1.60.2.6  2006/12/16 15:02:16  speedsnail
-//  Merged from HEAD
-//
-//  Revision 1.60.2.5  2006/11/14 21:33:26  jhunold
-//  Merge from HEAD: Add missing export macros for print_log_value<>
-//
-//  Revision 1.60.2.4  2006/11/14 07:35:43  jhunold
-//  Merge from HEAD: Removed wrong export declarations.
-//
-//  Revision 1.60.2.3  2006/11/13 20:06:57  jhunold
-//  Merge from HEAD:
-//  Added missing export declarations.
-//
-//  Revision 1.60.2.2  2006/10/30 18:37:36  johnmaddock
-//  Patch for serialisation test failures.
-//
-//  Revision 1.60.2.1  2006/07/24 00:43:17  gennaro_prota
-//  Tentative fix for Sun C++ 5.8 (don't add more specialized print_helper function template)
-//
-//  Revision 1.60  2006/03/19 07:27:11  rogeeff
-//  avoid warning
-//
-//  Revision 1.59  2006/03/03 17:39:46  rogeeff
-//  paaspoint added to check throw
-//
-//  Revision 1.58  2006/02/06 10:04:55  rogeeff
-//  BOOST_TEST_MODULE - master test suite name
-//
-//  Revision 1.57  2006/01/28 07:00:47  rogeeff
-//  sunpro port
-//
-//  Revision 1.56  2005/12/19 03:08:30  rogeeff
-//  added is_abstract to guard numeric_limits instantiation
-//
-//  Revision 1.55  2005/12/14 05:20:41  rogeeff
-//  dll support introduced
-//  BOOST_TEST_PASSPOINT() introduced
-//  BOOST_MESSAGE depricated. Use BOOST_TEST_MESSAGE instead
-//  BOOST_CHECKPOINT is depricated. Use BOOST_TEST_CHECKPOINT intead
-//
-//  Revision 1.54  2005/06/07 04:38:20  rogeeff
-//  borland fix
-//
-//  Revision 1.53  2005/05/11 04:51:14  rogeeff
-//  borlard portability fix
-//
-//  Revision 1.52  2005/03/22 07:08:47  rogeeff
-//  string comparisons streamlined
-//  precision settings made portable
-//
-//  Revision 1.51  2005/02/21 10:23:54  rogeeff
-//  major issue with TT redesign causing TT to reevaluate it's arguments fixed
-//  FP precision extended
-//
-//  Revision 1.50  2005/02/20 08:27:06  rogeeff
-//  This a major update for Boost.Test framework. See release docs for complete list of fixes/updates
-//
-//  Revision 1.49  2005/02/01 06:40:06  rogeeff
-//  copyright update
-//  old log entries removed
-//  minor stylistic changes
-//  deprecated tools removed
-//
-//  Revision 1.48  2005/01/30 03:32:57  rogeeff
-//  Test Tools completely reworked:
-//    interfaces streamlined to provide 3 version for each tool
-//    implementation reworked to use single vararg formatter function
-//    CHECK_COLLECTION now expect 4 arguments
-//    BITWISE_EQUAL renamed to CHECK_BITWISE_EQUAL but still provided as deprecated
-//    CHECK_COLLECTION interface changed to use PP_SEQ and as a result support arbitrary number of predicate arguments
-//    most of templates eliminated
-//    deprecated tools removed
-//    print_helper object generator added
-//
-// ***************************************************************************
-
 #endif // BOOST_TEST_TEST_TOOLS_HPP_012705GER
-

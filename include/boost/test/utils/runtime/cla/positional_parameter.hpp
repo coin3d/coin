@@ -1,13 +1,13 @@
-//  (C) Copyright Gennadiy Rozental 2005.
+//  (C) Copyright Gennadiy Rozental 2005-2008.
 //  Use, modification, and distribution are subject to the 
 //  Boost Software License, Version 1.0. (See accompanying file 
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
 //
-//  File        : $RCSfile: positional_parameter.hpp,v $
+//  File        : $RCSfile$
 //
-//  Version     : $Revision: 1.1 $
+//  Version     : $Revision: 49312 $
 //
 //  Description : positional parameter model
 // ***************************************************************************
@@ -38,17 +38,17 @@ public:
     BOOST_RT_PARAM_UNNEEDED_VIRTUAL ~trivial_id_policy() {}
 
     virtual bool    responds_to( cstring name ) const                       { return m_name == name; }
-    virtual bool    conflict_with( identification_policy const& id ) const  { return false; }
+    virtual bool    conflict_with( identification_policy const& ) const     { return false; }
     virtual cstring id_2_report() const                                     { return m_name; }
     virtual void    usage_info( format_stream& fs ) const
     { 
         if( !m_name.empty() )
             fs << BOOST_RT_PARAM_LITERAL( '<' ) << m_name << BOOST_RT_PARAM_LITERAL( '>' );
         else
-            fs << BOOST_RT_PARAM_CSTRING_LITERAL( "<value>" );;
+            fs << BOOST_RT_PARAM_CSTRING_LITERAL( "<value>" );
     }
 
-    virtual bool    matching( parameter const& p, argv_traverser& tr, bool primary ) const
+    virtual bool    matching( parameter const& p, argv_traverser&, bool primary ) const
     {
         return primary && ( !p.has_argument() || p.p_multiplicable );
     }
@@ -87,14 +87,5 @@ BOOST_RT_CLA_NAMED_PARAM_GENERATORS( positional_parameter )
 } // namespace BOOST_RT_PARAM_NAMESPACE
 
 } // namespace boost
-
-// ************************************************************************** //
-//   Revision History:
-//
-//   $Log: positional_parameter.hpp,v $
-//   Revision 1.1  2005/04/12 06:42:43  rogeeff
-//   Runtime.Param library initial commit
-//
-// ************************************************************************** //
 
 #endif // BOOST_RT_CLA_POSITIONAL_PARAMETER_HPP_062604GER
