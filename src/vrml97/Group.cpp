@@ -109,6 +109,8 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/tidbits.h> // coin_getenv()
+
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
@@ -117,6 +119,9 @@
 #include "nodes/SoSubNodeP.h"
 #include "glue/glp.h"
 #include "profiler/SoNodeProfiling.h"
+
+#include <cstdlib> // strtol(), rand()
+#include <climits> // LONG_MIN, LONG_MAX
 
 // *************************************************************************
 
@@ -264,6 +269,23 @@ SoVRMLGroup::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
 
   PRIVATE(this)->hassoundchild = SoVRMLGroupP::MAYBE;
+
+  static long int maxcaches = -1;
+  if (maxcaches == -1) {
+    maxcaches = -2; // so we don't request the envvar later if it is not set
+    const char * maxcachesstr = coin_getenv("IV_SEPARATOR_MAX_CACHES");
+    if (maxcachesstr) {
+      maxcaches = strtol(maxcachesstr, NULL, 10);
+      if ((maxcaches == LONG_MIN) || (maxcaches == LONG_MAX) || (maxcaches < 0)) {
+        SoDebugError::post("SoVRMLGroup::commonConstructor",
+                           "Environment variable IV_SEPARATOR_MAX_CACHES "
+                           "has invalid setting \"%s\"", maxcachesstr);
+      }
+      else {
+        SoVRMLGroup::setNumRenderCaches(maxcaches);
+      }
+    }
+  }
 }
 
 /*!
