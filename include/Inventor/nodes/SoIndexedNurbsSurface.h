@@ -30,6 +30,8 @@
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
 
+template<class Master> class SoNurbsP;
+
 class COIN_DLL_API SoIndexedNurbsSurface : public SoShape {
     typedef SoShape inherited;
 
@@ -68,6 +70,7 @@ protected:
 private:
   class SoIndexedNurbsSurfaceP * pimpl;
   friend class SoIndexedNurbsSurfaceP;
+  friend class SoNurbsP<SoIndexedNurbsSurface>;
 };
 
 #endif // !COIN_SOINDEXEDNURBSSURFACE_H

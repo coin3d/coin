@@ -13,10 +13,18 @@ class SoNurbsP
   //
   // used only for GLU callbacks
   //
-  struct coin_nurbs_cbdata {
+  class coin_nurbs_cbdata {
+  public:
+    coin_nurbs_cbdata(SoAction * action,
+                      Master * master,
+                      bool is4d) :
+      action(action),
+      thisp(master),
+      is4D(is4d) {}
     SoAction * action;
     SoPrimitiveVertex vertex;
     Master * thisp;
+    bool is4D;
   };
 
   static void APIENTRY tessBegin(int , void * data);
@@ -48,11 +56,8 @@ void APIENTRY
 SoNurbsP<Master>::tessVertex(float * vertex, void * data)
 {
   coin_nurbs_cbdata * cbdata = static_cast<coin_nurbs_cbdata *>(data);
-  //The GLU API is not perfectly clear on wether the vertex always
-  //contains 4 datapoints. But for every function where it is
-  //documented, the documentation says 3D homogeneous coordinates are
-  //used.
-  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2])/vertex[3]);
+  float to3d = cbdata->is4D ? vertex[3] : 1.0f;
+  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2])/to3d);
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
@@ -102,20 +107,36 @@ SoNurbsP<Master>::tessBegin(int type, void * data)
   case GL_POINTS:
     shapetype = SoShape::POINTS;
     break;
+  case GL_TRIANGLES:
+    shapetype = SoShape::TRIANGLES;
+    break;
+  case GL_TRIANGLE_STRIP:
+    shapetype = SoShape::TRIANGLE_STRIP;
+    break;
+  case GL_TRIANGLE_FAN:
+    shapetype = SoShape::TRIANGLE_FAN;
+    break;
+  case GL_QUADS:
+    shapetype = SoShape::QUADS;
+    break;
+  case GL_QUAD_STRIP:
+    shapetype = SoShape::QUAD_STRIP;
+    break;
+  case GL_POLYGON:
+    shapetype = SoShape::POLYGON;
+    break;
   default:
-    shapetype = SoShape::POLYGON; // illegal value
+    shapetype = SoShape::POINTS; // fall back to points
     // FIXME: should this be an assert, or does it represent
     // something which is out of our control, like a possible future
     // feature of the GLU tessellator?  20010909 mortene.
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postWarning("SoNurbsCurveP::tessBegin",
                               "unsupported GL enum: 0x%x", type);
 #endif // debug
     break;
   }
-  if (shapetype != SoShape::POINTS) {
-    cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
-  }
+  cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
 }
 
 

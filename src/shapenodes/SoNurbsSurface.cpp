@@ -87,46 +87,6 @@
 #include <Inventor/nodes/SoNurbsSurface.h>
 #include "SoNurbsP.h"
 
-//Special case of SoNurbsP for this node, as it is not a line, as the others
-template<>
-void APIENTRY
-SoNurbsP<SoNurbsSurface>::tessBegin(int type, void * data)
-{
-  coin_nurbs_cbdata * cbdata = static_cast<coin_nurbs_cbdata *>(data);
-  SoNurbsSurface::TriangleShape shapetype;
-  switch ((int)type) {
-  case GL_TRIANGLES:
-    shapetype = SoShape::TRIANGLES;
-    break;
-  case GL_TRIANGLE_STRIP:
-    shapetype = SoShape::TRIANGLE_STRIP;
-    break;
-  case GL_TRIANGLE_FAN:
-    shapetype = SoShape::TRIANGLE_FAN;
-    break;
-  case GL_QUADS:
-    shapetype = SoShape::QUADS;
-    break;
-  case GL_QUAD_STRIP:
-    shapetype = SoShape::QUAD_STRIP;
-    break;
-  case GL_POLYGON:
-    shapetype = SoShape::POLYGON;
-    break;
-  default:
-    shapetype = SoShape::POINTS; // illegal value
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoNurbsSurface::tessBegin",
-                           "unsupported GL enum: 0x%x", type);
-#endif // debug
-    break;
-  }
-  if (shapetype != SoShape::POINTS) {
-    cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
-  }
-}
-
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -322,11 +282,12 @@ SoNurbsSurface::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoNurbsSurface::rayPick(SoRayPickAction * action)
 {
+  if (!this->shouldRayPick(action)) return;
+
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     SoShape::rayPick(action); // do normal generatePrimitives() pick
   }
   else {
-    if (!this->shouldRayPick(action)) return;
     static SbBool firstpick = TRUE;
     if (firstpick) {
       firstpick = FALSE;
@@ -431,13 +392,12 @@ SoNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
   // NB, don't move this structure inside the if-statement. It needs
   // to be here so that the callbacks from sogl_render_nurbs_surface()
   // have a valid pointer to the structure.
-  coin_ns_cbdata cbdata;
+  coin_ns_cbdata cbdata(action, PUBLIC(this), 
+                        !SoCoordinateElement::getInstance(action->getState())->is3D());
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     if (!glrender) {
       GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
-      cbdata.action = action;
-      cbdata.thisp = PUBLIC(this);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
       cbdata.vertex.setMaterialIndex(0);
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));

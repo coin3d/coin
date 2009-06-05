@@ -229,11 +229,11 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
 void
 SoIndexedNurbsCurve::rayPick(SoRayPickAction * action)
 {
+  if (!this->shouldRayPick(action)) return;
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     SoShape::rayPick(action); // do normal generatePrimitives() pick
   }
   else {
-    if (!this->shouldRayPick(action)) return;
     static SbBool firstpick = TRUE;
     if (firstpick) {
       firstpick = FALSE;
@@ -345,13 +345,12 @@ SoIndexedNurbsCurveP::doNurbs(SoAction * action,
   // NB, don't move this structure inside the if-statement. It needs
   // to be here so that the callbacks from sogl_render_nurbs_curve()
   // have a valid pointer to the structure.
-  coin_inc_cbdata cbdata;
+  coin_inc_cbdata cbdata(action, PUBLIC(this), 
+                         !SoCoordinateElement::getInstance(action->getState())->is3D());
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     if (!glrender) {
       GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
-      cbdata.action = action;
-      cbdata.thisp = PUBLIC(this);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
       cbdata.vertex.setMaterialIndex(0);
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
