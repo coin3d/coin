@@ -694,7 +694,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     FALSE : this->cullTest(state);
   if (createcache || !outsidefrustum) {
     int n = this->children->getLength();
-    SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
+    SoNode ** childarray = (n!=0)? reinterpret_cast<SoNode**>(this->children->getArrayPtr()) : NULL;
     action->pushCurPath();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
       action->popPushCurPath(i, childarray[i]);
