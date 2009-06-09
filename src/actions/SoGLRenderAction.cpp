@@ -174,6 +174,12 @@
   SoGLRenderAction::SORTED_LAYERS_BLEND. It is also the only mode that
   overrides all other modes in the scenegraph.
 
+  (One important note about this mode: we've had reports from users
+  that some OpenGL drivers -- possibly particular for some Mac OS X
+  systems -- significantly degrades rendering performance. So be
+  careful and test your application on a wide variety of run-time
+  systems when using SoGLRenderAction::SORTED_LAYERS_BLEND.)
+
   \sa SoTransparencyType
 */
 
