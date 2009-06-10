@@ -5198,9 +5198,10 @@ coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 SbBool
 coin_glglue_non_power_of_two_textures(const cc_glglue * glue)
 {
-  // FIXME: work in progress. Needs testing on more drivers. pederb, 20090322
-  // we only seem to have problems with ATi
-  if (glue->vendor_is_ati) return FALSE;
+  // ATi and Intel both seem to have problems with this feature,
+  // especially on old drivers. Disable for everything except nVidia
+  // until we can build a better driver database
+  if (!glue->vendor_is_nvidia) return FALSE;
   return glue->non_power_of_two_textures;
 }
 
