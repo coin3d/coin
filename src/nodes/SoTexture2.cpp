@@ -118,9 +118,18 @@
   int
   main(void)
   {
+    if (argc == 1) {
+      fprintf(stderr,"Usage: %s <infile> > outfile.iv\n", argv[0]);
+      return -1;
+    }
     SoDB::init();
-
+  
+    // open the file (don't use stdin) to enable Coin to search for textures
+    // relative to the input file.
     SoInput in;
+    if (!in.openFile(argv[1])) {
+      return -1;
+    }
     SoSeparator * root = SoDB::readAll(&in);
     if (!root) { exit(1); }
 
