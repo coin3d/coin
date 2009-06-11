@@ -168,6 +168,19 @@ SbBool
 SoSFPath::readValue(SoInput * in)
 {
   SoBase * baseptr;
+
+  //Handle when the path is set to NULL
+  SbName keyword;
+  if (in)
+    if (!in->read(keyword)) return FALSE;
+  
+  if(keyword=="NULL") {
+    this->setValue(NULL);
+    return TRUE;
+  }
+  else
+  in->putBack(keyword.getString());
+
   if (!SoBase::read(in, baseptr, SoPath::getClassTypeId())) return FALSE;
 
   if (in->eof()) {
