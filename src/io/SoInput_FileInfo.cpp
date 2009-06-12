@@ -45,7 +45,9 @@ const unsigned int READBUFSIZE = 65536*2;
 
 // *************************************************************************
 
-SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr)
+SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr,
+                                   const SbHash<SoBase *, const char *> & refs)
+  : references(refs)
 {
   this->reader = readerptr;
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
@@ -216,6 +218,27 @@ SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
   } while (length && !this->eof);
 
   return !this->eof;
+}
+
+void
+SoInput_FileInfo::addReference(const SbName & name, SoBase * base,
+                               SbBool /* addToGlobalDict */) // FIXME: why the unused arg?
+{
+  this->references.put(name.getString(), base);
+}
+
+void
+SoInput_FileInfo::removeReference(const SbName & name)
+{
+  this->references.remove(name.getString());
+}
+
+SoBase *
+SoInput_FileInfo::findReference(const SbName & name) const
+{
+  SoBase * base;
+  if (this->references.get(name.getString(), base)) { return base; }
+  return NULL;
 }
 
 SbBool

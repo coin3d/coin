@@ -37,6 +37,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/lists/SbList.h>
+#include "misc/SbHash.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -61,7 +62,8 @@ class SoInput;
 
 class SoInput_FileInfo {
 public:
-  SoInput_FileInfo(SoInput_Reader * reader);
+  SoInput_FileInfo(SoInput_Reader * reader, 
+                   const SbHash<SoBase *, const char *> & refs);
   ~SoInput_FileInfo();
 
   void doBufferRead(void);
@@ -73,6 +75,11 @@ public:
   void putBack(const char c);
   void putBack(const char * const str);
 
+  void addReference(const SbName & name, SoBase * base,
+                    SbBool addToGlobalDict = TRUE);
+  void removeReference(const SbName & name);
+  SoBase * findReference(const SbName & name) const;
+  
   SbBool skipWhiteSpace(void);
 
   // Returns TRUE if an attempt at reading the file header went
@@ -194,6 +201,9 @@ public:
   SbBool readInteger(int32_t & l);
   SbBool readReal(double & d);
 
+  const SbHash<SoBase *, const char *> & getReferences() const {
+    return this->references;
+  }
 private:
 
   SoInput_Reader * getReader(void);
@@ -226,6 +236,7 @@ private:
 
   SbString stdinname; // needed for ivFilename()
   char * deletebuffer;
+  SbHash<SoBase *, const char *> references;
 
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
   static void sched_cb(void * closure);

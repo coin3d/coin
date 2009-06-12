@@ -58,8 +58,11 @@ public:
 
   SbBool usingstdin;
 
-  SbHash<SoBase *, const char *> references;
+  SbHash<SoBase *, const char *> copied_references;
 
+  // Reenable this if we want to be backwards compatible with older versions of Coin
+  SbHash<SoBase *, const char *> references;
+  
 private:
   SoInput * owner;
 };

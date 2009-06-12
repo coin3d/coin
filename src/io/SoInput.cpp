@@ -188,6 +188,34 @@ SoInputP::debugBinary(void)
 }
 
 // *************************************************************************
+/*
+  Important note: Up until Coin 3.1.1 we used to have a bug in SoInput
+  when reading files from other files (SoFile/SoVRMLInline++). The SoInput
+  dictionary was global for all files pushed onto the SoInput filestack,
+  and DEFs in extra files could therefore overwrite DEFs in the original
+  file. This minimal case reproduces this bug:
+
+  #Inventor V2.1 ascii
+
+  Switch {
+    whichChild -1
+    DEF cube Cube {}
+  }
+
+  File { name "minimal_ref.iv" }
+  USE cube
+
+  minimal_ref.iv looks something like this:
+
+  #Inventor V2.1 ascii
+  DEF cube Info {}
+  
+  In older versions of Coin you'll not see the Cube when loading the first
+  file.
+
+ */
+// *************************************************************************
+
 
 // Helper function that pops the stack when the current file is at
 // EOF.  Then it returns the file at the top of the stack.
@@ -443,8 +471,10 @@ SoInput::SoInput(void)
  */
 SoInput::SoInput(SoInput * dictIn)
 {
+  if (dictIn && dictIn->filestack.getLength()) {
+    PRIVATE(this)->copied_references = dictIn->getTopOfStack()->getReferences();
+  }
   this->constructorsCommon();
-  PRIVATE(this)->references = PRIVATE(dictIn)->references;
 }
 
 /*!
@@ -720,7 +750,8 @@ SoInput::setFilePointer(FILE * newFP)
   if (newFP != coin_get_stdin()) {
     reader = SoInput_Reader::createReader(newFP, SbString(name));
   }
-  SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
+  SoInput_FileInfo * newfile = 
+    new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
   if (newfile) this->filestack.insert(newfile, 0);
 }
 
@@ -748,7 +779,8 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   if (fp) {
     SoInput_Reader * reader = SoInput_Reader::createReader(fp, fullname);
     assert(reader);
-    SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
+    SoInput_FileInfo * newfile = 
+      new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
     this->filestack.insert(newfile, 0);
 
     SoInput::addDirectoryFirst(SoInput::getPathname(fullname).getString());
@@ -797,7 +829,8 @@ SoInput::pushFile(const char * filename)
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
     SoInput_Reader * reader = SoInput_Reader::createReader(fp, fullname);
-    SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
+    SoInput_FileInfo * newfile = 
+      new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
     this->filestack.insert(newfile, 0);
 
     SoInput::addDirectoryFirst(SoInput::getPathname(fullname).getString());
@@ -996,7 +1029,8 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
   if (reader == NULL) {
     reader = new SoInput_MemBufferReader(bufpointer, bufsize);
   }
-  SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
+  SoInput_FileInfo * newfile =
+    new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
   this->filestack.insert(newfile, 0);
 }
 
@@ -1795,14 +1829,16 @@ SoInput::putBack(const char * str)
  */
 void
 SoInput::addReference(const SbName & name, SoBase * base,
-                      SbBool /* addToGlobalDict */) // FIXME: why the unused arg? 20001024 mortene.
+                      SbBool addToGlobalDict)
 {
   SoProto * proto = this->getCurrentProto();
   if (proto) {
     proto->addReference(name, base);
   }
   else {
-    PRIVATE(this)->references.put(name.getString(), base);
+    this->getTopOfStack()->addReference(name, base, addToGlobalDict);
+    // Enable to be backwards compatible with older versions of Coin
+    // PRIVATE(this)->references.put(name.getString(), base);
   }
 }
 
@@ -1819,7 +1855,9 @@ SoInput::removeReference(const SbName & name)
     proto->removeReference(name);
   }
   else {
-    PRIVATE(this)->references.remove(name.getString());
+    this->getTopOfStack()->removeReference(name);
+    // Enable to be backwards compatible with older versions of Coin
+    // PRIVATE(this)->references.remove(name.getString());
   }
 }
 
@@ -1843,9 +1881,12 @@ SoInput::findReference(const SbName & name) const
     return proto->findReference(name);
   }
   else {
-    SoBase * base;
+    SoBase * base = this->getTopOfStack()->findReference(name);
+    if (base) return base;
 
-    if (PRIVATE(this)->references.get(name.getString(), base)) { return base; }
+    // Enable to be backwards compatible with older versions of Coin
+    // SoBase * base;
+    // if (PRIVATE(this)->references.get(name.getString(), base)) { return base; }
 
     static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
     if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
