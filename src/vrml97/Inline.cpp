@@ -133,7 +133,6 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/lists/SbStringList.h>
 #include <Inventor/system/gl.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -619,26 +618,44 @@ SoVRMLInline::readLocalFile(SoInput * in)
   if (this->url.getNum() == 0) {
     return TRUE;
   }
+
   SbString filename = this->url[0];
-  SoInput in2;
-  
-  // FIXME: remove directories added while reading the Inline file?
-  // SbStringList predir = SoInput::getDirectories();
-  
-  SbBool didread = FALSE;
-  if (in2.openFile(filename.getString(), TRUE)) {
-    PRIVATE(this)->fullurlname = in2.getCurFileName();
-    SoSeparator * node = SoDB::readAll(&in2);
-    if (node) {
-      didread = TRUE;
-      PRIVATE(this)->children->truncate(0);
-      PRIVATE(this)->children->append((SoNode *)node);
-    }
+
+  // If we can't find file, ignore it. Note that this does not match
+  // the way Inventor works, which will make the whole read process
+  // exit with a failure code.
+  if (!in->pushFile(filename.getString())) return TRUE;
+
+  PRIVATE(this)->fullurlname = in->getCurFileName();
+
+  SoSeparator * node = SoDB::readAll(in);
+
+  if (node) {
+    PRIVATE(this)->children->truncate(0);
+    PRIVATE(this)->children->append((SoNode *)node);
   }
-  if (!didread) {
+  else {
+    if (in->getCurFileName() == PRIVATE(this)->fullurlname) {
+      // Take care of popping the file off the stack. This is a bit
+      // "hack-ish", but its done this way instead of loosening the
+      // protection of SoInput::popFile().
+      char dummy;
+      while (!in->eof() && in->get(dummy));
+      assert(in->eof());
+      
+      // Make sure the stack is really popped on EOF. Popping happens
+      // when attempting to read when the current file in the stack is
+      // at EOF.
+      SbBool gotchar = in->get(dummy);
+      if (gotchar) in->putBack(dummy);
+    }
+
+    // Note that we handle this differently than Inventor, which lets
+    // the whole import fail.
     SoReadError::post(in, "Unable to read Inline file: ``%s''",
                       filename.getString());
   }
+
   return TRUE;
 }
 
