@@ -1,8 +1,8 @@
 
 EXTRA_DIST = \
-        books.dox \
-        environment.dox \
-        main.dox \
-        modules.dox \
-        macros.dox
+        Coin_books.dox \
+        Coin_environment.dox \
+        Coin_main.dox \
+        Coin_modules.dox \
+        Coin_macros.dox
 

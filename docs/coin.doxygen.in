@@ -447,7 +447,6 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = \
-		         @path_tag@@coin_src_dir@/src/doc/main.dox \
                          @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/docs/releases.dox \
                          @path_tag@@coin_src_dir@/include/Inventor/C/XML/attribute.h \
@@ -1334,10 +1333,11 @@ INPUT                  = \
                          @path_tag@@coin_src_dir@/src/details/SoNodeKitDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoPointDetail.cpp \
                          @path_tag@@coin_src_dir@/src/details/SoTextDetail.cpp \
-                         @path_tag@@coin_src_dir@/src/doc/books.dox \
-                         @path_tag@@coin_src_dir@/src/doc/environment.dox \
-                         @path_tag@@coin_src_dir@/src/doc/macros.dox \
-                         @path_tag@@coin_src_dir@/src/doc/modules.dox \
+                         @path_tag@@coin_src_dir@/src/doc/Coin_books.dox \
+                         @path_tag@@coin_src_dir@/src/doc/Coin_environment.dox \
+                         @path_tag@@coin_src_dir@/src/doc/Coin_macros.dox \
+                         @path_tag@@coin_src_dir@/src/doc/Coin_main.dox \
+                         @path_tag@@coin_src_dir@/src/doc/Coin_modules.dox \
                          @path_tag@@coin_src_dir@/src/draggers/SoCenterballDragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoDirectionalLightDragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoDragPointDragger.cpp \

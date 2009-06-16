@@ -39,7 +39,7 @@
 
 // referencing block that goes to the envvars module
 /*!
-  \page envvars_profiler Scene Graph Profiler
+  \page Coin_envvars_profiler Scene Graph Profiler
 
   The scene graph profiler subsystem uses the following environment
   variables:
@@ -164,7 +164,7 @@
   SoDBP::EnvVars members, as is done for a few already, and document
   them one-by-one through Doxygen.  20071106 mortene.
 
-  \page environment_variables Environment variables
+  \page Coin_environment_variables Environment variables
 
   Debug related:
 
