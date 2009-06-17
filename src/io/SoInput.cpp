@@ -1837,8 +1837,6 @@ SoInput::addReference(const SbName & name, SoBase * base,
   }
   else {
     this->getTopOfStack()->addReference(name, base, addToGlobalDict);
-    // Enable to be backwards compatible with older versions of Coin
-    // PRIVATE(this)->references.put(name.getString(), base);
   }
 }
 
@@ -1856,8 +1854,6 @@ SoInput::removeReference(const SbName & name)
   }
   else {
     this->getTopOfStack()->removeReference(name);
-    // Enable to be backwards compatible with older versions of Coin
-    // PRIVATE(this)->references.remove(name.getString());
   }
 }
 
@@ -1883,10 +1879,6 @@ SoInput::findReference(const SbName & name) const
   else {
     SoBase * base = this->getTopOfStack()->findReference(name);
     if (base) return base;
-
-    // Enable to be backwards compatible with older versions of Coin
-    // SoBase * base;
-    // if (PRIVATE(this)->references.get(name.getString(), base)) { return base; }
 
     static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
     if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
