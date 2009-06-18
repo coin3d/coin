@@ -1027,6 +1027,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
         state->pop();
       }
       else {
+        action->popPushCurPath(i, child);
         action->traverse(child);
       }
     }
