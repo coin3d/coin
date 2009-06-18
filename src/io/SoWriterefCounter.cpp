@@ -417,115 +417,11 @@ SoWriterefCounter::getWriteName(const SoBase * base) const
   
   // Find what node name to write
   SbString writename;
-  if (dont_mangle_output_names(base)) {
-    //
-    // Try to keep the original node names as far as possible.
-    // Weaknesses (FIXME kintel 20020429):
-    //  o We should try to reuse refid's as well.
-    //  o We should try to let "important" (=toplevel?) nodes
-    //    keep their original node names before some subnode "captures" it.
-    //
+  
 
-    /* Code example. The correct output file is shown below
 
-       #include <Inventor/SoDB.h>
-       #include <Inventor/SoInput.h>
-       #include <Inventor/SoOutput.h>
-       #include <Inventor/actions/SoWriteAction.h>
-       #include <Inventor/nodes/SoSeparator.h>
+ 
 
-       void main(int argc, char *argv[])
-       {
-       SoDB::init();
-
-       SoSeparator *root = new SoSeparator;
-       root->ref();
-       root->setName("root");
-
-       SoSeparator *n0 = new SoSeparator;
-       SoSeparator *a0 = new SoSeparator;
-       SoSeparator *a1 = new SoSeparator;
-       SoSeparator *a2 = new SoSeparator;
-       SoSeparator *a3 = new SoSeparator;
-       SoSeparator *b0 = new SoSeparator;
-       SoSeparator *b1 = new SoSeparator;
-       SoSeparator *b2 = new SoSeparator;
-       SoSeparator *b3 = new SoSeparator;
-       SoSeparator *b4 = new SoSeparator;
-       SoSeparator *c0 = new SoSeparator;
-
-       a2->setName(SbName("MyName"));
-       b0->setName(SbName("MyName"));
-       b1->setName(SbName("MyName"));
-       b2->setName(SbName("MyName"));
-       b4->setName(SbName("MyName"));
-       c0->setName(SbName("MyName"));
-
-       root->addChild(n0);
-       root->addChild(n0);
-       root->addChild(a0);
-       a0->addChild(b0);
-       a0->addChild(b1);
-       root->addChild(b0);
-       root->addChild(a1);
-       a1->addChild(b2);
-       a1->addChild(b1);
-       root->addChild(b1);
-       root->addChild(a2);
-       root->addChild(a2);
-       root->addChild(a3);
-       a3->addChild(b3);
-       b3->addChild(c0);
-       b3->addChild(c0);
-       a3->addChild(b4);
-       a3->addChild(a2);
-
-       SoOutput out;
-       out.openFile("out.wrl");
-       out.setHeaderString(SbString("#VRML V1.0 ascii"));
-       SoWriteAction wra(&out);
-       wra.apply(root);
-       out.closeFile();
-
-       root->unref();
-       }
-
-       Output file:
-
-       #VRML V1.0 ascii
-
-       DEF root Separator {
-         DEF +0 Separator {
-         }
-         USE +0
-         Separator {
-           DEF MyName Separator {
-           }
-           DEF MyName+1 Separator {
-           }
-         }
-         USE MyName
-         Separator {
-           DEF MyName Separator {
-           }
-           USE MyName+1
-         }
-         USE MyName+1
-         DEF MyName Separator {
-         }
-         USE MyName
-         Separator {
-           Separator {
-             DEF MyName+2 Separator {
-             }
-             USE MyName+2
-           }
-           DEF MyName+3 Separator {
-           }
-           USE MyName
-         }
-       }
-    */
 
     if (!firstwrite) {
       writename = name.getString();
@@ -534,7 +430,14 @@ SoWriterefCounter::getWriteName(const SoBase * base) const
         PRIVATE(this)->appendPostfix(base, writename, refid);
       }
       // Detects last USE of a node, enables reuse of DEF's
-      if (!multiref) out->removeDEFNode(SbName(writename));
+	 // if dont_mangle_output_names(base) is true;
+    // Try to keep the original node names as far as possible.
+    // Weaknesses (FIXME kintel 20020429):
+    //  o We should try to reuse refid's as well.
+    //  o We should try to let "important" (=toplevel?) nodes
+    //    keep their original node names before some subnode "captures" it.
+    //
+      if (!multiref && dont_mangle_output_names(base)) out->removeDEFNode(SbName(writename));
     }
     else {
       SbBool found = out->lookupDEFNode(name);
@@ -544,20 +447,13 @@ SoWriterefCounter::getWriteName(const SoBase * base) const
         if (multiref) out->addDEFNode(name);
         out->setReference(base, (int) NOSUFFIX);
       }
-      else {
+      if ((found && name.getLength()>0) || (multiref && name.getLength()==0)) {
         // Node name is already DEF'ed or an unnamed multiref => use a suffix.
         PRIVATE(this)->appendPostfix(base, writename, out->addReference(base));
         out->addDEFNode(SbName(writename));
       }
-    }
   }
-  else { // Default OIV behavior
-    if (multiref && firstwrite) refid = out->addReference(base);
-    writename = name.getString();
-    if (!firstwrite || multiref) {
-      PRIVATE(this)->appendPostfix(base, writename, refid);
-    }
-  }
+ 
   return writename;
 }
 
@@ -621,3 +517,4 @@ SoWriterefCounter::debugWriterefs(void)
 
 
 #undef PRIVATE
+
