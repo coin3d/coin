@@ -144,14 +144,13 @@ public:
   void appendPostfix(const SoBase *base, SbString &name, int refid)
   {
     // Fix to avoid writing DEFs starting with an illegal
-    // character (e.g. '+') in VRML2.
+    // character (e.g. '+') 
     if (name.getLength() == 0 &&
         base->isOfType(SoNode::getClassTypeId()) &&
-        ((SoNode *)base)->getNodeType() == SoNode::VRML2 &&
         !SbName::isBaseNameStartChar((*refwriteprefix)[0])) {
       name += "_";
     }
-    
+ 
     name += SoWriterefCounterP::refwriteprefix->getString();
     name.addIntString(refid);
   }

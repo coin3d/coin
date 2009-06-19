@@ -1734,8 +1734,8 @@ DEF root Separator {
 		BOOST_CHECK_MESSAGE(dont_mangle_output_names(scenegraph)==FALSE,"don't mangle should be FALSE");
 
 	   if(dont_mangle_output_names(scenegraph)) {
-		   node_names.append("+0");
-		   node_names.append("+0");
+		   node_names.append("_+0");
+		   node_names.append("_+0");
 		   node_names.append("MyName");
 		   node_names.append("MyName+1");
 		   node_names.append("MyName");
@@ -1750,8 +1750,8 @@ DEF root Separator {
 		   node_names.append("MyName");
 	   }
 	   else {
-		   node_names.append("+0");
-		   node_names.append("+0");
+		   node_names.append("_+0");
+		   node_names.append("_+0");
 		   node_names.append("MyName");
 		   node_names.append("MyName+1");
 		   node_names.append("MyName");
@@ -1777,6 +1777,7 @@ DEF root Separator {
 		   }
 		   ss = ss.getSubString(pos+node_names[i].getLength(),ss.getLength());
 	   }
+
 
 	   BOOST_CHECK_MESSAGE(!fail,"Check failed, written node names should match test template");
 	   
