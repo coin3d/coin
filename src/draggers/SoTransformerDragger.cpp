@@ -1104,7 +1104,7 @@ SoTransformerDragger::metaKeyChangeCB(void *, SoDragger *d)
 static void
 invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>(
+  SoSurroundScale * ss = coin_safe_cast<SoSurroundScale *>(
     kit->getPart("surroundScale", FALSE)
     );
   if (ss) ss->invalidate();

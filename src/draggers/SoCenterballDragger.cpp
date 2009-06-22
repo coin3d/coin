@@ -380,7 +380,7 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
 {
   SoSwitch *sw;
 
-  if (activechild == NULL || coin_assert_cast<SoNode *>(activechild) == rotator.getValue()) {
+  if (activechild == NULL || coin_safe_cast<SoNode *>(activechild) == rotator.getValue()) {
     // special feedback when rotator is activated/deactiveated
     int switchval = activechild != NULL ? 1 : 0;
     sw = SO_GET_ANY_PART(this, "XCenterChanger.translatorSwitch", SoSwitch);
@@ -400,13 +400,13 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
   // internal feedback
   int vals[3] = { SO_SWITCH_NONE, SO_SWITCH_NONE, SO_SWITCH_NONE };
 
-  if (coin_assert_cast<SoNode *>(activechild) == XRotator.getValue()) {
+  if (coin_safe_cast<SoNode *>(activechild) == XRotator.getValue()) {
     vals[0] = 0;
   }
-  else if (coin_assert_cast<SoNode *>(activechild) == YRotator.getValue()) {
+  else if (coin_safe_cast<SoNode *>(activechild) == YRotator.getValue()) {
     vals[1] = 0;
   }
-  else if (coin_assert_cast<SoNode *>(activechild) == ZRotator.getValue()) {
+  else if (coin_safe_cast<SoNode *>(activechild) == ZRotator.getValue()) {
     vals[2] = 0;
   }
   else if (activechild != NULL) {
@@ -588,7 +588,7 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
   SoCenterballDragger * thisp = static_cast<SoCenterballDragger *>(d);
   thisp->setSwitches(child);
 
-  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+  SoSurroundScale * scale = coin_safe_cast<SoSurroundScale *>(
     thisp->getPart("surroundScale", FALSE)
     );
   if (scale) scale->invalidate();
@@ -604,7 +604,7 @@ SoCenterballDragger::kidFinishCB(void * d, SoDragger * COIN_UNUSED_ARG(child))
   SoCenterballDragger * thisp = static_cast<SoCenterballDragger *>(d);
   thisp->setSwitches(NULL);
 
-  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+  SoSurroundScale * scale = coin_safe_cast<SoSurroundScale *>(
     thisp->getPart("surroundScale", FALSE)
     );
   if (scale) scale->invalidate();
@@ -636,7 +636,7 @@ SoCenterballDragger::removeChildDragger(const char *childname)
 void
 SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+  SoSurroundScale * scale = coin_safe_cast<SoSurroundScale *>(
     this->getPart("surroundScale", FALSE)
     );
   if (scale) {
@@ -652,7 +652,7 @@ SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoCenterballDragger::getMatrix(SoGetMatrixAction * action)
 {
-  SoSurroundScale * scale = coin_assert_cast<SoSurroundScale *>(
+  SoSurroundScale * scale = coin_safe_cast<SoSurroundScale *>(
     this->getPart("surroundScale", FALSE)
     );
   if (scale) {

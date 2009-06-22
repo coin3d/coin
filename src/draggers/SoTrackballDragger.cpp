@@ -391,12 +391,12 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
   this->antiSquish.setDefault(TRUE);
   this->surroundScale.setDefault(TRUE);
 
-  SoRotation * rot = coin_assert_cast<SoRotation *>(this->getAnyPart("userAxisRotation", FALSE));
+  SoRotation * rot = coin_safe_cast<SoRotation *>(this->getAnyPart("userAxisRotation", FALSE));
   if (rot && rot->rotation.getValue() == SbRotation::identity()) {
     this->userAxisRotation.setDefault(TRUE);
   }
 
-  SoSwitch * sw = coin_assert_cast<SoSwitch *>(this->userAxisSwitch.getValue());
+  SoSwitch * sw = coin_safe_cast<SoSwitch *>(this->userAxisSwitch.getValue());
   if (sw && sw->whichChild.getValue() == SO_SWITCH_NONE)
     this->userAxisSwitch.setDefault(TRUE);
 
@@ -470,7 +470,7 @@ SoTrackballDragger::setAnimationEnabled(SbBool newval)
 static void
 SoTrackballDragger_invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = coin_assert_cast<SoSurroundScale *>(
+  SoSurroundScale * ss = coin_safe_cast<SoSurroundScale *>(
     kit->getPart("surroundScale", FALSE)
     );
   if (ss) ss->invalidate();
