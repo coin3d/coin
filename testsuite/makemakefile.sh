@@ -31,7 +31,7 @@ filelist=""
 extractlist=""
 objlist=""
 
-for file in `cd $srcdir; find src -type f -print | sort`; do
+for file in `cd $srcdir; find src -type f -print | LC_ALL="C" sort`; do
   # filter the find results
   case $file in
   */.svn/*)
