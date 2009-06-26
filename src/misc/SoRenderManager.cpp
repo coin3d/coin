@@ -24,6 +24,8 @@
 #include <Inventor/SoRenderManager.h>
 
 #include <algorithm>
+//FIXME:Need this include early, since including it via SoRenderManagerP.h will cause problems for cygwin. Don't understand the root cause BFG 20090629
+#include <vector>
 
 #include <Inventor/system/gl.h>
 #include <Inventor/nodes/SoInfo.h>

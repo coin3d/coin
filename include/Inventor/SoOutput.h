@@ -85,6 +85,11 @@ public:
   virtual void write(const unsigned short s);
   virtual void write(const float f);
   virtual void write(const double d);
+#ifdef __CYGWIN__
+  //These function are not virtual as they are meant to be only wrappers to the real function calls, due to limitations in Cygwin g++ type demangling.
+  void write(long int i);
+  void write(long unsigned int i);
+#endif //__CYGWIN__
   virtual void writeBinaryArray(const unsigned char * c, const int length);
   virtual void writeBinaryArray(const int32_t * const l, const int length);
   virtual void writeBinaryArray(const float * const f, const int length);

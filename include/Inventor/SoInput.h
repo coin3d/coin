@@ -98,6 +98,11 @@ public:
   virtual SbBool read(double & d);
   virtual SbBool readByte(int8_t & b);
   virtual SbBool readByte(uint8_t & b);
+#ifdef __CYGWIN__
+  //These function are not virtual as they are meant to be only wrappers to the real function calls, due to limitations in Cygwin g++ type demangling.
+  SbBool read(long int & i);
+  SbBool read(long unsigned int & i);
+#endif //__CYGWIN__
   virtual SbBool readBinaryArray(unsigned char * c, int length);
   virtual SbBool readBinaryArray(int32_t * l, int length);
   virtual SbBool readBinaryArray(float * f, int length);

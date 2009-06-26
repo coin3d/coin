@@ -1694,6 +1694,24 @@ SoInput::read(double & d)
   return TRUE;
 }
 
+#ifdef __CYGWIN__
+#include <boost/static_assert.hpp>
+
+SbBool
+SoInput::read(long int & i)
+{
+  BOOST_STATIC_ASSERT(sizeof(long int) == sizeof(int));
+  return read(reinterpret_cast<int &>(i));
+}
+
+SbBool
+SoInput::read(unsigned long int & i)
+{
+  BOOST_STATIC_ASSERT(sizeof(unsigned long int) == sizeof(unsigned int));
+  return read(reinterpret_cast<unsigned int &>(i));
+}
+#endif //__CYGWIN
+
 /*!
   Reads \a length characters from the current stream into \a c. Returns
   \c FALSE if end of file is encountered before the given number of bytes

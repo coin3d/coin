@@ -366,7 +366,7 @@ SoProfilerTopEngine::evaluate(void)
     break;
   }
 
-  const int numlines = SbMin(this->maxLines.getValue(), this->statisticsNames.getNum());
+  const int numlines = SbMin(static_cast<int>(this->maxLines.getValue()), this->statisticsNames.getNum());
 
   // find longest name (of the complete nameset (to stay static))
   // and maxcount
