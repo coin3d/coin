@@ -156,7 +156,7 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
   SbVec3f direction = this->position.getValue() - box.getCenter();
   (void) direction.normalize(); // we know this is not a null vector
   float movelength =
-    aspectradius + (aspectradius/float(atan(this->heightAngle.getValue())));
+    aspectradius + (aspectradius/float(tan(this->heightAngle.getValue() /2.0 )));
   this->position.setValue(box.getCenter() + direction * movelength);
 
 

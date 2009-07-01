@@ -188,7 +188,7 @@ SoFrustumCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
   SbVec3f direction = this->position.getValue() - box.getCenter();
   direction.normalize();
   float movelength =
-    aspectradius + (aspectradius/float(atan(heightangle)));
+    aspectradius + (aspectradius/float(tan(heightangle / 2.0)));
   this->position.setValue(box.getCenter() + direction * movelength);
 
   // Set up the far clipping plane according to the slack value (a

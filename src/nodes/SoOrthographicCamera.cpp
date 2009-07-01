@@ -159,48 +159,34 @@ SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
   }
 #endif // COIN_DEBUG
 
-  // First, we want to move the camera in such a way that it is
-  // pointing straight at the center of the scene bounding box -- but
-  // without modifiying the rotation value (so we can't use
-  // SoCamera::pointAt()).
-  SbVec3f cameradirection;
-  this->orientation.getValue().multVec(SbVec3f(0, 0, -1), cameradirection);
-  this->position.setValue(box.getCenter() + -cameradirection);
-
-
   // Get the radius of the bounding sphere.
   SbSphere bs;
   bs.circumscribe(box);
   float radius = bs.getRadius();
 
+  // We want to move the camera in such a way that it is pointing
+  // straight at the center of the scene bounding box -- but without
+  // modifiying the rotation value (so we can't use SoCamera::pointAt()),
+  // and positioned at the edge of the bounding sphere.
+  SbVec3f cameradirection;
+  this->orientation.getValue().multVec(SbVec3f(0, 0, -1), cameradirection);
+  this->position.setValue(box.getCenter() + cameradirection * -radius);
 
-  // Make sure that everything will still be inside the viewing volume
-  // even if the aspect ratio "favorizes" width over height.
-  if (aspect < 1.0f)
-    this->height = 2 * radius / aspect;
-  else
-    this->height = 2 * radius;
-
-
-  // Move the camera to the edge of the bounding sphere, while still
-  // pointing at the scene.
-  SbVec3f direction = this->position.getValue() - box.getCenter();
-  (void) direction.normalize(); // we know this is not a null vector
-  this->position.setValue(box.getCenter() + direction * radius);
-
-
-  // Set up the clipping planes according to the slack value (a value
-  // of 1.0 will yield clipping planes that are tangent to the
-  // bounding sphere of the scene).
-  float distance_to_midpoint =
-    (this->position.getValue() - box.getCenter()).length();
-  this->nearDistance = distance_to_midpoint - radius * slack;
-  this->farDistance = distance_to_midpoint + radius * slack;
-
+  // Set up the clipping planes tangent to the bounding sphere of the scene.
+  this->nearDistance = radius * ( -slack + 1);
+  this->farDistance = radius * ( slack + 1);
 
   // The focal distance is simply the distance from the camera to the
   // scene midpoint. This field is not used in rendering, its just
   // provided to make it easier for the user to do calculations based
   // on the distance between the camera and the scene.
-  this->focalDistance = distance_to_midpoint;
+  this->focalDistance = radius;
+
+  // Make sure that everything will still be inside the viewing volume
+  // even if the aspect ratio "favorizes" width over height, and take the
+  // slack factor into account.
+  if (aspect < 1.0f)
+    this->height = 2 * radius / aspect;
+  else
+    this->height = 2 * radius;
 }
