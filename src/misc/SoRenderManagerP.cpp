@@ -147,20 +147,24 @@ SoRenderManagerP::setClippingPlanes(void)
   }
 
   const float SLACK = 0.001f;
+  const float newnear = nearval * (1.0f - SLACK);
+  const float newfar = farval * (1.0f + SLACK);
 
-  SbBool oldnear = camera->nearDistance.enableNotify(FALSE);
-  SbBool oldfar = camera->farDistance.enableNotify(FALSE);
+  const float neareps = nearval * SLACK * SLACK;
+  const float fareps = farval * SLACK * SLACK;
 
-  camera->nearDistance = nearval * (1.0f - SLACK);
-  camera->farDistance = farval * (1.0f + SLACK);
+  const float oldnear = camera->nearDistance.getValue();
+  const float oldfar = camera->farDistance.getValue();
 
-  if (oldnear) {
-    camera->nearDistance.enableNotify(TRUE);
+  // check that the values have changed before setting the fields to
+  // avoid continuous redraws on static scenes. Use an epsilon value
+  // when comparing
+  if (SbAbs(oldnear-newnear) >= neareps) {
+    camera->nearDistance = newnear;
   }
-  if (oldfar) {
-    camera->farDistance.enableNotify(TRUE);
+  if (SbAbs(oldfar-newfar) >= fareps) {
+    camera->farDistance = newfar;
   }
-
 }
 
 void
