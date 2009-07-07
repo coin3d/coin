@@ -118,6 +118,8 @@ SoPerspectiveCamera::getViewVolume(float useaspectratio) const
   return volume;
 }
 
+#include <Inventor/SbMatrix.h>
+
 // Doc in superclass.
 void
 SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
@@ -155,19 +157,23 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
   // pointing at the scene.
   SbVec3f direction = this->position.getValue() - box.getCenter();
   (void) direction.normalize(); // we know this is not a null vector
-  float movelength =
-    aspectradius + (aspectradius/float(tan(this->heightAngle.getValue() /2.0 )));
-  this->position.setValue(box.getCenter() + direction * movelength);
 
+  // There's a small chance that the frustum will intersect the
+  // bounding box when we calculate the movelength like this, but for
+  // all normal heightAngles it will yield a much better fit than
+  // the 100% safe version which also adds radius to movelength
+  float movelength = aspectradius/float(tan(this->heightAngle.getValue() / 2.0));
+  this->position.setValue(box.getCenter() + direction * movelength);
 
   // Set up the clipping planes according to the slack value (a value
   // of 1.0 will yield clipping planes that are tangent to the
   // bounding sphere of the scene).
   float distance_to_midpoint =
     (this->position.getValue() - box.getCenter()).length();
-  this->nearDistance = distance_to_midpoint - radius * slack;
+  // make sure nearDistance isn't 0.0 (or too close to 0.0)
+  const float EPS = 0.001f;
+  this->nearDistance = SbMax(distance_to_midpoint*EPS, distance_to_midpoint - radius * slack);
   this->farDistance = distance_to_midpoint + radius * slack;
-
 
   // The focal distance is simply the distance from the camera to the
   // scene midpoint. This field is not used in rendering, its just
