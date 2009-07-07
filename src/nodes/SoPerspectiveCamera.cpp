@@ -118,8 +118,6 @@ SoPerspectiveCamera::getViewVolume(float useaspectratio) const
   return volume;
 }
 
-#include <Inventor/SbMatrix.h>
-
 // Doc in superclass.
 void
 SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
