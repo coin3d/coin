@@ -33,6 +33,14 @@
   Paths can be export and imported to/from file, like other SoBase
   derived objects. Read the documentation on the write() method to see
   how the file format is.
+
+  It's important to know the difference between this class and
+  SoFullPath when working with paths. SoPath::getTail() will return
+  the first node in the path that doesn't inherit SoGroup, and
+  getLength() returns the number of nodes down to this node.
+
+  If you need the actual path length, or the actual tail node, you
+  need to cast the path to SoFullPath.
 */
 
 // *************************************************************************
@@ -368,7 +376,7 @@ SoPath::append(SoNode * const node, const int index)
   if (this->isauditing) this->startNotify();
 }
 
-/*!  
+/*!
   This method returns the tail node of the path. Please note that this
   method only considers group nodes without hidden children (nodes
   inheriting SoGroup) when finding the tail.
@@ -482,6 +490,9 @@ SoPath::getIndexFromTail(const int index) const
   This method returns the number of nodes in the path. Only the
   "visible" nodes are counted, i.e. hidden nodes of e.g. nodekits are
   not included.
+
+  If you need the actual path length, you need to cast your path to
+  SoFullPath and use SoFullPath::getLength().
 */
 int
 SoPath::getLength(void) const
@@ -630,7 +641,7 @@ SoPath::containsPath(const SoPath * const path) const
 
   int offset = this->findNode(path->nodes[0]); // find head in this path
   if ((offset < 0) || (offset + thatlen > thislen)) return FALSE;
- 
+
   const int * thisidxptr = this->indices.getArrayPtr();
   const int * pathidxptr = path->indices.getArrayPtr();
 
@@ -947,7 +958,7 @@ void
 SoPath::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
-  
+
   if (out->getStage() == SoOutput::COUNT_REFS) {
     inherited::addWriteReference(out, FALSE);
     if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) {
@@ -996,7 +1007,7 @@ SoPath::isRelevantNotification(SoNotList * const l) const
   if (len == 1) return rec->getBase() == (SoBase*) this->getHead();
 
   int pathidx = 1;
-  
+
   // start at the root node and follow the notification chain until we
   // find a node that is off the path or a notification that is not
   // from a node.
@@ -1009,7 +1020,7 @@ SoPath::isRelevantNotification(SoNotList * const l) const
     }
     pathidx++;
   } while (rec && (rec->getType() == SoNotRec::PARENT) && (pathidx < len));
-  
+
   // check if we're off path
   if (rec && (pathidx < len) && (rec->getType() == SoNotRec::PARENT)) {
     SoBase * base = rec->getBase();
@@ -1023,7 +1034,7 @@ SoPath::isRelevantNotification(SoNotList * const l) const
     if (childidx > this->getIndex(pathidx)) return FALSE;
 
     // check if the notification is from inside a separator node,
-    // then it will not affect the path 
+    // then it will not affect the path
     do {
       assert(rec->getBase()->isOfType(SoNode::getClassTypeId()));
       if (!((SoNode*)rec->getBase())->affectsState()) return FALSE;
@@ -1075,7 +1086,7 @@ SoPath::initClass(void)
          "call SoPath::initClass only once!");
 
   coin_atexit((coin_atexit_f*)SoPath::cleanupClass, CC_ATEXIT_NORMAL);
-      
+
   SoPath::classTypeId = SoType::createType(inherited::getClassTypeId(),
                                            SbName("Path"),
                                            &SoPath::createInstance);
