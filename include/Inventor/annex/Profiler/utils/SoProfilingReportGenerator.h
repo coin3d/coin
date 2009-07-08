@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/lists/SbList.h>
 
 class SbProfilingData;
 class SbProfilingReportSortCriteria;   // opaque internal
@@ -33,8 +34,6 @@ class SbProfilingReportPrintCriteria;  // opaque internal
 class COIN_DLL_API SoProfilingReportGenerator {
 public:
   static void init(void);
-
-  enum Constants { TERMINATE_ARGLIST = -1 };
 
   enum Column {
     NAME,
@@ -83,15 +82,16 @@ public:
     STOP
   };
 
-  static SbProfilingReportSortCriteria * getReportSortCriteria(SortOrder order, ...);
+  static SbProfilingReportSortCriteria * getReportSortCriteria(const SbList< SortOrder > & order);
   static SbProfilingReportSortCriteria * getDefaultReportSortCriteria(DataCategorization category);
-  static SbProfilingReportPrintCriteria * getReportPrintCriteria(Column col, ...);
+
+  static SbProfilingReportPrintCriteria * getReportPrintCriteria(const SbList< Column > & order);
   static SbProfilingReportPrintCriteria * getDefaultReportPrintCriteria(DataCategorization category);
   static void freeCriteria(SbProfilingReportSortCriteria * criteria);
   static void freeCriteria(SbProfilingReportPrintCriteria * criteria);
 
   typedef CallbackResponse ReportCB(void * userdata, int entrynum, const char * text);
- 
+
   static void generate(const SbProfilingData & data,
                        DataCategorization categorization,
                        SbProfilingReportSortCriteria * sort,

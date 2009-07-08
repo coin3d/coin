@@ -120,28 +120,17 @@ public:
   \sa freeCriteria
 */
 SbProfilingReportSortCriteria *
-SoProfilingReportGenerator::getReportSortCriteria(SortOrder order, ...)
+SoProfilingReportGenerator::getReportSortCriteria(const SbList< SortOrder > & order)
 {
   SbProfilingReportSortCriteria * criteria = new SbProfilingReportSortCriteria;
 
-  SortOrder sortorder = order;
-  criteria->numfunctions = 0;
-  va_list args;
-  va_start(args, order);
-  while (static_cast<int>(sortorder) != static_cast<int>(TERMINATE_ARGLIST)) {
-    ++criteria->numfunctions;
-    sortorder = static_cast<SortOrder>(va_arg(args, int));
-  }
-  va_end(args);
+  criteria->numfunctions=order.getLength();
 
   criteria->functions =
     new SoProfilingReportGeneratorP::SortFunction * [ criteria->numfunctions ];
 
-  sortorder = order;
-  int idx = 0;
-  va_start(args, order);
-  while (static_cast<int>(sortorder) != static_cast<int>(TERMINATE_ARGLIST)) {
-    switch (sortorder) {
+  for (int idx=0;idx<order.getLength();++idx) {
+    switch (order[idx]) {
     case SoProfilingReportGenerator::TIME_ASC:
       criteria->functions[idx] = SoProfilingReportGeneratorP::cmpTimeAsc;
       break;
@@ -188,10 +177,7 @@ SoProfilingReportGenerator::getReportSortCriteria(SortOrder order, ...)
       assert(!"not a supported sort order");
       break;
     }
-    sortorder = static_cast<SortOrder>(va_arg(args, int));
-    ++idx;
   }
-  va_end(args);
 
   return criteria;
 }
@@ -203,18 +189,20 @@ SoProfilingReportGenerator::getReportSortCriteria(SortOrder order, ...)
 SbProfilingReportSortCriteria *
 SoProfilingReportGenerator::getDefaultReportSortCriteria(DataCategorization category)
 {
+  SbList< SortOrder > order(1);
   switch (category) {
   case NODES:
-    return getReportSortCriteria(TIME_DES, TERMINATE_ARGLIST);
-  case TYPES:
-    return getReportSortCriteria(TIME_MAX_DES, TERMINATE_ARGLIST);
   case NAMES:
-    return getReportSortCriteria(TIME_DES, TERMINATE_ARGLIST);
+    order.append(TIME_DES);
+    break;
+  case TYPES:
+    order.append(TIME_MAX_DES);
+    break;
   default:
     assert(!"not a supported sort order");
     break;
   }
-  return NULL;
+  return getReportSortCriteria(order);
 }
 
 void
@@ -252,27 +240,16 @@ public:
   \sa freeCriteria
 */
 SbProfilingReportPrintCriteria *
-SoProfilingReportGenerator::getReportPrintCriteria(Column col, ...)
+SoProfilingReportGenerator::getReportPrintCriteria(const SbList<Column> & order)
 {
   SbProfilingReportPrintCriteria * criteria = new SbProfilingReportPrintCriteria;
-  Column column = col;
-  criteria->numfunctions = 0;
-  va_list args;
-  va_start(args, col);
-  while (static_cast<int>(column) != static_cast<int>(TERMINATE_ARGLIST)) {
-    ++criteria->numfunctions;
-    column = static_cast<Column>(va_arg(args, int));
-  }
-  va_end(args);
+  criteria->numfunctions = order.getLength();
 
   criteria->functions =
     new SoProfilingReportGeneratorP::PrintFunction * [ criteria->numfunctions ];
 
-  column = col;
-  int idx = 0;
-  va_start(args, col);
-  while (static_cast<int>(column) != static_cast<int>(TERMINATE_ARGLIST)) {
-    switch (column) {
+  for (int idx=0;idx<order.getLength();++idx) {
+    switch (order[idx]) {
     case SoProfilingReportGenerator::NAME:
       criteria->functions[idx] = SoProfilingReportGeneratorP::printName;
       criteria->needstringlengths = TRUE;
@@ -327,10 +304,7 @@ SoProfilingReportGenerator::getReportPrintCriteria(Column col, ...)
       assert(!"unsupported column/format id");
       break;
     }
-    column = static_cast<Column>(va_arg(args, int));
-    ++idx;
   }
-  va_end(args);
 
   return criteria;
 }
@@ -342,18 +316,31 @@ SoProfilingReportGenerator::getReportPrintCriteria(Column col, ...)
 SbProfilingReportPrintCriteria *
 SoProfilingReportGenerator::getDefaultReportPrintCriteria(DataCategorization category)
 {
+  SbList<Column> order;
   switch (category) {
   case TYPES:
-    return getReportPrintCriteria(TYPE, COUNT, TIME_PERCENT, TIME_MSECS, TIME_MSECS_MAX, TERMINATE_ARGLIST);
+    order.append(TYPE);
+    order.append(COUNT);
+    order.append(TIME_PERCENT);
+    order.append(TIME_MSECS);
+    order.append(TIME_MSECS_MAX);
+    break;
   case NAMES:
-    return getReportPrintCriteria(NAME, TIME_PERCENT, TIME_MSECS, TERMINATE_ARGLIST);
+    order.append(NAME);
+    order.append(TIME_PERCENT);
+    order.append(TIME_MSECS);
+    break;
   case NODES:
-    return getReportPrintCriteria(NAME, TIME_PERCENT, TIME_MSECS, MEM_KILOBYTES, TERMINATE_ARGLIST);
+    order.append(NAME);
+    order.append(TIME_PERCENT);
+    order.append(TIME_MSECS);
+    order.append(MEM_KILOBYTES);
+    break;
   default:
     assert(!"unsupported category");
     break;
   }
-  return NULL;
+  return getReportPrintCriteria(order);
 }
 
 void
