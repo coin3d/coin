@@ -1829,15 +1829,17 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else mipmapfilter = FALSE;
     }
+    // prefer GL_SGIS_generate_mipmap to glGenerateMipmap. It seems to
+    // be better supported in drivers
+    else if (mipmap && SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
+      glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+      mipmapimage = FALSE;
+    }
     // using glGenerateMipmap() while creating a display list is not
     // supported (even if the display list is never used)
     else if (mipmap && SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP) && !state->isCacheOpen()) {
       mipmapimage = FALSE;
       generatemipmap = TRUE; // delay until after the texture image is set up
-    }
-    else if (mipmap && SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
-      glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-      mipmapimage = FALSE;
     }
     this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) &&
