@@ -50,51 +50,51 @@
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
   #include <Inventor/nodes/SoNodes.h>
-  
+
   int
   main(int argc, char ** argv)
   {
     QWidget * mainwin = SoQt::init(argv[0]);
-  
+
     SoSeparator * root = new SoSeparator;
     root->ref();
-  
+
     // Adds a camera and a red cone. The first camera found in the
     // scene graph by the SoQtExaminerViewer will be picked up and
     // initialized automatically.
-  
+
     root->addChild(new SoPerspectiveCamera);
     SoMaterial * material = new SoMaterial;
     material->diffuseColor.setValue(1.0, 0.0, 0.0);
     root->addChild(material);
     root->addChild(new SoCone);
-  
-  
+
+
     // Set up a second camera for the remaining geometry. This camera
     // will not be picked up and influenced by the viewer, so the
     // geometry will be kept static.
-  
+
     SoPerspectiveCamera * pcam = new SoPerspectiveCamera;
     pcam->position = SbVec3f(0, 0, 5);
     pcam->nearDistance = 0.1;
     pcam->farDistance = 10;
     root->addChild(pcam);
-  
+
     // Adds a green cone to demonstrate static geometry.
-  
+
     SoMaterial * greenmaterial = new SoMaterial;
     greenmaterial->diffuseColor.setValue(0, 1.0, 0.0);
     root->addChild(greenmaterial);
     root->addChild(new SoCone);
-  
-  
+
+
     SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
     viewer->setSceneGraph(root);
     viewer->show();
-  
+
     SoQt::show(mainwin);
     SoQt::mainLoop();
-  
+
     delete viewer;
     root->unref();
     return 0;
@@ -283,10 +283,10 @@
 
   \endverbatim
 
-  Also, for the CROPPED viewport mappings, the viewport might
-  be changed if the viewport aspect ratio is not equal to the
-  camera aspect ratio. See SoCamera::getView() to see how this
-  is done.  
+  Also, for the CROPPED viewport mappings, the viewport might be
+  changed if the viewport aspect ratio is not equal to the camera
+  aspect ratio. See the SoCamera::getView() source-code
+  (private method) to see how this is done.
 */
 
 /*!
@@ -478,10 +478,10 @@ SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
                          box.getMin()[0], box.getMin()[1], box.getMin()[2],
                          box.getMax()[0], box.getMax()[1], box.getMax()[2]);
   SoDebugError::postInfo("SoCamera::viewAll",
-                         "viewportregion, windowsize: <%f, %f>, <%d, %d>\n", 
-                         vpregion.getViewportSize()[0], 
-                         vpregion.getViewportSize()[1], 
-                         vpregion.getWindowSize()[0], 
+                         "viewportregion, windowsize: <%f, %f>, <%d, %d>\n",
+                         vpregion.getViewportSize()[0],
+                         vpregion.getViewportSize()[1],
+                         vpregion.getWindowSize()[0],
                          vpregion.getWindowSize()[1] );
 #endif // debug
 
@@ -588,7 +588,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
       left -= offset * nearv / focaldist;
       right -= offset * nearv / focaldist;
       vv.frustum(left,right,bottom,top,nearv,farv);
-      
+
       // transform the skewed view volume to the same location as the original
       vv.transform(affine);
       // translate to account for left/right view
@@ -624,7 +624,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
 }
 
 // Documented in superclass.
-void 
+void
 SoCamera::audioRender(SoAudioRenderAction *action)
 {
   SoState * state = action->getState();
@@ -634,7 +634,7 @@ SoCamera::audioRender(SoAudioRenderAction *action)
   if ((! setbylistener) &&  (! this->position.isIgnored())) {
     SbVec3f pos, worldpos;
     pos = this->position.getValue();
-    SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos); 
+    SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos);
     SoListenerPositionElement::set(state, this, worldpos, FALSE);
 #if COIN_DEBUG && 0
   float x, y, z;
@@ -875,7 +875,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
 
   if (action->handleTransparency(FALSE))
     return;
-  
+
   SoState *state = action->getState();
   state->push();
 
@@ -899,7 +899,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);
   SoGLMultiTextureEnabledElement::disableAll(state);
-  
+
   glPushAttrib(GL_LIGHTING_BIT|
                GL_FOG_BIT|
                GL_DEPTH_BUFFER_BIT|
@@ -912,7 +912,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   glDisable(GL_LIGHTING);
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
-  
+
   glColor3f(0.8f, 0.8f, 0.8f);
 
   SbVec2s origin = newvp.getViewportOriginPixels();
@@ -1011,19 +1011,19 @@ SoCamera::getStereoMode(void) const
   do is examine simple stand-alone 3D objects, it is possible to
   calculate a stereo offset based on the bounding box of the 3D model
   (or scale the model down to an appropriate size).
-  
-  However, if you have a large scene, where you want to fly around in             
-  the scene, and see stereo on different objects as you approach them,            
-  you can't calculate the stereo offset based on the bounding box                 
-  of the scene, but rather use a stereo offset based on the scale of              
-  the individual objects/details you want to examine. 
+
+  However, if you have a large scene, where you want to fly around in
+  the scene, and see stereo on different objects as you approach them,
+  you can't calculate the stereo offset based on the bounding box
+  of the scene, but rather use a stereo offset based on the scale of
+  the individual objects/details you want to examine.
 
   Please note that it's important to set a sensible focal distance
   when doing stereo rendering. See setBalanceAdjustment() for
   information about how the focal distance affects the stereo
   rendering.
 
-  \sa setBalanceAdjustment() 
+  \sa setBalanceAdjustment()
 */
 void
 SoCamera::setStereoAdjustment(float adjustment)
