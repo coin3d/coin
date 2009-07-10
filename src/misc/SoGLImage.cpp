@@ -192,6 +192,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
@@ -1628,7 +1629,10 @@ SoGLImageP::createGLDisplayList(SoState *state)
       this->resizeImage(state, imageptr, xsize, ysize, zsize);
     }
   }
-  
+  SoCacheElement::setInvalid(TRUE);
+  if (state->isCacheOpen()) {
+    SoCacheElement::invalidate(state);
+  }
   SoGLDisplayList *dl = new SoGLDisplayList(state,
                                             SoGLDisplayList::TEXTURE_OBJECT,
                                             1, mipmap);
@@ -1825,8 +1829,9 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else mipmapfilter = FALSE;
     }
-
-    else if (mipmap && SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP)) {
+    // using glGenerateMipmap() while creating a display list is not
+    // supported (even if the display list is never used)
+    else if (mipmap && SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP) && !state->isCacheOpen()) {
       mipmapimage = FALSE;
       generatemipmap = TRUE; // delay until after the texture image is set up
     }
