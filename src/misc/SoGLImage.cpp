@@ -1830,18 +1830,19 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       else mipmapfilter = FALSE;
     }
     // prefer GL_SGIS_generate_mipmap to glGenerateMipmap. It seems to
-    // be better supported in drivers
+    // be better supported in drivers.
     else if (mipmap && SoGLDriverDatabase::isSupported(glw, "GL_SGIS_generate_mipmap")) {
       glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
       mipmapimage = FALSE;
     }
     // using glGenerateMipmap() while creating a display list is not
-    // supported (even if the display list is never used)
+    // supported (even if the display list is never used). This is
+    // probably because the OpenGL driver creates each mipmap level by
+    // rendering it using normal OpenGL calls.
     else if (mipmap && SoGLDriverDatabase::isSupported(glw, SO_GL_GENERATE_MIPMAP) && !state->isCacheOpen()) {
       mipmapimage = FALSE;
       generatemipmap = TRUE; // delay until after the texture image is set up
     }
-    this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) &&
         SoGLDriverDatabase::isSupported(glw, SO_GL_ANISOTROPIC_FILTERING)) {
       glTexParameterf(target, GL_TEXTURE_MAX_ANISOTROPY_EXT,
@@ -1853,7 +1854,18 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                    border, dataFormat, GL_UNSIGNED_BYTE, texture);
       
       if (generatemipmap) {
+        SbBool wasenabled = TRUE;
+        // Woraround for ATi driver bug. GL_TEXTURE_2D needs to be
+        // enabled when using glGenerateMipmap(), according to
+        // dicussions on the opengl.org forums.
+        if (glw->vendor_is_ati) {
+          if (!glIsEnabled(GL_TEXTURE_2D)) {
+            wasenabled = FALSE;
+            glEnable(GL_TEXTURE_2D);
+          }
+        }
         cc_glglue_glGenerateMipmap(glw, target);
+        if (!wasenabled) glDisable(GL_TEXTURE_2D);
       }
     }
     else { // mipmaps
@@ -1866,6 +1878,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       //                                         GL_UNSIGNED_BYTE, texture);
       fast_mipmap(state, w, h, numComponents, texture, FALSE, compress);
     }
+    // apply the texture filters
+    this->applyFilter(mipmapfilter);
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 }
