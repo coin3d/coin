@@ -742,17 +742,25 @@ SoSTLFileKit::add_facet_cb(void * closure,
 {
   assert(closure); assert(v1); assert(v2); assert(v3);
   SoSTLFileKit * filekit = (SoSTLFileKit *) closure;
+  
+  const SbMatrix & mm = action->getModelMatrix();
 
-  SbVec3f vertex1(v1->getPoint());
-  SbVec3f vertex2(v2->getPoint());
-  SbVec3f vertex3(v3->getPoint());
+  // move the points into world space
+  SbVec3f vertex1, vertex2, vertex3;
+  mm.multVecMatrix(v1->getPoint(), vertex1);
+  mm.multVecMatrix(v2->getPoint(), vertex2);
+  mm.multVecMatrix(v3->getPoint(), vertex3);
 
+  // flip ordering if the current shape is CW
+  if (action->getVertexOrdering() == SoShapeHints::CLOCKWISE) {
+    SbVec3f tmp = vertex2;
+    vertex2 = vertex3;
+    vertex3 = tmp;
+  }
   SbVec3f vec1(vertex2-vertex1);
   SbVec3f vec2(vertex3-vertex1);
   SbVec3f normal(vec1.cross(vec2));
-  float len = normal.length();
-  if ( len > 0.0f && len != 1.0f ) normal /= len;
-  assert(len != 0.0f);
+  (void) normal.normalize();
 
   filekit->addFacet(vertex1, vertex2, vertex3, normal);
 }
@@ -781,8 +789,7 @@ SoSTLFileKit::put_facet_cb(void * closure,
   SbVec3f vec1(vertex2-vertex1);
   SbVec3f vec2(vertex3-vertex1);
   SbVec3f normal(vec1.cross(vec2));
-  float len = normal.length();
-  if ( len > 0 ) normal /= len;
+  (void) normal.normalize();
 
   stl_facet * facet = stl_writer_get_facet(writer);
   assert(facet);
