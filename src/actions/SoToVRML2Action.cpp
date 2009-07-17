@@ -296,15 +296,16 @@ SbBool SoToVRML2Action::doReuseGeometryNodes(void) const { return FALSE; }
 class SoToVRML2ActionP {
 public:
   SoToVRML2ActionP(void)
-    : master(NULL)
+    : master(NULL),nodefuse(FALSE),reuseAppearanceNodes(FALSE),reuseGeometryNodes(FALSE),
+      vrml2path(NULL),vrml2root(NULL),bboxaction(NULL),vrmlcoords(NULL),vrmlnormals(NULL),vrmlcolors(NULL),vrmltexcoords(NULL)
+  {}
+
+  ~SoToVRML2ActionP(void)
   {
-    this->nodefuse = FALSE; // for optimizing bad scene graphs
-    this->reuseAppearanceNodes = FALSE;
-    this->reusePropertyNodes = FALSE;
-    this->reuseGeometryNodes = FALSE;
-    this->vrml2path = NULL;
-    this->vrml2root = NULL;
-    this->bboxaction = NULL;
+    delete this->vrmlcoords;
+    delete this->vrmlnormals;
+    delete this->vrmlcolors;
+    delete this->vrmltexcoords;
   }
 
   void init(void)
@@ -320,6 +321,11 @@ public:
     recentTex2 = NULL;
     do_post_primitives = FALSE;
     didpush = FALSE;
+
+    delete this->vrmlcoords;
+    delete this->vrmlnormals;
+    delete this->vrmlcolors;
+    delete this->vrmltexcoords;
 
     this->vrmlcoords = new SbList <SoVRMLCoordinate *>;
     this->vrmlnormals = new SbList <SoVRMLNormal *>;
