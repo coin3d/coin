@@ -44,7 +44,7 @@
   behaviour to be like a separator, a switch or whatever else you have
   of node types inheriting SoGroup.
 
-  3. It might be necessary to get the container node, e.g. to change
+  It might be necessary to get the container node, e.g. to change
   SoSwitch::whichChild if the container node is a SoSwitch.
   The container node is located in the first position of its children,
   i.e. (*getChildren())[0].
