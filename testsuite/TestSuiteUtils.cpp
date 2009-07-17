@@ -25,14 +25,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef _POSIX_SOURCE
+#if defined (_POSIX_SOURCE) || defined(__APPLE__)
 #define USE_POSIX
-#else //POSIX
-#ifdef _WIN32
+#elif defined(_WIN32)
 #define USE_WIN32
 #else //_WIN32
 #error Unknown system
-#endif //_WIN32
 #endif //POSIX
 
 #include <Inventor/errors/SoDebugError.h>
