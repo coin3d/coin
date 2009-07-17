@@ -290,7 +290,7 @@ BOOST_AUTO_TEST_CASE(GlobalField)
   //Store away the state before we mess with the global realTime field
   SoSFTime * realtime = static_cast<SoSFTime *>(SoDB::getGlobalField("realTime"));
   assert(realtime);
-  unsigned int realTimeStorage = realtime->getValue().getValue();
+  SbTime realTimeStorage = realtime->getValue();
 
   static const char inlinescenegraph[] =
     "#Inventor V2.1 ascii\n"

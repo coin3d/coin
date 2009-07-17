@@ -587,7 +587,7 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   //Store away the state before we mess with the global realTime field
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
   assert(realtime);
-  unsigned int realTimeStorage = realtime->getValue().getValue();
+  SbTime realTimeStorage = realtime->getValue();
 
   char scene[] =
     "#Inventor V2.1 ascii\n\n"
