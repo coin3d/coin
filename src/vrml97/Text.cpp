@@ -412,15 +412,23 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
      
     cc_glyph3d * prevglyph = NULL;
 
-    const unsigned int len = this->string[i].getLength();
+    SbBool unicode = TRUE;
+    SbString str = this->string[i];
+    const char * p = str.getString();
+    size_t len = cc_string_utf8_validate_length(p);
+    if (!len) { unicode = FALSE; len = str.getLength(); }
+
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
- 
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+      uint32_t glyphidx = 0;
+
+      if (unicode) {
+	glyphidx = cc_string_utf8_get_char(p);
+	p = cc_string_utf8_next_char(p);
+      } else {
+	glyphidx = (unsigned char)str[strcharidx];
+      }
+
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
@@ -517,15 +525,24 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       
       for (int i = 0;i < lines; ++i) {
         
-        const unsigned int len = this->string[i].getLength();
+	SbBool unicode = TRUE;
+	SbString str = this->string[i];
+	const char * p = str.getString();
+	size_t len = cc_string_utf8_validate_length(p);
+	if (!len) { unicode = FALSE; len = str.getLength(); }
+
         for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
           
-          // Note that the "unsigned char" cast is needed to avoid 8-bit
-          // chars using the highest bit (i.e. characters above the ASCII
-          // set up to 127) be expanded to huge int numbers that turn
-          // negative when casted to integer size.             
-          const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-          cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+          uint32_t glyphidx = 0;
+
+	  if (unicode) {
+	    glyphidx = cc_string_utf8_get_char(p);
+	    p = cc_string_utf8_next_char(p);
+	  } else {
+	    glyphidx = (unsigned char)str[strcharidx];
+	  }
+
+          cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
           
           int cnt = 0;
           const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -873,16 +890,24 @@ SoVRMLText::generatePrimitives(SoAction * action)
     }
     
 
+    SbBool unicode = TRUE;
+    SbString str = this->string[i];
     cc_glyph3d * prevglyph = NULL;
-    const unsigned int len = this->string[i].getLength();
-    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+    const char * p = str.getString();
+    size_t len = cc_string_utf8_validate_length(p);
+    if (!len) { unicode = FALSE; len = str.getLength(); }
 
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+      uint32_t glyphidx = 0;
+
+      if (unicode) {
+	glyphidx = cc_string_utf8_get_char(p);
+	p = cc_string_utf8_next_char(p);
+      } else {
+	glyphidx = (unsigned char)str[strcharidx];
+      }
+
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
@@ -1075,7 +1100,12 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
     
-    const unsigned int len = textnode->string[i].getLength();
+    SbBool unicode = TRUE;
+    SbString str = textnode->string[i];
+    const char * p = str.getString();
+    size_t len = cc_string_utf8_validate_length(p);
+    if (!len) { unicode = FALSE; len = str.getLength(); }
+
     float stringwidth = 0.0f;
     const float * maxbbox;
     float kerningx = 0;
@@ -1086,12 +1116,16 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     this->maxglyphbbox.makeEmpty();
 
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.   
-      const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+      uint32_t glyphidx = 0;
+
+      if (unicode) {
+	glyphidx = cc_string_utf8_get_char(p);
+	p = cc_string_utf8_next_char(p);
+      } else {
+	glyphidx = (unsigned char)str[strcharidx];
+      }
+
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
       assert(glyph);
       this->cache->addGlyph(glyph);
 

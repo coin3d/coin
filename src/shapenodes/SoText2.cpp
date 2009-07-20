@@ -391,11 +391,22 @@ SoText2::GLRender(SoGLRenderAction * action)
         break;
       }
 
-      const unsigned int length = str.getLength();
+      SbBool unicode = TRUE;
+      const char * p = str.getString();
+      size_t length = cc_string_utf8_validate_length(p);
+      if (!length) { unicode = FALSE; length = str.getLength(); }
+
       for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-        
-        const uint32_t glyphidx = (const unsigned char) str[strcharidx];
-        cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
+	uint32_t glyphidx = 0;
+
+	if (unicode) {
+	  glyphidx = cc_string_utf8_get_char(p);
+	  p = cc_string_utf8_next_char(p);
+	} else {
+	  glyphidx = (unsigned char)str[strcharidx];
+	}
+
+        cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f, unicode);
         
         buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
         
@@ -809,7 +820,6 @@ SoText2P::buildGlyphCache(SoState * state)
 
   for (int i=0; i < nrlines; i++) {
     SbString str = PUBLIC(this)->string[i];
-    const unsigned int length = str.getLength();
     this->positions.append(SbList<SbVec2s>());
 
     int actuallength = 0;
@@ -820,15 +830,22 @@ SoText2P::buildGlyphCache(SoState * state)
     int bitmapsize[2];
     int bitmappos[2];
     const cc_glyph2d * prevglyph = NULL;
+    SbBool unicode = TRUE;
+    const char * p = str.getString();
+    unsigned int length = cc_string_utf8_validate_length(p);
+    if (!length) { unicode = FALSE; length = str.getLength(); }
 
     // fetch all glyphs first
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) str[strcharidx];
-      cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
+      uint32_t glyphidx = 0;
+
+      if (unicode) {
+	glyphidx = cc_string_utf8_get_char(p);
+	p = cc_string_utf8_next_char(p);
+      } else {
+	glyphidx = (unsigned char)str[strcharidx];
+      }
+      cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f, unicode);
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
       // empty rectangle should be used.  -mortene.
@@ -859,7 +876,6 @@ SoText2P::buildGlyphCache(SoState * state)
 
       penpos += kerning + SbVec2s(advancex,0);
       prevglyph = glyph;
-
     }
 
     this->stringwidth.append(actuallength);
