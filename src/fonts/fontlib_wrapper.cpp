@@ -518,8 +518,9 @@ cc_flw_unref_font(int fontid)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font_id(const char * fontname, const unsigned int sizey,
-                   const float angle, const float complexity)
+cc_flw_get_font_id(const char * fontname, unsigned int sizey,
+                   float angle, float complexity,
+		   SbBool unicode)
 {
   /* FIXME: complexity (and angle, if we're keeping it) needs to be
      clamped to single-digit precision, to make sure we don't set up
@@ -548,7 +549,7 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizey,
       font = cc_flww32_get_font(fontname, sizey, angle, complexity);
     }
     else if (using_freetype()) {
-      font = cc_flwft_get_font(fontname, sizey);
+     font = cc_flwft_get_font(fontname, sizey, unicode);
     }
   }
 
