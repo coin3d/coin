@@ -540,3 +540,110 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
 } /* cc_string_vsprintf() */
 
 /* ********************************************************************** */
+
+size_t
+cc_string_utf8_decode(const char * src, size_t srclen, uint32_t * value)
+{
+  const unsigned char * s = reinterpret_cast<const unsigned char *>(src);
+
+  if ((s[0] & 0x80) == 0x00) {                    // Check s[0] == 0xxxxxxx
+    *value = s[0];
+    return 1;
+  }
+  if ((srclen < 2) || ((s[1] & 0xC0) != 0x80)) {  // Check s[1] != 10xxxxxx
+    return 0;
+  }
+  // Accumulate the trailer byte values in value16, and combine it with the
+  // relevant bits from s[0], once we've determined the sequence length.
+  uint32_t value16 = (s[1] & 0x3F);
+  if ((s[0] & 0xE0) == 0xC0) {                    // Check s[0] == 110xxxxx
+    *value = ((s[0] & 0x1F) << 6) | value16;
+    return 2;
+  }
+  if ((srclen < 3) || ((s[2] & 0xC0) != 0x80)) {  // Check s[2] != 10xxxxxx
+    return 0;
+  }
+  value16 = (value16 << 6) | (s[2] & 0x3F);
+  if ((s[0] & 0xF0) == 0xE0) {                    // Check s[0] == 1110xxxx
+    *value = ((s[0] & 0x0F) << 12) | value16;
+    return 3;
+  }
+  if ((srclen < 4) || ((s[3] & 0xC0) != 0x80)) {  // Check s[3] != 10xxxxxx
+    return 0;
+  }
+  value16 = (value16 << 6) | (s[3] & 0x3F);
+  if ((s[0] & 0xF8) == 0xF0) {                    // Check s[0] == 11110xxx
+    *value = ((s[0] & 0x07) << 18) | value16;
+    return 4;
+  }
+  return 0;
+}
+
+size_t
+cc_string_utf8_encode(char * buffer, size_t buflen, uint32_t value)
+{
+  if ((value <= 0x7F) && (buflen >= 1)) {
+    buffer[0] = static_cast<unsigned char>(value);
+    return 1;
+  }
+  if ((value <= 0x7FF) && (buflen >= 2)) {
+    buffer[0] = 0xC0 | static_cast<unsigned char>(value >> 6);
+    buffer[1] = 0x80 | static_cast<unsigned char>(value & 0x3F);
+    return 2;
+  }
+  if ((value <= 0xFFFF) && (buflen >= 3)) {
+    buffer[0] = 0xE0 | static_cast<unsigned char>(value >> 12);
+    buffer[1] = 0x80 | static_cast<unsigned char>((value >> 6) & 0x3F);
+    buffer[2] = 0x80 | static_cast<unsigned char>(value & 0x3F);
+    return 3;
+  }
+  if ((value <= 0x1FFFFF) && (buflen >= 4)) {
+    buffer[0] = 0xF0 | static_cast<unsigned char>(value >> 18);
+    buffer[1] = 0x80 | static_cast<unsigned char>((value >> 12) & 0x3F);
+    buffer[2] = 0x80 | static_cast<unsigned char>((value >> 6) & 0x3F);
+    buffer[3] = 0x80 | static_cast<unsigned char>(value & 0x3F);
+    return 4;
+  }
+  return 0;
+}
+
+uint32_t
+cc_string_utf8_get_char(const char * str)
+{
+  uint32_t value;
+  size_t declen = cc_string_utf8_decode(str, strlen(str), &value);
+  assert(declen);
+  return value;
+}
+
+const char *
+cc_string_utf8_next_char(const char * str)
+{
+  uint32_t value;
+  size_t declen = cc_string_utf8_decode(str, strlen(str), &value);
+  assert(declen);
+  return str+declen;
+}
+
+size_t
+cc_string_utf8_validate_length(const char * str)
+{
+  const char * s = str;
+  size_t declen = 0;
+  size_t srclen = strlen(str);
+  size_t utf8len = 0;
+  uint32_t value;
+
+  while (srclen) {
+    if (!(declen = cc_string_utf8_decode(s, srclen, &value))) {
+      return 0;
+    }
+    srclen -= declen;
+    s += declen;
+    ++utf8len;
+  }
+
+  return utf8len;
+}
+
+/* ********************************************************************** */
