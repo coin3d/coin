@@ -85,6 +85,12 @@ COIN_DLL_API void cc_string_apply(cc_string * str, cc_apply_f function);
 COIN_DLL_API void cc_string_sprintf(cc_string * str, const char * formatstr, ...);
 COIN_DLL_API void cc_string_vsprintf(cc_string * str, const char * formatstr, va_list args);
 
+COIN_DLL_API size_t cc_string_utf8_decode(const char * src, size_t srclen, uint32_t * value);
+COIN_DLL_API size_t cc_string_utf8_encode(char * buffer, size_t buflen, uint32_t value);
+COIN_DLL_API uint32_t cc_string_utf8_get_char(const char * str);
+COIN_DLL_API const char * cc_string_utf8_next_char(const char * str);
+COIN_DLL_API size_t cc_string_utf8_validate_length(const char * str);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus
