@@ -113,7 +113,8 @@ cc_glyph2d_initialize()
 }
 
 cc_glyph2d * 
-cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float angle)
+cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, 
+	       float angle, SbBool unicode)
 {
   void * val;
   cc_glyph2d * glyph;
@@ -192,7 +193,8 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
                           properly -- the worst offender against any
                           good design taste is the code in
                           win32.c. 20050706 mortene.*/
-                       -1.0f);
+                       -1.0f,
+		       unicode);
 
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);

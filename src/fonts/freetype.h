@@ -49,7 +49,7 @@ extern "C" {
   SbBool cc_flwft_initialize(void);
   void cc_flwft_exit(void);
 
-  void * cc_flwft_get_font(const char * fontname, const unsigned int pixelsize);
+  void * cc_flwft_get_font(const char * fontname, unsigned int pixelsize, SbBool unicode);
   void cc_flwft_get_font_name(void * font, cc_string * str);
   void cc_flwft_done_font(void * font);
 

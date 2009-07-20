@@ -56,7 +56,8 @@ public:
   static const SoGlyph * getGlyph(SoState * state,
                                   const unsigned int character, 
                                   const SbVec2s & size,
-                                  const float angle);
+                                  const float angle,
+				  SbBool unicode);
   SbVec2s getAdvance(void) const;
   SbVec2s getKerning(const SoGlyph & rightglyph) const;
   unsigned char * getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const;

@@ -127,7 +127,7 @@ cc_glyph3d_initialize()
 }
 
 cc_glyph3d *
-cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
+cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec, SbBool unicode)
 {
   cc_glyph3d * glyph;
   int glyphidx;
@@ -192,7 +192,8 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), 
                                glyph3d_standardfontsize,
                                0.0f,
-                               newspec->complexity);
+                               newspec->complexity,
+			       unicode);
 
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
