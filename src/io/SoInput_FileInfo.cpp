@@ -391,6 +391,9 @@ SoInput_FileInfo::readHeaderInternal(SoInput * soinput)
   if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
                            this->prefunc, this->postfunc, this->userdata,
                            TRUE)) {
+    SbString putback = this->header;
+    putback += c;
+    this->putBack(putback.getString()); // put back invalid header
     this->ivversion = 0.0f;
   }
   else {
