@@ -366,6 +366,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     SbVec3f currnormal = normals ? normals[0] : SbVec3f(0, 0, 1);
     for (int i = 0; i < numindices; i++) {
       int32_t idx = cindices[i];
+      if (idx < 0) continue;
 
       if (mbind == PER_VERTEX_INDEXED) mb.send(mindices[i], TRUE);
       else if (mbind == PER_VERTEX) mb.send(i, TRUE);
@@ -518,6 +519,7 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
   SbVec3f currnormal = normals ? normals[0] : SbVec3f(0, 0, 1);
   for (int i = 0; i < numindices; i++) {
     int32_t idx = cindices[i];
+    if (idx < 0) continue;
 
     if (mbind == PER_VERTEX_INDEXED){
       pointDetail.setMaterialIndex(mindices[i]);
