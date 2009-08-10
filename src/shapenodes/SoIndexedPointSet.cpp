@@ -448,7 +448,7 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
     this->vertexProperty.getValue()->doAction(action);
   }
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
 
   /*
     FIXME: the following code is almost identical to that in glRender. 
@@ -547,7 +547,6 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
         vertex.setTextureCoords(tb.get(tindex));
       }
     }
-
     pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx));
     this->shapeVertex(&vertex);
