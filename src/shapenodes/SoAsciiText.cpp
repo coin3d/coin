@@ -530,7 +530,7 @@ void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specificati
   float originalxpos = 0.0f;
   float maxglyphwidth = 0.0f;
   float maxx = 0.0f;
-  int strcharidx;
+  unsigned int strcharidx;
 
   // Find last character in the stretched text
   SbBool unicode = TRUE;
