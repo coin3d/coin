@@ -365,45 +365,45 @@ static char cc_flww32_chartolower(char c)
 }
 
 /*
-  Simply passes the parameters to the GDI function CreateFont() and returns the result
+  Simply passes the parameters to the GDI function CreateFontW() and returns the result
 */
 static HFONT cc_flww32_create_font(const char* fontname, int sizey,
                                    float angle, BOOL bold, BOOL italic)
 {
   HFONT font;
-  font = CreateFont(-sizey,
-                    /* Using a negative 'sizey'. Otherwise
-                       leads to less details as it seems like
-                       the Win32 systems tries to 'quantize'
-                       the glyph to match the pixels of the
-                       choosen resolution. */
-                    0, /* let Win32 choose to get correct aspect ratio */
-                    (int) (10 * (angle * 180) / M_PI) , /* escapement */
-                    (int) (10 * (angle * 180) / M_PI) , /* orientation */
-                    bold ? FW_BOLD : FW_DONTCARE, /* weight */
-                    italic, FALSE, FALSE, /* italic, underline, strikeout */
-                    /* FIXME: using DEFAULT_CHARSET is probably not
-                       what we should do, AFAICT from a quick
-                       read-over of the CreateFont() API
-                       doc. 20030530 mortene. */
-                     DEFAULT_CHARSET,
-                     /* FIXME: to also make it possible to use
-                        Window's raster fonts, this should rather be
-                        OUT_DEFAULT_PRECIS. Then when
-                        GetGlyphOutline() fails on a font, we should
-                        grab it's bitmap by using TextOut() and
-                        GetDIBits(). 20030610 mortene.
-                     */
-                     OUT_TT_ONLY_PRECIS, /* output precision */
-                     CLIP_DEFAULT_PRECIS, /* clipping precision */
-                     PROOF_QUALITY, /* output quality */
-                     DEFAULT_PITCH, /* pitch and family */
-                     fontname); /* typeface name */
+  font = CreateFontW(-sizey,
+                     /* Using a negative 'sizey'. Otherwise
+                        leads to less details as it seems like
+                        the Win32 systems tries to 'quantize'
+                        the glyph to match the pixels of the
+                        choosen resolution. */
+                     0, /* let Win32 choose to get correct aspect ratio */
+                     (int) (10 * (angle * 180) / M_PI) , /* escapement */
+                     (int) (10 * (angle * 180) / M_PI) , /* orientation */
+                     bold ? FW_BOLD : FW_DONTCARE, /* weight */
+                     italic, FALSE, FALSE, /* italic, underline, strikeout */
+                     /* FIXME: using DEFAULT_CHARSET is probably not
+                        what we should do, AFAICT from a quick
+                        read-over of the CreateFontW() API
+                        doc. 20030530 mortene. */
+                      DEFAULT_CHARSET,
+                      /* FIXME: to also make it possible to use
+                         Window's raster fonts, this should rather be
+                         OUT_DEFAULT_PRECIS. Then when
+                         GetGlyphOutlineW() fails on a font, we should
+                         grab it's bitmap by using TextOutW() and
+                         GetDIBits(). 20030610 mortene.
+                      */
+                      OUT_TT_ONLY_PRECIS, /* output precision */
+                      CLIP_DEFAULT_PRECIS, /* clipping precision */
+                      PROOF_QUALITY, /* output quality */
+                      DEFAULT_PITCH, /* pitch and family */
+                      reinterpret_cast<LPCWSTR>(fontname)); /* typeface name */
 
   if (!font) {
     DWORD lasterr = GetLastError();
     cc_string * str = cc_string_construct_new();
-    cc_string_sprintf(str, "CreateFont(%d, ..., '%s')", sizey, fontname);
+    cc_string_sprintf(str, "CreateFontW(%d, ..., '%s')", sizey, fontname);
     cc_win32_print_error("cc_flww32_get_font", cc_string_get_text(str), lasterr);
     cc_string_destruct(str);
     return NULL;
@@ -598,23 +598,23 @@ cc_flww32_get_font_name(void * font, cc_string * str)
     return;
   }
 
-  size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
-  /* 'size' will never be 0. Then GetTextFace would have asserted. */
+  size = cc_win32()->GetTextFaceW(cc_flww32_globals.devctx, 0, NULL);
+  /* 'size' will never be 0. Then GetTextFaceW would have asserted. */
   s = (char *)malloc(size);
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
 
-  newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
+  newsize = cc_win32()->GetTextFaceW(cc_flww32_globals.devctx, size, reinterpret_cast<LPTSTR>(s));
   cc_string_set_text(str, s);
 
   /* FIXME: this should be handled better. See FIXME about making an
-     additional wrapper around GetTextFace() to catch string cropping,
+     additional wrapper around GetTextFaceW() to catch string cropping,
      in win32api.c's coin_GetTextFace(). 20031114 mortene. */
   if (newsize == size) {
     /* The returned fontname length is longer than expected. This
        means that the system has cropped the string. Requested font
        will most probably not be found. */
     SoDebugError::postWarning("cc_flww32_get_font_name",
-                              "GetTextFace(). The length of the returned fontname is"
+                              "GetTextFaceW(). The length of the returned fontname is"
                               " >= expected size. Fontname has been cropped.");
   }
 
@@ -684,23 +684,22 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
     return;
   }
 
-  /* The GetGlyphOutline function retrieves the outline or bitmap for
+  /* The GetGlyphOutlineW function retrieves the outline or bitmap for
      a character in the TrueType font that is selected into the
      specified device context. */
-  ret = GetGlyphOutline(cc_flww32_globals.devctx,
-                        glyph, /* character to query */
-                        GGO_METRICS, /* format of data to return */
-                        &gm, /* metrics */
-                        0, /* size of buffer for data */
-                        NULL, /* buffer for data */
-                        &identitymatrix /* transformation matrix */
-                        );
+  ret = GetGlyphOutlineW(cc_flww32_globals.devctx,
+                         glyph, /* character to query */
+                         GGO_METRICS, /* format of data to return */
+                         &gm, /* metrics */
+                         0, /* size of buffer for data */
+                         NULL, /* buffer for data */
+                         &identitymatrix); /* transformation matrix */
 
   if (ret == GDI_ERROR) {
     cc_string str;
     cc_string_construct(&str);
     cc_string_sprintf(&str,
-                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_METRICS, "
+                      "GetGlyphOutlineW(HDC=%p, 0x%x '%c', GGO_METRICS, "
                       "<metricsstruct>, 0, NULL, <idmatrix>)",
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
     cc_win32_print_error("cc_flww32_get_vector_advance", cc_string_get_text(&str), GetLastError());
@@ -807,26 +806,25 @@ cc_flww32_get_bitmap(void * font, int glyph)
     return NULL;
   }
 
-  /* The GetGlyphOutline function retrieves the outline or bitmap for
+  /* The GetGlyphOutlineW function retrieves the outline or bitmap for
      a character in the TrueType font that is selected into the
      specified device context. */
 
-  ret = GetGlyphOutline(cc_flww32_globals.devctx,
-                        glyph, /* character to query */
-                        GGO_GRAY8_BITMAP, /* format of data to return */
-                        &gm, /* metrics */
-                        0, /* size of buffer for data */
-                        NULL, /* buffer for data */
-                        &identitymatrix /* transformation matrix */
-                        );
+  ret = GetGlyphOutlineW(cc_flww32_globals.devctx,
+                         glyph, /* character to query */
+                         GGO_GRAY8_BITMAP, /* format of data to return */
+                         &gm, /* metrics */
+                         0, /* size of buffer for data */
+                         NULL, /* buffer for data */
+                         &identitymatrix); /* transformation matrix */
 
-  /* As of now, GetGlyphOutline() should have no known reason to
+  /* As of now, GetGlyphOutlineW() should have no known reason to
      fail.
 
      FIXME: We should eventually allow non-TT fonts to be loaded
      aswell, by changing the "precision" setting in the call to
-     CreateFont() to also allow raster fonts (see FIXME comment where
-     CreateFont() is called). Then, when GetGlyphOutline() fails, use
+     CreateFontW() to also allow raster fonts (see FIXME comment where
+     CreateFontW() is called). Then, when GetGlyphOutlineW() fails, use
      TextOut() and GetDIBits() to grab a font glyph's bitmap.
      20030610 mortene.
   */
@@ -834,7 +832,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
     cc_string str;
     cc_string_construct(&str);
     cc_string_sprintf(&str,
-                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_GRAY8_BITMAP, "
+                      "GetGlyphOutlineW(HDC=%p, 0x%x '%c', GGO_GRAY8_BITMAP, "
                       "<metricsstruct>, 0, NULL, <idmatrix>)",
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
     cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
@@ -851,20 +849,19 @@ cc_flww32_get_bitmap(void * font, int glyph)
     w32bitmap = (uint8_t *)malloc(ret);
     assert(w32bitmap != NULL); /* FIXME: be robust. 20030530 mortene. */
 
-    ret = GetGlyphOutline(cc_flww32_globals.devctx,
-                          glyph, /* character to query */
-                          GGO_GRAY8_BITMAP, /* format of data to return */
-                          &gm, /* metrics */
-                          size, /* size of buffer for data */
-                          w32bitmap, /* buffer for data */
-                          &identitymatrix /* transformation matrix */
-                          );
+    ret = GetGlyphOutlineW(cc_flww32_globals.devctx,
+                           glyph, /* character to query */
+                           GGO_GRAY8_BITMAP, /* format of data to return */
+                           &gm, /* metrics */
+                           size, /* size of buffer for data */
+                           w32bitmap, /* buffer for data */
+                           &identitymatrix); /* transformation matrix */
 
     if (ret == GDI_ERROR) {
       cc_string str;
       cc_string_construct(&str);
       cc_string_sprintf(&str,
-                        "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_GRAY8_BITMAP, "
+                        "GetGlyphOutlineW(HDC=%p, 0x%x '%c', GGO_GRAY8_BITMAP, "
                         "<metricsstruct>, %d, <buffer>, <idmatrix>)",
                         cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
       cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
@@ -1000,7 +997,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   HDC memdc;
   HBITMAP membmp;
   HDC screendc;
-  TCHAR string[1];
+  WCHAR glyph_str[1];
   struct cc_font_vector_glyph * new_vector_glyph;
   void * tmp;
   unsigned int size;
@@ -1089,9 +1086,9 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling BeginPath(). Cannot vectorize font.", GetLastError());
     return NULL;
   }
-  string[0] = glyph;
-  if (TextOut(memdc, 0, 0, string, 1) == 0) {
-    cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling TextOut(). Cannot vectorize font.", GetLastError());
+  glyph_str[0] = glyph;
+  if (TextOutW(memdc, 0, 0, glyph_str, 1) == 0) {
+    cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling TextOutW(). Cannot vectorize font.", GetLastError());
     return NULL;
   }
   if (EndPath(memdc) == 0) {
