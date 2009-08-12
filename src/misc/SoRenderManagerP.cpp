@@ -160,11 +160,10 @@ SoRenderManagerP::setClippingPlanes(void)
   // avoid continuous redraws on static scenes. Use an epsilon value
   // when comparing
 
-  // use > instead of >= to avoid continous redraws when nearval == 0 (wiesener 20090811)
-  if (SbAbs(oldnear - newnear) > neareps) {
+  if (SbAbs(oldnear - newnear) > SbAbs(neareps)) {
     camera->nearDistance = newnear;
   }
-  if (SbAbs(oldfar - newfar) >= fareps) {
+  if (SbAbs(oldfar - newfar) > SbAbs(fareps)) {
     camera->farDistance = newfar;
   }
 }
