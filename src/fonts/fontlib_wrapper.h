@@ -58,8 +58,7 @@ extern "C" {
   void cc_flw_unref_font(int fontid);
 
   int cc_flw_get_font_id(const char * fontname, unsigned int sizey,
-                         float angle, float complexity,
-			 SbBool unicode);
+                         float angle, float complexity);
 
   unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
   void cc_flw_done_glyph(int font, unsigned int glyphidx);

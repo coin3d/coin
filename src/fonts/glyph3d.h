@@ -39,8 +39,7 @@ extern "C" {
   typedef struct cc_glyph3d cc_glyph3d;
 
   cc_glyph3d * cc_glyph3d_ref(uint32_t character,
-                              const cc_font_specification * spec,
-			      SbBool unicode);
+                              const cc_font_specification * spec);
   void cc_glyph3d_unref(cc_glyph3d * glyph);
 
   const float * cc_glyph3d_getcoords(const cc_glyph3d * g);

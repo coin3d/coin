@@ -412,23 +412,18 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
      
     cc_glyph3d * prevglyph = NULL;
 
-    SbBool unicode = TRUE;
     SbString str = this->string[i];
     const char * p = str.getString();
     size_t len = cc_string_utf8_validate_length(p);
-    if (!len) { unicode = FALSE; len = str.getLength(); }
+    assert(len);
 
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
       uint32_t glyphidx = 0;
 
-      if (unicode) {
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
-      } else {
-	glyphidx = (unsigned char)str[strcharidx];
-      }
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
 
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
@@ -524,25 +519,18 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       int numtris = 0;      
       
       for (int i = 0;i < lines; ++i) {
-        
-	SbBool unicode = TRUE;
 	SbString str = this->string[i];
 	const char * p = str.getString();
 	size_t len = cc_string_utf8_validate_length(p);
-	if (!len) { unicode = FALSE; len = str.getLength(); }
+	assert(len);
 
         for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
-          
-          uint32_t glyphidx = 0;
+	  uint32_t glyphidx = 0;
 
-	  if (unicode) {
-	    glyphidx = cc_string_utf8_get_char(p);
-	    p = cc_string_utf8_next_char(p);
-	  } else {
-	    glyphidx = (unsigned char)str[strcharidx];
-	  }
+	  glyphidx = cc_string_utf8_get_char(p);
+	  p = cc_string_utf8_next_char(p);
 
-          cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+          cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
           
           int cnt = 0;
           const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -889,25 +877,19 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
     }
     
-
-    SbBool unicode = TRUE;
     SbString str = this->string[i];
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t len = cc_string_utf8_validate_length(p);
-    if (!len) { unicode = FALSE; len = str.getLength(); }
+    assert(len);
 
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
       uint32_t glyphidx = 0;
 
-      if (unicode) {
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
-      } else {
-	glyphidx = (unsigned char)str[strcharidx];
-      }
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
 
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
@@ -1099,12 +1081,10 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   this->glyphwidths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
-    
-    SbBool unicode = TRUE;
     SbString str = textnode->string[i];
     const char * p = str.getString();
     size_t len = cc_string_utf8_validate_length(p);
-    if (!len) { unicode = FALSE; len = str.getLength(); }
+    assert(len);
 
     float stringwidth = 0.0f;
     const float * maxbbox;
@@ -1118,14 +1098,10 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
       uint32_t glyphidx = 0;
 
-      if (unicode) {
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
-      } else {
-	glyphidx = (unsigned char)str[strcharidx];
-      }
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
 
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       assert(glyph);
       this->cache->addGlyph(glyph);
 

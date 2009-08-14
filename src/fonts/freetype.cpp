@@ -623,8 +623,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
 }
 
 void *
-cc_flwft_get_font(const char * fontname, unsigned int pixelsize,
-		  SbBool unicode)
+cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
 {
   FT_Face face;
   const char * fontfilename = find_font_file(fontname, pixelsize);
@@ -650,8 +649,7 @@ cc_flwft_get_font(const char * fontname, unsigned int pixelsize,
                            face->family_name, face->style_name);
   }
 
-  cc_flwft_set_charmap(face, 
-		       unicode ? FT_ENCODING_UNICODE : FT_ENCODING_ADOBE_LATIN_1);
+  cc_flwft_set_charmap(face, FT_ENCODING_UNICODE);
   return face;
 }
 

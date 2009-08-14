@@ -368,25 +368,19 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       break;
     }
 
-    SbBool unicode = TRUE;
     SbString str = this->string[i];
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    if (!length) { unicode = FALSE; length = str.getLength(); }
     assert(length);
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
 
-      if (unicode) {
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
-      } else {
-	glyphidx = (const unsigned char)str[strcharidx];
-      }
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
 
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       // Get kerning
       if (strcharidx > 0) {
@@ -464,24 +458,18 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
     int numtris = 0;      
     for (int i = 0;i < lines; ++i) {
 
-      SbBool unicode = TRUE;
       SbString str = this->string[i];
       const char * p = str.getString();
       size_t length = cc_string_utf8_validate_length(p);
-      if (!length) { unicode = FALSE; length = str.getLength(); }
       assert(length);
 
       for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 	uint32_t glyphidx = 0;
 
-	if (unicode) {
-	  glyphidx = cc_string_utf8_get_char(p);
-	  p = cc_string_utf8_next_char(p);
-	} else {
-	  glyphidx = (unsigned char)str[strcharidx];
-	}
+	glyphidx = cc_string_utf8_get_char(p);
+	p = cc_string_utf8_next_char(p);
 
-        cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+        cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -533,24 +521,18 @@ void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specificati
   unsigned int strcharidx;
 
   // Find last character in the stretched text
-  SbBool unicode = TRUE;
   SbString str = master->string[i];
   const char * p = str.getString();
   size_t length = cc_string_utf8_validate_length(p);
-  if (!length) { unicode = FALSE; length = str.getLength(); }
   assert(length);
 
   for (strcharidx = 0; strcharidx < length; strcharidx++) {
     uint32_t glyphidx = 0;
 
-    if (unicode) {
-      glyphidx = cc_string_utf8_get_char(p);
-      p = cc_string_utf8_next_char(p);
-    } else {
-      glyphidx = (unsigned char)str[strcharidx];
-    }
+    glyphidx = cc_string_utf8_get_char(p);
+    p = cc_string_utf8_next_char(p);
 
-    cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+    cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
     float glyphwidth = cc_glyph3d_getwidth(glyph) * fontspec->size;
 
     // Adjust the distance between neighbouring characters
@@ -724,27 +706,20 @@ SoAsciiText::generatePrimitives(SoAction * action)
       xpos = - currwidth * 0.5f;
       break;
     }
-
     
-    SbBool unicode = TRUE;
     SbString str = this->string[i];
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    if (!length) { unicode = FALSE; length = str.getLength(); }
     assert(length);
       
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {      
       uint32_t glyphidx = 0;
 
-      if (unicode) {
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
-      } else {
-	glyphidx = (unsigned char)str[strcharidx];
-      }
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
 
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec, unicode);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       
       // Get kerning
       if (strcharidx > 0) {
@@ -871,25 +846,19 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
     float stringwidth = 0.0f;
-    SbBool unicode = TRUE;
     SbString str = textnode->string[i];
     const float * maxbbox;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    if (!length) { unicode = FALSE; length = str.getLength(); }
     assert(length);
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
 
-      if (unicode) {
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
-      } else {
-	glyphidx = (unsigned char)str[strcharidx];
-      }
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
 
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspecptr, unicode);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspecptr);
       this->cache->addGlyph(glyph);
       assert(glyph);
 
