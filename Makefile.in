@@ -2920,8 +2920,6 @@ doxygen-docs: built-sources
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/include" && rm -f $(MAC_FRAMEWORK_NAME) && ln -s ../../Headers $(MAC_FRAMEWORK_NAME) && cd -;
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@  # Link to SoQt.framework to allow <Inventor/Qt/xxx.h> includes. 
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers" && rm -f Qt && ln -s ../../../../SoQt.framework/Headers Qt && cd -;
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@  # Link to SIMVoleon.framework to allow <VolumeViz/xxx.h> includes. 
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers" && rm -f VolumeViz && ln -s ../../../../SIMVoleon.framework/Headers VolumeViz && cd -;
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-data-local:
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
