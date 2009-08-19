@@ -66,6 +66,7 @@ SoShininessElement::~SoShininessElement()
 void
 SoShininessElement::init(SoState * stateptr)
 {
+  inherited::init(state);
   this->state = stateptr;
 }
 

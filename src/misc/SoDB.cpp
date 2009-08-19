@@ -1673,10 +1673,6 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 #include <Inventor/nodes/SoRotationXYZ.h>
 #include <boost/detail/workaround.hpp>
 
-#if defined(_MSC_VER)
-BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(globalRealTimeField,1);
-#endif
-
 BOOST_AUTO_TEST_CASE(globalRealTimeField)
 {
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");

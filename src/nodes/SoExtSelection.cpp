@@ -1076,11 +1076,18 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   if (action->isHandled()) { return; }
 
   // An option for the end-user to abort a selection.
-  if (SO_KEY_PRESS_EVENT(e, END)) {
-    if (PRIVATE(this)->runningselection.mode != SoExtSelectionP::SelectionState::NONE) {
-      PRIVATE(this)->runningselection.reset();
-      this->touch();
-      return;
+  if (e->getTypeId() == SoKeyboardEvent::getClassTypeId()) {
+    SoKeyboardEvent * k = (SoKeyboardEvent *)e;
+    // note: will match on either up or down presses, or even not any
+    // up/down state set. this is what we want, to be robust against
+    // e.g. someone setting up their own SoKeyboardEvent and manually
+    // sending it into the scene graph.  -mortene.
+    if (k->getKey() == SoKeyboardEvent::END) {
+      if (PRIVATE(this)->runningselection.mode != SoExtSelectionP::SelectionState::NONE) {
+        PRIVATE(this)->runningselection.reset();
+        this->touch();
+        return;
+      }
     }
   }
 

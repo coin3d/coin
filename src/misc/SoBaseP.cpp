@@ -584,7 +584,10 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   // SoDB::init() already called by test-suite init, and the realTime
   // global field will be set up there
 
+  //Store away the state before we mess with the global realTime field
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
+  assert(realtime);
+  SbTime realTimeStorage = realtime->getValue();
 
   char scene[] =
     "#Inventor V2.1 ascii\n\n"
@@ -611,6 +614,10 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   // clean up
   g->ref();
   g->unref();
+
+  //Restore state
+  realtime->setValue(realTimeStorage);
+
 }
 
 #endif // COIN_TEST_SUITE

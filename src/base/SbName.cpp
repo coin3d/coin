@@ -341,20 +341,17 @@ SbName::operator const char * (void) const
 /* anonymous namespace for management of the empty SbName instance */
 namespace {
 
-  static SbName * emptyname = NULL;
+  SbName * emptyname = NULL;
 
-  extern "C" {
-
-    static void SbName_atexit(void) {
-      if (emptyname != NULL) {
-        delete emptyname;
-        emptyname = NULL;
-      }
+  void
+  SbName_atexit(void) {
+    if (emptyname != NULL) {
+      delete emptyname;
+      emptyname = NULL;
     }
-
-  } // extern "C"
-
+  }
 }
+
 
 /*!
   Returns an empty-string SbName instance.

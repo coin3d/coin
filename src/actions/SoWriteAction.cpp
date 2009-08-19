@@ -278,6 +278,7 @@ SoWriteAction::shouldCompactPathLists(void) const
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/C/tidbits.h>
@@ -285,6 +286,11 @@ SoWriteAction::shouldCompactPathLists(void) const
 BOOST_AUTO_TEST_CASE(GlobalField)
 {
   SoDB::init();
+
+  //Store away the state before we mess with the global realTime field
+  SoSFTime * realtime = static_cast<SoSFTime *>(SoDB::getGlobalField("realTime"));
+  assert(realtime);
+  SbTime realTimeStorage = realtime->getValue();
 
   static const char inlinescenegraph[] =
     "#Inventor V2.1 ascii\n"
@@ -335,6 +341,10 @@ BOOST_AUTO_TEST_CASE(GlobalField)
   free(buffer);
 
   top->unref();
+
+  //Restore state
+  realtime->setValue(realTimeStorage);
+
 }
 
 #endif // COIN_TEST_SUITE

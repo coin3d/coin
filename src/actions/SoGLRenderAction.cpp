@@ -1080,6 +1080,14 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_NORMALIZE);
 
+    // initialize the depth function to the default Coin/Inventor
+    // value.  SoGLDepthBufferElement doesn't check for this, it just
+    // assumes that the function is initialized to GL_LEQUAL, which is
+    // not correct (the OpenGL specification says the initial value is
+    // GL_LESS, but I've seen drivers that defaults to GL_LEQUAL as
+    // well).
+    glDepthFunc(GL_LEQUAL);
+
     if (PRIVATE(this)->smoothing) {
       glEnable(GL_POINT_SMOOTH);
       glEnable(GL_LINE_SMOOTH);

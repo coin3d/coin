@@ -159,10 +159,11 @@ SoRenderManagerP::setClippingPlanes(void)
   // check that the values have changed before setting the fields to
   // avoid continuous redraws on static scenes. Use an epsilon value
   // when comparing
-  if (SbAbs(oldnear-newnear) >= neareps) {
+
+  if (SbAbs(oldnear - newnear) > SbAbs(neareps)) {
     camera->nearDistance = newnear;
   }
-  if (SbAbs(oldfar-newfar) >= fareps) {
+  if (SbAbs(oldfar - newfar) > SbAbs(fareps)) {
     camera->farDistance = newfar;
   }
 }

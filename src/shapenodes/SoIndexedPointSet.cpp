@@ -366,6 +366,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     SbVec3f currnormal = normals ? normals[0] : SbVec3f(0, 0, 1);
     for (int i = 0; i < numindices; i++) {
       int32_t idx = cindices[i];
+      if (idx < 0) continue;
 
       if (mbind == PER_VERTEX_INDEXED) mb.send(mindices[i], TRUE);
       else if (mbind == PER_VERTEX) mb.send(i, TRUE);
@@ -448,7 +449,7 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
     this->vertexProperty.getValue()->doAction(action);
   }
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
 
   /*
     FIXME: the following code is almost identical to that in glRender. 
@@ -518,6 +519,7 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
   SbVec3f currnormal = normals ? normals[0] : SbVec3f(0, 0, 1);
   for (int i = 0; i < numindices; i++) {
     int32_t idx = cindices[i];
+    if (idx < 0) continue;
 
     if (mbind == PER_VERTEX_INDEXED){
       pointDetail.setMaterialIndex(mindices[i]);
@@ -547,7 +549,6 @@ SoIndexedPointSet::generatePrimitives(SoAction *action)
         vertex.setTextureCoords(tb.get(tindex));
       }
     }
-
     pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx));
     this->shapeVertex(&vertex);

@@ -63,6 +63,7 @@ SoTransparencyElement::~SoTransparencyElement()
 void
 SoTransparencyElement::init(SoState * stateptr)
 {
+  inherited::init(state);
   this->state = stateptr;
 }
 

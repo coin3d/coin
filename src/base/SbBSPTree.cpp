@@ -196,8 +196,8 @@ void
 coin_bspnode::updateIndex(const SbVec3f & pt, int previdx, int newidx)
 {
   if (this->left) {
-    if (this->leftOf(pt)) return this->left->updateIndex(pt, previdx, newidx);
-    else return this->right->updateIndex(pt, previdx, newidx);
+    if (this->leftOf(pt)) this->left->updateIndex(pt, previdx, newidx);
+    else this->right->updateIndex(pt, previdx, newidx);
   }
   else {
     int i, n = this->indices.getLength();
