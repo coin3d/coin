@@ -21,8 +21,6 @@ endif
 
 SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
-include include/boost/Makefile.inc
-
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA= Coin.pc
 
@@ -339,10 +337,7 @@ EXTRA_DIST = \
 	testsuite/TestSuiteMisc.cpp \
 	testsuite/makeextract.sh \
 	testsuite/makemakefile.sh \
-	testsuite/README \
-	include/boost/Makefile.inc \
-	include/boost.README \
-	$(BOOST_HEADER_FILES)
+	testsuite/README
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
@@ -441,6 +436,8 @@ install-data-local:
 	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources/include" && rm -f $(MAC_FRAMEWORK_NAME) && ln -s ../../Headers $(MAC_FRAMEWORK_NAME) && cd -;
   # Link to SoQt.framework to allow <Inventor/Qt/xxx.h> includes. 
 	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers" && rm -f Qt && ln -s ../../../../SoQt.framework/Headers Qt && cd -;
+  # Link to SIMVoleon.framework to allow <VolumeViz/xxx.h> includes. 
+	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers" && rm -f VolumeViz && ln -s ../../../../SIMVoleon.framework/Headers VolumeViz && cd -;
 else
 install-data-local:
 install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
