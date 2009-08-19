@@ -82,7 +82,7 @@ public:
   SbVec3f getCenter(void) const { return SbVec3f(minpt + maxpt) * 0.5f; }
   void getOrigin(int32_t & originX, int32_t & originY, int32_t & originZ) const
     { minpt.getValue(originX, originY, originZ); }
-  void getSize(int32_t & sizeX, int32_t & sizeY, int32_t sizeZ) const
+  void getSize(int32_t & sizeX, int32_t & sizeY, int32_t & sizeZ) const
     { if (isEmpty()) { sizeX = sizeY = sizeZ = 0; }
       else { sizeX = maxpt[0] - minpt[0]; sizeY = maxpt[1] - minpt[1]; sizeZ = maxpt[2] - minpt[2]; } }
 
