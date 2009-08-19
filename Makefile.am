@@ -21,7 +21,7 @@ endif
 
 SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
-include include/boost/Makefile.inc
+include include/Makefile.inc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA= Coin.pc
