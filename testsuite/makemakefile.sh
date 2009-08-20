@@ -118,7 +118,7 @@ OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
 @MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
-@MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -framework Inventor
+@MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -l Coin
 
 TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
 TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
