@@ -123,7 +123,31 @@ SoEventManager::~SoEventManager()
   for (int c = this->getNumSoScXMLStateMachines() - 1; c >= 0; --c) {
     SoScXMLStateMachine * sm = this->getSoScXMLStateMachine(c);
     this->removeSoScXMLStateMachine(sm);
-    delete sm;
+
+    // Originally, the documentation of addSoScXMLStateMachine() said
+    // the following:
+    //
+    //   If [the passed in state machine] is not removed before
+    //   SoSceneManager destruction, the SoSceneManager destructor
+    //   will delete it.
+    //
+    // ...and so we used to do:
+    //
+//     delete sm;
+    //
+    // ...here, but we should *not* do the deletion, as it causes
+    // serious, hard to debug problems on MS Windows when the module
+    // of the caller of addSoScXMLStateMachine() is using a different
+    // CRT (and thereby a different memory allocation heap) than Coin
+    // do.
+    //
+    // This is not an obscure, unlikely thing to happen -- people will
+    // e.g. mix debug and release DLLs and application executables
+    // pretty often, sometimes even by design. So this was dumb, and
+    // has been changed. Older code relying on the SoEventManager
+    // instance to do the deletion will have a small memory leak.
+    //
+    //                                        -mortene
   }
 }
 
@@ -399,8 +423,15 @@ SoEventManager::getSoScXMLStateMachine(int idx) const
 
 /*!
   Adds an SCXML state machine object to the SoEventManager's event pipeline.
-  If it is not removed before SoSceneManager destruction, the SoSceneManager
-  destructor will delete it.
+
+  The calling code is responsible for deleting the passed in state
+  machine after removeSoScXMLStateMachine() has been invoked.
+
+  (Note: this behavior changed between Coin 3.1 and later, as the
+   SoEventManager used to destruct the state machines upon its own
+   destruction. That is however highly unsafe in a Windows environment
+   where the SoScXMLStateMachine instance could have been allocated in
+   a different C run-time than Coin's.)
 */
 void
 SoEventManager::addSoScXMLStateMachine(SoScXMLStateMachine * sm)
