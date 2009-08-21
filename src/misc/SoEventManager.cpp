@@ -135,17 +135,10 @@ SoEventManager::~SoEventManager()
     //
 //     delete sm;
     //
-    // ...here, but we should *not* do the deletion, as it causes
-    // serious, hard to debug problems on MS Windows when the module
-    // of the caller of addSoScXMLStateMachine() is using a different
-    // CRT (and thereby a different memory allocation heap) than Coin
-    // do.
-    //
-    // This is not an obscure, unlikely thing to happen -- people will
-    // e.g. mix debug and release DLLs and application executables
-    // pretty often, sometimes even by design. So this was dumb, and
-    // has been changed. Older code relying on the SoEventManager
-    // instance to do the deletion will have a small memory leak.
+    // ...here.  We decided to change this behaviour and give all the
+    // responsibility of freeing the set state machine to the module that
+    // set it.  Older code relying on the SoEventManager instance to be
+    // automatically deleted will have a small memory leak.
     //
     //                                        -mortene
   }
@@ -429,9 +422,7 @@ SoEventManager::getSoScXMLStateMachine(int idx) const
 
   (Note: this behavior changed between Coin 3.1 and later, as the
    SoEventManager used to destruct the state machines upon its own
-   destruction. That is however highly unsafe in a Windows environment
-   where the SoScXMLStateMachine instance could have been allocated in
-   a different C run-time than Coin's.)
+   destruction.)
 */
 void
 SoEventManager::addSoScXMLStateMachine(SoScXMLStateMachine * sm)
