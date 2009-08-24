@@ -28,6 +28,7 @@
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
+#if defined(HAVE_VRML97) && defined(COIN_HAVE_JAVASCRIPT)
 /* ********************************************************************** */
 
 class SoJavaScriptEngine;
@@ -37,5 +38,6 @@ class SoJavaScriptEngine;
 void JS_addVRMLclasses(SoJavaScriptEngine * engine);
 
 /* ********************************************************************** */
+#endif // HAVE_VRML97 && COIN_HAVE_JAVASCRIPT
 
 #endif /* !COIN_JS_VRMLCLASSES_H */
