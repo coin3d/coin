@@ -273,23 +273,23 @@ simage_wrapper(void)
 
 #ifdef COIN_SYSTEM_LIBRARY_NAME
 	  {
-        /* check for 'd' suffix usage in coinX.dll coinXd.dll */
-        const char * suffix = strstr(COIN_SYSTEM_LIBRARY_NAME, "d.");
-        if (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME)) {
-          simage_dll_name = "simage1d";
-        }
+	    /* check for 'd' suffix usage in coinX.dll coinXd.dll */
+	    const char * suffix = strstr(COIN_SYSTEM_LIBRARY_NAME, "d.");
+	    if (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME)) {
+	      simage_dll_name = "simage1d";
+	    }
 	  }
 #endif
 
       /* FIXME: should we get the system shared library name from an
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
-        NULL, /* is set below */ 
+        NULL, /* is set below */
         "simage", "libsimage", "libsimage.so",
-		/* Mach dynamic library name */
+	/* Mach dynamic library name */
         "libsimage.dylib",
         /* MSWindows DLL names for the simage library */
-		simage_dll_name,
+	simage_dll_name,
         NULL
       };
 
