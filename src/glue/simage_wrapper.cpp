@@ -269,20 +269,27 @@ simage_wrapper(void)
 #ifdef SIMAGE_RUNTIME_LINKING
     {
       int idx;
+	  char * simage_dll_name = "simage1";
+
+#ifdef COIN_SYSTEM_LIBRARY_NAME
+	  {
+        /* check for 'd' suffix usage in coinX.dll coinXd.dll */
+        const char * suffix = strstr(COIN_SYSTEM_LIBRARY_NAME, "d.");
+        if (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME)) {
+          simage_dll_name = "simage1d";
+        }
+	  }
+#endif
+
       /* FIXME: should we get the system shared library name from an
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         NULL, /* is set below */ 
         "simage", "libsimage", "libsimage.so",
+		/* Mach dynamic library name */
         "libsimage.dylib",
         /* MSWindows DLL names for the simage library */
-        /* FIXME: a bit of a hack this, but it looks difficult to find
-           a better strategy. Perhaps it'd be a good idea to use an
-           application programmer controlled environment variable?
-           20010626 mortene. */
-        "simage6", "simage5", "simage4", "simage3", "simage2", "simage1",
-        /* FIXME: not checking for simageXd.dll names (ie debug
-           versions of the library). 20010926 mortene. */
+		simage_dll_name,
         NULL
       };
 
