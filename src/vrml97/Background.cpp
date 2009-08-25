@@ -165,6 +165,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SbImage.h>
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -179,6 +180,7 @@
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/lists/SbStringList.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoLightModel.h>
@@ -332,11 +334,12 @@ public:
   SoSeparator * leftface;
   SoSeparator * rightface;
 
+  SbStringList directoryList; // used for searching for textures
   SbBool geometrybuilt;
 
   void buildGeometry(void);
   void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, const int32_t * vindices);
-  SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, const int32_t * vindices);
+  SoSeparator * createCubeFace(const SoMFString & urls, SoSeparator * sep, const int32_t * vindices);
   void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength);
 
 };
@@ -460,6 +463,9 @@ SoVRMLBackground::SoVRMLBackground(void)
 */
 SoVRMLBackground::~SoVRMLBackground()
 {
+  for (int i = 0; i < PRIVATE(this)->directoryList.getLength(); i++) {
+    delete PRIVATE(this)->directoryList[i];
+  }
   if (PRIVATE(this)->geometrybuilt) {
     PRIVATE(this)->rootnode->removeAllChildren();
     PRIVATE(this)->rootnode->unref();
@@ -881,17 +887,21 @@ SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, i
   
 }
 
-
-
 SoSeparator * 
-SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, const int32_t * vindices)
+SoVRMLBackgroundP::createCubeFace(const SoMFString & urls, SoSeparator * sep, const int32_t * vindices)
 {
-
   const int32_t tindices[] = {1, 2, 3, 0, -1};
   sep = new SoSeparator;
   sep->ref();
   SoVRMLImageTexture * tex = new SoVRMLImageTexture;
-  tex->url = urls;
+
+  // manually search for each url using directoryList, which is stored in readInstance
+  for (int i = 0; i < urls.getNum(); i++) {
+    SbString file = SbImage::searchForFile(urls[i], this->directoryList.getArrayPtr(), this->directoryList.getLength());
+    if (file == "") file = urls[i];
+    tex->url.set1Value(tex->url.getNum(), file);
+  }
+
   tex->repeatS.setValue(FALSE);
   tex->repeatT.setValue(FALSE);
   SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
@@ -1013,7 +1023,20 @@ background_bindingchangeCB(void * data, SoSensor * sensor)
   else if (sensor == pimpl->isboundsensor) {
     SoDebugError::postWarning("background_bindingchangeCB", "'isBound' event not implemented yet");
   }
+}
 
+SbBool 
+SoVRMLBackground::readInstance(SoInput * in, unsigned short flags)
+{
+  SbBool readOK = inherited::readInstance(in, flags);
+  if (readOK) {
+    // store current search paths
+    const SbStringList & sl = SoInput::getDirectories();
+    for (int i = 0; i < sl.getLength(); i++) {
+      PRIVATE(this)->directoryList.append(new SbString(*(sl[i])));
+    }
+  }
+  return readOK;
 }
 
 #undef PRIVATE

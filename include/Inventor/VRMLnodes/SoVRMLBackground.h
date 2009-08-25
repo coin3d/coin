@@ -56,6 +56,7 @@ public:
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual ~SoVRMLBackground();
 
   SoSFBool set_bind; // eventIn
