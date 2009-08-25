@@ -354,52 +354,55 @@ static
 void
 stl_reader_binary_facet(stl_reader * reader)
 {
+  int readok = 1; 
   // FIXME: use one 50-byte read operation instead
   union {
     unsigned char bytes[4];
     uint32_t data;
     float real;
   } data;
+
+
   assert(reader != NULL);
   assert(reader->file != NULL);
   assert(reader->facet != NULL);
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->nx = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->ny = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->nz = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v1x = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v1y = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v1z = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v2x = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v2y = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v2z = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v3x = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v3y = data.real;
-  fread(&data.bytes, 4, 1, reader->file);
+  readok &= fread(&data.bytes, 4, 1, reader->file);
   data.data = stl_ntohl(data.data);
   reader->facet->v3z = data.real;
-  fread(&data.bytes, 2, 1, reader->file);
+  readok &= fread(&data.bytes, 2, 1, reader->file);
   /* byteswap? */
   reader->facet->color = data.bytes[0] | (data.bytes[1] << 8);
   /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
@@ -410,6 +413,7 @@ static
 int
 stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
 {
+  int writeok = 1;
   union {
     unsigned char bytes[4];
     uint32_t data;
@@ -420,45 +424,45 @@ stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
   assert(writer->facet != NULL);
   data.real = writer->facet->nx;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->ny;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->nz;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v1x;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v1y;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v1z;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v2x;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v2y;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v2z;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v3x;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v3y;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
   data.real = writer->facet->v3z;
   data.data = stl_ntohl(data.data);
-  fwrite(&data.bytes, 4, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 4, 1, writer->file);
 
   data.bytes[0] = writer->facet->color & 0xff;
   data.bytes[1] = (writer->facet->color >> 8) & 0xff;
   /* byteswap? */
-  fwrite(&data.bytes, 2, 1, writer->file);
+  writeok &= fwrite(&data.bytes, 2, 1, writer->file);
   /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
 
   return TRUE;
@@ -837,30 +841,32 @@ stl_reader_create(const char * filename)
 
   /* check if file is binary stl file first */
   do {
+    int readok = 1;
     /* FIXME: scan header for "COLOR=" for the "Materialise" color extension */
     reader->linenum = 0;
-    fseek(reader->file, 0, SEEK_END);
+    readok &= !fseek(reader->file, 0, SEEK_END);
     length = ftell(reader->file);
-    fseek(reader->file, 80, SEEK_SET);
-    fread(bytes, 4, 1, reader->file);
+    readok &= !fseek(reader->file, 80, SEEK_SET);
+    readok &= fread(bytes, 4, 1, reader->file);
     reader->facets_total =
       (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
     if ( (84 + (reader->facets_total * 50)) != length ) {
       break; /* not a binary stl file */
     }
     reader->flags |= STL_BINARY;
-    fseek(reader->file, 0, SEEK_SET);
+    readok &= !fseek(reader->file, 0, SEEK_SET);
     reader->info = static_cast<char *>(malloc(81));
     assert(reader->info);
-    fread(reader->info, 80, 1, reader->file);
+    readok &= fread(reader->info, 80, 1, reader->file);
     reader->info[80] = '\0';
-    fseek(reader->file, 84, SEEK_SET); /* position of first facet */
+    readok &= !fseek(reader->file, 84, SEEK_SET); /* position of first facet */
     reader->pending = STL_INIT_INFO;
     return reader;
   } while ( FALSE );
 
   /* now try ascii stl */
   do {
+    int readok = 1;
     reader->linenum = 1;
     reader->file = freopen(reader->filename, "r", reader->file);
     assert(reader->file);
@@ -868,14 +874,14 @@ stl_reader_create(const char * filename)
     if ( id == STL_ERROR ) {
       break; /* not an ascii stl file */
     }
-    fseek(reader->file, 0, SEEK_SET);
+    readok &= !fseek(reader->file, 0, SEEK_SET);
     stl_yyrestart(reader->file);
     reader->pending = STL_NO_PENDING;
     return reader;
   } while ( FALSE );
 
   /* the file is not an stl file */
-  fclose(reader->file);
+  (void)fclose(reader->file);
   free(reader->filename);
   reader->filename = NULL;
   stl_facet_destroy(reader->facet);
@@ -1067,14 +1073,15 @@ stl_writer_destroy(stl_writer * writer)
   assert(writer != NULL);
   assert(writer->file != NULL);
   if ( writer->flags & STL_BINARY ) {
+    int writeok = 1;
     unsigned char bytes[4];
     bytes[3] = (writer->facets >> 24) & 0xff;
     bytes[2] = (writer->facets >> 16) & 0xff;
     bytes[1] = (writer->facets >> 8) & 0xff;
     bytes[0] = writer->facets & 0xff;
-    fflush(writer->file);
-    fseek(writer->file, 80, SEEK_SET);
-    fwrite(bytes, 4, 1, writer->file);
+    writeok &= !fflush(writer->file);
+    writeok &= !fseek(writer->file, 80, SEEK_SET);
+    writeok &= fwrite(bytes, 4, 1, writer->file);
   } else {
     fprintf(writer->file, "endsolid\n");
     writer->linenum++;
