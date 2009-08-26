@@ -993,7 +993,6 @@ BOOST_AUTO_TEST_CASE(intersect_ortho)
   BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 1.0f), "unexpected value");
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(intersect_perspective)
 {
   // FIXME: set up a better perspective vv which also tests left/right/top/bottom
@@ -1011,6 +1010,5 @@ BOOST_AUTO_TEST_CASE(intersect_perspective)
   BOOST_CHECK_MESSAGE(eq(isect.getMax()[1], 1.0f), "unexpected value");
   BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 0.75f), "unexpected value");
 }
-#endif
 
 #endif // COIN_TEST_SUITE
