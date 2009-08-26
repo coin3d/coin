@@ -95,6 +95,7 @@ public:
   SbBool intersect(const SbVec3f & p0, const SbVec3f & p1,
                    SbVec3f & closestpoint) const;
   SbBool intersect(const SbBox3f & box) const;
+  SbBox3f intersectionBox(const SbBox3f & box) const;
 
   SbBool outsideTest(const SbPlane & p,
                      const SbVec3f & bmin, const SbVec3f & bmax) const;
@@ -117,6 +118,9 @@ public:
   SbVec3f ulf;
 
 private:
+  void getPlaneRectangle(const float depth, SbVec3f & lowerleft,
+                         SbVec3f & lowerright, SbVec3f & upperleft,
+                         SbVec3f & upperright) const;
 
   SbDPViewVolume dpvv;
 };

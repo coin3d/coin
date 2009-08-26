@@ -56,6 +56,8 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbBox3f.h>
+#include <Inventor/SbClip.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -804,11 +806,92 @@ SbViewVolume::intersect(const SbBox3f & box) const
   return TRUE;
 }
 
+namespace {
+  void clip_face(SbClip & clipper, const SbVec3f & v0, const SbVec3f & v1,
+                 const SbVec3f & v2, const SbVec3f & v3,
+                 const SbPlane * planes, SbBox3f & isect)
+  {
+    int i;
+    clipper.addVertex(v0);
+    clipper.addVertex(v1);
+    clipper.addVertex(v2);
+    clipper.addVertex(v3);
+    for (i = 0; i < 6; i++) {
+      clipper.clip(planes[i]);
+    }
+    const int n = clipper.getNumVertices();
+    for (i = 0; i < n; i++) {
+      SbVec3f tmp;
+      clipper.getVertex(i, tmp);
+      isect.extendBy(tmp);
+    } 
+  }
+};
+
+/*!
+  Calculates the bbox of the intersection between \a bbox and the view volume.
+  
+  \since Coin 4.0
+*/
+
+SbBox3f 
+SbViewVolume::intersectionBox(const SbBox3f & box) const
+{
+  int i, j;
+  SbVec3f vvpts[8];
+  SbVec3f bbpts[8];
+  SbBox3f commonVolume;
+  SbVec3f bmin, bmax;
+  bmin = box.getMin();
+  bmax = box.getMax();
+
+  //*****************************************************************************
+  // First, find the intersection between the bbox and the view volume bbox
+  this->getPlaneRectangle(0.0f, vvpts[0], vvpts[1], vvpts[2], vvpts[3]);
+  this->getPlaneRectangle(this->nearToFar, vvpts[4], vvpts[5], vvpts[6], vvpts[7]);
+
+  for (i = 0; i < 8; i++) {
+    commonVolume.extendBy(vvpts[i]);
+  }
+  // check if we have an intersection
+  if (!box.intersect(commonVolume)) return SbBox3f();
+  
+  SbVec3f cmin = commonVolume.getMin();
+  SbVec3f cmax = commonVolume.getMax();
+  for (i = 0; i < 3; i++) {
+    cmin[i] = SbMax(cmin[i], bmin[i]);
+    cmax[i] = SbMin(cmax[i], bmax[i]);
+  }
+
+  //*****************************************************************************
+  // clip the combined bbox against the view volume
+
+  // bbox corner points
+  for (i = 0; i < 8; i++) {
+    bbpts[i][0] = i & 1 ? cmin[0] : cmax[0];
+    bbpts[i][1] = i & 2 ? cmin[1] : cmax[1];
+    bbpts[i][2] = i & 4 ? cmin[2] : cmax[2];
+  }
+
+  SbClip clipper;
+  SbPlane planes[6];
+  commonVolume.makeEmpty(); // reset bbox before clipping
+  this->getViewVolumePlanes(planes);
+  clip_face(clipper, bbpts[0], bbpts[1], bbpts[3], bbpts[2], planes, commonVolume);
+  clip_face(clipper, bbpts[1], bbpts[5], bbpts[7], bbpts[3], planes, commonVolume);
+  clip_face(clipper, bbpts[5], bbpts[4], bbpts[6], bbpts[7], planes, commonVolume);
+  clip_face(clipper, bbpts[4], bbpts[0], bbpts[2], bbpts[6], planes, commonVolume);
+  clip_face(clipper, bbpts[4], bbpts[5], bbpts[1], bbpts[0], planes, commonVolume);
+  clip_face(clipper, bbpts[2], bbpts[3], bbpts[7], bbpts[6], planes, commonVolume);
+
+  return commonVolume;
+}
+
 /*!
   Returns the double precision version of this view volume.
 */
 const SbDPViewVolume & 
-SbViewVolume::getDPViewVolume(void) const
+  SbViewVolume::getDPViewVolume(void) const
 {
   return this->dpvv;
 }
@@ -834,3 +917,100 @@ SbViewVolume::outsideTest(const SbPlane & p,
   }
   return TRUE;
 }
+
+//
+// Returns the four points defining the view volume rectangle at the
+// specified distance from the near plane, towards the far plane.
+void
+SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft,
+                                SbVec3f & lowerright,
+                                SbVec3f & upperleft,
+                                SbVec3f & upperright) const
+{
+  SbVec3f near_ur = this->ulf + (this->lrf - this->llf);
+  
+#if COIN_DEBUG
+  if (this->llf == SbVec3f(0.0, 0.0, 0.0) ||
+      this->lrf == SbVec3f(0.0, 0.0, 0.0) ||
+      this->ulf == SbVec3f(0.0, 0.0, 0.0) ||
+      near_ur == SbVec3f(0.0, 0.0, 0.0)) {
+    SoDebugError::postWarning("SbDPViewVolume::getPlaneRectangle",
+                              "Invalid frustum.");
+
+  }
+#endif // COIN_DEBUG
+
+  if (this->type == PERSPECTIVE) {
+    SbVec3f dir;
+    dir = this->llf;
+    (void) dir.normalize(); // safe to normalize here
+    lowerleft = this->llf + dir * distance / dir.dot(this->projDir);
+
+    dir = this->lrf;
+    dir.normalize(); // safe to normalize here
+    lowerright = this->lrf + dir * distance / dir.dot(this->projDir);
+
+    dir = this->ulf;
+    (void) dir.normalize(); // safe to normalize here
+    upperleft = this->ulf + dir * distance / dir.dot(this->projDir);
+
+    dir = near_ur;
+    (void) dir.normalize(); // safe to normalize here
+    upperright = near_ur + dir * distance / dir.dot(this->projDir);
+  }
+  else {
+    lowerleft = this->llf + this->projDir * distance;
+    lowerright = this->lrf + this->projDir * distance;
+    upperleft = this->ulf + this->projDir * distance;
+    upperright = near_ur + this->projDir * distance;
+  }
+}
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/SbBox3f.h>
+#include <cfloat>
+
+namespace {
+  SbBool eq(float v1, float v2) {
+    float d = v1-v2;
+    return SbAbs(d) <= FLT_EPSILON;
+  }
+};
+
+BOOST_AUTO_TEST_CASE(intersect_ortho)
+{
+  SbViewVolume vv;
+  vv.ortho(-0.5, 0.5, -0.5, 0.5, -1, 10);
+  SbBox3f box(0, 0, 0, 1, 1, 1);
+
+  SbBox3f isect = vv.intersectionBox(box);
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[0], 0.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[1], 0.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[2], 0.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[0], 0.5f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[1], 0.5f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 1.0f), "unexpected value");
+}
+
+#if 0
+BOOST_AUTO_TEST_CASE(intersect_perspective)
+{
+  // FIXME: set up a better perspective vv which also tests left/right/top/bottom
+  SbViewVolume vv;
+  vv.perspective(0.78f, 1.0f, 4.25, 4.75);
+  vv.translateCamera(SbVec3f(0.0f, 0.0f, 5.0f));
+
+  SbBox3f box(0, 0, 0, 1, 1, 1);
+  SbBox3f isect = vv.intersectionBox(box);
+
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[0], 0.0), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[1], 0.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[2], 0.25f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[0], 1.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[1], 1.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 0.75f), "unexpected value");
+}
+#endif
+
+#endif // COIN_TEST_SUITE

@@ -31,6 +31,7 @@ TEST_SUITE_OBJECTS = \
 	actionsSoWriteAction.$(OBJEXT) \
 	baseSbBSPTree.$(OBJEXT) \
 	baseSbString.$(OBJEXT) \
+	baseSbViewVolume.$(OBJEXT) \
 	baserbptree.$(OBJEXT) \
 	draggersSoTransformerDragger.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
@@ -149,6 +150,7 @@ TEST_SUITE_BUILT_FILES = \
 	actionsSoWriteAction.cpp \
 	baseSbBSPTree.cpp \
 	baseSbString.cpp \
+	baseSbViewVolume.cpp \
 	baserbptree.cpp \
 	draggersSoTransformerDragger.cpp \
 	fieldsSoMFBitMask.cpp \
@@ -333,6 +335,12 @@ baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
 
 baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbString.cpp
+
+baseSbViewVolume.cpp: $(top_srcdir)/src/base/SbViewVolume.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbViewVolume.cpp
+
+baseSbViewVolume.$(OBJEXT): baseSbViewVolume.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbViewVolume.cpp
 
 baserbptree.cpp: $(top_srcdir)/src/base/rbptree.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/rbptree.cpp
