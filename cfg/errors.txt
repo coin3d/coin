@@ -77,6 +77,12 @@ Could not find a way to build against GDI+ (GdiPlus.h / -lgdiplus).
 GDI+ is part of the Microsoft Windows SDK download.  Make sure you have
 the MS Windows SDK set up correctly for your compiler.
 
+For MinGW builds, install Alf P. Steinbach's GDI+ MinGW bindings and
+rename lib/gdiplus.import.a to lib/gdiplus.a in the MinGW path.
+
+See http://alfps.izfree.com/libraries/cpp/gdiplus_for_mingw/ for
+MinGW download information.
+
 !no-qgl
 The configure script could not find any way to build code which uses
 Qt's OpenGL bindings (called "QGL"), neither as part of the main Qt
