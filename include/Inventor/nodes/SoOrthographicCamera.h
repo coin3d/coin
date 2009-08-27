@@ -40,11 +40,11 @@ public:
 
   virtual void scaleHeight(float scalefactor);
   virtual SbViewVolume getViewVolume(float useaspectratio = 0.0f) const;
+  virtual void viewBoundingBox(const SbBox3f & box, float aspect, float slack);
 
 protected:
   virtual ~SoOrthographicCamera();
 
-  virtual void viewBoundingBox(const SbBox3f & box, float aspect, float slack);
 };
 
 #endif // !COIN_SOORTHOGRAPHICCAMERA_H

@@ -33,6 +33,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbMatrix.h>
 #include <Inventor/SbBox3f.h>
 
 #define SO_ASPECT_SQUARE        1.0f
@@ -75,6 +76,10 @@ public:
   SoSFFloat farDistance;
   SoSFFloat focalDistance;
 
+  SbViewVolume getViewVolume(const SbViewportRegion & vp,
+                             SbViewportRegion & resultvp, 
+                             const SbMatrix & mm = SbMatrix::identity()) const;
+  
   void pointAt(const SbVec3f & targetpoint);
   void pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector);
   virtual void scaleHeight(float scalefactor) = 0;
@@ -107,13 +112,12 @@ public:
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-
+  virtual void viewBoundingBox(const SbBox3f & box, float aspect,
+                               float slack) = 0;
 protected:
   SoCamera(void);
   virtual ~SoCamera();
 
-  virtual void viewBoundingBox(const SbBox3f & box, float aspect,
-                               float slack) = 0;
   virtual void jitter(int numpasses, int curpass,
                       const SbViewportRegion & vpreg,
                       SbVec3f & jitteramount) const;

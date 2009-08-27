@@ -256,7 +256,8 @@
 
   This view volume is not adjusted to account for viewport mapping.
   If you want the same view volume as the one used during rendering,
-  you should do something like this:
+  you should use getViewVolume(SbViewportRegion & vp, const SbMatrix & mm),
+  or do something like this:
 
   \verbatim
 
@@ -396,6 +397,68 @@ SoCamera::initClass(void)
   SO_ENABLE(SoAudioRenderAction, SoListenerOrientationElement);
   SO_ENABLE(SoAudioRenderAction, SoListenerDopplerElement);
   SO_ENABLE(SoAudioRenderAction, SoListenerGainElement);
+}
+
+/*!
+  Convenience method which returns the actual view volume used when
+  rendering, adjusted for the current viewport mapping.
+
+  Supply the view's viewport in \a vp. If the viewport mapping
+  is one of CROP_VIEWPORT_FILL_FRAME, CROP_VIEWPORT_LINE_FRAME or
+  CROP_VIEWPORT_NO_FRAME, \a resultvp will be modified to contain the
+  resulting viewport.
+
+  If you got any transformations in front of the camera, \a mm should
+  contain this transformation.
+  
+  \since Coin 4.0
+*/
+SbViewVolume 
+SoCamera::getViewVolume(const SbViewportRegion & vp, 
+                        SbViewportRegion & resultvp, 
+                        const SbMatrix & mm) const
+{
+  float aspectratio = resultvp.getViewportAspectRatio();
+  int vpm = this->viewportMapping.getValue();  
+  SbBool adjustvp = FALSE;
+  resultvp = vp;
+  SbViewVolume resultvv;
+
+  switch (vpm) {
+  case CROP_VIEWPORT_FILL_FRAME:
+  case CROP_VIEWPORT_LINE_FRAME:
+  case CROP_VIEWPORT_NO_FRAME:
+    resultvv = this->getViewVolume(0.0f);
+    adjustvp = TRUE;
+    break;
+  case ADJUST_CAMERA:
+    resultvv = this->getViewVolume(aspectratio);
+    if (aspectratio < 1.0f) resultvv.scale(1.0f / aspectratio);
+    break;
+  case LEAVE_ALONE:
+    resultvv = this->getViewVolume(0.0f);
+    break;
+  default:
+    assert(0 && "unknown viewport mapping");
+    break;
+  }
+
+  if (mm != SbMatrix::identity()) {
+    resultvv.transform(mm);
+  }
+  if (adjustvp) {
+    float cameraratio = this->aspectRatio.getValue();
+    if (aspectratio != cameraratio) {
+      SbViewportRegion oldvp = resultvp;
+      if (aspectratio < cameraratio) {
+        resultvp.scaleHeight(aspectratio/cameraratio);
+      }
+      else {
+        resultvp.scaleWidth(cameraratio/aspectratio);
+      }
+    }
+  }
+  return resultvv;
 }
 
 /*!
@@ -797,13 +860,12 @@ SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion &
                   const SbBool considermodelmatrix)
 {
   SoState * state = action->getState();
-
   // need to test if vp element is enabled. SoGetPrimitiveCountAction
   // does not enable this element, although I think it should (to get
   // correct SCREEN_SPACE complexity handling).  pederb, 2001-10-31
   SbBool usevpelement =
     state->isElementEnabled(SoViewportRegionElement::getClassStackIndex());
-
+  
   if (usevpelement) {
     resultvp = SoViewportRegionElement::get(state);
   }
@@ -812,52 +874,17 @@ SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion &
     // action does not support viewports.
     resultvp = SbViewportRegion(256, 256);
   }
-  float aspectratio = resultvp.getViewportAspectRatio();
-  int vpm = this->viewportMapping.getValue();
+  SbMatrix mm = considermodelmatrix ? SoModelMatrixElement::get(state) : SbMatrix::identity();
+  SbViewportRegion oldvp(resultvp);
+  resultvv = this->getViewVolume(oldvp, resultvp, mm);
 
-  SbBool adjustvp = FALSE;
-
-  switch (vpm) {
-  case CROP_VIEWPORT_FILL_FRAME:
-  case CROP_VIEWPORT_LINE_FRAME:
-  case CROP_VIEWPORT_NO_FRAME:
-    resultvv = this->getViewVolume(0.0f);
-    adjustvp = TRUE;
-    break;
-  case ADJUST_CAMERA:
-    resultvv = this->getViewVolume(aspectratio);
-    if (aspectratio < 1.0f) resultvv.scale(1.0f / aspectratio);
-    break;
-  case LEAVE_ALONE:
-    resultvv = this->getViewVolume(0.0f);
-    break;
-  default:
-    assert(0 && "unknown viewport mapping");
-    break;
-  }
-
-  if (considermodelmatrix) {
-    SbBool isidentity;
-    const SbMatrix &mm = SoModelMatrixElement::get(state, isidentity);
-    if (!isidentity) resultvv.transform(mm);
-  }
-  if (adjustvp) {
-    float cameraratio = this->aspectRatio.getValue();
-    if (aspectratio != cameraratio) {
-      SbViewportRegion oldvp = resultvp;
-      if (aspectratio < cameraratio) {
-        resultvp.scaleHeight(aspectratio/cameraratio);
-      }
-      else {
-        resultvp.scaleWidth(cameraratio/aspectratio);
-      }
-      // only draw if this is an SoGLRenderAction
-      if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-        this->drawCroppedFrame((SoGLRenderAction*)action, vpm, oldvp, resultvp);
-      }
-      if (usevpelement) {
-        SoViewportRegionElement::set(action->getState(), resultvp);
-      }
+  if (resultvp != oldvp) {
+    // only draw if this is an SoGLRenderAction
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+      this->drawCroppedFrame((SoGLRenderAction*)action, this->viewportMapping.getValue(), oldvp, resultvp);
+    }
+    if (usevpelement) {
+      SoViewportRegionElement::set(action->getState(), resultvp);
     }
   }
 }
