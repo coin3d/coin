@@ -286,6 +286,8 @@
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
@@ -375,7 +377,8 @@ public:
     this->fragment_nearval = new SoShaderParameter1f;
     this->fragment_nearval->ref();
 
-    this->createVSMProgram();
+    this->fragment_lightplane = new SoShaderParameter4f;
+    this->fragment_lightplane->ref();
 
     this->path = path->copy();
     this->path->ref();
@@ -383,6 +386,8 @@ public:
 
     this->light = (SoLight*)((SoFullPath*)path)->getTail();
     this->light->ref();
+
+    this->createVSMProgram();
     this->depthmap = new SoSceneTexture2;
     this->depthmap->ref();
     this->depthmap->transparencyFunction = SoSceneTexture2::NONE;
@@ -456,6 +461,7 @@ public:
     if (this->vsm_nearval) this->vsm_nearval->unref();
     if (this->fragment_farval) this->fragment_farval->unref();
     if (this->fragment_nearval) this->fragment_nearval->unref();
+    if (this->fragment_lightplane) this->fragment_lightplane->unref();
     if (this->light) this->light->unref();
     if (this->path) this->path->unref();
     if (this->gaussmap) this->gaussmap->unref();
@@ -485,6 +491,7 @@ public:
   SoShaderParameter1f * vsm_nearval;
   SoShaderParameter1f * fragment_farval;
   SoShaderParameter1f * fragment_nearval;
+  SoShaderParameter4f * fragment_lightplane;
   SoShaderGenerator vsm_vertex_generator;
   SoShaderGenerator vsm_fragment_generator;
 
@@ -591,7 +598,10 @@ public:
   void GLRender(SoGLRenderAction * action, const SbBool inpath);
   void setVertexShader(SoState * state);
   void setFragmentShader(SoState * state);
-  void updateCamera(SoShadowLightCache * cache, const SbMatrix & transform);
+  void updateSpotCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform);
+  void updateDirectionalCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform);
+  const SbXfBox3f & calcBBox(SoShadowLightCache * cache, SbBox3f & worldbox);
+
   void renderDepthMap(SoShadowLightCache * cache,
                       SoGLRenderAction * action);
   void updateShadowLights(SoGLRenderAction * action);
@@ -943,9 +953,10 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
           cache->path->unref();
           cache->path = path->copy();
         }
-        this->matrixaction.apply(path);
-
-        this->updateCamera(cache, this->matrixaction.getMatrix());
+        if (cache->light->isOfType(SoSpotLight::getClassTypeId())) {
+          this->matrixaction.apply(path);
+          this->updateSpotCamera(state, cache, this->matrixaction.getMatrix());
+        }
         i2++;
       }
     }
@@ -953,6 +964,10 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
   }
   for (i = 0; i < this->shadowlights.getLength(); i++) {
     SoShadowLightCache * cache = this->shadowlights[i];
+    if (cache->light->isOfType(SoDirectionalLight::getClassTypeId())) {
+      this->matrixaction.apply(cache->path);
+      this->updateDirectionalCamera(state, cache, this->matrixaction.getMatrix());
+    }
     assert(cache->texunit >= 0);
     SoTextureUnitElement::set(state, PUBLIC(this), cache->texunit);
 
@@ -982,45 +997,43 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
 }
 
-void
-SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transform)
+const SbXfBox3f &
+SoShadowGroupP::calcBBox(SoShadowLightCache * cache, SbBox3f & worldbox)
 {
   SoCamera * cam = cache->camera;
-  SoLight * light = cache->light;
+  this->bboxaction.apply(cache->depthmap->scene.getValue());
+  SbXfBox3f & xbox = this->bboxaction.getXfBoundingBox();
+  worldbox = xbox.project();
+  SbMatrix mat;
+  mat.setTranslate(- cam->position.getValue());
+  xbox.transform(mat);
+  mat = cam->orientation.getValue().inverse();
+  xbox.transform(mat);
+  return xbox;
+}
 
-  SbBool ortho = FALSE;
-  float cutoff = 0.78f;
-  if (light->isOfType(SoSpotLight::getClassTypeId())) {
-    assert(cam->isOfType(SoPerspectiveCamera::getClassTypeId()));
-    SoSpotLight * sl = static_cast<SoSpotLight*> (light);
-    SbVec3f pos = sl->location.getValue();
-    transform.multVecMatrix(pos, pos);
+void
+SoShadowGroupP::updateSpotCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform)
+{
+  SoCamera * cam = cache->camera;
+  SoSpotLight * light = static_cast<SoSpotLight*> (cache->light);
+
+  assert(cam->isOfType(SoPerspectiveCamera::getClassTypeId()));
+  SbVec3f pos = light->location.getValue();
+  transform.multVecMatrix(pos, pos);
     
-    SbVec3f dir = sl->direction.getValue();
-    transform.multDirMatrix(dir, dir);
-    (void) dir.normalize();
-    cutoff = sl->cutOffAngle.getValue();
-    cam->position.setValue(pos);
-    // the maximum heightAngle we can render with a camera is < PI/2,.
-    // The max cutoff is therefore PI/4. Some slack is needed, and 0.78
-    // is about the maximum angle we can do.
-    if (cutoff > 0.78f) cutoff = 0.78f;
+  SbVec3f dir = light->direction.getValue();
+  transform.multDirMatrix(dir, dir);
+  (void) dir.normalize();
+  float cutoff = light->cutOffAngle.getValue();
+  cam->position.setValue(pos);
+  // the maximum heightAngle we can render with a camera is < PI/2,.
+  // The max cutoff is therefore PI/4. Some slack is needed, and 0.78
+  // is about the maximum angle we can do.
+  if (cutoff > 0.78f) cutoff = 0.78f;
     
-    cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
-    static_cast<SoPerspectiveCamera*> (cam)->heightAngle.setValue(cutoff * 2.0f);
-  }
-  else {
-    ortho = TRUE;
-    assert(light->isOfType(SoShadowDirectionalLight::getClassTypeId()));
-    SoShadowDirectionalLight * dl = static_cast<SoShadowDirectionalLight*> (light);
-    SbVec3f pos = SbVec3f(0.0f, 0.0f, 0.0f);
-    SbVec3f dir = dl->direction.getValue();
-    transform.multDirMatrix(dir, dir);
-    (void) dir.normalize();
-    cam->position.setValue(pos);
-    cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
-  }
-  
+  cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
+  static_cast<SoPerspectiveCamera*> (cam)->heightAngle.setValue(cutoff * 2.0f);
   SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
   
   float visnear = PUBLIC(this)->visibilityNearRadius.getValue();
@@ -1032,7 +1045,7 @@ SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transf
     ((visnear < 0.0f) || (visfar < 0.0f));
   
   if (light->isOfType(SoShadowSpotLight::getClassTypeId())) {
-    SoShadowSpotLight * sslight = (SoShadowSpotLight*) light;
+    SoShadowSpotLight * sslight = static_cast<SoShadowSpotLight*> (light);
     const float ssnear = sslight->nearDistance.getValue();
     const float ssfar = sslight->farDistance.getValue();
     
@@ -1042,29 +1055,9 @@ SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transf
       needbbox = FALSE;
     }
   }
-  else if (light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
-    SoShadowDirectionalLight * sdlight = static_cast<SoShadowDirectionalLight*> (light);
-    const float ssnear = sdlight->nearDistance.getValue();
-    const float ssfar = sdlight->farDistance.getValue();
-    
-    if (ssnear > 0.0f && ssfar > ssnear) {
-      visnear = ssnear;
-      visfar = ssfar;
-      needbbox = FALSE;
-    }
-  }
-  
   if (needbbox) {
-    // FIXME: cache bbox in the pimpl class
-    this->bboxaction.apply(cache->depthmap->scene.getValue());
-    SbXfBox3f xbox = this->bboxaction.getXfBoundingBox();
-    
-    SbMatrix mat;
-    mat.setTranslate(- cam->position.getValue());
-    xbox.transform(mat);
-    mat = cam->orientation.getValue().inverse();
-    xbox.transform(mat);
-    SbBox3f box = xbox.project();
+    SbBox3f worldbox;
+    SbBox3f box = this->calcBBox(cache, worldbox).project();
     
     // Bounding box was calculated in camera space, so we need to "flip"
     // the box (because camera is pointing in the (0,0,-1) direction
@@ -1079,7 +1072,6 @@ SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transf
     if (cache->nearval < nearlimit) {
       cache->nearval = nearlimit;
     }
-    
     const float SLACK = 0.001f;
     
     cache->nearval = cache->nearval * (1.0f - SLACK);
@@ -1087,7 +1079,7 @@ SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transf
     
     if (visflag == SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR) {
       float sx,sy,sz;
-      xbox.getSize(sx, sy, sz);
+      worldbox.getSize(sx, sy, sz);
       float smax =  SbMax(SbMax(sx, sy), sz);
         if (visnear > 0.0f) visnear = smax * visnear;
         if (visfar > 0.0f) visfar = smax  * visfar;
@@ -1108,7 +1100,7 @@ SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transf
     cam->farDistance = cache->farval;
   }
   
-  float realfarval = cache->farval / float(cos(cutoff * 2.0f));
+  float realfarval = cutoff >= 0.0f ? cache->farval / float(cos(cutoff * 2.0f)) : cache->farval;
   cache->fragment_farval->value = realfarval;
   cache->vsm_farval->value = realfarval;
   
@@ -1120,20 +1112,75 @@ SoShadowGroupP::updateCamera(SoShadowLightCache * cache, const SbMatrix & transf
   
   vv.getMatrices(affine, proj);
   cache->matrix = affine * proj;
-  
-#if 0
-  fprintf(stderr,"matrix:\n"
-            "%.2f %.2f %.2f %.2f\n"
-          "%.2f %.2f %.2f %.2f\n"
-          "%.2f %.2f %.2f %.2f\n"
-          "%.2f %.2f %.2f %.2f\n",
-          cache->matrix[0][0], cache->matrix[0][1], cache->matrix[0][2], cache->matrix[0][3],
-          cache->matrix[1][0], cache->matrix[1][1], cache->matrix[1][2], cache->matrix[1][3],
-          cache->matrix[2][0], cache->matrix[2][1], cache->matrix[2][2], cache->matrix[2][3],
-          cache->matrix[3][0], cache->matrix[3][1], cache->matrix[3][2], cache->matrix[3][3]);
-#endif
 }
 
+void
+SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform)
+{
+  SoCamera * cam = cache->camera;
+  assert(cache->light->isOfType(SoShadowDirectionalLight::getClassTypeId()));
+  SoShadowDirectionalLight * light = static_cast<SoShadowDirectionalLight*> (cache->light);
+
+  SbBox3f worldbox;  
+  SbBox3f box = this->calcBBox(cache, worldbox).project();
+  SbVec3f pos = worldbox.getCenter();
+  SbVec3f dir = light->direction.getValue();
+  transform.multDirMatrix(dir, dir);
+  (void) dir.normalize();
+  cam->position.setValue(pos);
+  cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
+    
+  SbViewVolume vv = SoViewVolumeElement::get(state);
+  SbBox3f isect = vv.intersectionBox(worldbox);
+  SbViewportRegion vp = SoViewportRegionElement::get(state);
+  cam->viewBoundingBox(isect, vp.getViewportAspectRatio(), 1.0f);
+  pos = cam->position.getValue();
+  SbPlane plane(dir, pos);
+  // move to eye space
+  plane.transform(SoViewingMatrixElement::get(state));
+  SbVec3f N = plane.getNormal();
+  float D = plane.getDistanceFromOrigin(); 
+
+#if 0
+  fprintf(stderr,"isect: %g %g %g, %g %g %g\n",
+          isect.getMin()[0],
+          isect.getMin()[1],
+          isect.getMin()[2],
+          isect.getMax()[0],
+          isect.getMax()[1],
+          isect.getMax()[2]);
+  fprintf(stderr,"plane: %g %g %g, %g\n", N[0], N[1], N[2], D);
+#endif
+
+  cache->fragment_lightplane->value.setValue(N[0], N[1], N[2], D);
+  
+  SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
+  
+  float visnear = cam->nearDistance.getValue();
+  float visfar = cam->farDistance.getValue();
+  
+  if (visnear > 0.0f) cache->nearval = visnear;
+  if (visfar > 0.0f) cache->farval = visfar;
+  
+  if (cache->nearval != cam->nearDistance.getValue()) {
+    cam->nearDistance = cache->nearval;
+  }
+  if (cache->farval != cam->farDistance.getValue()) {
+    cam->farDistance = cache->farval;
+  }
+  
+  float realfarval = cache->farval;
+  cache->fragment_farval->value = realfarval;
+  cache->vsm_farval->value = realfarval;
+  
+  cache->fragment_nearval->value = cache->nearval;
+  cache->vsm_nearval->value = cache->nearval;
+  
+  vv = cam->getViewVolume(1.0f);
+  SbMatrix affine, proj;
+  vv.getMatrices(affine, proj);
+  cache->matrix = affine * proj;
+}
 
 void
 SoShadowGroupP::renderDepthMap(SoShadowLightCache * cache,
@@ -1177,6 +1224,10 @@ SoShadowGroupP::setVertexShader(SoState * state)
     SbString str;
     str.sprintf("varying vec4 shadowCoord%d;", i);
     gen.addDeclaration(str, FALSE);
+
+    if (this->shadowlights[i]->light->isOfType(SoDirectionalLight::getClassTypeId())) {
+
+    }
 
     if (!perpixelspot) {
       str.sprintf("varying vec3 spotVertexColor%d;", i);
@@ -1377,6 +1428,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       str.sprintf("varying vec3 spotVertexColor%d;", i);
       gen.addDeclaration(str, FALSE);
     }
+    if (this->shadowlights[i]->light->isOfType(SoDirectionalLight::getClassTypeId())) {
+      str.sprintf("uniform vec4 lightplane%d;", i);
+      gen.addDeclaration(str, FALSE);
+    }
   }
 
   SbString str;
@@ -1415,7 +1470,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   if (perpixelspot) {
     SbBool spotlight = FALSE;
+    SbBool dirlight = FALSE;
     for (i = 0; i < numshadowlights; i++) {
+      SbBool dirshadow = FALSE;
       SbString str;
       SbString spotname = "DirSpotLight";
       SbString insidetest = "&& coord.x >= 0.0 && coord.x <= 1.0 && coord.y >= 0.0 && coord.y <= 1.0)";
@@ -1433,32 +1490,45 @@ SoShadowGroupP::setFragmentShader(SoState * state)
         }
       }
       else {
-        // FIXME: anything else?
-        dirspot = TRUE;
+        dirshadow = TRUE;
+        dirlight = TRUE;
+        spotname = "DirectionalLight";    
       }
-      str.sprintf("diffuse = vec4(0.0); specular = vec4(0);"
-                  "dist = %s(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n"
-                  "coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n"
-                  "map = texture2D(shadowMap%d, coord.xy);\n"
+      gen.addMainStatement("diffuse = vec4(0.0); specular = vec4(0);");
+      if (dirshadow) {
+        str.sprintf("dist = dot(ecPosition3.xyz, lightplane%d.xyz) - lightplane%d.w;\n", i,i);
+        gen.addMainStatement(str);
+        // gen.addMainStatement("dist = 0.0;\n");
+        str.sprintf("DirectionalLight(%d, normalize(fragmentNormal), ambient, diffuse, specular);\n", i);
+      }
+      else {
+        str.sprintf("dist = %s(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n",
+                    spotname.getString(), lights.getLength()+i);
+      }
+      gen.addMainStatement(str);
+      str.sprintf("coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n", i , i);
+      gen.addMainStatement(str);
+      str.sprintf("map = texture2D(shadowMap%d, coord.xy);\n", i);
+      gen.addMainStatement(str);
 #ifdef USE_NEGATIVE
-                  "map = (map + vec4(1.0)) * 0.5;\n"
+      gen.addMainStatement("map = (map + vec4(1.0)) * 0.5;\n");
 #endif // USE_NEGATIVE
 #ifdef DISTRIBUTE_FACTOR
-                  "map.xy += map.zw / DISTRIBUTE_FACTOR;\n"
+      gen.addMainStatement("map.xy += map.zw / DISTRIBUTE_FACTOR;\n");
 #endif
-                  "shadeFactor = ((map.x < 0.9999) && (shadowCoord%d.z > -1.0%s) ? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 1.0;\n"
-                  "color += shadeFactor * diffuse.rgb * mydiffuse.rgb;"
-                  "scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n",
-                  spotname.getString(), lights.getLength()+i, i , i, i, i, insidetest.getString(), i, i, i);
+      str.sprintf("shadeFactor = ((map.x < 0.9999) && (shadowCoord%d.z > -1.0%s) "
+                  "? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 1.0;\n",
+                  i, insidetest.getString(),i,i,i);
       gen.addMainStatement(str);
       
+      gen.addMainStatement("color += shadeFactor * diffuse.rgb * mydiffuse.rgb;");
+      gen.addMainStatement("scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n");      
     }
     gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb;\n");
 
     if (perpixelother) {
       gen.addMainStatement("diffuse = vec4(0.0); ambient = vec4(0.0); specular = vec4(0.0);");
 
-      SbBool dirlight = FALSE;
       SbBool pointlight = FALSE;
 
       for (i = 0; i < lights.getLength(); i++) {
@@ -1613,8 +1683,6 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     }
     this->fragmentshader->parameter.set1Value(i*3+2, nearval);
   }
-
-
   SoShaderParameter1i * texmap =
     new SoShaderParameter1i();
   str.sprintf("textureMap0");
@@ -1656,6 +1724,18 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (this->numtexunitsinscene > 1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
 
+  for (i = 0; i < numshadowlights; i++) {
+    if (this->shadowlights[i]->light->isOfType(SoDirectionalLight::getClassTypeId())) {
+      SbString str;
+      SoShaderParameter4f * lightplane = this->shadowlights[i]->fragment_lightplane;
+      str.sprintf("lightplane%d", i);
+      if (lightplane->name.getValue() != str) {
+        lightplane->name = str;
+      }
+      this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), lightplane);
+    }
+  }
+
   this->fragmentshadercache->set(gen.getShaderProgram());
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
@@ -1677,6 +1757,8 @@ SoShadowLightCache::createVSMProgram(void)
   SoShaderGenerator & fgen = this->vsm_fragment_generator;
 
   vgen.reset(FALSE);
+  
+  SbBool dirlight = this->light->isOfType(SoDirectionalLight::getClassTypeId());
 
   vgen.addDeclaration("varying vec3 light_vec;", FALSE);
   vgen.addMainStatement("light_vec = (gl_ModelViewMatrix * gl_Vertex).xyz;\n"
@@ -1684,7 +1766,7 @@ SoShadowLightCache::createVSMProgram(void)
 
   vshader->sourceProgram = vgen.getShaderProgram();
   vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
-
+  
   fgen.reset(FALSE);
 #ifdef DISTRIBUTE_FACTOR
   SbString str;
@@ -1694,7 +1776,13 @@ SoShadowLightCache::createVSMProgram(void)
   fgen.addDeclaration("varying vec3 light_vec;", FALSE);
   fgen.addDeclaration("uniform float farval;", FALSE);
   fgen.addDeclaration("uniform float nearval;", FALSE);
-  fgen.addMainStatement("float l = (length(light_vec) - nearval) / (farval-nearval);\n"
+  if (!dirlight)  {
+    fgen.addMainStatement("float l = (length(light_vec) - nearval) / (farval-nearval);\n");
+  }
+  else {
+    fgen.addMainStatement("float l = (-light_vec.z - nearval) / (farval-nearval);\n");
+  }
+  fgen.addMainStatement(
 #ifdef DISTRIBUTE_FACTOR
                         "vec2 m = vec2(l, l*l);\n"
                         "vec2 f = fract(m * DISTRIBUTE_FACTOR);\n"
