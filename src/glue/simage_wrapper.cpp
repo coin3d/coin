@@ -23,7 +23,7 @@
 
 /*
  *  Environment variable controls available:
- * 
+ *
  *   - COIN_DEBUG_SIMAGE: set to 1 to get information about success or
  *     failure of loading the simage library.
  */
@@ -275,9 +275,11 @@ simage_wrapper(void)
       {
 	/* check for 'd' suffix usage in coinX.dll coinXd.dll */
 	const char * suffix = strstr(COIN_SYSTEM_LIBRARY_NAME, "d.");
-	if (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME)) {
-	  simage_dll_name = "simage1d";
-	}
+        if (suffix) {
+          if (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME)) {
+            simage_dll_name = "simage1d";
+          }
+        }
       }
 #endif
 
@@ -357,7 +359,7 @@ simage_wrapper(void)
         if (cc_simage_debugging()) {
           cc_debugerror_postinfo ("simage_wrapper",
                                   "simage version: %d.%d.%d",
-                                  si->version.major, 
+                                  si->version.major,
                                   si->version.minor,
                                   si->version.micro);
         }
