@@ -469,6 +469,7 @@ public:
     if (this->camera) this->camera->unref();
   }
 
+  SbBox3f toCameraSpace(const SbXfBox3f & worldbox) const;
   static void shadowmap_glcallback(void * closure, SoAction * action);
   static void shadowmap_post_glcallback(void * closure, SoAction * action);
   void createVSMProgram(void);
@@ -600,7 +601,7 @@ public:
   void setFragmentShader(SoState * state);
   void updateSpotCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform);
   void updateDirectionalCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform);
-  const SbXfBox3f & calcBBox(SoShadowLightCache * cache, SbBox3f & worldbox);
+  const SbXfBox3f & calcBBox(SoShadowLightCache * cache);
 
   void renderDepthMap(SoShadowLightCache * cache,
                       SoGLRenderAction * action);
@@ -998,18 +999,23 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
 }
 
 const SbXfBox3f &
-SoShadowGroupP::calcBBox(SoShadowLightCache * cache, SbBox3f & worldbox)
+SoShadowGroupP::calcBBox(SoShadowLightCache * cache)
 {
-  SoCamera * cam = cache->camera;
   this->bboxaction.apply(cache->depthmap->scene.getValue());
-  SbXfBox3f & xbox = this->bboxaction.getXfBoundingBox();
-  worldbox = xbox.project();
+  return this->bboxaction.getXfBoundingBox();
+}
+
+SbBox3f 
+SoShadowLightCache::toCameraSpace(const SbXfBox3f & worldbox) const
+{
+  SoCamera * cam = this->camera;
   SbMatrix mat;
+  SbXfBox3f xbox = worldbox;
   mat.setTranslate(- cam->position.getValue());
   xbox.transform(mat);
   mat = cam->orientation.getValue().inverse();
   xbox.transform(mat);
-  return xbox;
+  return xbox.project();
 }
 
 void
@@ -1056,8 +1062,8 @@ SoShadowGroupP::updateSpotCamera(SoState * state, SoShadowLightCache * cache, co
     }
   }
   if (needbbox) {
-    SbBox3f worldbox;
-    SbBox3f box = this->calcBBox(cache, worldbox).project();
+    const SbXfBox3f & worldbox = this->calcBBox(cache);
+    SbBox3f box = cache->toCameraSpace(worldbox);
     
     // Bounding box was calculated in camera space, so we need to "flip"
     // the box (because camera is pointing in the (0,0,-1) direction
@@ -1121,20 +1127,25 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   assert(cache->light->isOfType(SoShadowDirectionalLight::getClassTypeId()));
   SoShadowDirectionalLight * light = static_cast<SoShadowDirectionalLight*> (cache->light);
 
-  SbBox3f worldbox;  
-  SbBox3f box = this->calcBBox(cache, worldbox).project();
-  SbVec3f pos = worldbox.getCenter();
   SbVec3f dir = light->direction.getValue();
   transform.multDirMatrix(dir, dir);
   (void) dir.normalize();
-  cam->position.setValue(pos);
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
     
   SbViewVolume vv = SoViewVolumeElement::get(state);
+  const SbXfBox3f & worldbox = this->calcBBox(cache);
   SbBox3f isect = vv.intersectionBox(worldbox);
   SbViewportRegion vp = SoViewportRegionElement::get(state);
   cam->viewBoundingBox(isect, vp.getViewportAspectRatio(), 1.0f);
-  pos = cam->position.getValue();
+  SbBox3f box = cache->toCameraSpace(worldbox);
+
+  // Bounding box was calculated in camera space, so we need to "flip"
+  // the box (because camera is pointing in the (0,0,-1) direction
+  // from origo.
+  cam->nearDistance = -box.getMax()[2];
+  cam->farDistance = -box.getMin()[2];
+
+  SbVec3f pos = cam->position.getValue();
   SbPlane plane(dir, pos);
   // move to eye space
   plane.transform(SoViewingMatrixElement::get(state));
@@ -1150,6 +1161,7 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
           isect.getMax()[1],
           isect.getMax()[2]);
   fprintf(stderr,"plane: %g %g %g, %g\n", N[0], N[1], N[2], D);
+  fprintf(stderr,"nearfar: %g %g\n", cam->nearDistance.getValue(), cam->farDistance.getValue());
 #endif
 
   cache->fragment_lightplane->value.setValue(N[0], N[1], N[2], D);
@@ -1159,8 +1171,8 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   float visnear = cam->nearDistance.getValue();
   float visfar = cam->farDistance.getValue();
   
-  if (visnear > 0.0f) cache->nearval = visnear;
-  if (visfar > 0.0f) cache->farval = visfar;
+  cache->nearval = visnear;
+  cache->farval = visfar;
   
   if (cache->nearval != cam->nearDistance.getValue()) {
     cam->nearDistance = cache->nearval;
