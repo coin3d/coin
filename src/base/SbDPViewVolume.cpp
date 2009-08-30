@@ -47,6 +47,7 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbVec2d.h>
 #include <Inventor/SbVec3d.h>
+#include <Inventor/SbDPPlane.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -1242,6 +1243,7 @@ SbDPViewVolume::transform(const SbDPMatrix & matrix)
   SbVec3d newlrf;
   SbVec3d newulf;
   matrix.multVecMatrix(oldprojpt, newprojpt);
+  
 
   // need to translate frustum point with the projection point before
   // transforming, then translate back afterwards.
@@ -1269,8 +1271,9 @@ SbDPViewVolume::transform(const SbDPMatrix & matrix)
   this->llf = newllf;
   this->ulf = newulf;
   this->lrf = newlrf;
-  this->nearDist = (nearpt-newprojpt).length();
-  this->nearToFar = (farpt-newprojpt).length() - this->nearDist; 
+  SbDPPlane projPlane(this->projDir, this->projPoint);
+  this->nearDist = projPlane.getDistance(nearpt);
+  this->nearToFar = (farpt-nearpt).length();
 }
 
 /*!
