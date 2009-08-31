@@ -1814,14 +1814,14 @@ namespace { namespace SoGL { namespace FaceSet {
              int MaterialBinding,
              int VertexAttributeBinding >
   static void GLRender(const SoGLCoordinateElement * const vertexlist,
-		       const int32_t *vertexindices,
-		       int numindices,
-		       const SbVec3f *normals,
-		       const int32_t *normalindices,
-		       SoMaterialBundle *materials,
-		       const int32_t *matindices,
-		       const SoTextureCoordinateBundle * const texcoords,
-		       const int32_t *texindices,
+                     const int32_t *vertexindices,
+                     int numindices,
+                     const SbVec3f *normals,
+                     const int32_t *normalindices,
+                     SoMaterialBundle *materials,
+                     const int32_t *matindices,
+                     const SoTextureCoordinateBundle * const texcoords,
+                     const int32_t *texindices,
                        SoVertexAttributeBundle * const attribs,
                        const int dotexture,
                        const int doattribs)
@@ -1860,10 +1860,10 @@ namespace { namespace SoGL { namespace FaceSet {
     SbVec3f dummynormal(0,0,1);
     const SbVec3f * currnormal = &dummynormal;
     if ((AttributeBinding)NormalBinding == PER_VERTEX ||
-	(AttributeBinding)NormalBinding == PER_FACE ||
-	(AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
-	(AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
-	dotexture) {
+       (AttributeBinding)NormalBinding == PER_FACE ||
+       (AttributeBinding)NormalBinding == PER_VERTEX_INDEXED ||
+       (AttributeBinding)NormalBinding == PER_FACE_INDEXED ||
+       dotexture) {
       if (normals) currnormal = normals;
     }
 
@@ -1957,7 +1957,7 @@ namespace { namespace SoGL { namespace FaceSet {
       }
 
       if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
-	attribs->send(attribnr++);
+       attribs->send(attribnr++);
       } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
         attribs->send(*vertexindices++);
       }
@@ -1993,7 +1993,7 @@ namespace { namespace SoGL { namespace FaceSet {
       }
 
       if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
-	attribs->send(attribnr++);
+       attribs->send(attribnr++);
       } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
         attribs->send(*vertexindices++);
       }
@@ -2029,7 +2029,7 @@ namespace { namespace SoGL { namespace FaceSet {
       }
 
       if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
-	attribs->send(attribnr++);
+       attribs->send(attribnr++);
       } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
         attribs->send(*vertexindices++);
       }
@@ -2416,7 +2416,7 @@ namespace { namespace SoGL { namespace TriStripSet {
                  (AttributeBinding)MaterialBinding == PER_STRIP_INDEXED ||
                  (AttributeBinding)MaterialBinding == PER_TRIANGLE_INDEXED) {
         materials->send(*matindices++, TRUE);
-      }      
+      }
       if ((AttributeBinding)NormalBinding == PER_VERTEX ||
           (AttributeBinding)NormalBinding == PER_STRIP ||
           (AttributeBinding)NormalBinding == PER_TRIANGLE) {

@@ -192,13 +192,13 @@
   probably other ways to do this as well.
 
   \code
-  void render_offscreen(const SbVec2s size) 
+  void render_offscreen(const SbVec2s size)
   {
     SbVec2s glsize = this->getGLSize(); // size of your normal viewer
     float glar = float(glsize[0] / float(glsize[1]));
     float ar = float(size[0]) / float(size[1]);
     SoCamera * camera = this->getCamera(); // the camera you're using
-    SoCamera::ViewportMapping oldmap = (SoCamera::ViewportMapping) 
+    SoCamera::ViewportMapping oldmap = (SoCamera::ViewportMapping)
       camera->viewportMapping.getValue();
     float oldar = camera->aspectRatio.getValue();
 

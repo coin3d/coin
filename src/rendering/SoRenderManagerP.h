@@ -58,7 +58,7 @@ public:
 
   void setClippingPlanes(void);
   static void updateClippingPlanesCB(void * closure, SoSensor * sensor);
-  void getCameraCoordinateSystem(SbMatrix & matrix, 
+  void getCameraCoordinateSystem(SbMatrix & matrix,
                                  SbMatrix & inverse);
   static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
   static void cleanup(void);
@@ -145,7 +145,7 @@ class SoRenderManagerRootSensor : public SoNodeSensor {
 public:
   SoRenderManagerRootSensor(SoSensorCB * func, void * data) : inherited(func, data) { }
   virtual ~SoRenderManagerRootSensor() { }
-  
+
   virtual void notify(SoNotList * l);
   static SbBool debug(void);
 

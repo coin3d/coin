@@ -38,14 +38,14 @@
 Display * SoOffscreenGLXData::display = NULL;
 static SbBool display_initialized = FALSE;
 
-void 
-SoOffscreenGLXData::cleanup(void) 
+void
+SoOffscreenGLXData::cleanup(void)
 {
   display_initialized = FALSE;
   // FIXME: Disabled since this might cause problems according to the
   // comment below (see getDisplay). Not sure if *not* closing the
   // display cannot also lead to problems though... 20060208 kyrah
-#if 0 
+#if 0
   XCloseDisplay(display);
   display = NULL;
 #endif
@@ -59,7 +59,7 @@ SoOffscreenGLXData::getDisplay(void)
     coin_atexit((coin_atexit_f*)SoOffscreenGLXData::cleanup, CC_ATEXIT_NORMAL);
 
     // Keep a single static display-ptr.
-    // 
+    //
     // This resource is never deallocated explicitly (but of course
     // implicitly by the system on application close-down). This to
     // work around some strange problems with the NVidia-driver 29.60

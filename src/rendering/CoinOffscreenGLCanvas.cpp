@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include "misc/CoinOffscreenGLCanvas.h"
+#include "CoinOffscreenGLCanvas.h"
 
 #include <limits.h>
 
@@ -161,7 +161,7 @@ CoinOffscreenGLCanvas::getActualSize(void) const
 // *************************************************************************
 
 uint32_t
-CoinOffscreenGLCanvas::tryActivateGLContext(void) 
+CoinOffscreenGLCanvas::tryActivateGLContext(void)
 {
   if (this->size == SbVec2s(0, 0)) { return 0; }
 
@@ -187,12 +187,12 @@ CoinOffscreenGLCanvas::tryActivateGLContext(void)
     this->current_hdc = cc_glglue_win32_HDC(this->context);
   }
 
-  if (cc_glglue_context_make_current(this->context) == FALSE) { 
+  if (cc_glglue_context_make_current(this->context) == FALSE) {
     if (CoinOffscreenGLCanvas::debug()) {
       SoDebugError::post("CoinOffscreenGLCanvas::tryActivateGLContext",
                          "Couldn't make context current.");
     }
-    return 0; 
+    return 0;
   }
   return this->renderid;
 }
@@ -219,8 +219,8 @@ CoinOffscreenGLCanvas::clampToPixelSizeRoof(SbVec2s & s)
 // If the given context can not be made current (due to e.g. any error
 // condition resulting from the attempt at setting up the offscreen GL
 // context), 0 is returned.
-uint32_t 
-CoinOffscreenGLCanvas::activateGLContext(void) 
+uint32_t
+CoinOffscreenGLCanvas::activateGLContext(void)
 {
   // We try to allocate the wanted size, and then if we fail,
   // successively try with smaller sizes (alternating between halving
@@ -391,7 +391,7 @@ CoinOffscreenGLCanvas::readPixels(uint8_t * dst,
 static SbBool tilesize_cached = FALSE;
 static unsigned int maxtile[2] = { 0, 0 };
 
-static void tilesize_cleanup(void) 
+static void tilesize_cleanup(void)
 {
   tilesize_cached = FALSE;
   maxtile[0] = maxtile[1] = 0;

@@ -50,7 +50,7 @@ public:
                   unsigned int nrcomponents) const;
 
   static SbBool debug(void);
-  
+
   static SbBool allowResourcehog(void);
 
   const void * const & getHDC(void) const; // ugliness to support SoOffscreenRenderer::getDC()

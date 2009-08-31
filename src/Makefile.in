@@ -303,7 +303,7 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)
 @MAC_FRAMEWORK_TRUE@SUBDIRS = 
 @MAC_FRAMEWORK_FALSE@SUBDIRS = \
 @MAC_FRAMEWORK_FALSE@	extensions xml actions base bundles caches details draggers elements \
-@MAC_FRAMEWORK_FALSE@	engines errors events fields fonts glue io manips misc lists nodekits \
+@MAC_FRAMEWORK_FALSE@	engines errors events fields fonts glue io manips misc rendering lists nodekits \
 @MAC_FRAMEWORK_FALSE@	navigation nodes shapenodes projectors sensors upgraders \
 @MAC_FRAMEWORK_FALSE@	3ds collision hardcopy shadows geo threads shaders profiler \
 @MAC_FRAMEWORK_FALSE@	vrml97 foreignfiles scxml doc .
@@ -319,20 +319,22 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 @HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_LIBADD = 
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_LIBADD = \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	actions/libactions.la base/libbase.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/GL/libglelements.la engines/libengines.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	errors/liberrors.la events/libevents.la fields/libfields.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fonts/libfonts.la glue/libglue.la io/libio.la misc/libmisc.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shapenodes/libshapenodes.la projectors/libprojectors.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	threads/libthreads.la shaders/libshaders.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_LIBADD = actions/libactions.la base/libbase.la       \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	bundles/libbundles.la caches/libcaches.la                       \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	elements/libelements.la elements/GL/libglelements.la            \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	engines/libengines.la errors/liberrors.la events/libevents.la   \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	fields/libfields.la fonts/libfonts.la glue/libglue.la           \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	io/libio.la misc/libmisc.la rendering/librendering.la           \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la     \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shapenodes/libshapenodes.la projectors/libprojectors.la         \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	sensors/libsensors.la details/libdetails.la                     \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	draggers/libdraggers.la manips/libmanips.la                     \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	upgraders/libupgraders.la navigation/libnavigation.la           \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	3ds/libformat3ds.la collision/libcollision.la                   \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	hardcopy/libhardcopy.la threads/libthreads.la                   \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la shadows/libshadows.la geo/libgeo.la       \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	foreignfiles/libforeignfiles.la xml/libxml.la                   \
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la profiler/libprofiler.la                   \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
 
 
@@ -359,6 +361,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @MAC_FRAMEWORK_TRUE@	glue/all-glue-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	io/all-io-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	misc/all-misc-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	rendering/all-rendering-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	lists/all-lists-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	nodekits/all-nodekits-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	nodes/all-nodes-cpp.cpp \
@@ -403,21 +406,22 @@ EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(PrivateHeaders)
 
 
 # **************************************************************************
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
-	actions/actions.lst base/base.lst \
-	bundles/bundles.lst caches/caches.lst elements/elements.lst \
-	elements/GL/glelements.lst engines/engines.lst \
-	errors/errors.lst events/events.lst fields/fields.lst \
-	fonts/fonts.lst glue/glue.lst io/io.lst misc/misc.lst lists/lists.lst \
-	nodekits/nodekits.lst nodes/nodes.lst shapenodes/shapenodes.lst \
-	projectors/projectors.lst sensors/sensors.lst navigation/navigation.lst \
-	details/details.lst draggers/draggers.lst manips/manips.lst \
-	upgraders/upgraders.lst \
-	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
-	threads/threads.lst shaders/shaders.lst \
-	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
-	xml/xml.lst xml/expat/expat.lst profiler/profiler.lst \
-	vrml97/vrml97.lst scxml/scxml.lst $(SUPERGLULSTADD)
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = actions/actions.lst       \
+	base/base.lst bundles/bundles.lst caches/caches.lst             \
+	elements/elements.lst elements/GL/glelements.lst                \
+	engines/engines.lst errors/errors.lst events/events.lst         \
+	fields/fields.lst fonts/fonts.lst glue/glue.lst io/io.lst       \
+	misc/misc.lst rendering/rendering.lst lists/lists.lst           \
+	nodekits/nodekits.lst nodes/nodes.lst                           \
+	shapenodes/shapenodes.lst projectors/projectors.lst             \
+	sensors/sensors.lst navigation/navigation.lst                   \
+	details/details.lst draggers/draggers.lst manips/manips.lst     \
+	upgraders/upgraders.lst 3ds/format3ds.lst                       \
+	collision/collision.lst hardcopy/hardcopy.lst                   \
+	threads/threads.lst shaders/shaders.lst shadows/shadows.lst     \
+	geo/geo.lst foreignfiles/foreignfiles.lst xml/xml.lst           \
+	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst     \
+	scxml/scxml.lst $(SUPERGLULSTADD)
 
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-headerpad_max_install_names 
 @MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
@@ -444,6 +448,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_TRUE@	events/events.lst fields/fields.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	fonts/fonts.lst glue/glue.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	io/io.lst misc/misc.lst \
+@BUILD_WITH_SUPERGLU_TRUE@	rendering/rendering.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	lists/lists.lst nodekits/nodekits.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	nodes/nodes.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	shapenodes/shapenodes.lst \
@@ -475,7 +480,9 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_FALSE@	errors/errors.lst events/events.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	fields/fields.lst fonts/fonts.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	glue/glue.lst io/io.lst \
-@BUILD_WITH_SUPERGLU_FALSE@	misc/misc.lst lists/lists.lst \
+@BUILD_WITH_SUPERGLU_FALSE@	misc/misc.lst \
+@BUILD_WITH_SUPERGLU_FALSE@	rendering/rendering.lst \
+@BUILD_WITH_SUPERGLU_FALSE@	lists/lists.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	nodekits/nodekits.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	nodes/nodes.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	shapenodes/shapenodes.lst \
@@ -504,9 +511,9 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 	engines/all-engines-c.c errors/all-errors-cpp.cpp \
 	events/all-events-cpp.cpp fields/all-fields-cpp.cpp \
 	fonts/all-fonts-cpp.cpp glue/all-glue-cpp.cpp io/all-io-cpp.cpp \
-	misc/all-misc-cpp.cpp lists/all-lists-cpp.cpp \
-	nodekits/all-nodekits-cpp.cpp nodes/all-nodes-cpp.cpp \
-	shapenodes/all-shapenodes-cpp.cpp \
+	misc/all-misc-cpp.cpp rendering/all-rendering-cpp.cpp \
+	lists/all-lists-cpp.cpp nodekits/all-nodekits-cpp.cpp \
+	nodes/all-nodes-cpp.cpp shapenodes/all-shapenodes-cpp.cpp \
 	projectors/all-projectors-cpp.cpp sensors/all-sensors-cpp.cpp \
 	details/all-details-cpp.cpp draggers/all-draggers-cpp.cpp \
 	manips/all-manips-cpp.cpp upgraders/all-upgraders-cpp.cpp \
@@ -532,6 +539,7 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 @MAC_FRAMEWORK_TRUE@	all-fonts-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-glue-cpp.$(OBJEXT) all-io-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-misc-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-rendering-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-lists-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-nodekits-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-nodes-cpp.$(OBJEXT) \
@@ -579,6 +587,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	glue/libglue.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	io/libio.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	misc/libmisc.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	rendering/librendering.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodekits/libnodekits.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodes/libnodes.la \
@@ -621,6 +630,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	glue/libglue.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	io/libio.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	misc/libmisc.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	rendering/librendering.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	lists/liblists.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodekits/libnodekits.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	nodes/libnodes.la \
@@ -655,9 +665,9 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
 	engines/all-engines-c.c errors/all-errors-cpp.cpp \
 	events/all-events-cpp.cpp fields/all-fields-cpp.cpp \
 	fonts/all-fonts-cpp.cpp glue/all-glue-cpp.cpp io/all-io-cpp.cpp \
-	misc/all-misc-cpp.cpp lists/all-lists-cpp.cpp \
-	nodekits/all-nodekits-cpp.cpp nodes/all-nodes-cpp.cpp \
-	shapenodes/all-shapenodes-cpp.cpp \
+	misc/all-misc-cpp.cpp rendering/all-rendering-cpp.cpp \
+	lists/all-lists-cpp.cpp nodekits/all-nodekits-cpp.cpp \
+	nodes/all-nodes-cpp.cpp shapenodes/all-shapenodes-cpp.cpp \
 	projectors/all-projectors-cpp.cpp sensors/all-sensors-cpp.cpp \
 	details/all-details-cpp.cpp draggers/all-draggers-cpp.cpp \
 	manips/all-manips-cpp.cpp upgraders/all-upgraders-cpp.cpp \
@@ -676,20 +686,20 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	all-errors-cpp.lo all-events-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-fields-cpp.lo all-fonts-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-glue-cpp.lo all-io-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-misc-cpp.lo all-lists-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-nodekits-cpp.lo all-nodes-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-shapenodes-cpp.lo all-projectors-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-sensors-cpp.lo all-details-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-draggers-cpp.lo all-manips-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-upgraders-cpp.lo all-navigation-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-3ds-cpp.lo all-collision-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-hardcopy-cpp.lo all-threads-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-shaders-cpp.lo all-shadows-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-geo-cpp.lo all-foreignfiles-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-xml-cpp.lo all-expat-c.lo \
-@MAC_FRAMEWORK_TRUE@	all-profiler-cpp.lo all-vrml97-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	all-scxml-cpp.lo tidbits.lo \
-@MAC_FRAMEWORK_TRUE@	CoinGLPerformance.lo
+@MAC_FRAMEWORK_TRUE@	all-misc-cpp.lo all-rendering-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-lists-cpp.lo all-nodekits-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-nodes-cpp.lo all-shapenodes-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-projectors-cpp.lo all-sensors-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-details-cpp.lo all-draggers-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-manips-cpp.lo all-upgraders-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-navigation-cpp.lo all-3ds-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-collision-cpp.lo all-hardcopy-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-threads-cpp.lo all-shaders-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-shadows-cpp.lo all-geo-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-foreignfiles-cpp.lo all-xml-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-expat-c.lo all-profiler-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.lo all-scxml-cpp.lo \
+@MAC_FRAMEWORK_TRUE@	tidbits.lo CoinGLPerformance.lo
 @MAC_FRAMEWORK_FALSE@am__objects_3 = tidbits.lo CoinGLPerformance.lo
 am_libCoin@SUFFIX@_la_OBJECTS = $(am__objects_3)
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
@@ -757,6 +767,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/all-profiler-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-rendering-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-rendering-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Plo \
@@ -807,9 +819,10 @@ DIST_COMMON = $(noinst_HEADERS) Makefile.am Makefile.in config.h.in \
 	discard.h.in setup.h.in
 DIST_SUBDIRS = extensions xml actions base bundles caches details \
 	draggers elements engines errors events fields fonts glue io \
-	manips misc lists nodekits navigation nodes shapenodes \
-	projectors sensors upgraders 3ds collision hardcopy shadows geo \
-	threads shaders profiler vrml97 foreignfiles scxml doc .
+	manips misc rendering lists nodekits navigation nodes \
+	shapenodes projectors sensors upgraders 3ds collision hardcopy \
+	shadows geo threads shaders profiler vrml97 foreignfiles scxml \
+	doc .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: discard.h config.h setup.h
@@ -996,6 +1009,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-profiler-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-rendering-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-rendering-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Plo@am__quote@
@@ -1613,6 +1628,39 @@ all-misc-cpp.lo: misc/all-misc-cpp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-misc-cpp.Plo' tmpdepfile='$(DEPDIR)/all-misc-cpp.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-misc-cpp.lo `test -f 'misc/all-misc-cpp.cpp' || echo '$(srcdir)/'`misc/all-misc-cpp.cpp
+
+all-rendering-cpp.o: rendering/all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-rendering-cpp.o -MD -MP -MF "$(DEPDIR)/all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-rendering-cpp.o `test -f 'rendering/all-rendering-cpp.cpp' || echo '$(srcdir)/'`rendering/all-rendering-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-rendering-cpp.Tpo" "$(DEPDIR)/all-rendering-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='rendering/all-rendering-cpp.cpp' object='all-rendering-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-rendering-cpp.Po' tmpdepfile='$(DEPDIR)/all-rendering-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-rendering-cpp.o `test -f 'rendering/all-rendering-cpp.cpp' || echo '$(srcdir)/'`rendering/all-rendering-cpp.cpp
+
+all-rendering-cpp.obj: rendering/all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-rendering-cpp.obj -MD -MP -MF "$(DEPDIR)/all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-rendering-cpp.obj `if test -f 'rendering/all-rendering-cpp.cpp'; then $(CYGPATH_W) 'rendering/all-rendering-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/rendering/all-rendering-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-rendering-cpp.Tpo" "$(DEPDIR)/all-rendering-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='rendering/all-rendering-cpp.cpp' object='all-rendering-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-rendering-cpp.Po' tmpdepfile='$(DEPDIR)/all-rendering-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-rendering-cpp.obj `if test -f 'rendering/all-rendering-cpp.cpp'; then $(CYGPATH_W) 'rendering/all-rendering-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/rendering/all-rendering-cpp.cpp'; fi`
+
+all-rendering-cpp.lo: rendering/all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-rendering-cpp.lo -MD -MP -MF "$(DEPDIR)/all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-rendering-cpp.lo `test -f 'rendering/all-rendering-cpp.cpp' || echo '$(srcdir)/'`rendering/all-rendering-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-rendering-cpp.Tpo" "$(DEPDIR)/all-rendering-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='rendering/all-rendering-cpp.cpp' object='all-rendering-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-rendering-cpp.Plo' tmpdepfile='$(DEPDIR)/all-rendering-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-rendering-cpp.lo `test -f 'rendering/all-rendering-cpp.cpp' || echo '$(srcdir)/'`rendering/all-rendering-cpp.cpp
 
 all-lists-cpp.o: lists/all-lists-cpp.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-lists-cpp.o -MD -MP -MF "$(DEPDIR)/all-lists-cpp.Tpo" \

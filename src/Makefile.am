@@ -39,7 +39,7 @@ SUBDIRS =
 else
 SUBDIRS = \
 	extensions xml actions base bundles caches details draggers elements \
-	engines errors events fields fonts glue io manips misc lists nodekits \
+	engines errors events fields fonts glue io manips misc rendering lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads shaders profiler \
 	vrml97 foreignfiles scxml doc .
@@ -68,20 +68,22 @@ else
 if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
 else
-libCoin@SUFFIX@_la_LIBADD = \
-	actions/libactions.la base/libbase.la \
-	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-	elements/GL/libglelements.la engines/libengines.la \
-	errors/liberrors.la events/libevents.la fields/libfields.la \
-	fonts/libfonts.la glue/libglue.la io/libio.la misc/libmisc.la \
-	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
-	shapenodes/libshapenodes.la projectors/libprojectors.la \
-	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la upgraders/libupgraders.la navigation/libnavigation.la \
-	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
-	threads/libthreads.la shaders/libshaders.la \
-	shadows/libshadows.la geo/libgeo.la foreignfiles/libforeignfiles.la \
-	xml/libxml.la xml/expat/libexpat.la profiler/libprofiler.la \
+libCoin@SUFFIX@_la_LIBADD = actions/libactions.la base/libbase.la       \
+	bundles/libbundles.la caches/libcaches.la                       \
+	elements/libelements.la elements/GL/libglelements.la            \
+	engines/libengines.la errors/liberrors.la events/libevents.la   \
+	fields/libfields.la fonts/libfonts.la glue/libglue.la           \
+	io/libio.la misc/libmisc.la rendering/librendering.la           \
+	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la     \
+	shapenodes/libshapenodes.la projectors/libprojectors.la         \
+	sensors/libsensors.la details/libdetails.la                     \
+	draggers/libdraggers.la manips/libmanips.la                     \
+	upgraders/libupgraders.la navigation/libnavigation.la           \
+	3ds/libformat3ds.la collision/libcollision.la                   \
+	hardcopy/libhardcopy.la threads/libthreads.la                   \
+	shaders/libshaders.la shadows/libshadows.la geo/libgeo.la       \
+	foreignfiles/libforeignfiles.la xml/libxml.la                   \
+	xml/expat/libexpat.la profiler/libprofiler.la                   \
 	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
 endif
 endif
@@ -106,6 +108,7 @@ RegularSources = \
 	glue/all-glue-cpp.cpp \
 	io/all-io-cpp.cpp \
 	misc/all-misc-cpp.cpp \
+	rendering/all-rendering-cpp.cpp \
 	lists/all-lists-cpp.cpp \
 	nodekits/all-nodekits-cpp.cpp \
 	nodes/all-nodes-cpp.cpp \
@@ -149,21 +152,22 @@ EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(PrivateHeaders)
 
 # **************************************************************************
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
-	actions/actions.lst base/base.lst \
-	bundles/bundles.lst caches/caches.lst elements/elements.lst \
-	elements/GL/glelements.lst engines/engines.lst \
-	errors/errors.lst events/events.lst fields/fields.lst \
-	fonts/fonts.lst glue/glue.lst io/io.lst misc/misc.lst lists/lists.lst \
-	nodekits/nodekits.lst nodes/nodes.lst shapenodes/shapenodes.lst \
-	projectors/projectors.lst sensors/sensors.lst navigation/navigation.lst \
-	details/details.lst draggers/draggers.lst manips/manips.lst \
-	upgraders/upgraders.lst \
-	3ds/format3ds.lst collision/collision.lst hardcopy/hardcopy.lst \
-	threads/threads.lst shaders/shaders.lst \
-	shadows/shadows.lst geo/geo.lst foreignfiles/foreignfiles.lst \
-	xml/xml.lst xml/expat/expat.lst profiler/profiler.lst \
-	vrml97/vrml97.lst scxml/scxml.lst $(SUPERGLULSTADD)
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = actions/actions.lst       \
+	base/base.lst bundles/bundles.lst caches/caches.lst             \
+	elements/elements.lst elements/GL/glelements.lst                \
+	engines/engines.lst errors/errors.lst events/events.lst         \
+	fields/fields.lst fonts/fonts.lst glue/glue.lst io/io.lst       \
+	misc/misc.lst rendering/rendering.lst lists/lists.lst           \
+	nodekits/nodekits.lst nodes/nodes.lst                           \
+	shapenodes/shapenodes.lst projectors/projectors.lst             \
+	sensors/sensors.lst navigation/navigation.lst                   \
+	details/details.lst draggers/draggers.lst manips/manips.lst     \
+	upgraders/upgraders.lst 3ds/format3ds.lst                       \
+	collision/collision.lst hardcopy/hardcopy.lst                   \
+	threads/threads.lst shaders/shaders.lst shadows/shadows.lst     \
+	geo/geo.lst foreignfiles/foreignfiles.lst xml/xml.lst           \
+	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst     \
+	scxml/scxml.lst $(SUPERGLULSTADD)
 
 # **************************************************************************
 # Installation information.

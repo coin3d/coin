@@ -2342,6 +2342,7 @@ AC_CONFIG_FILES([
         src/io/Makefile
         src/manips/Makefile
         src/misc/Makefile
+        src/rendering/Makefile
         src/lists/Makefile
         src/navigation/Makefile
         src/nodekits/Makefile

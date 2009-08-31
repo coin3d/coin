@@ -1620,7 +1620,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
   const cc_glglue * glw = sogl_glue_instance(state);
   SbBool mipmap = this->shouldCreateMipmap();
-  
+
   if (imageptr) {
     if (is3D ||
         (!SoGLDriverDatabase::isSupported(glw, SO_GL_NON_POWER_OF_TWO_TEXTURES) ||
@@ -1852,7 +1852,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       // Create only level 0 texture. Mimpamps might be created by glGenerateMipmap
       glTexImage2D(target, 0, internalFormat, w, h,
                    border, dataFormat, GL_UNSIGNED_BYTE, texture);
-      
+
       if (generatemipmap) {
         SbBool wasenabled = TRUE;
         // Woraround for ATi driver bug. GL_TEXTURE_2D needs to be
@@ -2115,7 +2115,7 @@ SoGLImage::endFrame(SoState *state)
       SoGLImage *img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
       if (img->pimpl->endframecb)
-        cb_list.push_back(std::make_pair(img->pimpl->endframecb, 
+        cb_list.push_back(std::make_pair(img->pimpl->endframecb,
                                          img->pimpl->endframeclosure));
     }
     UNLOCK_GLIMAGE;

@@ -57,7 +57,7 @@
 #pragma warning(disable:4786)
 #endif // VC6.0
 
-#include "misc/SoRenderManagerP.h"
+#include "SoRenderManagerP.h"
 
 //FIXME Improve this doc. BFG 20090123
 /*!
@@ -1574,9 +1574,9 @@ void
 SoRenderManager::setRedrawPriority(const uint32_t priority)
 {
   PRIVATE(this)->redrawpri = priority;
-  
+
   if (PRIVATE(this)->redrawshot) PRIVATE(this)->redrawshot->setPriority(priority);
-  if (PRIVATE(this)->rootsensor) PRIVATE(this)->rootsensor->setPriority(PRIVATE(this)->redrawpri == 0 ? 0 : 1); 
+  if (PRIVATE(this)->rootsensor) PRIVATE(this)->rootsensor->setPriority(PRIVATE(this)->redrawpri == 0 ? 0 : 1);
 }
 
 /*!

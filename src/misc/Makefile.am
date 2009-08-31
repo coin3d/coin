@@ -1,25 +1,25 @@
 RegularSources = \
+	AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp \
+	SoAudioDevice.cpp \
 	SoBase.cpp \
 	SoBaseP.cpp \
 	SoChildList.cpp \
 	SoCompactPathList.cpp \
 	SoContextHandler.cpp \
-	SoGL.cpp \
-	SoGLDriverDatabase.cpp \
-	SoGLImage.cpp \
-	SoGLCubeMapImage.cpp \
-	SoGLBigImage.cpp \
-	SoGlyph.cpp \
-	SoNormalGenerator.cpp \
-	SoNotification.cpp \
-	SoNotRec.cpp \
-	SoState.cpp \
 	SoDB.cpp \
-        SoDBP.cpp \
+	SoDebug.cpp \
 	SoFullPath.cpp \
-	SoTempPath.cpp \
-	SoLightPath.cpp \
+	SoGLBigImage.cpp \
+	SoGenerate.cpp \
+	SoGlyph.cpp \
 	SoInteraction.cpp \
+	SoJavaScriptEngine.cpp \
+	SoLightPath.cpp \
+	SoLockManager.cpp \
+	SoNormalGenerator.cpp \
+	SoNotRec.cpp \
+	SoNotification.cpp \
 	SoPath.cpp \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
@@ -28,26 +28,13 @@ RegularSources = \
 	SoProtoInstance.cpp \
 	SoSceneManager.cpp \
 	SoSceneManagerP.cpp \
-        SoRenderManager.cpp \
-	SoRenderManagerP.cpp \
-        SoEventManager.cpp \
-	SoType.cpp \
-	SoOffscreenRenderer.cpp \
-	SoOffscreenCGData.cpp \
-	SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp \
-	SoVBO.cpp \
 	SoShaderGenerator.cpp \
-	SoVertexArrayIndexer.cpp \
-	SoGenerate.cpp \
-	SoLockManager.cpp \
-	SoAudioDevice.cpp \
-	AudioTools.cpp \
-	CoinStaticObjectInDLL.cpp \
-	CoinOffscreenGLCanvas.cpp \
-	SoDebug.cpp \
-	SoJavaScriptEngine.cpp \
-        CoinResources.cpp
+	SoState.cpp \
+	SoTempPath.cpp \
+	SoType.cpp \
+        CoinResources.cpp \
+        SoDBP.cpp \
+        SoEventManager.cpp
 
 LinkHackSources = \
 	all-misc-cpp.cpp
@@ -62,15 +49,8 @@ PrivateHeaders = \
         SoDBP.h \
         SoBaseP.h \
 	AudioTools.h \
-	CoinOffscreenGLCanvas.h \
-	SoVBO.h \
-	SoVertexArrayIndexer.h \
-	SoOffscreenCGData.h \
-	SoOffscreenGLXData.h \
-	SoOffscreenWGLData.h \
 	CoinStaticObjectInDLL.h \
         SoSceneManagerP.h \
-        SoRenderManagerP.h \
 	cppmangle.icc \
 	systemsanity.icc \
         CoinResources.h

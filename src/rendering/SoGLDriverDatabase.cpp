@@ -183,7 +183,7 @@ SoGLDriverDatabaseP::multidraw_elements_wrapper(const cc_glglue * glue)
   return FALSE;
 }
 
-SbBool 
+SbBool
 SoGLDriverDatabaseP::glsl_clip_vertex_hw_wrapper(const cc_glglue * glue)
 {
   // ATi doesn't support gl_ClipVertex in hardware, according to their own own paper

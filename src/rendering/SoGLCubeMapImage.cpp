@@ -66,7 +66,7 @@
 
 static GLenum get_gltarget(SoGLCubeMapImage::Target target)
 {
-  GLenum ret; 
+  GLenum ret;
   switch (target) {
   default:
   case SoGLCubeMapImage::POSITIVE_X:
@@ -77,7 +77,7 @@ static GLenum get_gltarget(SoGLCubeMapImage::Target target)
     break;
   case SoGLCubeMapImage::POSITIVE_Y:
     ret = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-    break;    
+    break;
   case SoGLCubeMapImage::NEGATIVE_Y:
     ret = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
     break;
@@ -93,7 +93,7 @@ static GLenum get_gltarget(SoGLCubeMapImage::Target target)
 
 class SoGLCubeMapImageP {
 public:
-  SoGLCubeMapImageP(void) { 
+  SoGLCubeMapImageP(void) {
   }
   ~SoGLCubeMapImageP() { }
 
@@ -110,7 +110,7 @@ public:
     SoGLDisplayList * dlist;
     uint32_t age;
   };
-  
+
   SoGLDisplayList * findDL(SoState *state) {
     int currcontext = SoGLCacheContextElement::get(state);
     int i, n = this->dlists.getLength();
@@ -131,7 +131,7 @@ public:
 #ifdef COIN_THREADSAFE
   static SbMutex * mutex;
 #endif // !COIN_THREADSAFE
-  
+
   inline void lock(void) {
 #ifdef COIN_THREADSAFE
     SoGLCubeMapImageP::mutex->lock();
@@ -149,7 +149,7 @@ public:
     thisp->lock();
     int n = thisp->dlists.getLength();
     int i = 0;
-    
+
     while (i < n) {
       if (thisp->dlists[i].dlist->getContext() == (int) context) {
         thisp->dlists[i].dlist->unref(NULL);
@@ -244,7 +244,7 @@ SoGLCubeMapImage::getTypeId(void) const
 }
 
 
-void 
+void
 SoGLCubeMapImage::setCubeMapImage(const Target target,
                                   const unsigned char * bytes,
                                   const SbVec2s & size,
@@ -252,7 +252,7 @@ SoGLCubeMapImage::setCubeMapImage(const Target target,
 {
   int idx = (int) target;
   PRIVATE(this)->image[idx].setValuePtr(size, numcomponents, bytes);
-  
+
   PRIVATE(this)->lock();
   for (int i = 0; i < PRIVATE(this)->dlists.getLength(); i++) {
     PRIVATE(this)->dlists[i].dlist->unref(NULL);
@@ -325,9 +325,9 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
 
           // FIXME: resize image if not power of two
           glTexImage2D(get_gltarget((Target) i),
-                       0, numcomponents, size[0], size[1], 0, 
+                       0, numcomponents, size[0], size[1], 0,
                        format, GL_UNSIGNED_BYTE, bytes);
-          
+
         }
       }
 
