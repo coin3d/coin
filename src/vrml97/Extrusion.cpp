@@ -951,7 +951,12 @@ calculate_y_axis(const SbVec3f * spine, const int i,
   SbVec3f Y;
   if (closed) {
     if (i > 0) {
-      Y = spine[i+1] - spine[i-1];
+      if (i == numspine-1) {
+        Y = spine[1] - spine[i-1];
+      }
+      else {
+        Y = spine[i+1] - spine[i-1];
+      }
     }
     else {
       // use numspine-2, since for closed spines, the last spine point == the first point
@@ -975,12 +980,18 @@ calculate_z_axis(const SbVec3f * spine, const int i,
 
   if (closed) {
     if (i > 0) {
-      z0 = spine[i+1] - spine[i];
-      z1 = spine[i-1] - spine[i];
+      if (i == numspine-1) {
+        z0 = spine[1] - spine[i];
+        z1 = spine[i-1] - spine[i];
+      }
+      else {
+        z0 = spine[i+1] - spine[i];
+        z1 = spine[i-1] - spine[i];
+      }
     }
     else {
       z0 = spine[1] - spine[0];
-      z1 = spine[numspine-1] - spine[0];
+      z1 = spine[numspine >= 2 ? numspine-2 : numspine-1] - spine[0];
     }
   }
   else {
@@ -1114,8 +1125,8 @@ SoVRMLExtrusionP::generateCoords(void)
     }
     else {
       Y = calculate_y_axis(spine, i, numspine, closed);
-      if (Y == empty) Y = prevY;
       Z = calculate_z_axis(spine, i, numspine, closed);
+      if (Y == empty) Y = prevY;
       if (Z == empty) Z = prevZ;
       if (Z.dot(prevZ) < 0) Z = -Z;
     }
