@@ -469,6 +469,71 @@ public:
     if (this->camera) this->camera->unref();
   }
 
+  static int
+  write_short(FILE * fp, unsigned short val)
+  {
+    unsigned char tmp[2];
+    tmp[0] = (unsigned char)(val >> 8);
+    tmp[1] = (unsigned char)(val & 0xff);
+    return fwrite(&tmp, 2, 1, fp);
+  }
+  
+  int dumpBitmap(const char * filename) const {
+    int width;
+    int height;
+    int comp;
+
+    GLint vp[4];
+    glGetIntegerv(GL_VIEWPORT, vp);
+    width = vp[2];
+    height = vp[3];
+    comp = 1;
+    
+    unsigned char * bytes = new unsigned char[width*height*comp];
+    glFlush();
+    glReadPixels(0,0, width, height, GL_RED, GL_UNSIGNED_BYTE, bytes);
+
+    int x, y, c;
+    unsigned char * tmpbuf;
+    unsigned char buf[500];
+
+    FILE * fp = fopen(filename, "wb");
+    if (!fp) {
+      return 0;
+    }
+
+    write_short(fp, 0x01da); /* imagic */
+    write_short(fp, 0x0001); /* raw (no rle yet) */
+    
+    if (comp == 1)
+      write_short(fp, 0x0002); /* 2 dimensions (heightmap) */
+    else
+      write_short(fp, 0x0003); /* 3 dimensions */
+    
+    write_short(fp, (unsigned short) width);
+    write_short(fp, (unsigned short) height);
+    write_short(fp, (unsigned short) comp);
+    
+    memset(buf, 0, 500);
+    buf[7] = 255; /* set maximum pixel value to 255 */
+    strcpy((char *)buf+8, "http://www.coin3d.org");
+    fwrite(buf, 1, 500, fp);
+    
+    tmpbuf = (unsigned char *) malloc(width);
+    
+    for (c = 0; c < comp; c++) {
+      for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+          tmpbuf[x] = bytes[x * comp + y * comp * width + c];
+        }
+        fwrite(tmpbuf, 1, width, fp);
+      }
+    }
+    free(tmpbuf);
+    fclose(fp);
+    delete[] bytes;
+    return 1;
+  }
   SbBox3f toCameraSpace(const SbXfBox3f & worldbox) const;
   static void shadowmap_glcallback(void * closure, SoAction * action);
   static void shadowmap_post_glcallback(void * closure, SoAction * action);
@@ -1123,7 +1188,7 @@ SoShadowGroupP::updateSpotCamera(SoState * state, SoShadowLightCache * cache, co
 void
 SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform)
 {
-  SoCamera * cam = cache->camera;
+  SoOrthographicCamera * cam = static_cast<SoOrthographicCamera*>(cache->camera);
   assert(cache->light->isOfType(SoShadowDirectionalLight::getClassTypeId()));
   SoShadowDirectionalLight * light = static_cast<SoShadowDirectionalLight*> (cache->light);
 
@@ -1137,16 +1202,16 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   SbBox3f isect = vv.intersectionBox(worldbox);
   SbViewportRegion vp = SoViewportRegionElement::get(state);
   cam->viewBoundingBox(isect, vp.getViewportAspectRatio(), 1.0f);
+
   SbBox3f box = cache->toCameraSpace(worldbox);
 
   // Bounding box was calculated in camera space, so we need to "flip"
   // the box (because camera is pointing in the (0,0,-1) direction
-  // from origo.
-  cam->nearDistance = -box.getMax()[2];
-  cam->farDistance = -box.getMin()[2];
+  // from origo. Add a little slack (multiply by 1.01)
+  cam->nearDistance = -box.getMax()[2]*1.01f;
+  cam->farDistance = -box.getMin()[2]*1.01f;
 
-  SbVec3f pos = cam->position.getValue();
-  SbPlane plane(dir, pos);
+  SbPlane plane(dir, cam->position.getValue());
   // move to eye space
   plane.transform(SoViewingMatrixElement::get(state));
   SbVec3f N = plane.getNormal();
@@ -1181,7 +1246,7 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
     cam->farDistance = cache->farval;
   }
   
-  float realfarval = cache->farval;
+  float realfarval = cache->farval*1.1;
   cache->fragment_farval->value = realfarval;
   cache->vsm_farval->value = realfarval;
   
@@ -1510,7 +1575,6 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       if (dirshadow) {
         str.sprintf("dist = dot(ecPosition3.xyz, lightplane%d.xyz) - lightplane%d.w;\n", i,i);
         gen.addMainStatement(str);
-        // gen.addMainStatement("dist = 0.0;\n");
         str.sprintf("DirectionalLight(%d, normalize(fragmentNormal), ambient, diffuse, specular);\n", i);
       }
       else {
@@ -1528,7 +1592,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 #ifdef DISTRIBUTE_FACTOR
       gen.addMainStatement("map.xy += map.zw / DISTRIBUTE_FACTOR;\n");
 #endif
-      str.sprintf("shadeFactor = ((map.x < 0.9999) && (shadowCoord%d.z > -1.0%s) "
+      str.sprintf("shadeFactor = ((map.x < 0.9999) && (shadowCoord%d.z > -1.0 %s) "
                   "? VsmLookup(map, (dist - nearval%d) / (farval%d - nearval%d), EPSILON, THRESHOLD) : 1.0;\n",
                   i, insidetest.getString(),i,i,i);
       gen.addMainStatement(str);
@@ -2080,6 +2144,8 @@ void
 SoShadowLightCache::shadowmap_post_glcallback(void * closure, SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    // for debugging the shadow map
+    // reinterpret_cast<SoShadowLightCache*>(closure)->dumpBitmap("/home/pederb/Desktop/shadow.rgb");
     // nothing to do yet
   }
 }
