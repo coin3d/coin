@@ -553,7 +553,19 @@ SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
   // dimensions).
   if (box.isEmpty()) { return; }
 
-  this->viewBoundingBox(box, this->aspectRatio.getValue(), slack);
+  // get the actual aspect ratio used while rendering
+  float aspectratio = vpregion.getViewportAspectRatio();
+  switch (this->viewportMapping.getValue()) {
+  case CROP_VIEWPORT_FILL_FRAME:
+  case CROP_VIEWPORT_LINE_FRAME:
+  case CROP_VIEWPORT_NO_FRAME:
+    aspectratio = 1.0f;
+    break;
+  default:
+    break;
+  }
+
+  this->viewBoundingBox(box, aspectratio, slack);
 }
 
 /*!
@@ -576,7 +588,19 @@ SoCamera::viewAll(SoPath * const path, const SbViewportRegion & vpregion,
   // dimensions).
   if (box.isEmpty()) { return; }
 
-  this->viewBoundingBox(box, this->aspectRatio.getValue(), slack);
+  // get the actual aspect ratio used while rendering
+  float aspectratio = vpregion.getViewportAspectRatio();
+  switch (this->viewportMapping.getValue()) {
+  case CROP_VIEWPORT_FILL_FRAME:
+  case CROP_VIEWPORT_LINE_FRAME:
+  case CROP_VIEWPORT_NO_FRAME:
+    aspectratio = 1.0f;
+    break;
+  default:
+    break;
+  }
+
+  this->viewBoundingBox(box, aspectratio, slack);
 }
 
 /*!
