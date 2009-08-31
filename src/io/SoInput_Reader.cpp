@@ -231,7 +231,7 @@ SoInput_FileReader::getFilePointer(void)
 // standard membuffer class
 //
 
-SoInput_MemBufferReader::SoInput_MemBufferReader(void * bufPointer, size_t bufSize)
+SoInput_MemBufferReader::SoInput_MemBufferReader(const void * bufPointer, size_t bufSize)
 {
   this->buf = (char*) bufPointer;
   this->buflen = bufSize;
@@ -267,7 +267,7 @@ SoInput_MemBufferReader::readBuffer(char * buffer, const size_t readlen)
 // gzipped membuffer class
 //
 
-SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize)
+SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(const void * bufPointer, size_t bufSize)
 {
   // FIXME: the bufSize cast (as size_t can be 64 bits wide) is there
   // to humour the interface of gzmemio -- should really be fixed

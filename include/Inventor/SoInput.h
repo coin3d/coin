@@ -75,7 +75,7 @@ public:
   virtual SbBool isValidBuffer(void);
   virtual FILE * getCurFile(void) const;
   virtual const char * getCurFileName(void) const;
-  virtual void setBuffer(void * bufpointer, size_t bufsize);
+  virtual void setBuffer(const void * bufpointer, size_t bufsize);
           void setStringArray(const char * strings[]);
   virtual size_t getNumBytesRead(void) const;
   virtual SbString getHeader(void);

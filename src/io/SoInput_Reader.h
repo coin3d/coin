@@ -89,7 +89,7 @@ public:
 
 class SoInput_MemBufferReader : public SoInput_Reader {
 public:
-  SoInput_MemBufferReader(void * bufPointer, size_t bufSize);
+  SoInput_MemBufferReader(const void * bufPointer, size_t bufSize);
   virtual ~SoInput_MemBufferReader();
 
   virtual ReaderType getType(void) const;
@@ -103,7 +103,7 @@ public:
 
 class SoInput_GZMemBufferReader : public SoInput_Reader {
 public:
-  SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize);
+  SoInput_GZMemBufferReader(const void * bufPointer, size_t bufSize);
   virtual ~SoInput_GZMemBufferReader();
 
   virtual ReaderType getType(void) const;
@@ -111,7 +111,7 @@ public:
 
 public:
   void * gzmfile;
-  void * buf;
+  const void * buf;
 };
 
 

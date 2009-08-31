@@ -209,7 +209,7 @@ SoInputP::debugBinary(void)
 
   #Inventor V2.1 ascii
   DEF cube Info {}
-  
+
   In older versions of Coin you'll not see the Cube when loading the first
   file.
 
@@ -750,7 +750,7 @@ SoInput::setFilePointer(FILE * newFP)
   if (newFP != coin_get_stdin()) {
     reader = SoInput_Reader::createReader(newFP, SbString(name));
   }
-  SoInput_FileInfo * newfile = 
+  SoInput_FileInfo * newfile =
     new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
   if (newfile) this->filestack.insert(newfile, 0);
 }
@@ -779,7 +779,7 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   if (fp) {
     SoInput_Reader * reader = SoInput_Reader::createReader(fp, fullname);
     assert(reader);
-    SoInput_FileInfo * newfile = 
+    SoInput_FileInfo * newfile =
       new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
     this->filestack.insert(newfile, 0);
 
@@ -829,7 +829,7 @@ SoInput::pushFile(const char * filename)
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
     SoInput_Reader * reader = SoInput_Reader::createReader(fp, fullname);
-    SoInput_FileInfo * newfile = 
+    SoInput_FileInfo * newfile =
       new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
     this->filestack.insert(newfile, 0);
 
@@ -1004,13 +1004,11 @@ SoInput::setStringArray(const char * strings[])
   Sets up the input stream for reading from a memory buffer. Closes all
   open files in the file stack first.
 
-  The type of the first argument of this method would have been better
-  designed as "const char *", but this his how the original SGI
-  Inventor API is, and we duplicate the method signature for
-  compatibility reasons.
+  In the original SGI Inventor API this method was designed as "char * bufpointer",
+  Coin followed this until Coin 3, but changed the signature to const from Coin 4.0.
 */
 void
-SoInput::setBuffer(void * bufpointer, size_t bufsize)
+SoInput::setBuffer(const void * bufpointer, size_t bufsize)
 {
   this->closeFile();
   SoInput_Reader * reader = NULL;
