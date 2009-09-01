@@ -1200,8 +1200,7 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   SbViewVolume vv = SoViewVolumeElement::get(state);
   const SbXfBox3f & worldbox = this->calcBBox(cache);
   SbBox3f isect = vv.intersectionBox(worldbox);
-  SbViewportRegion vp = SoViewportRegionElement::get(state);
-  cam->viewBoundingBox(isect, vp.getViewportAspectRatio(), 1.0f);
+  cam->viewBoundingBox(isect, 1.0f, 1.0f);
 
   SbBox3f box = cache->toCameraSpace(worldbox);
 
@@ -1227,6 +1226,7 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
           isect.getMax()[2]);
   fprintf(stderr,"plane: %g %g %g, %g\n", N[0], N[1], N[2], D);
   fprintf(stderr,"nearfar: %g %g\n", cam->nearDistance.getValue(), cam->farDistance.getValue());
+  fprintf(stderr,"aspect: %g\n", SoViewportRegionElement::get(state).getViewportAspectRatio());
 #endif
 
   cache->fragment_lightplane->value.setValue(N[0], N[1], N[2], D);
@@ -1563,6 +1563,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
           spotlight = TRUE;
         }
         else {
+          insidetest = ")";
           dirspot = TRUE;
         }
       }
