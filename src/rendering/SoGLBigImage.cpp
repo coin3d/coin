@@ -78,7 +78,7 @@
 #endif // COIN_THREADSAFE
 
 #include "tidbitsp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 

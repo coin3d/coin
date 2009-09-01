@@ -174,7 +174,7 @@
 #include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
 
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include "nodes/SoSubNodeP.h"
 
 // *************************************************************************

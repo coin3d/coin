@@ -10,7 +10,6 @@ RegularSources = \
 	SoDB.cpp \
 	SoDebug.cpp \
 	SoFullPath.cpp \
-	SoGLBigImage.cpp \
 	SoGenerate.cpp \
 	SoGlyph.cpp \
 	SoInteraction.cpp \

@@ -109,9 +109,9 @@
 #endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
-#include "misc/SoVBO.h"
-#include "misc/SoVertexArrayIndexer.h"
+#include "rendering/SoGL.h"
+#include "rendering/SoVBO.h"
+#include "rendering/SoVertexArrayIndexer.h"
 
 #define LOCK_VAINDEXER(obj) SoBase::staticDataLock()
 #define UNLOCK_VAINDEXER(obj) SoBase::staticDataUnlock()

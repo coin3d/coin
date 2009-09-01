@@ -235,10 +235,10 @@
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
 
-#include "misc/SoVBO.h"
-#include "misc/SoVertexArrayIndexer.h"
+#include "rendering/SoVBO.h"
+#include "rendering/SoVertexArrayIndexer.h"
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 
 // *************************************************************************

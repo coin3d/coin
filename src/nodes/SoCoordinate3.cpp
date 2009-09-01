@@ -55,7 +55,7 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 /*!
   \var SoMFVec3f SoCoordinate3::point

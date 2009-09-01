@@ -93,7 +93,6 @@
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #endif // HAVE_NODEKITS
 
-#include "SoVBO.h"
 #include "coindefs.h" // COIN_STUB()
 #include "shaders/SoShader.h"
 #include "geo/SoGeo.h"
@@ -104,6 +103,7 @@
 #include "misc/SoDBP.h"
 #include "misc/SbHash.h"
 #include "misc/CoinResources.h"
+#include "rendering/SoVBO.h"
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>

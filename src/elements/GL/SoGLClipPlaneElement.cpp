@@ -38,7 +38,7 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 

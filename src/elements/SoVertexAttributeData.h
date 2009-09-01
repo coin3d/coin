@@ -27,7 +27,7 @@
 #include <Inventor/elements/SoVertexAttributeElement.h>
 #include <Inventor/nodes/SoVertexAttribute.h>
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 class SoVBO;
 

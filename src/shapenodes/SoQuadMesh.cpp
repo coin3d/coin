@@ -180,7 +180,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 
 /*!

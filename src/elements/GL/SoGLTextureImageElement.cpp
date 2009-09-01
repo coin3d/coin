@@ -52,7 +52,7 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 #include "glue/glp.h"
-#include "misc/SoGL.h" // GL wrapper.
+#include "rendering/SoGL.h" // GL wrapper.
 #include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************

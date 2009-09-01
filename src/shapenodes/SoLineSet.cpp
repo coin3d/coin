@@ -95,7 +95,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/details/SoLineDetail.h>
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 
 /*!

@@ -110,7 +110,7 @@ Separator {
 #include <Inventor/C/glue/gl.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 // *************************************************************************
 

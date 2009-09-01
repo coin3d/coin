@@ -123,7 +123,7 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "misc/SoGenerate.h"
 #include "misc/SoPick.h"
 

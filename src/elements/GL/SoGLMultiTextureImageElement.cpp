@@ -53,7 +53,7 @@
 #endif // HAVE_CONFIG_H
 
 #include "shaders/SoGLShaderProgram.h"
-#include "misc/SoGL.h" // GL wrapper.
+#include "rendering/SoGL.h" // GL wrapper.
 
 // *************************************************************************
 

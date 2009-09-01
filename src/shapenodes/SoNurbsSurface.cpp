@@ -107,7 +107,7 @@
 
 #include "glue/GLUWrapper.h"
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 
 /*!

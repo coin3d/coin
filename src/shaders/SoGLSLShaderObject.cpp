@@ -29,7 +29,7 @@
 #include <Inventor/system/gl.h>
 
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "shaders/SoGLSLShaderParameter.h"
 
 static int32_t soglshaderobject_idcounter = 1;

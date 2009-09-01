@@ -100,7 +100,7 @@
 #include <Inventor/system/gl.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 

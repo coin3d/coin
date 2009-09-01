@@ -60,7 +60,7 @@
 
 // For coin_apply_normalization_cube_map().
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 

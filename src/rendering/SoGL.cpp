@@ -26,7 +26,7 @@
 
 // *************************************************************************
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 #include <assert.h>
 #include <stdio.h>

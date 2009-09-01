@@ -58,7 +58,7 @@
 #include <Inventor/C/tidbits.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 
 // *************************************************************************

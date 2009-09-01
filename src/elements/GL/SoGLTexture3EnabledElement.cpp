@@ -41,7 +41,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
-#include "misc/SoGL.h" // GL wrapper.
+#include "rendering/SoGL.h" // GL wrapper.
 
 
 SO_ELEMENT_SOURCE(SoGLTexture3EnabledElement);

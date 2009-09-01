@@ -98,8 +98,8 @@
 #endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoGL.h"
+#include "rendering/SoVBO.h"
 
 /*!
   \var SoSFInt32 SoPointSet::numPoints

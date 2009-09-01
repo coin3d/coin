@@ -179,7 +179,7 @@
 #include <Inventor/system/gl.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "glue/glp.h"
 #include "profiler/SoNodeProfiling.h"
 

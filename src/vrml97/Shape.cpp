@@ -129,7 +129,7 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 #include "tidbitsp.h"
 #include "profiler/SoNodeProfiling.h"

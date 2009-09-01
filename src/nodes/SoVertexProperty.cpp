@@ -102,7 +102,7 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 /*!
   \enum SoVertexProperty::Binding

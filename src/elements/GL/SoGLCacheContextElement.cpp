@@ -42,7 +42,7 @@
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 

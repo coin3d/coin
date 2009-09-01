@@ -109,11 +109,11 @@
 #endif // HAVE_VRML97
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "glue/glp.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 
 // SoShape.cpp grew too big, so I had to move some code into new

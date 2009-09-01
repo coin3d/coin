@@ -75,7 +75,7 @@
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 class SoVRMLColorP {
  public:

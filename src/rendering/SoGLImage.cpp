@@ -209,7 +209,7 @@
 #endif // COIN_THREADSAFE
 
 #include "tidbitsp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "elements/SoTextureScaleQualityElement.h"
 #include "glue/GLUWrapper.h"
 #include "glue/glp.h"

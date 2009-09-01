@@ -60,7 +60,7 @@
 #include <Inventor/actions/SoAction.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 SO_NODE_SOURCE(SoVRMLCoordinate);
 

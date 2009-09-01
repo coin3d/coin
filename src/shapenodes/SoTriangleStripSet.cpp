@@ -124,7 +124,7 @@
 #include <Inventor/details/SoPointDetail.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 /*!
   \var SoMFInt32 SoTriangleStripSet::numVertices

@@ -85,7 +85,7 @@
 #include "coindefs.h" // COIN_OBSOLETED()
 #include "nodes/SoSubNodeP.h"
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "misc/SoDBP.h"
 
 #include <Inventor/annex/Profiler/SoProfiler.h>

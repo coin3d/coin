@@ -88,7 +88,7 @@
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 

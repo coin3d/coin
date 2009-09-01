@@ -130,7 +130,7 @@
 #include <Inventor/system/gl.h>
 
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 #include "nodes/SoSoundElementHelper.h"
 #include "profiler/SoNodeProfiling.h"

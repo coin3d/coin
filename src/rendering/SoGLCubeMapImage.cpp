@@ -60,7 +60,7 @@
 
 #include "tidbitsp.h"
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 

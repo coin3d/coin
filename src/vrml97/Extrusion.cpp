@@ -350,9 +350,9 @@
 #endif // HAVE_THREADS
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoVBO.h"
-#include "misc/SoVertexArrayIndexer.h"
-#include "misc/SoGL.h"
+#include "rendering/SoVBO.h"
+#include "rendering/SoVertexArrayIndexer.h"
+#include "rendering/SoGL.h"
 #include "misc/SbHash.h"
 #include "caches/SoVBOCache.h"
 

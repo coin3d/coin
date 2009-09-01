@@ -43,7 +43,7 @@
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include "nodes/SoSubNodeP.h"
 #include "elements/SoVertexAttributeData.h"
 

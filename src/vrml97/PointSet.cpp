@@ -100,8 +100,8 @@
 #endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoGL.h"
+#include "rendering/SoVBO.h"
 
 static SbBool
 is_material_per_vertex(SoVRMLPointSet * ps, SoState * state)

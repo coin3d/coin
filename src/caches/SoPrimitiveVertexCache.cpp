@@ -60,9 +60,9 @@
 
 #include "tidbitsp.h"
 #include "misc/SbHash.h"
-#include "misc/SoGL.h"
-#include "misc/SoVBO.h"
-#include "misc/SoVertexArrayIndexer.h"
+#include "rendering/SoGL.h"
+#include "rendering/SoVBO.h"
+#include "rendering/SoVertexArrayIndexer.h"
 #include "SbBasicP.h"
 
 /*!

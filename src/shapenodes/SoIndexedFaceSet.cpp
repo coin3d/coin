@@ -216,9 +216,9 @@
 #include "nodes/SoSubNodeP.h"
 #include "tidbitsp.h"
 #include "threads/threadsutilp.h"
-#include "misc/SoVertexArrayIndexer.h"
-#include "misc/SoVBO.h"
-#include "misc/SoGL.h"
+#include "rendering/SoVertexArrayIndexer.h"
+#include "rendering/SoVBO.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 

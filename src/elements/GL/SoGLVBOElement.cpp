@@ -43,9 +43,9 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "glue/glp.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 #define PRIVATE(obj) obj->pimpl
 

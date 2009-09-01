@@ -140,10 +140,10 @@
 #endif // COIN_DEBUG
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "glue/glp.h"
-#include "misc/SoVertexArrayIndexer.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVertexArrayIndexer.h"
+#include "rendering/SoVBO.h"
 
 class SoVRMLIndexedLineSetP {
  public:

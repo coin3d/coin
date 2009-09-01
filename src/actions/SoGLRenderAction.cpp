@@ -119,7 +119,7 @@
 #include "actions/SoSubActionP.h"
 #include "glue/glp.h"
 #include "glue/simage_wrapper.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include "profiler/SoProfilerP.h"

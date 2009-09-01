@@ -30,7 +30,7 @@
 
 */
 
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,7 +44,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "misc/SoVertexArrayIndexer.h"
+#include "rendering/SoVertexArrayIndexer.h"
 #include "threads/threadsutilp.h"
 #include "glue/glp.h"
 #include "tidbitsp.h"

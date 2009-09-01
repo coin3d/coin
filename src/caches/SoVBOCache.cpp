@@ -29,8 +29,8 @@
 */
 
 #include "caches/SoVBOCache.h"
-#include "misc/SoVBO.h"
-#include "misc/SoVertexArrayIndexer.h"
+#include "rendering/SoVBO.h"
+#include "rendering/SoVertexArrayIndexer.h"
 #include <Inventor/lists/SbList.h>
 
 class SoVBOCacheP {

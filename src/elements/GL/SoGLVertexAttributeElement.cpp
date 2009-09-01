@@ -35,9 +35,9 @@
 #include "elements/SoVertexAttributeData.h"
 #include "shaders/SoGLShaderProgram.h"
 #include "misc/SbHash.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include "glue/glp.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 
 SO_ELEMENT_SOURCE(SoGLVertexAttributeElement);
 

@@ -193,7 +193,7 @@
 
 #include "tidbitsp.h"
 #include "misc/SbHash.h"
-#include "misc/SoGL.h"
+#include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
 #include "nodes/SoUnknownNode.h"
 #include "threads/threadsutilp.h"

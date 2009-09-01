@@ -28,7 +28,7 @@
   FIXME: more doc. when/if this class is made public, pederb 20050111
 */
 
-#include "misc/SoVertexArrayIndexer.h"
+#include "rendering/SoVertexArrayIndexer.h"
 
 #include <cassert>
 #include <cstring>
@@ -38,7 +38,7 @@
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "tidbitsp.h"
-#include "misc/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include "coindefs.h"
 
 #if BOOST_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
