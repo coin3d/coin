@@ -339,6 +339,7 @@ public:
                      const SoPath * path,
                      SoShadowGroup * sg,
                      SoNode * scene,
+                     SoNode * bboxscene,
                      const int gausskernelsize,
                      const float gaussstandarddeviation)
   {
@@ -370,6 +371,8 @@ public:
     this->vsm_nearval = NULL;
     this->gaussmap = NULL;
     this->texunit = -1;
+    this->bboxnode = new SoSeparator;
+    this->bboxnode->ref();
 
     this->fragment_farval = new SoShaderParameter1f;
     this->fragment_farval->ref();
@@ -433,6 +436,16 @@ public:
     }
     else sep->addChild(scene);
 
+    if (bboxscene->isOfType(SoShadowGroup::getClassTypeId())) {
+      SoShadowGroup * g = (SoShadowGroup*) bboxscene;
+      for (int i = 0; i < g->getNumChildren(); i++) {
+        this->bboxnode->addChild(g->getChild(i));
+      }
+    }
+    else {
+      this->bboxnode->addChild(bboxscene);
+    }
+
     cb = new SoCallback;
     cb->setCallback(shadowmap_post_glcallback, this);
     sep->addChild(cb);
@@ -456,6 +469,7 @@ public:
     }
   }
   ~SoShadowLightCache() {
+    if (this->bboxnode) this->bboxnode->ref();
     if (this->vsm_program) this->vsm_program->unref();
     if (this->vsm_farval) this->vsm_farval->unref();
     if (this->vsm_nearval) this->vsm_nearval->unref();
@@ -552,6 +566,7 @@ public:
   float nearval;
   int texunit;
 
+  SoSeparator * bboxnode;
   SoShaderProgram * vsm_program;
   SoShaderParameter1f * vsm_farval;
   SoShaderParameter1f * vsm_nearval;
@@ -984,6 +999,7 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
         SoLight * light = (SoLight*)((SoFullPath*)pl[i])->getTail();
         if (light->on.getValue() && (this->shadowlights.getLength() < maxlights)) {
           SoNode * scene = PUBLIC(this);
+          SoNode * bboxscene = PUBLIC(this);
           if (light->isOfType(SoShadowSpotLight::getClassTypeId())) {
             SoShadowSpotLight * ssl = (SoShadowSpotLight*) light;
             if (ssl->shadowMapScene.getValue()) {
@@ -999,6 +1015,7 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
           SoShadowLightCache * cache = new SoShadowLightCache(state, pl[i],
                                                               PUBLIC(this),
                                                               scene,
+                                                              bboxscene,
                                                               gaussmatrixsize,
                                                               gaussstandarddeviation);
           this->shadowlights.append(cache);
@@ -1069,7 +1086,7 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
 const SbXfBox3f &
 SoShadowGroupP::calcBBox(SoShadowLightCache * cache)
 {
-  this->bboxaction.apply(cache->depthmap->scene.getValue());
+  this->bboxaction.apply(cache->bboxnode);
   return this->bboxaction.getXfBoundingBox();
 }
 
@@ -1471,10 +1488,6 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   this->getQuality(state, perpixelspot, perpixelother);
   
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-  // ATi doesn't seem to support gl_FrontFace in hardware. We've only
-  // verified that nVidia supports it so far.
-  SbBool twosidetest = glue->vendor_is_nvidia && (perpixelspot || perpixelother);
-  
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push();
 
@@ -1489,6 +1502,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   int numshadowlights = this->shadowlights.getLength();
   SbBool dirspot = FALSE;
+
+  // ATi doesn't seem to support gl_FrontFace in hardware. We've only
+  // verified that nVidia supports it so far.
+  SbBool twosidetest = glue->vendor_is_nvidia && ((perpixelspot && numshadowlights) || perpixelother);
+  
 
   if (numshadowlights) {
     SbString eps;
