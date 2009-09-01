@@ -1203,6 +1203,10 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   SbViewVolume vv = SoViewVolumeElement::get(state);
   const SbXfBox3f & worldbox = this->calcBBox(cache);
   SbBox3f isect = vv.intersectionBox(worldbox);
+  if (isect.isEmpty()) {
+    // if empty, just set up the camera on the world box, we won't see it anyway
+    isect = worldbox.project();
+  }
   cam->viewBoundingBox(isect, 1.0f, 1.0f);
 
   SbBox3f box = cache->toCameraSpace(worldbox);
