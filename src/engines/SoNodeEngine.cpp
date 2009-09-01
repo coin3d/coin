@@ -110,27 +110,11 @@ SoNodeEngine::destroy(void)
                          t.getName().getString());
 #endif // debug
 
-  // evaluate() before we actually destruct. It would be too late
-  // during the destructor, as the SoNodeEngine::evaluate() method is pure
-  // virtual.
-  //
-  // The explicit call here is done so attached fields will get the
-  // chance to update before we die. SoField::disconnect() will
-  // normally call SoNodeEngine::evaluate(), but we disable that feature
-  // by setting SoEngineOutput::isEnabled() to FALSE before
-  // decoupling.
+  // we used to evalute here before deleting the node. I don't think
+  // this is correct for SoNodeEngine engines though, since they're a
+  // part of the scene graph, and it's no point evaluating the engine
+  // when it's no longer in the scene
 
-  // need to lock to avoid that evaluateWrapper() is called
-  // simultaneously from more than one thread
-#ifdef COIN_THREADSAFE
-  cc_recmutex_internal_field_lock();
-#endif // COIN_THREADSAFE
-  this->evaluateWrapper();
-#ifdef COIN_THREADSAFE
-  cc_recmutex_internal_field_unlock();
-#endif // COIN_THREADSAFE
-
-  // SoBase destroy().
   inherited::destroy();
 
 #if COIN_DEBUG && 0 // debug
