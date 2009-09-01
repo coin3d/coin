@@ -375,12 +375,30 @@ CoinOffscreenGLCanvas::readPixels(uint8_t * dst,
   glFlush(); glFinish();
 
   assert((nrcomponents >= 1) && (nrcomponents <= 4));
-  static const GLenum formats[] =
-    { GL_LUMINANCE, GL_LUMINANCE_ALPHA, GL_RGB, GL_RGBA };
 
-  glReadPixels(0, 0, vpdims[0], vpdims[1],
-               formats[nrcomponents - 1], GL_UNSIGNED_BYTE, dst);
+  if (nrcomponents < 3) {
+    unsigned char * tmp = new unsigned char[vpdims[0]*vpdims[1]*4];
+    glReadPixels(0, 0, vpdims[0], vpdims[1],
+                 nrcomponents == 1 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, tmp);
 
+    const unsigned char * src = tmp;
+    // manually convert to grayscale
+    for (short y = 0; y < vpdims[1]; y++) {
+      for (short x = 0; x < vpdims[0]; x++) {
+        double v = src[0] * 0.3 + src[1] * 0.59 + src[2] * 0.11;
+        *dst++ = (unsigned char) v;
+        if (nrcomponents == 2) {
+          *dst++ = src[3];
+        }
+        src += nrcomponents == 1 ? 3 : 4;
+      }
+    }
+    delete[] tmp;
+  }
+  else {
+    glReadPixels(0, 0, vpdims[0], vpdims[1],
+                 nrcomponents == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, dst);
+  }
   glFlush(); glFinish();
 
   glPopAttrib();
