@@ -581,6 +581,7 @@ public:
     texunit0(NULL),
     texunit1(NULL),
     lightmodel(NULL),
+    twosided(NULL),
     numtexunitsinscene(1),
     hasclipplanes(FALSE),
     subgraphsearchenabled(TRUE)
@@ -603,6 +604,7 @@ public:
   ~SoShadowGroupP() {
     this->clearLightPaths();
     if (this->lightmodel) this->lightmodel->unref();
+    if (this->twosided) this->twosided->unref();
     if (this->texunit0) this->texunit0->unref();
     if (this->texunit1) this->texunit1->unref();
     if (this->vertexshadercache) this->vertexshadercache->unref();
@@ -699,6 +701,7 @@ public:
   SoShaderParameter1i * texunit0;
   SoShaderParameter1i * texunit1;
   SoShaderParameter1i * lightmodel;
+  SoShaderParameter1i * twosided;
 
   int numtexunitsinscene;
   SbBool hasclipplanes;
@@ -1462,7 +1465,12 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   SbBool perpixelspot = FALSE;
   SbBool perpixelother = FALSE;
   this->getQuality(state, perpixelspot, perpixelother);
-
+  
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  // ATi doesn't seem to support gl_FrontFace in hardware. We've only
+  // verified that nVidia supports it so far.
+  SbBool twosidetest = glue->vendor_is_nvidia && (perpixelspot || perpixelother);
+  
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push();
 
@@ -1527,6 +1535,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (numshadowlights) {
     gen.addNamedFunction("vsm/VsmLookup", FALSE);
   }
+  gen.addMainStatement("vec3 normal = normalize(fragmentNormal);\n");
+  if (twosidetest) {
+    gen.addMainStatement("if (coin_two_sided_lighting != 0 && !gl_FrontFacing) normal = -normal;\n");
+  }
   gen.addMainStatement("vec3 eye = -normalize(ecPosition3);\n");
   gen.addMainStatement("vec4 ambient = vec4(0.0);\n"
                        "vec4 diffuse = vec4(0.0);\n"
@@ -1576,10 +1588,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       if (dirshadow) {
         str.sprintf("dist = dot(ecPosition3.xyz, lightplane%d.xyz) - lightplane%d.w;\n", i,i);
         gen.addMainStatement(str);
-        str.sprintf("DirectionalLight(%d, normalize(fragmentNormal), ambient, diffuse, specular);\n", i);
+        str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);\n", i);
       }
       else {
-        str.sprintf("dist = %s(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);\n",
+        str.sprintf("dist = %s(%d, eye, ecPosition3, normal, ambient, diffuse, specular);\n",
                     spotname.getString(), lights.getLength()+i);
       }
       gen.addMainStatement(str);
@@ -1611,17 +1623,17 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       for (i = 0; i < lights.getLength(); i++) {
         SoLight * l = (SoLight*) lights[i];
         if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
-          str.sprintf("DirectionalLight(%d, normalize(fragmentNormal), ambient, diffuse, specular);", i);
+          str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);", i);
           gen.addMainStatement(str);
           dirlight = TRUE;
         }
         else if (l->isOfType(SoSpotLight::getClassTypeId())) {
-          str.sprintf("SpotLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
+          str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
           gen.addMainStatement(str);
           spotlight = TRUE;
         }
         else if (l->isOfType(SoPointLight::getClassTypeId())) {
-          str.sprintf("PointLight(%d, eye, ecPosition3, normalize(fragmentNormal), ambient, diffuse, specular);", i);
+          str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
           gen.addMainStatement(str);
           pointlight = TRUE;
         }
@@ -1708,6 +1720,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     gen.addDeclaration("uniform sampler2D textureMap1;\n", FALSE);
   }
   gen.addDeclaration("uniform int coin_light_model;\n", FALSE);
+  if (twosidetest) {
+    gen.addDeclaration("uniform int coin_two_sided_lighting;\n", FALSE);    
+  }
 
   if (dirspot) {
     gen.addNamedFunction("lights/DirSpotLight", FALSE);
@@ -1794,12 +1809,21 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     this->lightmodel->name = "coin_light_model";
     this->lightmodel->value = 1;
   }
-
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap);
   if (texmap1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), texmap1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit0);
   if (this->numtexunitsinscene > 1) this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->texunit1);
   this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->lightmodel);
+
+  if (twosidetest) {
+    if (!this->twosided) {
+      this->twosided = new SoShaderParameter1i;
+      this->twosided->ref();
+      this->twosided->name = "coin_two_sided_lighting";
+      this->twosided->value = 0;
+    }
+    this->fragmentshader->parameter.set1Value(this->fragmentshader->parameter.getNum(), this->twosided);
+  }
 
   for (i = 0; i < numshadowlights; i++) {
     if (this->shadowlights[i]->light->isOfType(SoDirectionalLight::getClassTypeId())) {

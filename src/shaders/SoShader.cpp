@@ -69,6 +69,8 @@
 
   \li coin_light_model - Set to 1 for PHONG, 0 for BASE_COLOR lighting.
 
+  \li coin_two_sided_lighting - Set to 1 for two-sided, 0 for normal
+
   Example scene graph that renders per-fragment OpenGL Phong lighting
   for one light source. The shaders assume the first light source is a
   directional light. This is the case if you open the file in a standard

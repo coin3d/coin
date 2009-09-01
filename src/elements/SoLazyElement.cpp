@@ -575,6 +575,13 @@ SoLazyElement::getLightModel(SoState * state)
   return elem->coinstate.lightmodel;
 }
 
+SbBool 
+SoLazyElement::getTwoSidedLighting(SoState * state)
+{
+  SoLazyElement * elem = getInstance(state);
+  return elem->coinstate.twoside;
+}
+
 // ! FIXME: write doc
 SbBool
 SoLazyElement::getAlphaTest(SoState * state)

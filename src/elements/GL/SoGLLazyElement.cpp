@@ -716,6 +716,8 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
         break;
       case TWOSIDE_CASE:
         if (this->glstate.twoside != this->coinstate.twoside) {
+          SoGLShaderProgram * prog = SoGLShaderProgramElement::get((SoState*) stateptr);
+          if (prog) prog->updateCoinParameter((SoState*)stateptr, SbName("coin_two_sided_lighting"), this->coinstate.twoside);
           this->sendTwosideLighting(this->coinstate.twoside);
         }
         break;

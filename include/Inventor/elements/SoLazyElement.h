@@ -157,6 +157,7 @@ public:
   
   static int32_t getLightModel(SoState*);
   static SbBool getAlphaTest(SoState * state);
+  static SbBool getTwoSidedLighting(SoState * state);
 
   int32_t getNumDiffuse(void) const;
   int32_t getNumTransparencies(void) const;

@@ -681,6 +681,9 @@ SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * sta
       else if (name == "coin_light_model") {
         shaderobject->updateCoinParameter(state, name, NULL, SoLazyElement::getLightModel(state));
       }
+      else if (name == "coin_two_sided_lighting") {
+        shaderobject->updateCoinParameter(state, name, NULL, SoLazyElement::getTwoSidedLighting(state));
+      }
     }
   }
 }
