@@ -107,6 +107,7 @@
 
 #include "glue/GLUWrapper.h"
 #include "nodes/SoSubNodeP.h"
+#include "rendering/SoGLNurbs.h"
 #include "rendering/SoGL.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 
@@ -222,10 +223,15 @@ SoNurbsSurface::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  // Create lazy element for GL_AUTO_NORMAL ?
-  glEnable(GL_AUTO_NORMAL);
+  SbBool calcnormals = sogl_calculate_nurbs_normals();
+
+  if (!calcnormals) {
+    glEnable(GL_AUTO_NORMAL);
+  }
   PRIVATE(this)->doNurbs(action, TRUE);
-  glDisable(GL_AUTO_NORMAL);
+  if (!calcnormals) {
+    glDisable(GL_AUTO_NORMAL);
+  }
 
   SoState * state = action->getState();
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
@@ -392,7 +398,7 @@ SoNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
   // NB, don't move this structure inside the if-statement. It needs
   // to be here so that the callbacks from sogl_render_nurbs_surface()
   // have a valid pointer to the structure.
-  coin_ns_cbdata cbdata(action, PUBLIC(this), 
+  coin_ns_cbdata cbdata(action, PUBLIC(this),
                         !SoCoordinateElement::getInstance(action->getState())->is3D());
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {

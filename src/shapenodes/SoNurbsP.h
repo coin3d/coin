@@ -57,6 +57,9 @@ SoNurbsP<Master>::tessVertex(float * vertex, void * data)
 {
   coin_nurbs_cbdata * cbdata = static_cast<coin_nurbs_cbdata *>(data);
   float to3d = cbdata->is4D ? vertex[3] : 1.0f;
+  if (to3d == 0.0f) {
+    to3d = 1.0f;
+  }
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2])/to3d);
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }

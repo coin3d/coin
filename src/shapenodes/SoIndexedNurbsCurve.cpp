@@ -70,6 +70,7 @@
 #include "coindefs.h" // COIN_OBSOLETED()
 #include "glue/GLUWrapper.h"
 #include "nodes/SoSubNodeP.h"
+#include "rendering/SoGLNurbs.h"
 #include "rendering/SoGL.h"
 #include "SoNurbsP.h"
 
@@ -345,7 +346,7 @@ SoIndexedNurbsCurveP::doNurbs(SoAction * action,
   // NB, don't move this structure inside the if-statement. It needs
   // to be here so that the callbacks from sogl_render_nurbs_curve()
   // have a valid pointer to the structure.
-  coin_inc_cbdata cbdata(action, PUBLIC(this), 
+  coin_inc_cbdata cbdata(action, PUBLIC(this),
                          !SoCoordinateElement::getInstance(action->getState())->is3D());
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {

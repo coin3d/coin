@@ -96,28 +96,6 @@ void sogl_render_cube(const float width,
 void sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
                                     void * closure);
 
-// nurbs rendering and tessellation
-void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
-                               void * nurbsrenderer,
-                               const int numuctrlpts, const int numvctrlpts,
-                               const float * uknotvec, const float * vknotvec,
-                               const int numuknot, const int numvknot,
-                               const int numsctrlpts, const int numtctrlpts,
-                               const float * sknotvec, const float * tknotvec,
-                               const int numsknot, const int numtknot,
-                               const SbBool glrender,
-                               const int numcoordindex = 0, const int32_t * coordindex = NULL,
-                               const int numtexcoordindex = 0, const int32_t * texcoordindex = NULL);
-
-void sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
-                             void * nurbsrenderer,
-                             const int numctrlpts,
-                             const float * knotvec,
-                             const int numknots,
-                             const SbBool glrender,
-                             const SbBool drawaspoints = FALSE,
-                             const int numcoordindex = 0, const int32_t * coordindex = NULL);
-
 //
 // optimized faceset rendering functions.
 // the functions are automagically generated based on a template function.

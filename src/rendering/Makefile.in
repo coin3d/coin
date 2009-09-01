@@ -273,6 +273,7 @@ RegularSources = \
 	SoGLDriverDatabase.cpp \
 	SoGLImage.cpp \
 	SoGLCubeMapImage.cpp \
+        SoGLNurbs.cpp \
         SoRenderManager.cpp \
 	SoRenderManagerP.cpp \
 	SoOffscreenRenderer.cpp \
@@ -291,6 +292,7 @@ PublicHeaders =
 PrivateHeaders = \
 	SbHash.h \
 	SoGL.h \
+        SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \
@@ -366,7 +368,7 @@ rendering_lst_AR = $(AR) cru
 rendering_lst_LIBADD =
 am__rendering_lst_SOURCES_DIST = SoGL.cpp SoGLBigImage.cpp \
 	SoGLDriverDatabase.cpp SoGLImage.cpp SoGLCubeMapImage.cpp \
-	SoRenderManager.cpp SoRenderManagerP.cpp \
+	SoGLNurbs.cpp SoRenderManager.cpp SoRenderManagerP.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenCGData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp \
@@ -374,21 +376,22 @@ am__rendering_lst_SOURCES_DIST = SoGL.cpp SoGLBigImage.cpp \
 am__objects_1 = all-rendering-cpp.$(OBJEXT)
 am__objects_2 = SoGL.$(OBJEXT) SoGLBigImage.$(OBJEXT) \
 	SoGLDriverDatabase.$(OBJEXT) SoGLImage.$(OBJEXT) \
-	SoGLCubeMapImage.$(OBJEXT) SoRenderManager.$(OBJEXT) \
-	SoRenderManagerP.$(OBJEXT) SoOffscreenRenderer.$(OBJEXT) \
-	SoOffscreenCGData.$(OBJEXT) SoOffscreenGLXData.$(OBJEXT) \
-	SoOffscreenWGLData.$(OBJEXT) SoVBO.$(OBJEXT) \
-	SoVertexArrayIndexer.$(OBJEXT) CoinOffscreenGLCanvas.$(OBJEXT)
+	SoGLCubeMapImage.$(OBJEXT) SoGLNurbs.$(OBJEXT) \
+	SoRenderManager.$(OBJEXT) SoRenderManagerP.$(OBJEXT) \
+	SoOffscreenRenderer.$(OBJEXT) SoOffscreenCGData.$(OBJEXT) \
+	SoOffscreenGLXData.$(OBJEXT) SoOffscreenWGLData.$(OBJEXT) \
+	SoVBO.$(OBJEXT) SoVertexArrayIndexer.$(OBJEXT) \
+	CoinOffscreenGLCanvas.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_rendering_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_rendering_lst_SOURCES_DIST = SbHash.h SoGL.h \
+am__EXTRA_rendering_lst_SOURCES_DIST = SbHash.h SoGL.h SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h SoVBO.h SoVertexArrayIndexer.h \
 	SoOffscreenCGData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	SoRenderManagerP.h cppmangle.icc systemsanity.icc \
 	CoinResources.h all-rendering-cpp.cpp SoGL.cpp SoGLBigImage.cpp \
 	SoGLDriverDatabase.cpp SoGLImage.cpp SoGLCubeMapImage.cpp \
-	SoRenderManager.cpp SoRenderManagerP.cpp \
+	SoGLNurbs.cpp SoRenderManager.cpp SoRenderManagerP.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenCGData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp
@@ -399,27 +402,28 @@ librendering_la_LDFLAGS =
 librendering_la_LIBADD =
 am__librendering_la_SOURCES_DIST = SoGL.cpp SoGLBigImage.cpp \
 	SoGLDriverDatabase.cpp SoGLImage.cpp SoGLCubeMapImage.cpp \
-	SoRenderManager.cpp SoRenderManagerP.cpp \
+	SoGLNurbs.cpp SoRenderManager.cpp SoRenderManagerP.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenCGData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp \
 	all-rendering-cpp.cpp
 am__objects_6 = all-rendering-cpp.lo
 am__objects_7 = SoGL.lo SoGLBigImage.lo SoGLDriverDatabase.lo \
-	SoGLImage.lo SoGLCubeMapImage.lo SoRenderManager.lo \
-	SoRenderManagerP.lo SoOffscreenRenderer.lo SoOffscreenCGData.lo \
-	SoOffscreenGLXData.lo SoOffscreenWGLData.lo SoVBO.lo \
-	SoVertexArrayIndexer.lo CoinOffscreenGLCanvas.lo
+	SoGLImage.lo SoGLCubeMapImage.lo SoGLNurbs.lo \
+	SoRenderManager.lo SoRenderManagerP.lo SoOffscreenRenderer.lo \
+	SoOffscreenCGData.lo SoOffscreenGLXData.lo \
+	SoOffscreenWGLData.lo SoVBO.lo SoVertexArrayIndexer.lo \
+	CoinOffscreenGLCanvas.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_librendering_la_OBJECTS = $(am__objects_8)
-am__EXTRA_librendering_la_SOURCES_DIST = SbHash.h SoGL.h \
+am__EXTRA_librendering_la_SOURCES_DIST = SbHash.h SoGL.h SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h SoVBO.h SoVertexArrayIndexer.h \
 	SoOffscreenCGData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
 	SoRenderManagerP.h cppmangle.icc systemsanity.icc \
 	CoinResources.h all-rendering-cpp.cpp SoGL.cpp SoGLBigImage.cpp \
 	SoGLDriverDatabase.cpp SoGLImage.cpp SoGLCubeMapImage.cpp \
-	SoRenderManager.cpp SoRenderManagerP.cpp \
+	SoGLNurbs.cpp SoRenderManager.cpp SoRenderManagerP.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenCGData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp
@@ -428,22 +432,23 @@ librendering@SUFFIX@LINKHACK_la_LDFLAGS =
 librendering@SUFFIX@LINKHACK_la_LIBADD =
 am__librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGL.cpp \
 	SoGLBigImage.cpp SoGLDriverDatabase.cpp SoGLImage.cpp \
-	SoGLCubeMapImage.cpp SoRenderManager.cpp SoRenderManagerP.cpp \
-	SoOffscreenRenderer.cpp SoOffscreenCGData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
-	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp \
-	all-rendering-cpp.cpp
+	SoGLCubeMapImage.cpp SoGLNurbs.cpp SoRenderManager.cpp \
+	SoRenderManagerP.cpp SoOffscreenRenderer.cpp \
+	SoOffscreenCGData.cpp SoOffscreenGLXData.cpp \
+	SoOffscreenWGLData.cpp SoVBO.cpp SoVertexArrayIndexer.cpp \
+	CoinOffscreenGLCanvas.cpp all-rendering-cpp.cpp
 am_librendering@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h SoGL.h \
-	CoinOffscreenGLCanvas.h SoVBO.h SoVertexArrayIndexer.h \
-	SoOffscreenCGData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	SoRenderManagerP.h cppmangle.icc systemsanity.icc \
-	CoinResources.h all-rendering-cpp.cpp SoGL.cpp SoGLBigImage.cpp \
-	SoGLDriverDatabase.cpp SoGLImage.cpp SoGLCubeMapImage.cpp \
-	SoRenderManager.cpp SoRenderManagerP.cpp \
-	SoOffscreenRenderer.cpp SoOffscreenCGData.cpp \
-	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
-	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp
+	SoGLNurbs.h CoinOffscreenGLCanvas.h SoVBO.h \
+	SoVertexArrayIndexer.h SoOffscreenCGData.h SoOffscreenGLXData.h \
+	SoOffscreenWGLData.h SoRenderManagerP.h cppmangle.icc \
+	systemsanity.icc CoinResources.h all-rendering-cpp.cpp SoGL.cpp \
+	SoGLBigImage.cpp SoGLDriverDatabase.cpp SoGLImage.cpp \
+	SoGLCubeMapImage.cpp SoGLNurbs.cpp SoRenderManager.cpp \
+	SoRenderManagerP.cpp SoOffscreenRenderer.cpp \
+	SoOffscreenCGData.cpp SoOffscreenGLXData.cpp \
+	SoOffscreenWGLData.cpp SoVBO.cpp SoVertexArrayIndexer.cpp \
+	CoinOffscreenGLCanvas.cpp
 librendering@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_librendering@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -458,6 +463,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLDriverDatabase.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLDriverDatabase.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLImage.Plo ./$(DEPDIR)/SoGLImage.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLNurbs.Plo ./$(DEPDIR)/SoGLNurbs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenCGData.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenCGData.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenGLXData.Plo \
@@ -573,6 +579,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDriverDatabase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLImage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLNurbs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLNurbs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenCGData.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenCGData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenGLXData.Plo@am__quote@

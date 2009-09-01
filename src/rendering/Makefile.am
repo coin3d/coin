@@ -4,6 +4,7 @@ RegularSources = \
 	SoGLDriverDatabase.cpp \
 	SoGLImage.cpp \
 	SoGLCubeMapImage.cpp \
+        SoGLNurbs.cpp \
         SoRenderManager.cpp \
 	SoRenderManagerP.cpp \
 	SoOffscreenRenderer.cpp \
@@ -20,6 +21,7 @@ PublicHeaders =
 PrivateHeaders = \
 	SbHash.h \
 	SoGL.h \
+        SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h \
 	SoVBO.h \
 	SoVertexArrayIndexer.h \

@@ -106,6 +106,7 @@
 #include "glue/GLUWrapper.h"
 #include "nodes/SoSubNodeP.h"
 #include "rendering/SoGL.h"
+#include "rendering/SoGLNurbs.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 #include "SoNurbsP.h"
 
@@ -266,7 +267,7 @@ void
 SoNurbsCurve::rayPick(SoRayPickAction * action)
 {
   if (!this->shouldRayPick(action)) return;
-  
+
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     SoShape::rayPick(action); // do normal generatePrimitives() pick
   }
@@ -382,13 +383,13 @@ SoNurbsCurveP::doNurbs(SoAction * action,
   // NB, don't move this structure inside the if-statement. It needs
   // to be here so that the callbacks from sogl_render_nurbs_curve()
   // have a valid pointer to the structure.
-  coin_nc_cbdata cbdata(action, PUBLIC(this), 
+  coin_nc_cbdata cbdata(action, PUBLIC(this),
                         !SoCoordinateElement::getInstance(action->getState())->is3D());
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     // if we're just tessellating, the callbacks will be invoked:
     if (!glrender) {
-      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);      
+      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
       cbdata.vertex.setMaterialIndex(0);
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
