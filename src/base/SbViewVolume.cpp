@@ -863,8 +863,6 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
     cmin[i] = SbMax(cmin[i], bmin[i]);
     cmax[i] = SbMin(cmax[i], bmax[i]);
   }
-  //return SbBox3f(cmin, cmax);
-
   //*****************************************************************************
   // clip the combined bbox against the view volume
 
