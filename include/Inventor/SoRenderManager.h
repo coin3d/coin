@@ -114,7 +114,6 @@ public:
                                        Superimposition::AUTOREDRAW |
                                        Superimposition::ZBUFFERON  |
                                        Superimposition::CLEARZBUFFER);
-
   void removeSuperimposition(Superimposition * s);
 
   virtual void setSceneGraph(SoNode * const sceneroot);
@@ -124,11 +123,6 @@ public:
   SoCamera * getCamera(void) const;
 
   void setAutoClipping(AutoClippingStrategy autoclipping);
-  void attachRootSensor(SoNode * const sceneroot);
-  void attachClipSensor(SoNode * const sceneroot);
-  void detachRootSensor(void);
-  void detachClipSensor(void);
-
   AutoClippingStrategy getAutoClipping(void) const;
   void setNearPlaneValue(float value);
   float getNearPlaneValue(void) const;
@@ -150,10 +144,6 @@ public:
   void setRedrawPriority(const uint32_t priority);
   uint32_t getRedrawPriority(void) const;
 
-  static void nodesensorCB(void * data, SoSensor *);
-  static void prerendercb(void * userdata, SoGLRenderAction * action);
-
-  void reinitialize(void);
   void scheduleRedraw(void);
   void setWindowSize(const SbVec2s & newsize);
   const SbVec2s & getWindowSize(void) const;
@@ -216,6 +206,14 @@ protected:
   void clearBuffers(SbBool color, SbBool depth);
 
 private:
+  void attachRootSensor(SoNode * const sceneroot);
+  void attachClipSensor(SoNode * const sceneroot);
+  void detachRootSensor(void);
+  void detachClipSensor(void);
+  void reinitialize(void);
+  static void nodesensorCB(void * data, SoSensor *);
+  static void prerendercb(void * userdata, SoGLRenderAction * action);
+
   SoRenderManagerP * pimpl;
   friend class SoRenderManagerP;
   friend class SoSceneManager;
