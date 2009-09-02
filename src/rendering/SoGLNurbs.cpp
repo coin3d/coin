@@ -37,6 +37,7 @@
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoShape.h>
