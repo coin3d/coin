@@ -32,6 +32,9 @@
   GUI toolkit. With this new class all that is needed is to create one
   SoRenderManager instance per viewer/view.
   
+  This class does not handle events for the scene graph/viewer. To do
+  that you can use the \ref SoEventManager class.
+
   \since Coin 3.0
 */
 
