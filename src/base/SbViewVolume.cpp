@@ -858,10 +858,12 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
   
   SbVec3f cmin = commonVolume.getMin();
   SbVec3f cmax = commonVolume.getMax();
+
   for (i = 0; i < 3; i++) {
     cmin[i] = SbMax(cmin[i], bmin[i]);
     cmax[i] = SbMin(cmax[i], bmax[i]);
   }
+  //return SbBox3f(cmin, cmax);
 
   //*****************************************************************************
   // clip the combined bbox against the view volume
@@ -876,6 +878,13 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
   SbClip clipper;
   SbPlane planes[6];
   commonVolume.makeEmpty(); // reset bbox before clipping
+  
+  // all all view volume points inside the original bbox
+  for (i = 0; i < 8; i++) {
+    if (box.intersect(vvpts[i])) commonVolume.extendBy(vvpts[i]);
+  }
+
+  // clip view volume against the bbox
   this->getViewVolumePlanes(planes);
   clip_face(clipper, bbpts[0], bbpts[1], bbpts[3], bbpts[2], planes, commonVolume);
   clip_face(clipper, bbpts[1], bbpts[5], bbpts[7], bbpts[3], planes, commonVolume);
@@ -942,19 +951,19 @@ SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft,
 
   if (this->type == PERSPECTIVE) {
     SbVec3f dir;
-    dir = this->llf;
+    dir = this->llf - this->projPoint;
     (void) dir.normalize(); // safe to normalize here
     lowerleft = this->llf + dir * distance / dir.dot(this->projDir);
 
-    dir = this->lrf;
+    dir = this->lrf - this->projPoint;
     dir.normalize(); // safe to normalize here
     lowerright = this->lrf + dir * distance / dir.dot(this->projDir);
 
-    dir = this->ulf;
+    dir = this->ulf - this->projPoint;
     (void) dir.normalize(); // safe to normalize here
     upperleft = this->ulf + dir * distance / dir.dot(this->projDir);
 
-    dir = near_ur;
+    dir = near_ur - this->projPoint;
     (void) dir.normalize(); // safe to normalize here
     upperright = near_ur + dir * distance / dir.dot(this->projDir);
   }
