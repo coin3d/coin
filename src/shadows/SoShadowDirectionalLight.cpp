@@ -26,12 +26,14 @@
   \brief The SoShadowDirectionalLight class is a node for setting up a directional light which casts shadows.
 
   Directional lights usually affect everything, but since it's not
-  always feasible to generate shadows for the entire scene graph, this
-  node has some extra features to work around this.
+  always feasible to use one shadow map for the entire scene
+  graph. This node has some extra features to work around this.
   
-  It calculates the intersection between the current view volume and 
-  either the scene bounding box, or the bounding box provided in this node. 
-  The shadows are only calculated for this volume.
+  It calculates the intersection between the current view volume and
+  either the scene bounding box, or the bounding box provided in this
+  node.  The shadows are only calculated for this volume. This means
+  that you'll get more detailed shadows as you zoom in on items in the
+  scene graph.
 
   In addition, you can set the maximum distance from the camera which
   will be shaded with shadows. Think of this a new far plane for the
@@ -41,47 +43,48 @@
   setting your own shadow caster scene graph in the shadowMapScene
   field.
 
+  The example scene graph below demonstrates how you can use this node
+  to create shadows on a large number of objects, and still get decent
+  precision when zooming in.
+
+  \code
+
+  DirectionalLight {
+     direction 0 0 -1
+     intensity 0.1
+  }
 
   ShadowGroup {
     quality 1 # to get per pixel lighting
+    precision 1
 
     ShadowDirectionalLight {
       direction 1 1 -1
-
-      shadowMapScene
-      DEF sphere Separator {
-          Complexity { value 1.0 }
-          Material { diffuseColor 1 1 0 specularColor 1 1 1 shininess 0.9 }
-          Shuttle { translation0 -3 1 0 translation1 3 -5 0 speed 0.25 on TRUE }
-          Translation { translation -5 0 2 }
-          Sphere { radius 2.0 }
-       }
-    }
-    # need to insert the sphere in the regular scene graph as well
-    USE sphere
-
-    Separator {
-      Material { diffuseColor 1 0 0 specularColor 1 1 1 shininess 0.9 }
-      Shuttle { translation0 0 -5 0 translation1 0 5 0 speed 0.15 on TRUE }
-      Translation { translation 0 0 -3 }
-      Cube { depth 1.8 }
-    }
-    Separator {
-      Material { diffuseColor 0 1 0 specularColor 1 1 1 shininess 0.9 }
-      Shuttle { translation0 -5 0 0 translation1 5 0 0 speed 0.3 on TRUE }
-      Translation { translation 0 0 -3 }
-      Cube { }
+      intensity 0.8
     }
 
-    Coordinate3 { point [ -10 -10 -3, 10 -10 -3, 10 10 -3, -10 10 -3 ] }
+    # 900 cubes spaced out over a fairly large area
+    Array {
+      origin CENTER
+      numElements1 30
+      numElements2 30
+      numElements3 1
+      separation1 20 0 0
+      separation2 0 20 0
+      separation3 0 0 0
+
+      Material { diffuseColor 1 0 0 specularColor 1 1 1 }
+      Cube { width 4 height 4 depth 4 }
+    }
+
+    # a chess board
+    Coordinate3 { point [ -400 -400 -3, 400 -400 -3, 400 400 -3, -400 400 -3 ] }
     Material { specularColor 1 1 1 shininess 0.9 }
-
     Complexity { textureQuality 0.1 }
     Texture2 { image 2 2 3 0xffffff 0x225588 0x225588 0xffffff }
-    Texture2Transform { scaleFactor 4 4 }
+    Texture2Transform { scaleFactor 20 20 }
     FaceSet { numVertices 4 }
   }
-
   \endcode
 
   \since Coin 3.0
