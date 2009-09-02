@@ -21,6 +21,20 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoRenderManager Inventor/SoRenderManager.h
+  \brief The SoRenderManager class is used for controlling the rendering of a scene graph.
+
+  You can use this class to configure things like clipping planes,
+  rendering mode, stereo rendering and the background color. In
+  earlier versions of Coin/Inventor, this was set up in the GUI
+  toolkits, making it quite hard to make a new Coin viewer for another
+  GUI toolkit. With this new class all that is needed is to create one
+  SoRenderManager instance per viewer/view.
+  
+  \since Coin 3.0
+*/
+
 #include <Inventor/SoRenderManager.h>
 
 #include <algorithm>
@@ -59,13 +73,6 @@
 
 #include "SoRenderManagerP.h"
 
-//FIXME Improve this doc. BFG 20090123
-/*!
-  \class SoRenderManager
-
-  Manages properties which influences how rendering is done.
-*/
-
 /*!
   \enum SoRenderManager::RenderMode
 
@@ -81,13 +88,13 @@
 /*!
   \var SoRenderManager::RenderMode SoRenderManager::WIREFRAME
 
-  Render only the wireframe
+  Render polygons as wireframe
 */
 
 /*!
   \var SoRenderManager::RenderMode SoRenderManager::POINTS
 
-  Render only the vertices of the primitives
+  Render only the vertices of the polygons and lines.
 */
 
 /*!
@@ -106,7 +113,7 @@
 /*!
   \var SoRenderManager::RenderMode SoRenderManager::BOUNDING_BOX
 
-  Only show the bounding box of each object
+  Only show the bounding box of each object.
 */
 
 /*!
@@ -180,19 +187,20 @@
 /*!
   \enum SoRenderManager::AutoClippingStrategy
 
-  Strategy for adjusting camera clipping plane
+  Strategy for adjusting camera near/far clipping plane
 */
 
 /*!
   \var SoRenderManager::AutoClippingStrategy SoRenderManager::NO_AUTO_CLIPPING
 
-  Turn off automatic clipping
+  Turn off automatic clipping. The user needs to set the correct values in the camera.
 */
 
 /*!
   \var SoRenderManager::AutoClippingStrategy SoRenderManager::FIXED_NEAR_PLANE
 
-  Keep near plane at a fixed distance from the camera
+  Keep near plane at a fixed distance from the camera. The far plane is always set
+  at the end of the bounding box.
 */
 
 /*!
@@ -204,6 +212,9 @@
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->publ)
 
+/*!
+  Constructor.
+*/
 SoRenderManager::SoRenderManager(void)
 {
   assert(SoDB::isInitialized() && "SoDB::init() has not been invoked");
@@ -254,6 +265,9 @@ SoRenderManager::SoRenderManager(void)
 
 }
 
+/*!
+  Destructor.
+ */
 SoRenderManager::~SoRenderManager()
 {
   PRIVATE(this)->dummynode->unref();
@@ -300,18 +314,15 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
 
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
-    // FIXME: WTF? Did someone forget to read the coding guidelines? kintel 20080729
-    //PRIVATE(this)->camera = PRIVATE(this)->searchForCamera(PRIVATE(this)->scene);
-
     this->attachRootSensor(PRIVATE(this)->scene);
     this->attachClipSensor(PRIVATE(this)->scene);
   }
-
+  
   if (oldroot) oldroot->unref();
 }
 
 /*!
-  Returns pointer to root of scene graph.
+  Returns the pointer to root of scene graph.
  */
 SoNode *
 SoRenderManager::getSceneGraph(void) const
@@ -344,7 +355,7 @@ SoRenderManager::getCamera(void) const
   return PRIVATE(this)->camera;
 }
 
-/*!
+/*
   Internal callback
 
   \param[in] data Pointer to SoRenderManager
@@ -354,7 +365,6 @@ SoRenderManager::getCamera(void) const
 void
 SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"Should be a purely internal callback");
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoRenderManager::nodesensorCB",
                          "detected change in scene graph");
@@ -367,12 +377,11 @@ SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 
   \param[in] sceneroot scene to attach to
 
-  \deprecated Will not be available in Coin 4
+  \deprecated Will be private available in Coin 4
 */
 void
 SoRenderManager::attachRootSensor(SoNode * const sceneroot)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   if (!PRIVATE(this)->rootsensor) {
     (SoRenderManagerRootSensor::debug()) ?
       PRIVATE(this)->rootsensor = new SoRenderManagerRootSensor(SoRenderManager::nodesensorCB, this):
@@ -387,7 +396,7 @@ SoRenderManager::attachRootSensor(SoNode * const sceneroot)
   PRIVATE(this)->rootsensor->attach(sceneroot);
 }
 
-/*!
+/*
   Detaches the rootsensor from all tracked scenes
 
   \deprecated Will not be available in Coin 4
@@ -395,13 +404,12 @@ SoRenderManager::attachRootSensor(SoNode * const sceneroot)
 void
 SoRenderManager::detachRootSensor(void)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   if (PRIVATE(this)->rootsensor) {
     PRIVATE(this)->rootsensor->detach();
   }
 }
 
-/*!
+/*
   Attaches this SoRenderManagers clipsensor to a scene
 
   \param[in] sceneroot scene to attach to
@@ -411,14 +419,13 @@ SoRenderManager::detachRootSensor(void)
 void
 SoRenderManager::attachClipSensor(SoNode * const sceneroot)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   PRIVATE(this)->clipsensor->attach(sceneroot);
   if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
     PRIVATE(this)->clipsensor->schedule();
   }
 }
 
-/*!
+/*
   Detaches the clipsensor from all tracked scenes
 
   \deprecated Will not be available in Coin 4
@@ -426,7 +433,6 @@ SoRenderManager::attachClipSensor(SoNode * const sceneroot)
 void
 SoRenderManager::detachClipSensor(void)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"Should be privatized or protected");
   if (PRIVATE(this)->clipsensor->isScheduled()) {
     PRIVATE(this)->clipsensor->unschedule();
   }
@@ -437,7 +443,7 @@ SoRenderManager::detachClipSensor(void)
 
 /*!
   Clears buffers with the backgroundcolor set correctly
-
+  
   \param[in] color Set to \c TRUE if color buffer should be cleared
   \param[in] depth Set to \c TRUE if depth buffer should be cleared
 */
@@ -452,7 +458,7 @@ SoRenderManager::clearBuffers(SbBool color, SbBool depth)
   glClear(mask);
 }
 
-/*!
+/*
   Internal callback
 
   \param[in] userdata GLbitfield mask
@@ -463,7 +469,6 @@ SoRenderManager::clearBuffers(SbBool color, SbBool depth)
 void
 SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"Should be a purely internal callback");
   // remove callback again
   action->removePreRenderCallback(prerendercb, userdata);
   // MSVC7 on 64-bit Windows wants it to go through this cast.
@@ -530,7 +535,7 @@ SoRenderManager::removeSuperimposition(Superimposition * s)
 
  error:
 #if COIN_DEBUG
-  SoDebugError::post("SoSceneManager::removeSuperimposition",
+  SoDebugError::post("SoRenderManager::removeSuperimposition",
                      "no such superimposition");
 #endif // COIN_DEBUG
   return;
@@ -701,12 +706,12 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   // sensor detect and schedule before we've gotten around to serving
   // the current redraw -- remove it. This will prevent infinite loops
   // in the case of scenegraph modifications between a nodesensor
-  // trigger and SoSceneManager::render() actually being called. It
+  // trigger and SoRenderManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
   PRIVATE(this)->lock();
   if (PRIVATE(this)->rootsensor && PRIVATE(this)->rootsensor->isScheduled()) {
 #if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoSceneManager::render",
+    SoDebugError::postInfo("SoRenderManager::render",
                            "rootsensor unschedule");
 #endif // debug
     PRIVATE(this)->rootsensor->unschedule();
@@ -742,11 +747,9 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
   \param[in] clearmask mask to pass to glClear
 */
 void
-SoRenderManager::renderScene(
-                          SoGLRenderAction * action,
-                          SoNode * scene,
-                          uint32_t clearmask
-                          )
+SoRenderManager::renderScene( SoGLRenderAction * action,
+                              SoNode * scene,
+                              uint32_t clearmask)
 {
   if (clearmask) {
     if (clearmask & GL_COLOR_BUFFER_BIT) {
@@ -1131,11 +1134,6 @@ SoRenderManager::setWindowSize(const SbVec2s & newsize)
   SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
   PRIVATE(this)->glaction->setViewportRegion(region);
-
-    // FIXME: WTF? Did someone forget to read the coding guidelines? kintel 20080729
-//   region = PRIVATE(this)->handleeventaction->getViewportRegion();
-//   region.setWindowSize(newsize[0], newsize[1]);
-//   PRIVATE(this)->handleeventaction->setViewportRegion(region);
 }
 
 /*!
@@ -1364,7 +1362,7 @@ SoRenderManager::redraw(void)
 }
 
 /*!
-  Returns \c TRUE if the SoSceneManager automatically redraws the
+  Returns \c TRUE if the SoRenderManager automatically redraws the
   scene upon detecting changes in the scene graph.
 
   The automatic redraw is turned on and off by setting either a valid
@@ -1629,7 +1627,7 @@ SoRenderManager::getDefaultRedrawPriority(void)
 }
 
 /*!
-  Set whether or not for SoSceneManager instances to "touch" the
+  Set whether or not for SoRenderManager instances to "touch" the
   global \c realTime field after a redraw. If this is not done,
   redrawing when animating the scene will only happen as fast as the
   \c realTime interval goes (which defaults to 12 times a second).
