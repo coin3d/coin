@@ -366,6 +366,7 @@ public:
     }
     const int TEXSIZE = coin_geq_power_of_two((int) (sg->precision.getValue() * SbMin(maxsize, maxtexsize)));
 
+    this->lightid = -1;
     this->vsm_program = NULL;
     this->vsm_farval = NULL;
     this->vsm_nearval = NULL;
@@ -565,6 +566,7 @@ public:
   float farval;
   float nearval;
   int texunit;
+  int lightid;
 
   SoSeparator * bboxnode;
   SoShaderProgram * vsm_program;
@@ -642,17 +644,20 @@ public:
   void copyLightPaths(const SoPathList & pl) {
     for (int i = 0; i < pl.getLength(); i++) {
       SoFullPath * p = (SoFullPath*) pl[i];
-      SoTempPath * tp = new SoTempPath(p->getLength());
-      tp->ref();
-      tp->setHead(p->getHead());
-
-      for (int j = 1; j < p->getLength(); j++) {
-        tp->append(p->getNode(j));
+      SoNode * tail = p->getTail();
+      if (tail->isOfType(SoSpotLight::getClassTypeId()) ||
+          tail->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
+        SoTempPath * tp = new SoTempPath(p->getLength());
+        tp->ref();
+        tp->setHead(p->getHead());
+        
+        for (int j = 1; j < p->getLength(); j++) {
+          tp->append(p->getNode(j));
+        }
+        this->lightpaths.append(tp);
       }
-      this->lightpaths.append(tp);
     }
   }
-
   void getQuality(SoState * state, SbBool & perpixelspot, SbBool & perpixelother) {
     float quality = this->master->quality.getValue();
     perpixelspot = FALSE;
@@ -918,6 +923,7 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   if (!this->shadowlightsvalid) {
+    int lightidoffset = SoLightElement::getLights(state).getLength();
     float smoothing = PUBLIC(this)->smoothBorder.getValue();
     smoothing = 0.0f; // FIXME: temporary until we have time to fix this feature
 
@@ -963,23 +969,14 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
       if (this->numtexunitsinscene == 0) this->numtexunitsinscene = 1;
 
       this->searchaction.reset();
-      this->searchaction.setType(SoSpotLight::getClassTypeId());
+      this->searchaction.setType(SoLight::getClassTypeId());
       this->searchaction.setInterest(SoSearchAction::ALL);
       this->searchaction.setSearchingAll(FALSE);
       this->searchaction.apply(PUBLIC(this));
-
       this->clearLightPaths();
       this->copyLightPaths(this->searchaction.getPaths());
       this->searchaction.reset();
-
-      this->searchaction.setType(SoShadowDirectionalLight::getClassTypeId());
-      this->searchaction.setInterest(SoSearchAction::ALL);
-      this->searchaction.setSearchingAll(FALSE);
-      this->searchaction.apply(PUBLIC(this));
       this->needscenesearch = FALSE;
-
-      this->copyLightPaths(this->searchaction.getPaths());
-      this->searchaction.reset();
     }
     int maxunits = cc_glglue_max_texture_units(glue);
 
@@ -991,10 +988,10 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
       SoLight * light = (SoLight*)((SoFullPath*)(pl[i]))->getTail();
       if (light->on.getValue() && (numlights < maxlights)) numlights++;
     }
-
     if (numlights != this->shadowlights.getLength()) {
       // just delete and recreate all if the number of spot lights have changed
       this->deleteShadowLights();
+      int id = lightidoffset;
       for (i = 0; i < pl.getLength(); i++) {
         SoLight * light = (SoLight*)((SoFullPath*)pl[i])->getTail();
         if (light->on.getValue() && (this->shadowlights.getLength() < maxlights)) {
@@ -1018,22 +1015,26 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
                                                               bboxscene,
                                                               gaussmatrixsize,
                                                               gaussstandarddeviation);
+          cache->lightid = id++;
           this->shadowlights.append(cache);
         }
       }
     }
     // validate if spot light paths are still valid
     int i2 = 0;
+    int id = lightidoffset;
     for (i = 0; i < pl.getLength(); i++) {
       SoPath * path = pl[i];
       SoLight * light = (SoLight*) ((SoFullPath*)path)->getTail();
       if (light->on.getValue() && (i2 < maxlights)) {
         SoShadowLightCache * cache = this->shadowlights[i2];
         int unit = (maxunits - 1) - i2;
-        if (unit != cache->texunit) {
+        int lightid = id++;
+        if (unit != cache->texunit || lightid != cache->lightid) {
           if (this->vertexshadercache) this->vertexshadercache->invalidate();
           if (this->fragmentshadercache) this->fragmentshadercache->invalidate();
           cache->texunit = unit;
+          cache->lightid = lightid;
         }
         if (*(cache->path) != *path) {
           cache->path->unref();
@@ -1055,6 +1056,7 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
       this->updateDirectionalCamera(state, cache, this->matrixaction.getMatrix());
     }
     assert(cache->texunit >= 0);
+    assert(cache->lightid >= 0);
     SoTextureUnitElement::set(state, PUBLIC(this), cache->texunit);
 
     SbMatrix mat = cache->matrix;
@@ -1213,8 +1215,9 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   SoShadowDirectionalLight * light = static_cast<SoShadowDirectionalLight*> (cache->light);
 
   SbVec3f dir = light->direction.getValue();
+  dir.normalize();
   transform.multDirMatrix(dir, dir);
-  (void) dir.normalize();
+  dir.normalize();
   cam->orientation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, -1.0f), dir));
     
   SbViewVolume vv = SoViewVolumeElement::get(state);
@@ -1326,10 +1329,6 @@ SoShadowGroupP::setVertexShader(SoState * state)
     str.sprintf("varying vec4 shadowCoord%d;", i);
     gen.addDeclaration(str, FALSE);
 
-    if (this->shadowlights[i]->light->isOfType(SoDirectionalLight::getClassTypeId())) {
-
-    }
-
     if (!perpixelspot) {
       str.sprintf("varying vec3 spotVertexColor%d;", i);
       gen.addDeclaration(str, FALSE);
@@ -1402,15 +1401,16 @@ SoShadowGroupP::setVertexShader(SoState * state)
     gen.addMainStatement("vec4 pos = cameraTransform * ecPosition;\n"); // in world space
   }
   for (i = 0; i < numshadowlights; i++) {
-    spotlight = TRUE;
     SoShadowLightCache * cache = this->shadowlights[i];
     SbString str;
     str.sprintf("shadowCoord%d = gl_TextureMatrix[%d] * pos;\n", i, cache->texunit); // in light space
     gen.addMainStatement(str);
 
     if (!perpixelspot) {
+      spotlight = TRUE;
       gen.addMainStatement("ambient = vec4(0.0); diffuse = vec4(0.0); specular = vec4(0.0);\n");
-      str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", lights.getLength()+i);
+      str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", 
+                  cache->lightid);
       gen.addMainStatement(str);
       str.sprintf("spotVertexColor%d = \n"
                   "  ambient.rgb * gl_FrontMaterial.ambient.rgb + "
@@ -1571,7 +1571,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (this->numtexunitsinscene > 1) {
     gen.addMainStatement("if (coin_texunit1_model != 0) texcolor *= texture2D(textureMap1, gl_TexCoord[1].xy);\n");
   }
-  gen.addMainStatement("vec3 color = perVertexColor;\n"
+  gen.addMainStatement(
+
+                       // "vec3 color = perVertexColor;\n"
+                       "vec3 color = vec3(0.0);\n"
                        "vec3 scolor = vec3(0.0);\n"
                        "float dist;\n"
                        "float shadeFactor;\n"
@@ -1583,6 +1586,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     SbBool spotlight = FALSE;
     SbBool dirlight = FALSE;
     for (i = 0; i < numshadowlights; i++) {
+      SoShadowLightCache * cache = this->shadowlights[i];
       SbBool dirshadow = FALSE;
       SbString str;
       SbString spotname = "DirSpotLight";
@@ -1610,11 +1614,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       if (dirshadow) {
         str.sprintf("dist = dot(ecPosition3.xyz, lightplane%d.xyz) - lightplane%d.w;\n", i,i);
         gen.addMainStatement(str);
-        str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);\n", i);
+        str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);\n", cache->lightid);
       }
       else {
         str.sprintf("dist = %s(%d, eye, ecPosition3, normal, ambient, diffuse, specular);\n",
-                    spotname.getString(), lights.getLength()+i);
+                    spotname.getString(), cache->lightid);
       }
       gen.addMainStatement(str);
       str.sprintf("coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n", i , i);
