@@ -58,7 +58,7 @@
   \endcode
 
   \since Inventor 2.1
-  \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph
+  \sa SoFont, SoText2, SoText3, SoAsciiText
 */
 
 // *************************************************************************

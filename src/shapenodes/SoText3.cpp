@@ -143,7 +143,6 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoTextOutlineEnabledElement.h>
-#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/nodes/SoProfile.h>

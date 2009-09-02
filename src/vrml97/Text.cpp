@@ -131,7 +131,6 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/system/gl.h>

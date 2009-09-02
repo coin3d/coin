@@ -57,7 +57,6 @@
 #include "SoGLDriverDatabase.cpp"
 #include "SoGLImage.cpp"
 #include "SoGenerate.cpp"
-#include "SoGlyph.cpp"
 #include "SoInteraction.cpp"
 #include "SoJavaScriptEngine.cpp"
 #include "SoLightPath.cpp"

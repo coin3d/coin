@@ -9,7 +9,6 @@ RegularSources = \
 	SoGLImage.cpp \
 	SoGLCubeMapImage.cpp \
 	SoGLBigImage.cpp \
-	SoGlyph.cpp \
 	SoNormalGenerator.cpp \
 	SoNotification.cpp \
 	SoNotRec.cpp \
