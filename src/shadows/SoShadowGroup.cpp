@@ -1745,7 +1745,16 @@ SoShadowGroupP::setFragmentShader(SoState * state)
         SoShadowDirectionalLight * sl = static_cast<SoShadowDirectionalLight*> (light);
         if (sl->maxShadowDistance.getValue() > 0.0f) {
           gen.addMainStatement("shadeFactor = 1.0 - shadeFactor;\n");
-          str.sprintf("shadeFactor *= max(0.0, min(1.0, 1.0 + ecPosition3.z/maxshadowdistance%d));\n", i);
+
+          // linear falloff
+          // str.sprintf("shadeFactor *= max(0.0, min(1.0, 1.0 + ecPosition3.z/maxshadowdistance%d));\n", i);
+
+          // See SoGLEnvironemntElement.cpp (updategl()) to see how the magic exp() constants here are calculated
+
+          // exp(f) falloff
+          // str.sprintf("shadeFactor *= min(1.0, exp(5.545*ecPosition3.z/maxshadowdistance%d));\n", i);
+          // just use exp(f^2) as a falloff formula for now, consider making this configurable
+          str.sprintf("shadeFactor *= min(1.0, exp(2.35*ecPosition3.z*abs(ecPosition3.z)/(maxshadowdistance%d*maxshadowdistance%d)));\n", i,i);
           gen.addMainStatement(str);
           gen.addMainStatement("shadeFactor = 1.0 - shadeFactor;\n");
         }
