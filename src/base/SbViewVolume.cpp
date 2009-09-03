@@ -843,6 +843,7 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
   SbBox3f commonVolume;
   SbVec3f bmin = box.getMin();
   SbVec3f bmax = box.getMax();
+  SbPlane planes[6];
 
   //*****************************************************************************
   // find the 8 view volume corners
@@ -854,20 +855,40 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
   for (i = 0; i < 8; i++) {
     if (box.intersect(vvpts[i])) commonVolume.extendBy(vvpts[i]);
   }
+
+  //*****************************************************************************
+  // add all bbox corner points inside the view volume
+  this->getViewVolumePlanes(planes);
+  int inside = 0;
+  for (i = 0; i < 8; i++) {
+    SbVec3f pt((i&1)?bmin[0]:bmax[0],
+               (i&2)?bmin[1]:bmax[1],
+               (i&4)?bmin[2]:bmax[2]);
+    int j;
+    for (j = 0; i < 6; j++) {
+      if (!planes[j].isInHalfSpace(pt)) break;
+    }
+    if (j == 6) {
+      commonVolume.extendBy(pt);
+      inside++;
+    }
+  }
+  if (inside==8) return commonVolume;
+  
   //*****************************************************************************
   // clip the view volume against the bbox and add intersection points
   // to commonVolume
   //
   SbClip clipper;
-  SbPlane planes[6];
-
-  // generate the bbox planes
+  // generate the 6 bbox planes, all pointing towards the center of the box
   for (i = 0; i < 6; i++) {
     int dim = i/2;
     SbVec3f n(0.0f, 0.0f, 0.0f);
     n[dim] = (i&1) ? 1.0f : -1.0f;
     planes[i] = SbPlane(n, ((i&1) ? bmin[dim] : -bmax[dim]));
   }
+
+  // clip view volume polygons against the bbox planes
   clip_face(clipper, vvpts[0], vvpts[1], vvpts[3], vvpts[2], planes, commonVolume);
   clip_face(clipper, vvpts[1], vvpts[5], vvpts[7], vvpts[3], planes, commonVolume);
   clip_face(clipper, vvpts[5], vvpts[4], vvpts[6], vvpts[7], planes, commonVolume);
