@@ -824,7 +824,8 @@ namespace {
       SbVec3f tmp;
       clipper.getVertex(i, tmp);
       isect.extendBy(tmp);
-    } 
+    }
+    clipper.reset();
   }
 };
 
@@ -839,57 +840,40 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
 {
   int i, j;
   SbVec3f vvpts[8];
-  SbVec3f bbpts[8];
   SbBox3f commonVolume;
-  SbVec3f bmin, bmax;
-  bmin = box.getMin();
-  bmax = box.getMax();
+  SbVec3f bmin = box.getMin();
+  SbVec3f bmax = box.getMax();
 
   //*****************************************************************************
-  // First, find the intersection between the bbox and the view volume bbox
+  // find the 8 view volume corners
   this->getPlaneRectangle(0.0f, vvpts[0], vvpts[1], vvpts[2], vvpts[3]);
   this->getPlaneRectangle(this->nearToFar, vvpts[4], vvpts[5], vvpts[6], vvpts[7]);
 
-  for (i = 0; i < 8; i++) {
-    commonVolume.extendBy(vvpts[i]);
-  }
-  // check if we have an intersection
-  if (!box.intersect(commonVolume)) return SbBox3f();
-  
-  SbVec3f cmin = commonVolume.getMin();
-  SbVec3f cmax = commonVolume.getMax();
-
-  for (i = 0; i < 3; i++) {
-    cmin[i] = SbMax(cmin[i], bmin[i]);
-    cmax[i] = SbMin(cmax[i], bmax[i]);
-  }
   //*****************************************************************************
-  // clip the combined bbox against the view volume
-
-  // bbox corner points
-  for (i = 0; i < 8; i++) {
-    bbpts[i][0] = i & 1 ? cmin[0] : cmax[0];
-    bbpts[i][1] = i & 2 ? cmin[1] : cmax[1];
-    bbpts[i][2] = i & 4 ? cmin[2] : cmax[2];
-  }
-
-  SbClip clipper;
-  SbPlane planes[6];
-  commonVolume.makeEmpty(); // reset bbox before clipping
-  
   // all all view volume points inside the original bbox
   for (i = 0; i < 8; i++) {
     if (box.intersect(vvpts[i])) commonVolume.extendBy(vvpts[i]);
   }
+  //*****************************************************************************
+  // clip the view volume against the bbox and add intersection points
+  // to commonVolume
+  //
+  SbClip clipper;
+  SbPlane planes[6];
 
-  // clip view volume against the bbox
-  this->getViewVolumePlanes(planes);
-  clip_face(clipper, bbpts[0], bbpts[1], bbpts[3], bbpts[2], planes, commonVolume);
-  clip_face(clipper, bbpts[1], bbpts[5], bbpts[7], bbpts[3], planes, commonVolume);
-  clip_face(clipper, bbpts[5], bbpts[4], bbpts[6], bbpts[7], planes, commonVolume);
-  clip_face(clipper, bbpts[4], bbpts[0], bbpts[2], bbpts[6], planes, commonVolume);
-  clip_face(clipper, bbpts[4], bbpts[5], bbpts[1], bbpts[0], planes, commonVolume);
-  clip_face(clipper, bbpts[2], bbpts[3], bbpts[7], bbpts[6], planes, commonVolume);
+  // generate the bbox planes
+  for (i = 0; i < 6; i++) {
+    int dim = i/2;
+    SbVec3f n(0.0f, 0.0f, 0.0f);
+    n[dim] = (i&1) ? 1.0f : -1.0f;
+    planes[i] = SbPlane(n, ((i&1) ? bmin[dim] : -bmax[dim]));
+  }
+  clip_face(clipper, vvpts[0], vvpts[1], vvpts[3], vvpts[2], planes, commonVolume);
+  clip_face(clipper, vvpts[1], vvpts[5], vvpts[7], vvpts[3], planes, commonVolume);
+  clip_face(clipper, vvpts[5], vvpts[4], vvpts[6], vvpts[7], planes, commonVolume);
+  clip_face(clipper, vvpts[4], vvpts[0], vvpts[2], vvpts[6], planes, commonVolume);
+  clip_face(clipper, vvpts[4], vvpts[5], vvpts[1], vvpts[0], planes, commonVolume);
+  clip_face(clipper, vvpts[2], vvpts[3], vvpts[7], vvpts[6], planes, commonVolume);
 
   return commonVolume;
 }
