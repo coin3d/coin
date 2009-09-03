@@ -1330,14 +1330,22 @@ namespace {
     initLightMaterial(gen, i);
     const char * dist = needdist ? "dist = " : "";
     SbString str;
-    str.sprintf("%s DirSpotLight(%d, eye, ecPosition3, normal, diffuse, specular);", dist, i);
+    str.sprintf("%s DirSpotLight("
+                " -normalize(vec3(gl_LightSource[%d].spotDirection),"
+                " vec3(gl_LightSource[%d].position,"
+                " eye, ecPosition3, normal, diffuse, specular);", dist, i, i);
     gen.addMainStatement(str);
   }
 
   void addPointLight(SoShaderGenerator & gen, int i) {
     initLightMaterial(gen, i);
     SbString str;
-    str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+    str.sprintf("PointLight("
+                "vec3(gl_LightSource[%d].position),"
+                "vec3(gl_LightSource[%d].constantAttenuation,"
+                "     gl_LightSource[%d].linearAttenuation,"
+                "     gl_LightSource[%d].quadraticAttenuation),"
+                " eye, ecPosition3, normal, ambient, diffuse, specular);", i,i,i,i);
 
     gen.addMainStatement(str);
 

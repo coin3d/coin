@@ -1,5 +1,6 @@
 
-void PointLight(in int i,
+void PointLight(in vec3 light_position,
+                in vec3 light_attenuation,
                 in vec3 eye,
                 in vec3 ecPosition3,
                 in vec3 normal,
@@ -15,14 +16,14 @@ void PointLight(in int i,
   vec3 VP;
   vec3 halfvec;
 
-  VP = vec3(gl_LightSource[i].position) - ecPosition3;
+  VP = light_position - ecPosition3;
   d = length(VP);
 
   VP = normalize(VP);
 
-  att = 1.0 / (gl_LightSource[i].constantAttenuation +
-               gl_LightSource[i].linearAttenuation * d +
-               gl_LightSource[i].quadraticAttenuation * d * d);
+  att = 1.0 / (light_attenuation.x +
+               light_attenuation.y * d +
+               light_attenuation.z * d * d);
 
   halfvec = normalize(VP + eye);
   nDotVP = max(0.0, dot(normal, VP));
@@ -35,8 +36,8 @@ void PointLight(in int i,
   else
     pf = pow(nDotHV, shininess);
 
-  ambient += gl_LightSource[i].ambient * att;
-  diffuse += gl_LightSource[i].diffuse * nDotVP * att;
-  specular += gl_LightSource[i].specular * pf * att;
+  ambient *= att;
+  diffuse *= nDotVP * att;
+  specular *= pf * att;
 }
 

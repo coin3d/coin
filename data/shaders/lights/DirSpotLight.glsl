@@ -1,5 +1,6 @@
 
-float DirSpotLight(in int i,
+float DirSpotLight(in vec3 light_direction,
+                   in vec3 light_position,
                    in vec3 eye,
                    in vec3 ecPosition3,
                    in vec3 normal,
@@ -9,7 +10,7 @@ float DirSpotLight(in int i,
   float nDotVP;
   float nDotHV;
   float pf;
-  vec3 dir = -normalize(vec3(gl_LightSource[i].spotDirection));
+  vec3 dir = );
   vec3 hv = normalize(eye + dir);
   nDotVP = max(0.0, dot(normal, dir));
   nDotHV = max(0.0, dot(normal, hv));
@@ -21,6 +22,6 @@ float DirSpotLight(in int i,
 
   diffuse *= nDotVP;
   specular *= pf;
-  return length(vec3(gl_LightSource[i].position) - ecPosition3);
+  return length(light_position - ecPosition3);
 }
 
