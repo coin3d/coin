@@ -51,7 +51,7 @@
 
   DirectionalLight {
      direction 0 0 -1
-     intensity 0.1
+     intensity 0.2
   }
 
   ShadowGroup {

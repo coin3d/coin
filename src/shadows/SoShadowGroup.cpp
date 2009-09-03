@@ -1294,6 +1294,57 @@ SoShadowGroupP::renderDepthMap(SoShadowLightCache * cache,
   if (cache->gaussmap) cache->gaussmap->GLRender(action);
 }
 
+namespace {
+  void initLightMaterial(SoShaderGenerator & gen, int i) {
+    SbString str;
+    str.sprintf("ambient = gl_LightSource[%d].ambient;\n"
+                "diffuse = gl_LightSource[%d].diffuse;\n"
+                "specular = gl_LightSource[%d].specular;\n", i,i,i);
+    gen.addMainStatement(str);
+  }
+  
+  void addDirectionalLight(SoShaderGenerator & gen, int i) {
+    initLightMaterial(gen, i);
+    SbString str; 
+    str.sprintf("DirectionalLight(normalize(vec3(gl_LightSource[%d].position)),"
+                "vec3(gl_LightSource[%d].halfVector), normal, diffuse, specular);", i,i);
+    gen.addMainStatement(str);
+  }
+  void addSpotLight(SoShaderGenerator & gen, int i, SbBool needdist = FALSE) {
+    initLightMaterial(gen, i);
+    const char * dist = needdist ? "dist = " : "";
+    SbString str;
+    str.sprintf("%s SpotLight("
+                "vec3(gl_LightSource[%d].position),"
+                "vec3(gl_LightSource[%d].constantAttenuation,"
+                "     gl_LightSource[%d].linearAttenuation,"
+                "     gl_LightSource[%d].quadraticAttenuation),"
+                "normalize(gl_LightSource[%d].spotDirection),"
+                "gl_LightSource[%d].spotExponent,"
+                "gl_LightSource[%d].spotCosCutoff,"
+                "eye, ecPosition3, normal, ambient, diffuse, specular);", 
+                dist, i,i,i,i,i,i,i);
+    gen.addMainStatement(str);
+  }
+  void addDirSpotLight(SoShaderGenerator & gen, int i, SbBool needdist = FALSE) {
+    initLightMaterial(gen, i);
+    const char * dist = needdist ? "dist = " : "";
+    SbString str;
+    str.sprintf("%s DirSpotLight(%d, eye, ecPosition3, normal, diffuse, specular);", dist, i);
+    gen.addMainStatement(str);
+  }
+
+  void addPointLight(SoShaderGenerator & gen, int i) {
+    initLightMaterial(gen, i);
+    SbString str;
+    str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+
+    gen.addMainStatement(str);
+
+  }
+
+};
+
 void
 SoShadowGroupP::setVertexShader(SoState * state)
 {
@@ -1352,28 +1403,29 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
   gen.addMainStatement("vec3 normal = normalize(gl_NormalMatrix * gl_Normal);\n"
                        "vec3 eye = -normalize(ecPosition3);\n"
-                       "vec4 ambient = vec4(0.0);\n"
-                       "vec4 diffuse = vec4(0.0);\n"
-                       "vec4 specular = vec4(0.0);");
-
+                       "vec4 ambient;\n"
+                       "vec4 diffuse;\n"
+                       "vec4 specular;\n"
+                       "vec4 accambient = vec4(0.0);\n"
+                       "vec4 accdiffuse = vec4(0.0);\n"
+                       "vec4 accspecular = vec4(0.0);\n"
+                       "vec4 color;\n");
+  
   gen.addMainStatement("fragmentNormal = normal;");
 
   if (!perpixelother) {
     for (i = 0; i < lights.getLength(); i++) {
       SoLight * l = (SoLight*) lights[i];
       if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
-        str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);", i);
-        gen.addMainStatement(str);
+        addDirectionalLight(gen, i);
         dirlight = TRUE;
       }
       else if (l->isOfType(SoSpotLight::getClassTypeId())) {
-        str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
-        gen.addMainStatement(str);
+        addSpotLight(gen, i);
         spotlight = TRUE;
-
       }
       else if (l->isOfType(SoPointLight::getClassTypeId())) {
-        str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
+        addPointLight(gen, i);
         gen.addMainStatement(str);
         pointlight = TRUE;
       }
@@ -1382,19 +1434,20 @@ SoShadowGroupP::setVertexShader(SoState * state)
                                   "Unknown light type: %s",
                                   l->getTypeId().getName().getString());
       }
+      gen.addMainStatement("accambient += ambient; accdiffuse += diffuse; accspecular += specular;\n");
     }
-
+    
     if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
     if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
 
-    gen.addMainStatement("vec4 color = gl_FrontLightModelProduct.sceneColor + "
-                         "  ambient * gl_FrontMaterial.ambient + "
-                         "  diffuse * gl_Color +"
-                         "  specular * gl_FrontMaterial.specular;\n"
+    gen.addMainStatement("color = gl_FrontLightModelProduct.sceneColor + "
+                         "  accambient * gl_FrontMaterial.ambient + "
+                         "  accdiffuse * gl_Color +"
+                         "  accspecular * gl_FrontMaterial.specular;\n"
                          );
   }
   else {
-    gen.addMainStatement("vec4 color = gl_FrontLightModelProduct.sceneColor;\n");
+    gen.addMainStatement("color = gl_FrontLightModelProduct.sceneColor;\n");
   }
 
   if (numshadowlights) {
@@ -1408,10 +1461,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
 
     if (!perpixelspot) {
       spotlight = TRUE;
-      gen.addMainStatement("ambient = vec4(0.0); diffuse = vec4(0.0); specular = vec4(0.0);\n");
-      str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", 
-                  cache->lightid);
-      gen.addMainStatement(str);
+      addSpotLight(gen, cache->lightid);
       str.sprintf("spotVertexColor%d = \n"
                   "  ambient.rgb * gl_FrontMaterial.ambient.rgb + "
                   "  diffuse.rgb * gl_Color.rgb + "
@@ -1421,7 +1471,6 @@ SoShadowGroupP::setVertexShader(SoState * state)
   }
 
   if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
-
   int32_t fogType = this->getFog(state);
 
   switch (fogType) {
@@ -1571,10 +1620,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   if (this->numtexunitsinscene > 1) {
     gen.addMainStatement("if (coin_texunit1_model != 0) texcolor *= texture2D(textureMap1, gl_TexCoord[1].xy);\n");
   }
-  gen.addMainStatement(
-
-                       // "vec3 color = perVertexColor;\n"
-                       "vec3 color = vec3(0.0);\n"
+  gen.addMainStatement("vec3 color = perVertexColor;\n"
                        "vec3 scolor = vec3(0.0);\n"
                        "float dist;\n"
                        "float shadeFactor;\n"
@@ -1589,16 +1635,16 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       SoShadowLightCache * cache = this->shadowlights[i];
       SbBool dirshadow = FALSE;
       SbString str;
-      SbString spotname = "DirSpotLight";
+      SbBool normalspot = FALSE;
       SbString insidetest = "&& coord.x >= 0.0 && coord.x <= 1.0 && coord.y >= 0.0 && coord.y <= 1.0)";
 
       SoLight * light = this->shadowlights[i]->light;
       if (light->isOfType(SoSpotLight::getClassTypeId())) {
         SoSpotLight * sl = static_cast<SoSpotLight*> (light);
         if (sl->dropOffRate.getValue() >= 0.0f) {
-          spotname = "SpotLight";
           insidetest = ")";
           spotlight = TRUE;
+          normalspot = TRUE;
         }
         else {
           insidetest = ")";
@@ -1608,19 +1654,20 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       else {
         dirshadow = TRUE;
         dirlight = TRUE;
-        spotname = "DirectionalLight";    
       }
-      gen.addMainStatement("diffuse = vec4(0.0); specular = vec4(0);");
       if (dirshadow) {
         str.sprintf("dist = dot(ecPosition3.xyz, lightplane%d.xyz) - lightplane%d.w;\n", i,i);
         gen.addMainStatement(str);
-        str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);\n", cache->lightid);
+        addDirectionalLight(gen, cache->lightid);
       }
       else {
-        str.sprintf("dist = %s(%d, eye, ecPosition3, normal, ambient, diffuse, specular);\n",
-                    spotname.getString(), cache->lightid);
+        if (normalspot) {
+          addSpotLight(gen, cache->lightid, TRUE);
+        }
+        else {
+          addDirSpotLight(gen, cache->lightid, TRUE);
+        }
       }
-      gen.addMainStatement(str);
       str.sprintf("coord = 0.5 * (shadowCoord%d.xyz / shadowCoord%d.w + vec3(1.0));\n", i , i);
       gen.addMainStatement(str);
       str.sprintf("map = texture2D(shadowMap%d, coord.xy);\n", i);
@@ -1638,29 +1685,23 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       
       gen.addMainStatement("color += shadeFactor * diffuse.rgb * mydiffuse.rgb;");
       gen.addMainStatement("scolor += shadeFactor * gl_FrontMaterial.specular.rgb * specular.rgb;\n");      
+      gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb;\n");
     }
-    gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb;\n");
 
     if (perpixelother) {
-      gen.addMainStatement("diffuse = vec4(0.0); ambient = vec4(0.0); specular = vec4(0.0);");
-
       SbBool pointlight = FALSE;
-
       for (i = 0; i < lights.getLength(); i++) {
         SoLight * l = (SoLight*) lights[i];
         if (l->isOfType(SoDirectionalLight::getClassTypeId())) {
-          str.sprintf("DirectionalLight(%d, normal, ambient, diffuse, specular);", i);
-          gen.addMainStatement(str);
+          addDirectionalLight(gen, i);
           dirlight = TRUE;
         }
         else if (l->isOfType(SoSpotLight::getClassTypeId())) {
-          str.sprintf("SpotLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
-          gen.addMainStatement(str);
+          addSpotLight(gen, i);
           spotlight = TRUE;
         }
         else if (l->isOfType(SoPointLight::getClassTypeId())) {
-          str.sprintf("PointLight(%d, eye, ecPosition3, normal, ambient, diffuse, specular);", i);
-          gen.addMainStatement(str);
+          addPointLight(gen, i);
           pointlight = TRUE;
         }
         else {
@@ -1668,14 +1709,13 @@ SoShadowGroupP::setFragmentShader(SoState * state)
                                     "Unknown light type: %s",
                                     l->getTypeId().getName().getString());
         }
+        gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb + "
+                             "diffuse.rgb * mydiffuse.rgb;\n");
+        gen.addMainStatement("scolor += specular.rgb * gl_FrontMaterial.specular.rgb;\n");
       }
 
       if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
       if (pointlight) gen.addNamedFunction(SbName("lights/PointLight"), FALSE);
-
-      gen.addMainStatement("color += ambient.rgb * gl_FrontMaterial.ambient.rgb + "
-                           "diffuse.rgb * mydiffuse.rgb;\n");
-      gen.addMainStatement("scolor += specular.rgb * gl_FrontMaterial.specular.rgb;\n");
     }
     if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
   }
