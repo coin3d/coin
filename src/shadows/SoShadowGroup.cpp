@@ -1270,13 +1270,11 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
   }
   if (!visible) {
     if (cache->depthmap->scene.getValue() == cache->depthmapscene) {
-      fprintf(stderr,"not visible!\n");
       cache->depthmap->scene = new SoInfo;
     }
     return;
   }
   if (cache->depthmap->scene.getValue() != cache->depthmapscene) {
-    fprintf(stderr,"visible!\n");
     cache->depthmap->scene = cache->depthmapscene;
   }
   cam->viewBoundingBox(isect, 1.0f, 1.0f);
