@@ -99,19 +99,24 @@
 */
 
 /*!
-  \var SoSFFloat SoShadowGroup::nearDistance
+  \var SoSFFloat SoShadowGroup::maxShadowDistance
 
-  Can be used to set a fixed near distance for this directional light. The value in this
-  field will be used if it's set to > 0.0. Default value is -1.0.
+  The maximum distance (from the camera) that we'll see shadows from this light source.
 */
 
 /*!
-  \var SoSFFloat SoShadowGroup::farDistance
+  \var SoSFVec3f SoShadowGroup::bboxCenter
 
-  Can be used to set a fixed far distance for this directional light. The value in this
-  field will be used if it's set to > 0.0. Default value is -1.0.
+  Can be used to specify the volume that should be used for
+  calculating the resulting shadow volume.
 */
 
+/*!
+  \var SoSFVec3f SoShadowGroup::bboxSize
+
+  Can be used to specify the volume that should be used for
+  calculating the resulting shadow volume.
+*/
 
 // *************************************************************************
 
@@ -134,9 +139,9 @@ SoShadowDirectionalLight::SoShadowDirectionalLight(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShadowDirectionalLight);
   SO_NODE_ADD_FIELD(shadowMapScene, (NULL));
-  SO_NODE_ADD_FIELD(nearDistance, (-1.0f));
-  SO_NODE_ADD_FIELD(farDistance, (-1.0f));
   SO_NODE_ADD_FIELD(maxShadowDistance, (-1.0f));
+  SO_NODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
 }
 
 /*!
