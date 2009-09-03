@@ -1744,8 +1744,10 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       if (dirshadow) {
         SoShadowDirectionalLight * sl = static_cast<SoShadowDirectionalLight*> (light);
         if (sl->maxShadowDistance.getValue() > 0.0f) {
-          str.sprintf("shadeFactor *= max(0.0, 1.0 - max(0.0, -ecPosition3.z/maxshadowdistance%d));\n", i);
+          gen.addMainStatement("shadeFactor = 1.0 - shadeFactor;\n");
+          str.sprintf("shadeFactor *= max(0.0, min(1.0, 1.0 + ecPosition3.z/maxshadowdistance%d));\n", i);
           gen.addMainStatement(str);
+          gen.addMainStatement("shadeFactor = 1.0 - shadeFactor;\n");
         }
       }
       gen.addMainStatement("color += shadeFactor * diffuse.rgb * mydiffuse.rgb;");
