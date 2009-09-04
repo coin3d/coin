@@ -727,6 +727,14 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   v2 = vv.getPlanePoint(dist, n2);
   v3 = vv.getPlanePoint(dist, n3);
 
+  // test if the quad is outside the view frustum, ignore it in that case
+  SbBox3f testbox;
+  testbox.extendBy(v0);
+  testbox.extendBy(v1);
+  testbox.extendBy(v2);
+  testbox.extendBy(v3);
+  if (!vv.intersect(testbox)) return FALSE;
+
   // transform back to object space
   SbMatrix inv = mat.inverse();
   inv.multVecMatrix(v0, v0);
@@ -735,7 +743,6 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   inv.multVecMatrix(v3, v3);
 
   return TRUE;
-
 }
 
 // Debug convenience method.
