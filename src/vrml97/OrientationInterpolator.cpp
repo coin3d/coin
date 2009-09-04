@@ -112,21 +112,16 @@ void
 SoVRMLOrientationInterpolator::evaluate(void)
 {
   float interp;
-
-  assert(this->key.getNum() == this->keyValue.getNum() && "Number of elements in 'key' should always be identical to number of elements in 'keyValue'");
-
-  int idx = this->getKeyValueIndex(interp);
+  const int idx = this->getKeyValueIndex(interp, this->keyValue.getNum());
   if (idx < 0) return;
 
   const SbRotation * v = this->keyValue.getValues(0);
-
   SbRotation v0 = v[idx];
   if (interp > 0.0f) {
     SbRotation v1 = v[idx+1];
     v0 = SbRotation::slerp(v0, v1, interp);
   }
   SO_ENGINE_OUTPUT(value_changed, SoSFRotation, setValue(v0));
-
 }
 
 #endif // HAVE_VRML97

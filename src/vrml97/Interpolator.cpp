@@ -108,14 +108,14 @@ SoVRMLInterpolator::~SoVRMLInterpolator() // virtual, protected
   \COININTERNAL
 */
 int 
-SoVRMLInterpolator::getKeyValueIndex(float & interp)
+SoVRMLInterpolator::getKeyValueIndex(float & interp, int numvalues)
 {
   float fraction = this->set_fraction.getValue();
   const int n = this->key.getNum();
-  if (n == 0) return -1;
+  if (n == 0 || numvalues == 0) return -1;
 
   const float * t = this->key.getValues(0); 
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < SbMin(n, numvalues); i++) {
     if (fraction < t[i]) {
       if (i == 0) {
         interp = 0.0f;
@@ -132,7 +132,7 @@ SoVRMLInterpolator::getKeyValueIndex(float & interp)
     }
   }
   interp = 0.0f;
-  return n-1;
+  return SbMin(numvalues,n)-1;
 }
 
 #endif // HAVE_VRML97

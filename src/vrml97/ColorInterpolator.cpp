@@ -109,7 +109,7 @@ void
 SoVRMLColorInterpolator::evaluate(void)
 {
   float interp;
-  int idx = this->getKeyValueIndex(interp);
+  int idx = this->getKeyValueIndex(interp, this->keyValue.getNum());
   if (idx < 0) return;
 
   const SbColor * v = this->keyValue.getValues(0);

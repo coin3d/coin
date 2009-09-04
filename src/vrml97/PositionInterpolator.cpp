@@ -99,9 +99,9 @@ void
 SoVRMLPositionInterpolator::evaluate(void)
 {
   float interp;
-  int idx = this->getKeyValueIndex(interp);
+  int idx = this->getKeyValueIndex(interp, this->keyValue.getNum());
   if (idx < 0) return;
-
+  
   const SbVec3f * v = this->keyValue.getValues(0);
 
   SbVec3f v0 = v[idx];

@@ -110,10 +110,13 @@ SoNodeEngine::destroy(void)
                          t.getName().getString());
 #endif // debug
 
-  // we used to evalute here before deleting the node. I don't think
-  // this is correct for SoNodeEngine engines though, since they're a
-  // part of the scene graph, and it's no point evaluating the engine
-  // when it's no longer in the scene
+#ifdef COIN_THREADSAFE
+  cc_recmutex_internal_field_lock();
+#endif // COIN_THREADSAFE
+  this->evaluateWrapper();
+#ifdef COIN_THREADSAFE
+  cc_recmutex_internal_field_unlock();
+#endif // COIN_THREADSAFE
 
   inherited::destroy();
 

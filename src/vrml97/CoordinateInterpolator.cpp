@@ -100,7 +100,7 @@ SoVRMLCoordinateInterpolator::evaluate(void)
   if (!this->value_changed.isEnabled()) return;
 
   float interp;
-  int i, idx = this->getKeyValueIndex(interp);
+  int i, idx = this->getKeyValueIndex(interp, this->keyValue.getNum());
   if (idx < 0) return;
 
   PRIVATE(this)->tmplist.truncate(0);

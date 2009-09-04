@@ -43,7 +43,7 @@ public:
 
 protected:
   
-  int getKeyValueIndex(float & interp);
+  int getKeyValueIndex(float & interp, int numvalues);
 
   SoVRMLInterpolator(void);
   virtual ~SoVRMLInterpolator();
