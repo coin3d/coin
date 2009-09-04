@@ -1005,6 +1005,36 @@ BOOST_AUTO_TEST_CASE(intersect_ortho)
   BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 1.0f), "unexpected value");
 }
 
+BOOST_AUTO_TEST_CASE(intersect_bbox_inside_vv)
+{
+  SbViewVolume vv;
+  vv.ortho(-0.5, 0.5, -0.5, 0.5, -1, 10);
+  SbBox3f box(-0.25, -0.25, -0.25, 0.25, 0.25, 0.25);
+
+  SbBox3f isect = vv.intersectionBox(box);
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[0], -0.25f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[1], -0.25f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[2], -0.25f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[0], 0.25f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[1], 0.25f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 0.25f), "unexpected value");
+}
+
+BOOST_AUTO_TEST_CASE(intersect_vv_inside_bbox)
+{
+  SbViewVolume vv;
+  vv.ortho(-0.5, 0.5, -0.5, 0.5, 0, 5);
+  SbBox3f box(-10, -10, -10, 10, 10, 10);
+
+  SbBox3f isect = vv.intersectionBox(box);
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[0], -0.5f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[1], -0.5f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMin()[2], -5.0f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[0], 0.5f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[1], 0.5f), "unexpected value");
+  BOOST_CHECK_MESSAGE(eq(isect.getMax()[2], 0.0f), "unexpected value");
+}
+
 BOOST_AUTO_TEST_CASE(intersect_perspective)
 {
   // FIXME: set up a better perspective vv which also tests left/right/top/bottom
