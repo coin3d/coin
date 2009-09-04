@@ -45,7 +45,9 @@
 
   The example scene graph below demonstrates how you can use this node
   to create shadows on a large number of objects, and still get decent
-  precision when zooming in.
+  precision when zooming in. To further reduce the volume covered by
+  the shadowmap, you can set \a maxShadowDistance to some number > 0.
+  This is the distance from the camera where shadows will be visible.
 
   \code
 
@@ -61,6 +63,8 @@
     ShadowDirectionalLight {
       direction 1 1 -1
       intensity 0.8
+      # enable this to reduce the shadow view distance
+      # maxShadowDistance 200
     }
 
     # 900 cubes spaced out over a fairly large area
