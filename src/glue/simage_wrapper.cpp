@@ -275,10 +275,8 @@ simage_wrapper(void)
       {
 	/* check for 'd' suffix usage in coinX.dll coinXd.dll */
 	const char * suffix = strstr(COIN_SYSTEM_LIBRARY_NAME, "d.");
-        if (suffix) {
-          if (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME)) {
-            simage_dll_name = "simage1d";
-          }
+        if (suffix && (strlen(suffix) != strlen(COIN_SYSTEM_LIBRARY_NAME))) {
+	  simage_dll_name = "simage1d";
         }
       }
 #endif
