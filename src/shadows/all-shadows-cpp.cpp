@@ -23,6 +23,7 @@
 
 #include "SoGLShadowCullingElement.cpp"
 #include "SoShadowCulling.cpp"
+#include "SoShadowDirectionalLight.cpp"
 #include "SoShadowGroup.cpp"
 #include "SoShadowSpotLight.cpp"
 #include "SoShadowStyle.cpp"
