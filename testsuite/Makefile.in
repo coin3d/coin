@@ -138,6 +138,7 @@ TEST_SUITE_OBJECTS = \
 	shadersSoVertexShader.$(OBJEXT) \
 	shadowsSoGLShadowCullingElement.$(OBJEXT) \
 	shadowsSoShadowCulling.$(OBJEXT) \
+	shadowsSoShadowDirectionalLight.$(OBJEXT) \
 	shadowsSoShadowGroup.$(OBJEXT) \
 	shadowsSoShadowSpotLight.$(OBJEXT) \
 	shadowsSoShadowStyle.$(OBJEXT) \
@@ -257,6 +258,7 @@ TEST_SUITE_BUILT_FILES = \
 	shadersSoVertexShader.cpp \
 	shadowsSoGLShadowCullingElement.cpp \
 	shadowsSoShadowCulling.cpp \
+	shadowsSoShadowDirectionalLight.cpp \
 	shadowsSoShadowGroup.cpp \
 	shadowsSoShadowSpotLight.cpp \
 	shadowsSoShadowStyle.cpp \
@@ -977,6 +979,12 @@ shadowsSoShadowCulling.cpp: $(top_srcdir)/src/shadows/SoShadowCulling.cpp $(srcd
 
 shadowsSoShadowCulling.$(OBJEXT): shadowsSoShadowCulling.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowCulling.cpp
+
+shadowsSoShadowDirectionalLight.cpp: $(top_srcdir)/src/shadows/SoShadowDirectionalLight.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowDirectionalLight.cpp
+
+shadowsSoShadowDirectionalLight.$(OBJEXT): shadowsSoShadowDirectionalLight.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowDirectionalLight.cpp
 
 shadowsSoShadowGroup.cpp: $(top_srcdir)/src/shadows/SoShadowGroup.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowGroup.cpp
