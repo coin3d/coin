@@ -19,7 +19,6 @@ Note: We can only build binaries on Intel Macs, and we only build universal bina
     wget ftp://ftp.coin3d.org/pub/coin/src/all/Coin-$VERSION.tar.gz
 
 * Configure and build simage:
-  // FIXME: simage won't build in 64-bits (COIN-168)
 
     mkdir simage-config
     cd simage-config
