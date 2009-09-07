@@ -65,6 +65,7 @@ sogl_calculate_nurbs_normals()
 namespace {
   SbStorage * sogl_coordstorage = NULL;
   SbStorage * sogl_texcoordstorage = NULL;
+  SbStorage * sogl_normalstorage = NULL;
 
   void nurbs_coord_cleanup(void)
   {
@@ -78,6 +79,12 @@ namespace {
     sogl_texcoordstorage = NULL;
   }
   
+  void nurbs_normal_cleanup(void)
+  {
+    delete sogl_normalstorage;
+    sogl_normalstorage = NULL;
+  }
+
   void sogl_alloc_coords(void * ptr)
   {
     SbList <float> ** cptr = (SbList <float> **) ptr;
@@ -112,6 +119,17 @@ namespace {
     return *ptr;
   }
   
+  SbList <float> *
+  sogl_get_tmpnormallist(void)
+  {
+    if (sogl_normalstorage == NULL) {
+      sogl_normalstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
+      coin_atexit((coin_atexit_f *)nurbs_normal_cleanup, CC_ATEXIT_NORMAL);
+    }
+    SbList <float> ** ptr = (SbList <float> **) sogl_normalstorage->get();
+    return *ptr;
+  }
+
   // Toggle extra debugging output for nurbs complexity settings code.
   SbBool
   sogl_nurbs_debugging(void)
@@ -126,7 +144,7 @@ namespace {
   
   void
   sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer, 
-                            int uIsLinear, int vIsLinear, int numuctrlpts, int numvctrlpts, int uIsClosed, int vIsClosed)
+                            int uIsLinear, int vIsLinear, int numuctrlpts, int numvctrlpts, int uIsClosed, int vIsClosed, float uSpan, float vSpan)
   {
     SoState * state = action->getState();
     
@@ -164,7 +182,7 @@ namespace {
     static int oldnurbscomplexity = -1;
     if (oldnurbscomplexity == -1){
       const char * env = coin_getenv("COIN_OLD_NURBS_COMPLEXITY");
-      oldnurbscomplexity = env ? atoi(env) : 1;
+      oldnurbscomplexity = env ? atoi(env) : 0;
     }
     if (oldnurbscomplexity) {
       switch (SoComplexityTypeElement::get(state)) {
@@ -249,37 +267,20 @@ namespace {
       }
     }
     else { // new nurbs complexity
-      // Find the number of steps required for object space tessellation and
-      // the pixel tolerance used for screen space tessellation.
-      //
-      int srfSteps;
-      if (complexity < 0.10) srfSteps = 2;
-      else if (complexity < 0.25) srfSteps = 3;
-      else if (complexity < 0.40)  srfSteps = 4;
-      else if (complexity < 0.55) srfSteps = 6;
-      else srfSteps = (int)ceil(pow(complexity, 3.32f)*28) + 2;
-    
-      int crvSteps;
-      if (complexity < 0.5) crvSteps = (int)ceil(18.0*complexity) + 1;
-      else crvSteps = (int)ceil(380.0*complexity) - 180;
-  
-      float crvTolerance;
-      if (complexity < 0.10) crvTolerance = 10;
-      else if (complexity < 0.20) crvTolerance = 8;
-      else if (complexity < 0.30) crvTolerance = 6;
-      else if (complexity < 0.40) crvTolerance = 4;
-      else if (complexity < 0.50) crvTolerance = 2;
-      else if (complexity < 0.70) crvTolerance = 1;
-      else if (complexity < 0.80) crvTolerance = .5;
-      else if (complexity < 0.90) crvTolerance = .25;
-      else crvTolerance = .125;
-    
-      float srfTolerance = 104.0f*complexity*complexity - 252.0f*complexity + 150.0f;
-      float tolerance = numvctrlpts ? srfTolerance : crvTolerance;
-  
       switch (SoComplexityTypeElement::get(state)) {
       case SoComplexityTypeElement::SCREEN_SPACE:
         {
+          float tolerance;
+          if      ( complexity < 0.10 ) tolerance = 10;
+          else if ( complexity < 0.20 ) tolerance = 8;
+          else if ( complexity < 0.30 ) tolerance = 6;
+          else if ( complexity < 0.40 ) tolerance = 4;
+          else if ( complexity < 0.50 ) tolerance = 2;
+          else if ( complexity < 0.70 ) tolerance = 1;
+          else if ( complexity < 0.80 ) tolerance = .5;
+          else if ( complexity < 0.90 ) tolerance = .25;
+          else                          tolerance = .125;
+	  
           static SbBool first = TRUE;
           if (sogl_nurbs_debugging() && first) {
             first = FALSE;
@@ -298,6 +299,19 @@ namespace {
         }
       case SoComplexityTypeElement::OBJECT_SPACE:
         {
+		// Find the number of steps required for object space tessellation.
+		//
+		int srfSteps;
+		if      ( complexity < 0.10 ) srfSteps = 2;
+		else if ( complexity < 0.25 ) srfSteps = 3;
+		else if ( complexity < 0.40 ) srfSteps = 4;
+		else if ( complexity < 0.55 ) srfSteps = 5;
+		else                          srfSteps = (int)(pow(complexity, 3.32f)*28) + 2;
+	  
+		int crvSteps;
+		if ( complexity < 0.5 ) crvSteps = (int)(18*complexity) + 1;
+		else                    crvSteps = (int)(380*complexity) - 180;
+  
           static int reducelinearnurbssteps = -1;
           if (reducelinearnurbssteps == -1) {
             const char * env = coin_getenv("COIN_REDUCE_LINEAR_NURBS_STEPS");
@@ -311,18 +325,22 @@ namespace {
           int nvsteps;
           if (reducelinearnurbssteps && uIsLinear) nusteps = 1;
           else if (uIsClosed) nusteps = srfSteps*4;
-          else if (vIsClosed) nusteps = (numuctrlpts < 4 ? 1 : numuctrlpts - 3)*srfSteps+2;
-          else nusteps = (numuctrlpts < 3 ? 1 : numuctrlpts - 2)*srfSteps+1;
+          else nusteps = (numuctrlpts < 4 ? 1 : numuctrlpts - 3)*srfSteps+1;
   
           if (reducelinearnurbssteps && vIsLinear) nvsteps = 1;
           else if (vIsClosed) nvsteps = srfSteps*4;
-          else if (uIsClosed) nvsteps = (numvctrlpts < 4 ? 1 : numvctrlpts - 3)*srfSteps+2;
-          else nvsteps = (numvctrlpts < 3 ? 1 : numvctrlpts - 2)*srfSteps+1;
+          else nvsteps = (numvctrlpts < 4 ? 1 : numvctrlpts - 3)*srfSteps+1;
   
           // it's a curve, not a surface
           if (!numvctrlpts)
             nvsteps = nusteps = uIsClosed ? srfSteps*4-1 : (numuctrlpts < 4 ? 1 : numuctrlpts - 3)*crvSteps;
         
+          nusteps = int(nusteps/uSpan);
+		  if ( numvctrlpts )
+		    nvsteps = int(nvsteps/vSpan);
+		  else
+		    nvsteps = nusteps;
+
           static SbBool first = TRUE;
           if (sogl_nurbs_debugging() && first) {
             first = FALSE;
@@ -1013,9 +1031,10 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   uIsClosed = uIsClosed == ustride;
   vIsClosed = vIsClosed == vstride;
 
-  sogl_set_nurbs_complexity(action, shape, nurbsrenderer, uIsLinear, vIsLinear, numuctrlpts, numvctrlpts, uIsClosed, vIsClosed);
+  float uSpan = uknotvec[numuknot-1] - uknotvec[0];
+  float vSpan = vknotvec[numvknot-1] - vknotvec[0];
 
-
+  sogl_set_nurbs_complexity(action, shape, nurbsrenderer, uIsLinear, vIsLinear, numuctrlpts, numvctrlpts, uIsClosed, vIsClosed, uSpan, vSpan);
 
   GLUWrapper()->gluBeginSurface(nurbsrenderer);
   GLUWrapper()->gluNurbsSurface(nurbsrenderer,
@@ -1036,8 +1055,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   if (calculatenurbsnormals) {
     GLfloat * ptrnormals = NULL;
     
-    SbList <float> * tmptexcoordlist = sogl_get_tmptexcoordlist();
-    tmptexcoordlist->truncate(0);
+    SbList <float> * tmpnormallist = sogl_get_tmpnormallist();
+    tmpnormallist->truncate(0);
+
     nurbs nrb(numuknot-numuctrlpts, numuknot, uknotvec, 
               numvknot-numvctrlpts, numvknot, vknotvec, 
               ustride, vstride, ptr, dim);
@@ -1045,12 +1065,12 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     for (int j = 0; j < numvctrlpts; j++) {
       for (int i = 0; i < numuctrlpts; i++) {
         SbVec3f normal = nrb.normal(i, j);
-        tmptexcoordlist->append(normal[0]);
-        tmptexcoordlist->append(normal[1]);
-        tmptexcoordlist->append(normal[2]);
+        tmpnormallist->append(normal[0]);
+        tmpnormallist->append(normal[1]);
+        tmpnormallist->append(normal[2]);
       }
     }
-    ptrnormals = (float*) tmptexcoordlist->getArrayPtr();
+    ptrnormals = (float*) tmpnormallist->getArrayPtr();
     
     // correct the normals if zero normals are present!
     for (int j = 0; j < numvctrlpts; j++) {
@@ -1074,7 +1094,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
           ptrnormals[idx+1] = ptrnormals[idx2+1];
           ptrnormals[idx+2] = ptrnormals[idx2+2];
         }
-        int idxpt = j*vstride + i*ustride;
       }
       //if ( numuctrlpts == 6 && numvctrlpts == 9 )
       //  nrb.Test();
@@ -1088,7 +1107,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                   GL_MAP2_NORMAL);
   }
   
-
   SbBool okcheckelem =
     state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
     state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex());
@@ -1330,7 +1348,9 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
     uIsClosed += ptr[i] == ptr[(numctrlpts-1)*dim+i];
   uIsClosed = uIsClosed == dim;
   
-  sogl_set_nurbs_complexity(action, shape, nurbsrenderer, uIsLinear, 0, numctrlpts, 0, uIsClosed, 0);
+  float uSpan = knotvec[numknots-1] - knotvec[0];
+ 
+  sogl_set_nurbs_complexity(action, shape, nurbsrenderer, uIsLinear, 0, numctrlpts, 0, uIsClosed, 0, uSpan, 0);
 
   GLUWrapper()->gluBeginCurve(nurbsrenderer);
   GLUWrapper()->gluNurbsCurve(nurbsrenderer,
