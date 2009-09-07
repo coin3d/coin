@@ -580,14 +580,7 @@ COIN_DLL_API SbBool cc_glglue_has_framebuffer_objects(const cc_glglue * glue);
 COIN_DLL_API int cc_glglue_get_max_lights(const cc_glglue * glue);
 COIN_DLL_API const float * cc_glglue_get_line_width_range(const cc_glglue * glue);
 COIN_DLL_API const float * cc_glglue_get_point_size_range(const cc_glglue * glue);
-/* 
-   DEPRECATED for internal use. Kept for ABI compatibility
-   FIXME: Remove for Coin-3 (kintel 20050608)
-*/
-COIN_DLL_API SbBool cc_glglue_is_texture_size_legal(const cc_glglue * glw, 
-                                                    int xsize, int ysize, int zsize, 
-                                                    int bytespertexel, 
-                                                    SbBool mipmap);
+
 COIN_DLL_API float cc_glglue_get_max_anisotropy(const cc_glglue * glue);
 
 /* ********************************************************************** */

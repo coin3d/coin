@@ -810,45 +810,6 @@ coin_ntoh_uint64(uint64_t value)
   return coin_hton_uint64(value);
 }
 
-float
-coin_hton_float(float value)
-{
-  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
-  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
-
-  return 0;
-}
-
-float
-coin_ntoh_float(float value)
-{
-  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
-  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
-
-  return coin_hton_float(value);
-}
-
-double
-coin_hton_double(double value)
-{
-  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
-  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
-  return 0;
-}
-
-double
-coin_ntoh_double(double value)
-{
-  // see http://www.dmh2000.com/cpp/dswap.shtml for an explanation why this function was a bad idea
-  assert(0 && "don't use this function. It might trigger incorrect results in some cases");
-  COMPILE_ONLY_BEFORE(4,0,0,"This function is misdesigned, and should be removed from the API before Coin-4");
-
-  return coin_hton_double(value);
-}
-
 void
 coin_hton_float_bytes(float value, char * result)
 {

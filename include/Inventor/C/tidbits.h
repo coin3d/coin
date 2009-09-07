@@ -80,15 +80,6 @@ COIN_DLL_API void cc_coin_atexit_static_internal(coin_atexit_f * fp);
 
 /* ********************************************************************** */
 
-/* OBSOLETED! These are not safe. Don't use them. */
-COIN_DLL_API float coin_hton_float(float value);
-COIN_DLL_API float coin_ntoh_float(float value);
-  
-COIN_DLL_API double coin_hton_double(double value);
-COIN_DLL_API double coin_ntoh_double(double value);
-
-/* ********************************************************************** */
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

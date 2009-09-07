@@ -4935,7 +4935,6 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
                                 int xsize, int ysize, int zsize,
                                 int bytespertexel, SbBool mipmap)
 {
-  COMPILE_ONLY_BEFORE(4,0,0,"This function is for internal use only and should be removed from the public API.");
   GLenum internalformat;
   GLenum format;
   GLenum type = GL_UNSIGNED_BYTE;
