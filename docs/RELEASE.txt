@@ -106,8 +106,12 @@ several times as new problems show up.
     $ Coin/configure && make distcheck
 
   - Cygwin (GNU make and MS Visual C++)
+  
+    NOTE: For windows-packages to work, you need to have perl and
+    makensis installed, this functionality is remove in Coin-3 and
+    onwards, so only run make
 
-    $ <srcdir>/Coin/configure && make windows-packages
+    $ <srcdir>/Coin/configure && make (windows-packages)
 
     * Build SoQt and then build SoQt/test-code/assertdbg/crash.cpp with
       the debug libraries of Coin and SoQt, and ensure that the debugger
@@ -123,7 +127,7 @@ several times as new problems show up.
 
     - Remember to remove src/extensions/superglu before running
 
-        $ <srcdir>/Coin-2/configure && make dist
+        $ <srcdir>/Coin/configure && make dist
 
       or superglu will be included in the dist tarball.
 
