@@ -96,17 +96,8 @@ several times as new problems show up.
 
       $ ./configure && make debian-packages
 
-  - IRIX (IRIX CC and IRIX make):
+ - Cygwin (GNU make and MS Visual C++)
 
-    $ unset NLSPATH
-    $ export CC="CC -n32"
-    $ export CXX="CC -n32"
-    $ export MAKE=/bin/make
-    $ export PATH=/bin:$PATH
-    $ Coin/configure && make distcheck
-
-  - Cygwin (GNU make and MS Visual C++)
-  
     NOTE: For windows-packages to work, you need to have perl and
     makensis installed, this functionality is remove in Coin-3 and
     onwards, so only run make
