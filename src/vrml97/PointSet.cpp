@@ -80,8 +80,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
@@ -145,8 +144,7 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoGLTextureEnabledElement::set(state, this, FALSE);
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
+  SoMultiTextureEnabledElement::disableAll(state);
 
   SoVRMLVertexPoint::GLRender(action);
 

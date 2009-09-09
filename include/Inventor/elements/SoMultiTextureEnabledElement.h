@@ -40,7 +40,7 @@ protected:
 
 public:
   enum Mode {
-    DISABLED,
+    DISABLED = 0,
     TEXTURE2D,
     RECTANGLE,
     CUBEMAP,
@@ -48,12 +48,12 @@ public:
   };
 
   virtual void init(SoState * state);
-  static void set(SoState * state, SoNode * node,
+  static void set(SoState * state, 
+                  SoNode * node,
                   const int unit,
                   const SbBool enabled);
 
-  static SbBool get(SoState * state, const int unit);
-
+  static SbBool get(SoState * state, const int unit = 0);
   virtual void setElt(const int unit, const int mode);
 
   virtual void push(SoState * state);
@@ -65,11 +65,23 @@ public:
   static const Mode * getActiveUnits(SoState * state,
                                      int & lastenabled);
 
-  static void enableRectangle(SoState * state, SoNode * node, const int unit);
-  static void enableCubeMap(SoState * state, SoNode * node, const int unit);
-  static Mode getMode(SoState * state, const int unit);
+  static void enableRectangle(SoState * state, SoNode * node, const int unit = 0);
+  static void enableCubeMap(SoState * state, SoNode * node, const int unit = 0);
+  static void enableTexture3(SoState * state, SoNode * node, const int unit = 0);
+  static Mode getMode(SoState * state, const int unit = 0);
   static void disableAll(SoState * state);
 
+  // Coin-3 support
+  static void set(SoState * state, 
+                  const SbBool enabled) {
+    set(state, NULL, 0, enabled);
+  }
+
+  static void set(SoState * state, SoNode * node,
+                  const SbBool enabled) {
+    set(state, node, 0, enabled);
+  }
+  
 protected:
   SbBool isEnabled(const int unit) const;
   Mode getMode(const int unit) const;

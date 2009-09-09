@@ -183,11 +183,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -447,39 +444,21 @@ SoVRMLImageTexture::doAction(SoAction * action)
     }
   }
 
-  if (unit == 0) {
-    SoTexture3EnabledElement::set(state, this, FALSE);
-    if (size == SbVec2s(0,0)) {
-      SoTextureEnabledElement::set(state, this, FALSE);    
-    }
-    else {
-      SoTextureEnabledElement::set(state, this, TRUE);    
-      SoTextureImageElement::set(state, this,
-                                 size, nc, bytes,
-                                 imagetexture_translate_wrap(this->repeatS.getValue()),
-                                 imagetexture_translate_wrap(this->repeatT.getValue()),
-                                 SoTextureImageElement::MODULATE,
-                                 SbColor(1.0f, 1.0f, 1.0f));      
-    }
-    if (this->isOverride()) {
-      SoTextureOverrideElement::setImageOverride(state, TRUE);
-    }
+  if (size == SbVec2s(0,0)) {
+    SoMultiTextureEnabledElement::set(state, this, unit, FALSE);    
   }
   else {
-    if (size == SbVec2s(0,0)) {
-      SoMultiTextureEnabledElement::set(state, this, unit, FALSE);    
-    }
-    else {
-      SoMultiTextureEnabledElement::set(state, this, unit, TRUE);    
-      SoMultiTextureImageElement::set(state, this, unit,
-                                      size, nc, bytes,
-                                      (SoTextureImageElement::Wrap)
-                                      imagetexture_translate_wrap(this->repeatS.getValue()),
-                                      (SoTextureImageElement::Wrap)
-                                      imagetexture_translate_wrap(this->repeatT.getValue()),
-                                      SoTextureImageElement::MODULATE,
-                                      SbColor(1.0f, 1.0f, 1.0f));      
-    }
+    SoMultiTextureEnabledElement::set(state, this, unit, TRUE);    
+    SoMultiTextureImageElement::set(state, this, unit,
+                                    size, nc, bytes,
+                                    (this->repeatS.getValue() ? 
+                                     SoMultiTextureImageElement::REPEAT : 
+                                     SoMultiTextureImageElement::CLAMP_TO_BORDER),
+                                    (this->repeatT.getValue() ? 
+                                     SoMultiTextureImageElement::REPEAT : 
+                                     SoMultiTextureImageElement::CLAMP_TO_BORDER),
+                                    SoMultiTextureImageElement::MODULATE,
+                                    SbColor(1.0f, 1.0f, 1.0f));      
   }
 }
 
@@ -495,10 +474,10 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
-  if (SoTextureOverrideElement::getImageOverride(state))
+  int unit = SoTextureUnitElement::get(state);
+  if ((unit == 0) && SoTextureOverrideElement::getImageOverride(state))
     return;
-
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
+  
   float quality = SoTextureQualityElement::get(state);
 
   PRIVATE(this)->lock_glimage();
@@ -545,21 +524,22 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
 
   PRIVATE(this)->unlock_glimage();
 
-  SoGLTextureImageElement::set(state, this,
-                               PRIVATE(this)->glimage,
-                               SoTextureImageElement::MODULATE,
-                               SbColor(1.0f, 1.0f, 1.0f));
-
+  SoGLMultiTextureImageElement::set(state, this, unit,
+                                    PRIVATE(this)->glimage,
+                                    SoMultiTextureImageElement::MODULATE,
+                                    SbColor(1.0f, 1.0f, 1.0f));
+  
   SbBool enable = PRIVATE(this)->glimage &&
     quality > 0.0f &&
     PRIVATE(this)->glimage->getImage() &&
     PRIVATE(this)->glimage->getImage()->hasData();
 
-  SoGLTextureEnabledElement::set(state,
-                                 this,
-                                 enable);
-
-  if (this->isOverride()) {
+  SoMultiTextureEnabledElement::set(state,
+                                    this,
+                                    unit,
+                                    enable);
+  
+  if (this->isOverride() && (unit == 0)) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
 }

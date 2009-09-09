@@ -24,84 +24,12 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoReplacedElement.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbVec4f.h>
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally"
+#endif
 
-/*
- * TODO
- * - conversion between 2D and 4D (like Open Inventor)
- */
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 
-typedef const SbVec4f & SoTextureCoordinateFunctionCB(void * userdata,
-                                                      const SbVec3f & point,
-                                                      const SbVec3f & normal);
-
-class COIN_DLL_API SoTextureCoordinateElement : public SoReplacedElement {
-  typedef SoReplacedElement inherited;
-
-  SO_ELEMENT_HEADER(SoTextureCoordinateElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoTextureCoordinateElement();
-
-public:
-
-  enum CoordType {
-    NONE = 0,
-    TEXGEN = 0,
-    EXPLICIT = 1,
-    FUNCTION = 2,
-    DEFAULT = 3
-  };
-
-  virtual void init(SoState * state);
-
-  static void setDefault(SoState * const state, SoNode * const node);
-  static void setFunction(SoState * const state, SoNode * const node,
-                          SoTextureCoordinateFunctionCB * const func,
-                          void * const userdata);
-
-  static void set2(SoState * const state, SoNode * const node,
-                   const int32_t numCoords, const SbVec2f * const coords);
-  static void set3(SoState * const state, SoNode * const node,
-                   const int32_t numCoords, const SbVec3f * const coords);
-  static void set4(SoState * const state, SoNode * const node,
-                   const int32_t numCoords, const SbVec4f * const coords);
-
-  static CoordType getType(SoState * const state);
-  virtual CoordType getType(void) const;
-
-  static const SoTextureCoordinateElement *getInstance(SoState * const state);
-
-  const SbVec4f &get(const SbVec3f & point,
-                     const SbVec3f & normal) const;
-  int32_t getNum(void) const;
-  SbBool is2D(void) const;
-  int32_t getDimension(void) const;
-
-  const SbVec2f &get2(const int index) const;
-  const SbVec3f &get3(const int index) const;
-  const SbVec4f &get4(const int index) const;
-
-  const SbVec2f *getArrayPtr2(void) const;
-  const SbVec3f *getArrayPtr3(void) const;
-  const SbVec4f *getArrayPtr4(void) const;
-
-protected:
-  CoordType whatKind;
-  SoTextureCoordinateFunctionCB *funcCB;
-  void *funcCBData;
-  int32_t numCoords;
-  const SbVec2f *coords2;
-  const SbVec3f *coords3;
-  const SbVec4f *coords4;
-  SbBool coordsDimension;
-  SbVec2f convert2;
-  SbVec3f convert3;
-  SbVec4f convert4;
-};
+typedef SoMultiTextureCoordinateElement SoTextureCoordinateElement;
 
 #endif // !COIN_SOTEXTURECOORDINATEELEMENT_H

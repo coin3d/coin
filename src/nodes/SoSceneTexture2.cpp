@@ -263,9 +263,6 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
@@ -275,7 +272,6 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -383,17 +379,14 @@ SoSceneTexture2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSceneTexture2, SO_FROM_COIN_2_2);
 
-  SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
-  SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
-  SO_ENABLE(SoGLRenderAction, SoGLTexture3EnabledElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
 
-  SO_ENABLE(SoCallbackAction, SoTextureImageElement);
-  SO_ENABLE(SoCallbackAction, SoTextureEnabledElement);
-  SO_ENABLE(SoCallbackAction, SoTexture3EnabledElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureImageElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureEnabledElement);
 
-  SO_ENABLE(SoRayPickAction, SoTextureImageElement);
-  SO_ENABLE(SoRayPickAction, SoTextureEnabledElement);
-  SO_ENABLE(SoRayPickAction, SoTexture3EnabledElement);
+  SO_ENABLE(SoRayPickAction, SoMultiTextureImageElement);
+  SO_ENABLE(SoRayPickAction, SoMultiTextureEnabledElement);
 }
 
 static SoGLImage::Wrap
@@ -497,10 +490,10 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
   }
   UNLOCK_GLIMAGE(this);
 
-  SoTextureImageElement::Model glmodel = (SoTextureImageElement::Model)
+  SoMultiTextureImageElement::Model glmodel = (SoMultiTextureImageElement::Model)
     this->model.getValue();
 
-  if (glmodel == SoTextureImageElement::REPLACE) {
+  if (glmodel == SoMultiTextureImageElement::REPLACE) {
     if (!cc_glglue_glversion_matches_at_least(glue, 1, 1, 0)) {
       static int didwarn = 0;
       if (!didwarn) {
@@ -512,32 +505,13 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
       }
       // use MODULATE and not DECAL, since DECAL only works for RGB
       // and RGBA textures
-      glmodel = SoTextureImageElement::MODULATE;
+      glmodel = SoMultiTextureImageElement::MODULATE;
     }
   }
 
   int unit = SoTextureUnitElement::get(state);
   int maxunits = cc_glglue_max_texture_units(glue);
-  if (unit == 0) {
-    SoGLTextureImageElement::set(state, this,
-                                 PRIVATE(this)->glimage,
-                                 glmodel,
-                                 this->blendColor.getValue());
-
-    SoGLTexture3EnabledElement::set(state, this, FALSE);
-    if (PRIVATE(this)->glimage && PRIVATE(this)->glrectangle) {
-      SoGLTextureEnabledElement::enableRectangle(state, this);
-    }
-    else {
-      SoGLTextureEnabledElement::set(state,
-                                     PRIVATE(this)->glimage != NULL &&
-                                     quality > 0.0f);
-    }
-    if (this->isOverride()) {
-      SoTextureOverrideElement::setImageOverride(state, TRUE);
-    }
-  }
-  else if (unit < maxunits) {
+  if (unit < maxunits) {
     SoGLMultiTextureImageElement::set(state, this, unit,
                                       PRIVATE(this)->glimage,
                                       glmodel,
@@ -564,8 +538,6 @@ SoSceneTexture2::doAction(SoAction * action)
 
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
-
-  SoTexture3EnabledElement::set(state, this, FALSE);
 
   if (size != SbVec2s(0,0)) {
     SoTextureImageElement::set(state, this,
@@ -780,7 +752,6 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
 
   // disable all active textures
   SoMultiTextureEnabledElement::disableAll(state);
-  SoGLTextureEnabledElement::set(state, PUBLIC(this), FALSE);
 
   // just disable all active light source
   int numlights = SoLightElement::getLights(state).getLength();

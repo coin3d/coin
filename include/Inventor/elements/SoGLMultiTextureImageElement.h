@@ -44,30 +44,46 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
-  
+
   static void set(SoState * const state, SoNode * const node,
                   const int unit,
-                  SoGLImage * image, const SoTextureImageElement::Model model,
+                  SoGLImage * image, const Model model,
                   const SbColor & blendColor);
 
   static void restore(SoState * state, const int unit);
-  
-  static SoGLImage * get(SoState * state, 
+
+  static SoGLImage * get(SoState * state,
                          const int unit,
-                         SoTextureImageElement::Model & model,
+                         Model & model,
                          SbColor & blendcolor);
-  
+
   class GLUnitData {
   public:
     SoGLImage * glimage;
   };
+  
   static SbBool hasTransparency(SoState * state);
-protected:
-  virtual SbBool hasTransparency(const int unit) const;
-
+  
+ protected:
+  virtual SbBool hasTransparency(const int unit = 0) const;
+  
 private:
   void updateGL(const int unit);
   SoGLMultiTextureImageElementP * pimpl;
+
+ public: // Coin-3 support
+  
+  static void set(SoState * const state, SoNode * const node,
+                  SoGLImage * image, const Model model,
+                  const SbColor & blendColor) {
+    set(state, node, 0, image, model, blendColor);
+  }
+
+  static SoGLImage * get(SoState * state, Model & model,
+                         SbColor & blendcolor) {
+    return get(state, 0, model, blendcolor);
+  }
+  static int32_t getMaxGLTextureSize(void);
 };
 
 #endif // !COIN_SOGLMULTITEXTUREIMAGEELEMENT_H

@@ -24,36 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoTexture3EnabledElement.h>
-
-class COIN_DLL_API SoGLTexture3EnabledElement : public SoTexture3EnabledElement {
-  typedef SoTexture3EnabledElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLTexture3EnabledElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLTexture3EnabledElement();
-
-public:
-  virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  static  void set(SoState * const state, SoNode * const node,
-                   const SbBool enabled);
-  static  void set(SoState * const state, const SbBool enabled);
-
-  static SbBool get(SoState * const state);
-  static SbBool getDefault(void);
-
-  virtual void setElt(int32_t value);
-
-private:
-  void updategl(void);
-  SoState * state;
-};
+#error "Deprecated. Use SoMultiTextureEnabledElement instead"
 
 #endif // !COIN_SOGLTEXTURE3ENABLEDELEMENT_H

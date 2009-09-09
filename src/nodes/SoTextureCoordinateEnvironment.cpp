@@ -70,12 +70,12 @@
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
-
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/gl.h>
 
 #include "tidbitsp.h"
 #include "nodes/SoSubNodeP.h"
@@ -164,9 +164,11 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
 void
 SoTextureCoordinateEnvironment::doAction(SoAction * action)
 {
-  SoTextureCoordinateElement::setFunction(action->getState(), this,
-                                          generate,
-                                          action->getState());
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  SoMultiTextureCoordinateElement::setFunction(action->getState(), this, unit,
+                                               generate,
+                                               action->getState());
 }
 
 // doc from parent
@@ -175,15 +177,9 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
-  if (unit == 0) {
-    SoTextureCoordinateEnvironment::doAction((SoAction *)action);
-    SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                            this, handleTexgen,
-                                            NULL,
-                                            generate,
-                                            action->getState());
-  }
-  else {
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  if (unit < maxunits) {
     SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
                                                  unit,
                                                  generate,
@@ -193,7 +189,6 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
                                                  NULL,
                                                  generate,
                                                  action->getState());
-
   }
 }
 

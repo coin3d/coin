@@ -133,15 +133,13 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoTextOutlineEnabledElement.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
@@ -583,9 +581,13 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
-
+  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
+    do2Dtextures = TRUE;
+    if (SoGLMultiTextureEnabledElement::getMode(state, 0) ==
+        SoMultiTextureEnabledElement::TEXTURE3D) {
+      do3Dtextures = TRUE;
+    }
+  }
   // FIXME: implement proper support for 3D-texturing, and get rid of
   // this. (20031010 handegar)
   if (do3Dtextures) {
@@ -1000,10 +1002,8 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
   // not all actions have these elements enabled
   // (for instance SoGetPrimitiveCountAction)
-  if (state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
-      state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex())) {
-    if (SoTextureEnabledElement::get(state)) do2Dtextures = TRUE;
-    else if (SoTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+  if (state->isElementEnabled(SoMultiTextureEnabledElement::getClassStackIndex())) {
+    if (SoMultiTextureEnabledElement::get(state)) do2Dtextures = TRUE;
   }
   // FIXME: implement proper support for 3D-texturing, and get rid of
   // this. (20031010 handegar)

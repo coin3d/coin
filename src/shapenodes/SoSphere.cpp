@@ -76,9 +76,8 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/misc/SoState.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -136,11 +135,16 @@ SoSphere::GLRender(SoGLRenderAction * action)
 
   SbBool doTextures = FALSE;
   SbBool do3DTextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
+  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
+    doTextures = TRUE;
+    if (SoGLMultiTextureEnabledElement::getMode(state,0) ==
+        SoMultiTextureEnabledElement::TEXTURE3D) {
+      do3DTextures = TRUE;
+    }
+  }
 
   SbBool sendNormals = !mb.isColorOnly() || 
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
   
   float complexity = SbClamp(this->getComplexityValue(action), 0.0f, 1.0f);
 

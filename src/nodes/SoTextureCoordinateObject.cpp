@@ -48,7 +48,6 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -127,16 +126,9 @@ SoTextureCoordinateObject::doAction(SoAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
-  if (unit == 0) {
-    SoTextureCoordinateElement::setFunction(action->getState(), this,
-                                            SoTextureCoordinateObject::generate,
-                                            this);
-  }
-  else {
-    SoMultiTextureCoordinateElement::setFunction(action->getState(), this, unit,
-                                                 SoTextureCoordinateObject::generate,
-                                                 this);
-  }
+  SoMultiTextureCoordinateElement::setFunction(action->getState(), this, unit,
+                                               SoTextureCoordinateObject::generate,
+                                               this);
 }
 
 // doc from parent
@@ -146,26 +138,15 @@ SoTextureCoordinateObject::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
 
-  if (unit == 0) {
-    SoTextureCoordinateObject::doAction((SoAction *)action);
-    SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                            this,
-                                            SoTextureCoordinateObject::handleTexgen,
-                                            this,
-                                            SoTextureCoordinateObject::generate,
-                                            this);
-  }
-  else {
-    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
-    int maxunits = cc_glglue_max_texture_units(glue);
-    if (unit < maxunits) {        
-      SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
-                                                   this, unit,
-                                                   SoTextureCoordinateObject::handleTexgen,
-                                                   this,
-                                                   SoTextureCoordinateObject::generate,
-                                                   this);
-    }
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  if (unit < maxunits) {        
+    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
+                                                 this, unit,
+                                                 SoTextureCoordinateObject::handleTexgen,
+                                                 this,
+                                                 SoTextureCoordinateObject::generate,
+                                                 this);
   }
 }
 

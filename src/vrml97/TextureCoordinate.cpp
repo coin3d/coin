@@ -84,7 +84,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -131,9 +131,9 @@ SoVRMLTextureCoordinate::~SoVRMLTextureCoordinate()
 void
 SoVRMLTextureCoordinate::doAction(SoAction * action)
 {
-  SoTextureCoordinateElement::set2(action->getState(), this,
-                                   point.getNum(),
-                                   point.getValues(0));
+  SoMultiTextureCoordinateElement::set2(action->getState(), this, 0,
+                                        point.getNum(),
+                                        point.getValues(0));
 }
 
 // Doc in parent
@@ -148,8 +148,8 @@ void
 SoVRMLTextureCoordinate::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  SoGLTextureCoordinateElement::setTexGen(state,
-                                          this, NULL);
+  SoGLMultiTextureCoordinateElement::setTexGen(state,
+                                               this, 0, NULL);
   SoVRMLTextureCoordinate::doAction((SoAction*)action);
 
   SoBase::staticDataLock();

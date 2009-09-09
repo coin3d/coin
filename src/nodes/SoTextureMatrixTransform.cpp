@@ -53,7 +53,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -98,9 +97,9 @@ SoTextureMatrixTransform::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureMatrixTransform, SO_FROM_INVENTOR_1);
 
-  SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
-  SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
-  SO_ENABLE(SoPickAction, SoTextureMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureMatrixElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureMatrixElement);
+  SO_ENABLE(SoPickAction, SoMultiTextureMatrixElement);
 }
 
 
@@ -114,23 +113,18 @@ SoTextureMatrixTransform::GLRender(SoGLRenderAction * action)
   if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP) return;
 
   int unit = SoTextureUnitElement::get(state);
-  if (unit == 0) {
-    SoTextureMatrixTransform::doAction(action);
+  const cc_glglue * glue =
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  
+  if (unit < maxunits) {
+    SbMatrix mat = this->matrix.getValue();
+    SoMultiTextureMatrixElement::mult(state, this, unit, mat);
   }
   else {
-    const cc_glglue * glue =
-      cc_glglue_instance(SoGLCacheContextElement::get(state));
-    int maxunits = cc_glglue_max_texture_units(glue);
-
-    if (unit < maxunits) {
-      SbMatrix mat = this->matrix.getValue();
-      SoMultiTextureMatrixElement::mult(state, this, unit, mat);
-    }
-    else {
-      // we already warned in SoTextureUnit. I think it's best to just
+    // we already warned in SoTextureUnit. I think it's best to just
       // ignore the texture here so that all textures for non-supported
       // units will be ignored. pederb, 2003-11-11
-    }
   }
 }
 
@@ -139,7 +133,8 @@ void
 SoTextureMatrixTransform::doAction(SoAction *action)
 {
   SbMatrix mat = this->matrix.getValue();
-  SoTextureMatrixElement::mult(action->getState(), this, mat);
+  int unit = SoTextureUnitElement::get(action->getState());
+  SoMultiTextureMatrixElement::mult(action->getState(), this, unit, mat);
 }
 
 // Documented in superclass.

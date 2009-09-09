@@ -83,7 +83,6 @@ public:
     int32_t culling;
     int32_t twoside;
     int32_t flatshading;
-    int32_t glimageid;
     int32_t alphatest;
     uint32_t diffusenodeid;
     uint32_t transpnodeid;
@@ -121,7 +120,6 @@ public:
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
   virtual void setShadeModelElt(SbBool flatshading);
-  virtual void setGLImageIdElt(uint32_t glimageid, SbBool alphatest);
   virtual void setAlphaTestElt(SbBool onoff);
 
   static void beginCaching(SoState * state,
@@ -160,7 +158,6 @@ private:
   void sendVertexOrdering(const VertexOrdering ordering) const;
   void sendTwosideLighting(const SbBool onoff) const;
   void sendBackfaceCulling(const SbBool onoff) const;
-  void sendGLImage(const uint32_t glimageid) const;
   void sendAlphaTest(const SbBool onoff) const;
   void initGL(void);
   void packColors(SoColorPacker * packer) const;

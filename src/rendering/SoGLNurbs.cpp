@@ -31,9 +31,8 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoTextureEnabledElement.h>
-#include <Inventor/elements/SoTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -51,7 +50,7 @@
 
 #include <cstdlib>
 
-SbBool 
+SbBool
 sogl_calculate_nurbs_normals()
 {
   static int calculatenurbsnormals = -1;
@@ -72,13 +71,13 @@ namespace {
     delete sogl_coordstorage;
     sogl_coordstorage = NULL;
   }
-  
+
   void nurbs_texcoord_cleanup(void)
   {
     delete sogl_texcoordstorage;
     sogl_texcoordstorage = NULL;
   }
-  
+
   void nurbs_normal_cleanup(void)
   {
     delete sogl_normalstorage;
@@ -90,13 +89,13 @@ namespace {
     SbList <float> ** cptr = (SbList <float> **) ptr;
     *cptr = new SbList <float>;
   }
-  
+
   void sogl_dealloc_coords(void * ptr)
   {
     SbList <float> ** cptr = (SbList <float> **) ptr;
     delete *cptr;
   }
-  
+
   SbList <float> *
   sogl_get_tmpcoordlist(void)
   {
@@ -118,7 +117,7 @@ namespace {
     SbList <float> ** ptr = (SbList <float> **) sogl_texcoordstorage->get();
     return *ptr;
   }
-  
+
   SbList <float> *
   sogl_get_tmpnormallist(void)
   {
@@ -141,26 +140,26 @@ namespace {
     }
     return (COIN_DEBUG_NURBS_COMPLEXITY == 0) ? FALSE : TRUE;
   }
-  
+
   void
-  sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer, 
+  sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer,
                             int uIsLinear, int vIsLinear, int numuctrlpts, int numvctrlpts, int uIsClosed, int vIsClosed, float uSpan, float vSpan)
   {
     SoState * state = action->getState();
-    
+
     float complexity = SbClamp(SoComplexityElement::get(state), 0.0f, 1.0f);
 
     if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
       // GLU < 1.3 does not support view-independent error metrics
       // for tesselation accuracy. => Fall back to pixel-based metric.
-      
+
       // Settings chosen by visual inspection of same sample curves and
       // surfaces, and comparison with the result of using the object-
       // space metric. The -0.5 is there because for an SoComplexity
       // value of 1, we should have an error of less than one pixel.
       complexity = float(1.0/(complexity*complexity) - 0.5);
       if (complexity < 0.5f) complexity = 0.5f;
-      
+
       GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                      (GLenum) GLU_SAMPLING_METHOD,
                                      GLU_PARAMETRIC_ERROR);
@@ -178,7 +177,7 @@ namespace {
       }
       return;
     }
-    
+
     static int oldnurbscomplexity = -1;
     if (oldnurbscomplexity == -1){
       const char * env = coin_getenv("COIN_OLD_NURBS_COMPLEXITY");
@@ -192,7 +191,7 @@ namespace {
           SbVec3f center;
           shape->computeBBox(action, box, center);
           float diag;
-          { 
+          {
             float dx, dy, dz;
             box.getSize(dx, dy, dz);
             diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
@@ -215,11 +214,11 @@ namespace {
                                    " GLU_PARAMETRIC_TOLERANCE = %.4f",
                                    complexity);
           }
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                          (GLenum) GLU_SAMPLING_METHOD,
                                          GLU_OBJECT_PARAMETRIC_ERROR);
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                         (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                         (GLenum) GLU_PARAMETRIC_TOLERANCE,
                                          complexity);
           break;
         }
@@ -239,7 +238,7 @@ namespace {
           complexity *= complexity;
           if (complexity < 0.0001f) complexity = 0.0001f;
           complexity = diag * 0.01f / complexity;
-        
+
           static SbBool first = TRUE;
           if (sogl_nurbs_debugging() && first) {
             first = FALSE;
@@ -247,23 +246,23 @@ namespace {
                                    "sampling method = GLU_OBJECT PARAMETRIC_ERROR,"                                " GLU_PARAMETRIC_TOLERANCE = %.4f",
                                    complexity);
           }
-        
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                          (GLenum) GLU_SAMPLING_METHOD,
                                          GLU_OBJECT_PARAMETRIC_ERROR);
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                         (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                         (GLenum) GLU_PARAMETRIC_TOLERANCE,
                                          complexity);
           break;
         }
       case SoComplexityTypeElement::BOUNDING_BOX:
         assert(0 && "should never get here");
         break;
-      
+
       default:
         assert(0 && "unknown complexity type");
         break;
-      
+
       }
     }
     else { // new nurbs complexity
@@ -280,7 +279,7 @@ namespace {
           else if ( complexity < 0.80 ) tolerance = .5;
           else if ( complexity < 0.90 ) tolerance = .25;
           else                          tolerance = .125;
-	  
+	
           static SbBool first = TRUE;
           if (sogl_nurbs_debugging() && first) {
             first = FALSE;
@@ -289,10 +288,10 @@ namespace {
                                    " GLU_PARAMETRIC_TOLERANCE = %.4f",
                                    tolerance);
           }
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                          (GLenum) GLU_SAMPLING_METHOD,
                                          GLU_PARAMETRIC_ERROR);
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
                                          (GLenum) GLU_PARAMETRIC_TOLERANCE,
                                          tolerance);
           break;
@@ -307,11 +306,11 @@ namespace {
 		else if ( complexity < 0.40 ) srfSteps = 4;
 		else if ( complexity < 0.55 ) srfSteps = 5;
 		else                          srfSteps = (int)(pow(complexity, 3.32f)*28) + 2;
-	  
+	
 		int crvSteps;
 		if ( complexity < 0.5 ) crvSteps = (int)(18*complexity) + 1;
 		else                    crvSteps = (int)(380*complexity) - 180;
-  
+
           static int reducelinearnurbssteps = -1;
           if (reducelinearnurbssteps == -1) {
             const char * env = coin_getenv("COIN_REDUCE_LINEAR_NURBS_STEPS");
@@ -326,15 +325,15 @@ namespace {
           if (reducelinearnurbssteps && uIsLinear) nusteps = 1;
           else if (uIsClosed) nusteps = srfSteps*4;
           else nusteps = (numuctrlpts < 4 ? 1 : numuctrlpts - 3)*srfSteps+1;
-  
+
           if (reducelinearnurbssteps && vIsLinear) nvsteps = 1;
           else if (vIsClosed) nvsteps = srfSteps*4;
           else nvsteps = (numvctrlpts < 4 ? 1 : numvctrlpts - 3)*srfSteps+1;
-  
+
           // it's a curve, not a surface
           if (!numvctrlpts)
             nvsteps = nusteps = uIsClosed ? srfSteps*4-1 : (numuctrlpts < 4 ? 1 : numuctrlpts - 3)*crvSteps;
-        
+
           nusteps = int(nusteps/uSpan);
 		  if ( numvctrlpts )
 		    nvsteps = int(nvsteps/vSpan);
@@ -350,14 +349,14 @@ namespace {
                                    " GLU_V_STEP = %d",
                                    nusteps, nvsteps);
           }
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                         (GLenum) GLU_SAMPLING_METHOD, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                         (GLenum) GLU_SAMPLING_METHOD,
                                          GLU_DOMAIN_DISTANCE);
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                         (GLenum) GLU_U_STEP, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                         (GLenum) GLU_U_STEP,
                                          (GLfloat) nusteps);
-          GLUWrapper()->gluNurbsProperty(nurbsrenderer, 
-                                         (GLenum) GLU_V_STEP, 
+          GLUWrapper()->gluNurbsProperty(nurbsrenderer,
+                                         (GLenum) GLU_V_STEP,
                                          (GLfloat) nvsteps);
           break;
         }
@@ -373,29 +372,29 @@ namespace {
   class nurbs {
   public:
     nurbs(const int uorder_, const int numuknots_, const float* uknotvec_,
-          const int vorder_, const int numvknots_, const float* vknotvec_, 
+          const int vorder_, const int numvknots_, const float* vknotvec_,
           const int ustride_, const int vstride_, const float* ctlPoints_, const int dim_)
-      : uorder(uorder_), 
-        numuknots(numuknots_), 
-        uknotvec(uknotvec_), 
-        vorder(vorder_), 
-        numvknots(numvknots_), 
+      : uorder(uorder_),
+        numuknots(numuknots_),
+        uknotvec(uknotvec_),
+        vorder(vorder_),
+        numvknots(numvknots_),
         vknotvec(vknotvec_),
-        ustride(ustride_), 
-        vstride(vstride_), 
-        ctlPoints(ctlPoints_), 
+        ustride(ustride_),
+        vstride(vstride_),
+        ctlPoints(ctlPoints_),
         dim(dim_)
     {
       udegree = uorder-1;
       vdegree = vorder-1;
       numuctrlpts = numuknots-uorder;
       numvctrlpts = numvknots-vorder;
-      
+
       int maxorder = SbMax(uorder, vorder);
-      
+
       left = new float[maxorder];
       right = new float[maxorder];
-      
+
       ndu = new float*[maxorder];
       ndu[0] = new float[maxorder*maxorder];
       for ( int i = 1; i < maxorder; i++ ) ndu[i] = ndu[0]+i*maxorder;
@@ -403,16 +402,16 @@ namespace {
       a = new float*[2];
       a[0] = new float[2*maxorder];
       a[1] = a[0]+maxorder;
-      
+
       temp = new SbVec4f[maxorder];
-      
+
       Nu = new float*[uorder];
       Nu[0] = new float[uorder*uorder];
       for ( int i = 1; i < uorder; i++ ) Nu[i] = Nu[0]+i*uorder;
       Nv = new float*[vorder];
       Nv[0] = new float[vorder*vorder];
       for ( int i = 1; i < vorder; i++ ) Nv[i] = Nv[0]+i*vorder;
-      
+
       Bin = new float*[maxorder];
       Bin[0] = new float[maxorder*maxorder];
       for ( int i = 1; i < maxorder; i++ ) Bin[i] = Bin[0]+i*maxorder;
@@ -434,7 +433,7 @@ namespace {
       delete [] Bin;
     }
     void Test();
-    
+
     void BinomialCoefficients(const int rows, const int cols);
     int FindSpan(const float u, const int degree, const int numctrlpts, const float* knotvec) const;
     void BasisFunctions(const float u, const int span, const float* knotvec, const int order, float* N);
@@ -446,9 +445,9 @@ namespace {
     SbVec4f SurfacePoint(const float u, const float v);
     SbVec4f SurfacePoint(const int i, const int j);
     void mapijtouv(const int i, const int j, float& u, float &v);
-    
+
   private:
-    const int uorder; 
+    const int uorder;
     const int numuknots;
     const float* uknotvec;
     const int vorder;
@@ -462,8 +461,8 @@ namespace {
     int udegree;
     int numuctrlpts;
     int vdegree;
-    int numvctrlpts;    
-    
+    int numvctrlpts;
+
     /// temporary fields
     float* left;
     float* right;
@@ -480,14 +479,14 @@ namespace {
   // The binomical coefficients are defined as follow
   //   (n)         n!
   //   (k)  =    k!(n-k)!       0<=k<=n
-  // and the following relationship applies 
+  // and the following relationship applies
   // (n+1)     (n)   ( n )
   // ( k ) =   (k) + (k-1)
   void nurbs::BinomialCoefficients(const int rows, const int cols) {
     Bin[0][0] = 1.0f;
     for (int k = 1; k < cols; k++)
       Bin[0][k] = 0.0f;
-    
+
     for ( int n = 0; n < rows-1; n++ ) {
       Bin[n+1][0] = 1.0f;
       for ( int k = 1; k < cols; k++ )
@@ -497,18 +496,18 @@ namespace {
           Bin[n+1][k] = Bin[n][k] + Bin[n][k-1];
     }
   }
-  
+
   /// Find the span in the knot vector containing the specified parameter value using binary search.
   int nurbs::FindSpan(const float u, const int degree, const int numctrlpts, const float* knotvec) const {
     if ( u >= knotvec[numctrlpts] )
       return numctrlpts-1;
     if ( u <= knotvec[degree] )
       return degree;
-    
+
     int low = 0;
     int high = numctrlpts + 1;
     int mid = (low + high)/2;
-    
+
     while ( u < knotvec[mid] || u >= knotvec[mid + 1] ) {
       if ( u < knotvec[mid] )
         high = mid;
@@ -539,7 +538,7 @@ namespace {
   /// Return the basis functions for the specified parameter value.
   void nurbs::DersBasisFunctions(const float u, const int span, const float* knotvec, const int order, const int n, float** ders) {
     int p = order - 1;
-    
+
     ndu[0][0] = 1.0f;
     for (int j = 1; j < order; j++) {
       left[j] = u - knotvec[span + 1 - j];
@@ -548,13 +547,13 @@ namespace {
       for ( int r = 0; r < j; r++ ) {
         ndu[j][r] = right[r + 1] + left[j - r];
         float temp = ndu[r][j - 1] / ndu[j][r];
-        
+
         ndu[r][j] = saved + right[r + 1] * temp;
         saved = left[j - r] * temp;
       }
       ndu[j][j] = saved;
     }
-    
+
     // Load the basis functions.
     for ( int j = 0; j < order; j++ )
       ders[0][j] = ndu[j][p];
@@ -565,7 +564,7 @@ namespace {
       int s2 = 1;
       a[0][0] = 1.0f;
       int j1, j2;
-      
+
       // Loop to compute the kth derivative.
       for ( int k = 1; k <= n; k++ ) {
         float d = 0.0f;
@@ -579,12 +578,12 @@ namespace {
           j1 = 1;
         else
           j1 = -rk;
-        
+
         if ( r - 1 <= pk )
           j2 = k - 1;
         else
           j2 = p - r;
-        
+
         for ( int j = j1; j <= j2; j++ ) {
           a[s2][j] = (a[s1][j] - a[s1][j - 1]) / ndu[pk + 1][rk + j];
           d += a[s2][j] * ndu[rk + j][pk];
@@ -594,7 +593,7 @@ namespace {
           d += a[s2][k] * ndu[r][pk];
         }
         ders[k][r] = d;
-        
+
         // Switch rows.
         int t = s1;
         s1 = s2;
@@ -617,18 +616,18 @@ namespace {
     for ( int k = uorder; k <= d; k++ )
       for ( int l = 0; l <= d - k; l++ )
         skl[k][l] = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-    
+
     int dv = SbMin( d, vdegree );
     // Initalize the requested derivatives greater than the degree in v.
     for ( int l = vorder; l <= d; l++ )
       for ( int k = 0; k <= d - l; k++ )
         skl[k][l] = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-    
+
     int uspan = FindSpan( u, udegree, numuctrlpts, uknotvec );
     DersBasisFunctions( u, uspan, uknotvec, uorder, du, Nu );
     int vspan = FindSpan( v, vdegree, numvctrlpts, vknotvec );
     DersBasisFunctions( v, vspan, vknotvec, vorder, dv, Nv );
-    
+
     for ( int k = 0; k <= du; k++ ) {
       for ( int s = 0; s < vorder; s++ ) {
         temp[s] = SbVec4f(0.0f, 0.0f, 0.0f, 0.0f);
@@ -658,16 +657,16 @@ namespace {
       }
     }
   }
-  
+
   /// Computes the point and the derivatives of degree d and below at (u,v).
   void nurbs::RationalSurfaceDerivs(float u, float v, const int d, SbVec3f** skl) {
     SbVec4f** ders = new SbVec4f*[d+1];
     ders[0] = new SbVec4f[(d + 1)*(d + 1)];
     for ( int i = 1; i < (d + 1); i++ ) ders[i] = ders[0]+i*(d + 1);
-    
+
     RationalSurfaceDerivsH( u, v, d, ders );
     BinomialCoefficients( d+1, d+1 );
-    
+
     for ( int k = 0; k <= d; k++ ) {
       for ( int l = 0; l <= d-k; l++ ) {
         SbVec3f v(ders[k][l][0], ders[k][l][1], ders[k][l][2]);
@@ -689,33 +688,33 @@ namespace {
     delete [] ders[0];
     delete [] ders;
   }
-  
+
   /// Computes the normal of the surface at parameters (u,v).
   SbVec3f nurbs::normal(const float u, const float v) {
     int d = 1;
-    
+
     SbVec3f** ders = new SbVec3f*[d+1];
     ders[0] = new SbVec3f[(d + 1)*(d + 1)];
     for ( int i = 1; i < (d + 1); i++ ) ders[i] = ders[0]+i*(d + 1);
     //SbVec4f** ders = new SbVec4f*[d+1];
     //ders[0] = new SbVec4f[(d + 1)*(d + 1)];
     //for ( int i = 1; i < (d + 1); i++ ) ders[i] = ders[0]+i*(d + 1);
-    
+
     RationalSurfaceDerivs( u, v, d, ders );
     //RationalSurfaceDerivsH( u, v, d, ders );
-    
+
     SbVec3f N;
-    
+
     //SbVec3f d10(ders[1][0][0], ders[1][0][1], ders[1][0][2]), d01(ders[0][1][0], ders[0][1][1], ders[0][1][2]);
     //N = d10.cross( d01 );
     N = ders[1][0].cross( ders[0][1] );
-    
+
     float mag = N.length();
-    
+
     //char buffer[1024];
     //sprintf(buffer, "Normal: %g %g %g, magnitude: %g\n", N[0], N[1], N[2], mag);
     //OutputDebugString(buffer);
-    
+
     if ( mag > 1.e-5f )
       N /= mag;
     else {
@@ -724,10 +723,10 @@ namespace {
       //OutputDebugString(buffer);
       N = SbVec3f(0.0f, 0.0f, 0.0f);
     }
-    
+
     delete [] ders[0];
     delete [] ders;
-    
+
     return N;
   }
 
@@ -735,10 +734,10 @@ namespace {
   SbVec3f nurbs::normal(const int i, const int j) {
     float u, v;
     mapijtouv( i, j, u, v );
-    
+
     return normal( u, v );
   }
-  
+
   /// Maps the point indices (i,j) to parameters (u,v).
   void nurbs::mapijtouv(const int i, const int j, float& u, float& v) {
     float deltau = (uknotvec[numuknots-1] - uknotvec[0]) / (numuctrlpts - 1);
@@ -753,7 +752,7 @@ namespace {
     BasisFunctions( u, uspan, uknotvec, uorder, Nu[0] );
     int vspan = FindSpan( v, vdegree, numvctrlpts, vknotvec );
     BasisFunctions( v, vspan, vknotvec, vorder, Nv[0] );
-    
+
     for ( int l = 0; l < vorder; l++ ) {
       temp[l] = SbVec4f(0.0f, 0.0f, 0.0f, 0.0f);
       for ( int k = 0; k < uorder; k++ ) {
@@ -767,15 +766,15 @@ namespace {
     SbVec4f sp(0.0f, 0.0f, 0.0f, 0.0f);
     for ( int l = 0; l < vorder; l++ )
       sp = sp + Nv[0][l]*temp[l];
-    
-    return sp; 
+
+    return sp;
   }
 
   /// Returns the point on the surface at indices (i,j).
   SbVec4f nurbs::SurfacePoint(const int i, const int j) {
     float u, v;
     mapijtouv( i, j, u, v );
-    
+
     return SurfacePoint( u, v );
   }
 
@@ -792,7 +791,7 @@ namespace {
     assert(ustride == 4);
     assert(vstride == 4*6);
     assert(dim == 4);
-        
+
     // testing the routine mapijtouv
     float u, v;
     mapijtouv(0, 0, u, v);
@@ -801,8 +800,8 @@ namespace {
     mapijtouv(numuctrlpts-1, numvctrlpts-1, u, v);
     assert(fabs(u - uknotvec[numuknots-1]) < 1.e-12);
     assert(fabs(v - vknotvec[numvknots-1]) < 1.e-12);
-    
-    // testing the findspan routine 
+
+    // testing the findspan routine
     int i = 0;
     // rechter rand
     i = FindSpan(uknotvec[0], udegree, numuctrlpts, uknotvec);
@@ -822,7 +821,7 @@ namespace {
     //// zweiter Abschnitt
     //i = FindSpan((uknotvec[udegree+2]+uknotvec[udegree+1])/2.0f, udegree, numuctrlpts, uknotvec);
     //assert( i == udegree+2 );
-    
+
     float* ptrnormals = new float[numvctrlpts*numuctrlpts*3];
     float* ptr = new float[numvctrlpts*numuctrlpts*dim];
     char buffer[1024];
@@ -841,7 +840,7 @@ namespace {
         ptrnormals[idx2] = normal[0];
         ptrnormals[idx2+1] = normal[1];
         ptrnormals[idx2+2] = normal[2];
-        
+
         SbVec4f srfpt = this->SurfacePoint(i, j);
         //srfpt.Homogenize();
 
@@ -849,7 +848,7 @@ namespace {
         ptr[idx] = srfpt[0]/srfpt[3];
         ptr[idx+1] = srfpt[1]/srfpt[3];
         ptr[idx+2] = srfpt[2]/srfpt[3];
-        
+
         sprintf(buffer, "%g %g %g,", srfpt[0]/srfpt[3], srfpt[1]/srfpt[3], srfpt[2]/srfpt[3]);
         if ( fp ) fprintf(fp, buffer);
       }
@@ -1016,7 +1015,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   int vIsLinear = numvctrlpts == 2 && numvknot == 2*(numvknot - numvctrlpts);
   int uIsClosed = 0;
   int vIsClosed = 0;
- 
+
   int ustride = dim;
   int vstride = dim * numuctrlpts;
 
@@ -1054,14 +1053,14 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   // generate normal map
   if (calculatenurbsnormals) {
     GLfloat * ptrnormals = NULL;
-    
+
     SbList <float> * tmpnormallist = sogl_get_tmpnormallist();
     tmpnormallist->truncate(0);
 
-    nurbs nrb(numuknot-numuctrlpts, numuknot, uknotvec, 
-              numvknot-numvctrlpts, numvknot, vknotvec, 
+    nurbs nrb(numuknot-numuctrlpts, numuknot, uknotvec,
+              numvknot-numvctrlpts, numvknot, vknotvec,
               ustride, vstride, ptr, dim);
-    
+
     for (int j = 0; j < numvctrlpts; j++) {
       for (int i = 0; i < numuctrlpts; i++) {
         SbVec3f normal = nrb.normal(i, j);
@@ -1071,7 +1070,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       }
     }
     ptrnormals = (float*) tmpnormallist->getArrayPtr();
-    
+
     // correct the normals if zero normals are present!
     for (int j = 0; j < numvctrlpts; j++) {
       for (int i = 0; i < numuctrlpts; i++) {
@@ -1098,7 +1097,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       //if ( numuctrlpts == 6 && numvctrlpts == 9 )
       //  nrb.Test();
     }
-    
+
     GLUWrapper()->gluNurbsSurface(nurbsrenderer,
                                   numuknot, (GLfloat*) uknotvec,
                                   numvknot, (GLfloat*) vknotvec,
@@ -1106,18 +1105,15 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                   numuknot - numuctrlpts, numvknot - numvctrlpts,
                                   GL_MAP2_NORMAL);
   }
-  
+
   SbBool okcheckelem =
-    state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
-    state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex());
+    state->isElementEnabled(SoMultiTextureEnabledElement::getClassStackIndex());
 
-
-  if (!okcheckelem || (SoTextureEnabledElement::get(state) ||
-      SoTexture3EnabledElement::get(state))) {
-    const SoTextureCoordinateElement * tc =
-      SoTextureCoordinateElement::getInstance(state);
+  if (!okcheckelem || (SoMultiTextureEnabledElement::get(state, 0))) {
+    const SoMultiTextureCoordinateElement * tc =
+      SoMultiTextureCoordinateElement::getInstance(state);
     if (numsctrlpts && numtctrlpts && numsknot && numtknot &&
-        (tc->getType() == SoTextureCoordinateElement::EXPLICIT) &&
+        (tc->getType() == SoMultiTextureCoordinateElement::EXPLICIT) &&
         tc->getNum()) {
       int texdim = tc->is2D() ? 2 : 4;
       GLfloat * texptr = tc->is2D() ?
@@ -1144,8 +1140,8 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                     (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
 
     }
-    else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
-             (tc->getType() == SoTextureCoordinateElement::EXPLICIT)) {
+    else if ((tc->getType() == SoMultiTextureCoordinateElement::DEFAULT) ||
+             (tc->getType() == SoMultiTextureCoordinateElement::EXPLICIT)) {
       //FIXME: 3D texture coordinate generation (kintel 20020202)
       static float defaulttex[] = {
         0.0f, 0.0f,
@@ -1342,14 +1338,14 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
 
   int uIsLinear = numctrlpts == 2 && numknots == 2*(numknots - numctrlpts);
   int uIsClosed = 0;
- 
+
   // compare first and last values in u direction
   for (int i = 0; i < dim; i++)
     uIsClosed += ptr[i] == ptr[(numctrlpts-1)*dim+i];
   uIsClosed = uIsClosed == dim;
-  
+
   float uSpan = knotvec[numknots-1] - knotvec[0];
- 
+
   sogl_set_nurbs_complexity(action, shape, nurbsrenderer, uIsLinear, 0, numctrlpts, 0, uIsClosed, 0, uSpan, 0);
 
   GLUWrapper()->gluBeginCurve(nurbsrenderer);

@@ -79,8 +79,8 @@
 #include <Inventor/VRMLnodes/SoVRMLBox.h>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -125,13 +125,13 @@ SoVRMLBox::GLRender(SoGLRenderAction * action)
  if (!this->shouldGLRender(action)) return;
   SoState * state = action->getState();
 
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  SbBool doTextures = SoGLMultiTextureEnabledElement::get(state);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
   SbBool sendNormals = !mb.isColorOnly() ||
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;

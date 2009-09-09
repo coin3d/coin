@@ -47,15 +47,13 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/tidbits.h>
@@ -231,74 +229,6 @@ SoGLLazyElement::sendFlatshading(const SbBool onoff) const
   ((SoGLLazyElement*)this)->cachebitmask |= SHADE_MODEL_MASK;
 }
 
-void
-SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
-{
-  // sentimageid is set to 0 if texturing isn't enabled
-  uint32_t sentimageid = glimageid;
-
-  if (glimageid != 0) {
-    sentimageid = 0;
-
-    SoTextureImageElement::Model model;
-    SbColor blendcolor;
-    SoGLImage * glimage = SoGLTextureImageElement::get(this->state, model, blendcolor);
-
-    if (glimage) {
-      SbBool enabled =
-        SoGLTextureEnabledElement::get(this->state) ||
-        SoGLTexture3EnabledElement::get(this->state);
-      // image data might be loaded on demand (SoVRMLImageTexture).
-      // We trigger a load here by attempting to fetch the image data.
-      if (!enabled && glimage->getImage()) {
-        SbVec3s size;
-        int nc;
-        (void) glimage->getImage()->getValue(size, nc);
-      }
-      if (enabled) {
-        SoGLDisplayList * dl = glimage->getGLDisplayList(this->state);
-        if (dl) {
-          // tag image (for GLImage LRU cache).
-          SoGLImage::tagImage(this->state, glimage);
-          if (SoTextureCombineElement::isDefault(this->state, 0)) {
-            switch (model) {
-            case SoTextureImageElement::DECAL:
-              glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-              break;
-            case SoTextureImageElement::MODULATE:
-              glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-              break;
-            case SoTextureImageElement::BLEND:
-              glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-              glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
-              break;
-            case SoTextureImageElement::REPLACE:
-              // GL_REPLACE mode was introduced with OpenGL 1.1. It is
-              // considered the client code's responsibility to check
-              // that it can use this mode.
-              //
-              // FIXME: ..but we should do a sanity check anyway.
-              // 20030901 mortene.
-              glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-              break;
-            default:
-              assert(0 && "unknown model");
-              break;
-            }
-          }
-          else {
-            SoTextureCombineElement::apply(this->state, 0);
-          }
-          dl->call(this->state);
-          sentimageid = glimageid;
-        }
-      }
-    }
-  }
-  ((SoGLLazyElement*)this)->cachebitmask |= GLIMAGE_MASK;
-  ((SoGLLazyElement*)this)->glstate.glimageid = (int32_t) sentimageid;
-}
-
 inline void
 SoGLLazyElement::sendAlphaTest(const SbBool onoff) const
 {
@@ -461,7 +391,6 @@ SoGLLazyElement::init(SoState * stateptr)
   this->glstate.twoside = -1;
   this->glstate.culling = -1;
   this->glstate.flatshading = -1;
-  this->glstate.glimageid = -1;
   this->glstate.alphatest = -1;
   this->glstate.diffuse = 0xccccccff;
   this->glstate.diffusenodeid = 0;
@@ -726,11 +655,6 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
           this->sendFlatshading(this->coinstate.flatshading);
         }
         break;
-      case GLIMAGE_CASE:
-        if (this->glstate.glimageid != (int32_t) this->coinstate.glimageid) {
-          this->sendGLImage(this->coinstate.glimageid);
-        }
-        break;
       case ALPHATEST_CASE:
         if (this->glstate.alphatest != (int32_t) this->coinstate.alphatest) {
           this->sendAlphaTest(this->coinstate.alphatest);
@@ -806,9 +730,6 @@ SoGLLazyElement::reset(SoState * stateptr,  uint32_t mask) const
         break;
       case SHADE_MODEL_CASE:
         elem->glstate.flatshading = -1;
-        break;
-      case GLIMAGE_CASE:
-        elem->glstate.glimageid = -1;
         break;
       case ALPHATEST_CASE:
         elem->glstate.alphatest = -1;
@@ -1033,12 +954,6 @@ SoGLLazyElement::setShadeModelElt(SbBool flatshading)
 }
 
 void
-SoGLLazyElement::setGLImageIdElt(uint32_t glimageid, SbBool alphatest)
-{
-  inherited::setGLImageIdElt(glimageid, alphatest);
-}
-
-void
 SoGLLazyElement::setAlphaTestElt(SbBool onoff)
 {
   inherited::setAlphaTestElt(onoff);
@@ -1157,9 +1072,6 @@ SoGLLazyElement::postCacheCall(SoState * state, GLState * poststate)
       case SHADE_MODEL_CASE:
         elem->glstate.flatshading = poststate->flatshading;
         break;
-      case GLIMAGE_CASE:
-        elem->glstate.glimageid = poststate->glimageid;
-        break;
       case ALPHATEST_CASE:
         elem->glstate.alphatest = poststate->alphatest;
         break;
@@ -1260,12 +1172,6 @@ SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
       case SHADE_MODEL_CASE:
         if (curr.flatshading != prestate->flatshading) {
           GLLAZY_DEBUG("shade model failed");
-          return FALSE;
-        }
-        break;
-      case GLIMAGE_CASE:
-        if ((int32_t) curr.glimageid != prestate->glimageid) {
-          GLLAZY_DEBUG("glimageid failed");
           return FALSE;
         }
         break;

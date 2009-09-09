@@ -35,12 +35,9 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
 #include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 
@@ -85,78 +82,62 @@ SoTextureCoordinateBundle(SoAction * const action,
   //
   // return immediately if there is no texture
   //
-  SbBool needinit =
-    SoTextureEnabledElement::get(this->state) ||
-    SoTexture3EnabledElement::get(this->state);
-
+  int lastenabled = -1;
+  const SbBool * multienabled = 
+    SoMultiTextureEnabledElement::getEnabledUnits(this->state, lastenabled);
+  SbBool needinit = lastenabled >= 0;
   SbBool glrender = forRendering || action->isOfType(SoGLRenderAction::getClassTypeId());
-
-  const SbBool * multienabled = NULL;
-  int multimax = 0;
-  if (glrender) {
-    multienabled =
-      SoMultiTextureEnabledElement::getEnabledUnits(this->state, multimax);
-  }
   SbBool bumpenabled = glrender && (SoBumpMapElement::get(this->state) != NULL);
 
   if (!needinit && !multienabled && !bumpenabled) return;
-
+  
   // It is safe to assume that shapenode is of type SoShape, so we
   // cast to SoShape before doing any operations on the node.
   this->shapenode = coin_assert_cast<SoShape *>(action->getCurPathTail());
-
-  this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
-  switch (this->coordElt->getType()) {
-  case SoTextureCoordinateElement::DEFAULT:
-    this->initDefault(action, forRendering);
-    break;
-  case SoTextureCoordinateElement::EXPLICIT:
-    if (this->coordElt->getNum() > 0) {
-      this->flags |= FLAG_NEEDCOORDS;
-    }
-    else {
-      this->initDefault(action, forRendering);
-    }
-    break;
-  case SoTextureCoordinateElement::FUNCTION:
-    this->flags |= FLAG_FUNCTION;
-    this->flags |= FLAG_NEEDCOORDS; // not automatically generated
-    break;
-
-  case SoTextureCoordinateElement::TEXGEN:
-    // texcoord won't be needed. This will only happen during SoGLRenderAction,
-    // when GL generates texture coorinates. Therefore, we will not set
-    // the FLAG_NEEDCOORDS here.
-    this->flags |= FLAG_FUNCTION;
-    if (!forRendering) {
-      this->flags |= FLAG_NEEDCOORDS;
-    }
-    break;
-  default:
-    assert(0 && "unknown CoordType");
-    break;
-  }
-
-  this->glElt = NULL;
-  if (glrender) {
-    SbBool needindices = !this->isFunction();
-    if (multienabled) {
-      const SoMultiTextureCoordinateElement * melem =
-        SoMultiTextureCoordinateElement::getInstance(state);
-      for (int i = 1; i <= multimax; i++) {
-        if (multienabled[i]) {
-          if ((melem->getType(i) == SoTextureCoordinateElement::DEFAULT) ||
-              ((melem->getType(state, i) == SoTextureCoordinateElement::EXPLICIT) &&
-               (melem->getNum(i) == 0))) {
-            this->initDefaultMulti(action, i);
-          }
-          else if (!needindices &&
-                   (melem->getType(state, i) == SoTextureCoordinateElement::EXPLICIT)) {
-            needindices = TRUE;
-          }
+  
+  this->coordElt = SoMultiTextureCoordinateElement::getInstance(this->state);
+  for (int i = 0; i <= lastenabled; i++) {
+    if (multienabled[i]) {
+      switch (this->coordElt->getType(i)) {
+      case SoMultiTextureCoordinateElement::DEFAULT:
+        this->initDefault(action, i);
+        break;
+      case SoMultiTextureCoordinateElement::EXPLICIT:
+        this->flags |= FLAG_NEEDINDICES;
+        if (this->coordElt->getNum() > 0) {
+          this->flags |= FLAG_NEEDCOORDS;
         }
+        else {
+          this->initDefault(action, i);
+        }
+        break;
+      case SoMultiTextureCoordinateElement::FUNCTION:
+        this->flags |= FLAG_FUNCTION;
+        this->flags |= FLAG_NEEDCOORDS; // not automatically generated
+        break;
+        
+      case SoMultiTextureCoordinateElement::TEXGEN:
+        // texcoord won't be needed. This will only happen during SoGLRenderAction,
+        // when GL generates texture coorinates. Therefore, we will not set
+        // the FLAG_NEEDCOORDS here.
+        this->flags |= FLAG_FUNCTION;
+        if (!forRendering) {
+          this->flags |= FLAG_NEEDCOORDS;
+        }
+        break;
+      default:
+        assert(0 && "unknown CoordType");
+        break;
       }
     }
+  }
+  // refetch element in case we pushed
+  if (this->flags & FLAG_DIDPUSH) {
+    this->coordElt = SoMultiTextureCoordinateElement::getInstance(this->state);
+  }
+  this->glElt = NULL;
+  if (glrender) {
+    SbBool needindices = FALSE;
     if (!needindices && this->isFunction()) {
       // check if bump mapping needs texture coordinate indices
       if (bumpenabled &&
@@ -165,7 +146,7 @@ SoTextureCoordinateBundle(SoAction * const action,
       }
     }
     if (needindices && this->isFunction()) this->flags |= FLAG_NEEDINDICES;
-    this->glElt = static_cast<const SoGLTextureCoordinateElement *>(this->coordElt);
+    this->glElt = static_cast<const SoGLMultiTextureCoordinateElement *>(this->coordElt);
     this->glElt->initMulti(action->getState());
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
@@ -270,39 +251,14 @@ SoTextureCoordinateBundle::get(const int index)
 
 
 //
-// initialize default texture coordinates for unit 0
+// initialize default texture coordinates for unit
 //
 void
-SoTextureCoordinateBundle::initDefault(SoAction * const action,
-                                       const SbBool COIN_UNUSED_ARG(forRendering))
+SoTextureCoordinateBundle::initDefault(SoAction * action, const int unit)
 {
   this->flags |= FLAG_NEEDCOORDS;
   this->flags |= FLAG_DEFAULT;
   this->flags |= FLAG_FUNCTION;
-
-  if (!(this->flags & FLAG_DIDPUSH)) {
-    this->state->push();
-    this->flags |= FLAG_DIDPUSH;
-  }
-  // have coordelt generate the default texture coordinates using a
-  // callback to this instance.
-  SoTextureCoordinateElement::setFunction(this->state, this->shapenode,
-                                          SoTextureCoordinateBundle::defaultCB,
-                                          this);
-  this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
-
-  if (!(this->flags & FLAG_DIDINITDEFAULT)) {
-    this->initDefaultCallback(action);
-  }
-}
-
-//
-// initialize default texture coordinates for unit > 0
-//
-void
-SoTextureCoordinateBundle::initDefaultMulti(SoAction * action, const int unit)
-{
-  this->flags |= FLAG_NEEDCOORDS;
 
   if (!(this->flags & FLAG_DIDPUSH)) {
     this->state->push();
@@ -388,7 +344,8 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   }
 
   // Map S,T,R to X,Y,Z for 3D texturing
-  if (SoTexture3EnabledElement::get(this->state)) {
+  if (SoMultiTextureEnabledElement::getMode(this->state, 0) == 
+      SoMultiTextureEnabledElement::TEXTURE3D) {
     this->flags |= FLAG_3DTEXTURES;
     this->defaultdim0 = 0;
     this->defaultdim1 = 1;

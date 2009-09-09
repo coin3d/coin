@@ -116,9 +116,8 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 
@@ -173,12 +172,12 @@ SoVRMLCylinder::GLRender(SoGLRenderAction * action)
   unsigned int flags = 0;
 
   SbBool sendNormals = !mb.isColorOnly() ||
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
   
   if (sendNormals)
     flags |= SOGL_NEED_NORMALS;
-  if ((SoGLTextureEnabledElement::get(state) || SoGLTexture3EnabledElement::get(state)) &&
-      SoTextureCoordinateElement::getType(state) != SoTextureCoordinateElement::TEXGEN)
+  if ((SoGLMultiTextureEnabledElement::get(state)) &&
+      SoMultiTextureCoordinateElement::getType(state) != SoMultiTextureCoordinateElement::TEXGEN)
     flags |= SOGL_NEED_TEXCOORDS;
   if (this->side.getValue()) flags |= SOGL_RENDER_SIDE;
   if (this->top.getValue()) flags |= SOGL_RENDER_TOP;

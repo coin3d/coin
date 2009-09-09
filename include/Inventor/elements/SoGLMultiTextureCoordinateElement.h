@@ -25,9 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 class SoGLMultiTextureCoordinateElementP;
+typedef void SoTexCoordTexgenCB(void * data);
 
 class COIN_DLL_API SoGLMultiTextureCoordinateElement : public SoMultiTextureCoordinateElement {
   typedef SoMultiTextureCoordinateElement inherited;
@@ -51,7 +51,7 @@ public:
                          SoTextureCoordinateFunctionCB * const func = NULL,
                          void * const funcData = NULL);
 
-  virtual SoTextureCoordinateElement::CoordType getType(const int unit) const;
+  virtual CoordType getType(const int unit = 0) const;
 
   static const SoGLMultiTextureCoordinateElement * getInstance(SoState * const state);
 
@@ -63,8 +63,32 @@ public:
     SoTexCoordTexgenCB * texgenCB;
     void * texgenData;
   };
-  
+
   void initRender(const SbBool * enabled, const int maxenabled) const;
+
+  // Coin-3 support
+  void send(const int index) const {
+    for (int i = 0; i <= this->multimax; i++) {
+      if (this->multienabled[i]) {
+        this->send(i, index);
+      }
+    }
+  }
+  void send(const int index, const SbVec3f &c, const SbVec3f &n) const {
+    for (int i = 0; i <= this->multimax; i++) {
+      if (this->multienabled[i]) {
+        this->send(i, index, c, n);
+      }
+    }
+  }
+  void initMulti(SoState * state) const;
+  static  void setTexGen(SoState * const state, SoNode * const node,
+                         SoTexCoordTexgenCB * const texgenFunc,
+                         void * const texgenData = NULL,
+                         SoTextureCoordinateFunctionCB * const func = NULL,
+                         void * const funcData = NULL) {
+    setTexGen(state, node, 0, texgenFunc, texgenData, func, funcData);
+  }
 
 protected:
   virtual void setElt(const int unit,
@@ -74,6 +98,8 @@ protected:
 private:
   void doCallback(const int unit) const;
   SoGLMultiTextureCoordinateElementP * pimpl;
+  mutable const SbBool * multienabled;
+  mutable int multimax;
 };
 
 #endif // !COIN_SOGLMULTITEXTURECOORDINATEELEMENT_H

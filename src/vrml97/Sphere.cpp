@@ -39,7 +39,7 @@
     field SFFloat radius  1    # (0, inf)
   }
   \endverbatim
-  
+
   The Sphere node specifies a sphere centred at (0, 0, 0) in the local
   coordinate system. The radius field specifies the radius of the
   sphere and shall be greater than zero. Figure 6.15 depicts the
@@ -57,7 +57,7 @@
   X=0 plane intersects the sphere and Z values are
   negative. TextureTransform affects the texture coordinates of the
   Sphere.  The Sphere node's geometry requires outside faces
-  only. When viewed from the inside the results are undefined.  
+  only. When viewed from the inside the results are undefined.
 
 */
 
@@ -71,14 +71,14 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SoGenerate.h"
@@ -125,10 +125,10 @@ SoVRMLSphere::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  SbBool doTextures = SoGLMultiTextureEnabledElement::get(state);
 
   SbBool sendNormals = !mb.isColorOnly() ||
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
   
   float complexity = this->getComplexityValue(action);
 

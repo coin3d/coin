@@ -375,8 +375,6 @@ SoElement::initElements(void)
   SoBBoxModelMatrixElement::initClass();
   SoGLModelMatrixElement::initClass();
   SoProfileElement::initClass();
-  SoTextureMatrixElement::initClass();
-  SoGLTextureMatrixElement::initClass();
   SoCacheElement::initClass();
   SoInt32Element::initClass();
   SoAnnoText3CharOrientElement::initClass();
@@ -387,10 +385,6 @@ SoElement::initElements(void)
   SoDrawStyleElement::initClass();
   SoGLDrawStyleElement::initClass();
   SoGLLightIdElement::initClass();
-  SoTextureEnabledElement::initClass();
-  SoGLTextureEnabledElement::initClass();
-  SoTexture3EnabledElement::initClass();
-  SoGLTexture3EnabledElement::initClass();
   SoLinePatternElement::initClass();
   SoGLLinePatternElement::initClass();
   SoMaterialBindingElement::initClass();
@@ -432,10 +426,6 @@ SoElement::initElements(void)
   SoProjectionMatrixElement::initClass();
   SoGLProjectionMatrixElement::initClass();
   SoProfileCoordinateElement::initClass();
-  SoTextureCoordinateElement::initClass();
-  SoGLTextureCoordinateElement::initClass();
-  SoTextureImageElement::initClass();
-  SoGLTextureImageElement::initClass();
   SoViewingMatrixElement::initClass();
   SoGLViewingMatrixElement::initClass();
   SoViewVolumeElement::initClass();

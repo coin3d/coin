@@ -58,7 +58,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -128,9 +127,9 @@ SoTexture3Transform::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTexture3Transform, SO_FROM_INVENTOR_1);
 
-  SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
-  SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
-  SO_ENABLE(SoPickAction, SoTextureMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureMatrixElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureMatrixElement);
+  SO_ENABLE(SoPickAction, SoMultiTextureMatrixElement);
 }
 
 
@@ -140,28 +139,23 @@ SoTexture3Transform::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state); 
-  if (unit == 0) {
-    SoTexture3Transform::doAction(action);
+  const cc_glglue * glue = 
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  
+  if (unit < maxunits) {
+    SbMatrix mat;
+    mat.setTransform(this->translation.getValue(),
+                     this->rotation.getValue(),
+                     this->scaleFactor.getValue(),
+                     this->scaleOrientation.getValue(),
+                     this->center.getValue());
+    SoMultiTextureMatrixElement::mult(state, this, unit, mat);
   }
   else {
-    const cc_glglue * glue = 
-      cc_glglue_instance(SoGLCacheContextElement::get(state));
-    int maxunits = cc_glglue_max_texture_units(glue);
-
-    if (unit < maxunits) {
-      SbMatrix mat;
-      mat.setTransform(this->translation.getValue(),
-                       this->rotation.getValue(),
-                       this->scaleFactor.getValue(),
-                       this->scaleOrientation.getValue(),
-                       this->center.getValue());
-      SoMultiTextureMatrixElement::mult(state, this, unit, mat);
-    }
-    else {
-      // we already warned in SoTextureUnit. I think it's best to just
-      // ignore the texture here so that all textures for non-supported
-      // units will be ignored. pederb, 2003-11-11
-    }
+    // we already warned in SoTextureUnit. I think it's best to just
+    // ignore the texture here so that all textures for non-supported
+    // units will be ignored. pederb, 2003-11-11
   }
 }
 
@@ -169,13 +163,15 @@ SoTexture3Transform::GLRender(SoGLRenderAction * action)
 void
 SoTexture3Transform::doAction(SoAction *action)
 {
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state); 
   SbMatrix mat;
   mat.setTransform(this->translation.getValue(),
                    this->rotation.getValue(),
                    this->scaleFactor.getValue(),
                    this->scaleOrientation.getValue(),
                    this->center.getValue());
-  SoTextureMatrixElement::mult(action->getState(), this, mat);
+  SoMultiTextureMatrixElement::mult(action->getState(), this, unit, mat);
 }
 
 // Documented in superclass.
@@ -189,14 +185,17 @@ SoTexture3Transform::callback(SoCallbackAction *action)
 void
 SoTexture3Transform::getMatrix(SoGetMatrixAction * action)
 {
-  SbMatrix mat;
-  mat.setTransform(this->translation.getValue(),
-                   this->rotation.getValue(),
-                   this->scaleFactor.getValue(),
-                   this->scaleOrientation.getValue(),
-                   this->center.getValue());
-  action->getTextureMatrix().multLeft(mat);
-  action->getTextureInverse().multRight(mat.inverse());
+  int unit = SoTextureUnitElement::get(action->getState()); 
+  if (unit == 0) {
+    SbMatrix mat;
+    mat.setTransform(this->translation.getValue(),
+                     this->rotation.getValue(),
+                     this->scaleFactor.getValue(),
+                     this->scaleOrientation.getValue(),
+                     this->center.getValue());
+    action->getTextureMatrix().multLeft(mat);
+    action->getTextureInverse().multRight(mat.inverse());
+  }
 }
 
 // Documented in superclass.

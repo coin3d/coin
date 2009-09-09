@@ -47,7 +47,6 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/lists/SbList.h>

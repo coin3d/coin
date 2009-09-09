@@ -129,8 +129,6 @@
 #include <Inventor/elements/SoListenerOrientationElement.h>
 #include <Inventor/elements/SoListenerDopplerElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbColor4f.h>
@@ -947,8 +945,6 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
           oldorigin[1], oldorigin[1]+oldsize[1]-1,
           -1, 1);
 
-  SoGLTextureEnabledElement::set(state, this, FALSE);
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
   SoGLMultiTextureEnabledElement::disableAll(state);
 
   glPushAttrib(GL_LIGHTING_BIT|

@@ -102,6 +102,8 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -637,10 +639,6 @@ SoShaderObjectP::updateParameters(const uint32_t cachecontext, int start, int nu
   }
 }
 
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLMultiTextureImageElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-
 void
 SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * state)
 {
@@ -655,25 +653,25 @@ SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * sta
 
     if (strncmp(name.getString(), "coin_", 5) == 0) {
       if (name == "coin_texunit0_model") {
-        SoTextureImageElement::Model model;
+        SoMultiTextureImageElement::Model model;
         SbColor dummy;
-        SbBool tex = SoGLTextureImageElement::get(state, model, dummy) != NULL;
+        SbBool tex = SoGLMultiTextureImageElement::get(state, model, dummy) != NULL;
         shaderobject->updateCoinParameter(state, name, NULL, tex ? model : 0);
       }
       else if (name == "coin_texunit1_model") {
-        SoTextureImageElement::Model model;
+        SoMultiTextureImageElement::Model model;
         SbColor dummy;
         SbBool tex = SoGLMultiTextureImageElement::get(state, 1, model, dummy) != NULL;
         shaderobject->updateCoinParameter(state, name, NULL, tex ? model : 0);
       }
       else if (name == "coin_texunit2_model") {
-        SoTextureImageElement::Model model;
+        SoMultiTextureImageElement::Model model;
         SbColor dummy;
         SbBool tex = SoGLMultiTextureImageElement::get(state, 2, model, dummy) != NULL;
         shaderobject->updateCoinParameter(state, name, NULL, tex ? model : 0);
       }
       else if (name == "coin_texunit3_model") {
-        SoTextureImageElement::Model model;
+        SoMultiTextureImageElement::Model model;
         SbColor dummy;
         SbBool tex = SoGLMultiTextureImageElement::get(state, 3, model, dummy) != NULL;
         shaderobject->updateCoinParameter(state, name, NULL, tex ? model : 0);

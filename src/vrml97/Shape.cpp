@@ -123,7 +123,6 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/system/gl.h>
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>

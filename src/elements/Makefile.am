@@ -68,11 +68,6 @@ RegularSources = \
 	SoTextOutlineEnabledElement.cpp \
 	SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp \
-	SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp \
-	SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp \

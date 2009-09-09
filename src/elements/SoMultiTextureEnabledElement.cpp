@@ -31,10 +31,23 @@
   \since Coin 2.2
 */
 
+/*!
+  \fn void SoMultiTextureEnabledElement::set(SoState * state, const SbBool enabled)
+  
+  Coin-3 support.
+*/
+
+/*!
+  \fn void SoMultiTextureEnabledElement::set(SoState * state, SoNode* node, const SbBool enabled)
+  
+  Coin-3 support.
+*/
+
 #include "SbBasicP.h"
 #include "coindefs.h"
 
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 
 #include "coindefs.h"
 
@@ -92,6 +105,11 @@ SoMultiTextureEnabledElement::set(SoState * state,
      );
 
   elem->setElt(unit, enabled);
+  
+  if (unit == 0) {
+    // FIXME: check all units?
+    SoShapeStyleElement::setTextureEnabled(state, enabled);
+  }
 }
 
 
@@ -277,6 +295,24 @@ SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
 }
 
 /*!
+  Enable Texture3 texture mode.
+
+  \since Coin 4.0
+*/
+void
+SoMultiTextureEnabledElement::enableTexture3(SoState * state,
+                                             SoNode * COIN_UNUSED_ARG(node),
+                                             const int unit)
+{
+  SoMultiTextureEnabledElement * elem = coin_assert_cast<SoMultiTextureEnabledElement *>
+    (
+     state->getElement(classStackIndex)
+     );
+  
+  elem->setElt(unit, static_cast<int>(TEXTURE3D));
+}
+
+/*!
 
   Disable all active texture units. Convenient when all textures needs
   to be disabled before rendering.
@@ -295,12 +331,13 @@ SoMultiTextureEnabledElement::disableAll(SoState * state)
        state->getElement(classStackIndex)
        );
 
-    for (int i = 1; i <= lastenabled; i++) {
+    for (int i = 0; i <= lastenabled; i++) {
       if (enabled[i]) {
         elem->setElt(i, FALSE);
       }
     }
   }
+  SoShapeStyleElement::setTextureEnabled(state, FALSE);
 }
 
 /*!

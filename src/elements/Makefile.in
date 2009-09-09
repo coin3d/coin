@@ -335,11 +335,6 @@ RegularSources = \
 	SoTextOutlineEnabledElement.cpp \
 	SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp \
-	SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp \
-	SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp \
@@ -468,10 +463,7 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
-	SoTextureScalePolicyElement.cpp \
+	SoTextureOverrideElement.cpp SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
 	SoUnitsElement.cpp SoViewVolumeElement.cpp \
@@ -521,11 +513,6 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoSwitchElement.$(OBJEXT) SoTextOutlineEnabledElement.$(OBJEXT) \
 	SoTextureCombineElement.$(OBJEXT) \
 	SoTextureCoordinateBindingElement.$(OBJEXT) \
-	SoTextureCoordinateElement.$(OBJEXT) \
-	SoTextureEnabledElement.$(OBJEXT) \
-	SoTexture3EnabledElement.$(OBJEXT) \
-	SoTextureImageElement.$(OBJEXT) \
-	SoTextureMatrixElement.$(OBJEXT) \
 	SoTextureOverrideElement.$(OBJEXT) \
 	SoTextureScalePolicyElement.$(OBJEXT) \
 	SoTextureScaleQualityElement.$(OBJEXT) \
@@ -579,10 +566,7 @@ am__EXTRA_elements_lst_SOURCES_DIST = SoTextureScalePolicyElement.h \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
-	SoTextureScalePolicyElement.cpp \
+	SoTextureOverrideElement.cpp SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
 	SoUnitsElement.cpp SoViewVolumeElement.cpp \
@@ -629,10 +613,7 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
-	SoTextureScalePolicyElement.cpp \
+	SoTextureOverrideElement.cpp SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
 	SoUnitsElement.cpp SoViewVolumeElement.cpp \
@@ -673,17 +654,15 @@ am__objects_8 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoShininessElement.lo SoSpecularColorElement.lo \
 	SoSwitchElement.lo SoTextOutlineEnabledElement.lo \
 	SoTextureCombineElement.lo SoTextureCoordinateBindingElement.lo \
-	SoTextureCoordinateElement.lo SoTextureEnabledElement.lo \
-	SoTexture3EnabledElement.lo SoTextureImageElement.lo \
-	SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
-	SoTextureScalePolicyElement.lo SoTextureScaleQualityElement.lo \
-	SoTextureUnitElement.lo SoTextureQualityElement.lo \
-	SoTransparencyElement.lo SoUnitsElement.lo \
-	SoViewVolumeElement.lo SoViewingMatrixElement.lo \
-	SoViewportRegionElement.lo SoWindowElement.lo \
-	SoListenerPositionElement.lo SoListenerOrientationElement.lo \
-	SoListenerGainElement.lo SoListenerDopplerElement.lo \
-	SoSoundElement.lo SoVertexAttributeElement.lo
+	SoTextureOverrideElement.lo SoTextureScalePolicyElement.lo \
+	SoTextureScaleQualityElement.lo SoTextureUnitElement.lo \
+	SoTextureQualityElement.lo SoTransparencyElement.lo \
+	SoUnitsElement.lo SoViewVolumeElement.lo \
+	SoViewingMatrixElement.lo SoViewportRegionElement.lo \
+	SoWindowElement.lo SoListenerPositionElement.lo \
+	SoListenerOrientationElement.lo SoListenerGainElement.lo \
+	SoListenerDopplerElement.lo SoSoundElement.lo \
+	SoVertexAttributeElement.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libelements_la_OBJECTS = $(am__objects_9)
@@ -724,10 +703,7 @@ am__EXTRA_libelements_la_SOURCES_DIST = SoTextureScalePolicyElement.h \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
-	SoTextureScalePolicyElement.cpp \
+	SoTextureOverrideElement.cpp SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
 	SoUnitsElement.cpp SoViewVolumeElement.cpp \
@@ -773,10 +749,7 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
-	SoTextureScalePolicyElement.cpp \
+	SoTextureOverrideElement.cpp SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
 	SoUnitsElement.cpp SoViewVolumeElement.cpp \
@@ -823,10 +796,7 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
-	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
-	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
-	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
-	SoTextureScalePolicyElement.cpp \
+	SoTextureOverrideElement.cpp SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
 	SoUnitsElement.cpp SoViewVolumeElement.cpp \
@@ -969,20 +939,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoSwitchElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextOutlineEnabledElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextOutlineEnabledElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTexture3EnabledElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTexture3EnabledElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCombineElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCombineElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBindingElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBindingElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureEnabledElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureEnabledElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureImageElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureImageElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureMatrixElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureMatrixElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureOverrideElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureOverrideElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureQualityElement.Plo \
@@ -1236,20 +1196,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSwitchElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextOutlineEnabledElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextOutlineEnabledElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3EnabledElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3EnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCombineElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCombineElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBindingElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBindingElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureEnabledElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureEnabledElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureImageElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureImageElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureMatrixElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureOverrideElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureOverrideElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureQualityElement.Plo@am__quote@

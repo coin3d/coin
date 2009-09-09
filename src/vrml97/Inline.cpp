@@ -132,7 +132,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/system/gl.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -412,9 +412,7 @@ SoVRMLInline::GLRender(SoGLRenderAction * action)
     SoState * state = action->getState();
     state->push();
 
-    if (SoGLTextureEnabledElement::get(state)) {
-      SoGLTextureEnabledElement::set(state, FALSE);
-    }
+    SoGLMultiTextureEnabledElement::disableAll(state);
     
     uint32_t packedcolor = sovrmlinline_bboxcolor->getPackedValue();
     SoGLLazyElement::sendLightModel(state, SoLazyElement::BASE_COLOR);
@@ -640,7 +638,7 @@ SoVRMLInline::readLocalFile(SoInput * in)
       // "hack-ish", but its done this way instead of loosening the
       // protection of SoInput::popFile().
       char dummy;
-      while (!in->eof() && in->get(dummy));
+      while (!in->eof() && in->get(dummy)) {}
       assert(in->eof());
       
       // Make sure the stack is really popped on EOF. Popping happens

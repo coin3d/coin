@@ -153,8 +153,8 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -845,7 +845,7 @@ SoCallbackAction::getCreaseAngle(void) const
 int32_t
 SoCallbackAction::getNumTextureCoordinates(void) const
 {
-  return SoTextureCoordinateElement::getInstance(this->state)->getNum();
+  return SoMultiTextureCoordinateElement::getInstance(this->state)->getNum(0);
 }
 
 /*!
@@ -855,7 +855,7 @@ SoCallbackAction::getNumTextureCoordinates(void) const
 const SbVec2f &
 SoCallbackAction::getTextureCoordinate2(const int index) const
 {
-  return SoTextureCoordinateElement::getInstance(this->state)->get2(index);
+  return SoMultiTextureCoordinateElement::getInstance(this->state)->get2(0, index);
 }
 
 /*!
@@ -869,7 +869,7 @@ SoCallbackAction::getTextureCoordinate2(const int index) const
 const SbVec3f &
 SoCallbackAction::getTextureCoordinate3(const int index) const
 {
-  return SoTextureCoordinateElement::getInstance(this->state)->get3(index);
+  return SoMultiTextureCoordinateElement::getInstance(this->state)->get3(0, index);
 }
 
 /*!
@@ -879,7 +879,7 @@ SoCallbackAction::getTextureCoordinate3(const int index) const
 const SbVec4f &
 SoCallbackAction::getTextureCoordinate4(const int index) const
 {
-  return SoTextureCoordinateElement::getInstance(this->state)->get4(index);
+  return SoMultiTextureCoordinateElement::getInstance(this->state)->get4(0, index);
 }
 
 /*!
@@ -899,7 +899,7 @@ SoCallbackAction::getTextureCoordinateBinding(void) const
 const SbColor &
 SoCallbackAction::getTextureBlendColor(void) const
 {
-  return SoTextureImageElement::getBlendColor(this->state);
+  return SoMultiTextureImageElement::getBlendColor(this->state, 0);
 }
 
 /*!
@@ -908,7 +908,7 @@ SoCallbackAction::getTextureBlendColor(void) const
 const unsigned char *
 SoCallbackAction::getTextureImage(SbVec2s & size, int & numcomps) const
 {
-  return SoTextureImageElement::getImage(state, size, numcomps);
+  return SoMultiTextureImageElement::getImage(state, 0, size, numcomps);
 }
 
 /*!
@@ -921,7 +921,7 @@ SoCallbackAction::getTextureImage(SbVec2s & size, int & numcomps) const
 const unsigned char *
 SoCallbackAction::getTextureImage(SbVec3s & size, int & numcomps) const
 {
-  return SoTextureImageElement::getImage(state, size, numcomps);
+  return SoMultiTextureImageElement::getImage(state, 0, size, numcomps);
 }
 
 /*!
@@ -930,7 +930,7 @@ SoCallbackAction::getTextureImage(SbVec3s & size, int & numcomps) const
 const SbMatrix &
 SoCallbackAction::getTextureMatrix(void) const
 {
-  return SoTextureMatrixElement::get(this->state);
+  return SoMultiTextureMatrixElement::get(this->state, 0);
 }
 
 /*!
@@ -939,7 +939,7 @@ SoCallbackAction::getTextureMatrix(void) const
 SoTexture2::Model
 SoCallbackAction::getTextureModel(void) const
 {
-  return static_cast<SoTexture2::Model>( SoTextureImageElement::getModel(this->state));
+  return static_cast<SoTexture2::Model>( SoMultiTextureImageElement::getModel(this->state, 0));
 }
 
 /*!
@@ -948,7 +948,7 @@ SoCallbackAction::getTextureModel(void) const
 SoTexture2::Wrap
 SoCallbackAction::getTextureWrapS(void) const
 {
-  return static_cast<SoTexture2::Wrap>( SoTextureImageElement::getWrapS(this->state));
+  return static_cast<SoTexture2::Wrap>( SoMultiTextureImageElement::getWrapS(this->state,0));
 }
 
 /*!
@@ -957,7 +957,7 @@ SoCallbackAction::getTextureWrapS(void) const
 SoTexture2::Wrap
 SoCallbackAction::getTextureWrapT(void) const
 {
-  return static_cast<SoTexture2::Wrap>(SoTextureImageElement::getWrapT(this->state));
+  return static_cast<SoTexture2::Wrap>(SoMultiTextureImageElement::getWrapT(this->state, 0));
 }
 
 /*!
@@ -970,7 +970,7 @@ SoCallbackAction::getTextureWrapT(void) const
 SoTexture2::Wrap
 SoCallbackAction::getTextureWrapR(void) const
 {
-  return static_cast<SoTexture2::Wrap>(SoTextureImageElement::getWrapR(this->state));
+  return static_cast<SoTexture2::Wrap>(SoMultiTextureImageElement::getWrapR(this->state, 0));
 }
 
 /*!

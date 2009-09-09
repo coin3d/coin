@@ -93,8 +93,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLNormalElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
@@ -294,25 +293,25 @@ SoVertexProperty::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoMaterialBindingElement);
   SO_ENABLE(SoGLRenderAction, SoNormalBindingElement);
   SO_ENABLE(SoGLRenderAction, SoGLNormalElement);
-  SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
 
   SO_ENABLE(SoPickAction, SoCoordinateElement);
   SO_ENABLE(SoPickAction, SoMaterialBindingElement);
   SO_ENABLE(SoPickAction, SoNormalBindingElement);
   SO_ENABLE(SoPickAction, SoNormalElement);
-  SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoPickAction, SoMultiTextureCoordinateElement);
 
   SO_ENABLE(SoCallbackAction, SoCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoMaterialBindingElement);
   SO_ENABLE(SoCallbackAction, SoNormalBindingElement);
   SO_ENABLE(SoCallbackAction, SoNormalElement);
-  SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureCoordinateElement);
 
   SO_ENABLE(SoGetPrimitiveCountAction, SoCoordinateElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoMaterialBindingElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoNormalBindingElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoNormalElement);
-  SO_ENABLE(SoGetPrimitiveCountAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoMultiTextureCoordinateElement);
 }
 
 // Documented in superclass.
@@ -393,15 +392,13 @@ SoVertexProperty::doAction(SoAction *action)
   num = this->texCoord3.getNum();
   if (num > 0) {
     if (glrender) {
-      if (SoGLTexture3EnabledElement::get(state)) {
-        // it's important to call this _before_ setting the coordinates
-        // on the state.
-        SoGLTextureCoordinateElement::setTexGen(state,
-                                                this, NULL);
-      }
+      // it's important to call this _before_ setting the coordinates
+      // on the state.
+      SoGLMultiTextureCoordinateElement::setTexGen(state,
+                                                   this, 0, NULL);
     }
-    SoTextureCoordinateElement::set3(state, this, num,
-                                     this->texCoord3.getValues(0));
+    SoMultiTextureCoordinateElement::set3(state, this, 0, num,
+                                          this->texCoord3.getValues(0));
     if (glrender) {
       SbBool setvbo = FALSE;
       if ((num == numvertex) && shouldcreatevbo) {
@@ -435,11 +432,11 @@ SoVertexProperty::doAction(SoAction *action)
       if (glrender) {
         // it's important to call this _before_ setting the coordinates
         // on the state.
-        SoGLTextureCoordinateElement::setTexGen(state,
-                                                this, NULL);
+        SoGLMultiTextureCoordinateElement::setTexGen(state,
+                                                     this, 0, NULL);
       }
-      SoTextureCoordinateElement::set2(state, this, num,
-                                       this->texCoord.getValues(0));
+      SoMultiTextureCoordinateElement::set2(state, this, 0, num,
+                                            this->texCoord.getValues(0));
 
       if (glrender) {
         SbBool setvbo = FALSE;

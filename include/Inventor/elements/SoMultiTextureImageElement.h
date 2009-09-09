@@ -25,7 +25,6 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoReplacedElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SbColor.h>
@@ -44,41 +43,60 @@ protected:
 
 public:
 
+  enum Model {
+    // These should match GL_BLEND, GL_MODULATE and GL_DECAL for SGI
+    // Inventor compatibility (these are also used by SoTexture2 and
+    // SoTexture3).
+    BLEND = 0x0be2,
+    MODULATE = 0x2100,
+    DECAL = 0x2101,
+    REPLACE = 0x1E01 // must match GL_REPLACE
+  };
+
+  enum Wrap {
+    // These should match GL_CLAMP and GL_REPEAT for SGI Inventor
+    // compatibility (these are also used by SoTexture2 and
+    // SoTexture3).
+    CLAMP = 0x2900,
+    REPEAT = 0x2901,
+    CLAMP_TO_BORDER = 0x812D
+  };
+
   virtual void init(SoState * state);
-  static void setDefault(SoState * const state, SoNode * const node, const int unit);
+  static void setDefault(SoState * const state, SoNode * const node, const int unit = 0);
   
   static void set(SoState * const state, SoNode * const node,
                   const int unit,
                   const SbVec2s & size, const int numComponents,
                   const unsigned char * bytes,
-                  const SoTextureImageElement::Wrap wrapS, 
-                  const SoTextureImageElement::Wrap wrapT,
-                  const SoTextureImageElement::Model model, const SbColor & blendColor);
+                  const Wrap wrapS, 
+                  const Wrap wrapT,
+                  const Model model, const SbColor & blendColor);
   static void set(SoState * const state, SoNode * const node,
                   const int unit,
                   const SbVec3s & size, const int numComponents,
                   const unsigned char * bytes,
-                  const SoTextureImageElement::Wrap wrapS, 
-                  const SoTextureImageElement::Wrap wrapT, 
-                  const SoTextureImageElement::Wrap wrapR,
-                  const SoTextureImageElement::Model model, const SbColor & blendColor);
+                  const Wrap wrapS, 
+                  const Wrap wrapT, 
+                  const Wrap wrapR,
+                  const Model model, const SbColor & blendColor);
 
   static const unsigned char *get(SoState * const state,
                                   const int unit,
                                   SbVec2s & size,
                                   int & numComponents,
-                                  SoTextureImageElement::Wrap & wrapS,
-                                  SoTextureImageElement::Wrap & wrapT,
-                                  SoTextureImageElement::Model & model,
+                                  Wrap & wrapS,
+                                  Wrap & wrapT,
+                                  Model & model,
                                   SbColor & blendColor);
   static const unsigned char *get(SoState * const state,
                                   const int unit,
                                   SbVec3s & size,
                                   int & numComponents,
-                                  SoTextureImageElement::Wrap & wrapS,
-                                  SoTextureImageElement::Wrap & wrapT,
-                                  SoTextureImageElement::Wrap & wrapR,
-                                  SoTextureImageElement::Model & model,
+                                  Wrap & wrapS,
+                                  Wrap & wrapT,
+                                  Wrap & wrapR,
+                                  Model & model,
                                   SbColor & blendColor);
 
   static const unsigned char *getImage(SoState * const state,
@@ -90,11 +108,11 @@ public:
                                        SbVec3s &size,
                                        int &numComponents);
 
-  static const SbColor & getBlendColor(SoState * const state, const int unit);
-  static SoTextureImageElement::Model getModel(SoState * const state, const int unit);
-  static SoTextureImageElement::Wrap getWrapS(SoState * const state, const int unit);
-  static SoTextureImageElement::Wrap getWrapT(SoState * const state, const int unit);
-  static SoTextureImageElement::Wrap getWrapR(SoState * const state, const int unit);
+  static const SbColor & getBlendColor(SoState * const state, const int unit = 0);
+  static Model getModel(SoState * const state, const int unit = 0);
+  static Wrap getWrapS(SoState * const state, const int unit = 0);
+  static Wrap getWrapT(SoState * const state, const int unit = 0);
+  static Wrap getWrapR(SoState * const state, const int unit = 0);
 
   static SbBool containsTransparency(SoState * const state);
 
@@ -109,21 +127,21 @@ public:
                       const uint32_t nodeid,
                       const SbVec2s & size, const int numComponents,
                       const unsigned char * bytes,
-                      const SoTextureImageElement::Wrap wrapS, 
-                      const SoTextureImageElement::Wrap wrapT,
-                      const SoTextureImageElement::Model model, 
+                      const Wrap wrapS, 
+                      const Wrap wrapT,
+                      const Model model, 
                       const SbColor & blendColor);
   virtual void setElt(const int unit,
                       const uint32_t nodeid,
                       const SbVec3s & size, const int numComponents,
                       const unsigned char * bytes,
-                      const SoTextureImageElement::Wrap wrapS, 
-                      const SoTextureImageElement::Wrap wrapT, 
-                      const SoTextureImageElement::Wrap wrapR,
-                      const SoTextureImageElement::Model model, 
+                      const Wrap wrapS, 
+                      const Wrap wrapT, 
+                      const Wrap wrapR,
+                      const Model model, 
                       const SbColor & blendColor);
   
-  virtual SbBool hasTransparency(const int unit) const;
+  virtual SbBool hasTransparency(const int unit = 0) const;
 
   class UnitData {
   public:
@@ -131,8 +149,8 @@ public:
     SbVec3s size;
     int numComponents;
     const unsigned char * bytes;
-    SoTextureImageElement::Wrap wrapS, wrapT, wrapR;
-    SoTextureImageElement::Model model;
+    Wrap wrapS, wrapT, wrapR;
+    Model model;
     SbColor blendColor;
   };
 
@@ -142,6 +160,105 @@ protected:
 private:
   void setDefaultValues(const int unit);
   SoMultiTextureImageElementP * pimpl;
+
+ public: // Coin-3 support
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec2s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const int wrapS, const int wrapT,
+                  const int model, const SbColor & blendColor) {
+    set(state, node,0, size, numComponents, bytes,
+        (Wrap) wrapS, (Wrap) wrapT, (Model) model, blendColor);
+  }
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec2s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const Wrap wrapS, const Wrap wrapT,
+                  const Model model, const SbColor & blendColor) {
+    set(state, node, 0, size, numComponents, bytes,
+        wrapS, wrapT, model, blendColor);
+  }
+
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec3s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const int wrapS, const int wrapT, const int wrapR,
+                  const int model, const SbColor & blendColor) {
+    set(state, node, 0, size, numComponents, bytes,
+        (Wrap) wrapS, (Wrap) wrapT, (Wrap) wrapR, (Model) model, blendColor);
+  }
+
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec3s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const Wrap wrapS, const Wrap wrapT, const Wrap wrapR,
+                  const Model model, const SbColor & blendColor) {
+    set(state, node, 0, size, numComponents, bytes,
+        wrapS, wrapT, wrapR, model, blendColor);
+  }
+  
+  static const unsigned char *get(SoState * const state,
+                                  SbVec2s & size,
+                                  int & numComponents,
+                                  Wrap & wrapS,
+                                  Wrap & wrapT,
+                                  Model & model,
+                                  SbColor & blendColor) {
+    return get(state, 0, size, numComponents, wrapS, wrapT, model, blendColor);
+  }
+  static const unsigned char *get(SoState * const state,
+                                  SbVec3s & size,
+                                  int & numComponents,
+                                  Wrap & wrapS,
+                                  Wrap & wrapT,
+                                  Wrap & wrapR,
+                                  Model & model,
+                                  SbColor & blendColor) {
+    return get(state, 0, size, numComponents, wrapS, wrapT, wrapR, model, blendColor);
+  }
+  
+  static const unsigned char *get(SoState * const state,
+                                  SbVec2s & size,
+                                  int & numComponents,
+                                  int & wrapS,
+                                  int & wrapT,
+                                  int & model,
+                                  SbColor & blendColor) {
+    Wrap s, t;
+    Model m;
+    const unsigned char * bytes = get(state, 0, size, numComponents, s, t, m, blendColor);
+    wrapS = (int) s;
+    wrapT = (int) t;
+    model = (int) m;
+    return bytes;
+  }
+  static const unsigned char *get(SoState * const state,
+                                  SbVec3s & size,
+                                  int & numComponents,
+                                  int & wrapS,
+                                  int & wrapT,
+                                  int & wrapR,
+                                  int & model,
+                                  SbColor & blendColor) {
+    Wrap s, t, r;
+    Model m;
+    const unsigned char * bytes = get(state, 0, size, numComponents, s, t, r, m, blendColor);
+    wrapS = (int) s;
+    wrapT = (int) t;
+    wrapR = (int) r;
+    model = (int) m;
+    return bytes;
+  }
+  static const unsigned char *getImage(SoState * const state,
+                                       SbVec2s &size,
+                                       int &numComponents) {
+    return getImage(state, 0, size, numComponents);
+  }
+  static const unsigned char *getImage(SoState * const state,
+                                       SbVec3s &size,
+                                       int &numComponents) {
+    return getImage(state, 0, size, numComponents);
+  }
 };
 
 #endif // !COIN_SOMULTITEXTUREIMAGEELEMENT_H

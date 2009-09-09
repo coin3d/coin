@@ -117,7 +117,7 @@
 #include <math.h>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/SbMatrix.h>
@@ -160,8 +160,8 @@ SoVRMLTextureTransform::doAction(SoAction * action)
 {
   SbMatrix mat;
   this->makeMatrix(mat);
-  SoTextureMatrixElement::mult(action->getState(), this,
-                               mat);
+  SoMultiTextureMatrixElement::mult(action->getState(), this, 0,
+                                    mat);
 }
 
 // Doc in parent

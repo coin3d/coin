@@ -77,9 +77,8 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/misc/SoState.h>
 
 #if COIN_DEBUG
@@ -189,14 +188,18 @@ SoCone::GLRender(SoGLRenderAction * action)
 
   SbBool doTextures = FALSE;
   SbBool do3DTextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
-
+  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
+    doTextures = TRUE;
+    if (SoGLMultiTextureEnabledElement::getMode(state,0) ==
+        SoMultiTextureEnabledElement::TEXTURE3D) {
+      do3DTextures = TRUE;
+    }
+  }
   SoCone::Part p = (SoCone::Part) this->parts.getValue();
 
   SoMaterialBundle mb(action);
   SbBool sendNormals = !mb.isColorOnly() || 
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+    (SoMultiTextureCoordinateElement::getType(state, 0) == SoMultiTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;

@@ -48,16 +48,14 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -2417,13 +2415,4 @@ sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
   }
   offscreencallback->setCallback(cb, closure);
   offscreenrenderer->render(offscreencallback);
-}
-
-// Needed until all logic in SoGLTextureImageElement is moved to SoGLMultiTextureImageElement
-void
-sogl_update_shapehints_transparency(SoState * state)
-{
-  SoShapeStyleElement::setTransparentTexture(state,
-                                             SoGLTextureImageElement::hasTransparency(state) ||
-                                             SoGLMultiTextureImageElement::hasTransparency(state));
 }

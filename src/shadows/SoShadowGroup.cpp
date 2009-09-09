@@ -283,7 +283,6 @@
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightElement.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -315,7 +314,6 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -1077,24 +1075,10 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
 
     assert(cache->texunit >= 0);
 
-    if (cache->texunit == 0) {
-      SoTextureMatrixElement::set(state, PUBLIC(this), mat);
-    }
-    else {
-      SoMultiTextureMatrixElement::set(state, PUBLIC(this), cache->texunit, cache->matrix);
-    }
-
-    // glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
+    SoMultiTextureMatrixElement::set(state, PUBLIC(this), cache->texunit, cache->matrix);
     this->renderDepthMap(cache, action);
-
-    if (cache->texunit == 0) {
-      SoGLTextureEnabledElement::set(state, PUBLIC(this), FALSE);
-    }
-    else {
-      SoGLMultiTextureEnabledElement::set(state, PUBLIC(this), cache->texunit,
-                                          SoGLMultiTextureEnabledElement::DISABLED);
-    }
+    SoGLMultiTextureEnabledElement::set(state, PUBLIC(this), cache->texunit,
+                                        SoGLMultiTextureEnabledElement::DISABLED);
   }
   SoTextureUnitElement::set(state, PUBLIC(this), 0);
 }

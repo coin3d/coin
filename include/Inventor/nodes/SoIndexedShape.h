@@ -28,7 +28,6 @@
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-class SoTextureCoordinateElement;
 class SoCoordinateElement;
 
 class COIN_DLL_API SoIndexedShape : public SoVertexShape {

@@ -142,8 +142,7 @@
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
@@ -329,8 +328,12 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
+    do2Dtextures = TRUE;
+    if (SoGLMultiTextureEnabledElement::getMode(state, 0) == SoGLMultiTextureEnabledElement::TEXTURE3D) {
+      do3Dtextures = TRUE;
+    }
+  }
 
   // FIXME: implement proper support for 3D-texturing, and get rid of
   // this. 20020120 mortene.
@@ -651,9 +654,13 @@ SoAsciiText::generatePrimitives(SoAction * action)
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
-
+  if (SoMultiTextureEnabledElement::get(state, 0)) {
+    do2Dtextures = TRUE;
+    if (SoMultiTextureEnabledElement::getMode(state,0) ==
+        SoMultiTextureEnabledElement::TEXTURE3D) {
+      do3Dtextures = TRUE;
+    }
+  }
   // FIXME: implement proper support for 3D-texturing, and get rid of
   // this. 20020120 mortene.
   if (do3Dtextures) {

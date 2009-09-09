@@ -31,7 +31,7 @@
 #include <Inventor/fields/SoSFVec4f.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 
 class SoSceneTexture2P;
 
@@ -45,16 +45,16 @@ public:
   SoSceneTexture2(void);
 
   enum Model {
-    MODULATE = SoTextureImageElement::MODULATE,
-    DECAL = SoTextureImageElement::DECAL,
-    BLEND = SoTextureImageElement::BLEND,
-    REPLACE = SoTextureImageElement::REPLACE
+    MODULATE = SoMultiTextureImageElement::MODULATE,
+    DECAL = SoMultiTextureImageElement::DECAL,
+    BLEND = SoMultiTextureImageElement::BLEND,
+    REPLACE = SoMultiTextureImageElement::REPLACE
   };
 
   enum Wrap {
-    REPEAT = SoTextureImageElement::REPEAT,
-    CLAMP = SoTextureImageElement::CLAMP,
-    CLAMP_TO_BORDER = SoTextureImageElement::CLAMP_TO_BORDER
+    REPEAT = SoMultiTextureImageElement::REPEAT,
+    CLAMP = SoMultiTextureImageElement::CLAMP,
+    CLAMP_TO_BORDER = SoMultiTextureImageElement::CLAMP_TO_BORDER
   };
 
   enum TransparencyFunction {

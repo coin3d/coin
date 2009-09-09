@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbBox3f.h>
@@ -34,7 +35,6 @@ class SoDetail;
 class SoPickedPoint;
 class SoFaceDetail;
 class SoState;
-class SoTextureCoordinateElement;
 class SoCoordinateElement;
 class SbVec2f;
 class SoMaterialBundle;
@@ -116,14 +116,14 @@ protected:
   void generateVertex(SoPrimitiveVertex * const pv,
                       const SbVec3f & point,
                       const SbBool useTexFunc,
-                      const SoTextureCoordinateElement * const tce,
+                      const SoMultiTextureCoordinateElement * const tce,
                       const float s,
                       const float t,
                       const SbVec3f & normal);
   void generateVertex(SoPrimitiveVertex * const pv,
                       const SbVec3f & point,
                       const SbBool useTexFunc,
-                      const SoTextureCoordinateElement * const tce,
+                      const SoMultiTextureCoordinateElement * const tce,
                       const float s,
                       const float t,
                       const float r,

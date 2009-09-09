@@ -47,8 +47,8 @@ public:
   static void mult(SoState * const state, SoNode * const node,
                    const int unit,
                    const SbMatrix & matrix);
-  static const SbMatrix & get(SoState * const state, const int unit);
-  
+  static const SbMatrix & get(SoState * const state, const int unit = 0);
+
   class UnitData {
   public:
     SbMatrix textureMatrix;
@@ -57,13 +57,44 @@ public:
 protected:
   UnitData & getUnitData(const int unit);
   const UnitData & getUnitData(const int unit) const;
-  
+
   virtual void multElt(const int unit, const SbMatrix & matrix);
   virtual void setElt(const int unit, const SbMatrix & matrix);
   virtual const SbMatrix & getElt(const int unit) const;
 
 private:
   SoMultiTextureMatrixElementP * pimpl;
+
+ public: // Coin-3 support
+  static void makeIdentity(SoState * const state, SoNode * const node, const int unit = 0) {
+    set(state, node, unit, SbMatrix::identity());
+  }
+  static void set(SoState * const state, SoNode * const node,
+                  const SbMatrix & matrix) {
+    set(state, node, 0, matrix);
+  }
+  static void mult(SoState * const state, SoNode * const node,
+                   const SbMatrix & matrix) {
+    mult(state, node, 0, matrix);
+  }
+  static void translateBy(SoState * const state, SoNode * const node,
+                          const SbVec3f & translation) {
+    SbMatrix m;
+    m.setTranslate(translation);
+    mult(state, node, 0, m);
+  }
+  static void rotateBy(SoState * const state, SoNode * const node,
+                       const SbRotation & rotation) {
+    SbMatrix m;
+    m.setRotate(rotation);
+    mult(state, node, 0, m);
+  }
+  static void scaleBy(SoState * const state, SoNode * const node,
+                      const SbVec3f & scaleFactor) {
+    SbMatrix m;
+    m.setScale(scaleFactor);
+    mult(state, node, 0, m);
+  }
 };
 
 #endif // !COIN_SOTEXTUREMATRIXELEMENT_H

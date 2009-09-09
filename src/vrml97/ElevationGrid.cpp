@@ -267,7 +267,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoState.h>
@@ -392,7 +392,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
 
-  SbBool dotex = SoGLTextureEnabledElement::get(state);
+  SbBool dotex = SoGLMultiTextureEnabledElement::get(state);
   SbBool donorm = !mb.isColorOnly();
 
   Binding nbind = this->findNormalBinding();

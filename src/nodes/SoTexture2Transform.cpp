@@ -53,7 +53,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -117,10 +116,6 @@ SoTexture2Transform::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTexture2Transform, SO_FROM_INVENTOR_1|SoNode::VRML1);
 
-  SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
-  SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
-  SO_ENABLE(SoPickAction, SoTextureMatrixElement);
-
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureMatrixElement);
   SO_ENABLE(SoCallbackAction, SoMultiTextureMatrixElement);
   SO_ENABLE(SoPickAction, SoMultiTextureMatrixElement);
@@ -138,25 +133,19 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
 
   int unit = SoTextureUnitElement::get(state);
 
-  if (unit == 0) {
-    SoTexture2Transform::doAction(action);
+  const cc_glglue * glue =
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
 
+  if (unit < maxunits) {
+    SbMatrix mat;
+    this->makeMatrix(mat);
+    SoMultiTextureMatrixElement::mult(state, this, unit, mat);
   }
   else {
-    const cc_glglue * glue =
-      cc_glglue_instance(SoGLCacheContextElement::get(state));
-    int maxunits = cc_glglue_max_texture_units(glue);
-
-    if (unit < maxunits) {
-      SbMatrix mat;
-      this->makeMatrix(mat);
-      SoMultiTextureMatrixElement::mult(state, this, unit, mat);
-    }
-    else {
-      // we already warned in SoTextureUnit. I think it's best to just
-      // ignore the texture here so that all textures for non-supported
-      // units will be ignored. pederb, 2003-11-10
-    }
+    // we already warned in SoTextureUnit. I think it's best to just
+    // ignore the texture here so that all textures for non-supported
+    // units will be ignored. pederb, 2003-11-10
   }
 }
 
@@ -166,16 +155,9 @@ SoTexture2Transform::doAction(SoAction *action)
 {
   SbMatrix mat;
   this->makeMatrix(mat);
-
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
-  if (unit == 0) {
-    SoTextureMatrixElement::mult(action->getState(), this,
-                                 mat);
-  }
-  else {
-    SoMultiTextureMatrixElement::mult(state, this, unit, mat);
-  }
+  SoMultiTextureMatrixElement::mult(state, this, unit, mat);
 }
 
 // Documented in superclass.
@@ -189,10 +171,13 @@ SoTexture2Transform::callback(SoCallbackAction *action)
 void
 SoTexture2Transform::getMatrix(SoGetMatrixAction * action)
 {
-  SbMatrix mat;
-  this->makeMatrix(mat);
-  action->getTextureMatrix().multLeft(mat);
-  action->getTextureInverse().multRight(mat.inverse());
+  int unit = SoTextureUnitElement::get(action->getState()); 
+  if (unit == 0) {
+    SbMatrix mat;
+    this->makeMatrix(mat);
+    action->getTextureMatrix().multLeft(mat);
+    action->getTextureInverse().multRight(mat.inverse());
+  }
 }
 
 // Documented in superclass.

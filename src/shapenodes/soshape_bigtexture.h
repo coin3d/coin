@@ -29,6 +29,7 @@
 #endif /* !COIN_INTERNAL */
 
 #include <Inventor/lists/SbList.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbPlane.h>
 
@@ -65,7 +66,7 @@ private:
                        SoPrimitiveVertex * v1,
                        SoPrimitiveVertex * v2,
                        SoPrimitiveVertex * v3,
-                       const int wrap[2],
+                       const SoMultiTextureImageElement::Wrap wrap[2],
                        const int transs, 
                        const int transt);
   

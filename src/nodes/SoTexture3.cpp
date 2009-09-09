@@ -71,11 +71,12 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
@@ -227,10 +228,8 @@ SoTexture3::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTexture3, SO_FROM_INVENTOR_2_6|SO_FROM_COIN_2_0);
 
-  SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
-  SO_ENABLE(SoGLRenderAction, SoGLTexture3EnabledElement);
-
-  SO_ENABLE(SoCallbackAction, SoTextureImageElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureImageElement);
 }
 
 
@@ -267,6 +266,8 @@ SoTexture3::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   const cc_glglue * glue = cc_glglue_instance((uint32_t) SoGLCacheContextElement::get(state));
+
+  int unit = SoTextureUnitElement::get(state);
   
   if (!SoGLDriverDatabase::isSupported(glue, SO_GL_3D_TEXTURES)) {
     static SbBool first = TRUE;
@@ -325,16 +326,18 @@ SoTexture3::GLRender(SoGLRenderAction * action)
     }
   }
 
-  SoGLTexture3EnabledElement::set(state,
-                                  this, this->glimagevalid &&
-                                  quality > 0.0f);
-  SoGLTextureImageElement::set(state, this,
-                               this->glimagevalid ? this->glimage : NULL,
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
-
-
-  if (this->isOverride()) {
+  if (this->glimagevalid && quality > 0.0f) {
+    SoGLMultiTextureEnabledElement::enableTexture3(state, this, unit);
+  }
+  else {
+    SoGLMultiTextureEnabledElement::set(state, this, unit, FALSE);
+  }
+  SoGLMultiTextureImageElement::set(state, this, unit,
+                                    this->glimagevalid ? this->glimage : NULL,
+                                    (SoMultiTextureImageElement::Model) model.getValue(),
+                                    this->blendColor.getValue());
+  
+  if (this->isOverride() && unit == 0) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
 }
@@ -345,7 +348,8 @@ SoTexture3::doAction(SoAction *action)
 {
   SoState *state = action->getState();
 
-  if (SoTextureOverrideElement::getImageOverride(state))
+  int unit = SoTextureUnitElement::get(state);  
+  if (SoTextureOverrideElement::getImageOverride(state) && unit == 0)
     return;
 
   int nc;
@@ -353,13 +357,13 @@ SoTexture3::doAction(SoAction *action)
   const unsigned char *bytes = this->images.getValue(size, nc);
 
   if (size != SbVec3s(0,0,0)) {
-    SoTextureImageElement::set(state, this,
-                               size, nc, bytes,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (int)this->wrapR.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
+    SoMultiTextureImageElement::set(state, this, unit,
+                                    size, nc, bytes,
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapR.getValue(),
+                                    (SoMultiTextureImageElement::Model) model.getValue(),
+                                    this->blendColor.getValue());
   }
   // if a filename has been set, but the file has not been loaded, supply
   // a dummy texture image to make sure texture coordinates are generated.
@@ -368,18 +372,18 @@ SoTexture3::doAction(SoAction *action)
            this->filenames[0].getLength()) {
     static const unsigned char dummytex[] = {0xff,0xff,0xff,0xff,
                                              0xff,0xff,0xff,0xff};
-    SoTextureImageElement::set(state, this,
-                               SbVec3s(2,2,2), 1, dummytex,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (int)this->wrapR.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
+    SoMultiTextureImageElement::set(state, this, unit,
+                                    SbVec3s(2,2,2), 1, dummytex,
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapR.getValue(),
+                                    (SoMultiTextureImageElement::Model) model.getValue(),
+                                    this->blendColor.getValue());
   }
   else {
-    SoTextureImageElement::setDefault(state, this);
+    SoMultiTextureImageElement::setDefault(state, this, unit);
   }
-  if (this->isOverride()) {
+  if (this->isOverride() && unit == 0) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
 }

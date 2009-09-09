@@ -24,26 +24,12 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoInt32Element.h>
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally"
+#endif
 
-class COIN_DLL_API SoTextureEnabledElement : public SoInt32Element {
-  typedef SoInt32Element inherited;
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
-  SO_ELEMENT_HEADER(SoTextureEnabledElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoTextureEnabledElement();
-
-public:
-  virtual void init(SoState * state);  
-  static void set(SoState * const state, SoNode * const node,
-                  const SbBool enabled);
-  
-  static SbBool get(SoState * const state);
-  static SbBool getDefault(void);
-  
-  virtual void setElt(int32_t value);
-};
+typedef SoMultiTextureEnabledElement SoTextureEnabledElement;
 
 #endif // !COIN_SOTEXTUREENABLEDELEMENT_H

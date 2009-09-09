@@ -254,7 +254,6 @@
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -265,13 +264,10 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoTextureEnabledElement.h>
-#include <Inventor/elements/SoTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/SbColor4f.h>
 
@@ -633,7 +629,7 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
   this->normalsonstate = SoNormalElement::getInstance(state)->getNum() > 0;
 
   SbBool texture0enabled =
-    SoTextureEnabledElement::get(state) != FALSE;
+    SoMultiTextureEnabledElement::get(state,0) != FALSE;
 
   this->hastexture = texture0enabled;
 
@@ -653,17 +649,17 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
   }
 
   if (canrenderasvertexarray && texture0enabled) {
-    const SoTextureCoordinateElement * celem =
-      static_cast<const SoTextureCoordinateElement *>(SoTextureCoordinateElement::getInstance(state));
+    const SoMultiTextureCoordinateElement * celem =
+      static_cast<const SoMultiTextureCoordinateElement *>(SoMultiTextureCoordinateElement::getInstance(state));
     switch (celem->getType()) {
-    case SoTextureCoordinateElement::DEFAULT:
-    case SoTextureCoordinateElement::EXPLICIT:
+    case SoMultiTextureCoordinateElement::DEFAULT:
+    case SoMultiTextureCoordinateElement::EXPLICIT:
       this->needtexcoords[0] = TRUE;
       break;
-    case SoTextureCoordinateElement::TEXGEN:
+    case SoMultiTextureCoordinateElement::TEXGEN:
       // don't need texcoords for unit0
       break;
-    case SoTextureCoordinateElement::FUNCTION:
+    case SoMultiTextureCoordinateElement::FUNCTION:
       this->needtexcoords[0] = TRUE;
       break;
     default:
@@ -685,14 +681,14 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
 
         this->hastexture = TRUE;
         switch (melem->getType(i)) {
-        case SoTextureCoordinateElement::DEFAULT:
-        case SoTextureCoordinateElement::EXPLICIT:
+        case SoMultiTextureCoordinateElement::DEFAULT:
+        case SoMultiTextureCoordinateElement::EXPLICIT:
           this->needtexcoords[i] = TRUE;
           break;
-        case SoTextureCoordinateElement::TEXGEN:
+        case SoMultiTextureCoordinateElement::TEXGEN:
           // don't need texcoords for unit i
           break;
-        case SoTextureCoordinateElement::FUNCTION:
+        case SoMultiTextureCoordinateElement::FUNCTION:
           this->needtexcoords[i] = TRUE;
           break;
         default:

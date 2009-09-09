@@ -121,8 +121,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 
 #ifdef COIN_THREADSAFE
@@ -368,8 +367,6 @@ SoText2::GLRender(SoGLRenderAction * action)
     state->push();
     
     // disable textures for all units
-    SoGLTextureEnabledElement::set(state, this, FALSE);
-    SoGLTexture3EnabledElement::set(state, this, FALSE);
     SoGLMultiTextureEnabledElement::disableAll(state);
     
     glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);

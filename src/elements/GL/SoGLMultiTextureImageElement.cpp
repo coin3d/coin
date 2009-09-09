@@ -36,11 +36,12 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
-#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/tidbits.h>
 
@@ -111,6 +112,7 @@ SoGLMultiTextureImageElement::init(SoState * state)
   // might not be initialized yet.
   SoGLRenderAction * glaction = (SoGLRenderAction*) action;
   PRIVATE(this)->cachecontext = glaction->getCacheContext();
+  PRIVATE(this)->state = state;
 
   for (int i = 0; i < MAX_UNITS; i++) {
     GLUnitData & ud = PRIVATE(this)->unitdata[i];
@@ -156,7 +158,7 @@ SoGLMultiTextureImageElement::pop(SoState * state,
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   SbString str;
   
-  for (int i = 1; i <= PRIVATE(prev)->lastunitset; i++) {
+  for (int i = 0; i <= PRIVATE(prev)->lastunitset; i++) {
     const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
     // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
     // if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
@@ -170,11 +172,11 @@ SoGLMultiTextureImageElement::pop(SoState * state,
   }
 }
 
-static SoTextureImageElement::Wrap
+static SoMultiTextureImageElement::Wrap
 multi_translateWrap(const SoGLImage::Wrap wrap)
 {
-  if (wrap == SoGLImage::REPEAT) return SoTextureImageElement::REPEAT;
-  return SoTextureImageElement::CLAMP;
+  if (wrap == SoGLImage::REPEAT) return SoMultiTextureImageElement::REPEAT;
+  return SoMultiTextureImageElement::CLAMP;
 }
 
 /*!
@@ -186,7 +188,7 @@ void
 SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                   const int unit,
                                   SoGLImage * image,
-                                  const SoTextureImageElement::Model model,
+                                  Model model,
                                   const SbColor & blendColor)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -223,8 +225,14 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
     inherited::setDefault(state, node, unit);
   }
   elem->updateGL(unit);
-  sogl_update_shapehints_transparency(state);
 
+  // FIXME: check if it's possible to support for other units as well
+  if ((unit == 0) && image && image->isOfType(SoGLBigImage::getClassTypeId())) {
+    SoShapeStyleElement::setBigImageEnabled(state, TRUE);
+  }
+  SoShapeStyleElement::setTransparentTexture(state,
+                                             SoGLMultiTextureImageElement::hasTransparency(state));
+  
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   if (prog) {
     SbString str;
@@ -245,7 +253,7 @@ SoGLMultiTextureImageElement::restore(SoState * state, const int unit)
 SoGLImage *
 SoGLMultiTextureImageElement::get(SoState * state,
                                   const int unit,
-                                  SoTextureImageElement::Model & model,
+                                  Model & model,
                                   SbColor & blendcolor)
 {
   const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
@@ -305,17 +313,17 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
 
     if (SoTextureCombineElement::isDefault(state, unit)) {
       switch (ud.model) {
-      case SoTextureImageElement::DECAL:
+      case DECAL:
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
         break;
-      case SoTextureImageElement::MODULATE:
+      case MODULATE:
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
         break;
-      case SoTextureImageElement::BLEND:
+      case BLEND:
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
         glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, ud.blendColor.getValue());
         break;
-      case SoTextureImageElement::REPLACE:
+      case REPLACE:
         // GL_REPLACE mode was introduced with OpenGL 1.1. It is
         // considered the client code's responsibility to check
         // that it can use this mode.
@@ -332,10 +340,39 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
     else {
       SoTextureCombineElement::apply(state, unit);
     }
-
-    dl->call(state);
+    if (dl) {
+      dl->call(state);
+    }
     cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
   }
+}
+
+/*!
+  The size returned by this function will just be a very coarse
+  estimate as it only uses the more or less obsoleted technique of
+  calling glGetIntegerv(GL_MAX_TEXTURE_SIZE).
+  
+  For a better estimate, use
+  SoGLTextureImageElement::isTextureSizeLegal().
+  
+  Note that this function needs an OpenGL context to be made current
+  for it to work. Without that, you will most likely get a faulty
+  return value or even a crash.
+*/
+int32_t
+SoGLMultiTextureImageElement::getMaxGLTextureSize(void)
+{
+  SoDebugError::postWarning("SoGLMultiTextureImageElement::getMaxGLTextureSize",
+                            "This function is obsoleted. It should not "
+                            "be used because its interface is fubar: "
+                            "the maximum texture size handled by "
+                            "the OpenGL driver depends on the context, and "
+                            "this function does not know which context this "
+                            "information is requested for.");
+
+  GLint val;
+  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
+  return (int32_t)val;
 }
 
 #undef MAX_UNITS

@@ -30,7 +30,7 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoMFNode.h>
 #include <Inventor/fields/SoSFColor.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 
 class SoSensor;
 class SoSceneTextureCubeMapP;
@@ -45,15 +45,15 @@ public:
   SoSceneTextureCubeMap(void);
 
   enum Model {
-    MODULATE = SoTextureImageElement::MODULATE,
-    DECAL = SoTextureImageElement::DECAL,
-    BLEND = SoTextureImageElement::BLEND,
-    REPLACE = SoTextureImageElement::REPLACE
+    MODULATE = SoMultiTextureImageElement::MODULATE,
+    DECAL = SoMultiTextureImageElement::DECAL,
+    BLEND = SoMultiTextureImageElement::BLEND,
+    REPLACE = SoMultiTextureImageElement::REPLACE
   };
 
   enum Wrap {
-    REPEAT = SoTextureImageElement::REPEAT,
-    CLAMP = SoTextureImageElement::CLAMP
+    REPEAT = SoMultiTextureImageElement::REPEAT,
+    CLAMP = SoMultiTextureImageElement::CLAMP
   };
 
   enum TransparencyFunction {
@@ -64,13 +64,13 @@ public:
 
   SoSFVec2s size;
   SoSFNode scene;
-  
+
   SoSFEnum wrapS;
   SoSFEnum wrapT;
   SoSFEnum wrapR;
   SoSFEnum model;
   SoSFColor backgroundColor;
-  
+
   SoSFEnum transparencyFunction;
   SoSFColor blendColor;
 

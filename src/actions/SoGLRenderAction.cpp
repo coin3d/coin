@@ -88,7 +88,7 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -1216,7 +1216,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     PRIVATE(this)->sortedlayersblendprojectionmatrix =
       SoProjectionMatrixElement::get(thestate);
 
-    if (!SoTextureEnabledElement::get(thestate)) {
+    if (!SoMultiTextureEnabledElement::get(thestate, 0)) {
       if (glue->has_arb_fragment_program && !PRIVATE(this)->usenvidiaregistercombiners) {
         PRIVATE(this)->setupFragmentProgram();
       }

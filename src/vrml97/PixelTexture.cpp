@@ -90,11 +90,11 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -181,33 +181,37 @@ void
 SoVRMLPixelTexture::doAction(SoAction * action)
 {
   SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
 
-  if (SoTextureOverrideElement::getImageOverride(state))
+  if (SoTextureOverrideElement::getImageOverride(state) && (unit == 0))
     return;
 
-  SoTexture3EnabledElement::set(state, this, FALSE);
   int nc;
   SbVec2s size;
   const unsigned char * bytes = this->image.getValue(size, nc);
 
   if (size == SbVec2s(0, 0)) {
-    SoTextureEnabledElement::set(state, this, FALSE);    
+    SoMultiTextureEnabledElement::set(state, this, unit, FALSE);
   }
   else {
-    SoTextureImageElement::set(state, this,
-                               size, nc, bytes,
-                               pixeltexture_translate_wrap(this->repeatS.getValue()),
-                               pixeltexture_translate_wrap(this->repeatT.getValue()),
-                               SoTextureImageElement::MODULATE,
-                               SbColor(1.0f, 1.0f, 1.0f));
-    SoTextureEnabledElement::set(state, this, TRUE);
+    SoMultiTextureImageElement::set(state, this, unit,
+                                    size, nc, bytes,
+                                    (this->repeatS.getValue() ? 
+                                     SoMultiTextureImageElement::REPEAT : 
+                                     SoMultiTextureImageElement::CLAMP_TO_BORDER),
+                                    (this->repeatT.getValue() ? 
+                                     SoMultiTextureImageElement::REPEAT : 
+                                     SoMultiTextureImageElement::CLAMP_TO_BORDER),
+                                    SoMultiTextureImageElement::MODULATE,
+                                    SbColor(1.0f, 1.0f, 1.0f));
+    SoMultiTextureEnabledElement::set(state, this, unit, TRUE);
   }
-  if (this->isOverride()) {
+  if (this->isOverride() && (unit == 0)) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
 }
 
-void 
+void
 SoVRMLPixelTexture::rayPick(SoRayPickAction * action)
 {
   SoVRMLPixelTexture::doAction(action);
@@ -218,12 +222,11 @@ void
 SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
 
-  if (SoTextureOverrideElement::getImageOverride(state))
+  if (SoTextureOverrideElement::getImageOverride(state) && (unit == 0))
     return;
-
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
-
+  
   float quality = SoTextureQualityElement::get(state);
 
   PRIVATE(this)->lock_glimage();
@@ -234,7 +237,7 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
     const unsigned char * bytes =
       this->image.getValue(size, nc);
     SoTextureScalePolicyElement::Policy scalepolicy =
-      SoTextureScalePolicyElement::get(state);      
+      SoTextureScalePolicyElement::get(state);
     SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
 
     if (needbig &&
@@ -256,9 +259,9 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 
     if (bytes && size != SbVec2s(0,0)) {
       PRIVATE(this)->glimage->setData(bytes, size, nc,
-                             pixeltexture_translate_wrap(this->repeatS.getValue()),
-                             pixeltexture_translate_wrap(this->repeatT.getValue()),
-                             quality);
+                                      pixeltexture_translate_wrap(this->repeatS.getValue()),
+                                      pixeltexture_translate_wrap(this->repeatT.getValue()),
+                                      quality);
       PRIVATE(this)->glimagevalid = TRUE;
       // don't cache while creating a texture object
       SoCacheElement::setInvalid(TRUE);
@@ -270,16 +273,16 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 
   PRIVATE(this)->unlock_glimage();
 
-  SoGLTextureImageElement::set(state, this,
-                               PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
-                               SoTextureImageElement::MODULATE,
-                               SbColor(1.0f, 1.0f, 1.0f));
+  SoGLMultiTextureImageElement::set(state, this, unit,
+                                    PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
+                                    SoMultiTextureImageElement::MODULATE,
+                                    SbColor(1.0f, 1.0f, 1.0f));
 
-  SoGLTextureEnabledElement::set(state,
-                                 this, PRIVATE(this)->glimagevalid &&
-                                 quality > 0.0f);
-
-  if (this->isOverride()) {
+  SoGLMultiTextureEnabledElement::set(state,
+                                      this, unit, PRIVATE(this)->glimagevalid &&
+                                      quality > 0.0f);
+  
+  if (this->isOverride() && (unit == 0)) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
 }

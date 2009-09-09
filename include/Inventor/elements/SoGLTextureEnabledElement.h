@@ -24,47 +24,13 @@
  *
 \**************************************************************************/
 
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally
+#endif
+
 #include <Inventor/elements/SoTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 
-class COIN_DLL_API SoGLTextureEnabledElement : public SoTextureEnabledElement {
-  typedef SoTextureEnabledElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLTextureEnabledElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLTextureEnabledElement();
-
-public:
-
-  enum Mode {
-    DISABLED,
-    TEXTURE2D,
-    RECTANGLE,
-    CUBEMAP
-  };
-  virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-  
-  static void set(SoState * const state, SoNode * const node,
-                  const SbBool enabled);
-  static void set(SoState * const state, const SbBool enabled);
-
-  static SbBool get(SoState * const state);
-  static SbBool getDefault(void);
-
-  virtual void setElt(int32_t value);
-
-  static void enableRectangle(SoState * state, SoNode * node);
-  static void enableCubeMap(SoState * state, SoNode * node);
-  static Mode getMode(SoState * state);
-
-private:
-  void updategl(void);
-  void updategl(const Mode newvalue, const Mode oldvalue);
-};
+typedef SoGLMultiTextureEnabledElement SoGLTextureEnabledElement;
 
 #endif // !COIN_SOGLTEXTUREENABLEDELEMENT_H

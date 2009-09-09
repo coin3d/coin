@@ -32,7 +32,6 @@ class SoMFFloat;
 class SoMFColor;
 class SoColorPacker;
 class SoLazyElementP;
-class SoGLImage;
 
 #define SO_LAZY_SHINY_THRESHOLD 0.005f
 
@@ -61,7 +60,6 @@ public:
     TWOSIDE_CASE,
     CULLING_CASE,
     SHADE_MODEL_CASE,
-    GLIMAGE_CASE,
     ALPHATEST_CASE,
     LAZYCASES_LAST // must be last
   };
@@ -79,8 +77,7 @@ public:
     TWOSIDE_MASK = 1 << TWOSIDE_CASE,                   // 0x0400
     CULLING_MASK = 1 << CULLING_CASE,                   // 0x0800
     SHADE_MODEL_MASK = 1 << SHADE_MODEL_CASE,           // 0x1000
-    GLIMAGE_MASK = 1 << GLIMAGE_CASE,                   // 0x2000
-    ALPHATEST_MASK = 1 << ALPHATEST_CASE,               // 0x4000
+    ALPHATEST_MASK = 1 << ALPHATEST_CASE,               // 0x2000
     ALL_MASK = (1 << LAZYCASES_LAST)-1
   };
 
@@ -137,7 +134,6 @@ public:
   static void setBackfaceCulling(SoState * state, SbBool onoff);
   static void setTwosideLighting(SoState * state, SbBool onoff);
   static void setShadeModel(SoState * state, SbBool flatshading);
-  static void setGLImageId(SoState * state, uint32_t glimageid, SbBool alphatest);
   static void setAlphaTest(SoState * state, SbBool onoff);
 
   static const SbColor & getDiffuse(SoState* state, int index);
@@ -227,10 +223,7 @@ protected:
     SbBool twoside;
     SbBool culling;
     SbBool flatshading;
-    uint32_t glimageid;
-    SoGLImage * glimage;
     SbBool alphatest;
-    SbBool glimageusealphatest;
     uint32_t reserved[4];
   } coinstate;
 
@@ -269,7 +262,6 @@ protected:
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
   virtual void setShadeModelElt(SbBool flatshading);
-  virtual void setGLImageIdElt(uint32_t glimageid, SbBool alphatest);
   virtual void setAlphaTestElt(SbBool onoff);
 
 private:

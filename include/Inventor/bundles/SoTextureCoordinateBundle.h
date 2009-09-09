@@ -27,12 +27,10 @@
 #include <Inventor/bundles/SoBundle.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 
 #include <Inventor/SbVec4f.h>
 
-class SoTextureCoordinateElement;
-class SoGLTextureCoordinateElement;
 class SoTextureCoordinateCache;
 class SoShape;
 
@@ -62,8 +60,8 @@ public:
   SbBool needIndices(void) const;
 
 private:
-  const SoTextureCoordinateElement *coordElt;
-  const SoGLTextureCoordinateElement *glElt;
+  const SoMultiTextureCoordinateElement *coordElt;
+  const SoGLMultiTextureCoordinateElement *glElt;
   unsigned int flags;
 
   // misc stuff for default texture coordinate mappping
@@ -79,8 +77,7 @@ private:
   SbVec4f dummyInstance;
   int defaultdim0, defaultdim1;
   void initDefaultCallback(SoAction * action);
-  void initDefault(SoAction * const action, const SbBool forRendering);
-  void initDefaultMulti(SoAction * action, const int unit);
+  void initDefault(SoAction * action, const int unit);
 };
 
 

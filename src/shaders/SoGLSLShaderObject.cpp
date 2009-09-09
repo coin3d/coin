@@ -199,16 +199,16 @@ SoGLSLShaderObject::didOpenGLErrorOccur(const SbString & source)
   // geometry is rendered, which makes debugging really confusing.
   if (glerror_debug) {
     glFlush();
-  } 
+  }
 
   GLenum glErr = glGetError();
   while (glErr != GL_NO_ERROR) {
-    SoDebugError::post(source.getString(), "error: '%s' %s", 
+    SoDebugError::post(source.getString(), "error: '%s' %s",
                        coin_glerror_string(glErr),
                        glerror_debug ? "":
                        "(set envvar COIN_GLERROR_DEBUGGING=1 "
                        "and re-run to get more information)");
-    
+
     retCode = TRUE;
     glErr = glGetError();
   }
@@ -218,30 +218,30 @@ SoGLSLShaderObject::didOpenGLErrorOccur(const SbString & source)
 #include <stdio.h>
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoShaderParameter.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/actions/SoAction.h>
 #include <stdio.h>
 
-void 
+void
 SoGLSLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value)
 {
   COIN_GLhandle pHandle = this->programHandle;
   if (pHandle) {
     const cc_glglue * glue = this->GLContext();
-    
-    // FIXME: set up a dict for the supported Coin variables 
+
+    // FIXME: set up a dict for the supported Coin variables
     SoShaderParameter1i * p = (SoShaderParameter1i*) param;
-    
+
     if (p) {
       if (p->value.getValue() != value) p->value = value;
     }
     else {
       GLint location = glue->glGetUniformLocationARB(pHandle,
                                                      (const COIN_GLchar *)name.getString());
-      
+
 #if 0
-      fprintf(stderr,"action: %s, name: %s, loc: %d, handle: %p\n", 
+      fprintf(stderr,"action: %s, name: %s, loc: %d, handle: %p\n",
               state->getAction()->getTypeId().getName().getString(),
               name.getString(), location, pHandle);
 #endif

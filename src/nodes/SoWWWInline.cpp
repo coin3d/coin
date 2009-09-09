@@ -86,8 +86,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoChildList.h>
@@ -450,8 +449,7 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
   // disable lighting
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   // disable texture mapping
-  SoGLTextureEnabledElement::set(state, this, FALSE);
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
+  SoGLMultiTextureEnabledElement::disableAll(state);
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // set current color

@@ -46,10 +46,6 @@
 #include <Inventor/nodes/SoCallback.h>
 
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
 
 #include "nodes/SoSubNodeP.h"
 

@@ -88,8 +88,7 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -159,10 +158,9 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
   // We just disable lighting and texturing for markers, since we
   // can't see any reason this should ever be enabled.  send an angry
   // email to <pederb@coin3d.org> if you disagree.
-
+  
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoGLTextureEnabledElement::set(state, this, FALSE);
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
+  SoMultiTextureEnabledElement::disableAll(state);
 
   SoMaterialBundle mb(action);
 

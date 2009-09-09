@@ -41,7 +41,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
 
 #include "tidbitsp.h"
@@ -321,7 +321,7 @@ void
 SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoordsref)
 {
   this->objTexCoords = texCoordsref;
-  SoTextureMatrixElement::get(this->state).multVecMatrix(texCoordsref, this->texCoords);
+  SoMultiTextureMatrixElement::get(this->state, 0).multVecMatrix(texCoordsref, this->texCoords);
 }
 
 /*!

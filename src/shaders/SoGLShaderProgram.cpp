@@ -30,8 +30,6 @@
 #include "SoGLCgShaderProgram.h"
 #include "SoGLSLShaderProgram.h"
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 
 // *************************************************************************
 
@@ -114,7 +112,7 @@ SoGLShaderProgram::disable(SoState * state)
   }
 }
 
-SbBool 
+SbBool
 SoGLShaderProgram::isEnabled(void) const
 {
   return this->isenabled;
@@ -147,22 +145,22 @@ SoGLShaderProgram::addProgramParameter(int name, int value)
   }
 }
 
-void 
+void
 SoGLShaderProgram::getShaderObjectIds(SbList <uint32_t> & ids) const
 {
   ids = this->objectids;
 }
 
-uint32_t 
+uint32_t
 SoGLShaderProgram::getGLSLShaderProgramHandle(SoState * state) const
 {
   const uint32_t cachecontext = SoGLCacheContextElement::get(state);
   const cc_glglue * glctx = cc_glglue_instance(cachecontext);
- 
+
   return this->glslShaderProgram->getProgramHandle(glctx);
 }
 
-SbBool 
+SbBool
 SoGLShaderProgram::glslShaderProgramLinked(void) const
 {
   if (this->glslShaderProgram) {

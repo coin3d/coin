@@ -41,7 +41,7 @@ public:
     BUMP_MAPPING,
     IMAGE_MAPPING
   };
-  
+
   SoSFInt32 unit;
   SoSFEnum mappingMethod;
 
@@ -49,6 +49,7 @@ public:
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void pick(SoPickAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
   static uint32_t getMaxTextureUnit(void);
 protected:

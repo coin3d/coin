@@ -24,48 +24,13 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoAccumulatedElement.h>
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally"
+#endif
+
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/SbMatrix.h>
 
-class COIN_DLL_API SoTextureMatrixElement : public SoAccumulatedElement {
-  typedef SoAccumulatedElement inherited;
-
-  SO_ELEMENT_HEADER(SoTextureMatrixElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoTextureMatrixElement();
-
-public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  static void makeIdentity(SoState * const state, SoNode * const node);
-
-  static void set(SoState * const state, SoNode * const node,
-                  const SbMatrix & matrix);
-  static void mult(SoState * const state, SoNode * const node,
-                   const SbMatrix & matrix);
-
-  static void translateBy(SoState * const state, SoNode * const node,
-                           const SbVec3f & translation);
-  static void rotateBy(SoState * const state, SoNode * const node,
-                        const SbRotation & rotation);
-  static void scaleBy(SoState * const state, SoNode * const node,
-                      const SbVec3f & scaleFactor);
-
-  static const SbMatrix & get(SoState * const state);
-  static void emptyMatrix(SoState * const state);
-
-protected:
-  virtual void makeEltIdentity(void);
-  virtual void setElt(const SbMatrix & matrix);
-  virtual void multElt(const SbMatrix & matrix);
-  virtual void translateEltBy(const SbVec3f & translation);
-  virtual void rotateEltBy(const SbRotation & rotation);
-  virtual void scaleEltBy(const SbVec3f & scaleFactor);
-  virtual const SbMatrix & getElt(void) const;
-
-  SbMatrix textureMatrix;
-};
+typedef SoMultiTextureMatrixElement SoTextureMatrixElement;
 
 #endif // !COIN_SOTEXTUREMATRIXELEMENT_H

@@ -103,10 +103,10 @@ SoMultiTextureImageElement::setDefaultValues(const int unit)
 
   UnitData & ud = PRIVATE(this)->unitdata[unit];
   ud.bytes = getDefault(ud.size, ud.numComponents);
-  ud.wrapS = SoTextureImageElement::REPEAT;
-  ud.wrapT = SoTextureImageElement::REPEAT;
-  ud.wrapR = SoTextureImageElement::REPEAT;
-  ud.model = SoTextureImageElement::MODULATE;
+  ud.wrapS = REPEAT;
+  ud.wrapT = REPEAT;
+  ud.wrapR = REPEAT;
+  ud.model = MODULATE;
   ud.blendColor.setValue(0.0f, 0.0f, 0.0f);
   ud.nodeid = 0;
 }
@@ -134,9 +134,9 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const int unit,
                                 const SbVec2s & size, const int numComponents,
                                 const unsigned char * bytes,
-                                const SoTextureImageElement::Wrap wrapS,
-                                const SoTextureImageElement::Wrap wrapT,
-                                const SoTextureImageElement::Model model,
+                                const Wrap wrapS,
+                                const Wrap wrapT,
+                                const Model model,
                                 const SbColor & blendColor)
 {
   SoMultiTextureImageElement * elem =
@@ -160,10 +160,10 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const int unit,
                                 const SbVec3s & size, const int numComponents,
                                 const unsigned char * bytes,
-                                const SoTextureImageElement::Wrap wrapS,
-                                const SoTextureImageElement::Wrap wrapT,
-                                const SoTextureImageElement::Wrap wrapR,
-                                const SoTextureImageElement::Model model,
+                                const Wrap wrapS,
+                                const Wrap wrapT,
+                                const Wrap wrapR,
+                                const Model model,
                                 const SbColor & blendColor)
 {
   SoMultiTextureImageElement * elem = coin_safe_cast<SoMultiTextureImageElement *>
@@ -184,9 +184,9 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 const int unit,
                                 SbVec2s & size,
                                 int & numComponents,
-                                SoTextureImageElement::Wrap & wrapS,
-                                SoTextureImageElement::Wrap & wrapT,
-                                SoTextureImageElement::Model & model,
+                                Wrap & wrapS,
+                                Wrap & wrapT,
+                                Model & model,
                                 SbColor &blendColor)
 {
   const SoMultiTextureImageElement * elem =
@@ -217,10 +217,10 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 const int unit,
                                 SbVec3s & size,
                                 int & numComponents,
-                                SoTextureImageElement::Wrap & wrapS,
-                                SoTextureImageElement::Wrap & wrapT,
-                                SoTextureImageElement::Wrap & wrapR,
-                                SoTextureImageElement::Model & model,
+                                Wrap & wrapS,
+                                Wrap & wrapT,
+                                Wrap & wrapR,
+                                Model & model,
                                 SbColor &blendColor)
 {
   const SoMultiTextureImageElement * elem =
@@ -258,7 +258,7 @@ SoMultiTextureImageElement::getImage(SoState * const state,
 
 #if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
   if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
-    SoTextureImageElement::Model dummy1;
+    Model dummy1;
     SbColor dummy2;
     SoGLImage * image = SoGLMultiTextureImageElement::get(state, unit, dummy1, dummy2);
     unsigned char * bytes = NULL;
@@ -295,7 +295,7 @@ SoMultiTextureImageElement::getImage(SoState * const state,
 
 #if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
   if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
-    SoTextureImageElement::Model dummy1;
+    Model dummy1;
     SbColor dummy2;
     SoGLImage * image = SoGLMultiTextureImageElement::get(state, dummy1, dummy2);
     unsigned char * bytes = NULL;
@@ -425,9 +425,9 @@ SoMultiTextureImageElement::setElt(const int unit,
                                    const uint32_t nodeid,
                                    const SbVec2s &size, const int numComponents,
                                    const unsigned char * bytes,
-                                   const SoTextureImageElement::Wrap wrapS,
-                                   const SoTextureImageElement::Wrap wrapT,
-                                   const SoTextureImageElement::Model model,
+                                   const Wrap wrapS,
+                                   const Wrap wrapT,
+                                   const Model model,
                                    const SbColor &blendColor)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -439,7 +439,7 @@ SoMultiTextureImageElement::setElt(const int unit,
   ud.bytes = bytes;
   ud.wrapS = wrapS;
   ud.wrapT = wrapT;
-  ud.wrapR = SoTextureImageElement::REPEAT;
+  ud.wrapR = REPEAT;
   ud.model = model;
   ud.blendColor = blendColor;
 }
@@ -452,10 +452,10 @@ SoMultiTextureImageElement::setElt(const int unit,
                                    const uint32_t nodeid,
                                    const SbVec3s & size, const int numComponents,
                                    const unsigned char * bytes,
-                                   const SoTextureImageElement::Wrap wrapS,
-                                   const SoTextureImageElement::Wrap wrapT,
-                                   const SoTextureImageElement::Wrap wrapR,
-                                   const SoTextureImageElement::Model model,
+                                   const Wrap wrapS,
+                                   const Wrap wrapT,
+                                   const Wrap wrapR,
+                                   const Model model,
                                    const SbColor &blendColor)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -490,7 +490,7 @@ SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 /*!
   FIXME: write doc.
 */
-SoTextureImageElement::Wrap
+SoMultiTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
@@ -505,7 +505,7 @@ SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 /*!
   FIXME: write doc.
 */
-SoTextureImageElement::Wrap
+SoMultiTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
@@ -520,7 +520,7 @@ SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 /*!
   FIXME: write doc.
 */
-SoTextureImageElement::Wrap
+SoMultiTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
@@ -535,7 +535,7 @@ SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 /*!
   FIXME: write doc.
 */
-SoTextureImageElement::Model
+SoMultiTextureImageElement::Model
 SoMultiTextureImageElement::getModel(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =

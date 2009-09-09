@@ -149,7 +149,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -576,12 +576,12 @@ SoImage::generatePrimitives(SoAction * action)
   const unsigned char * dataptr = this->getImage(size, nc);
 
 
-  SoTextureImageElement::set(state, this,
-                             size, nc, dataptr,
-                             SoTextureImageElement::CLAMP,
-                             SoTextureImageElement::CLAMP,
-                             SoTextureImageElement::DECAL,
-                             SbVec3f(0,0,0));
+  SoMultiTextureImageElement::set(state, this, 0,
+                                  size, nc, dataptr,
+                                  SoMultiTextureImageElement::CLAMP,
+                                  SoMultiTextureImageElement::CLAMP,
+                                  SoMultiTextureImageElement::DECAL,
+                                  SbVec3f(0,0,0));
   SbVec3f v0, v1, v2, v3;
   this->getQuad(action->getState(), v0, v1, v2, v3);
 

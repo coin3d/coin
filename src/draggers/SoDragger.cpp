@@ -231,9 +231,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -448,13 +446,8 @@ SoDragger::updateElements(SoState * state)
                              SoShapeHintsElement::SOLID,
                              SoShapeHintsElement::CONVEX);
   }
-  if (state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex())) {
-    // disable 2D texture
-    SoTextureEnabledElement::set(state, this, FALSE);
-  }
-  if (state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex())) {
-    // disable 3D texture
-    SoTexture3EnabledElement::set(state, this, FALSE);
+  if (state->isElementEnabled(SoMultiTextureEnabledElement::getClassStackIndex())) {
+    SoMultiTextureEnabledElement::disableAll(state);
   }
   if (state->isElementEnabled(SoNormalBindingElement::getClassStackIndex())) {
     // make default

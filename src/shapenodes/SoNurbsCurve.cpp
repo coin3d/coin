@@ -96,7 +96,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -205,10 +205,8 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   // disable texturing
-  if (SoGLTextureEnabledElement::get(state)) {
-    SoGLTextureEnabledElement::set(state, FALSE);
-  }
-
+  SoGLMultiTextureEnabledElement::disableAll(state);
+  
   // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);
   PRIVATE(this)->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);

@@ -42,7 +42,8 @@
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 
 #include "nodes/SoSubNodeP.h"
 
@@ -76,15 +77,17 @@ SoTextureCoordinateDefault::initClass(void)
 void
 SoTextureCoordinateDefault::doAction(SoAction * action)
 {
-  SoTextureCoordinateElement::setDefault(action->getState(), this);
+  int unit = SoTextureUnitElement::get(action->getState());
+  SoMultiTextureCoordinateElement::setDefault(action->getState(), this, unit);
 }
 
 // doc from parent
 void
 SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
 {
-  SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                          this, NULL);
+  int unit = SoTextureUnitElement::get(action->getState());
+  SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
+                                               this, 0, NULL);
   SoTextureCoordinateDefault::doAction((SoAction *)action);
 }
 

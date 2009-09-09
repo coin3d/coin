@@ -53,7 +53,6 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
@@ -146,9 +145,9 @@ SoTextureCoordinateSphere::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateSphere, SO_FROM_COIN_2_3);
 
-  SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
-  SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
-  SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
+  SO_ENABLE(SoCallbackAction, SoMultiTextureCoordinateElement);
+  SO_ENABLE(SoPickAction, SoMultiTextureCoordinateElement);
 
 }
 
@@ -224,16 +223,9 @@ SoTextureCoordinateSphere::doAction(SoAction * action)
   data->currentshape = NULL;
   
   int unit = SoTextureUnitElement::get(data->currentstate);
-  if (unit == 0) {
-    SoTextureCoordinateElement::setFunction(data->currentstate,
-                                            this, textureCoordinateSphereCallback,
-                                            PRIVATE(this));
-  }
-  else {
-    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                 unit, textureCoordinateSphereCallback,
-                                                 PRIVATE(this));
-  }
+  SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                               unit, textureCoordinateSphereCallback,
+                                               PRIVATE(this));
 }
 
 // Documented in superclass.
@@ -246,21 +238,13 @@ SoTextureCoordinateSphere::GLRender(SoGLRenderAction * action)
   data->currentshape = NULL;
 
   int unit = SoTextureUnitElement::get(data->currentstate);
-  if (unit == 0) {
-    SoTextureCoordinateElement::setFunction(data->currentstate,
-                                            this, textureCoordinateSphereCallback,
-                                            PRIVATE(this));
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  if (unit < maxunits) {        
+    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                 unit, textureCoordinateSphereCallback,
+                                                 PRIVATE(this));
   }
-  else {
-    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
-    int maxunits = cc_glglue_max_texture_units(glue);
-    if (unit < maxunits) {        
-      SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                   unit, textureCoordinateSphereCallback,
-                                                   PRIVATE(this));
-    }
-  }
-
 }
 
 // Documented in superclass.

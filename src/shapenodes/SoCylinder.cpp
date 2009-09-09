@@ -56,12 +56,12 @@
 
   \code
   #Inventor V2.1 ascii
-  
+
   ShapeHints { # to get two-sided lighting on the disc
      vertexOrdering COUNTERCLOCKWISE
      shapeType UNKNOWN_SHAPE_TYPE
   }
-  
+
   Cylinder {
      height 0
      parts TOP
@@ -97,9 +97,8 @@
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/misc/SoState.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -216,17 +215,21 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  SbBool sendNormals = !mb.isColorOnly() || 
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+  SbBool sendNormals = !mb.isColorOnly() ||
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (sendNormals)
     flags |= SOGL_NEED_NORMALS;
-  if (SoGLTextureEnabledElement::get(state))
-    flags |= SOGL_NEED_TEXCOORDS;
-  else if (SoGLTexture3EnabledElement::get(state))
-    flags |= SOGL_NEED_3DTEXCOORDS;
-  
+  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
+    if (SoGLMultiTextureEnabledElement::getMode(state, 0) ==
+        SoMultiTextureEnabledElement::TEXTURE3D) {
+      flags |= SOGL_NEED_3DTEXCOORDS;
+    }
+    else {
+      flags |= SOGL_NEED_TEXCOORDS;
+    }
+  }
   if (p & SIDES) flags |= SOGL_RENDER_SIDE;
   if (p & TOP) flags |= SOGL_RENDER_TOP;
   if (p & BOTTOM) flags |= SOGL_RENDER_BOTTOM;
@@ -312,7 +315,7 @@ SoCylinder::rayPick(SoRayPickAction * action)
   if (bind == SoMaterialBindingElement::PER_PART ||
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOPICK_MATERIAL_PER_PART;
-  
+
   sopick_pick_cylinder(this->radius.getValue(),
                        this->height.getValue(),
                        flags,

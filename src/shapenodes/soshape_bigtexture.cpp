@@ -37,8 +37,8 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/C/tidbits.h>
@@ -56,7 +56,7 @@ soshape_bigtexture::~soshape_bigtexture()
 {
   delete[] this->regions;
   delete this->clipper;
-  
+
   if (this->pvlist) {
     int n = this->pvlist->getLength();
     for (int i = 0; i < n; i++) {
@@ -81,7 +81,7 @@ soshape_bigtexture::beginShape(SoGLBigImage * imageptr,
   // initSubImages(). 20050701 mortene.
   int size = 256;
   int num = imageptr->initSubImages(SbVec2s(size, size));
-  
+
   // try to not use more than 256 subtextures, but don't use a
   // subimage size bigger than 1024 (it will be too slow to
   // recalculate the subimage for larger images)
@@ -151,7 +151,7 @@ soshape_bigtexture::endShape(SoState * state,
   glDisable(GL_TEXTURE_GEN_T);
   glDisable(GL_TEXTURE_GEN_R);
   glDisable(GL_TEXTURE_GEN_Q);
-  
+
   const int numreg = this->numregions;
   for (int i = 0; i < numreg; i++) {
     int numv, j;
@@ -186,7 +186,7 @@ soshape_bigtexture::endShape(SoState * state,
       }
       glEnd();
     }
-  }  
+  }
 
   // enable texgen (if active)
   glPopAttrib();
@@ -207,7 +207,7 @@ soshape_bigtexture::triangle(SoState * state,
                              const SoPrimitiveVertex * v3)
 {
   const SoPrimitiveVertex * vp[] = {v1, v2, v3};
-  
+
   for (int i = 0; i < 3; i++) {
     SoPrimitiveVertex * pv = this->get_new_pv();
     *pv = *(vp[i]);
@@ -215,24 +215,24 @@ soshape_bigtexture::triangle(SoState * state,
   }
 }
 
-void 
+void
 soshape_bigtexture::clip_triangles(SoState * state)
 {
   int n = this->vertexlist.getLength();
   if (n == 0) return;
-  
+
   // need texture matrix to transform the texture coordinates
-  SbMatrix texturematrix = SoTextureMatrixElement::get(state);
-  int wrap[2];
+  SbMatrix texturematrix = SoMultiTextureMatrixElement::get(state, 0);
+  SoMultiTextureImageElement::Wrap wrap[2];
   SbVec2s dummy;
   int dummync;
   SbColor dummycol;
-  int dummymod;
+  SoMultiTextureImageElement::Model dummymod;
 
   // need wrapS/T to figure out how to handle the texture coordinates
-  (void) SoTextureImageElement::get(state, dummy, dummync,
-                                    wrap[0], wrap[1], 
-                                    dummymod, dummycol);
+  (void) SoMultiTextureImageElement::get(state, 0, dummy, dummync,
+                                         wrap[0], wrap[1],
+                                         dummymod, dummycol);
   SbVec4f tmp;
   int i;
 
@@ -255,17 +255,17 @@ soshape_bigtexture::clip_triangles(SoState * state)
     tc[0] = this->vertexlist[i]->getTextureCoords();
     tc[1] = this->vertexlist[i+1]->getTextureCoords();
     tc[2] = this->vertexlist[i+2]->getTextureCoords();
-    
+
     // Calculate triangle's texturecoordinate bounding box
     SbBox2f bbox;
     bbox.extendBy(SbVec2f(tc[0][0], tc[0][1]));
     bbox.extendBy(SbVec2f(tc[1][0], tc[1][1]));
     bbox.extendBy(SbVec2f(tc[2][0], tc[2][1]));
-      
+
     // Find the min/max bounds of the bounding box
     SbVec2f bbmin = bbox.getMin();
     SbVec2f bbmax = bbox.getMax();
-    
+
     // Find the intersecting windows
     const int windowstartidxx = (int)floor(bbmin[0]);
     const int windowstartidxy = (int)floor(bbmin[1]);
@@ -286,10 +286,10 @@ soshape_bigtexture::clip_triangles(SoState * state)
 
         tcf[0][0] = tcf[0][0] + transs;
         tcf[0][1] = tcf[0][1] + transt;
-        
+
         tcf[1][0] = tcf[1][0] + transs;
         tcf[1][1] = tcf[1][1] + transt;
-        
+
         tcf[2][0] = tcf[2][0] + transs;
         tcf[2][1] = tcf[2][1] + transt;
 
@@ -298,10 +298,10 @@ soshape_bigtexture::clip_triangles(SoState * state)
         this->vertexlist[i+2]->setTextureCoords(tcf[2]);
 
         // Clip the triangle against the current window
-        this->handle_triangle(state, 
-                              this->vertexlist[i], 
-                              this->vertexlist[i+1], 
-                              this->vertexlist[i+2], 
+        this->handle_triangle(state,
+                              this->vertexlist[i],
+                              this->vertexlist[i+1],
+                              this->vertexlist[i+2],
                               wrap, transs, transt);
       }
     }
@@ -312,9 +312,9 @@ void
 soshape_bigtexture::handle_triangle(SoState * state,
                                     SoPrimitiveVertex * v1,
                                     SoPrimitiveVertex * v2,
-                                    SoPrimitiveVertex * v3, 
-                                    const int wrap[2], 
-                                    const int transs, 
+                                    SoPrimitiveVertex * v3,
+                                    const SoMultiTextureImageElement::Wrap wrap[2],
+                                    const int transs,
                                     const int transt)
 {
   SbVec4f tc[3];
@@ -366,24 +366,24 @@ soshape_bigtexture::handle_triangle(SoState * state,
 
         if (!SoCullElement::cullTest(state, obox)) {
 
-          if (wrap[0] == SoTextureImageElement::CLAMP ||
-              wrap[1] == SoTextureImageElement::CLAMP) {
+          if (wrap[0] == SoMultiTextureImageElement::CLAMP ||
+              wrap[1] == SoMultiTextureImageElement::CLAMP) {
 
             // Clamp the texturecoordinates
             for (j = 0; j < numv; j++) {
               SoPrimitiveVertex * v = (SoPrimitiveVertex *) this->clipper->getVertexData(j);
               SbVec4f texcoord = v->getTextureCoords();
-              
+
               // Clamp the texturecoordinates to be within the
               // clamp-region. Need to translate back to the texture
               // coordinates original position to do this. That is
               // because we are interested in the cases where the
               // texture coordinates go outside the default clipping
               // window.
-              if (wrap[0] == SoTextureImageElement::CLAMP) {
+              if (wrap[0] == SoMultiTextureImageElement::CLAMP) {
                 texcoord[0] = SbClamp(texcoord[0] - transs, 0.0f, 1.0f);
               }
-              if (wrap[1] == SoTextureImageElement::CLAMP) {
+              if (wrap[1] == SoMultiTextureImageElement::CLAMP) {
                 texcoord[1] = SbClamp(texcoord[1] - transt, 0.0f, 1.0f);
               }
               v->setTextureCoords(texcoord);
@@ -395,7 +395,7 @@ soshape_bigtexture::handle_triangle(SoState * state,
             // region the polygon belongs to.
             for (k = 0; k < this->numregions; k++) {
               reg = &this->regions[k];
-                            
+
               // Find the mean texture coordinate for the
               // polygon. This will be used to find the texture
               // region.
@@ -403,7 +403,7 @@ soshape_bigtexture::handle_triangle(SoState * state,
               for (j = 0; j < numv; j++) {
                 SoPrimitiveVertex * v = (SoPrimitiveVertex *) this->clipper->getVertexData(j);
                 SbVec4f texcoord = v->getTextureCoords();
-                
+
                 mean[0] += texcoord[0];
                 mean[1] += texcoord[1];
               }
@@ -414,7 +414,7 @@ soshape_bigtexture::handle_triangle(SoState * state,
               regbbox.makeEmpty();
               regbbox.extendBy(reg->start);
               regbbox.extendBy(reg->end);
-              
+
               // Test if the mean is inside the current region. If it
               // is, all the texture coordinates for the polygon
               // should be within the same region.
@@ -423,7 +423,7 @@ soshape_bigtexture::handle_triangle(SoState * state,
               }
             }
           }
-          
+
           // Add the polygon to the region
           reg->facelist.append(numv);
           for (j = 0; j < numv; j++) {

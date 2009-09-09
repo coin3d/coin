@@ -25,7 +25,6 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoReplacedElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SbColor4f.h>
@@ -52,7 +51,7 @@ public:
   };
   enum Operand {
     SRC_COLOR = 0x0300,
-    ONE_MINUS_SRC_COLOR = 0x0301, 
+    ONE_MINUS_SRC_COLOR = 0x0301,
     SRC_ALPHA = 0x0302,
     ONE_MINUS_SRC_ALPHA = 0x0303
   };
@@ -83,7 +82,7 @@ public:
 
   static SbBool isDefault(SoState * const state,
                           const int unit);
-                       
+
   static void get(SoState * const state,
                   const int unit,
                   Operation & rgboperation,

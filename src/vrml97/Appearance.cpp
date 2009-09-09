@@ -31,7 +31,7 @@
   \class SoVRMLAppearance SoVRMLAppearance.h Inventor/VRMLnodes/SoVRMLAppearance.h
   \brief The SoVRMLAppearance class specifies visual properties for shapes.
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -91,7 +91,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
@@ -139,13 +139,13 @@ SoVRMLAppearance::initClass(void)
 SoVRMLAppearance::SoVRMLAppearance(void)
 {
   PRIVATE(this) = new SoVRMLAppearanceP;
-  // supply a NULL-pointer as parent, since notifications will be 
+  // supply a NULL-pointer as parent, since notifications will be
   // handled by the fields that actually contain the node(s)
   PRIVATE(this)->childlist = new SoChildList(NULL);
   PRIVATE(this)->childlistvalid = FALSE;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLAppearance);
-  
+
   SO_VRMLNODE_ADD_EXPOSED_FIELD(material, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(texture, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(textureTransform, (NULL));
@@ -230,20 +230,20 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
     action->popCurPath();
   }
 
-  // workaround for weird (IMO) VRML97 texture/material handling. For 
+  // workaround for weird (IMO) VRML97 texture/material handling. For
   // RGB[A] textures, the texture color should replace the diffuse color.
   SbVec2s size;
   int nc;
-  (void) SoTextureImageElement::getImage(state, size, nc);
-  
-  if (this->texture.getValue() && 
-      SoTextureQualityElement::get(state) > 0.0f && 
-      size != SbVec2s(0,0) && 
+  (void) SoMultiTextureImageElement::getImage(state, size, nc);
+
+  if (this->texture.getValue() &&
+      SoTextureQualityElement::get(state) > 0.0f &&
+      size != SbVec2s(0,0) &&
       nc >= 3) {
 
     float t = SoLazyElement::getTransparency(state, 0);
     uint32_t alpha = (uint32_t) ((1.0f - t) * 255.0f);
-    
+
     // lock just in case two threads get here at the same time
     PRIVATE(this)->lock();
     PRIVATE(this)->fakecolor = 0xffffff00 | alpha;

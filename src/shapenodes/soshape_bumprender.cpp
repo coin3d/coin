@@ -38,15 +38,14 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -420,7 +419,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   this->initLight(light, toobjectspace);
 
-  const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
+  const SbMatrix & oldtexture0matrix = SoMultiTextureMatrixElement::get(state, 0);
   const SbMatrix & oldtexture1matrix = SoMultiTextureMatrixElement::get(state, 1);
   const SbMatrix & oldtexture2matrix = SoMultiTextureMatrixElement::get(state, 2);
   const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
@@ -430,13 +429,11 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled); 
 
   state->push();
-  SoGLTexture3EnabledElement::set(state, NULL, FALSE);
   SoMultiTextureEnabledElement::disableAll(state);
+  SoGLMultiTextureEnabledElement::set(state, NULL, 0, TRUE); // enable GL_TEXTURE_2D
+  
   SoGLImage * bumpimage = SoBumpMapElement::get(state);
-
-
   assert(bumpimage);
-
   // set up textures
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
 
@@ -445,10 +442,8 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     glLoadMatrixf(bumpmapmatrix[0]);
     glMatrixMode(GL_MODELVIEW);
   }
-
-  SoGLTextureEnabledElement::set(state, NULL, TRUE); // enable GL_TEXTURE_2D
+  
   bumpimage->getGLDisplayList(state)->call(state);
-
 
   // FRAGMENT: Setting up spec. colour and shininess for the fragment program
   glEnable(GL_FRAGMENT_PROGRAM_ARB);
@@ -583,7 +578,7 @@ soshape_bumprender::renderBump(SoState * state,
   this->initLight(light, toobjectspace);
 
   const cc_glglue * glue = sogl_glue_instance(state);
-  const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
+  const SbMatrix & oldtexture0matrix = SoMultiTextureMatrixElement::get(state, 0);
   const SbMatrix & oldtexture1matrix = SoMultiTextureMatrixElement::get(state, 1);
   const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
   
@@ -592,9 +587,6 @@ soshape_bumprender::renderBump(SoState * state,
     SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled); 
 
   state->push();
-  SoGLTexture3EnabledElement::set(state, NULL, FALSE);
-  SoMultiTextureEnabledElement::disableAll(state);
-
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
   SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
@@ -609,6 +601,8 @@ soshape_bumprender::renderBump(SoState * state,
     // need to calculate tsb coordinates manually
     this->calcTSBCoords(cache, light);
   }
+  SoMultiTextureEnabledElement::disableAll(state);
+  SoMultiTextureEnabledElement::set(state, NULL, 0, TRUE);
 
   SoGLImage * bumpimage = SoBumpMapElement::get(state);
   assert(bumpimage);
@@ -622,7 +616,6 @@ soshape_bumprender::renderBump(SoState * state,
     glMatrixMode(GL_MODELVIEW);
   }
 
-  SoGLTextureEnabledElement::set(state, NULL, TRUE); // enable GL_TEXTURE_2D
   bumpimage->getGLDisplayList(state)->call(state);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);

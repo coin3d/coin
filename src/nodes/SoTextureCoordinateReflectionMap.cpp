@@ -50,7 +50,6 @@
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -136,9 +135,12 @@ SoTextureCoordinateReflectionMap::generate(void *userdata,
 void
 SoTextureCoordinateReflectionMap::doAction(SoAction * action)
 {
-  SoTextureCoordinateElement::setFunction(action->getState(), this,
-                                          generate,
-                                          action->getState());
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+
+  SoMultiTextureCoordinateElement::setFunction(action->getState(), this, unit,
+                                               generate,
+                                               action->getState());
 }
 
 // doc from parent
@@ -147,26 +149,16 @@ SoTextureCoordinateReflectionMap::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
-  if (unit == 0) {
-    SoTextureCoordinateReflectionMap::doAction((SoAction *)action);
-    SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                            this, handleTexgen,
-                                            action,
-                                            generate,
-                                            action->getState());
-  }
-  else {
-    SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
-                                                 unit,
+  SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
+                                               unit,
+                                               generate,
+                                               action->getState());
+  SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
+                                               this, unit, handleTexgen, 
+                                               action,
                                                  generate,
-                                                 action->getState());
-    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
-                                                 this, unit, handleTexgen, 
-                                                 action,
-                                                 generate,
-                                                 action->getState());
-
-  }
+                                               action->getState());
+  
 }
 
 // doc from parent

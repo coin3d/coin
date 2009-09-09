@@ -177,8 +177,6 @@ SoLazyElement::init(SoState * COIN_UNUSED_ARG(state))
   this->coinstate.twoside = FALSE;
   this->coinstate.culling = FALSE;
   this->coinstate.flatshading = FALSE;
-  this->coinstate.glimageid = 0;
-  this->coinstate.glimageusealphatest = FALSE;
   this->coinstate.alphatest = FALSE;
 }
 
@@ -265,9 +263,6 @@ SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
     elem->lazyDidntSet(TRANSPARENCY_MASK);
   }
   SoShapeStyleElement::setTransparentMaterial(state, elem->coinstate.istransparent);
-  SoLazyElement::setAlphaTest(state,
-                              !elem->coinstate.istransparent &&
-                              elem->coinstate.glimageusealphatest);
 }
 
 // ! FIXME: write doc
@@ -290,9 +285,6 @@ SoLazyElement::setPacked(SoState * state, SoNode * node,
     elem->lazyDidntSet(TRANSPARENCY_MASK|DIFFUSE_MASK);
   }
   SoShapeStyleElement::setTransparentMaterial(state, elem->coinstate.istransparent);
-  SoLazyElement::setAlphaTest(state,
-                              !elem->coinstate.istransparent &&
-                              elem->coinstate.glimageusealphatest);
 }
 
 // ! FIXME: write doc
@@ -795,9 +787,6 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
   }
   if (bitmask & TRANSPARENCY_MASK) {
     SoShapeStyleElement::setTransparentMaterial(state, istransparent);
-    SoLazyElement::setAlphaTest(state,
-                                !istransparent &&
-                                elem->coinstate.glimageusealphatest);
   }
 }
 
@@ -856,21 +845,6 @@ SoLazyElement::setShadeModel(SoState * state, SbBool flatshading)
   else if (state->isCacheOpen()) {
     elem->lazyDidntSet(SHADE_MODEL_MASK);
   }
-}
-
-void
-SoLazyElement::setGLImageId(SoState * state, uint32_t glimageid, SbBool alphatest)
-{
-  SoLazyElement * elem = SoLazyElement::getInstance(state);
-  if (elem->coinstate.glimageid != glimageid) {
-    elem = getWInstance(state);
-    elem->setGLImageIdElt(glimageid, alphatest);
-    if (state->isCacheOpen()) elem->lazyDidSet(GLIMAGE_MASK);
-  }
-  else if (state->isCacheOpen()) {
-    elem->lazyDidntSet(GLIMAGE_MASK);
-  }
-  SoLazyElement::setAlphaTest(state, !elem->coinstate.istransparent && alphatest);
 }
 
 void
@@ -1126,13 +1100,6 @@ void
 SoLazyElement::setShadeModelElt(SbBool flatshading)
 {
   this->coinstate.flatshading = flatshading;
-}
-
-void
-SoLazyElement::setGLImageIdElt(uint32_t glimageid, SbBool alphatest)
-{
-  this->coinstate.glimageid = glimageid;
-  this->coinstate.glimageusealphatest = alphatest;
 }
 
 void

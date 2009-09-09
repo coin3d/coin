@@ -102,7 +102,7 @@ SoMultiTextureCoordinateElement::setDefault(SoState * const state,
   assert(unit >= 0 && unit < MAX_UNITS);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
   ud.nodeid = 0;
-  ud.whatKind = SoTextureCoordinateElement::DEFAULT;
+  ud.whatKind = DEFAULT;
   ud.numCoords = 0;
 }
 
@@ -131,7 +131,7 @@ SoMultiTextureCoordinateElement::setFunction(SoState * const state,
   ud.nodeid = node->getNodeId();
   ud.funcCB = func;
   ud.funcCBData = userdata;
-  ud.whatKind = SoTextureCoordinateElement::FUNCTION;
+  ud.whatKind = FUNCTION;
   ud.coords2 = NULL;
   ud.coords3 = NULL;
   ud.coords4 = NULL;
@@ -164,7 +164,7 @@ SoMultiTextureCoordinateElement::set2(SoState * const state,
   ud.coords2 = coords;
   ud.coords3 = NULL;
   ud.coords4 = NULL;
-  ud.whatKind = SoTextureCoordinateElement::EXPLICIT;
+  ud.whatKind = EXPLICIT;
 }
 
 /*!
@@ -195,7 +195,7 @@ SoMultiTextureCoordinateElement::set3(SoState * const state,
   ud.coords2 = NULL;
   ud.coords3 = coords;
   ud.coords4 = NULL;
-  ud.whatKind = SoTextureCoordinateElement::EXPLICIT;
+  ud.whatKind = EXPLICIT;
 }
 
 //! FIXME: write doc.
@@ -225,7 +225,7 @@ SoMultiTextureCoordinateElement::set4(SoState * const state,
   ud.coords2 = NULL;
   ud.coords3 = NULL;
   ud.coords4 = coords;
-  ud.whatKind = SoTextureCoordinateElement::EXPLICIT;
+  ud.whatKind = EXPLICIT;
 }
 
 //! FIXME: write doc.
@@ -256,8 +256,8 @@ SoMultiTextureCoordinateElement::get(const int unit,
   assert(unit >= 0 && unit < MAX_UNITS);
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
-  assert((ud.whatKind == SoTextureCoordinateElement::FUNCTION ||
-          ud.whatKind == SoTextureCoordinateElement::TEXGEN) && ud.funcCB);
+  assert((ud.whatKind == FUNCTION ||
+          ud.whatKind == TEXGEN) && ud.funcCB);
   return (*(ud.funcCB))(ud.funcCBData, point, normal);
 }
 
@@ -270,7 +270,7 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert(index >= 0 && index < ud.numCoords);
-  assert(ud.whatKind == SoTextureCoordinateElement::EXPLICIT);
+  assert(ud.whatKind == EXPLICIT);
   if (ud.coordsDimension == 2) {
     return ud.coords2[index];
   }
@@ -304,7 +304,7 @@ SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert(index >= 0 && index < ud.numCoords);
-  assert(ud.whatKind == SoTextureCoordinateElement::EXPLICIT);
+  assert(ud.whatKind == EXPLICIT);
   if (ud.coordsDimension == 3) {
     return ud.coords3[index];
   }
@@ -334,7 +334,7 @@ SoMultiTextureCoordinateElement::get4(const int unit, const int index) const
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert(index >= 0 && index < ud.numCoords);
-  assert(ud.whatKind == SoTextureCoordinateElement::EXPLICIT);
+  assert(ud.whatKind == EXPLICIT);
   if (ud.coordsDimension==4) {
     return ud.coords4[index];
   }
@@ -370,7 +370,7 @@ SoMultiTextureCoordinateElement::get4(const int unit, const int index) const
   coordinates.
 */
 
-SoTextureCoordinateElement::CoordType
+SoMultiTextureCoordinateElement::CoordType
 SoMultiTextureCoordinateElement::getType(SoState * const state, const int unit)
 {
   const SoMultiTextureCoordinateElement * element =
@@ -381,7 +381,7 @@ SoMultiTextureCoordinateElement::getType(SoState * const state, const int unit)
 
 //! FIXME: write doc.
 
-SoTextureCoordinateElement::CoordType
+SoMultiTextureCoordinateElement::CoordType
 SoMultiTextureCoordinateElement::getType(const int unit) const
 {
   assert(unit >= 0 && unit < MAX_UNITS);
@@ -398,7 +398,7 @@ SoMultiTextureCoordinateElement::init(SoState * state)
   for (int i = 0; i < MAX_UNITS; i++) {
     UnitData & ud = PRIVATE(this)->unitdata[i];
     ud.nodeid = 0;
-    ud.whatKind = SoTextureCoordinateElement::DEFAULT;
+    ud.whatKind = DEFAULT;
     ud.funcCB = NULL;
     ud.funcCBData = NULL;
     ud.numCoords = 0;

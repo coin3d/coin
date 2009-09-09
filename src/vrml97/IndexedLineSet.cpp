@@ -122,8 +122,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -246,8 +245,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   state->push();
 
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoGLTextureEnabledElement::set(state, this, FALSE);
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
+  SoMultiTextureEnabledElement::disableAll(state);
   
   SoVRMLVertexLine::GLRender(action);
 

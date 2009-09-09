@@ -31,7 +31,7 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFBool.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 
 class SoFieldSensor;
 class SoSensor;
@@ -47,15 +47,15 @@ public:
   SoTexture2(void);
 
   enum Model {
-    MODULATE = SoTextureImageElement::MODULATE,
-    DECAL = SoTextureImageElement::DECAL,
-    BLEND = SoTextureImageElement::BLEND,
-    REPLACE = SoTextureImageElement::REPLACE
+    MODULATE = SoMultiTextureImageElement::MODULATE,
+    DECAL = SoMultiTextureImageElement::DECAL,
+    BLEND = SoMultiTextureImageElement::BLEND,
+    REPLACE = SoMultiTextureImageElement::REPLACE
   };
 
   enum Wrap {
-    REPEAT = SoTextureImageElement::REPEAT,
-    CLAMP = SoTextureImageElement::CLAMP
+    REPEAT = SoMultiTextureImageElement::REPEAT,
+    CLAMP = SoMultiTextureImageElement::CLAMP
   };
 
   SoSFString filename;

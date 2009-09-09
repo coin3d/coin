@@ -164,6 +164,4 @@ SbBool sogl_glerror_debugging(void);
 
 void sogl_autocache_update(SoState * state, const int numprimitives);
 
-void sogl_update_shapehints_transparency(SoState * state);
-
 #endif // !COIN_SOGL_H

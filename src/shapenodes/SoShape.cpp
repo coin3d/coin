@@ -71,9 +71,6 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/elements/SoGLVertexAttributeElement.h>
 #include <Inventor/elements/SoLightElement.h>
@@ -86,7 +83,6 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -587,9 +583,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     this->validatePVCache(action);
 
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
-    SoGLTextureImageElement::Model model;
+    SoGLMultiTextureImageElement::Model model;
     SbColor blendcolor;
-    SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
+    SoGLImage * glimage = SoGLMultiTextureImageElement::get(state, 0, model, blendcolor);
     if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
 
     SoMaterialBundle mb(action);
@@ -617,12 +613,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
   if (shapestyleflags & SoShapeStyleElement::BIGIMAGE) {
-    SoGLTextureImageElement::Model model;
+    SoGLMultiTextureImageElement::Model model;
     SbColor blendcolor;
-    SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
+    SoGLImage * glimage = SoGLMultiTextureImageElement::get(state, 0, model, blendcolor);
     if (glimage &&
         glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
-        SoGLTextureEnabledElement::get(state)) {
+        SoGLMultiTextureEnabledElement::get(state, 0)) {
 
       // don't attempt to cache bigimage shapes
       if (state->isCacheOpen()) {
@@ -714,8 +710,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
 
       SoGLLazyElement::getInstance(state)->reset(state,
-                                                 SoLazyElement::DIFFUSE_MASK |
-                                                 SoLazyElement::GLIMAGE_MASK);
+                                                 SoLazyElement::DIFFUSE_MASK);
       SoMaterialBundle mb(action);
       mb.sendFirst();
       PRIVATE(this)->setupShapeHints(this, state);
@@ -729,8 +724,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
             glue->has_arb_vertex_program) {
 
           SoGLLazyElement::getInstance(state)->reset(state,
-                                                     SoLazyElement::DIFFUSE_MASK |
-                                                     SoLazyElement::GLIMAGE_MASK);
+                                                     SoLazyElement::DIFFUSE_MASK);
           glEnable(GL_BLEND);
           glBlendFunc(GL_ONE, GL_ONE);
 
@@ -751,10 +745,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       PRIVATE(this)->unlock();
 
       glPopAttrib();
-      // FIXME: temporary for FPS-counter
-      // FIXME: wtf is the above supposed to mean?  -mortene.
-      glDisable(GL_BLEND);
-
+      // we used two units in the bumpmap code
+      SoGLMultiTextureImageElement::restore(state, 0);
+      SoGLMultiTextureImageElement::restore(state, 1);
       SoGLLazyElement::getInstance(state)->reset(state,
                                                  SoLazyElement::LIGHT_MODEL_MASK|
                                                  SoLazyElement::BLENDING_MASK);
@@ -773,9 +766,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     SoGLCacheContextElement::shouldAutoCache(state,
                                              SoGLCacheContextElement::DONT_AUTO_CACHE);
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
-    SoGLTextureImageElement::Model model;
+    SoGLMultiTextureImageElement::Model model;
     SbColor blendcolor;
-    SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
+    SoGLImage * glimage = SoGLMultiTextureImageElement::get(state, 0, model, blendcolor);
     if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
     SoMaterialBundle mb(action);
     mb.sendFirst();
@@ -1292,7 +1285,7 @@ void
 SoShape::generateVertex(SoPrimitiveVertex * const pv,
                         const SbVec3f & point,
                         const SbBool usetexfunc,
-                        const SoTextureCoordinateElement * const tce,
+                        const SoMultiTextureCoordinateElement * const tce,
                         const float s,
                         const float t,
                         const SbVec3f & normal)
@@ -1312,7 +1305,7 @@ void
 SoShape::generateVertex(SoPrimitiveVertex * const pv,
                         const SbVec3f & point,
                         const SbBool usetexfunc,
-                        const SoTextureCoordinateElement * const tce,
+                        const SoMultiTextureCoordinateElement * const tce,
                         const float s,
                         const float t,
                         const float r,
@@ -1595,42 +1588,16 @@ SoShape::startVertexArray(SoGLRenderAction * action,
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
   }
   if (texpervertex) {
-    const SoTextureCoordinateElement * telem = NULL;
     const SoMultiTextureCoordinateElement * mtelem = NULL;
     const SbBool * enabledunits = NULL;
     int lastenabled;
-
-    telem = SoTextureCoordinateElement::getInstance(state);
+    
     enabledunits = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
     if (enabledunits) {
       mtelem = SoMultiTextureCoordinateElement::getInstance(state);
     }
     SoVBO * vbo;
-    if (telem->getNum()) {
-      int dim = telem->getDimension();
-      const GLvoid * tptr;
-      switch (dim) {
-      default:
-      case 2: tptr = (const GLvoid*) telem->getArrayPtr2(); break;
-      case 3: tptr = (const GLvoid*) telem->getArrayPtr3(); break;
-      case 4: tptr = (const GLvoid*) telem->getArrayPtr4(); break;
-      }
-      vbo = dovbo ? vboelem->getTexCoordVBO(0) : NULL;
-      if (vbo) {
-        vbo->bindBuffer(contextid);
-        didbind = TRUE;
-        tptr = NULL;
-      }
-      else {
-        if (didbind) {
-          cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
-          didbind = FALSE;
-        }
-      }
-      cc_glglue_glTexCoordPointer(glue, dim, GL_FLOAT, 0, tptr);
-      cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-    }
-    for (int i = 1; i <= lastenabled; i++) {
+    for (int i = 0; i <= lastenabled; i++) {
       if (enabledunits[i] && mtelem->getNum(i)) {
         int dim = mtelem->getDimension(i);
         const GLvoid * tptr;
@@ -1728,23 +1695,17 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
     int lastenabled;
     const SbBool * enabledunits =
       SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-
+    
     const SoMultiTextureCoordinateElement * mtelem =
       SoMultiTextureCoordinateElement::getInstance(state);
-
-    const SoTextureCoordinateElement * telem =
-      SoTextureCoordinateElement::getInstance(state);
-
-    for (int i = 1; i <= lastenabled; i++) {
+    
+    for (int i = 0; i <= lastenabled; i++) {
       if (enabledunits[i] && mtelem->getNum(i)) {
         cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
         cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
       }
     }
     cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
-    if (telem->getNum()) {
-      cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-    }
   }
   if (colorpervertex) {
     SoGLLazyElement * lelem = (SoGLLazyElement*) SoLazyElement::getInstance(state);

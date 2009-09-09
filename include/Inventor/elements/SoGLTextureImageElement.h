@@ -24,46 +24,13 @@
  *
 \**************************************************************************/
 
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally
+#endif
+
 #include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
 
-class SoGLImage;
-class SoGLDisplayList;
-
-class COIN_DLL_API SoGLTextureImageElement : public SoTextureImageElement {
-  typedef SoTextureImageElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLTextureImageElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLTextureImageElement();
-
-public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  static void set(SoState * const state, SoNode * const node,
-                  SoGLImage * image, const Model model,
-                  const SbColor & blendColor);
-
-  static SoGLImage * get(SoState * state, Model & model,
-                         SbColor & blendcolor);
-
-  static int32_t getMaxGLTextureSize(void);
-  virtual SbBool isTextureSizeLegal(int xsize, int ysize, int zsize, 
-                                    int bytespertexel);
-
-  static SbBool hasTransparency(SoState * state);
-protected:
-  virtual SbBool hasTransparency(void) const;
-
-private:
-  void updateLazyElement(void) const;
-  SoGLImage * glimage;
-  SoGLDisplayList  * dlist;
-  SoState * state;
-};
+typedef SoGLMultiTextureImageElement SoGLTextureImageElement;
 
 #endif // !COIN_SOGLTEXTUREIMAGEELEMENT_H

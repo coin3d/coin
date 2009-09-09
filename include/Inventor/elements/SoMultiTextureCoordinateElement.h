@@ -24,11 +24,15 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
+
+typedef const SbVec4f & SoTextureCoordinateFunctionCB(void * userdata,
+                                                      const SbVec3f & point,
+                                                      const SbVec3f & normal);
 
 class SoMultiTextureCoordinateElementP;
 
@@ -43,9 +47,17 @@ protected:
 
 public:
 
+  enum CoordType {
+    NONE = 0,
+    TEXGEN = 0,
+    EXPLICIT = 1,
+    FUNCTION = 2,
+    DEFAULT = 3
+  };
+
   virtual void init(SoState * state);
 
-  static void setDefault(SoState * const state, SoNode * const node, const int unit);
+  static void setDefault(SoState * const state, SoNode * const node, const int unit = 0);
   static void setFunction(SoState * const state, SoNode * const node,
                           const int unit,
                           SoTextureCoordinateFunctionCB * const func,
@@ -61,31 +73,31 @@ public:
                    const int unit,
                    const int32_t numCoords, const SbVec4f * const coords);
 
-  static SoTextureCoordinateElement::CoordType getType(SoState * const state, const int unit);
-  virtual SoTextureCoordinateElement::CoordType getType(const int unit) const;
-
+  static CoordType getType(SoState * const state, const int unit = 0);
+  virtual CoordType getType(const int unit = 0) const;
+  
   static const SoMultiTextureCoordinateElement * getInstance(SoState * const state);
 
   const SbVec4f & get(const int unit,
                       const SbVec3f & point,
                       const SbVec3f & normal) const;
 
-  int32_t getNum(const int unit) const;
-  SbBool is2D(const int unit) const;
-  int32_t getDimension(const int unit) const;
+  int32_t getNum(const int unit = 0) const;
+  SbBool is2D(const int unit = 0) const;
+  int32_t getDimension(const int unit = 0) const;
 
   const SbVec2f & get2(const int unit, const int index) const;
   const SbVec3f & get3(const int unit, const int index) const;
   const SbVec4f & get4(const int unit, const int index) const;
 
-  const SbVec2f * getArrayPtr2(const int unit) const;
-  const SbVec3f * getArrayPtr3(const int unit) const;
-  const SbVec4f * getArrayPtr4(const int unit) const;
+  const SbVec2f * getArrayPtr2(const int unit = 0) const;
+  const SbVec3f * getArrayPtr3(const int unit = 0)  const;
+  const SbVec4f * getArrayPtr4(const int unit = 0) const;
 
   class UnitData {
   public:
     uint32_t nodeid;
-    SoTextureCoordinateElement::CoordType whatKind;
+    CoordType whatKind;
     SoTextureCoordinateFunctionCB * funcCB;
     void * funcCBData;
     int32_t numCoords;
@@ -98,6 +110,42 @@ public:
   virtual void push(SoState * state);
   virtual SbBool matches(const SoElement * elem) const;
   SoElement * copyMatchInfo(void) const;
+
+  // Coin-3 support
+  const SbVec4f & get(const SbVec3f & point,
+                      const SbVec3f & normal) const {
+    return this->get(0, point, normal);
+  }
+  
+  static void setFunction(SoState * const state, 
+                          SoNode * const node,
+                          SoTextureCoordinateFunctionCB * const func,
+                          void * const userdata) {
+    setFunction(state, node, 0, func, userdata);
+  }
+
+  static void set2(SoState * const state, SoNode * const node,
+                   const int32_t numCoords, const SbVec2f * const coords) {
+    set2(state, node, 0, numCoords, coords);
+  }
+  static void set3(SoState * const state, SoNode * const node,
+                   const int32_t numCoords, const SbVec3f * const coords) {
+    set3(state, node, 0, numCoords, coords);
+  }
+  static void set4(SoState * const state, SoNode * const node,
+                   const int32_t numCoords, const SbVec4f * const coords) {
+    set4(state, node, 0, numCoords, coords);
+  }
+  const SbVec2f & get2(const int index) const {
+    return this->get2(0, index);
+  }
+  const SbVec3f & get3(const int index) const {
+    return this->get3(0, index);
+  }
+  const SbVec4f & get4(const int index) const {
+    return this->get4(0, index);
+  }
+
 
 protected:
   UnitData & getUnitData(const int unit);

@@ -109,9 +109,8 @@
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "rendering/SoGL.h"
@@ -158,14 +157,13 @@ SoVRMLCone::GLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
   
-  SbBool doTextures = SoGLTextureEnabledElement::get(state) ||
-    SoGLTexture3EnabledElement::get(state);
+  SbBool doTextures = SoGLMultiTextureEnabledElement::get(state);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
   SbBool sendNormals = !mb.isColorOnly() ||
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;

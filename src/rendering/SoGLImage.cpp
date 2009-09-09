@@ -193,8 +193,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
@@ -1777,7 +1776,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   //FIXME: Check cc_glglue capability as well? (kintel 20011129)
-  if (SoGLTexture3EnabledElement::get(state)) { // 3D textures
+  if (SoMultiTextureEnabledElement::getMode(state) == 
+      SoMultiTextureEnabledElement::TEXTURE3D) { // 3D textures
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,
                     translate_wrap(state, this->wraps));
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T,

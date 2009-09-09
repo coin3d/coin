@@ -24,11 +24,6 @@ RegularSources = \
 	SoGLProjectionMatrixElement.cpp \
 	SoGLRenderPassElement.cpp \
 	SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp \
-	SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp \
-	SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp \
 	SoGLVBOElement.cpp \
 	SoGLViewingMatrixElement.cpp \

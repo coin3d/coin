@@ -24,35 +24,13 @@
  *
 \**************************************************************************/
 
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally
+#endif
+
 #include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 
-class COIN_DLL_API SoGLTextureMatrixElement : public SoTextureMatrixElement {
-  typedef SoTextureMatrixElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLTextureMatrixElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLTextureMatrixElement();
-
-public:
-  virtual void init(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  static void setEltIdentity(void);
-  virtual void setElt(const SbMatrix & matrix);
-  virtual void makeEltIdentity(void);
-
-  virtual void multElt(const SbMatrix & matrix);
-
-  virtual void translateEltBy(const SbVec3f & translation);
-  virtual void rotateEltBy(const SbRotation & translation);
-  virtual void scaleEltBy(const SbVec3f & scaleFactor);
-
-private:
-  void updategl(void) const;
-
-};
+typedef SoGLMultiTextureMatrixElement SoGLTextureMatrixElement;
 
 #endif // !COIN_SOGLTEXTUREMATRIXELEMENT_H

@@ -28,7 +28,7 @@
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoMultiTextureImageElement.h>
 
 class SoFieldSensor;
 class SoSensor;
@@ -44,15 +44,15 @@ public:
   SoBumpMap(void);
 
   enum Wrap {
-    REPEAT = SoTextureImageElement::REPEAT,
-    CLAMP = SoTextureImageElement::CLAMP
+    REPEAT = SoMultiTextureImageElement::REPEAT,
+    CLAMP = SoMultiTextureImageElement::CLAMP
   };
 
   SoSFString filename;
   SoSFImage image;
   SoSFEnum wrapS;
   SoSFEnum wrapT;
-  
+
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void callback(SoCallbackAction * action);

@@ -328,9 +328,7 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/bundles/SoVertexAttributeBundle.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoVertexAttributeBindingElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -537,13 +535,13 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 
   this->updateCache();
 
-  if ((SoTextureCoordinateElement::getType(state) !=
-      SoTextureCoordinateElement::FUNCTION) &&
-      (SoTextureCoordinateElement::getType(state) !=
-       SoTextureCoordinateElement::TEXGEN)) {
-    SoGLTextureCoordinateElement::setTexGen(state, this, NULL);
-    SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
-                                     PRIVATE(this)->tcoord.getArrayPtr());
+  if ((SoMultiTextureCoordinateElement::getType(state) !=
+       SoMultiTextureCoordinateElement::FUNCTION) &&
+      (SoMultiTextureCoordinateElement::getType(state) !=
+       SoMultiTextureCoordinateElement::TEXGEN)) {
+    SoGLMultiTextureCoordinateElement::setTexGen(state, this, NULL);
+    SoMultiTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
+                                          PRIVATE(this)->tcoord.getArrayPtr());
   }
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(contextid);
@@ -554,7 +552,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  SbBool doTextures = SoMultiTextureEnabledElement::get(state);
 
   if (vbo) {
     if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
@@ -617,21 +615,14 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
     
     if (doTextures) {
-      if (SoTextureCoordinateElement::getType(state) !=
-          SoTextureCoordinateElement::FUNCTION) {
-        SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
-                                         PRIVATE(this)->tcoord.getArrayPtr());
-      }
       int lastenabled = -1;
       const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-      if (lastenabled >= 1) {
-        for (int i = 1; i <= lastenabled; i++) {
-          if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
-                             SoTextureCoordinateElement::FUNCTION)) {
-            SoMultiTextureCoordinateElement::set2(state, this, i,
-                                                  PRIVATE(this)->tcoord.getLength(),
-                                                  PRIVATE(this)->tcoord.getArrayPtr());
-          }
+      for (int i = 1; i <= lastenabled; i++) {
+        if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
+                           SoMultiTextureCoordinateElement::FUNCTION)) {
+          SoMultiTextureCoordinateElement::set2(state, this, i,
+                                                PRIVATE(this)->tcoord.getLength(),
+                                                PRIVATE(this)->tcoord.getArrayPtr());
         }
       }
     }
@@ -723,24 +714,14 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
   SoState * state = action->getState();
   state->push();
 
-  if (SoTextureCoordinateElement::getType(state) !=
-      SoTextureCoordinateElement::FUNCTION) {
-    SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
-                                     PRIVATE(this)->tcoord.getArrayPtr());
-  }
-
-  if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-    int lastenabled = -1;
-    const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-    if (lastenabled >= 1) {
-      for (int i = 1; i <= lastenabled; i++) {
-        if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
-                           SoTextureCoordinateElement::FUNCTION)) {
-          SoMultiTextureCoordinateElement::set2(state, this, i,
-                                                PRIVATE(this)->tcoord.getLength(),
-                                                PRIVATE(this)->tcoord.getArrayPtr());
-        }
-      }
+  int lastenabled = -1;
+  const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  for (int i = 1; i <= lastenabled; i++) {
+    if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
+                       SoMultiTextureCoordinateElement::FUNCTION)) {
+      SoMultiTextureCoordinateElement::set2(state, this, i,
+                                            PRIVATE(this)->tcoord.getLength(),
+                                            PRIVATE(this)->tcoord.getArrayPtr());
     }
   }
   SoShapeHintsElement::set(state, this,
@@ -852,7 +833,7 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
   SoCacheElement::set(state, this->vbocache);
 
   // create a dependency on the texture coordinate element
-  (void) SoTextureCoordinateElement::getType(state);
+  (void) SoMultiTextureCoordinateElement::getType(state);
   
   SbBool istexfunc = tb.isFunction();
   

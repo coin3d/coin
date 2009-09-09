@@ -24,52 +24,13 @@
  *
 \**************************************************************************/
 
+#ifdef COIN_INTERNAL
+#error "Don't use this typedef internally"
+#endif
+
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 
-typedef void SoTexCoordTexgenCB(void * data);
-
-class COIN_DLL_API SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
-  typedef SoTextureCoordinateElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLTextureCoordinateElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLTextureCoordinateElement();
-
-public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  static  void setTexGen(SoState * const state, SoNode * const node,
-                         SoTexCoordTexgenCB * const texgenFunc,
-                         void * const texgenData = NULL,
-                         SoTextureCoordinateFunctionCB * const func = NULL,
-                         void * const funcData = NULL);
-
-  virtual CoordType getType() const;
-
-  static const SoGLTextureCoordinateElement *
-  getInstance(SoState * const state);
-
-  void send(const int index) const;
-  void send(const int index, const SbVec3f &c, const SbVec3f &n) const;
-
-  void initMulti(SoState * state) const;
-
-protected:
-  virtual void setElt(SoTexCoordTexgenCB *func,
-                      void *data = NULL);
-
-private:
-  SoTexCoordTexgenCB *texgenCB;
-
-  class PImpl;
-  PImpl * pimpl;
-
-  void doCallback() const;
-};
+typedef SoGLMultiTextureCoordinateElement SoGLTextureCoordinateElement;
 
 #endif // !COIN_SOGLTEXTURECOORDINATEELEMENT_H

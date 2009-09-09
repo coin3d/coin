@@ -35,7 +35,6 @@
 class SoNormalBundle;
 class SoNormalCache;
 class SbVec3f;
-class SoTextureCoordinateElement;
 class SoCoordinateElement;
 class SoVertexShapeP;
 

@@ -201,7 +201,6 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/nodes/SoShaderObject.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 

@@ -33,8 +33,10 @@
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoGLModelMatrixElement.h>
 #include <Inventor/elements/SoProfileElement.h>
+#ifndef COIN_INTERNAL
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
+#endif // COIN_INTERNAL
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoInt32Element.h>
 #include <Inventor/elements/SoAnnoText3CharOrientElement.h>
@@ -45,8 +47,9 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLDrawStyleElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
+#ifndef COIN_INTERNAL
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#endif // COIN_INTERNAL
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoGLLinePatternElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -87,10 +90,12 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
+#ifndef COIN_INTERNAL
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#endif // COIN_INTERNAL
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>

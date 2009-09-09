@@ -45,18 +45,12 @@
   \since Coin 2.2
 */
 
-
-// FIXME, FIXME, FIXME:
-// We realy need to override the getMatrix() method as well (and
-// enable SoTextureUnitElement for SoGetMatrixAction). Otherwise
-// we might risk getting the wrong texture matrix. 
-// pederb, 2005-02-28
-
 #include <Inventor/nodes/SoTextureUnit.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
@@ -133,6 +127,7 @@ SoTextureUnit::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoTextureUnitElement);
   SO_ENABLE(SoCallbackAction, SoTextureUnitElement);
   SO_ENABLE(SoPickAction, SoTextureUnitElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoTextureUnitElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
@@ -183,6 +178,13 @@ SoTextureUnit::callback(SoCallbackAction * action)
 // Doc from superclass.
 void
 SoTextureUnit::pick(SoPickAction * action)
+{
+  SoTextureUnit::doAction(action);
+}
+
+// Doc from superclass.
+void
+SoTextureUnit::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTextureUnit::doAction(action);
 }

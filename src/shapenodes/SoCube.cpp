@@ -66,10 +66,9 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/misc/SoState.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -136,26 +135,31 @@ SoCube::GLRender(SoGLRenderAction * action)
      binding == SoMaterialBindingElement::PER_PART_INDEXED ||
      binding == SoMaterialBindingElement::PER_FACE ||
      binding == SoMaterialBindingElement::PER_FACE_INDEXED);
-  
+
   SbBool doTextures = FALSE;
   SbBool do3DTextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
+  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
+    doTextures = TRUE;
+    if (SoGLMultiTextureEnabledElement::getMode(state,0) ==
+        SoMultiTextureEnabledElement::TEXTURE3D) {
+      do3DTextures = TRUE;
+    }
+  }
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  SbBool sendNormals = !mb.isColorOnly() || 
-    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+  SbBool sendNormals = !mb.isColorOnly() ||
+    (SoMultiTextureCoordinateElement::getType(state) == SoMultiTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;
   if (doTextures) {
-    switch (SoGLTextureEnabledElement::getMode(state)) {
+    switch (SoMultiTextureEnabledElement::getMode(state, 0)) {
     default:
       flags |= SOGL_NEED_TEXCOORDS;
       break;
-    case SoGLTextureEnabledElement::CUBEMAP:
+    case SoMultiTextureEnabledElement::CUBEMAP:
       flags |= SOGL_NEED_3DTEXCOORDS;
       break;
     }

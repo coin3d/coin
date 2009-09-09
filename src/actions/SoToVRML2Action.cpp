@@ -135,7 +135,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
@@ -1355,9 +1355,9 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
     }
   }
 
-  const SoTextureCoordinateElement * texcoordElem =
-    SoTextureCoordinateElement::getInstance(action->getState());
-  if (texcoordElem->getNum() > 0) {
+  const SoMultiTextureCoordinateElement * texcoordElem =
+    SoMultiTextureCoordinateElement::getInstance(action->getState());
+  if (texcoordElem->getNum(0) > 0) {
     ifs->texCoord = thisp->get_or_create_texcoordinate(texcoordElem->getArrayPtr2(),
                                                        texcoordElem->getNum());
   }

@@ -73,8 +73,7 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -1138,8 +1137,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   // email to <pederb@coin3d.org> if you disagree.
 
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoGLTextureEnabledElement::set(state, this, FALSE);
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
+  SoMultiTextureEnabledElement::disableAll(state);
 
   if (this->vertexProperty.getValue()) {
     this->vertexProperty.getValue()->GLRender(action);
