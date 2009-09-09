@@ -57,6 +57,7 @@ public:
     TEXCOORD4
   };
   mutable SbList<SendLookup> sendlookup;
+  const cc_glglue * glue;
   SoGLMultiTextureCoordinateElement::GLUnitData defaultdata;
   void ensureCapacity(int unit) const {
     while (unit >= this->unitdata.getLength()) {
@@ -142,8 +143,8 @@ SoGLMultiTextureCoordinateElement::pop(SoState * state,
   SoGLMultiTextureCoordinateElement * prev = (SoGLMultiTextureCoordinateElement*) prevTopElement;
 
   const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
-
-  const int maxunits = SbMax(PRIVATE(this)->unitdata.getLength(), PRIVATE(prev)->unitdata.getLength());
+  const int maxunits = SbMax(PRIVATE(this)->unitdata.getLength(), 
+                             PRIVATE(prev)->unitdata.getLength());
   
   for (int i = 0; i < maxunits; i++) {
     const GLUnitData & thisud = 
@@ -234,7 +235,7 @@ SoGLMultiTextureCoordinateElement::send(const int unit, const int index) const
 {
   const UnitData & ud = this->getUnitData(unit);
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
-  const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
+  const cc_glglue * glue = PRIVATE(this)->glue;
 
   assert(unit < PRIVATE(this)->sendlookup.getLength());
   switch (PRIVATE(this)->sendlookup[unit]) {
@@ -272,7 +273,7 @@ SoGLMultiTextureCoordinateElement::send(const int unit,
 {
   const UnitData & ud = this->getUnitData(unit);
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
-  const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
+  const cc_glglue * glue = PRIVATE(this)->glue;
   
   assert(unit < PRIVATE(this)->sendlookup.getLength());
   switch (PRIVATE(this)->sendlookup[unit]) {
@@ -364,6 +365,7 @@ SoGLMultiTextureCoordinateElement::doCallback(const int unit) const
 void
 SoGLMultiTextureCoordinateElement::initRender(const SbBool * enabled, const int maxenabled) const
 {
+  PRIVATE(this)->glue = cc_glglue_instance(PRIVATE(this)->contextid);
   PRIVATE(this)->sendlookup.truncate(0);
   for (int i = 0; i <= maxenabled; i++) {
     PRIVATE(this)->sendlookup.append(SoGLMultiTextureCoordinateElementP::NONE);
