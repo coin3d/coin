@@ -84,6 +84,10 @@ SoGLMultiTextureMatrixElement::push(SoState * state)
     this->getNextInStack();
 
   this->cachecontext = prev->cachecontext;
+
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 // doc from parent
@@ -93,9 +97,12 @@ SoGLMultiTextureMatrixElement::pop(SoState * state,
 {
   inherited::pop(state, prevTopElement);
 
+  const SoGLMultiTextureMatrixElement * prev = 
+    static_cast<const SoGLMultiTextureMatrixElement *> (prevTopElement);
+
   for (int i = 0; i < MAX_UNITS; i++) {
     const UnitData & thisud = this->getUnitData(i);
-    const UnitData & prevud = this->getUnitData(i);
+    const UnitData & prevud = prev->getUnitData(i);
     if (thisud.textureMatrix != prevud.textureMatrix) {
       this->updategl(i);
     }
@@ -125,13 +132,16 @@ void
 SoGLMultiTextureMatrixElement::updategl(const int unit) const
 {
   const cc_glglue * glue = cc_glglue_instance(this->cachecontext);
-  cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
-
+  if (unit != 0) {
+    cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
+  }
   glMatrixMode(GL_TEXTURE);
   glLoadMatrixf(this->getUnitData(unit).textureMatrix[0]);
   glMatrixMode(GL_MODELVIEW);
 
-  cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
+  if (unit != 0) {
+    cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
+  }
 }
 
 #undef MAX_UNITS
