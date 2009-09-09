@@ -4,6 +4,7 @@
 #include <string>
 #include <ostream>
 #include <boost/lexical_cast.hpp>
+#include <Inventor/SbBasic.h>
 
 // Test for almostEquality
 inline bool floatEquals(float Ain, float Bin, int maxUlps)
@@ -23,7 +24,7 @@ inline bool floatEquals(float Ain, float Bin, int maxUlps)
     // Make B.i32 lexicographically ordered as a twos-complement int
     if (B.i32 < 0)
         B.i32 = 0x80000000 - B.i32;
-    int intDiff = abs(A.i32 - B.i32);
+    int intDiff = SbAbs(A.i32 - B.i32);
     if (intDiff <= maxUlps)
         return true;
     return false;
