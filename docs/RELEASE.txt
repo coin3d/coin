@@ -220,8 +220,8 @@ This stage should be self-explanatory.
 
 * Checkout of the release source code and make archive
 
-  $ svn co https://svn.coin3d.org/repos/Coin-2/branches/coin-#.#.# Coin-2
-  $ cd Coin-2
+  $ svn co https://svn.coin3d.org/repos/Coin/branches/coin-#.#.# Coin
+  $ cd Coin
   $ ./configure && make dist
 
 * Build Microsoft Visual C++ Windows SDK
@@ -263,7 +263,7 @@ This stage should be self-explanatory.
 * Update Coin Freshmeat project
 
 * Send announcement to maintainers of OpenGL.org, Linux3D.org (dead?),
-  VIS-SIM.org, 3dvis.siliconthoughts.com, vrsource.org
+  VIS-SIM.org, vrsource.org
 
 * Update our Coin entry on www.versiontracker.com (Mac OS equivalent
   of freshmeat.net).
