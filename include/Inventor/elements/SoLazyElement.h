@@ -61,6 +61,7 @@ public:
     CULLING_CASE,
     SHADE_MODEL_CASE,
     ALPHATEST_CASE,
+    GLIMAGE_CASE, // OBSOLETED
     LAZYCASES_LAST // must be last
   };
   enum masks{
@@ -78,6 +79,7 @@ public:
     CULLING_MASK = 1 << CULLING_CASE,                   // 0x0800
     SHADE_MODEL_MASK = 1 << SHADE_MODEL_CASE,           // 0x1000
     ALPHATEST_MASK = 1 << ALPHATEST_CASE,               // 0x2000
+    GLIMAGE_MASK = 1 << GLIMAGE_CASE,                   // obsoleted
     ALL_MASK = (1 << LAZYCASES_LAST)-1
   };
 
