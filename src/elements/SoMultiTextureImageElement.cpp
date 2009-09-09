@@ -41,13 +41,17 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/lists/SbList.h>
 #include <cassert>
-
-#define MAX_UNITS 16 // FIXME: make dynamic?????
 
 class SoMultiTextureImageElementP {
 public:
-  SoMultiTextureImageElement::UnitData unitdata[MAX_UNITS];
+  void ensureCapacity(int unit) const {
+    while (unit >= this->unitdata.getLength()) {
+      this->unitdata.append(SoMultiTextureImageElement::UnitData());
+    }
+  }
+  mutable SbList<SoMultiTextureImageElement::UnitData> unitdata;
 };
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoMultiTextureImageElement);
@@ -88,27 +92,6 @@ void
 SoMultiTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
-  for (int i = 0; i < MAX_UNITS; i++) {
-    this->setDefaultValues(i);
-  }
-}
-
-//
-// private
-//
-void
-SoMultiTextureImageElement::setDefaultValues(const int unit)
-{
-  assert(unit >=0 && unit < MAX_UNITS);
-
-  UnitData & ud = PRIVATE(this)->unitdata[unit];
-  ud.bytes = getDefault(ud.size, ud.numComponents);
-  ud.wrapS = REPEAT;
-  ud.wrapT = REPEAT;
-  ud.wrapR = REPEAT;
-  ud.model = MODULATE;
-  ud.blendColor.setValue(0.0f, 0.0f, 0.0f);
-  ud.nodeid = 0;
 }
 
 /*!
@@ -119,13 +102,9 @@ SoMultiTextureImageElement::setDefault(SoState * const state, SoNode * const COI
 {
   SoMultiTextureImageElement * elem =
     coin_safe_cast<SoMultiTextureImageElement *>
-    (
-     state->getElement(classStackIndex)
-     );
-
-  if (elem) {
-    elem->setDefaultValues(unit);
-  }
+    (state->getElement(classStackIndex));
+  PRIVATE(elem)->ensureCapacity(unit);
+  PRIVATE(elem)->unitdata[unit] = UnitData();  
 }
 
 //! FIXME: write doc.
@@ -141,13 +120,11 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
 {
   SoMultiTextureImageElement * elem =
     coin_safe_cast<SoMultiTextureImageElement *>
-    (
-     state->getElement(classStackIndex)
-     );
-  if (elem) {
-    elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT,
-                 model, blendColor);
-  }
+    (state->getElement(classStackIndex));
+
+  PRIVATE(elem)->ensureCapacity(unit);
+  elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT,
+               model, blendColor);
 }
 
 /*!
@@ -167,14 +144,11 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const SbColor & blendColor)
 {
   SoMultiTextureImageElement * elem = coin_safe_cast<SoMultiTextureImageElement *>
-    (
-     state->getElement(classStackIndex)
-     );
-
-  if (elem) {
-    elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT, wrapR,
-                 model, blendColor);
-  }
+    (state->getElement(classStackIndex));
+  
+  PRIVATE(elem)->ensureCapacity(unit);
+  elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT, wrapR,
+               model, blendColor);
 }
 
 //! FIXME: write doc.
@@ -191,18 +165,16 @@ SoMultiTextureImageElement::get(SoState * const state,
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
+    (getConstElement(state, classStackIndex));
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   wrapS = ud.wrapS;
   wrapT = ud.wrapT;
   model = ud.model;
   blendColor = ud.blendColor;
-
+  
   return getImage(state, unit, size, numComponents);
 }
 
@@ -225,13 +197,11 @@ SoMultiTextureImageElement::get(SoState * const state,
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+  
+  PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   wrapS = ud.wrapS;
   wrapT = ud.wrapT;
   wrapR = ud.wrapR;
@@ -252,27 +222,11 @@ SoMultiTextureImageElement::getImage(SoState * const state,
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
+    (getConstElement(state, classStackIndex));
 
-#if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
-  if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
-    Model dummy1;
-    SbColor dummy2;
-    SoGLImage * image = SoGLMultiTextureImageElement::get(state, unit, dummy1, dummy2);
-    unsigned char * bytes = NULL;
-    size = SbVec2s(0,0);
-    numComponents = 0;
-    if (image && image->getImage()) {
-      bytes = image->getImage()->getValue(size, numComponents);
-    }
-    return bytes;
-  }
-#endif
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   size.setValue(ud.size[0], ud.size[1]);
   numComponents = ud.numComponents;
   return ud.bytes;
@@ -289,27 +243,11 @@ SoMultiTextureImageElement::getImage(SoState * const state,
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
+    (getConstElement(state, classStackIndex));
 
-#if 0 // FIXME: update when SoGLMultiTextureImageElement is implemented
-  if (elem->getTypeId().isDerivedFrom(SoGLMultiTextureImageElement::getClassTypeId())) {
-    Model dummy1;
-    SbColor dummy2;
-    SoGLImage * image = SoGLMultiTextureImageElement::get(state, dummy1, dummy2);
-    unsigned char * bytes = NULL;
-    size = SbVec3s(0,0,0);
-    numComponents = 0;
-    if (image && image->getImage()) {
-      bytes = image->getImage()->getValue(size, numComponents);
-    }
-    return bytes;
-  }
-#endif
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   size = ud.size;
   numComponents = ud.numComponents;
   return ud.bytes;
@@ -323,11 +261,9 @@ SoMultiTextureImageElement::containsTransparency(SoState * const state)
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-
-  for (int i = 0; i < MAX_UNITS; i++) {
+    (getConstElement(state, classStackIndex));
+  
+  for (int i = 0; i < PRIVATE(elem)->unitdata.getLength(); i++) {
     if (elem->hasTransparency(i)) return TRUE;
   }
   return FALSE;
@@ -344,14 +280,17 @@ SoMultiTextureImageElement::containsTransparency(SoState * const state)
 SbBool
 SoMultiTextureImageElement::hasTransparency(const int unit) const
 {
-  const UnitData & ud = PRIVATE(this)->unitdata[unit];
-  return (ud.numComponents==2 || ud.numComponents==4);
+  if (unit < PRIVATE(this)->unitdata.getLength()) {
+    const UnitData & ud = PRIVATE(this)->unitdata[unit];
+    return (ud.numComponents==2 || ud.numComponents==4);
+  }
+  return FALSE;
 }
 
 const SoMultiTextureImageElement::UnitData &
 SoMultiTextureImageElement::getUnitData(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   return PRIVATE(this)->unitdata[unit];
 }
 
@@ -383,13 +322,9 @@ SoMultiTextureImageElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoMultiTextureImageElement * prev =
     coin_assert_cast<SoMultiTextureImageElement *>
-    (
-     this->getNextInStack()
-     );
+    (this->getNextInStack());
 
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
-  }
+  PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
 
 SbBool
@@ -398,7 +333,10 @@ SoMultiTextureImageElement::matches(const SoElement * elem) const
   const SoMultiTextureImageElement * e =
     coin_assert_cast<const SoMultiTextureImageElement *>
     (elem);
-  for (int i = 0; i < MAX_UNITS; i++) {
+  const int n = PRIVATE(e)->unitdata.getLength();
+  if (n != PRIVATE(this)->unitdata.getLength()) return FALSE;
+
+  for (int i = 0; i < n; i++) {
     if (PRIVATE(e)->unitdata[i].nodeid != PRIVATE(this)->unitdata[i].nodeid) {
       return FALSE;
     }
@@ -411,9 +349,7 @@ SoMultiTextureImageElement::copyMatchInfo(void) const
 {
   SoMultiTextureImageElement * elem = static_cast<SoMultiTextureImageElement *>
     (getTypeId().createInstance());
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(elem)->unitdata[i].nodeid = PRIVATE(this)->unitdata[i].nodeid;
-  }
+  PRIVATE(elem)->unitdata = PRIVATE(this)->unitdata;
   return elem;
 }
 
@@ -430,9 +366,9 @@ SoMultiTextureImageElement::setElt(const int unit,
                                    const Model model,
                                    const SbColor &blendColor)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   UnitData & ud = PRIVATE(this)->unitdata[unit];
-
+  
   ud.nodeid = nodeid;
   ud.size.setValue(size[0],size[1],1);
   ud.numComponents = numComponents;
@@ -458,7 +394,7 @@ SoMultiTextureImageElement::setElt(const int unit,
                                    const Model model,
                                    const SbColor &blendColor)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   ud.nodeid = nodeid;
@@ -480,10 +416,9 @@ SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+
+  PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].blendColor;
 }
 
@@ -495,10 +430,9 @@ SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+
+  PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].wrapT;
 }
 
@@ -510,10 +444,9 @@ SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+
+  PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].wrapS;
 }
 
@@ -525,10 +458,9 @@ SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+
+  PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].wrapR;
 }
 
@@ -540,12 +472,36 @@ SoMultiTextureImageElement::getModel(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
     coin_assert_cast<const SoMultiTextureImageElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+
+  PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].model;
 }
 
-#undef MAX_UNITS
+SoMultiTextureImageElement::UnitData::UnitData()
+  : nodeid(0),
+    size(0,0,0),
+    numComponents(0),
+    bytes(0),
+    wrapS(SoMultiTextureImageElement::REPEAT), 
+    wrapT(SoMultiTextureImageElement::REPEAT), 
+    wrapR(SoMultiTextureImageElement::REPEAT),
+    model(SoMultiTextureImageElement::MODULATE),
+    blendColor(0.0f, 0.0f, 0.0f)
+{
+}
+
+SoMultiTextureImageElement::UnitData::UnitData(const UnitData & org)
+  : nodeid(org.nodeid),
+    size(org.size),
+    numComponents(org.numComponents),
+    bytes(org.bytes),
+    wrapS(org.wrapS),
+    wrapT(org.wrapT), 
+    wrapR(org.wrapR),
+    model(org.model),
+    blendColor(org.blendColor)
+{
+}
+
 #undef PRIVATE

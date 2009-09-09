@@ -44,6 +44,7 @@
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/lists/SbList.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
@@ -58,13 +59,18 @@
 
 // *************************************************************************
 
-#define MAX_UNITS 16
 #define PRIVATE(obj) obj->pimpl
 
 class SoGLMultiTextureImageElementP {
 public:
-  int lastunitset;
-  SoGLMultiTextureImageElement::GLUnitData unitdata[MAX_UNITS];
+  void ensureCapacity(int unit) const {
+    while (unit >= this->unitdata.getLength()) {
+      this->unitdata.append(SoGLMultiTextureImageElement::GLUnitData());
+    }
+  }
+
+  SoGLMultiTextureImageElement::GLUnitData defaultdata;
+  mutable SbList<SoGLMultiTextureImageElement::GLUnitData> unitdata;
   SoState * state;
   uint32_t cachecontext;
 };
@@ -113,12 +119,6 @@ SoGLMultiTextureImageElement::init(SoState * state)
   SoGLRenderAction * glaction = (SoGLRenderAction*) action;
   PRIVATE(this)->cachecontext = glaction->getCacheContext();
   PRIVATE(this)->state = state;
-
-  for (int i = 0; i < MAX_UNITS; i++) {
-    GLUnitData & ud = PRIVATE(this)->unitdata[i];
-    ud.glimage = NULL;
-  }
-  PRIVATE(this)->lastunitset = -1;
 }
 
 
@@ -132,13 +132,8 @@ SoGLMultiTextureImageElement::push(SoState * state)
     this->getNextInStack();
   PRIVATE(this)->state = state;
   PRIVATE(this)->cachecontext = PRIVATE(prev)->cachecontext;
-  PRIVATE(this)->lastunitset = PRIVATE(prev)->lastunitset;
-
-  // copy all units and not just up to lastunitset to make sure that
-  // all units are properly initialized
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
-  }
+  PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
+  
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -158,14 +153,21 @@ SoGLMultiTextureImageElement::pop(SoState * state,
   SoGLShaderProgram * prog = SoGLShaderProgramElement::get(state);
   SbString str;
   
-  for (int i = 0; i <= PRIVATE(prev)->lastunitset; i++) {
-    const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
-    // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
-    // if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
+  const int maxunits = SbMax(PRIVATE(prev)->unitdata.getLength(),
+                             PRIVATE(this)->unitdata.getLength());
 
-    const GLUnitData & thisud = PRIVATE(this)->unitdata[i];
+  for (int i = 0; i < maxunits; i++) {
+    const GLUnitData & prevud = 
+      (i < PRIVATE(prev)->unitdata.getLength()) ?
+      PRIVATE(prev)->unitdata[i] :
+      PRIVATE(prev)->defaultdata;
+    
+    const GLUnitData & thisud = 
+      (i < PRIVATE(this)->unitdata.getLength()) ?
+      PRIVATE(this)->unitdata[i] :
+      PRIVATE(this)->defaultdata;
+
     if (thisud.glimage != prevud.glimage) this->updateGL(i);
-
     str.sprintf("coin_texunit%d_model", i);
     if (prog) prog->updateCoinParameter(state, SbName(str.getString()),
                                         thisud.glimage != NULL ? this->getUnitData(i).model : 0);
@@ -191,13 +193,10 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                                   Model model,
                                   const SbColor & blendColor)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
-
   SoGLMultiTextureImageElement * elem = (SoGLMultiTextureImageElement*)
     state->getElement(classStackIndex);
-  if (unit > PRIVATE(elem)->lastunitset) {
-    PRIVATE(elem)->lastunitset = unit;
-  }
+
+  PRIVATE(elem)->ensureCapacity(unit);
   GLUnitData & ud = PRIVATE(elem)->unitdata[unit];
   
   // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
@@ -246,7 +245,7 @@ SoGLMultiTextureImageElement::restore(SoState * state, const int unit)
 {
   SoGLMultiTextureImageElement * elem = (SoGLMultiTextureImageElement*)
     state->getConstElement(classStackIndex);
-
+  
   elem->updateGL(unit);
 }
 
@@ -259,6 +258,7 @@ SoGLMultiTextureImageElement::get(SoState * state,
   const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
     getConstElement(state, classStackIndex);
 
+  PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = elem->getUnitData(unit);
 
   model = ud.model;
@@ -277,7 +277,7 @@ SoGLMultiTextureImageElement::hasTransparency(SoState * state)
   const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
     getConstElement(state, classStackIndex);
   
-  for (int i = 0; i <= PRIVATE(elem)->lastunitset; i++) {
+  for (int i = 0; i <= PRIVATE(elem)->unitdata.getLength(); i++) {
     if (elem->hasTransparency(i)) return TRUE;
   }
   return FALSE;
@@ -287,10 +287,11 @@ SoGLMultiTextureImageElement::hasTransparency(SoState * state)
 SbBool
 SoGLMultiTextureImageElement::hasTransparency(const int unit) const
 {
-  assert(unit >= 0 && unit< MAX_UNITS);
-  const GLUnitData & ud = PRIVATE(this)->unitdata[unit];
-  if (ud.glimage) {
-    return ud.glimage->hasTransparency();
+  if (unit < PRIVATE(this)->unitdata.getLength()) {
+    const GLUnitData & ud = PRIVATE(this)->unitdata[unit];
+    if (ud.glimage) {
+      return ud.glimage->hasTransparency();
+    }
   }
   return FALSE;
 }
@@ -298,8 +299,11 @@ SoGLMultiTextureImageElement::hasTransparency(const int unit) const
 void
 SoGLMultiTextureImageElement::updateGL(const int unit)
 {
-  assert(unit >= 0 && unit< MAX_UNITS);
-  const GLUnitData & glud = PRIVATE(this)->unitdata[unit];
+  const GLUnitData & glud = 
+    (unit < PRIVATE(this)->unitdata.getLength()) ? 
+    PRIVATE(this)->unitdata[unit] :
+    PRIVATE(this)->defaultdata;
+  
   if (glud.glimage) {
     const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->cachecontext);
     cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
@@ -375,5 +379,4 @@ SoGLMultiTextureImageElement::getMaxGLTextureSize(void)
   return (int32_t)val;
 }
 
-#undef MAX_UNITS
 #undef PRIVATE

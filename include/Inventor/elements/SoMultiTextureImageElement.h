@@ -145,6 +145,8 @@ public:
 
   class UnitData {
   public:
+    UnitData();
+    UnitData(const UnitData & org);
     uint32_t nodeid;
     SbVec3s size;
     int numComponents;
@@ -158,7 +160,6 @@ protected:
   const UnitData & getUnitData(const int unit) const;
 
 private:
-  void setDefaultValues(const int unit);
   SoMultiTextureImageElementP * pimpl;
 
  public: // Coin-3 support

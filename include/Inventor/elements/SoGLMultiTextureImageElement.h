@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoMultiTextureImageElement.h>
+#include <cstdlib>
 
 class SoGLImage;
 class SoGLDisplayList;
@@ -59,6 +60,8 @@ public:
 
   class GLUnitData {
   public:
+  GLUnitData() : glimage(NULL) {}
+  GLUnitData(const GLUnitData & org) : glimage(org.glimage) {}
     SoGLImage * glimage;
   };
   
