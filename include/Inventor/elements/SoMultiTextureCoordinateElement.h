@@ -96,6 +96,9 @@ public:
 
   class UnitData {
   public:
+    UnitData();
+    UnitData(const UnitData & org);
+
     uint32_t nodeid;
     CoordType whatKind;
     SoTextureCoordinateFunctionCB * funcCB;
@@ -148,6 +151,7 @@ public:
 
 
 protected:
+  int getMaxUnits() const;
   UnitData & getUnitData(const int unit);
   const UnitData & getUnitData(const int unit) const;
   SbVec2f convert2;

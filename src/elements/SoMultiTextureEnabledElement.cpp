@@ -197,13 +197,8 @@ SoMultiTextureEnabledElement::push(SoState * COIN_UNUSED_ARG(state))
   SoMultiTextureEnabledElement * prev = coin_assert_cast<SoMultiTextureEnabledElement *>
     (this->getNextInStack());
 
-  PRIVATE(this)->mode.truncate(0);
-  PRIVATE(this)->enabled.truncate(0);
-
-  for (int i = 0; i < PRIVATE(prev)->enabled.getLength(); i++) {
-    PRIVATE(this)->mode.append(PRIVATE(prev)->mode[i]);
-    PRIVATE(this)->enabled.append(PRIVATE(prev)->enabled[i]);
-  }
+  PRIVATE(this)->mode = PRIVATE(prev)->mode;
+  PRIVATE(this)->enabled = PRIVATE(prev)->enabled;
 }
 
 SbBool

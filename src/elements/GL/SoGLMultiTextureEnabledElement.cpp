@@ -90,7 +90,7 @@ SoGLMultiTextureEnabledElement::pop(SoState * state,
 {
   SoGLMultiTextureEnabledElement * prev = (SoGLMultiTextureEnabledElement*) prevTopElement;
   const int maxunits = SbMax(this->getMaxUnits(), prev->getMaxUnits());
-
+  
   for (int i = 0; i < maxunits; i++) {
     Mode oldmode = prev->getMode(i);
     Mode newmode =  this->getMode(i);

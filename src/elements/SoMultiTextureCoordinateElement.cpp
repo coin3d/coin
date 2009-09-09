@@ -39,14 +39,46 @@
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/lists/SbList.h>
 #include <cassert>
 
-#define MAX_UNITS 16
 #define PRIVATE(obj) obj->pimpl
+
+SoMultiTextureCoordinateElement::UnitData::UnitData()
+  : nodeid(0),
+    whatKind(DEFAULT),
+    funcCB(NULL),
+    funcCBData(NULL),
+    numCoords(0),
+    coords2(NULL),
+    coords3(NULL),
+    coords4(NULL),
+    coordsDimension(2)
+{
+}
+
+SoMultiTextureCoordinateElement::UnitData::UnitData(const UnitData & org)
+  : nodeid(org.nodeid),
+    whatKind(org.whatKind),
+    funcCB(org.funcCB),
+    funcCBData(org.funcCBData),
+    numCoords(org.numCoords),
+    coords2(org.coords2),
+    coords3(org.coords3),
+    coords4(org.coords4),
+    coordsDimension(org.coordsDimension)
+{
+}
 
 class SoMultiTextureCoordinateElementP {
 public:
-  SoMultiTextureCoordinateElement::UnitData unitdata[MAX_UNITS];
+  mutable SbList<SoMultiTextureCoordinateElement::UnitData> unitdata;
+
+  void ensureCapacity(int units) const {
+    for (int i = this->unitdata.getLength(); i <= units; i++) {
+      this->unitdata.append(SoMultiTextureCoordinateElement::UnitData());
+    }
+  }
 };
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoMultiTextureCoordinateElement);
@@ -95,11 +127,9 @@ SoMultiTextureCoordinateElement::setDefault(SoState * const state,
   }
   SoMultiTextureCoordinateElement * element =
     coin_assert_cast<SoMultiTextureCoordinateElement *>
-    (
-     SoElement::getElement(state, classStackIndex)
-     );
+    (SoElement::getElement(state, classStackIndex));
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
   ud.nodeid = 0;
   ud.whatKind = DEFAULT;
@@ -121,11 +151,9 @@ SoMultiTextureCoordinateElement::setFunction(SoState * const state,
 
   SoMultiTextureCoordinateElement * element =
     coin_assert_cast<SoMultiTextureCoordinateElement *>
-    (
-     SoElement::getElement(state, classStackIndex)
-     );
+    (SoElement::getElement(state, classStackIndex));
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
 
   ud.nodeid = node->getNodeId();
@@ -155,7 +183,7 @@ SoMultiTextureCoordinateElement::set2(SoState * const state,
      SoElement::getElement(state, classStackIndex)
      );
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
 
   ud.nodeid = node->getNodeId();
@@ -186,7 +214,7 @@ SoMultiTextureCoordinateElement::set3(SoState * const state,
      SoElement::getElement(state, classStackIndex)
      );
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
 
   ud.nodeid = node->getNodeId();
@@ -216,7 +244,7 @@ SoMultiTextureCoordinateElement::set4(SoState * const state,
      SoElement::getElement(state, classStackIndex)
      );
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
 
   ud.nodeid = node->getNodeId();
@@ -234,9 +262,7 @@ const SoMultiTextureCoordinateElement *
 SoMultiTextureCoordinateElement::getInstance(SoState * const state)
 {
   return coin_safe_cast<const SoMultiTextureCoordinateElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
+    (getConstElement(state, classStackIndex));
 }
 
 /*!
@@ -253,7 +279,7 @@ SoMultiTextureCoordinateElement::get(const int unit,
                                      const SbVec3f & point,
                                      const SbVec3f & normal) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert((ud.whatKind == FUNCTION ||
@@ -266,7 +292,7 @@ SoMultiTextureCoordinateElement::get(const int unit,
 const SbVec2f &
 SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert(index >= 0 && index < ud.numCoords);
@@ -300,7 +326,7 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
 const SbVec3f &
 SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert(index >= 0 && index < ud.numCoords);
@@ -330,7 +356,7 @@ SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
 const SbVec4f &
 SoMultiTextureCoordinateElement::get4(const int unit, const int index) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   assert(index >= 0 && index < ud.numCoords);
@@ -381,10 +407,11 @@ SoMultiTextureCoordinateElement::getType(SoState * const state, const int unit)
 
 //! FIXME: write doc.
 
+// side effect, will increase array size
 SoMultiTextureCoordinateElement::CoordType
 SoMultiTextureCoordinateElement::getType(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.whatKind;
 }
@@ -395,18 +422,7 @@ void
 SoMultiTextureCoordinateElement::init(SoState * state)
 {
   inherited::init(state);
-  for (int i = 0; i < MAX_UNITS; i++) {
-    UnitData & ud = PRIVATE(this)->unitdata[i];
-    ud.nodeid = 0;
-    ud.whatKind = DEFAULT;
-    ud.funcCB = NULL;
-    ud.funcCBData = NULL;
-    ud.numCoords = 0;
-    ud.coords2 = NULL;
-    ud.coords3 = NULL;
-    ud.coords4 = NULL;
-    ud.coordsDimension = 2;
-  }
+  PRIVATE(this)->unitdata.truncate(0);
 }
 
 //! FIXME: write doc.
@@ -415,7 +431,7 @@ SoMultiTextureCoordinateElement::init(SoState * state)
 int32_t
 SoMultiTextureCoordinateElement::getNum(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.numCoords;
 }
@@ -426,7 +442,7 @@ SoMultiTextureCoordinateElement::getNum(const int unit) const
 SbBool
 SoMultiTextureCoordinateElement::is2D(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return (ud.coordsDimension==2);
 }
@@ -437,7 +453,7 @@ SoMultiTextureCoordinateElement::is2D(const int unit) const
 int32_t
 SoMultiTextureCoordinateElement::getDimension(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.coordsDimension;
 }
@@ -449,7 +465,7 @@ SoMultiTextureCoordinateElement::getDimension(const int unit) const
 const SbVec2f *
 SoMultiTextureCoordinateElement::getArrayPtr2(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.coords2;
 }
@@ -461,7 +477,7 @@ SoMultiTextureCoordinateElement::getArrayPtr2(const int unit) const
 const SbVec3f *
 SoMultiTextureCoordinateElement::getArrayPtr3(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.coords3;
 }
@@ -473,7 +489,7 @@ SoMultiTextureCoordinateElement::getArrayPtr3(const int unit) const
 const SbVec4f *
 SoMultiTextureCoordinateElement::getArrayPtr4(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.coords4;
 }
@@ -483,13 +499,9 @@ SoMultiTextureCoordinateElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoMultiTextureCoordinateElement * prev =
     coin_assert_cast<SoMultiTextureCoordinateElement *>
-    (
-     this->getNextInStack()
-    );
-
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
-  }
+    (this->getNextInStack());
+  
+  PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
 
 SbBool
@@ -497,7 +509,9 @@ SoMultiTextureCoordinateElement::matches(const SoElement * elem) const
 {
   const SoMultiTextureCoordinateElement * e =
     coin_assert_cast<const SoMultiTextureCoordinateElement *>(elem);
-  for (int i = 0; i < MAX_UNITS; i++) {
+  if (PRIVATE(e)->unitdata.getLength() != PRIVATE(this)->unitdata.getLength()) return FALSE;
+  
+  for (int i = 0; i < PRIVATE(this)->unitdata.getLength(); i++) {
     if (PRIVATE(e)->unitdata[i].nodeid != PRIVATE(this)->unitdata[i].nodeid) {
       return FALSE;
     }
@@ -510,9 +524,7 @@ SoMultiTextureCoordinateElement::copyMatchInfo(void) const
 {
   SoMultiTextureCoordinateElement * elem =
     static_cast<SoMultiTextureCoordinateElement *>(getTypeId().createInstance());
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(elem)->unitdata[i].nodeid = PRIVATE(this)->unitdata[i].nodeid;
-  }
+  PRIVATE(elem)->unitdata = PRIVATE(this)->unitdata;
   return elem;
 }
 
@@ -522,18 +534,22 @@ SoMultiTextureCoordinateElement::copyMatchInfo(void) const
 SoMultiTextureCoordinateElement::UnitData &
 SoMultiTextureCoordinateElement::getUnitData(const int unit)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   return PRIVATE(this)->unitdata[unit];
 }
 
 const SoMultiTextureCoordinateElement::UnitData &
 SoMultiTextureCoordinateElement::getUnitData(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   return PRIVATE(this)->unitdata[unit];
 }
 
-
+int 
+SoMultiTextureCoordinateElement::getMaxUnits() const
+{
+  return PRIVATE(this)->unitdata.getLength();
+}
 
 #undef MAX_UNITS
 #undef PRIVATE

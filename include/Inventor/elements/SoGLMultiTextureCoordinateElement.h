@@ -60,6 +60,8 @@ public:
 
   class GLUnitData {
   public:
+    GLUnitData() : texgenCB(NULL), texgenData(NULL) {}
+    GLUnitData(const GLUnitData & org) : texgenCB(org.texgenCB), texgenData(org.texgenData) {}
     SoTexCoordTexgenCB * texgenCB;
     void * texgenData;
   };

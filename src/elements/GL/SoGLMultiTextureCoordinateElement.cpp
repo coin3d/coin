@@ -31,6 +31,7 @@
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/lists/SbList.h>
 
 #include <cassert>
 
@@ -41,13 +42,11 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 
-#define MAX_UNITS 16 // FIXME: make dynamic? pederb, 2003-11-03
-
 class SoGLMultiTextureCoordinateElementP {
 public:
-  SoGLMultiTextureCoordinateElement::GLUnitData unitdata[MAX_UNITS];
+  mutable SbList<SoGLMultiTextureCoordinateElement::GLUnitData> unitdata;
   int contextid;
-
+  
   // switch/case table for faster rendering.
   enum SendLookup {
     UNINITIALIZED,
@@ -57,7 +56,14 @@ public:
     TEXCOORD3,
     TEXCOORD4
   };
-  mutable SendLookup sendlookup[MAX_UNITS];
+  mutable SbList<SendLookup> sendlookup;
+  SoGLMultiTextureCoordinateElement::GLUnitData defaultdata;
+  void ensureCapacity(int unit) const {
+    while (unit >= this->unitdata.getLength()) {
+      this->unitdata.append(SoGLMultiTextureCoordinateElement::GLUnitData());
+    }
+  }
+
 };
 
 #define PRIVATE(obj) obj->pimpl
@@ -108,12 +114,8 @@ SoGLMultiTextureCoordinateElement::init(SoState * state)
   PRIVATE(this)->contextid = glaction->getCacheContext();
 
   inherited::init(state);
-  for (int i = 0; i < MAX_UNITS; i++) {
-    GLUnitData & ud = PRIVATE(this)->unitdata[i];
-    ud.texgenCB = NULL;
-    ud.texgenData = NULL;
-    PRIVATE(this)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::UNINITIALIZED;
-  }
+  PRIVATE(this)->unitdata.truncate(0);
+  PRIVATE(this)->sendlookup.truncate(0);
 }
 
 //!  FIXME: write doc.
@@ -123,14 +125,10 @@ SoGLMultiTextureCoordinateElement::push(SoState * state)
 {
   inherited::push(state);
   SoGLMultiTextureCoordinateElement * prev = (SoGLMultiTextureCoordinateElement*)this->getNextInStack();
-
+  
   PRIVATE(this)->contextid = PRIVATE(prev)->contextid;
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
-    PRIVATE(this)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::UNINITIALIZED;
-  }
-  // capture previous element since we might or might not change the
-  // GL state in set/pop
+  PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
+  
   prev->capture(state);
 }
 
@@ -145,10 +143,16 @@ SoGLMultiTextureCoordinateElement::pop(SoState * state,
 
   const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
 
-  for (int i = 0; i < MAX_UNITS; i++) {
-    const GLUnitData & thisud = PRIVATE(this)->unitdata[i];
-    const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
-
+  const int maxunits = SbMax(PRIVATE(this)->unitdata.getLength(), PRIVATE(prev)->unitdata.getLength());
+  
+  for (int i = 0; i < maxunits; i++) {
+    const GLUnitData & thisud = 
+      i < PRIVATE(this)->unitdata.getLength() ? 
+      PRIVATE(this)->unitdata[i] : PRIVATE(this)->defaultdata;
+    const GLUnitData & prevud = 
+      i < PRIVATE(prev)->unitdata.getLength() ?
+      PRIVATE(prev)->unitdata[i] : PRIVATE(prev)->defaultdata;
+    
     SbBool enablegen = FALSE;
     SbBool disablegen = FALSE;
     SbBool docallback = FALSE;
@@ -208,8 +212,9 @@ SoGLMultiTextureCoordinateElement::setTexGen(SoState * const state,
 SoMultiTextureCoordinateElement::CoordType
 SoGLMultiTextureCoordinateElement::getType(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
-  if (PRIVATE(this)->unitdata[unit].texgenCB) return SoMultiTextureCoordinateElement::NONE;
+  if (unit < PRIVATE(this)->unitdata.getLength()) {
+    if (PRIVATE(this)->unitdata[unit].texgenCB) return SoMultiTextureCoordinateElement::NONE;
+  }
   return inherited::getType(unit);
 }
 
@@ -231,6 +236,7 @@ SoGLMultiTextureCoordinateElement::send(const int unit, const int index) const
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
   const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
 
+  assert(unit < PRIVATE(this)->sendlookup.getLength());
   switch (PRIVATE(this)->sendlookup[unit]) {
   case SoGLMultiTextureCoordinateElementP::UNINITIALIZED:
     assert(0 && "should not happen");
@@ -267,7 +273,8 @@ SoGLMultiTextureCoordinateElement::send(const int unit,
   const UnitData & ud = this->getUnitData(unit);
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
   const cc_glglue * glue = cc_glglue_instance(PRIVATE(this)->contextid);
-
+  
+  assert(unit < PRIVATE(this)->sendlookup.getLength());
   switch (PRIVATE(this)->sendlookup[unit]) {
   case SoGLMultiTextureCoordinateElementP::NONE:
     break;
@@ -299,9 +306,9 @@ SoGLMultiTextureCoordinateElement::setElt(const int unit,
                                           SoTexCoordTexgenCB * func,
                                           void *data)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   GLUnitData & ud = PRIVATE(this)->unitdata[unit];
-
+  
   SbBool enablegen = FALSE;
   SbBool disablegen = FALSE;
   SbBool docallback = FALSE;
@@ -357,8 +364,9 @@ SoGLMultiTextureCoordinateElement::doCallback(const int unit) const
 void
 SoGLMultiTextureCoordinateElement::initRender(const SbBool * enabled, const int maxenabled) const
 {
+  PRIVATE(this)->sendlookup.truncate(0);
   for (int i = 0; i <= maxenabled; i++) {
-    PRIVATE(this)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::NONE;
+    PRIVATE(this)->sendlookup.append(SoGLMultiTextureCoordinateElementP::NONE);
     // init the sendloopup variable
     if (enabled[i]) {
       const UnitData & ud = this->getUnitData(i);
@@ -414,4 +422,3 @@ SoGLMultiTextureCoordinateElement::initMulti(SoState * state) const
 
 
 #undef PRIVATE
-#undef MAX_UNITS
