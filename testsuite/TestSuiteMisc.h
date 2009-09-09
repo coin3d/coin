@@ -29,7 +29,7 @@ inline bool floatEquals(float Ain, float Bin, int maxUlps)
     return false;
 }
 
-#define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 2000), std::string("unexpected value: expected ") + boost::lexical_cast<std::string>((Y)) +", got " + boost::lexical_cast<std::string>((X)) + " difference is: " + boost::lexical_cast<std::string>((X)-(Y)))
+#define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 1), std::string("unexpected value: expected ") + boost::lexical_cast<std::string>((Y)) +", got " + boost::lexical_cast<std::string>((X)) + " difference is: " + boost::lexical_cast<std::string>((X)-(Y)))
 
 /*
  * The following ostream << operators are needed for the Boost.Test macros
