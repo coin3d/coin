@@ -643,7 +643,7 @@ BOOST_AUTO_TEST_CASE(NULLreading)
   const char file[] =
     "[ DEF mycube Cube {} USE mycube ]";
   SoInput in;
-  in.setBuffer(reinterpret_cast<void *> (const_cast<char *> (file)), sizeof(file));
+  in.setBuffer(reinterpret_cast<const void *>(file), sizeof(file));
   SoMFNode field;
   BOOST_CHECK_MESSAGE(field.read(&in, SbName("test")),
                       "DEF/USE reading in SoMFNode is broken");

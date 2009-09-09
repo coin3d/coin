@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE(vrml97nullchild)
   char scene[] = "#VRML V2.0 utf8\n\nAppearance { material NULL }";
 
   SoInput * in = new SoInput;
-  in->setBuffer(scene, strlen(scene));
+  in->setBuffer(reinterpret_cast<const void*>(scene), strlen(scene));
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
   delete in;
