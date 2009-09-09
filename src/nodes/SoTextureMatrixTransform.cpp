@@ -148,9 +148,12 @@ SoTextureMatrixTransform::callback(SoCallbackAction *action)
 void
 SoTextureMatrixTransform::getMatrix(SoGetMatrixAction * action)
 {
-  SbMatrix mat = this->matrix.getValue();
-  action->getTextureMatrix().multLeft(mat);
-  action->getTextureInverse().multRight(mat.inverse());
+  int unit = SoTextureUnitElement::get(action->getState()); 
+  if (unit == 0) {
+    SbMatrix mat = this->matrix.getValue();
+    action->getTextureMatrix().multLeft(mat);
+    action->getTextureInverse().multRight(mat.inverse());
+  }
 }
 
 // Documented in superclass.
