@@ -41,8 +41,6 @@
 #include <Inventor/C/glue/gl.h>
 #include <cassert>
 
-#define MAX_UNITS 16
-
 SO_ELEMENT_SOURCE(SoGLMultiTextureEnabledElement);
 
 // doc from parent
@@ -91,7 +89,9 @@ SoGLMultiTextureEnabledElement::pop(SoState * state,
                                     const SoElement * prevTopElement)
 {
   SoGLMultiTextureEnabledElement * prev = (SoGLMultiTextureEnabledElement*) prevTopElement;
-  for (int i = 0; i < MAX_UNITS; i++) {
+  const int maxunits = SbMax(this->getMaxUnits(), prev->getMaxUnits());
+
+  for (int i = 0; i < maxunits; i++) {
     Mode oldmode = prev->getMode(i);
     Mode newmode =  this->getMode(i);
     if (oldmode != newmode) {

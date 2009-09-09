@@ -83,6 +83,7 @@ public:
   }
   
 protected:
+  int getMaxUnits() const;
   SbBool isEnabled(const int unit) const;
   Mode getMode(const int unit) const;
 

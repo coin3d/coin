@@ -48,15 +48,14 @@
 
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/lists/SbList.h>
 
 #include "coindefs.h"
 
-#define MAX_UNITS 16
-
 class SoMultiTextureEnabledElementP {
  public:
-  SbBool enabled[MAX_UNITS];
-  SoMultiTextureEnabledElement::Mode mode[MAX_UNITS];
+  SbList <SbBool> enabled;
+  SbList<SoMultiTextureEnabledElement::Mode> mode;
 };
 
 #define PRIVATE(obj) obj->pimpl
@@ -117,10 +116,8 @@ SoMultiTextureEnabledElement::set(SoState * state,
 void
 SoMultiTextureEnabledElement::init(SoState * COIN_UNUSED_ARG(state))
 {
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->mode[i] = DISABLED;
-    PRIVATE(this)->enabled[i] = FALSE;
-  }
+  PRIVATE(this)->mode.truncate(0);
+  PRIVATE(this)->enabled.truncate(0);
 }
 
 /*!
@@ -131,24 +128,25 @@ SoMultiTextureEnabledElement::get(SoState * state, const int unit)
 {
   const SoMultiTextureEnabledElement * elem =
     coin_assert_cast<const SoMultiTextureEnabledElement *>
-    (
-     SoElement::getConstElement(state, classStackIndex)
-     );
+    (SoElement::getConstElement(state, classStackIndex));
 
-  assert(unit >= 0 && unit < MAX_UNITS);
-  return PRIVATE(elem)->enabled[unit];
+  if (unit < PRIVATE(elem)->enabled.getLength()) {
+    return PRIVATE(elem)->enabled[unit];
+  }
+  return FALSE;
 }
 
 /*!
   virtual element set function.
 */
 void
-SoMultiTextureEnabledElement::setElt(const int unit, const int enabled)
+SoMultiTextureEnabledElement::setElt(const int unit, const int mode_in)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
-
-  Mode mode = static_cast<Mode>(enabled);
-
+  Mode mode = static_cast<Mode>(mode_in);
+  for (int i = PRIVATE(this)->enabled.getLength(); i <= unit; i++) { 
+    PRIVATE(this)->enabled.append(FALSE);
+    PRIVATE(this)->mode.append(DISABLED);
+  }
   PRIVATE(this)->enabled[unit] = mode != DISABLED;
   PRIVATE(this)->mode[unit] = mode;
 }
@@ -165,18 +163,16 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
 {
   const SoMultiTextureEnabledElement * elem =
     coin_assert_cast<const SoMultiTextureEnabledElement *>
-    (
-     SoElement::getConstElement(state, classStackIndex)
-     );
+    (SoElement::getConstElement(state, classStackIndex));
 
-  int i = MAX_UNITS-1;
+  int i = PRIVATE(elem)->enabled.getLength()-1;
   while (i >= 0) {
     if (PRIVATE(elem)->enabled[i]) break;
     i--;
   }
   if (i >= 0) {
     lastenabled = i;
-    return PRIVATE(elem)->enabled;
+    return PRIVATE(elem)->enabled.getArrayPtr();
   }
   lastenabled = -1;
   return NULL;
@@ -188,8 +184,10 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
 SbBool
 SoMultiTextureEnabledElement::isEnabled(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
-  return PRIVATE(this)->enabled[unit];
+  if (unit < PRIVATE(this)->enabled.getLength()) {
+    return PRIVATE(this)->enabled[unit];
+  }
+  return FALSE;
 }
 
 // doc in parent
@@ -197,13 +195,14 @@ void
 SoMultiTextureEnabledElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoMultiTextureEnabledElement * prev = coin_assert_cast<SoMultiTextureEnabledElement *>
-    (
-     this->getNextInStack()
-     );
+    (this->getNextInStack());
 
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->mode[i] = PRIVATE(prev)->mode[i];
-    PRIVATE(this)->enabled[i] = PRIVATE(prev)->enabled[i];
+  PRIVATE(this)->mode.truncate(0);
+  PRIVATE(this)->enabled.truncate(0);
+
+  for (int i = 0; i < PRIVATE(prev)->enabled.getLength(); i++) {
+    PRIVATE(this)->mode.append(PRIVATE(prev)->mode[i]);
+    PRIVATE(this)->enabled.append(PRIVATE(prev)->enabled[i]);
   }
 }
 
@@ -212,7 +211,9 @@ SoMultiTextureEnabledElement::matches(const SoElement * elem) const
 {
   const SoMultiTextureEnabledElement * e =
     coin_assert_cast<const SoMultiTextureEnabledElement *>(elem);
-  for (int i = 0; i < MAX_UNITS; i++) {
+  if (PRIVATE(e)->mode.getLength() != PRIVATE(this)->mode.getLength()) return FALSE;
+  
+  for (int i = 0; i < PRIVATE(e)->mode.getLength(); i++) {
     if (PRIVATE(e)->mode[i] != PRIVATE(this)->mode[i]) {
       return FALSE;
     }
@@ -225,8 +226,9 @@ SoMultiTextureEnabledElement::copyMatchInfo(void) const
 {
   SoMultiTextureEnabledElement * elem =
     static_cast<SoMultiTextureEnabledElement *>(getTypeId().createInstance());
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(elem)->mode[i]= PRIVATE(this)->mode[i];
+
+  for (int i = 0; i < PRIVATE(this)->mode.getLength(); i++) {
+    PRIVATE(elem)->mode.append(PRIVATE(this)->mode[i]);
   }
   return elem;
 }
@@ -242,18 +244,16 @@ SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
 {
   const SoMultiTextureEnabledElement * elem =
     coin_assert_cast<const SoMultiTextureEnabledElement *>
-    (
-    SoElement::getConstElement(state, classStackIndex)
-    );
-
-  int i = MAX_UNITS-1;
+    (SoElement::getConstElement(state, classStackIndex));
+  
+  int i = PRIVATE(elem)->mode.getLength()-1;
   while (i >= 0) {
     if (PRIVATE(elem)->mode[i] != DISABLED) break;
     i--;
   }
   if (i >= 0) {
     lastenabled = i;
-    return PRIVATE(elem)->mode;
+    return PRIVATE(elem)->mode.getArrayPtr();
   }
   return NULL;
 }
@@ -270,9 +270,7 @@ SoMultiTextureEnabledElement::enableRectangle(SoState * state,
 {
   SoMultiTextureEnabledElement * elem =
     coin_assert_cast<SoMultiTextureEnabledElement *>
-    (
-     state->getElement(classStackIndex)
-     );
+    (state->getElement(classStackIndex));
   elem->setElt(unit, static_cast<int>(RECTANGLE));
 }
 
@@ -287,9 +285,7 @@ SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
                                             const int unit)
 {
   SoMultiTextureEnabledElement * elem = coin_assert_cast<SoMultiTextureEnabledElement *>
-    (
-     state->getElement(classStackIndex)
-     );
+    (state->getElement(classStackIndex));
 
   elem->setElt(unit, static_cast<int>(CUBEMAP));
 }
@@ -305,9 +301,7 @@ SoMultiTextureEnabledElement::enableTexture3(SoState * state,
                                              const int unit)
 {
   SoMultiTextureEnabledElement * elem = coin_assert_cast<SoMultiTextureEnabledElement *>
-    (
-     state->getElement(classStackIndex)
-     );
+    (state->getElement(classStackIndex));
   
   elem->setElt(unit, static_cast<int>(TEXTURE3D));
 }
@@ -327,9 +321,7 @@ SoMultiTextureEnabledElement::disableAll(SoState * state)
   if (enabled) {
     SoMultiTextureEnabledElement * elem =
       coin_assert_cast<SoMultiTextureEnabledElement *>
-      (
-       state->getElement(classStackIndex)
-       );
+      (state->getElement(classStackIndex));
 
     for (int i = 0; i <= lastenabled; i++) {
       if (enabled[i]) {
@@ -350,11 +342,19 @@ SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
 {
   const SoMultiTextureEnabledElement * elem =
     coin_assert_cast<const SoMultiTextureEnabledElement *>
-    (
-     SoElement::getConstElement(state, classStackIndex)
-     );
+    (SoElement::getConstElement(state, classStackIndex));
 
   return elem->getMode(unit);
+}
+
+/*!
+  Returns the max number of texture units enabled/disabled
+  \since Coin 4.0
+ */
+int 
+SoMultiTextureEnabledElement::getMaxUnits() const
+{
+  return PRIVATE(this)->mode.getLength();
 }
 
 //
@@ -363,8 +363,10 @@ SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
 SoMultiTextureEnabledElement::Mode
 SoMultiTextureEnabledElement::getMode(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
-  return PRIVATE(this)->mode[unit];
+  if (unit < PRIVATE(this)->mode.getLength()) {
+    return PRIVATE(this)->mode[unit];
+  }
+  return DISABLED;
 }
 
 #undef MAX_UNITS
