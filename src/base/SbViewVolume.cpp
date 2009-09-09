@@ -982,16 +982,6 @@ SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft,
 
 #include <Inventor/SbBox3f.h>
 #include <cfloat>
-#include <boost/lexical_cast.hpp>
-
-namespace {
-  SbBool eq(float v1, float v2) {
-    float d = v1-v2;
-    return SbAbs(d) <= FLT_EPSILON;
-  }
-};
-
-#define TEST_CASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(eq((X), (Y)), std::string("unexpected value: expected " + boost::lexical_cast<std::string>((Y)) +", got " + boost::lexical_cast<std::string>((X))))
 
 BOOST_AUTO_TEST_CASE(intersect_ortho)
 {
@@ -1000,12 +990,12 @@ BOOST_AUTO_TEST_CASE(intersect_ortho)
   SbBox3f box(0, 0, 0, 1, 1, 1);
 
   SbBox3f isect = vv.intersectionBox(box);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[0], 0.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[1], 0.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[2], 0.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[0], 0.5f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[1], 0.5f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[2], 1.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[0], 0.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[1], 0.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[2], 0.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[0], 0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[1], 0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[2], 1.0f);
 }
 
 BOOST_AUTO_TEST_CASE(intersect_bbox_inside_vv)
@@ -1015,12 +1005,12 @@ BOOST_AUTO_TEST_CASE(intersect_bbox_inside_vv)
   SbBox3f box(-0.25, -0.25, -0.25, 0.25, 0.25, 0.25);
 
   SbBox3f isect = vv.intersectionBox(box);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[0], -0.25);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[1], -0.25f);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[2], -0.25f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[0], 0.25f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[1], 0.25f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[2], 0.25f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[0], -0.25);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[1], -0.25f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[2], -0.25f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[0], 0.25f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[1], 0.25f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[2], 0.25f);
 }
 
 BOOST_AUTO_TEST_CASE(intersect_vv_inside_bbox)
@@ -1030,12 +1020,12 @@ BOOST_AUTO_TEST_CASE(intersect_vv_inside_bbox)
   SbBox3f box(-10, -10, -10, 10, 10, 10);
 
   SbBox3f isect = vv.intersectionBox(box);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[0], -0.5f);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[1], -0.5f);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[2], -5.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[0], 0.5f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[1], 0.5f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[2], 0.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[0], -0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[1], -0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[2], -5.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[0], 0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[1], 0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[2], 0.0f);
 }
 
 BOOST_AUTO_TEST_CASE(intersect_perspective)
@@ -1048,12 +1038,12 @@ BOOST_AUTO_TEST_CASE(intersect_perspective)
   SbBox3f box(0, 0, 0, 1, 1, 1);
   SbBox3f isect = vv.intersectionBox(box);
 
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[0], 0.0);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[1], 0.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMin()[2], 0.25f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[0], 1.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[1], 1.0f);
-  TEST_CASE_CHECK_FLOAT(isect.getMax()[2], 0.75f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[0], 0.0);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[1], 0.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMin()[2], 0.25f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[0], 1.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[1], 1.0f);
+  COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[2], 0.75f);
 }
 
 #endif // COIN_TEST_SUITE
