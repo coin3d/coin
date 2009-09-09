@@ -51,10 +51,13 @@ public:
 
   class UnitData {
   public:
+    UnitData() : textureMatrix(SbMatrix::identity()) {}
+    UnitData(const UnitData & org) : textureMatrix(org.textureMatrix) {}
     SbMatrix textureMatrix;
   };
 
 protected:
+  int getNumUnits() const;
   UnitData & getUnitData(const int unit);
   const UnitData & getUnitData(const int unit) const;
 

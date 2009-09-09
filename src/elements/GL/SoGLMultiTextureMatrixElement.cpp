@@ -45,7 +45,6 @@
 
 SO_ELEMENT_SOURCE(SoGLMultiTextureMatrixElement);
 
-#define MAX_UNITS 16
 
 // doc from parent
 void
@@ -99,11 +98,20 @@ SoGLMultiTextureMatrixElement::pop(SoState * state,
 
   const SoGLMultiTextureMatrixElement * prev = 
     static_cast<const SoGLMultiTextureMatrixElement *> (prevTopElement);
-
-  for (int i = 0; i < MAX_UNITS; i++) {
-    const UnitData & thisud = this->getUnitData(i);
-    const UnitData & prevud = prev->getUnitData(i);
-    if (thisud.textureMatrix != prevud.textureMatrix) {
+  
+  SbMatrix identity = SbMatrix::identity();
+  const int numunits = SbMax(this->getNumUnits(),
+                             prev->getNumUnits());
+  for (int i = 0; i < numunits; i++) {
+    const SbMatrix & thism = 
+      (i < this->getNumUnits()) ?
+      this->getUnitData(i).textureMatrix : identity;
+    
+    const SbMatrix & prevm = 
+      (i < prev->getNumUnits()) ? 
+      prev->getUnitData(i).textureMatrix : identity;
+    
+    if (thism != prevm) {
       this->updategl(i);
     }
   }
@@ -113,7 +121,6 @@ SoGLMultiTextureMatrixElement::pop(SoState * state,
 void
 SoGLMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
   inherited::multElt(unit, matrix);
   this->updategl(unit);
 }
@@ -121,7 +128,6 @@ SoGLMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
 void
 SoGLMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
   inherited::setElt(unit, matrix);
   this->updategl(unit);
 }
@@ -136,12 +142,15 @@ SoGLMultiTextureMatrixElement::updategl(const int unit) const
     cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + unit));
   }
   glMatrixMode(GL_TEXTURE);
-  glLoadMatrixf(this->getUnitData(unit).textureMatrix[0]);
+  if (unit < this->getNumUnits()) {
+    glLoadMatrixf(this->getUnitData(unit).textureMatrix[0]);
+  }
+  else {
+    glLoadIdentity();
+  }
   glMatrixMode(GL_MODELVIEW);
-
   if (unit != 0) {
     cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
   }
 }
 
-#undef MAX_UNITS

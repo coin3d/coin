@@ -35,13 +35,18 @@
 #include "SbBasicP.h"
 
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
+#include <Inventor/lists/SbList.h>
 
-#define MAX_UNITS 16
 #define PRIVATE(obj) obj->pimpl
 
 class SoMultiTextureMatrixElementP {
 public:
-  SoMultiTextureMatrixElement::UnitData unitdata[MAX_UNITS];
+  void ensureCapacity(int unit) const {
+    while (unit >= this->unitdata.getLength()) {
+      this->unitdata.append(SoMultiTextureMatrixElement::UnitData());
+    }
+  }
+  mutable SbList<SoMultiTextureMatrixElement::UnitData> unitdata;
 };
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoMultiTextureMatrixElement);
@@ -77,9 +82,7 @@ void
 SoMultiTextureMatrixElement::set(SoState * const state, SoNode * const node, const int unit, const SbMatrix & matrix)
 {
   SoMultiTextureMatrixElement * elem = coin_assert_cast<SoMultiTextureMatrixElement *>
-    (
-     SoElement::getElement(state, classStackIndex)
-     );
+    (SoElement::getElement(state, classStackIndex));
   elem->setElt(unit, matrix);
   if (node) elem->addNodeId(node);
 }
@@ -95,9 +98,7 @@ SoMultiTextureMatrixElement::mult(SoState * const state,
                                   const SbMatrix & matrix)
 {
   SoMultiTextureMatrixElement * elem = coin_assert_cast<SoMultiTextureMatrixElement *>
-    (
-     SoElement::getElement(state, classStackIndex)
-     );
+    (SoElement::getElement(state, classStackIndex));
   elem->multElt(unit, matrix);
   if (node) elem->addNodeId(node);
 }
@@ -110,24 +111,28 @@ SoMultiTextureMatrixElement::get(SoState * const state, const int unit)
 {
   const SoMultiTextureMatrixElement * elem =
     coin_assert_cast<const SoMultiTextureMatrixElement *>
-    (
-     SoElement::getConstElement(state, classStackIndex)
-     );
+    (SoElement::getConstElement(state, classStackIndex));
   return elem->getElt(unit);
 }
 
 SoMultiTextureMatrixElement::UnitData &
 SoMultiTextureMatrixElement::getUnitData(const int unit)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   return PRIVATE(this)->unitdata[unit];
 }
 
 const SoMultiTextureMatrixElement::UnitData &
 SoMultiTextureMatrixElement::getUnitData(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   return PRIVATE(this)->unitdata[unit];
+}
+
+int 
+SoMultiTextureMatrixElement::getNumUnits() const
+{
+  return PRIVATE(this)->unitdata.getLength();
 }
 
 
@@ -138,7 +143,7 @@ SoMultiTextureMatrixElement::getUnitData(const int unit) const
 void
 SoMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   PRIVATE(this)->unitdata[unit].textureMatrix.multLeft(matrix);
 }
 
@@ -149,7 +154,7 @@ SoMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
 void
 SoMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   PRIVATE(this)->unitdata[unit].textureMatrix = matrix;
 }
 
@@ -159,6 +164,7 @@ SoMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)
 const SbMatrix &
 SoMultiTextureMatrixElement::getElt(const int unit) const
 {
+  PRIVATE(this)->ensureCapacity(unit);
   return PRIVATE(this)->unitdata[unit].textureMatrix;
 }
 
@@ -167,9 +173,6 @@ void
 SoMultiTextureMatrixElement::init(SoState * state)
 {
   inherited::init(state);
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i].textureMatrix.makeIdentity();
-  }
   this->clearNodeIds();
 }
 
@@ -182,17 +185,11 @@ SoMultiTextureMatrixElement::push(SoState * state)
 
   const SoMultiTextureMatrixElement * prev =
     coin_assert_cast<const SoMultiTextureMatrixElement *>
-    (
-     this->getNextInStack()
-     );
-
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];;
-  }
-
+    (this->getNextInStack());
+  
+  PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
   // make sure node ids are accumulated properly
   this->copyNodeIds(prev);
 }
 
 #undef PRIVATE
-#undef MAX_UNITS
