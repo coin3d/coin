@@ -39,6 +39,7 @@
 #include <cstring>
 
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/system/gl.h>
 
@@ -49,11 +50,14 @@
 using std::memcpy;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
-#define MAX_UNITS 16 // FIXME: make dynamic?????
-
 class SoTextureCombineElementP {
 public:
-  SoTextureCombineElement::UnitData unitdata[MAX_UNITS];
+  void ensureCapacity(int unit) const {
+    while (unit >= this->unitdata.getLength()) {
+      this->unitdata.append(SoTextureCombineElement::UnitData());
+    }
+  }
+  mutable SbList<SoTextureCombineElement::UnitData> unitdata;
 };
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoTextureCombineElement);
@@ -94,21 +98,6 @@ void
 SoTextureCombineElement::init(SoState * state)
 {
   inherited::init(state);
-  for (int i = 0; i < MAX_UNITS; i++) {
-    this->setDefaultValues(i);
-  }
-}
-
-//
-// private
-//
-void
-SoTextureCombineElement::setDefaultValues(const int unit)
-{
-  assert(unit >=0 && unit < MAX_UNITS);
-
-  UnitData & ud = PRIVATE(this)->unitdata[unit];
-  ud.nodeid = 0;
 }
 
 //! FIXME: write doc.
@@ -126,21 +115,18 @@ SoTextureCombineElement::set(SoState * const state, SoNode * const node,
                              const float alphascale)
 {
   SoTextureCombineElement * elem = coin_safe_cast<SoTextureCombineElement *>
-    (
-     state->getElement(classStackIndex)
-     );
-  if (elem) {
-    elem->setElt(unit, node->getNodeId(),
-                 rgboperation,
-                 alphaoperation,
-                 rgbsource,
-                 alphasource,
-                 rgboperand,
-                 alphaoperand,
-                 constantcolor,
-                 rgbscale,
-                 alphascale);
-  }
+    (state->getElement(classStackIndex));
+  PRIVATE(elem)->ensureCapacity(unit);
+  elem->setElt(unit, node->getNodeId(),
+               rgboperation,
+               alphaoperation,
+               rgbsource,
+               alphasource,
+               rgboperand,
+               alphaoperand,
+               constantcolor,
+               rgbscale,
+               alphascale);
 }
 
 
@@ -161,13 +147,11 @@ SoTextureCombineElement::get(SoState * const state,
 {
   const SoTextureCombineElement * elem =
     coin_assert_cast<const SoTextureCombineElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
-
-  assert(unit >= 0 && unit < MAX_UNITS);
+    (getConstElement(state, classStackIndex));
+  
+  assert(unit < PRIVATE(elem)->unitdata.getLength());
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   rgboperation = ud.rgboperation;
   alphaoperation = ud.alphaoperation;
   memcpy(rgbsource, ud.rgbsource, 3*sizeof(Source));
@@ -186,20 +170,19 @@ SoTextureCombineElement::isDefault(SoState * const state,
 {
   const SoTextureCombineElement * elem =
     coin_assert_cast<const SoTextureCombineElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
+    (getConstElement(state, classStackIndex));
 
-  assert(unit >= 0 && unit < MAX_UNITS);
-
-  return PRIVATE(elem)->unitdata[unit].nodeid == 0;
+  if (unit < PRIVATE(elem)->unitdata.getLength()) {
+    return PRIVATE(elem)->unitdata[unit].nodeid == 0;
+  }
+  return TRUE;
 }
 
 
 const SoTextureCombineElement::UnitData &
 SoTextureCombineElement::getUnitData(const int unit) const
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(this)->unitdata.getLength());
   return PRIVATE(this)->unitdata[unit];
 }
 
@@ -207,13 +190,8 @@ void
 SoTextureCombineElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoTextureCombineElement * prev = coin_assert_cast<SoTextureCombineElement *>
-    (
-     this->getNextInStack()
-     );
-
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(this)->unitdata[i] = PRIVATE(prev)->unitdata[i];
-  }
+    (this->getNextInStack());
+  PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
 
 SbBool
@@ -221,7 +199,10 @@ SoTextureCombineElement::matches(const SoElement * elem) const
 {
   const SoTextureCombineElement * e =
     coin_assert_cast<const SoTextureCombineElement *>(elem);
-  for (int i = 0; i < MAX_UNITS; i++) {
+  const int n = PRIVATE(e)->unitdata.getLength();
+  if (n != PRIVATE(this)->unitdata.getLength()) return FALSE;
+
+  for (int i = 0; i < n; i++) {
     if (PRIVATE(e)->unitdata[i].nodeid != PRIVATE(this)->unitdata[i].nodeid) {
       return FALSE;
     }
@@ -234,9 +215,7 @@ SoTextureCombineElement::copyMatchInfo(void) const
 {
   SoTextureCombineElement * elem =
     static_cast<SoTextureCombineElement *>(getTypeId().createInstance());
-  for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(elem)->unitdata[i].nodeid = PRIVATE(this)->unitdata[i].nodeid;
-  }
+  PRIVATE(elem)->unitdata = PRIVATE(this)->unitdata;
   return elem;
 }
 
@@ -257,7 +236,7 @@ SoTextureCombineElement::setElt(const int unit,
                                 const float alphascale)
 
 {
-  assert(unit >= 0 && unit < MAX_UNITS);
+  PRIVATE(this)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(this)->unitdata[unit];
 
   ud.nodeid = nodeid;
@@ -277,13 +256,11 @@ SoTextureCombineElement::apply(SoState * state, const int unit)
 {
   const SoTextureCombineElement * elem =
     coin_assert_cast<const SoTextureCombineElement *>
-    (
-     getConstElement(state, classStackIndex)
-     );
+    (getConstElement(state, classStackIndex));
 
-  assert(unit >= 0 && unit < MAX_UNITS);
+  assert(unit < PRIVATE(elem)->unitdata.getLength());
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-
+  
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, static_cast<GLenum>(ud.rgboperation));
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, static_cast<GLenum>(ud.alphaoperation));
@@ -310,6 +287,26 @@ SoTextureCombineElement::apply(SoState * state, const int unit)
   glTexEnvf(GL_TEXTURE_ENV, GL_ALPHA_SCALE, ud.alphascale);
 }
 
+SoTextureCombineElement::UnitData::UnitData()
+  : nodeid(0),
+    rgboperation(REPLACE),
+    alphaoperation(REPLACE),
+    constantcolor(0.0f, 0.0f, 0.0f, 0.0f),
+    rgbscale(1.0f),
+    alphascale(1.0f)
+{
+  for (int i = 0; i < 3; i++) {
+    rgbsource[i] = CONSTANT;
+    alphasource[i] = CONSTANT;
+    rgboperand[i] = SRC_COLOR;
+    alphaoperand[i] = SRC_COLOR;
+  }
+}
 
-#undef MAX_UNITS
+SoTextureCombineElement::UnitData::UnitData(const UnitData & org)
+{
+  memcpy(this, &org, sizeof(*this));
+}
+
+
 #undef PRIVATE

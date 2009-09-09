@@ -551,5 +551,4 @@ SoMultiTextureCoordinateElement::getMaxUnits() const
   return PRIVATE(this)->unitdata.getLength();
 }
 
-#undef MAX_UNITS
 #undef PRIVATE

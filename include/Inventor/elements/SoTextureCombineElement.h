@@ -115,6 +115,9 @@ public:
 
   class UnitData {
   public:
+    UnitData();
+    UnitData(const UnitData & org);
+
     uint32_t nodeid;
     Source rgbsource[3];
     Source alphasource[3];
@@ -131,7 +134,6 @@ protected:
   const UnitData & getUnitData(const int unit) const;
 
 private:
-  void setDefaultValues(const int unit);
   SoTextureCombineElementP * pimpl;
 };
 

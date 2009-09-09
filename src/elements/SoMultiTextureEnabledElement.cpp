@@ -364,5 +364,4 @@ SoMultiTextureEnabledElement::getMode(const int unit) const
   return DISABLED;
 }
 
-#undef MAX_UNITS
 #undef PRIVATE

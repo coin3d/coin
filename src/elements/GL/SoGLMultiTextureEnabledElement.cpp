@@ -173,4 +173,3 @@ SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, co
 
 }
 
-#undef MAX_UNITS
