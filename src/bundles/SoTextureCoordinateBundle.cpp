@@ -104,7 +104,7 @@ SoTextureCoordinateBundle(SoAction * const action,
         break;
       case SoMultiTextureCoordinateElement::EXPLICIT:
         this->flags |= FLAG_NEEDINDICES;
-        if (this->coordElt->getNum() > 0) {
+        if (this->coordElt->getNum(i) > 0) {
           this->flags |= FLAG_NEEDCOORDS;
         }
         else {
