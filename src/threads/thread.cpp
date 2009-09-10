@@ -247,10 +247,11 @@ cc_thread_init(void)
   actively re-configure Coin and build a special, local version. For
   configure-based builds (UNIX and UNIX-like systems, or with Cygwin
   on Microsoft Windows) this is done with the option
-  "--enable-threadsafe" to Autoconf configure. For how to change the
-  configuration and re-build with Visual Studio, get in touch with us
-  at "coin-support@coin3d.org".
-  </li>
+  "--enable-threadsafe" to Autoconf configure. To change the
+  configuration and re-build with Visual Studio, you will need to
+  change the preprocessor directive COIN_THREADSAFE to defined in the
+  file src/setup.h located in the same folder as you found your
+  solution file.</li>
 
   </ul>
 
@@ -277,10 +278,11 @@ cc_thread_init(void)
   structures versus what is used for the application's GUI event
   thread.
 
-  We are aware of at least issues with Qt (and thereby SoQt), where
+  We are aware of at least issues with Qt3 (and thereby SoQt), where
   you should not modify the scene graph in any way in a thread
   separate from the main Qt thread. This because it will trigger
-  operations where Qt is not thread-safe. </li>
+  operations where Qt3 is not thread-safe. For Qt4, we have not been
+  aware of such problems.</li>
 
   </ul>
 
