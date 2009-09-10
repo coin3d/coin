@@ -158,7 +158,8 @@ public:
 
 protected:
   const UnitData & getUnitData(const int unit) const;
-
+  int getNumUnits() const;
+  
 private:
   SoMultiTextureImageElementP * pimpl;
 

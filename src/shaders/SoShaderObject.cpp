@@ -650,7 +650,7 @@ SoShaderObjectP::updateCoinParameters(const uint32_t cachecontext, SoState * sta
     SoUniformShaderParameter * param =
       (SoUniformShaderParameter*)this->owner->parameter[i];
     SbName name = param->name.getValue();
-
+    
     if (strncmp(name.getString(), "coin_", 5) == 0) {
       if (name == "coin_texunit0_model") {
         SoMultiTextureImageElement::Model model;

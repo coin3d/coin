@@ -258,12 +258,13 @@ SoGLMultiTextureImageElement::get(SoState * state,
   const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
     getConstElement(state, classStackIndex);
 
-  PRIVATE(elem)->ensureCapacity(unit);
-  const UnitData & ud = elem->getUnitData(unit);
-
-  model = ud.model;
-  blendcolor = ud.blendColor;
-  return PRIVATE(elem)->unitdata[unit].glimage;
+  if (unit < elem->getNumUnits()) {
+    const UnitData & ud = elem->getUnitData(unit);
+    model = ud.model;
+    blendcolor = ud.blendColor;
+    return PRIVATE(elem)->unitdata[unit].glimage;
+  }
+  return NULL;
 }
 
 /*!

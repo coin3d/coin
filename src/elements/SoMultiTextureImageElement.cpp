@@ -294,6 +294,14 @@ SoMultiTextureImageElement::getUnitData(const int unit) const
   return PRIVATE(this)->unitdata[unit];
 }
 
+/*!
+  Get the number of units with image data set.
+*/
+int 
+SoMultiTextureImageElement::getNumUnits() const
+{
+  return PRIVATE(this)->unitdata.getLength();
+}
 
 //! FIXME: write doc.
 
