@@ -162,17 +162,17 @@ private:
   void initGL(void);
   void packColors(SoColorPacker * packer) const;
 
-  uint32_t didsetbitmask;
-  uint32_t didntsetbitmask;
-  uint32_t cachebitmask;
-  uint32_t opencacheflags;
+  mutable uint32_t didsetbitmask;
+  mutable uint32_t didntsetbitmask;
+  mutable uint32_t cachebitmask;
+  mutable uint32_t opencacheflags;
 
-  GLState glstate;
+  mutable GLState glstate;
   GLState * postcachestate;
   GLState * precachestate;
   SbBool colorindex;
-  SoColorPacker * colorpacker;
-  const uint32_t * packedpointer;
+  mutable SoColorPacker * colorpacker;
+  mutable const uint32_t * packedpointer;
   uint32_t transpmask;
   SoState * state;
   SoGLLazyElementP * pimpl; // for future use

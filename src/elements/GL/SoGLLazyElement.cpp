@@ -207,8 +207,8 @@ SoGLLazyElement::sendPackedDiffuse(const uint32_t col) const
              (unsigned char)((col>>16)&0xff),
              (unsigned char)((col>>8)&0xff),
              (unsigned char)(col&0xff));
-  ((SoGLLazyElement*)this)->glstate.diffuse = col;
-  ((SoGLLazyElement*)this)->cachebitmask |= DIFFUSE_MASK;
+  this->glstate.diffuse = col;
+  this->cachebitmask |= DIFFUSE_MASK;
 }
 
 inline void
@@ -216,8 +216,8 @@ SoGLLazyElement::sendLightModel(const int32_t model) const
 {
   if (model == PHONG) glEnable(GL_LIGHTING);
   else glDisable(GL_LIGHTING);
-  ((SoGLLazyElement*)this)->glstate.lightmodel = model;
-  ((SoGLLazyElement*)this)->cachebitmask |= LIGHT_MODEL_MASK;
+  this->glstate.lightmodel = model;
+  this->cachebitmask |= LIGHT_MODEL_MASK;
 }
 
 inline void
@@ -225,8 +225,8 @@ SoGLLazyElement::sendFlatshading(const SbBool onoff) const
 {
   if (onoff) glShadeModel(GL_FLAT);
   else glShadeModel(GL_SMOOTH);
-  ((SoGLLazyElement*)this)->glstate.flatshading = (int32_t) onoff;
-  ((SoGLLazyElement*)this)->cachebitmask |= SHADE_MODEL_MASK;
+  this->glstate.flatshading = (int32_t) onoff;
+  this->cachebitmask |= SHADE_MODEL_MASK;
 }
 
 inline void
@@ -239,8 +239,8 @@ SoGLLazyElement::sendAlphaTest(const SbBool onoff) const
   else {
     glDisable(GL_ALPHA_TEST);
   }
-  ((SoGLLazyElement*)this)->cachebitmask |= ALPHATEST_MASK;
-  ((SoGLLazyElement*)this)->glstate.alphatest = onoff;
+  this->cachebitmask |= ALPHATEST_MASK;
+  this->glstate.alphatest = onoff;
 }
 
 
@@ -248,16 +248,16 @@ inline void
 SoGLLazyElement::sendVertexOrdering(const VertexOrdering ordering) const
 {
   glFrontFace(ordering == CW ? GL_CW : GL_CCW);
-  ((SoGLLazyElement*)this)->glstate.vertexordering = (int32_t) ordering;
-  ((SoGLLazyElement*)this)->cachebitmask |= VERTEXORDERING_MASK;
+  this->glstate.vertexordering = (int32_t) ordering;
+  this->cachebitmask |= VERTEXORDERING_MASK;
 }
 
 inline void
 SoGLLazyElement::sendTwosideLighting(const SbBool onoff) const
 {
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, onoff ? GL_TRUE : GL_FALSE);
-  ((SoGLLazyElement*)this)->glstate.twoside = (int32_t) onoff;
-  ((SoGLLazyElement*)this)->cachebitmask |= TWOSIDE_MASK;
+  this->glstate.twoside = (int32_t) onoff;
+  this->cachebitmask |= TWOSIDE_MASK;
 }
 
 inline void
@@ -265,8 +265,8 @@ SoGLLazyElement::sendBackfaceCulling(const SbBool onoff) const
 {
   if (onoff) glEnable(GL_CULL_FACE);
   else glDisable(GL_CULL_FACE);
-  ((SoGLLazyElement*)this)->glstate.culling = onoff;
-  ((SoGLLazyElement*)this)->cachebitmask |= CULLING_MASK;
+  this->glstate.culling = onoff;
+  this->cachebitmask |= CULLING_MASK;
 }
 
 static inline void
@@ -283,32 +283,32 @@ inline void
 SoGLLazyElement::sendAmbient(const SbColor & color) const
 {
   send_gl_material(GL_AMBIENT, color);
-  ((SoGLLazyElement*)this)->glstate.ambient = color;
-  ((SoGLLazyElement*)this)->cachebitmask |= AMBIENT_MASK;
+  this->glstate.ambient = color;
+  this->cachebitmask |= AMBIENT_MASK;
 }
 
 inline void
 SoGLLazyElement::sendEmissive(const SbColor & color) const
 {
   send_gl_material(GL_EMISSION, color);
-  ((SoGLLazyElement*)this)->glstate.emissive = color;
-  ((SoGLLazyElement*)this)->cachebitmask |= EMISSIVE_MASK;
+  this->glstate.emissive = color;
+  this->cachebitmask |= EMISSIVE_MASK;
 }
 
 inline void
 SoGLLazyElement::sendSpecular(const SbColor & color) const
 {
   send_gl_material(GL_SPECULAR, color);
-  ((SoGLLazyElement*)this)->glstate.specular = color;
-  ((SoGLLazyElement*)this)->cachebitmask |= SPECULAR_MASK;
+  this->glstate.specular = color;
+  this->cachebitmask |= SPECULAR_MASK;
 }
 
 inline void
 SoGLLazyElement::sendShininess(const float shine) const
 {
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine*128.0f);
-  ((SoGLLazyElement*)this)->glstate.shininess = shine;
-  ((SoGLLazyElement*)this)->cachebitmask |= SHININESS_MASK;
+  this->glstate.shininess = shine;
+  this->cachebitmask |= SHININESS_MASK;
 }
 
 inline void
@@ -321,8 +321,8 @@ SoGLLazyElement::sendTransparency(const int stipplenum) const
     if (this->glstate.stipplenum <= 0) glEnable(GL_POLYGON_STIPPLE);
     glPolygonStipple(stipple_patterns[stipplenum]);
   }
-  ((SoGLLazyElement*)this)->glstate.stipplenum = stipplenum;
-  ((SoGLLazyElement*)this)->cachebitmask |= TRANSPARENCY_MASK;
+  this->glstate.stipplenum = stipplenum;
+  this->cachebitmask |= TRANSPARENCY_MASK;
 }
 
 inline void
@@ -330,12 +330,12 @@ SoGLLazyElement::enableBlending(const int sfactor, const int dfactor) const
 {
   glEnable(GL_BLEND);
   glBlendFunc((GLenum) sfactor, (GLenum) dfactor);
-  ((SoGLLazyElement*)this)->glstate.blending = TRUE;
-  ((SoGLLazyElement*)this)->glstate.blend_sfactor = sfactor;
-  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_sfactor = 0;
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = 0;
-  ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
+  this->glstate.blending = TRUE;
+  this->glstate.blend_sfactor = sfactor;
+  this->glstate.blend_dfactor = dfactor;
+  this->glstate.alpha_blend_sfactor = 0;
+  this->glstate.alpha_blend_dfactor = 0;
+  this->cachebitmask |= BLENDING_MASK;
 }
 
 inline void
@@ -354,20 +354,20 @@ SoGLLazyElement::enableSeparateBlending(const cc_glglue * glue,
       // fall back to normal blending
     glBlendFunc((GLenum) sfactor, (GLenum) dfactor);
   }
-  ((SoGLLazyElement*)this)->glstate.blending = TRUE;
-  ((SoGLLazyElement*)this)->glstate.blend_sfactor = sfactor;
-  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_sfactor = alpha_sfactor;
-  ((SoGLLazyElement*)this)->glstate.alpha_blend_dfactor = alpha_dfactor;
-  ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
+  this->glstate.blending = TRUE;
+  this->glstate.blend_sfactor = sfactor;
+  this->glstate.blend_dfactor = dfactor;
+  this->glstate.alpha_blend_sfactor = alpha_sfactor;
+  this->glstate.alpha_blend_dfactor = alpha_dfactor;
+  this->cachebitmask |= BLENDING_MASK;
 }
 
 inline void
 SoGLLazyElement::disableBlending(void) const
 {
   glDisable(GL_BLEND);
-  ((SoGLLazyElement*)this)->glstate.blending = FALSE;
-  ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
+  this->glstate.blending = FALSE;
+  this->cachebitmask |= BLENDING_MASK;
 }
 
 void
@@ -536,9 +536,9 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
         !this->colorpacker->transpMatch(this->coinstate.transpnodeid)) {
       this->packColors(this->colorpacker);
     }
-    ((SoGLLazyElement*)this)->packedpointer = this->colorpacker->getPackedColors();
+    this->packedpointer = this->colorpacker->getPackedColors();
   }
-  else ((SoGLLazyElement*)this)->packedpointer = this->coinstate.packedarray;
+  else this->packedpointer = this->coinstate.packedarray;
 
   assert(this->packedpointer);
 
@@ -560,7 +560,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
           // colors from a material node outside the cache.
           if ((this->precachestate->diffusenodeid == this->coinstate.diffusenodeid) ||
               (this->precachestate->transpnodeid == this->coinstate.transpnodeid)) {
-            ((SoGLLazyElement*)this)->opencacheflags |= FLAG_DIFFUSE_DEPENDENCY;
+            this->opencacheflags |= FLAG_DIFFUSE_DEPENDENCY;
           }
         }
         if (this->opencacheflags & FLAG_FORCE_DIFFUSE) {
@@ -572,7 +572,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
           else {
             this->sendPackedDiffuse(this->packedpointer[0]|this->transpmask);
           }
-          ((SoGLLazyElement*)this)->opencacheflags &= ~FLAG_FORCE_DIFFUSE;
+          this->opencacheflags &= ~FLAG_FORCE_DIFFUSE;
         }
         else {
           this->sendDiffuseByIndex(0);
