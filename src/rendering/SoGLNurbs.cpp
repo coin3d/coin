@@ -179,11 +179,21 @@ namespace {
     }
 
     static int oldnurbscomplexity = -1;
+    
+    // don't enable the new complexity algorithm for SCREEN_SPACE yet
+    // (unless the user sets it to off) since it's basically the same as
+    // OBJECT_SPACE. However, using SCREEN_SPACE complexity for an
+    // object built up from multiple patches is not recommended, since
+    // you'll get polygon cracks in the seams between the patches (the
+    // bounding box for each patch is used for calculating the
+    // complexity, they should really have been using the same complexity).
     if (oldnurbscomplexity == -1){
       const char * env = coin_getenv("COIN_OLD_NURBS_COMPLEXITY");
-      oldnurbscomplexity = env ? atoi(env) : 0;
+      oldnurbscomplexity = env ? atoi(env) : -2;
     }
-    if (oldnurbscomplexity) {
+    if ((oldnurbscomplexity > 0) || 
+        ((oldnurbscomplexity == -2) && 
+         (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::SCREEN_SPACE))) {
       switch (SoComplexityTypeElement::get(state)) {
       case SoComplexityTypeElement::SCREEN_SPACE:
         {
