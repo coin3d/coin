@@ -1668,54 +1668,6 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   SoViewingMatrixElement::set(state, cam, affine);
 }
 
-/*!
-  \DANGEROUS_ALLOC_RETURN
-
-  To avoid this potential problem, use the overloaded
-  getWriteFiletypeInfo() function with an SbPList for the second
-  argument instead.
- */
-void
-SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
-                                          SbList <SbName> & extlist,
-                                          SbString & fullname,
-                                          SbString & description)
-{
-  SoDebugError::postWarning("SoOffscreenRenderer::getWriteFiletypeInfo",
-                            "Obsoleted function. Use instead the overloaded "
-                            "method with an SbPList for the second argument.");
-
-  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-#if COIN_DEBUG
-    SoDebugError::postInfo("SoOffscreenRenderer::getWriteFiletypeInfo",
-                           "You need simage v1.1 for this functionality.");
-#endif // COIN_DEBUG
-    return;
-  }
-  extlist.truncate(0);
-  assert(idx >= 0 && idx < this->getNumWriteFiletypes());
-  void * saver = simage_wrapper()->simage_get_saver_handle(idx);
-  SbString allext(simage_wrapper()->simage_get_saver_extensions(saver));
-  const char * start = allext.getString();
-  const char * curr = start;
-  const char * end = strchr(curr, ',');
-  while (end) {
-    const ptrdiff_t offset_start = curr - start;
-    const ptrdiff_t offset_end = end - start - 1;
-    SbString ext = allext.getSubString((int)offset_start, (int)offset_end);
-    extlist.append(SbName(ext.getString()));
-    curr = end+1;
-    end = strchr(curr, ',');
-  }
-  const ptrdiff_t offset = curr - start;
-  SbString ext = allext.getSubString((int)offset);
-  extlist.append(SbName(ext.getString()));
-  const char * fullname_s = simage_wrapper()->simage_get_saver_fullname(saver);
-  const char * desc_s = simage_wrapper()->simage_get_saver_description(saver);
-  fullname = fullname_s ? SbString(fullname_s) : SbString("");
-  description = desc_s ? SbString(desc_s) : SbString("");
-}
-
 // *************************************************************************
 
 SbBool

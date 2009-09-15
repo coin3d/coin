@@ -79,24 +79,17 @@ public:
   SbBool writeToRGB(const char * filename) const;
   SbBool writeToPostScript(const char * filename) const;
   SbBool writeToPostScript(const char * filename, const SbVec2f & printsize) const;
-  
+
   SbBool isWriteSupported(const SbName & filetypeextension) const;
   int getNumWriteFiletypes(void) const;
   void getWriteFiletypeInfo(const int idx,
                             SbPList & extlist,
                             SbString & fullname,
                             SbString & description);
-  SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const; 
+  SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const;
 
   void setPbufferEnable(SbBool enable);
   SbBool getPbufferEnable(void) const;
-
-  // Please stop using this function. It will be removed in 
-  // Coin 4.0. Use the SbPList version instead.
-  void getWriteFiletypeInfo(const int idx,
-                            SbList <SbName> & extlist,
-                            SbString & fullname,
-                            SbString & description);
 
 private:
   friend class SoOffscreenRendererP;
