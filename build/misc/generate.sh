@@ -7,7 +7,8 @@ if test x"$COINDIR" = x""; then
   exit
 fi
 
-project=coin3
+project_name=coin
+project=${project_name}$(fgrep -i "${project_name}_MAJOR_VERSION=" ../../configure | cut -d= -f2)
 
 function cleansolution() {
   name=$1;
