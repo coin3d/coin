@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "coin3"=.\coin3.dsp - Package Owner=<4>
+Project: "coin4"=.\coin4.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "coin3_install"=.\coin3_install.dsp - Package Owner=<4>
+Project: "coin4_install"=.\coin4_install.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -24,13 +24,13 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
-    Project_Dep_Name coin3
+    Project_Dep_Name coin4
     End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "coin3_uninstall"=.\coin3_uninstall.dsp - Package Owner=<4>
+Project: "coin4_uninstall"=.\coin4_uninstall.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -42,7 +42,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "coin3_docs"=.\coin3_docs.dsp - Package Owner=<4>
+Project: "coin4_docs"=.\coin4_docs.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
