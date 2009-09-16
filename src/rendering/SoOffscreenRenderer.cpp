@@ -1513,9 +1513,16 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
 SbBool
 SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filetypeextension) const
 {
-  // FIXME: shouldn't there be warnings on these two? 20050510 mortene.
-  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) { return FALSE; }
-  if (SoOffscreenRendererP::offscreenContextsNotSupported()) { return FALSE; }
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+    SoDebugError::post(__FUNCTION__,
+                       "simage version is older than 1.1.0 ");
+    return FALSE;
+  }
+  if (SoOffscreenRendererP::offscreenContextsNotSupported()) {
+    SoDebugError::post(__FUNCTION__,
+                       "Offscreen contexts not supported.");
+    return FALSE;
+  }
 
   SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   int comp = (int) this->getComponents();
