@@ -1514,12 +1514,12 @@ SbBool
 SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-    SoDebugError::post(__FUNCTION__,
+    SoDebugError::post(__PRETTY_FUNCTION__,
                        "simage version is older than 1.1.0 ");
     return FALSE;
   }
   if (SoOffscreenRendererP::offscreenContextsNotSupported()) {
-    SoDebugError::post(__FUNCTION__,
+    SoDebugError::post(__PRETTY_FUNCTION__,
                        "Offscreen contexts not supported.");
     return FALSE;
   }
