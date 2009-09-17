@@ -29,13 +29,13 @@
 #define COIN_INT32_T int
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT64_T long long
+#define COIN_INT64_T __int64
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_INT8_T char
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INTPTR_T intptr_t
+#define COIN_INTPTR_T int
 
 /* Define when building Mac OS X framework */
 /* #undef COIN_MACOSX_FRAMEWORK */
@@ -50,16 +50,16 @@
 /* #undef COIN_MACOS_10_2 */
 
 /* define this to the libCoin major version number */
-#define COIN_MAJOR_VERSION 3
+#define COIN_MAJOR_VERSION 4
 
 /* define this to the libCoin release version number */
 #define COIN_MICRO_VERSION 0
 
 /* define this to the libCoin minor version number */
-#define COIN_MINOR_VERSION 1
+#define COIN_MINOR_VERSION 0
 
 /* define this to the dynamic library name of Coin */
-#define COIN_SYSTEM_LIBRARY_NAME "coin3d.dll"
+#define COIN_SYSTEM_LIBRARY_NAME "coin4d.dll"
 
 /* System dependent thread ID type */
 #define COIN_THREADID_TYPE DWORD
@@ -71,19 +71,19 @@
 #define COIN_UINT32_T unsigned int
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT64_T unsigned long long
+#define COIN_UINT64_T unsigned __int64
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_UINT8_T unsigned char
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINTPTR_T uintptr_t
+#define COIN_UINTPTR_T unsigned int
 
 /* define to "remove" conflicting IN_PATH define from <sys/unistd.h> */
 /* #undef COIN_UNDEF_IN_PATH_HACK */
 
 /* define this to the full libCoin major.minor.micro version number */
-#define COIN_VERSION "3.1.1a"
+#define COIN_VERSION "4.0.0a"
 
 /* define this to the dynamic library extension suffix on this system */
 #define DYNAMIC_LIBRARY_EXTENSION ".dll"
@@ -125,10 +125,10 @@
 /* #undef HAVE_CGL */
 
 /* The CPP compiler has a variable containing the current function name */
-#define HAVE_CPP_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
+/* #undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR */
 
 /* The C compiler has a variable containing the current function name */
-#define HAVE_C_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
+/* #undef HAVE_C_COMPILER_FUNCTION_NAME_VAR */
 
 /* Define to 1 if you have the <direct.h> header file. */
 #define HAVE_DIRECT_H 1
@@ -221,7 +221,7 @@
 /* #undef HAVE_INT8_T */
 
 /* define this if the type is available on the system */
-#define HAVE_INTPTR_T 1
+/* #undef HAVE_INTPTR_T */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 /* #undef HAVE_INTTYPES_H */
@@ -356,7 +356,7 @@
 /* #undef HAVE_UINT8_T */
 
 /* define this if the type is available on the system */
-#define HAVE_UINTPTR_T 1
+/* #undef HAVE_UINTPTR_T */
 
 /* Define to 1 if you have the <unistd.h> header file. */
 /* #undef HAVE_UNISTD_H */
@@ -434,13 +434,13 @@
 #define PACKAGE_NAME "Coin"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Coin 3.1.1a"
+#define PACKAGE_STRING "Coin 4.0.0a"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "coin"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "3.1.1a"
+#define PACKAGE_VERSION "4.0.0a"
 
 /* define for runtime linking with simage */
 #define SIMAGE_RUNTIME_LINKING 1
@@ -464,7 +464,7 @@
 #define USE_W32THREAD 
 
 /* Version number of package */
-#define VERSION "3.1.1a"
+#define VERSION "4.0.0a"
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #define X_DISPLAY_MISSING 1

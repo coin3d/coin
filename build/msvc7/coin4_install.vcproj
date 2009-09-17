@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="coin3_install"
+	Name="coin4_install"
 	SccProjectName=""
 	SccLocalPath=""
 	Keyword="MakeFileProj">
@@ -12,19 +12,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="DLL (Debug)|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
-			ConfigurationType="0"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc7 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc7 coin3 "
-				Output="coin3_install.exe"/>
-		</Configuration>
-		<Configuration
 			Name="LIB (Debug)|Win32"
 			OutputDirectory=".\StaticDebug"
 			IntermediateDirectory=".\StaticDebug"
@@ -33,9 +20,22 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc7 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc7 coin3 "
-				Output="coin3_install.exe"/>
+				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc6 coin4 "
+				Output="coin4_install.exe"/>
+		</Configuration>
+		<Configuration
+			Name="DLL (Debug)|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc6 coin4 "
+				Output="coin4_install.exe"/>
 		</Configuration>
 		<Configuration
 			Name="DLL (Release)|Win32"
@@ -46,9 +46,9 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll release msvc7 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc7 coin3 "
-				Output="coin3_install.exe"/>
+				BuildCommandLine="..\misc\install-sdk.bat dll release msvc6 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc6 coin4 "
+				Output="coin4_install.exe"/>
 		</Configuration>
 		<Configuration
 			Name="LIB (Release)|Win32"
@@ -59,9 +59,9 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib release msvc7 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc7 coin3 "
-				Output="coin3_install.exe"/>
+				BuildCommandLine="..\misc\install-sdk.bat lib release msvc6 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc6 coin4 "
+				Output="coin4_install.exe"/>
 		</Configuration>
 	</Configurations>
 	<References>

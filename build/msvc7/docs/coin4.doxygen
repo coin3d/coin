@@ -23,7 +23,7 @@ PROJECT_NAME           = Coin
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER         = 3.1.1a
+PROJECT_NUMBER         = 4.0.0a
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
@@ -447,7 +447,6 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = \
-		         ..\..\src\doc\main.dox \
                          .\include\Inventor\C\basic.h \
                          ..\..\docs\releases.dox \
                          ..\..\include\Inventor\C\XML\attribute.h \
@@ -1334,10 +1333,11 @@ INPUT                  = \
                          ..\..\src\details\SoNodeKitDetail.cpp \
                          ..\..\src\details\SoPointDetail.cpp \
                          ..\..\src\details\SoTextDetail.cpp \
-                         ..\..\src\doc\books.dox \
-                         ..\..\src\doc\environment.dox \
-                         ..\..\src\doc\macros.dox \
-                         ..\..\src\doc\modules.dox \
+                         ..\..\src\doc\Coin_books.dox \
+                         ..\..\src\doc\Coin_environment.dox \
+                         ..\..\src\doc\Coin_macros.dox \
+                         ..\..\src\doc\Coin_main.dox \
+                         ..\..\src\doc\Coin_modules.dox \
                          ..\..\src\draggers\SoCenterballDragger.cpp \
                          ..\..\src\draggers\SoDirectionalLightDragger.cpp \
                          ..\..\src\draggers\SoDragPointDragger.cpp \
@@ -2612,7 +2612,7 @@ EXTERNAL_GROUPS        = YES
 # The PERL_PATH should be the absolute path and name of the perl script
 # interpreter (i.e. the result of `which perl').
 
-PERL_PATH              = /cygdrive/c/Perl/bin/perl
+PERL_PATH              = /usr/bin/perl
 
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool

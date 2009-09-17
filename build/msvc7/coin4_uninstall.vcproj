@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="coin3_uninstall"
+	Name="coin4_uninstall"
 	SccProjectName=""
 	SccLocalPath=""
 	Keyword="MakeFileProj">
@@ -20,22 +20,9 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc7 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc7 coin3 "
-				Output="coin3_uninstall.exe"/>
-		</Configuration>
-		<Configuration
-			Name="DLL (Debug)|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
-			ConfigurationType="0"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc7 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc7 coin3 "
-				Output="coin3_uninstall.exe"/>
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4 "
+				Output="coin4_uninstall.exe"/>
 		</Configuration>
 		<Configuration
 			Name="LIB (Release)|Win32"
@@ -46,9 +33,22 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc7 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc7 coin3 "
-				Output="coin3_uninstall.exe"/>
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4 "
+				Output="coin4_uninstall.exe"/>
+		</Configuration>
+		<Configuration
+			Name="DLL (Debug)|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4 "
+				Output="coin4_uninstall.exe"/>
 		</Configuration>
 		<Configuration
 			Name="LIB (Debug)|Win32"
@@ -59,9 +59,9 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc7 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc7 coin3 "
-				Output="coin3_uninstall.exe"/>
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4 "
+				Output="coin4_uninstall.exe"/>
 		</Configuration>
 	</Configurations>
 	<References>
