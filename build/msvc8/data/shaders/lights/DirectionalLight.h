@@ -29,9 +29,9 @@
 
 static const char DIRECTIONALLIGHT_shadersource[] =
   "\n"
-  "void DirectionalLight(in int i,\n"
+  "void DirectionalLight(in vec3 light_vector,\n"
+  "                      in vec3 light_halfVector,\n"
   "                      in vec3 normal,\n"
-  "                      inout vec4 ambient,\n"
   "                      inout vec4 diffuse,\n"
   "                      inout vec4 specular)\n"
   "{\n"
@@ -39,8 +39,8 @@ static const char DIRECTIONALLIGHT_shadersource[] =
   "  float nDotHV; // normal . light half vector\n"
   "  float pf;     // power factor\n"
   "\n"
-  "  nDotVP = max(0.0, dot(normal, normalize(vec3(gl_LightSource[i].position))));\n"
-  "  nDotHV = max(0.0, dot(normal, vec3(gl_LightSource[i].halfVector)));\n"
+  "  nDotVP = max(0.0, dot(normal, light_vector));\n"
+  "  nDotHV = max(0.0, dot(normal, light_halfVector));\n"
   "\n"
   "  float shininess = gl_FrontMaterial.shininess;\n"
   "  if (nDotVP == 0.0)\n"
@@ -48,9 +48,8 @@ static const char DIRECTIONALLIGHT_shadersource[] =
   "  else\n"
   "    pf = pow(nDotHV, shininess);\n"
   "\n"
-  "  ambient += gl_LightSource[i].ambient;\n"
-  "  diffuse += gl_LightSource[i].diffuse * nDotVP;\n"
-  "  specular += gl_LightSource[i].specular * pf;\n"
+  "  diffuse *= nDotVP;  \n"
+  "  specular *= pf;\n"
   "}\n"
   "\n";
 

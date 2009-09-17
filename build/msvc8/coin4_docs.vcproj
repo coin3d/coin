@@ -2,8 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="coin3_docs"
-	ProjectGUID="{0BB55545-9770-43CF-B482-35A51D101440}"
+	Name="coin4_docs"
 	Keyword="MakeFileProj"
 	>
 	<Platforms>
@@ -15,20 +14,20 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="LIB (Debug)|Win32"
-			OutputDirectory=".\StaticDebug"
-			IntermediateDirectory=".\StaticDebug"
+			Name="DLL (Debug)|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat lib debug msvc8 coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc8 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_docs.exe"
+				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -42,39 +41,16 @@
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat dll release msvc8 coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc8 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll release msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_docs.exe"
-				PreprocessorDefinitions=""
-				IncludeSearchPath=""
-				ForcedIncludes=""
-				AssemblySearchPath=""
-				ForcedUsingAssemblies=""
-				CompileAsManaged=""
-			/>
-		</Configuration>
-		<Configuration
-			Name="DLL (Debug)|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
-			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat dll debug msvc8 coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc8 coin3 "
-				CleanCommandLine=""
-				Output="coin3_docs.exe"
+				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -88,16 +64,39 @@
 			OutputDirectory=".\StaticRelease"
 			IntermediateDirectory=".\StaticRelease"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat lib release msvc8 coin3"
-				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc8 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat lib release msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_docs.exe"
+				Output="coin4_docs.exe"
+				PreprocessorDefinitions=""
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="LIB (Debug)|Win32"
+			OutputDirectory=".\StaticDebug"
+			IntermediateDirectory=".\StaticDebug"
+			ConfigurationType="0"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\build-docs.bat lib debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc6 coin4 "
+				CleanCommandLine=""
+				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -119,7 +118,7 @@
 				>
 			</File>
 			<File
-				RelativePath="docs\coin3.doxygen"
+				RelativePath="docs\coin4.doxygen"
 				>
 			</File>
 			<File
