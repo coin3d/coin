@@ -137,6 +137,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\annex\ForeignFiles\SoForeignFileKit.h %
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h %COINDIR%\include\Inventor\annex\ForeignFiles\SoSTLFileKit.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowGroup.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowStyle.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowDirectionalLight.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowDirectionalLight.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowSpotLight.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h %COINDIR%\include\Inventor\annex\FXViz\nodes\SoShadowCulling.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h %COINDIR%\include\Inventor\annex\FXViz\elements\SoShadowStyleElement.h >nul:

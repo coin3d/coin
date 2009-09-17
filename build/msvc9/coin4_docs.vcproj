@@ -2,10 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="coin3_install"
-	ProjectGUID="{4A87045E-7702-43E8-9D65-E78A61F47FE4}"
+	Name="coin4_docs"
 	Keyword="MakeFileProj"
-	TargetFrameworkVersion="0"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -20,39 +19,16 @@
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc9 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc9 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_install.exe"
-				PreprocessorDefinitions=""
-				IncludeSearchPath=""
-				ForcedIncludes=""
-				AssemblySearchPath=""
-				ForcedUsingAssemblies=""
-				CompileAsManaged=""
-			/>
-		</Configuration>
-		<Configuration
-			Name="LIB (Debug)|Win32"
-			OutputDirectory=".\StaticDebug"
-			IntermediateDirectory=".\StaticDebug"
-			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc9 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc9 coin3 "
-				CleanCommandLine=""
-				Output="coin3_install.exe"
+				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -66,16 +42,16 @@
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll release msvc9 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc9 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat dll release msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_install.exe"
+				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -89,16 +65,39 @@
 			OutputDirectory=".\StaticRelease"
 			IntermediateDirectory=".\StaticRelease"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib release msvc9 coin3"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc9 coin3 "
+				BuildCommandLine="..\misc\build-docs.bat lib release msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_install.exe"
+				Output="coin4_docs.exe"
+				PreprocessorDefinitions=""
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="LIB (Debug)|Win32"
+			OutputDirectory=".\StaticDebug"
+			IntermediateDirectory=".\StaticDebug"
+			ConfigurationType="0"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\build-docs.bat lib debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc6 coin4 "
+				CleanCommandLine=""
+				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -116,15 +115,15 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;bat"
 			>
 			<File
-				RelativePath="..\misc\create-directories.bat"
+				RelativePath="..\misc\build-docs.bat"
 				>
 			</File>
 			<File
-				RelativePath="..\misc\install-headers.bat"
+				RelativePath="docs\coin4.doxygen"
 				>
 			</File>
 			<File
-				RelativePath="..\misc\install-sdk.bat"
+				RelativePath="..\html\index.html"
 				>
 			</File>
 		</Filter>

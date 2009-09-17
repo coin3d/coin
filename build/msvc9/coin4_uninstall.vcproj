@@ -2,10 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="coin3_uninstall"
-	ProjectGUID="{3AA17271-4396-4DB7-8A58-27A70BDDD9F8}"
+	Name="coin4_uninstall"
 	Keyword="MakeFileProj"
-	TargetFrameworkVersion="0"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -20,39 +19,16 @@
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc9 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc9 coin3 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
-				PreprocessorDefinitions=""
-				IncludeSearchPath=""
-				ForcedIncludes=""
-				AssemblySearchPath=""
-				ForcedUsingAssemblies=""
-				CompileAsManaged=""
-			/>
-		</Configuration>
-		<Configuration
-			Name="DLL (Debug)|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
-			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc9 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc9 coin3 "
-				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
+				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -66,16 +42,39 @@
 			OutputDirectory=".\StaticRelease"
 			IntermediateDirectory=".\StaticRelease"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc9 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc9 coin3 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
+				Output="coin4_uninstall.exe"
+				PreprocessorDefinitions=""
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="DLL (Debug)|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4 "
+				CleanCommandLine=""
+				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -89,16 +88,16 @@
 			OutputDirectory=".\StaticDebug"
 			IntermediateDirectory=".\StaticDebug"
 			ConfigurationType="0"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc9 coin3"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc9 coin3 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4 "
 				CleanCommandLine=""
-				Output="coin3_uninstall.exe"
+				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
