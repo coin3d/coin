@@ -1358,6 +1358,7 @@ SbBool
 SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+
     if (CoinOffscreenGLCanvas::debug()) {
       if (!simage_wrapper()->available) {
         SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
@@ -1516,8 +1517,19 @@ SbBool
 SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-    SoDebugError::post(BOOST_CURRENT_FUNCTION,
-                       "simage version is older than 1.1.0 ");
+    //FIXME: Shouldn't use BOOST_CURRENT_FUNCTION here, the
+    //HAVE_CPP_COMPILER_FUNCTION_NAME_VAR should be massaged correctly
+    //to fit here. BFG 20090917
+    if (!simage_wrapper()->available) {
+      SoDebugError::post(BOOST_CURRENT_FUNCTION,
+                             "simage library not available.");
+    }
+    else {
+      int major, minor, micro;
+      simage_wrapper()->simage_version(&major,&minor,&micro);
+      SoDebugError::post(BOOST_CURRENT_FUNCTION,
+                         "simage version is older than 1.1.0, available version is %d.%d.%d", major,minor,micro);
+    }
     return FALSE;
   }
   if (SoOffscreenRendererP::offscreenContextsNotSupported()) {
