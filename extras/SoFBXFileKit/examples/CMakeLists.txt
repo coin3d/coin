@@ -1,0 +1,11 @@
+ADD_EXECUTABLE(foreignconvert foreignconvert.cpp)
+TARGET_LINK_LIBRARIES(foreignconvert ${Coin_LIBRARY})
+
+SET(QT_USE_QTOPENGL TRUE)
+FIND_PACKAGE(Qt4)
+FIND_PACKAGE(SoQt)
+IF (QT4_FOUND AND SoQt_FOUND)
+  INCLUDE(${QT_USE_FILE})
+  ADD_EXECUTABLE(fbxviewer fbxviewer.cpp)
+  TARGET_LINK_LIBRARIES(fbxviewer ${Coin_LIBRARY} ${SoQt_LIBRARY} ${QT_LIBRARIES})
+ENDIF ()

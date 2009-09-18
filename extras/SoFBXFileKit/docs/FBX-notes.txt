@@ -1,0 +1,264 @@
+Suggestions, ideas etc. for how to get started with FBX development:
+--------------------------------------------------------------------
+
+o Make sure you can build, link and run code using SoFBXFileKit both using Coin's
+  autoloading feature and using a static or dynamically linked class.
+
+o Make sure you can run the CoinSurance test suite and be able to create and 
+  fix easy bugs and rerun it. The build setup of CoinSurance is a bit confusing and
+  should be fixed.
+
+o You need to be able to create test models. The vast majority of test
+  models created so far has been modelled in Maya. Note that FBX
+  output from Maya and 3D Studio Max differs, and some
+  features/issues/problems/bugs can only be reproduced by one of them.
+  -> Learn how to use at least one of these tools.
+
+o The current version of SoFBXFileKit is developed and tested against
+  the 2009.3 version of the FBX SDK. A new version (2010.0) has been released since then
+  but not tested. In addition, there is an alpha version available to developers.
+
+o Resources
+  o Register as a corporate end-user for the Autodesk Developer Network.
+    Ask Terje Wiesener for details.
+    -> Download and install Maya and/or 3D Studio Max.
+  o Google for "Autodesk FBX" to find the FBX page inside the Autodesk site
+  o Install the Maya and/or Max plugins, the FBX Converter (useful for testing)
+    and the FBXSDK.
+  o Optionally, you can download partial source code for some of the importers/exporters.
+    This is packaged in the "FBX Extensions" package (separate download)
+  o Register for the alpha/beta developer program at http://myfeedback.autodesk.com
+  o The FBX SDK ships with html docs and reference manual. Read them.
+
+o Tips & Tricks
+  o It's possible to export FBX files both as ASCII and binary. Make sure to
+    test both. Also, exporting as ASCII can make debugging a lot easier as you can
+    easily pinpoint e.g. differences in export between Maya and Max.
+    Most of the time, it's possible to directly map data you get through the API
+    with the corresponding entries in the ASCII files.
+  o Textures are a mess, both in FBX and in Coin and is handled
+    differently in Maya and Max. Spend time figuring this out!
+  o Read up on, test and understand layers in FBX. We mostly use layer 0,
+    but when e.g. using multitexturing with multiple UV sets, things can get messy.
+
+
+Bugs, missing features and weaknesses in Coin's FBX support:
+------------------------------------------------------------
+o Animations
+o NURBS curves
+o NURBS surfaces
+o Cameras
+o LODs
+o Shaders
+
+o Bump mapping support is very limited
+o IndexedFaceSet: default materialIndex -1 shouldn't be written
+o Negative scale factors will sometimes result in black geometry
+o Non-convex polygons are not triangulated. 
+  This can be done by applications using SoShapeHints
+o Build system is today qmake, should prob. be synced with Coin's build system
+o SoForeignFileKit:
+  - Design review!
+  - Add support for setting conversion parameters?
+  - Add support for a mapping from kit to file format suffix
+    to be able to autoload the correct library
+  - Handle multiple readers for the same format (e.g. 3ds is supported both
+    natively and through FBX)? Priority among these?
+  - Rewrite Coin's 3ds support to being an external foreignfilekit
+  - Error handling in case a read or conversion fails
+  - Rewrite dime's VMRL conversion to a foreignfilekit?
+  - Rewrite dgn2vrml to a foreignfilekit?
+o Handle texture not found -> dummy texture?
+
+
+
+Tips & Tricks when modeling for Coin
+------------------------------------
+o Try to void negative scale factors. This can confuse the Coin renderer.
+o Test extra carefully when using non-convex polygons
+o Some aspects of the visualization (e.g. things like two-sided lighting)
+  are the responsibility of the application. Make sure to test the model
+  both in the preview app and in the real app in case these are not in sync.
+
+
+
+Features to test for:
+----------------------
+
+Transformations:
+x PostRotation (rotate-axis.fbx)
+x geom transform (geom-transform.fbx)
+o transform combos
+  x parent-transform.fbx
+o Different inheritance types
+x correct order of operations (rotate-order.fbx)
+x correct pivot point handling (pivot.fbx)
+
+Normals:
+o Is it allowed to have an FBX file without normals
+o Is there an option for not exporting normals from Maya and/or Max?
+o Look into smoothing groups:
+  Export options, differences from Maya to Max, explicit vs. implicit smoothing.
+x Simple two-sided lighting (twosidedlighting.fbx)
+x More two-sided lighting, flipped normals, negative scaling (twosidedlighting.fbx)
+x Real-world example of mirrored geometry (mirror.fbx)
+
+Materials:
+x Basic (cube.fbx)
+x Basic (cube-blue.fbx)
+x Basic (cube-submeshes.fbx)
+x Multiple materials per mesh (cube-multimaterial.fbx)
+x Transparency (transparency-incandescence.fbx)
+x Specular, shininess (Spheres24Materials.fbx)
+x Multiple materials per mesh (cube-multimaterial.fbx)
+x Lambert, phong, adjust specular and transparency settings (sphere-multimaterial.fbx)
+x per-vertex colors (sphere-pervertexcolor.fbx)
+x Material reuse (material-reuse.fbx)
+o Per-face colors?
+o Other, more advanced stuff?
+o Double-sided shaded surfaces
+
+Lights:
+o Per object vs. global
+
+Cameras:
+In Maya, if I import an FBX model with cameras and re-export it, the
+cameras are lost, even if the export camera option is on (Example: B86Q560-01.fbx)
+-> Read up on cameras in Maya and figure out how to export them.
+o Perspective
+o Orthographic
+o Attached to object
+o Grouped under transform
+o Multiple cameras
+o Camera selector?
+
+Textures:
+x Minimal (texture-simple.fbx)
+x PSD texture; PSD (Photoshop) textures are smth. specific in Maya
+  and behave differently than normal textures (texture-simple-psd.fbx)
+x Texture transforms (texture-trans.fbx)
+x Texture with alpha component (texture-alpha.fbx)
+x Texture with diffuseFactor set (upper left of texture-trans.fbx)
+x Texture reuse (texture-reuse.fbx)
+o Monochrome texture
+o Per face vs. per object
+o Per material component?
+o Texture with transparency(Factor) set
+o Blend texture and material colors: Layered Shader Material?
+o Avoid blend texture and material colors
+o Multi-texturing
+  x simple (multitexture-simple.fbx)
+  x with different texture transforms (multitexture-transforms.fbx)
+  x with multiple UV sets and different index arrays (multitexture-twouvsets.fbx)
+  - Layered textures
+  - Separate textures per layer
+  - Blending modes FIXME: check multitexture-multiply
+  - It seems like a single UV set is exported as multiple sets, all being copies
+    of the same set. We could detect and merge these.
+o Bump mapping
+  x simple (bump-torus.fbx)
+  x bump + transparent texture (bump-transtex.fbx)
+  o Bump value
+o FBX features:
+  EMappingType
+  EWrapMode           NB! FBX exporter bug? Not exported. Create test model
+  ETextureUse
+  EAlphaSource
+  SwapUV
+  EMaterialUse
+  UseMipMap
+  EBlendMode
+
+Shaders:
+ In Maya, only CgFX shaders appear to be supported across platforms.
+o Simple example
+o Different shader languages
+o Vertex shaders
+o Fragment shaders
+o Geometry shaders
+o Various types of shaders
+o Shader parameters
+o Vertex attributes
+
+Meshes:
+o Convex vs. non-convex polygons (transform-inheritance.fbx, parent-transforms.fbx)
+
+Misc:
+x Object modifications (e.g. cube split unto muliple meshes), visible flag (cube-submeshes.fbx)
+o Multi/sub-objects in Max (subobject-max.fbx)
+o Adjust export options
+o Layers in Maya are ignored when exported (all geometry in all layers are exported flat)
+
+Ideas for more test objects:
+o Export both from Max and Maya to identify differences
+
+Coin Interpretation of misc. FBX nodes
+--------------------------------------
+
+Material:
+---------
+
+Calculated properties (may exist in files but are ignored):
+Diffuse = DiffuseFactor*DiffuseColor
+Emissive = EmissiveFactor*EmissiveColor
+Ambient = AmbientFactor*AmbientColor
+Specular = SpecularFactor*SpecularColor
+
+Ambient: Coin has a global setting: Environment->ambientIntensity which defaults to 0.2
+
+Whe using a texture with an alpha component, Maya sets the material to
+diffuse=0.8,0.8,0.8 transparency=0.5. This should be ignored since the
+Maya textures replace these material components.
+
+Specular:
+Maya:"Cosine Power" -> FBX:"ShininessExponent" == FBX:"Shininess"
+Max:"Specular Level"/100 -> FBX:"SpecularFactor"
+
+Max:"Glossiness": 2^(max(1,glossiness)/10)   -> FBX:"Shininess"
+
+Transforms:
+--------------
+                                   
+Maya:"Rotate Axis" -> FBX:"PostRotation"
+Maya:"Inherit Transform" -> NB! Not exported
+
+FBX:"GeometricTranslation","GeometricRotation","GeometricScaling" -> Maya:Not Available
+(the FBX importer precalculates the transform into the vertices)
+
+Textures:
+---------
+
+Note: Maya texture transforms happen around (0.5,0.5), not origo.
+      The FBX exporter will compensate for this, but it has a bug:
+      If there is a texture translation (Offset), it will be
+      calculated incorrectly. The Maya Offset appears to be a pre-transform,
+      while the compentation is calculated as a post-transform.
+
+Maya:"Coverage" -> -FBX:Not exported
+Maya:"Translate Frame" -> -FBX:Texture:"Translation"
+Maya:"Rotate Frame" -> FBX:Texture:"Rotation" + Translation
+Maya:"Repeat UV" -> FBX:Texture:"Scaling"
+Maya:"Offset" -> -FBX:Texture:"Translation"
+Maya:"Rotate UV" -> FBX:Texture:"Rotation" + Translation
+Maya:"Noise UV" -> FBX:Not exported
+Maya:"Wrap U"/"Wrap V" -> FBX:Not exported
+Maya:"Mirror U"/"Mirror V" -> FBX:Not exported
+Maya:"Stagger" -> FBX:Not exported
+
+Sub Objects (Max)
+-----------------
+
+One mesh can have different materials per face or group of faces.
+If these materials are textured, there can thus also be different texture coordinates
+for each group of faces. These are then stored as separate texture coordinate arrays
+on different layers. However, multitexturing is not used.
+This confuses SoFBXFileKit, which likes to collect all texture coordinate state only once
+for each mesh.
+
+Possible solutions:
+o Reindex all texture coordinate arrays into one coordinate array. Take special care if
+  multitexturing is used, and even more if multitexturing with multiple UV sets is used
+  in combination with per-face material.
+o Move texture coordinate state into each individual submesh. Make sure to avoid duplication.
+  Will this affect performance?
+
