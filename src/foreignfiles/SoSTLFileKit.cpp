@@ -240,7 +240,7 @@ SoSTLFileKit::canReadFile(const char * filename) const
   Returns FALSE if \a filename could not be opened or parsed
   correctly.
 
-  \sa canReadFile, canWriteScene, writeScene
+  \sa canReadFile
 */
 
 SbBool
@@ -380,107 +380,69 @@ SoSTLFileKit::readScene(SoNode * scene)
   return TRUE;
 }
 
-// doc in inherited class
-SbBool
-SoSTLFileKit::canWriteScene(const char * format) const
+SoSeparator *
+SoSTLFileKit::convert()
 {
-  if ( !format ) return TRUE;
-  // FIXME: implement format checking (VRML1, VRML97)
-  return TRUE;
-}
+  SoSeparator * sceneroot = new SoSeparator;
+  sceneroot->ref();
 
-/*!
-  Converts the STL model into a native scene graph.
-
-  \sa canWriteScene
-*/
-
-SbBool
-SoSTLFileKit::writeScene(SoNode *& root, const char * format)
-{
-  static const char default_format[] = "#VRML 1.0"; // syntax for this?
-  if ( !format ) format = default_format;
-
-  SbBool success = true;
-
-  // FIXME: implement format check to specify scene graph setup
-  enum Format {
-    UNKNOWN,
-    VRML1,
-    VRML97
-  };
-
-  Format build = VRML1;
-
-  if ( build == VRML1 ) {
-    // create VRML1 scene
-    SoSeparator * sceneroot = new SoSeparator;
-    sceneroot->ref();
-
-    SoInfo * info = new SoInfo;
-    info->string = "STL model data, created by Coin " COIN_VERSION ".";
-    sceneroot->addChild(info);
+  SoInfo * info = new SoInfo;
+  info->string = "STL model data, created by Coin " COIN_VERSION ".";
+  sceneroot->addChild(info);
     
-    SoShapeHints * shapehints_orig =
-      SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
-    SoShapeHints * shapehints_copy = new SoShapeHints;
-    shapehints_copy->copyContents(shapehints_orig, FALSE);
-    sceneroot->addChild(shapehints_copy);
+  SoShapeHints * shapehints_orig =
+    SO_GET_ANY_PART(this, "shapehints", SoShapeHints);
+  SoShapeHints * shapehints_copy = new SoShapeHints;
+  shapehints_copy->copyContents(shapehints_orig, FALSE);
+  sceneroot->addChild(shapehints_copy);
 
-    SoTexture2 * texture_orig = SO_GET_ANY_PART(this, "texture", SoTexture2);
-    SoTexture2 * texture_copy = new SoTexture2;
-    texture_copy->copyContents(texture_orig, FALSE);
-    sceneroot->addChild(texture_copy);
+  SoTexture2 * texture_orig = SO_GET_ANY_PART(this, "texture", SoTexture2);
+  SoTexture2 * texture_copy = new SoTexture2;
+  texture_copy->copyContents(texture_orig, FALSE);
+  sceneroot->addChild(texture_copy);
 
-    SoNormalBinding * normalbinding_orig =
-      SO_GET_ANY_PART(this, "normalbinding", SoNormalBinding);
-    SoNormalBinding * normalbinding_copy = new SoNormalBinding;
-    normalbinding_copy->copyContents(normalbinding_orig, FALSE);
-    sceneroot->addChild(normalbinding_copy);
+  SoNormalBinding * normalbinding_orig =
+    SO_GET_ANY_PART(this, "normalbinding", SoNormalBinding);
+  SoNormalBinding * normalbinding_copy = new SoNormalBinding;
+  normalbinding_copy->copyContents(normalbinding_orig, FALSE);
+  sceneroot->addChild(normalbinding_copy);
 
-    SoNormal * normals_orig = SO_GET_ANY_PART(this, "normals", SoNormal);
-    SoNormal * normals_copy = new SoNormal;
-    normals_copy->copyContents(normals_orig, FALSE);
-    sceneroot->addChild(normals_copy);
+  SoNormal * normals_orig = SO_GET_ANY_PART(this, "normals", SoNormal);
+  SoNormal * normals_copy = new SoNormal;
+  normals_copy->copyContents(normals_orig, FALSE);
+  sceneroot->addChild(normals_copy);
 
-    SoMaterialBinding * materialbinding_orig =
-      SO_GET_ANY_PART(this, "materialbinding", SoMaterialBinding);
-    SoMaterialBinding * materialbinding_copy = new SoMaterialBinding;
-    materialbinding_copy->copyContents(materialbinding_orig, FALSE);
-    sceneroot->addChild(materialbinding_copy);
+  SoMaterialBinding * materialbinding_orig =
+    SO_GET_ANY_PART(this, "materialbinding", SoMaterialBinding);
+  SoMaterialBinding * materialbinding_copy = new SoMaterialBinding;
+  materialbinding_copy->copyContents(materialbinding_orig, FALSE);
+  sceneroot->addChild(materialbinding_copy);
 
-    SoMaterial * material_orig = SO_GET_ANY_PART(this, "material", SoMaterial);
-    SoMaterial * material_copy = new SoMaterial;
-    material_copy->copyContents(material_orig, FALSE);
-    sceneroot->addChild(material_copy);
+  SoMaterial * material_orig = SO_GET_ANY_PART(this, "material", SoMaterial);
+  SoMaterial * material_copy = new SoMaterial;
+  material_copy->copyContents(material_orig, FALSE);
+  sceneroot->addChild(material_copy);
 
-    SoCoordinate3 * coordinates_orig =
-      SO_GET_ANY_PART(this, "coordinates", SoCoordinate3);
-    SoCoordinate3 * coordinates_copy = new SoCoordinate3;
-    coordinates_copy->copyContents(coordinates_orig, FALSE);
-    sceneroot->addChild(coordinates_copy);
+  SoCoordinate3 * coordinates_orig =
+    SO_GET_ANY_PART(this, "coordinates", SoCoordinate3);
+  SoCoordinate3 * coordinates_copy = new SoCoordinate3;
+  coordinates_copy->copyContents(coordinates_orig, FALSE);
+  sceneroot->addChild(coordinates_copy);
 
-    SoIndexedFaceSet * facets_orig =
-      SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
-    SoIndexedFaceSet * facets_copy = new SoIndexedFaceSet;
-    facets_copy->copyContents(facets_orig, FALSE);
-    sceneroot->addChild(facets_copy);
+  SoIndexedFaceSet * facets_orig =
+    SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
+  SoIndexedFaceSet * facets_copy = new SoIndexedFaceSet;
+  facets_copy->copyContents(facets_orig, FALSE);
+  sceneroot->addChild(facets_copy);
 
-    // optimize/reorganize mesh
-    SoReorganizeAction ra;
-    ra.apply(sceneroot);
+  // optimize/reorganize mesh
+  SoReorganizeAction ra;
+  ra.apply(sceneroot);
 
-    // FIXME: remove redundant scene graph nodes after scene reorganization
+  // FIXME: remove redundant scene graph nodes after scene reorganization
 
-    sceneroot->unrefNoDelete();
-    root = sceneroot;
-  } else {
-    SoDebugError::postWarning("SoSTLFileKit::writeScene",
-                              "unsupported format - could not create scene.");
-    success = FALSE;
-  }
-
-  return success;
+  sceneroot->unrefNoDelete();
+  return sceneroot;
 }
 
 // doc in inherited class

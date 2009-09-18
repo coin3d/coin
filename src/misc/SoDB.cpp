@@ -539,23 +539,23 @@ SoDB::read(SoInput * in, SoBase *& base)
 {
   SbBool valid = in->isValidFile();
 
-  if (!valid && SoDBP::is3dsFile(in)) {
-    base = SoDBP::read3DSFile(in);
-    return (base != NULL);
-  }
-
 #ifdef HAVE_NODEKITS
-  if ( !valid &&
+  if (!valid &&
        SoForeignFileKit::getClassTypeId() != SoType::badType() &&
-       SoForeignFileKit::isFileSupported(in) ) {
+       SoForeignFileKit::isFileSupported(in)) {
     base = SoForeignFileKit::createForeignFileKit(in);
     return (base != NULL);
   }
 #endif // NODEKITS
 
+  if (!valid && SoDBP::is3dsFile(in)) {
+    base = SoDBP::read3DSFile(in);
+    return (base != NULL);
+  }
+
   // Header is only required when reading from a stream, if reading from
   // memory no header is required.
-  if ( !valid ) {
+  if (!valid) {
     return FALSE;
   }
   return SoBase::read(in, base, SoBase::getClassTypeId());
@@ -1182,6 +1182,19 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 
   SbBool valid = in->isValidFile();
 
+#ifdef HAVE_NODEKITS
+  if (!valid &&
+       SoForeignFileKit::getClassTypeId() != SoType::badType() &&
+       SoForeignFileKit::isFileSupported(in)) {
+    SoForeignFileKit * kit = SoForeignFileKit::createForeignFileKit(in);
+    if (kit) {
+      SoGroup * root = (SoGroup *) grouptype.createInstance();
+      root->addChild(kit);
+      return root;
+    }
+  }
+#endif // HAVE_NODEKITS
+
   if (!valid && SoDBP::is3dsFile(in)) {
     SoSeparator * root3ds = SoDBP::read3DSFile(in);
     if (root3ds == NULL) { return NULL; }
@@ -1196,20 +1209,7 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     }
   }
 
-#ifdef HAVE_NODEKITS
-  if ( !valid &&
-       SoForeignFileKit::getClassTypeId() != SoType::badType() &&
-       SoForeignFileKit::isFileSupported(in) ) {
-    SoForeignFileKit * kit = SoForeignFileKit::createForeignFileKit(in);
-    if ( kit ) {
-      SoGroup * root = (SoGroup *) grouptype.createInstance();
-      root->addChild(kit);
-      return root;
-    }
-  }
-#endif // HAVE_NODEKITS
-
-  if ( !valid ) {
+  if (!valid) {
     SoReadError::post(in, "Not a valid Inventor file.");
     return NULL;
   }

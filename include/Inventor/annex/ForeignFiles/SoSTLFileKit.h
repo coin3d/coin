@@ -63,13 +63,14 @@ public:
   static SbBool identify(const char * filename);
   virtual SbBool canReadFile(const char * filename = NULL) const;
   virtual SbBool readFile(const char * filename);
-  virtual SbBool canReadScene(void) const;
-  virtual SbBool readScene(SoNode * scene);
 
   virtual SbBool canWriteFile(const char * filename = NULL) const;
   virtual SbBool writeFile(const char * filename);
-  virtual SbBool canWriteScene(const char * format = NULL) const;
-  virtual SbBool writeScene(SoNode *& root, const char * format = NULL);
+
+
+  SbBool canReadScene(void) const;
+  SbBool readScene(SoNode * scene);
+  virtual SoSeparator *convert();
 
 protected:
   virtual ~SoSTLFileKit(void);

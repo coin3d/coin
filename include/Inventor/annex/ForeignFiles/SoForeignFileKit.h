@@ -29,8 +29,6 @@
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 
-#include <Inventor/fields/SoSFString.h>
-
 typedef SbBool SoForeignFileIdentifyFunc(const char *);
 
 class SoForeignFileKitP;
@@ -44,24 +42,24 @@ class COIN_DLL_API SoForeignFileKit : public SoBaseKit {
 public:
   static void initClass(void);
 
-  SoSFString filename;
-
   static SbBool isFileSupported(SoInput * in, SbBool exhaust = FALSE);
-  static SoForeignFileKit * createForeignFileKit(SoInput * in, SbBool exhaust = FALSE);
-
   static SbBool isFileSupported(const char * filename, SbBool exhaust = FALSE);
+
+  static SoForeignFileKit * createForeignFileKit(SoInput * in, SbBool exhaust = FALSE);
   static SoForeignFileKit * createForeignFileKit(const char * filename, SbBool exhaust = FALSE);
 
-  // read support
+  // foreign read support
   virtual SbBool canReadFile(const char * filename = NULL) const;
   virtual SbBool readFile(const char * filename);
-  virtual SbBool canReadScene(void) const;
-  virtual SbBool readScene(SoNode * scene);
-  // write support
+  // foreign write support
   virtual SbBool canWriteFile(const char * filename = NULL) const;
   virtual SbBool writeFile(const char * filename);
-  virtual SbBool canWriteScene(const char * format = NULL) const;
-  virtual SbBool writeScene(SoNode *& root, const char * format = NULL);
+
+  /*!
+    Converts (if necessary) the internal representation of the foreign file to a pure Coin scenegraph.
+    Returns the root node with a refcount of 0.
+  */
+  virtual class SoSeparator *convert() = 0;
 
 protected:
   static void initClasses(void);

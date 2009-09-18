@@ -932,6 +932,18 @@ SoOutput::write(const float f)
 
     SbString s;
     s.sprintf(PRIVATE(this)->fltprecision.getString(), f);
+    
+    // make sure scientific exponential is written in a platform independent way
+    // always with three digits
+    int pos = s.find("e");
+    if(pos>0)
+      {
+	SbString exponential;
+	exponential.sprintf("%03d",atoi(s.getSubString(pos+2).getString()));
+	s=s.getSubString(0,pos+1)+exponential;
+
+      }
+
     this->writeBytesWithPadding(s.getString(), s.getLength());
 
     if (changed) { coin_locale_reset(&storedlocale); }
@@ -957,6 +969,18 @@ SoOutput::write(const double d)
 
     SbString s;
     s.sprintf(PRIVATE(this)->dblprecision.getString(), d);
+
+    // make sure scientific exponential is written in a platform independent way
+    // always with three digits
+    int pos = s.find("e");
+    if(pos>0)
+      {
+	SbString exponential;
+	exponential.sprintf("%03d",atoi(s.getSubString(pos+2).getString()));
+	s=s.getSubString(0,pos+1)+exponential;
+      }
+
+
     this->writeBytesWithPadding(s.getString(), s.getLength());
 
     if (changed) { coin_locale_reset(&storedlocale); }
