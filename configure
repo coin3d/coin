@@ -36910,30 +36910,36 @@ fi
     esac
   else
     LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
+    case $enable_debug in
+    no | false)
+      release_string=" (release)"
+      debug_flag=" /DEBUG"
+      ;;
+    *)
+      release_string=""
+      debug_flag=" /DEBUG"
+      ;;
+    esac
     case $enable_symbols in
     no | false)
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:dynamic .dll (release) + .pdb"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:dynamic .dll${release_string}"
 else
-  sim_ac_configuration_settings="Coin build type:dynamic .dll (release) + .pdb"
+  sim_ac_configuration_settings="Coin build type:dynamic .dll${release_string}"
 fi
 
-      # CFLAGS="-g $CFLAGS"
-      # CXXFLAGS="-g $CXXFLAGS"
-      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+      LIBFLAGS="$LIBFLAGS ${debug_flag}"
       ;;
     *)
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:dynamic .dll + .pdb"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:dynamic .dll${release_string} + .pdb"
 else
-  sim_ac_configuration_settings="Coin build type:dynamic .dll + .pdb"
+  sim_ac_configuration_settings="Coin build type:dynamic .dll${release_string} + .pdb"
 fi
 
-      CFLAGS="-g $CFLAGS"
-      CXXFLAGS="-g $CXXFLAGS"
-      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+      LIBFLAGS="$LIBFLAGS ${debug_flag} /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
       ;;
     esac
     LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
