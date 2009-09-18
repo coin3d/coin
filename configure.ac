@@ -2112,20 +2112,26 @@ if $BUILD_WITH_MSVC; then
     esac
   else
     LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
+    case $enable_debug in
+    no | false)
+      release_string=" (release)"
+      debug_flag=" /DEBUG"
+      ;;
+    *)
+      release_string=""
+      debug_flag=" /DEBUG"
+      ;;
+    esac
     case $enable_symbols in
     no | false)
       SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                   [dynamic .dll (release) + .pdb])
-      # CFLAGS="-g $CFLAGS"
-      # CXXFLAGS="-g $CXXFLAGS"
-      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+                                   [dynamic .dll${release_string}])
+      LIBFLAGS="$LIBFLAGS ${debug_flag}"
       ;;
     *)
       SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                   [dynamic .dll + .pdb])
-      CFLAGS="-g $CFLAGS"
-      CXXFLAGS="-g $CXXFLAGS"
-      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+                                   [dynamic .dll${release_string} + .pdb])
+      LIBFLAGS="$LIBFLAGS ${debug_flag} /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
       ;;
     esac
     LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
