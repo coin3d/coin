@@ -45,8 +45,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=0  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "NDEBUG"
 # ADD RSC /l 0x414 /d "NDEBUG"
@@ -71,8 +71,8 @@ LIB32=link.exe -lib
 # PROP Target_Dir ""
 MTL=midl.exe
 CPP=cl.exe
-# ADD BASE CPP /nologo /MDd /W3 /GX /GZ /Od /Zi /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MDd /W3 /GX /GZ /Od /Zi /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MDd /W3 /GX /GZ /Od /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_LIB" /D COIN_DEBUG=1  /D "HAVE_CONFIG_H" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 RSC=rc.exe
 # ADD BASE RSC /l 0x414 /d "_DEBUG"
 # ADD RSC /l 0x414 /d "_DEBUG"
@@ -97,8 +97,8 @@ LIB32=link.exe -lib
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /Ox /Gy /Zi /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D COIN_DEBUG=0 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -126,8 +126,8 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 CPP=cl.exe
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "C:\cygwin." /I "C:\cygwininclude" /I "C:\cygwin..\..\include" /I "C:\cygwinsrc" /I "C:\cygwin..\..\src" /I "C:\cygwin..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /GZ /Zi /Od /I "." /I "include" /I "..\..\include" /I "src" /I "..\..\src" /I "..\..\include\Inventor\annex" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D COIN_DEBUG=1 /D "HAVE_CONFIG_H" /D "COIN_MAKE_DLL" /D "YY_NO_UNISTD_H" /D "COIN_INTERNAL" /FD /c
 MTL=midl.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -194,7 +194,7 @@ SOURCE=..\..\ChangeLog
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\expat\xmlparse.c
+SOURCE=..\..\src\xml\expat\xmlparse.c
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml\expat"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -207,7 +207,7 @@ SOURCE=C:\cygwin..\..\src\xml\expat\xmlparse.c
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\expat\xmlrole.c
+SOURCE=..\..\src\xml\expat\xmlrole.c
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml\expat"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -220,7 +220,7 @@ SOURCE=C:\cygwin..\..\src\xml\expat\xmlrole.c
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\expat\xmltok.c
+SOURCE=..\..\src\xml\expat\xmltok.c
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml\expat"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -236,7 +236,7 @@ SOURCE=C:\cygwin..\..\src\xml\expat\xmltok.c
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\document.cpp
+SOURCE=..\..\src\xml\document.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -249,7 +249,7 @@ SOURCE=C:\cygwin..\..\src\xml\document.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\element.cpp
+SOURCE=..\..\src\xml\element.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -262,7 +262,7 @@ SOURCE=C:\cygwin..\..\src\xml\element.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\attribute.cpp
+SOURCE=..\..\src\xml\attribute.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -275,7 +275,7 @@ SOURCE=C:\cygwin..\..\src\xml\attribute.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\entity.cpp
+SOURCE=..\..\src\xml\entity.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -288,7 +288,7 @@ SOURCE=C:\cygwin..\..\src\xml\entity.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\utils.cpp
+SOURCE=..\..\src\xml\utils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -301,7 +301,7 @@ SOURCE=C:\cygwin..\..\src\xml\utils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\xml\path.cpp
+SOURCE=..\..\src\xml\path.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\xml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -317,7 +317,7 @@ SOURCE=C:\cygwin..\..\src\xml\path.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoAction.cpp
+SOURCE=..\..\src\actions\SoAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -330,7 +330,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoBoxHighlightRenderAction.cpp
+SOURCE=..\..\src\actions\SoBoxHighlightRenderAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -343,7 +343,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoBoxHighlightRenderAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoCallbackAction.cpp
+SOURCE=..\..\src\actions\SoCallbackAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -356,7 +356,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoCallbackAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoGLRenderAction.cpp
+SOURCE=..\..\src\actions\SoGLRenderAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -369,7 +369,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoGLRenderAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoGetBoundingBoxAction.cpp
+SOURCE=..\..\src\actions\SoGetBoundingBoxAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -382,7 +382,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoGetBoundingBoxAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoGetMatrixAction.cpp
+SOURCE=..\..\src\actions\SoGetMatrixAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -395,7 +395,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoGetMatrixAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoGetPrimitiveCountAction.cpp
+SOURCE=..\..\src\actions\SoGetPrimitiveCountAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -408,7 +408,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoGetPrimitiveCountAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoHandleEventAction.cpp
+SOURCE=..\..\src\actions\SoHandleEventAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -421,7 +421,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoHandleEventAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoLineHighlightRenderAction.cpp
+SOURCE=..\..\src\actions\SoLineHighlightRenderAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -434,7 +434,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoLineHighlightRenderAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoPickAction.cpp
+SOURCE=..\..\src\actions\SoPickAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -447,7 +447,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoPickAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoRayPickAction.cpp
+SOURCE=..\..\src\actions\SoRayPickAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -460,7 +460,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoRayPickAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoReorganizeAction.cpp
+SOURCE=..\..\src\actions\SoReorganizeAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -473,7 +473,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoReorganizeAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoSearchAction.cpp
+SOURCE=..\..\src\actions\SoSearchAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -486,7 +486,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoSearchAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoSimplifyAction.cpp
+SOURCE=..\..\src\actions\SoSimplifyAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -499,7 +499,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoSimplifyAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoToVRMLAction.cpp
+SOURCE=..\..\src\actions\SoToVRMLAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -512,7 +512,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoToVRMLAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoToVRML2Action.cpp
+SOURCE=..\..\src\actions\SoToVRML2Action.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -525,7 +525,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoToVRML2Action.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoWriteAction.cpp
+SOURCE=..\..\src\actions\SoWriteAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -538,7 +538,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoWriteAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\actions\SoAudioRenderAction.cpp
+SOURCE=..\..\src\actions\SoAudioRenderAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\actions"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -554,7 +554,7 @@ SOURCE=C:\cygwin..\..\src\actions\SoAudioRenderAction.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\dict.cpp
+SOURCE=..\..\src\base\dict.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -567,7 +567,7 @@ SOURCE=C:\cygwin..\..\src\base\dict.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\hash.cpp
+SOURCE=..\..\src\base\hash.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -580,7 +580,7 @@ SOURCE=C:\cygwin..\..\src\base\hash.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\heap.cpp
+SOURCE=..\..\src\base\heap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -593,7 +593,7 @@ SOURCE=C:\cygwin..\..\src\base\heap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\list.cpp
+SOURCE=..\..\src\base\list.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -606,7 +606,7 @@ SOURCE=C:\cygwin..\..\src\base\list.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\memalloc.cpp
+SOURCE=..\..\src\base\memalloc.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -619,7 +619,7 @@ SOURCE=C:\cygwin..\..\src\base\memalloc.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\rbptree.cpp
+SOURCE=..\..\src\base\rbptree.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -632,7 +632,7 @@ SOURCE=C:\cygwin..\..\src\base\rbptree.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\time.cpp
+SOURCE=..\..\src\base\time.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -645,7 +645,7 @@ SOURCE=C:\cygwin..\..\src\base\time.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\string.cpp
+SOURCE=..\..\src\base\string.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -658,7 +658,7 @@ SOURCE=C:\cygwin..\..\src\base\string.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\dynarray.cpp
+SOURCE=..\..\src\base\dynarray.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -671,7 +671,7 @@ SOURCE=C:\cygwin..\..\src\base\dynarray.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\namemap.cpp
+SOURCE=..\..\src\base\namemap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -684,7 +684,7 @@ SOURCE=C:\cygwin..\..\src\base\namemap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBSPTree.cpp
+SOURCE=..\..\src\base\SbBSPTree.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -697,7 +697,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBSPTree.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox2s.cpp
+SOURCE=..\..\src\base\SbBox2s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -710,7 +710,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox2s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox2i32.cpp
+SOURCE=..\..\src\base\SbBox2i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -723,7 +723,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox2i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox2f.cpp
+SOURCE=..\..\src\base\SbBox2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -736,7 +736,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox2d.cpp
+SOURCE=..\..\src\base\SbBox2d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -749,7 +749,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox3s.cpp
+SOURCE=..\..\src\base\SbBox3s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -762,7 +762,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox3s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox3i32.cpp
+SOURCE=..\..\src\base\SbBox3i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -775,7 +775,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox3i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox3f.cpp
+SOURCE=..\..\src\base\SbBox3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -788,7 +788,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbBox3d.cpp
+SOURCE=..\..\src\base\SbBox3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -801,7 +801,7 @@ SOURCE=C:\cygwin..\..\src\base\SbBox3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbClip.cpp
+SOURCE=..\..\src\base\SbClip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -814,7 +814,7 @@ SOURCE=C:\cygwin..\..\src\base\SbClip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbColor.cpp
+SOURCE=..\..\src\base\SbColor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -827,7 +827,7 @@ SOURCE=C:\cygwin..\..\src\base\SbColor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbColor4f.cpp
+SOURCE=..\..\src\base\SbColor4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -840,7 +840,7 @@ SOURCE=C:\cygwin..\..\src\base\SbColor4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbCylinder.cpp
+SOURCE=..\..\src\base\SbCylinder.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -853,7 +853,7 @@ SOURCE=C:\cygwin..\..\src\base\SbCylinder.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbDict.cpp
+SOURCE=..\..\src\base\SbDict.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -866,7 +866,7 @@ SOURCE=C:\cygwin..\..\src\base\SbDict.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbDPLine.cpp
+SOURCE=..\..\src\base\SbDPLine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -879,7 +879,7 @@ SOURCE=C:\cygwin..\..\src\base\SbDPLine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbDPMatrix.cpp
+SOURCE=..\..\src\base\SbDPMatrix.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -892,7 +892,7 @@ SOURCE=C:\cygwin..\..\src\base\SbDPMatrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbDPPlane.cpp
+SOURCE=..\..\src\base\SbDPPlane.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -905,7 +905,7 @@ SOURCE=C:\cygwin..\..\src\base\SbDPPlane.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbDPRotation.cpp
+SOURCE=..\..\src\base\SbDPRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -918,7 +918,7 @@ SOURCE=C:\cygwin..\..\src\base\SbDPRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbHeap.cpp
+SOURCE=..\..\src\base\SbHeap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -931,7 +931,7 @@ SOURCE=C:\cygwin..\..\src\base\SbHeap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbImage.cpp
+SOURCE=..\..\src\base\SbImage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -944,7 +944,7 @@ SOURCE=C:\cygwin..\..\src\base\SbImage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbLine.cpp
+SOURCE=..\..\src\base\SbLine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -957,7 +957,7 @@ SOURCE=C:\cygwin..\..\src\base\SbLine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbMatrix.cpp
+SOURCE=..\..\src\base\SbMatrix.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -970,7 +970,7 @@ SOURCE=C:\cygwin..\..\src\base\SbMatrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbName.cpp
+SOURCE=..\..\src\base\SbName.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -983,7 +983,7 @@ SOURCE=C:\cygwin..\..\src\base\SbName.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbOctTree.cpp
+SOURCE=..\..\src\base\SbOctTree.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -996,7 +996,7 @@ SOURCE=C:\cygwin..\..\src\base\SbOctTree.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbPlane.cpp
+SOURCE=..\..\src\base\SbPlane.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1009,7 +1009,7 @@ SOURCE=C:\cygwin..\..\src\base\SbPlane.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbRotation.cpp
+SOURCE=..\..\src\base\SbRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1022,7 +1022,7 @@ SOURCE=C:\cygwin..\..\src\base\SbRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbSphere.cpp
+SOURCE=..\..\src\base\SbSphere.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1035,7 +1035,7 @@ SOURCE=C:\cygwin..\..\src\base\SbSphere.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbString.cpp
+SOURCE=..\..\src\base\SbString.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1048,7 +1048,7 @@ SOURCE=C:\cygwin..\..\src\base\SbString.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbTesselator.cpp
+SOURCE=..\..\src\base\SbTesselator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1061,7 +1061,7 @@ SOURCE=C:\cygwin..\..\src\base\SbTesselator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbGLUTessellator.cpp
+SOURCE=..\..\src\base\SbGLUTessellator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1074,7 +1074,7 @@ SOURCE=C:\cygwin..\..\src\base\SbGLUTessellator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbTime.cpp
+SOURCE=..\..\src\base\SbTime.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1087,7 +1087,7 @@ SOURCE=C:\cygwin..\..\src\base\SbTime.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2b.cpp
+SOURCE=..\..\src\base\SbVec2b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1100,7 +1100,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2ub.cpp
+SOURCE=..\..\src\base\SbVec2ub.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1113,7 +1113,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2ub.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2s.cpp
+SOURCE=..\..\src\base\SbVec2s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1126,7 +1126,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2us.cpp
+SOURCE=..\..\src\base\SbVec2us.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1139,7 +1139,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2us.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2i32.cpp
+SOURCE=..\..\src\base\SbVec2i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1152,7 +1152,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2ui32.cpp
+SOURCE=..\..\src\base\SbVec2ui32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1165,7 +1165,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2ui32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2f.cpp
+SOURCE=..\..\src\base\SbVec2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1178,7 +1178,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec2d.cpp
+SOURCE=..\..\src\base\SbVec2d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1191,7 +1191,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3b.cpp
+SOURCE=..\..\src\base\SbVec3b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1204,7 +1204,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3ub.cpp
+SOURCE=..\..\src\base\SbVec3ub.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1217,7 +1217,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3ub.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3s.cpp
+SOURCE=..\..\src\base\SbVec3s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1230,7 +1230,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3us.cpp
+SOURCE=..\..\src\base\SbVec3us.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1243,7 +1243,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3us.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3i32.cpp
+SOURCE=..\..\src\base\SbVec3i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1256,7 +1256,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3ui32.cpp
+SOURCE=..\..\src\base\SbVec3ui32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1269,7 +1269,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3ui32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3f.cpp
+SOURCE=..\..\src\base\SbVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1282,7 +1282,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec3d.cpp
+SOURCE=..\..\src\base\SbVec3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1295,7 +1295,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4b.cpp
+SOURCE=..\..\src\base\SbVec4b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1308,7 +1308,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4ub.cpp
+SOURCE=..\..\src\base\SbVec4ub.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1321,7 +1321,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4ub.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4s.cpp
+SOURCE=..\..\src\base\SbVec4s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1334,7 +1334,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4us.cpp
+SOURCE=..\..\src\base\SbVec4us.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1347,7 +1347,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4us.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4i32.cpp
+SOURCE=..\..\src\base\SbVec4i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1360,7 +1360,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4ui32.cpp
+SOURCE=..\..\src\base\SbVec4ui32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1373,7 +1373,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4ui32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4f.cpp
+SOURCE=..\..\src\base\SbVec4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1386,7 +1386,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbVec4d.cpp
+SOURCE=..\..\src\base\SbVec4d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1399,7 +1399,7 @@ SOURCE=C:\cygwin..\..\src\base\SbVec4d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbViewVolume.cpp
+SOURCE=..\..\src\base\SbViewVolume.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1412,7 +1412,7 @@ SOURCE=C:\cygwin..\..\src\base\SbViewVolume.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbDPViewVolume.cpp
+SOURCE=..\..\src\base\SbDPViewVolume.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1425,7 +1425,7 @@ SOURCE=C:\cygwin..\..\src\base\SbDPViewVolume.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbViewportRegion.cpp
+SOURCE=..\..\src\base\SbViewportRegion.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1438,7 +1438,7 @@ SOURCE=C:\cygwin..\..\src\base\SbViewportRegion.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbXfBox3f.cpp
+SOURCE=..\..\src\base\SbXfBox3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1451,7 +1451,7 @@ SOURCE=C:\cygwin..\..\src\base\SbXfBox3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\base\SbXfBox3d.cpp
+SOURCE=..\..\src\base\SbXfBox3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1467,7 +1467,7 @@ SOURCE=C:\cygwin..\..\src\base\SbXfBox3d.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\bundles\SoBundle.cpp
+SOURCE=..\..\src\bundles\SoBundle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\bundles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1480,7 +1480,7 @@ SOURCE=C:\cygwin..\..\src\bundles\SoBundle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\bundles\SoMaterialBundle.cpp
+SOURCE=..\..\src\bundles\SoMaterialBundle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\bundles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1493,7 +1493,7 @@ SOURCE=C:\cygwin..\..\src\bundles\SoMaterialBundle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\bundles\SoNormalBundle.cpp
+SOURCE=..\..\src\bundles\SoNormalBundle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\bundles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1506,7 +1506,7 @@ SOURCE=C:\cygwin..\..\src\bundles\SoNormalBundle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\bundles\SoVertexAttributeBundle.cpp
+SOURCE=..\..\src\bundles\SoVertexAttributeBundle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\bundles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1519,7 +1519,7 @@ SOURCE=C:\cygwin..\..\src\bundles\SoVertexAttributeBundle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\bundles\SoTextureCoordinateBundle.cpp
+SOURCE=..\..\src\bundles\SoTextureCoordinateBundle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\bundles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1535,7 +1535,7 @@ SOURCE=C:\cygwin..\..\src\bundles\SoTextureCoordinateBundle.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoBoundingBoxCache.cpp
+SOURCE=..\..\src\caches\SoBoundingBoxCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1548,7 +1548,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoBoundingBoxCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoCache.cpp
+SOURCE=..\..\src\caches\SoCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1561,7 +1561,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoConvexDataCache.cpp
+SOURCE=..\..\src\caches\SoConvexDataCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1574,7 +1574,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoConvexDataCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoGLCacheList.cpp
+SOURCE=..\..\src\caches\SoGLCacheList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1587,7 +1587,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoGLCacheList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoGLRenderCache.cpp
+SOURCE=..\..\src\caches\SoGLRenderCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1600,7 +1600,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoGLRenderCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoNormalCache.cpp
+SOURCE=..\..\src\caches\SoNormalCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1613,7 +1613,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoNormalCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoTextureCoordinateCache.cpp
+SOURCE=..\..\src\caches\SoTextureCoordinateCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1626,7 +1626,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoTextureCoordinateCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoPrimitiveVertexCache.cpp
+SOURCE=..\..\src\caches\SoPrimitiveVertexCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1639,7 +1639,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoPrimitiveVertexCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoGlyphCache.cpp
+SOURCE=..\..\src\caches\SoGlyphCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1652,7 +1652,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoGlyphCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoShaderProgramCache.cpp
+SOURCE=..\..\src\caches\SoShaderProgramCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1665,7 +1665,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoShaderProgramCache.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\caches\SoVBOCache.cpp
+SOURCE=..\..\src\caches\SoVBOCache.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\caches"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1681,7 +1681,7 @@ SOURCE=C:\cygwin..\..\src\caches\SoVBOCache.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoDetail.cpp
+SOURCE=..\..\src\details\SoDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1694,7 +1694,7 @@ SOURCE=C:\cygwin..\..\src\details\SoDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoConeDetail.cpp
+SOURCE=..\..\src\details\SoConeDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1707,7 +1707,7 @@ SOURCE=C:\cygwin..\..\src\details\SoConeDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoCubeDetail.cpp
+SOURCE=..\..\src\details\SoCubeDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1720,7 +1720,7 @@ SOURCE=C:\cygwin..\..\src\details\SoCubeDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoCylinderDetail.cpp
+SOURCE=..\..\src\details\SoCylinderDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1733,7 +1733,7 @@ SOURCE=C:\cygwin..\..\src\details\SoCylinderDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoFaceDetail.cpp
+SOURCE=..\..\src\details\SoFaceDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1746,7 +1746,7 @@ SOURCE=C:\cygwin..\..\src\details\SoFaceDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoLineDetail.cpp
+SOURCE=..\..\src\details\SoLineDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1759,7 +1759,7 @@ SOURCE=C:\cygwin..\..\src\details\SoLineDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoNodeKitDetail.cpp
+SOURCE=..\..\src\details\SoNodeKitDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1772,7 +1772,7 @@ SOURCE=C:\cygwin..\..\src\details\SoNodeKitDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoPointDetail.cpp
+SOURCE=..\..\src\details\SoPointDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1785,7 +1785,7 @@ SOURCE=C:\cygwin..\..\src\details\SoPointDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\details\SoTextDetail.cpp
+SOURCE=..\..\src\details\SoTextDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\details"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1801,7 +1801,7 @@ SOURCE=C:\cygwin..\..\src\details\SoTextDetail.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoDragger.cpp
+SOURCE=..\..\src\draggers\SoDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1814,7 +1814,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoCenterballDragger.cpp
+SOURCE=..\..\src\draggers\SoCenterballDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1827,7 +1827,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoCenterballDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoDirectionalLightDragger.cpp
+SOURCE=..\..\src\draggers\SoDirectionalLightDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1840,7 +1840,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoDirectionalLightDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoDragPointDragger.cpp
+SOURCE=..\..\src\draggers\SoDragPointDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1853,7 +1853,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoDragPointDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoHandleBoxDragger.cpp
+SOURCE=..\..\src\draggers\SoHandleBoxDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1866,7 +1866,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoHandleBoxDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoJackDragger.cpp
+SOURCE=..\..\src\draggers\SoJackDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1879,7 +1879,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoJackDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoPointLightDragger.cpp
+SOURCE=..\..\src\draggers\SoPointLightDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1892,7 +1892,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoPointLightDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoRotateCylindricalDragger.cpp
+SOURCE=..\..\src\draggers\SoRotateCylindricalDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1905,7 +1905,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoRotateCylindricalDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoRotateDiscDragger.cpp
+SOURCE=..\..\src\draggers\SoRotateDiscDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1918,7 +1918,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoRotateDiscDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoRotateSphericalDragger.cpp
+SOURCE=..\..\src\draggers\SoRotateSphericalDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1931,7 +1931,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoRotateSphericalDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoScale1Dragger.cpp
+SOURCE=..\..\src\draggers\SoScale1Dragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1944,7 +1944,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoScale1Dragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoScale2Dragger.cpp
+SOURCE=..\..\src\draggers\SoScale2Dragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1957,7 +1957,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoScale2Dragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoScale2UniformDragger.cpp
+SOURCE=..\..\src\draggers\SoScale2UniformDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1970,7 +1970,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoScale2UniformDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoScaleUniformDragger.cpp
+SOURCE=..\..\src\draggers\SoScaleUniformDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1983,7 +1983,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoScaleUniformDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoSpotLightDragger.cpp
+SOURCE=..\..\src\draggers\SoSpotLightDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -1996,7 +1996,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoSpotLightDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTabBoxDragger.cpp
+SOURCE=..\..\src\draggers\SoTabBoxDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2009,7 +2009,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTabBoxDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTabPlaneDragger.cpp
+SOURCE=..\..\src\draggers\SoTabPlaneDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2022,7 +2022,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTabPlaneDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTrackballDragger.cpp
+SOURCE=..\..\src\draggers\SoTrackballDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2035,7 +2035,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTrackballDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTransformBoxDragger.cpp
+SOURCE=..\..\src\draggers\SoTransformBoxDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2048,7 +2048,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTransformBoxDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTransformerDragger.cpp
+SOURCE=..\..\src\draggers\SoTransformerDragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2061,7 +2061,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTransformerDragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTranslate1Dragger.cpp
+SOURCE=..\..\src\draggers\SoTranslate1Dragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2074,7 +2074,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTranslate1Dragger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\draggers\SoTranslate2Dragger.cpp
+SOURCE=..\..\src\draggers\SoTranslate2Dragger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\draggers"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2090,7 +2090,7 @@ SOURCE=C:\cygwin..\..\src\draggers\SoTranslate2Dragger.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLCacheContextElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLCacheContextElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2103,7 +2103,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLCacheContextElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLClipPlaneElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLClipPlaneElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2116,7 +2116,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLClipPlaneElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLColorIndexElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLColorIndexElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2129,7 +2129,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLColorIndexElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLCoordinateElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLCoordinateElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2142,7 +2142,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLDepthBufferElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLDepthBufferElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2155,7 +2155,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLDepthBufferElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLDrawStyleElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLDrawStyleElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2168,7 +2168,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLDrawStyleElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLEnvironmentElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLEnvironmentElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2181,7 +2181,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLEnvironmentElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLazyElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLLazyElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2194,7 +2194,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLazyElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLightIdElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLLightIdElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2207,7 +2207,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLightIdElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLinePatternElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLLinePatternElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2220,7 +2220,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLinePatternElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLineWidthElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLLineWidthElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2233,7 +2233,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLLineWidthElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLModelMatrixElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLModelMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2246,7 +2246,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLModelMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureCoordinateElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLMultiTextureCoordinateElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2259,7 +2259,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureEnabledElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLMultiTextureEnabledElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2272,7 +2272,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureEnabledElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureMatrixElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLMultiTextureMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2285,7 +2285,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureImageElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLMultiTextureImageElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2298,7 +2298,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLMultiTextureImageElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLNormalElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLNormalElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2311,7 +2311,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLNormalElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLPointSizeElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLPointSizeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2324,7 +2324,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLPointSizeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLPolygonOffsetElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLPolygonOffsetElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2337,7 +2337,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLPolygonOffsetElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLProjectionMatrixElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLProjectionMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2350,7 +2350,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLProjectionMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLRenderPassElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLRenderPassElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2363,7 +2363,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLRenderPassElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLShapeHintsElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLShapeHintsElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2376,7 +2376,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLShapeHintsElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLUpdateAreaElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLUpdateAreaElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2389,7 +2389,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLUpdateAreaElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLVBOElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLVBOElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2402,7 +2402,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLVBOElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLViewingMatrixElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLViewingMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2415,7 +2415,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLViewingMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLViewportRegionElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLViewportRegionElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2428,7 +2428,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLViewportRegionElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLDisplayList.cpp
+SOURCE=..\..\src\elements\GL\SoGLDisplayList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2441,7 +2441,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLDisplayList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoGLVertexAttributeElement.cpp
+SOURCE=..\..\src\elements\GL\SoGLVertexAttributeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2454,7 +2454,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoGLVertexAttributeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\GL\SoResetMatrixElement.cpp
+SOURCE=..\..\src\elements\GL\SoResetMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements\GL"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2470,7 +2470,7 @@ SOURCE=C:\cygwin..\..\src\elements\GL\SoResetMatrixElement.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoAccumulatedElement.cpp
+SOURCE=..\..\src\elements\SoAccumulatedElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2483,7 +2483,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoAccumulatedElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoAmbientColorElement.cpp
+SOURCE=..\..\src\elements\SoAmbientColorElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2496,7 +2496,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoAmbientColorElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoAnnoText3CharOrientElement.cpp
+SOURCE=..\..\src\elements\SoAnnoText3CharOrientElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2509,7 +2509,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoAnnoText3CharOrientElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoAnnoText3FontSizeHintElement.cpp
+SOURCE=..\..\src\elements\SoAnnoText3FontSizeHintElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2522,7 +2522,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoAnnoText3FontSizeHintElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoAnnoText3RenderPrintElement.cpp
+SOURCE=..\..\src\elements\SoAnnoText3RenderPrintElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2535,7 +2535,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoAnnoText3RenderPrintElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoBBoxModelMatrixElement.cpp
+SOURCE=..\..\src\elements\SoBBoxModelMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2548,7 +2548,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoBBoxModelMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoBumpMapElement.cpp
+SOURCE=..\..\src\elements\SoBumpMapElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2561,7 +2561,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoBumpMapElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoBumpMapCoordinateElement.cpp
+SOURCE=..\..\src\elements\SoBumpMapCoordinateElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2574,7 +2574,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoBumpMapCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoBumpMapMatrixElement.cpp
+SOURCE=..\..\src\elements\SoBumpMapMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2587,7 +2587,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoBumpMapMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoBumpMappingPropertyElement.cpp
+SOURCE=..\..\src\elements\SoBumpMappingPropertyElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2600,7 +2600,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoBumpMappingPropertyElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoCacheElement.cpp
+SOURCE=..\..\src\elements\SoCacheElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2613,7 +2613,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoCacheElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoCacheHintElement.cpp
+SOURCE=..\..\src\elements\SoCacheHintElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2626,7 +2626,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoCacheHintElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoClipPlaneElement.cpp
+SOURCE=..\..\src\elements\SoClipPlaneElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2639,7 +2639,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoClipPlaneElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoComplexityElement.cpp
+SOURCE=..\..\src\elements\SoComplexityElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2652,7 +2652,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoComplexityElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoComplexityTypeElement.cpp
+SOURCE=..\..\src\elements\SoComplexityTypeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2665,7 +2665,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoComplexityTypeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoCoordinateElement.cpp
+SOURCE=..\..\src\elements\SoCoordinateElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2678,7 +2678,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoCreaseAngleElement.cpp
+SOURCE=..\..\src\elements\SoCreaseAngleElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2691,7 +2691,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoCreaseAngleElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoCullElement.cpp
+SOURCE=..\..\src\elements\SoCullElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2704,7 +2704,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoCullElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoDecimationPercentageElement.cpp
+SOURCE=..\..\src\elements\SoDecimationPercentageElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2717,7 +2717,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoDecimationPercentageElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoDecimationTypeElement.cpp
+SOURCE=..\..\src\elements\SoDecimationTypeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2730,7 +2730,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoDecimationTypeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoDepthBufferElement.cpp
+SOURCE=..\..\src\elements\SoDepthBufferElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2743,7 +2743,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoDepthBufferElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoDiffuseColorElement.cpp
+SOURCE=..\..\src\elements\SoDiffuseColorElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2756,7 +2756,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoDiffuseColorElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoDrawStyleElement.cpp
+SOURCE=..\..\src\elements\SoDrawStyleElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2769,7 +2769,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoDrawStyleElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoElement.cpp
+SOURCE=..\..\src\elements\SoElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2782,7 +2782,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoEmissiveColorElement.cpp
+SOURCE=..\..\src\elements\SoEmissiveColorElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2795,7 +2795,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoEmissiveColorElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoEnvironmentElement.cpp
+SOURCE=..\..\src\elements\SoEnvironmentElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2808,7 +2808,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoEnvironmentElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoFloatElement.cpp
+SOURCE=..\..\src\elements\SoFloatElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2821,7 +2821,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoFloatElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoFocalDistanceElement.cpp
+SOURCE=..\..\src\elements\SoFocalDistanceElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2834,7 +2834,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoFocalDistanceElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoFontNameElement.cpp
+SOURCE=..\..\src\elements\SoFontNameElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2847,7 +2847,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoFontNameElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoFontSizeElement.cpp
+SOURCE=..\..\src\elements\SoFontSizeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2860,7 +2860,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoFontSizeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoInt32Element.cpp
+SOURCE=..\..\src\elements\SoInt32Element.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2873,7 +2873,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoInt32Element.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLazyElement.cpp
+SOURCE=..\..\src\elements\SoLazyElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2886,7 +2886,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLazyElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLightAttenuationElement.cpp
+SOURCE=..\..\src\elements\SoLightAttenuationElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2899,7 +2899,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLightAttenuationElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLightElement.cpp
+SOURCE=..\..\src\elements\SoLightElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2912,7 +2912,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLightElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLightModelElement.cpp
+SOURCE=..\..\src\elements\SoLightModelElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2925,7 +2925,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLightModelElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLinePatternElement.cpp
+SOURCE=..\..\src\elements\SoLinePatternElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2938,7 +2938,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLinePatternElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLineWidthElement.cpp
+SOURCE=..\..\src\elements\SoLineWidthElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2951,7 +2951,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLineWidthElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoLocalBBoxMatrixElement.cpp
+SOURCE=..\..\src\elements\SoLocalBBoxMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2964,7 +2964,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoLocalBBoxMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoMaterialBindingElement.cpp
+SOURCE=..\..\src\elements\SoMaterialBindingElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2977,7 +2977,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoMaterialBindingElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoVertexAttributeBindingElement.cpp
+SOURCE=..\..\src\elements\SoVertexAttributeBindingElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -2990,7 +2990,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoVertexAttributeBindingElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureCoordinateElement.cpp
+SOURCE=..\..\src\elements\SoMultiTextureCoordinateElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3003,7 +3003,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureEnabledElement.cpp
+SOURCE=..\..\src\elements\SoMultiTextureEnabledElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3016,7 +3016,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureEnabledElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureMatrixElement.cpp
+SOURCE=..\..\src\elements\SoMultiTextureMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3029,7 +3029,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureImageElement.cpp
+SOURCE=..\..\src\elements\SoMultiTextureImageElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3042,7 +3042,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoMultiTextureImageElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoModelMatrixElement.cpp
+SOURCE=..\..\src\elements\SoModelMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3055,7 +3055,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoModelMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoNormalBindingElement.cpp
+SOURCE=..\..\src\elements\SoNormalBindingElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3068,7 +3068,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoNormalBindingElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoNormalElement.cpp
+SOURCE=..\..\src\elements\SoNormalElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3081,7 +3081,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoNormalElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoOverrideElement.cpp
+SOURCE=..\..\src\elements\SoOverrideElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3094,7 +3094,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoOverrideElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoPickRayElement.cpp
+SOURCE=..\..\src\elements\SoPickRayElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3107,7 +3107,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoPickRayElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoPickStyleElement.cpp
+SOURCE=..\..\src\elements\SoPickStyleElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3120,7 +3120,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoPickStyleElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoPointSizeElement.cpp
+SOURCE=..\..\src\elements\SoPointSizeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3133,7 +3133,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoPointSizeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoPolygonOffsetElement.cpp
+SOURCE=..\..\src\elements\SoPolygonOffsetElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3146,7 +3146,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoPolygonOffsetElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoProfileCoordinateElement.cpp
+SOURCE=..\..\src\elements\SoProfileCoordinateElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3159,7 +3159,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoProfileCoordinateElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoProfileElement.cpp
+SOURCE=..\..\src\elements\SoProfileElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3172,7 +3172,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoProfileElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoProjectionMatrixElement.cpp
+SOURCE=..\..\src\elements\SoProjectionMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3185,7 +3185,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoProjectionMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoReplacedElement.cpp
+SOURCE=..\..\src\elements\SoReplacedElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3198,7 +3198,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoReplacedElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoShapeHintsElement.cpp
+SOURCE=..\..\src\elements\SoShapeHintsElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3211,7 +3211,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoShapeHintsElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoShapeStyleElement.cpp
+SOURCE=..\..\src\elements\SoShapeStyleElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3224,7 +3224,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoShapeStyleElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoShininessElement.cpp
+SOURCE=..\..\src\elements\SoShininessElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3237,7 +3237,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoShininessElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoSpecularColorElement.cpp
+SOURCE=..\..\src\elements\SoSpecularColorElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3250,7 +3250,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoSpecularColorElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoSwitchElement.cpp
+SOURCE=..\..\src\elements\SoSwitchElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3263,7 +3263,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoSwitchElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextOutlineEnabledElement.cpp
+SOURCE=..\..\src\elements\SoTextOutlineEnabledElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3276,7 +3276,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextOutlineEnabledElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureCombineElement.cpp
+SOURCE=..\..\src\elements\SoTextureCombineElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3289,7 +3289,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureCombineElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureCoordinateBindingElement.cpp
+SOURCE=..\..\src\elements\SoTextureCoordinateBindingElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3302,7 +3302,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureCoordinateBindingElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureOverrideElement.cpp
+SOURCE=..\..\src\elements\SoTextureOverrideElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3315,7 +3315,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureOverrideElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureScalePolicyElement.cpp
+SOURCE=..\..\src\elements\SoTextureScalePolicyElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3328,7 +3328,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureScalePolicyElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureScaleQualityElement.cpp
+SOURCE=..\..\src\elements\SoTextureScaleQualityElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3341,7 +3341,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureScaleQualityElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureUnitElement.cpp
+SOURCE=..\..\src\elements\SoTextureUnitElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3354,7 +3354,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureUnitElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTextureQualityElement.cpp
+SOURCE=..\..\src\elements\SoTextureQualityElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3367,7 +3367,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTextureQualityElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoTransparencyElement.cpp
+SOURCE=..\..\src\elements\SoTransparencyElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3380,7 +3380,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoTransparencyElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoUnitsElement.cpp
+SOURCE=..\..\src\elements\SoUnitsElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3393,7 +3393,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoUnitsElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoViewVolumeElement.cpp
+SOURCE=..\..\src\elements\SoViewVolumeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3406,7 +3406,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoViewVolumeElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoViewingMatrixElement.cpp
+SOURCE=..\..\src\elements\SoViewingMatrixElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3419,7 +3419,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoViewingMatrixElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoViewportRegionElement.cpp
+SOURCE=..\..\src\elements\SoViewportRegionElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3432,7 +3432,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoViewportRegionElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoWindowElement.cpp
+SOURCE=..\..\src\elements\SoWindowElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3445,7 +3445,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoWindowElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoListenerPositionElement.cpp
+SOURCE=..\..\src\elements\SoListenerPositionElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3458,7 +3458,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoListenerPositionElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoListenerOrientationElement.cpp
+SOURCE=..\..\src\elements\SoListenerOrientationElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3471,7 +3471,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoListenerOrientationElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoListenerGainElement.cpp
+SOURCE=..\..\src\elements\SoListenerGainElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3484,7 +3484,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoListenerGainElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoListenerDopplerElement.cpp
+SOURCE=..\..\src\elements\SoListenerDopplerElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3497,7 +3497,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoListenerDopplerElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoSoundElement.cpp
+SOURCE=..\..\src\elements\SoSoundElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3510,7 +3510,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoSoundElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\elements\SoVertexAttributeElement.cpp
+SOURCE=..\..\src\elements\SoVertexAttributeElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\elements"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3526,7 +3526,7 @@ SOURCE=C:\cygwin..\..\src\elements\SoVertexAttributeElement.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoBoolOperation.cpp
+SOURCE=..\..\src\engines\SoBoolOperation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3539,7 +3539,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoBoolOperation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoCalculator.cpp
+SOURCE=..\..\src\engines\SoCalculator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3552,7 +3552,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoCalculator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComposeMatrix.cpp
+SOURCE=..\..\src\engines\SoComposeMatrix.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3565,7 +3565,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComposeMatrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComposeRotation.cpp
+SOURCE=..\..\src\engines\SoComposeRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3578,7 +3578,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComposeRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComposeRotationFromTo.cpp
+SOURCE=..\..\src\engines\SoComposeRotationFromTo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3591,7 +3591,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComposeRotationFromTo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComposeVec2f.cpp
+SOURCE=..\..\src\engines\SoComposeVec2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3604,7 +3604,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComposeVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComposeVec3f.cpp
+SOURCE=..\..\src\engines\SoComposeVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3617,7 +3617,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComposeVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComposeVec4f.cpp
+SOURCE=..\..\src\engines\SoComposeVec4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3630,7 +3630,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComposeVec4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoComputeBoundingBox.cpp
+SOURCE=..\..\src\engines\SoComputeBoundingBox.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3643,7 +3643,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoComputeBoundingBox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoConcatenate.cpp
+SOURCE=..\..\src\engines\SoConcatenate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3656,7 +3656,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoConcatenate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoConvertAll.cpp
+SOURCE=..\..\src\engines\SoConvertAll.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3669,7 +3669,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoConvertAll.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoCounter.cpp
+SOURCE=..\..\src\engines\SoCounter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3682,7 +3682,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoCounter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoDecomposeMatrix.cpp
+SOURCE=..\..\src\engines\SoDecomposeMatrix.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3695,7 +3695,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoDecomposeMatrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoDecomposeRotation.cpp
+SOURCE=..\..\src\engines\SoDecomposeRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3708,7 +3708,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoDecomposeRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoDecomposeVec2f.cpp
+SOURCE=..\..\src\engines\SoDecomposeVec2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3721,7 +3721,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoDecomposeVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoDecomposeVec3f.cpp
+SOURCE=..\..\src\engines\SoDecomposeVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3734,7 +3734,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoDecomposeVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoDecomposeVec4f.cpp
+SOURCE=..\..\src\engines\SoDecomposeVec4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3747,7 +3747,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoDecomposeVec4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoElapsedTime.cpp
+SOURCE=..\..\src\engines\SoElapsedTime.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3760,7 +3760,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoElapsedTime.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoEngine.cpp
+SOURCE=..\..\src\engines\SoEngine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3773,7 +3773,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoEngine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoEngineOutput.cpp
+SOURCE=..\..\src\engines\SoEngineOutput.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3786,7 +3786,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoEngineOutput.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoFieldConverter.cpp
+SOURCE=..\..\src\engines\SoFieldConverter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3799,7 +3799,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoFieldConverter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoGate.cpp
+SOURCE=..\..\src\engines\SoGate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3812,7 +3812,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoGate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoInterpolate.cpp
+SOURCE=..\..\src\engines\SoInterpolate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3825,7 +3825,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoInterpolate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoInterpolateFloat.cpp
+SOURCE=..\..\src\engines\SoInterpolateFloat.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3838,7 +3838,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoInterpolateFloat.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoInterpolateRotation.cpp
+SOURCE=..\..\src\engines\SoInterpolateRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3851,7 +3851,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoInterpolateRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoInterpolateVec2f.cpp
+SOURCE=..\..\src\engines\SoInterpolateVec2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3864,7 +3864,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoInterpolateVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoInterpolateVec3f.cpp
+SOURCE=..\..\src\engines\SoInterpolateVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3877,7 +3877,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoInterpolateVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoInterpolateVec4f.cpp
+SOURCE=..\..\src\engines\SoInterpolateVec4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3890,7 +3890,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoInterpolateVec4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoNodeEngine.cpp
+SOURCE=..\..\src\engines\SoNodeEngine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3903,7 +3903,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoNodeEngine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoOnOff.cpp
+SOURCE=..\..\src\engines\SoOnOff.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3916,7 +3916,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoOnOff.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoOneShot.cpp
+SOURCE=..\..\src\engines\SoOneShot.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3929,7 +3929,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoOneShot.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoOutputData.cpp
+SOURCE=..\..\src\engines\SoOutputData.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3942,7 +3942,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoOutputData.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoSelectOne.cpp
+SOURCE=..\..\src\engines\SoSelectOne.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3955,7 +3955,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoSelectOne.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoTimeCounter.cpp
+SOURCE=..\..\src\engines\SoTimeCounter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3968,7 +3968,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoTimeCounter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoTransformVec3f.cpp
+SOURCE=..\..\src\engines\SoTransformVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3981,7 +3981,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoTransformVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoTriggerAny.cpp
+SOURCE=..\..\src\engines\SoTriggerAny.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -3994,7 +3994,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoTriggerAny.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoTexture2Convert.cpp
+SOURCE=..\..\src\engines\SoTexture2Convert.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4007,7 +4007,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoTexture2Convert.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\SoHeightMapToNormalMap.cpp
+SOURCE=..\..\src\engines\SoHeightMapToNormalMap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4020,7 +4020,7 @@ SOURCE=C:\cygwin..\..\src\engines\SoHeightMapToNormalMap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\evaluator.c
+SOURCE=..\..\src\engines\evaluator.c
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4033,7 +4033,7 @@ SOURCE=C:\cygwin..\..\src\engines\evaluator.c
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\engines\evaluator_tab.c
+SOURCE=..\..\src\engines\evaluator_tab.c
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\engines"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4049,7 +4049,7 @@ SOURCE=C:\cygwin..\..\src\engines\evaluator_tab.c
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\errors\error.cpp
+SOURCE=..\..\src\errors\error.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4062,7 +4062,7 @@ SOURCE=C:\cygwin..\..\src\errors\error.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\errors\debugerror.cpp
+SOURCE=..\..\src\errors\debugerror.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4075,7 +4075,7 @@ SOURCE=C:\cygwin..\..\src\errors\debugerror.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\errors\SoDebugError.cpp
+SOURCE=..\..\src\errors\SoDebugError.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4088,7 +4088,7 @@ SOURCE=C:\cygwin..\..\src\errors\SoDebugError.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\errors\SoError.cpp
+SOURCE=..\..\src\errors\SoError.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4101,7 +4101,7 @@ SOURCE=C:\cygwin..\..\src\errors\SoError.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\errors\SoMemoryError.cpp
+SOURCE=..\..\src\errors\SoMemoryError.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4114,7 +4114,7 @@ SOURCE=C:\cygwin..\..\src\errors\SoMemoryError.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\errors\SoReadError.cpp
+SOURCE=..\..\src\errors\SoReadError.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\errors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4130,7 +4130,7 @@ SOURCE=C:\cygwin..\..\src\errors\SoReadError.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoButtonEvent.cpp
+SOURCE=..\..\src\events\SoButtonEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4143,7 +4143,7 @@ SOURCE=C:\cygwin..\..\src\events\SoButtonEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoEvent.cpp
+SOURCE=..\..\src\events\SoEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4156,7 +4156,7 @@ SOURCE=C:\cygwin..\..\src\events\SoEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoKeyboardEvent.cpp
+SOURCE=..\..\src\events\SoKeyboardEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4169,7 +4169,7 @@ SOURCE=C:\cygwin..\..\src\events\SoKeyboardEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoLocation2Event.cpp
+SOURCE=..\..\src\events\SoLocation2Event.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4182,7 +4182,7 @@ SOURCE=C:\cygwin..\..\src\events\SoLocation2Event.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoMotion3Event.cpp
+SOURCE=..\..\src\events\SoMotion3Event.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4195,7 +4195,7 @@ SOURCE=C:\cygwin..\..\src\events\SoMotion3Event.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoMouseButtonEvent.cpp
+SOURCE=..\..\src\events\SoMouseButtonEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4208,7 +4208,7 @@ SOURCE=C:\cygwin..\..\src\events\SoMouseButtonEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\events\SoSpaceballButtonEvent.cpp
+SOURCE=..\..\src\events\SoSpaceballButtonEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\events"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4224,7 +4224,7 @@ SOURCE=C:\cygwin..\..\src\events\SoSpaceballButtonEvent.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoField.cpp
+SOURCE=..\..\src\fields\SoField.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4237,7 +4237,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoField.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoFieldContainer.cpp
+SOURCE=..\..\src\fields\SoFieldContainer.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4250,7 +4250,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoFieldContainer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoFieldData.cpp
+SOURCE=..\..\src\fields\SoFieldData.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4263,7 +4263,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoFieldData.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFBitMask.cpp
+SOURCE=..\..\src\fields\SoMFBitMask.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4276,7 +4276,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFBitMask.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFBool.cpp
+SOURCE=..\..\src\fields\SoMFBool.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4289,7 +4289,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFBool.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFColor.cpp
+SOURCE=..\..\src\fields\SoMFColor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4302,7 +4302,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFColor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFColorRGBA.cpp
+SOURCE=..\..\src\fields\SoMFColorRGBA.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4315,7 +4315,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFColorRGBA.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFDouble.cpp
+SOURCE=..\..\src\fields\SoMFDouble.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4328,7 +4328,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFDouble.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFEngine.cpp
+SOURCE=..\..\src\fields\SoMFEngine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4341,7 +4341,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFEngine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFEnum.cpp
+SOURCE=..\..\src\fields\SoMFEnum.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4354,7 +4354,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFEnum.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFFloat.cpp
+SOURCE=..\..\src\fields\SoMFFloat.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4367,7 +4367,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFFloat.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFInt32.cpp
+SOURCE=..\..\src\fields\SoMFInt32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4380,7 +4380,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFInt32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFMatrix.cpp
+SOURCE=..\..\src\fields\SoMFMatrix.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4393,7 +4393,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFMatrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFName.cpp
+SOURCE=..\..\src\fields\SoMFName.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4406,7 +4406,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFName.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFNode.cpp
+SOURCE=..\..\src\fields\SoMFNode.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4419,7 +4419,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFNode.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFPath.cpp
+SOURCE=..\..\src\fields\SoMFPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4432,7 +4432,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFPlane.cpp
+SOURCE=..\..\src\fields\SoMFPlane.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4445,7 +4445,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFPlane.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFRotation.cpp
+SOURCE=..\..\src\fields\SoMFRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4458,7 +4458,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFShort.cpp
+SOURCE=..\..\src\fields\SoMFShort.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4471,7 +4471,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFShort.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFString.cpp
+SOURCE=..\..\src\fields\SoMFString.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4484,7 +4484,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFString.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFTime.cpp
+SOURCE=..\..\src\fields\SoMFTime.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4497,7 +4497,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFTime.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFUInt32.cpp
+SOURCE=..\..\src\fields\SoMFUInt32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4510,7 +4510,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFUInt32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFUShort.cpp
+SOURCE=..\..\src\fields\SoMFUShort.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4523,7 +4523,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFUShort.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec2b.cpp
+SOURCE=..\..\src\fields\SoMFVec2b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4536,7 +4536,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec2b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec2s.cpp
+SOURCE=..\..\src\fields\SoMFVec2s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4549,7 +4549,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec2s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec2i32.cpp
+SOURCE=..\..\src\fields\SoMFVec2i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4562,7 +4562,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec2i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec2f.cpp
+SOURCE=..\..\src\fields\SoMFVec2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4575,7 +4575,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec2d.cpp
+SOURCE=..\..\src\fields\SoMFVec2d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4588,7 +4588,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec3b.cpp
+SOURCE=..\..\src\fields\SoMFVec3b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4601,7 +4601,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec3b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec3s.cpp
+SOURCE=..\..\src\fields\SoMFVec3s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4614,7 +4614,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec3s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec3i32.cpp
+SOURCE=..\..\src\fields\SoMFVec3i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4627,7 +4627,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec3i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec3f.cpp
+SOURCE=..\..\src\fields\SoMFVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4640,7 +4640,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec3d.cpp
+SOURCE=..\..\src\fields\SoMFVec3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4653,7 +4653,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4b.cpp
+SOURCE=..\..\src\fields\SoMFVec4b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4666,7 +4666,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4ub.cpp
+SOURCE=..\..\src\fields\SoMFVec4ub.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4679,7 +4679,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4ub.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4s.cpp
+SOURCE=..\..\src\fields\SoMFVec4s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4692,7 +4692,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4us.cpp
+SOURCE=..\..\src\fields\SoMFVec4us.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4705,7 +4705,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4us.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4i32.cpp
+SOURCE=..\..\src\fields\SoMFVec4i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4718,7 +4718,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4ui32.cpp
+SOURCE=..\..\src\fields\SoMFVec4ui32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4731,7 +4731,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4ui32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4f.cpp
+SOURCE=..\..\src\fields\SoMFVec4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4744,7 +4744,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMFVec4d.cpp
+SOURCE=..\..\src\fields\SoMFVec4d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4757,7 +4757,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMFVec4d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoMField.cpp
+SOURCE=..\..\src\fields\SoMField.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4770,7 +4770,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoMField.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBitMask.cpp
+SOURCE=..\..\src\fields\SoSFBitMask.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4783,7 +4783,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBitMask.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBool.cpp
+SOURCE=..\..\src\fields\SoSFBool.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4796,7 +4796,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBool.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox2s.cpp
+SOURCE=..\..\src\fields\SoSFBox2s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4809,7 +4809,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox2s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox2i32.cpp
+SOURCE=..\..\src\fields\SoSFBox2i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4822,7 +4822,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox2i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox2f.cpp
+SOURCE=..\..\src\fields\SoSFBox2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4835,7 +4835,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox2d.cpp
+SOURCE=..\..\src\fields\SoSFBox2d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4848,7 +4848,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox3s.cpp
+SOURCE=..\..\src\fields\SoSFBox3s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4861,7 +4861,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox3s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox3i32.cpp
+SOURCE=..\..\src\fields\SoSFBox3i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4874,7 +4874,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox3i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox3f.cpp
+SOURCE=..\..\src\fields\SoSFBox3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4887,7 +4887,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFBox3d.cpp
+SOURCE=..\..\src\fields\SoSFBox3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4900,7 +4900,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFBox3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFColor.cpp
+SOURCE=..\..\src\fields\SoSFColor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4913,7 +4913,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFColor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFColorRGBA.cpp
+SOURCE=..\..\src\fields\SoSFColorRGBA.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4926,7 +4926,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFColorRGBA.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFDouble.cpp
+SOURCE=..\..\src\fields\SoSFDouble.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4939,7 +4939,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFDouble.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFEngine.cpp
+SOURCE=..\..\src\fields\SoSFEngine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4952,7 +4952,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFEngine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFEnum.cpp
+SOURCE=..\..\src\fields\SoSFEnum.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4965,7 +4965,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFEnum.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFFloat.cpp
+SOURCE=..\..\src\fields\SoSFFloat.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4978,7 +4978,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFFloat.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFImage.cpp
+SOURCE=..\..\src\fields\SoSFImage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -4991,7 +4991,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFImage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFImage3.cpp
+SOURCE=..\..\src\fields\SoSFImage3.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5004,7 +5004,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFImage3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFInt32.cpp
+SOURCE=..\..\src\fields\SoSFInt32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5017,7 +5017,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFInt32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFMatrix.cpp
+SOURCE=..\..\src\fields\SoSFMatrix.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5030,7 +5030,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFMatrix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFName.cpp
+SOURCE=..\..\src\fields\SoSFName.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5043,7 +5043,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFName.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFNode.cpp
+SOURCE=..\..\src\fields\SoSFNode.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5056,7 +5056,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFNode.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFPath.cpp
+SOURCE=..\..\src\fields\SoSFPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5069,7 +5069,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFPlane.cpp
+SOURCE=..\..\src\fields\SoSFPlane.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5082,7 +5082,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFPlane.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFRotation.cpp
+SOURCE=..\..\src\fields\SoSFRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5095,7 +5095,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFShort.cpp
+SOURCE=..\..\src\fields\SoSFShort.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5108,7 +5108,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFShort.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFString.cpp
+SOURCE=..\..\src\fields\SoSFString.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5121,7 +5121,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFString.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFTime.cpp
+SOURCE=..\..\src\fields\SoSFTime.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5134,7 +5134,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFTime.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFTrigger.cpp
+SOURCE=..\..\src\fields\SoSFTrigger.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5147,7 +5147,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFTrigger.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFUInt32.cpp
+SOURCE=..\..\src\fields\SoSFUInt32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5160,7 +5160,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFUInt32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFUShort.cpp
+SOURCE=..\..\src\fields\SoSFUShort.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5173,7 +5173,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFUShort.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec2b.cpp
+SOURCE=..\..\src\fields\SoSFVec2b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5186,7 +5186,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec2b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec2s.cpp
+SOURCE=..\..\src\fields\SoSFVec2s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5199,7 +5199,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec2s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec2i32.cpp
+SOURCE=..\..\src\fields\SoSFVec2i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5212,7 +5212,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec2i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec2f.cpp
+SOURCE=..\..\src\fields\SoSFVec2f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5225,7 +5225,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec2f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec2d.cpp
+SOURCE=..\..\src\fields\SoSFVec2d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5238,7 +5238,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec3b.cpp
+SOURCE=..\..\src\fields\SoSFVec3b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5251,7 +5251,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec3b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec3s.cpp
+SOURCE=..\..\src\fields\SoSFVec3s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5264,7 +5264,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec3s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec3i32.cpp
+SOURCE=..\..\src\fields\SoSFVec3i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5277,7 +5277,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec3i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec3f.cpp
+SOURCE=..\..\src\fields\SoSFVec3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5290,7 +5290,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec3d.cpp
+SOURCE=..\..\src\fields\SoSFVec3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5303,7 +5303,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4b.cpp
+SOURCE=..\..\src\fields\SoSFVec4b.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5316,7 +5316,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4b.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4ub.cpp
+SOURCE=..\..\src\fields\SoSFVec4ub.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5329,7 +5329,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4ub.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4s.cpp
+SOURCE=..\..\src\fields\SoSFVec4s.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5342,7 +5342,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4s.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4us.cpp
+SOURCE=..\..\src\fields\SoSFVec4us.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5355,7 +5355,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4us.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4i32.cpp
+SOURCE=..\..\src\fields\SoSFVec4i32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5368,7 +5368,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4i32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4ui32.cpp
+SOURCE=..\..\src\fields\SoSFVec4ui32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5381,7 +5381,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4ui32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4f.cpp
+SOURCE=..\..\src\fields\SoSFVec4f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5394,7 +5394,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSFVec4d.cpp
+SOURCE=..\..\src\fields\SoSFVec4d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5407,7 +5407,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSFVec4d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoSField.cpp
+SOURCE=..\..\src\fields\SoSField.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5420,7 +5420,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoSField.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\SoGlobalField.cpp
+SOURCE=..\..\src\fields\SoGlobalField.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5433,7 +5433,7 @@ SOURCE=C:\cygwin..\..\src\fields\SoGlobalField.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fields\shared.cpp
+SOURCE=..\..\src\fields\shared.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fields"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5449,7 +5449,7 @@ SOURCE=C:\cygwin..\..\src\fields\shared.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\fontlib_wrapper.cpp
+SOURCE=..\..\src\fonts\fontlib_wrapper.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5462,7 +5462,7 @@ SOURCE=C:\cygwin..\..\src\fonts\fontlib_wrapper.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\win32.cpp
+SOURCE=..\..\src\fonts\win32.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5475,7 +5475,7 @@ SOURCE=C:\cygwin..\..\src\fonts\win32.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\freetype.cpp
+SOURCE=..\..\src\fonts\freetype.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5488,7 +5488,7 @@ SOURCE=C:\cygwin..\..\src\fonts\freetype.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\fontspec.cpp
+SOURCE=..\..\src\fonts\fontspec.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5501,7 +5501,7 @@ SOURCE=C:\cygwin..\..\src\fonts\fontspec.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\glyph.cpp
+SOURCE=..\..\src\fonts\glyph.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5514,7 +5514,7 @@ SOURCE=C:\cygwin..\..\src\fonts\glyph.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\glyph2d.cpp
+SOURCE=..\..\src\fonts\glyph2d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5527,7 +5527,7 @@ SOURCE=C:\cygwin..\..\src\fonts\glyph2d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\glyph3d.cpp
+SOURCE=..\..\src\fonts\glyph3d.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5540,7 +5540,7 @@ SOURCE=C:\cygwin..\..\src\fonts\glyph3d.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\default3dfont.cpp
+SOURCE=..\..\src\fonts\default3dfont.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5553,7 +5553,7 @@ SOURCE=C:\cygwin..\..\src\fonts\default3dfont.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\default2dfont.cpp
+SOURCE=..\..\src\fonts\default2dfont.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5566,7 +5566,7 @@ SOURCE=C:\cygwin..\..\src\fonts\default2dfont.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\fonts\common.cpp
+SOURCE=..\..\src\fonts\common.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\fonts"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5582,7 +5582,7 @@ SOURCE=C:\cygwin..\..\src\fonts\common.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\cg.cpp
+SOURCE=..\..\src\glue\cg.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5595,7 +5595,7 @@ SOURCE=C:\cygwin..\..\src\glue\cg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\spidermonkey.cpp
+SOURCE=..\..\src\glue\spidermonkey.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5608,7 +5608,7 @@ SOURCE=C:\cygwin..\..\src\glue\spidermonkey.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\dl.cpp
+SOURCE=..\..\src\glue\dl.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5621,7 +5621,7 @@ SOURCE=C:\cygwin..\..\src\glue\dl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\gl.cpp
+SOURCE=..\..\src\glue\gl.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5634,7 +5634,7 @@ SOURCE=C:\cygwin..\..\src\glue\gl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\gl_wgl.cpp
+SOURCE=..\..\src\glue\gl_wgl.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5647,7 +5647,7 @@ SOURCE=C:\cygwin..\..\src\glue\gl_wgl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\gl_agl.cpp
+SOURCE=..\..\src\glue\gl_agl.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5660,7 +5660,7 @@ SOURCE=C:\cygwin..\..\src\glue\gl_agl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\gl_cgl.cpp
+SOURCE=..\..\src\glue\gl_cgl.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5673,7 +5673,7 @@ SOURCE=C:\cygwin..\..\src\glue\gl_cgl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\gl_glx.cpp
+SOURCE=..\..\src\glue\gl_glx.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5686,7 +5686,7 @@ SOURCE=C:\cygwin..\..\src\glue\gl_glx.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\GLUWrapper.cpp
+SOURCE=..\..\src\glue\GLUWrapper.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5699,7 +5699,7 @@ SOURCE=C:\cygwin..\..\src\glue\GLUWrapper.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\simage_wrapper.cpp
+SOURCE=..\..\src\glue\simage_wrapper.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5712,7 +5712,7 @@ SOURCE=C:\cygwin..\..\src\glue\simage_wrapper.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\openal_wrapper.cpp
+SOURCE=..\..\src\glue\openal_wrapper.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5725,7 +5725,7 @@ SOURCE=C:\cygwin..\..\src\glue\openal_wrapper.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\win32api.cpp
+SOURCE=..\..\src\glue\win32api.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5738,7 +5738,7 @@ SOURCE=C:\cygwin..\..\src\glue\win32api.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\zlib.cpp
+SOURCE=..\..\src\glue\zlib.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5751,7 +5751,7 @@ SOURCE=C:\cygwin..\..\src\glue\zlib.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\bzip2.cpp
+SOURCE=..\..\src\glue\bzip2.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5764,7 +5764,7 @@ SOURCE=C:\cygwin..\..\src\glue\bzip2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\freetype.cpp
+SOURCE=..\..\src\glue\freetype.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5777,7 +5777,7 @@ SOURCE=C:\cygwin..\..\src\glue\freetype.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\glue\normalization_cubemap.cpp
+SOURCE=..\..\src\glue\normalization_cubemap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\glue"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5793,7 +5793,7 @@ SOURCE=C:\cygwin..\..\src\glue\normalization_cubemap.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoInput.cpp
+SOURCE=..\..\src\io\SoInput.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5806,7 +5806,7 @@ SOURCE=C:\cygwin..\..\src\io\SoInput.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoInput_FileInfo.cpp
+SOURCE=..\..\src\io\SoInput_FileInfo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5819,7 +5819,7 @@ SOURCE=C:\cygwin..\..\src\io\SoInput_FileInfo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoInput_Reader.cpp
+SOURCE=..\..\src\io\SoInput_Reader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5832,7 +5832,7 @@ SOURCE=C:\cygwin..\..\src\io\SoInput_Reader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoOutput.cpp
+SOURCE=..\..\src\io\SoOutput.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5845,7 +5845,7 @@ SOURCE=C:\cygwin..\..\src\io\SoOutput.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoOutput_Writer.cpp
+SOURCE=..\..\src\io\SoOutput_Writer.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5858,7 +5858,7 @@ SOURCE=C:\cygwin..\..\src\io\SoOutput_Writer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoByteStream.cpp
+SOURCE=..\..\src\io\SoByteStream.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5871,7 +5871,7 @@ SOURCE=C:\cygwin..\..\src\io\SoByteStream.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoTranSender.cpp
+SOURCE=..\..\src\io\SoTranSender.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5884,7 +5884,7 @@ SOURCE=C:\cygwin..\..\src\io\SoTranSender.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoTranReceiver.cpp
+SOURCE=..\..\src\io\SoTranReceiver.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5897,7 +5897,7 @@ SOURCE=C:\cygwin..\..\src\io\SoTranReceiver.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\SoWriterefCounter.cpp
+SOURCE=..\..\src\io\SoWriterefCounter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5910,7 +5910,7 @@ SOURCE=C:\cygwin..\..\src\io\SoWriterefCounter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\io\gzmemio.cpp
+SOURCE=..\..\src\io\gzmemio.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\io"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5926,7 +5926,7 @@ SOURCE=C:\cygwin..\..\src\io\gzmemio.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoClipPlaneManip.cpp
+SOURCE=..\..\src\manips\SoClipPlaneManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5939,7 +5939,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoClipPlaneManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoDirectionalLightManip.cpp
+SOURCE=..\..\src\manips\SoDirectionalLightManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5952,7 +5952,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoDirectionalLightManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoPointLightManip.cpp
+SOURCE=..\..\src\manips\SoPointLightManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5965,7 +5965,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoPointLightManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoSpotLightManip.cpp
+SOURCE=..\..\src\manips\SoSpotLightManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5978,7 +5978,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoSpotLightManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoTransformManip.cpp
+SOURCE=..\..\src\manips\SoTransformManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -5991,7 +5991,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoTransformManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoCenterballManip.cpp
+SOURCE=..\..\src\manips\SoCenterballManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6004,7 +6004,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoCenterballManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoHandleBoxManip.cpp
+SOURCE=..\..\src\manips\SoHandleBoxManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6017,7 +6017,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoHandleBoxManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoJackManip.cpp
+SOURCE=..\..\src\manips\SoJackManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6030,7 +6030,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoJackManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoTabBoxManip.cpp
+SOURCE=..\..\src\manips\SoTabBoxManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6043,7 +6043,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoTabBoxManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoTrackballManip.cpp
+SOURCE=..\..\src\manips\SoTrackballManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6056,7 +6056,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoTrackballManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoTransformBoxManip.cpp
+SOURCE=..\..\src\manips\SoTransformBoxManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6069,7 +6069,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoTransformBoxManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\SoTransformerManip.cpp
+SOURCE=..\..\src\manips\SoTransformerManip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6082,7 +6082,7 @@ SOURCE=C:\cygwin..\..\src\manips\SoTransformerManip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\manips\commoncode.cpp
+SOURCE=..\..\src\manips\commoncode.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\manips"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6098,7 +6098,7 @@ SOURCE=C:\cygwin..\..\src\manips\commoncode.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\AudioTools.cpp
+SOURCE=..\..\src\misc\AudioTools.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6111,7 +6111,7 @@ SOURCE=C:\cygwin..\..\src\misc\AudioTools.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\CoinStaticObjectInDLL.cpp
+SOURCE=..\..\src\misc\CoinStaticObjectInDLL.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6124,7 +6124,7 @@ SOURCE=C:\cygwin..\..\src\misc\CoinStaticObjectInDLL.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoAudioDevice.cpp
+SOURCE=..\..\src\misc\SoAudioDevice.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6137,7 +6137,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoAudioDevice.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoBase.cpp
+SOURCE=..\..\src\misc\SoBase.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6150,7 +6150,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoBase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoBaseP.cpp
+SOURCE=..\..\src\misc\SoBaseP.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6163,7 +6163,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoBaseP.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoChildList.cpp
+SOURCE=..\..\src\misc\SoChildList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6176,7 +6176,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoChildList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoCompactPathList.cpp
+SOURCE=..\..\src\misc\SoCompactPathList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6189,7 +6189,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoCompactPathList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoContextHandler.cpp
+SOURCE=..\..\src\misc\SoContextHandler.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6202,7 +6202,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoContextHandler.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoDB.cpp
+SOURCE=..\..\src\misc\SoDB.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6215,7 +6215,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoDB.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoDebug.cpp
+SOURCE=..\..\src\misc\SoDebug.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6228,7 +6228,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoDebug.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoFullPath.cpp
+SOURCE=..\..\src\misc\SoFullPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6241,7 +6241,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoFullPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoGenerate.cpp
+SOURCE=..\..\src\misc\SoGenerate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6254,7 +6254,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoGenerate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoGlyph.cpp
+SOURCE=..\..\src\misc\SoGlyph.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6267,7 +6267,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoGlyph.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoInteraction.cpp
+SOURCE=..\..\src\misc\SoInteraction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6280,7 +6280,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoInteraction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoJavaScriptEngine.cpp
+SOURCE=..\..\src\misc\SoJavaScriptEngine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6293,7 +6293,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoJavaScriptEngine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoLightPath.cpp
+SOURCE=..\..\src\misc\SoLightPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6306,7 +6306,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoLightPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoLockManager.cpp
+SOURCE=..\..\src\misc\SoLockManager.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6319,7 +6319,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoLockManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoNormalGenerator.cpp
+SOURCE=..\..\src\misc\SoNormalGenerator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6332,7 +6332,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoNormalGenerator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoNotRec.cpp
+SOURCE=..\..\src\misc\SoNotRec.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6345,7 +6345,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoNotRec.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoNotification.cpp
+SOURCE=..\..\src\misc\SoNotification.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6358,7 +6358,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoNotification.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoPath.cpp
+SOURCE=..\..\src\misc\SoPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6371,7 +6371,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoPick.cpp
+SOURCE=..\..\src\misc\SoPick.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6384,7 +6384,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoPick.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoPickedPoint.cpp
+SOURCE=..\..\src\misc\SoPickedPoint.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6397,7 +6397,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoPickedPoint.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoPrimitiveVertex.cpp
+SOURCE=..\..\src\misc\SoPrimitiveVertex.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6410,7 +6410,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoPrimitiveVertex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoProto.cpp
+SOURCE=..\..\src\misc\SoProto.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6423,7 +6423,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoProto.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoProtoInstance.cpp
+SOURCE=..\..\src\misc\SoProtoInstance.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6436,7 +6436,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoProtoInstance.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoSceneManager.cpp
+SOURCE=..\..\src\misc\SoSceneManager.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6449,7 +6449,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoSceneManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoSceneManagerP.cpp
+SOURCE=..\..\src\misc\SoSceneManagerP.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6462,7 +6462,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoSceneManagerP.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoShaderGenerator.cpp
+SOURCE=..\..\src\misc\SoShaderGenerator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6475,7 +6475,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoShaderGenerator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoState.cpp
+SOURCE=..\..\src\misc\SoState.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6488,7 +6488,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoState.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoTempPath.cpp
+SOURCE=..\..\src\misc\SoTempPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6501,7 +6501,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoTempPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoType.cpp
+SOURCE=..\..\src\misc\SoType.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6514,7 +6514,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoType.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\CoinResources.cpp
+SOURCE=..\..\src\misc\CoinResources.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6527,7 +6527,7 @@ SOURCE=C:\cygwin..\..\src\misc\CoinResources.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoDBP.cpp
+SOURCE=..\..\src\misc\SoDBP.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6540,7 +6540,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoDBP.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\misc\SoEventManager.cpp
+SOURCE=..\..\src\misc\SoEventManager.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\misc"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6556,7 +6556,7 @@ SOURCE=C:\cygwin..\..\src\misc\SoEventManager.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoGL.cpp
+SOURCE=..\..\src\rendering\SoGL.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6569,7 +6569,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoGL.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoGLBigImage.cpp
+SOURCE=..\..\src\rendering\SoGLBigImage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6582,7 +6582,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoGLBigImage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoGLDriverDatabase.cpp
+SOURCE=..\..\src\rendering\SoGLDriverDatabase.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6595,7 +6595,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoGLDriverDatabase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoGLImage.cpp
+SOURCE=..\..\src\rendering\SoGLImage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6608,7 +6608,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoGLImage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoGLCubeMapImage.cpp
+SOURCE=..\..\src\rendering\SoGLCubeMapImage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6621,7 +6621,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoGLCubeMapImage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoGLNurbs.cpp
+SOURCE=..\..\src\rendering\SoGLNurbs.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6634,7 +6634,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoGLNurbs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoRenderManager.cpp
+SOURCE=..\..\src\rendering\SoRenderManager.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6647,7 +6647,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoRenderManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoRenderManagerP.cpp
+SOURCE=..\..\src\rendering\SoRenderManagerP.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6660,7 +6660,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoRenderManagerP.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenRenderer.cpp
+SOURCE=..\..\src\rendering\SoOffscreenRenderer.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6673,7 +6673,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenRenderer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenCGData.cpp
+SOURCE=..\..\src\rendering\SoOffscreenCGData.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6686,7 +6686,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenCGData.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenGLXData.cpp
+SOURCE=..\..\src\rendering\SoOffscreenGLXData.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6699,7 +6699,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenGLXData.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenWGLData.cpp
+SOURCE=..\..\src\rendering\SoOffscreenWGLData.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6712,7 +6712,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoOffscreenWGLData.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoVBO.cpp
+SOURCE=..\..\src\rendering\SoVBO.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6725,7 +6725,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoVBO.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\SoVertexArrayIndexer.cpp
+SOURCE=..\..\src\rendering\SoVertexArrayIndexer.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6738,7 +6738,7 @@ SOURCE=C:\cygwin..\..\src\rendering\SoVertexArrayIndexer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\rendering\CoinOffscreenGLCanvas.cpp
+SOURCE=..\..\src\rendering\CoinOffscreenGLCanvas.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\rendering"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6754,7 +6754,7 @@ SOURCE=C:\cygwin..\..\src\rendering\CoinOffscreenGLCanvas.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SbList.cpp
+SOURCE=..\..\src\lists\SbList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6767,7 +6767,7 @@ SOURCE=C:\cygwin..\..\src\lists\SbList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SbPList.cpp
+SOURCE=..\..\src\lists\SbPList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6780,7 +6780,7 @@ SOURCE=C:\cygwin..\..\src\lists\SbPList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SbIntList.cpp
+SOURCE=..\..\src\lists\SbIntList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6793,7 +6793,7 @@ SOURCE=C:\cygwin..\..\src\lists\SbIntList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SbVec3fList.cpp
+SOURCE=..\..\src\lists\SbVec3fList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6806,7 +6806,7 @@ SOURCE=C:\cygwin..\..\src\lists\SbVec3fList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SbStringList.cpp
+SOURCE=..\..\src\lists\SbStringList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6819,7 +6819,7 @@ SOURCE=C:\cygwin..\..\src\lists\SbStringList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoActionMethodList.cpp
+SOURCE=..\..\src\lists\SoActionMethodList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6832,7 +6832,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoActionMethodList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoAuditorList.cpp
+SOURCE=..\..\src\lists\SoAuditorList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6845,7 +6845,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoAuditorList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoBaseList.cpp
+SOURCE=..\..\src\lists\SoBaseList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6858,7 +6858,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoBaseList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoCallbackList.cpp
+SOURCE=..\..\src\lists\SoCallbackList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6871,7 +6871,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoCallbackList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoDetailList.cpp
+SOURCE=..\..\src\lists\SoDetailList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6884,7 +6884,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoDetailList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoEnabledElementsList.cpp
+SOURCE=..\..\src\lists\SoEnabledElementsList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6897,7 +6897,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoEnabledElementsList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoEngineList.cpp
+SOURCE=..\..\src\lists\SoEngineList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6910,7 +6910,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoEngineList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoEngineOutputList.cpp
+SOURCE=..\..\src\lists\SoEngineOutputList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6923,7 +6923,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoEngineOutputList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoFieldList.cpp
+SOURCE=..\..\src\lists\SoFieldList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6936,7 +6936,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoFieldList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoNodeList.cpp
+SOURCE=..\..\src\lists\SoNodeList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6949,7 +6949,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoNodeList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoPathList.cpp
+SOURCE=..\..\src\lists\SoPathList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6962,7 +6962,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoPathList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoPickedPointList.cpp
+SOURCE=..\..\src\lists\SoPickedPointList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6975,7 +6975,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoPickedPointList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\lists\SoTypeList.cpp
+SOURCE=..\..\src\lists\SoTypeList.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\lists"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -6991,7 +6991,7 @@ SOURCE=C:\cygwin..\..\src\lists\SoTypeList.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoNodeKit.cpp
+SOURCE=..\..\src\nodekits\SoNodeKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7004,7 +7004,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoNodeKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoNodeKitPath.cpp
+SOURCE=..\..\src\nodekits\SoNodeKitPath.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7017,7 +7017,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoNodeKitPath.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoNodeKitListPart.cpp
+SOURCE=..\..\src\nodekits\SoNodeKitListPart.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7030,7 +7030,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoNodeKitListPart.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoNodekitCatalog.cpp
+SOURCE=..\..\src\nodekits\SoNodekitCatalog.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7043,7 +7043,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoNodekitCatalog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoBaseKit.cpp
+SOURCE=..\..\src\nodekits\SoBaseKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7056,7 +7056,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoBaseKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoAppearanceKit.cpp
+SOURCE=..\..\src\nodekits\SoAppearanceKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7069,7 +7069,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoAppearanceKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoCameraKit.cpp
+SOURCE=..\..\src\nodekits\SoCameraKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7082,7 +7082,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoCameraKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoInteractionKit.cpp
+SOURCE=..\..\src\nodekits\SoInteractionKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7095,7 +7095,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoInteractionKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoLightKit.cpp
+SOURCE=..\..\src\nodekits\SoLightKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7108,7 +7108,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoLightKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoSceneKit.cpp
+SOURCE=..\..\src\nodekits\SoSceneKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7121,7 +7121,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoSceneKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoSeparatorKit.cpp
+SOURCE=..\..\src\nodekits\SoSeparatorKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7134,7 +7134,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoSeparatorKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoShapeKit.cpp
+SOURCE=..\..\src\nodekits\SoShapeKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7147,7 +7147,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoShapeKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodekits\SoWrapperKit.cpp
+SOURCE=..\..\src\nodekits\SoWrapperKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodekits"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7163,7 +7163,7 @@ SOURCE=C:\cygwin..\..\src\nodekits\SoWrapperKit.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLNavigation.cpp
+SOURCE=..\..\src\navigation\SoScXMLNavigation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7176,7 +7176,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLNavigation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLNavigationInvoke.cpp
+SOURCE=..\..\src\navigation\SoScXMLNavigationInvoke.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7189,7 +7189,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLNavigationInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLPanUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLPanUtils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7202,7 +7202,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLPanUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLRotateUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLRotateUtils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7215,7 +7215,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLRotateUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLSeekUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLSeekUtils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7228,7 +7228,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLSeekUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLSpinUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLSpinUtils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7241,7 +7241,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLSpinUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLZoomUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLZoomUtils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7254,7 +7254,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLZoomUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\navigation\SoScXMLViewUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLViewUtils.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7270,7 +7270,7 @@ SOURCE=C:\cygwin..\..\src\navigation\SoScXMLViewUtils.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoAnnotation.cpp
+SOURCE=..\..\src\nodes\SoAnnotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7283,7 +7283,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoAnnotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoAntiSquish.cpp
+SOURCE=..\..\src\nodes\SoAntiSquish.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7296,7 +7296,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoAntiSquish.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoArray.cpp
+SOURCE=..\..\src\nodes\SoArray.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7309,7 +7309,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoArray.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoBaseColor.cpp
+SOURCE=..\..\src\nodes\SoBaseColor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7322,7 +7322,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoBaseColor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoBlinker.cpp
+SOURCE=..\..\src\nodes\SoBlinker.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7335,7 +7335,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoBlinker.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoBumpMap.cpp
+SOURCE=..\..\src\nodes\SoBumpMap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7348,7 +7348,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoBumpMap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoBumpMapCoordinate.cpp
+SOURCE=..\..\src\nodes\SoBumpMapCoordinate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7361,7 +7361,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoBumpMapCoordinate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoBumpMapTransform.cpp
+SOURCE=..\..\src\nodes\SoBumpMapTransform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7374,7 +7374,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoBumpMapTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoCallback.cpp
+SOURCE=..\..\src\nodes\SoCallback.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7387,7 +7387,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoCallback.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoCacheHint.cpp
+SOURCE=..\..\src\nodes\SoCacheHint.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7400,7 +7400,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoCacheHint.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoCamera.cpp
+SOURCE=..\..\src\nodes\SoCamera.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7413,7 +7413,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoCamera.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoClipPlane.cpp
+SOURCE=..\..\src\nodes\SoClipPlane.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7426,7 +7426,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoClipPlane.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoColorIndex.cpp
+SOURCE=..\..\src\nodes\SoColorIndex.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7439,7 +7439,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoColorIndex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoComplexity.cpp
+SOURCE=..\..\src\nodes\SoComplexity.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7452,7 +7452,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoComplexity.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoCoordinate3.cpp
+SOURCE=..\..\src\nodes\SoCoordinate3.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7465,7 +7465,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoCoordinate3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoCoordinate4.cpp
+SOURCE=..\..\src\nodes\SoCoordinate4.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7478,7 +7478,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoCoordinate4.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoDepthBuffer.cpp
+SOURCE=..\..\src\nodes\SoDepthBuffer.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7491,7 +7491,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoDepthBuffer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoDirectionalLight.cpp
+SOURCE=..\..\src\nodes\SoDirectionalLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7504,7 +7504,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoDirectionalLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoDrawStyle.cpp
+SOURCE=..\..\src\nodes\SoDrawStyle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7517,7 +7517,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoDrawStyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoEnvironment.cpp
+SOURCE=..\..\src\nodes\SoEnvironment.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7530,7 +7530,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoEnvironment.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoEventCallback.cpp
+SOURCE=..\..\src\nodes\SoEventCallback.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7543,7 +7543,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoEventCallback.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoExtSelection.cpp
+SOURCE=..\..\src\nodes\SoExtSelection.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7556,7 +7556,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoExtSelection.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoFile.cpp
+SOURCE=..\..\src\nodes\SoFile.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7569,7 +7569,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoFile.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoFont.cpp
+SOURCE=..\..\src\nodes\SoFont.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7582,7 +7582,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoFont.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoFontStyle.cpp
+SOURCE=..\..\src\nodes\SoFontStyle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7595,7 +7595,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoFontStyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoFrustumCamera.cpp
+SOURCE=..\..\src\nodes\SoFrustumCamera.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7608,7 +7608,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoFrustumCamera.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoGroup.cpp
+SOURCE=..\..\src\nodes\SoGroup.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7621,7 +7621,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoGroup.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoInfo.cpp
+SOURCE=..\..\src\nodes\SoInfo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7634,7 +7634,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoInfo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLOD.cpp
+SOURCE=..\..\src\nodes\SoLOD.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7647,7 +7647,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLOD.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLabel.cpp
+SOURCE=..\..\src\nodes\SoLabel.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7660,7 +7660,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLabel.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLevelOfDetail.cpp
+SOURCE=..\..\src\nodes\SoLevelOfDetail.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7673,7 +7673,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLevelOfDetail.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLight.cpp
+SOURCE=..\..\src\nodes\SoLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7686,7 +7686,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLightModel.cpp
+SOURCE=..\..\src\nodes\SoLightModel.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7699,7 +7699,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLightModel.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLinearProfile.cpp
+SOURCE=..\..\src\nodes\SoLinearProfile.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7712,7 +7712,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLinearProfile.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoListener.cpp
+SOURCE=..\..\src\nodes\SoListener.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7725,7 +7725,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoListener.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoLocateHighlight.cpp
+SOURCE=..\..\src\nodes\SoLocateHighlight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7738,7 +7738,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoLocateHighlight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoMaterial.cpp
+SOURCE=..\..\src\nodes\SoMaterial.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7751,7 +7751,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoMaterial.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoMaterialBinding.cpp
+SOURCE=..\..\src\nodes\SoMaterialBinding.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7764,7 +7764,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoMaterialBinding.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoMatrixTransform.cpp
+SOURCE=..\..\src\nodes\SoMatrixTransform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7777,7 +7777,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoMatrixTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoMultipleCopy.cpp
+SOURCE=..\..\src\nodes\SoMultipleCopy.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7790,7 +7790,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoMultipleCopy.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoNode.cpp
+SOURCE=..\..\src\nodes\SoNode.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7803,7 +7803,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoNode.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoNormal.cpp
+SOURCE=..\..\src\nodes\SoNormal.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7816,7 +7816,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoNormal.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoNormalBinding.cpp
+SOURCE=..\..\src\nodes\SoNormalBinding.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7829,7 +7829,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoNormalBinding.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoNurbsProfile.cpp
+SOURCE=..\..\src\nodes\SoNurbsProfile.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7842,7 +7842,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoNurbsProfile.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoOrthographicCamera.cpp
+SOURCE=..\..\src\nodes\SoOrthographicCamera.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7855,7 +7855,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoOrthographicCamera.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPackedColor.cpp
+SOURCE=..\..\src\nodes\SoPackedColor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7868,7 +7868,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPackedColor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPathSwitch.cpp
+SOURCE=..\..\src\nodes\SoPathSwitch.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7881,7 +7881,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPathSwitch.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPendulum.cpp
+SOURCE=..\..\src\nodes\SoPendulum.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7894,7 +7894,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPendulum.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPerspectiveCamera.cpp
+SOURCE=..\..\src\nodes\SoPerspectiveCamera.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7907,7 +7907,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPerspectiveCamera.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPickStyle.cpp
+SOURCE=..\..\src\nodes\SoPickStyle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7920,7 +7920,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPickStyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPointLight.cpp
+SOURCE=..\..\src\nodes\SoPointLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7933,7 +7933,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPointLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoPolygonOffset.cpp
+SOURCE=..\..\src\nodes\SoPolygonOffset.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7946,7 +7946,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoPolygonOffset.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoProfile.cpp
+SOURCE=..\..\src\nodes\SoProfile.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7959,7 +7959,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoProfile.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoProfileCoordinate2.cpp
+SOURCE=..\..\src\nodes\SoProfileCoordinate2.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7972,7 +7972,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoProfileCoordinate2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoProfileCoordinate3.cpp
+SOURCE=..\..\src\nodes\SoProfileCoordinate3.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7985,7 +7985,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoProfileCoordinate3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoResetTransform.cpp
+SOURCE=..\..\src\nodes\SoResetTransform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7998,7 +7998,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoResetTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoRotation.cpp
+SOURCE=..\..\src\nodes\SoRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8011,7 +8011,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoRotation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoRotationXYZ.cpp
+SOURCE=..\..\src\nodes\SoRotationXYZ.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8024,7 +8024,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoRotationXYZ.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoRotor.cpp
+SOURCE=..\..\src\nodes\SoRotor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8037,7 +8037,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoRotor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoScale.cpp
+SOURCE=..\..\src\nodes\SoScale.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8050,7 +8050,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoScale.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSceneTexture2.cpp
+SOURCE=..\..\src\nodes\SoSceneTexture2.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8063,7 +8063,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSceneTexture2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSceneTextureCubeMap.cpp
+SOURCE=..\..\src\nodes\SoSceneTextureCubeMap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8076,7 +8076,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSceneTextureCubeMap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSelection.cpp
+SOURCE=..\..\src\nodes\SoSelection.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8089,7 +8089,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSelection.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSeparator.cpp
+SOURCE=..\..\src\nodes\SoSeparator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8102,7 +8102,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSeparator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoShapeHints.cpp
+SOURCE=..\..\src\nodes\SoShapeHints.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8115,7 +8115,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoShapeHints.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoShuttle.cpp
+SOURCE=..\..\src\nodes\SoShuttle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8128,7 +8128,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoShuttle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSpotLight.cpp
+SOURCE=..\..\src\nodes\SoSpotLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8141,7 +8141,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSpotLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSurroundScale.cpp
+SOURCE=..\..\src\nodes\SoSurroundScale.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8154,7 +8154,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSurroundScale.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoSwitch.cpp
+SOURCE=..\..\src\nodes\SoSwitch.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8167,7 +8167,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoSwitch.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTexture.cpp
+SOURCE=..\..\src\nodes\SoTexture.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8180,7 +8180,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTexture.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTexture2.cpp
+SOURCE=..\..\src\nodes\SoTexture2.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8193,7 +8193,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTexture2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTexture3.cpp
+SOURCE=..\..\src\nodes\SoTexture3.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8206,7 +8206,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTexture3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTexture2Transform.cpp
+SOURCE=..\..\src\nodes\SoTexture2Transform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8219,7 +8219,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTexture2Transform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTexture3Transform.cpp
+SOURCE=..\..\src\nodes\SoTexture3Transform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8232,7 +8232,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTexture3Transform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCombine.cpp
+SOURCE=..\..\src\nodes\SoTextureCombine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8245,7 +8245,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCombine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinate2.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinate2.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8258,7 +8258,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinate2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinate3.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinate3.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8271,7 +8271,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinate3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateBinding.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateBinding.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8284,7 +8284,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateBinding.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateCube.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateCube.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8297,7 +8297,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateCube.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateCylinder.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateCylinder.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8310,7 +8310,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateCylinder.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateSphere.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateSphere.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8323,7 +8323,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateSphere.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateDefault.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateDefault.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8336,7 +8336,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateDefault.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateEnvironment.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateEnvironment.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8349,7 +8349,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateEnvironment.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateFunction.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateFunction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8362,7 +8362,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateFunction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinatePlane.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinatePlane.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8375,7 +8375,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinatePlane.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateNormalMap.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateNormalMap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8388,7 +8388,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateNormalMap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateReflectionMap.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateReflectionMap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8401,7 +8401,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateReflectionMap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateObject.cpp
+SOURCE=..\..\src\nodes\SoTextureCoordinateObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8414,7 +8414,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCoordinateObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureCubeMap.cpp
+SOURCE=..\..\src\nodes\SoTextureCubeMap.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8427,7 +8427,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureCubeMap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureMatrixTransform.cpp
+SOURCE=..\..\src\nodes\SoTextureMatrixTransform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8440,7 +8440,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureMatrixTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureScalePolicy.cpp
+SOURCE=..\..\src\nodes\SoTextureScalePolicy.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8453,7 +8453,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureScalePolicy.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTextureUnit.cpp
+SOURCE=..\..\src\nodes\SoTextureUnit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8466,7 +8466,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTextureUnit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTransform.cpp
+SOURCE=..\..\src\nodes\SoTransform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8479,7 +8479,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTransparencyType.cpp
+SOURCE=..\..\src\nodes\SoTransparencyType.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8492,7 +8492,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTransparencyType.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTransformSeparator.cpp
+SOURCE=..\..\src\nodes\SoTransformSeparator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8505,7 +8505,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTransformSeparator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTransformation.cpp
+SOURCE=..\..\src\nodes\SoTransformation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8518,7 +8518,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTransformation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoTranslation.cpp
+SOURCE=..\..\src\nodes\SoTranslation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8531,7 +8531,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoTranslation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoUnits.cpp
+SOURCE=..\..\src\nodes\SoUnits.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8544,7 +8544,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoUnits.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoUnknownNode.cpp
+SOURCE=..\..\src\nodes\SoUnknownNode.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8557,7 +8557,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoUnknownNode.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoVertexProperty.cpp
+SOURCE=..\..\src\nodes\SoVertexProperty.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8570,7 +8570,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoVertexProperty.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoVertexAttribute.cpp
+SOURCE=..\..\src\nodes\SoVertexAttribute.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8583,7 +8583,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoVertexAttribute.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoVertexAttributeBinding.cpp
+SOURCE=..\..\src\nodes\SoVertexAttributeBinding.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8596,7 +8596,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoVertexAttributeBinding.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoWWWAnchor.cpp
+SOURCE=..\..\src\nodes\SoWWWAnchor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8609,7 +8609,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoWWWAnchor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\nodes\SoWWWInline.cpp
+SOURCE=..\..\src\nodes\SoWWWInline.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8625,7 +8625,7 @@ SOURCE=C:\cygwin..\..\src\nodes\SoWWWInline.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoAsciiText.cpp
+SOURCE=..\..\src\shapenodes\SoAsciiText.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8638,7 +8638,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoAsciiText.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoCone.cpp
+SOURCE=..\..\src\shapenodes\SoCone.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8651,7 +8651,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoCone.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoCube.cpp
+SOURCE=..\..\src\shapenodes\SoCube.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8664,7 +8664,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoCube.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoCylinder.cpp
+SOURCE=..\..\src\shapenodes\SoCylinder.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8677,7 +8677,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoCylinder.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoFaceSet.cpp
+SOURCE=..\..\src\shapenodes\SoFaceSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8690,7 +8690,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoFaceSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoImage.cpp
+SOURCE=..\..\src\shapenodes\SoImage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8703,7 +8703,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoImage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedFaceSet.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedFaceSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8716,7 +8716,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedFaceSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedLineSet.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedLineSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8729,7 +8729,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedLineSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedMarkerSet.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedMarkerSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8742,7 +8742,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedMarkerSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedNurbsCurve.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedNurbsCurve.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8755,7 +8755,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedNurbsCurve.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedNurbsSurface.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedNurbsSurface.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8768,7 +8768,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedNurbsSurface.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedPointSet.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedPointSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8781,7 +8781,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedPointSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedShape.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedShape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8794,7 +8794,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedTriangleStripSet.cpp
+SOURCE=..\..\src\shapenodes\SoIndexedTriangleStripSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8807,7 +8807,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoIndexedTriangleStripSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoLineSet.cpp
+SOURCE=..\..\src\shapenodes\SoLineSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8820,7 +8820,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoLineSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoMarkerSet.cpp
+SOURCE=..\..\src\shapenodes\SoMarkerSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8833,7 +8833,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoMarkerSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoNonIndexedShape.cpp
+SOURCE=..\..\src\shapenodes\SoNonIndexedShape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8846,7 +8846,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoNonIndexedShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoNurbsCurve.cpp
+SOURCE=..\..\src\shapenodes\SoNurbsCurve.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8859,7 +8859,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoNurbsCurve.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoNurbsSurface.cpp
+SOURCE=..\..\src\shapenodes\SoNurbsSurface.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8872,7 +8872,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoNurbsSurface.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoPointSet.cpp
+SOURCE=..\..\src\shapenodes\SoPointSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8885,7 +8885,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoPointSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoQuadMesh.cpp
+SOURCE=..\..\src\shapenodes\SoQuadMesh.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8898,7 +8898,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoQuadMesh.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoShape.cpp
+SOURCE=..\..\src\shapenodes\SoShape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8911,7 +8911,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoSphere.cpp
+SOURCE=..\..\src\shapenodes\SoSphere.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8924,7 +8924,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoSphere.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoText2.cpp
+SOURCE=..\..\src\shapenodes\SoText2.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8937,7 +8937,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoText2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoText3.cpp
+SOURCE=..\..\src\shapenodes\SoText3.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8950,7 +8950,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoText3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoTriangleStripSet.cpp
+SOURCE=..\..\src\shapenodes\SoTriangleStripSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8963,7 +8963,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoTriangleStripSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\SoVertexShape.cpp
+SOURCE=..\..\src\shapenodes\SoVertexShape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8976,7 +8976,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\SoVertexShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\soshape_bigtexture.cpp
+SOURCE=..\..\src\shapenodes\soshape_bigtexture.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -8989,7 +8989,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\soshape_bigtexture.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\soshape_bumprender.cpp
+SOURCE=..\..\src\shapenodes\soshape_bumprender.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9002,7 +9002,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\soshape_bumprender.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\soshape_primdata.cpp
+SOURCE=..\..\src\shapenodes\soshape_primdata.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9015,7 +9015,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\soshape_primdata.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shapenodes\soshape_trianglesort.cpp
+SOURCE=..\..\src\shapenodes\soshape_trianglesort.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shapenodes"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9031,7 +9031,7 @@ SOURCE=C:\cygwin..\..\src\shapenodes\soshape_trianglesort.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbCylinderPlaneProjector.cpp
+SOURCE=..\..\src\projectors\SbCylinderPlaneProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9044,7 +9044,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbCylinderPlaneProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbCylinderProjector.cpp
+SOURCE=..\..\src\projectors\SbCylinderProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9057,7 +9057,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbCylinderProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbCylinderSectionProjector.cpp
+SOURCE=..\..\src\projectors\SbCylinderSectionProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9070,7 +9070,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbCylinderSectionProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbCylinderSheetProjector.cpp
+SOURCE=..\..\src\projectors\SbCylinderSheetProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9083,7 +9083,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbCylinderSheetProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbLineProjector.cpp
+SOURCE=..\..\src\projectors\SbLineProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9096,7 +9096,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbLineProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbPlaneProjector.cpp
+SOURCE=..\..\src\projectors\SbPlaneProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9109,7 +9109,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbPlaneProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbProjector.cpp
+SOURCE=..\..\src\projectors\SbProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9122,7 +9122,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbSpherePlaneProjector.cpp
+SOURCE=..\..\src\projectors\SbSpherePlaneProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9135,7 +9135,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbSpherePlaneProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbSphereProjector.cpp
+SOURCE=..\..\src\projectors\SbSphereProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9148,7 +9148,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbSphereProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbSphereSectionProjector.cpp
+SOURCE=..\..\src\projectors\SbSphereSectionProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9161,7 +9161,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbSphereSectionProjector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\projectors\SbSphereSheetProjector.cpp
+SOURCE=..\..\src\projectors\SbSphereSheetProjector.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\projectors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9177,7 +9177,7 @@ SOURCE=C:\cygwin..\..\src\projectors\SbSphereSheetProjector.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoAlarmSensor.cpp
+SOURCE=..\..\src\sensors\SoAlarmSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9190,7 +9190,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoAlarmSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoDataSensor.cpp
+SOURCE=..\..\src\sensors\SoDataSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9203,7 +9203,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoDataSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoDelayQueueSensor.cpp
+SOURCE=..\..\src\sensors\SoDelayQueueSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9216,7 +9216,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoDelayQueueSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoFieldSensor.cpp
+SOURCE=..\..\src\sensors\SoFieldSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9229,7 +9229,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoFieldSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoIdleSensor.cpp
+SOURCE=..\..\src\sensors\SoIdleSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9242,7 +9242,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoIdleSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoNodeSensor.cpp
+SOURCE=..\..\src\sensors\SoNodeSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9255,7 +9255,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoNodeSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoOneShotSensor.cpp
+SOURCE=..\..\src\sensors\SoOneShotSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9268,7 +9268,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoOneShotSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoPathSensor.cpp
+SOURCE=..\..\src\sensors\SoPathSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9281,7 +9281,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoPathSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoSensor.cpp
+SOURCE=..\..\src\sensors\SoSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9294,7 +9294,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoSensorManager.cpp
+SOURCE=..\..\src\sensors\SoSensorManager.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9307,7 +9307,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoSensorManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoTimerQueueSensor.cpp
+SOURCE=..\..\src\sensors\SoTimerQueueSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9320,7 +9320,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoTimerQueueSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\sensors\SoTimerSensor.cpp
+SOURCE=..\..\src\sensors\SoTimerSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\sensors"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9336,7 +9336,7 @@ SOURCE=C:\cygwin..\..\src\sensors\SoTimerSensor.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\upgraders\SoUpgrader.cpp
+SOURCE=..\..\src\upgraders\SoUpgrader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\upgraders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9349,7 +9349,7 @@ SOURCE=C:\cygwin..\..\src\upgraders\SoUpgrader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\upgraders\SoPackedColorV20.cpp
+SOURCE=..\..\src\upgraders\SoPackedColorV20.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\upgraders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9362,7 +9362,7 @@ SOURCE=C:\cygwin..\..\src\upgraders\SoPackedColorV20.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\upgraders\SoShapeHintsV10.cpp
+SOURCE=..\..\src\upgraders\SoShapeHintsV10.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\upgraders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9378,7 +9378,7 @@ SOURCE=C:\cygwin..\..\src\upgraders\SoShapeHintsV10.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\3ds\3dsLoader.cpp
+SOURCE=..\..\src\3ds\3dsLoader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\3ds"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9391,7 +9391,7 @@ SOURCE=C:\cygwin..\..\src\3ds\3dsLoader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\3ds\SoStream.cpp
+SOURCE=..\..\src\3ds\SoStream.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\3ds"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9407,7 +9407,7 @@ SOURCE=C:\cygwin..\..\src\3ds\SoStream.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\collision\SbTri3f.cpp
+SOURCE=..\..\src\collision\SbTri3f.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\collision"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9420,7 +9420,7 @@ SOURCE=C:\cygwin..\..\src\collision\SbTri3f.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\collision\SoIntersectionDetectionAction.cpp
+SOURCE=..\..\src\collision\SoIntersectionDetectionAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\collision"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9436,7 +9436,7 @@ SOURCE=C:\cygwin..\..\src\collision\SoIntersectionDetectionAction.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\hardcopy\HardCopy.cpp
+SOURCE=..\..\src\hardcopy\HardCopy.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9449,7 +9449,7 @@ SOURCE=C:\cygwin..\..\src\hardcopy\HardCopy.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\hardcopy\PSVectorOutput.cpp
+SOURCE=..\..\src\hardcopy\PSVectorOutput.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9462,7 +9462,7 @@ SOURCE=C:\cygwin..\..\src\hardcopy\PSVectorOutput.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\hardcopy\VectorOutput.cpp
+SOURCE=..\..\src\hardcopy\VectorOutput.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9475,7 +9475,7 @@ SOURCE=C:\cygwin..\..\src\hardcopy\VectorOutput.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\hardcopy\VectorizeAction.cpp
+SOURCE=..\..\src\hardcopy\VectorizeAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9488,7 +9488,7 @@ SOURCE=C:\cygwin..\..\src\hardcopy\VectorizeAction.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\hardcopy\VectorizeActionP.cpp
+SOURCE=..\..\src\hardcopy\VectorizeActionP.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9501,7 +9501,7 @@ SOURCE=C:\cygwin..\..\src\hardcopy\VectorizeActionP.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\hardcopy\VectorizePSAction.cpp
+SOURCE=..\..\src\hardcopy\VectorizePSAction.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\hardcopy"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9517,7 +9517,7 @@ SOURCE=C:\cygwin..\..\src\hardcopy\VectorizePSAction.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoShadowGroup.cpp
+SOURCE=..\..\src\shadows\SoShadowGroup.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9530,7 +9530,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoShadowGroup.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoShadowStyle.cpp
+SOURCE=..\..\src\shadows\SoShadowStyle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9543,7 +9543,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoShadowStyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoShadowSpotLight.cpp
+SOURCE=..\..\src\shadows\SoShadowSpotLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9556,7 +9556,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoShadowSpotLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoShadowDirectionalLight.cpp
+SOURCE=..\..\src\shadows\SoShadowDirectionalLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9569,7 +9569,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoShadowDirectionalLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoShadowStyleElement.cpp
+SOURCE=..\..\src\shadows\SoShadowStyleElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9582,7 +9582,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoShadowStyleElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoShadowCulling.cpp
+SOURCE=..\..\src\shadows\SoShadowCulling.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9595,7 +9595,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoShadowCulling.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shadows\SoGLShadowCullingElement.cpp
+SOURCE=..\..\src\shadows\SoGLShadowCullingElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shadows"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9611,7 +9611,7 @@ SOURCE=C:\cygwin..\..\src\shadows\SoGLShadowCullingElement.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SoGeo.cpp
+SOURCE=..\..\src\geo\SoGeo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9624,7 +9624,7 @@ SOURCE=C:\cygwin..\..\src\geo\SoGeo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SoGeoOrigin.cpp
+SOURCE=..\..\src\geo\SoGeoOrigin.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9637,7 +9637,7 @@ SOURCE=C:\cygwin..\..\src\geo\SoGeoOrigin.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SoGeoLocation.cpp
+SOURCE=..\..\src\geo\SoGeoLocation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9650,7 +9650,7 @@ SOURCE=C:\cygwin..\..\src\geo\SoGeoLocation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SoGeoElement.cpp
+SOURCE=..\..\src\geo\SoGeoElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9663,7 +9663,7 @@ SOURCE=C:\cygwin..\..\src\geo\SoGeoElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SoGeoSeparator.cpp
+SOURCE=..\..\src\geo\SoGeoSeparator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9676,7 +9676,7 @@ SOURCE=C:\cygwin..\..\src\geo\SoGeoSeparator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SoGeoCoordinate.cpp
+SOURCE=..\..\src\geo\SoGeoCoordinate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9689,7 +9689,7 @@ SOURCE=C:\cygwin..\..\src\geo\SoGeoCoordinate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SbGeoAngle.cpp
+SOURCE=..\..\src\geo\SbGeoAngle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9702,7 +9702,7 @@ SOURCE=C:\cygwin..\..\src\geo\SbGeoAngle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SbGeoEllipsoid.cpp
+SOURCE=..\..\src\geo\SbGeoEllipsoid.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9715,7 +9715,7 @@ SOURCE=C:\cygwin..\..\src\geo\SbGeoEllipsoid.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SbGeoProjection.cpp
+SOURCE=..\..\src\geo\SbGeoProjection.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9728,7 +9728,7 @@ SOURCE=C:\cygwin..\..\src\geo\SbGeoProjection.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SbPolarStereographic.cpp
+SOURCE=..\..\src\geo\SbPolarStereographic.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9741,7 +9741,7 @@ SOURCE=C:\cygwin..\..\src\geo\SbPolarStereographic.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\geo\SbUTMProjection.cpp
+SOURCE=..\..\src\geo\SbUTMProjection.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\geo"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9757,7 +9757,7 @@ SOURCE=C:\cygwin..\..\src\geo\SbUTMProjection.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\common.cpp
+SOURCE=..\..\src\threads\common.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9770,7 +9770,7 @@ SOURCE=C:\cygwin..\..\src\threads\common.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\thread.cpp
+SOURCE=..\..\src\threads\thread.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9783,7 +9783,7 @@ SOURCE=C:\cygwin..\..\src\threads\thread.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\mutex.cpp
+SOURCE=..\..\src\threads\mutex.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9796,7 +9796,7 @@ SOURCE=C:\cygwin..\..\src\threads\mutex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\rwmutex.cpp
+SOURCE=..\..\src\threads\rwmutex.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9809,7 +9809,7 @@ SOURCE=C:\cygwin..\..\src\threads\rwmutex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\storage.cpp
+SOURCE=..\..\src\threads\storage.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9822,7 +9822,7 @@ SOURCE=C:\cygwin..\..\src\threads\storage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\condvar.cpp
+SOURCE=..\..\src\threads\condvar.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9835,7 +9835,7 @@ SOURCE=C:\cygwin..\..\src\threads\condvar.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\worker.cpp
+SOURCE=..\..\src\threads\worker.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9848,7 +9848,7 @@ SOURCE=C:\cygwin..\..\src\threads\worker.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\wpool.cpp
+SOURCE=..\..\src\threads\wpool.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9861,7 +9861,7 @@ SOURCE=C:\cygwin..\..\src\threads\wpool.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\recmutex.cpp
+SOURCE=..\..\src\threads\recmutex.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9874,7 +9874,7 @@ SOURCE=C:\cygwin..\..\src\threads\recmutex.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\sched.cpp
+SOURCE=..\..\src\threads\sched.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9887,7 +9887,7 @@ SOURCE=C:\cygwin..\..\src\threads\sched.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\sync.cpp
+SOURCE=..\..\src\threads\sync.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9900,7 +9900,7 @@ SOURCE=C:\cygwin..\..\src\threads\sync.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\fifo.cpp
+SOURCE=..\..\src\threads\fifo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9913,7 +9913,7 @@ SOURCE=C:\cygwin..\..\src\threads\fifo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\threads\barrier.cpp
+SOURCE=..\..\src\threads\barrier.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\threads"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9929,7 +9929,7 @@ SOURCE=C:\cygwin..\..\src\threads\barrier.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoFragmentShader.cpp
+SOURCE=..\..\src\shaders\SoFragmentShader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9942,7 +9942,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoFragmentShader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGeometryShader.cpp
+SOURCE=..\..\src\shaders\SoGeometryShader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9955,7 +9955,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGeometryShader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLARBShaderParameter.cpp
+SOURCE=..\..\src\shaders\SoGLARBShaderParameter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9968,7 +9968,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLARBShaderParameter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLARBShaderObject.cpp
+SOURCE=..\..\src\shaders\SoGLARBShaderObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9981,7 +9981,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLARBShaderObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLARBShaderProgram.cpp
+SOURCE=..\..\src\shaders\SoGLARBShaderProgram.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -9994,7 +9994,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLARBShaderProgram.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLCgShaderObject.cpp
+SOURCE=..\..\src\shaders\SoGLCgShaderObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10007,7 +10007,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLCgShaderObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLCgShaderParameter.cpp
+SOURCE=..\..\src\shaders\SoGLCgShaderParameter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10020,7 +10020,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLCgShaderParameter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLCgShaderProgram.cpp
+SOURCE=..\..\src\shaders\SoGLCgShaderProgram.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10033,7 +10033,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLCgShaderProgram.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLSLShaderParameter.cpp
+SOURCE=..\..\src\shaders\SoGLSLShaderParameter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10046,7 +10046,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLSLShaderParameter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLSLShaderObject.cpp
+SOURCE=..\..\src\shaders\SoGLSLShaderObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10059,7 +10059,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLSLShaderObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLSLShaderProgram.cpp
+SOURCE=..\..\src\shaders\SoGLSLShaderProgram.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10072,7 +10072,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLSLShaderProgram.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderObject.cpp
+SOURCE=..\..\src\shaders\SoGLShaderObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10085,7 +10085,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderParameter.cpp
+SOURCE=..\..\src\shaders\SoGLShaderParameter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10098,7 +10098,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderParameter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderProgram.cpp
+SOURCE=..\..\src\shaders\SoGLShaderProgram.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10111,7 +10111,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderProgram.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderProgramElement.cpp
+SOURCE=..\..\src\shaders\SoGLShaderProgramElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10124,7 +10124,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoGLShaderProgramElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoShaderObject.cpp
+SOURCE=..\..\src\shaders\SoShaderObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10137,7 +10137,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoShaderObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoShaderParameter.cpp
+SOURCE=..\..\src\shaders\SoShaderParameter.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10150,7 +10150,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoShaderParameter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoShaderProgram.cpp
+SOURCE=..\..\src\shaders\SoShaderProgram.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10163,7 +10163,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoShaderProgram.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoShader.cpp
+SOURCE=..\..\src\shaders\SoShader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10176,7 +10176,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoShader.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\shaders\SoVertexShader.cpp
+SOURCE=..\..\src\shaders\SoVertexShader.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\shaders"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10192,7 +10192,7 @@ SOURCE=C:\cygwin..\..\src\shaders\SoVertexShader.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfiler.cpp
+SOURCE=..\..\src\profiler\SoProfiler.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10205,7 +10205,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfiler.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilerElement.cpp
+SOURCE=..\..\src\profiler\SoProfilerElement.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10218,7 +10218,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilerElement.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilerOverlayKit.cpp
+SOURCE=..\..\src\profiler\SoProfilerOverlayKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10231,7 +10231,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilerOverlayKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilerStats.cpp
+SOURCE=..\..\src\profiler\SoProfilerStats.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10244,7 +10244,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilerStats.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilingReportGenerator.cpp
+SOURCE=..\..\src\profiler\SoProfilingReportGenerator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10257,7 +10257,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilingReportGenerator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilerTopEngine.cpp
+SOURCE=..\..\src\profiler\SoProfilerTopEngine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10270,7 +10270,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilerTopEngine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoScrollingGraphKit.cpp
+SOURCE=..\..\src\profiler\SoScrollingGraphKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10283,7 +10283,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoScrollingGraphKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoNodeVisualize.cpp
+SOURCE=..\..\src\profiler\SoNodeVisualize.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10296,7 +10296,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoNodeVisualize.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilerTopKit.cpp
+SOURCE=..\..\src\profiler\SoProfilerTopKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10309,7 +10309,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilerTopKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SoProfilerVisualizeKit.cpp
+SOURCE=..\..\src\profiler\SoProfilerVisualizeKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10322,7 +10322,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SoProfilerVisualizeKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\profiler\SbProfilingData.cpp
+SOURCE=..\..\src\profiler\SbProfilingData.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\profiler"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10338,7 +10338,7 @@ SOURCE=C:\cygwin..\..\src\profiler\SbProfilingData.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Anchor.cpp
+SOURCE=..\..\src\vrml97\Anchor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10351,7 +10351,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Anchor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Appearance.cpp
+SOURCE=..\..\src\vrml97\Appearance.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10364,7 +10364,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Appearance.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\AudioClip.cpp
+SOURCE=..\..\src\vrml97\AudioClip.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10377,7 +10377,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\AudioClip.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Background.cpp
+SOURCE=..\..\src\vrml97\Background.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10390,7 +10390,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Background.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Billboard.cpp
+SOURCE=..\..\src\vrml97\Billboard.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10403,7 +10403,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Billboard.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Box.cpp
+SOURCE=..\..\src\vrml97\Box.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10416,7 +10416,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Box.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Collision.cpp
+SOURCE=..\..\src\vrml97\Collision.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10429,7 +10429,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Collision.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Color.cpp
+SOURCE=..\..\src\vrml97\Color.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10442,7 +10442,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Color.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\ColorInterpolator.cpp
+SOURCE=..\..\src\vrml97\ColorInterpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10455,7 +10455,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\ColorInterpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Cone.cpp
+SOURCE=..\..\src\vrml97\Cone.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10468,7 +10468,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Cone.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Coordinate.cpp
+SOURCE=..\..\src\vrml97\Coordinate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10481,7 +10481,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Coordinate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\CoordinateInterpolator.cpp
+SOURCE=..\..\src\vrml97\CoordinateInterpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10494,7 +10494,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\CoordinateInterpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Cylinder.cpp
+SOURCE=..\..\src\vrml97\Cylinder.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10507,7 +10507,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Cylinder.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\CylinderSensor.cpp
+SOURCE=..\..\src\vrml97\CylinderSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10520,7 +10520,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\CylinderSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\DirectionalLight.cpp
+SOURCE=..\..\src\vrml97\DirectionalLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10533,7 +10533,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\DirectionalLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\DragSensor.cpp
+SOURCE=..\..\src\vrml97\DragSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10546,7 +10546,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\DragSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\ElevationGrid.cpp
+SOURCE=..\..\src\vrml97\ElevationGrid.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10559,7 +10559,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\ElevationGrid.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Extrusion.cpp
+SOURCE=..\..\src\vrml97\Extrusion.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10572,7 +10572,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Extrusion.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Fog.cpp
+SOURCE=..\..\src\vrml97\Fog.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10585,7 +10585,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Fog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\FontStyle.cpp
+SOURCE=..\..\src\vrml97\FontStyle.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10598,7 +10598,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\FontStyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Geometry.cpp
+SOURCE=..\..\src\vrml97\Geometry.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10611,7 +10611,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Geometry.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Group.cpp
+SOURCE=..\..\src\vrml97\Group.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10624,7 +10624,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Group.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\ImageTexture.cpp
+SOURCE=..\..\src\vrml97\ImageTexture.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10637,7 +10637,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\ImageTexture.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\IndexedFaceSet.cpp
+SOURCE=..\..\src\vrml97\IndexedFaceSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10650,7 +10650,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\IndexedFaceSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\IndexedLine.cpp
+SOURCE=..\..\src\vrml97\IndexedLine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10663,7 +10663,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\IndexedLine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\IndexedLineSet.cpp
+SOURCE=..\..\src\vrml97\IndexedLineSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10676,7 +10676,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\IndexedLineSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\IndexedShape.cpp
+SOURCE=..\..\src\vrml97\IndexedShape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10689,7 +10689,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\IndexedShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Init.cpp
+SOURCE=..\..\src\vrml97\Init.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10702,7 +10702,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Init.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Inline.cpp
+SOURCE=..\..\src\vrml97\Inline.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10715,7 +10715,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Inline.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Interpolator.cpp
+SOURCE=..\..\src\vrml97\Interpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10728,7 +10728,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Interpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\LOD.cpp
+SOURCE=..\..\src\vrml97\LOD.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10741,7 +10741,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\LOD.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Light.cpp
+SOURCE=..\..\src\vrml97\Light.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10754,7 +10754,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Light.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Material.cpp
+SOURCE=..\..\src\vrml97\Material.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10767,7 +10767,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Material.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\MovieTexture.cpp
+SOURCE=..\..\src\vrml97\MovieTexture.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10780,7 +10780,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\MovieTexture.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\NavigationInfo.cpp
+SOURCE=..\..\src\vrml97\NavigationInfo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10793,7 +10793,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\NavigationInfo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Normal.cpp
+SOURCE=..\..\src\vrml97\Normal.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10806,7 +10806,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Normal.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\NormalInterpolator.cpp
+SOURCE=..\..\src\vrml97\NormalInterpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10819,7 +10819,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\NormalInterpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\OrientationInterpolator.cpp
+SOURCE=..\..\src\vrml97\OrientationInterpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10832,7 +10832,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\OrientationInterpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Parent.cpp
+SOURCE=..\..\src\vrml97\Parent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10845,7 +10845,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Parent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\PixelTexture.cpp
+SOURCE=..\..\src\vrml97\PixelTexture.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10858,7 +10858,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\PixelTexture.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\PlaneSensor.cpp
+SOURCE=..\..\src\vrml97\PlaneSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10871,7 +10871,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\PlaneSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\PointLight.cpp
+SOURCE=..\..\src\vrml97\PointLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10884,7 +10884,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\PointLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\PointSet.cpp
+SOURCE=..\..\src\vrml97\PointSet.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10897,7 +10897,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\PointSet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\PositionInterpolator.cpp
+SOURCE=..\..\src\vrml97\PositionInterpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10910,7 +10910,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\PositionInterpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\ProximitySensor.cpp
+SOURCE=..\..\src\vrml97\ProximitySensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10923,7 +10923,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\ProximitySensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\ScalarInterpolator.cpp
+SOURCE=..\..\src\vrml97\ScalarInterpolator.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10936,7 +10936,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\ScalarInterpolator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Script.cpp
+SOURCE=..\..\src\vrml97\Script.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10949,7 +10949,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Script.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Sensor.cpp
+SOURCE=..\..\src\vrml97\Sensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10962,7 +10962,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Sensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Shape.cpp
+SOURCE=..\..\src\vrml97\Shape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10975,7 +10975,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Shape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Sound.cpp
+SOURCE=..\..\src\vrml97\Sound.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -10988,7 +10988,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Sound.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Sphere.cpp
+SOURCE=..\..\src\vrml97\Sphere.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11001,7 +11001,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Sphere.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\SphereSensor.cpp
+SOURCE=..\..\src\vrml97\SphereSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11014,7 +11014,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\SphereSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\SpotLight.cpp
+SOURCE=..\..\src\vrml97\SpotLight.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11027,7 +11027,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\SpotLight.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Switch.cpp
+SOURCE=..\..\src\vrml97\Switch.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11040,7 +11040,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Switch.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Text.cpp
+SOURCE=..\..\src\vrml97\Text.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11053,7 +11053,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Text.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Texture.cpp
+SOURCE=..\..\src\vrml97\Texture.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11066,7 +11066,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Texture.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\TextureCoordinate.cpp
+SOURCE=..\..\src\vrml97\TextureCoordinate.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11079,7 +11079,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\TextureCoordinate.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\TextureTransform.cpp
+SOURCE=..\..\src\vrml97\TextureTransform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11092,7 +11092,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\TextureTransform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\TimeSensor.cpp
+SOURCE=..\..\src\vrml97\TimeSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11105,7 +11105,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\TimeSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\TouchSensor.cpp
+SOURCE=..\..\src\vrml97\TouchSensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11118,7 +11118,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\TouchSensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Transform.cpp
+SOURCE=..\..\src\vrml97\Transform.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11131,7 +11131,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Transform.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\VertexLine.cpp
+SOURCE=..\..\src\vrml97\VertexLine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11144,7 +11144,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\VertexLine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\VertexPoint.cpp
+SOURCE=..\..\src\vrml97\VertexPoint.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11157,7 +11157,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\VertexPoint.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\VertexShape.cpp
+SOURCE=..\..\src\vrml97\VertexShape.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11170,7 +11170,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\VertexShape.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\Viewpoint.cpp
+SOURCE=..\..\src\vrml97\Viewpoint.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11183,7 +11183,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\Viewpoint.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\VisibilitySensor.cpp
+SOURCE=..\..\src\vrml97\VisibilitySensor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11196,7 +11196,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\VisibilitySensor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\WorldInfo.cpp
+SOURCE=..\..\src\vrml97\WorldInfo.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11209,7 +11209,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\WorldInfo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\vrml97\JS_VRMLClasses.cpp
+SOURCE=..\..\src\vrml97\JS_VRMLClasses.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\vrml97"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11225,7 +11225,7 @@ SOURCE=C:\cygwin..\..\src\vrml97\JS_VRMLClasses.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\foreignfiles\SoForeignFileKit.cpp
+SOURCE=..\..\src\foreignfiles\SoForeignFileKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\foreignfiles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11238,7 +11238,7 @@ SOURCE=C:\cygwin..\..\src\foreignfiles\SoForeignFileKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\foreignfiles\SoSTLFileKit.cpp
+SOURCE=..\..\src\foreignfiles\SoSTLFileKit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\foreignfiles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11251,7 +11251,7 @@ SOURCE=C:\cygwin..\..\src\foreignfiles\SoSTLFileKit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\foreignfiles\steel-wrapper.cpp
+SOURCE=..\..\src\foreignfiles\steel-wrapper.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\foreignfiles"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11267,7 +11267,7 @@ SOURCE=C:\cygwin..\..\src\foreignfiles\steel-wrapper.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXML.cpp
+SOURCE=..\..\src\scxml\ScXML.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11280,7 +11280,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXML.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLObject.cpp
+SOURCE=..\..\src\scxml\ScXMLObject.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11293,7 +11293,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLDocument.cpp
+SOURCE=..\..\src\scxml\ScXMLDocument.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11306,7 +11306,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLDocument.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLState.cpp
+SOURCE=..\..\src\scxml\ScXMLState.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11319,7 +11319,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLState.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLOnEntry.cpp
+SOURCE=..\..\src\scxml\ScXMLOnEntry.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11332,7 +11332,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLOnEntry.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLOnExit.cpp
+SOURCE=..\..\src\scxml\ScXMLOnExit.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11345,7 +11345,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLOnExit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLInitial.cpp
+SOURCE=..\..\src\scxml\ScXMLInitial.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11358,7 +11358,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLInitial.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLFinal.cpp
+SOURCE=..\..\src\scxml\ScXMLFinal.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11371,7 +11371,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLFinal.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLAnchor.cpp
+SOURCE=..\..\src\scxml\ScXMLAnchor.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11384,7 +11384,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLAnchor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLHistory.cpp
+SOURCE=..\..\src\scxml\ScXMLHistory.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11397,7 +11397,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLHistory.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLTransition.cpp
+SOURCE=..\..\src\scxml\ScXMLTransition.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11410,7 +11410,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLTransition.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLEvent.cpp
+SOURCE=..\..\src\scxml\ScXMLEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11423,7 +11423,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLInvoke.cpp
+SOURCE=..\..\src\scxml\ScXMLInvoke.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11436,7 +11436,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLFallbackInvoke.cpp
+SOURCE=..\..\src\scxml\ScXMLFallbackInvoke.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11449,7 +11449,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLFallbackInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\ScXMLStateMachine.cpp
+SOURCE=..\..\src\scxml\ScXMLStateMachine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11462,7 +11462,7 @@ SOURCE=C:\cygwin..\..\src\scxml\ScXMLStateMachine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\SoScXMLEvent.cpp
+SOURCE=..\..\src\scxml\SoScXMLEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11475,7 +11475,7 @@ SOURCE=C:\cygwin..\..\src\scxml\SoScXMLEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\SoScXMLStateMachine.cpp
+SOURCE=..\..\src\scxml\SoScXMLStateMachine.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11488,7 +11488,7 @@ SOURCE=C:\cygwin..\..\src\scxml\SoScXMLStateMachine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp
+SOURCE=..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11501,7 +11501,7 @@ SOURCE=C:\cygwin..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp
+SOURCE=..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11514,7 +11514,7 @@ SOURCE=C:\cygwin..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp
+SOURCE=..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11528,7 +11528,7 @@ SOURCE=C:\cygwin..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp
 # End Group
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\tidbits.cpp
+SOURCE=..\..\src\tidbits.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11543,7 +11543,7 @@ SOURCE=C:\cygwin..\..\src\tidbits.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
-SOURCE=C:\cygwin..\..\src\share\gl\CoinGLPerformance.cpp
+SOURCE=..\..\src\share\gl\CoinGLPerformance.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\share\gl"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
