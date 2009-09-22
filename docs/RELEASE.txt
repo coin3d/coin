@@ -78,28 +78,10 @@ several times as new problems show up.
 
     $ <srcdir>/Coin/configure CC=<C++-compiler> && make
 
-    - Linux Debian packaging check (from "make dist" tarball)
-
-      $ cd /tmp
-      $ debootstrap sid sid-chroot
-      $ cp /etc/apt/sources.list sid-chroot/etc/apt/
-      $ cp Coin-#.#.#.tar.gz sid-chroot/tmp
-      $ chroot sid-chroot
-      $ apt-get update
-      $ apt-get install build-essential
-      $ cd /tmp
-      $ tar zxvf Coin-#.#.#.tar.gz
-      $ cd Coin-#.#.#
-
-      Inspect packaging/debian/control.in and do for each dependency package
-        $ apt-get install <package>
-
-      $ ./configure && make debian-packages
-
  - Cygwin (GNU make and MS Visual C++)
 
     NOTE: For windows-packages to work, you need to have perl and
-    makensis installed, this functionality is remove in Coin-3 and
+    makensis installed, this functionality is removed in Coin-3 and
     onwards, so only run make
 
     $ <srcdir>/Coin/configure && make (windows-packages)
@@ -224,26 +206,6 @@ This stage should be self-explanatory.
   $ cd Coin
   $ ./configure && make dist
 
-* Build Microsoft Visual C++ Windows SDK
-
-  $ ./configure && make windows-packages
-
-  (FIXME note for future releases: MSVC++ v6 and v7 binary SDKs might
-  be incompatible due to changes in which C-libraries are used.  (At
-  least TGS is releasing separate SDKs of TGS Inventor for the two
-  MSVC++ versions.) Investigate, and if this is the case, we should
-  pick up an MSVC++ v7 license after the official release somewhere in
-  2002-02 and support both versions.  2002-01-26 mortene.)
-
-* Build Debian Packages
-
-  $ ./configure && make debian-packages
-
-  * NOTE: PGP-signing of the packages is done by the Debian sponsor/
-    uploader, not the package builder
-
-* Build RPM Packages
-
 * Build Mac OS X binary distribution
 
   See Coin/packaging/macosx/checklist.txt.
@@ -252,7 +214,7 @@ This stage should be self-explanatory.
 
 * Put binary distributions at ftp://ftp.coin3d.org/pub/coin/bin/<arch>/
 
-* Make Debian Upload
+* Contact Debian and inform them about the update
 
   Steve M. Robbins <smr at debian.org> is our contact on this item.
 
