@@ -8,3 +8,6 @@ cd build/misc
 ./generate.bat msvc8
 ./generate.bat msvc9
 
+#msvc6 is only our starting point, but cannot be built.
+#Uncomment to keep the files.
+rm -rf msvc6
