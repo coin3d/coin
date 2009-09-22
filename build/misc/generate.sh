@@ -7,6 +7,11 @@ if test x"$COINDIR" = x""; then
   exit
 fi
 
+if ! perl -e 'exit 0' 2>/dev/null ; then
+  echo "You need to have perl installed to run this script"
+  exit
+fi
+
 project_name=coin
 project=${project_name}$(fgrep -i "${project_name}_MAJOR_VERSION=" ../../configure | cut -d= -f2)
 
