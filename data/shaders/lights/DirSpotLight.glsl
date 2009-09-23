@@ -1,5 +1,5 @@
 
-float DirSpotLight(in vec3 light_direction,
+float DirSpotLight(in vec3 dir,
                    in vec3 light_position,
                    in vec3 eye,
                    in vec3 ecPosition3,
@@ -10,7 +10,6 @@ float DirSpotLight(in vec3 light_direction,
   float nDotVP;
   float nDotHV;
   float pf;
-  vec3 dir = );
   vec3 hv = normalize(eye + dir);
   nDotVP = max(0.0, dot(normal, dir));
   nDotHV = max(0.0, dot(normal, hv));
@@ -24,4 +23,3 @@ float DirSpotLight(in vec3 light_direction,
   specular *= pf;
   return length(light_position - ecPosition3);
 }
-

@@ -1365,8 +1365,8 @@ namespace {
     const char * dist = needdist ? "dist = " : "";
     SbString str;
     str.sprintf("%s DirSpotLight("
-                " -normalize(vec3(gl_LightSource[%d].spotDirection),"
-                " vec3(gl_LightSource[%d].position,"
+                " -normalize(vec3(gl_LightSource[%d].spotDirection)),"
+                " vec3(gl_LightSource[%d].position),"
                 " eye, ecPosition3, normal, diffuse, specular);", dist, i, i);
     gen.addMainStatement(str);
   }
