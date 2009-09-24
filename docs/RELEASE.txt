@@ -175,8 +175,8 @@ anything.
 * Tag Source Repository
 
   $ svn copy https://svn.coin3d.org/repos/Coin/trunk \
-             https://svn.coin3d.org/repos/Coin/tags/coin-3.0.1 \
-      -m "Tagging the 3.0.1 release of the Coin library."
+             https://svn.coin3d.org/repos/Coin/tags/coin-#.#.# \
+      -m "Tagging the #.#.# release of the Coin library."
 
 
   | Listing existing tags can be done with:
@@ -202,7 +202,7 @@ This stage should be self-explanatory.
 
 * Checkout of the release source code and make archive
 
-  $ svn co https://svn.coin3d.org/repos/Coin/branches/coin-#.#.# Coin
+  $ svn export https://svn.coin3d.org/repos/Coin/tags/coin-#.#.# Coin
   $ cd Coin
   $ ./configure && make dist
 
@@ -218,9 +218,9 @@ This stage should be self-explanatory.
 
   Steve M. Robbins <smr at debian.org> is our contact on this item.
 
-* Send announcements to coin-announce@coin3d.org and coin-discuss@coin3d.org
+* Update Coin Web site
 
-* Post announcement on comp.graphics.api.inventor
+* Send announcements to coin-announce@coin3d.org and coin-discuss@coin3d.org
 
 * Update Coin Freshmeat project
 
