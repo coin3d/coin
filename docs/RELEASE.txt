@@ -78,6 +78,12 @@ several times as new problems show up.
 
     $ <srcdir>/Coin/configure CC=<C++-compiler> && make
 
+    Run the testsuite, and make sure no system installation of boost
+    is available. The makefile-update is important, since no changes
+    should be caused by this that differ between systems.
+
+    $ cd testsuite && make makefile-update && make
+
  - Cygwin (GNU make and MS Visual C++)
 
     NOTE: For windows-packages to work, you need to have perl and
@@ -92,9 +98,21 @@ several times as new problems show up.
 
     This step will verify both release and debug builds.
 
+    Run the testsuite, and make sure no system installation of boost
+    is available. The makefile-update is important, since no changes
+    should be caused by this that differ between systems.
+
+    $ cd testsuite && make makefile-update && make
+
   - Mac OS X (GNU make and gcc)
 
     Create binary distribution, see Coin/packaging/macosx/checklist.txt.
+
+    Run the testsuite, and make sure no system installation of boost
+    is available. The makefile-update is important, since no changes
+    should be caused by this that differ between systems.
+
+    $ cd testsuite && make makefile-update && make
 
   - Make Source Dist
 
