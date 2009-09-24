@@ -7,10 +7,11 @@ elaborate way than can be fit into to the compact NEWS summary file.
 The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
-Coin 3.1.1 (so far)
-===================
 
-
+Coin 3.1.1
+==========
+This is a bugfix release.
+Bugs are fixed in all the NURBS related classes, and SoIndexedPointSet.
 
 Coin 3.1.0
 ==========

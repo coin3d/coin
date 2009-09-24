@@ -87,6 +87,7 @@ EXTRA_DIST = \
 	docs/ChangeLog.2007 \
 	docs/ChangeLog.v3.0.0 \
 	docs/ChangeLog.v3.1.0 \
+	docs/ChangeLog.v3.1.1 \
 	docs/HACKING \
 	docs/announcement-2_0_0.txt \
 	docs/announcement-2_0_1.txt \

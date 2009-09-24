@@ -1,5 +1,8 @@
-New in Coin v3.1.1 (so far):
-
+New in Coin v3.1.1 (2009-09-08):
+* bugfixes:
+  - Fixed NURBS bugs
+  - Fixed some issues in SoIndexedPointSet.
+  - Fixed a configure problem which made it impossible to create release builds on Windows.
 New in Coin v3.1.0 (2009-05-27):
 * new:
   - shape node classes SoIndexedPointSet, SoIndexedMarkerSet
