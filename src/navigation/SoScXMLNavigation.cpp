@@ -21,52 +21,118 @@
  *
 \**************************************************************************/
 
-#include "navigation/SoScXMLNavigation.h"
+#include <Inventor/navigation/SoScXMLNavigation.h>
 
-#include "navigation/SoScXMLRotateUtils.h"
-#include "navigation/SoScXMLPanUtils.h"
-#include "navigation/SoScXMLZoomUtils.h"
-#include "navigation/SoScXMLSpinUtils.h"
-#include "navigation/SoScXMLSeekUtils.h"
-#include "navigation/SoScXMLViewUtils.h"
+/*!
+  \class SoScXMLNavigation SoScXMLNavigation.h Inventor/scxml/SoScXMLNavigation.h
+  \brief Static class for some static init/cleanup/synchronization functions.
 
+  \ingroup navigation
+*/
+
+#include <cassert>
+#include "tidbitsp.h"
+
+#include <Inventor/misc/CoinResources.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/navigation/SoScXMLRotateTarget.h>
+#include <Inventor/navigation/SoScXMLPanTarget.h>
+#include <Inventor/navigation/SoScXMLZoomTarget.h>
+#include <Inventor/navigation/SoScXMLDollyTarget.h>
+#include <Inventor/navigation/SoScXMLSpinTarget.h>
+#include <Inventor/navigation/SoScXMLSeekTarget.h>
+#include <Inventor/navigation/SoScXMLMiscTarget.h>
+#include <Inventor/navigation/SoScXMLFlightControlTarget.h>
+#include <Inventor/navigation/SoScXMLMotionTarget.h>
+#include <Inventor/C/threads/mutex.h>
+#include "threads/threadsutilp.h"
+#include "navigation/common-xml.cpp"
 #include "navigation/examiner-xml.cpp"
+#include "navigation/plane-xml.cpp"
 
-#include "misc/CoinResources.h"
+class SoScXMLNavigation::PImpl {
+public:
+  static void * syncmutex;
+};
+
+void * SoScXMLNavigation::PImpl::syncmutex = NULL;
 
 void
 SoScXMLNavigation::initClasses(void)
 {
-  SoScXMLNavigationInvoke::initClass();
+  assert(PImpl::syncmutex == NULL);
+  CC_MUTEX_CONSTRUCT(PImpl::syncmutex);
 
-  SoScXMLRotateInvoke::initClass();
-  SoScXMLSetRotate::initClass();
-  SoScXMLUpdateRotate::initClass();
-  SoScXMLEndRotate::initClass();
+  SoScXMLNavigationTarget::initClass();
+  SoScXMLRotateTarget::initClass();
+  SoScXMLSpinTarget::initClass();
+  SoScXMLPanTarget::initClass();
+  SoScXMLZoomTarget::initClass();
+  SoScXMLDollyTarget::initClass();
+  SoScXMLSeekTarget::initClass();
+  SoScXMLMiscTarget::initClass();
+  SoScXMLFlightControlTarget::initClass();
+  SoScXMLMotionTarget::initClass();
 
-  SoScXMLSpinInvoke::initClass();
-  SoScXMLSetSpin::initClass();
-  SoScXMLUpdateSpin::initClass();
-  SoScXMLEndSpin::initClass();
+  CoinResources::set("coin://scxml/navigation/common.xml",
+                     SbByteBuffer(sizeof(common_xml)-1,&common_xml[0]));
 
-  SoScXMLPanInvoke::initClass();
-  SoScXMLSetPan::initClass();
-  SoScXMLUpdatePan::initClass();
-  SoScXMLEndPan::initClass();
-  
-  SoScXMLZoomInvoke::initClass();
-  SoScXMLSetZoom::initClass();
-  SoScXMLUpdateZoom::initClass();
-  SoScXMLEndZoom::initClass();
-  
-  SoScXMLSeekInvoke::initClass();
-  SoScXMLSetSeek::initClass();
-  SoScXMLUpdateSeek::initClass();
-  SoScXMLEndSeek::initClass();
+  CoinResources::set("coin://scxml/navigation/examiner.xml",
+                     SbByteBuffer(sizeof(examiner_xml)-1,&examiner_xml[0]));
 
-  SoScXMLViewAll::initClass();
+  CoinResources::set("coin://scxml/navigation/plane.xml",
+                     SbByteBuffer(sizeof(plane_xml)-1,&plane_xml[0]));
 
-  CoinResources::set("coin:scxml/navigation/examiner.xml",
-                     reinterpret_cast<const char *>(&(examiner_xml[0])),
-                     sizeof(examiner_xml));
+  // launch services
+  SoScXMLRotateTarget::constructSingleton();
+  SoScXMLPanTarget::constructSingleton();
+  SoScXMLZoomTarget::constructSingleton();
+  SoScXMLDollyTarget::constructSingleton();
+  SoScXMLSpinTarget::constructSingleton();
+  SoScXMLSeekTarget::constructSingleton();
+  SoScXMLMiscTarget::constructSingleton();
+  SoScXMLFlightControlTarget::constructSingleton();
+  SoScXMLMotionTarget::constructSingleton();
+
+  coin_atexit(static_cast<coin_atexit_f*>(SoScXMLNavigation::cleanClasses), CC_ATEXIT_NORMAL);
+}
+
+void
+SoScXMLNavigation::cleanClasses(void)
+{
+  SoScXMLMotionTarget::destructSingleton();
+  SoScXMLFlightControlTarget::destructSingleton();
+  SoScXMLMiscTarget::destructSingleton();
+  SoScXMLSeekTarget::destructSingleton();
+  SoScXMLSpinTarget::destructSingleton();
+  SoScXMLDollyTarget::destructSingleton();
+  SoScXMLZoomTarget::destructSingleton();
+  SoScXMLPanTarget::destructSingleton();
+  SoScXMLRotateTarget::destructSingleton();
+
+  SoScXMLRotateTarget::cleanClass();
+  SoScXMLSpinTarget::cleanClass();
+  SoScXMLPanTarget::cleanClass();
+  SoScXMLDollyTarget::cleanClass();
+  SoScXMLZoomTarget::cleanClass();
+  SoScXMLSeekTarget::cleanClass();
+  SoScXMLMiscTarget::cleanClass();
+  SoScXMLFlightControlTarget::cleanClass();
+  SoScXMLMotionTarget::cleanClass();
+  SoScXMLNavigationTarget::cleanClass();
+
+  CC_MUTEX_DESTRUCT(PImpl::syncmutex);
+  PImpl::syncmutex = NULL;
+}
+
+void
+SoScXMLNavigation::syncLock(void)
+{
+  CC_MUTEX_LOCK(PImpl::syncmutex);
+}
+
+void
+SoScXMLNavigation::syncUnlock(void)
+{
+  CC_MUTEX_UNLOCK(PImpl::syncmutex);
 }

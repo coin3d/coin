@@ -294,3 +294,19 @@ SbBox2i32::intersect(const SbBox2i32 & box) const
 
   Check \a b1 and \a b2 for inequality.
 */
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(checkSize) {
+  SbVec2i32 min(1,2);
+  SbVec2i32 max(3,4);
+
+  SbVec2i32 diff = max - min;
+
+  
+  SbBox2i32 box(min, max);
+
+  BOOST_CHECK_MESSAGE(box.getSize() == diff,
+                      "Box has incorrect size");
+
+}
+#endif //COIN_TEST_SUITE

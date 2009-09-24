@@ -36,6 +36,7 @@
 #endif // COIN_DEBUG
 
 #include "tidbitsp.h" // coin_debug_normalize()
+#include "coinString.h"
 
 /*!
   \class SbVec3d SbLinear.h Inventor/SbLinear.h
@@ -517,6 +518,15 @@ SbVec3d::setValue(const SbVec3i32 & v)
 */
 
 /*!
+  Return a string representation of this object
+*/
+SbString
+SbVec3d::toString() const
+{
+  return ToString(*this);
+}
+
+/*!
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized
   compile.
@@ -525,6 +535,16 @@ void
 SbVec3d::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  (void)fprintf(fp, "<%f, %f, %f>", this->vec[0], this->vec[1], this->vec[2]);
+  fputs(this->toString().getString(),fp);
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(toString) {
+  SbVec3d val(1.0/3,2,3);
+  SbString str("<0.33333333333333331, 2, 3>");
+  BOOST_CHECK_MESSAGE(str == val.toString(),
+                      std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
+
+}
+#endif //COIN_TEST_SUITE

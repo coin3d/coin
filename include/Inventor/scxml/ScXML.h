@@ -26,23 +26,23 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
-
-// xmlns values (only document root scxml element is checked)
-
-// default (and fallback) - uses just the base types
-#define SCXML_DEFAULT_NS "http://www.coin3d.org/scxml/default/1.0"
-
-// namespace value that integrates with Coin types
-#define SCXML_COIN_NS "http://www.coin3d.org/scxml/coin/1.0"
+#include <Inventor/SbName.h>
 
 class ScXMLStateMachine;
+class ScXMLEvaluator;
+class SbByteBuffer;
 
 class COIN_DLL_API ScXML {
 public:
   static void initClasses(void);
+  static void cleanClasses(void);
 
   static ScXMLStateMachine * readFile(const char * filename);
-  static ScXMLStateMachine * readBuffer(const char * bufferdata);
+  static ScXMLStateMachine * readBuffer(const SbByteBuffer & buffer);
+
+  static SbBool registerEvaluatorType(SbName profilename, SoType evaluatortype);
+  static SbBool unregisterEvaluatorType(SbName profilename, SoType evaluatortype);
+  static SoType getEvaluatorTypeForProfile(SbName profilename);
 
 }; // ScXML
 

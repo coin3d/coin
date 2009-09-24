@@ -47,11 +47,9 @@ public:
   SbDPMatrix(const SbMatrix & matrix);
   ~SbDPMatrix(void);
 
-  SbDPMatrix & operator =(const SbDPMat & m);
-
-  operator double*(void);
-  SbDPMatrix & operator =(const SbDPMatrix & m);
   void setValue(const SbDPMat & m);
+  void setValue(const SbMatrix & m);
+  void setValue(const double * pMat);
   const SbDPMat & getValue(void) const;
 
   void makeIdentity(void);
@@ -65,14 +63,6 @@ public:
   SbBool equals(const SbDPMatrix & m, double tolerance) const;
 
 
-  operator SbDPMat&(void);
-  double * operator [](int i);
-  const double * operator [](int i) const;
-  SbDPMatrix & operator =(const SbDPRotation & q);
-  SbDPMatrix & operator *=(const SbDPMatrix & m);
-  friend COIN_DLL_API SbDPMatrix operator *(const SbDPMatrix & m1, const SbDPMatrix & m2);
-  friend COIN_DLL_API int operator ==(const SbDPMatrix & m1, const SbDPMatrix & m2);
-  friend COIN_DLL_API int operator !=(const SbDPMatrix & m1, const SbDPMatrix & m2);
   void getValue(SbDPMat & m) const;
   static SbDPMatrix identity(void);
   void setScale(const double s);
@@ -104,12 +94,27 @@ public:
 
   void print(FILE * fp) const;
 
+  operator double*(void);
+  operator SbDPMat&(void);
+  double * operator [](int i);
+  const double * operator [](int i) const;
+
+  SbDPMatrix & operator =(const SbDPMat & m);
+  SbDPMatrix & operator =(const SbDPMatrix & m);
+  SbDPMatrix & operator =(const SbDPRotation & q);
+  SbDPMatrix & operator *=(const SbDPMatrix & m);
+
+  friend COIN_DLL_API SbDPMatrix operator *(const SbDPMatrix & m1, const SbDPMatrix & m2);
+  friend COIN_DLL_API int operator ==(const SbDPMatrix & m1, const SbDPMatrix & m2);
+  friend COIN_DLL_API int operator !=(const SbDPMatrix & m1, const SbDPMatrix & m2);
 private:
   double matrix[4][4];
 
   void operator /=(const double v);
   void operator *=(const double v);
 };
+
+typedef SbDPMatrix SbMatrixd;
 
 COIN_DLL_API SbDPMatrix operator *(const SbDPMatrix & m1, const SbDPMatrix & m2);
 COIN_DLL_API int operator ==(const SbDPMatrix & m1, const SbDPMatrix & m2);

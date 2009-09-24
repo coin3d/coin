@@ -30,7 +30,22 @@ TEST_SUITE_OBJECTS = \
 	actionsSoCallbackAction.$(OBJEXT) \
 	actionsSoWriteAction.$(OBJEXT) \
 	baseSbBSPTree.$(OBJEXT) \
+	baseSbBox2d.$(OBJEXT) \
+	baseSbBox2f.$(OBJEXT) \
+	baseSbBox2i32.$(OBJEXT) \
+	baseSbBox2s.$(OBJEXT) \
+	baseSbBox3i32.$(OBJEXT) \
+	baseSbBox3s.$(OBJEXT) \
+	baseSbByteBuffer.$(OBJEXT) \
+	baseSbDPMatrix.$(OBJEXT) \
+	baseSbDPRotation.$(OBJEXT) \
+	baseSbMatrix.$(OBJEXT) \
+	baseSbRotation.$(OBJEXT) \
 	baseSbString.$(OBJEXT) \
+	baseSbVec3d.$(OBJEXT) \
+	baseSbVec3f.$(OBJEXT) \
+	baseSbVec3s.$(OBJEXT) \
+	baseSbVec3us.$(OBJEXT) \
 	baseSbViewVolume.$(OBJEXT) \
 	baserbptree.$(OBJEXT) \
 	draggersSoTransformerDragger.$(OBJEXT) \
@@ -131,6 +146,7 @@ TEST_SUITE_OBJECTS = \
 	miscSoDB.$(OBJEXT) \
 	miscSoType.$(OBJEXT) \
 	nodesSoAnnotation.$(OBJEXT) \
+	scxmlScXMLMinimumEvaluator.$(OBJEXT) \
 	shadersSoFragmentShader.$(OBJEXT) \
 	shadersSoGeometryShader.$(OBJEXT) \
 	shadersSoShaderParameter.$(OBJEXT) \
@@ -143,6 +159,7 @@ TEST_SUITE_OBJECTS = \
 	shadowsSoShadowSpotLight.$(OBJEXT) \
 	shadowsSoShadowStyle.$(OBJEXT) \
 	shadowsSoShadowStyleElement.$(OBJEXT) \
+	soscxmlScXMLCoinEvaluator.$(OBJEXT) \
 	xmldocument.$(OBJEXT) \
 	$(EMPTY)
 
@@ -150,7 +167,22 @@ TEST_SUITE_BUILT_FILES = \
 	actionsSoCallbackAction.cpp \
 	actionsSoWriteAction.cpp \
 	baseSbBSPTree.cpp \
+	baseSbBox2d.cpp \
+	baseSbBox2f.cpp \
+	baseSbBox2i32.cpp \
+	baseSbBox2s.cpp \
+	baseSbBox3i32.cpp \
+	baseSbBox3s.cpp \
+	baseSbByteBuffer.cpp \
+	baseSbDPMatrix.cpp \
+	baseSbDPRotation.cpp \
+	baseSbMatrix.cpp \
+	baseSbRotation.cpp \
 	baseSbString.cpp \
+	baseSbVec3d.cpp \
+	baseSbVec3f.cpp \
+	baseSbVec3s.cpp \
+	baseSbVec3us.cpp \
 	baseSbViewVolume.cpp \
 	baserbptree.cpp \
 	draggersSoTransformerDragger.cpp \
@@ -251,6 +283,7 @@ TEST_SUITE_BUILT_FILES = \
 	miscSoDB.cpp \
 	miscSoType.cpp \
 	nodesSoAnnotation.cpp \
+	scxmlScXMLMinimumEvaluator.cpp \
 	shadersSoFragmentShader.cpp \
 	shadersSoGeometryShader.cpp \
 	shadersSoShaderParameter.cpp \
@@ -263,6 +296,7 @@ TEST_SUITE_BUILT_FILES = \
 	shadowsSoShadowSpotLight.cpp \
 	shadowsSoShadowStyle.cpp \
 	shadowsSoShadowStyleElement.cpp \
+	soscxmlScXMLCoinEvaluator.cpp \
 	xmldocument.cpp \
 	$(EMPTY)
 
@@ -332,11 +366,101 @@ baseSbBSPTree.cpp: $(top_srcdir)/src/base/SbBSPTree.cpp $(srcdir)/makeextract.sh
 baseSbBSPTree.$(OBJEXT): baseSbBSPTree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBSPTree.cpp
 
+baseSbBox2d.cpp: $(top_srcdir)/src/base/SbBox2d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2d.cpp
+
+baseSbBox2d.$(OBJEXT): baseSbBox2d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2d.cpp
+
+baseSbBox2f.cpp: $(top_srcdir)/src/base/SbBox2f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2f.cpp
+
+baseSbBox2f.$(OBJEXT): baseSbBox2f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2f.cpp
+
+baseSbBox2i32.cpp: $(top_srcdir)/src/base/SbBox2i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2i32.cpp
+
+baseSbBox2i32.$(OBJEXT): baseSbBox2i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2i32.cpp
+
+baseSbBox2s.cpp: $(top_srcdir)/src/base/SbBox2s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2s.cpp
+
+baseSbBox2s.$(OBJEXT): baseSbBox2s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2s.cpp
+
+baseSbBox3i32.cpp: $(top_srcdir)/src/base/SbBox3i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox3i32.cpp
+
+baseSbBox3i32.$(OBJEXT): baseSbBox3i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox3i32.cpp
+
+baseSbBox3s.cpp: $(top_srcdir)/src/base/SbBox3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox3s.cpp
+
+baseSbBox3s.$(OBJEXT): baseSbBox3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox3s.cpp
+
+baseSbByteBuffer.cpp: $(top_srcdir)/src/base/SbByteBuffer.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbByteBuffer.cpp
+
+baseSbByteBuffer.$(OBJEXT): baseSbByteBuffer.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbByteBuffer.cpp
+
+baseSbDPMatrix.cpp: $(top_srcdir)/src/base/SbDPMatrix.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPMatrix.cpp
+
+baseSbDPMatrix.$(OBJEXT): baseSbDPMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPMatrix.cpp
+
+baseSbDPRotation.cpp: $(top_srcdir)/src/base/SbDPRotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPRotation.cpp
+
+baseSbDPRotation.$(OBJEXT): baseSbDPRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPRotation.cpp
+
+baseSbMatrix.cpp: $(top_srcdir)/src/base/SbMatrix.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbMatrix.cpp
+
+baseSbMatrix.$(OBJEXT): baseSbMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbMatrix.cpp
+
+baseSbRotation.cpp: $(top_srcdir)/src/base/SbRotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbRotation.cpp
+
+baseSbRotation.$(OBJEXT): baseSbRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbRotation.cpp
+
 baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
 
 baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbString.cpp
+
+baseSbVec3d.cpp: $(top_srcdir)/src/base/SbVec3d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3d.cpp
+
+baseSbVec3d.$(OBJEXT): baseSbVec3d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3d.cpp
+
+baseSbVec3f.cpp: $(top_srcdir)/src/base/SbVec3f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3f.cpp
+
+baseSbVec3f.$(OBJEXT): baseSbVec3f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3f.cpp
+
+baseSbVec3s.cpp: $(top_srcdir)/src/base/SbVec3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3s.cpp
+
+baseSbVec3s.$(OBJEXT): baseSbVec3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3s.cpp
+
+baseSbVec3us.cpp: $(top_srcdir)/src/base/SbVec3us.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3us.cpp
+
+baseSbVec3us.$(OBJEXT): baseSbVec3us.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3us.cpp
 
 baseSbViewVolume.cpp: $(top_srcdir)/src/base/SbViewVolume.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbViewVolume.cpp
@@ -938,6 +1062,12 @@ nodesSoAnnotation.cpp: $(top_srcdir)/src/nodes/SoAnnotation.cpp $(srcdir)/makeex
 nodesSoAnnotation.$(OBJEXT): nodesSoAnnotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c nodesSoAnnotation.cpp
 
+scxmlScXMLMinimumEvaluator.cpp: $(top_srcdir)/src/scxml/ScXMLMinimumEvaluator.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/scxml/ScXMLMinimumEvaluator.cpp
+
+scxmlScXMLMinimumEvaluator.$(OBJEXT): scxmlScXMLMinimumEvaluator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c scxmlScXMLMinimumEvaluator.cpp
+
 shadersSoFragmentShader.cpp: $(top_srcdir)/src/shaders/SoFragmentShader.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/shaders/SoFragmentShader.cpp
 
@@ -1009,6 +1139,12 @@ shadowsSoShadowStyleElement.cpp: $(top_srcdir)/src/shadows/SoShadowStyleElement.
 
 shadowsSoShadowStyleElement.$(OBJEXT): shadowsSoShadowStyleElement.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowStyleElement.cpp
+
+soscxmlScXMLCoinEvaluator.cpp: $(top_srcdir)/src/soscxml/ScXMLCoinEvaluator.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/soscxml/ScXMLCoinEvaluator.cpp
+
+soscxmlScXMLCoinEvaluator.$(OBJEXT): soscxmlScXMLCoinEvaluator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c soscxmlScXMLCoinEvaluator.cpp
 
 xmldocument.cpp: $(top_srcdir)/src/xml/document.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/xml/document.cpp

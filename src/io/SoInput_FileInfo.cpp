@@ -46,7 +46,7 @@ const unsigned int READBUFSIZE = 65536*2;
 // *************************************************************************
 
 SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr,
-                                   const SbHash<SoBase *, const char *> & refs)
+                                   const SbHash<const char *, SoBase *> & refs)
   : references(refs)
 {
   this->reader = readerptr;
@@ -230,7 +230,7 @@ SoInput_FileInfo::addReference(const SbName & name, SoBase * base,
 void
 SoInput_FileInfo::removeReference(const SbName & name)
 {
-  this->references.remove(name.getString());
+  this->references.erase(name.getString());
 }
 
 SoBase *

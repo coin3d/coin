@@ -165,7 +165,7 @@ SbDPRotation::setValue(const double q0, const double q1,
     SoDebugError::postWarning("SbRotation::setValue",
                               "Quarternion has zero length => "
                               "undefined rotation.");
-#endif // COIN_DEBUG    
+#endif // COIN_DEBUG
   }
   return *this;
 }
@@ -304,7 +304,7 @@ SbDPRotation::setValue(const double q[4])
     SoDebugError::postWarning("SbRotation::setValue",
                               "Quarternion has zero length => "
                               "undefined rotation.");
-#endif // COIN_DEBUG    
+#endif // COIN_DEBUG
   }
   return *this;
 }
@@ -634,3 +634,11 @@ SbDPRotation::print(FILE * fp) const
   this->quat.print(fp);
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbVec3d.h>
+
+BOOST_AUTO_TEST_CASE(tgsCompliance) {
+  SbDPRotation v = SbRotationd(SbVec3d(0,1,2),3);
+}
+#endif //COIN_TEST_SUITE

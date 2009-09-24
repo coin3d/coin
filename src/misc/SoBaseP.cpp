@@ -63,7 +63,7 @@ void * SoBase::PImpl::obj2name_mutex = NULL;
 void * SoBase::PImpl::auditor_mutex = NULL;
 void * SoBase::PImpl::global_mutex = NULL;
 
-SbHash<SoAuditorList *, const SoBase *> * SoBase::PImpl::auditordict = NULL;
+SbHash<const SoBase *, SoAuditorList *> * SoBase::PImpl::auditordict = NULL;
 
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
@@ -71,8 +71,8 @@ SbHash<SoAuditorList *, const SoBase *> * SoBase::PImpl::auditordict = NULL;
 // pointer for each and every object, we'll cut down on a decent
 // amount of memory use this way (SoBase should be kept as slim as
 // possible, as any dead weight is brought along in a lot of objects).
-SbHash<SbPList *, const char *> * SoBase::PImpl::name2obj = NULL;
-SbHash<const char *, const SoBase *> * SoBase::PImpl::obj2name = NULL;
+SbHash<const char *, SbPList *> * SoBase::PImpl::name2obj = NULL;
+SbHash<const SoBase *, const char *> * SoBase::PImpl::obj2name = NULL;
 
 // This is used for debugging purposes: it stores a pointer to all
 // SoBase-derived objects that have been allocated and not
@@ -105,9 +105,11 @@ void
 SoBase::PImpl::removeName2Obj(SoBase * const base, const char * const name)
 {
   CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
-  SbPList * l = NULL;
-  SbBool found = SoBase::PImpl::name2obj->get(name, l);
+  SbHash<const char*, SbPList*>::const_iterator iter = SoBase::PImpl::name2obj->find(name);
+  SbBool found = (iter != SoBase::PImpl::name2obj->const_end());
   assert(found);
+  
+  SbPList * l = iter->obj;
 
   const int i = l->find(base);
   assert(i >= 0);
@@ -121,26 +123,23 @@ void
 SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const name)
 {
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
-  SoBase::PImpl::obj2name->remove(base);
+  SoBase::PImpl::obj2name->erase(base);
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
-
-
-struct auditordict_cb :
-  public SbHash<SoAuditorList *, const SoBase *>::ApplyFunctor<void *>
-{
-  void operator()(const SoBase * &, SoAuditorList * & l, void *)
-  {
-    delete l;
-  }
-};
 
 void
 SoBase::PImpl::cleanup_auditordict(void)
 {
   if (SoBase::PImpl::auditordict) {
-    auditordict_cb functor;
-    SoBase::PImpl::auditordict->apply(functor, static_cast<void *>(NULL));
+    for(
+       SbHash<const SoBase *, SoAuditorList *>::const_iterator iter =
+         SoBase::PImpl::auditordict->const_begin();
+       iter!=SoBase::PImpl::auditordict->const_end();
+       ++iter
+       ) {
+      delete iter->obj;
+    }
+
     delete SoBase::PImpl::auditordict;
     SoBase::PImpl::auditordict = NULL;
   }

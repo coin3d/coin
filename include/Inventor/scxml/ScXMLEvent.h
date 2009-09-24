@@ -25,6 +25,8 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLObject.h>
+#include <Inventor/tools/SbLazyPimplPtr.h>
+#include <Inventor/lists/SbList.h>
 
 class COIN_DLL_API ScXMLEvent : public ScXMLObject {
   typedef ScXMLObject inherited;
@@ -32,20 +34,34 @@ class COIN_DLL_API ScXMLEvent : public ScXMLObject {
 
 public:
   static void initClass(void);
+  static void cleanClass(void);
 
   ScXMLEvent(void);
   virtual ~ScXMLEvent(void);
 
-  virtual void setIdentifier(const SbName & identifier);
-  const SbName & getIdentifier(void) const { return this->identifier; }
+  virtual void setEventName(const SbName & name);
+  const SbName & getEventName(void) const { return this->name; }
+
+  ScXMLEvent * clone(void) const;
+
+  // associations
+  void setAssociation(const char * key, const char * value);
+  const char * getAssociation(const char * key) const;
+
+  size_t getNumAssociations(void) const;
+  size_t getAssociationKeys(SbList<const char *> & keys) const;
 
 protected:
-  SbName identifier;
+  SbName name;
+
+  virtual void copyContents(const ScXMLEvent * rhs);
 
 private:
   ScXMLEvent(const ScXMLEvent & rhs); // N/A
   ScXMLEvent & operator = (const ScXMLEvent & rhs); // N/A
 
+  class PImpl;
+  SbLazyPimplPtr<PImpl> pimpl;
 }; // ScXMLEvent
 
 #endif // !COIN_SCXMLEVENT_H

@@ -199,27 +199,20 @@
 // *************************************************************************
 
 static const char * SO_SHADER_DIR = NULL;
-static SbHash <char *, const char *> * shader_dict = NULL;
-static SbHash <char *, const char *> * shader_builtin_dict = NULL;
-
-struct soshader_cleanup_callback :
-  public SbHash <char *, const char *>::ApplyFunctor<void *>
-{
-  void operator()(const char * & key,
-                char * & obj,
-                void * closure
-                )
-  {
-    delete[] obj;
-  }
-};
-
+static SbHash<const char *, char *> * shader_dict = NULL;
+static SbHash<const char *, char *> * shader_builtin_dict = NULL;
 
 static void
 soshader_cleanup(void)
 {
-  soshader_cleanup_callback functor;
-  shader_dict->apply(functor, static_cast<void *>(NULL));
+  for(
+      SbHash<const char *, char *>::const_iterator iter =
+       shader_dict->const_begin();
+      iter!=shader_dict->const_end();
+      ++iter
+      ) {
+    delete[] iter->obj;
+  }
   delete shader_dict;
 
   // no need to apply on objects since strings are compiled into the
@@ -309,8 +302,8 @@ SoShader::init(void)
 #endif
 
   SO_SHADER_DIR = coin_getenv("SO_SHADER_DIR");
-  shader_dict = new SbHash <char *, const char *>;
-  shader_builtin_dict = new SbHash <char *, const char *>;
+  shader_dict = new SbHash<const char *, char *>;
+  shader_builtin_dict = new SbHash<const char *, char *>;
   setupBuiltinShaders();
 
   coin_atexit((coin_atexit_f*) soshader_cleanup, CC_ATEXIT_NORMAL);

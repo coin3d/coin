@@ -101,7 +101,7 @@ struct CoinVrmlJs {
 struct CoinVrmlJs_SensorInfo {
   SbList <JSObject *> objects;
 };
-SbHash <void *, unsigned long> * CoinVrmlJs_sensorinfohash = NULL;
+SbHash<unsigned long, void *> * CoinVrmlJs_sensorinfohash = NULL;
 
 
 const char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
@@ -681,7 +681,7 @@ static void SFNode_deleteCB(void * data, SoSensor * sensor)
 
   // Store the sensor-pointer so that it can be properly deleted later
   nodesensorstobedeleted->append((SoNodeSensor *) sensor);
-  CoinVrmlJs_sensorinfohash->remove((unsigned long) node);
+  CoinVrmlJs_sensorinfohash->erase((unsigned long) node);
   delete si;
 }
 
@@ -1419,7 +1419,7 @@ static void attachSensorToNode(SoNode * node, JSObject * obj)
 {
   // Has the hash-table been initialized?
   if (!CoinVrmlJs_sensorinfohash) {
-    CoinVrmlJs_sensorinfohash = new SbHash <void *, unsigned long>;
+    CoinVrmlJs_sensorinfohash = new SbHash<unsigned long, void *>;
     coin_atexit(deleteSensorInfoHash, CC_ATEXIT_NORMAL);
   }
 

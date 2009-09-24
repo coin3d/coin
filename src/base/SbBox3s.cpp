@@ -329,3 +329,19 @@ SbBox3s::getClosestPoint(const SbVec3f & pt) const
 /*!
   \fn SbBool SbBox3s::hasVolume(void) const
 */
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(checkSize) {
+  SbVec3s min(1,2,3);
+  SbVec3s max(3,4,5);
+
+  SbVec3s diff = max - min;
+
+  
+  SbBox3s box(min, max);
+
+  BOOST_CHECK_MESSAGE(box.getSize() == diff,
+                      "Box has incorrect size");
+
+}
+#endif //COIN_TEST_SUITE

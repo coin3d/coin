@@ -103,6 +103,7 @@ DEB_PACKAGEABLE_FALSE = @DEB_PACKAGEABLE_FALSE@
 DEB_PACKAGEABLE_TRUE = @DEB_PACKAGEABLE_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DOXYGEN_INPUT = @DOXYGEN_INPUT@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
@@ -267,7 +268,8 @@ target_vendor = @target_vendor@
 
 SUBDIRS = C VRMLnodes XML actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
-          misc nodekits nodes projectors sensors system threads tools scxml
+          misc navigation nodekits nodes projectors sensors system threads \
+          tools scxml
 
 
 PublicHeaders = \
@@ -279,10 +281,12 @@ PublicHeaders = \
 	SbBox2i32.h \
 	SbBox2f.h \
 	SbBox2d.h \
-	SbBox3s.h \
-	SbBox3i32.h \
-	SbBox3f.h \
 	SbBox3d.h \
+	SbBox3f.h \
+	SbBox3i32.h \
+	SbBox3s.h \
+	SbByteBuffer.h \
+	SbByteBuffer.h \
 	SbClip.h \
 	SbColor.h \
 	SbColor4f.h \
@@ -352,8 +356,8 @@ PublicHeaders = \
 	SoPickedPoint.h \
 	SoPrimitiveVertex.h \
 	SoSceneManager.h \
-        SoRenderManager.h \
-        SoEventManager.h \
+	SoRenderManager.h \
+	SoEventManager.h \
 	SoType.h \
 	non_winsys.h \
 	oivwin32.h

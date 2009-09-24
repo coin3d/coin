@@ -34,21 +34,12 @@ class COIN_DLL_API ScXMLObject {
 
 public:
   static void initClass(void);
+  static void cleanClass(void);
 
   ScXMLObject(void);
   virtual ~ScXMLObject(void);
 
   SbBool isOfType(SoType type) const;
-
-  void setXMLAttribute(const char * attribute, const char * value);
-  const char * getXMLAttribute(const char * attribute) const;
-
-  virtual SbBool handleXMLAttributes(void);
-
-  virtual void setContainer(ScXMLObject * container);
-  ScXMLObject * getContainer(void) const { return this->containerptr; }
-
-  SbBool isContainedIn(const ScXMLObject * object) const;
 
 protected:
   static void registerClassType(const char * xmlns,

@@ -76,6 +76,12 @@ public:
   void getSize(float & sizeX, float & sizeY) const
     { if (isEmpty()) { sizeX = sizeY = 0.0f; }
       else { sizeX = maxpt[0] - minpt[0]; sizeY = maxpt[1] - minpt[1]; } }
+  SbVec2f getSize(void) const {
+    SbVec2f v;
+    this->getSize(v[0], v[1]);
+    return v;
+  }
+
   float getAspectRatio(void) const
     { SbDividerChk("SbBox2f::getAspectRatio()", maxpt[1] - minpt[1]);
       return (maxpt[0] - minpt[0]) / (maxpt[1] - minpt[1]); }

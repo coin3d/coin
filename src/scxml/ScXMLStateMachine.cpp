@@ -21,37 +21,7 @@
  *
 \**************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning(disable:4786) // symbol truncated
-#endif // _MSC_VER
-
 #include <Inventor/scxml/ScXMLStateMachine.h>
-
-#include <algorithm>
-#include <cassert>
-#include <cstring>
-#include <list>
-#include <map>
-#include <vector>
-
-#include <boost/scoped_ptr.hpp>
-
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/ScXMLInvoke.h>
-#include <Inventor/scxml/ScXMLEvent.h>
-
-#include "scxml/ScXMLDocument.h"
-#include "scxml/ScXMLState.h"
-#include "scxml/ScXMLInitial.h"
-#include "scxml/ScXMLFinal.h"
-#include "scxml/ScXMLOnEntry.h"
-#include "scxml/ScXMLOnExit.h"
-#include "scxml/ScXMLTransition.h"
-#include "scxml/ScXMLAnchor.h"
-#include "scxml/ScXMLHistory.h"
-
-// *************************************************************************
 
 /*!
   \class ScXMLStateMachine ScXMLStateMachine.h Inventor/scxml/ScXMLStateMachine.h
@@ -60,6 +30,45 @@
   \since Coin 3.0
   \ingroup scxml
 */
+
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // symbol truncated
+#endif // _MSC_VER
+
+#include <cassert>
+#include <cstring>
+#include <algorithm>
+#include <list>
+#include <map>
+#include <vector>
+
+#include <boost/scoped_ptr.hpp>
+
+#include <Inventor/errors/SoDebugError.h>
+
+#include <Inventor/scxml/ScXML.h>
+#include <Inventor/scxml/ScXMLEvent.h>
+#include <Inventor/scxml/ScXMLDocument.h>
+
+#include <Inventor/scxml/ScXMLScxmlElt.h>
+#include <Inventor/scxml/ScXMLInvokeElt.h>
+#include <Inventor/scxml/ScXMLStateElt.h>
+#include <Inventor/scxml/ScXMLParallelElt.h>
+#include <Inventor/scxml/ScXMLInitialElt.h>
+#include <Inventor/scxml/ScXMLFinalElt.h>
+#include <Inventor/scxml/ScXMLOnEntryElt.h>
+#include <Inventor/scxml/ScXMLOnExitElt.h>
+#include <Inventor/scxml/ScXMLTransitionElt.h>
+#include <Inventor/scxml/ScXMLAnchorElt.h>
+#include <Inventor/scxml/ScXMLHistoryElt.h>
+#include <Inventor/scxml/ScXMLLogElt.h>
+#include <Inventor/scxml/ScXMLSendElt.h>
+#include <Inventor/scxml/ScXMLMinimumEvaluator.h>
+#include <Inventor/scxml/ScXMLCoinEvaluator.h>
+#include "scxml/ScXMLP.h"
+#include "misc/SbHash.h"
+
+// *************************************************************************
 
 struct EventInfo {
   const ScXMLEvent * eventptr;
@@ -71,9 +80,10 @@ public:
   PImpl(void)
     : pub(NULL),
       active(FALSE), finished(FALSE),
-      name(SbName::empty()), description(NULL),
-      currentevent(NULL),
-      isprocessingqueue(FALSE),
+      name(SbName::empty()), sessionid(SbName::empty()),
+      loglevel(3),
+      description(NULL),
+      evaluator(NULL),
       initializer(NULL)
   {
   }
@@ -92,7 +102,14 @@ public:
   SbBool finished;
 
   SbName name;
+  SbName sessionid;
+  int loglevel;
   ScXMLDocument * description;
+  ScXMLEvaluator * evaluator;
+
+  SbList<const char *> modules;
+
+  mutable SbString varstring;
 
   // delete callbacks:
   typedef std::pair<ScXMLStateMachineDeleteCB *, void *> DeleteCBInfo;
@@ -106,37 +123,24 @@ public:
   StateChangeCallbackList statechangecallbacklist;
   void invokeStateChangeCallbacks(const char * identifier, SbBool enterstate);
 
-  const ScXMLEvent * currentevent;
+  boost::scoped_ptr<ScXMLTransitionElt> initializer;
 
-  std::list<EventInfo> eventqueue;
-  SbBool isprocessingqueue;
+  std::vector<ScXMLElt *> activestatelist;
 
-  std::list<EventInfo> internaleventqueue;
-
-  void queueInternalEvent(const ScXMLEvent * event, SbBool dealloc = FALSE);
-  void queueInternalEvent(const SbName & eventid);
-
-
-  boost::scoped_ptr<ScXMLTransition> initializer;
-
-  std::vector<ScXMLObject *> activestatelist;
-
-  // name->object map
-  typedef std::map<const char *, ScXMLObject *> IdentifierMap;
-  IdentifierMap identifiermap;
-
-  void fillIdentifierMap(ScXMLObject * object);
-  ScXMLObject * getObjectByIdentifier(SbName identifier) const;
-
-  typedef std::pair<ScXMLObject *, ScXMLTransition *> StateTransition;
+  typedef std::pair<ScXMLElt *, ScXMLTransitionElt *> StateTransition;
   typedef std::vector<StateTransition> TransitionList;
 
-  void findTransitions(TransitionList & transitions, ScXMLObject * stateobj, const ScXMLEvent * event);
+  void findTransitions(TransitionList & transitions, ScXMLElt * stateobj, const ScXMLEvent * event);
 
-  void exitState(ScXMLObject * object);
-  void enterState(ScXMLObject * object);
+  void exitState(ScXMLElt * object);
+  void enterState(ScXMLElt * object);
 
+  static long nextsessionid;
+  static SbHash<const char *, ScXMLStateMachine *> * sessiondictionary;
 }; // ScXMLStateMachine::PImpl
+
+SbHash<const char *, ScXMLStateMachine *> * ScXMLStateMachine::PImpl::sessiondictionary = NULL;
+long ScXMLStateMachine::PImpl::nextsessionid = 0;
 
 // *************************************************************************
 
@@ -148,18 +152,53 @@ SCXML_OBJECT_SOURCE(ScXMLStateMachine);
 void
 ScXMLStateMachine::initClass(void)
 {
-  SCXML_OBJECT_INIT_CLASS(ScXMLStateMachine, ScXMLObject, SCXML_DEFAULT_NS, "statemachine");
+  SCXML_OBJECT_INIT_CLASS(ScXMLStateMachine, ScXMLEventTarget, "ScXMLEventTarget");
+  ScXMLStateMachine::PImpl::nextsessionid = 1;
+  ScXMLStateMachine::PImpl::sessiondictionary =
+    new SbHash<const char *, ScXMLStateMachine *>;
+}
+
+void
+ScXMLStateMachine::cleanClass(void)
+{
+  ScXMLStateMachine::PImpl::nextsessionid = 0;
+  delete ScXMLStateMachine::PImpl::sessiondictionary;
+  ScXMLStateMachine::PImpl::sessiondictionary = NULL;
+  ScXMLStateMachine::classTypeId = SoType::badType();
+}
+
+ScXMLStateMachine *
+ScXMLStateMachine::getStateMachineForSessionId(const SbName & sessionid)
+{
+  if (sessionid == SbName::empty()) {
+    return NULL;
+  }
+  const char * id = sessionid.getString();
+  ScXMLStateMachine * statemachine = NULL;
+  if (!ScXMLStateMachine::PImpl::sessiondictionary->get(id, statemachine)) {
+    return NULL;
+  }
+  return statemachine;
 }
 
 ScXMLStateMachine::ScXMLStateMachine(void)
 {
   PRIVATE(this)->pub = this;
+  this->setEventTargetType("scxml");
+  ScXMLP::lock();
+  const long id = ScXMLStateMachine::PImpl::nextsessionid;
+  ScXMLStateMachine::PImpl::nextsessionid += 1;
+  ScXMLP::unlock();
+  char sessionidstr[32];
+  sprintf(sessionidstr, "x-coin-scxml-session%03ld", id);
+  this->setSessionId(SbName(sessionidstr));
 }
 
 ScXMLStateMachine::~ScXMLStateMachine(void)
 {
   PRIVATE(this)->invokeDeleteCallbacks();
-
+  this->setSessionId(SbName::empty());
+  this->setEnabledModulesList(SbList<const char *>());
 }
 
 // *************************************************************************
@@ -168,6 +207,7 @@ void
 ScXMLStateMachine::setName(const SbName & nameobj)
 {
   PRIVATE(this)->name = nameobj;
+  this->setEventTargetName(nameobj.getString());
 }
 
 const SbName &
@@ -179,19 +219,82 @@ ScXMLStateMachine::getName(void) const
 void
 ScXMLStateMachine::setDescription(ScXMLDocument * document)
 {
+  assert(!PRIVATE(this)->active);
   PRIVATE(this)->description = document;
   PRIVATE(this)->initializer.reset(NULL);
   PRIVATE(this)->active = FALSE;
   PRIVATE(this)->finished = FALSE;
   PRIVATE(this)->activestatelist.clear();
-  PRIVATE(this)->identifiermap.clear();
-  PRIVATE(this)->fillIdentifierMap(PRIVATE(this)->description);
+
+  // set up the correct evalutor and identify the modules that are enabled
+  ScXMLElt * rootelt = document->getRoot();
+  if (rootelt->isOfType(ScXMLScxmlElt::getClassTypeId())) {
+    ScXMLScxmlElt * scxmlelt = static_cast<ScXMLScxmlElt *>(rootelt);
+    const char * profile = scxmlelt->getProfileAttribute();
+    SbName profilename = SbName::empty();
+    if (profile) {
+      profilename = profile;
+    }
+   
+   SoType evaluatortype = ScXML::getEvaluatorTypeForProfile(profilename);
+   if (evaluatortype != SoType::badType()) {
+     assert(evaluatortype.canCreateInstance());
+     ScXMLEvaluator * evaluator = 
+       static_cast<ScXMLEvaluator *>(evaluatortype.createInstance());
+     evaluator->setStateMachine(this);
+     this->setEvaluator(evaluator);
+   }
+   else {
+     SoDebugError::post("ScXMLStateMachine::setDescription",
+                        "No available evaluator for profile '%s'.",
+                        profilename.getString());
+   }
+  }
 }
 
 const ScXMLDocument *
 ScXMLStateMachine::getDescription(void) const
 {
   return PRIVATE(this)->description;
+}
+
+/*!
+  This sets the session identifier for the state machine.  Using this is
+  optional, since state machines are already assigned unique session ids at
+  construction-time.
+*/
+void
+ScXMLStateMachine::setSessionId(const SbName & sessionidarg)
+{
+  if (PRIVATE(this)->sessionid != SbName::empty()) {
+    ScXMLStateMachine::PImpl::sessiondictionary->erase(PRIVATE(this)->sessionid.getString());
+    PRIVATE(this)->sessionid = SbName::empty();
+  }
+  if (sessionidarg != SbName::empty()) {
+    PRIVATE(this)->sessionid = sessionidarg;
+    ScXMLStateMachine::PImpl::sessiondictionary->put(PRIVATE(this)->sessionid.getString(), this);
+  }
+}
+
+/*!
+  Returns the session identifier string for the state machine.
+*/
+const SbName &
+ScXMLStateMachine::getSessionId(void) const
+{
+  return PRIVATE(this)->sessionid;
+}
+
+void
+ScXMLStateMachine::setLogLevel(int loglevel)
+{
+  PRIVATE(this)->loglevel = loglevel;
+}
+
+int
+ScXMLStateMachine::getLogLevel(void) const
+{
+  return PRIVATE(this)->loglevel;
 }
 
 // *************************************************************************
@@ -206,97 +309,11 @@ ScXMLStateMachine::initialize(void)
   PRIVATE(this)->active = TRUE;
   PRIVATE(this)->finished = FALSE;
   PRIVATE(this)->activestatelist.clear();
-  PRIVATE(this)->isprocessingqueue = TRUE;
-  this->processOneEvent(NULL); // process the initialstate initializer
-  PRIVATE(this)->isprocessingqueue = FALSE;
-  this->processEventQueue();
+  this->processOneEvent(NULL); // process the 'initial' initializer
+  this->processEventQueue(); // process any pending events from the initial-processing
 }
 
 // *************************************************************************
-
-/*!
-*/
-void
-ScXMLStateMachine::queueEvent(const ScXMLEvent * event, SbBool dealloc)
-{
-  EventInfo info;
-  info.eventptr = event;
-  info.deallocate = dealloc;
-  PRIVATE(this)->eventqueue.push_back(info);
-}
-
-/*!
-*/
-void
-ScXMLStateMachine::queueEvent(const SbName & eventid)
-{
-  ScXMLEvent * event = new ScXMLEvent;
-  event->setIdentifier(eventid);
-  this->queueEvent(event, TRUE);
-}
-
-/*
-*/
-void
-ScXMLStateMachine::PImpl::queueInternalEvent(const ScXMLEvent * event, SbBool dealloc)
-{
-  EventInfo info;
-  info.eventptr = event;
-  info.deallocate = dealloc;
-  this->internaleventqueue.push_back(info);
-}
-
-/*
-*/
-void
-ScXMLStateMachine::PImpl::queueInternalEvent(const SbName & eventid)
-{
-  ScXMLEvent * event = new ScXMLEvent;
-  event->setIdentifier(eventid);
-  this->queueInternalEvent(event, TRUE);
-}
-
-/*!
-  Recursive calling of this function will be handled by letting the
-  recursive call return immediately, while the first call will
-  continue processing the event queue until it is empty.
-*/
-SbBool
-ScXMLStateMachine::processEventQueue(void)
-{
-  if (PRIVATE(this)->isprocessingqueue) return FALSE;
-
-  SbBool didtransitions = FALSE;
-
-  PRIVATE(this)->isprocessingqueue = TRUE;
-
-  while (!(PRIVATE(this)->eventqueue.empty()) ||
-         !(PRIVATE(this)->internaleventqueue.empty())) {
-
-    // all internal events have first priority
-    while (!(PRIVATE(this)->internaleventqueue.empty())) {
-      EventInfo info = PRIVATE(this)->internaleventqueue.front();
-      if (this->processOneEvent(info.eventptr)) {
-        didtransitions = TRUE;
-      }
-      PRIVATE(this)->internaleventqueue.pop_front();
-      if (info.deallocate) { delete info.eventptr; }
-    }
-
-    // then one of the external events if any
-    if (!(PRIVATE(this)->eventqueue.empty())) {
-      EventInfo info = PRIVATE(this)->eventqueue.front();
-      if (this->processOneEvent(info.eventptr)) {
-        didtransitions = TRUE;
-      }
-      PRIVATE(this)->eventqueue.pop_front();
-      if (info.deallocate) { delete info.eventptr; }
-    }
-  }
-
-  PRIVATE(this)->isprocessingqueue = FALSE;
-  return didtransitions;
-}
 
 /*!
   Processes one event.
@@ -306,17 +323,20 @@ SbBool
 ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
 {
   // this function seriously needs more structuring
-  assert(PRIVATE(this)->isprocessingqueue);
   this->setCurrentEvent(event);
 
-  if (0) {
-    if (event) SoDebugError::postInfo("process", "event: %s",
-                                      event->getIdentifier().getString());
-    else       SoDebugError::postInfo("process", "NULL event");
+  if (0 /* debug */) {
+    if (event)
+      SoDebugError::postInfo("ScXMLStateMachine::processOneEvent",
+                             "event: %s",
+                             event->getEventName().getString());
+    else
+      SoDebugError::postInfo("ScXMLStateMachine::processOneEvent",
+                             "NULL event");
   }
 
-  if (0) {
-    std::vector<ScXMLObject *>::iterator it =
+  if (0 /* debug */) {
+    std::vector<ScXMLElt *>::iterator it =
       PRIVATE(this)->activestatelist.begin();
     while (it != PRIVATE(this)->activestatelist.end()) {
       SoDebugError::postInfo("ScXMLStateMachine::processOneEvent",
@@ -324,18 +344,22 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
       ++it;
     }
   }
-                      
+
   PImpl::TransitionList transitions;
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
-      PRIVATE(this)->initializer.reset(new ScXMLTransition);
-      PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getXMLAttribute("initialstate"));
+      PRIVATE(this)->initializer.reset(new ScXMLTransitionElt);
+      // FIXME
+      if (PRIVATE(this)->description->getRoot()->getInitial()) {
+      } else {
+        PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getRoot()->getInitialAttribute());
+      }
     }
     transitions.push_back(PImpl::StateTransition(NULL, PRIVATE(this)->initializer.get()));
   } else {
     for (int c = 0; c < static_cast<int>(PRIVATE(this)->activestatelist.size()); ++c) {
       // containers are also active states and must be checked
-      ScXMLObject * stateobj = PRIVATE(this)->activestatelist.at(c);
+      ScXMLElt * stateobj = PRIVATE(this)->activestatelist.at(c);
       while (stateobj != NULL) {
         PRIVATE(this)->findTransitions(transitions, stateobj, event);
         stateobj = stateobj->getContainer();
@@ -345,6 +369,8 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
 
   // no transitions means no changes, just return
   if (transitions.size() == 0) {
+    if (this->getEvaluator())
+      this->getEvaluator()->clearTemporaryVariables();
     this->setCurrentEvent(NULL);
     return FALSE;
   }
@@ -354,7 +380,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     PImpl::TransitionList::iterator transit = transitions.begin();
     while (transit != transitions.end()) {
       if (transit->second->isTargetLess()) {
-        transit->second->invoke(this);
+        transit->second->execute(this);
       }
       ++transit;
     }
@@ -366,23 +392,23 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     PImpl::TransitionList::iterator transit = transitions.begin();
     while (transit != transitions.end()) {
       if (transit->second->isSelfReferencing()) {
-        ScXMLObject * containerobj = transit->second->getContainer();
-        ScXMLObject * targetobj = PRIVATE(this)->getObjectByIdentifier(transit->second->getTargetAttribute());
+        ScXMLElt * containerobj = transit->second->getContainer();
+        ScXMLAbstractStateElt * targetobj = PRIVATE(this)->description->getStateById(transit->second->getTargetAttribute());
 
-        if (containerobj->isOfType(ScXMLState::getClassTypeId())) {
-          ScXMLState * state = static_cast<ScXMLState *>(containerobj);
+        if (containerobj->isOfType(ScXMLStateElt::getClassTypeId())) {
+          ScXMLStateElt * state = static_cast<ScXMLStateElt *>(containerobj);
           PRIVATE(this)->exitState(state);
-          transit->second->invoke(this);
+          transit->second->execute(this);
           PRIVATE(this)->enterState(state);
         } else {
-          transit->second->invoke(this);
+          transit->second->execute(this);
         }
       }
       ++transit;
     }
   }
 
-  std::vector<ScXMLObject *> newstateslist;
+  std::vector<ScXMLElt *> newstateslist;
 
   // handle those with other targets next
   PImpl::TransitionList::iterator transit = transitions.begin();
@@ -394,7 +420,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     }
 
     const char * targetid = transit->second->getTargetAttribute();
-    ScXMLObject * targetstate = PRIVATE(this)->getObjectByIdentifier(targetid);
+    ScXMLElt * targetstate = PRIVATE(this)->description->getStateById(targetid);
     if (!targetstate) {
       SoDebugError::post("ScXMLStateMachine::processOneEvent",
                          "transition to unknown state '%s' failed.", targetid);
@@ -402,16 +428,16 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
       continue;
     }
 
-    std::vector<ScXMLObject *> sourcestates;
+    std::vector<ScXMLElt *> sourcestates;
 
-    ScXMLObject * sourcestate = transit->first;
+    ScXMLElt * sourcestate = transit->first;
     if (sourcestate != NULL) { // ignore sourcestate NULL (initializer)
       // find all activestate object contained within source state
-      std::vector<ScXMLObject *>::iterator activeit =
+      std::vector<ScXMLElt *>::iterator activeit =
         PRIVATE(this)->activestatelist.begin();
       while (activeit != PRIVATE(this)->activestatelist.end()) {
         if ((*activeit)->isContainedIn(sourcestate)) {
-          ScXMLObject * active = *activeit;
+          ScXMLElt * active = *activeit;
           sourcestates.push_back(active); // remember, to remove from activelist
           while (active != sourcestate) {
             //SoDebugError::post("process",
@@ -434,22 +460,22 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
 
     // executable content in the transition
     //SoDebugError::postInfo("process", "executing transition code");
-    transit->second->invoke(this);
+    transit->second->execute(this);
 
     {
-      std::vector<ScXMLObject *> path;
+      std::vector<ScXMLElt *> path;
       //SoDebugError::postInfo("process", "finding target-path from sourcestate %p",
       //                       sourcestate);
       while (sourcestate != targetstate) {
         path.push_back(targetstate);
         targetstate = targetstate->getContainer();
       }
-      targetstate = PRIVATE(this)->getObjectByIdentifier(targetid); // restore
+      targetstate = PRIVATE(this)->description->getStateById(targetid); // restore
 
       //SoDebugError::postInfo("process", "reversing downward path");
       std::reverse(path.begin(), path.end());
 
-      std::vector<ScXMLObject *>::iterator pathit = path.begin();
+      std::vector<ScXMLElt *>::iterator pathit = path.begin();
       while (pathit != path.end()) {
         // SoDebugError::postInfo("process", "entering down towards target");
         PRIVATE(this)->enterState(*pathit);
@@ -460,9 +486,9 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     //SoDebugError::post("process", "list of source states to remove - %d",
     //                   sourcestates.size());
     // remove source states form activestates
-    std::vector<ScXMLObject *>::iterator it = sourcestates.begin();
+    std::vector<ScXMLElt *>::iterator it = sourcestates.begin();
     while (it != sourcestates.end()) {
-      std::vector<ScXMLObject *>::iterator findit =
+      std::vector<ScXMLElt *>::iterator findit =
         std::find(PRIVATE(this)->activestatelist.begin(),
                   PRIVATE(this)->activestatelist.end(), *it);
       if (findit != PRIVATE(this)->activestatelist.end()) {
@@ -488,26 +514,26 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
 
 
   // inspect target states for substates + <initial> children
-  std::vector<ScXMLObject *>::iterator appendit = newstateslist.begin();
+  std::vector<ScXMLElt *>::iterator appendit = newstateslist.begin();
   while (appendit != newstateslist.end()) {
     SbBool pushedsubstate = FALSE;
-    ScXMLObject * newstate = *appendit;
+    ScXMLElt * newstate = *appendit;
 
     SbBool settled = FALSE;
     while (!settled) {
       settled = TRUE;
-      if (newstate->isOfType(ScXMLState::getClassTypeId())) {
-        ScXMLState * state = static_cast<ScXMLState *>(newstate);
+      if (newstate->isOfType(ScXMLStateElt::getClassTypeId())) {
+        ScXMLStateElt * state = static_cast<ScXMLStateElt *>(newstate);
         if (state->getNumStates() > 0 || state->getNumParallels() > 0) {
           do {
-            const ScXMLInitial * initial = state->getInitial();
+            const ScXMLInitialElt * initial = state->getInitial();
             if (!initial) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "state '%s' has substates but no <initial>.",
                                  state->getIdAttribute());
               break;
             }
-            ScXMLTransition * transition = initial->getTransition();
+            ScXMLTransitionElt * transition = initial->getTransition();
             if (!transition) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "state '%s' has <initial> without a transition.",
@@ -521,30 +547,30 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
                                  state->getIdAttribute());
               break;
             }
-            ScXMLObject * targetobj = PRIVATE(this)->getObjectByIdentifier(targetid);
+            ScXMLElt * targetobj = PRIVATE(this)->description->getStateById(targetid);
             if (!targetobj) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "could not find target of state \"%s\"'s <initial> transition.",
                                  state->getIdAttribute());
               break;
             }
-            
+
             if (targetobj->getContainer() != state) {
               SoDebugError::post("ScXMLStateMachine::processOneEvent",
                                  "target of state \"%s\"'s <initial> transition is not an immediate child of the state",
                                  state->getIdAttribute());
               break;
             }
-            
+
             // perform executable code
-            transition->invoke(this);
-            
+            transition->execute(this);
+
             PRIVATE(this)->enterState(targetobj);
 
             newstate = targetobj;
             settled = FALSE; // need to loop over on new state one more time
           } while ( FALSE );
-        
+
         } else {
           // no substates in this state - can be marked as the deepest active state
           if (state->getInitial()) { // just checking
@@ -552,13 +578,13 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
                                "state '%s' has <initial> but no sub-states.",
                                state->getIdAttribute());
           }
-          
+
           PRIVATE(this)->activestatelist.push_back(state);
           pushedsubstate = TRUE; // need to avoid adding parent state before doing outer loop
           ++appendit;
         }
       } else {
-        // non-ScXMLState object (ScXMLFinal for instance)
+        // non-ScXMLStateElt object (ScXMLFinalElt for instance)
         if (newstate != *appendit) {
           PRIVATE(this)->activestatelist.push_back(newstate);
           pushedsubstate = TRUE; // need to avoid adding parent state before doing outer loop
@@ -575,6 +601,8 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   // if all active states are <final> states of the root scxml element,
   // we should set 'finished' to true and stop/hinder event processing
 
+  if (this->getEvaluator())
+    this->getEvaluator()->clearTemporaryVariables();
   this->setCurrentEvent(NULL);
   return TRUE; // transitions have been taken
 }
@@ -601,16 +629,6 @@ ScXMLStateMachine::isFinished(void) const
 
 // *************************************************************************
 
-/*!
-  Sets a pointer for the event that is 'current' during event processing.
-  This is an internal method, and updating the current event is handled
-  automatically.
-*/
-void
-ScXMLStateMachine::setCurrentEvent(const ScXMLEvent * event)
-{
-  PRIVATE(this)->currentevent = event;
-}
 
 /*!
   This method returns the current event during event processing, and NULL
@@ -619,11 +637,6 @@ ScXMLStateMachine::setCurrentEvent(const ScXMLEvent * event)
   Event processing is in special cases done with NULL as the current event,
   as for instance during state machine initialization.
 */
-const ScXMLEvent *
-ScXMLStateMachine::getCurrentEvent(void) const
-{
-  return PRIVATE(this)->currentevent;
-}
 
 // *************************************************************************
 
@@ -641,21 +654,11 @@ ScXMLStateMachine::getNumActiveStates(void) const
 /*!
   Returns the Nth active state.
 */
-const ScXMLObject *
+const ScXMLElt *
 ScXMLStateMachine::getActiveState(int idx) const
 {
   assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->activestatelist.size()));
   return PRIVATE(this)->activestatelist.at(idx);
-}
-
-/*!
-  Returns the state machine state object with the given identifier, or NULL
-  if no object is found that has the given identifier.
-*/
-const ScXMLObject *
-ScXMLStateMachine::getState(const char * identifier) const
-{
-  return PRIVATE(this)->getObjectByIdentifier(identifier);
 }
 
 // *************************************************************************
@@ -758,159 +761,115 @@ ScXMLStateMachine::PImpl::invokeStateChangeCallbacks(const char * identifier, Sb
 // *************************************************************************
 
 void
-ScXMLStateMachine::PImpl::fillIdentifierMap(ScXMLObject * object)
+ScXMLStateMachine::setVariable(const char * name, const char * value)
 {
-  assert(object);
+  assert(name);
+  if (name[0] == '_') { // reserved system variables
+    // core reserved names
+    if (strcmp(name, "_name") == 0) {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' is a reserved system variable.", name);
+    }
+    else if (strcmp(name, "_sessionID") == 0) {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' is a reserved system variable.", name);
+    }
+    else if (strcmp(name, "_event") == 0 ||
+             strncmp(name, "_event.", 7) == 0) {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' is a reserved system variable.", name);
+    }
+    // data module
+    else if (strcmp(name, "_data") == 0) {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' is a reserved system variable.", name);
+    }
+    // fallthrough
+    else {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' violates the reserved '_'-prefix "
+                         "namespace for system variables.", name);
+    }
+  }
 
-  if (object->getXMLAttribute("id") != NULL) {
-    SbName identifier = object->getXMLAttribute("id");
-    this->identifiermap.insert(std::pair<const char *, ScXMLObject *>(identifier.getString(), object));
-  }
-
-  if (object->isOfType(ScXMLAnchor::getClassTypeId())) {
-    ScXMLAnchor * anchor = static_cast<ScXMLAnchor *>(object);
-  }
-  else if (object->isOfType(ScXMLDocument::getClassTypeId())) {
-    ScXMLDocument * doc = static_cast<ScXMLDocument *>(object);
-    int c;
-    for (c = 0; c < doc->getNumStates(); ++c) {
-      this->fillIdentifierMap(doc->getState(c));
+  else if (strncmp(name, "coin:", 5) == 0) {
+    // coin profile
+    if (strcmp(name, "coin:root") == 0) {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' is a reserved system variable.", name);
     }
-    for (c = 0; c < doc->getNumParallels(); ++c) {
-      this->fillIdentifierMap(doc->getParallel(c));
+    else if (strcmp(name, "coin:camera") == 0) {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' is a reserved system variable.", name);
     }
-    for (c = 0; c < doc->getNumFinals(); ++c) {
-      this->fillIdentifierMap(doc->getFinal(c));
-    }
-  }
-  else if (object->isOfType(ScXMLFinal::getClassTypeId())) {
-    ScXMLFinal * final = static_cast<ScXMLFinal *>(object);
-  }
-  else if (object->isOfType(ScXMLHistory::getClassTypeId())) {
-    const ScXMLHistory * history = static_cast<ScXMLHistory *>(object);
-    if (history->getTransition()) {
-      this->fillIdentifierMap(history->getTransition());
-    }
-  }
-  else if (object->isOfType(ScXMLInitial::getClassTypeId())) {
-    ScXMLInitial * initial = static_cast<ScXMLInitial *>(object);
-    if (initial->getTransition()) {
-      this->fillIdentifierMap(initial->getTransition());
-    }
-  }
-  else if (object->isOfType(ScXMLInvoke::getClassTypeId())) {
-    ScXMLInvoke * invoke = static_cast<ScXMLInvoke *>(object);
-  }
-  else if (object->isOfType(ScXMLOnEntry::getClassTypeId())) {
-    ScXMLOnEntry * onentry = static_cast<ScXMLOnEntry *>(object);
-    int c;
-    for (c = 0; c < onentry->getNumInvokes(); ++c) {
-      this->fillIdentifierMap(onentry->getInvoke(c));
-    }
-  }
-  else if (object->isOfType(ScXMLOnExit::getClassTypeId())) {
-    ScXMLOnExit * onexit = static_cast<ScXMLOnExit *>(object);
-    int c;
-    for (c = 0; c < onexit->getNumInvokes(); ++c) {
-      this->fillIdentifierMap(onexit->getInvoke(c));
-    }
-  }
-  else if (object->isOfType(ScXMLState::getClassTypeId())) {
-    ScXMLState * state = static_cast<ScXMLState *>(object);
-    int c;
-    if (state->getOnEntry()) {
-      this->fillIdentifierMap(state->getOnEntry());
-    }
-    if (state->getOnExit()) {
-      this->fillIdentifierMap(state->getOnExit());
-    }
-    for (c = 0; c < state->getNumTransitions(); ++c) {
-      this->fillIdentifierMap(state->getTransition(c));
-    }
-    if (state->getInitial()) {
-      this->fillIdentifierMap(state->getInitial());
-    }
-    for (c = 0; c < state->getNumStates(); ++c) {
-      this->fillIdentifierMap(state->getState(c));
-    }
-    for (c = 0; c < state->getNumParallels(); ++c) {
-      this->fillIdentifierMap(state->getParallel(c));
-    }
-    for (c = 0; c < state->getNumFinals(); ++c) {
-      this->fillIdentifierMap(state->getFinal(c));
-    }
-    for (c = 0; c < state->getNumHistories(); ++c) {
-      this->fillIdentifierMap(state->getHistory(c));
-    }
-    for (c = 0; c < state->getNumAnchors(); ++c) {
-      this->fillIdentifierMap(state->getAnchor(c));
-    }
-    if (state->getInvoke()) {
-      this->fillIdentifierMap(state->getInvoke());
-    }
-  }
-  else if (object->isOfType(ScXMLTransition::getClassTypeId())) {
-    ScXMLTransition * transition = static_cast<ScXMLTransition *>(object);
-    int c;
-    for (c = 0; c < transition->getNumInvokes(); ++c) {
-      this->fillIdentifierMap(transition->getInvoke(c));
+    // fallthrough
+    else {
+      SoDebugError::post("ScXMLStateMachine::setVariable",
+                         "Name '%s' violates the reserved 'coin:'-prefix "
+                         "namespace for system variables.", name);
     }
   }
   else {
-    SoDebugError::postInfo("fillIdentifierMap", "unsupported object type %s",
-                           object->getTypeId().getName().getString());
+    // FIXME
   }
 }
 
-ScXMLObject *
-ScXMLStateMachine::PImpl::getObjectByIdentifier(SbName identifier) const
+const char *
+ScXMLStateMachine::getVariable(const char * name) const
 {
-  std::map<const char *, ScXMLObject *>::const_iterator it =
-    this->identifiermap.find(identifier.getString());
-  if (it != this->identifiermap.end()) {
-    return it->second;
+  if (strcmp(name, "_sessionid") == 0) {
+    PRIVATE(this)->varstring.sprintf("'%s'", PRIVATE(this)->sessionid.getString());
+    return PRIVATE(this)->varstring.getString();
+    // return PRIVATE(this)->sessionid.getString();
+  }
+  if (strcmp(name, "_name") == 0) {
+    PRIVATE(this)->varstring.sprintf("'%s'", PRIVATE(this)->name.getString());
+    return PRIVATE(this)->varstring.getString();
+    // return PRIVATE(this)->name.getString();
   }
   return NULL;
 }
 
+// *************************************************************************
+
 void
-ScXMLStateMachine::PImpl::findTransitions(TransitionList & transitions, ScXMLObject * stateobj, const ScXMLEvent * event)
+ScXMLStateMachine::PImpl::findTransitions(TransitionList & transitions, ScXMLElt * stateobj, const ScXMLEvent * event)
 {
   assert(stateobj);
 
-  if (stateobj->isOfType(ScXMLHistory::getClassTypeId())) {
-    ScXMLHistory * history = static_cast<ScXMLHistory *>(stateobj);
+  if (stateobj->isOfType(ScXMLHistoryElt::getClassTypeId())) {
+    ScXMLHistoryElt * history = static_cast<ScXMLHistoryElt *>(stateobj);
     if (history->getTransition() &&
         history->getTransition()->isEventMatch(event) &&
         history->getTransition()->evaluateCondition(PUBLIC(this))) {
       StateTransition transition(stateobj, history->getTransition());
-      TransitionList::iterator findit = 
+      TransitionList::iterator findit =
         std::find(transitions.begin(), transitions.end(), transition);
       if (findit == transitions.end()) {
         transitions.push_back(transition);
       }
     }
   }
-  else if (stateobj->isOfType(ScXMLInitial::getClassTypeId())) {
-    ScXMLInitial * initial = static_cast<ScXMLInitial *>(stateobj);
+  else if (stateobj->isOfType(ScXMLInitialElt::getClassTypeId())) {
+    ScXMLInitialElt * initial = static_cast<ScXMLInitialElt *>(stateobj);
     if (initial->getTransition() &&
         initial->getTransition()->isEventMatch(event) &&
         initial->getTransition()->evaluateCondition(PUBLIC(this))) {
       StateTransition transition(stateobj, initial->getTransition());
-      TransitionList::iterator findit = 
+      TransitionList::iterator findit =
         std::find(transitions.begin(), transitions.end(), transition);
       if (findit == transitions.end()) {
         transitions.push_back(transition);
       }
     }
   }
-  else if (stateobj->isOfType(ScXMLState::getClassTypeId())) {
-    ScXMLState * state = static_cast<ScXMLState *>(stateobj);
+  else if (stateobj->isOfType(ScXMLStateElt::getClassTypeId())) {
+    ScXMLStateElt * state = static_cast<ScXMLStateElt *>(stateobj);
     for (int j = 0; j < state->getNumTransitions(); ++j) {
       if (state->getTransition(j)->isEventMatch(event) &&
           state->getTransition(j)->evaluateCondition(PUBLIC(this))) {
         StateTransition transition(stateobj, state->getTransition(j));
-        TransitionList::iterator findit = 
+        TransitionList::iterator findit =
           std::find(transitions.begin(), transitions.end(), transition);
         if (findit == transitions.end()) {
           transitions.push_back(transition);
@@ -923,31 +882,29 @@ ScXMLStateMachine::PImpl::findTransitions(TransitionList & transitions, ScXMLObj
 // *************************************************************************
 
 void
-ScXMLStateMachine::PImpl::exitState(ScXMLObject * object)
+ScXMLStateMachine::PImpl::exitState(ScXMLElt * object)
 {
   assert(object);
-  if (object->isOfType(ScXMLState::getClassTypeId())) {
-    ScXMLState * state = static_cast<ScXMLState *>(object);
+  if (object->isOfType(ScXMLStateElt::getClassTypeId())) {
+    ScXMLStateElt * state = static_cast<ScXMLStateElt *>(object);
     const char * id = state->getIdAttribute();
-    if (state->isTask()) {
-      this->invokeStateChangeCallbacks(id, FALSE);
-    }
-    ScXMLOnExit * onexit = state->getOnExit();
+    this->invokeStateChangeCallbacks(id, FALSE);
+    ScXMLOnExitElt * onexit = state->getOnExit();
     if (onexit) {
-      onexit->invoke(PUBLIC(this));
+      onexit->execute(PUBLIC(this));
     }
   }
 }
 
 void
-ScXMLStateMachine::PImpl::enterState(ScXMLObject * object)
+ScXMLStateMachine::PImpl::enterState(ScXMLElt * object)
 {
   assert(object);
 
-  if (object->isOfType(ScXMLFinal::getClassTypeId())) {
+  if (object->isOfType(ScXMLFinalElt::getClassTypeId())) {
     // When entering a <final>, ParentID.done should be posted
-    ScXMLFinal * final = static_cast<ScXMLFinal *>(object);
-    const ScXMLObject * container = final->getContainer();
+    ScXMLFinalElt * final = static_cast<ScXMLFinalElt *>(object);
+    const ScXMLElt * container = final->getContainer();
     assert(container);
     const char * id = container->getXMLAttribute("id");
     if (!id || strlen(id) == 0) {
@@ -964,22 +921,69 @@ ScXMLStateMachine::PImpl::enterState(ScXMLObject * object)
     }
     SbString eventstr;
     eventstr.sprintf("%s.done", id);
-    this->queueInternalEvent(eventstr.getString());
+    PUBLIC(this)->queueInternalEvent(eventstr.getString());
   }
-  else if (object->isOfType(ScXMLState::getClassTypeId())) {
-    ScXMLState * state = static_cast<ScXMLState *>(object);
+  else if (object->isOfType(ScXMLStateElt::getClassTypeId())) {
+    ScXMLStateElt * state = static_cast<ScXMLStateElt *>(object);
     const char * id = state->getIdAttribute();
-    if (state->isTask()) {
-      this->invokeStateChangeCallbacks(id, TRUE);
-    }
-    ScXMLOnEntry * onentry = state->getOnEntry();
+    this->invokeStateChangeCallbacks(id, TRUE);
+    ScXMLOnEntryElt * onentry = state->getOnEntry();
     if (onentry) {
-      onentry->invoke(PUBLIC(this));
+      onentry->execute(PUBLIC(this));
     }
   }
 }
 
-// *************************************************************************
+void
+ScXMLStateMachine::setEvaluator(ScXMLEvaluator * evaluator)
+{
+  PRIVATE(this)->evaluator = evaluator;
+}
+
+ScXMLEvaluator *
+ScXMLStateMachine::getEvaluator(void) const
+{
+  return PRIVATE(this)->evaluator;
+}
+
+SbBool
+ScXMLStateMachine::isModuleEnabled(const char * modulename) const
+{
+  for (int i = 0; i < PRIVATE(this)->modules.getLength(); ++i) {
+    if (strcmp(modulename, PRIVATE(this)->modules[i]) == 0) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+int
+ScXMLStateMachine::getNumEnabledModules(void) const
+{
+  return PRIVATE(this)->modules.getLength();
+}
+
+const char *
+ScXMLStateMachine::getEnabledModuleName(int idx) const
+{
+  assert(idx >= 0 && idx < PRIVATE(this)->modules.getLength());
+  return PRIVATE(this)->modules[idx];
+}
+
+void
+ScXMLStateMachine::setEnabledModulesList(const SbList<const char *> & modulenames)
+{
+  int i;
+  for (i = 0; i < PRIVATE(this)->modules.getLength(); ++i) {
+    delete [] PRIVATE(this)->modules[i];
+  }
+  PRIVATE(this)->modules.truncate(0);
+  for (i = 0; i < modulenames.getLength(); ++i) {
+    char * dup = new char [ strlen(modulenames[i]) + 1 ];
+    strcpy(dup, modulenames[i]);
+    PRIVATE(this)->modules.append(dup);
+  }
+}
 
 #undef PUBLIC
 #undef PRIVATE

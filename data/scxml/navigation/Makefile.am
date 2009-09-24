@@ -10,7 +10,12 @@ scxmldefdatadir = $(datadir)/Coin/scxml/navigation
 endif
 
 dist_scxmldefdata_DATA = \
-	examiner.xml
+	common.xml \
+	examiner.xml \
+	plane.xml
+
+EXTRA_DIST = \
+	debugging.xml
 
 # This is necessary to include so the headers are actually built.
 all-local:

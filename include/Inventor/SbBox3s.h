@@ -81,7 +81,12 @@ public:
   void getSize(short & sizeX, short & sizeY, short & sizeZ) const
     { if (isEmpty()) { sizeX = sizeY = sizeZ = 0; }
       else { sizeX = maxpt[0] - minpt[0]; sizeY = maxpt[1] - minpt[1]; sizeZ = maxpt[2] - minpt[2]; } }
-
+  SbVec3s getSize(void) const {
+    SbVec3s v;
+    this->getSize(v[0], v[1],v[2]);
+    return v;
+  }
+  
 protected:
   SbVec3s minpt, maxpt;
 

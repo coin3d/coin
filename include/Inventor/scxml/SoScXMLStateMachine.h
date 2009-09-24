@@ -37,6 +37,7 @@ class COIN_DLL_API SoScXMLStateMachine : public ScXMLStateMachine {
 
 public:
   static void initClass(void);
+  static void cleanClass(void);
 
   SoScXMLStateMachine(void);
   virtual ~SoScXMLStateMachine(void);
@@ -54,6 +55,8 @@ public:
   virtual void postGLRender(void);
 
   virtual SbBool processSoEvent(const SoEvent * event);
+
+  virtual const char * getVariable(const char * key) const;
 
 private:
   SoScXMLStateMachine(const SoScXMLStateMachine & rhs); // N/A

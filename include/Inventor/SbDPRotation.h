@@ -50,12 +50,7 @@ public:
   SbDPRotation & setValue(const SbDPMatrix & m);
   SbDPRotation & setValue(const SbVec3d & axis, const double radians);
   SbDPRotation & setValue(const SbVec3d & rotateFrom, const SbVec3d & rotateTo);
-  SbDPRotation & operator*=(const SbDPRotation & q);
-  SbDPRotation & operator*=(const double s);
-  friend COIN_DLL_API int operator==(const SbDPRotation & q1, const SbDPRotation & q2);
-  friend COIN_DLL_API int operator!=(const SbDPRotation & q1, const SbDPRotation & q2);
   SbBool equals(const SbDPRotation & r, const double tolerance) const;
-  friend COIN_DLL_API SbDPRotation operator *(const SbDPRotation & q1, const SbDPRotation & q2);
   void multVec(const SbVec3d & src, SbVec3d & dst) const;
 
   void scaleAngle(const double scaleFactor);
@@ -65,9 +60,17 @@ public:
 
   void print(FILE * fp) const;
 
+  SbDPRotation & operator*=(const SbDPRotation & q);
+  SbDPRotation & operator*=(const double s);
+  friend COIN_DLL_API int operator==(const SbDPRotation & q1, const SbDPRotation & q2);
+  friend COIN_DLL_API int operator!=(const SbDPRotation & q1, const SbDPRotation & q2);
+  friend COIN_DLL_API SbDPRotation operator *(const SbDPRotation & q1, const SbDPRotation & q2);
 private:
   SbVec4d quat;
 };
+
+typedef SbDPRotation SbRotationd;
+
 
 COIN_DLL_API int operator ==(const SbDPRotation & q1, const SbDPRotation & q2);
 COIN_DLL_API int operator !=(const SbDPRotation & q1, const SbDPRotation & q2);

@@ -120,7 +120,7 @@ public:
   SbList <SbVec2f> bumpcoordlist;
   SbList <uint8_t> rgbalist;
   SbList <SbVec3f> tangentlist;
-  SbHash <int32_t, Vertex> vhash;
+  SbHash<Vertex, int32_t> vhash;
 
   const SbVec2f * bumpcoords;
   int numbumpcoords;

@@ -87,8 +87,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
 #include <Inventor/scxml/ScXML.h>
-#include "navigation/SoScXMLNavigation.h"
+#include <Inventor/navigation/SoScXMLNavigation.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
+#include <Inventor/misc/CoinResources.h>
+
 #ifdef HAVE_NODEKITS
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #endif // HAVE_NODEKITS
@@ -102,7 +104,6 @@
 #include "misc/systemsanity.icc"
 #include "misc/SoDBP.h"
 #include "misc/SbHash.h"
-#include "misc/CoinResources.h"
 #include "rendering/SoVBO.h"
 
 #ifdef HAVE_VRML97

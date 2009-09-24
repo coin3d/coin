@@ -73,7 +73,7 @@ class SoVBO {
   uint32_t dataid;
   SbBool didalloc;
 
-  SbHash <GLuint, uint32_t> vbohash;
+  SbHash<uint32_t, GLuint> vbohash;
 };
 
 #endif // COIN_VERTEXARRAYINDEXER_H

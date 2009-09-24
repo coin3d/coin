@@ -82,7 +82,7 @@
 
 /*
   TODO / UNRESOLVED ISSUES:
-  
+
   - file format sub-formats (e.g. stl: stl ascii, stl binary, stl binary colored)
   - specify/implement format specification/syntax for writeScene()
   - improve file type handler registering
@@ -94,11 +94,11 @@ class SoForeignFileKitP {
 public:
   SoForeignFileKitP(SoForeignFileKit * api) { }
 
-  static SbHash<SoType, const char *> * fileexts;
+  static SbHash<const char *, SoType> * fileexts;
 
 };
 
-SbHash<SoType, const char *> * SoForeignFileKitP::fileexts = NULL;
+SbHash<const char *, SoType> * SoForeignFileKitP::fileexts = NULL;
 
 SO_KIT_ABSTRACT_SOURCE(SoForeignFileKit);
 
@@ -118,7 +118,7 @@ SoForeignFileKit::initClass(void)
 
   SO_KIT_INIT_ABSTRACT_CLASS(SoForeignFileKit, SoBaseKit, SoBaseKit);
   // set up support dictionary
-  SoForeignFileKitP::fileexts = new SbHash<SoType, const char *>(11);
+  SoForeignFileKitP::fileexts = new SbHash<const char *, SoType>(11);
   coin_atexit((coin_atexit_f*)foreignfilekit_cleanup, CC_ATEXIT_NORMAL);
 
   SoForeignFileKit::initClasses();

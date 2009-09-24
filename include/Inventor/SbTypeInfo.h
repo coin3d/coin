@@ -35,7 +35,7 @@
   be able to do that quite easily if the Sb-classes had been template classes
   of Type and Dimension arguments.  This type library makes it possible to
   work around that lack of genericity by looking up type relationships instead.
-  
+
   Certain inside types of SbTypeInfo<> are always defined. Others will only
   be defined if the template argument type is of certain characteristics.
 
@@ -44,7 +44,7 @@
 
   ParamType is a type deemed to be efficient for function parameter transfer.
   It is always defined.
-  
+
   If the type is a primitive type that has
 
   \since Coin 2.5
@@ -219,7 +219,10 @@ struct SbTypeInfo {
 template <>
 struct SbTypeInfo<float> {
   typedef float Type;
+  typedef float PrimitiveType;
   typedef Type ParamType;
+
+  enum { Dimensions = 1 };
 
   typedef SbVec2f Vec2Type;
   typedef SbVec3f Vec3Type;
@@ -236,10 +239,46 @@ struct SbTypeInfo<float> {
   typedef SbRotation RotationType;
 };
 
+template<typename PrimitiveType, unsigned int dim>
+struct Vec
+{
+};
+template<typename PrimitiveType>
+struct Vec<PrimitiveType,2>
+{
+  typedef typename SbTypeInfo<PrimitiveType>::Vec2Type Type;
+};
+template<typename PrimitiveType>
+struct Vec<PrimitiveType,3>
+{
+  typedef typename SbTypeInfo<PrimitiveType>::Vec3Type Type;
+};
+
+template<typename PrimitiveType>
+struct Vec<PrimitiveType,4>
+{
+  typedef typename SbTypeInfo<PrimitiveType>::Vec4Type Type;
+};
+
+
+
+//This should have been a template for SbBool, but since SbBool is an
+//int, we would risk unwanted behaviour for ints.
+template <>
+struct SbTypeInfo<bool> {
+  typedef bool Type;
+  typedef bool PrimitiveType;
+  typedef Type ParamType;
+
+  enum { Dimensions = 1 };
+};
+
 template <>
 struct SbTypeInfo<double> {
   typedef double Type;
   typedef Type ParamType;
+
+  enum { Dimensions = 1 };
 
   typedef SbVec2d Vec2Type;
   typedef SbVec3d Vec3Type;
@@ -345,6 +384,8 @@ struct SbTypeInfo<SbVec2f> {
 
   typedef SoSFVec2f SFieldType;
   typedef SoMFVec2f MFieldType;
+
+  static const char * getTypeName() { return "SbVec2f"; }
 };
 
 template <>
@@ -440,6 +481,8 @@ struct SbTypeInfo<SbVec3f> {
 
   typedef SoSFVec3f SFieldType;
   typedef SoMFVec3f MFieldType;
+
+  static const char * getTypeName() { return "SbVec3f"; }
 };
 
 template <>
@@ -489,6 +532,8 @@ struct SbTypeInfo<SbVec3s> {
 
   typedef SoSFVec3s SFieldType;
   typedef SoMFVec3s MFieldType;
+
+  static const char * getTypeName() { return "SbVec3s"; }
 };
 
 template <>
@@ -498,6 +543,8 @@ struct SbTypeInfo<SbVec3us> {
 
   typedef unsigned short PrimitiveType;
   enum { Dimensions = 3 };
+
+  static const char * getTypeName() { return "SbVec3us"; }
 };
 
 template <>
@@ -771,6 +818,9 @@ struct SbTypeInfo<SbRotation> {
 
   typedef SoSFRotation SFieldType;
   typedef SoMFRotation MFieldType;
+
+  enum { Dimensions = 4 };
+  static const char * getTypeName() { return "SbRotation"; }
 };
 
 template <>

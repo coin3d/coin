@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include "misc/CoinResources.h"
+#include <Inventor/misc/CoinResources.h>
 
 /*!
   \class CoinResources "misc/CoinResources.h"
@@ -33,10 +33,12 @@
   either from disk (if present) and as a fallback the built-in
   (compiled in) buffer
 
-  The resource locators take the form "coin:path/to/resource.ext".
+  The resource locators take the form of a URL with coin as its schema and empty host eg.
+  "coin://path/to/resource.ext".
+
   The "coin:" prefix is for Coin to differentiate a resource locator from
   a filename (for multipurpose function usage).
-  
+
   The path/to/resource.ext is for most platforms the path under the
   environment variable $COINDIR where the file should be present.  For
   Mac OS X, the path is under the Inventor framework bundle Resources/
@@ -61,6 +63,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbByteBuffer.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -85,55 +88,72 @@
 #define MAXPATHLEN 2048
 #endif // !MAXPATHLEN
 
-// internal data
-class ResourceHandle {
-public:
-  ResourceHandle(void)
-    : resloc(NULL), canbefile(FALSE), filenotfound(FALSE),
-      loadedbuf(NULL), loadedbufsize(0),
-      internalbuf(NULL), internalbufsize(0)
-  { }
+//Anonymous namespace
+namespace CoinResources { namespace {
+    class ResourceHandle {
+    public:
+      ResourceHandle(void)
+        : resloc(NULL), canbefile(FALSE), filenotfound(FALSE)
+      { }
 
-  char * resloc;
-  SbBool canbefile;
-  SbBool filenotfound;
+      char * resloc;
+      SbBool canbefile;
+      SbBool filenotfound;
 
-  char * loadedbuf;
-  size_t loadedbufsize;
-  char * internalbuf;
-  size_t internalbufsize;
-};
+      SbByteBuffer loadedbuf;
+      SbByteBuffer internalbuf;
+    };
 
-// internal static class
-class CoinResourcesP {
-public:
-  typedef std::map<const char *, ResourceHandle *> ResourceMap;
+    typedef std::map<const char *, ResourceHandle *> ResourceMap;
 
-  static ResourceMap * resourcemap;
+    ResourceMap * resourcemap;
 
-  static ResourceHandle * getResourceHandle(const char * resloc);
-  static ResourceHandle * createResourceHandle(const char * resloc);
-};
+    ResourceHandle * getResourceHandle(const char * resloc);
+    ResourceHandle * createResourceHandle(const char * resloc);
+    void cleanup(void);
 
-CoinResourcesP::ResourceMap * CoinResourcesP::resourcemap;
+    void
+    cleanup(void)
+    {
+      ResourceMap::iterator it = resourcemap->begin();
+      while (it != resourcemap->end()) {
+        delete it->second;
+        it++;
+      }
+      delete resourcemap;
+      resourcemap = NULL;
+    }
 
-void 
+    ResourceHandle *
+    getResourceHandle(const char * resloc)
+    {
+      assert(resloc);
+      SbName reslochash(resloc);
+      ResourceMap::iterator it =
+        resourcemap->find(reslochash.getString());
+      if (it == resourcemap->end()) return NULL;
+      return it->second;
+    }
+
+    ResourceHandle *
+    createResourceHandle(const char * resloc)
+    {
+      assert(resloc);
+      SbName reslochash(resloc);
+      ResourceHandle * handle = new ResourceHandle;
+      handle->resloc = const_cast<char *>(reslochash.getString());
+      std::pair<const char *, ResourceHandle *> mapentry(reslochash.getString(), handle);
+      resourcemap->insert(mapentry);
+      return handle;
+    }
+
+}}
+
+void
 CoinResources::init(void)
 {
-  CoinResourcesP::resourcemap = new CoinResourcesP::ResourceMap;
+  CoinResources::resourcemap = new CoinResources::ResourceMap;
   cc_coin_atexit_static_internal((coin_atexit_f*) CoinResources::cleanup);
-}
-
-void 
-CoinResources::cleanup(void)
-{
-  CoinResourcesP::ResourceMap::iterator it = CoinResourcesP::resourcemap->begin();
-  while (it != CoinResourcesP::resourcemap->end()) {
-    delete it->second;
-    it++;
-  }
-  delete CoinResourcesP::resourcemap;
-  CoinResourcesP::resourcemap = NULL;
 }
 
 
@@ -144,19 +164,19 @@ CoinResources::cleanup(void)
 
   \return TRUE on success, and FALSE if there is no such resource.
 */
-SbBool
-CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
+SbByteBuffer
+CoinResources::get(const char * resloc)
 {
-  if (strncmp(resloc, "coin:", 5) != 0) {
-    return FALSE;
+  if (strncmp(resloc, "coin://", 7) != 0) {
+    return SbByteBuffer::invalidBuffer();
   }
 
-  ResourceHandle * handle = CoinResourcesP::getResourceHandle(resloc);
+  ResourceHandle * handle = CoinResources::getResourceHandle(resloc);
   if (!handle) {
-    return FALSE;
+    return SbByteBuffer::invalidBuffer();
   }
 
-  if (handle->loadedbuf == NULL && handle->canbefile && !handle->filenotfound) {
+  if (handle->loadedbuf.empty() && handle->canbefile && !handle->filenotfound) {
     // try loading file from COINDIR/...
     do { // to 'break' out of this try-file-loading sequence
       SbString filename;
@@ -214,10 +234,9 @@ CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
 
       fseek(fp, 0, SEEK_SET);
 
-      char * buffer = new char [ size + 1 ];
-      buffer[size] = '\0';
+      SbByteBuffer buffer(size);
 
-      size_t num = fread(buffer, size, 1, fp);
+      size_t num = fread(buffer.data(), size, 1, fp);
       fclose(fp);
       fp = NULL;
 
@@ -227,33 +246,30 @@ CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
         // to clean up those buffers automatically.  Or we can maybe
         // hook up something that clears out everything instead.
         handle->loadedbuf = buffer;
-        handle->loadedbufsize = size;
+
         if (COIN_DEBUG && 0) {
           SoDebugError::postInfo("CoinResources::get", "load '%s' ok.",
                                  filename.getString());
         }
       } else {
         handle->filenotfound = TRUE;
-        delete [] buffer;
         break;
       }
     } while ( FALSE );
   }
 
-  if (handle->loadedbuf != NULL) {
-    buffer = handle->loadedbuf;
-    bufsize = handle->loadedbufsize;
-    return TRUE;
+  assert(handle);
+  if (! handle->loadedbuf.empty()) {
+    return handle->loadedbuf;
   }
 
-  buffer = handle->internalbuf;
-  bufsize = handle->internalbufsize;
-  return TRUE;
+  assert(handle);
+  return handle->internalbuf;
 }
 
 /*!
   This function registers a new resource.  The resource locator (\a resloc)
-  should take the form "coin:" followed by a relative file path that should
+  should take the form "coin://" followed by a relative file path that should
   lead to the file representation of the resource from where the COINDIR
   environment variable points.  The relative path should use / for directory
   separation, and not \ if on MS Windows.
@@ -264,19 +280,21 @@ CoinResources::get(const char * resloc, const char *& buffer, size_t & bufsize)
   \returns TRUE if the resource was set, and FALSE if something went wrong.
   FALSE would most likely be returned because the resource already exists.
 */
-
 SbBool
-CoinResources::set(const char * resloc, const char * buffer, size_t bufsize, unsigned int flags)
+CoinResources::set(const char * resloc, const SbByteBuffer & buffer, ResourceFlags flags)
 {
-  ResourceHandle * handle = CoinResourcesP::getResourceHandle(resloc);
+  if (strncmp(resloc, "coin://", 7) != 0) {
+    return FALSE;
+  }
+
+  ResourceHandle * handle = CoinResources::getResourceHandle(resloc);
   if (handle) { // already set
     SoDebugError::post("CoinResources::set", "Resource already set.");
     return FALSE;
   }
-  handle = CoinResourcesP::createResourceHandle(resloc);
+  handle = CoinResources::createResourceHandle(resloc);
   assert(handle);
-  handle->internalbuf = const_cast<char *>(buffer);
-  handle->internalbufsize = bufsize;
+  handle->internalbuf = buffer;
   if (flags & COIN_RESOURCE_NOT_A_FILE) {
     handle->canbefile = FALSE;
   } else {
@@ -293,40 +311,14 @@ CoinResources::set(const char * resloc, const char * buffer, size_t bufsize, uns
 void
 CoinResources::freeLoadedExternals(void)
 {
-  CoinResourcesP::ResourceMap::iterator it =
-    CoinResourcesP::resourcemap->begin();
-  while (it != CoinResourcesP::resourcemap->end()) {
+  CoinResources::ResourceMap::iterator it =
+    CoinResources::resourcemap->begin();
+  while (it != CoinResources::resourcemap->end()) {
     ResourceHandle * handle = it->second;
-    if (handle->loadedbuf != NULL) {
-      delete [] handle->loadedbuf;
-      handle->loadedbuf = NULL;
-      handle->loadedbufsize = 0;
+    if (!handle->loadedbuf.empty()) {
+      //FIXME: This may be entirely unnecessary with the SbByteBuffer class BFG 20090212
+      handle->loadedbuf = SbByteBuffer();
     }
     ++it;
   }
-}
-
-// internal
-ResourceHandle *
-CoinResourcesP::getResourceHandle(const char * resloc)
-{
-  assert(resloc);
-  SbName reslochash(resloc);
-  CoinResourcesP::ResourceMap::iterator it =
-    CoinResourcesP::resourcemap->find(reslochash.getString());
-  if (it == CoinResourcesP::resourcemap->end()) return NULL;
-  return it->second;
-}
-
-// internal
-ResourceHandle *
-CoinResourcesP::createResourceHandle(const char * resloc)
-{
-  assert(resloc);
-  SbName reslochash(resloc);
-  ResourceHandle * handle = new ResourceHandle;
-  handle->resloc = const_cast<char *>(reslochash.getString());
-  std::pair<const char *, ResourceHandle *> mapentry(reslochash.getString(), handle);
-  CoinResourcesP::resourcemap->insert(mapentry);
-  return handle;
 }

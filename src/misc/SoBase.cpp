@@ -95,8 +95,8 @@
 /*!
   \fn SoType SoBase::getTypeId(void) const
 
-  Returns the type identification of an object derived from a class
-  inheriting SoBase.  This is used for run-time type checking and
+  \brief Returns the type identification of an object derived from a
+  class inheriting SoBase. This is used for run-time type checking and
   "downward" casting.
 
   Usage example:
@@ -203,8 +203,8 @@ SoBase::SoBase(void)
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
     void * dummy;
-    assert(!SoBase::PImpl::allbaseobj->get(this, dummy));
-    SoBase::PImpl::allbaseobj->put(this, NULL);
+    assert(SoBase::PImpl::allbaseobj->find(this)!=SoBase::PImpl::allbaseobj->const_end());
+    (*SoBase::PImpl::allbaseobj)[this]=NULL;
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
 #endif // COIN_DEBUG
@@ -229,8 +229,8 @@ SoBase::~SoBase()
 
   if (SoBase::PImpl::auditordict) {
     SoAuditorList * l;
-    if (SoBase::PImpl::auditordict->get(this, l)) {
-      SoBase::PImpl::auditordict->remove(this);
+    if (SoBase::PImpl::auditordict->find(this)!=SoBase::PImpl::auditordict->const_end()) {
+      SoBase::PImpl::auditordict->erase(this);
       delete l;
     }
   }
@@ -239,7 +239,7 @@ SoBase::~SoBase()
 #if COIN_DEBUG
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
-    const SbBool ok = SoBase::PImpl::allbaseobj->remove(this);
+    const SbBool ok = SoBase::PImpl::allbaseobj->erase(this);
     assert(ok && "something fishy going on in debug object tracking");
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
@@ -330,8 +330,8 @@ SoBase::destroy(void)
 }
 
 /*!
-  Sets up initialization for data common to all instances of this
-  class, like submitting necessary information to the Coin type
+  \brief Sets up initialization for data common to all instances of
+  this class, like submitting necessary information to the Coin type
   system.
  */
 void
@@ -355,8 +355,8 @@ SoBase::initClass(void)
 
   SoBase::classTypeId = SoType::createType(SoType::badType(), "Base");
 
-  SoBase::PImpl::name2obj = new SbHash<SbPList *, const char *>;
-  SoBase::PImpl::obj2name = new SbHash<const char *, const SoBase *>();
+  SoBase::PImpl::name2obj = new SbHash<const char *, SbPList *>;
+  SoBase::PImpl::obj2name = new SbHash<const SoBase *, const char *>();
   SoBase::PImpl::refwriteprefix = new SbString("+");
   SoBase::PImpl::allbaseobj = new SoBaseSet;
 
@@ -369,7 +369,7 @@ SoBase::initClass(void)
 
   // debug
   const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
-  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;  
+  SoBase::PImpl::trackbaseobjects = str && atoi(str) > 0;
 
   SoWriterefCounter::initClass();
 }
@@ -383,8 +383,14 @@ SoBase::cleanClass(void)
   assert(SoBase::PImpl::obj2name);
 
   // Delete the SbPLists in the dictionaries.
-  emptyName2ObjHash functor;
-  SoBase::PImpl::name2obj->apply(functor, static_cast<void *>(NULL));
+  for(
+      SbHash<const char *, SbPList *>::const_iterator iter =
+       SoBase::PImpl::name2obj->const_begin();
+      iter!=SoBase::PImpl::name2obj->const_end();
+      ++iter
+      ) {
+    delete iter->obj;
+  }
 
   delete SoBase::PImpl::allbaseobj; SoBase::PImpl::allbaseobj = NULL;
 
@@ -513,7 +519,7 @@ SoBase::unref(void) const
   CC_MUTEX_LOCK(SoBase::PImpl::mutex);
   this->objdata.referencecount--;
   int refcount = this->objdata.referencecount;
- 
+
   CC_MUTEX_UNLOCK(SoBase::PImpl::mutex);
 
 #if COIN_DEBUG
@@ -584,8 +590,8 @@ SoBase::touch(void)
 }
 
 /*!
-  Returns \c TRUE if the type of this object is either of the same
-  type or inherited from \a type.
+  \brief Returns \c TRUE if the type of this object is either of the
+  same type or inherited from \a type.
 
   This is used for run-time type checking and "downward" casting.
 
@@ -609,7 +615,7 @@ SoBase::isOfType(SoType type) const
 }
 
 /*!
-  This static method returns the SoType object associated with
+  \brief This static method returns the SoType object associated with
   objects of this class.
  */
 SoType
@@ -632,9 +638,10 @@ SoBase::getName(void) const
 
   const char * value = NULL;
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
-  SbBool found = SoBase::PImpl::obj2name->get(this, value);
+  SbHash<const SoBase *, const char *>::const_iterator tmp = SoBase::PImpl::obj2name->find(this);
+  SbBool found = (tmp != SoBase::PImpl::obj2name->const_end());
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
-  return SbName(found ? value : "");
+  return SbName(found ? tmp->obj : "");
 }
 
 /*!
@@ -725,10 +732,14 @@ SoBase::addName(SoBase * const b, const char * const name)
 
   SbPList * l;
   CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
-  if (!SoBase::PImpl::name2obj->get(name, l)) {
+  SbHash<const char*, SbPList*>::const_iterator tmp = SoBase::PImpl::name2obj->find(name);
+  if (tmp==SoBase::PImpl::name2obj->const_end()) {
     // name not used before, create new list
     l = new SbPList;
-    SoBase::PImpl::name2obj->put(name, l);
+    (*SoBase::PImpl::name2obj)[name] = l;
+  }
+  else {
+    l = tmp->obj;
   }
 
   // append this to the list
@@ -737,7 +748,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
   // set name of object. SbHash::put() will overwrite old name
-  (void)SoBase::PImpl::obj2name->put(b, name);
+  (*SoBase::PImpl::obj2name)[b] = name;
   CC_MUTEX_UNLOCK(SoBase::PImpl::obj2name_mutex);
 }
 
@@ -841,20 +852,23 @@ SoBase::getAuditors(void) const
   CC_MUTEX_LOCK(SoBase::PImpl::auditor_mutex);
 
   if (SoBase::PImpl::auditordict == NULL) {
-    SoBase::PImpl::auditordict = new SbHash<SoAuditorList *, const SoBase *>();
+    SoBase::PImpl::auditordict = new SbHash<const SoBase *, SoAuditorList *>();
     coin_atexit((coin_atexit_f*)SoBase::PImpl::cleanup_auditordict, CC_ATEXIT_NORMAL);
   }
 
   SoAuditorList * l = NULL;
-  if (SoBase::PImpl::auditordict->get(this, l)) {
+  SbHash<const SoBase *, SoAuditorList *>::const_iterator iter
+    = 
+    SoBase::PImpl::auditordict->find(this);
+  if (iter!=SoBase::PImpl::auditordict->const_end()) {
+    l = iter->obj;
     // empty list before copying in new values
     for (int i = 0; i < l->getLength(); i++) {
       l->remove(i);
     }
   }
   else {
-    l = new SoAuditorList;
-    SoBase::PImpl::auditordict->put(this, l);
+    (*SoBase::PImpl::auditordict)[this] = new SoAuditorList;
   }
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) l);
 
@@ -941,8 +955,10 @@ SoBase *
 SoBase::getNamedBase(const SbName & name, SoType type)
 {
   CC_MUTEX_LOCK(SoBase::PImpl::name2obj_mutex);
-  SbPList * l;
-  if (SoBase::PImpl::name2obj->get((const char *)name, l)) {
+  SbHash<const char*, SbPList*>::const_iterator iter = 
+    SoBase::PImpl::name2obj->find((const char *)name);
+  if (iter!=SoBase::PImpl::name2obj->const_end()) {
+    SbPList * l = iter->obj;
     if (l->getLength()) {
       SoBase * b = (SoBase *)((*l)[l->getLength() - 1]);
       if (b->isOfType(type)) {
@@ -968,8 +984,11 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 
   int matches = 0;
 
-  SbPList * l;
-  if (SoBase::PImpl::name2obj->get((const char *)name, l)) {
+  SbHash<const char*, SbPList*>::const_iterator iter = 
+    SoBase::PImpl::name2obj->find((const char *)name);
+  if (iter!=SoBase::PImpl::name2obj->const_end()) {
+    SbPList * l = iter->obj;
+    
     for (int i=0; i < l->getLength(); i++) {
       SoBase * b = (SoBase *)((*l)[i]);
       if (b->isOfType(type)) {
@@ -1266,9 +1285,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       out->incrementIndent();
     }
   }
-  
+
   int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
-  
+
 #if COIN_DEBUG
   if (SoWriterefCounter::debugWriterefs()) {
     SoDebugError::postInfo("SoBase::writeHeader",
@@ -1355,7 +1374,7 @@ SoBase::connectRoute(SoInput * in,
   SoNode * fromnode = SoNode::getByName(fromnodename);
   SoNode * tonode = SoNode::getByName(tonodename);
   if (fromnode && tonode) {
-    SoDB::createRoute(fromnode, fromfieldname.getString(), 
+    SoDB::createRoute(fromnode, fromfieldname.getString(),
                       tonode, tofieldname.getString());
     return TRUE;
   }

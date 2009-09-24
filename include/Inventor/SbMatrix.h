@@ -43,14 +43,12 @@ public:
            const float a41, const float a42, const float a43, const float a44);
   SbMatrix(const SbMat & matrix);
   SbMatrix(const SbMat * matrix);
+  explicit SbMatrix(const class SbDPMatrix & matrix);
   ~SbMatrix(void);
 
-  SbMatrix & operator =(const SbMat & m);
-
-  operator float*(void);
-  SbMatrix & operator =(const SbMatrix & m);
   void setValue(const SbMat & m);
   void setValue(const class SbDPMatrix & m);
+  void setValue(const float * pMat);
   const SbMat & getValue(void) const;
 
   void makeIdentity(void);
@@ -64,14 +62,6 @@ public:
   SbBool equals(const SbMatrix & m, float tolerance) const;
 
 
-  operator SbMat&(void);
-  float * operator [](int i);
-  const float * operator [](int i) const;
-  SbMatrix & operator =(const SbRotation & q);
-  SbMatrix & operator *=(const SbMatrix & m);
-  friend COIN_DLL_API SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
-  friend COIN_DLL_API int operator ==(const SbMatrix & m1, const SbMatrix & m2);
-  friend COIN_DLL_API int operator !=(const SbMatrix & m1, const SbMatrix & m2);
   void getValue(SbMat & m) const;
   static SbMatrix identity(void);
   void setScale(const float s);
@@ -102,6 +92,21 @@ public:
   void multVecMatrix(const SbVec4f & src, SbVec4f & dst) const;
 
   void print(FILE * fp) const;
+
+  operator float*(void);
+  operator SbMat&(void);
+
+  float * operator [](int i);
+  const float * operator [](int i) const;
+
+  SbMatrix & operator =(const SbMat & m);
+  SbMatrix & operator =(const SbMatrix & m);
+  SbMatrix & operator =(const SbRotation & q);
+  SbMatrix & operator *=(const SbMatrix & m);
+
+  friend COIN_DLL_API SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_API int operator ==(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_API int operator !=(const SbMatrix & m1, const SbMatrix & m2);
 
 private:
   float matrix[4][4];

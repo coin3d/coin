@@ -24,11 +24,49 @@
  *
 \**************************************************************************/
 
+#include <cstring>
+#include <vector>
+#include <algorithm>
+
+#include "coindefs.h"
+#include "SbBasicP.h"
+
+// *************************************************************************
+
+#define SCXML__SET_ATTRIBUTE_VALUE(_ptr_, _name_, _value_)              \
+  do {                                                                  \
+    if ((_ptr_ != NULL) &&                                              \
+        (_ptr_ != this->getXMLAttribute(_name_))) {                     \
+      delete [] _ptr_;                                                  \
+    }                                                                   \
+    _ptr_ = NULL;                                                       \
+    if (_value_ != NULL) {                                              \
+      if (_value_ == this->getXMLAttribute(_name_)) {                   \
+        _ptr_ = const_cast<char *>(_value_);                            \
+      } else {                                                          \
+        _ptr_ = new char [std::strlen(_value_) + 1];                    \
+        std::strcpy(_ptr_, _value_);                                    \
+      }                                                                 \
+    }                                                                   \
+  } while (FALSE)
+
+#define SCXML__CLEAR_STD_VECTOR(_listobj_, _elementtype_)               \
+  do {                                                                  \
+    std::vector<_elementtype_>::iterator it = _listobj_.begin();        \
+    while (it != _listobj_.end()) {                                     \
+      delete *it;                                                       \
+      ++it;                                                             \
+    }                                                                   \
+    _listobj_.clear();                                                  \
+  } while ( FALSE )
+
+
 #define SCXML_SINGLE_OBJECT_API_IMPL(classname, objtype, pointer, singular) \
 void                                                                    \
 classname::SO__CONCAT(set,singular)(objtype * obj)                      \
 {                                                                       \
   pointer.reset(obj);                                                   \
+  obj->setContainer(this);                                              \
 }                                                                       \
                                                                         \
 objtype *                                                               \
@@ -56,6 +94,7 @@ void                                                                    \
 classname::SO__CONCAT(add,singular)(objtype * obj)                      \
 {                                                                       \
   objlist.push_back(obj);                                               \
+  obj->setContainer(this);                                              \
 }                                                                       \
                                                                         \
 void                                                                    \
@@ -65,11 +104,17 @@ classname::SO__CONCAT(remove,singular)(objtype * obj)                   \
     std::find(objlist.begin(), objlist.end(), obj);                     \
   assert(it != objlist.end());                                          \
   objlist.erase(it);                                                    \
+  obj->setContainer(NULL);                                              \
 }                                                                       \
                                                                         \
 void                                                                    \
 classname::SO__CONCAT(clearAll,plural)(void)                            \
 {                                                                       \
+  std::vector<objtype *>::iterator it = objlist.begin();                \
+  while (it != objlist.end()) {                                         \
+    (*it)->setContainer(NULL);                                          \
+    ++it;                                                               \
+  }                                                                     \
   objlist.clear();                                                      \
 }
 

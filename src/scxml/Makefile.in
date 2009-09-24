@@ -103,6 +103,7 @@ DEB_PACKAGEABLE_FALSE = @DEB_PACKAGEABLE_FALSE@
 DEB_PACKAGEABLE_TRUE = @DEB_PACKAGEABLE_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DOXYGEN_INPUT = @DOXYGEN_INPUT@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
@@ -268,54 +269,82 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 RegularSources = \
+        SbStringConvert.cpp \
+        \
         ScXML.cpp \
         ScXMLObject.cpp \
-        ScXMLDocument.cpp \
-        ScXMLState.cpp \
-        ScXMLOnEntry.cpp \
-        ScXMLOnExit.cpp \
-        ScXMLInitial.cpp \
-        ScXMLFinal.cpp \
-        ScXMLAnchor.cpp \
-        ScXMLHistory.cpp \
-        ScXMLTransition.cpp \
         ScXMLEvent.cpp \
-        ScXMLInvoke.cpp \
-        ScXMLFallbackInvoke.cpp \
+        ScXMLEventTarget.cpp \
         ScXMLStateMachine.cpp \
-        SoScXMLEvent.cpp \
-        SoScXMLStateMachine.cpp \
-        SoScXMLDebugInfoInvoke.cpp \
-        SoScXMLScheduleRedrawInvoke.cpp \
-        SoScXMLScheduleTimerEventInvoke.cpp
+        ScXMLDocument.cpp \
+        \
+        ScXMLElt.cpp \
+        ScXMLScxmlElt.cpp \
+        ScXMLInitialElt.cpp \
+        ScXMLAbstractStateElt.cpp \
+        ScXMLStateElt.cpp \
+        ScXMLParallelElt.cpp \
+        ScXMLFinalElt.cpp \
+        ScXMLOnEntryElt.cpp \
+        ScXMLOnExitElt.cpp \
+        ScXMLTransitionElt.cpp \
+        ScXMLHistoryElt.cpp \
+        \
+        ScXMLExecutableElt.cpp \
+        ScXMLEventElt.cpp \
+        ScXMLIfElt.cpp \
+        ScXMLElseIfElt.cpp \
+        ScXMLElseElt.cpp \
+        ScXMLLogElt.cpp \
+        \
+        ScXMLDataModelElt.cpp \
+        ScXMLDataElt.cpp \
+        ScXMLAssignElt.cpp \
+        ScXMLValidateElt.cpp \
+        \
+        ScXMLSendElt.cpp \
+        ScXMLInvokeElt.cpp \
+        ScXMLParamElt.cpp \
+        ScXMLFinalizeElt.cpp \
+        ScXMLContentElt.cpp \
+        \
+        ScXMLAnchorElt.cpp \
+        \
+        ScXMLScriptElt.cpp \
+        \
+        ScXMLEvaluator.cpp \
+        \
+        ScXMLMinimumEvaluator.cpp \
+        eval-minimum.cpp \
+        eval-minimum-tab.cpp \
+        \
+        ScXMLXPathEvaluator.cpp \
+        ScXMLECMAScriptEvaluator.cpp
 
 
 LinkHackSources = \
-        all-scxml-cpp.cpp
+        all-scxml-cpp.cpp \
+        all-scxml2-cpp.cpp
 
 
 PublicHeaders = 
 
 PrivateHeaders = \
+        SbStringConvert.h \
         ScXMLP.h \
         ScXMLCommonP.h \
-        ScXMLFallbackInvoke.h \
-        SoScXMLDebugInfoInvoke.h \
-        SoScXMLScheduleRedrawInvoke.h \
-        SoScXMLScheduleTimerEventInvoke.h \
-        \
-        ScXMLDocument.h \
-        ScXMLAnchor.h \
-        ScXMLState.h \
-        ScXMLOnEntry.h \
-        ScXMLOnExit.h \
-        ScXMLInitial.h \
-        ScXMLFinal.h \
-        ScXMLHistory.h \
-        ScXMLTransition.h
+        eval-minimum.h \
+        eval-coin.h
 
 
 ObsoleteHeaders = 
+
+EXTRA_DIST = \
+        eval-minimum.l \
+        eval-minimum-tab.y \
+        eval-coin.l \
+        eval-coin-tab.y
+
 
 
 # **************************************************************************
@@ -381,149 +410,245 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 scxml_lst_AR = $(AR) cru
 scxml_lst_LIBADD =
-am__scxml_lst_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp ScXMLDocument.cpp \
-	ScXMLState.cpp ScXMLOnEntry.cpp ScXMLOnExit.cpp \
-	ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
-	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
-	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
-	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
-	SoScXMLScheduleTimerEventInvoke.cpp all-scxml-cpp.cpp
-am__objects_1 = all-scxml-cpp.$(OBJEXT)
-am__objects_2 = ScXML.$(OBJEXT) ScXMLObject.$(OBJEXT) \
-	ScXMLDocument.$(OBJEXT) ScXMLState.$(OBJEXT) \
-	ScXMLOnEntry.$(OBJEXT) ScXMLOnExit.$(OBJEXT) \
-	ScXMLInitial.$(OBJEXT) ScXMLFinal.$(OBJEXT) \
-	ScXMLAnchor.$(OBJEXT) ScXMLHistory.$(OBJEXT) \
-	ScXMLTransition.$(OBJEXT) ScXMLEvent.$(OBJEXT) \
-	ScXMLInvoke.$(OBJEXT) ScXMLFallbackInvoke.$(OBJEXT) \
-	ScXMLStateMachine.$(OBJEXT) SoScXMLEvent.$(OBJEXT) \
-	SoScXMLStateMachine.$(OBJEXT) SoScXMLDebugInfoInvoke.$(OBJEXT) \
-	SoScXMLScheduleRedrawInvoke.$(OBJEXT) \
-	SoScXMLScheduleTimerEventInvoke.$(OBJEXT)
+am__scxml_lst_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
+	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
+	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
+	all-scxml2-cpp.cpp
+am__objects_1 = all-scxml-cpp.$(OBJEXT) all-scxml2-cpp.$(OBJEXT)
+am__objects_2 = SbStringConvert.$(OBJEXT) ScXML.$(OBJEXT) \
+	ScXMLObject.$(OBJEXT) ScXMLEvent.$(OBJEXT) \
+	ScXMLEventTarget.$(OBJEXT) ScXMLStateMachine.$(OBJEXT) \
+	ScXMLDocument.$(OBJEXT) ScXMLElt.$(OBJEXT) \
+	ScXMLScxmlElt.$(OBJEXT) ScXMLInitialElt.$(OBJEXT) \
+	ScXMLAbstractStateElt.$(OBJEXT) ScXMLStateElt.$(OBJEXT) \
+	ScXMLParallelElt.$(OBJEXT) ScXMLFinalElt.$(OBJEXT) \
+	ScXMLOnEntryElt.$(OBJEXT) ScXMLOnExitElt.$(OBJEXT) \
+	ScXMLTransitionElt.$(OBJEXT) ScXMLHistoryElt.$(OBJEXT) \
+	ScXMLExecutableElt.$(OBJEXT) ScXMLEventElt.$(OBJEXT) \
+	ScXMLIfElt.$(OBJEXT) ScXMLElseIfElt.$(OBJEXT) \
+	ScXMLElseElt.$(OBJEXT) ScXMLLogElt.$(OBJEXT) \
+	ScXMLDataModelElt.$(OBJEXT) ScXMLDataElt.$(OBJEXT) \
+	ScXMLAssignElt.$(OBJEXT) ScXMLValidateElt.$(OBJEXT) \
+	ScXMLSendElt.$(OBJEXT) ScXMLInvokeElt.$(OBJEXT) \
+	ScXMLParamElt.$(OBJEXT) ScXMLFinalizeElt.$(OBJEXT) \
+	ScXMLContentElt.$(OBJEXT) ScXMLAnchorElt.$(OBJEXT) \
+	ScXMLScriptElt.$(OBJEXT) ScXMLEvaluator.$(OBJEXT) \
+	ScXMLMinimumEvaluator.$(OBJEXT) eval-minimum.$(OBJEXT) \
+	eval-minimum-tab.$(OBJEXT) ScXMLXPathEvaluator.$(OBJEXT) \
+	ScXMLECMAScriptEvaluator.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_scxml_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_scxml_lst_SOURCES_DIST = ScXMLP.h ScXMLCommonP.h \
-	ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
-	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
-	ScXMLDocument.h ScXMLAnchor.h ScXMLState.h ScXMLOnEntry.h \
-	ScXMLOnExit.h ScXMLInitial.h ScXMLFinal.h ScXMLHistory.h \
-	ScXMLTransition.h all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
-	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
-	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
-	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
-	SoScXMLScheduleTimerEventInvoke.cpp
+am__EXTRA_scxml_lst_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
+	ScXMLCommonP.h eval-minimum.h eval-coin.h all-scxml-cpp.cpp \
+	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp \
+	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
+	ScXMLECMAScriptEvaluator.cpp
 scxml_lst_OBJECTS = $(am_scxml_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libscxml_la_LDFLAGS =
 libscxml_la_LIBADD =
-am__libscxml_la_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
-	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
-	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
-	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
-	SoScXMLScheduleTimerEventInvoke.cpp all-scxml-cpp.cpp
-am__objects_6 = all-scxml-cpp.lo
-am__objects_7 = ScXML.lo ScXMLObject.lo ScXMLDocument.lo ScXMLState.lo \
-	ScXMLOnEntry.lo ScXMLOnExit.lo ScXMLInitial.lo ScXMLFinal.lo \
-	ScXMLAnchor.lo ScXMLHistory.lo ScXMLTransition.lo ScXMLEvent.lo \
-	ScXMLInvoke.lo ScXMLFallbackInvoke.lo ScXMLStateMachine.lo \
-	SoScXMLEvent.lo SoScXMLStateMachine.lo \
-	SoScXMLDebugInfoInvoke.lo SoScXMLScheduleRedrawInvoke.lo \
-	SoScXMLScheduleTimerEventInvoke.lo
+am__libscxml_la_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
+	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
+	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
+	all-scxml2-cpp.cpp
+am__objects_6 = all-scxml-cpp.lo all-scxml2-cpp.lo
+am__objects_7 = SbStringConvert.lo ScXML.lo ScXMLObject.lo ScXMLEvent.lo \
+	ScXMLEventTarget.lo ScXMLStateMachine.lo ScXMLDocument.lo \
+	ScXMLElt.lo ScXMLScxmlElt.lo ScXMLInitialElt.lo \
+	ScXMLAbstractStateElt.lo ScXMLStateElt.lo ScXMLParallelElt.lo \
+	ScXMLFinalElt.lo ScXMLOnEntryElt.lo ScXMLOnExitElt.lo \
+	ScXMLTransitionElt.lo ScXMLHistoryElt.lo ScXMLExecutableElt.lo \
+	ScXMLEventElt.lo ScXMLIfElt.lo ScXMLElseIfElt.lo \
+	ScXMLElseElt.lo ScXMLLogElt.lo ScXMLDataModelElt.lo \
+	ScXMLDataElt.lo ScXMLAssignElt.lo ScXMLValidateElt.lo \
+	ScXMLSendElt.lo ScXMLInvokeElt.lo ScXMLParamElt.lo \
+	ScXMLFinalizeElt.lo ScXMLContentElt.lo ScXMLAnchorElt.lo \
+	ScXMLScriptElt.lo ScXMLEvaluator.lo ScXMLMinimumEvaluator.lo \
+	eval-minimum.lo eval-minimum-tab.lo ScXMLXPathEvaluator.lo \
+	ScXMLECMAScriptEvaluator.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libscxml_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libscxml_la_SOURCES_DIST = ScXMLP.h ScXMLCommonP.h \
-	ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
-	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
-	ScXMLDocument.h ScXMLAnchor.h ScXMLState.h ScXMLOnEntry.h \
-	ScXMLOnExit.h ScXMLInitial.h ScXMLFinal.h ScXMLHistory.h \
-	ScXMLTransition.h all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
-	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
-	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
-	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
-	SoScXMLScheduleTimerEventInvoke.cpp
+am__EXTRA_libscxml_la_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
+	ScXMLCommonP.h eval-minimum.h eval-coin.h all-scxml-cpp.cpp \
+	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp \
+	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
+	ScXMLECMAScriptEvaluator.cpp
 libscxml_la_OBJECTS = $(am_libscxml_la_OBJECTS)
 libscxml@SUFFIX@LINKHACK_la_LDFLAGS =
 libscxml@SUFFIX@LINKHACK_la_LIBADD =
-am__libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
-	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
-	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
-	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
-	SoScXMLScheduleTimerEventInvoke.cpp all-scxml-cpp.cpp
+am__libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = SbStringConvert.cpp \
+	ScXML.cpp ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
+	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
+	all-scxml2-cpp.cpp
 am_libscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = ScXMLP.h \
-	ScXMLCommonP.h ScXMLFallbackInvoke.h SoScXMLDebugInfoInvoke.h \
-	SoScXMLScheduleRedrawInvoke.h SoScXMLScheduleTimerEventInvoke.h \
-	ScXMLDocument.h ScXMLAnchor.h ScXMLState.h ScXMLOnEntry.h \
-	ScXMLOnExit.h ScXMLInitial.h ScXMLFinal.h ScXMLHistory.h \
-	ScXMLTransition.h all-scxml-cpp.cpp ScXML.cpp ScXMLObject.cpp \
-	ScXMLDocument.cpp ScXMLState.cpp ScXMLOnEntry.cpp \
-	ScXMLOnExit.cpp ScXMLInitial.cpp ScXMLFinal.cpp ScXMLAnchor.cpp \
-	ScXMLHistory.cpp ScXMLTransition.cpp ScXMLEvent.cpp \
-	ScXMLInvoke.cpp ScXMLFallbackInvoke.cpp ScXMLStateMachine.cpp \
-	SoScXMLEvent.cpp SoScXMLStateMachine.cpp \
-	SoScXMLDebugInfoInvoke.cpp SoScXMLScheduleRedrawInvoke.cpp \
-	SoScXMLScheduleTimerEventInvoke.cpp
+am__EXTRA_libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = SbStringConvert.h \
+	ScXMLP.h ScXMLCommonP.h eval-minimum.h eval-coin.h \
+	all-scxml-cpp.cpp all-scxml2-cpp.cpp SbStringConvert.cpp \
+	ScXML.cpp ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
+	ScXMLECMAScriptEvaluator.cpp
 libscxml@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libscxml@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/ScXML.Plo ./$(DEPDIR)/ScXML.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAnchor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAnchor.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbStringConvert.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbStringConvert.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXML.Plo ./$(DEPDIR)/ScXML.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAbstractStateElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAbstractStateElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAnchorElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAnchorElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAssignElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLAssignElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLContentElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLContentElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLDataElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLDataElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLDataModelElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLDataModelElt.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLDocument.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLDocument.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLECMAScriptEvaluator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLECMAScriptEvaluator.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLElseElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLElseElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLElseIfElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLElseIfElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLElt.Plo ./$(DEPDIR)/ScXMLElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLEvaluator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLEvaluator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLEvent.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLEvent.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFallbackInvoke.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFallbackInvoke.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFinal.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFinal.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLHistory.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLHistory.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInitial.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInitial.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInvoke.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInvoke.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLEventElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLEventElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLEventTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLEventTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLExecutableElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLExecutableElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFinalElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFinalElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFinalizeElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLFinalizeElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLHistoryElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLHistoryElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLIfElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLIfElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInitialElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInitialElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInvokeElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLInvokeElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLLogElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLLogElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLMinimumEvaluator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLMinimumEvaluator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLObject.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLObject.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnEntry.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnEntry.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLState.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLState.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnEntryElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnEntryElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExitElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExitElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLParallelElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLParallelElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLParamElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLParamElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLScriptElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLScriptElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLScxmlElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLScxmlElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLSendElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLSendElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateElt.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateMachine.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLStateMachine.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLTransition.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLTransition.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLDebugInfoInvoke.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLDebugInfoInvoke.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLEvent.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLEvent.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLScheduleRedrawInvoke.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLScheduleRedrawInvoke.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLScheduleTimerEventInvoke.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLScheduleTimerEventInvoke.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLStateMachine.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLStateMachine.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLTransitionElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLTransitionElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLValidateElt.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLValidateElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLXPathEvaluator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLXPathEvaluator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-scxml2-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-scxml2-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/eval-minimum-tab.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/eval-minimum-tab.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/eval-minimum.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/eval-minimum.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -610,48 +735,92 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbStringConvert.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbStringConvert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXML.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXML.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAnchor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAnchor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAbstractStateElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAbstractStateElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAnchorElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAnchorElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAssignElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLAssignElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLContentElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLContentElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLDataElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLDataElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLDataModelElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLDataModelElt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLDocument.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLDocument.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLECMAScriptEvaluator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLECMAScriptEvaluator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLElseElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLElseElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLElseIfElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLElseIfElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEvaluator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEvaluator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEvent.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEvent.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFallbackInvoke.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFallbackInvoke.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFinal.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFinal.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLHistory.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLHistory.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInitial.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInitial.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInvoke.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInvoke.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEventElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEventElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEventTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLEventTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLExecutableElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLExecutableElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFinalElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFinalElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFinalizeElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLFinalizeElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLHistoryElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLHistoryElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLIfElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLIfElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInitialElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInitialElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInvokeElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLInvokeElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLLogElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLLogElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLMinimumEvaluator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLMinimumEvaluator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLObject.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnEntry.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnEntry.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLState.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLState.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnEntryElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnEntryElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExitElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExitElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParallelElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParallelElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParamElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParamElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLScriptElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLScriptElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLScxmlElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLScxmlElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLSendElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLSendElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateElt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateMachine.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLStateMachine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLTransition.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLTransition.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLDebugInfoInvoke.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLDebugInfoInvoke.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLEvent.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLScheduleRedrawInvoke.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLScheduleRedrawInvoke.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLScheduleTimerEventInvoke.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLScheduleTimerEventInvoke.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLStateMachine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLStateMachine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLTransitionElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLTransitionElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLValidateElt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLValidateElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLXPathEvaluator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLXPathEvaluator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml2-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml2-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum-tab.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum-tab.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -887,6 +1056,13 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	pdf-am ps ps-am tags uninstall uninstall-am uninstall-info-am \
 	uninstall-libLTLIBRARIES uninstall-libscxmlincHEADERS
 
+
+generate:
+	( cd $(srcdir) && \
+	  flex eval-minimum.l && \
+	  patch -p0 <eval-minimum.cpp.patch )
+	( cd $(srcdir) && \
+	  bison eval-minimum-tab.y )
 
 # this rule causes a make warning, so we remove it when it is not in use
 scxml.lst: Makefile $(scxml_lst_OBJECTS)

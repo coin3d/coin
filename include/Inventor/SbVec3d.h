@@ -80,6 +80,7 @@ public:
   SbVec3d operator - (void) const { return SbVec3d(-vec[0], -vec[1], -vec[2]); }
 
   void print(FILE * fp) const;
+  SbString toString() const;
 
 private:
   double vec[3];

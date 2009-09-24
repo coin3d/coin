@@ -21,24 +21,63 @@
  *
 \**************************************************************************/
 
+// Utils
+#include "SbStringConvert.cpp"
+
+// Infrastructure
 #include "ScXML.cpp"
 #include "ScXMLObject.cpp"
-#include "ScXMLDocument.cpp"
-#include "ScXMLState.cpp"
-#include "ScXMLOnEntry.cpp"
-#include "ScXMLOnExit.cpp"
-#include "ScXMLInitial.cpp"
-#include "ScXMLFinal.cpp"
-#include "ScXMLAnchor.cpp"
-#include "ScXMLHistory.cpp"
-#include "ScXMLTransition.cpp"
 #include "ScXMLEvent.cpp"
-#include "ScXMLInvoke.cpp"
-#include "ScXMLFallbackInvoke.cpp"
+#include "ScXMLEventTarget.cpp"
 #include "ScXMLStateMachine.cpp"
+#include "ScXMLDocument.cpp"
 
-#include "SoScXMLEvent.cpp"
-#include "SoScXMLStateMachine.cpp"
-#include "SoScXMLDebugInfoInvoke.cpp"
-#include "SoScXMLScheduleRedrawInvoke.cpp"
-#include "SoScXMLScheduleTimerEventInvoke.cpp"
+// Core Module
+#include "ScXMLElt.cpp"
+#include "ScXMLScxmlElt.cpp"
+#include "ScXMLInitialElt.cpp"
+#include "ScXMLAbstractStateElt.cpp"
+#include "ScXMLStateElt.cpp"
+#include "ScXMLParallelElt.cpp"
+#include "ScXMLFinalElt.cpp"
+#include "ScXMLOnEntryElt.cpp"
+#include "ScXMLOnExitElt.cpp"
+#include "ScXMLTransitionElt.cpp"
+#include "ScXMLHistoryElt.cpp"
+
+// Executable Content
+#include "ScXMLExecutableElt.cpp"
+#include "ScXMLEventElt.cpp"
+#include "ScXMLIfElt.cpp"
+#include "ScXMLElseIfElt.cpp"
+#include "ScXMLElseElt.cpp"
+#include "ScXMLLogElt.cpp"
+
+// External Communication Module
+#include "ScXMLSendElt.cpp"
+#include "ScXMLInvokeElt.cpp"
+#include "ScXMLParamElt.cpp"
+#include "ScXMLFinalizeElt.cpp"
+#include "ScXMLContentElt.cpp"
+
+// Data Module
+#include "ScXMLDataElt.cpp"
+#include "ScXMLDataModelElt.cpp"
+#include "ScXMLAssignElt.cpp"
+#include "ScXMLValidateElt.cpp"
+
+// Script Module
+#include "ScXMLScriptElt.cpp"
+
+// Anchor Module
+#include "ScXMLAnchorElt.cpp"
+
+// Expression Evaluation
+#include "ScXMLEvaluator.cpp"
+
+#include "ScXMLMinimumEvaluator.cpp"
+#include "eval-minimum-tab.cpp"
+#include "eval-minimum.cpp"
+#include "ScXMLXPathEvaluator.cpp"
+#include "ScXMLECMAScriptEvaluator.cpp"
+

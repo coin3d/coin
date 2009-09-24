@@ -103,6 +103,7 @@ DEB_PACKAGEABLE_FALSE = @DEB_PACKAGEABLE_FALSE@
 DEB_PACKAGEABLE_TRUE = @DEB_PACKAGEABLE_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DOXYGEN_INPUT = @DOXYGEN_INPUT@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
@@ -269,7 +270,13 @@ target_vendor = @target_vendor@
 @MAC_FRAMEWORK_FALSE@scxmldefdatadir = $(datadir)/Coin/scxml/navigation
 
 dist_scxmldefdata_DATA = \
-	examiner.xml
+	common.xml \
+	examiner.xml \
+	plane.xml
+
+
+EXTRA_DIST = \
+	debugging.xml
 
 subdir = data/scxml/navigation
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

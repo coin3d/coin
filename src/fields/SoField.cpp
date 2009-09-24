@@ -219,7 +219,7 @@ public:
 
   void removeConverter(const void * item)
   {
-    SbBool ok = this->maptoconverter.remove(item);
+    SbBool ok = this->maptoconverter.erase(item);
     assert(ok);
   }
 
@@ -264,7 +264,7 @@ public:
 
 private:
   // Dictionary of void* -> SoFieldConverter* mappings.
-  SbHash<SoFieldConverter *, const void *> maptoconverter;
+  SbHash<const void *, SoFieldConverter *> maptoconverter;
 
 };
 
@@ -360,13 +360,13 @@ public:
     return s;
   }
 
-  static SbHash<char **, char *> * getReallocHash(void);
+  static SbHash<char *, char **> * getReallocHash(void);
   static void * hashRealloc(void * bufptr, size_t size);
 
-  static SbHash<char **, char *> * ptrhash;
+  static SbHash<char *, char **> * ptrhash;
 };
 
-SbHash<char **, char *> * SoFieldP::ptrhash = NULL;
+SbHash<char *, char **> * SoFieldP::ptrhash = NULL;
 
 extern "C" {
 // atexit callbacks
@@ -375,12 +375,12 @@ static void hashExitCleanup(void);
 static void field_mutex_cleanup(void);
 }
 
-SbHash<char **, char *> *
+SbHash<char *, char **> *
 SoFieldP::getReallocHash(void)
 {
   // FIXME: protect with mutex?
   if (SoFieldP::ptrhash == NULL) {
-    SoFieldP::ptrhash = new SbHash<char **, char *>;
+    SoFieldP::ptrhash = new SbHash<char *, char **>;
     coin_atexit(hashExitCleanup, CC_ATEXIT_NORMAL);
   }
   return SoFieldP::ptrhash;
@@ -416,7 +416,7 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
     newbuf = static_cast<char *>(realloc(bufptr, size));
   }
   if (newbuf != bufptr) {
-    ok = SoFieldP::ptrhash->remove(static_cast<char *>(bufptr));
+    ok = SoFieldP::ptrhash->erase(static_cast<char *>(bufptr));
     assert(ok);
     *bufptrptr = newbuf;
     SoFieldP::ptrhash->put(newbuf, bufptrptr);
@@ -1354,7 +1354,7 @@ SoField::get(SbString & valuestring)
   if (bufferptr) { free(bufferptr); }
 
   CC_MUTEX_LOCK(sofield_mutex);
-  ok = SoFieldP::getReallocHash()->remove(bufferptr ? bufferptr : initbuffer);
+  ok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);
   assert(ok);
   CC_MUTEX_UNLOCK(sofield_mutex);
 }

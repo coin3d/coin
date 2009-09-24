@@ -34,6 +34,7 @@ class COIN_DLL_API SoScXMLEvent : public ScXMLEvent {
 
 public:
   static void initClass(void);
+  static void cleanClass(void);
 
   SoScXMLEvent(void);
   virtual ~SoScXMLEvent(void);
@@ -42,6 +43,8 @@ public:
   virtual const SoEvent * getSoEvent(void) const;
 
   virtual void setUpIdentifier(void);
+
+  virtual void copyContents(const ScXMLEvent * rhs);
 
 private:
   const SoEvent * soeventptr;

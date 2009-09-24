@@ -1,11 +1,45 @@
 
 PublicHeaders = \
         ScXML.h \
-        ScXMLObject.h \
         ScXMLSubObject.h \
+        ScXMLObject.h \
         ScXMLEvent.h \
-        ScXMLInvoke.h \
+        ScXMLEventTarget.h \
         ScXMLStateMachine.h \
+        ScXMLDocument.h \
+        ScXMLElt.h \
+        ScXMLAbstractStateElt.h \
+        ScXMLExecutableElt.h \
+        ScXMLAnchorElt.h \
+        ScXMLAssignElt.h \
+        ScXMLContentElt.h \
+        ScXMLDataElt.h \
+        ScXMLDataModelElt.h \
+        ScXMLElseElt.h \
+        ScXMLElseIfElt.h \
+        ScXMLEventElt.h \
+        ScXMLFinalElt.h \
+        ScXMLFinalizeElt.h \
+        ScXMLHistoryElt.h \
+        ScXMLIfElt.h \
+        ScXMLInitialElt.h \
+        ScXMLInvokeElt.h \
+        ScXMLLogElt.h \
+        ScXMLOnEntryElt.h \
+        ScXMLOnExitElt.h \
+        ScXMLParallelElt.h \
+        ScXMLParamElt.h \
+        ScXMLScriptElt.h \
+        ScXMLScxmlElt.h \
+        ScXMLSendElt.h \
+        ScXMLStateElt.h \
+        ScXMLTransitionElt.h \
+        ScXMLValidateElt.h \
+        ScXMLEvaluator.h \
+        ScXMLMinimumEvaluator.h \
+        ScXMLXPathEvaluator.h \
+        ScXMLECMAScriptEvaluator.h \
+        ScXMLCoinEvaluator.h \
         SoScXMLEvent.h \
         SoScXMLStateMachine.h
 

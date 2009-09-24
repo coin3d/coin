@@ -86,6 +86,12 @@ public:
     { if (isEmpty()) { sizeX = sizeY = sizeZ = 0; }
       else { sizeX = maxpt[0] - minpt[0]; sizeY = maxpt[1] - minpt[1]; sizeZ = maxpt[2] - minpt[2]; } }
 
+  SbVec3i32 getSize(void) const {
+    SbVec3i32 v;
+    this->getSize(v[0], v[1], v[2]);
+    return v;
+  }
+
   void getSpan(const SbVec3f & direction, float & dmin, float & dmax) const;
 
 protected:

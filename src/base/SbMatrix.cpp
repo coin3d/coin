@@ -250,6 +250,14 @@ SbMatrix::SbMatrix(const SbMat * matrixptr)
 }
 
 /*!
+  This constructor is courtesy of the Microsoft Visual C++ compiler.
+*/
+SbMatrix::SbMatrix(const SbDPMatrix & matrixref)
+{
+  this->setValue(matrixref);
+}
+
+/*!
   Default destructor does nothing.
  */
 SbMatrix::~SbMatrix(void)
@@ -280,6 +288,17 @@ SbMatrix::setValue(const SbMat & m)
 }
 
 /*!
+  Copies the elements from \a pMat into the matrix.
+
+  \sa getValue().
+ */
+void
+SbMatrix::setValue(const float * pMat)
+{
+  (void)memmove(this->matrix, pMat, sizeof(float)*4*4);
+}
+
+/*!
   Copies the elements from \a m into the matrix.
 */
 void
@@ -288,11 +307,11 @@ SbMatrix::setValue(const SbDPMatrix & m)
   const SbDPMat & dmat = m.getValue();
   const SbMat smat = { { float(dmat[0][0]), float(dmat[0][1]),
                            float(dmat[0][2]), float(dmat[0][3]) },
-		       { float(dmat[1][0]), float(dmat[1][1]),
+                     { float(dmat[1][0]), float(dmat[1][1]),
                            float(dmat[1][2]), float(dmat[1][3]) },
-		       { float(dmat[2][0]), float(dmat[2][1]),
+                     { float(dmat[2][0]), float(dmat[2][1]),
                            float(dmat[2][2]), float(dmat[2][3]) },
-		       { float(dmat[3][0]), float(dmat[3][1]),
+                     { float(dmat[3][0]), float(dmat[3][1]),
                            float(dmat[3][2]), float(dmat[3][3]) } };
   this->setValue(smat);
 }
@@ -2021,3 +2040,17 @@ SbMatrixP::decomp_affine(SbMatrixP::HMatrix A, SbMatrixP::AffineParts * parts)
 #undef sp_mat_copy
 #undef sp_mat_tpose
 #undef sp_mat_binop
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbDPMatrix.h>
+
+BOOST_AUTO_TEST_CASE(constructFromSbDPMatrix) {
+  SbMatrixd a(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+  SbMatrix b;
+  float c[]  = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+  b.setValue(c);
+  SbMatrix d = SbMatrix(a);
+  BOOST_CHECK_MESSAGE(b == d,
+                      "Equality comparrison failed!");
+}
+#endif //COIN_TEST_SUITE

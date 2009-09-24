@@ -299,3 +299,21 @@ SbBox3i32::getSpan(const SbVec3f & dir, float & dmin, float & dmax) const
   dmin = mindist;
   dmax = maxdist;
 }
+
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(checkSize) {
+  SbVec3i32 min(1,2,3);
+  SbVec3i32 max(3,4,5);
+
+  SbVec3i32 diff = max - min;
+
+  
+  SbBox3i32 box(min, max);
+  SbVec3i32 res = box.getSize();
+
+  BOOST_CHECK_MESSAGE(box.getSize() == diff,
+                      "Box has incorrect size");
+
+}
+#endif //COIN_TEST_SUITE

@@ -1,7 +1,8 @@
 
 SUBDIRS = C VRMLnodes XML actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
-          misc nodekits nodes projectors sensors system threads tools scxml
+          misc navigation nodekits nodes projectors sensors system threads \
+          tools scxml
 
 PublicHeaders = \
 	Sb.h \
@@ -12,10 +13,12 @@ PublicHeaders = \
 	SbBox2i32.h \
 	SbBox2f.h \
 	SbBox2d.h \
-	SbBox3s.h \
-	SbBox3i32.h \
-	SbBox3f.h \
 	SbBox3d.h \
+	SbBox3f.h \
+	SbBox3i32.h \
+	SbBox3s.h \
+	SbByteBuffer.h \
+	SbByteBuffer.h \
 	SbClip.h \
 	SbColor.h \
 	SbColor4f.h \
@@ -85,8 +88,8 @@ PublicHeaders = \
 	SoPickedPoint.h \
 	SoPrimitiveVertex.h \
 	SoSceneManager.h \
-        SoRenderManager.h \
-        SoEventManager.h \
+	SoRenderManager.h \
+	SoEventManager.h \
 	SoType.h \
 	non_winsys.h \
 	oivwin32.h

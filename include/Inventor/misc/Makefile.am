@@ -1,4 +1,5 @@
 PublicHeaders = \
+	CoinResources.h \
 	SoAuditorList.h \
 	SoBase.h \
 	SoBasic.h \

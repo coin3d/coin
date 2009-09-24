@@ -90,10 +90,10 @@ private:
   SbVec3f lightvec;
   SbBool ispointlight;
 
-  typedef SbHash<struct diffuse_programidx *, int> ContextId2DiffuseStruct;
+  typedef SbHash<int, struct diffuse_programidx *> ContextId2DiffuseStruct;
   ContextId2DiffuseStruct diffuseprogramdict;
 
-  typedef SbHash<struct spec_programidx *, int> ContextId2SpecStruct;
+  typedef SbHash<int, struct spec_programidx *> ContextId2SpecStruct;
   ContextId2SpecStruct specularprogramdict;
 
   GLuint fragmentprogramid;

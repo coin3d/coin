@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -21,11 +21,16 @@
  *
 \**************************************************************************/
 
+#include "SoCameraUtils.cpp"
 #include "SoScXMLNavigation.cpp"
-#include "SoScXMLNavigationInvoke.cpp"
-#include "SoScXMLPanUtils.cpp"
-#include "SoScXMLRotateUtils.cpp"
-#include "SoScXMLSeekUtils.cpp"
-#include "SoScXMLSpinUtils.cpp"
-#include "SoScXMLZoomUtils.cpp"
-#include "SoScXMLViewUtils.cpp"
+#include "SoScXMLNavigationTarget.cpp"
+#include "SoScXMLPanTarget.cpp"
+#include "SoScXMLRotateTarget.cpp"
+#include "SoScXMLSeekTarget.cpp"
+#include "SoScXMLSpinTarget.cpp"
+#include "SoScXMLZoomTarget.cpp"
+#include "SoScXMLDollyTarget.cpp"
+#include "SoScXMLMiscTarget.cpp"
+#include "SoScXMLFlightControlTarget.cpp"
+#include "SoScXMLMotionTarget.cpp"
+

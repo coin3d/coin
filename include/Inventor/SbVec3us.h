@@ -24,8 +24,10 @@
  *
 \**************************************************************************/
 
+#include <cstdio>
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
+#include <Inventor/SbByteBuffer.h>
 #ifndef NDEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // !NDEBUG
@@ -65,6 +67,12 @@ public:
   SbVec3us & operator += (const SbVec3us & v) { vec[0] += v[0]; vec[1] += v[1]; vec[2] += v[2]; return *this; }
   SbVec3us & operator -= (const SbVec3us & v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; return *this; }
   SbVec3us operator - (void) const { SbVec3us v(*this); v.negate(); return v; }
+
+  SbString toString() const;
+  SbByteBuffer byteRepr() const;
+  SbBool fromString(const SbString & str);
+  SbBool fromByteRepr(const SbByteBuffer & repr);
+  void print(FILE * fp) const;
 
 protected:
   unsigned short vec[3];

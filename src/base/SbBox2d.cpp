@@ -498,3 +498,19 @@ SbBox2d::getClosestPoint(const SbVec2d & p) const
 
   Check \a b1 and \a b2 for inequality.
 */
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(checkSize) {
+  SbVec2d min(1,2);
+  SbVec2d max(3,4);
+
+  SbVec2d diff = max - min;
+
+  
+  SbBox2d box(min, max);
+
+  BOOST_CHECK_MESSAGE(box.getSize() == diff,
+                      "Box has incorrect size");
+
+}
+#endif //COIN_TEST_SUITE

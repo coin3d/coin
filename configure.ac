@@ -942,6 +942,15 @@ esac
 
 AC_SUBST(path_tag)
 
+#Get all the doxygen source files
+. ${coin_src_dir}/docs/coin_doxygenfiles.inc
+
+#The AC_SUBST command will not accept multiline strings, so trick this
+#into a singleline string
+DOXYGEN_INPUT=$(echo ${DOXYGEN_INPUT})
+
+AC_SUBST(DOXYGEN_INPUT)
+
 sim_ac_makensis_exe=false
 case $host in
 *-cygwin)
@@ -1932,9 +1941,9 @@ if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
-    manips misc lists nodekits navigation nodes shapenodes projectors \
+    manips misc lists nodekits navigation nodes rendering shapenodes projectors \
     sensors shaders upgraders hardcopy shadows geo foreignfiles collision \
-    xml xml/expat:expat profiler 3ds:format3ds scxml; \
+    xml xml/expat:expat profiler 3ds:format3ds scxml soscxml; \
   do
     case $dir in
     *:* )
@@ -2298,6 +2307,7 @@ AC_CONFIG_FILES([
         include/Inventor/lock/Makefile
         include/Inventor/manips/Makefile
         include/Inventor/misc/Makefile
+        include/Inventor/navigation/Makefile
         include/Inventor/nodekits/Makefile
         include/Inventor/nodes/Makefile
         include/Inventor/projectors/Makefile
@@ -2370,6 +2380,7 @@ AC_CONFIG_FILES([
         src/xml/expat/Makefile
         src/profiler/Makefile
         src/scxml/Makefile
+        src/soscxml/Makefile
         src/doc/Makefile
         testsuite/Makefile
         cfg/gendsp.pl

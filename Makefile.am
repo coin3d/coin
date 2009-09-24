@@ -107,7 +107,6 @@ EXTRA_DIST = \
 	docs/announcement-3_0_0.txt \
 	docs/announcement-3_1_0.txt \
 	docs/autoexp.dat \
-	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
 	docs/releases.dox \
 	cfg/errors.txt \

@@ -30,14 +30,16 @@
 
 struct cc_xml_doc;
 struct cc_xml_elt;
-
 class ScXMLObject;
-class ScXMLStateMachine;
+class ScXMLElt;
 
 class ScXMLP {
 public:
   static void init(void);
   static void cleanup(void);
+
+  static void lock(void);
+  static void unlock(void);
 
   static void registerClassType(const char * xmlns,
                                 const char * classname, SoType type);
@@ -48,9 +50,10 @@ public:
 
   static ScXMLStateMachine * readXMLData(cc_xml_doc * doc);
 
-protected:
   typedef std::map<const char *, SoType> TypeDict;
   typedef std::pair<const char *, SoType> TypeEntry;
+
+protected:
   typedef std::map<const char *, TypeDict *> NamespaceDict;
   typedef std::pair<const char *, TypeDict *> NamespaceEntry;
   typedef std::map<const char *, NamespaceDict *> TargettypeDict;
@@ -75,25 +78,14 @@ protected:
   static SoType getClassType(NamespaceDict * dict, const char * xmlns,
                              const char * classname);
 
-
-  static ScXMLObject * readScXMLDocument(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLState(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns, SbBool isparallel = FALSE);
-  static ScXMLObject * readScXMLTransition(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLFinal(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLParallel(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLDatamodel(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLOnEntry(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLOnExit(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLInitial(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLHistory(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLAnchor(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-  static ScXMLObject * readScXMLInvoke(ScXMLObject * container, cc_xml_elt * elt, const char * xmlns);
-
-  static SbBool no_datamodel_warning;
+public:
+  static TypeDict * profileevaluators;
 
 private:
   static void cleanup_namespacedict(NamespaceDict * dict);
   static void cleanup_targettypes(void);
+
+  static void * mutex;
 }; // ScXMLP
 
 #endif // !COIN_SCXMLP_H

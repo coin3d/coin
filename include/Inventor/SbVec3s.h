@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <Inventor/SbBasic.h>
+#include <Inventor/SbByteBuffer.h>
 #ifndef NDEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // !NDEBUG
@@ -72,6 +73,10 @@ public:
   SbVec3s & operator -= (const SbVec3s & v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; return *this; }
   SbVec3s operator - (void) const { return SbVec3s(-vec[0], -vec[1], -vec[2]); }
 
+  SbString toString() const;
+  SbByteBuffer byteRepr() const;
+  SbBool fromString(const SbString & str);
+  SbBool fromByteRepr(const SbByteBuffer & repr);
   void print(FILE * fp) const;
 
 protected:

@@ -9,7 +9,7 @@ if BUILD_HTMLPAGES
 $(top_builddir)/docs/coin.doxygen: $(top_srcdir)/docs/coin.doxygen.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) docs/coin.doxygen )
 
-index.html: $(top_builddir)/docs/coin.doxygen
+index.html: $(top_builddir)/docs/coin.doxygen $(DOXYGEN_INPUT)
 	@( cd ..; \
 	echo " $(sim_ac_doxygen_exe) docs/coin.doxygen"; \
 	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )

@@ -50,13 +50,13 @@ public:
 
 // *************************************************************************
 
-typedef SbHash<SoWriterefCounterBaseData *, const SoBase *> SoBase2SoWriterefCounterBaseDataMap;
+typedef SbHash<const SoBase *, SoWriterefCounterBaseData *> SoBase2SoWriterefCounterBaseDataMap;
 
 class SoWriterefCounterOutputData {
 public:
   SoBase2SoWriterefCounterBaseDataMap writerefdict;
 
-  SoWriterefCounterOutputData() 
+  SoWriterefCounterOutputData()
     : writerefdict(1051), refcount(0) {
   }
 
@@ -71,61 +71,59 @@ public:
     }
   }
   void debugCleanup(void) {
-    debug_dict functor;
-    this->writerefdict.apply(functor, static_cast<void *>(NULL));
-    this->cleanup();
-  }
-  
-protected:
-  ~SoWriterefCounterOutputData() {  
-  }
-
-private:
-  int refcount;
-
-  void cleanup(void) {
-    delete_dict_item functor;
-    this->writerefdict.apply(functor, static_cast<void *>(NULL));
-    this->writerefdict.clear();
-  }
-  
-  struct debug_dict :
-    public SbHash<SoWriterefCounterBaseData *, const SoBase *>::ApplyFunctor<void *>
-  {
-    void operator()(const SoBase * & base, SoWriterefCounterBaseData * &,
-                  void * closure) {
 #if COIN_DEBUG
+    for(
+       SoBase2SoWriterefCounterBaseDataMap::const_iterator iter =
+         writerefdict.const_begin();
+       iter!=writerefdict.const_end();
+       ++iter
+       ) {
+      const SoBase * base = iter->key;
+
       SbName name = base->getName();
       if (name == "") name = "<noname>";
 
       SoDebugError::postWarning("SoWriterefCounter::<cleanup>",
                                 "Not removed from writerefdict: %p, %s:%s",
                                 base, base->getTypeId().getName().getString(), name.getString());
-#endif // COIN_DEBUG
-    }
-  };
 
-  struct delete_dict_item :
-    public SbHash<SoWriterefCounterBaseData *, const SoBase *>::ApplyFunctor<void *>
-  {
-    void operator()(const SoBase * &, SoWriterefCounterBaseData * & data,
-                  void * closure) {
-      delete data;
     }
-  };
+#endif // COIN_DEBUG
+    this->cleanup();
+  }
+
+protected:
+  ~SoWriterefCounterOutputData() {
+  }
+
+private:
+  int refcount;
+
+  void cleanup(void) {
+    for(
+       SoBase2SoWriterefCounterBaseDataMap::const_iterator iter =
+         writerefdict.const_begin();
+       iter!=writerefdict.const_end();
+       ++iter
+       ) {
+      delete iter->obj;
+    }
+
+    this->writerefdict.clear();
+  }
 
 };
 
 // *************************************************************************
 
-typedef SbHash<SoWriterefCounter *, SoOutput *> SoOutput2SoWriterefCounterMap;
-typedef SbHash<int, const SoBase *> SoBase2Id;
+typedef SbHash<SoOutput *, SoWriterefCounter *> SoOutput2SoWriterefCounterMap;
+typedef SbHash<const SoBase *, int> SoBase2Id;
 
 class SoWriterefCounterP {
 public:
-  SoWriterefCounterP(SoWriterefCounter * master, SoOutput * out, SoWriterefCounterP * dataCopy) 
+  SoWriterefCounterP(SoWriterefCounter * master, SoOutput * out, SoWriterefCounterP * dataCopy)
     : master(master), out(out)
-  { 
+  {
     if (dataCopy) {
       this->outputdata = dataCopy->outputdata;
       this->sobase2id = new SoBase2Id(*dataCopy->sobase2id);
@@ -150,7 +148,7 @@ public:
         !SbName::isBaseNameStartChar((*refwriteprefix)[0])) {
       name += "_";
     }
- 
+
     name += SoWriterefCounterP::refwriteprefix->getString();
     name.addIntString(refid);
   }
@@ -165,7 +163,7 @@ public:
   static SoOutput2SoWriterefCounterMap * outputdict;
   static SoWriterefCounter * current; // used to be backwards compatible
   static SbString * refwriteprefix;
-  
+
   static void atexit_cleanup(void) {
     current = NULL;
     delete refwriteprefix;
@@ -201,26 +199,26 @@ SoWriterefCounter::~SoWriterefCounter()
   delete PRIVATE(this);
 }
 
-void 
+void
 SoWriterefCounter::create(SoOutput * out, SoOutput * copyfrom)
 {
   SoWriterefCounter * inst = new SoWriterefCounter(out, copyfrom);
   CC_MUTEX_LOCK(SoWriterefCounterP::mutex);
   SbBool ret = SoWriterefCounterP::outputdict->put(out, inst);
   assert(ret && "writeref instance already exists!");
-  CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex); 
+  CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
 }
 
-void 
+void
 SoWriterefCounter::destruct(SoOutput * out)
 {
   SoWriterefCounter * inst = SoWriterefCounter::instance(out);
   assert(inst && "instance not found!");
 
   CC_MUTEX_LOCK(SoWriterefCounterP::mutex);
-  (void) SoWriterefCounterP::outputdict->remove(out);
+  (void) SoWriterefCounterP::outputdict->erase(out);
   delete inst;
-  CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex); 
+  CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
 }
 
 void
@@ -232,20 +230,20 @@ SoWriterefCounter::initClass(void)
   coin_atexit((coin_atexit_f*) SoWriterefCounterP::atexit_cleanup, CC_ATEXIT_NORMAL);
 }
 
-void 
+void
 SoWriterefCounter::debugCleanup(void)
 {
   PRIVATE(this)->sobase2id->clear();
   PRIVATE(this)->outputdata->debugCleanup();
 }
 
-void 
+void
 SoWriterefCounter::setInstancePrefix(const SbString & s)
 {
   (*SoWriterefCounterP::refwriteprefix) = s;
 }
 
-SoWriterefCounter * 
+SoWriterefCounter *
 SoWriterefCounter::instance(SoOutput * out)
 {
   if (out == NULL) {
@@ -256,7 +254,7 @@ SoWriterefCounter::instance(SoOutput * out)
   CC_MUTEX_LOCK(SoWriterefCounterP::mutex);
 
   SoWriterefCounter * inst = NULL;
-  
+
   const SbBool ok = SoWriterefCounterP::outputdict->get(out, inst);
   assert(ok && "no instance");
 
@@ -265,7 +263,7 @@ SoWriterefCounter::instance(SoOutput * out)
   return inst;
 }
 
-SbBool 
+SbBool
 SoWriterefCounter::shouldWrite(const SoBase * base) const
 {
   SoWriterefCounterBaseData * data;
@@ -275,7 +273,7 @@ SoWriterefCounter::shouldWrite(const SoBase * base) const
   return FALSE;
 }
 
-SbBool 
+SbBool
 SoWriterefCounter::hasMultipleWriteRefs(const SoBase * base) const
 {
   SoWriterefCounterBaseData * data;
@@ -285,7 +283,7 @@ SoWriterefCounter::hasMultipleWriteRefs(const SoBase * base) const
   return FALSE;
 }
 
-int 
+int
 SoWriterefCounter::getWriteref(const SoBase * base) const
 {
   SoWriterefCounterBaseData * data;
@@ -295,7 +293,7 @@ SoWriterefCounter::getWriteref(const SoBase * base) const
   return 0;
 }
 
-void 
+void
 SoWriterefCounter::setWriteref(const SoBase * base, const int ref)
 {
   // for debugging
@@ -337,15 +335,15 @@ SoWriterefCounter::setWriteref(const SoBase * base, const int ref)
                               "writeref < 0 for %s <%p>", name.getString(), base);
   }
 }
-  
-void 
+
+void
 SoWriterefCounter::decrementWriteref(const SoBase * base)
 {
   this->setWriteref(base, this->getWriteref(base) - 1);
 }
 
 
-SbBool 
+SbBool
 SoWriterefCounter::isInGraph(const SoBase * base) const
 {
   SoWriterefCounterBaseData * data;
@@ -355,7 +353,7 @@ SoWriterefCounter::isInGraph(const SoBase * base) const
   return FALSE;
 }
 
-void 
+void
 SoWriterefCounter::setInGraph(const SoBase * base, const SbBool ingraph)
 {
   SoWriterefCounterBaseData * data;
@@ -369,13 +367,13 @@ SoWriterefCounter::setInGraph(const SoBase * base, const SbBool ingraph)
   }
 }
 
-void 
-SoWriterefCounter::removeWriteref(const SoBase * base) 
-{ 
+void
+SoWriterefCounter::removeWriteref(const SoBase * base)
+{
   SoWriterefCounterBaseData * data;
   if (PRIVATE(this)->outputdata->writerefdict.get(base, data)) {
     delete data;
-    (void) PRIVATE(this)->outputdata->writerefdict.remove(base);
+    (void) PRIVATE(this)->outputdata->writerefdict.erase(base);
   }
   else {
     assert(0 && "writedata not found");
@@ -405,7 +403,7 @@ dont_mangle_output_names(const SoBase *base)
   return COIN_DONT_MANGLE_OUTPUT_NAMES ? TRUE : FALSE;
 }
 
-SbName 
+SbName
 SoWriterefCounter::getWriteName(const SoBase * base) const
 {
   SoOutput * out = PRIVATE(this)->out;
@@ -413,7 +411,7 @@ SoWriterefCounter::getWriteName(const SoBase * base) const
   int refid = out->findReference(base);
   SbBool firstwrite = (refid == (int) FIRSTWRITE);
   SbBool multiref = this->hasMultipleWriteRefs(base);
-  
+
   // Find what node name to write
   SbString writename;
   
@@ -494,7 +492,7 @@ SoWriterefCounter::setReference(const SoBase * base, int refid)
 void
 SoWriterefCounter::removeSoBase2IdRef(const SoBase * base)
 {
-  PRIVATE(this)->sobase2id->remove(base);
+  PRIVATE(this)->sobase2id->erase(base);
 }
 
 /*!

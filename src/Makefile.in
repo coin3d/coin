@@ -105,6 +105,7 @@ DEB_PACKAGEABLE_FALSE = @DEB_PACKAGEABLE_FALSE@
 DEB_PACKAGEABLE_TRUE = @DEB_PACKAGEABLE_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DOXYGEN_INPUT = @DOXYGEN_INPUT@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
@@ -306,7 +307,7 @@ ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)
 @MAC_FRAMEWORK_FALSE@	engines errors events fields fonts glue io manips misc rendering lists nodekits \
 @MAC_FRAMEWORK_FALSE@	navigation nodes shapenodes projectors sensors upgraders \
 @MAC_FRAMEWORK_FALSE@	3ds collision hardcopy shadows geo threads shaders profiler \
-@MAC_FRAMEWORK_FALSE@	vrml97 foreignfiles scxml doc .
+@MAC_FRAMEWORK_FALSE@	vrml97 foreignfiles scxml soscxml doc .
 
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src $(ExtraIncludeDirs)
@@ -335,7 +336,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	shaders/libshaders.la shadows/libshadows.la geo/libgeo.la       \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	foreignfiles/libforeignfiles.la xml/libxml.la                   \
 @HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la profiler/libprofiler.la                   \
-@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
+@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la scxml/libscxml.la soscxml/libsoscxml.la $(SUPERGLULIBADD)
 
 
 
@@ -386,6 +387,7 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_bui
 @MAC_FRAMEWORK_TRUE@	profiler/all-profiler-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	vrml97/all-vrml97-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	scxml/all-scxml-cpp.cpp \
+@MAC_FRAMEWORK_TRUE@	soscxml/all-soscxml-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	tidbits.cpp \
 @MAC_FRAMEWORK_TRUE@	share/gl/CoinGLPerformance.cpp
 
@@ -421,7 +423,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = actions/actions.lst       \
 	threads/threads.lst shaders/shaders.lst shadows/shadows.lst     \
 	geo/geo.lst foreignfiles/foreignfiles.lst xml/xml.lst           \
 	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst     \
-	scxml/scxml.lst $(SUPERGLULSTADD)
+	scxml/scxml.lst soscxml/soscxml.lst $(SUPERGLULSTADD)
 
 @MACOSX_10_2FF_TRUE@@MACOSX_USE_DYNAMIC_LOOKUP_TRUE@LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,dynamic_lookup -Wl,-headerpad_max_install_names 
 @MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
@@ -469,6 +471,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_TRUE@	xml/xml.lst xml/expat/expat.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	profiler/profiler.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	vrml97/vrml97.lst scxml/scxml.lst \
+@BUILD_WITH_SUPERGLU_TRUE@	soscxml/soscxml.lst \
 @BUILD_WITH_SUPERGLU_TRUE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
 @BUILD_WITH_SUPERGLU_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
 @BUILD_WITH_SUPERGLU_FALSE@	actions/actions.lst base/base.lst \
@@ -502,7 +505,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_WITH_SUPERGLU_FALSE@	foreignfiles/foreignfiles.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	xml/xml.lst xml/expat/expat.lst \
 @BUILD_WITH_SUPERGLU_FALSE@	profiler/profiler.lst \
-@BUILD_WITH_SUPERGLU_FALSE@	vrml97/vrml97.lst scxml/scxml.lst
+@BUILD_WITH_SUPERGLU_FALSE@	vrml97/vrml97.lst scxml/scxml.lst \
+@BUILD_WITH_SUPERGLU_FALSE@	soscxml/soscxml.lst
 am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 	actions/all-actions-cpp.cpp base/all-base-cpp.cpp \
 	bundles/all-bundles-cpp.cpp caches/all-caches-cpp.cpp \
@@ -523,7 +527,8 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 	shadows/all-shadows-cpp.cpp geo/all-geo-cpp.cpp \
 	foreignfiles/all-foreignfiles-cpp.cpp xml/all-xml-cpp.cpp \
 	xml/expat/all-expat-c.c profiler/all-profiler-cpp.cpp \
-	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp tidbits.cpp \
+	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp \
+	soscxml/all-soscxml-cpp.cpp tidbits.cpp \
 	share/gl/CoinGLPerformance.cpp
 @MAC_FRAMEWORK_TRUE@am__objects_1 = all-actions-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-base-cpp.$(OBJEXT) \
@@ -562,7 +567,8 @@ am__coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES_DIST = \
 @MAC_FRAMEWORK_TRUE@	all-xml-cpp.$(OBJEXT) all-expat-c.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-profiler-cpp.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.$(OBJEXT) \
-@MAC_FRAMEWORK_TRUE@	all-scxml-cpp.$(OBJEXT) tidbits.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-scxml-cpp.$(OBJEXT) \
+@MAC_FRAMEWORK_TRUE@	all-soscxml-cpp.$(OBJEXT) tidbits.$(OBJEXT) \
 @MAC_FRAMEWORK_TRUE@	CoinGLPerformance.$(OBJEXT)
 @MAC_FRAMEWORK_FALSE@am__objects_1 = tidbits.$(OBJEXT) \
 @MAC_FRAMEWORK_FALSE@	CoinGLPerformance.$(OBJEXT)
@@ -611,7 +617,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	xml/expat/libexpat.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	profiler/libprofiler.la \
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la \
-@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	scxml/libscxml.la
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	scxml/libscxml.la \
+@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	soscxml/libsoscxml.la
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
@@ -655,6 +662,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	profiler/libprofiler.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	vrml97/libvrml97.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	scxml/libscxml.la \
+@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	soscxml/libsoscxml.la \
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@@MAC_FRAMEWORK_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@@MAC_FRAMEWORK_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES =
@@ -677,7 +685,8 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
 	shadows/all-shadows-cpp.cpp geo/all-geo-cpp.cpp \
 	foreignfiles/all-foreignfiles-cpp.cpp xml/all-xml-cpp.cpp \
 	xml/expat/all-expat-c.c profiler/all-profiler-cpp.cpp \
-	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp tidbits.cpp \
+	vrml97/all-vrml97-cpp.cpp scxml/all-scxml-cpp.cpp \
+	soscxml/all-soscxml-cpp.cpp tidbits.cpp \
 	share/gl/CoinGLPerformance.cpp
 @MAC_FRAMEWORK_TRUE@am__objects_3 = all-actions-cpp.lo all-base-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-bundles-cpp.lo all-caches-cpp.lo \
@@ -699,7 +708,8 @@ am__libCoin@SUFFIX@_la_SOURCES_DIST = actions/all-actions-cpp.cpp \
 @MAC_FRAMEWORK_TRUE@	all-foreignfiles-cpp.lo all-xml-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-expat-c.lo all-profiler-cpp.lo \
 @MAC_FRAMEWORK_TRUE@	all-vrml97-cpp.lo all-scxml-cpp.lo \
-@MAC_FRAMEWORK_TRUE@	tidbits.lo CoinGLPerformance.lo
+@MAC_FRAMEWORK_TRUE@	all-soscxml-cpp.lo tidbits.lo \
+@MAC_FRAMEWORK_TRUE@	CoinGLPerformance.lo
 @MAC_FRAMEWORK_FALSE@am__objects_3 = tidbits.lo CoinGLPerformance.lo
 am_libCoin@SUFFIX@_la_OBJECTS = $(am__objects_3)
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
@@ -779,6 +789,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-shapenodes-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-shapenodes-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-soscxml-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-soscxml-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-threads-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-threads-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Plo \
@@ -822,7 +834,7 @@ DIST_SUBDIRS = extensions xml actions base bundles caches details \
 	manips misc rendering lists nodekits navigation nodes \
 	shapenodes projectors sensors upgraders 3ds collision hardcopy \
 	shadows geo threads shaders profiler vrml97 foreignfiles scxml \
-	doc .
+	soscxml doc .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(EXTRA_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES) $(EXTRA_libCoin@SUFFIX@_la_SOURCES)
 
 all: discard.h config.h setup.h
@@ -1021,6 +1033,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shapenodes-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shapenodes-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-soscxml-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-soscxml-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-threads-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-threads-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Plo@am__quote@
@@ -2420,6 +2434,39 @@ all-scxml-cpp.lo: scxml/all-scxml-cpp.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-scxml-cpp.Plo' tmpdepfile='$(DEPDIR)/all-scxml-cpp.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-scxml-cpp.lo `test -f 'scxml/all-scxml-cpp.cpp' || echo '$(srcdir)/'`scxml/all-scxml-cpp.cpp
+
+all-soscxml-cpp.o: soscxml/all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-soscxml-cpp.o -MD -MP -MF "$(DEPDIR)/all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-soscxml-cpp.o `test -f 'soscxml/all-soscxml-cpp.cpp' || echo '$(srcdir)/'`soscxml/all-soscxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-soscxml-cpp.Tpo" "$(DEPDIR)/all-soscxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='soscxml/all-soscxml-cpp.cpp' object='all-soscxml-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-soscxml-cpp.Po' tmpdepfile='$(DEPDIR)/all-soscxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-soscxml-cpp.o `test -f 'soscxml/all-soscxml-cpp.cpp' || echo '$(srcdir)/'`soscxml/all-soscxml-cpp.cpp
+
+all-soscxml-cpp.obj: soscxml/all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-soscxml-cpp.obj -MD -MP -MF "$(DEPDIR)/all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-soscxml-cpp.obj `if test -f 'soscxml/all-soscxml-cpp.cpp'; then $(CYGPATH_W) 'soscxml/all-soscxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/soscxml/all-soscxml-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-soscxml-cpp.Tpo" "$(DEPDIR)/all-soscxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='soscxml/all-soscxml-cpp.cpp' object='all-soscxml-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-soscxml-cpp.Po' tmpdepfile='$(DEPDIR)/all-soscxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-soscxml-cpp.obj `if test -f 'soscxml/all-soscxml-cpp.cpp'; then $(CYGPATH_W) 'soscxml/all-soscxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/soscxml/all-soscxml-cpp.cpp'; fi`
+
+all-soscxml-cpp.lo: soscxml/all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all-soscxml-cpp.lo -MD -MP -MF "$(DEPDIR)/all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o all-soscxml-cpp.lo `test -f 'soscxml/all-soscxml-cpp.cpp' || echo '$(srcdir)/'`soscxml/all-soscxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/all-soscxml-cpp.Tpo" "$(DEPDIR)/all-soscxml-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='soscxml/all-soscxml-cpp.cpp' object='all-soscxml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/all-soscxml-cpp.Plo' tmpdepfile='$(DEPDIR)/all-soscxml-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all-soscxml-cpp.lo `test -f 'soscxml/all-soscxml-cpp.cpp' || echo '$(srcdir)/'`soscxml/all-soscxml-cpp.cpp
 
 CoinGLPerformance.o: share/gl/CoinGLPerformance.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CoinGLPerformance.o -MD -MP -MF "$(DEPDIR)/CoinGLPerformance.Tpo" \

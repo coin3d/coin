@@ -107,7 +107,7 @@ public:
     // FIXME: schedule for delete, pederb 2005-11-30
   }
   // FIXME: add a cache context destruction callback, pederb 2005-11-30
-  SbHash <SoGLShaderParameter *, uint32_t> glparams;
+  SbHash<uint32_t, SoGLShaderParameter *> glparams;
 };
 
 SO_NODE_ABSTRACT_SOURCE(SoUniformShaderParameter);

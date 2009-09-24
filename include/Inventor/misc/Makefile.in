@@ -103,6 +103,7 @@ DEB_PACKAGEABLE_FALSE = @DEB_PACKAGEABLE_FALSE@
 DEB_PACKAGEABLE_TRUE = @DEB_PACKAGEABLE_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DOXYGEN_INPUT = @DOXYGEN_INPUT@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
@@ -265,6 +266,7 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 PublicHeaders = \
+	CoinResources.h \
 	SoAuditorList.h \
 	SoBase.h \
 	SoBasic.h \

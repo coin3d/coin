@@ -27,19 +27,20 @@
 #include <Inventor/SoType.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/events/SoSubEvent.h>
 
 class SbViewportRegion;
 class SbVec2f;
 
 class COIN_DLL_API SoEvent {
-
+  SO_EVENT_ABSTRACT_HEADER();
 public:
+  static void initClass(void);
+
   SoEvent(void);
   virtual ~SoEvent();
 
   SbBool isOfType(SoType type) const;
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 
   void setTime(const SbTime t);
   SbTime getTime(void) const;
@@ -56,16 +57,11 @@ public:
   void setAltDown(SbBool isDown);
   SbBool wasAltDown(void) const;
 
-  static void initClass(void);
-
 private:
-  static SoType classTypeId;
-
   SbTime timeofevent;
   SbVec2s positionofevent;
 
   static void initEvents(void);
-  static void cleanupClass(void);
 
   struct {
     unsigned int shiftdown : 1;

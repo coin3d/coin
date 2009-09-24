@@ -69,7 +69,7 @@ class SoGLDriverDatabaseP {
     SbList <SbName> fast;
     SbList <SbName> disabled;
 
-    SbHash <const char *, const char *> features;
+    SbHash<const char *, const char *> features;
 
     uint32_t contextid;
   };
@@ -138,13 +138,13 @@ private:
   cc_xml_doc * database;
 
   SbList <SoGLDriver*> driverlist;
-  SbHash <SbBool, FeatureID> brokencache;
-  SbHash <SbBool, FeatureID> slowcache;
-  SbHash <SbBool, FeatureID> fastcache;
-  SbHash <SbBool, FeatureID> disabledcache;
+  SbHash<FeatureID, SbBool> brokencache;
+  SbHash<FeatureID, SbBool> slowcache;
+  SbHash<FeatureID, SbBool> fastcache;
+  SbHash<FeatureID, SbBool> disabledcache;
 
   typedef SbBool glglue_feature_test_f(const cc_glglue * glue);
-  SbHash <glglue_feature_test_f *, const char *> featuremap;
+  SbHash<const char *, glglue_feature_test_f *> featuremap;
 };
 
 // static variables
@@ -200,64 +200,64 @@ SoGLDriverDatabaseP::glsl_clip_vertex_hw_wrapper(const cc_glglue * glue)
 void
 SoGLDriverDatabaseP::initFunctions(void)
 {
-  this->featuremap.put(SbName(SO_GL_MULTIDRAW_ELEMENTS).getString(),
-                       (glglue_feature_test_f *) &multidraw_elements_wrapper);
-  this->featuremap.put(SbName(SO_GL_POLYGON_OFFSET).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_polygon_offset);
-  this->featuremap.put(SbName(SO_GL_TEXTURE_OBJECT).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_texture_objects);
-  this->featuremap.put(SbName(SO_GL_3D_TEXTURES).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_3d_textures);
-  this->featuremap.put(SbName(SO_GL_MULTITEXTURE).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_multitexture);
-  this->featuremap.put(SbName(SO_GL_TEXSUBIMAGE).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_texsubimage);
-  this->featuremap.put(SbName(SO_GL_2D_PROXY_TEXTURES).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_2d_proxy_textures);
-  this->featuremap.put(SbName(SO_GL_TEXTURE_EDGE_CLAMP).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_texture_edge_clamp);
-  this->featuremap.put(SbName(SO_GL_TEXTURE_COMPRESSION).getString(),
-                       (glglue_feature_test_f *) &cc_glue_has_texture_compression);
-  this->featuremap.put(SbName(SO_GL_COLOR_TABLES).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_color_tables);
-  this->featuremap.put(SbName(SO_GL_COLOR_SUBTABLES).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_color_subtables);
-  this->featuremap.put(SbName(SO_GL_PALETTED_TEXTURES).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_paletted_textures);
-  this->featuremap.put(SbName(SO_GL_BLEND_EQUATION).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_blendequation);
-  this->featuremap.put(SbName(SO_GL_VERTEX_ARRAY).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_vertex_array);
-  this->featuremap.put(SbName(SO_GL_NV_VERTEX_ARRAY_RANGE).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_nv_vertex_array_range);
-  this->featuremap.put(SbName(SO_GL_VERTEX_BUFFER_OBJECT).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_vertex_buffer_object);
-  this->featuremap.put(SbName(SO_GL_ARB_FRAGMENT_PROGRAM).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_arb_fragment_program);
-  this->featuremap.put(SbName(SO_GL_ARB_VERTEX_PROGRAM).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_arb_vertex_program);
-  this->featuremap.put(SbName(SO_GL_ARB_VERTEX_SHADER).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_arb_vertex_shader);
-  this->featuremap.put(SbName(SO_GL_ARB_SHADER_OBJECT).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_arb_shader_objects);
-  this->featuremap.put(SbName(SO_GL_OCCLUSION_QUERY).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_occlusion_query);
-  this->featuremap.put(SbName(SO_GL_FRAMEBUFFER_OBJECT).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_has_framebuffer_objects);
-  this->featuremap.put(SbName(SO_GL_ANISOTROPIC_FILTERING).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_can_do_anisotropic_filtering);
-  this->featuremap.put(SbName(SO_GL_SORTED_LAYERS_BLEND).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_can_do_sortedlayersblend);
-  this->featuremap.put(SbName(SO_GL_BUMPMAPPING).getString(),
-                       (glglue_feature_test_f *) &cc_glglue_can_do_bumpmapping);
-  this->featuremap.put(SbName(SO_GL_VBO_IN_DISPLAYLIST).getString(),
-                       (glglue_feature_test_f *) &coin_glglue_vbo_in_displaylist_supported);
-  this->featuremap.put(SbName(SO_GL_NON_POWER_OF_TWO_TEXTURES).getString(),
-                       (glglue_feature_test_f *) &coin_glglue_non_power_of_two_textures);
-  this->featuremap.put(SbName(SO_GL_GENERATE_MIPMAP).getString(),
-                       (glglue_feature_test_f *) &coin_glglue_has_generate_mipmap);
-  this->featuremap.put(SbName(SO_GL_GLSL_CLIP_VERTEX_HW).getString(),
-                       (glglue_feature_test_f *) &glsl_clip_vertex_hw_wrapper);
+  this->featuremap[SbName(SO_GL_MULTIDRAW_ELEMENTS).getString()] =
+                       (glglue_feature_test_f *) &multidraw_elements_wrapper;
+  this->featuremap[SbName(SO_GL_POLYGON_OFFSET).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_polygon_offset;
+  this->featuremap[SbName(SO_GL_TEXTURE_OBJECT).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_texture_objects;
+  this->featuremap[SbName(SO_GL_3D_TEXTURES).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_3d_textures;
+  this->featuremap[SbName(SO_GL_MULTITEXTURE).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_multitexture;
+  this->featuremap[SbName(SO_GL_TEXSUBIMAGE).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_texsubimage;
+  this->featuremap[SbName(SO_GL_2D_PROXY_TEXTURES).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_2d_proxy_textures;
+  this->featuremap[SbName(SO_GL_TEXTURE_EDGE_CLAMP).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_texture_edge_clamp;
+  this->featuremap[SbName(SO_GL_TEXTURE_COMPRESSION).getString()] =
+                       (glglue_feature_test_f *) &cc_glue_has_texture_compression;
+  this->featuremap[SbName(SO_GL_COLOR_TABLES).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_color_tables;
+  this->featuremap[SbName(SO_GL_COLOR_SUBTABLES).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_color_subtables;
+  this->featuremap[SbName(SO_GL_PALETTED_TEXTURES).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_paletted_textures;
+  this->featuremap[SbName(SO_GL_BLEND_EQUATION).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_blendequation;
+  this->featuremap[SbName(SO_GL_VERTEX_ARRAY).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_vertex_array;
+  this->featuremap[SbName(SO_GL_NV_VERTEX_ARRAY_RANGE).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_nv_vertex_array_range;
+  this->featuremap[SbName(SO_GL_VERTEX_BUFFER_OBJECT).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_vertex_buffer_object;
+  this->featuremap[SbName(SO_GL_ARB_FRAGMENT_PROGRAM).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_arb_fragment_program;
+  this->featuremap[SbName(SO_GL_ARB_VERTEX_PROGRAM).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_arb_vertex_program;
+  this->featuremap[SbName(SO_GL_ARB_VERTEX_SHADER).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_arb_vertex_shader;
+  this->featuremap[SbName(SO_GL_ARB_SHADER_OBJECT).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_arb_shader_objects;
+  this->featuremap[SbName(SO_GL_OCCLUSION_QUERY).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_occlusion_query;
+  this->featuremap[SbName(SO_GL_FRAMEBUFFER_OBJECT).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_has_framebuffer_objects;
+  this->featuremap[SbName(SO_GL_ANISOTROPIC_FILTERING).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_can_do_anisotropic_filtering;
+  this->featuremap[SbName(SO_GL_SORTED_LAYERS_BLEND).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_can_do_sortedlayersblend;
+  this->featuremap[SbName(SO_GL_BUMPMAPPING).getString()] =
+                       (glglue_feature_test_f *) &cc_glglue_can_do_bumpmapping;
+  this->featuremap[SbName(SO_GL_VBO_IN_DISPLAYLIST).getString()] =
+                       (glglue_feature_test_f *) &coin_glglue_vbo_in_displaylist_supported;
+  this->featuremap[SbName(SO_GL_NON_POWER_OF_TWO_TEXTURES).getString()] =
+                       (glglue_feature_test_f *) &coin_glglue_non_power_of_two_textures;
+  this->featuremap[SbName(SO_GL_GENERATE_MIPMAP).getString()] =
+                       (glglue_feature_test_f *) &coin_glglue_has_generate_mipmap;
+  this->featuremap[SbName(SO_GL_GLSL_CLIP_VERTEX_HW).getString()] =
+                       (glglue_feature_test_f *) &glsl_clip_vertex_hw_wrapper;
 }
 
 SbBool
@@ -269,8 +269,9 @@ SoGLDriverDatabaseP::isSupported(const cc_glglue * context, const SbName & featu
     if (!cc_glglue_glext_supported(context, feature)) return FALSE;
   }
   else { // check our lookup table
-    glglue_feature_test_f * testfunc;
-    if (this->featuremap.get(feature.getString(), testfunc)) {
+    SbHash<const char*, glglue_feature_test_f *>::const_iterator iter = this->featuremap.find(feature.getString());
+    if (iter!=this->featuremap.const_end()) {
+      glglue_feature_test_f * testfunc = iter->obj;
       if (!testfunc(context)) return FALSE;
     }
     else {
@@ -289,12 +290,15 @@ SoGLDriverDatabaseP::isBroken(const cc_glglue * context, const SbName & feature)
   f.feature = feature;
 
   SbBool broken = FALSE;
-  if (!this->brokencache.get(f, broken)) {
+  SbHash<SoGLDriverDatabaseP::FeatureID, int>::const_iterator iter = 
+    this->brokencache.find(f);
+  if (iter!=this->brokencache.const_end()) {
+    broken = iter->obj;
     SoGLDriver * driver = this->findGLDriver(context);
     if (driver) {
       if (driver->broken.find(feature) != -1) broken = TRUE;
     }
-    this->brokencache.put(f, broken);
+    this->brokencache[f] = broken;
   }
   return broken;
 }
@@ -307,12 +311,16 @@ SoGLDriverDatabaseP::isDisabled(const cc_glglue * context, const SbName & featur
   f.feature = feature;
 
   SbBool disabled = FALSE;
-  if (!this->disabledcache.get(f, disabled)) {
+  SbHash<SoGLDriverDatabaseP::FeatureID, int>::const_iterator iter =
+    this->disabledcache.find(f);
+  if (iter!=this->disabledcache.const_end()) {
+    disabled = iter->obj;
     SoGLDriver * driver = this->findGLDriver(context);
+
     if (driver) {
       if (driver->disabled.find(feature) != -1) disabled = TRUE;
     }
-    this->disabledcache.put(f, disabled);
+    this->disabledcache[f] = disabled;
   }
   return disabled;
 }
@@ -336,7 +344,7 @@ SoGLDriverDatabaseP::isSlow(const cc_glglue * context, const SbName & feature)
     if (driver) {
       if (driver->slow.find(feature) != -1) slow = TRUE;
     }
-    this->slowcache.put(f, slow);
+    this->slowcache[f] = slow;
   }
   return slow;
 }
@@ -361,7 +369,7 @@ SoGLDriverDatabaseP::isFast(const cc_glglue * context, const SbName & feature)
     if (driver) {
       if (driver->fast.find(feature) != -1) fast = TRUE;
     }
-    this->fastcache.put(f, fast);
+    this->fastcache[f] = fast;
   }
   return fast;
 }
@@ -1018,7 +1026,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element
       featurename = cc_xml_elt_get_cdata(name);
       commentstr = cc_xml_elt_get_cdata(comment);
 
-      driver->features.put(featurename, commentstr);
+      driver->features[featurename] = commentstr;
     }
 
   #if COIN_DEBUG

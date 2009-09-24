@@ -57,7 +57,7 @@
 
 #include "tidbitsp.h"
 
-SO_EVENT_SOURCE(SoEvent);
+SO_EVENT_ABSTRACT_SOURCE(SoEvent);
 
 /*!
   \fn SoType SoEvent::getClassTypeId(void)
@@ -93,12 +93,6 @@ SoEvent::initClass(void)
   coin_atexit(reinterpret_cast<coin_atexit_f *>(cleanupClass), CC_ATEXIT_NORMAL);
 
   SoEvent::initEvents();
-}
-
-void
-SoEvent::cleanupClass(void)
-{
-  SoEvent::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!

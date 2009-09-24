@@ -27,8 +27,32 @@
 
 #include <Inventor/scxml/ScXMLObject.h>
 
-#include <string.h>
-#include <assert.h>
+/*!
+  \class ScXMLObject ScXMLObject.h Inventor/scxml/ScXMLObject.h
+  \brief Base class for all SCXML objects.
+
+  \since Coin 3.0
+  \ingroup scxml
+*/
+
+/*!
+  \fn ScXMLObject::getTypeId() const
+
+  \brief \copybrief SoBase::getTypeId() const
+
+  \sa SoBase::getTypeId() const
+*/
+
+/*!
+  \fn ScXMLObject::getClassTypeId()
+
+  \brief \copybrief SoBase::getClassTypeId()
+
+  \sa SoBase::getClassTypeId
+*/
+
+#include <cstring>
+#include <cassert>
 #include <map>
 
 #include <Inventor/SbName.h>
@@ -37,14 +61,6 @@
 #include "scxml/ScXMLP.h"
 
 // *************************************************************************
-
-/*!
-  \class ScXMLObject ScXMLObject.h Inventor/scxml/ScXMLObject.h
-  \brief Base class for all SCXML objects.
-
-  \since Coin 3.0
-  \ingroup scxml
-*/
 
 class ScXMLObject::PImpl {
 public:
@@ -67,6 +83,12 @@ public:
 
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLObject);
 
+
+/*!
+  \brief \copybrief SoBase::initClass()
+
+  \sa SoBase::initClass()
+*/
 void
 ScXMLObject::initClass(void)
 {
@@ -75,8 +97,19 @@ ScXMLObject::initClass(void)
   // not registered with ScXML
 }
 
+/*!
+  \brief Does the opposite of initClass, deallocates any class
+  specific resources and resets the class to an uninitialized state
+  with respect to the Coin typesystem
+ */
+void
+ScXMLObject::cleanClass(void)
+{
+  ScXMLObject::classTypeId = SoType::badType();
+}
+
 ScXMLObject::ScXMLObject(void)
-  : containerptr(NULL)
+: containerptr(NULL)
 {
 }
 
@@ -85,100 +118,15 @@ ScXMLObject::~ScXMLObject(void)
   this->containerptr = NULL;
 }
 
+/*!
+  \brief \copybrief SoBase::isOfType(SoType type) const
+
+  \sa SoBase::isOfType(SoType type) const
+*/
 SbBool
 ScXMLObject::isOfType(SoType type) const
 {
   return this->getTypeId().isDerivedFrom(type);
-}
-
-/*!
-  This method associates a value with an attribute name.  This is
-  used for parameter passing while reading by the SCXML reader, but
-  can be used as a general-purpose attribute dictionary outside of
-  that.
-
-  If NULL is passed as the value, the attribute is removed.
-*/
-void
-ScXMLObject::setXMLAttribute(const char * attribute, const char * value)
-{
-  assert(attribute);
-  const SbName attrname(attribute); // uniqify on string pointer
-  PImpl::AttributeMap::iterator it =
-    PRIVATE(this)->attributemap.find(attrname.getString());
-  if (it == PRIVATE(this)->attributemap.end()) {
-    if (value) {
-      char * valuedup = new char [ strlen(value) + 1 ];
-      strcpy(valuedup, value);
-      PRIVATE(this)->attributemap.insert(
-        PImpl::AttributeEntry(attrname.getString(), valuedup));
-    }
-  } else {
-    delete [] it->second;
-    it->second = NULL;
-    if (!value) {
-      PRIVATE(this)->attributemap.erase(it);
-    } else {
-      it->second = new char [ strlen(value) + 1 ];
-      strcpy(it->second, value);
-    }
-  }
-}
-
-/*!
-  This method returns the string value set for an attribute, or
-  NULL if not set.
-*/
-const char *
-ScXMLObject::getXMLAttribute(const char * attribute) const
-{
-  const SbName attrname(attribute);
-  PImpl::AttributeMap::const_iterator it =
-    PRIVATE(this)->attributemap.find(attrname.getString());
-  if (it != PRIVATE(this)->attributemap.end()) {
-    return it->second;
-  }
-  return NULL;
-}
-
-/*!
-  This method is called when the file reader has set all the XML
-  attributes on the object, and wants the object to handle them and
-  report if the values were ok or if a read error should be produced.
-
-  \return TRUE if the attributes are ok, and FALSE on error.
-
-  This base class implementation does nothing and just returns TRUE.
-*/
-SbBool
-ScXMLObject::handleXMLAttributes(void)
-{
-  return TRUE;
-}
-
-/*!
-  Set the pointer to the parent ScXML object.
-*/
-void
-ScXMLObject::setContainer(ScXMLObject * container)
-{
-  this->containerptr = container;
-}
-
-/*!
-  This method returns TRUE if the object is contained within the given
-  \a object argument. Also if they are the same, TRUE will be returned.
-  Otherwise, FALSE is retured.
-*/
-SbBool
-ScXMLObject::isContainedIn(const ScXMLObject * object) const
-{
-  const ScXMLObject * lineageobj = this;
-  while (lineageobj) {
-    if (lineageobj == object) return TRUE;
-    lineageobj = lineageobj->getContainer();
-  }
-  return FALSE;
 }
 
 // *************************************************************************
@@ -202,7 +150,5 @@ ScXMLObject::registerInvokeClassType(const char * xmlns, const char * targettype
 {
   ScXMLP::registerInvokeClassType(xmlns, targettype, source, type);
 }
-
-// *************************************************************************
 
 #undef PRIVATE

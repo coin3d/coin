@@ -68,7 +68,7 @@ public:
 protected:
   SbList <int> programParameters;
   SbList <SoGLSLShaderObject *> shaderObjects;
-  SbHash <COIN_GLhandle, uint32_t> programHandles;
+  SbHash<uint32_t, COIN_GLhandle> programHandles;
 
   SbBool isExecutable;
   SbBool neededlinking;

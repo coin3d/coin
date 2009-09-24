@@ -98,7 +98,7 @@ private:
     SbTime max, total;
     int32_t count;
   };
-  
+
 public:
   SoProfilerStatsP(void) : master(NULL) {
   }
@@ -117,7 +117,7 @@ public:
 
   SoProfilerStats * master;
 
-  SbHash<SbTime, int16_t> action_timings;
+  SbHash<int16_t, SbTime> action_timings;
 }; // SoProfilerStatsP
 
 void

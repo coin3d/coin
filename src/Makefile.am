@@ -42,7 +42,7 @@ SUBDIRS = \
 	engines errors events fields fonts glue io manips misc rendering lists nodekits \
 	navigation nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy shadows geo threads shaders profiler \
-	vrml97 foreignfiles scxml doc .
+	vrml97 foreignfiles scxml soscxml doc .
 endif
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(top_builddir)/src -I$(top_srcdir)/src $(ExtraIncludeDirs)
@@ -84,7 +84,7 @@ libCoin@SUFFIX@_la_LIBADD = actions/libactions.la base/libbase.la       \
 	shaders/libshaders.la shadows/libshadows.la geo/libgeo.la       \
 	foreignfiles/libforeignfiles.la xml/libxml.la                   \
 	xml/expat/libexpat.la profiler/libprofiler.la                   \
-	vrml97/libvrml97.la scxml/libscxml.la $(SUPERGLULIBADD)
+	vrml97/libvrml97.la scxml/libscxml.la soscxml/libsoscxml.la $(SUPERGLULIBADD)
 endif
 endif
 
@@ -133,6 +133,7 @@ RegularSources = \
 	profiler/all-profiler-cpp.cpp \
 	vrml97/all-vrml97-cpp.cpp \
 	scxml/all-scxml-cpp.cpp \
+	soscxml/all-soscxml-cpp.cpp \
 	tidbits.cpp \
 	share/gl/CoinGLPerformance.cpp
 else
@@ -167,7 +168,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = actions/actions.lst       \
 	threads/threads.lst shaders/shaders.lst shadows/shadows.lst     \
 	geo/geo.lst foreignfiles/foreignfiles.lst xml/xml.lst           \
 	xml/expat/expat.lst profiler/profiler.lst vrml97/vrml97.lst     \
-	scxml/scxml.lst $(SUPERGLULSTADD)
+	scxml/scxml.lst soscxml/soscxml.lst $(SUPERGLULSTADD)
 
 # **************************************************************************
 # Installation information.

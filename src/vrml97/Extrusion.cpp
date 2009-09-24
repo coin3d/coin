@@ -379,14 +379,14 @@ public:
   SbVec3f coord;
   SbVec3f normal;
   SbVec2f texcoord;
-  
+
   // needed for SbHash
   operator unsigned long(void) const {
     unsigned long key = 0;
     // create an xor key based on coordinates, normal and texcoords
-    const unsigned char * ptr = (const unsigned char *) this;    
+    const unsigned char * ptr = (const unsigned char *) this;
     const ptrdiff_t size = sizeof(SoVRMLExtrusionVertex);
-    
+
     for (int i = 0; i < size; i++) {
       int shift = (i%4) * 8;
       key ^= (ptr[i]<<shift);
@@ -396,7 +396,7 @@ public:
   // needed, since if we don't add this the unsigned long operator
   // will be used when comparing two vertices.
   int operator==(const SoVRMLExtrusionVertex & v) {
-    return 
+    return
       (this->coord == v.coord) &&
       (this->normal == v.normal) &&
       (this->texcoord == v.texcoord);
@@ -436,12 +436,12 @@ public:
   SbBool dirty;
   SoVBOCache * vbocache;
 
-  SbHash <int32_t, SoVRMLExtrusionVertex> vbohash;
+  SbHash<SoVRMLExtrusionVertex, int32_t> vbohash;
 
   SbList <SbVec3f> vbocoord;
   SbList <SbVec3f> vbonormal;
   SbList <SbVec2f> vbotexcoord;
-  
+
   void updateVBO(SoAction * action);
   void generateVBO(SoAction * action, SoTextureCoordinateBundle & tb);
 
@@ -525,7 +525,7 @@ void
 SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
-  
+
   SoState * state = action->getState();
   state->push();
 
@@ -557,7 +557,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   if (vbo) {
     if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
       SoCacheElement::invalidate(state);
-      SoGLCacheContextElement::shouldAutoCache(state, 
+      SoGLCacheContextElement::shouldAutoCache(state,
                                                SoGLCacheContextElement::DONT_AUTO_CACHE);
     }
     int i;
@@ -568,7 +568,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
       PRIVATE(this)->vbocache->getTexCoordVBO(0)->bindBuffer(contextid);
       cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0, NULL);
       cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-      
+
       for (i = 1; i <= lastenabled; i++) {
         if (enabled[i]) {
           cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
@@ -578,7 +578,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
       }
       cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
     }
-    
+
     PRIVATE(this)->vbocache->getNormalVBO()->bindBuffer(contextid);
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
@@ -596,7 +596,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
 
     SoGLVertexAttributeElement::getInstance(state)->disableVBO(action);
-    
+
     if (doTextures) {
       for (i = 1; i <= lastenabled; i++) {
         if (enabled[i]) {
@@ -610,10 +610,10 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   }
   else {
     const SbVec3f * normals = PRIVATE(this)->gen.getNormals();
-    
+
     SoCoordinateElement::set3(state, this, PRIVATE(this)->coord.getLength(), PRIVATE(this)->coord.getArrayPtr());
     const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
-    
+
     if (doTextures) {
       int lastenabled = -1;
       const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
@@ -626,22 +626,22 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
         }
       }
     }
-    
+
     SoTextureCoordinateBundle tb(action, TRUE, FALSE);
     doTextures = tb.needCoordinates();
-    
+
     SoVertexAttributeBundle vab(action, TRUE);
     SbBool doattribs = vab.doAttributes();
 
-    SoVertexAttributeBindingElement::Binding attribbind = 
+    SoVertexAttributeBindingElement::Binding attribbind =
       SoVertexAttributeBindingElement::get(state);
 
-    if (!doattribs) { 
+    if (!doattribs) {
       // for overall attribute binding we check for doattribs before
       // sending anything in SoGL::FaceSet::GLRender
       attribbind = SoVertexAttributeBindingElement::OVERALL;
     }
-    
+
     sogl_render_faceset((SoGLCoordinateElement *) coords,
                         PRIVATE(this)->idx.getArrayPtr(),
                         PRIVATE(this)->idx.getLength(),
@@ -735,7 +735,7 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
                            SoShapeHintsElement::CONVEX :
                            SoShapeHintsElement::UNKNOWN_FACE_TYPE);
 
-  SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   SbBool istexfunc = tb.isFunction();
   SoPrimitiveVertex vertex;
 
@@ -794,12 +794,12 @@ SoVRMLExtrusion::updateCache(void)
   }
 }
 
-void 
+void
 SoVRMLExtrusionP::updateVBO(SoAction * action)
 {
   if (this->vbocache == NULL || !this->vbocache->isValid(action->getState())) {
     this->readUnlock();
-    SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
+    SoTextureCoordinateBundle tb(action, FALSE, FALSE);
     SbBool istexfunc = tb.isFunction();
     if (istexfunc) {
       // trigger a texture coordinate function callback to update (for
@@ -814,11 +814,11 @@ SoVRMLExtrusionP::updateVBO(SoAction * action)
   }
 }
 
-void 
+void
 SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 {
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-  
+
   SoState * state = action->getState();
 
   state->push();
@@ -834,9 +834,9 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 
   // create a dependency on the texture coordinate element
   (void) SoMultiTextureCoordinateElement::getType(state);
-  
+
   SbBool istexfunc = tb.isFunction();
-  
+
   const SbVec3f * normals = this->gen.getNormals();
   const SbVec2f * tcoords = this->tcoord.getArrayPtr();
   const SbVec3f * coords = this->coord.getArrayPtr();
@@ -857,7 +857,7 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
   while (iptr < endptr) {
     // we generate either triangles or quads, so this test is safe
     SbBool isquad = iptr[3] >= 0;
-    
+
     for (int i = 0; i < (isquad ? 4 : 3); i++) {
       int idx = *iptr++;
       v.normal = *normals;
@@ -895,7 +895,7 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 
   this->vbocache->getCoordVBO()->setBufferData(this->vbocoord.getArrayPtr(),
                                                this->vbocoord.getLength()*sizeof(SbVec3f), 1);
-  
+
   this->vbocache->getNormalVBO()->setBufferData(this->vbonormal.getArrayPtr(),
                                                 this->vbonormal.getLength()*sizeof(SbVec3f), 1);
   this->vbocache->getTexCoordVBO(0)->setBufferData(this->vbotexcoord.getArrayPtr(),
@@ -907,7 +907,7 @@ SoVRMLExtrusionP::generateVBO(SoAction * action, SoTextureCoordinateBundle & tb)
 void
 SoVRMLExtrusion::notify(SoNotList * list)
 {
-  if (PRIVATE(this)->vbocache) PRIVATE(this)->vbocache->invalidate();  
+  if (PRIVATE(this)->vbocache) PRIVATE(this)->vbocache->invalidate();
   PRIVATE(this)->dirty = TRUE;
   inherited::notify(list);
 }
@@ -1049,7 +1049,7 @@ SoVRMLExtrusionP::generateCoords(void)
     spinelen += (spine[i+1]-spine[i]).length();
   }
   if (spinelen == 0.0f) spinelen = 1.0f;
-    
+
   for (i = 0; i < numcross-1; i++) {
     crosslen += (cross[i+1]-cross[i]).length();
   }
@@ -1161,7 +1161,7 @@ SoVRMLExtrusionP::generateCoords(void)
       c[2] = cross[j][1];
 
       matrix.multVecMatrix(c, c);
-      this->coord.append(c);     
+      this->coord.append(c);
       tc[0] = currentcrosslen / crosslen;
       tc[1] = currentspinelen / spinelen;
       this->tcoord.append(tc);
@@ -1212,7 +1212,7 @@ SoVRMLExtrusionP::generateCoords(void)
   }
 
   SbVec2f crossboxsize = crossbox.getMax() - crossbox.getMin();
-  
+
   // create beginCap polygon
   if (PUBLIC(this)->beginCap.getValue() && !closed) {
     // create texcoords

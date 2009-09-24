@@ -220,6 +220,16 @@ cc_string_set_text(cc_string * me, const char * text)
   (void) strcpy(me->pointer, text);
 } /* cc_string_set_text() */
 
+static
+size_t
+cc_string_strnlen(const char * text, size_t max)
+{
+  size_t n = 0;
+  while(n < max && text[n] != '\0')
+    ++n;
+  return n;
+}
+
 /*!
   \relates cc_string
 */
@@ -232,7 +242,7 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   size_t size;
 
   if ( text == NULL ) text = emptystring;
-  len = static_cast<int>(strlen(text));
+  len = cc_string_strnlen(text,end);
   if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG

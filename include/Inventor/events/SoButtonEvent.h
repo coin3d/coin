@@ -24,7 +24,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/events/SoSubEvent.h>
+#include <Inventor/events/SoEvent.h>
 
 class SbString;
 

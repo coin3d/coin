@@ -55,6 +55,7 @@
 #include "SbTesselator.cpp"
 #include "SbGLUTessellator.cpp"
 #include "SbTime.cpp"
+#include "SbByteBuffer.cpp"
 
 #include "SbVec2b.cpp"
 #include "SbVec2ub.cpp"

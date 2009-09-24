@@ -103,6 +103,7 @@ DEB_PACKAGEABLE_FALSE = @DEB_PACKAGEABLE_FALSE@
 DEB_PACKAGEABLE_TRUE = @DEB_PACKAGEABLE_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DOXYGEN_INPUT = @DOXYGEN_INPUT@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
@@ -268,14 +269,18 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 RegularSources = \
+        SoCameraUtils.cpp \
         SoScXMLNavigation.cpp \
-        SoScXMLNavigationInvoke.cpp \
-        SoScXMLPanUtils.cpp \
-        SoScXMLRotateUtils.cpp \
-        SoScXMLSeekUtils.cpp \
-        SoScXMLSpinUtils.cpp \
-        SoScXMLZoomUtils.cpp \
-        SoScXMLViewUtils.cpp
+        SoScXMLNavigationTarget.cpp \
+        SoScXMLPanTarget.cpp \
+        SoScXMLRotateTarget.cpp \
+        SoScXMLSeekTarget.cpp \
+        SoScXMLSpinTarget.cpp \
+        SoScXMLZoomTarget.cpp \
+        SoScXMLDollyTarget.cpp \
+        SoScXMLMiscTarget.cpp \
+        SoScXMLFlightControlTarget.cpp \
+        SoScXMLMotionTarget.cpp
 
 
 LinkHackSources = all-navigation-cpp.cpp
@@ -283,19 +288,13 @@ LinkHackSources = all-navigation-cpp.cpp
 PublicHeaders = 
 
 PrivateHeaders = \
-        SoScXMLNavigation.h \
-        SoScXMLNavigationInvoke.h \
-        SoScXMLPanUtils.h \
-        SoScXMLRotateUtils.h \
-        SoScXMLSeekUtils.h \
-        SoScXMLSpinUtils.h \
-        SoScXMLZoomUtils.h \
-        SoScXMLViewUtils.h
+        SoCameraUtils.h \
+        common-xml.cpp \
+        examiner-xml.cpp \
+        plane-xml.cpp
 
 
 ObsoleteHeaders = 
-
-EXTRA_DIST = examiner-xml.cpp
 
 
 # BEGIN TEMPLATE Make-Common(navigation, navigation)
@@ -358,89 +357,116 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 navigation_lst_AR = $(AR) cru
 navigation_lst_LIBADD =
-am__navigation_lst_SOURCES_DIST = SoScXMLNavigation.cpp \
-	SoScXMLNavigationInvoke.cpp SoScXMLPanUtils.cpp \
-	SoScXMLRotateUtils.cpp SoScXMLSeekUtils.cpp \
-	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
-	all-navigation-cpp.cpp
+am__navigation_lst_SOURCES_DIST = SoCameraUtils.cpp \
+	SoScXMLNavigation.cpp SoScXMLNavigationTarget.cpp \
+	SoScXMLPanTarget.cpp SoScXMLRotateTarget.cpp \
+	SoScXMLSeekTarget.cpp SoScXMLSpinTarget.cpp \
+	SoScXMLZoomTarget.cpp SoScXMLDollyTarget.cpp \
+	SoScXMLMiscTarget.cpp SoScXMLFlightControlTarget.cpp \
+	SoScXMLMotionTarget.cpp all-navigation-cpp.cpp
 am__objects_1 = all-navigation-cpp.$(OBJEXT)
-am__objects_2 = SoScXMLNavigation.$(OBJEXT) \
-	SoScXMLNavigationInvoke.$(OBJEXT) SoScXMLPanUtils.$(OBJEXT) \
-	SoScXMLRotateUtils.$(OBJEXT) SoScXMLSeekUtils.$(OBJEXT) \
-	SoScXMLSpinUtils.$(OBJEXT) SoScXMLZoomUtils.$(OBJEXT) \
-	SoScXMLViewUtils.$(OBJEXT)
+am__objects_2 = SoCameraUtils.$(OBJEXT) SoScXMLNavigation.$(OBJEXT) \
+	SoScXMLNavigationTarget.$(OBJEXT) SoScXMLPanTarget.$(OBJEXT) \
+	SoScXMLRotateTarget.$(OBJEXT) SoScXMLSeekTarget.$(OBJEXT) \
+	SoScXMLSpinTarget.$(OBJEXT) SoScXMLZoomTarget.$(OBJEXT) \
+	SoScXMLDollyTarget.$(OBJEXT) SoScXMLMiscTarget.$(OBJEXT) \
+	SoScXMLFlightControlTarget.$(OBJEXT) \
+	SoScXMLMotionTarget.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_navigation_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_navigation_lst_SOURCES_DIST = SoScXMLNavigation.h \
-	SoScXMLNavigationInvoke.h SoScXMLPanUtils.h \
-	SoScXMLRotateUtils.h SoScXMLSeekUtils.h SoScXMLSpinUtils.h \
-	SoScXMLZoomUtils.h SoScXMLViewUtils.h all-navigation-cpp.cpp \
-	SoScXMLNavigation.cpp SoScXMLNavigationInvoke.cpp \
-	SoScXMLPanUtils.cpp SoScXMLRotateUtils.cpp SoScXMLSeekUtils.cpp \
-	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp
+am__EXTRA_navigation_lst_SOURCES_DIST = SoCameraUtils.h common-xml.cpp \
+	examiner-xml.cpp plane-xml.cpp all-navigation-cpp.cpp \
+	SoCameraUtils.cpp SoScXMLNavigation.cpp \
+	SoScXMLNavigationTarget.cpp SoScXMLPanTarget.cpp \
+	SoScXMLRotateTarget.cpp SoScXMLSeekTarget.cpp \
+	SoScXMLSpinTarget.cpp SoScXMLZoomTarget.cpp \
+	SoScXMLDollyTarget.cpp SoScXMLMiscTarget.cpp \
+	SoScXMLFlightControlTarget.cpp SoScXMLMotionTarget.cpp
 navigation_lst_OBJECTS = $(am_navigation_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libnavigation_la_LDFLAGS =
 libnavigation_la_LIBADD =
-am__libnavigation_la_SOURCES_DIST = SoScXMLNavigation.cpp \
-	SoScXMLNavigationInvoke.cpp SoScXMLPanUtils.cpp \
-	SoScXMLRotateUtils.cpp SoScXMLSeekUtils.cpp \
-	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
-	all-navigation-cpp.cpp
-am__objects_6 = all-navigation-cpp.lo
-am__objects_7 = SoScXMLNavigation.lo SoScXMLNavigationInvoke.lo \
-	SoScXMLPanUtils.lo SoScXMLRotateUtils.lo SoScXMLSeekUtils.lo \
-	SoScXMLSpinUtils.lo SoScXMLZoomUtils.lo SoScXMLViewUtils.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
-am_libnavigation_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libnavigation_la_SOURCES_DIST = SoScXMLNavigation.h \
-	SoScXMLNavigationInvoke.h SoScXMLPanUtils.h \
-	SoScXMLRotateUtils.h SoScXMLSeekUtils.h SoScXMLSpinUtils.h \
-	SoScXMLZoomUtils.h SoScXMLViewUtils.h all-navigation-cpp.cpp \
-	SoScXMLNavigation.cpp SoScXMLNavigationInvoke.cpp \
-	SoScXMLPanUtils.cpp SoScXMLRotateUtils.cpp SoScXMLSeekUtils.cpp \
-	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp
+am__libnavigation_la_SOURCES_DIST = SoCameraUtils.cpp \
+	SoScXMLNavigation.cpp SoScXMLNavigationTarget.cpp \
+	SoScXMLPanTarget.cpp SoScXMLRotateTarget.cpp \
+	SoScXMLSeekTarget.cpp SoScXMLSpinTarget.cpp \
+	SoScXMLZoomTarget.cpp SoScXMLDollyTarget.cpp \
+	SoScXMLMiscTarget.cpp SoScXMLFlightControlTarget.cpp \
+	SoScXMLMotionTarget.cpp all-navigation-cpp.cpp
+am__objects_7 = all-navigation-cpp.lo
+am__objects_8 = SoCameraUtils.lo SoScXMLNavigation.lo \
+	SoScXMLNavigationTarget.lo SoScXMLPanTarget.lo \
+	SoScXMLRotateTarget.lo SoScXMLSeekTarget.lo \
+	SoScXMLSpinTarget.lo SoScXMLZoomTarget.lo SoScXMLDollyTarget.lo \
+	SoScXMLMiscTarget.lo SoScXMLFlightControlTarget.lo \
+	SoScXMLMotionTarget.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
+am_libnavigation_la_OBJECTS = $(am__objects_9)
+am__EXTRA_libnavigation_la_SOURCES_DIST = SoCameraUtils.h common-xml.cpp \
+	examiner-xml.cpp plane-xml.cpp all-navigation-cpp.cpp \
+	SoCameraUtils.cpp SoScXMLNavigation.cpp \
+	SoScXMLNavigationTarget.cpp SoScXMLPanTarget.cpp \
+	SoScXMLRotateTarget.cpp SoScXMLSeekTarget.cpp \
+	SoScXMLSpinTarget.cpp SoScXMLZoomTarget.cpp \
+	SoScXMLDollyTarget.cpp SoScXMLMiscTarget.cpp \
+	SoScXMLFlightControlTarget.cpp SoScXMLMotionTarget.cpp
 libnavigation_la_OBJECTS = $(am_libnavigation_la_OBJECTS)
 libnavigation@SUFFIX@LINKHACK_la_LDFLAGS =
 libnavigation@SUFFIX@LINKHACK_la_LIBADD =
-am__libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	SoScXMLNavigation.cpp SoScXMLNavigationInvoke.cpp \
-	SoScXMLPanUtils.cpp SoScXMLRotateUtils.cpp SoScXMLSeekUtils.cpp \
-	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp \
-	all-navigation-cpp.cpp
-am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = SoCameraUtils.cpp \
+	SoScXMLNavigation.cpp SoScXMLNavigationTarget.cpp \
+	SoScXMLPanTarget.cpp SoScXMLRotateTarget.cpp \
+	SoScXMLSeekTarget.cpp SoScXMLSpinTarget.cpp \
+	SoScXMLZoomTarget.cpp SoScXMLDollyTarget.cpp \
+	SoScXMLMiscTarget.cpp SoScXMLFlightControlTarget.cpp \
+	SoScXMLMotionTarget.cpp all-navigation-cpp.cpp
+am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	SoScXMLNavigation.h SoScXMLNavigationInvoke.h SoScXMLPanUtils.h \
-	SoScXMLRotateUtils.h SoScXMLSeekUtils.h SoScXMLSpinUtils.h \
-	SoScXMLZoomUtils.h SoScXMLViewUtils.h all-navigation-cpp.cpp \
-	SoScXMLNavigation.cpp SoScXMLNavigationInvoke.cpp \
-	SoScXMLPanUtils.cpp SoScXMLRotateUtils.cpp SoScXMLSeekUtils.cpp \
-	SoScXMLSpinUtils.cpp SoScXMLZoomUtils.cpp SoScXMLViewUtils.cpp
+	SoCameraUtils.h common-xml.cpp examiner-xml.cpp plane-xml.cpp \
+	all-navigation-cpp.cpp SoCameraUtils.cpp SoScXMLNavigation.cpp \
+	SoScXMLNavigationTarget.cpp SoScXMLPanTarget.cpp \
+	SoScXMLRotateTarget.cpp SoScXMLSeekTarget.cpp \
+	SoScXMLSpinTarget.cpp SoScXMLZoomTarget.cpp \
+	SoScXMLDollyTarget.cpp SoScXMLMiscTarget.cpp \
+	SoScXMLFlightControlTarget.cpp SoScXMLMotionTarget.cpp
 libnavigation@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoScXMLNavigation.Plo \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoCameraUtils.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoCameraUtils.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLDollyTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLDollyTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLFlightControlTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLFlightControlTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMiscTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMiscTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMotionTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMotionTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigation.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigation.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigationInvoke.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigationInvoke.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLPanUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLPanUtils.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLRotateUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLRotateUtils.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSeekUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSeekUtils.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSpinUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSpinUtils.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLViewUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLViewUtils.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLZoomUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLZoomUtils.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigationTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigationTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLPanTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLPanTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLRotateTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLRotateTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSeekTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSeekTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSpinTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSpinTarget.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLZoomTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLZoomTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/common-xml.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/common-xml.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/examiner-xml.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/examiner-xml.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/plane-xml.Plo ./$(DEPDIR)/plane-xml.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -527,24 +553,38 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCameraUtils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCameraUtils.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLDollyTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLDollyTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLFlightControlTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLFlightControlTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMiscTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMiscTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMotionTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMotionTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigation.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigationInvoke.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigationInvoke.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLPanUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLPanUtils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLRotateUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLRotateUtils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSeekUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSeekUtils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSpinUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSpinUtils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLViewUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLViewUtils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLZoomUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLZoomUtils.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigationTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigationTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLPanTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLPanTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLRotateTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLRotateTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSeekTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSeekTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSpinTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSpinTarget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLZoomTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLZoomTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-xml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-xml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/examiner-xml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/examiner-xml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plane-xml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plane-xml.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -781,10 +821,16 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libnavigationincHEADERS
 
 
-update-builtin-resources: $(srcdir)/examiner-xml.cpp
+update-builtin-resources: $(srcdir)/common-xml.cpp $(srcdir)/examiner-xml.cpp $(srcdir)/plane-xml.cpp
+
+$(srcdir)/common-xml.cpp: $(top_srcdir)/data/scxml/navigation/common.xml $(top_srcdir)/data/scxml/xml2cpp.pl
+	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ common_xml
 
 $(srcdir)/examiner-xml.cpp: $(top_srcdir)/data/scxml/navigation/examiner.xml $(top_srcdir)/data/scxml/xml2cpp.pl
 	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ examiner_xml
+
+$(srcdir)/plane-xml.cpp: $(top_srcdir)/data/scxml/navigation/plane.xml $(top_srcdir)/data/scxml/xml2cpp.pl
+	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ plane_xml
 
 # this rule causes a make warning, so we remove it when it is not in use
 navigation.lst: Makefile $(navigation_lst_OBJECTS)

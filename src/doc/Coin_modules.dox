@@ -224,6 +224,16 @@
 // *************************************************************************
 
 /*!
+  \defgroup navigation Navigation Classes
+
+  These contains the actual implementation of the ScXML based navigation system.
+
+  \sa scxml
+*/
+
+// *************************************************************************
+
+/*!
   \defgroup nodekits NodeKit Classes
 
   Wrapping ones head around when, how, and why to create nodekits can
@@ -334,6 +344,20 @@
 // *************************************************************************
 
 /*!
+  \defgroup soscxml Coin specific State Chart XML Classes
+
+  This set of classes implement a coin-specific mode of scxml.
+
+  \sa navigation
+  \sa scxml
+
+  \since Coin 4.0
+
+*/
+
+// *************************************************************************
+
+/*!
   \defgroup sound 3D Sound Support Classes
 
 */
@@ -345,15 +369,15 @@
 
   This set of classes is a basic implementation of State Chart XML.
   It is not complete, nor is it necessary conformant to those parts it
-  implements.  It is however a decent start, and there are plans for
-  implementing more parts of the specification.
+  implements.
 
   Currently Coin uses SCXML for managing 3D viewer user interaction
   (the non-model-interaction part) - the examiner navigation mode in
-  layman terms - but with a more complete implementation of SCXML, the
-  potential for more uses should be quite huge.
+  layman terms.
 
   The Draft Specification for SCXML is at http://www.w3.org/TR/scxml/.
+
+  \sa navigation
 
   \since Coin 3.0
 

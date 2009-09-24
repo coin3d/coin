@@ -63,7 +63,7 @@ class SoInput;
 class SoInput_FileInfo {
 public:
   SoInput_FileInfo(SoInput_Reader * reader, 
-                   const SbHash<SoBase *, const char *> & refs);
+                   const SbHash<const char *, SoBase *> & refs);
   ~SoInput_FileInfo();
 
   void doBufferRead(void);
@@ -201,7 +201,7 @@ public:
   SbBool readInteger(int32_t & l);
   SbBool readReal(double & d);
 
-  const SbHash<SoBase *, const char *> & getReferences() const {
+  const SbHash<const char *, SoBase *> & getReferences() const {
     return this->references;
   }
 private:
@@ -236,7 +236,7 @@ private:
 
   SbString stdinname; // needed for ivFilename()
   char * deletebuffer;
-  SbHash<SoBase *, const char *> references;
+  SbHash<const char *, SoBase *> references;
 
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
   static void sched_cb(void * closure);

@@ -1,35 +1,40 @@
 RegularSources = \
+        SoCameraUtils.cpp \
         SoScXMLNavigation.cpp \
-        SoScXMLNavigationInvoke.cpp \
-        SoScXMLPanUtils.cpp \
-        SoScXMLRotateUtils.cpp \
-        SoScXMLSeekUtils.cpp \
-        SoScXMLSpinUtils.cpp \
-        SoScXMLZoomUtils.cpp \
-        SoScXMLViewUtils.cpp
+        SoScXMLNavigationTarget.cpp \
+        SoScXMLPanTarget.cpp \
+        SoScXMLRotateTarget.cpp \
+        SoScXMLSeekTarget.cpp \
+        SoScXMLSpinTarget.cpp \
+        SoScXMLZoomTarget.cpp \
+        SoScXMLDollyTarget.cpp \
+        SoScXMLMiscTarget.cpp \
+        SoScXMLFlightControlTarget.cpp \
+        SoScXMLMotionTarget.cpp
 
 LinkHackSources = all-navigation-cpp.cpp
 
 PublicHeaders =
 
 PrivateHeaders = \
-        SoScXMLNavigation.h \
-        SoScXMLNavigationInvoke.h \
-        SoScXMLPanUtils.h \
-        SoScXMLRotateUtils.h \
-        SoScXMLSeekUtils.h \
-        SoScXMLSpinUtils.h \
-        SoScXMLZoomUtils.h \
-        SoScXMLViewUtils.h
+        SoCameraUtils.h \
+        common-xml.cpp \
+        examiner-xml.cpp \
+        plane-xml.cpp
 
 ObsoleteHeaders =
 
-update-builtin-resources: $(srcdir)/examiner-xml.cpp
+update-builtin-resources: $(srcdir)/common-xml.cpp $(srcdir)/examiner-xml.cpp $(srcdir)/plane-xml.cpp
 
-EXTRA_DIST = examiner-xml.cpp
+
+$(srcdir)/common-xml.cpp: $(top_srcdir)/data/scxml/navigation/common.xml $(top_srcdir)/data/scxml/xml2cpp.pl
+	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ common_xml
 
 $(srcdir)/examiner-xml.cpp: $(top_srcdir)/data/scxml/navigation/examiner.xml $(top_srcdir)/data/scxml/xml2cpp.pl
 	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ examiner_xml
+
+$(srcdir)/plane-xml.cpp: $(top_srcdir)/data/scxml/navigation/plane.xml $(top_srcdir)/data/scxml/xml2cpp.pl
+	$(top_srcdir)/data/scxml/xml2cpp.pl $< $@ plane_xml
 
 # BEGIN TEMPLATE Make-Common(navigation, navigation)
 # **************************************************************************

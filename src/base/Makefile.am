@@ -10,6 +10,7 @@ RegularSources = \
 	dynarray.cpp \
 	namemap.cpp \
 	SbBSPTree.cpp \
+	SbByteBuffer.cpp \
 	SbBox2s.cpp \
 	SbBox2i32.cpp \
 	SbBox2f.cpp \

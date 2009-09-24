@@ -24,14 +24,16 @@
  *
 \**************************************************************************/
 
-#include <Inventor/scxml/ScXMLObject.h>
+#include <Inventor/scxml/ScXMLEventTarget.h>
 
 #include <Inventor/SbName.h>
-#include <Inventor/tools/SbPimplPtr.h>
+#include <Inventor/lists/SbList.h>
 
 class ScXMLEvent;
 class ScXMLDocument;
 class ScXMLStateMachine;
+class ScXMLEvaluator;
+class ScXMLElt;
 
 typedef void ScXMLStateMachineDeleteCB(void * userdata,
                                        ScXMLStateMachine * statemachine);
@@ -40,15 +42,22 @@ typedef void ScXMLStateChangeCB(void * userdata,
                                 const char * stateidentifier,
                                 SbBool enterstate,
                                 SbBool success);
+typedef void ScXMLParallelStateChangeCB(void * userdata,
+                                        ScXMLStateMachine * statemachine,
+                                        int numstates,
+                                        const char ** stateidentifiers,
+                                        SbBool enterstate,
+                                        SbBool success);
 
-class COIN_DLL_API ScXMLStateMachine : public ScXMLObject {
-  typedef ScXMLObject inherited;
+class COIN_DLL_API ScXMLStateMachine : public ScXMLEventTarget {
+  typedef ScXMLEventTarget inherited;
   SCXML_OBJECT_HEADER(ScXMLStateMachine)
 
 public:
   static void initClass(void);
+  static void cleanClass(void);
 
-  ScXMLStateMachine(void);
+ ScXMLStateMachine(void);
   virtual ~ScXMLStateMachine(void);
 
   virtual void setName(const SbName & name);
@@ -57,21 +66,16 @@ public:
   virtual void setDescription(ScXMLDocument * document);
   const ScXMLDocument * getDescription(void) const;
 
-  virtual void initialize(void);
+  virtual void setSessionId(const SbName & sessionid);
+  const SbName & getSessionId(void) const;
 
-  virtual void queueEvent(const ScXMLEvent * event, SbBool dealloc = FALSE);
-  virtual void queueEvent(const SbName & eventid);
-  virtual SbBool processEventQueue(void);
+  virtual void initialize(void);
 
   virtual SbBool isActive(void) const;
   virtual SbBool isFinished(void) const;
 
-  virtual const ScXMLEvent * getCurrentEvent(void) const;
-
   virtual int getNumActiveStates(void) const;
-  virtual const ScXMLObject * getActiveState(int idx) const;
-
-  virtual const ScXMLObject * getState(const char * identifier) const;
+  virtual const ScXMLElt * getActiveState(int idx) const;
 
   virtual void addDeleteCallback(ScXMLStateMachineDeleteCB * callback,
                                  void * userdata);
@@ -82,10 +86,25 @@ public:
                                       void * userdata);
   virtual void removeStateChangeCallback(ScXMLStateChangeCB * callback,
                                          void * userdata);
+
+  virtual void setVariable(const char * name, const char * value);
+  virtual const char * getVariable(const char * name) const;
+
+  static ScXMLStateMachine * getStateMachineForSessionId(const SbName & sessionid);
+
+  virtual void setLogLevel(int loglevel);
+  int getLogLevel(void) const;
+
+  virtual void setEvaluator(ScXMLEvaluator * evaluator);
+  ScXMLEvaluator * getEvaluator(void) const;
+
+  SbBool isModuleEnabled(const char * modulename) const;
+  int getNumEnabledModules(void) const;
+  const char * getEnabledModuleName(int idx) const;
+  void setEnabledModulesList(const SbList<const char *> & modulenames);
+
 protected:
   virtual SbBool processOneEvent(const ScXMLEvent * event);
-
-  virtual void setCurrentEvent(const ScXMLEvent * event);
 
 private:
   ScXMLStateMachine(const ScXMLStateMachine & rhs); // N/A

@@ -100,7 +100,7 @@ static void SoFieldContainer_cleanupClass(void);
 SoType SoFieldContainer::classTypeId STATIC_SOTYPE_INIT;
 
 // used by setUserData() and getUserData()
-typedef SbHash<void *, const SoFieldContainer *> UserDataMap;
+typedef SbHash<const SoFieldContainer *, void *> UserDataMap;
 static UserDataMap * sofieldcontainer_userdata_dict = NULL;
 
 void
@@ -134,7 +134,7 @@ SoFieldContainer::~SoFieldContainer()
   // area that this destructed instance is placed at. So we must
   // remove our entry (if any -- we can just ignore the return value,
   // no harm is done if no data was set for this instance).
-  (void)sofieldcontainer_userdata_dict->remove(this);
+  (void)sofieldcontainer_userdata_dict->erase(this);
 }
 
 // *************************************************************************
@@ -181,7 +181,7 @@ public:
 };
 
 
-typedef SbHash<SbBool, const SoFieldContainer *> ContentsCopiedMap;
+typedef SbHash<const SoFieldContainer *, SbBool> ContentsCopiedMap;
 
 typedef struct {
   SbList<SoFieldContainerCopyMap *> * copiedinstancestack;
@@ -927,7 +927,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 
   const SoNode * protonode = coin_safe_cast<const SoNode *>(orig);
   SoProtoInstance * protoinst = protonode ?
-    SoProtoInstance::findProtoInstance(protonode) : NULL; 
+    SoProtoInstance::findProtoInstance(protonode) : NULL;
 
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
@@ -988,20 +988,6 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   return cp;
 }
 
-//
-// Used to unref() copied instances (we ref() in addCopy()).
-//
-struct fieldcontainer_unref_node :
-  public SbHash<const SoFieldContainer *,
-              const SoFieldContainer *>::ApplyFunctor<void *>
-{
-  void operator()(const SoFieldContainer * & COIN_UNUSED_ARG(key),
-                  const SoFieldContainer * & fieldcontainer,
-                  void * COIN_UNUSED_ARG(closure)) {
-    fieldcontainer->unref();
-  }
-};
-
 /*!
   \COININTERNAL
 
@@ -1022,8 +1008,15 @@ SoFieldContainer::copyDone(void)
   assert(contentscopied);
 
   // unref all copied instances. See comment in addCopy().
-  fieldcontainer_unref_node functor;
-  copiedinstances->apply(functor, static_cast<void *>(NULL));
+  for(
+      SoFieldContainerCopyMap::const_iterator iter =
+       copiedinstances->const_begin();
+      iter!=copiedinstances->const_end();
+      ++iter
+      ) {
+    iter->obj->unref();
+  }
+
 
   delete copiedinstances;
   delete contentscopied;

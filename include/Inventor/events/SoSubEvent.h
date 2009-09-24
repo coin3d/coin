@@ -24,12 +24,20 @@
  *
 \**************************************************************************/
 
-#include <Inventor/events/SoEvent.h>
 #include <Inventor/C/tidbits.h>
 
 // *************************************************************************
 
 #define SO_EVENT_HEADER() \
+private: \
+  static SoType classTypeId; \
+  static void cleanupClass(void) { classTypeId STATIC_SOTYPE_INIT; }; \
+  static void * createInstance(void); \
+public: \
+  static SoType getClassTypeId(void); \
+  virtual SoType getTypeId(void) const
+
+#define SO_EVENT_ABSTRACT_HEADER() \
 private: \
   static SoType classTypeId; \
   static void cleanupClass(void) { classTypeId STATIC_SOTYPE_INIT; }; \
@@ -39,12 +47,33 @@ public: \
 
 // *************************************************************************
 
-#define SO_EVENT_SOURCE(_class_) \
+#define SO_EVENT_ABSTRACT_SOURCE(_class_) \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
+#define SO_EVENT_SOURCE(_class_) \
+SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+void * _class_::createInstance(void) { return static_cast<void *>(new _class_); } \
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
+
 // *************************************************************************
+
+#define SO_EVENT_INIT_ABSTRACT_CLASS(_class_, _parentclass_) \
+  do { \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    /* Make sure superclass get initialized before subclass. */ \
+    assert(_parentclass_::getClassTypeId() != SoType::badType()); \
+    \
+    _class_::classTypeId = \
+      SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_class_)); \
+    /* FIXME: internal code should not use this function, but use the coin_atexit() function */ \
+    /* with priority set to CC_ATEXIT_NORMAL. As it is now, the clean-up functions for */ \
+    /* these classes will always be run before all other Coin at-exit clean-ups. 20070126 mortene */ \
+    cc_coin_atexit(reinterpret_cast<coin_atexit_f *>(cleanupClass)); \
+  } while (0)
 
 #define SO_EVENT_INIT_CLASS(_class_, _parentclass_) \
   do { \
@@ -54,7 +83,7 @@ SoType _class_::classTypeId STATIC_SOTYPE_INIT
     assert(_parentclass_::getClassTypeId() != SoType::badType()); \
     \
     _class_::classTypeId = \
-      SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_class_)); \
+      SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_class_), _class_::createInstance); \
     /* FIXME: internal code should not use this function, but use the coin_atexit() function */ \
     /* with priority set to CC_ATEXIT_NORMAL. As it is now, the clean-up functions for */ \
     /* these classes will always be run before all other Coin at-exit clean-ups. 20070126 mortene */ \

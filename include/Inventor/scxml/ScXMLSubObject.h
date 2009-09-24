@@ -53,6 +53,21 @@ private:                                                        \
 
 // *************************************************************************
 
+#define SCXML_ELEMENT_ABSTRACT_HEADER(classname)                \
+  SCXML_OBJECT_ABSTRACT_HEADER(classname)
+
+// *************************************************************************
+
+// FIXME: element-reader must be reenatrant/threadsafe
+#define SCXML_ELEMENT_HEADER(classname)                         \
+public:                                                         \
+  static ScXMLEltReader * getElementReader(void);               \
+private:                                                        \
+  static ScXMLEltReader * elementReader;                        \
+  SCXML_OBJECT_HEADER(classname)
+
+// *************************************************************************
+
 #define SCXML_OBJECT_SOURCE(classname)                          \
                                                                 \
 SoType classname::classTypeId = SoType::badType();              \
@@ -87,9 +102,23 @@ classname::getClassTypeId(void)                                 \
   return classname::classTypeId;                                \
 }
 
+#define SCXML_ELEMENT_ABSTRACT_SOURCE(classname)                \
+  SCXML_OBJECT_ABSTRACT_SOURCE(classname)
+
+#define SCXML_ELEMENT_SOURCE(classname)                         \
+ScXMLEltReader * classname::elementReader = NULL;               \
+                                                                \
+ScXMLEltReader *                                                \
+classname::getElementReader(void)                               \
+{                                                               \
+  return classname::elementReader;                              \
+}                                                               \
+                                                                \
+  SCXML_OBJECT_SOURCE(classname)
+
 // *************************************************************************
 
-#define SCXML_OBJECT_INIT_CLASS(thisclass, parentclass, xmlns, xmlclass) \
+#define SCXML_OBJECT_INIT_CLASS(thisclass, parentclass, parentname)     \
   do {                                                                  \
     SoType parenttype = SoType::fromName(SO__QUOTE(parentclass));       \
     assert(parenttype != SoType::badType());                            \
@@ -97,13 +126,19 @@ classname::getClassTypeId(void)                                 \
       SoType::createType(parenttype,                                    \
                          SbName(SO__QUOTE(thisclass)),                  \
                          thisclass::createInstance);                    \
-    ScXMLObject::registerClassType(xmlns, xmlclass,                     \
-                                   thisclass::classTypeId);             \
+ /* ScXMLObject::registerClassType(xmlns, xmlclass,                     \
+                                   thisclass::classTypeId); */          \
+  } while ( FALSE )
+
+
+#define SCXML_ELEMENT_REGISTER_READER(thisclass, xmlelement, classname) \
+  do {                                                                  \
+    thisclass::elementReader = new classname;                           \
   } while ( FALSE )
 
 // *************************************************************************
 
-#define SCXML_OBJECT_INIT_ABSTRACT_CLASS(thisclass, parentclass)        \
+#define SCXML_OBJECT_INIT_ABSTRACT_CLASS(thisclass, parentclass, parentname) \
   do {                                                                  \
     SoType parenttype = SoType::fromName(SO__QUOTE(parentclass));       \
     assert(parenttype != SoType::badType());                            \

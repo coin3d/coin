@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <Inventor/SbVec4f.h>
+#include <Inventor/SbByteBuffer.h>
 
 class SbMatrix;
 class SbVec3f;
@@ -54,6 +55,8 @@ public:
   SbRotation & operator*=(const float s);
   friend COIN_DLL_API int operator==(const SbRotation & q1, const SbRotation & q2);
   friend COIN_DLL_API int operator!=(const SbRotation & q1, const SbRotation & q2);
+  float operator[] (size_t n) const;
+
   SbBool equals(const SbRotation & r, const float tolerance) const;
   friend COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
   void multVec(const SbVec3f & src, SbVec3f & dst) const;
@@ -62,6 +65,11 @@ public:
   static SbRotation slerp(const SbRotation & rot0, const SbRotation & rot1,
                           float t);
   static SbRotation identity(void);
+
+  SbString toString() const;
+  SbByteBuffer byteRepr() const;
+  SbBool fromString(const SbString & str);
+  SbBool fromByteRepr(const SbByteBuffer & repr);
 
   void print(FILE * fp) const;
 
@@ -72,5 +80,11 @@ private:
 COIN_DLL_API int operator ==(const SbRotation & q1, const SbRotation & q2);
 COIN_DLL_API int operator !=(const SbRotation & q1, const SbRotation & q2);
 COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
+
+inline float SbRotation::operator[](size_t n) const
+{
+  //Any limit checking is delegated to SbVec4f
+  return quat[n];
+}
 
 #endif // !COIN_SBROTATION_H

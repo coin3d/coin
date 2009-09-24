@@ -1,49 +1,83 @@
 RegularSources = \
+        SbStringConvert.cpp \
+        \
         ScXML.cpp \
         ScXMLObject.cpp \
-        ScXMLDocument.cpp \
-        ScXMLState.cpp \
-        ScXMLOnEntry.cpp \
-        ScXMLOnExit.cpp \
-        ScXMLInitial.cpp \
-        ScXMLFinal.cpp \
-        ScXMLAnchor.cpp \
-        ScXMLHistory.cpp \
-        ScXMLTransition.cpp \
         ScXMLEvent.cpp \
-        ScXMLInvoke.cpp \
-        ScXMLFallbackInvoke.cpp \
+        ScXMLEventTarget.cpp \
         ScXMLStateMachine.cpp \
-        SoScXMLEvent.cpp \
-        SoScXMLStateMachine.cpp \
-        SoScXMLDebugInfoInvoke.cpp \
-        SoScXMLScheduleRedrawInvoke.cpp \
-        SoScXMLScheduleTimerEventInvoke.cpp
+        ScXMLDocument.cpp \
+        \
+        ScXMLElt.cpp \
+        ScXMLScxmlElt.cpp \
+        ScXMLInitialElt.cpp \
+        ScXMLAbstractStateElt.cpp \
+        ScXMLStateElt.cpp \
+        ScXMLParallelElt.cpp \
+        ScXMLFinalElt.cpp \
+        ScXMLOnEntryElt.cpp \
+        ScXMLOnExitElt.cpp \
+        ScXMLTransitionElt.cpp \
+        ScXMLHistoryElt.cpp \
+        \
+        ScXMLExecutableElt.cpp \
+        ScXMLEventElt.cpp \
+        ScXMLIfElt.cpp \
+        ScXMLElseIfElt.cpp \
+        ScXMLElseElt.cpp \
+        ScXMLLogElt.cpp \
+        \
+        ScXMLDataModelElt.cpp \
+        ScXMLDataElt.cpp \
+        ScXMLAssignElt.cpp \
+        ScXMLValidateElt.cpp \
+        \
+        ScXMLSendElt.cpp \
+        ScXMLInvokeElt.cpp \
+        ScXMLParamElt.cpp \
+        ScXMLFinalizeElt.cpp \
+        ScXMLContentElt.cpp \
+        \
+        ScXMLAnchorElt.cpp \
+        \
+        ScXMLScriptElt.cpp \
+        \
+        ScXMLEvaluator.cpp \
+        \
+        ScXMLMinimumEvaluator.cpp \
+        eval-minimum.cpp \
+        eval-minimum-tab.cpp \
+        \
+        ScXMLXPathEvaluator.cpp \
+        ScXMLECMAScriptEvaluator.cpp
 
 LinkHackSources = \
-        all-scxml-cpp.cpp
+        all-scxml-cpp.cpp \
+        all-scxml2-cpp.cpp
 
 PublicHeaders =
 
 PrivateHeaders = \
+        SbStringConvert.h \
         ScXMLP.h \
         ScXMLCommonP.h \
-        ScXMLFallbackInvoke.h \
-        SoScXMLDebugInfoInvoke.h \
-        SoScXMLScheduleRedrawInvoke.h \
-        SoScXMLScheduleTimerEventInvoke.h \
-        \
-        ScXMLDocument.h \
-        ScXMLAnchor.h \
-        ScXMLState.h \
-        ScXMLOnEntry.h \
-        ScXMLOnExit.h \
-        ScXMLInitial.h \
-        ScXMLFinal.h \
-        ScXMLHistory.h \
-        ScXMLTransition.h
+        eval-minimum.h \
+        eval-coin.h
 
 ObsoleteHeaders =
+
+EXTRA_DIST = \
+        eval-minimum.l \
+        eval-minimum-tab.y \
+        eval-coin.l \
+        eval-coin-tab.y
+
+generate:
+	( cd $(srcdir) && \
+	  flex eval-minimum.l && \
+	  patch -p0 <eval-minimum.cpp.patch )
+	( cd $(srcdir) && \
+	  bison eval-minimum-tab.y )
 
 ##$ BEGIN TEMPLATE Make-Common(scxml, scxml)
 # **************************************************************************

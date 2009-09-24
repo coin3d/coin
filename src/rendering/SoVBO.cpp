@@ -59,7 +59,7 @@ static int vbo_debug = -1;
 static const int DEFAULT_MAX_LIMIT = 256000;
 static const int DEFAULT_MIN_LIMIT = 20;
 
-static SbHash <SbBool, uint32_t> * vbo_isfast_hash;
+static SbHash<uint32_t, SbBool> * vbo_isfast_hash;
 
 /*!
   Constructor
@@ -88,22 +88,6 @@ SoVBO::vbo_delete(void * closure, uint32_t contextid)
   cc_glglue_glDeleteBuffers(glue, 1, &id);
 }
 
-//
-// Callback from SbHash
-//
-struct vbo_schedule :
-  public SbHash <GLuint, uint32_t>::ApplyFunctor<void *>
-{
-  void operator()(uint32_t & key,
-                GLuint & value,
-                void * closure
-                )
-  {
-    void * ptr = (void*) ((uintptr_t) value);
-    SoGLCacheContextElement::scheduleDeleteCallback(key, SoVBO::vbo_delete, ptr);
-  }
-};
-
 /*!
   Destructor
 */
@@ -111,8 +95,17 @@ SoVBO::~SoVBO()
 {
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
-  vbo_schedule functor;
-  this->vbohash.apply(functor, static_cast<void *>(NULL));
+  for(
+      SbHash<uint32_t, GLuint>::const_iterator iter =
+       this->vbohash.const_begin();
+      iter!=this->vbohash.const_end();
+      ++iter
+      )
+    {
+      void * ptr = (void*) ((uintptr_t) iter->obj);
+      SoGLCacheContextElement::scheduleDeleteCallback(iter->key, SoVBO::vbo_delete, ptr);
+  }
+
   if (this->didalloc) {
     char * ptr = (char*) this->data;
     delete[] ptr;
@@ -135,7 +128,7 @@ SoVBO::init(void)
 {
   coin_glglue_add_instance_created_callback(context_created, NULL);
 
-  vbo_isfast_hash = new SbHash <SbBool, uint32_t> (3);
+  vbo_isfast_hash = new SbHash<uint32_t, SbBool> (3);
   coin_atexit(vbo_atexit_cleanup, CC_ATEXIT_NORMAL);
 
   // use COIN_VBO_MAX_LIMIT to set the largest VBO we create
@@ -202,8 +195,16 @@ void *
 SoVBO::allocBufferData(intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
-  vbo_schedule functor;
-  this->vbohash.apply(functor, static_cast<void *>(NULL));
+  for(
+      SbHash<uint32_t, GLuint>::const_iterator iter =
+       this->vbohash.const_begin();
+      iter!=this->vbohash.const_end();
+      ++iter
+      ) {
+    void * ptr = (void*) ((uintptr_t) iter->obj);
+    SoGLCacheContextElement::scheduleDeleteCallback(iter->key, SoVBO::vbo_delete, ptr);
+  }
+
   // clear hash table
   this->vbohash.clear();
 
@@ -232,8 +233,17 @@ void
 SoVBO::setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid)
 {
   // schedule delete for all allocated GL resources
-  vbo_schedule functor;
-  this->vbohash.apply(functor, static_cast<void *>(NULL));
+  for(
+      SbHash<uint32_t, GLuint>::const_iterator iter =
+       this->vbohash.const_begin();
+      iter!=this->vbohash.const_end();
+      ++iter
+      ) {
+    void * ptr = (void*) ((uintptr_t) iter->obj);
+    SoGLCacheContextElement::scheduleDeleteCallback(iter->key, SoVBO::vbo_delete, ptr);
+  }
+
+
   // clear hash table
   this->vbohash.clear();
 
@@ -331,7 +341,7 @@ SoVBO::context_destruction_cb(uint32_t context, void * userdata)
   if (thisp->vbohash.get(context, buffer)) {
     const cc_glglue * glue = cc_glglue_instance((int) context);
     cc_glglue_glDeleteBuffers(glue, 1, &buffer);
-    thisp->vbohash.remove(context);
+    thisp->vbohash.erase(context);
   }
 }
 

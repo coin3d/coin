@@ -70,10 +70,17 @@
 #include <Inventor/SbMatrix.h>
 #include <cassert>
 #include <cfloat>
+#include "coinString.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+/*!
+  \fn float SbRotation::operator[](size_t n) const
+
+  \brief returns the n'th quaternion of this rotation
+*/
 
 /*!
   The default constructor just initializes a valid rotation. The
@@ -143,21 +150,21 @@ SbRotation::SbRotation(const SbMatrix & m)
   #include <Inventor/SbRotation.h>
   #include <Inventor/SbVec3f.h>
   #include <cstdio>
-  
+
   int
   main(void)
   {
     SbVec3f from(10, 0, 0);
     SbVec3f to(0, 10, 0);
-  
+
     SbRotation rot(from, to);
-  
+
     SbVec3f axis;
     float angle;
     rot.getValue(axis, angle);
     axis.print(stdout);
     printf("  angle==%f\n", angle);
-  
+
     return 0;
   }
   \endcode
@@ -213,7 +220,7 @@ SbRotation::setValue(const float q0, const float q1,
     SoDebugError::postWarning("SbRotation::setValue",
                               "Quarternion has zero length => "
                               "undefined rotation.");
-#endif // COIN_DEBUG    
+#endif // COIN_DEBUG
   }
   return *this;
 }
@@ -363,7 +370,7 @@ SbRotation::setValue(const float q[4])
     SoDebugError::postWarning("SbRotation::setValue",
                               "Quarternion has zero length => "
                               "undefined rotation.");
-#endif // COIN_DEBUG    
+#endif // COIN_DEBUG
   }
   return *this;
 }
@@ -378,7 +385,7 @@ SbRotation &
 SbRotation::setValue(const SbMatrix & m)
 {
   float scalerow = m[0][0] + m[1][1] + m[2][2];
-  
+
   if (scalerow > 0.0f) {
     float s = static_cast<float>(sqrt(scalerow + m[3][3]));
     this->quat[3] = s * 0.5f;
@@ -597,17 +604,17 @@ operator*(const SbRotation & q1, const SbRotation & q2)
 /*!
   Rotate the \a src vector and put the result in \a dst.
 
-  It is safe to let src and dst be the same SbVec3f instance. 
+  It is safe to let src and dst be the same SbVec3f instance.
 */
 void
 SbRotation::multVec(const SbVec3f & src, SbVec3f & dst) const
 {
   SbVec3f qv(this->quat[0], this->quat[1], this->quat[2]);
   float r = this->quat[3];
-  
+
   SbVec3f a = qv.cross(src);
   SbVec3f b = qv.cross(a);
-  
+
   dst = src + 2.0f * (r * a + b);
 }
 
@@ -659,12 +666,12 @@ SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
     dot = -dot;
     to.quat.negate();
   }
-  
+
   // fallback to linear interpolation, in case we run out of floating
   // point precision
   float scale0 = 1.0f - t;
   float scale1 = t;
-  
+
   if ((1.0f - dot) > FLT_EPSILON) {
     float angle = static_cast<float>(acos(dot));
     float sinangle = static_cast<float>(sin(angle));
@@ -688,6 +695,46 @@ SbRotation::identity(void)
 }
 
 /*!
+  Return a string representation of this object
+*/
+SbString
+SbRotation::toString() const
+{
+  return ToString(*this);
+}
+
+/*!
+  Return a byte(binary) representation of this object
+*/
+SbByteBuffer
+SbRotation::byteRepr() const
+{
+  return ToByteRepr(*this);
+}
+
+/*!
+  Convert from a byte(binary) representation, return wether this is a valid conversion
+*/
+SbBool
+SbRotation::fromByteRepr(const SbByteBuffer & repr)
+{
+  SbBool conversionOk;
+  *this = FromByteRepr<SbRotation>(repr,&conversionOk);
+  return conversionOk;
+}
+
+/*!
+  Convert from a string representation, return wether this is a valid conversion
+*/
+SbBool
+SbRotation::fromString(const SbString & str)
+{
+  SbBool conversionOk;
+  *this = FromString<SbRotation>(str,&conversionOk);
+  return conversionOk;
+}
+
+/*!
   Dump the state of this object to the \a fp file stream. Only works
   in debug version of library, method does nothing in an optimized
   compile.
@@ -699,3 +746,173 @@ SbRotation::print(FILE * fp) const
   this->quat.print(fp);
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbTypeInfo.h>
+#include <boost/lexical_cast.hpp>
+#include <cassert>
+
+// Test for almostEquality
+static bool floatEquals(float A, float B, int maxUlps)
+{
+    // Make sure maxUlps is non-negative and small enough that the
+    // default NAN won't compare as equal to anything.
+    assert(maxUlps > 0 && maxUlps < 4 * 1024 * 1024);
+    int aInt = *(int*)&A;
+    // Make aInt lexicographically ordered as a twos-complement int
+    if (aInt < 0)
+        aInt = 0x80000000 - aInt;
+    // Make bInt lexicographically ordered as a twos-complement int
+    int bInt = *(int*)&B;
+    if (bInt < 0)
+        bInt = 0x80000000 - bInt;
+    int intDiff = abs(aInt - bInt);
+    if (intDiff <= maxUlps)
+        return true;
+    return false;
+}
+
+typedef SbRotation ToTest;
+BOOST_AUTO_TEST_CASE(operatorBrackets)
+{
+  const int FLOAT_SENSITIVITY = 1;
+  const float SQRT2 = sqrt(2)/2;
+  SbRotation rot(0,-SQRT2,0,SQRT2);
+
+  for (int i=0;i<4;++i) {
+    int premultiply = ((i&0x1)*((i&0x2)-1));
+    float testVal = premultiply*SQRT2;
+    BOOST_CHECK_MESSAGE(
+                        floatEquals(testVal,rot[i],FLOAT_SENSITIVITY),
+                        std::string("Wrong value when trying to access value #")
+                        + boost::lexical_cast<std::string>(i)
+                        + ": "
+                        + boost::lexical_cast<std::string>(rot[i]) +
+                        " == "
+                        + boost::lexical_cast<std::string>(testVal)
+                        );
+  }
+}
+
+BOOST_AUTO_TEST_CASE(toString) {
+  ToTest val(0, -0.707106829, 0, 0.707106829);
+  SbString str("<0, -0.707106829, 0, 0.707106829>");
+  BOOST_CHECK_MESSAGE(str == val.toString(),
+                      std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
+
+}
+
+BOOST_AUTO_TEST_CASE(fromString) {
+  ToTest foo;
+  SbString test = "<0, -0.707106829, 0, 0.707106829>";
+  ToTest trueVal(0, -0.707106829, 0, 0.707106829);
+  SbBool conversionOk = foo.fromString(test);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(fromXMLTypeString) {
+  ToTest foo;
+  SbString test = "SbRotation(0.5,0.5,0.5,0.5)";
+  ToTest trueVal(0.5,0.5,0.5,0.5);
+  SbBool conversionOk = foo.fromString(test);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(fromXMLTypeShortString) {
+  ToTest foo;
+  SbString test = "(0,0.5,0.75,0)";
+  ToTest trueVal(0,0.5,0.75,0);
+  SbBool conversionOk = foo.fromString(test);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+/*
+  This tests check if we can use a strange, but allowable
+  representation. In the future we may want to disallow this, but it
+  should be a concious decission.
+*/
+BOOST_AUTO_TEST_CASE(fromStrangeStrings) {
+  ToTest foo;
+
+  SbString test = "<0,0.5,0.75,0)";
+  ToTest trueVal(0,0.5,0.75,0);
+  SbBool conversionOk = foo.fromString(test);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+
+  test = "(0.5,0.5,  0.5,0.5>";
+  trueVal = ToTest(0.5,0.5,0.5,0.5);
+  foo.fromString(test);
+  BOOST_CHECK_MESSAGE(trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(fromInvalidString) {
+  ToTest foo;
+  SbString test = "<a,2,3>";
+  ToTest trueVal(1,2,3,4);
+  SbBool conversionOk = foo.fromString(test);
+  BOOST_CHECK_MESSAGE(conversionOk == FALSE,
+                      std::string("Able to convert from ") + test.getString() + " which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " representation");
+}
+
+BOOST_AUTO_TEST_CASE(byteRepr) {
+  ToTest val(0,0,0,1);
+  /*
+  for (int i=0;i<3;++i) {
+    union {
+      SbTypeInfo<ToTest>::PrimitiveType pt;
+      uint32_t i;
+    } tmp;
+    tmp.i = 0;
+
+    for (int j=0;j<sizeof(SbTypeInfo<ToTest>::PrimitiveType);++j) {
+      tmp.i|=(i*sizeof(SbTypeInfo<ToTest>::PrimitiveType)+j+'0')<<(j*8);
+    }
+    val[i]=tmp.pt;
+  }
+  */
+  SbByteBuffer buf = val.byteRepr();
+
+
+  //FIXME: This check probably needs to be rewritten for a big-endian machine
+  const char ToCheck [] = { 0,0,0,0, 0,0,0,0, 0,0,0,0, 0x3f,0x80,0,0,  '\0'};
+  BOOST_CHECK_MESSAGE(buf.size() == (sizeof(ToCheck)-1),
+                        std::string("Wrong size in byterepresentation, is ") + boost::lexical_cast<std::string>(buf.size()) + " should be " + boost::lexical_cast<std::string>((sizeof(ToCheck)-1))
+                      );
+  bool allOk = true;
+  for (int i=0;i<sizeof(ToCheck)-1;++i) {
+    if(buf[i]!=ToCheck[i]) {
+      printf("CharVal %d: %x != %x \n",i,static_cast<unsigned char>(buf[i]),static_cast<unsigned char>(ToCheck[i]));
+      allOk=false;
+    }
+  }
+
+  BOOST_CHECK_MESSAGE(allOk,
+                      "Wrong pattern in byterepresentation.");
+}
+
+BOOST_AUTO_TEST_CASE(fromByteRepr) {
+  ToTest foo(-1,2,3,4);
+  ToTest bar;
+
+  SbBool conversionOk = bar.fromByteRepr(foo.byteRepr());
+
+  BOOST_CHECK_MESSAGE(conversionOk && foo == bar,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + bar.toString().getString()    );
+}
+
+BOOST_AUTO_TEST_CASE(fromInvalidByteRepr) {
+  ToTest bar;
+  SbByteBuffer test("FOOBAR");
+
+  SbBool conversionOk = bar.fromByteRepr(test);
+
+  BOOST_CHECK_MESSAGE(conversionOk == FALSE,
+                      std::string("Able to convert from '") + test.constData() + "' which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " binary representation");
+}
+
+#endif //COIN_TEST_SUITE
