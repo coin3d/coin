@@ -57,6 +57,9 @@ SoNurbsP<Master>::tessVertex(float * vertex, void * data)
 {
   coin_nurbs_cbdata * cbdata = static_cast<coin_nurbs_cbdata *>(data);
   float to3d = cbdata->is4D ? vertex[3] : 1.0f;
+  // it's necesssary to have this test, since even when sending 4D
+  // coordinates w can sometimes be 0.0 (it just depends on the input
+  // data I guess).
   if (to3d == 0.0f) {
     to3d = 1.0f;
   }
