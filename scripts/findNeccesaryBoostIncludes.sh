@@ -31,6 +31,15 @@
 #you will want to make sure it is not picked up, when you are syncing
 #against another boost base.
 
+#Since mkdirhier is not working with absolute paths on cygwin, lets do a workaround
+mkdirhierWorkaround() {
+    if [ -n $(echo -n $1 | cut -d/ -f1) ]
+    then
+      (cd / && mkdirhier $(echo -n $1 | cut -d/  -f2-))
+    else
+        mkdirhier $1
+    fi
+}
 
 error() {
     echo $@ >/dev/stderr
@@ -74,6 +83,7 @@ then
     exit 1
 fi
 
+DETECTCOMMAND="make 2>&1 | egrep ': No such file or directory' | cut -d: -f5 | cut -d/ -f2- | cut -d\'  -f1 | sort | uniq"
 
 CONFIGDIRS="
 config
@@ -89,17 +99,16 @@ for cdir in ${CONFIGDIRS}
 do
     oneup=$(dirname ${cdir})
     #name=$(basename ${cdir})
-    mkdirhier ${COINDIR}/include/boost/${oneup}
-    cp -r ${BOOSTDIR}/${cdir} ${COINDIR}/include/boost/${oneup} 2>/dev/null || error -e "No such file or directory: ${BOOSTDIR}/${cdir}.\nYou need to revise your special includes."
+    mkdirhierWorkaround ${COINDIR}/include/boost/${oneup}
+    cp -r ${BOOSTDIR}/${cdir} ${COINDIR}/include/boost/${oneup} || error -e "No such file or directory: ${BOOSTDIR}/${cdir}.\nYou need to revise your special includes."
 done
-exit 0
 
 cd ${BUILDDIR}
-for file in $(make 2>&1 | egrep 'No such file or directory$' | cut -d: -f5 | cut -d/ -f2- | sort | uniq)
+for file in $(eval ${DETECTCOMMAND})
 do
     reallyCopy ${BOOSTDIR}/$file ${COINDIR}/include/boost/$file
 done
-REMAINING=$(make 2>&1 | egrep 'No such file or directory$' | cut -d: -f5 | sort | uniq)
+REMAINING=$(eval ${DETECTCOMMAND})
 echo "${REMAINING}"
 if [ -n "${REMAINING}" ]
 then
