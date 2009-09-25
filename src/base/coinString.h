@@ -1,5 +1,6 @@
 #ifndef COINSTRING_H
 #define COINSTRING_H
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbByteBuffer.h>
 #include <Inventor/SbRotation.h>
@@ -8,7 +9,6 @@
 #include <boost/xpressive/xpressive.hpp>
 #include <string>
 
-#include <arpa/inet.h>
 template <unsigned int size, typename Target, typename Source>
 struct ordered {
 };
@@ -17,7 +17,7 @@ template <typename Source>
   struct ordered<2,SbByteBuffer,Source> {
   static
   SbByteBuffer repr(const Source * in) {
-    uint16_t val = htons(*reinterpret_cast<const uint16_t *>(in));
+    uint16_t val = coin_hton_uint16(*reinterpret_cast<const uint16_t *>(in));
     return SbByteBuffer(2,reinterpret_cast<const char *>(&val));
   }
 };
@@ -26,7 +26,7 @@ template <typename Source>
   struct ordered<4,SbByteBuffer,Source> {
   static
   SbByteBuffer repr(const Source * in) {
-    uint32_t val = htonl(*reinterpret_cast<const uint32_t *>(in));
+    uint32_t val = coin_hton_uint32(*reinterpret_cast<const uint32_t *>(in));
     SbByteBuffer tmp = SbByteBuffer(4,reinterpret_cast<const char *>(&val));
     return tmp;
   }
@@ -36,7 +36,7 @@ template <typename Target>
 struct ordered<2,Target,SbByteBuffer> {
   static
     Target repr(const SbByteBuffer & in, size_t offset = 0) {
-    uint16_t val = ntohs(*reinterpret_cast<const uint16_t *>(&in[offset*2]));
+    uint16_t val = coin_ntoh_uint16(*reinterpret_cast<const uint16_t *>(&in[offset*2]));
     return *reinterpret_cast<Target*>(&val);
   }
 };
@@ -49,7 +49,7 @@ struct ordered<4,Target,SbByteBuffer> {
       Target t;
       uint32_t u32;
     } val;
-    val.u32 = ntohl(*reinterpret_cast<const uint32_t *>(&in[offset*4]));
+    val.u32 = coin_ntoh_uint32(*reinterpret_cast<const uint32_t *>(&in[offset*4]));
     return val.t;
   }
 };
