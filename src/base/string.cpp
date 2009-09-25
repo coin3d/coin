@@ -24,10 +24,10 @@
 #include <Inventor/C/base/string.h>
 
 #include <cassert>
-#include <cstring>
-#include <cstdlib>
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
@@ -103,8 +103,8 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
      infinite recursion. */
   if (debug) {
     printf("cc_string_grow_buffer: "
-           "me->bufsize==%u, me->pointer==%p, me->buffer==%p => "
-           "newsize==%d\n",
+           "me->bufsize==%z, me->pointer==%p, me->buffer==%p => "
+           "newsize==%z\n",
            me->bufsize, me->pointer, me->buffer, newsize);
   }
 
