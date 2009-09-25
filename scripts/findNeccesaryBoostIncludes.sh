@@ -26,15 +26,16 @@
 #
 #To check that everything is in order, the following command should return empty:
 # svn st | egrep -v '^A' | egrep -v '^D'
+#
+#Also always remember if you have eg. a system installation of boost,
+#you will want to make sure it is not picked up, when you are syncing
+#against another boost base.
 
 
-BASEDIR=$(pwd)
-cd $(dirname $0)/..
-COINDIR=$(pwd)
-cd ${BASEDIR}
-
-BUILDDIR=$1
-BOOSTDIR=$2
+error() {
+    echo $@ >/dev/stderr
+    exit -1
+}
 
 usage() {
     echo -e "Usage is:\n\t $0 <BUILDDIR> <BOOSTDIR>";
@@ -49,11 +50,49 @@ reallyCopy() {
     fi
 }
 
+BASEDIR=$(pwd)
+cd $(dirname $0)/..
+COINDIR=$(pwd)
+cd ${BASEDIR}
+
+if [ -z "$1" ] || [ -z "$2" ]
+then
+    usage
+    exit -1
+fi
+
+cd $1 2>/dev/null || error "No such directory: $1"
+BUILDDIR=$(pwd)
+cd ${BASEDIR}
+cd $2 2>/dev/null || error "No such directory: $2"
+BOOSTDIR=$(pwd)
+cd ${BASEDIR}
+
 if [ -z "${BUILDDIR}" ]
 then
     usage
     exit 1
 fi
+
+
+CONFIGDIRS="
+config
+smart_ptr/detail/lwm_win32_cs.hpp
+smart_ptr/detail/atomic_count_win32.hpp
+smart_ptr/detail/sp_counted_base_w32.hpp
+smart_ptr/detail/spinlock_w32.hpp
+detail/interlocked.hpp
+preprocessor/control/detail/msvc
+"
+#We will always keep the platform configuration files.
+for cdir in ${CONFIGDIRS}
+do
+    oneup=$(dirname ${cdir})
+    #name=$(basename ${cdir})
+    mkdirhier ${COINDIR}/include/boost/${oneup}
+    cp -r ${BOOSTDIR}/${cdir} ${COINDIR}/include/boost/${oneup} 2>/dev/null || error -e "No such file or directory: ${BOOSTDIR}/${cdir}.\nYou need to revise your special includes."
+done
+exit 0
 
 cd ${BUILDDIR}
 for file in $(make 2>&1 | egrep 'No such file or directory$' | cut -d: -f5 | cut -d/ -f2- | sort | uniq)
@@ -64,5 +103,9 @@ REMAINING=$(make 2>&1 | egrep 'No such file or directory$' | cut -d: -f5 | sort 
 echo "${REMAINING}"
 if [ -n "${REMAINING}" ]
 then
-    echo "${REMAINING}" | wc -l
+    exitStatus=$(echo "${REMAINING}" | wc -l)
+else
+    exitStatus=0
 fi
+echo ${exitStatus}
+exit ${exitStatus}
