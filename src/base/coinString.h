@@ -207,7 +207,7 @@ template<typename Target,typename Source, int Dimensions=1>
       InputSeparator<Source>::addRight(regexp);
     }
 
-    static Target castTo(const SbString & input, SbBool & conversionOk = TRUE)
+    static Target castTo(const SbString & input, SbBool & conversionOk)
     {
       Target val;
       SbString regexp;
@@ -241,7 +241,7 @@ template<typename Source>
       InputSeparator<Source>::addRight(regexp);
     }
 
-    static SbRotation castTo(const SbString & input, SbBool & conversionOk = TRUE)
+    static SbRotation castTo(const SbString & input, SbBool & conversionOk)
     {
       SbRotation val;
       SbString regexp;
@@ -269,8 +269,10 @@ template<typename Target, typename Source>
   static void getRegexp(SbString & regexp) {
     regexp += PrimitiveRepresentation<Target>::get();
   }
-  static Target castTo(const SbString & input, SbBool & conversionOk = TRUE) {
+  static Target castTo(const SbString & input, SbBool & conversionOk) {
     abort();
+    Target retVal;
+    return retVal;
   }
 
 };
@@ -282,7 +284,7 @@ template<typename Target,int Dimensions>
       SbTypeInfo<Target>::Dimensions * sizeof(typename SbTypeInfo<Target>::PrimitiveType);
   }
 
-  static Target castTo(const SbByteBuffer & input, SbBool & conversionOk = TRUE)
+  static Target castTo(const SbByteBuffer & input, SbBool & conversionOk)
   {
     Target retVal;
 #ifdef COIN_DEBUG_REPR
@@ -389,7 +391,7 @@ template<typename Target,typename Source, int Dimensions = 1 >
       OutputSeparator<Target>::addRight(ret);
       return ret;
     }
-    static Target castTo(const Source & input, SbBool & conversionOk = TRUE)
+    static Target castTo(const Source & input, SbBool & conversionOk)
     {
       return DimensionalStringCast<Target,Source,Dimensions>::castTo(input,conversionOk);
     }
@@ -400,7 +402,7 @@ template<typename Target, typename Source>
   static Target castFrom(const Source & val) {
     return lexical_cast<Target>(val);
   }
-  static Target castTo(const Source & input, SbBool & conversionOk = TRUE)
+  static Target castTo(const Source & input, SbBool & conversionOk)
   {
     return DimensionalStringCast<Target,Source,1>::castTo(input,conversionOk);
   }
