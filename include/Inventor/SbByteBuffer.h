@@ -1,3 +1,19 @@
+/*
+  Defining Private variables in exactly one location, to keep them in
+  sync, remember to undefine this, so this is not visible outside this
+  header, unless included from an .icc file
+*/
+/*
+  NOTE: This define is done outside the Header guard, and undefined in
+  the end. This is to make it possible to include this from an .icc
+  file, even if the header has been included from before.
+*/
+#define SBBYTEBUFFER_PRIVATE_VARIABLES \
+  size_t size_; \
+  boost::shared_array<char> buffer; \
+  SbBool invalid; \
+  static SbByteBuffer invalidBuffer_;
+
 #ifndef COIN_SBBYTEBUFFER_H
 #define COIN_SBBYTEBUFFER_H
 
@@ -10,16 +26,6 @@ class SbByteBufferP;
 #include <boost/shared_array.hpp>
 #endif //ABI_BREAKING_OPTIMIZE
 
-/*
-  Defining Private variables in exactly one location, to keep them in
-  sync, remember to undefine this, so this is not visible outside this
-  header, unless included from an .icc file
-*/
-#define SBBYTEBUFFER_PRIVATE_VARIABLES \
-  size_t size_; \
-  boost::shared_array<char> buffer; \
-  SbBool invalid; \
-  static SbByteBuffer invalidBuffer_;
 
 
 //Consider making a general Buffer class for non bytes;
@@ -62,9 +68,9 @@ class COIN_DLL_API SbByteBuffer {
 #include "SbByteBufferP.icc"
 #endif //ABI_BREAKING_OPTIMIZE
 
+#endif // !COIN_SBBYTEBUFFER_H
+
 //The SBBYTEBUFFER_PRIVATE_VARIABLES must survice an inclusion from the .icc file
 #ifndef COIN_ICC_INCLUDE
 #undef SBBYTEBUFFER_PRIVATE_VARIABLES
 #endif //COIN_ICC_INCLUDE
-
-#endif // !COIN_SBBYTEBUFFER_H

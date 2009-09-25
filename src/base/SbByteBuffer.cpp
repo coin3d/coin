@@ -4,11 +4,6 @@
 SbByteBuffer SbByteBuffer::invalidBuffer_;
 #else
 #define PIMPL_IMPLEMENTATION
-//FIXME: This is to avoid strange errors when doing an
-//--enable-compact build. Consider this a really ugly hack, which we
-//want to find a better solution for. BFG 20090302
-#undef COIN_SBBYTEBUFFER_H
-
 #include <Inventor/SbByteBufferP.icc>
 
 SbByteBuffer SbByteBufferP::invalidBuffer_;
