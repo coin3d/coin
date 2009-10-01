@@ -33,6 +33,9 @@
 #include <Inventor/SbVec3d.h>
 #include <Inventor/SbRotation.h>
 
+using std::strcmp;
+using std::strncmp;
+
 SbStringConvert::TypeIdentity
 SbStringConvert::typeOf(SbString & str)
 {
