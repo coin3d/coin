@@ -74,7 +74,7 @@ public:
   SbByteBuffer byteRepr() const;
   SbBool fromString(const SbString & str);
   SbBool fromByteRepr(const SbByteBuffer & repr);
-  void print(FILE * fp) const;
+  void print(std::FILE * fp) const;
 
 protected:
   unsigned short vec[3];
