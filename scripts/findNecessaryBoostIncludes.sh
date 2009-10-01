@@ -31,6 +31,15 @@
 #you will want to make sure it is not picked up, when you are syncing
 #against another boost base.
 
+
+OS=$(uname)
+if [ "${OS}" = "SunOS" ]
+then 
+  MKDIRHIER="/usr/X11/bin/mkdirhier"
+else
+  MKDIRHIER="mkdirhierWorkaround"
+fi
+
 #Since mkdirhier is not working with absolute paths on cygwin, lets do a workaround
 mkdirhierWorkaround() {
     if [ -n $(echo -n $1 | cut -d/ -f1) ]
@@ -54,7 +63,7 @@ usage() {
 reallyCopy() {
     if ! cp $1 $2
     then
-        mkdirhier $(dirname $2)
+        ${MKDIRHIER} $(dirname $2)
         cp $1 $2
     fi
 }
@@ -83,23 +92,23 @@ then
     exit 1
 fi
 
-DETECTCOMMAND="make 2>&1 | egrep ': No such file or directory' | cut -d: -f5 | cut -d/ -f2- | cut -d\'  -f1 | sort | uniq"
+if [ "${OS}" = "SunOS" ]
+then 
+  DETECTCOMMAND="make 2>&1 | egrep ': Error: Could not open include file' | cut -d: -f3- | cut -d\< -f2- | cut -d\> -f1 | cut -d/ -f2- | sort | uniq"
+else
+  DETECTCOMMAND="make 2>&1 | egrep ': No such file or directory' | cut -d: -f5 | cut -d/ -f2- | cut -d\'  -f1 | sort | uniq"
+fi
 
 CONFIGDIRS="
 config
-smart_ptr/detail/lwm_win32_cs.hpp
-smart_ptr/detail/atomic_count_win32.hpp
-smart_ptr/detail/sp_counted_base_w32.hpp
-smart_ptr/detail/spinlock_w32.hpp
-detail/interlocked.hpp
-preprocessor/control/detail/msvc
 "
+
 #We will always keep the platform configuration files.
 for cdir in ${CONFIGDIRS}
 do
     oneup=$(dirname ${cdir})
     #name=$(basename ${cdir})
-    mkdirhierWorkaround ${COINDIR}/include/boost/${oneup}
+    ${MKDIERHIER} ${COINDIR}/include/boost/${oneup}
     cp -r ${BOOSTDIR}/${cdir} ${COINDIR}/include/boost/${oneup} || error -e "No such file or directory: ${BOOSTDIR}/${cdir}.\nYou need to revise your special includes."
 done
 
