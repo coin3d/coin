@@ -49,6 +49,9 @@ public:
     ALL = (NORMAL|TEXCOORD|COLOR)
   };
 
+  virtual SbBool isValid(const SoState * state) const;
+  void close(SoState * state);
+
   void renderTriangles(SoState * state, const int arrays = ALL) const;
   void renderLines(SoState * state, const int arrays = ALL) const;
   void renderPoints(SoState * state, const int array = ALL) const;

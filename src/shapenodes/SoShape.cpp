@@ -1748,7 +1748,7 @@ SoShape::validatePVCache(SoGLRenderAction * action)
     // done before to state->pop() call.
     state->pop();
     SoCacheElement::setInvalid(storedinvalid);
-    PRIVATE(this)->pvcache->fit();
+    PRIVATE(this)->pvcache->close(state);
     PRIVATE(this)->testSetupShapeHints(this);
   }
 }

@@ -154,6 +154,9 @@ public:
   SoVBO * tangentvbo;
   SbList <SoVBO*> multitexvbo;
 
+  SoGLLazyElement::GLState prestate;
+  SoGLLazyElement::GLState poststate;
+
   void addVertex(const Vertex & v);
 
   void renderImmediate(const cc_glglue * glue,
@@ -258,6 +261,10 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 
   }
 #endif // debug
+
+  if (state->isElementEnabled(SoGLLazyElement::getClassStackIndex())) {
+    SoGLLazyElement::beginCaching(state, &PRIVATE(this)->prestate, &PRIVATE(this)->poststate);
+  }
 }
 
 /*!
@@ -288,6 +295,27 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
     delete[] PRIVATE(this)->multitexcoords;
   }
   delete [] PRIVATE(this)->deptharray;
+}
+
+SbBool 
+SoPrimitiveVertexCache::isValid(const SoState * state) const
+{
+  if (state->isElementEnabled(SoGLLazyElement::getClassStackIndex())) {
+    if (!SoGLLazyElement::preCacheCall(state , &PRIVATE(this)->prestate)) return FALSE;
+  }
+  return inherited::isValid(state);
+}
+
+/*!
+  Closes the cache after it's created. Takes care of SoGLLazyElement synchronization.
+*/
+void 
+SoPrimitiveVertexCache::close(SoState * state)
+{
+  if (state->isElementEnabled(SoGLLazyElement::getClassStackIndex())) {
+    SoGLLazyElement::endCaching(state);
+  }
+  this->fit();
 }
 
 void
