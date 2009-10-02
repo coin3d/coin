@@ -1024,7 +1024,7 @@ SoGLLazyElement::endCaching(SoState * state)
 }
 
 void
-SoGLLazyElement::postCacheCall(SoState * state, GLState * poststate)
+SoGLLazyElement::postCacheCall(const SoState * state, const GLState * poststate)
 {
   SoGLLazyElement * elem = getInstance(state);
   uint32_t mask = poststate->cachebitmask;
@@ -1081,7 +1081,7 @@ SoGLLazyElement::postCacheCall(SoState * state, GLState * poststate)
 }
 
 SbBool
-SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
+SoGLLazyElement::preCacheCall(const SoState * state, const GLState * prestate)
 {
   SoGLLazyElement * elem = getInstance(state);
 

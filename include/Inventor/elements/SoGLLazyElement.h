@@ -127,8 +127,8 @@ public:
                            SoGLLazyElement::GLState * poststate);
   static void endCaching(SoState * state);
 
-  static SbBool preCacheCall(SoState * state, SoGLLazyElement::GLState * prestate);
-  static void postCacheCall(SoState * state, SoGLLazyElement::GLState * poststate);
+  static SbBool preCacheCall(const SoState * state, const SoGLLazyElement::GLState * prestate);
+  static void postCacheCall(const SoState * state, const SoGLLazyElement::GLState * poststate);
 
   static void mergeCacheInfo(SoState * state,
                              SoGLLazyElement::GLState * childprestate,
