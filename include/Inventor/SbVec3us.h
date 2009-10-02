@@ -28,6 +28,8 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbByteBuffer.h>
+#include <Inventor/SbString.h>
+
 #ifndef NDEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // !NDEBUG
@@ -72,7 +74,7 @@ public:
   SbByteBuffer byteRepr() const;
   SbBool fromString(const SbString & str);
   SbBool fromByteRepr(const SbByteBuffer & repr);
-  void print(FILE * fp) const;
+  void print(std::FILE * fp) const;
 
 protected:
   unsigned short vec[3];

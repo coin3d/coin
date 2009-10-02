@@ -94,7 +94,7 @@ SoScXMLNavigation::initClasses(void)
   SoScXMLFlightControlTarget::constructSingleton();
   SoScXMLMotionTarget::constructSingleton();
 
-  coin_atexit(static_cast<coin_atexit_f*>(SoScXMLNavigation::cleanClasses), CC_ATEXIT_NORMAL);
+  coin_atexit(reinterpret_cast<coin_atexit_f*>(SoScXMLNavigation::cleanClasses), CC_ATEXIT_NORMAL);
 }
 
 void
