@@ -56,14 +56,17 @@ void APIENTRY
 SoNurbsP<Master>::tessVertex(float * vertex, void * data)
 {
   coin_nurbs_cbdata * cbdata = static_cast<coin_nurbs_cbdata *>(data);
-  float to3d = cbdata->is4D ? vertex[3] : 1.0f;
-  // it's necesssary to have this test, since even when sending 4D
-  // coordinates w can sometimes be 0.0 (it just depends on the input
-  // data I guess).
-  if (to3d == 0.0f) {
-    to3d = 1.0f;
-  }
-  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2])/to3d);
+  // We've had a different version of this code, where we accounted for
+  // 4D homogeneous coordinates. However, the GLU documentation states:
+  //
+  // "All the generated vertices have dimension 3, that is,
+  // homogeneous coordinates have been transformed into affine
+  // coordinates."
+  
+  // Any GLU implementation that sends 4D coordinates should be
+  // considered buggy.
+  
+  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
