@@ -3,6 +3,18 @@
 
 makefile=$1
 filter=""
+#Temporary solution to get internal tests running, enable by setting this to true
+includeInternalTests=false
+
+#Create a list with uniq items
+uniqueList () {
+    (
+        for elem in $@
+        do
+            echo ${elem}
+        done
+     ) | sort | uniq | xargs echo
+}
 
 shift
 while test $# -gt 0; do
@@ -28,6 +40,7 @@ exec 5>$makefile
 srcdir=..
 
 filelist=""
+internal_filelist=""
 extractlist=""
 objlist=""
 
@@ -47,13 +60,28 @@ for file in `cd $srcdir; find src -type f -print | LC_ALL="C" sort`; do
   case $file in
   *${filter}*)
     infile=$srcdir/$file
-    if test `grep -c "^#if.*COIN_TEST_SUITE" $infile` = 0; then
-      continue
+    if test `grep -c "^#if.*COIN_INT_TEST_SUITE" $infile` != 0; then
+        if ${includeInternalTests}
+        then
+            internal_filelist="${internal_filelist} ${file}"
+        else
+            #We run into trouble if we include these tests in the public tests
+            continue
+        fi
     fi
-    filelist="$filelist $file"
+    if test `grep -c "^#if.*COIN_TEST_SUITE" $infile` != 0; then
+      filelist="${filelist} ${file}"
+    fi
     ;;
   esac
 done
+
+if ${includeInternalTests}
+then
+    #For some reason we need a space at the beginning of this list
+    filelist=" "$(uniqueList ${filelist} ${internal_filelist})
+#    filelist="${filelist} ${internal_filelist}"
+fi
 
 # **************************************************************************
 
@@ -120,8 +148,21 @@ EXEEXT = @EXEEXT@
 @MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
 @MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -l Coin
 
+EODATA
+if ${includeInternalTests}
+then
+    cat <<"EODATA" >&5
+TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite -I$(top_srcdir)/src
+TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@ -DCOIN_INT_TEST_SUITE
+EODATA
+else
+    cat <<"EODATA" >&5
 TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
 TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
+EODATA
+fi
+
+cat <<"EODATA" >&5
 TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS)
 TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@
 
