@@ -44,6 +44,9 @@
 #include <Inventor/SbVec3i32.h>
 
 #include <Inventor/SbPlane.h>
+
+#include <Inventor/fields/SoSFVec3f.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -578,27 +581,7 @@ SbVec3f::setValue(const SbVec3i32 & v)
 SbString
 SbVec3f::toString() const
 {
-  return ToString(*this);
-}
-
-/*!
-  Return a byte(binary) representation of this object
-*/
-SbByteBuffer
-SbVec3f::byteRepr() const
-{
-  return ToByteRepr(*this);
-}
-
-/*!
-  Convert from a byte(binary) representation, return wether this is a valid conversion
-*/
-SbBool
-SbVec3f::fromByteRepr(const SbByteBuffer & repr)
-{
-  SbBool conversionOk;
-  *this = FromByteRepr<SbVec3f>(repr,&conversionOk);
-  return conversionOk;
+  return CoinInternal::ToString(*this);
 }
 
 /*!
@@ -608,7 +591,7 @@ SbBool
 SbVec3f::fromString(const SbString & str)
 {
   SbBool conversionOk;
-  *this = FromString<SbVec3f>(str,&conversionOk);
+  *this = CoinInternal::FromString<SbVec3f>(str,&conversionOk);
   return conversionOk;
 }
 
@@ -632,7 +615,7 @@ SbVec3f::print(FILE * fp) const
 typedef SbVec3f ToTest;
 BOOST_AUTO_TEST_CASE(toString) {
   ToTest val(1.0/3,2,3);
-  SbString str("<0.333333343, 2, 3>");
+  SbString str("0.33333334 2 3");
   BOOST_CHECK_MESSAGE(str == val.toString(),
                       std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
 
@@ -640,113 +623,27 @@ BOOST_AUTO_TEST_CASE(toString) {
 
 BOOST_AUTO_TEST_CASE(fromString) {
   ToTest foo;
-  SbString test = "<0.333333343, -2, -3.0>";
+  SbString test = "0.333333343 -2 -3.0";
   ToTest trueVal(0.333333343,-2,-3);
   SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
                       std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
 }
 
-BOOST_AUTO_TEST_CASE(fromXMLTypeString) {
+BOOST_AUTO_TEST_CASE(fromInvalidString1) {
   ToTest foo;
-  SbString test = "SbVec3f(1,-2,3)";
-  ToTest trueVal(1,-2,3);
-  SbBool conversionOk = foo.fromString(test);
-  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-}
-
-BOOST_AUTO_TEST_CASE(fromXMLTypeShortString) {
-  ToTest foo;
-  SbString test = "( 1.3  , -2.0  ,   3.3  )";
-  ToTest trueVal(1.3,-2.0,3.3);
-  SbBool conversionOk = foo.fromString(test);
-  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-}
-
-/*
-  This tests check if we can use a strange, but allowable
-  representation. In the future we may want to disallow this, but it
-  should be a concious decission.
-*/
-BOOST_AUTO_TEST_CASE(fromStrangeStrings) {
-  ToTest foo;
-
-  SbString test = "<1,-2,3)";
-  ToTest trueVal(1,-2,3);
-  SbBool conversionOk = foo.fromString(test);
-  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-
-  test = "(1,-2,3>";
-  trueVal = ToTest(1,-2,3);
-  foo.fromString(test);
-  BOOST_CHECK_MESSAGE(trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-}
-
-BOOST_AUTO_TEST_CASE(fromInvalidString) {
-  ToTest foo;
-  SbString test = "<a,2,3>";
-  ToTest trueVal(1,2,3);
+  SbString test = "a 2 3";
   SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk == FALSE,
                       std::string("Able to convert from ") + test.getString() + " which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " representation");
 }
 
-BOOST_AUTO_TEST_CASE(byteRepr) {
-  ToTest val;
-  for (int i=0;i<3;++i) {
-    union {
-      SbTypeInfo<ToTest>::PrimitiveType pt;
-      uint32_t i;
-    } tmp;
-    tmp.i = 0;
-
-    for (int j=0;j<sizeof(SbTypeInfo<ToTest>::PrimitiveType);++j) {
-      tmp.i|=(i*sizeof(SbTypeInfo<ToTest>::PrimitiveType)+j+'0')<<(j*8);
-    }
-    val[i]=tmp.pt;
-  }
-  SbByteBuffer buf = val.byteRepr();
-
-
-  //FIXME: This check probably needs to be rewritten for a big-endian machine
-  const char ToCheck [] = "32107654;:98";
-  BOOST_CHECK_MESSAGE(buf.size() == (sizeof(ToCheck)-1),
-                        std::string("Wrong size in byterepresentation, is ") + boost::lexical_cast<std::string>(buf.size()) + " should be " + boost::lexical_cast<std::string>((sizeof(ToCheck)-1))
-                      );
-  bool allOk = true;
-  for (int i=0;i<sizeof(ToCheck)-1;++i) {
-    if(buf[i]!=ToCheck[i]) {
-      printf("CharVal %d: %x != %x \n",i,static_cast<unsigned char>(buf[i]),static_cast<unsigned char>(ToCheck[i]));
-      allOk=false;
-    }
-  }
-
-  BOOST_CHECK_MESSAGE(allOk,
-                      "Wrong pattern in byterepresentation.");
-}
-
-BOOST_AUTO_TEST_CASE(fromByteRepr) {
-  ToTest foo(-1,2,3);
-  ToTest bar;
-
-  SbBool conversionOk = bar.fromByteRepr(foo.byteRepr());
-
-  BOOST_CHECK_MESSAGE(conversionOk && foo == bar,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + bar.toString().getString()    );
-}
-
-BOOST_AUTO_TEST_CASE(fromInvalidByteRepr) {
-  ToTest bar;
-  SbByteBuffer test("FOOBAR");
-
-  SbBool conversionOk = bar.fromByteRepr(test);
-
+BOOST_AUTO_TEST_CASE(fromInvalidString2) {
+  ToTest foo;
+  SbString test = "1,2,3";
+  SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk == FALSE,
-                      std::string("Able to convert from '") + test.constData() + "' which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " binary representation");
+                      std::string("Able to convert from ") + test.getString() + " which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " representation");
 }
 
 #endif //COIN_TEST_SUITE

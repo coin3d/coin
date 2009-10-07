@@ -189,57 +189,57 @@ SoScXMLStateMachine::getVariable(const char * key) const
       if (strcmp(subkey, "getTime()") == 0) {
         SbTime timeval = coinev->getTime();
         double doubletime = timeval.getValue();
-        PRIVATE(this)->varstring = ToString(doubletime);
+        PRIVATE(this)->varstring = SbStringConvert::toString(doubletime);
         return PRIVATE(this)->varstring.getString();
       }
 
       else if (strcmp(subkey, "getPosition().x") == 0) {
         SbVec2s pos = coinev->getPosition();
-        PRIVATE(this)->varstring = ToString(static_cast<double>(pos[0]));
+        PRIVATE(this)->varstring = SbStringConvert::toString(static_cast<double>(pos[0]));
         return PRIVATE(this)->varstring.getString();
       }
       else if (strcmp(subkey, "getPosition().y") == 0) {
         SbVec2s pos = coinev->getPosition();
-        PRIVATE(this)->varstring = ToString(static_cast<double>(pos[1]));
+        PRIVATE(this)->varstring = SbStringConvert::toString(static_cast<double>(pos[1]));
         return PRIVATE(this)->varstring.getString();
       }
       else if (strcmp(subkey, "getPosition()") == 0) {
         SbVec2s pos = coinev->getPosition();
-        PRIVATE(this)->varstring = ToString(pos);
+        PRIVATE(this)->varstring = SbStringConvert::toString(pos);
         return PRIVATE(this)->varstring.getString();
       }
 
       else if (strcmp(subkey, "getNormalizedPosition().x") == 0) {
         SbVec2f pos = coinev->getNormalizedPosition(this->getViewportRegion());
-        PRIVATE(this)->varstring = ToString(static_cast<double>(pos[0]));
+        PRIVATE(this)->varstring = SbStringConvert::toString(static_cast<double>(pos[0]));
         return PRIVATE(this)->varstring.getString();
       }
       else if (strcmp(subkey, "getNormalizedPosition().y") == 0) {
         SbVec2f pos = coinev->getNormalizedPosition(this->getViewportRegion());
-        PRIVATE(this)->varstring = ToString(static_cast<double>(pos[1]));
+        PRIVATE(this)->varstring = SbStringConvert::toString(static_cast<double>(pos[1]));
         return PRIVATE(this)->varstring.getString();
       }
       else if (strcmp(subkey, "getNormalizedPosition()") == 0) {
         SbVec2f pos = coinev->getNormalizedPosition(this->getViewportRegion());
-        PRIVATE(this)->varstring = ToString(pos);
+        PRIVATE(this)->varstring = SbStringConvert::toString(pos);
         return PRIVATE(this)->varstring.getString();
       }
 
       else if (strcmp(subkey, "wasShiftDown()") == 0) {
         SbBool wasdown = coinev->wasShiftDown();
-        PRIVATE(this)->varstring = ToString<bool>(wasdown);
+        PRIVATE(this)->varstring = SbStringConvert::toString<bool>(wasdown);
         return PRIVATE(this)->varstring.getString();
       }
 
       else if (strcmp(subkey, "wasCtrlDown()") == 0) {
         SbBool wasdown = coinev->wasCtrlDown();
-        PRIVATE(this)->varstring = ToString<bool>(wasdown);
+        PRIVATE(this)->varstring = SbStringConvert::toString<bool>(wasdown);
         return PRIVATE(this)->varstring.getString();
       }
 
       else if (strcmp(subkey, "wasAltDown()") == 0) {
         SbBool wasdown = coinev->wasAltDown();
-        PRIVATE(this)->varstring = ToString<bool>(wasdown);
+        PRIVATE(this)->varstring = SbStringConvert::toString<bool>(wasdown);
         return PRIVATE(this)->varstring.getString();
       }
 
@@ -286,7 +286,7 @@ SoScXMLStateMachine::getVariable(const char * key) const
       else if (strcmp(subkey, "getTranslation()") == 0 && coinev->isOfType(SoMotion3Event::getClassTypeId())) {
         const SoMotion3Event * m3event = coin_assert_cast<const SoMotion3Event *>(coinev);
         SbVec3f translation = m3event->getTranslation();
-        PRIVATE(this)->varstring = ToString(translation);
+        PRIVATE(this)->varstring = SbStringConvert::toString(translation);
         return PRIVATE(this)->varstring.getString();
       }
 
@@ -294,7 +294,7 @@ SoScXMLStateMachine::getVariable(const char * key) const
       else if (strcmp(subkey, "getRotation()") == 0 && coinev->isOfType(SoMotion3Event::getClassTypeId())) {
         const SoMotion3Event * m3event = coin_assert_cast<const SoMotion3Event *>(coinev);
         SbRotation rotation = m3event->getRotation();
-        PRIVATE(this)->varstring = ToString(rotation);
+        PRIVATE(this)->varstring = SbStringConvert::toString(rotation);
         return PRIVATE(this)->varstring.getString();
       }
 
@@ -307,7 +307,7 @@ SoScXMLStateMachine::getVariable(const char * key) const
         SoPickedPoint * pp = rpa.getPickedPoint();
         if (pp) {
           SbVec3f pickpos = pp->getPoint();
-          PRIVATE(this)->varstring = ToString(pickpos);
+          PRIVATE(this)->varstring = SbStringConvert::toString(pickpos);
         } else {
           PRIVATE(this)->varstring.sprintf("FALSE"); // need a valid undefined-value
         }

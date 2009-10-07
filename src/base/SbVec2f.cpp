@@ -42,6 +42,9 @@
 #include <Inventor/SbVec2b.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec2i32.h>
+#include <Inventor/fields/SoSFVec2f.h>
+
+#include "coinString.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -378,14 +381,34 @@ SbVec2f::setValue(const SbVec2i32 & v)
 */
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Return a string representation of this object
 */
+SbString
+SbVec2f::toString() const
+{
+  return CoinInternal::ToString(*this);
+}
 
+/*!
+  Convert from a string representation, return wether this is a valid conversion
+*/
+SbBool
+SbVec2f::fromString(const SbString & str)
+{
+  SbBool conversionOk;
+  *this = CoinInternal::FromString<SbVec2f>(str,&conversionOk);
+  return conversionOk;
+}
+
+/*!
+  Dump the state of this object to the \a file stream. Only works in
+  debug version of library, method does nothing in an optimized
+  compile.
+*/
 void
 SbVec2f::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  fprintf( fp, "<%f, %f>", this->vec[0], this->vec[1] );
+  fputs(this->toString().getString(),fp);
 #endif // COIN_DEBUG
 }

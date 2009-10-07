@@ -68,9 +68,7 @@ public:
   static SbRotation identity(void);
 
   SbString toString() const;
-  SbByteBuffer byteRepr() const;
   SbBool fromString(const SbString & str);
-  SbBool fromByteRepr(const SbByteBuffer & repr);
 
   void print(FILE * fp) const;
 

@@ -266,6 +266,7 @@ ScXMLDocument::readFile(const char * filename)
 
   if (strncmp(filename, "coin:", 5) == 0) { // is a "resource"
     size_t buffersize = 0;
+    printf("Filename: %s\n", filename);
     SbByteBuffer buffer = CoinResources::get(filename);
     if (likely(buffer.isValid())) {
       scxmldoc = ScXMLDocument::readBuffer(buffer);
