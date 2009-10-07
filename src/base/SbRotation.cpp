@@ -68,6 +68,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
 #include <cassert>
 #include <cfloat>
 #include "coinString.h"
@@ -700,27 +701,7 @@ SbRotation::identity(void)
 SbString
 SbRotation::toString() const
 {
-  return ToString(*this);
-}
-
-/*!
-  Return a byte(binary) representation of this object
-*/
-SbByteBuffer
-SbRotation::byteRepr() const
-{
-  return ToByteRepr(*this);
-}
-
-/*!
-  Convert from a byte(binary) representation, return wether this is a valid conversion
-*/
-SbBool
-SbRotation::fromByteRepr(const SbByteBuffer & repr)
-{
-  SbBool conversionOk;
-  *this = FromByteRepr<SbRotation>(repr,&conversionOk);
-  return conversionOk;
+  return CoinInternal::ToString(*this);
 }
 
 /*!
@@ -730,7 +711,7 @@ SbBool
 SbRotation::fromString(const SbString & str)
 {
   SbBool conversionOk;
-  *this = FromString<SbRotation>(str,&conversionOk);
+  *this = CoinInternal::FromString<SbRotation>(str,&conversionOk);
   return conversionOk;
 }
 
@@ -749,6 +730,7 @@ SbRotation::print(FILE * fp) const
 
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbTypeInfo.h>
+#include <Inventor/SbVec3f.h>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
 
@@ -795,8 +777,8 @@ BOOST_AUTO_TEST_CASE(operatorBrackets)
 }
 
 BOOST_AUTO_TEST_CASE(toString) {
-  ToTest val(0, -0.707106829, 0, 0.707106829);
-  SbString str("<0, -0.707106829, 0, 0.707106829>");
+  ToTest val(SbVec3f(0, -1, 0),  1);
+  SbString str("0 -1 0  1");
   BOOST_CHECK_MESSAGE(str == val.toString(),
                       std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
 
@@ -804,115 +786,20 @@ BOOST_AUTO_TEST_CASE(toString) {
 
 BOOST_AUTO_TEST_CASE(fromString) {
   ToTest foo;
-  SbString test = "<0, -0.707106829, 0, 0.707106829>";
-  ToTest trueVal(0, -0.707106829, 0, 0.707106829);
+  SbString test = "0 -1 0 1";
+  ToTest trueVal(SbVec3f(0, -1, 0),  1);
   SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-}
-
-BOOST_AUTO_TEST_CASE(fromXMLTypeString) {
-  ToTest foo;
-  SbString test = "SbRotation(0.5,0.5,0.5,0.5)";
-  ToTest trueVal(0.5,0.5,0.5,0.5);
-  SbBool conversionOk = foo.fromString(test);
-  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-}
-
-BOOST_AUTO_TEST_CASE(fromXMLTypeShortString) {
-  ToTest foo;
-  SbString test = "(0,0.5,0.75,0)";
-  ToTest trueVal(0,0.5,0.75,0);
-  SbBool conversionOk = foo.fromString(test);
-  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-}
-
-/*
-  This tests check if we can use a strange, but allowable
-  representation. In the future we may want to disallow this, but it
-  should be a concious decission.
-*/
-BOOST_AUTO_TEST_CASE(fromStrangeStrings) {
-  ToTest foo;
-
-  SbString test = "<0,0.5,0.75,0)";
-  ToTest trueVal(0,0.5,0.75,0);
-  SbBool conversionOk = foo.fromString(test);
-  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
-
-  test = "(0.5,0.5,  0.5,0.5>";
-  trueVal = ToTest(0.5,0.5,0.5,0.5);
-  foo.fromString(test);
-  BOOST_CHECK_MESSAGE(trueVal == foo,
                       std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
 }
 
 BOOST_AUTO_TEST_CASE(fromInvalidString) {
   ToTest foo;
-  SbString test = "<a,2,3>";
+  SbString test = "2.- 2 3 4";
   ToTest trueVal(1,2,3,4);
   SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk == FALSE,
                       std::string("Able to convert from ") + test.getString() + " which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " representation");
-}
-
-BOOST_AUTO_TEST_CASE(byteRepr) {
-  ToTest val(0,0,0,1);
-  /*
-  for (int i=0;i<3;++i) {
-    union {
-      SbTypeInfo<ToTest>::PrimitiveType pt;
-      uint32_t i;
-    } tmp;
-    tmp.i = 0;
-
-    for (int j=0;j<sizeof(SbTypeInfo<ToTest>::PrimitiveType);++j) {
-      tmp.i|=(i*sizeof(SbTypeInfo<ToTest>::PrimitiveType)+j+'0')<<(j*8);
-    }
-    val[i]=tmp.pt;
-  }
-  */
-  SbByteBuffer buf = val.byteRepr();
-
-
-  //FIXME: This check probably needs to be rewritten for a big-endian machine
-  const char ToCheck [] = { 0,0,0,0, 0,0,0,0, 0,0,0,0, 0x3f,0x80,0,0,  '\0'};
-  BOOST_CHECK_MESSAGE(buf.size() == (sizeof(ToCheck)-1),
-                        std::string("Wrong size in byterepresentation, is ") + boost::lexical_cast<std::string>(buf.size()) + " should be " + boost::lexical_cast<std::string>((sizeof(ToCheck)-1))
-                      );
-  bool allOk = true;
-  for (int i=0;i<sizeof(ToCheck)-1;++i) {
-    if(buf[i]!=ToCheck[i]) {
-      printf("CharVal %d: %x != %x \n",i,static_cast<unsigned char>(buf[i]),static_cast<unsigned char>(ToCheck[i]));
-      allOk=false;
-    }
-  }
-
-  BOOST_CHECK_MESSAGE(allOk,
-                      "Wrong pattern in byterepresentation.");
-}
-
-BOOST_AUTO_TEST_CASE(fromByteRepr) {
-  ToTest foo(-1,2,3,4);
-  ToTest bar;
-
-  SbBool conversionOk = bar.fromByteRepr(foo.byteRepr());
-
-  BOOST_CHECK_MESSAGE(conversionOk && foo == bar,
-                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + bar.toString().getString()    );
-}
-
-BOOST_AUTO_TEST_CASE(fromInvalidByteRepr) {
-  ToTest bar;
-  SbByteBuffer test("FOOBAR");
-
-  SbBool conversionOk = bar.fromByteRepr(test);
-
-  BOOST_CHECK_MESSAGE(conversionOk == FALSE,
-                      std::string("Able to convert from '") + test.constData() + "' which is not a valid " + SbTypeInfo<ToTest>::getTypeName() + " binary representation");
 }
 
 #endif //COIN_TEST_SUITE

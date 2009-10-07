@@ -25,6 +25,8 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/SbString.h>
+#include "base/coinString.h"
 
 class SbString;
 class SbVec2s;
@@ -32,6 +34,86 @@ class SbVec2f;
 class SbVec3f;
 class SbVec3d;
 class SbRotation;
+
+template<size_t numArgs, typename Type, typename ArgumentType>
+  struct constructFromArray {
+    
+  };
+
+template<typename Type, typename ArgumentType>
+  struct constructFromArray<2,Type,ArgumentType> {
+  static Type constructor(const ArgumentType * inArray)
+  {
+    return Type(inArray[0],inArray[1]);
+  }
+};
+
+template<typename Type, typename ArgumentType>
+  struct constructFromArray<3,Type,ArgumentType> {
+  static Type constructor(const ArgumentType * inArray)
+  {
+    return Type(inArray[0],inArray[1],inArray[2]);
+  }
+};
+
+template<typename Type, typename ArgumentType>
+  struct constructFromArray<4,Type,ArgumentType> {
+  static Type constructor(const ArgumentType * inArray)
+  {
+    return Type(inArray[0],inArray[1],inArray[2],inArray[3]);
+  }
+};
+
+template <typename T>
+struct ScXMLConvert {
+    static
+    T fromString(const SbString & str, SbBool * conversionOk = NULL)
+    {
+      typename SbTypeInfo<T>::PrimitiveType tmpVal[SbTypeInfo<T>::Dimensions];
+      SbString substr;
+      int start = str.find("(");
+      int end = str.find(")");
+      if (start == -1 || end == -1) {
+        if (conversionOk) *conversionOk = FALSE;
+        return T();
+      }
+      substr = str.getSubString(0, start-1);
+      if (substr != SbTypeInfo<T>::getTypeName()) {
+        if (conversionOk) *conversionOk = FALSE;
+        return T();
+      }
+      --end;
+      ++start;
+      assert(end>start);
+      substr = str.getSubString(start,end);
+      start = 0;
+      SbIntList indices;
+      substr.findAll(",",indices);
+      if (indices.getLength()!= SbTypeInfo<T>::Dimensions-1) {
+        if (conversionOk) *conversionOk = FALSE;
+        return T();
+      }
+      for (int i=0;i<SbTypeInfo<T>::Dimensions-1;++i) {
+        end = indices[i];
+        SbString token = substr.getSubString(start,end);
+        start=end+1;
+        typename SbTypeInfo<T>::PrimitiveType t = FromString< typename SbTypeInfo<T>::PrimitiveType > (token, conversionOk);
+        tmpVal[i]=t;
+      }
+      SbString token = substr.getSubString(start,-1);
+      typename SbTypeInfo<T>::PrimitiveType t = FromString< typename SbTypeInfo<T>::PrimitiveType > (token, conversionOk);
+      tmpVal[SbTypeInfo<T>::Dimensions-1]=t;
+      if (conversionOk) *conversionOk = TRUE;
+      return constructFromArray<SbTypeInfo<T>::Dimensions ,T, typename SbTypeInfo<T>::PrimitiveType >::constructor(tmpVal);
+    }
+};
+
+template<typename T>
+struct PrimitiveConvert {
+  static T fromString(const SbString & str, SbBool * conversionOk = NULL) {
+      return FromString<T>(str, conversionOk);
+  }
+};
 
 class SbStringConvert {
 public:
@@ -47,7 +129,45 @@ public:
     UNKNOWN
   };
 
-  static TypeIdentity typeOf(SbString & str);
+  static TypeIdentity typeOf(const SbString & str);
+  
+  template <typename T>
+    static
+    T fromString(const SbString & str, SbBool * conversionOk = NULL)
+    {
+      return
+        IF< SbTypeInfo<T>::isPrimitive, PrimitiveConvert<T>, ScXMLConvert<T> >::RET::fromString(str,conversionOk);
+    }
+
+  template <typename T>
+    static
+    SbString toString(const T & in)
+    {
+      SbString retVal =  IF<
+        SbTypeInfo<T>::isPrimitive,
+        SbStringConvert,
+        SbTypeInfo<T>
+        >::RET::getTypeName();
+      
+      retVal += start(SbTypeInfo<T>::isPrimitive);
+      retVal += ToString<T>(in);
+      retVal += end(SbTypeInfo<T>::isPrimitive);
+      return retVal;
+    }
+
+ private:
+  static const char * getTypeName()
+  {
+    return "";
+  }
+  static const char * start(bool yes)
+  {
+    return (yes)?"(":"";
+  }
+  static const char * end(bool yes)
+  {
+    return (yes)?")":"";
+  }
 };
 
 #endif // !COIN_SBSTRINGCONVERT_H

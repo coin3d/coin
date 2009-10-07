@@ -37,7 +37,7 @@ using std::strcmp;
 using std::strncmp;
 
 SbStringConvert::TypeIdentity
-SbStringConvert::typeOf(SbString & str)
+SbStringConvert::typeOf(const SbString & str)
 {
   if (strncmp(str.getString(), "Sb", 2) == 0) {
     if (strncmp(str.getString() + 2, "Vec2s(", 6) == 0) {
@@ -70,3 +70,66 @@ SbStringConvert::typeOf(SbString & str)
   }
   return UNKNOWN;
 }
+
+#ifdef COIN_TEST_SUITE
+#ifdef COIN_INT_TEST_SUITE
+#include <Inventor/SbVec3s.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbRotation.h>
+
+BOOST_AUTO_TEST_CASE(SbVec3sfromString) {
+  typedef SbVec3s ToTest;
+  ToTest foo;
+  SbString test = "SbVec3s(1,-2,3)";
+  ToTest trueVal(1,-2,3);
+  foo = SbStringConvert::fromString<ToTest>(test);
+  BOOST_CHECK_MESSAGE(trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(SbVec3sfromSbVec3f) {
+  typedef SbVec3s ToTest;
+  ToTest foo;
+  SbString test = "SbVec3f(1,-2,3)";
+  ToTest trueVal(1,-2,3);
+  SbBool conversionOk = TRUE;
+  foo = SbStringConvert::fromString<ToTest>(test, &conversionOk);
+  BOOST_CHECK_MESSAGE(conversionOk == FALSE,
+                      std::string("Able to create SbVec3s from ") +  test.getString());
+}
+
+BOOST_AUTO_TEST_CASE(SbVec3fFromIntString) {
+  typedef SbVec3f ToTest;
+  ToTest foo;
+  SbString test = "SbVec3f(1,-2,3)";
+  ToTest trueVal(1,-2,3);
+  SbBool conversionOk = TRUE;
+  foo = SbStringConvert::fromString<ToTest>(test, &conversionOk);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(SbVec3fFromFloatString) {
+  typedef SbVec3f ToTest;
+  ToTest foo;
+  SbString test = "SbVec3f( 1.3  , -2.0  ,   3.3  )";
+  ToTest trueVal(1.3,-2.0,3.3);
+  SbBool conversionOk = TRUE;
+  foo = SbStringConvert::fromString<ToTest>(test, &conversionOk);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(SbRotationFromString) {
+  typedef SbRotation ToTest;
+  ToTest foo;
+  SbString test = "SbRotation(0.5,0.5,0.5,0.5)";
+  ToTest trueVal(0.5,0.5,0.5,0.5);
+  SbBool conversionOk = FALSE;
+  foo = SbStringConvert::fromString<ToTest>(test, &conversionOk);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+#endif //COIN_INT_TESTSUITE
+#endif //COIN_TEST_SUITE

@@ -326,11 +326,11 @@ SoScXMLRotateTarget::processOneEvent(const ScXMLEvent * event)
         SoScXMLStateMachine * statemachine = inherited::getSoStateMachine(event, sessionid);
         if (!statemachine) { return FALSE; }
         SbString rotationstr;
-        ToString(spinrotation);
+        SbStringConvert::toString(spinrotation);
 
         SbString updatetimestr;
         double fromtime = SbTime::getTimeOfDay().getValue();
-        updatetimestr = ToString(fromtime);
+        updatetimestr = SbStringConvert::toString(fromtime);
 
         ScXMLEvent event;
         event.setEventName(TRIGGER_SPIN());

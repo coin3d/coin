@@ -220,6 +220,8 @@ template <>
 struct SbTypeInfo<float> {
   typedef float Type;
   typedef float PrimitiveType;
+  enum { isPrimitive = 1 };
+
   typedef Type ParamType;
 
   enum { Dimensions = 1 };
@@ -268,15 +270,22 @@ template <>
 struct SbTypeInfo<bool> {
   typedef bool Type;
   typedef bool PrimitiveType;
+  enum { isPrimitive = 1 };
+
   typedef Type ParamType;
 
   enum { Dimensions = 1 };
+
+  typedef SoSFBool SFieldType;
+  typedef SoMFBool MFieldType;
 };
 
 template <>
 struct SbTypeInfo<double> {
   typedef double Type;
   typedef Type ParamType;
+
+  enum { isPrimitive = 1 };
 
   enum { Dimensions = 1 };
 
@@ -319,6 +328,8 @@ template <>
 struct SbTypeInfo<short> {
   typedef short Type;
   typedef Type ParamType;
+
+  enum { isPrimitive = 1 };
 
   typedef SbVec2s Vec2Type;
   typedef SbVec3s Vec3Type;
@@ -378,6 +389,8 @@ struct SbTypeInfo<SbVec2f> {
   typedef const Type & ParamType;
 
   typedef float PrimitiveType;
+  enum { isPrimitive = 0 };
+
   enum { Dimensions = 2 };
 
   typedef SbBox2f BoxType;
@@ -429,12 +442,16 @@ struct SbTypeInfo<SbVec2s> {
   typedef Type ParamType;
 
   typedef short PrimitiveType;
+  enum { isPrimitive = 0 };
+
   enum { Dimensions = 2 };
 
   typedef SbBox2s BoxType;
 
   typedef SoSFVec2s SFieldType;
   typedef SoMFVec2s MFieldType;
+
+  static const char * getTypeName() { return "SbVec2s"; }
 };
 
 template <>
@@ -475,6 +492,8 @@ struct SbTypeInfo<SbVec3f> {
   typedef const Type & ParamType;
 
   typedef float PrimitiveType;
+  enum { isPrimitive = 0 };
+
   enum { Dimensions = 3 };
 
   typedef SbBox3f BoxType;
@@ -526,6 +545,8 @@ struct SbTypeInfo<SbVec3s> {
   typedef const Type & ParamType;
 
   typedef short PrimitiveType;
+  enum { isPrimitive = 0 };
+
   enum { Dimensions = 3 };
 
   typedef SbBox3s BoxType;
@@ -815,6 +836,7 @@ struct SbTypeInfo<SbRotation> {
   typedef const Type & ParamType;
 
   typedef float PrimitiveType;
+  enum { isPrimitive = 0 };
 
   typedef SoSFRotation SFieldType;
   typedef SoMFRotation MFieldType;

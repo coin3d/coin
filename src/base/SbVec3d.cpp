@@ -31,6 +31,7 @@
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SbVec3i32.h>
 #include <Inventor/SbDPPlane.h>
+#include <Inventor/fields/SoSFVec3d.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -523,7 +524,18 @@ SbVec3d::setValue(const SbVec3i32 & v)
 SbString
 SbVec3d::toString() const
 {
-  return ToString(*this);
+  return CoinInternal::ToString(*this);
+}
+
+/*!
+  Convert from a string representation, return wether this is a valid conversion
+*/
+SbBool
+SbVec3d::fromString(const SbString & str)
+{
+  SbBool conversionOk;
+  *this = CoinInternal::FromString<SbVec3d>(str,&conversionOk);
+  return conversionOk;
 }
 
 /*!
@@ -540,11 +552,22 @@ SbVec3d::print(FILE * fp) const
 }
 
 #ifdef COIN_TEST_SUITE
+typedef SbVec3d ToTest;
 BOOST_AUTO_TEST_CASE(toString) {
-  SbVec3d val(1.0/3,2,3);
-  SbString str("<0.33333333333333331, 2, 3>");
+  ToTest val(1.0/3,2,3);
+  SbString str("0.3333333333333333 2 3");
   BOOST_CHECK_MESSAGE(str == val.toString(),
                       std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
 
 }
+
+BOOST_AUTO_TEST_CASE(fromString) {
+  ToTest foo;
+  SbString test = "0.3333333333333333 -2 -3.0";
+  ToTest trueVal(0.3333333333333333,-2,-3);
+  SbBool conversionOk = foo.fromString(test);
+  BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
+                      std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
 #endif //COIN_TEST_SUITE

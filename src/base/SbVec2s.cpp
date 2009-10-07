@@ -44,6 +44,9 @@
 #include <Inventor/SbVec2i32.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2d.h>
+#include <Inventor/fields/SoSFVec2s.h>
+
+#include "coinString.h"
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -379,13 +382,34 @@ SbVec2s::operator *= (double d)
 */
 
 /*!
+  Return a string representation of this object
+*/
+SbString
+SbVec2s::toString() const
+{
+  return CoinInternal::ToString(*this);
+}
+
+/*!
+  Convert from a string representation, return wether this is a valid conversion
+*/
+SbBool
+SbVec2s::fromString(const SbString & str)
+{
+  SbBool conversionOk;
+  *this = CoinInternal::FromString<SbVec2s>(str,&conversionOk);
+  return conversionOk;
+}
+
+/*!
   Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
- */
+  debug version of library, method does nothing in an optimized
+  compile.
+*/
 void
 SbVec2s::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  fprintf( fp, "<%d, %d>", this->vec[0], this->vec[1] );
+  fputs(this->toString().getString(),fp);
 #endif // COIN_DEBUG
 }
