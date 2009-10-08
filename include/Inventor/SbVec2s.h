@@ -28,6 +28,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
+#include <Inventor/SbString.h>
 #ifndef NDEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // !NDEBUG
