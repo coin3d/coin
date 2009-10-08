@@ -160,11 +160,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLProjectionMatrixElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLRenderPassElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLShapeHintsElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLTexture3EnabledElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLTextureCoordinateElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLTextureEnabledElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLTextureImageElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLTextureMatrixElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLUpdateAreaElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLVBOElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoGLVertexAttributeElement.h
@@ -207,13 +203,8 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoSubElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoSwitchElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextOutlineEnabledElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTexture3EnabledElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureCombineElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureCoordinateBindingElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureCoordinateElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureEnabledElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureImageElement.h
-                         ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureMatrixElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureOverrideElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureQualityElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/elements/SoTextureUnitElement.h
@@ -944,11 +935,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLProjectionMatrixElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLRenderPassElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLShapeHintsElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/GL/SoGLTexture3EnabledElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/GL/SoGLTextureCoordinateElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLTextureEnabledElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/GL/SoGLTextureImageElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/GL/SoGLTextureMatrixElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLUpdateAreaElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLVBOElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLVertexAttributeElement.cpp
@@ -1020,13 +1007,8 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/elements/SoSpecularColorElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoSwitchElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextOutlineEnabledElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/SoTexture3EnabledElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureCombineElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureCoordinateBindingElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/SoTextureCoordinateElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/SoTextureEnabledElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/SoTextureImageElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/SoTextureMatrixElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureOverrideElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureQualityElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureScalePolicyElement.cpp
