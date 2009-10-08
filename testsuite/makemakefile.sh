@@ -47,7 +47,7 @@ objlist=""
 for file in `cd $srcdir; find src -type f -print | LC_ALL="C" sort`; do
   # filter the find results
   case $file in
-  */.svn/*)
+  */.hg/*)
     continue
     ;;
   *.cpp | *.c | *.icc | *.ic)
