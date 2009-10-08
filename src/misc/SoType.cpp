@@ -461,6 +461,7 @@ typedef void __cdecl initClassFunction(void);
 typedef void initClassFunction(void);
 #endif
 
+POTENTIAL_ROTTING_DOCUMENTATION
 /*!
   This static function returns the SoType object associated with name \a name.
 
@@ -478,8 +479,7 @@ typedef void initClassFunction(void);
   platform to platform, and from compiler suite to compiler suite.
 
   So far code built with the following compilers are supported: GNU
-  GCC v2, GNU GCC v3, Microsoft Visual C++ v6 (and probably v7, not
-  tested), SGI MIPSPro v7.
+  GCC v2-4, Microsoft Visual C++ v6, 2003, 2005 and 2008), SGI MIPSPro v7.
 
   Extensions built with compilers that are known to be binary
   compatible with the above compilers are also supported, such as

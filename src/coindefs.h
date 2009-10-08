@@ -150,8 +150,16 @@ COIN_CT_ASSERT( (COIN_MAJOR_VERSION < MAJOR) || (COIN_MAJOR_VERSION == MAJOR && 
 
 #define COMPILE_ONLY_BEFORE_NOFUNCTION(MAJOR,MINOR,MICRO,REASON)              \
 static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
-COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO); \
+  COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO,REASON);                              \
 }
+
+/*
+  Grep for POTENTIAL_ROTTING_DOCUMENTATION and update the version
+  number when you have checked all occurences of this. Some places
+  this marker is used in a pure comment, so do not content yourself
+  with checking every place that fails.
+*/
+#define POTENTIAL_ROTTING_DOCUMENTATION COMPILE_ONLY_BEFORE_NOFUNCTION(4,0,1,"This piece of documentation may potentially be outdated in the future.")
 
 #ifdef _MSC_VER
 #define COIN_MSVC _MSC_VER
