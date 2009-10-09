@@ -120,12 +120,13 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
+#include "SbBasicP.h"
 #include "engines/SoConvertAll.h"
 #include "fields/SoGlobalField.h"
-#include "SbBasicP.h"
-#include "tidbitsp.h"
-#include "threads/threadsutilp.h"
 #include "io/SoWriterefCounter.h"
+#include "misc/SoConfigSettings.h"
+#include "threads/threadsutilp.h"
+#include "tidbitsp.h"
 inline unsigned int SbHashFunc(const void * key);
 #include "misc/SbHash.h"
 inline unsigned int SbHashFunc(const void * key)
@@ -545,9 +546,12 @@ SoField::~SoField()
   // disconnecting connections.
   this->setStatusBits(FLAG_ISDESTRUCTING);
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::~SoField", "destructing %p", this);
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::~SoField", "destructing %p", this);
+#endif //COIN_DEBUG_EXTRA
 
   // Disconnect ourself from all connections where this field is the
   // slave.
@@ -590,9 +594,10 @@ SoField::~SoField()
 
     delete this->storage;
   }
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::~SoField", "%p done", this);
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::~SoField", "%p done", this);
+#endif //COIN_DEBUG_EXTRA
 
   this->clearStatusBits(FLAG_ALIVE_PATTERN);
 }
@@ -674,11 +679,15 @@ SoField::isIgnored(void) const
 void
 SoField::setDefault(SbBool def)
 {
-#if COIN_DEBUG && 0 // debug
-  SbString finfo = SoFieldP::getDebugIdString(this);
-  SoDebugError::postInfo("SoField::setDefault", "%s, setDefault(%s)",
-                         finfo.getString(), def ? "TRUE" : "FALSE");
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3) {
+    SbString finfo = SoFieldP::getDebugIdString(this);
+    SoDebugError::postInfo("SoField::setDefault", "%s, setDefault(%s)",
+                           finfo.getString(), def ? "TRUE" : "FALSE");
+  }
+#endif //COIN_DEBUG_EXTRA
 
   (void) this->changeStatusBits(FLAG_ISDEFAULT, def);
 }
@@ -989,11 +998,14 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
 void
 SoField::disconnect(SoField * master)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::disconnect",
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::disconnect",
                          "removing slave field %p from master field %p",
                          this, master);
-#endif // debug
+#endif //COIN_DEBUG_EXTRA
 
   const int idx = this->storage->masterfields.find(master);
   if (idx == -1) {
@@ -1066,15 +1078,18 @@ SoField::disconnect(SoEngineOutput * master)
   }
 
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::disconnect",
-                         "removing slave field %p (%s.%s) from master "
-                         "engineout %p",
-                         this,
-                         this->storage->container->getTypeId().getName().getString(),
-                         this->storage->fieldtype.getName().getString(),
-                         master);
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::disconnect",
+                           "removing slave field %p (%s.%s) from master "
+                           "engineout %p",
+                           this,
+                           this->storage->container->getTypeId().getName().getString(),
+                           this->storage->fieldtype.getName().getString(),
+                           master);
+#endif //COIN_DEBUG_EXTRA
 
 
   // Check the enabled flag to avoid evaluating from engines which are
@@ -1387,18 +1402,22 @@ void
 SoField::startNotify(void)
 {
   SoNotList l;
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::startNotify", "field %p (%s), list %p",
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::startNotify", "field %p (%s), list %p",
                          this, this->getTypeId().getName().getString(), &l);
-#endif // debug
+#endif //COIN_DEBUG_EXTRA
 
   SoDB::startNotify();
   this->notify(&l);
   SoDB::endNotify();
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::startNotify", "DONE\n\n");
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::startNotify", "DONE\n\n");
+#endif //COIN_DEBUG_EXTRA
 }
 
 /*!
@@ -1446,15 +1465,18 @@ SoField::notify(SoNotList * nlist)
   // an engine output or from another field.
   this->setDefault(FALSE);
 
-#if COIN_DEBUG && 0 // debug
-  if (this != SoDB::getGlobalField("realTime")) {
-    SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- start",
-                           this,
-                           this->getTypeId().getName().getString(),
-                           this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
-                           this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
-  }
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    if (this != SoDB::getGlobalField("realTime")) {
+      SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- start",
+                             this,
+                             this->getTypeId().getName().getString(),
+                             this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
+                             this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
+    }
+#endif //COIN_DEBUG_EXTRA
 
   // If we're not the originator of the notification process, we need
   // to be marked dirty, as it means something we're connected to as a
@@ -1473,10 +1495,13 @@ SoField::notify(SoNotList * nlist)
     nlist->append(&rec, this);
     nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
 
-#if COIN_DEBUG && 0 // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
     SoDebugError::postInfo("SoField::notify",
                            "field %p, list %p", this, nlist);
-#endif // debug
+#endif //COIN_DEBUG_EXTRA
 
     if (this->hasExtendedStorage() && this->storage->auditors.getLength()) {
       // need to copy list first if we're going to notify the auditors
@@ -1490,15 +1515,16 @@ SoField::notify(SoNotList * nlist)
     this->clearStatusBits(FLAG_ISNOTIFIED);
   }
 
-#if COIN_DEBUG && 0 // debug
-  if (this != SoDB::getGlobalField("realTime")) {
-    SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- done",
-                           this,
-                           this->getTypeId().getName().getString(),
-                           this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
-                           this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
-  }
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  if (wLevel>=3)
+    if (this != SoDB::getGlobalField("realTime")) {
+      SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- done",
+                             this,
+                             this->getTypeId().getName().getString(),
+                             this->getContainer() ? this->getContainer()->getTypeId().getName().getString() : "*none*",
+                             this->getContainer() ? this->getContainer()->getName().getString() : "*none*");
+    }
+#endif //COIN_DEBUG_EXTRA
 }
 
 /*!
@@ -1555,10 +1581,13 @@ SoField::addAuditor(void * f, SoNotRec::Type type)
 void
 SoField::removeAuditor(void * f, SoNotRec::Type type)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::removeAuditor",
-                         "%p removing %p", this, f);
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::removeAuditor",
+                           "%p removing %p", this, f);
+#endif //COIN_DEBUG_EXTRA
 
   assert(this->hasExtendedStorage());
   this->storage->auditors.remove(f, type);
@@ -1594,13 +1623,17 @@ SoField::operator !=(const SoField & f) const
 SbBool
 SoField::shouldWrite(void) const
 {
-#if COIN_DEBUG && 0 // debug
-  SbString finfo = SoFieldP::getDebugIdString(this);
-  SoDebugError::postInfo("SoField::shouldWrite",
-                         "%s: isDefault==%d, isIgnored==%d, isConnected==%d",
-                         finfo.getString(), this->isDefault(),
-                         this->isIgnored(), this->isConnected());
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3) {
+    SbString finfo = SoFieldP::getDebugIdString(this);
+    SoDebugError::postInfo("SoField::shouldWrite",
+                           "%s: isDefault==%d, isIgnored==%d, isConnected==%d",
+                           finfo.getString(), this->isDefault(),
+                           this->isIgnored(), this->isConnected());
+  }
+#endif //COIN_DEBUG_EXTRA
 
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
@@ -2077,10 +2110,14 @@ SoField::evaluateField(void) const
   // if we're destructing, don't continue as this would cause
   // a call to the virtual evaluateConnection()
   if (this->getStatus(FLAG_ISDESTRUCTING)) {
-#if COIN_DEBUG && 0 // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3) {
     SoDebugError::postInfo("SoField::evaluate",
                            "Stopped evaluate while destructing.");
-#endif // debug
+  }
+#endif //COIN_DEBUG_EXTRA
     return;
   }
 
@@ -2470,10 +2507,13 @@ SoField::valueChanged(SbBool resetdefault)
 void
 SoField::notifyAuditors(SoNotList * l)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::notifyAuditors",
-                         "field %p, list %p", this, l);
-#endif // debug
+#if COIN_DEBUG_EXTRA
+  int wLevel =
+    SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
+  if (wLevel>=3)
+    SoDebugError::postInfo("SoField::notifyAuditors",
+                           "field %p, list %p", this, l);
+#endif //COIN_DEBUG_EXTRA
   if (this->hasExtendedStorage() && this->storage->auditors.getLength())
     this->storage->auditors.notify(l);
 }

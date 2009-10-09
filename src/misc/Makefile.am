@@ -6,6 +6,7 @@ RegularSources = \
 	SoBaseP.cpp \
 	SoChildList.cpp \
 	SoCompactPathList.cpp \
+	SoConfigSettings.cpp\
 	SoContextHandler.cpp \
 	SoDB.cpp \
 	SoDebug.cpp \
@@ -40,6 +41,7 @@ LinkHackSources = \
 PublicHeaders =
 PrivateHeaders = \
 	SbHash.h \
+	SoConfigSettings.h \
 	SoGL.h \
 	SoGenerate.h \
 	SoPick.h \
