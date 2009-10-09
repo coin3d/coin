@@ -78,10 +78,11 @@ SoGlobalField::SoGlobalField(const SbName & name, SoField * field)
 #endif // debug
 
   if (field) {
-    field->setContainer(this);
-
     // Initialize a fielddata container for the instance.
     this->classfielddata = new SoFieldData;
+
+    field->setContainer(this);
+
     this->classfielddata->addField(this, name, field);
   }
   else {
