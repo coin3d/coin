@@ -55,7 +55,9 @@ static int vbo_render_as_vertex_arrays = -1;
 static int vbo_enabled = -1;
 static int vbo_debug = -1;
 
-static const int DEFAULT_MAX_LIMIT = 256000;
+// VBO rendering seems to be faster than other rendering, even for
+// large VBOs. Just set the default limit very high
+static const int DEFAULT_MAX_LIMIT = 100000000;
 static const int DEFAULT_MIN_LIMIT = 20;
 
 static SbHash<uint32_t, SbBool> * vbo_isfast_hash;
