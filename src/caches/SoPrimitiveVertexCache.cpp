@@ -199,6 +199,20 @@ public:
 
 // *************************************************************************
 
+namespace {
+  // SoGLLazyElement shares the same class stack index as
+  // SoLazyElement. Do a type check to test if SoGLLazyElement is
+  // enabled but not SoLazyElement
+  SbBool SoGLLazyElement_enabled(const SoState * state) {
+    if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
+      return SoLazyElement::getInstance(const_cast<SoState*>(state))->getTypeId().isDerivedFrom(SoGLLazyElement::getClassTypeId());
+    }
+    return FALSE;
+  }
+};
+
+// *************************************************************************
+
 /*!
   Constructor.
 */
@@ -262,7 +276,7 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
   }
 #endif // debug
 
-  if (state->isElementEnabled(SoGLLazyElement::getClassStackIndex())) {
+  if (SoGLLazyElement_enabled(state)) {
     SoGLLazyElement::beginCaching(state, &PRIVATE(this)->prestate, &PRIVATE(this)->poststate);
   }
 }
@@ -300,7 +314,7 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 SbBool 
 SoPrimitiveVertexCache::isValid(const SoState * state) const
 {
-  if (state->isElementEnabled(SoGLLazyElement::getClassStackIndex())) {
+  if (SoGLLazyElement_enabled(state)) {
     if (!SoGLLazyElement::preCacheCall(state , &PRIVATE(this)->prestate)) return FALSE;
   }
   return inherited::isValid(state);
@@ -312,7 +326,7 @@ SoPrimitiveVertexCache::isValid(const SoState * state) const
 void 
 SoPrimitiveVertexCache::close(SoState * state)
 {
-  if (state->isElementEnabled(SoGLLazyElement::getClassStackIndex())) {
+  if (SoGLLazyElement_enabled(state)) {
     SoGLLazyElement::endCaching(state);
   }
   this->fit();
