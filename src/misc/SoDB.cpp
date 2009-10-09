@@ -104,6 +104,7 @@
 #include "misc/systemsanity.icc"
 #include "misc/SoDBP.h"
 #include "misc/SbHash.h"
+#include "misc/SoConfigSettings.h"
 #include "rendering/SoVBO.h"
 
 #ifdef HAVE_VRML97
@@ -234,6 +235,8 @@ SoDB::init(void)
   // inconsistencies are found.
   SoError::initClasses();
 
+
+  SoConfigSettings::getInstance();
 
   // OBSOLETED asserts for 1.0 release. We should be ok. FIXME: I can
   // only think of possibilities for problems in the binary .iv import

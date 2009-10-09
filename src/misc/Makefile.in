@@ -276,6 +276,7 @@ RegularSources = \
 	SoBaseP.cpp \
 	SoChildList.cpp \
 	SoCompactPathList.cpp \
+	SoConfigSettings.cpp\
 	SoContextHandler.cpp \
 	SoDB.cpp \
 	SoDebug.cpp \
@@ -312,6 +313,7 @@ LinkHackSources = \
 PublicHeaders = 
 PrivateHeaders = \
 	SbHash.h \
+	SoConfigSettings.h \
 	SoGL.h \
 	SoGenerate.h \
 	SoPick.h \
@@ -390,42 +392,44 @@ misc_lst_AR = $(AR) cru
 misc_lst_LIBADD =
 am__misc_lst_SOURCES_DIST = AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	SoAudioDevice.cpp SoBase.cpp SoBaseP.cpp SoChildList.cpp \
-	SoCompactPathList.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
-	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
-	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
-	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
-	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
-	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp \
-	SoSceneManagerP.cpp SoShaderGenerator.cpp SoState.cpp \
-	SoTempPath.cpp SoType.cpp CoinResources.cpp SoDBP.cpp \
-	SoEventManager.cpp all-misc-cpp.cpp
+	SoCompactPathList.cpp SoConfigSettings.cpp SoContextHandler.cpp \
+	SoDB.cpp SoDebug.cpp SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp \
+	SoInteraction.cpp SoJavaScriptEngine.cpp SoLightPath.cpp \
+	SoLockManager.cpp SoNormalGenerator.cpp SoNotRec.cpp \
+	SoNotification.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
+	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
+	SoSceneManager.cpp SoSceneManagerP.cpp SoShaderGenerator.cpp \
+	SoState.cpp SoTempPath.cpp SoType.cpp CoinResources.cpp \
+	SoDBP.cpp SoEventManager.cpp all-misc-cpp.cpp
 am__objects_1 = all-misc-cpp.$(OBJEXT)
 am__objects_2 = AudioTools.$(OBJEXT) CoinStaticObjectInDLL.$(OBJEXT) \
 	SoAudioDevice.$(OBJEXT) SoBase.$(OBJEXT) SoBaseP.$(OBJEXT) \
 	SoChildList.$(OBJEXT) SoCompactPathList.$(OBJEXT) \
-	SoContextHandler.$(OBJEXT) SoDB.$(OBJEXT) SoDebug.$(OBJEXT) \
-	SoFullPath.$(OBJEXT) SoGenerate.$(OBJEXT) SoGlyph.$(OBJEXT) \
-	SoInteraction.$(OBJEXT) SoJavaScriptEngine.$(OBJEXT) \
-	SoLightPath.$(OBJEXT) SoLockManager.$(OBJEXT) \
-	SoNormalGenerator.$(OBJEXT) SoNotRec.$(OBJEXT) \
-	SoNotification.$(OBJEXT) SoPath.$(OBJEXT) SoPick.$(OBJEXT) \
-	SoPickedPoint.$(OBJEXT) SoPrimitiveVertex.$(OBJEXT) \
-	SoProto.$(OBJEXT) SoProtoInstance.$(OBJEXT) \
-	SoSceneManager.$(OBJEXT) SoSceneManagerP.$(OBJEXT) \
-	SoShaderGenerator.$(OBJEXT) SoState.$(OBJEXT) \
-	SoTempPath.$(OBJEXT) SoType.$(OBJEXT) CoinResources.$(OBJEXT) \
-	SoDBP.$(OBJEXT) SoEventManager.$(OBJEXT)
+	SoConfigSettings.$(OBJEXT) SoContextHandler.$(OBJEXT) \
+	SoDB.$(OBJEXT) SoDebug.$(OBJEXT) SoFullPath.$(OBJEXT) \
+	SoGenerate.$(OBJEXT) SoGlyph.$(OBJEXT) SoInteraction.$(OBJEXT) \
+	SoJavaScriptEngine.$(OBJEXT) SoLightPath.$(OBJEXT) \
+	SoLockManager.$(OBJEXT) SoNormalGenerator.$(OBJEXT) \
+	SoNotRec.$(OBJEXT) SoNotification.$(OBJEXT) SoPath.$(OBJEXT) \
+	SoPick.$(OBJEXT) SoPickedPoint.$(OBJEXT) \
+	SoPrimitiveVertex.$(OBJEXT) SoProto.$(OBJEXT) \
+	SoProtoInstance.$(OBJEXT) SoSceneManager.$(OBJEXT) \
+	SoSceneManagerP.$(OBJEXT) SoShaderGenerator.$(OBJEXT) \
+	SoState.$(OBJEXT) SoTempPath.$(OBJEXT) SoType.$(OBJEXT) \
+	CoinResources.$(OBJEXT) SoDBP.$(OBJEXT) \
+	SoEventManager.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_misc_lst_SOURCES_DIST = SbHash.h SoGL.h SoGenerate.h SoPick.h \
-	SoShaderGenerator.h SoCompactPathList.h SoDBP.h SoBaseP.h \
-	AudioTools.h CoinStaticObjectInDLL.h SoSceneManagerP.h \
-	cppmangle.icc systemsanity.icc CoinResources.h all-misc-cpp.cpp \
-	AudioTools.cpp CoinStaticObjectInDLL.cpp SoAudioDevice.cpp \
-	SoBase.cpp SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
-	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
-	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+am__EXTRA_misc_lst_SOURCES_DIST = SbHash.h SoConfigSettings.h SoGL.h \
+	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
+	SoDBP.h SoBaseP.h AudioTools.h CoinStaticObjectInDLL.h \
+	SoSceneManagerP.h cppmangle.icc systemsanity.icc \
+	CoinResources.h all-misc-cpp.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
+	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
+	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
+	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -440,38 +444,38 @@ libmisc_la_LDFLAGS =
 libmisc_la_LIBADD =
 am__libmisc_la_SOURCES_DIST = AudioTools.cpp CoinStaticObjectInDLL.cpp \
 	SoAudioDevice.cpp SoBase.cpp SoBaseP.cpp SoChildList.cpp \
-	SoCompactPathList.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
-	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
-	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
-	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
-	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
-	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp \
-	SoSceneManagerP.cpp SoShaderGenerator.cpp SoState.cpp \
-	SoTempPath.cpp SoType.cpp CoinResources.cpp SoDBP.cpp \
-	SoEventManager.cpp all-misc-cpp.cpp
+	SoCompactPathList.cpp SoConfigSettings.cpp SoContextHandler.cpp \
+	SoDB.cpp SoDebug.cpp SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp \
+	SoInteraction.cpp SoJavaScriptEngine.cpp SoLightPath.cpp \
+	SoLockManager.cpp SoNormalGenerator.cpp SoNotRec.cpp \
+	SoNotification.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
+	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
+	SoSceneManager.cpp SoSceneManagerP.cpp SoShaderGenerator.cpp \
+	SoState.cpp SoTempPath.cpp SoType.cpp CoinResources.cpp \
+	SoDBP.cpp SoEventManager.cpp all-misc-cpp.cpp
 am__objects_6 = all-misc-cpp.lo
 am__objects_7 = AudioTools.lo CoinStaticObjectInDLL.lo SoAudioDevice.lo \
 	SoBase.lo SoBaseP.lo SoChildList.lo SoCompactPathList.lo \
-	SoContextHandler.lo SoDB.lo SoDebug.lo SoFullPath.lo \
-	SoGenerate.lo SoGlyph.lo SoInteraction.lo SoJavaScriptEngine.lo \
-	SoLightPath.lo SoLockManager.lo SoNormalGenerator.lo \
-	SoNotRec.lo SoNotification.lo SoPath.lo SoPick.lo \
-	SoPickedPoint.lo SoPrimitiveVertex.lo SoProto.lo \
+	SoConfigSettings.lo SoContextHandler.lo SoDB.lo SoDebug.lo \
+	SoFullPath.lo SoGenerate.lo SoGlyph.lo SoInteraction.lo \
+	SoJavaScriptEngine.lo SoLightPath.lo SoLockManager.lo \
+	SoNormalGenerator.lo SoNotRec.lo SoNotification.lo SoPath.lo \
+	SoPick.lo SoPickedPoint.lo SoPrimitiveVertex.lo SoProto.lo \
 	SoProtoInstance.lo SoSceneManager.lo SoSceneManagerP.lo \
 	SoShaderGenerator.lo SoState.lo SoTempPath.lo SoType.lo \
 	CoinResources.lo SoDBP.lo SoEventManager.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmisc_la_SOURCES_DIST = SbHash.h SoGL.h SoGenerate.h \
-	SoPick.h SoShaderGenerator.h SoCompactPathList.h SoDBP.h \
-	SoBaseP.h AudioTools.h CoinStaticObjectInDLL.h \
+am__EXTRA_libmisc_la_SOURCES_DIST = SbHash.h SoConfigSettings.h SoGL.h \
+	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
+	SoDBP.h SoBaseP.h AudioTools.h CoinStaticObjectInDLL.h \
 	SoSceneManagerP.h cppmangle.icc systemsanity.icc \
 	CoinResources.h all-misc-cpp.cpp AudioTools.cpp \
 	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
 	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
-	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
-	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
+	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -485,8 +489,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.cpp \
 	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
 	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
-	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
-	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
+	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -495,15 +499,15 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.cpp \
 	SoTempPath.cpp SoType.cpp CoinResources.cpp SoDBP.cpp \
 	SoEventManager.cpp all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h SoGL.h \
-	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
-	SoDBP.h SoBaseP.h AudioTools.h CoinStaticObjectInDLL.h \
-	SoSceneManagerP.h cppmangle.icc systemsanity.icc \
-	CoinResources.h all-misc-cpp.cpp AudioTools.cpp \
-	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
-	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
-	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
-	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h \
+	SoConfigSettings.h SoGL.h SoGenerate.h SoPick.h \
+	SoShaderGenerator.h SoCompactPathList.h SoDBP.h SoBaseP.h \
+	AudioTools.h CoinStaticObjectInDLL.h SoSceneManagerP.h \
+	cppmangle.icc systemsanity.icc CoinResources.h all-misc-cpp.cpp \
+	AudioTools.cpp CoinStaticObjectInDLL.cpp SoAudioDevice.cpp \
+	SoBase.cpp SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
+	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
+	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -528,6 +532,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoChildList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCompactPathList.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCompactPathList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoConfigSettings.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoConfigSettings.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoContextHandler.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoContextHandler.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDB.Plo ./$(DEPDIR)/SoDB.Po \
@@ -675,6 +681,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoChildList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCompactPathList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCompactPathList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoConfigSettings.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoConfigSettings.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoContextHandler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoContextHandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDB.Plo@am__quote@

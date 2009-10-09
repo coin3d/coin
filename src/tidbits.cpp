@@ -236,6 +236,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
 
   if (debug) { printf("==> length==%d\n", length); }
 
+  //POTENTIAL_ROTTING_DOCUMENTATION
   /* Not all vsnprintf() implementations returns -1 upon failure (this
      is what vsnprintf() from GNU libc is documented to do).
 

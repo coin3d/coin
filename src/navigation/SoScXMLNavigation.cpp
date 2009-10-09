@@ -74,13 +74,13 @@ SoScXMLNavigation::initClasses(void)
   SoScXMLFlightControlTarget::initClass();
   SoScXMLMotionTarget::initClass();
 
-  CoinResources::set("coin://scxml/navigation/common.xml",
+  CoinResources::set("coin:scxml/navigation/common.xml",
                      SbByteBuffer(sizeof(common_xml)-1,&common_xml[0]));
 
-  CoinResources::set("coin://scxml/navigation/examiner.xml",
+  CoinResources::set("coin:scxml/navigation/examiner.xml",
                      SbByteBuffer(sizeof(examiner_xml)-1,&examiner_xml[0]));
 
-  CoinResources::set("coin://scxml/navigation/plane.xml",
+  CoinResources::set("coin:scxml/navigation/plane.xml",
                      SbByteBuffer(sizeof(plane_xml)-1,&plane_xml[0]));
 
   // launch services

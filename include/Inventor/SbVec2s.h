@@ -28,6 +28,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
+#include <Inventor/SbString.h>
 #ifndef NDEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // !NDEBUG
@@ -73,6 +74,9 @@ public:
   SbVec2s & operator += (SbVec2s v) { vec[0] += v[0]; vec[1] += v[1]; return *this; }
   SbVec2s & operator -= (SbVec2s v) { vec[0] -= v[0]; vec[1] -= v[1]; return *this; }
   SbVec2s operator - (void) const { return SbVec2s(-vec[0], -vec[1]); }
+
+  SbString toString() const;
+  SbBool fromString(const SbString & str);
 
   void print(FILE * fp) const;
 

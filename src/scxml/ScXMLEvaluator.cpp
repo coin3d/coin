@@ -336,7 +336,7 @@ ScXMLRealDataObj::clone(void) const
 void
 ScXMLRealDataObj::convertToString(SbString & str) const
 {
-  str = ToString<>(this->value);
+  str = SbStringConvert::toString(this->value);
 }
 
 // *************************************************************************

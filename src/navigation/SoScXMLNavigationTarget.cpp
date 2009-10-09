@@ -250,7 +250,7 @@ SoScXMLNavigationTarget::getEventDouble(const ScXMLEvent * event, const char * l
     return FALSE;
   }
   SbBool conversionOk;
-  dbl_out = FromString<double>(valuestr,&conversionOk);
+  dbl_out = SbStringConvert::fromString<double>(valuestr,&conversionOk);
   if (!conversionOk) {
     if (required) {
       SoDebugError::post("SoScXMLNavigationTarget::getEventDouble",
@@ -336,7 +336,7 @@ SoScXMLNavigationTarget::getEventSbBool(const ScXMLEvent * event, const char * l
     return FALSE;
   }
   SbBool conversionOk;
-  bool_out = FromString<bool>(valuestr,&conversionOk);
+  bool_out = SbStringConvert::fromString<bool>(valuestr,&conversionOk);
   if (!conversionOk) {
     if (required) {
       SoDebugError::post("SoScXMLNavigationTarget::getEventSbBool",
@@ -373,7 +373,7 @@ SoScXMLNavigationTarget::getEventSbVec2f(const ScXMLEvent * event, const char * 
     return FALSE;
   }
   SbBool conversionOk;
-  vec_out = FromString<SbVec2f>(valuestr, &conversionOk);
+  vec_out = SbStringConvert::fromString<SbVec2f>(valuestr, &conversionOk);
   if (!conversionOk) {
     if (required) {
       SoDebugError::post("SoScXMLNavigationTarget::getEventSbVec2f",
@@ -410,7 +410,7 @@ SoScXMLNavigationTarget::getEventSbVec3f(const ScXMLEvent * event, const char * 
     return FALSE;
   }
   SbBool conversionOk;
-  vec_out = FromString<SbVec3f>(valuestr, &conversionOk);
+  vec_out = SbStringConvert::fromString<SbVec3f>(valuestr, &conversionOk);
   if (!conversionOk) {
     if (required) {
       SoDebugError::post("SoScXMLNavigationTarget::getEventSbVec3f",
@@ -447,7 +447,7 @@ SoScXMLNavigationTarget::getEventSbRotation(const ScXMLEvent * event, const char
     return FALSE;
   }
   SbBool conversionOk;
-  rot_out = FromString<SbRotation>(valuestr, &conversionOk);
+  rot_out = SbStringConvert::fromString<SbRotation>(valuestr, &conversionOk);
   if (!conversionOk) {
     if (required) {
       SoDebugError::post("SoScXMLNavigationTarget::getEventSbRotation",

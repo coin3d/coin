@@ -146,6 +146,7 @@ namespace CoinResources { namespace {
       resourcemap->insert(mapentry);
       return handle;
     }
+    static const char PREFIX [] = "coin:";
 
 }}
 
@@ -167,7 +168,7 @@ CoinResources::init(void)
 SbByteBuffer
 CoinResources::get(const char * resloc)
 {
-  if (strncmp(resloc, "coin://", 7) != 0) {
+  if (strncmp(resloc, PREFIX, sizeof(PREFIX)-1) != 0) {
     return SbByteBuffer::invalidBuffer();
   }
 
@@ -269,7 +270,7 @@ CoinResources::get(const char * resloc)
 
 /*!
   This function registers a new resource.  The resource locator (\a resloc)
-  should take the form "coin://" followed by a relative file path that should
+  should take the form "coin:" followed by a relative file path that should
   lead to the file representation of the resource from where the COINDIR
   environment variable points.  The relative path should use / for directory
   separation, and not \ if on MS Windows.
@@ -283,7 +284,7 @@ CoinResources::get(const char * resloc)
 SbBool
 CoinResources::set(const char * resloc, const SbByteBuffer & buffer, ResourceFlags flags)
 {
-  if (strncmp(resloc, "coin://", 7) != 0) {
+  if (strncmp(resloc, PREFIX, sizeof(PREFIX)-1) != 0) {
     return FALSE;
   }
 

@@ -117,7 +117,7 @@ echo ""
 set -x
 grep -i "\\(c:\\|@\\)" ${project}.dsp /dev/null
 grep -i "cygdrive" ${project}.dsp /dev/null
-grep "svn" ${project}.dsp /dev/null
+grep "hg" ${project}.dsp /dev/null
 sort ../misc/install-headers.bat | uniq -c | grep -v " 1 "
 grep "SOURCE=" ${project}.dsp | sort | uniq -c | grep -v " 1 "
 set +x

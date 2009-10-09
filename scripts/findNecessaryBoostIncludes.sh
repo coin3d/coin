@@ -18,14 +18,14 @@
 #Before starting a series of these scripts, the following command may
 #be run in the internal coin boost directory to clean it out:
 #
-#  find -type f -not -path '*/.svn/*' -delete
+#  find -type f -not -path '*/.hg/*' -delete
 #
 #To clean up afterwards:
-#  svn st | egrep '^!'  | cut -d\  -f2- | xargs svn del
-#  svn st | egrep '^\?'  | cut -d\  -f2- | xargs svn add
+#  hg st . | egrep '^!'  | cut -d\  -f2- | xargs hg remove
+#  hg st . | egrep '^\?'  | cut -d\  -f2- | xargs hg add
 #
 #To check that everything is in order, the following command should return empty:
-# svn st | egrep -v '^A' | egrep -v '^D'
+# hg st . | egrep -v '^A' | egrep -v '^D'
 #
 #Also always remember if you have eg. a system installation of boost,
 #you will want to make sure it is not picked up, when you are syncing

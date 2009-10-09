@@ -81,8 +81,10 @@ public:
   SbVec3d & operator -= (const SbVec3d & v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; return *this; }
   SbVec3d operator - (void) const { return SbVec3d(-vec[0], -vec[1], -vec[2]); }
 
-  void print(FILE * fp) const;
   SbString toString() const;
+  SbBool fromString(const SbString & str);
+
+  void print(FILE * fp) const;
 
 private:
   double vec[3];

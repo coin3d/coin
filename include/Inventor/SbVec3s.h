@@ -76,9 +76,7 @@ public:
   SbVec3s operator - (void) const { return SbVec3s(-vec[0], -vec[1], -vec[2]); }
 
   SbString toString() const;
-  SbByteBuffer byteRepr() const;
   SbBool fromString(const SbString & str);
-  SbBool fromByteRepr(const SbByteBuffer & repr);
   void print(FILE * fp) const;
 
 protected:

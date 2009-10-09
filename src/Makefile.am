@@ -134,16 +134,13 @@ RegularSources = \
 	vrml97/all-vrml97-cpp.cpp \
 	scxml/all-scxml-cpp.cpp \
 	soscxml/all-soscxml-cpp.cpp \
-	tidbits.cpp \
-	share/gl/CoinGLPerformance.cpp
+	tidbits.cpp
 else
 RegularSources = \
-	tidbits.cpp \
-	share/gl/CoinGLPerformance.cpp
+	tidbits.cpp
 endif
 
-PrivateHeaders = \
-	share/gl/CoinGLPerformance.h
+PrivateHeaders =
 
 libCoin@SUFFIX@_la_SOURCES = $(RegularSources)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(RegularSources)
