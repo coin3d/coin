@@ -29,7 +29,7 @@
 
 static const char DIRSPOTLIGHT_shadersource[] =
   "\n"
-  "float DirSpotLight(in vec3 light_direction,\n"
+  "float DirSpotLight(in vec3 dir,\n"
   "                   in vec3 light_position,\n"
   "                   in vec3 eye,\n"
   "                   in vec3 ecPosition3,\n"
@@ -40,7 +40,6 @@ static const char DIRSPOTLIGHT_shadersource[] =
   "  float nDotVP;\n"
   "  float nDotHV;\n"
   "  float pf;\n"
-  "  vec3 dir = );\n"
   "  vec3 hv = normalize(eye + dir);\n"
   "  nDotVP = max(0.0, dot(normal, dir));\n"
   "  nDotHV = max(0.0, dot(normal, hv));\n"
@@ -53,7 +52,6 @@ static const char DIRSPOTLIGHT_shadersource[] =
   "  diffuse *= nDotVP;\n"
   "  specular *= pf;\n"
   "  return length(light_position - ecPosition3);\n"
-  "}\n"
-  "\n";
+  "}\n";
 
 #endif /* ! SO_DIRSPOTLIGHT_GLSL_H */

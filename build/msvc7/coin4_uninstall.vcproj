@@ -20,8 +20,8 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc7 coin4 "
 				Output="coin4_uninstall.exe"/>
 		</Configuration>
 		<Configuration
@@ -33,8 +33,8 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc7 coin4 "
 				Output="coin4_uninstall.exe"/>
 		</Configuration>
 		<Configuration
@@ -46,8 +46,8 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc7 coin4 "
 				Output="coin4_uninstall.exe"/>
 		</Configuration>
 		<Configuration
@@ -59,8 +59,8 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc7 coin4 "
 				Output="coin4_uninstall.exe"/>
 		</Configuration>
 	</Configurations>

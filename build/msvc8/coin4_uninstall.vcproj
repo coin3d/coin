@@ -24,8 +24,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc8 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""
@@ -47,8 +47,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc8 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""
@@ -70,8 +70,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc8 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""
@@ -93,8 +93,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc6 coin4 "
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc8 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_uninstall.exe"
 				PreprocessorDefinitions=""

@@ -29,13 +29,13 @@
 #define COIN_INT32_T int
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT64_T __int64
+#define COIN_INT64_T long long
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_INT8_T char
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INTPTR_T int
+#define COIN_INTPTR_T intptr_t
 
 /* Define when building Mac OS X framework */
 /* #undef COIN_MACOSX_FRAMEWORK */
@@ -71,13 +71,13 @@
 #define COIN_UINT32_T unsigned int
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT64_T unsigned __int64
+#define COIN_UINT64_T unsigned long long
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_UINT8_T unsigned char
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINTPTR_T unsigned int
+#define COIN_UINTPTR_T uintptr_t
 
 /* define to "remove" conflicting IN_PATH define from <sys/unistd.h> */
 /* #undef COIN_UNDEF_IN_PATH_HACK */
@@ -125,10 +125,10 @@
 /* #undef HAVE_CGL */
 
 /* The CPP compiler has a variable containing the current function name */
-/* #undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR */
+#define HAVE_CPP_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
 
 /* The C compiler has a variable containing the current function name */
-/* #undef HAVE_C_COMPILER_FUNCTION_NAME_VAR */
+#define HAVE_C_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
 
 /* Define to 1 if you have the <direct.h> header file. */
 #define HAVE_DIRECT_H 1
@@ -221,7 +221,7 @@
 /* #undef HAVE_INT8_T */
 
 /* define this if the type is available on the system */
-/* #undef HAVE_INTPTR_T */
+#define HAVE_INTPTR_T 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 /* #undef HAVE_INTTYPES_H */
@@ -356,7 +356,7 @@
 /* #undef HAVE_UINT8_T */
 
 /* define this if the type is available on the system */
-/* #undef HAVE_UINTPTR_T */
+#define HAVE_UINTPTR_T 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 /* #undef HAVE_UNISTD_H */
@@ -365,7 +365,7 @@
 /* #undef HAVE_VA_COPY_MACRO */
 
 /* define if vsnprintf() is available */
-/* #undef HAVE_VSNPRINTF */
+#define HAVE_VSNPRINTF 1
 
 /* define if you have WGL Win32 OpenGL bindings */
 #define HAVE_WGL 1
@@ -410,7 +410,7 @@
 #define HAVE__SPLITPATH 1
 
 /* define if _vsnprintf() is available */
-#define HAVE__VSNPRINTF 1
+/* #undef HAVE__VSNPRINTF */
 
 /* Define if compiler has __builtin_expect() macro */
 /* #undef HAVE___BUILTIN_EXPECT */
