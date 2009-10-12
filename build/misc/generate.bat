@@ -20,6 +20,6 @@ echo ERROR
 goto END
 ))))
 
-bash generate-compiler.sh %1
+bash generate-compiler.sh %1 %2
 
 :END
