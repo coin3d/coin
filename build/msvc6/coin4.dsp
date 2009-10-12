@@ -179,10 +179,6 @@ SOURCE=..\..\COPYING
 
 SOURCE=..\..\THANKS
 # End Source File
-# Begin Source File
-
-SOURCE=..\..\ChangeLog
-# End Source File
 # End Group
 # Begin Group "Template Files"
 # PROP Default_Filter "in"
@@ -685,6 +681,19 @@ SOURCE=..\..\src\base\namemap.cpp
 # Begin Source File
 
 SOURCE=..\..\src\base\SbBSPTree.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\base"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\base"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\base"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\base"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\base\SbByteBuffer.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\base"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7163,6 +7172,19 @@ SOURCE=..\..\src\nodekits\SoWrapperKit.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
+SOURCE=..\..\src\navigation\SoCameraUtils.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\navigation\SoScXMLNavigation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
@@ -7176,7 +7198,7 @@ SOURCE=..\..\src\navigation\SoScXMLNavigation.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLNavigationInvoke.cpp
+SOURCE=..\..\src\navigation\SoScXMLNavigationTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7189,7 +7211,7 @@ SOURCE=..\..\src\navigation\SoScXMLNavigationInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLPanUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLPanTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7202,7 +7224,7 @@ SOURCE=..\..\src\navigation\SoScXMLPanUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLRotateUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLRotateTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7215,7 +7237,7 @@ SOURCE=..\..\src\navigation\SoScXMLRotateUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLSeekUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLSeekTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7228,7 +7250,7 @@ SOURCE=..\..\src\navigation\SoScXMLSeekUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLSpinUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLSpinTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7241,7 +7263,7 @@ SOURCE=..\..\src\navigation\SoScXMLSpinUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLZoomUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLZoomTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -7254,7 +7276,46 @@ SOURCE=..\..\src\navigation\SoScXMLZoomUtils.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\navigation\SoScXMLViewUtils.cpp
+SOURCE=..\..\src\navigation\SoScXMLDollyTarget.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLMiscTarget.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLFlightControlTarget.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\navigation"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\navigation"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\navigation\SoScXMLMotionTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\navigation"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11267,6 +11328,19 @@ SOURCE=..\..\src\foreignfiles\steel-wrapper.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
+SOURCE=..\..\src\scxml\SbStringConvert.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\scxml\ScXML.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
@@ -11293,123 +11367,6 @@ SOURCE=..\..\src\scxml\ScXMLObject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\ScXMLDocument.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLState.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLOnEntry.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLOnExit.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLInitial.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLFinal.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLAnchor.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLHistory.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLTransition.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\scxml\ScXMLEvent.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
@@ -11423,20 +11380,7 @@ SOURCE=..\..\src\scxml\ScXMLEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\ScXMLInvoke.cpp
-!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
-# PROP Intermediate_Dir "Release\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
-# PROP Intermediate_Dir "Debug\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
-# PROP Intermediate_Dir "StaticRelease\scxml"
-!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
-# PROP Intermediate_Dir "StaticDebug\scxml"
-!ENDIF
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\scxml\ScXMLFallbackInvoke.cpp
+SOURCE=..\..\src\scxml\ScXMLEventTarget.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11462,7 +11406,7 @@ SOURCE=..\..\src\scxml\ScXMLStateMachine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\SoScXMLEvent.cpp
+SOURCE=..\..\src\scxml\ScXMLDocument.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11475,7 +11419,7 @@ SOURCE=..\..\src\scxml\SoScXMLEvent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\SoScXMLStateMachine.cpp
+SOURCE=..\..\src\scxml\ScXMLElt.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11488,7 +11432,7 @@ SOURCE=..\..\src\scxml\SoScXMLStateMachine.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp
+SOURCE=..\..\src\scxml\ScXMLScxmlElt.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11501,7 +11445,7 @@ SOURCE=..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp
+SOURCE=..\..\src\scxml\ScXMLInitialElt.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11514,7 +11458,7 @@ SOURCE=..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp
+SOURCE=..\..\src\scxml\ScXMLAbstractStateElt.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
@@ -11523,6 +11467,464 @@ SOURCE=..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp
 # PROP Intermediate_Dir "StaticRelease\scxml"
 !ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
 # PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLStateElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLParallelElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLFinalElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLOnEntryElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLOnExitElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLTransitionElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLHistoryElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLExecutableElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLEventElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLIfElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLElseIfElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLElseElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLLogElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLDataModelElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLDataElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLAssignElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLValidateElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLSendElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLInvokeElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLParamElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLFinalizeElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLContentElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLAnchorElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLScriptElt.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLEvaluator.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLMinimumEvaluator.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\eval-minimum.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\eval-minimum-tab.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLXPathEvaluator.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\scxml\ScXMLECMAScriptEvaluator.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\scxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\scxml"
+!ENDIF
+# End Source File
+# End Group
+# Begin Group "soscxml sources"
+# PROP Default_Filter "c;cpp;ic;icc;h"
+# Begin Source File
+
+SOURCE=..\..\src\soscxml\ScXMLCoinEvaluator.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\soscxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\soscxml\SoScXMLEvent.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\soscxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\soscxml\SoScXMLStateMachine.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\soscxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\soscxml\eval-coin-tab.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\soscxml"
+!ENDIF
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\soscxml\eval-coin.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\soscxml"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\soscxml"
 !ENDIF
 # End Source File
 # End Group
@@ -13676,6 +14078,10 @@ SOURCE=..\..\include\Inventor\manips\SoTransformerManip.h
 # Set Default_Filter "h"
 # Begin Source File
 
+SOURCE=..\..\include\Inventor\misc\CoinResources.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\Inventor\misc\SoAuditorList.h
 # End Source File
 # Begin Source File
@@ -13777,6 +14183,53 @@ SOURCE=..\..\include\Inventor\misc\SoJavaScriptEngine.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\misc\SoGLDriverDatabase.h
+# End Source File
+# End Group
+# Begin Group "Inventor\navigation headers"
+# Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLNavigation.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLNavigationTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLMiscTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLPanTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLRotateTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLSeekTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLSpinTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLZoomTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLDollyTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLFlightControlTarget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\navigation\SoScXMLMotionTarget.h
 # End Source File
 # End Group
 # Begin Group "Inventor\nodekits headers"
@@ -14596,11 +15049,11 @@ SOURCE=..\..\include\Inventor\scxml\ScXML.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\scxml\ScXMLObject.h
+SOURCE=..\..\include\Inventor\scxml\ScXMLSubObject.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\scxml\ScXMLSubObject.h
+SOURCE=..\..\include\Inventor\scxml\ScXMLObject.h
 # End Source File
 # Begin Source File
 
@@ -14608,11 +15061,147 @@ SOURCE=..\..\include\Inventor\scxml\ScXMLEvent.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\scxml\ScXMLInvoke.h
+SOURCE=..\..\include\Inventor\scxml\ScXMLEventTarget.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\scxml\ScXMLStateMachine.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLDocument.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLAbstractStateElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLExecutableElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLAnchorElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLAssignElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLContentElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLDataElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLDataModelElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLElseElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLElseIfElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLEventElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLFinalElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLFinalizeElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLHistoryElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLIfElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLInitialElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLInvokeElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLLogElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLOnEntryElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLOnExitElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLParallelElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLParamElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLScriptElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLScxmlElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLSendElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLStateElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLTransitionElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLValidateElt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLEvaluator.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLMinimumEvaluator.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLXPathEvaluator.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLECMAScriptEvaluator.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\scxml\ScXMLCoinEvaluator.h
 # End Source File
 # Begin Source File
 
@@ -14659,11 +15248,7 @@ SOURCE=..\..\include\Inventor\SbBox2d.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbBox3s.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\SbBox3i32.h
+SOURCE=..\..\include\Inventor\SbBox3d.h
 # End Source File
 # Begin Source File
 
@@ -14671,7 +15256,19 @@ SOURCE=..\..\include\Inventor\SbBox3f.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\include\Inventor\SbBox3d.h
+SOURCE=..\..\include\Inventor\SbBox3i32.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbBox3s.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbByteBuffer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\SbByteBuffer.h
 # End Source File
 # Begin Source File
 

@@ -246,9 +246,6 @@
 			Name="Documents"
 			Filter=";txt">
 			<File
-				RelativePath="..\..\ChangeLog">
-			</File>
-			<File
 				RelativePath="..\..\COPYING">
 			</File>
 			<File
@@ -2270,6 +2267,51 @@
 				</File>
 				<File
 					RelativePath="..\..\src\base\SbBSPTree.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\base/"
+							ProgramDataBaseFileName="Release\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\base/"
+							ProgramDataBaseFileName="StaticRelease\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\base/"
+							ProgramDataBaseFileName="StaticDebug\base/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\base/"
+							ProgramDataBaseFileName="Debug\base/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\base\SbByteBuffer.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -24305,6 +24347,231 @@
 				Name="navigation sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
+					RelativePath="..\..\src\navigation\SoCameraUtils.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoScXMLDollyTarget.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoScXMLFlightControlTarget.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoScXMLMiscTarget.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\navigation\SoScXMLMotionTarget.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\navigation/"
+							ProgramDataBaseFileName="Release\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\navigation/"
+							ProgramDataBaseFileName="StaticRelease\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\navigation/"
+							ProgramDataBaseFileName="StaticDebug\navigation/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\navigation/"
+							ProgramDataBaseFileName="Debug\navigation/"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\navigation\SoScXMLNavigation.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -24350,7 +24617,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\navigation\SoScXMLNavigationInvoke.cpp">
+					RelativePath="..\..\src\navigation\SoScXMLNavigationTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -24395,7 +24662,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\navigation\SoScXMLPanUtils.cpp">
+					RelativePath="..\..\src\navigation\SoScXMLPanTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -24440,7 +24707,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\navigation\SoScXMLRotateUtils.cpp">
+					RelativePath="..\..\src\navigation\SoScXMLRotateTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -24485,7 +24752,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\navigation\SoScXMLSeekUtils.cpp">
+					RelativePath="..\..\src\navigation\SoScXMLSeekTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -24530,7 +24797,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\navigation\SoScXMLSpinUtils.cpp">
+					RelativePath="..\..\src\navigation\SoScXMLSpinTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -24575,52 +24842,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\navigation\SoScXMLViewUtils.cpp">
-					<FileConfiguration
-						Name="DLL (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\navigation/"
-							ProgramDataBaseFileName="Release\navigation/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Release)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="3"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\navigation/"
-							ProgramDataBaseFileName="StaticRelease\navigation/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="LIB (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\navigation/"
-							ProgramDataBaseFileName="StaticDebug\navigation/"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="DLL (Debug)|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Optimization="0"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
-							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\navigation/"
-							ProgramDataBaseFileName="Debug\navigation/"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\navigation\SoScXMLZoomUtils.cpp">
+					RelativePath="..\..\src\navigation\SoScXMLZoomTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38409,6 +38631,141 @@
 				Name="scxml sources"
 				Filter="c;cpp;ic;icc;h">
 				<File
+					RelativePath="..\..\src\scxml\eval-minimum-tab.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\eval-minimum.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\SbStringConvert.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\scxml\ScXML.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -38454,7 +38811,232 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLAnchor.cpp">
+					RelativePath="..\..\src\scxml\ScXMLAbstractStateElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLAnchorElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLAssignElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLContentElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLDataElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLDataModelElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38544,6 +39126,231 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\src\scxml\ScXMLECMAScriptEvaluator.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLElseElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLElseIfElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLEvaluator.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\scxml\ScXMLEvent.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
@@ -38589,7 +39396,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLFallbackInvoke.cpp">
+					RelativePath="..\..\src\scxml\ScXMLEventElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38634,7 +39441,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLFinal.cpp">
+					RelativePath="..\..\src\scxml\ScXMLEventTarget.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38679,7 +39486,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLHistory.cpp">
+					RelativePath="..\..\src\scxml\ScXMLExecutableElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38724,7 +39531,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLInitial.cpp">
+					RelativePath="..\..\src\scxml\ScXMLFinalElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38769,7 +39576,277 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLInvoke.cpp">
+					RelativePath="..\..\src\scxml\ScXMLFinalizeElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLHistoryElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLIfElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLInitialElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLInvokeElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLLogElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLMinimumEvaluator.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38859,7 +39936,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLOnEntry.cpp">
+					RelativePath="..\..\src\scxml\ScXMLOnEntryElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38904,7 +39981,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLOnExit.cpp">
+					RelativePath="..\..\src\scxml\ScXMLOnExitElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -38949,7 +40026,232 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLState.cpp">
+					RelativePath="..\..\src\scxml\ScXMLParallelElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLParamElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLScriptElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLScxmlElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLSendElt.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\scxml/"
+							ProgramDataBaseFileName="Release\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\scxml/"
+							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\scxml/"
+							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\scxml/"
+							ProgramDataBaseFileName="Debug\scxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\scxml\ScXMLStateElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39039,7 +40341,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\ScXMLTransition.cpp">
+					RelativePath="..\..\src\scxml\ScXMLTransitionElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39084,7 +40386,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\SoScXMLDebugInfoInvoke.cpp">
+					RelativePath="..\..\src\scxml\ScXMLValidateElt.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39129,7 +40431,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\SoScXMLEvent.cpp">
+					RelativePath="..\..\src\scxml\ScXMLXPathEvaluator.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39173,8 +40475,12 @@
 							ProgramDataBaseFileName="Debug\scxml/"/>
 					</FileConfiguration>
 				</File>
+			</Filter>
+			<Filter
+				Name="soscxml sources"
+				Filter="c;cpp;ic;icc;h">
 				<File
-					RelativePath="..\..\src\scxml\SoScXMLScheduleRedrawInvoke.cpp">
+					RelativePath="..\..\src\soscxml\eval-coin-tab.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39182,8 +40488,8 @@
 							Optimization="3"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\scxml/"
-							ProgramDataBaseFileName="Release\scxml/"/>
+							ObjectFile=".\Release\soscxml/"
+							ProgramDataBaseFileName="Release\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -39192,8 +40498,8 @@
 							Optimization="3"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\scxml/"
-							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+							ObjectFile=".\StaticRelease\soscxml/"
+							ProgramDataBaseFileName="StaticRelease\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -39203,8 +40509,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\scxml/"
-							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+							ObjectFile=".\StaticDebug\soscxml/"
+							ProgramDataBaseFileName="StaticDebug\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -39214,12 +40520,12 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\scxml/"
-							ProgramDataBaseFileName="Debug\scxml/"/>
+							ObjectFile=".\Debug\soscxml/"
+							ProgramDataBaseFileName="Debug\soscxml/"/>
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\SoScXMLScheduleTimerEventInvoke.cpp">
+					RelativePath="..\..\src\soscxml\eval-coin.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39227,8 +40533,8 @@
 							Optimization="3"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\scxml/"
-							ProgramDataBaseFileName="Release\scxml/"/>
+							ObjectFile=".\Release\soscxml/"
+							ProgramDataBaseFileName="Release\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -39237,8 +40543,8 @@
 							Optimization="3"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\scxml/"
-							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+							ObjectFile=".\StaticRelease\soscxml/"
+							ProgramDataBaseFileName="StaticRelease\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -39248,8 +40554,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\scxml/"
-							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+							ObjectFile=".\StaticDebug\soscxml/"
+							ProgramDataBaseFileName="StaticDebug\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -39259,12 +40565,12 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\scxml/"
-							ProgramDataBaseFileName="Debug\scxml/"/>
+							ObjectFile=".\Debug\soscxml/"
+							ProgramDataBaseFileName="Debug\soscxml/"/>
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\scxml\SoScXMLStateMachine.cpp">
+					RelativePath="..\..\src\soscxml\ScXMLCoinEvaluator.cpp">
 					<FileConfiguration
 						Name="DLL (Release)|Win32">
 						<Tool
@@ -39272,8 +40578,8 @@
 							Optimization="3"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
-							ObjectFile=".\Release\scxml/"
-							ProgramDataBaseFileName="Release\scxml/"/>
+							ObjectFile=".\Release\soscxml/"
+							ProgramDataBaseFileName="Release\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Release)|Win32">
@@ -39282,8 +40588,8 @@
 							Optimization="3"
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
-							ObjectFile=".\StaticRelease\scxml/"
-							ProgramDataBaseFileName="StaticRelease\scxml/"/>
+							ObjectFile=".\StaticRelease\soscxml/"
+							ProgramDataBaseFileName="StaticRelease\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="LIB (Debug)|Win32">
@@ -39293,8 +40599,8 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions=""
 							BasicRuntimeChecks="3"
-							ObjectFile=".\StaticDebug\scxml/"
-							ProgramDataBaseFileName="StaticDebug\scxml/"/>
+							ObjectFile=".\StaticDebug\soscxml/"
+							ProgramDataBaseFileName="StaticDebug\soscxml/"/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="DLL (Debug)|Win32">
@@ -39304,8 +40610,98 @@
 							AdditionalIncludeDirectories=""
 							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
 							BasicRuntimeChecks="3"
-							ObjectFile=".\Debug\scxml/"
-							ProgramDataBaseFileName="Debug\scxml/"/>
+							ObjectFile=".\Debug\soscxml/"
+							ProgramDataBaseFileName="Debug\soscxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\soscxml\SoScXMLEvent.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\soscxml/"
+							ProgramDataBaseFileName="Release\soscxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\soscxml/"
+							ProgramDataBaseFileName="StaticRelease\soscxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\soscxml/"
+							ProgramDataBaseFileName="StaticDebug\soscxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\soscxml/"
+							ProgramDataBaseFileName="Debug\soscxml/"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\src\soscxml\SoScXMLStateMachine.cpp">
+					<FileConfiguration
+						Name="DLL (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\soscxml/"
+							ProgramDataBaseFileName="Release\soscxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\soscxml/"
+							ProgramDataBaseFileName="StaticRelease\soscxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\soscxml/"
+							ProgramDataBaseFileName="StaticDebug\soscxml/"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\soscxml/"
+							ProgramDataBaseFileName="Debug\soscxml/"/>
 					</FileConfiguration>
 				</File>
 			</Filter>
@@ -41014,6 +42410,9 @@
 				Name="Inventor\misc headers"
 				Filter="">
 				<File
+					RelativePath="..\..\include\Inventor\misc\CoinResources.h">
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\misc\SoAudioDevice.h">
 				</File>
 				<File
@@ -41090,6 +42489,43 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\misc\SoTranSender.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Inventor\navigation headers"
+				Filter="">
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLDollyTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLFlightControlTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLMiscTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLMotionTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLNavigation.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLNavigationTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLPanTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLRotateTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLSeekTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLSpinTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\navigation\SoScXMLZoomTarget.h">
 				</File>
 			</Filter>
 			<Filter
@@ -41718,19 +43154,121 @@
 					RelativePath="..\..\include\Inventor\scxml\ScXML.h">
 				</File>
 				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLAbstractStateElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLAnchorElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLAssignElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLCoinEvaluator.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLContentElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLDataElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLDataModelElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLDocument.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLECMAScriptEvaluator.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLElseElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLElseIfElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLEvaluator.h">
+				</File>
+				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLEvent.h">
 				</File>
 				<File
-					RelativePath="..\..\include\Inventor\scxml\ScXMLInvoke.h">
+					RelativePath="..\..\include\Inventor\scxml\ScXMLEventElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLEventTarget.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLExecutableElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLFinalElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLFinalizeElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLHistoryElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLIfElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLInitialElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLInvokeElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLLogElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLMinimumEvaluator.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLObject.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLOnEntryElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLOnExitElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLParallelElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLParamElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLScriptElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLScxmlElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLSendElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLStateElt.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLStateMachine.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\ScXMLSubObject.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLTransitionElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLValidateElt.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\scxml\ScXMLXPathEvaluator.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\scxml\SoScXMLEvent.h">
@@ -41783,6 +43321,12 @@
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbBSPTree.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\SbByteBuffer.h">
+				</File>
+				<File
+					RelativePath="..\..\include\Inventor\SbByteBuffer.h">
 				</File>
 				<File
 					RelativePath="..\..\include\Inventor\SbClip.h">

@@ -25,8 +25,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat dll debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc6 coin4 "
+				BuildCommandLine="..\misc\build-docs.bat dll debug msvc9 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat dll debug msvc9 coin4 "
 				CleanCommandLine=""
 				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
@@ -48,8 +48,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat dll release msvc6 coin4"
-				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc6 coin4 "
+				BuildCommandLine="..\misc\build-docs.bat dll release msvc9 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat dll release msvc9 coin4 "
 				CleanCommandLine=""
 				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
@@ -71,8 +71,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat lib release msvc6 coin4"
-				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc6 coin4 "
+				BuildCommandLine="..\misc\build-docs.bat lib release msvc9 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat lib release msvc9 coin4 "
 				CleanCommandLine=""
 				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""
@@ -94,8 +94,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\build-docs.bat lib debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc6 coin4 "
+				BuildCommandLine="..\misc\build-docs.bat lib debug msvc9 coin4"
+				ReBuildCommandLine="..\misc\build-docs.bat lib debug msvc9 coin4 "
 				CleanCommandLine=""
 				Output="coin4_docs.exe"
 				PreprocessorDefinitions=""

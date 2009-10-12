@@ -24,8 +24,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc6 coin4 "
+				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc8 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_install.exe"
 				PreprocessorDefinitions=""
@@ -47,8 +47,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc6 coin4"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc6 coin4 "
+				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc8 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_install.exe"
 				PreprocessorDefinitions=""
@@ -70,8 +70,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat dll release msvc6 coin4"
-				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc6 coin4 "
+				BuildCommandLine="..\misc\install-sdk.bat dll release msvc8 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_install.exe"
 				PreprocessorDefinitions=""
@@ -93,8 +93,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="..\misc\install-sdk.bat lib release msvc6 coin4"
-				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc6 coin4 "
+				BuildCommandLine="..\misc\install-sdk.bat lib release msvc8 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc8 coin4 "
 				CleanCommandLine=""
 				Output="coin4_install.exe"
 				PreprocessorDefinitions=""
