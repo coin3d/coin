@@ -27,7 +27,7 @@
 #ifdef COIN_INTERNAL
 /* Detect erroneous include statements in library code. Application
    programmers can ignore this. */
-#error "Do not include SbLinear.h in internal library code."
+#error Do not include SbLinear.h in internal library code.
 #endif // COIN_INTERNAL
 
 /*

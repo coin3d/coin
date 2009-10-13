@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #if defined(COIN_INTERNAL)
-#error "Do not include Inventor/misc/SoCallbackList.h internally (use Inventor/lists/SoCallbackList.h)."
+#error Do not include Inventor/misc/SoCallbackList.h internally (use Inventor/lists/SoCallbackList.h).
 #endif // COIN_INTERNAL
 
 #include <Inventor/lists/SoCallbackList.h>

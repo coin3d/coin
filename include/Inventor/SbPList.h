@@ -35,7 +35,7 @@
 // Here's the class definition of SbPList in Coin.
 #include <Inventor/lists/SbPList.h>
 #else // COIN_INTERNAL
-#error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
+#error Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h).
 #endif // COIN_INTERNAL
 
 #endif // !COIN_SBPLIST_H

@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #if defined(COIN_INTERNAL)
-#error "Do not include Sb.h internally."
+#error Do not include Sb.h internally.
 #endif // COIN_INTERNAL
 
 // Include all header files for the basic classes.

@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #ifdef COIN_INTERNAL
-#error "Don't use this typedef internally
+#error Do not use this typedef internally
 #endif
 
 #include <Inventor/elements/SoTextureMatrixElement.h>

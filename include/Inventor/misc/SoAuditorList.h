@@ -34,7 +34,7 @@
 // The real class definition include file has been moved to the lists
 // directory.
 #if defined(COIN_INTERNAL)
-#error "Do not include Inventor/misc/SoAuditorList.h internally (use Inventor/lists/SoAuditorList.h)."
+#error Do not include Inventor/misc/SoAuditorList.h internally (use Inventor/lists/SoAuditorList.h).
 #endif // COIN_INTERNAL
 #include <Inventor/lists/SoAuditorList.h>
 

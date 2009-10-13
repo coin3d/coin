@@ -24,6 +24,6 @@
  *
 \**************************************************************************/
 
-#error "Deprecated. Use SoMultiTextureEnabledElement instead"
+#error Deprecated: use SoMultiTextureEnabledElement instead
 
 #endif // !COIN_SOTEXTURE3ENABLEDELEMENT_H

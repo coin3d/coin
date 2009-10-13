@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #if defined(COIN_INTERNAL)
-#error "Do not include SoLists.h internally."
+#error Do not include SoLists.h internally.
 #endif // COIN_INTERNAL
 
 // This file's sole purpose is to provide compatibility with the way

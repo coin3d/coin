@@ -21,4 +21,4 @@
  *
 \**************************************************************************/
 
-#error "SoLongElement is obsoleted by SoInt32Element."
+#error SoLongElement is obsoleted by SoInt32Element
