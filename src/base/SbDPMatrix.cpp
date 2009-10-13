@@ -228,7 +228,7 @@ SbDPMatrix::setValue(const double * m)
   \sa getValue().
 */
 void
-SbMatrix::setValue(const SbMatrix & m)
+SbDPMatrix::setValue(const SbMatrix & m)
 {
   const SbDPMat dmat = { { m[0][0], m[0][1], m[0][2], m[0][3] },
 			 { m[1][0], m[1][1], m[1][2], m[1][3] },
