@@ -45,6 +45,7 @@
 #include "SoBaseP.cpp"
 #include "SoChildList.cpp"
 #include "SoCompactPathList.cpp"
+#include "SoConfigSettings.cpp"
 #include "SoContextHandler.cpp"
 #include "SoDB.cpp"
 #include "SoDBP.cpp"

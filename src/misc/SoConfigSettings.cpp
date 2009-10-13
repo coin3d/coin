@@ -75,7 +75,10 @@ SoConfigSettings::reinitialize()
       PRIVATE(this)->settings[ VALID_OPTIONS[i] ] = envVariable;
     }
   }
-#ifdef COIN_DEBUG
+  //FIXME: environ is not available on non-unix platforms, so
+  //disabling this for now. Write a configure test for this in the
+  //future. BFG 20091013
+#if COIN_DEBUG && 0
   for (char ** test = environ; *test != NULL; ++test) {
     char * first = strchr(*test,'=');
     if (first) {
