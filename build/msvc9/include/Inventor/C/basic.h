@@ -37,6 +37,7 @@ typedef int SbBool;
 
 #ifdef DOXYGEN_SKIP_THIS
 #ifndef USE_STATIC_CONSTS
+//POTENTIAL_ROTTING_DOCUMENTATION
 /*
   Using static consts might have some problems with merging on older
   compilers, so lie for doxygen for now, this is tested and found
