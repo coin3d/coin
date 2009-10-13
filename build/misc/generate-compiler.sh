@@ -21,7 +21,7 @@ in
   ;;
 esac
 
-if [ ${compilerversion} -lt 6 ] || [ ${compilerversion} -gt 9 ] 
+if [ ${compilerversion} -lt 6 ] || [ ${compilerversion} -gt 10 ] 
 then
   error "ERROR msvc${compilerversion} is not supported yet"
   exit 1
@@ -40,7 +40,7 @@ then
     cscript.exe ../misc/Convert.js $(cygpath -w $(pwd)/${file}) $(cygpath -w $(pwd)/${fName}.vcproj)
     rm ${file}
   done
-  cp ../misc/$2.sln .
+  cp ../data/$2.sln .
 fi
 if [ ${compilerversion} -gt 7 ]
 then
