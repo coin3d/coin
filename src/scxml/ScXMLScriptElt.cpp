@@ -107,6 +107,11 @@ ScXMLScriptElt::initClass(void)
   SCXML_ELEMENT_REGISTER_READER(ScXMLScriptElt, "script", ScXMLScriptEltReader);
 }
 
+void
+ScXMLScriptElt::cleanClass(void)
+{
+}
+
 ScXMLScriptElt::ScXMLScriptElt(void)
 {
 }
