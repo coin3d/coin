@@ -40,7 +40,7 @@ class SoScXMLStateMachine;
 
 class COIN_DLL_API SoScXMLNavigationTarget : public ScXMLEventTarget {
   typedef ScXMLEventTarget inherited;
-  SCXML_OBJECT_ABSTRACT_HEADER(SoScXMLNavigationTarget);
+  SCXML_OBJECT_ABSTRACT_HEADER(SoScXMLNavigationTarget)
 
 public:
   static void initClass(void);

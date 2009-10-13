@@ -30,7 +30,7 @@
 
 class COIN_DLL_API SoScXMLMiscTarget : public SoScXMLNavigationTarget {
   typedef SoScXMLNavigationTarget inherited;
-  SCXML_OBJECT_HEADER(SoScXMLMiscTarget);
+  SCXML_OBJECT_HEADER(SoScXMLMiscTarget)
 
 public:
   static void initClass(void);

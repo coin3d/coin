@@ -34,7 +34,7 @@ class SoCamera;
 
 class COIN_DLL_API SoScXMLPanTarget : public SoScXMLNavigationTarget {
   typedef SoScXMLNavigationTarget inherited;
-  SCXML_OBJECT_HEADER(SoScXMLPanTarget);
+  SCXML_OBJECT_HEADER(SoScXMLPanTarget)
 
 public:
   static void initClass(void);

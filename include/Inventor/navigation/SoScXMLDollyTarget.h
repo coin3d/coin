@@ -35,7 +35,7 @@ class SoFrustumCamera;
 
 class COIN_DLL_API SoScXMLDollyTarget : public SoScXMLNavigationTarget {
   typedef SoScXMLNavigationTarget inherited;
-  SCXML_OBJECT_HEADER(SoScXMLDollyTarget);
+  SCXML_OBJECT_HEADER(SoScXMLDollyTarget)
 
 public:
   static void initClass(void);

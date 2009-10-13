@@ -34,7 +34,7 @@ class SoRayPickAction;
 
 class COIN_DLL_API SoScXMLSeekTarget : public SoScXMLNavigationTarget {
   typedef SoScXMLNavigationTarget inherited;
-  SCXML_OBJECT_HEADER(SoScXMLSeekTarget);
+  SCXML_OBJECT_HEADER(SoScXMLSeekTarget)
 
 public:
   static void initClass(void);

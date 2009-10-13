@@ -28,7 +28,7 @@
 
 class COIN_DLL_API SoScXMLMotionTarget : public SoScXMLNavigationTarget {
   typedef SoScXMLNavigationTarget inherited;
-  SCXML_OBJECT_HEADER(SoScXMLMotionTarget);
+  SCXML_OBJECT_HEADER(SoScXMLMotionTarget)
 
 public:
   static void initClass(void);

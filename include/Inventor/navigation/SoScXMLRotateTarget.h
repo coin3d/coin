@@ -34,7 +34,7 @@ class SoCamera;
 
 class COIN_DLL_API SoScXMLRotateTarget : public SoScXMLNavigationTarget {
   typedef SoScXMLNavigationTarget inherited;
-  SCXML_OBJECT_HEADER(SoScXMLRotateTarget);
+  SCXML_OBJECT_HEADER(SoScXMLRotateTarget)
 
 public:
   static void initClass(void);
