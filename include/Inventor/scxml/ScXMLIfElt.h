@@ -33,7 +33,7 @@ class ScXMLElseIfElt;
 
 class COIN_DLL_API ScXMLIfElt : public ScXMLExecutableElt {
   typedef ScXMLExecutableElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLIfElt);
+  SCXML_ELEMENT_HEADER(ScXMLIfElt)
 
 public:
   static void initClass(void);

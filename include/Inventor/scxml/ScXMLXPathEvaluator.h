@@ -29,7 +29,7 @@
 
 class COIN_DLL_API ScXMLXPathEvaluator : public ScXMLEvaluator {
   typedef ScXMLEvaluator inherited;
-  SCXML_OBJECT_HEADER(ScXMLXPathEvaluator);
+  SCXML_OBJECT_HEADER(ScXMLXPathEvaluator)
 
 public:
   static void initClass(void);

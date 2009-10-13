@@ -41,7 +41,7 @@ class ScXMLStateMachine;
 
 class COIN_DLL_API ScXMLStateElt : public ScXMLAbstractStateElt {
   typedef ScXMLAbstractStateElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLStateElt);
+  SCXML_ELEMENT_HEADER(ScXMLStateElt)
 
 public:
   static void initClass(void);

@@ -30,7 +30,7 @@
 
 class COIN_DLL_API ScXMLAnchorElt : public ScXMLElt {
   typedef ScXMLElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLAnchorElt);
+  SCXML_ELEMENT_HEADER(ScXMLAnchorElt)
 
 public:
   static void initClass(void);

@@ -32,7 +32,7 @@ class ScXMLTransitionElt;
 
 class ScXMLHistoryElt : public ScXMLElt {
   typedef ScXMLElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLHistoryElt);
+  SCXML_ELEMENT_HEADER(ScXMLHistoryElt)
 
 public:
   static void initClass(void);

@@ -30,7 +30,7 @@
 
 class COIN_DLL_API ScXMLScriptElt : public ScXMLExecutableElt {
   typedef ScXMLExecutableElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLScriptElt);
+  SCXML_ELEMENT_HEADER(ScXMLScriptElt)
 
 public:
   static void initClass(void);

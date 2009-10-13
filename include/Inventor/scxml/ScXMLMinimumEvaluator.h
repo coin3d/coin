@@ -29,7 +29,7 @@
 
 class COIN_DLL_API ScXMLMinimumEvaluator : public ScXMLEvaluator {
   typedef ScXMLEvaluator inherited;
-  SCXML_OBJECT_HEADER(ScXMLMinimumEvaluator);
+  SCXML_OBJECT_HEADER(ScXMLMinimumEvaluator)
 
 public:
   static void initClass(void);
@@ -55,7 +55,7 @@ private:
 
 
 class COIN_DLL_API ScXMLMinimumExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLMinimumExprDataObj);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLMinimumExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -65,7 +65,7 @@ public:
 
 
 class COIN_DLL_API ScXMLInExprDataObj : public ScXMLMinimumExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLMinimumExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLMinimumExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -89,7 +89,7 @@ protected:
 
 
 class COIN_DLL_API ScXMLAppendOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLAppendOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLAppendOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);

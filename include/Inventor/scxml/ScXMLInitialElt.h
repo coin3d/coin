@@ -31,7 +31,7 @@ class ScXMLTransitionElt;
 
 class COIN_DLL_API ScXMLInitialElt : public ScXMLElt {
   typedef ScXMLElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLInitialElt);
+  SCXML_ELEMENT_HEADER(ScXMLInitialElt)
 
 public:
   static void initClass(void);

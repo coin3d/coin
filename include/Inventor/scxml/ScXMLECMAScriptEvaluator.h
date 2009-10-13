@@ -29,7 +29,7 @@
 
 class COIN_DLL_API ScXMLECMAScriptEvaluator : public ScXMLEvaluator {
   typedef ScXMLEvaluator inherited;
-  SCXML_OBJECT_HEADER(ScXMLECMAScriptEvaluator);
+  SCXML_OBJECT_HEADER(ScXMLECMAScriptEvaluator)
 
 public:
   static void initClass(void);

@@ -37,7 +37,7 @@ struct cc_xml_doc;
 
 class COIN_DLL_API ScXMLDocument : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_HEADER(ScXMLDocument);
+  SCXML_OBJECT_HEADER(ScXMLDocument)
 
 public:
   static void initClass(void);

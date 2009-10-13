@@ -29,7 +29,7 @@
 
 class COIN_DLL_API ScXMLCoinEvaluator : public ScXMLEvaluator {
   typedef ScXMLEvaluator inherited;
-  SCXML_OBJECT_HEADER(ScXMLCoinEvaluator);
+  SCXML_OBJECT_HEADER(ScXMLCoinEvaluator)
 
 public:
   static void initClass(void);
@@ -55,7 +55,7 @@ private:
 }; // ScXMLCoinEvaluator
 
 class COIN_DLL_API ScXMLCoinEqualsOpExprDataObj : public ScXMLEqualsOpExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLCoinEqualsOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLCoinEqualsOpExprDataObj)
   typedef ScXMLEqualsOpExprDataObj inherited;
 public:
   static void initClass(void);
@@ -67,7 +67,7 @@ protected:
 };
 
 class COIN_DLL_API ScXMLCoinAddOpExprDataObj : public ScXMLAddOpExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLCoinAddOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLCoinAddOpExprDataObj)
   typedef ScXMLAddOpExprDataObj inherited;
 public:
   static void initClass(void);
@@ -79,7 +79,7 @@ protected:
 };
 
 class COIN_DLL_API ScXMLCoinSubtractOpExprDataObj : public ScXMLSubtractOpExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLCoinSubtractOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLCoinSubtractOpExprDataObj)
   typedef ScXMLSubtractOpExprDataObj inherited;
 public:
   static void initClass(void);
@@ -93,7 +93,7 @@ protected:
 };
 
 class COIN_DLL_API ScXMLCoinMultiplyOpExprDataObj : public ScXMLMultiplyOpExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLCoinMultiplyOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLCoinMultiplyOpExprDataObj)
   typedef ScXMLMultiplyOpExprDataObj inherited;
 public:
   static void initClass(void);
@@ -105,7 +105,7 @@ protected:
 };
 
 class COIN_DLL_API ScXMLCoinDivideOpExprDataObj : public ScXMLDivideOpExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLCoinDivideOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLCoinDivideOpExprDataObj)
   typedef ScXMLDivideOpExprDataObj inherited;
 public:
   static void initClass(void);
@@ -117,7 +117,7 @@ protected:
 };
 
 class COIN_DLL_API ScXMLCoinLengthFuncExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLCoinLengthFuncExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLCoinLengthFuncExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);

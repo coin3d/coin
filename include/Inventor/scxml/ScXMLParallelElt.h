@@ -41,7 +41,7 @@ class ScXMLDataModelElt;
 
 class COIN_DLL_API ScXMLParallelElt : public ScXMLAbstractStateElt {
   typedef ScXMLAbstractStateElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLElt);
+  SCXML_ELEMENT_HEADER(ScXMLElt)
 
 public:
   static void initClass(void);

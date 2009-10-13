@@ -30,7 +30,7 @@
 
 class COIN_DLL_API ScXMLParamElt : public ScXMLElt {
   typedef ScXMLElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLParamElt);
+  SCXML_ELEMENT_HEADER(ScXMLParamElt)
 
 public:
   static void initClass(void);

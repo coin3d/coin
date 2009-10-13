@@ -33,7 +33,7 @@ class ScXMLStateMachine;
 
 class COIN_DLL_API ScXMLOnEntryElt : public ScXMLElt {
   typedef ScXMLElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLOnEntryElt);
+  SCXML_ELEMENT_HEADER(ScXMLOnEntryElt)
 
 public:
   static void initClass(void);

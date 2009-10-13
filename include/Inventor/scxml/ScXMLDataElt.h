@@ -32,7 +32,7 @@ class ScXMLDataObj;
 
 class COIN_DLL_API ScXMLDataElt : public ScXMLElt {
   typedef ScXMLElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLDataElt);
+  SCXML_ELEMENT_HEADER(ScXMLDataElt)
 
 public:
   static void initClass(void);

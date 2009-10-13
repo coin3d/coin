@@ -32,7 +32,7 @@ class ScXMLOnExitElt;
 
 class COIN_DLL_API ScXMLFinalElt : public ScXMLAbstractStateElt {
   typedef ScXMLAbstractStateElt inherited;
-  SCXML_ELEMENT_HEADER(ScXMLFinalElt);
+  SCXML_ELEMENT_HEADER(ScXMLFinalElt)
 
 public:
   static void initClass(void);

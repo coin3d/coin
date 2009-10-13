@@ -34,7 +34,7 @@ class ScXMLDataObj;
 
 class COIN_DLL_API ScXMLEvaluator : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLEvaluator);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLEvaluator)
 public:
   static void initClass(void);
   static void cleanClass(void);
@@ -66,7 +66,7 @@ private:
 // *************************************************************************
 
 class COIN_DLL_API ScXMLDataObj : public ScXMLObject {
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLDataObj);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLDataObj)
   typedef ScXMLObject inherited;
 public:
   static void initClass(void);
@@ -84,7 +84,7 @@ private:
 }; // ScXMLDataObj
 
 class COIN_DLL_API ScXMLConstantDataObj : public ScXMLDataObj {
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLConstantDataObj);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLConstantDataObj)
   typedef ScXMLDataObj inherited;
 public:
   static void initClass(void);
@@ -97,7 +97,7 @@ public:
 
 
 class COIN_DLL_API ScXMLStringDataObj : public ScXMLConstantDataObj {
-  SCXML_OBJECT_HEADER(ScXMLStringDataObj);
+  SCXML_OBJECT_HEADER(ScXMLStringDataObj)
   typedef ScXMLConstantDataObj inherited;
 public:
   static void initClass(void);
@@ -122,7 +122,7 @@ private:
 
 
 class COIN_DLL_API ScXMLRealDataObj : public ScXMLConstantDataObj {
-  SCXML_OBJECT_HEADER(ScXMLRealDataObj);
+  SCXML_OBJECT_HEADER(ScXMLRealDataObj)
   typedef ScXMLConstantDataObj inherited;
 public:
   static void initClass(void);
@@ -147,7 +147,7 @@ private:
 
 
 class COIN_DLL_API ScXMLBoolDataObj : public ScXMLConstantDataObj {
-  SCXML_OBJECT_HEADER(ScXMLBoolDataObj);
+  SCXML_OBJECT_HEADER(ScXMLBoolDataObj)
   typedef ScXMLConstantDataObj inherited;
 public:
   static void initClass(void);
@@ -172,7 +172,7 @@ private:
 
 
 class COIN_DLL_API ScXMLSbDataObj : public ScXMLConstantDataObj {
-  SCXML_OBJECT_HEADER(ScXMLSbDataObj);
+  SCXML_OBJECT_HEADER(ScXMLSbDataObj)
   typedef ScXMLConstantDataObj inherited;
 public:
   static void initClass(void);
@@ -197,7 +197,7 @@ private:
 
 
 class COIN_DLL_API ScXMLXMLDataObj : public ScXMLDataObj {
-  SCXML_OBJECT_HEADER(ScXMLXMLDataObj);
+  SCXML_OBJECT_HEADER(ScXMLXMLDataObj)
   typedef ScXMLDataObj inherited;
 public:
   static void initClass(void);
@@ -212,7 +212,7 @@ public:
 
 
 class COIN_DLL_API ScXMLExprDataObj : public ScXMLDataObj {
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLExprDataObj);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLExprDataObj)
   typedef ScXMLDataObj inherited;
 public:
   static void initClass(void);
@@ -233,7 +233,7 @@ private:
 
 
 class COIN_DLL_API ScXMLReferenceDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLReferenceDataObj);
+  SCXML_OBJECT_HEADER(ScXMLReferenceDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -260,7 +260,7 @@ private:
 // logical operators
 
 class COIN_DLL_API ScXMLAndOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLAndOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLAndOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -287,7 +287,7 @@ private:
 
 
 class COIN_DLL_API ScXMLOrOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLOrOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLOrOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -314,7 +314,7 @@ private:
 
 
 class COIN_DLL_API ScXMLNotOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLNotOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLNotOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -339,7 +339,7 @@ private:
 
 
 class COIN_DLL_API ScXMLEqualsOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLEqualsOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLEqualsOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -369,7 +369,7 @@ private:
 // arithmetic operators
 
 class COIN_DLL_API ScXMLAddOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLAddOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLAddOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -396,7 +396,7 @@ private:
 
 
 class COIN_DLL_API ScXMLSubtractOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLSubtractOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLSubtractOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -423,7 +423,7 @@ private:
 
 
 class COIN_DLL_API ScXMLMultiplyOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLMultiplyOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLMultiplyOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -450,7 +450,7 @@ private:
 
 
 class COIN_DLL_API ScXMLDivideOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLDivideOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLDivideOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);
@@ -477,7 +477,7 @@ private:
 
 
 class COIN_DLL_API ScXMLNegateOpExprDataObj : public ScXMLExprDataObj {
-  SCXML_OBJECT_HEADER(ScXMLNegateOpExprDataObj);
+  SCXML_OBJECT_HEADER(ScXMLNegateOpExprDataObj)
   typedef ScXMLExprDataObj inherited;
 public:
   static void initClass(void);

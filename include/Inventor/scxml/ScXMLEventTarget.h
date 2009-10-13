@@ -33,7 +33,7 @@ class ScXMLEvent;
 
 class COIN_DLL_API ScXMLEventTarget : public ScXMLObject {
   typedef ScXMLObject inherited;
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLEventTarget);
+  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLEventTarget)
 
 public:
   static void initClass(void);
