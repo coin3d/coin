@@ -30,7 +30,7 @@
 
 class ScXMLTransitionElt;
 
-class ScXMLHistoryElt : public ScXMLElt {
+class COIN_DLL_API ScXMLHistoryElt : public ScXMLElt {
   typedef ScXMLElt inherited;
   SCXML_ELEMENT_HEADER(ScXMLHistoryElt)
 

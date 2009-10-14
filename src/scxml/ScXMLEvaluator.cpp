@@ -166,6 +166,14 @@ ScXMLDataObj::initClass(void)
 }
 
 void
+ScXMLDataObj::setContainer(ScXMLObject * container) {
+  if (this->container) {
+    delete container;
+  }
+  this->container = container;
+}
+
+void
 ScXMLDataObj::cleanClass(void)
 {
   ScXMLDataObj::classTypeId = SoType::badType();
