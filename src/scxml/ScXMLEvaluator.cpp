@@ -47,6 +47,10 @@
 
 // *************************************************************************
 
+using std::strlen;
+using std::strcpy;
+using std::strcmp;
+
 class ScXMLEvaluator::PImpl {
 public:
 };
