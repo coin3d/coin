@@ -33,7 +33,7 @@ class SbVec4f;
 class COIN_DLL_API SbColor4f : public SbVec4f {
 public:
   SbColor4f(void);
-  SbColor4f(const SbColor &rgb, const float alpha);
+  SbColor4f(const SbColor &rgb, const float alpha = 1.0f);
   SbColor4f(const SbVec4f& v);
   SbColor4f(const float* const rgba);
   SbColor4f(const float r, const float g, const float b, const float a = 1.0f);

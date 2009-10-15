@@ -155,6 +155,8 @@ public:
   const SbViewportRegion & getViewportRegion(void) const;
   void setBackgroundColor(const SbColor4f & color);
   const SbColor4f & getBackgroundColor(void) const;
+  void setOverlayColor(const SbColor & color);
+  const SbColor & getOverlayColor(void) const;
   void setBackgroundIndex(const int index);
   int getBackgroundIndex(void) const;
   void setRGBMode(const SbBool onOrOff);
