@@ -1254,6 +1254,24 @@ SoRenderManager::getBackgroundColor(void) const
 }
 
 /*!
+  Sets color of overlay.
+*/
+void 
+SoRenderManager::setOverlayColor(const SbColor & color)
+{
+  PRIVATE(this)->overlaycolor = color;
+  this->scheduleRedraw();
+}
+/*!
+  Returns color used rendering overlay.
+*/
+const SbColor & 
+SoRenderManager::getOverlayColor(void) const
+{
+  return PRIVATE(this)->overlaycolor;
+}
+
+/*!
   Set index of background color in the color lookup table if rendering
   in colorindex mode.
 
