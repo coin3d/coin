@@ -34,6 +34,15 @@
     }
   \endcode
 
+  A common problem when dealing with geographic data is the reduced
+  floating point precision you often get. UTM coordinates are often in
+  the 10^5 a 10^6 magnitude, and this leaves very little precision for
+  details at that position.
+
+  The SoGeo nodes are therefore useful when you want to keep your data
+  in its original system, but still get good floating point precision
+  when rendering.
+
   Coin needs a local Cartesian coordinate system when rendering. When
   a SoGeoOrigin node is used, Coin will create a coordinate system at
   the SoGeoOrigin position, and all geometry (and the camera) in the
@@ -50,6 +59,32 @@
   as possible. If you move around on a large area, it might therefore
   be a good idea too actually move the GeoOrigin postition instead of
   the camera.
+
+  To place geometry in the scene graph, you can either use an
+  SoGeoSeparator node or an SoGeoCoordinate node. When using a
+  GeoSeparator node, all geometry inside that separator will be
+  rendered relative to its geo-system position and orientation, and
+  you then use regular shapes and regular SoCoordinate3 nodes to
+  specify data (the points in an SoCoordinate3 must be adjusted to be
+  relative to the GeoSeparator position).
+
+  The SoGeoCoordinate node on the other hand can contain double
+  precision geo-coordinates, and that node will internally recalculate
+  the double precison array to a single precision array which is
+  relative to the SoGeoOrgin node.
+
+  One note regarding UTM projections: Since it's quite common to assume
+  a flat earth when working with UTM data, it's possible to supply a 
+  "FLAT" keyword for UTM coordinate systems:
+
+  \code
+
+  GeoOrigin {
+    geoSystem [ "UTM", "Z17", "FLAT" ]
+    geoCoords  846889 4313850 0
+  }
+
+  \endcode
 
   Example scene graph:
   
@@ -81,7 +116,7 @@
 
   GeoSeparator {
     # Washington, DC
-    geoSystem [ "UTM" "Z17" ]
+    geoSystem [ "UTM", "Z17" ]
     geoCoords  846889 4313850 0
 
     BaseColor { rgb 0 1 1 }
