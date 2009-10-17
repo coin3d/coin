@@ -512,7 +512,7 @@ operator!=(const SbDPRotation & q1, const SbDPRotation & q2)
   within the given tolerance.
  */
 SbBool
-SbDPRotation::equals(const SbDPRotation & r, const double tolerance) const
+SbDPRotation::equals(const SbDPRotation & r, double tolerance) const
 {
   return this->quat.equals(r.quat, tolerance);
 }

@@ -50,7 +50,7 @@ public:
   SbDPRotation & setValue(const SbDPMatrix & m);
   SbDPRotation & setValue(const SbVec3d & axis, const double radians);
   SbDPRotation & setValue(const SbVec3d & rotateFrom, const SbVec3d & rotateTo);
-  SbBool equals(const SbDPRotation & r, const double tolerance) const;
+  SbBool equals(const SbDPRotation & r, double tolerance) const;
   void multVec(const SbVec3d & src, SbVec3d & dst) const;
 
   void scaleAngle(const double scaleFactor);

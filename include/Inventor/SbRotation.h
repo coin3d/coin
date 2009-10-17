@@ -58,7 +58,7 @@ public:
   friend COIN_DLL_API int operator!=(const SbRotation & q1, const SbRotation & q2);
   float operator[] (size_t n) const;
 
-  SbBool equals(const SbRotation & r, const float tolerance) const;
+  SbBool equals(const SbRotation & r, float tolerance) const;
   friend COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
   void multVec(const SbVec3f & src, SbVec3f & dst) const;
 

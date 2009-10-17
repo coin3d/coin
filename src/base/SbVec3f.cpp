@@ -223,7 +223,7 @@ SbVec3f::cross(const SbVec3f & v) const
   \a tolerance.
 */
 SbBool
-SbVec3f::equals(const SbVec3f & v, const float tolerance) const
+SbVec3f::equals(const SbVec3f & v, float tolerance) const
 {
 #if COIN_DEBUG
   if (!(tolerance >= 0.0f))
