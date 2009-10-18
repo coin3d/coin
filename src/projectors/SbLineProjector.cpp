@@ -98,8 +98,22 @@ SbLineProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f 
   // check how parallel the lines are
   SbBool nonparallel = TRUE;  
   if (epsilon > 0.0f) {
-    const float dot = SbAbs(this->line.getDirection().dot(projline.getDirection())); 
+    const SbViewVolume & vv = this->getViewVolume();
+    float dot = SbAbs(wrldline.getDirection().dot(vv.getProjectionDirection())); 
     nonparallel = SbAbs(1.0f - dot) > epsilon;
+    // need to do some extra work to check angle for perspective projections
+    if (!nonparallel && (vv.getProjectionType() == SbViewVolume::PERSPECTIVE)) {
+      SbPlane nearplane = vv.getPlane(vv.getNearDist());
+      SbVec3f nearpt;
+      if (nearplane.intersect(wrldline, nearpt)) {
+        SbVec3f projpt = vv.getProjectionPoint();
+        SbVec3f dir = nearpt - vv.getProjectionPoint();
+        (void)dir.normalize();
+        dot = SbAbs(dir.dot(vv.getProjectionDirection())); 
+        nonparallel = SbAbs(1.0f - dot) > epsilon;
+      }
+      else nonparallel = TRUE;
+    }
   }
   
   if (nonparallel) {
