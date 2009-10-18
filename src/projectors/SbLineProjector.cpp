@@ -106,7 +106,6 @@ SbLineProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f 
       SbPlane nearplane = vv.getPlane(vv.getNearDist());
       SbVec3f nearpt;
       if (nearplane.intersect(wrldline, nearpt)) {
-        SbVec3f projpt = vv.getProjectionPoint();
         SbVec3f dir = nearpt - vv.getProjectionPoint();
         (void)dir.normalize();
         dot = SbAbs(dir.dot(vv.getProjectionDirection())); 
