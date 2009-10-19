@@ -510,6 +510,10 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
     }
   }
 
+  //Correction factor to get small offsets back into the plane
+  SbVec3f normal = this->planeProj->getPlane().getNormal();
+  t-=normal.dot(t)*normal;
+
   if (t != trans) {
     m.setTransform(t, rot, scale, scaleOrient);
   }
