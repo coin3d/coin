@@ -15,6 +15,7 @@
 #
 # Authors:
 #   Marius Kintel <kintel@sim.no>
+#   Tom Fredrik Klaussen <bfg@sim.no>
 
 printUsage()
 {
@@ -37,30 +38,20 @@ if test -z "$VOLNAME" -o -z "$OUTNAME" -o -z "$ROOT"; then
   exit 1
 fi
 
-# Use sparse image to let it grow on demand
-hdiutil create $OUTNAME.tmp -quiet -size 100m -ov -layout NONE -volname "$VOLNAME" -type SPARSE -fs HFS+
-
-# Mount image and get the corresponding device
-DEVICE=`hdiutil attach $OUTNAME.tmp.sparseimage | sed -ne 's|.*/dev/\([^ ]*\).*|\1|p'`
-
-# Use ditto instead of cp to preserve file attributes (e.g. hidden files)
-ditto -rsrcFork $ROOT /Volumes/$VOLNAME
-echo "--"
-echo "Open $VOLNAME from Desktop and set background to"
-echo "/Volumes/$VOLNAME/dmg_bg.tiff. Make sure \"This window only\" is chosen."
-echo "When done, press enter to continue."
-read
 # Hide files
-/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/.VolumeIcon.icns
-/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/.DS_Store
-/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/Desktop\ DB
-/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/Desktop\ DF
-/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/dmg_bg.tiff
+/Developer/Tools/SetFile -a V /tmp/$VOLNAME/.VolumeIcon.icns
+/Developer/Tools/SetFile -a V /tmp/$VOLNAME/.DS_Store
+/Developer/Tools/SetFile -a V /tmp/$VOLNAME/Desktop\ DB
+/Developer/Tools/SetFile -a V /tmp/$VOLNAME/Desktop\ DF
+/Developer/Tools/SetFile -a V /tmp/$VOLNAME/dmg_bg.tiff
 # We have a custom volume icon
-/Developer/Tools/SetFile -a C /Volumes/$VOLNAME
+/Developer/Tools/SetFile -a C /tmp/$VOLNAME
 
-# Convert to a compressed, read-only image
-hdiutil detach $DEVICE -quiet
-hdiutil resize -sectors min $OUTNAME.tmp.sparseimage
-hdiutil convert $OUTNAME.tmp.sparseimage -quiet -format UDZO -o $OUTNAME
-rm $OUTNAME.tmp.sparseimage
+left=50
+top=90
+xspacing=170
+yspacing=150
+let x1=left+xspacing
+let y1=top+yspacing
+
+@top_srcdir@/packaging/macosx/create-dmg --volname ${VOLNAME} --background @top_srcdir@/packaging/macosx/noinst-dmg-files/dmg_bg.tiff --window-size 340 370 --icon README.txt ${x1} ${top}  --icon Coin.pkg ${left} ${top} --icon CoinTools.pkg ${left} ${y1} --icon Inventor.framework ${x1} ${y1} $OUTNAME /tmp/$VOLNAME
