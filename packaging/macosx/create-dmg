@@ -147,6 +147,9 @@ if [ -x /usr/local/bin/openUp ]; then
     /usr/local/bin/openUp "${MOUNT_DIR}"
 fi
 
+#Set volume icon if existant.
+/Developer/Tools/SetFile -a C "${MOUNT_DIR}"
+
 # unmount
 echo "Unmounting disk image..."
 hdiutil detach "${DEV_NAME}"
