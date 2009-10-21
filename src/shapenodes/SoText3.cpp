@@ -344,7 +344,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   SbBox2f maxbox;
 
-  float maxy = fontspec->size;
+  const float maxy = 0;
   float miny = -this->spacing.getValue() * fontspec->size * (n-1);
 
   float minx, maxx;
@@ -1449,8 +1449,9 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
+
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[3] * fontspec->size, 0)); 
 
       if (strcharidx > 0)
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);

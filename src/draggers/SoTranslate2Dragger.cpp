@@ -322,10 +322,11 @@ SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
   SoTranslate2Dragger * thisp = THISP(d);
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f trans = thisp->clampMatrix(matrix);
-  thisp->fieldSensor->detach();
-  if (thisp->translation.getValue() != trans)
+  if (thisp->translation.getValue() != trans) {
+    thisp->fieldSensor->detach();
     thisp->translation = trans;
-  thisp->fieldSensor->attach(&thisp->translation);
+    thisp->fieldSensor->attach(&thisp->translation);
+  }
 }
 
 // doc in parent
@@ -509,6 +510,10 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
       t[i] = SbClamp(t[i], minv[i], maxv[i]);
     }
   }
+
+  //Correction factor to get small offsets back into the plane
+  SbVec3f normal = this->planeProj->getPlane().getNormal();
+  t-=normal.dot(t)*normal;
 
   if (t != trans) {
     m.setTransform(t, rot, scale, scaleOrient);
