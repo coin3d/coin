@@ -127,20 +127,21 @@ several times as new problems show up.
 
 * Update Documents
 
-  - Run through ChangeLog and update NEWS on user-visible changes.
+  - Create stub ChangeLog.vN.N.N in docs and add it to $(EXTRA_DIST) in
+    toplevel Makefile.am. ("hg log -r <startrev>: --style changelog"
+    to generate)
 
-  - Run through ChangeLog and update RELNOTES on semantic changes.
+  - Scan through "hg log" and update NEWS on user-visible changes.
 
-  - Run through ChangeLog and update THANKS.
+  - Scan through "hg log" and update RELNOTES on semantic changes.
+
+  - Scan through "hg log" and update THANKS.
 
   - Check for missing and stale information in INSTALL.
 
   - Update README and README.*
 
-  - Create stub ChangeLog.vN.N.N in docs and add it to $(EXTRA_DIST) in
-    toplevel Makefile.am.
-
-  - Write usenet/mailinglist announcement and commit it to docs/ and add the
+  - Write mailinglist announcement and commit it to docs/ and add the
     file to $(EXTRA_DIST) in toplevel Makefile.am.
     - Include NEWS section.
     - Include download information.
@@ -192,15 +193,16 @@ anything.
 
 * Tag Source Repository
 
-  $ svn copy https://svn.coin3d.org/repos/Coin/trunk \
-             https://svn.coin3d.org/repos/Coin/tags/coin-#.#.# \
-      -m "Tagging the #.#.# release of the Coin library."
-
+  $ hg tag Coin-#.#.#
 
   | Listing existing tags can be done with:
-  | $ svn list https://svn.coin3d.org/repos/Coin/tags
+  | $ hg tags
+
+  If the next release is a major version clone the repository.
 
 * Version Number Update
+
+  If this release is on the main development repository, do the following.
 
   configure.ac (update COIN_MICRO and set COIN_BETA to a)
   NEWS (start new section for Coin beta)
