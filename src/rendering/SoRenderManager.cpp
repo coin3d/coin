@@ -247,7 +247,7 @@ SoRenderManager::SoRenderManager(void)
   PRIVATE(this)->isrgbmode = TRUE;
   PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f, 0.0f);
   PRIVATE(this)->backgroundindex = 0;
-  PRIVATE(this)->overlaycolor = SbColor(1.0f, 0.0f, 0.0f);
+  PRIVATE(this)->overlaycolor = SbColor(1.0f, 0.0f, 0.0f).getPackedValue();
   PRIVATE(this)->stereostencilmaskvp = SbViewportRegion(0, 0);
 
   PRIVATE(this)->stereostenciltype = SoRenderManager::MONO;
@@ -845,8 +845,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
                                   SoPolygonOffsetElement::FILLED, FALSE);
 
-      SoLazyElement::setDiffuse(state, node, 1, &PRIVATE(this)->overlaycolor,
-                                &PRIVATE(this)->colorpacker);
+      SoLazyElement::setPacked(state, node, 1, &PRIVATE(this)->overlaycolor, TRUE);
       SoLightModelElement::set(state, node, SoLightModelElement::BASE_COLOR);
       SoMaterialBindingElement::set(state, node, SoMaterialBindingElement::OVERALL);
       SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
@@ -1257,18 +1256,20 @@ SoRenderManager::getBackgroundColor(void) const
   Sets color of overlay.
 */
 void 
-SoRenderManager::setOverlayColor(const SbColor & color)
+SoRenderManager::setOverlayColor(const SbColor4f & color)
 {
-  PRIVATE(this)->overlaycolor = color;
+  PRIVATE(this)->overlaycolor = color.getPackedValue();
   this->scheduleRedraw();
 }
 /*!
   Returns color used rendering overlay.
 */
-const SbColor & 
+SbColor4f
 SoRenderManager::getOverlayColor(void) const
 {
-  return PRIVATE(this)->overlaycolor;
+  SbColor4f retVal;
+  retVal.setPackedValue(PRIVATE(this)->overlaycolor);
+  return retVal;
 }
 
 /*!
