@@ -181,6 +181,8 @@ public:
   void addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data);
   void removePostRenderCallback(SoRenderManagerRenderCB * cb, void * data);
 
+  void reinitialize(void);
+
 protected:
   int isActive(void) const;
   void redraw(void);
@@ -212,7 +214,6 @@ private:
   void attachClipSensor(SoNode * const sceneroot);
   void detachRootSensor(void);
   void detachClipSensor(void);
-  void reinitialize(void);
   static void nodesensorCB(void * data, SoSensor *);
   static void prerendercb(void * userdata, SoGLRenderAction * action);
 
