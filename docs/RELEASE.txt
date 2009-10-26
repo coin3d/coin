@@ -128,8 +128,7 @@ several times as new problems show up.
 * Update Documents
 
   - Create stub ChangeLog.vN.N.N in docs and add it to $(EXTRA_DIST) in
-    toplevel Makefile.am. ("hg log -r <startrev>: --style changelog"
-    to generate)
+    toplevel Makefile.am. 
 
   - Scan through "hg log" and update NEWS on user-visible changes.
 
@@ -190,7 +189,7 @@ anything.
   Strip the information header from the moved ChangeLog file.
   Commit changes.
   Make sure you remembered the $(EXTRA_DIST)-step in the above section.
-
+  ("hg log -r <startrev>: --style changelog" to generate)
 * Tag Source Repository
 
   $ hg tag Coin-#.#.#
