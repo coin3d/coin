@@ -75,22 +75,26 @@ SbLineProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f 
   SbVec3f pt1 = wrldline.getPosition();
   SbVec3f pt2 = pt1 + wrldline.getDirection();
   
-  SbVec3f lineorigin = wrldline.getPosition();
-
   this->viewVol.projectToScreen(pt1, pt1);
   this->viewVol.projectToScreen(pt2, pt2);
 
-  pt1[2] = 0.0f;
-  pt2[2] = 0.0f;
-
+  // account for the view volume aspect ratio when creating the screen space line
+  const float vvwidth  = (this->viewVol.getWidth()  == 0.0f) ? 1.0f : this->viewVol.getWidth();
+  const float vvheight  = (this->viewVol.getHeight() == 0.0f) ? 1.0f : this->viewVol.getHeight();
+  
+  pt1 = SbVec3f(pt1[0]*vvwidth, pt1[1]*vvheight, 0.0f);
+  pt2 = SbVec3f(pt2[0]*vvwidth, pt2[1]*vvheight, 0.0f);
   SbVec2f newpt = point;
   
   if (pt1 == pt2) newpt = SbVec2f(pt1[0], pt1[1]);
   else {
+    SbVec3f vppoint(point[0] * vvwidth, point[1] * vvheight, 0.0f);
     SbLine scrline(pt1, pt2);
-    SbVec3f dummy = scrline.getClosestPoint(SbVec3f(point[0], point[1], 0.0f));
+    SbVec3f dummy = scrline.getClosestPoint(vppoint);
     newpt = SbVec2f(dummy[0], dummy[1]);
   }
+  // move back from screen space to the normalized position
+  newpt = SbVec2f(newpt[0]/vvwidth, newpt[1]/vvheight);
 
   SbLine projline = this->getWorkingLine(newpt);
   SbVec3f projpt, dummy;
