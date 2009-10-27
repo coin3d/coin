@@ -40,6 +40,9 @@ function usage() {
   echo "  --custom-icon file_name custom_icon_or_sample_file x y"
   echo "      set position and custom icon"
   echo "  --version         show tool version number"
+  echo "  --owner user[:group] fileroot"
+  echo "      set owner and user to the specified group, you may need sudo"
+  echo "      permissions and a password for this"
   echo "  -h, --help        display this help"
   exit 0
 }
@@ -49,6 +52,7 @@ WINY=60
 WINW=600
 WINH=400
 ICON_SIZE=128
+CHOWNFILES=""
 
 while test "${1:0:1}" = "-"; do
   case $1 in
@@ -81,6 +85,10 @@ while test "${1:0:1}" = "-"; do
       version; exit 0;;
     --pure-version)
       pure_version; exit 0;;
+    --owner)
+      OWNER="${OWNER}
+$2 $3";
+      shift; shift; shift;;
     -*)
       echo "Unknown option $1. Run with --help for help."
       exit 1;;
@@ -139,7 +147,23 @@ sleep 4
 # make sure it's not world writeable
 echo "Fixing permissions..."
 chmod -Rf go-w "${MOUNT_DIR}" || true
+
+#Do any chown as indicated by the --owner setting
+cd ${MOUNT_DIR}
+OLDIFS=${IFS}
+IFS="
+"
+for perms in ${OWNER}
+do
+  IFS=${OLDIFS}
+  sudo chown -R ${perms}
+done
+IFS=${OLDIFS}
+cd ${OLDPWD}
+
 echo "Done fixing permissions."
+
+
 
 # make the top window open itself on mount:
 if [ -x /usr/local/bin/openUp ]; then
