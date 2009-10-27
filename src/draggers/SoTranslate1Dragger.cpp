@@ -39,9 +39,9 @@
   </center>
 
   Use this dragger to allow the end-user of your application to
-  translate along the X-axis and the Y-axis at the same time, ie
-  freely inside a 3D plane. (Use a transformation node in front of the
-  dragger to position it and re-orient it to translate in any plane.)
+  translate along the X-axis, ie freely along a line. (Use a
+  transformation node in front of the dragger to position it and
+  re-orient it to translate along any line.)
 
   \sa SoTranslate2Dragger, SoDragPointDragger
 */
