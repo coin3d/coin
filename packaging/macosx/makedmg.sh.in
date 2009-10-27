@@ -46,10 +46,11 @@ fi
 /Developer/Tools/SetFile -a V ${ROOT}/Desktop\ DF
 /Developer/Tools/SetFile -a V ${ROOT}/dmg_bg.tiff
 
-left=50
-top=90
+left=80
+top=80
 xspacing=170
-yspacing=150
+yspacing=100
+iconsize=64
 
 ICONADJUSTMENT=
 
@@ -63,7 +64,7 @@ do
         let offy=top+y*yspacing
         ICONADJUSTMENT="${ICONADJUSTMENT} --icon ${file} ${offx} ${offy}"
         let y++
-        if [ ${y} -gt 1 ]
+        if [ ${y} -gt 2 ]
         then
             y=0
             let x++
@@ -71,4 +72,4 @@ do
     fi
 done
 
-@top_srcdir@/packaging/macosx/create-dmg --volname ${VOLNAME} --background @top_srcdir@/packaging/macosx/noinst-dmg-files/dmg_bg.tiff --window-size 340 370 ${ICONADJUSTMENT} --owner root:admin . $OUTNAME ${ROOT}
+@top_srcdir@/packaging/macosx/create-dmg --volname ${VOLNAME} --background @top_srcdir@/packaging/macosx/noinst-dmg-files/dmg_bg.tiff  --icon-size ${iconsize} --window-size 340 370 ${ICONADJUSTMENT} --owner root:admin . $OUTNAME ${ROOT}
