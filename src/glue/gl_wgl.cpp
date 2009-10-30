@@ -424,7 +424,7 @@ wglglue_contextdata_cleanup(struct wglglue_contextdata * ctx)
   }
   if (ctx->hpbuffer) {
     {
-      const int r = wglglue_wglReleasePbufferDC(ctx->hpbuffer, ctx->memorydc);
+      const int r = wglglue_wglReleasePbufferDC(ctx->hpbuffer, wglglue_wglGetPbufferDC(ctx->hpbuffer));
       if (!r) {
         cc_win32_print_error("wglglue_contextdata_cleanup",
                              "wglReleasePbufferDC", GetLastError());
@@ -891,24 +891,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
 
     context->pixelformat = pixformat;
 
-    /* delete/release device context and window in case we created it
-       ourselves */
-    if (context->memorydc) {
-      if (context->didcreatememorydc) {
-        BOOL r = DeleteDC(context->memorydc);
-        if (!r) {
-          cc_win32_print_error("wglglue_context_create_pbuffer",
-                               "DeleteDC", GetLastError());
-        }
-      }
-      else if (context->shouldreleasememorydc && context->pbufferwnd) {
-        BOOL r = ReleaseDC(context->pbufferwnd, context->memorydc);
-        if (!r) {
-          cc_win32_print_error("wglglue_context_create_pbuffer",
-                               "ReleaseDC", GetLastError());
-        }
-      }
-    }
+
     if (context->pbufferwnd) {
       BOOL r = DestroyWindow(context->pbufferwnd);
       if (!r) {
@@ -916,17 +899,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
                              "DestroyWindow", GetLastError());
       }
       context->pbufferwnd = NULL;
-    }
-
-    context->memorydc = wglglue_wglGetPbufferDC(context->hpbuffer);
-    context->didcreatememorydc = FALSE;
-    context->shouldreleasememorydc = FALSE;
-    if (!context->memorydc) {
-      if (warnonerrors || coin_glglue_debug()) {
-        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "Couldn't create pbuffer's device context.");
-      }
-      return FALSE;
     }
 
     /* delete wgl context in case we created it ourselves */
