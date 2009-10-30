@@ -83,7 +83,7 @@ public:
   SbBool isactive;
   float stereooffset;
   SoInfo * dummynode;
-  SbColor overlaycolor;
+  uint32_t overlaycolor;
   SoColorPacker colorpacker;
   SbViewportRegion stereostencilmaskvp;
   GLubyte * stereostencilmask;

@@ -120,7 +120,7 @@
 */
 
 SbBool
-SbVec2f::equals(const SbVec2f& v, const float tolerance) const
+SbVec2f::equals(const SbVec2f& v, float tolerance) const
 {
 #if COIN_DEBUG
   if(!(tolerance >= 0.0f))

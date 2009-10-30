@@ -1835,6 +1835,8 @@ void
 SoDragger::childStartCB(void * data, SoDragger * child)
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
+  // make child use the same projector epsilon as its parent
+  child->setProjectorEpsilon(thisp->getProjectorEpsilon());
   thisp->saveStartParameters();
   thisp->setActiveChildDragger(child);
   PRIVATE(thisp)->startCB.invokeCallbacks(thisp);

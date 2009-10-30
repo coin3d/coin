@@ -106,12 +106,27 @@ struct ScXMLConvert {
       if (conversionOk) *conversionOk = TRUE;
       return constructFromArray<SbTypeInfo<T>::Dimensions ,T, typename SbTypeInfo<T>::PrimitiveType >::constructor(tmpVal);
     }
+
+  static SbString toString(const T & in) {
+    SbString retVal = SbTypeInfo<T>::getTypeName();
+    retVal+="(";
+    retVal+=ToString<>(in[0]);
+    for (int i=1;i<SbTypeInfo<T>::Dimensions;++i) {
+      retVal+=",";
+      retVal+=ToString<>(in[i]);
+    }
+    retVal+=")";
+    return retVal;
+  }
 };
 
 template<typename T>
 struct PrimitiveConvert {
   static T fromString(const SbString & str, SbBool * conversionOk = NULL) {
       return FromString<T>(str, conversionOk);
+  }
+  static SbString toString(const T & in) {
+      return ToString<>(in);
   }
 };
 
@@ -143,31 +158,12 @@ public:
     static
     SbString toString(const T & in)
     {
-      SbString retVal =  IF<
-        SbTypeInfo<T>::isPrimitive,
-        SbStringConvert,
-        SbTypeInfo<T>
-        >::RET::getTypeName();
-      
-      retVal += start(SbTypeInfo<T>::isPrimitive);
-      retVal += ToString<T>(in);
-      retVal += end(SbTypeInfo<T>::isPrimitive);
+      SbString retVal =
+        IF< SbTypeInfo<T>::isPrimitive, PrimitiveConvert<T>, ScXMLConvert<T> >::RET::toString(in);
+
       return retVal;
     }
 
- private:
-  static const char * getTypeName()
-  {
-    return "";
-  }
-  static const char * start(bool yes)
-  {
-    return (yes)?"(":"";
-  }
-  static const char * end(bool yes)
-  {
-    return (yes)?")":"";
-  }
 };
 
 #endif // !COIN_SBSTRINGCONVERT_H

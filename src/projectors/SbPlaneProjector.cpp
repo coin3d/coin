@@ -102,11 +102,31 @@ SbPlaneProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f
   SbVec3f projpt;
 
   SbBool ortho = this->viewVol.getProjectionType() == SbViewVolume::ORTHOGRAPHIC;
-
+  
   SbBool ok = TRUE;
   if (epsilon > 0.0f) {
-    const float dot = SbAbs(this->plane.getNormal().dot(projline.getDirection()));
+    SbPlane wrldplane = this->plane;
+    wrldplane.transform(this->workingToWorld);
+    const SbViewVolume & vv = this->getViewVolume();
+    float dot = SbAbs(wrldplane.getNormal().dot(vv.getProjectionDirection()));
     if (dot < epsilon) ok = FALSE;
+    // some extra work is needed for perspective projections
+    if (!ok && (vv.getProjectionType() == SbViewVolume::PERSPECTIVE)) {
+      float neardist = vv.getNearDist();
+      SbPlane nearplane = vv.getPlane(neardist);
+      SbLine nearline;
+      // get the intersection between the world plane and the near
+      // plane, and use that line to decide whether the plane is too
+      // close to the projection point
+      if (nearplane.intersect(wrldplane, nearline)) {
+        SbVec3f nearpt = nearline.getClosestPoint(vv.getSightPoint(neardist));
+        SbVec3f dir = nearpt - vv.getProjectionPoint();
+        (void)dir.normalize();
+        dot = SbAbs(dir.dot(vv.getProjectionDirection())); 
+        ok = SbAbs(1.0f - dot) > epsilon;
+      }
+      else ok = TRUE;
+    }
   }
   if (ok) ok = this->plane.intersect(projline, projpt);
 
