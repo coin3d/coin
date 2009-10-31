@@ -240,7 +240,7 @@ struct wglglue_contextdata {
 
   SbBool supports_render_to_texture;
   SbBool pbufferisbound;
-
+  void *pvBits;
   int pixelformat;
 };
 
@@ -250,6 +250,16 @@ wglglue_context_win32_HDC(void * ctx)
 {
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
   return context->memorydc;
+}
+
+void 
+wglglue_copy_to_bitmap_win32_HDC(void * ctx)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  wglglue_context_make_current(context);
+  glReadPixels(0, 0, context->width,context->height,
+                 GL_BGR , GL_UNSIGNED_BYTE, context->pvBits);
+  wglglue_context_reinstate_previous(context);
 }
 
 static SbBool
@@ -624,7 +634,6 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
   /* make a bitmap to draw to */
   {
     BITMAPINFO bmi;
-    void * pvbits;
 
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bmi.bmiHeader.biWidth = context->width;
@@ -643,7 +652,7 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
     bmi.bmiColors[0].rgbReserved = 0;
 
     context->bitmap = CreateDIBSection(context->memorydc, &bmi, DIB_RGB_COLORS,
-                                      &pvbits, NULL, 0);
+                                      &(context->pvBits), NULL, 0);
     if (context->bitmap == NULL) {
       if (warnonerrors || coin_glglue_debug()) {
         DWORD dwError = GetLastError();
@@ -891,7 +900,24 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
 
     context->pixelformat = pixformat;
 
-
+    /* delete/release device context and window in case we created it
+       ourselves */
+    if (context->memorydc) {
+      if (context->didcreatememorydc) {
+        BOOL r = DeleteDC(context->memorydc);
+        if (!r) {
+          cc_win32_print_error("wglglue_context_create_pbuffer",
+                               "DeleteDC", GetLastError());
+        }
+      }
+      else if (context->shouldreleasememorydc && context->pbufferwnd) {
+        BOOL r = ReleaseDC(context->pbufferwnd, context->memorydc);
+        if (!r) {
+          cc_win32_print_error("wglglue_context_create_pbuffer",
+                               "ReleaseDC", GetLastError());
+        }
+      } 
+    }
     if (context->pbufferwnd) {
       BOOL r = DestroyWindow(context->pbufferwnd);
       if (!r) {
@@ -899,6 +925,41 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
                              "DestroyWindow", GetLastError());
       }
       context->pbufferwnd = NULL;
+    }
+
+
+	context->memorydc = CreateCompatibleDC(wglglue_wglGetPbufferDC(context->hpbuffer));
+
+    BITMAPINFO bmi;
+
+    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth = context->width;
+    bmi.bmiHeader.biHeight = context->height;
+    bmi.bmiHeader.biPlanes = 1;
+    bmi.bmiHeader.biBitCount = 24;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    bmi.bmiHeader.biSizeImage = 0;
+    bmi.bmiHeader.biXPelsPerMeter = 0;
+    bmi.bmiHeader.biYPelsPerMeter = 0;
+    bmi.bmiHeader.biClrUsed  = 0;
+    bmi.bmiHeader.biClrImportant = 0;
+    bmi.bmiColors[0].rgbBlue = 0;
+    bmi.bmiColors[0].rgbGreen = 0;
+    bmi.bmiColors[0].rgbRed = 0;
+    bmi.bmiColors[0].rgbReserved = 0;
+
+    context->bitmap = CreateDIBSection(context->memorydc, &bmi, DIB_RGB_COLORS,
+                                      &(context->pvBits), NULL, 0);
+	SelectObject(context->memorydc, context->bitmap);
+
+    context->didcreatememorydc = TRUE;
+    context->shouldreleasememorydc = FALSE;
+    if (!context->memorydc) {
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "Couldn't create pbuffer's device context.");
+      }
+      return FALSE;
     }
 
     /* delete wgl context in case we created it ourselves */
@@ -911,7 +972,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
         }
       }
     }
-    context->wglcontext = wglCreateContext(context->memorydc);
+    context->wglcontext = wglCreateContext(wglglue_wglGetPbufferDC(context->hpbuffer));
     if (!context->wglcontext) {
       if (warnonerrors || coin_glglue_debug()) {
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
@@ -1046,7 +1107,12 @@ wglglue_context_make_current(void * ctx)
 
   context->storedcontext = wglGetCurrentContext();
   if (context->storedcontext) { context->storeddc = wglGetCurrentDC(); }
-  return wglMakeCurrent(context->memorydc, context->wglcontext) ? TRUE : FALSE;
+  HDC hdc;
+  if(context->hpbuffer)
+	  hdc = wglglue_wglGetPbufferDC(context->hpbuffer);
+  else
+	  hdc = context->memorydc;
+  return wglMakeCurrent(hdc, context->wglcontext) ? TRUE : FALSE;
 }
 
 void

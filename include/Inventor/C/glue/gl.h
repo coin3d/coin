@@ -619,6 +619,7 @@ COIN_DLL_API SbBool cc_glglue_context_can_render_to_texture(void * ctx);
 
 /* This abomination is needed to support SoOffscreenRenderer::getDC(). */
 COIN_DLL_API const void * cc_glglue_win32_HDC(void * ctx);
+COIN_DLL_API void cc_glglue_win32_updateHDCBitmap(void * ctx);
 
 /* ********************************************************************** */
 

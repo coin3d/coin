@@ -54,7 +54,7 @@ public:
   static SbBool allowResourcehog(void);
 
   const void * const & getHDC(void) const; // ugliness to support SoOffscreenRenderer::getDC()
-
+  void updateDCBitmap();	
 private:
   static SbBool clampSize(SbVec2s & s);
   static void clampToPixelSizeRoof(SbVec2s & s);
@@ -62,7 +62,7 @@ private:
   static unsigned int tilesizeroof;
   uint32_t tryActivateGLContext(void);
   void destructContext(void);
-
+  
   SbVec2s size;
 
   void * context;

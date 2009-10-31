@@ -294,6 +294,10 @@ CoinOffscreenGLCanvas::getHDC(void) const
   return this->current_hdc;
 }
 
+void CoinOffscreenGLCanvas::updateDCBitmap()
+{
+cc_glglue_win32_updateHDCBitmap(this->context);
+}
 // *************************************************************************
 
 // Pushes the rendered pixels into the internal memory array.

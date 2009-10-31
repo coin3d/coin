@@ -4850,6 +4850,14 @@ cc_glglue_win32_HDC(void * ctx)
   return NULL;
 #endif /* not WGL */
 }
+void cc_glglue_win32_updateHDCBitmap(void *ctx)
+{
+#if defined(HAVE_WGL)
+  return wglglue_copy_to_bitmap_win32_HDC(ctx);
+#else /* not WGL */
+  return NULL;
+#endif /* not WGL */
+}
 
 /*** </Offscreen buffer handling.> ******************************************/
 

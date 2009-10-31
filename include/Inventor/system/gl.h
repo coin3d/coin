@@ -335,6 +335,9 @@
 #ifndef GL_RGBA16
 #define GL_RGBA16 0x805B
 #endif /* GL_RGBA16 */
+#ifndef GL_BGR
+#define GL_BGR 0x80E0
+#endif /* GL_BGR */
 
 /* Floating point texture formats (ARB_texture_float) */
 
