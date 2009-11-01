@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <stdarg.h>
+#include <cstdio>
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/C/base/string.h>
@@ -120,6 +121,8 @@ public:
 
   SbString lower() const;
   SbString upper() const;
+
+  void print(FILE * fp) const;
 
   friend int operator==(const SbString & sbstr, const char * s);
   friend int operator==(const char * s, const SbString & sbstr);

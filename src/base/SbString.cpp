@@ -197,6 +197,19 @@ SbString::upper() const
   return newstr;
 }
 
+/*!
+  Dump the state of this object to the \a file stream. Only works in
+  debug version of library, method does nothing in an optimized
+  compile.
+*/
+void
+SbString::print(FILE * fp) const
+{
+#if COIN_DEBUG
+  fputs(this->getString(),fp);
+#endif // COIN_DEBUG
+}
+
 
 /*!
   \fn SbString::SbString(void)
