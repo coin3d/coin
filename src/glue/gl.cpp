@@ -4853,9 +4853,7 @@ cc_glglue_win32_HDC(void * ctx)
 void cc_glglue_win32_updateHDCBitmap(void *ctx)
 {
 #if defined(HAVE_WGL)
-  return wglglue_copy_to_bitmap_win32_HDC(ctx);
-#else /* not WGL */
-  return NULL;
+  wglglue_copy_to_bitmap_win32_HDC(ctx);
 #endif /* not WGL */
 }
 
