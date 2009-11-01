@@ -189,7 +189,7 @@ anything.
   Strip the information header from the moved ChangeLog file.
   Commit changes.
   Make sure you remembered the $(EXTRA_DIST)-step in the above section.
-  ("hg log -r <startrev>: --style changelog" to generate)
+  ("hg log -r tip:<startrev>: --style changelog" to generate)
 * Tag Source Repository
 
   $ hg tag Coin-#.#.#
