@@ -44,17 +44,8 @@ ditto -rsrcFork @top_srcdir@/packaging/macosx/License.rtf pkgresources/License.r
 ditto -rsrcFork @top_srcdir@/packaging/macosx/Coin_Welcome.rtf pkgresources/Welcome.rtf
 ditto -rsrcFork @top_srcdir@/packaging/macosx/background.tiff pkgresources/background.tiff
 
-# Set framework permissions to root:admin (same as /Library/Frameworks)
-# Note that due to a bug in the installer in Mac OS 10.3, we have to set 
-# the permissions for the root directory and not just for Inventor.framework 
-# or else the permissions of / would be modified to the installing user!
-sudo chown -R root:admin pkgroot
-
 # Package creation using PackageMaker
 if test x$VERBOSE = x; then
   REDIRECT='> /dev/null 2>&1'
 fi
 eval "@sim_ac_packagemaker_app@/Contents/MacOS/PackageMaker -build -p $PWD/Coin.pkg -f $PWD/pkgroot -r $PWD/pkgresources -i Coin_Info.plist -d Coin_Description.plist $REDIRECT"
-
-# Remove temporary files
-sudo rm -rf pkgroot pkgresources
