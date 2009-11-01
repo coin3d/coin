@@ -333,6 +333,10 @@ makefile-update:
 	( cd $(srcdir); ./makemakefile.sh Makefile.in filter="$(filter)" )
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
+makefile-internal-update:
+	( cd $(srcdir); ./makemakefile.sh -i Makefile.in filter="$(filter)" )
+	( cd $(top_builddir); ./config.status testsuite/Makefile )
+
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS)
 	$(CXX) -o $@ $(AM_LDFLAGS) $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(LIBS) $(TS_LIBS)
 
