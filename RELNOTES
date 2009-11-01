@@ -8,6 +8,10 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 3.1.2
+==========
+This is a bugfix release.
+
 Coin 3.1.1
 ==========
 This is a bugfix release.

@@ -26,13 +26,13 @@ before contacting The Coin Team for technical support.
   # 1. Unpack source code and make a build directory somewhere:
 
     cd /tmp
-    gzip -cd Coin-3.1.1.tar.gz | tar xvf -
+    gzip -cd Coin-3.1.2.tar.gz | tar xvf -
     mkdir coin-build
 
   # 2. Run configure from the build directory:
 
     cd coin-build
-    ../Coin-3.1.1/configure
+    ../Coin-3.1.2/configure
 
   # 3. Build the Coin library:
 
@@ -45,7 +45,7 @@ before contacting The Coin Team for technical support.
   # 5. Remove source and object files when you don't need them anymore:
 
     cd ..
-    rm -rf coin-build Coin-3.1.1
+    rm -rf coin-build Coin-3.1.2
 
 Running "make install" directly instead of "make" first and then
 "make install" is not recomended, since this will lead to partial
@@ -54,11 +54,11 @@ you want to launch all the build-commands on one command-line, don't separate
 commands with ; but separate them with && so the failure of one will stop the
 full chain of commands.  Like this:
 
-  .../Coin-3.1.1/configure && make && make install
+  .../Coin-3.1.2/configure && make && make install
 
 and not like this
 
-  .../Coin-3.1.1/configure; make; make install
+  .../Coin-3.1.2/configure; make; make install
 
 
 The Build Environment

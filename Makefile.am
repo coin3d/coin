@@ -88,6 +88,7 @@ EXTRA_DIST = \
 	docs/ChangeLog.v3.0.0 \
 	docs/ChangeLog.v3.1.0 \
 	docs/ChangeLog.v3.1.1 \
+	docs/ChangeLog.v3.1.2 \
 	docs/HACKING \
 	docs/announcement-2_0_0.txt \
 	docs/announcement-2_0_1.txt \
@@ -106,7 +107,10 @@ EXTRA_DIST = \
 	docs/announcement-2_5_0.txt \
 	docs/announcement-3_0_0.txt \
 	docs/announcement-3_1_0.txt \
+	docs/announcement-3_1_1.txt \
+	docs/announcement-3_1_2.txt \
 	docs/autoexp.dat \
+	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
 	docs/releases.dox \
 	cfg/errors.txt \
@@ -133,6 +137,7 @@ EXTRA_DIST = \
 	packaging/debian/libcoin40-doc.README.Debian.in \
 	packaging/debian/libcoin40-runtime.files.in \
 	packaging/debian/libcoin40-runtime.README.Debian.in \
+	packaging/macosx/create-dmg \
 	packaging/macosx/coin.info.template.in \
 	packaging/macosx/checklist.txt \
 	packaging/macosx/Coin_Description.plist.in \
@@ -163,6 +168,8 @@ EXTRA_DIST = \
 	packaging/macosx/inst-README-gcc3.txt.in \
 	packaging/macosx/inst-README-gcc4.txt.in \
 	packaging/macosx/background.tiff \
+	packaging/macosx/support/AdiumApplescriptRunner \
+	packaging/macosx/support/template.applescript \
 	packaging/redhat/coin.spec.in \
 	examples/bindings/glutiv.cpp \
 	build/misc/generate.sh \

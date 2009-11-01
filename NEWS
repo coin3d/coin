@@ -1,3 +1,13 @@
+New in Coin v3.1.2 (2009-10-14):
+* bugfixes:
+  - removePoint() bugfix for SbBSPTree
+  - divide-by-zero fix for SoNurbs
+  - Fix SoLazyElement handling in SoPrimitiveVertexCache.
+  - Refix NURBS picking according to the GLU specification.
+  - ShadowGroup fixes
+  - Bugfix for closed extrusions.
+  - Bugfix for using SoPrimitiveVertexCache for other actions than SoGL RenderAction.
+  - Increase upper limits for creating VBOs/caches.
 New in Coin v3.1.1 (2009-09-08):
 * bugfixes:
   - Fixed NURBS bugs
