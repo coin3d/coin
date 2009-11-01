@@ -349,7 +349,7 @@ public:
     this->buffer = NULL;
     this->bufferbytesize = 0;
     this->lastnodewasacamera = FALSE;
-
+	
     if (glrenderaction) {
       this->renderaction = glrenderaction;
     }
@@ -361,6 +361,7 @@ public:
 
     this->didallocation = glrenderaction ? FALSE : TRUE;
     this->viewport = vpr;
+	this->useDC = false;
   }
 
   ~SoOffscreenRendererP()
@@ -385,6 +386,9 @@ public:
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocation;
+
+  void updateDCBitmap();
+  SbBool useDC;
 
   unsigned char * buffer;
   size_t bufferbytesize;
@@ -876,7 +880,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   else {
     // do lazy buffer read (GL context is read in getBuffer())
     this->didreadbuffer = FALSE;
-    this->renderaction->setViewportRegion(this->viewport);
+	
+	SbViewportRegion region;
+
+	region.setViewportPixels(0,glsize[0]-fullsize[0],fullsize[0],fullsize[1]);
+
+    this->renderaction->setViewportRegion(region);
 
     SbTime t = SbTime::getTimeOfDay(); // for profiling
 
@@ -909,6 +918,9 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
   this->glcanvas.deactivateGLContext();
   this->renderaction->setCacheContext(oldcontext); // restore old
+
+  if(this->useDC)
+	this->updateDCBitmap();
 
   return TRUE;
 }
@@ -1022,9 +1034,19 @@ SoOffscreenRenderer::getBuffer(void) const
 const void * const &
 SoOffscreenRenderer::getDC(void) const
 {
+  if(!PRIVATE(this)->useDC)
+  {
+	PRIVATE(this)->useDC = true;
+	PRIVATE(this)->updateDCBitmap();
+  }
+  
   return PRIVATE(this)->glcanvas.getHDC();
 }
 
+void SoOffscreenRendererP::updateDCBitmap()
+{
+  this->glcanvas.updateDCBitmap();
+}
 // *************************************************************************
 
 //
