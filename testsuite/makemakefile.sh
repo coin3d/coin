@@ -1,10 +1,43 @@
 #!/bin/sh
 # **************************************************************************
 
-makefile=$1
+error () {
+    echo $@ >/dev/stderr
+}
+
+usage() {
+    echo "Usage is:"
+    echo "  $0 [OPTIONS] <makefile.in>"
+    echo
+    echo "Options:"
+    echo "  -i  include tests which uses internal API"
+    echo "  -I  do not include tests which uses internal API, this is the default"
+}
+
 filter=""
-#Temporary solution to get internal tests running, enable by setting this to true
+
+#Initialize default
 includeInternalTests=false
+
+while getopts 'iI?' o
+do
+    case $o in
+        i)
+            includeInternalTests=true;;
+        I)
+            includeInternalTests=false;;
+        ?)
+            usage
+            exit 0
+            ;;
+        *)
+            exit 1
+    esac
+done
+let nshift=OPTIND-1
+shift ${nshift}
+
+makefile=$1
 
 #Create a list with uniq items
 uniqueList () {
@@ -225,6 +258,10 @@ clean:
 
 makefile-update:
 	( cd $(srcdir); ./makemakefile.sh Makefile.in filter="$(filter)" )
+	( cd $(top_builddir); ./config.status testsuite/Makefile )
+
+makefile-internal-update:
+	( cd $(srcdir); ./makemakefile.sh -i Makefile.in filter="$(filter)" )
 	( cd $(top_builddir); ./config.status testsuite/Makefile )
 
 testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS)
