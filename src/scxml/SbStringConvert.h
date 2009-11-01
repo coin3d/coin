@@ -112,7 +112,7 @@ struct ScXMLConvert {
     retVal+="(";
     retVal+=ToString<>(in[0]);
     for (int i=1;i<SbTypeInfo<T>::Dimensions;++i) {
-      retVal+=",";
+      retVal+=", ";
       retVal+=ToString<>(in[i]);
     }
     retVal+=")";

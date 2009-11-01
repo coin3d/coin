@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(SbVec3sToString) {
   typedef SbVec3s ToTest;
   SbString foo;
   ToTest test(1,-2,3);
-  SbString trueVal = "SbVec3s(1,-2,3)";
+  SbString trueVal = "SbVec3s(1, -2, 3)";
   foo = SbStringConvert::toString(test);
   BOOST_CHECK_MESSAGE(trueVal == foo,
                       std::string("Mismatch between ") +  foo.getString() + " and control " + trueVal.getString());
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(SbVec3fToString) {
   typedef SbVec3f ToTest;
   SbString foo;
   ToTest test(0.5,-0.25,0.125);
-  SbString trueVal = "SbVec3f(0.5,-0.25,0.125)";
+  SbString trueVal = "SbVec3f(0.5, -0.25, 0.125)";
   foo = SbStringConvert::toString(test);
   BOOST_CHECK_MESSAGE(trueVal == foo,
                       std::string("Mismatch between ") +  foo.getString() + " and control " + trueVal.getString());
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(SbVec3fToIntString) {
   typedef SbVec3f ToTest;
   SbString foo;
   ToTest test(1,-2,3);
-  SbString trueVal = "SbVec3f(1,-2,3)";
+  SbString trueVal = "SbVec3f(1, -2, 3)";
   foo = SbStringConvert::toString(test);
   BOOST_CHECK_MESSAGE(trueVal == foo,
                       std::string("Mismatch between ") +  foo.getString() + " and control " + trueVal.getString());
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(SbVec3fFromFloatString) {
 BOOST_AUTO_TEST_CASE(SbRotationFromString) {
   typedef SbRotation ToTest;
   ToTest foo;
-  SbString test = "SbRotation(0.5,0.5,0.5,0.5)";
+  SbString test = "SbRotation(0.5,0.5 , 0.5, 0.5 )";
   ToTest trueVal(0.5,0.5,0.5,0.5);
   SbBool conversionOk = FALSE;
   foo = SbStringConvert::fromString<ToTest>(test, &conversionOk);
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(SbRotationToString) {
   typedef SbRotation ToTest;
   SbString foo;
   ToTest test(0.5,-0.5,-0.5,0.5);
-  SbString trueVal = "SbRotation(0.5,-0.5,-0.5,0.5)";
+  SbString trueVal = "SbRotation(0.5, -0.5, -0.5, 0.5)";
   foo = SbStringConvert::toString(test);
   BOOST_CHECK_MESSAGE(trueVal == foo,
                       std::string("Mismatch between ") +  foo.getString() + " and control " + trueVal.getString());
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(SbRotationToIntString) {
   typedef SbRotation ToTest;
   SbString foo;
   ToTest test(0,0,0,1);
-  SbString trueVal = "SbRotation(0,0,0,1)";
+  SbString trueVal = "SbRotation(0, 0, 0, 1)";
   foo = SbStringConvert::toString(test);
   BOOST_CHECK_MESSAGE(trueVal == foo,
                       std::string("Mismatch between ") +  foo.getString() + " and control " + trueVal.getString());
