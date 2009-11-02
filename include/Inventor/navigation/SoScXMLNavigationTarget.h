@@ -46,7 +46,7 @@ public:
   static void initClass(void);
   static void cleanClass(void);
 
-  COIN_DLL_API class Data { // virtual base for subclasses using getSessionData()...
+  class COIN_DLL_API Data { // virtual base for subclasses using getSessionData()...
   public:
     virtual ~Data(void);
   };
