@@ -1,0 +1,143 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg SIM about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
+ *
+\**************************************************************************/
+
+/* This file should only be included from condvar.c */
+
+#include <stdio.h>
+
+#include <Inventor/C/base/time.h>
+
+#include "threads/mutexp.h"
+
+static int
+internal_condvar_struct_init(cc_condvar * condvar_struct)
+{
+  int status = pthread_cond_init(&(condvar_struct->pthread.condid), NULL);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_struct_init",
+                         "pthread_cond_init() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_struct_clean(cc_condvar * condvar_struct)
+{
+  int status;
+  int ret = CC_OK;
+  status = pthread_cond_destroy(&(condvar_struct->pthread.condid));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_struct_clean",
+                         "pthread_cond_destroy() error: %d\n", status);
+    ret = CC_ERROR;
+  }
+  return ret;
+}
+
+static int
+internal_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
+{
+  int status;
+
+  status = pthread_cond_wait(&condvar->pthread.condid,
+                             &mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_wait",
+                         "pthread_cond_wait() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
+{
+  struct timespec timeout;
+  cc_time when;
+  int status, ret;
+  double sec;
+
+  when = cc_time_gettimeofday() + period;
+  sec = floor(when);
+  timeout.tv_sec = (int) sec;
+#if defined(HAVE_PTHREAD_TIMESPEC_NSEC)
+  timeout.tv_nsec = (int) ((when - sec) * 1000000000.0);
+#else
+  timeout.tv_usec = (int) ((when - sec) * 1000000.0);
+#endif
+  status = pthread_cond_timedwait(&condvar->pthread.condid,
+                                  &mutex->pthread.mutexid, &timeout);
+  ret = CC_OK;
+  if (status != 0) {
+    if (status == ETIMEDOUT) {
+      ret = CC_TIMEOUT;
+    }
+    else {
+      ret = CC_ERROR;
+      if (COIN_DEBUG) {
+        cc_debugerror_post("internal_condvar_timed_wait",
+                           "pthread_cond_timedwait() error: %d", status);
+        switch (status) {
+        case EINTR: cc_debugerror_post("internal_condvar_timed_wait",
+                                       "EINTR\n"); break;
+        case EBUSY: cc_debugerror_post("internal_condvar_timed_wait",
+                                       "EBUSY\n"); break;
+        default: cc_debugerror_post("internal_condvar_timed_wait",
+                                    "default\n"); break;
+        }
+      }
+    }
+  }
+  return ret;
+}
+
+static int
+internal_condvar_wake_one(cc_condvar * condvar)
+{
+  int status;
+  status = pthread_cond_signal(&condvar->pthread.condid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_wake_one",
+                         "pthread_cond_signal() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_wake_all(cc_condvar * condvar)
+{
+  int status = pthread_cond_broadcast(&condvar->pthread.condid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_wake_all",
+                         "pthread_cond_broadcast() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}

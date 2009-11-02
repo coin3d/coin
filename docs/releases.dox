@@ -1,0 +1,312 @@
+/*!
+\page coin300 New Features in Coin v3.0.0
+
+To come.
+
+\link coin250 New features for Coin v2.5.0 are here. \endlink
+*/
+
+/*!
+\page coin250 New Features in Coin v2.5.0
+
+This is a brief summary of the new features in Coin v2.5.0, grouped by
+feature category.
+
+\section geonodes Geographical Data Support
+
+The Geopgraphic Data Support nodes are partly based on GeoVRML
+(http://www.geovrml.org/), and partly based on our own UTM-nodes which
+can be found in the SmallChange library.
+
+The Geographic Data Support nodes makes it possible to create
+e.g. globe-spanning models that you can navigate around in without
+getting into float precision problems ("the shakes").  Some assistance
+from the application code is needed for this though; it is not a fully
+automatic solution.
+
+New nodes:
+- SoGeoOrigin
+- SoGeoLocation
+- SoGeoSeparator
+- SoGeoCoordinate
+
+In addition to new nodes, SoCamera and its derived nodes have been
+updated to support the SoGeoOrigin node.
+
+The coordinate system support in the above nodes are currently a bit
+lacking (only a few systems/zones are supported), but this will
+improve over time.  API-changes should not be needed to extend this,
+so patchlevel releases would be enough to add more coordinate systems.
+
+The VRML2 counterparts of the above nodes, which would be a subpart of
+implementing the GeoVRML extension, are not yet in development, but
+they might show up for the next major release since a big part of the
+implementation will be shared.
+
+Note: These above SoGeo*-nodes make the UTM*-nodes in the SmallChange
+library obsolete (for anyone who uses those), so the support for those
+nodes will eventually be deprecated and removed.  They won't be
+removed over night though, but for new users: avoid starting to use
+the UTM*-nodes at all cost to avoid having to waste time on a port
+down the line.
+
+\section shadernodes Generic GLSL Shader Support
+
+Shader support is implemented through a set of new shader nodes, more
+or less compatible with the corresponding TGS extensions.  Beyond
+GLSL, Coin also supports ARB shaders and Cg shaders (if the Cg library
+is installed).  However, we will only recommend the use of the shader
+language GLSL and put our focus on that one.
+
+New nodes:
+- SoShaderProgram
+- SoVertexShader
+- SoFragmentShader
+- SoGeometryShader
+
+See also the \link coin_shaders "Shaders in Coin"\endlink page for more
+information.
+
+\section shadownodes Generic Shadow Rendering Functionality
+
+Support for rendering shadows has been added to Coin through a set of
+shader-based nodes.  The technique used is the Variance Shadow Maps
+technique (http://www.punkuser.net/vsm/).
+
+New nodes:
+- SoShadowGroup
+- SoShadowCulling
+- SoShadowStyle
+
+\section vborendering Vertex Buffer Object (VBO) Usage
+
+A lot of nodes have had their rendering code optimized for VBO usage,
+giving great performance increases.  However, this is not universally
+enabled - it is necessary to organize the scene graphs in specific ways
+for VBOs to be used.
+
+See the \link vbo_rendering VBO Rendering in Coin \endlink page for a
+detailed description.
+
+Relevant classes:
+- SoVertexProperty
+- SoReorganizeAction
+
+\section sbclasses Expanded Sb* Class Collection
+
+The set of Sb* classes in Coin has been expanded greatly, with most
+notable a whole skew of SbVec and SbBox classes.  The reasoning behind
+this move was that historically these classes were just added as
+needed, one by one, causing the stable branch of Coin and the
+development branch of Coin to diverge and become more and more
+incompatible as time went by.  Also, extension nodes were created in
+peripheral libraries that used these new classes from the Coin
+development branch, and consequently couldn't be built gainst the
+stable branch of Coin.  With this preemptive class set expansion, we
+hope to cause that the Coin stable branch and the Coin development
+branch stay closer in sync over a longer period, and that the
+incompatibility divergence will happen around major new feature sets
+instead of around minor details.
+
+New Sb*-classes: \break
+SbBox2i32, SbBox3i32, SbBox3d, SbVec2b, SbVec2ub, SbVec2us, SbVec2i32,
+SbVec2ui32, SbVec3b, SbVec3ub, SbVec3us, SbVec3i32, SbVec3ui32,
+SbVec4b, SbVec4ub, SbVec4s, SbVec4us, SbVec4i32, SbVec4ui32, SbXfBox3d
+
+Note: You can also find a good deal of these classes in TGS Inventor, so
+this was also a TGS compatibility move.
+
+\section fieldclasses Expanded Field Class Collection
+
+The exact same reasoning as for the Sb*-classes goes for the field
+classes.
+
+New field classes: \break
+SoSFBox2s, SoSFBox2i32, SoSFBox2d, SoSFBox2d, SoSFBox3i32, SoSFBox3d,
+SoSFColorRGBA, SoSFDouble, SoSFVec2b, SoSFVec2i32, SoSFVec2d,
+SoSFVec3b, SoSFVec3i32, SoSFVec4b, SoSFVec4ub, SoSFVec4s, SoSFVec4us,
+SoSFVec4i32, SoSFVec4ui32, SoSFVec4d, SoMFColorRGBA, SoMFDouble,
+SoMFVec2b, SoMFVec2s, SoMFVec2i32, SoMFVec2d, SoMFVec3b, SoMFVec3s,
+SoMFVec3i32, SoMFVec4b, SoMFVec4ub, SoMFVec4s, SoMFVec4us,
+SoMFVec4i32, SoMFVec4ui32, SoMFVec4d
+
+\section frustumcamera SoFrustumCamera node
+
+This node is added to make it possible to set up a custom camera with
+full control over the view volume. SoFrustumCamera is basically a
+mapping of the OpenGL glFrustum() method.
+
+The typical use of SoFrustumCamera is in a CAVE or MultiPipe
+environment where it's often necessary to set up cameras based on the
+configuration of the different displays.
+
+\section misc250 Miscellaneous
+
+Below follows a non-exhaustive list of other, more minor, tweaks and
+tidbits.
+
+\subsection sofile SoSearchAction on SoFile nodes
+
+To facilitate control over whether an SoFile node should traverse its
+children during an SoSearchAction traversal, two static methods have been
+added to SoFile.
+
+New functions:
+- SoFile::setSearchOK() [static]
+- SoFile::getSearchOK() [static]
+
+\subsection sbtypeinfo SbTypeInfo<T> template type information library
+
+For those who write generic code using C++ templates, a template type
+information library has been added for the primitive Coin-types, so you
+can use type relations for populating a template instead of needing
+template parameters for all changing types of the template, or you can
+write generic code on type attributes like the number of dimensions of an
+SbVec class.  SbTypeInfo<T> can be found in Inventor/SbTypeInfo.h.
+
+\subsection vcprojects Visual Studio Projects
+
+The Visual Studio projects have been split into projects for separately
+building, installing, uninstalling the Coin SDK, and document generation.
+This was done primarily to be able to build without automatically
+performing the installation procedure at the same time, but also to offer
+other supplementary targets later like the doc-generation project...
+
+\link coin240 New features for Coin v2.4.0 are here. \endlink
+*/
+
+
+/*!
+\page coin240 New Features in Coin v2.4.0
+
+The primary reason for the 2.4.0 release was the option of finally
+building Coin from source on MS Windows without having to go through
+the Cygwin process.
+
+There had also been various optimization work on rendering traversal
+code, file i/o and other things.
+
+For v2.4.1, SoExtSelection LASSO and RECTANGLE select could be aborted
+by the end-user by hiting the 'END' key.  No API-changes was needed
+for this of course.
+
+For v2.4.2, we hacked in support for compressed textures through an
+API/ABI-invisible field in SoTexture2, called
+"enableCompressedTexture".  This field will remain "invisible" until
+Coin v3.0.0 is released, and can only be accessed from .iv-file input
+or through the SoFieldContainer API.
+
+For v2.4.6, SbViewVolume::getAlignRotation() was implemented, and
+SoToVRML2Action got support for SoUnits in relation to
+SoVRMLTransform nodes.
+
+\link coin230 New features for Coin v2.3.0 are here. \endlink
+*/
+
+/*!
+\page coin230 New Features in Coin v2.3.0
+
+\section multitexturing230 More Multi-Texturing
+
+New nodes:
+- SoTextureCombine
+
+\section texcoordmaps Texture coordinate mapping nodes
+
+New nodes:
+- SoTextureCoordinateCube
+- SoTextureCoordinateCylinder
+- SoTextureCoordinateSphere
+
+\link coin220 New features for Coin v2.2.0 are here. \endlink
+*/
+
+/*!
+\page coin220 New Features in Coin v2.2.0
+
+\section multitexturing220 Multi-Texturing
+
+New nodes:
+- SoTextureUnit
+
+\section bumpmapping Bump-Mapping
+
+New nodes:
+- SoBumpMap
+- SoBumpMapCoordinate
+- SoBumpMapTransform
+
+\section fontsupport Better Font Support
+
+TrueType font support for all 3D text primitive types.
+
+\section scenetexture Render To Texture Support
+
+New nodes:
+- SoSceneTexture2
+
+\section misc Misc
+
+REPLACE texture model support for SoTexture2
+
+pbuffer support for SoOffscreenRenderer
+
+New transparency rendering type, SORTED_LAYERS_BLEND
+
+\link coin210 New features for Coin v2.1.0 are here. \endlink
+
+*/
+
+/*!
+\page coin210 New Features in Coin v2.1.0
+
+\section hardcopy HardCopy Support
+
+Vector output to PostScript.
+
+
+\section fonts FreeType and Win32 TrueType Font Support
+
+\section intersectiondetection Intersection Detection
+
+SoIntersectionDetectionAction
+
+\section soselectionhighlight SoLineHighlightRenderAction/SoBoxHighlightRenderAction and Multiple SoSelection Nodes
+
+\section misc210 Misc
+
+\subsection compressedio Compressed File I/O Support
+
+SoOutput::setCompression()
+SoOutput::getAvailableCompressionMethods()
+
+\subsection convenience Additional Convenience Functions
+
+SoInput::setStringArray()
+SoAction::apply(SoAction *)
+
+\subsection copypolicy NO_COPY SoSFImage CopyPolicy
+
+SoSFImage::setValue with CopyPolicy::NO_COPY implemented.
+
+\link coin200 New features for Coin v2.0.0 are here. \endlink
+
+*/
+
+/*!
+\page coin200 New Features in Coin v2.0.0
+
+\section bigimage Big-Image Support
+
+\section textures3d 3D Textures Support
+
+\section sound3d 3D Sound Support
+
+\section vrml97 VRML97 Support
+
+\section macosx Mac OS X Support
+
+\section multipipe Multi-Pipe Rendering Support
+
+*/
+

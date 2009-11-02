@@ -1,0 +1,26 @@
+#Inventor V2.1 ascii
+
+# Check SoImage rendering.
+#
+# 19990515 mortene
+
+Separator {
+   Cube { width 100  depth 100  height 100}
+
+   Image {
+      filename "myimage.rgb" 
+      horAlignment LEFT
+      vertAlignment BOTTOM
+   }
+
+   BaseColor { rgb 1 0 0 }
+   Translation { translation +400 0 0 }
+   Cube { width 100  depth 100  height 100}
+
+   Translation { translation +400 0 0 }
+   Image {
+      filename "myimage.rgb" 
+      width 100
+      height 100
+   }
+}

@@ -1,0 +1,61 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg SIM about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
+ *
+\**************************************************************************/
+
+/* this file should only be included from mutex.c */
+
+static int
+win32_cs_struct_init(cc_mutex * mutex)
+{
+  InitializeCriticalSection(&mutex->w32thread.critical_section);
+  return CC_OK;
+}
+
+static int
+win32_cs_struct_clean(cc_mutex * mutex)
+{
+  DeleteCriticalSection(&mutex->w32thread.critical_section);
+  /* this function does not have a return value, always return OK */
+  return CC_OK;
+}
+
+static int
+win32_cs_lock(cc_mutex * mutex)
+{
+  EnterCriticalSection(&mutex->w32thread.critical_section);
+  return CC_OK;
+}
+
+static int
+win32_cs_try_lock(cc_mutex * mutex)
+{
+  BOOL status;
+  status = cc_mutex_TryEnterCriticalSection(&mutex->w32thread.critical_section);
+  return status == TRUE ? CC_OK : CC_BUSY;
+}
+
+static int
+win32_cs_unlock(cc_mutex * mutex)
+{
+  LeaveCriticalSection(&(mutex->w32thread.critical_section));
+  return CC_OK;
+}

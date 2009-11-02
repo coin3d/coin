@@ -1,0 +1,70 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Kongsberg SIM about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See http://www.coin3d.org/ for more information.
+ *
+ *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
+ *
+\**************************************************************************/
+
+/* this file should only be included from thread.c */
+
+static int
+internal_init(cc_thread * thread)
+{
+  int status = pthread_attr_init(&(thread->pthread.threadattrs));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_init", "pthread_attr_init() error: %d\n", status);
+    return CC_ERROR;
+  }
+
+  status = pthread_create(&(thread->pthread.threadid),
+                          &(thread->pthread.threadattrs),
+                          thread->func, thread->closure);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_init", "pthread_create() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_clean(cc_thread * thread)
+{
+  int status = pthread_attr_destroy(&(thread->pthread.threadattrs));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_clean", "pthread_attr_destroy() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_join(cc_thread * thread,
+               void ** retvalptr)
+{
+  int status = pthread_join(thread->pthread.threadid, retvalptr);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_join", "pthread_join() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
