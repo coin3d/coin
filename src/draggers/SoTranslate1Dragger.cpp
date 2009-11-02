@@ -392,14 +392,19 @@ SoTranslate1Dragger::clampMatrix(SbMatrix & m) const
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
   m.getTransform(trans, rot, scale, scaleOrient);
+  SbVec3f t = trans;
+
   if (minv <= maxv) {    
-    SbVec3f t = trans;
     t[0] = SbClamp(t[0], minv, maxv);
-    if (t != trans) {
-      m.setTransform(t, rot, scale, scaleOrient);
-    }
   }
-  return trans;
+  //Correct small offsets back onto the line
+  t[1] = t[2] = 0;
+
+  if (t != trans) {
+    m.setTransform(t, rot, scale, scaleOrient);
+  }
+
+  return t;
 }
 
 #undef THISP
