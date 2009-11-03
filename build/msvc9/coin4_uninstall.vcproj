@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin4_uninstall"
-	ProjectGUID="{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}"
 	Keyword="MakeFileProj"
 	TargetFrameworkVersion="131072"
 	>
