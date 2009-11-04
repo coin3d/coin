@@ -30,6 +30,7 @@
 #define COIN_ALLOW_CC_HASH /* Hack to get around include protection
                               for obsoleted ADT. */
 
+/*! \file hash.h */
 #include <Inventor/C/base/hash.h>
 
 #include <cassert>

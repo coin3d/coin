@@ -33,6 +33,7 @@
 
 /* ********************************************************************** */
 
+/*! \file storage.h */
 #include <Inventor/C/threads/storage.h>
 
 #include <stdlib.h>

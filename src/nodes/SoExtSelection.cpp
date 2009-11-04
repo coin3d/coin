@@ -65,6 +65,7 @@
 
 // *************************************************************************
 
+/*! \file SoExtSelection.h */
 #include <Inventor/nodes/SoExtSelection.h>
 
 #include <float.h>

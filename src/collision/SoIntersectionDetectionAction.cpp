@@ -118,6 +118,7 @@
 
 // *************************************************************************
 
+/*! \file SoIntersectionDetectionAction.h */
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 
 #ifdef HAVE_CONFIG_H

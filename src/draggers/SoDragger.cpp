@@ -194,6 +194,7 @@
 
 // FIXME: document DraggerCB typedef? 20010909 mortene.
 
+/*! \file SoDragger.h */
 #include <Inventor/draggers/SoDragger.h>
 
 #include <Inventor/draggers/SoCenterballDragger.h>
