@@ -27,6 +27,7 @@
 
 #ifdef COIN_HAVE_JAVASCRIPT
   
+/*! \file SoJavaScriptEngine.h */
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>

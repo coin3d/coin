@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file wpool.h */
 #include <Inventor/C/threads/wpool.h>
 
 #include <stdlib.h>

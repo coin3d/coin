@@ -114,6 +114,7 @@
   Always display bounding box.
 */
 
+/*! \file SoVRMLInline.h */
 #include <Inventor/VRMLnodes/SoVRMLInline.h>
 
 #include <stdlib.h>

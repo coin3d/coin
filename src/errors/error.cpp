@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file error.h */
 #include <Inventor/C/errors/error.h>
 
 #ifdef HAVE_CONFIG_H

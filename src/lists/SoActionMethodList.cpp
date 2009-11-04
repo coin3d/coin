@@ -31,6 +31,7 @@
   functions to call during scene graph traversal.
 */
 
+/*! \file SoActionMethodList.h */
 #include <Inventor/lists/SoActionMethodList.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SbList.h>

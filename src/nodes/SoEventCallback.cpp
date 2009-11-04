@@ -62,6 +62,7 @@
 
 // *************************************************************************
 
+/*! \file SoEventCallback.h */
 #include <Inventor/nodes/SoEventCallback.h>
 
 #include <Inventor/SoPath.h>

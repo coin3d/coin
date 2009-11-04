@@ -33,6 +33,7 @@
 // *************************************************************************
 
 #define COIN_ALLOW_SBDICT
+/*! \file SbDict.h */
 #include <Inventor/SbDict.h>
 #undef COIN_ALLOW_SBDICT
 
