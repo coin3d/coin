@@ -92,6 +92,7 @@
 
 // *************************************************************************
 
+/*! \file SbTesselator.h */
 #include <Inventor/SbTesselator.h>
 
 #include <cstdio>

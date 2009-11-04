@@ -38,6 +38,7 @@
 
 // *************************************************************************
 
+/*! \file SoSceneManager.h */
 #include <Inventor/SoSceneManager.h>
 
 #include <assert.h>

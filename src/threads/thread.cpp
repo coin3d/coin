@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file thread.h */
 #include <Inventor/C/threads/thread.h>
 
 #include <stdlib.h>

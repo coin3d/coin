@@ -173,6 +173,7 @@
   Children bounding box size hint. Default value is (-1, -1, -1).
 */
 
+/*! \file SoVRMLAnchor.h */
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 
 #include <stdlib.h>

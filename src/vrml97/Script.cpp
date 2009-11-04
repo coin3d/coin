@@ -144,6 +144,7 @@
 
 // *************************************************************************
 
+/*! \file SoVRMLScript.h */
 #include <Inventor/VRMLnodes/SoVRMLScript.h>
 
 #include <assert.h>

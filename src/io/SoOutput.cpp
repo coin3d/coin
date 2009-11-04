@@ -62,6 +62,7 @@
 
 // *************************************************************************
 
+/*! \file SoOutput.h */
 #include <Inventor/SoOutput.h>
 
 #ifdef HAVE_CONFIG_H

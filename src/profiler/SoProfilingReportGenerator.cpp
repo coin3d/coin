@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file SoProfilingReportGenerator.h */
 #include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
 
 #include <assert.h>

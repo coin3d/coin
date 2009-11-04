@@ -48,6 +48,7 @@
 
 // *************************************************************************
 
+/*! \file SoContextHandler.h */
 #include <Inventor/misc/SoContextHandler.h>
 
 #include <stdlib.h>

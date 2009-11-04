@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file sched.h */
 #include <Inventor/C/threads/sched.h>
 
 #include <assert.h>

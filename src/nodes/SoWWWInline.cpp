@@ -72,6 +72,7 @@
 
 // *************************************************************************
 
+/*! \file SoWWWInline.h */
 #include <Inventor/nodes/SoWWWInline.h>
 
 #include <stddef.h>

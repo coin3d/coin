@@ -120,6 +120,7 @@
 
 // *************************************************************************
 
+/*! \file SoType.h */
 #include <Inventor/SoType.h>
 
 #include <assert.h>
