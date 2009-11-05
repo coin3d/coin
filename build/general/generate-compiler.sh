@@ -37,7 +37,7 @@ then
   for file in *.dsp
   do
     fName=$(basename ${file} .dsp)
-    cscript.exe ../misc/Convert.js $(cygpath -w $(pwd)/${file}) $(cygpath -w $(pwd)/${fName}.vcproj)
+    cscript.exe ../general/Convert.js $(cygpath -w $(pwd)/${file}) $(cygpath -w $(pwd)/${fName}.vcproj)
     rm ${file}
   done
   cp ../data/$2.sln .
