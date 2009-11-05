@@ -1,11 +1,28 @@
 #!/bin/sh
 
-SolutionName=coin4
+usage() {
+  echo "Usage is:"
+  echo "  $0 <SolutionName> [FirstMSVCRev] [LastMSVCRev]"
+}
+
+#Defaults
+FirstMSVCRev=7
+LastMSVCRev=10
+
+if [ -z "$1" ]
+then
+  usage
+  exit 1
+fi
+
+SolutionName=$1
+
+[ "$2" -gt 0 ] 2>/dev/null && FirstMSVCRev=$2
+[ "$3" -gt 0 ] 2>/dev/null && LastMSVCRev=$3
 
 cd $(dirname $0)/../..
-export COINDIR=$(cygpath -w $(pwd))
 cd build/general
-for i in $(seq 9 9)
+for i in $(seq ${FirstMSVCRev} ${LastMSVCRev})
 do
   ./generate.bat msvc$i ${SolutionName}
 done
