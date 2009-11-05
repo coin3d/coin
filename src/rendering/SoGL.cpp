@@ -1512,6 +1512,12 @@ namespace { namespace SoGL { namespace FaceSet {
                           *currnormal);
         }
 
+        if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
+          attribs->send(attribnr++);
+        } 
+        else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+          attribs->send(*vertexindices++);
+        }
         SEND_VERTEX(v4);
 
         if (mode == GL_POLYGON) {
@@ -1595,6 +1601,11 @@ namespace { namespace SoGL { namespace FaceSet {
                               *currnormal);
             }
 
+            if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX) {
+              attribs->send(attribnr++);
+            } else if ((AttributeBinding)VertexAttributeBinding == PER_VERTEX_INDEXED) {
+              attribs->send(*vertexindices++);
+            }
             SEND_VERTEX(v1);
 
             v1 = viptr < viendptr ? *viptr++ : -1;
