@@ -257,13 +257,14 @@ SoPointSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
+  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool vbo = this->startVertexArray(action,
                                         coords,
                                         (needNormals && (nbind != OVERALL)) ? normals : NULL,
                                         doTextures,
                                         mbind == PER_VERTEX);
-    
+    didrenderasvbo = vbo;
     cc_glglue_glDrawArrays(glue, GL_POINTS, idx, numpts);
     this->finishVertexArray(action, vbo,
                             (needNormals && (nbind != OVERALL)),
@@ -282,7 +283,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   // send approx number of points for autocache handling. Divide
   // by three so that three points is the same as one triangle.
-  sogl_autocache_update(state, numpts/3);
+  sogl_autocache_update(state, numpts/3, didrenderasvbo);
 
 }
 

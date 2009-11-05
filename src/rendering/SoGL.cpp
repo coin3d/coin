@@ -2332,13 +2332,14 @@ static int SOGL_AUTOCACHE_REMOTE_MIN = 500000;
 static int SOGL_AUTOCACHE_REMOTE_MAX = 5000000;
 static int SOGL_AUTOCACHE_LOCAL_MIN = 100000;
 static int SOGL_AUTOCACHE_LOCAL_MAX = 1000000;
+static int SOGL_AUTOCACHE_VBO_LIMIT = 65536;
 
 /*!
   Called by each shape during rendering. Will enable/disable autocaching
   based on the number of primitives.
 */
 void
-sogl_autocache_update(SoState * state, const int numprimitives)
+sogl_autocache_update(SoState * state, const int numprimitives, SbBool didusevbo)
 {
   static SbBool didtestenv = FALSE;
   if (!didtestenv) {
@@ -2359,6 +2360,10 @@ sogl_autocache_update(SoState * state, const int numprimitives)
     if (env) {
       SOGL_AUTOCACHE_LOCAL_MAX = atoi(env);
     }
+    env = coin_getenv("COIN_AUTOCACHE_VBO_LIMIT");
+    if (env) {
+      SOGL_AUTOCACHE_VBO_LIMIT = atoi(env);
+    }
     didtestenv = TRUE;
   }
 
@@ -2375,6 +2380,13 @@ sogl_autocache_update(SoState * state, const int numprimitives)
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
   }
   SoGLCacheContextElement::incNumShapes(state);
+
+  if (didusevbo) {
+    // avoid creating caches when rendering large VBOs
+    if (numprimitives > SOGL_AUTOCACHE_VBO_LIMIT) {
+      SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+    }
+  }
 }
 
 // **************************************************************************

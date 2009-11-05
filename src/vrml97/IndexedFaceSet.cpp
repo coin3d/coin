@@ -551,12 +551,14 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
+  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
                                           (nbind != OVERALL) ? normals : NULL,
                                           doTextures,
                                           mbind != OVERALL);
+    didrenderasvbo = dovbo;
     LOCK_VAINDEXER(this);
     if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
@@ -644,7 +646,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   }
 
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, this->coordIndex.getNum() / 4);
+  sogl_autocache_update(state, this->coordIndex.getNum() / 4, didrenderasvbo);
 
   state->pop();
 }

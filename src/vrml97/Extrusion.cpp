@@ -664,7 +664,8 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   state->pop();
 
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, PRIVATE(this)->idx.getLength() / 4);
+  sogl_autocache_update(state, PRIVATE(this)->idx.getLength() / 4,
+                        vbo);
 }
 
 // Doc in parent
