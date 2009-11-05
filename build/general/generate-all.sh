@@ -4,8 +4,8 @@ SolutionName=coin4
 
 cd $(dirname $0)/../..
 export COINDIR=$(cygpath -w $(pwd))
-cd build/misc
-for i in $(seq 7 9)
+cd build/general
+for i in $(seq 9 9)
 do
   ./generate.bat msvc$i ${SolutionName}
 done
