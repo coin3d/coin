@@ -329,13 +329,14 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
-
+  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool vbo = this->startVertexArray(action,
                                         glcoords,
                                         (needNormals && (nbind == PER_VERTEX_INDEXED)) ? normals : NULL,
                                         doTextures,
                                         mbind == PER_VERTEX_INDEXED);
+    didrenderasvbo = vbo;
     LOCK_VAINDEXER(this);
     if (this->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
@@ -397,7 +398,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
 
   // send approx number of points for autocache handling. Divide
   // by three so that three points is the same as one triangle.
-  sogl_autocache_update(state, numindices/3);
+  sogl_autocache_update(state, numindices/3, didrenderasvbo);
 }
 
 // Documented in superclass.

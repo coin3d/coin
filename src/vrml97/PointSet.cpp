@@ -187,13 +187,14 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
+  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool vbo = this->startVertexArray(action,
                                         coords,
                                         NULL,
                                         FALSE,
                                         matpervertex);
-    
+    didrenderasvbo = vbo;
     cc_glglue_glDrawArrays(glue, GL_POINTS, 0, numpts);
     this->finishVertexArray(action, vbo,
                             FALSE,
@@ -209,7 +210,7 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
   }
 
   // send approx number of points for autocache handling
-  sogl_autocache_update(state, numpts); 
+  sogl_autocache_update(state, numpts, didrenderasvbo); 
 }
 
 // Doc in parent
