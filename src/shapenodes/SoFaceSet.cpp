@@ -76,6 +76,7 @@
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -557,7 +558,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     }
 
     // check if we can render things using glDrawArrays
-    if ((PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
+    if (SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY) &&
+        (PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
         (PRIVATE(this)->primitivetype == GL_QUADS) &&
         (nbind != PER_FACE) &&
         (mbind != PER_FACE)) {
