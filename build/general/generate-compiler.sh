@@ -10,6 +10,11 @@ error() {
   echo $@ >/dev/stderr
 }
 
+die() {
+  error $@
+  exit 1
+}
+
 case $1
 in 
   msvc*)
@@ -34,13 +39,15 @@ cd $1
 ../misc/generate.sh
 if [ ${compilerversion} -gt 6 ]
 then
+  #We want to keep this here, since this is a good place to drop dead
+  #when we generate a solution for the first time.
+  cp ../data/$2.sln . || die "No such file: ../data/$2.sln"
   for file in *.dsp
   do
     fName=$(basename ${file} .dsp)
-    cscript.exe ../misc/Convert.js $(cygpath -w $(pwd)/${file}) $(cygpath -w $(pwd)/${fName}.vcproj)
+    cscript.exe ../general/Convert.js $(cygpath -w $(pwd)/${file}) $(cygpath -w $(pwd)/${fName}.vcproj)
     rm ${file}
   done
-  cp ../data/$2.sln .
 fi
 if [ ${compilerversion} -gt 7 ]
 then
