@@ -203,10 +203,10 @@ SbString::upper() const
   compile.
 */
 void
-SbString::print(FILE * fp) const
+SbString::print(std::FILE * fp) const
 {
 #if COIN_DEBUG
-  fputs(this->getString(),fp);
+  std::fputs(this->getString(),fp);
 #endif // COIN_DEBUG
 }
 
