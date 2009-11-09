@@ -172,6 +172,7 @@
 
 // *************************************************************************
 
+/*! \file SoVRMLImageTexture.h */
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
 
 #include <assert.h>

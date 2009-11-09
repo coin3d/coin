@@ -336,12 +336,14 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
+  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
                                           FALSE,
                                           FALSE,
                                           mbind != SoVRMLIndexedLineSetP::OVERALL);
+    didrenderasvbo = dovbo;
     LOCK_VAINDEXER(this);
     if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
@@ -397,7 +399,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
                         drawPoints ? 1 : 0);
   }
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, this->coordIndex.getNum() / 2);
+  sogl_autocache_update(state, this->coordIndex.getNum() / 2, didrenderasvbo);
   state->pop();
 }
 

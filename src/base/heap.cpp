@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file heap.h */
 #include <Inventor/C/base/heap.h>
 
 #include <cassert>

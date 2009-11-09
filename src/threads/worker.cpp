@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file worker.h */
 #include <Inventor/C/threads/worker.h>
 
 #include <stdlib.h>

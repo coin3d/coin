@@ -36,6 +36,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+/*! \file SoMultiTextureCoordinateElement.h */
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/nodes/SoNode.h>

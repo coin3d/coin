@@ -52,7 +52,8 @@
 SoVertexArrayIndexer::SoVertexArrayIndexer(void)
   : target(0),
     next(NULL),
-    vbo(NULL)
+    vbo(NULL),
+    use_shorts(TRUE)
 {
 }
 
@@ -65,6 +66,13 @@ SoVertexArrayIndexer::~SoVertexArrayIndexer()
   delete this->next;
 }
 
+inline void 
+SoVertexArrayIndexer::addIndex(int32_t i) 
+{
+  if (i >= 65536) this->use_shorts = FALSE;
+  this->indexarray.append(static_cast<GLint> (i));
+}
+
 /*!
   Adds a line to be indexed.
 */
@@ -74,8 +82,8 @@ SoVertexArrayIndexer::addLine(const int32_t v0,
 {
   if (this->target == 0) this->target = GL_LINES;
   if (this->target == GL_LINES) {
-    this->indexarray.append((GLint)v0);
-    this->indexarray.append((GLint)v1);
+    this->addIndex(v0);
+    this->addIndex(v1);
   }
   else {
     this->getNext()->addLine(v0, v1);
@@ -90,7 +98,7 @@ SoVertexArrayIndexer::addPoint(const int32_t v0)
 {
   if (this->target == 0) this->target = GL_POINTS;
   if (this->target == GL_POINTS) {
-    this->indexarray.append((GLint)v0);
+    this->addIndex(v0);
   }
   else {
     this->getNext()->addPoint(v0);
@@ -107,9 +115,9 @@ SoVertexArrayIndexer::addTriangle(const int32_t v0,
 {
   if (this->target == 0) this->target = GL_TRIANGLES;
   if (this->target == GL_TRIANGLES) {
-    this->indexarray.append((GLint)v0);
-    this->indexarray.append((GLint)v1);
-    this->indexarray.append((GLint)v2);
+    this->addIndex(v0);
+    this->addIndex(v1);
+    this->addIndex(v2);
   }
   else {
     this->getNext()->addTriangle(v0,v1,v2);
@@ -127,10 +135,10 @@ SoVertexArrayIndexer::addQuad(const int32_t v0,
 {
   if (this->target == 0) this->target = GL_QUADS;
   if (this->target == GL_QUADS) {
-    this->indexarray.append((GLint)v0);
-    this->indexarray.append((GLint)v1);
-    this->indexarray.append((GLint)v2);
-    this->indexarray.append((GLint)v3);
+    this->addIndex(v0);
+    this->addIndex(v1);
+    this->addIndex(v2);
+    this->addIndex(v3);
   }
   else {
     this->getNext()->addQuad(v0,v1,v2,v3);
@@ -169,7 +177,7 @@ SoVertexArrayIndexer::targetVertex(GLenum targetin, const int32_t v)
   assert(this->target != 0);
   if (this->target == targetin) {
     this->targetcounter++;
-    this->indexarray.append((GLint)v);
+    this->addIndex(v);
   }
   else {
     this->getNext()->targetVertex(targetin, v);
@@ -238,14 +246,24 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
     if (renderasvbo) {
       if (this->vbo == NULL) {
         this->vbo = new SoVBO(GL_ELEMENT_ARRAY_BUFFER);
-        this->vbo->setBufferData(this->indexarray.getArrayPtr(),
-                                 this->indexarray.getLength()*sizeof(int32_t));
+        if (this->use_shorts) {
+          GLushort * dst = reinterpret_cast<GLushort*> 
+            (this->vbo->allocBufferData(this->indexarray.getLength()*sizeof(GLushort)));
+          const int32_t * src = this->indexarray.getArrayPtr();
+          for (int i = 0; i < this->indexarray.getLength(); i++) {
+            dst[i] = static_cast<GLushort> (src[i]);
+          }
+        }
+        else {
+          this->vbo->setBufferData(this->indexarray.getArrayPtr(),
+                                   this->indexarray.getLength()*sizeof(int32_t));
+        }
       }
       this->vbo->bindBuffer(contextid);
       cc_glglue_glDrawElements(glue,
                                this->target,
                                this->indexarray.getLength(),
-                               GL_UNSIGNED_INT, NULL);
+                               this->use_shorts ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, NULL);
       cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     else {

@@ -288,7 +288,7 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
 
   // send approx number of points for autocache handling. Divide
   // by three so that three points is the same as one triangle.
-  sogl_autocache_update(state, numindices/3);
+  sogl_autocache_update(state, numindices/3, FALSE);
 }
 
 // Documented in superclass.

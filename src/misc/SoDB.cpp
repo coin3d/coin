@@ -51,6 +51,7 @@
   any of the other Coin classes.
 */
 
+/*! \file SoDB.h */
 #include <Inventor/SoDB.h>
 
 #ifdef HAVE_CONFIG_H

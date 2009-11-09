@@ -150,6 +150,7 @@
   This eventOut is sent when the sound starts/stops playing.
 */
 
+/*! \file SoVRMLAudioClip.h */
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 
 #include <string.h>

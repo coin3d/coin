@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file string.h */
 #include <Inventor/C/base/string.h>
 
 #include <cassert>

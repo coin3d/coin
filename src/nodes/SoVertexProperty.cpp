@@ -595,7 +595,10 @@ SoVertexProperty::pick(SoPickAction *action)
 void
 SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  SoVertexProperty::doAction((SoAction*)action);
+  if (vertex.getNum() > 0) {
+    SoCoordinateElement::set3(action->getState(), this,
+                              vertex.getNum(), vertex.getValues(0));
+  }
 }
 
 // Documented in superclass. Overridden to check for transparency when

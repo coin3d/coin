@@ -29,6 +29,7 @@
 
 // *************************************************************************
 
+/*! \file SoGLCacheContextElement.h */
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
 #include <cstdlib>

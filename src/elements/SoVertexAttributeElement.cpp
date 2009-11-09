@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file SoVertexAttributeElement.h */
 #include <Inventor/elements/SoVertexAttributeElement.h>
 
 #include "SbBasicP.h"

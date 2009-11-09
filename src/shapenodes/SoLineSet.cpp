@@ -499,7 +499,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   int numv = this->numVertices.getNum();
   // send approx number of lines for autocache handling
   sogl_autocache_update(state, numv ?
-                        (this->numVertices[0]-1)*numv : 0);
+                        (this->numVertices[0]-1)*numv : 0, FALSE);
 }
 
 #undef SOGL_LINESET_GLRENDER_CALL_FUNC

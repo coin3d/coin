@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file ScXMLStateMachine.h */
 #include <Inventor/scxml/ScXMLStateMachine.h>
 
 /*!

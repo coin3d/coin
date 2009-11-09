@@ -264,6 +264,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -746,6 +747,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   state->push();
 
   // reset OpenGL/Coin state
+  SoGLShaderProgramElement::enable(state, FALSE);
   SoLazyElement::setToDefault(state);
   SoShapeStyleElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
   SoLazyElement::setTransparencyType(state, (int32_t) this->getTransparencyType(state));
@@ -777,12 +779,8 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
   SoGLRenderAction * glaction = (SoGLRenderAction*) state->getAction();
-
-  // FIXME: Don't leave commented out code in here without an explanation.
-  //SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
-  //if (type == SoSceneTexture2::DEPTH) glColorMask(0,0,0,0);
+  // traverse the new scene graph
   glaction->switchToNodeTraversal(scene);
-  // if (type == SoSceneTexture2::DEPTH) glColorMask(1,1,1,1);
 
   // make sure rendering has completed before switching back to the previous context
   glFlush();
