@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file SoScXMLNavigationTarget.h */
 #include <Inventor/navigation/SoScXMLNavigationTarget.h>
 
 /*!

@@ -64,6 +64,7 @@
 */
 
 
+/*! \file SoWWWAnchor.h */
 #include <Inventor/nodes/SoWWWAnchor.h>
 
 #include <Inventor/events/SoMouseButtonEvent.h>

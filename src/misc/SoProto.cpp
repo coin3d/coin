@@ -70,6 +70,7 @@
 
 // *************************************************************************
 
+/*! \file SoProto.h */
 #include <Inventor/misc/SoProto.h>
 
 #include <string.h>

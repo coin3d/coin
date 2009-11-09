@@ -127,6 +127,7 @@
   \endcode
 */
 
+/*! \file SoCallbackAction.h */
 #include <Inventor/actions/SoCallbackAction.h>
 
 #include <Inventor/SoPath.h>

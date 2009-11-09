@@ -27,6 +27,7 @@
 
 #ifdef HAVE_NODEKITS
 
+/*! \file SoForeignFileKit.h */
 #include <ForeignFiles/SoForeignFileKit.h>
 
 #include <assert.h>

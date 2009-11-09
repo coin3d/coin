@@ -66,7 +66,7 @@ public:
   GLint * getWriteableIndices(void);
 
 private:
-
+  void addIndex(int32_t i);
   void sort_triangles(void);
   void sort_lines(void);
   SoVertexArrayIndexer * getNext(void);
@@ -79,6 +79,7 @@ private:
   SbList <const GLint *> ciarray;
   SbList <GLint> indexarray;
   SoVBO * vbo;
+  SbBool use_shorts;
 };
 
 #endif // COIN_VERTEXARRAYINDEXER_H

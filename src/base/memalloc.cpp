@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file memalloc.h */
 #include <Inventor/C/base/memalloc.h>
 
 #include <cstdlib>

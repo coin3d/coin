@@ -28,6 +28,7 @@
  * page number refers to the corresponding pseude-code in the book.
  */
 
+/*! \file rbptree.h */
 #include <Inventor/C/base/rbptree.h>
 
 #include <cassert>

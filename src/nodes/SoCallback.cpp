@@ -43,6 +43,7 @@
 
 // *************************************************************************
 
+/*! \file SoCallback.h */
 #include <Inventor/nodes/SoCallback.h>
 
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.

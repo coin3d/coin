@@ -27,6 +27,7 @@
   \ingroup elements
 */
 
+/*! \file SoGLMultiTextureCoordinateElement.h */
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>

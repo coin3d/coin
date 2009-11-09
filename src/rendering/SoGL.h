@@ -162,6 +162,7 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
 
 SbBool sogl_glerror_debugging(void);
 
-void sogl_autocache_update(SoState * state, const int numprimitives);
+void sogl_autocache_update(SoState * state, const int numprimitives, 
+                           SbBool didusevbo);
 
 #endif // !COIN_SOGL_H

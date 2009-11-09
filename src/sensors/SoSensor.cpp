@@ -51,6 +51,7 @@
   \sa SoSensorManager, SoEngine
  */
 
+/*! \file SoSensor.h */
 #include <Inventor/sensors/SoSensor.h>
 #include <stdlib.h> // NULL
 #include <coindefs.h> // COIN_OBSOLETED()
