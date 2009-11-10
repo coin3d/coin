@@ -99,6 +99,8 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "rendering/SoVBO.h"
@@ -131,6 +133,21 @@
   field contains no coordinates.
 
   \sa SoTextureCoordinate2
+*/
+
+/*!
+  \var SoMFInt32 SoVertexProperty::textureUnit
+
+  The texture unit(s) for the texture coordinates. By default this field
+  contains one value, 0, and texture coordinates are then sent to
+  texture unit 0. It's possible to supply multiple values in this field,
+  and the texture coordinates in texCoord or texCoord3 will then be split
+  into those units. The first totalnum/numunits coordinates will be sent
+  to the first unit specified, the next totalnum/numunits coordinates will
+  be sent to the second unit in this field, etc.
+  
+  \sa SoTextureCoordinate2, SoTextureUnit
+  \since Coin 4.0
 */
 
 // FIXME: this field was added between TGS Inventor 2.5 and 2.6, and
@@ -196,16 +213,17 @@ class SoVertexPropertyP {
   SoVertexPropertyP(void) 
     : vertexvbo(NULL),
       normalvbo(NULL),
-      texcoordvbo(NULL),
       colorvbo(NULL)
   {
     this->checktransparent = FALSE;
     this->transparent = FALSE;
   }
   ~SoVertexPropertyP() {
+    for (int i = 0; i < this->texcoordvbo.getLength(); i++) {
+      delete this->texcoordvbo[i];
+    }
     delete this->vertexvbo;
     delete this->normalvbo;
-    delete this->texcoordvbo;
     delete this->colorvbo;
   }
   
@@ -215,9 +233,9 @@ class SoVertexPropertyP {
 
   SoVBO * vertexvbo;
   SoVBO * normalvbo;
-  SoVBO * texcoordvbo;
   SoVBO * colorvbo;
 
+  SbList<SoVBO*> texcoordvbo;
 };
 
 #define PRIVATE(obj) obj->pimpl
@@ -233,29 +251,15 @@ SoVertexProperty::SoVertexProperty(void)
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexProperty);
 
-  SO_NODE_ADD_FIELD(vertex, (0));
-  SO_NODE_ADD_FIELD(normal, (0));
-  SO_NODE_ADD_FIELD(texCoord, (0));
-  SO_NODE_ADD_FIELD(orderedRGBA, (0));
+  SO_NODE_ADD_EMPTY_MFIELD(vertex);
+  SO_NODE_ADD_EMPTY_MFIELD(normal);
+  SO_NODE_ADD_EMPTY_MFIELD(texCoord);
+  SO_NODE_ADD_EMPTY_MFIELD(orderedRGBA);
   // FIXME: this field was added in TGS Inventor 2.6 and Coin
   // 2.0. This should have repercussions for file format
   // compatibility. 20030227 mortene.
-  SO_NODE_ADD_FIELD(texCoord3, (0));
-
-  // Make multivalue fields empty.
-  this->vertex.setNum(0);
-  this->texCoord.setNum(0);
-  this->texCoord3.setNum(0);
-  this->normal.setNum(0);
-  this->orderedRGBA.setNum(0);
-
-  // So they are not written in their default state on SoWriteAction
-  // traversal.
-  this->vertex.setDefault(TRUE);
-  this->texCoord.setDefault(TRUE);
-  this->texCoord3.setDefault(TRUE);
-  this->normal.setDefault(TRUE);
-  this->orderedRGBA.setDefault(TRUE);
+  SO_NODE_ADD_EMPTY_MFIELD(texCoord3);
+  SO_NODE_ADD_FIELD(textureUnit, (0));
 
   SO_NODE_ADD_FIELD(normalBinding, (SoVertexProperty::PER_VERTEX_INDEXED));
   SO_NODE_ADD_FIELD(materialBinding, (SoVertexProperty::OVERALL));
@@ -331,6 +335,8 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   SoVertexProperty::doAction(action);
 }
 
+#define TEST_OVERRIDE(bit, flags) ((SoOverrideElement::bit & flags) != 0)
+
 // Documented in superclass.
 void
 SoVertexProperty::doAction(SoAction *action)
@@ -338,9 +344,8 @@ SoVertexProperty::doAction(SoAction *action)
   SoState * state = action->getState();
 
   uint32_t overrideflags = SoOverrideElement::getFlags(state);
-#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & overrideflags) != 0)
-
   SbBool glrender = action->isOfType(SoGLRenderAction::getClassTypeId());
+  if (glrender) SoBase::staticDataLock();
 
   if (PRIVATE(this)->checktransparent) {
     PRIVATE(this)->checktransparent = FALSE;
@@ -353,228 +358,13 @@ SoVertexProperty::doAction(SoAction *action)
       }
     }
   }
-  if (glrender) SoBase::staticDataLock();
-  int num = this->vertex.getNum();
-  const int numvertex = num;
-  const SbBool shouldcreatevbo = glrender ? SoGLVBOElement::shouldCreateVBO(state, numvertex) : FALSE;
-  
-  if (num > 0) {    
-    SoCoordinateElement::set3(state, this, num,
-                              this->vertex.getValues(0));
-
-    SbBool setvbo = FALSE;
-    if (glrender) {
-      if (shouldcreatevbo) {
-        SbBool dirty = FALSE;
-        setvbo = TRUE;
-        if (PRIVATE(this)->vertexvbo == NULL) {
-          PRIVATE(this)->vertexvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
-          dirty =  TRUE;
-        }
-        else if (PRIVATE(this)->vertexvbo->getBufferDataId() != this->getNodeId()) {
-          dirty = TRUE;
-        }
-        if (dirty) {
-          PRIVATE(this)->vertexvbo->setBufferData(this->vertex.getValues(0),
-                                                  num*sizeof(SbVec3f),
-                                                  this->getNodeId());
-        }
-      }
-      else if (PRIVATE(this)->vertexvbo && PRIVATE(this)->vertexvbo->getBufferDataId()) {
-        // clear buffers to deallocate VBO memory
-        PRIVATE(this)->vertexvbo->setBufferData(NULL, 0, 0);
-      }
-      if (setvbo) {
-        SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vertexvbo);
-      }
-    }
-  }
-  num = this->texCoord3.getNum();
-  if (num > 0) {
-    if (glrender) {
-      // it's important to call this _before_ setting the coordinates
-      // on the state.
-      SoGLMultiTextureCoordinateElement::setTexGen(state,
-                                                   this, 0, NULL);
-    }
-    SoMultiTextureCoordinateElement::set3(state, this, 0, num,
-                                          this->texCoord3.getValues(0));
-    if (glrender) {
-      SbBool setvbo = FALSE;
-      if ((num == numvertex) && shouldcreatevbo) {
-        SbBool dirty = FALSE;
-        setvbo = TRUE;
-        if (PRIVATE(this)->texcoordvbo == NULL) {
-          PRIVATE(this)->texcoordvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
-          dirty =  TRUE;
-        }
-        else if (PRIVATE(this)->texcoordvbo->getBufferDataId() != this->getNodeId()) {
-          dirty = TRUE;
-        }
-        if (dirty) {
-          PRIVATE(this)->texcoordvbo->setBufferData(this->texCoord3.getValues(0),
-                                                    num*sizeof(SbVec3f),
-                                                    this->getNodeId());
-        }
-      }
-      else if (PRIVATE(this)->texcoordvbo && PRIVATE(this)->texcoordvbo->getBufferDataId()) {
-        // clear buffers to deallocate VBO memory
-        PRIVATE(this)->texcoordvbo->setBufferData(NULL, 0, 0);
-      }
-      if (setvbo) {
-        SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->texcoordvbo);
-      }
-    }
-  }
-  else {
-    num = this->texCoord.getNum();
-    if (num > 0) {
-      if (glrender) {
-        // it's important to call this _before_ setting the coordinates
-        // on the state.
-        SoGLMultiTextureCoordinateElement::setTexGen(state,
-                                                     this, 0, NULL);
-      }
-      SoMultiTextureCoordinateElement::set2(state, this, 0, num,
-                                            this->texCoord.getValues(0));
-
-      if (glrender) {
-        SbBool setvbo = FALSE;
-        if ((num == numvertex) && shouldcreatevbo) {
-          SbBool dirty = FALSE;
-          setvbo = TRUE;
-          if (PRIVATE(this)->texcoordvbo == NULL) {
-            PRIVATE(this)->texcoordvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
-            dirty =  TRUE;
-          }
-          else if (PRIVATE(this)->texcoordvbo->getBufferDataId() != this->getNodeId()) {
-            dirty = TRUE;
-          }
-          if (dirty) {
-            PRIVATE(this)->texcoordvbo->setBufferData(this->texCoord.getValues(0),
-                                                      num*sizeof(SbVec2f),
-                                                    this->getNodeId());
-          }
-        }
-        else if (PRIVATE(this)->texcoordvbo && PRIVATE(this)->texcoordvbo->getBufferDataId()) {
-          // clear buffers to deallocate VBO memory
-          PRIVATE(this)->texcoordvbo->setBufferData(NULL, 0, 0);
-        }
-        if (setvbo) {
-          SoGLVBOElement::setTexCoordVBO(state, 0, PRIVATE(this)->texcoordvbo);
-        }
-      }
-    }
-  }
-  
-  num = this->normal.getNum();
-  if (num > 0 && !TEST_OVERRIDE(NORMAL_VECTOR)) {
-    SoNormalElement::set(state, this, num,
-                         this->normal.getValues(0));
-    if (this->isOverride()) {
-      SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
-    }
-
-    SbBool setvbo = FALSE;
-    if (glrender) {
-      if ((num == numvertex) && shouldcreatevbo) {
-        SbBool dirty = FALSE;
-        setvbo = TRUE;
-        if (PRIVATE(this)->normalvbo == NULL) {
-          PRIVATE(this)->normalvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
-          dirty =  TRUE;
-        }
-        else if (PRIVATE(this)->normalvbo->getBufferDataId() != this->getNodeId()) {
-          dirty = TRUE;
-        }
-        if (dirty) {
-          PRIVATE(this)->normalvbo->setBufferData(this->normal.getValues(0),
-                                                  num*sizeof(SbVec3f),
-                                                  this->getNodeId());
-        }
-      }
-      else if (PRIVATE(this)->normalvbo && PRIVATE(this)->normalvbo->getBufferDataId()) {
-        // clear buffers to deallocate VBO memory
-        PRIVATE(this)->normalvbo->setBufferData(NULL, 0, 0);
-      }
-      if (setvbo) {
-        SoGLVBOElement::setNormalVBO(state, PRIVATE(this)->normalvbo);
-      }
-    }
-  }
-  if (this->normal.getNum() > 0 && !TEST_OVERRIDE(NORMAL_BINDING)) {
-    SoNormalBindingElement::set(state, this,
-                                (SoNormalBindingElement::Binding)
-                                this->normalBinding.getValue());
-    if (this->isOverride()) {
-      SoOverrideElement::setNormalBindingOverride(state, this, TRUE);
-    }
-  }
-
-  num = this->orderedRGBA.getNum();
-  if (num > 0 && 
-      !TEST_OVERRIDE(DIFFUSE_COLOR)) {
-    
-    SoLazyElement::setPacked(state, this, num,
-                             this->orderedRGBA.getValues(0),
-                             PRIVATE(this)->transparent);
-    if (this->isOverride()) {
-      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
-    }
-    if (glrender) {
-      SbBool setvbo = FALSE;
-      if ((num == numvertex) && shouldcreatevbo) {
-        SbBool dirty = FALSE;
-        setvbo = TRUE;
-        if (PRIVATE(this)->colorvbo == NULL) {
-          PRIVATE(this)->colorvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-          dirty = TRUE;
-        }
-        else if (PRIVATE(this)->colorvbo->getBufferDataId() != this->getNodeId()) {
-          dirty = TRUE;
-        }
-        if (dirty) {
-          if (coin_host_get_endianness() == COIN_HOST_IS_BIGENDIAN) {
-            PRIVATE(this)->colorvbo->setBufferData(this->orderedRGBA.getValues(0),
-                                                   num*sizeof(uint32_t),
-                                                   this->getNodeId());
-          }
-          else {
-            const uint32_t * src = this->orderedRGBA.getValues(0);
-            uint32_t * dst = (uint32_t*) 
-              PRIVATE(this)->colorvbo->allocBufferData(num*sizeof(uint32_t), 
-                                                       this->getNodeId());  
-            for (int i = 0; i < num; i++) {
-              uint32_t tmp = src[i];
-              dst[i] = 
-                (tmp << 24) |
-                ((tmp & 0xff00) << 8) |
-                ((tmp & 0xff0000) >> 8) |
-                (tmp >> 24);
-            }
-          }
-        }
-      }
-      else if (PRIVATE(this)->colorvbo) {
-        PRIVATE(this)->colorvbo->setBufferData(NULL, 0, 0);
-      }
-      if (setvbo) {
-        SoGLVBOElement::setColorVBO(state, PRIVATE(this)->colorvbo);
-      }
-    }
-  }
+  const SbBool shouldcreatevbo = glrender ? SoGLVBOElement::shouldCreateVBO(state, this->vertex.getNum()) : FALSE;
+  this->updateVertex(state, glrender, shouldcreatevbo);
+  this->updateNormal(state, overrideflags, glrender, shouldcreatevbo);
+  this->updateMaterial(state, overrideflags, glrender, shouldcreatevbo);
+  this->updateTexCoord(state, glrender, shouldcreatevbo);
 
   if (glrender) SoBase::staticDataUnlock();
-
-  if (this->orderedRGBA.getNum() && !TEST_OVERRIDE(MATERIAL_BINDING)) {
-    SoMaterialBindingElement::set(state, this,
-                                  (SoMaterialBindingElement::Binding)
-                                  this->materialBinding.getValue());
-    if (this->isOverride()) {
-      SoOverrideElement::setMaterialBindingOverride(state, this, TRUE);
-    }
-  }
-#undef TEST_OVERRIDE
 }
 
 // Documented in superclass.
@@ -613,4 +403,233 @@ SoVertexProperty::notify(SoNotList *list)
   inherited::notify(list);
 }
 
+
+void 
+SoVertexProperty::updateVertex(SoState * state, SbBool glrender, SbBool vbo)
+{
+  int num = this->vertex.getNum();
+
+  if (num > 0) {    
+    SoCoordinateElement::set3(state, this, num,
+                              this->vertex.getValues(0));
+    if (glrender) {
+      if (vbo) {
+        SbBool dirty = FALSE;
+        if (PRIVATE(this)->vertexvbo == NULL) {
+          PRIVATE(this)->vertexvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+          dirty =  TRUE;
+        }
+        else if (PRIVATE(this)->vertexvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          PRIVATE(this)->vertexvbo->setBufferData(this->vertex.getValues(0),
+                                                  num*sizeof(SbVec3f),
+                                                  this->getNodeId());
+        }
+      }
+      else if (PRIVATE(this)->vertexvbo && PRIVATE(this)->vertexvbo->getBufferDataId()) {
+        // clear buffers to deallocate VBO memory
+        PRIVATE(this)->vertexvbo->setBufferData(NULL, 0, 0);
+      }
+      SoGLVBOElement::setVertexVBO(state, vbo ? PRIVATE(this)->vertexvbo : NULL);
+    }
+  }
+}
+
+void 
+SoVertexProperty::updateTexCoord(SoState * state, SbBool glrender, SbBool vbo)
+{
+  const int numvertex = this->vertex.getNum();
+  int num = this->texCoord3.getNum();
+  int dim = 3;
+  const SbVec3f * tc3 = num ? this->texCoord3.getValues(0) : NULL;
+  const SbVec2f * tc2 = NULL;
+  if (num == 0) {
+    num = this->texCoord.getNum();
+    dim = 2;
+    if (num) {
+      tc2 = this->texCoord.getValues(0);
+    }
+  }
+  if (num > 0) {
+    const int numunits = this->textureUnit.getNum();  
+    const int numperunit = num / numunits;
+
+    if ((num % numunits) != 0) {
+      SoDebugError::postWarning("SoVertexProperty::updateTexCoord",
+                                "Wrong number of texture coordinates. The number of texture "
+                                "coordinates must be dividable by the number of units in "
+                                "the textureUnit field.");
+    } 
+    else {
+      for (int i = 0; i < numunits; i++) {
+        int32_t unit = this->textureUnit[i];
+        if (glrender) {
+          // it's important to call this _before_ setting the coordinates
+          // on the state.
+          SoGLMultiTextureCoordinateElement::setTexGen(state,
+                                                       this, unit, NULL);
+        }
+        if (dim == 2) {
+          SoMultiTextureCoordinateElement::set2(state, this, unit, numperunit,
+                                                tc2 + i*numperunit);
+        }
+        else {
+          SoMultiTextureCoordinateElement::set3(state, this, unit, numperunit,
+                                                tc3 + i*numperunit);
+        }
+      
+        if (glrender) {
+          SbBool setvbo = FALSE;
+
+          if (i >= PRIVATE(this)->texcoordvbo.getLength()) {
+            PRIVATE(this)->texcoordvbo.append(NULL);
+          }
+          if ((numperunit == numvertex) && vbo) {
+            SbBool dirty = FALSE;
+            setvbo = TRUE;
+            if (PRIVATE(this)->texcoordvbo[i] == NULL) {
+              PRIVATE(this)->texcoordvbo[i] = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+              dirty =  TRUE;
+            }
+            else if (PRIVATE(this)->texcoordvbo[i]->getBufferDataId() != this->getNodeId()) {
+              dirty = TRUE;
+            }
+            if (dirty) {
+              if (dim == 2) {
+                PRIVATE(this)->texcoordvbo[i]->setBufferData(tc2 + i * numperunit,
+                                                             numperunit*sizeof(SbVec2f),
+                                                             this->getNodeId());
+              }
+              else {
+                PRIVATE(this)->texcoordvbo[i]->setBufferData(tc3 + i * numperunit,
+                                                             numperunit*sizeof(SbVec3f),
+                                                             this->getNodeId());
+              }
+            }
+          }
+          else if (PRIVATE(this)->texcoordvbo[i] && 
+                   PRIVATE(this)->texcoordvbo[i]->getBufferDataId()) {
+            // clear buffers to deallocate VBO memory
+            PRIVATE(this)->texcoordvbo[i]->setBufferData(NULL, 0, 0);
+          }
+          SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->texcoordvbo[i] : NULL);
+        }
+      }
+    }
+  }
+}
+  
+void 
+SoVertexProperty::updateNormal(SoState * state, uint32_t overrideflags, SbBool glrender, SbBool vbo)
+{
+  const int numvertex = this->vertex.getNum();
+  const int num = this->normal.getNum();
+  if (num > 0 && !TEST_OVERRIDE(NORMAL_VECTOR, overrideflags)) {
+    SoNormalElement::set(state, this, num,
+                         this->normal.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
+    }
+    if (glrender) {
+      SbBool setvbo = FALSE;
+      if ((num == numvertex) && vbo) {
+        SbBool dirty = FALSE;
+        setvbo = TRUE;
+        if (PRIVATE(this)->normalvbo == NULL) {
+          PRIVATE(this)->normalvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW); 
+          dirty =  TRUE;
+        }
+        else if (PRIVATE(this)->normalvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          PRIVATE(this)->normalvbo->setBufferData(this->normal.getValues(0),
+                                                  num*sizeof(SbVec3f),
+                                                  this->getNodeId());
+        }
+      }
+      else if (PRIVATE(this)->normalvbo && PRIVATE(this)->normalvbo->getBufferDataId()) {
+        // clear buffers to deallocate VBO memory
+        PRIVATE(this)->normalvbo->setBufferData(NULL, 0, 0);
+      }
+      SoGLVBOElement::setNormalVBO(state, setvbo ? PRIVATE(this)->normalvbo : NULL);
+    }
+  }
+  if (this->normal.getNum() > 0 && !TEST_OVERRIDE(NORMAL_BINDING, overrideflags)) {
+    SoNormalBindingElement::set(state, this,
+                                (SoNormalBindingElement::Binding)
+                                this->normalBinding.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalBindingOverride(state, this, TRUE);
+    }
+  }
+}
+
+void 
+SoVertexProperty::updateMaterial(SoState * state, uint32_t overrideflags, SbBool glrender, SbBool vbo)
+{
+  const int numvertex = this->vertex.getNum();
+  int num = this->orderedRGBA.getNum();
+  if (num > 0 && 
+      !TEST_OVERRIDE(DIFFUSE_COLOR, overrideflags)) {
+    
+    SoLazyElement::setPacked(state, this, num,
+                             this->orderedRGBA.getValues(0),
+                             PRIVATE(this)->transparent);
+    if (this->isOverride()) {
+      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    }
+    if (glrender) {
+      SbBool setvbo = FALSE;
+      if ((num == numvertex) && vbo) {
+        SbBool dirty = FALSE;
+        setvbo = TRUE;
+        if (PRIVATE(this)->colorvbo == NULL) {
+          PRIVATE(this)->colorvbo = new SoVBO(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+          dirty = TRUE;
+        }
+        else if (PRIVATE(this)->colorvbo->getBufferDataId() != this->getNodeId()) {
+          dirty = TRUE;
+        }
+        if (dirty) {
+          if (coin_host_get_endianness() == COIN_HOST_IS_BIGENDIAN) {
+            PRIVATE(this)->colorvbo->setBufferData(this->orderedRGBA.getValues(0),
+                                                   num*sizeof(uint32_t),
+                                                   this->getNodeId());
+          }
+          else {
+            const uint32_t * src = this->orderedRGBA.getValues(0);
+            uint32_t * dst = (uint32_t*) 
+              PRIVATE(this)->colorvbo->allocBufferData(num*sizeof(uint32_t), 
+                                                       this->getNodeId());  
+            for (int i = 0; i < num; i++) {
+              uint32_t tmp = src[i];
+              dst[i] = 
+                (tmp << 24) |
+                ((tmp & 0xff00) << 8) |
+                ((tmp & 0xff0000) >> 8) |
+                (tmp >> 24);
+            }
+          }
+        }
+      }
+      else if (PRIVATE(this)->colorvbo) {
+        PRIVATE(this)->colorvbo->setBufferData(NULL, 0, 0);
+      }
+      SoGLVBOElement::setColorVBO(state, setvbo ? PRIVATE(this)->colorvbo : NULL);
+    }
+  }
+  if (num && !TEST_OVERRIDE(MATERIAL_BINDING, overrideflags)) {
+    SoMaterialBindingElement::set(state, this,
+                                  (SoMaterialBindingElement::Binding)
+                                  this->materialBinding.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setMaterialBindingOverride(state, this, TRUE);
+    }
+  }
+}
+
 #undef PRIVATE
+#undef TEST_OVERRIDE
