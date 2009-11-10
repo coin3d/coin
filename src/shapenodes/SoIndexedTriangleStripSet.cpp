@@ -318,7 +318,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
     state->pop();
   }
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, this->coordIndex.getNum() / 2);
+  sogl_autocache_update(state, this->coordIndex.getNum() / 2, FALSE);
 }
 
 // Documented in superclass.

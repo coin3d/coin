@@ -192,6 +192,7 @@
 
 */
 
+/*! \file SoShaderProgram.h */
 #include <Inventor/nodes/SoShaderProgram.h>
 
 #include <assert.h>

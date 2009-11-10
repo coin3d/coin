@@ -272,8 +272,8 @@ SoScXMLZoomTarget::processOneEvent(const ScXMLEvent * event)
     }
     SbVec2f thisposn = data->lastposn;
 
-    // The value 20.0 is just a value found by trial.
-    SoScXMLZoomTarget::zoom(camera, (thisposn[1] - prevposn[1]) * 20.0f);
+    // The value 20.0 is just a value found by trial. exp() brings this in the range of <0, ->>.
+    SoScXMLZoomTarget::zoom(camera, float(exp((thisposn[1] - prevposn[1]) * 20.0f)));
 
     return TRUE;
   }
@@ -378,12 +378,9 @@ SoScXMLZoomTarget::processOneEvent(const ScXMLEvent * event)
 // closer or further away from the focal point in the scene.
 
 void
-SoScXMLZoomTarget::zoom(SoCamera * camera, float diffvalue)
+SoScXMLZoomTarget::zoom(SoCamera * camera, float multiplicator)
 {
   assert(camera);
-
-  // This will be in the range of <0, ->>.
-  float multiplicator = float(exp(diffvalue));
 
   if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
     // Since there's no perspective, "zooming" in the original sense

@@ -76,6 +76,7 @@
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
+#include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -106,6 +107,9 @@
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
 
+#define UNKNOWN_TYPE -1
+#define MIXED_TYPE -2
+
 // *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -118,6 +122,7 @@ public:
   { }
   SoConvexDataCache * convexCache;
   int concavestatus;
+  int primitivetype;
 
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
@@ -165,6 +170,7 @@ SoFaceSet::SoFaceSet()
   PRIVATE(this) = new SoFaceSetP;
   PRIVATE(this)->convexCache = NULL;
   PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
+  PRIVATE(this)->primitivetype = UNKNOWN_TYPE;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFaceSet);
 
@@ -446,9 +452,38 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t *end = ptr + this->numVertices.getNum();
   if ((end-ptr == 1) && (ptr[0] == 0)) return; // nothing to render
 
+  if (PRIVATE(this)->primitivetype == UNKNOWN_TYPE) {
+    PRIVATE(this)->primitivetype = MIXED_TYPE;
+    int numtriangles = 0;
+    int numquads = 0;
+    int numothers = 0;
+
+    const int32_t * nv = this->numVertices.getValues(0);
+    const int n = this->numVertices.getNum();
+    for (int i = 0; i < n; i++) {
+      switch (nv[i]) {
+      case 3:
+        numtriangles++;
+        break;
+      case 4:
+        numquads++;
+        break;
+      default:
+        numothers++;
+        break;
+      }
+    }
+    if (numtriangles && !numquads && !numothers) {
+      PRIVATE(this)->primitivetype = GL_TRIANGLES;
+    }
+    else if (numquads && !numtriangles && !numothers) {
+      PRIVATE(this)->primitivetype = GL_QUADS;
+    }
+  }
+
+  SbBool didusevbo = FALSE;
   SoState * state = action->getState();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-
 
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push(); // for convex cache
@@ -522,17 +557,39 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       goto glrender_done;
     }
 
-    SOGL_FACESET_GLRENDER(nbind, mbind, doTextures, (coords,
-                                                     normals,
-                                                     &mb,
-                                                     &tb,
-                                                     nbind,
-                                                     mbind,
-                                                     doTextures,
-                                                     idx,
-                                                     ptr,
-                                                     end,
-                                                     needNormals));
+    // check if we can render things using glDrawArrays
+    if (SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY) &&
+        (PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
+        (PRIVATE(this)->primitivetype == GL_QUADS) &&
+        (nbind != PER_FACE) &&
+        (mbind != PER_FACE)) {
+      SbBool dovbo = this->startVertexArray(action,
+                                            coords,
+                                            nbind == PER_VERTEX ? normals : NULL,
+                                            doTextures,
+                                            (mbind == PER_VERTEX));
+      int numprimitives = this->numVertices.getNum();
+      if (PRIVATE(this)->primitivetype == GL_TRIANGLES) numprimitives *= 3;
+      else numprimitives *= 4; // quads
+      cc_glglue_glDrawArrays(sogl_glue_instance(state), PRIVATE(this)->primitivetype,
+                             idx, numprimitives); 
+      this->finishVertexArray(action, dovbo, nbind == PER_VERTEX,
+                              doTextures, (mbind == PER_VERTEX));
+      
+    }
+    else {
+      SOGL_FACESET_GLRENDER(nbind, mbind, doTextures, (coords,
+                                                       normals,
+                                                       &mb,
+                                                       &tb,
+                                                       nbind,
+                                                       mbind,
+                                                       doTextures,
+                                                       idx,
+                                                       ptr,
+                                                       end,
+                                                       needNormals));
+    }
 
     if (nc) {
       this->readUnlockNormalCache();
@@ -551,7 +608,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   int numv = this->numVertices.getNum();
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, numv ?
-                        (this->numVertices[0]-2)*numv : 0);
+                        (this->numVertices[0]-2)*numv : 0, didusevbo);
 }
 
 #undef SOGL_FACESET_GLRENDER_CALL_FUNC
@@ -816,7 +873,10 @@ SoFaceSet::notify(SoNotList * l)
   if (PRIVATE(this)->convexCache) PRIVATE(this)->convexCache->invalidate();
   PRIVATE(this)->readUnlockConvexCache();
   SoField *f = l->getLastField();
-  if (f == &this->numVertices) PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
+  if (f == &this->numVertices) {
+    PRIVATE(this)->concavestatus = STATUS_UNKNOWN;
+    PRIVATE(this)->primitivetype = UNKNOWN_TYPE;
+  }
   inherited::notify(l);
 }
 
@@ -1024,4 +1084,6 @@ SoFaceSet::useConvexCache(SoAction * action)
 #undef PRIVATE
 #undef STATUS_UNKNOWN
 #undef STATUS_CONVEX
-#undef STATUS_CONCAVE
+#undef STATUS_CONCAV
+#undef UNKNOWN_TYPE
+#undef MIXED_TYPE

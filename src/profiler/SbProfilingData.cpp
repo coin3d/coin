@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file SbProfilingData.h */
 #include <Inventor/annex/Profiler/SbProfilingData.h>
 
 #include <algorithm> // std::reverse

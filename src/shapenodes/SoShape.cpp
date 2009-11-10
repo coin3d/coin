@@ -1557,7 +1557,9 @@ SoShape::startVertexArray(SoGLRenderAction * action,
 
   SbBool dovbo = TRUE;
   if (!SoGLDriverDatabase::isSupported(glue, SO_GL_VBO_IN_DISPLAYLIST)) {
-    dovbo = FALSE;
+    if (SoCacheElement::anyOpen(state)) {
+      dovbo = FALSE;
+    }
   }
   SoVBO * vertexvbo = dovbo ? vboelem->getVertexVBO() : NULL;
   if (!vertexvbo) dovbo = FALSE;

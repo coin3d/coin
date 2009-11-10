@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file types.h */
 #include <Inventor/C/XML/types.h>
 
 #include <Inventor/C/XML/document.h>

@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file SbClip.h */
 #include <Inventor/SbClip.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbPlane.h>
