@@ -295,5 +295,5 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
 void
 SoIndexedMarkerSet::notify(SoNotList * list)
 {
-  return;
+  inherited::notify(list);
 }
