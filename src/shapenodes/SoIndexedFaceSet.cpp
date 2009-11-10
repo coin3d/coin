@@ -535,6 +535,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
   SoVBO * colorvbo = NULL;
 
+  SbBool didrenderasvbo = FALSE;
   if (dova && (mbind != OVERALL)) {
     dova = FALSE;
     if ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL))) {
@@ -556,6 +557,8 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
                                           (nbind != OVERALL) ? normals : NULL,
                                           doTextures,
                                           mbind != OVERALL);
+    didrenderasvbo = dovbo;
+
     LOCK_VAINDEXER(this);
     if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
@@ -645,7 +648,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     state->pop();
   }
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, this->coordIndex.getNum() / 4);
+  sogl_autocache_update(state, this->coordIndex.getNum() / 4, didrenderasvbo);
 }
 
   // this macro actually makes the code below more readable  :-)

@@ -858,7 +858,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   const int colsize = this->verticesPerColumn.getValue();
 
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, (rowsize-1)*(colsize-1)*2);
+  sogl_autocache_update(state, (rowsize-1)*(colsize-1)*2, FALSE);
 
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;

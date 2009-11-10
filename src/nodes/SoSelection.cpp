@@ -141,6 +141,7 @@
 
 // *************************************************************************
 
+/*! \file SoSelection.h */
 #include <Inventor/nodes/SoSelection.h>
 
 #include <Inventor/actions/SoSearchAction.h>

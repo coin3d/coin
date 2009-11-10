@@ -415,7 +415,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     }
 
     float diff = static_cast<float>(count * stepsize);
-    if (eventname == STEP_OUT()) { diff = -diff; }
+    if (eventname == STEP_IN()) { diff = -diff; }
     SoScXMLDollyTarget::step(camera, exp, diff, absminfocaldistance, absmaxfocaldistance);
     return TRUE;
   }

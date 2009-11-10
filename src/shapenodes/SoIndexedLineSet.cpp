@@ -330,12 +330,14 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
+  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
                                           nbind != OVERALL ? normals : NULL,
                                           doTextures,
                                           mbind != OVERALL);
+    didrenderasvbo = dovbo;
     LOCK_VAINDEXER(this);
     if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
@@ -395,7 +397,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     state->pop();
   }
   // send approx number of lines for autocache handling
-  sogl_autocache_update(state, this->coordIndex.getNum() / 2);
+  sogl_autocache_update(state, this->coordIndex.getNum() / 2, didrenderasvbo);
 }
 
 // Documented in superclass.

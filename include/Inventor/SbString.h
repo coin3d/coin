@@ -122,7 +122,7 @@ public:
   SbString lower() const;
   SbString upper() const;
 
-  void print(FILE * fp) const;
+  void print(std::FILE * fp) const;
 
   friend int operator==(const SbString & sbstr, const char * s);
   friend int operator==(const char * s, const SbString & sbstr);

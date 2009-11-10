@@ -173,6 +173,7 @@
 
 // *************************************************************************
 
+/*! \file SoGLImage.h */
 #include <Inventor/misc/SoGLImage.h>
 
 #include <cassert>

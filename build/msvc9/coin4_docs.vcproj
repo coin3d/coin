@@ -3,7 +3,6 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="coin4_docs"
-	ProjectGUID="{79A19DDE-2D99-4E02-9784-062481599286}"
 	Keyword="MakeFileProj"
 	TargetFrameworkVersion="131072"
 	>

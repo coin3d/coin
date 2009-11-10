@@ -510,7 +510,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   int numv = this->numVertices.getNum();
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, numv ?
-                        (this->numVertices[0]-2)*numv : 0);
+                        (this->numVertices[0]-2)*numv : 0, FALSE);
 }
 
 #undef SOGL_TRISTRIPSET_GLRENDER_CALL_FUNC

@@ -53,6 +53,7 @@
 
 // *************************************************************************
 
+/*! \file SoGLRenderAction.h */
 #include <Inventor/actions/SoGLRenderAction.h>
 
 #ifdef HAVE_CONFIG_H

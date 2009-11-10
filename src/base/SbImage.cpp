@@ -36,6 +36,7 @@
 // and for different contexts. The API should stay the same though.
 // 20001026 mortene (original comment by pederb).
 
+/*! \file SbImage.h */
 #include <Inventor/SbImage.h>
 
 #include <cstring>

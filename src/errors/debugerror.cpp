@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file debugerror.h */
 #include <Inventor/C/errors/debugerror.h>
 
 #include <cstdlib>

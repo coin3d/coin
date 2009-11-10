@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+/*! \file spidermonkey.h */
 #include <Inventor/C/glue/spidermonkey.h>
 
 #ifdef HAVE_CONFIG_H
