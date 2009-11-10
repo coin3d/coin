@@ -29,8 +29,10 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoMFInt32.h>
 
 class SoVertexPropertyP;
+class SoState;
 
 class COIN_DLL_API SoVertexProperty : public SoNode {
   typedef SoNode inherited;
@@ -59,6 +61,7 @@ public:
   SoSFEnum normalBinding;
   SoMFUInt32 orderedRGBA;
   SoSFEnum materialBinding;
+  SoMFInt32 textureUnit;
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
@@ -72,6 +75,10 @@ protected:
   virtual void notify(SoNotList *list);
 
 private:
+  void updateVertex(SoState * state, SbBool glrender, SbBool vbo);
+  void updateTexCoord(SoState * state, SbBool glrender, SbBool vbo);
+  void updateNormal(SoState * state, uint32_t overrideflags, SbBool glrender, SbBool vbo);
+  void updateMaterial(SoState * state, uint32_t overrideflags, SbBool glrender, SbBool vbo);
   SoVertexPropertyP * pimpl;
 };
 
