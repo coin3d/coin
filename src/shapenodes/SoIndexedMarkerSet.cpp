@@ -290,10 +290,3 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
   // by three so that three points is the same as one triangle.
   sogl_autocache_update(state, numindices/3, FALSE);
 }
-
-// Documented in superclass.
-void
-SoIndexedMarkerSet::notify(SoNotList * list)
-{
-  inherited::notify(list);
-}
