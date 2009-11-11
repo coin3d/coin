@@ -42,7 +42,6 @@ public:
   SoMFInt32 markerIndex;
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual void notify(SoNotList * list);
 
 protected:
   virtual ~SoIndexedMarkerSet();
