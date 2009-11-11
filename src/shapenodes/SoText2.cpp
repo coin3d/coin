@@ -356,14 +356,13 @@ SoText2::GLRender(SoGLRenderAction * action)
     
     const int nrlines = this->string.getNum();
 
-    // get the current glColor
-    float ftglColor[4];
-    glGetFloatv(GL_CURRENT_COLOR, ftglColor);
-
-    unsigned char red   = (unsigned char) (ftglColor[0] * 255.0f);
-    unsigned char green = (unsigned char) (ftglColor[1] * 255.0f);
-    unsigned char blue  = (unsigned char) (ftglColor[2] * 255.0f);
-
+    // get the current diffuse color
+    const SbColor & diffuse = SoLazyElement::getDiffuse(state, 0);
+    unsigned char red   = (unsigned char) (diffuse[0] * 255.0f);
+    unsigned char green = (unsigned char) (diffuse[1] * 255.0f);
+    unsigned char blue  = (unsigned char) (diffuse[2] * 255.0f);
+    const float alpha = 1.0f - SoLazyElement::getTransparency(state, 0);
+    
     state->push();
     
     // disable textures for all units
@@ -456,7 +455,7 @@ SoText2::GLRender(SoGLRenderAction * action)
             const unsigned char * src = buffer;
 
             // Ouch. This must lead to pretty slow rendering
-            if (ftglColor[3] == 1.0f) {
+            if (alpha == 1.0f) {
               for (int i = 0; i < numpixels; i++) {
                 *dst++ = red; *dst++ = green; *dst++ = blue;
                 // alpha from the gray level pixel value
@@ -466,7 +465,7 @@ SoText2::GLRender(SoGLRenderAction * action)
               for (int i = 0; i < numpixels; i++) {
                 *dst++ = red; *dst++ = green; *dst++ = blue;
                 // alpha from the gray level pixel value
-                *dst++ = (((unsigned int)(ftglColor[3] * 256.0f)) * *src++) >> 8;
+                *dst++ = (((unsigned int)(alpha * 256.0f)) * *src++) >> 8;
               }
             }
             glDrawPixels(ix,iy,GL_RGBA,GL_UNSIGNED_BYTE,(const GLubyte *)PRIVATE(this)->pixel_buffer);
