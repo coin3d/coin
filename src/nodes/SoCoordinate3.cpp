@@ -147,9 +147,7 @@ SoCoordinate3::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
   }
   SoBase::staticDataUnlock();
-  if (setvbo) {
-    SoGLVBOElement::setVertexVBO(state, PRIVATE(this)->vbo);
-  }
+  SoGLVBOElement::setVertexVBO(state, setvbo ? PRIVATE(this)->vbo : NULL);
 }
 
 // Doc from superclass.
