@@ -145,9 +145,7 @@ SoNormal::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
   }
   SoBase::staticDataUnlock();
-  if (setvbo) {
-    SoGLVBOElement::setNormalVBO(state, PRIVATE(this)->vbo);
-  }
+  SoGLVBOElement::setNormalVBO(state, setvbo? PRIVATE(this)->vbo : NULL);
 }
 
 // Doc in superclass.
