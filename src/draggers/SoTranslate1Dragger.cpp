@@ -397,13 +397,9 @@ SoTranslate1Dragger::clampMatrix(SbMatrix & m) const
   if (minv <= maxv) {    
     t[0] = SbClamp(t[0], minv, maxv);
   }
-  //Correct small offsets back onto the line
-  t[1] = t[2] = 0;
-
   if (t != trans) {
     m.setTransform(t, rot, scale, scaleOrient);
   }
-
   return t;
 }
 
