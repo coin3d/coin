@@ -511,9 +511,6 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
     }
   }
 
-  //Correct small offsets back into the plane
-  t[2]=0;
-
   if (t != trans) {
     m.setTransform(t, rot, scale, scaleOrient);
   }
