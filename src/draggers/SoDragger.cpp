@@ -483,7 +483,7 @@ SoDragger::updateElements(SoState * state)
     // make default
     SoComplexityElement::set(state, this, SoComplexityElement::getDefault());
   }
-  if (state->isElementEnabled(SoComplexityElement::getClassStackIndex())) {
+  if (state->isElementEnabled(SoComplexityTypeElement::getClassStackIndex())) {
     // make default
     SoComplexityTypeElement::set(state, this, SoComplexityTypeElement::getDefault());
   }
