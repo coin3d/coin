@@ -389,18 +389,23 @@ SoTranslate1Dragger::clampMatrix(SbMatrix & m) const
   const float minv = this->minTranslation.getValue();
   const float maxv = this->maxTranslation.getValue();
   
+  SbVec3f pretrans = this->translation.getValue();
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
   m.getTransform(trans, rot, scale, scaleOrient);
-  SbVec3f t = trans;
+
+  // avoid that the Y and Z components drift away from the line
+  trans[1] = pretrans[1];
+  trans[2] = pretrans[2];
 
   if (minv <= maxv) {    
+    SbVec3f t = trans;
     t[0] = SbClamp(t[0], minv, maxv);
+    if (t != trans) {
+      m.setTransform(t, rot, scale, scaleOrient);
+    }
   }
-  if (t != trans) {
-    m.setTransform(t, rot, scale, scaleOrient);
-  }
-  return t;
+  return trans;
 }
 
 #undef THISP
