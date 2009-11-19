@@ -51,6 +51,7 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
@@ -128,6 +129,7 @@ SoTextureUnit::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTextureUnitElement);
   SO_ENABLE(SoPickAction, SoTextureUnitElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoTextureUnitElement);
+  SO_ENABLE(SoGetMatrixAction, SoTextureUnitElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
@@ -139,7 +141,7 @@ void
 SoTextureUnit::GLRender(SoGLRenderAction * action)
 {
   SoTextureUnit::doAction((SoAction*)action);
-  
+
   SoState * state = action->getState();
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
@@ -185,6 +187,12 @@ SoTextureUnit::pick(SoPickAction * action)
 // Doc from superclass.
 void
 SoTextureUnit::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  SoTextureUnit::doAction(action);
+}
+
+void
+SoTextureUnit::getMatrix(SoGetMatrixAction * action)
 {
   SoTextureUnit::doAction(action);
 }

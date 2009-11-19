@@ -50,6 +50,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void pick(SoPickAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void getMatrix(SoGetMatrixAction * action);
 
   static uint32_t getMaxTextureUnit(void);
 protected:
