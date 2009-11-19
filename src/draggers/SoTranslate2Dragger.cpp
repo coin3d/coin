@@ -500,11 +500,14 @@ SoTranslate2Dragger::clampMatrix(SbMatrix & m) const
   const SbVec2f minv = this->minTranslation.getValue();
   const SbVec2f maxv = this->maxTranslation.getValue();
 
+  SbVec3f pretrans = this->translation.getValue();
+
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
   m.getTransform(trans, rot, scale, scaleOrient);
+  // avoid that the Z components drifts away from the dragger plane
+  trans[2] = pretrans[2];
   SbVec3f t = trans;
-
   for (int i = 0; i < 2; i++) {
     if (minv[i] <= maxv[i]) {
       t[i] = SbClamp(t[i], minv[i], maxv[i]);
