@@ -48,11 +48,13 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 
 #include "actions/SoSubActionP.h"
 
 class SoGetPrimitiveCountActionP {
 public:
+  SbViewportRegion viewport;
 };
 
 SO_ACTION_SOURCE(SoGetPrimitiveCountAction);
@@ -66,19 +68,34 @@ SoGetPrimitiveCountAction::initClass(void)
 
   SO_ENABLE(SoGetPrimitiveCountAction, SoDecimationPercentageElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoDecimationTypeElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoViewportRegionElement);
 }
-
 
 /*!
   Constructor.
 */
-SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(void)
+SoGetPrimitiveCountAction::SoGetPrimitiveCountAction()
+{
+  this->commonConstructor(SbViewportRegion(640, 512));
+}
+
+/*!
+  Constructor. Supply the current viewport region to make SCREEN_SPACE counting correct.
+*/
+SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(const SbViewportRegion & vp)
+{
+  this->commonConstructor(vp);
+}
+
+void
+SoGetPrimitiveCountAction::commonConstructor(const SbViewportRegion & vp) 
 {
   SO_ACTION_CONSTRUCTOR(SoGetPrimitiveCountAction);
 
   this->textastris = TRUE;
   this->approx = FALSE;
   this->nonvertexastris = TRUE;
+  this->pimpl->viewport = vp;
 }
 
 /*!
@@ -356,6 +373,8 @@ SoGetPrimitiveCountAction::beginTraversal(SoNode * node)
   this->numpoints = 0;
   this->numtexts = 0;
   this->numimages = 0;
+
+  SoViewportRegionElement::set(state, this->pimpl->viewport);
 
 //  SoDecimationTypeElement::set(this->getState(), this->decimationtype);
 //  SoDecimationPercentageElement::set(this->getState(), this->decimationpercentage);

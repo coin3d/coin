@@ -30,6 +30,7 @@
 #include <Inventor/elements/SoDecimationTypeElement.h>
 
 class SoGetPrimitiveCountActionP;
+class SbViewportRegion;
 
 class COIN_DLL_API SoGetPrimitiveCountAction : public SoAction {
   typedef SoAction inherited;
@@ -40,6 +41,8 @@ public:
   static void initClass(void);
 
   SoGetPrimitiveCountAction(void);
+  SoGetPrimitiveCountAction(const SbViewportRegion & vp);
+
   virtual ~SoGetPrimitiveCountAction(void);
 
   int getTriangleCount(void) const;
@@ -89,6 +92,7 @@ private:
   float decimationpercentage;
 
 private:
+  void commonConstructor(const SbViewportRegion & vp);
   SbLazyPimplPtr<SoGetPrimitiveCountActionP> pimpl;
 
   // NOT IMPLEMENTED:
