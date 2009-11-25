@@ -257,13 +257,5 @@ SoComplexity::pick(SoPickAction * action)
 void
 SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoState * state = action->getState();
-  if (!value.isIgnored() && !SoOverrideElement::getComplexityOverride(state))
-    SoComplexityElement::set(state, value.getValue());
-
-  // complexity type element is always OBJECT_SPACE for this action.
-  // this is somewhat odd. If it had been possible to supply a
-  // viewport in the action constructor, it would be possible
-  // to also calculate SCREEN_SPACE complexity.
-  // pederb, 1999-11-25
+  SoComplexity::doAction(action);
 }
