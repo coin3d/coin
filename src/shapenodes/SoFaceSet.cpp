@@ -562,7 +562,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
         (PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
         (PRIVATE(this)->primitivetype == GL_QUADS) &&
         (nbind != PER_FACE) &&
-        (mbind != PER_FACE)) {
+        (mbind != PER_FACE) &&
+        !tb.isFunction()) {
       SbBool dovbo = this->startVertexArray(action,
                                             coords,
                                             nbind == PER_VERTEX ? normals : NULL,
