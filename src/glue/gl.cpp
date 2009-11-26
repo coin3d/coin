@@ -5358,7 +5358,14 @@ cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum t
 SbBool
 coin_glglue_has_generate_mipmap(const cc_glglue * glue)
 {
-  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  if (!glglue_allow_newer_opengl(glue)) return FALSE; 
+  // ATi's handling of this function is very buggy. It's possible to
+  // work around these quirks, but we just disable it for now since we
+  // have other ways to generate mipmaps. Only disable on Windows. The
+  // OS X and Linux drivers are probably ok.
+  if ((coin_runtime_os() == COIN_MSWINDOWS) && glue->vendor_is_ati) {
+    return FALSE;
+  }
   return (glue->glGenerateMipmap != NULL);
 }
 
