@@ -989,24 +989,24 @@ SoExtSelectionP::handleEventRectangle(SoHandleEventAction * action)
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     if (this->runningselection.mode == SelectionState::NONE) { // be robust vs two incoming press events without an intervening release
       this->runningselection.start(SelectionState::RECTANGLE, mousecoords);
+      action->setHandled();
     }
   }
 
   if (this->runningselection.mode == SelectionState::RECTANGLE) {
     assert(this->runningselection.coords.getLength() == 2);
     this->runningselection.coords[1] = mousecoords;
-
+    
     if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
       this->selectAndReset(action);
+      action->setHandled();
     }
     // mouse move
     else if ((event->isOfType(SoLocation2Event::getClassTypeId()))) {
+      action->setHandled();
       PUBLIC(this)->touch();
     }
   }
-
-  // FIXME: shouldn't we call action->setHandled(TRUE) when
-  // appropriate within this function? 20050426 mortene.
 }
 
 void
@@ -1019,6 +1019,7 @@ SoExtSelectionP::handleEventLasso(SoHandleEventAction * action)
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     if (this->runningselection.mode == SelectionState::NONE) {
       this->runningselection.start(SelectionState::LASSO, mousecoords);
+      action->setHandled();
     }
     else {
       assert(this->runningselection.mode == SelectionState::LASSO);
@@ -1028,10 +1029,12 @@ SoExtSelectionP::handleEventLasso(SoHandleEventAction * action)
       if ((SbAbs(vsprev[0]) + SbAbs(vsprev[1])) <= 2) {
         // clicked twice on same coord (double click) -> end selection
         this->selectAndReset(action);
+        action->setHandled();
       }
       else {
         this->runningselection.coords[nrcoords - 1] = mousecoords;
         this->runningselection.coords.append(mousecoords);
+        action->setHandled();
         PUBLIC(this)->touch();
       }
     }
@@ -1039,7 +1042,7 @@ SoExtSelectionP::handleEventLasso(SoHandleEventAction * action)
 
   if (this->runningselection.mode == SelectionState::NONE) { return; }
   assert(this->runningselection.mode == SelectionState::LASSO);
-
+  
   const int nrcoords = this->runningselection.coords.getLength();
   assert(nrcoords > 0);
 
@@ -1047,15 +1050,14 @@ SoExtSelectionP::handleEventLasso(SoHandleEventAction * action)
   if ((event->isOfType(SoLocation2Event::getClassTypeId()))) {
     this->runningselection.coords[nrcoords - 1] = mousecoords;
     PUBLIC(this)->touch();
+    action->setHandled();
   }
   // end selection with right-click
   else if (SO_MOUSE_PRESS_EVENT(event, BUTTON2)) {
     this->runningselection.coords[nrcoords - 1] = mousecoords;
     this->selectAndReset(action);
+    action->setHandled();
   }
-
-  // FIXME: shouldn't we call action->setHandled(TRUE) when
-  // appropriate within this function? 20050426 mortene.
 }
 
 // Documented in superclass.
@@ -1087,6 +1089,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
       if (PRIVATE(this)->runningselection.mode != SoExtSelectionP::SelectionState::NONE) {
         PRIVATE(this)->runningselection.reset();
         this->touch();
+        action->setHandled();
         return;
       }
     }
@@ -1096,7 +1099,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   // from the above SoSeparator::handleEvent() call, so we need to
   // check for this before proceeding.
   if (this->lassoType.getValue() == SoExtSelection::NOLASSO) { return; }
-
+  
   switch (PRIVATE(this)->runningselection.mode) {
     // No selection mode has been activated yet, so decide from the
     // lassoType field value where to go:
@@ -1107,7 +1110,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
     default: assert(FALSE); break;
     }
     break;
-
+    
     // A selection mode is already "in action", so continue with that:
   case SoExtSelectionP::SelectionState::RECTANGLE: PRIVATE(this)->handleEventRectangle(action); break;
   case SoExtSelectionP::SelectionState::LASSO: PRIVATE(this)->handleEventLasso(action); break;
