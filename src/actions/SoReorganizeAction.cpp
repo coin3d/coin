@@ -28,8 +28,8 @@
   rendering.  This might lead to major rendering performance
   improvements compared to the old rendering code. The new rendering
   code has been added for the SoIndexedFaceSet, SoVRMLIndexedFaceSet,
-  SoIndexedLineSet, SoVRMLIndexedLineSet, SoPointSet and
-  SoVRMLPointSet nodes.
+  SoIndexedLineSet, SoVRMLIndexedLineSet, SoPointSet, SoFaceSet and
+  SoVRMLPointSet nodes. 
 
   To take advantage of the improved performance vertex array and VBO
   rendering yields, you'll need to organize your vertex data in a way
