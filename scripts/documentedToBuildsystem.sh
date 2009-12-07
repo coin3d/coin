@@ -13,7 +13,9 @@ error()
 
 cd $(dirname $0)/..
 
-EXTRA_INCLUDES='${coin_build_dir}/include/Inventor/C/basic.h'
+EXTRA_INCLUDES='${coin_build_dir}/include/Inventor/C/basic.h
+${coin_src_dir}/docs/releases.dox
+'
 
 if [ -n "$1" ]
 then
@@ -69,10 +71,30 @@ do
         then
             if [ ${N} -gt 1 ]
             then
-                error "Error: ${HEADER}"
+                error "'${HEADER}'"
+                HEADER_NEW=""
+                for header in ${HEADER}
+                do
+                    header2=$(echo ${header} | cut -d '/' -f2-)
+                    if ! grep -q "#error Do not include ${header2}" ${header}
+                    then
+                        HEADER_NEW="${HEADER_REV}${header} "
+                    else
+                        let N--
+                    fi
+                done
+                HEADER=$(echo ${HEADER_NEW} | rev | cut -d\  -f2- | rev)
+                error ${N}
+                error "'${HEADER}'"
             fi
-        else
+        fi
+
+        if [ ${N} -eq 1 ]
+        then
             echo "                         \${path_tag}\${coin_src_dir}/${HEADER}"
+        elif [ ${N} -gt 1 ]
+        then
+            error "Error: ${HEADER}"
         fi
     fi
 done
