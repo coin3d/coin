@@ -71,7 +71,6 @@ do
         then
             if [ ${N} -gt 1 ]
             then
-                error "'${HEADER}'"
                 HEADER_NEW=""
                 for header in ${HEADER}
                 do
@@ -84,8 +83,6 @@ do
                     fi
                 done
                 HEADER=$(echo ${HEADER_NEW} | rev | cut -d\  -f2- | rev)
-                error ${N}
-                error "'${HEADER}'"
             fi
         fi
 
