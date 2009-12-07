@@ -57,7 +57,10 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/C/base/rbptree.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/base/string.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/base/time.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/C/errors/debugerror.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/C/errors/error.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/glue/dl.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/C/glue/spidermonkey.h
                          ${path_tag}${coin_src_dir}/include/Inventor/collision/SoIntersectionDetectionAction.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/threads/barrier.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/threads/condvar.h
@@ -359,10 +362,13 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/fields/SoSubField.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SbIntList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SbList.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/lists/SbPList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SbStringList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SbVec3fList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoActionMethodList.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/lists/SoAuditorList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoBaseList.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/lists/SoCallbackList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoDetailList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoEnabledElementsList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoEngineList.h
@@ -1059,6 +1065,8 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/engines/SoTimeCounter.cpp
                          ${path_tag}${coin_src_dir}/src/engines/SoTransformVec3f.cpp
                          ${path_tag}${coin_src_dir}/src/engines/SoTriggerAny.cpp
+                         ${path_tag}${coin_src_dir}/src/errors/debugerror.cpp
+                         ${path_tag}${coin_src_dir}/src/errors/error.cpp
                          ${path_tag}${coin_src_dir}/src/errors/SoDebugError.cpp
                          ${path_tag}${coin_src_dir}/src/errors/SoError.cpp
                          ${path_tag}${coin_src_dir}/src/errors/SoMemoryError.cpp
@@ -1172,6 +1180,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/geo/SoGeoSeparator.cpp
                          ${path_tag}${coin_src_dir}/src/glue/dl.cpp
                          ${path_tag}${coin_src_dir}/src/glue/gl.cpp
+                         ${path_tag}${coin_src_dir}/src/glue/spidermonkey.cpp
                          ${path_tag}${coin_src_dir}/src/hardcopy/HardCopy.cpp
                          ${path_tag}${coin_src_dir}/src/hardcopy/PSVectorOutput.cpp
                          ${path_tag}${coin_src_dir}/src/hardcopy/VectorizeAction.cpp
