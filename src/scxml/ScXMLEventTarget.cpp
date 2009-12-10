@@ -106,6 +106,7 @@ public:
   char * targetsessionid; // needed in destructor - can't fetch virtually
 
   static void delay_event_alarm_cb(void * userdata, SoSensor * sensor);
+  static SbList<ScXMLEventTarget *> targets;
 
 };
 
@@ -138,6 +139,7 @@ ScXMLEventTarget::PImpl::delay_event_alarm_cb(void * userdata, SoSensor * sensor
 #define PRIVATE(obj) ((obj)->pimpl)
 
 TargetTypeMap * ScXMLEventTarget::PImpl::targettypes = NULL;
+SbList<ScXMLEventTarget *> ScXMLEventTarget::PImpl::targets;
 
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLEventTarget);
 
@@ -155,7 +157,12 @@ ScXMLEventTarget::initClass(void)
 void
 ScXMLEventTarget::cleanClass(void)
 {
-  // FIXME: clean up map
+  int n;
+  while ( (n = ScXMLEventTarget::PImpl::targets.getLength())>0) {
+    ScXMLEventTarget * target = ScXMLEventTarget::PImpl::targets[n-1];
+    unregisterEventTarget(target,NULL);
+  }
+  
   ScXMLP::lock();
   assert(ScXMLEventTarget::PImpl::targettypes != NULL);
   delete ScXMLEventTarget::PImpl::targettypes;
@@ -214,6 +221,8 @@ ScXMLEventTarget::registerEventTarget(ScXMLEventTarget * target, const char * se
     sessionmap->insert(entry);
   }
 
+  ScXMLEventTarget::PImpl::targets.append(target);
+
   ScXMLP::unlock();
 }
 
@@ -253,13 +262,31 @@ ScXMLEventTarget::unregisterEventTarget(ScXMLEventTarget * target, const char * 
 
   SessionMap::iterator sessionit = sessionmap->find(targetsessionid.getString());
   if unlikely (sessionit == sessionmap->end()) {
-    if (target == sessionit->second) {
-      sessionmap->erase(sessionit);
-    } else {
       SoDebugError::post("ScXMLEventTarget::unregisterEventTarget",
                          "given target session not registered");
+      ScXMLP::unlock();
+      return;
+  }
+
+  if (target == sessionit->second) {
+    sessionmap->erase(sessionit);
+    if (sessionmap->empty()) {
+      targetmap->erase(targetit);
+      if (targetmap->empty()) {
+        ScXMLEventTarget::PImpl::targettypes->erase(typeit);
+        delete targetmap;
+      }
+      delete sessionmap;
     }
   }
+  else {
+    SoDebugError::post("ScXMLEventTarget::unregisterEventTarget",
+                       "given target session is registered, but to a different target");
+    ScXMLP::unlock();
+    return;
+  }
+
+  ScXMLEventTarget::PImpl::targets.removeItem(target);
   ScXMLP::unlock();
 }
 
