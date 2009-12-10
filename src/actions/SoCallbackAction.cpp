@@ -127,6 +127,46 @@
   \endcode
 */
 
+/*!
+  \typedef void SoTriangleCB(void *userdata, SoCallbackAction *action, const SoPrimitiveVertex *v1, const SoPrimitiveVertex *v2, const SoPrimitiveVertex *v3)
+  
+  \param userdata is a void pointer to any data the application need to
+  know of in the callback function (like for instance a \e this
+  pointer).
+  \param action the action which invoked the callback
+  \param v1 first vertex of the triangle
+  \param v2 second vertex of the triangle
+  \param v3 third vertex of the triangle
+
+  \sa SoLineSegmentCB, SoPointCB
+*/
+
+/*!
+  \typedef void SoLineSegmentCB(void *userdata, SoCallbackAction *action, const SoPrimitiveVertex *v1, const SoPrimitiveVertex *v2)
+  
+  \param userdata is a void pointer to any data the application need to
+  know of in the callback function (like for instance a \e this
+  pointer).
+  \param action the action which invoked the callback
+  \param v1 first vertex of the line
+  \param v2 second vertex of the line
+
+  \sa setPassCallback() SoPointCB
+*/
+
+/*!
+  \typedef void SoPointCB(void *userdata, SoCallbackAction *action, const SoPrimitiveVertex *v)
+  
+  \param userdata is a void pointer to any data the application need to
+  know of in the callback function (like for instance a \e this
+  pointer).
+  \param action the action which invoked the callback
+  \param v the vertex of the point
+
+  \sa setPassCallback()
+*/
+
+
 /*! \file SoCallbackAction.h */
 #include <Inventor/actions/SoCallbackAction.h>
 

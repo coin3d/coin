@@ -33,11 +33,6 @@
 
 // *************************************************************************
 
-// FIXME: this doesn't seem to end up in the Doxygen-generated
-// documentation anywhere, with Doxygen version 1.2.18, at least.
-// Find out why. There are also many other typedefs like this in Coin,
-// which are not within the scope of a class declaration. 20040707 mortene.
-
 /*!
   \typedef void SoGLRenderPassCB(void * userdata)
 

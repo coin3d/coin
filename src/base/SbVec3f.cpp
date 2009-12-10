@@ -101,6 +101,12 @@
 */
 
 /*!
+  \var SbVec3f::vec[3]
+
+  The container for all values of this class.
+*/
+
+/*!
   Constructs an SbVec3f instance by combining the three given planes.
   None of the planes should be parallel to any of the other two, otherwise
   a divide by zero error will occur.
