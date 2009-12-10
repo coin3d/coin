@@ -136,6 +136,12 @@ classname::getElementReader(void)                               \
     thisclass::elementReader = new classname;                           \
   } while ( FALSE )
 
+#define SCXML_ELEMENT_UNREGISTER_READER(thisclass) \
+  do {                                                                  \
+    delete thisclass::elementReader;                                    \
+    thisclass::elementReader = NULL;                                    \
+  } while ( FALSE )
+
 // *************************************************************************
 
 #define SCXML_OBJECT_INIT_ABSTRACT_CLASS(thisclass, parentclass, parentname) \

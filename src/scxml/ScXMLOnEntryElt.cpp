@@ -206,6 +206,7 @@ ScXMLOnEntryElt::initClass(void)
 void
 ScXMLOnEntryElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLOnEntryElt);
   ScXMLOnEntryElt::classTypeId = SoType::badType();
 }
 

@@ -110,6 +110,7 @@ ScXMLEventElt::initClass(void)
 void
 ScXMLEventElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLEventElt);
   ScXMLEventElt::classTypeId = SoType::badType();
 }
 

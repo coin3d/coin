@@ -114,6 +114,7 @@ ScXMLElseIfElt::initClass(void)
 void
 ScXMLElseIfElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLElseIfElt);
   ScXMLElseIfElt::classTypeId = SoType::badType();
 }
 

@@ -535,6 +535,7 @@ ScXMLStateElt::initClass(void)
 void
 ScXMLStateElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLStateElt);
   ScXMLStateElt::classTypeId = SoType::badType();
 }
 

@@ -518,6 +518,7 @@ ScXMLParallelElt::initClass(void)
 void
 ScXMLParallelElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLParallelElt);
   ScXMLParallelElt::classTypeId = SoType::badType();
 }
 

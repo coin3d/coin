@@ -109,6 +109,7 @@ ScXMLValidateElt::initClass(void)
 void
 ScXMLValidateElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLValidateElt);
   ScXMLValidateElt::classTypeId = SoType::badType();
 }
 

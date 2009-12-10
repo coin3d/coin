@@ -206,6 +206,7 @@ ScXMLOnExitElt::initClass(void)
 void
 ScXMLOnExitElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLOnExitElt);
   ScXMLOnExitElt::classTypeId = SoType::badType();
 }
 

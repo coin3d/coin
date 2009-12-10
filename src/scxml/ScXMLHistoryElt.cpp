@@ -138,6 +138,7 @@ ScXMLHistoryElt::initClass(void)
 void
 ScXMLHistoryElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLHistoryElt);
   ScXMLHistoryElt::classTypeId = SoType::badType();
 }
 

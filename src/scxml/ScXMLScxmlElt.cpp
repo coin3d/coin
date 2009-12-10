@@ -269,6 +269,7 @@ ScXMLScxmlElt::initClass(void)
 void
 ScXMLScxmlElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLScxmlElt);
   ScXMLScxmlElt::classTypeId = SoType::badType();
 }
 

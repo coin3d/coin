@@ -199,6 +199,7 @@ ScXMLInvokeElt::initClass(void)
 void
 ScXMLInvokeElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLInvokeElt);
   ScXMLInvokeElt::classTypeId = SoType::badType();
 }
 

@@ -136,6 +136,7 @@ ScXMLDataModelElt::initClass(void)
 void
 ScXMLDataModelElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLDataModelElt);
   ScXMLDataModelElt::classTypeId = SoType::badType();
 }
 
