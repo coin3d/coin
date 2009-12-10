@@ -109,6 +109,7 @@ ScXMLFinalizeElt::initClass(void)
 void
 ScXMLFinalizeElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLFinalizeElt);
   ScXMLFinalizeElt::classTypeId = SoType::badType();
 }
 

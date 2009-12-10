@@ -108,6 +108,7 @@ ScXMLParamElt::initClass(void)
 void
 ScXMLParamElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLParamElt);
   ScXMLParamElt::classTypeId = SoType::badType();
 }
 

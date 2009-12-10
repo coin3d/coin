@@ -111,6 +111,7 @@ ScXMLLogElt::initClass(void)
 void
 ScXMLLogElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLLogElt);
   ScXMLLogElt::classTypeId = SoType::badType();
 }
 

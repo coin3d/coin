@@ -303,6 +303,7 @@ ScXMLIfElt::initClass(void)
 void
 ScXMLIfElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLIfElt);
   ScXMLIfElt::classTypeId = SoType::badType();
 }
 

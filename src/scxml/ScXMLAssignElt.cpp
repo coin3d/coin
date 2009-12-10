@@ -152,6 +152,7 @@ ScXMLAssignElt::initClass(void)
 void
 ScXMLAssignElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLAssignElt);
   ScXMLAssignElt::classTypeId = SoType::badType();
 }
 

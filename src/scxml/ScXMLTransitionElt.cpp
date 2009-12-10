@@ -272,6 +272,7 @@ ScXMLTransitionElt::initClass(void)
 void
 ScXMLTransitionElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLTransitionElt);
   ScXMLTransitionElt::classTypeId = SoType::badType();
 }
 

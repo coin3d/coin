@@ -147,6 +147,7 @@ ScXMLInitialElt::initClass(void)
 void
 ScXMLInitialElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLInitialElt);
   ScXMLInitialElt::classTypeId = SoType::badType();
 }
 

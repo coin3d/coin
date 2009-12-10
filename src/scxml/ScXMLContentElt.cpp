@@ -112,6 +112,7 @@ ScXMLContentElt::initClass(void)
 void
 ScXMLContentElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLContentElt);
   ScXMLContentElt::classTypeId = SoType::badType();
 }
 

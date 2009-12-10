@@ -111,6 +111,7 @@ ScXMLAnchorElt::initClass(void)
 void
 ScXMLAnchorElt::cleanClass(void)
 {
+  SCXML_ELEMENT_UNREGISTER_READER(ScXMLAnchorElt);
   ScXMLAnchorElt::classTypeId = SoType::badType();
 }
 
