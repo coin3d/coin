@@ -34,14 +34,17 @@ class SbByteBufferP;
 class COIN_DLL_API SbByteBuffer {
  public:
   SbByteBuffer(const char * buffer);
+  SbByteBuffer(const SbByteBuffer & buffer);
   SbByteBuffer(size_t size = 0, const char * buffer = NULL);
   SbByteBuffer(size_t size, const unsigned char * buffer);
+  ~SbByteBuffer();
 
   SbBool isValid() const;
   size_t size() const;
   SbBool empty() const;
 
   const char & operator[](size_t idx) const;
+  SbByteBuffer & operator=(const SbByteBuffer & in);
   SbBool operator==(const SbByteBuffer & that) const;
   SbByteBuffer & operator+=(const SbByteBuffer & buf) {
     this->push(buf);
