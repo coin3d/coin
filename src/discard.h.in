@@ -480,6 +480,9 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Define to make Coin use/catch exceptions at some particular places. */
+#undef USE_EXCEPTIONS
+
 /* define to use the POSIX threads API */
 #undef USE_PTHREAD
 
