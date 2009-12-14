@@ -9159,6 +9159,7 @@ else
       AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
     fi
   fi
+  AC_DEFINE([USE_EXCEPTIONS], 1, [Define to make Coin use/catch exceptions at some particular places.])
 fi
 ])
 

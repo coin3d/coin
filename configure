@@ -25647,6 +25647,11 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 echo "$as_me: WARNING: --enable-exceptions only has effect when using GNU g++" >&2;}
     fi
   fi
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_EXCEPTIONS 1
+_ACEOF
+
 fi
 
 
