@@ -55,7 +55,7 @@
   v2.1 API.  In addition to being a Coin extension, it is also present
   in TGS' Inventor implementation (with the same API).
 
-  Please not that this manipulator is a bit different than the other
+  Please note that this manipulator is a bit different than the other
   manipulators, since it will not automatically scale and translate 
   the dragger to surround the geometry. The setValue() function must
   be used to initialize the manipulator/dragger. Below you'll find some
