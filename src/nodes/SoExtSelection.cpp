@@ -801,6 +801,8 @@ SoExtSelection::SoExtSelection(void)
 */
 SoExtSelection::~SoExtSelection()
 {
+  delete PRIVATE(this)->renderer;
+  delete PRIVATE(this)->lassorenderer;
   delete PRIVATE(this)->cbaction;
   delete PRIVATE(this)->visitedshapepaths;
   delete PRIVATE(this);
@@ -1157,8 +1159,6 @@ SoExtSelection::draw(SoGLRenderAction *action)
                GL_CURRENT_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
-
-
 
   if(pimpl->has3DTextures) glDisable(GL_TEXTURE_3D);
   glDisable(GL_FOG);
@@ -2283,7 +2283,6 @@ SoExtSelectionP::selectPaths(void)
 void
 SoExtSelectionP::offscreenLassoTesselatorCallback(void * v0, void * v1, void * v2, void * userdata)
 {
-
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
 
   // Set flag indicating that a callback was executed.
@@ -2305,9 +2304,9 @@ SoExtSelectionP::offscreenLassoTesselatorCallback(void * v0, void * v1, void * v
 void
 SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action)
 {
+  if (!action->isOfType(SoGLRenderAction::getClassTypeId())) return;
 
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
-
 
   // Setup optimal screen-aspect according to lasso-size
   SoHandleEventAction * eventAction = pimpl->offscreenaction;
@@ -2317,31 +2316,18 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   SbVec2s vps = vp.getViewportSizePixels();
 
   glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
   glOrtho(vpo[0], vpo[0]+vps[0]-1,
           vpo[1], vpo[0]+vps[1]-1,
           -1, 1);
-
-  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
-  // save the current color for later.
-  GLfloat currentColor[4];
-  glGetFloatv(GL_CURRENT_COLOR,currentColor);
-
-  glPushAttrib(GL_LIGHTING_BIT|
-               GL_FOG_BIT|
-               GL_DEPTH_BUFFER_BIT|
-               GL_TEXTURE_BIT|
-               GL_LINE_BIT|
-               GL_CURRENT_BIT);
-
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+  
   glDisable(GL_LIGHTING);
-  glDisable(GL_TEXTURE_2D);
-  if(pimpl->has3DTextures)
-    glDisable(GL_TEXTURE_3D);
-  glDisable(GL_FOG);
-  glDisable(GL_BLEND);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
-
+  
   // This flag will be set to TRUE if the tesselatorcallbacks was executed.
   pimpl->lassostencilisdrawed = FALSE;
 
@@ -2359,15 +2345,16 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
     tesselator.addVertex(tmparray[i],(void*)&tmparray[i]);
   tesselator.endPolygon();
 
-  // Due to a Mesa 3.4.2 bug
-  glColor3fv(currentColor);
-
-  glPopAttrib();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
 }
 
 void
 SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
 {
+  if (!action->isOfType(SoGLRenderAction::getClassTypeId())) return;
 
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
 
@@ -2654,6 +2641,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     this->requestedsize = action->getViewportRegion().getViewportSizePixels();
 
+    SbViewportRegion vp = action->getViewportRegion();
     if((unsigned int) requestedsize[0] > maxsize[0] || (unsigned int) requestedsize[1] > maxsize[1]){
 
       double maxv = (float) SbMax(requestedsize[0],requestedsize[1]);
@@ -2664,15 +2652,16 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       newsize[0] = (int) (requestedsize[0] * scale);
       newsize[1] = (int) (requestedsize[1] * scale);
 
-      const SbViewportRegion vp(newsize[0],newsize[1]);
+      vp = SbViewportRegion(newsize[0],newsize[1]);
+    }
+    // only (re)allocate the renderers if the viewport has changed
+    if (this->renderer == NULL || this->renderer->getViewportRegion() != vp) {
+      delete this->renderer;
       this->renderer = new SoOffscreenRenderer(vp);
+    }
+    if (this->lassorenderer == NULL || this->lassorenderer->getViewportRegion() != vp) {
+      delete this->lassorenderer;
       this->lassorenderer = new SoOffscreenRenderer(vp);
-
-    } else {
-
-      this->renderer = new SoOffscreenRenderer(action->getViewportRegion());
-      this->lassorenderer = new SoOffscreenRenderer(action->getViewportRegion());
-
     }
 
     SoCallback * cbnode = new SoCallback;
@@ -2687,7 +2676,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       this->offscreencolorcounteroverflow = FALSE;
       this->drawcallbackcounter = 0;
       this->drawcounter = 0;
-
 
       assert(this->runningselection.mode != SelectionState::NONE);
 
@@ -2713,7 +2701,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
         chkenv = TRUE;
       }
       if (dumpfilename) { this->renderer->writeToRGB(dumpfilename); }
-
 
       // Scan buffer marking visible colors in the
       // 'visibletrianglesbitarray' array.
@@ -2745,8 +2732,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     // Release allocated stuff
     cbnode->unref();
     delete [] this->visibletrianglesbitarray;
-    delete this->renderer;
-    delete this->lassorenderer;
   }
 
   this->selectPaths(); // Execute a 'doSelect' on all stored paths.
