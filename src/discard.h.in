@@ -333,6 +333,9 @@
 /* *EXPERIMENTAL* to use the GLU we've "appropriated" from SGI */
 #undef HAVE_SUPERGLU
 
+/* Define this if you want to use a system installation of expat */
+#undef HAVE_SYSTEM_EXPAT
+
 /* Define to 1 if you have the <sys/param.h> header file. */
 #undef HAVE_SYS_PARAM_H
 

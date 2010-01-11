@@ -193,6 +193,8 @@ SIM_INCLUDE_WINDOWS_H = @SIM_INCLUDE_WINDOWS_H@
 STRIP = @STRIP@
 SUFFIX = @SUFFIX@
 SUPERGLUPREFIX = @SUPERGLUPREFIX@
+USE_SYSTEM_EXPAT_FALSE = @USE_SYSTEM_EXPAT_FALSE@
+USE_SYSTEM_EXPAT_TRUE = @USE_SYSTEM_EXPAT_TRUE@
 VERSION = @VERSION@
 WIN_PACKAGEABLE_FALSE = @WIN_PACKAGEABLE_FALSE@
 WIN_PACKAGEABLE_TRUE = @WIN_PACKAGEABLE_TRUE@
@@ -316,11 +318,10 @@ ObsoletedHeaders =
 DISTCLEANFILES = \
 	ii_files/*.ii
 
-@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
-@HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
-@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
+#Always use the linkhack, as this library is essentially a release only sublibrary
+BuildSources = $(LinkHackSources)
+ExtraSources = $(RegularSources)
 
 @BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = expat.lst
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libexpat@SUFFIX@LINKHACK.la
@@ -359,45 +360,21 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 expat_lst_AR = $(AR) cru
 expat_lst_LIBADD =
-am__expat_lst_SOURCES_DIST = xmlparse.c xmlrole.c xmltok.c all-expat-c.c
 am__objects_1 = all-expat-c.$(OBJEXT)
-am__objects_2 = xmlparse.$(OBJEXT) xmlrole.$(OBJEXT) xmltok.$(OBJEXT)
-@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
-am_expat_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_expat_lst_SOURCES_DIST = xmltok_ns.c xmltok_impl.c \
-	amigaconfig.h ascii.h asciitab.h expat.h expat_external.h \
-	iasciitab.h internal.h latin1tab.h macconfig.h nametab.h \
-	utf8tab.h winconfig.h xmlrole.h xmltok.h xmltok_impl.h \
-	all-expat-c.c xmlparse.c xmlrole.c xmltok.c
+am__objects_2 = $(am__objects_1)
+am_expat_lst_OBJECTS = $(am__objects_2)
 expat_lst_OBJECTS = $(am_expat_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libexpat_la_LDFLAGS =
 libexpat_la_LIBADD =
-am__libexpat_la_SOURCES_DIST = xmlparse.c xmlrole.c xmltok.c \
-	all-expat-c.c
 am__objects_7 = all-expat-c.lo
-am__objects_8 = xmlparse.lo xmlrole.lo xmltok.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
-am_libexpat_la_OBJECTS = $(am__objects_9)
-am__EXTRA_libexpat_la_SOURCES_DIST = xmltok_ns.c xmltok_impl.c \
-	amigaconfig.h ascii.h asciitab.h expat.h expat_external.h \
-	iasciitab.h internal.h latin1tab.h macconfig.h nametab.h \
-	utf8tab.h winconfig.h xmlrole.h xmltok.h xmltok_impl.h \
-	all-expat-c.c xmlparse.c xmlrole.c xmltok.c
+am__objects_8 = $(am__objects_7)
+am_libexpat_la_OBJECTS = $(am__objects_8)
 libexpat_la_OBJECTS = $(am_libexpat_la_OBJECTS)
 libexpat@SUFFIX@LINKHACK_la_LDFLAGS =
 libexpat@SUFFIX@LINKHACK_la_LIBADD =
-am__libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = xmlparse.c xmlrole.c \
-	xmltok.c all-expat-c.c
-am_libexpat@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
-am__EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST = xmltok_ns.c \
-	xmltok_impl.c amigaconfig.h ascii.h asciitab.h expat.h \
-	expat_external.h iasciitab.h internal.h latin1tab.h macconfig.h \
-	nametab.h utf8tab.h winconfig.h xmlrole.h xmltok.h \
-	xmltok_impl.h all-expat-c.c xmlparse.c xmlrole.c xmltok.c
+am_libexpat@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 libexpat@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libexpat@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -416,12 +393,10 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(am__expat_lst_SOURCES_DIST) \
-	$(am__EXTRA_expat_lst_SOURCES_DIST) \
-	$(am__libexpat_la_SOURCES_DIST) \
-	$(am__EXTRA_libexpat_la_SOURCES_DIST) \
-	$(am__libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST) \
-	$(am__EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES_DIST)
+DIST_SOURCES = $(expat_lst_SOURCES) $(EXTRA_expat_lst_SOURCES) \
+	$(libexpat_la_SOURCES) $(EXTRA_libexpat_la_SOURCES) \
+	$(libexpat@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libexpatinc_HEADERS)
 
 DIST_COMMON = README $(libexpatinc_HEADERS) COPYING Makefile.am \
