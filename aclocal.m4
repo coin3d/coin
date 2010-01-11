@@ -603,47 +603,53 @@ AC_REQUIRE([SIM_AC_SPACE_IN_PATHS])
 : ${BUILD_WITH_MSVC=false}
 if $sim_ac_try_msvc; then
   if test -z "$CC" -a -z "$CXX"; then
-    sim_ac_wrapmsvc=`cd $ac_aux_dir; pwd`/wrapmsvc.exe
-    echo "$as_me:$LINENO: sim_ac_wrapmsvc=$sim_ac_wrapmsvc" >&AS_MESSAGE_LOG_FD
     AC_MSG_CHECKING([setup for wrapmsvc.exe])
-    if $sim_ac_wrapmsvc >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD; then
-      m4_ifdef([$0_VISITED],
-        [AC_FATAL([Macro $0 invoked multiple times])])
-      m4_define([$0_VISITED], 1)
-      CC=$sim_ac_wrapmsvc
-      CXX=$sim_ac_wrapmsvc
-      export CC CXX
-      BUILD_WITH_MSVC=true
-      AC_MSG_RESULT([working])
-
-      # Robustness: we had multiple reports of Cygwin ''link'' getting in
-      # the way of MSVC link.exe, so do a little sanity check for that.
-      #
-      # FIXME: a better fix would be to call link.exe with full path from
-      # the wrapmsvc wrapper, to avoid any trouble with this -- I believe
-      # that should be possible, using the dirname of the full cl.exe path.
-      # 20050714 mortene.
-      sim_ac_check_link=`type link`
-      AC_MSG_CHECKING([whether Cygwin's /usr/bin/link shadows MSVC link.exe])
-      case x"$sim_ac_check_link" in
-      x"link is /usr/bin/link"* )
-        AC_MSG_RESULT(yes)
-        SIM_AC_ERROR([cygwin-link])
+    case $host in
+      *-cygwin)
+        valid_system=true
         ;;
       * )
-        AC_MSG_RESULT(no)
+        valid_system=false
         ;;
-      esac
+    esac
+    if $valid_system; then
+      sim_ac_wrapmsvc=`cd $ac_aux_dir; pwd`/wrapmsvc.exe
+      echo "$as_me:$LINENO: sim_ac_wrapmsvc=$sim_ac_wrapmsvc" >&AS_MESSAGE_LOG_FD
+      if $sim_ac_wrapmsvc >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD; then
+        m4_ifdef([$0_VISITED],
+          [AC_FATAL([Macro $0 invoked multiple times])])
+        m4_define([$0_VISITED], 1)
+        CC=$sim_ac_wrapmsvc
+        CXX=$sim_ac_wrapmsvc
+        export CC CXX
+        BUILD_WITH_MSVC=true
+        AC_MSG_RESULT([working])
 
-    else
-      case $host in
-      *-cygwin)
+        # Robustness: we had multiple reports of Cygwin ''link'' getting in
+        # the way of MSVC link.exe, so do a little sanity check for that.
+        #
+        # FIXME: a better fix would be to call link.exe with full path from
+        # the wrapmsvc wrapper, to avoid any trouble with this -- I believe
+        # that should be possible, using the dirname of the full cl.exe path.
+        # 20050714 mortene.
+        sim_ac_check_link=`type link`
+        AC_MSG_CHECKING([whether Cygwin's /usr/bin/link shadows MSVC link.exe])
+        case x"$sim_ac_check_link" in
+        x"link is /usr/bin/link"* )
+          AC_MSG_RESULT(yes)
+          SIM_AC_ERROR([cygwin-link])
+          ;;
+        * )
+          AC_MSG_RESULT(no)
+          ;;
+        esac
+
+      else
         AC_MSG_RESULT([not working])
-        SIM_AC_ERROR([no-msvc++]) ;;
-      *)
-        AC_MSG_RESULT([not working (as expected)])
-        ;;
-      esac
+        SIM_AC_ERROR([no-msvc++])
+      fi
+    else
+      AC_MSG_RESULT([not a cygwin host])
     fi
   fi
 fi
