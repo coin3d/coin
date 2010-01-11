@@ -168,6 +168,9 @@ cat <<"EODATA" >&5
 @MACOSX_TRUE@macosx_boost_add = 
 @MACOSX_FALSE@macosx_boost_add =
 
+@USE_SYSTEM_EXPAT_FALSE@EXPAT_LINKFLAG = 
+@USE_SYSTEM_EXPAT_TRUE@EXPAT_LINKFLAG = -lexpat
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 top_builddir = ..
@@ -196,8 +199,8 @@ EODATA
 fi
 
 cat <<"EODATA" >&5
-TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS)
-TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@
+TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS) $(EXPAT_LINKFLAG)
+TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@ 
 
 EMPTY =
 
