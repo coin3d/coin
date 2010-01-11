@@ -46,13 +46,9 @@ ObsoletedHeaders =
 DISTCLEANFILES = \
 	ii_files/*.ii
 
-if HACKING_COMPACT_BUILD
+#Always use the linkhack, as this library is essentially a release only sublibrary
 BuildSources = $(LinkHackSources)
 ExtraSources = $(RegularSources)
-else
-BuildSources = $(RegularSources)
-ExtraSources = $(LinkHackSources)
-endif
 
 if BUILD_WITH_MSVC
 noinst_LIBRARIES = expat.lst

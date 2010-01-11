@@ -366,7 +366,7 @@ SIM_AC_MAC_CPP_ADJUSTMENTS
 if test x"$prefix" = x"NONE"; then
   prefix=/usr/local
 fi
-
+#
 # *******************************************************************
 # Enable/disable separate Coin modules
 
@@ -389,7 +389,7 @@ else
   SIM_AC_CONFIGURATION_SETTING([Generate Java wrapper], [No (default)])
 fi
 
-# *******************************************************************
+ *******************************************************************
 # See if we should build with 3ds import capabilities.
 
 sim_ac_enable_3ds_import=false
@@ -415,6 +415,28 @@ AC_SUBST(HAVE_3DS_IMPORT_CAPABILITIES)
 
 AM_CONDITIONAL([BUILD_3DS_CAPABILITIES], [$sim_ac_enable_3ds_import])
 
+
+# *******************************************************************
+# Enable/disable system expat
+
+sim_ac_enable_system_expat=false
+AC_ARG_ENABLE(
+  [system-expat],
+  AC_HELP_STRING([--enable-system-expat], [enable use of system-expat]), [
+  case $enableval in
+    yes | true) sim_ac_enable_system_expat=true ;;
+    no | false) sim_ac_enable_system_expat=false ;;
+    *) ;;
+  esac])
+
+AM_CONDITIONAL([USE_SYSTEM_EXPAT], [$sim_ac_enable_system_expat])
+
+if $sim_ac_enable_system_expat; then
+  AC_DEFINE([HAVE_SYSTEM_EXPAT], 1, [Define this if you want to use a system installation of expat])
+  SIM_AC_CONFIGURATION_SETTING([Use system expat], [Yes])
+else
+  SIM_AC_CONFIGURATION_SETTING([Use system expat], [No (default)])
+fi
 
 # *******************************************************************
 # See if we should build with javascript capabilities.
