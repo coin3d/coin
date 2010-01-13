@@ -268,7 +268,7 @@ SoEngine::getOutputName(const SoEngineOutput * output,
 SoEngine *
 SoEngine::getByName(const SbName & name)
 {
-  return coin_assert_cast<SoEngine *>(SoBase::getNamedBase(name, SoEngine::getClassTypeId()));
+  return static_cast<SoEngine *>(SoBase::getNamedBase(name, SoEngine::getClassTypeId()));
 }
 
 /*!
