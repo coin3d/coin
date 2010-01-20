@@ -92,6 +92,9 @@ libglue_la_SOURCES = $(BuildSources)
 EXTRA_libglue_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libglue_la_CXXFLAGS = $(AM_CXXFLAGS)
+libglue_la_CFLAGS = $(AM_CFLAGS)
+
 libglue@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -99,6 +102,9 @@ EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES = \
 glue_lst_SOURCES = $(BuildSources)
 EXTRA_glue_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+glue_lst_CXXFLAGS = $(AM_CXXFLAGS)
+glue_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 glue.lst: Makefile $(glue_lst_OBJECTS)

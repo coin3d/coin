@@ -81,6 +81,9 @@ libio_la_SOURCES = $(BuildSources)
 EXTRA_libio_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libio_la_CXXFLAGS = $(AM_CXXFLAGS)
+libio_la_CFLAGS = $(AM_CFLAGS)
+
 libio@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -88,6 +91,9 @@ EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES = \
 io_lst_SOURCES = $(BuildSources)
 EXTRA_io_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+io_lst_CXXFLAGS = $(AM_CXXFLAGS)
+io_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 io.lst: Makefile $(io_lst_OBJECTS)

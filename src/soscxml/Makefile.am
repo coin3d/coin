@@ -84,6 +84,9 @@ libsoscxml_la_SOURCES = $(BuildSources)
 EXTRA_libsoscxml_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libsoscxml_la_CXXFLAGS = $(AM_CXXFLAGS)
+libsoscxml_la_CFLAGS = $(AM_CFLAGS)
+
 libsoscxml@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libsoscxml@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -91,6 +94,9 @@ EXTRA_libsoscxml@SUFFIX@LINKHACK_la_SOURCES = \
 soscxml_lst_SOURCES = $(BuildSources)
 EXTRA_soscxml_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+soscxml_lst_CXXFLAGS = $(AM_CXXFLAGS)
+soscxml_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 soscxml.lst: Makefile $(soscxml_lst_OBJECTS)

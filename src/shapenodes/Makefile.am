@@ -100,6 +100,9 @@ libshapenodes_la_SOURCES = $(BuildSources)
 EXTRA_libshapenodes_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libshapenodes_la_CXXFLAGS = $(AM_CXXFLAGS)
+libshapenodes_la_CFLAGS = $(AM_CFLAGS)
+
 libshapenodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -107,6 +110,9 @@ EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES = \
 shapenodes_lst_SOURCES = $(BuildSources)
 EXTRA_shapenodes_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+shapenodes_lst_CXXFLAGS = $(AM_CXXFLAGS)
+shapenodes_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 shapenodes.lst: Makefile $(shapenodes_lst_OBJECTS)

@@ -70,6 +70,9 @@ libshadows_la_SOURCES = $(BuildSources)
 EXTRA_libshadows_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libshadows_la_CXXFLAGS = $(AM_CXXFLAGS)
+libshadows_la_CFLAGS = $(AM_CFLAGS)
+
 libshadows@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libshadows@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -77,6 +80,9 @@ EXTRA_libshadows@SUFFIX@LINKHACK_la_SOURCES = \
 shadows_lst_SOURCES = $(BuildSources)
 EXTRA_shadows_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+shadows_lst_CXXFLAGS = $(AM_CXXFLAGS)
+shadows_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 shadows.lst: Makefile $(shadows_lst_OBJECTS)

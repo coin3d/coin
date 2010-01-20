@@ -143,6 +143,9 @@ libbase_la_SOURCES = $(BuildSources)
 EXTRA_libbase_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libbase_la_CXXFLAGS = $(AM_CXXFLAGS)
+libbase_la_CFLAGS = $(AM_CFLAGS)
+
 libbase@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -150,6 +153,9 @@ EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 base_lst_SOURCES = $(BuildSources)
 EXTRA_base_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+base_lst_CXXFLAGS = $(AM_CXXFLAGS)
+base_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 base.lst: Makefile $(base_lst_OBJECTS)

@@ -61,6 +61,9 @@ else
 #wrappers_LDADD = libthreads.la
 endif
 
+#wrappers_CXXFLAGS = $(AM_CXXFLAGS)
+#wrappers_CFLAGS = $(AM_CFLAGS)
+
 ##$ BEGIN TEMPLATE Make-Common(threads, threads)
 # **************************************************************************
 # This template depends on the following variables having been set up before
@@ -117,6 +120,9 @@ libthreads_la_SOURCES = $(BuildSources)
 EXTRA_libthreads_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libthreads_la_CXXFLAGS = $(AM_CXXFLAGS)
+libthreads_la_CFLAGS = $(AM_CFLAGS)
+
 libthreads@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -124,6 +130,9 @@ EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES = \
 threads_lst_SOURCES = $(BuildSources)
 EXTRA_threads_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+threads_lst_CXXFLAGS = $(AM_CXXFLAGS)
+threads_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 threads.lst: Makefile $(threads_lst_OBJECTS)

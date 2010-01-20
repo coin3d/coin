@@ -113,6 +113,9 @@ libmisc_la_SOURCES = $(BuildSources)
 EXTRA_libmisc_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libmisc_la_CXXFLAGS = $(AM_CXXFLAGS)
+libmisc_la_CFLAGS = $(AM_CFLAGS)
+
 libmisc@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -120,6 +123,9 @@ EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES = \
 misc_lst_SOURCES = $(BuildSources)
 EXTRA_misc_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+misc_lst_CXXFLAGS = $(AM_CXXFLAGS)
+misc_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 misc.lst: Makefile $(misc_lst_OBJECTS)

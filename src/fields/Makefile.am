@@ -165,6 +165,9 @@ libfields_la_SOURCES = $(BuildSources)
 EXTRA_libfields_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libfields_la_CXXFLAGS = $(AM_CXXFLAGS)
+libfields_la_CFLAGS = $(AM_CFLAGS)
+
 libfields@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -172,6 +175,9 @@ EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES = \
 fields_lst_SOURCES = $(BuildSources)
 EXTRA_fields_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+fields_lst_CXXFLAGS = $(AM_CXXFLAGS)
+fields_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 fields.lst: Makefile $(fields_lst_OBJECTS)

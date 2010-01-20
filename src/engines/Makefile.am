@@ -68,6 +68,9 @@ EXTRA_DIST = \
 
 #BUILT_SOURCES = $(srcdir)/lex.so_eval.c $(srcdir)/evaluator.tab.c
 
+#BUILT_CXXFLAGS = $(AM_CXXFLAGS)
+#BUILT_CFLAGS = $(AM_CFLAGS)
+
 #$(srcdir)/lex.so_eval.c: $(srcdir)/evaluator.l
 #	flex -o$(srcdir)/lex.so_eval.c -L $(srcdir)/evaluator.l
 
@@ -130,6 +133,9 @@ libengines_la_SOURCES = $(BuildSources)
 EXTRA_libengines_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libengines_la_CXXFLAGS = $(AM_CXXFLAGS)
+libengines_la_CFLAGS = $(AM_CFLAGS)
+
 libengines@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -137,6 +143,9 @@ EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
 engines_lst_SOURCES = $(BuildSources)
 EXTRA_engines_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+engines_lst_CXXFLAGS = $(AM_CXXFLAGS)
+engines_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 engines.lst: Makefile $(engines_lst_OBJECTS)

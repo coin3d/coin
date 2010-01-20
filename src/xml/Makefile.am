@@ -75,6 +75,9 @@ libxml_la_SOURCES = $(BuildSources)
 EXTRA_libxml_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libxml_la_CXXFLAGS = $(AM_CXXFLAGS)
+libxml_la_CFLAGS = $(AM_CFLAGS)
+
 libxml@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libxml@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -82,6 +85,9 @@ EXTRA_libxml@SUFFIX@LINKHACK_la_SOURCES = \
 xml_lst_SOURCES = $(BuildSources)
 EXTRA_xml_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+xml_lst_CXXFLAGS = $(AM_CXXFLAGS)
+xml_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 xml.lst: Makefile $(xml_lst_OBJECTS)

@@ -70,6 +70,9 @@ libupgraders_la_SOURCES = $(BuildSources)
 EXTRA_libupgraders_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libupgraders_la_CXXFLAGS = $(AM_CXXFLAGS)
+libupgraders_la_CFLAGS = $(AM_CFLAGS)
+
 libupgraders@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libupgraders@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -77,6 +80,9 @@ EXTRA_libupgraders@SUFFIX@LINKHACK_la_SOURCES = \
 upgraders_lst_SOURCES = $(BuildSources)
 EXTRA_upgraders_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+upgraders_lst_CXXFLAGS = $(AM_CXXFLAGS)
+upgraders_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 upgraders.lst: Makefile $(upgraders_lst_OBJECTS)
