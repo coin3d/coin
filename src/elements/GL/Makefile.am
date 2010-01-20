@@ -101,6 +101,9 @@ libglelements_la_SOURCES = $(BuildSources)
 EXTRA_libglelements_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libglelements_la_CXXFLAGS = $(AM_CXXFLAGS)
+libglelements_la_CFLAGS = $(AM_CFLAGS)
+
 libglelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -108,6 +111,9 @@ EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES = \
 glelements_lst_SOURCES = $(BuildSources)
 EXTRA_glelements_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+glelements_lst_CXXFLAGS = $(AM_CXXFLAGS)
+glelements_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 glelements.lst: Makefile $(glelements_lst_OBJECTS)

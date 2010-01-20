@@ -82,6 +82,9 @@ libcaches_la_SOURCES = $(BuildSources)
 EXTRA_libcaches_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libcaches_la_CXXFLAGS = $(AM_CXXFLAGS)
+libcaches_la_CFLAGS = $(AM_CFLAGS)
+
 libcaches@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -89,6 +92,9 @@ EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 caches_lst_SOURCES = $(BuildSources)
 EXTRA_caches_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+caches_lst_CXXFLAGS = $(AM_CXXFLAGS)
+caches_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 caches.lst: Makefile $(caches_lst_OBJECTS)

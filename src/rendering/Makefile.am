@@ -90,6 +90,9 @@ librendering_la_SOURCES = $(BuildSources)
 EXTRA_librendering_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+librendering_la_CXXFLAGS = $(AM_CXXFLAGS)
+librendering_la_CFLAGS = $(AM_CFLAGS)
+
 librendering@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -97,6 +100,9 @@ EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES = \
 rendering_lst_SOURCES = $(BuildSources)
 EXTRA_rendering_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+rendering_lst_CXXFLAGS = $(AM_CXXFLAGS)
+rendering_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 rendering.lst: Makefile $(rendering_lst_OBJECTS)

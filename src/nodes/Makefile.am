@@ -172,6 +172,9 @@ libnodes_la_SOURCES = $(BuildSources)
 EXTRA_libnodes_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libnodes_la_CXXFLAGS = $(AM_CXXFLAGS)
+libnodes_la_CFLAGS = $(AM_CFLAGS)
+
 libnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -179,6 +182,9 @@ EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
 nodes_lst_SOURCES = $(BuildSources)
 EXTRA_nodes_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+nodes_lst_CXXFLAGS = $(AM_CXXFLAGS)
+nodes_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 nodes.lst: Makefile $(nodes_lst_OBJECTS)

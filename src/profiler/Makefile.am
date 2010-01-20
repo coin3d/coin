@@ -81,6 +81,9 @@ libprofiler_la_SOURCES = $(BuildSources)
 EXTRA_libprofiler_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libprofiler_la_CXXFLAGS = $(AM_CXXFLAGS)
+libprofiler_la_CFLAGS = $(AM_CFLAGS)
+
 libprofiler@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -88,6 +91,9 @@ EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES = \
 profiler_lst_SOURCES = $(BuildSources)
 EXTRA_profiler_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+profiler_lst_CXXFLAGS = $(AM_CXXFLAGS)
+profiler_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 profiler.lst: Makefile $(profiler_lst_OBJECTS)

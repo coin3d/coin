@@ -92,6 +92,9 @@ libnavigation_la_SOURCES = $(BuildSources)
 EXTRA_libnavigation_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libnavigation_la_CXXFLAGS = $(AM_CXXFLAGS)
+libnavigation_la_CFLAGS = $(AM_CFLAGS)
+
 libnavigation@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -99,6 +102,9 @@ EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES = \
 navigation_lst_SOURCES = $(BuildSources)
 EXTRA_navigation_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+navigation_lst_CXXFLAGS = $(AM_CXXFLAGS)
+navigation_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 navigation.lst: Makefile $(navigation_lst_OBJECTS)

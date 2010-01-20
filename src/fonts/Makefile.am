@@ -94,6 +94,9 @@ libfonts_la_SOURCES = $(BuildSources)
 EXTRA_libfonts_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libfonts_la_CXXFLAGS = $(AM_CXXFLAGS)
+libfonts_la_CFLAGS = $(AM_CFLAGS)
+
 libfonts@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -101,6 +104,9 @@ EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES = \
 fonts_lst_SOURCES = $(BuildSources)
 EXTRA_fonts_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+fonts_lst_CXXFLAGS = $(AM_CXXFLAGS)
+fonts_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 fonts.lst: Makefile $(fonts_lst_OBJECTS)

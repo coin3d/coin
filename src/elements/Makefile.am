@@ -155,6 +155,9 @@ libelements_la_SOURCES = $(BuildSources)
 EXTRA_libelements_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libelements_la_CXXFLAGS = $(AM_CXXFLAGS)
+libelements_la_CFLAGS = $(AM_CFLAGS)
+
 libelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -162,6 +165,9 @@ EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
 elements_lst_SOURCES = $(BuildSources)
 EXTRA_elements_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+elements_lst_CXXFLAGS = $(AM_CXXFLAGS)
+elements_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 elements.lst: Makefile $(elements_lst_OBJECTS)

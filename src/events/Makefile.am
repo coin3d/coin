@@ -71,6 +71,9 @@ libevents_la_SOURCES = $(BuildSources)
 EXTRA_libevents_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libevents_la_CXXFLAGS = $(AM_CXXFLAGS)
+libevents_la_CFLAGS = $(AM_CFLAGS)
+
 libevents@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -78,6 +81,9 @@ EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES = \
 events_lst_SOURCES = $(BuildSources)
 EXTRA_events_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+events_lst_CXXFLAGS = $(AM_CXXFLAGS)
+events_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 events.lst: Makefile $(events_lst_OBJECTS)

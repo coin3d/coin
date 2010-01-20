@@ -76,6 +76,9 @@ libsensors_la_SOURCES = $(BuildSources)
 EXTRA_libsensors_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+libsensors_la_CXXFLAGS = $(AM_CXXFLAGS)
+libsensors_la_CFLAGS = $(AM_CFLAGS)
+
 libsensors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -83,6 +86,9 @@ EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 sensors_lst_SOURCES = $(BuildSources)
 EXTRA_sensors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
+
+sensors_lst_CXXFLAGS = $(AM_CXXFLAGS)
+sensors_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 sensors.lst: Makefile $(sensors_lst_OBJECTS)
