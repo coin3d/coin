@@ -352,7 +352,7 @@ _class_::setValues(const int start, const int numarg, const _valtype_ * newvals)
   else if (start+numarg > this->num) this->num = start+numarg; \
  \
   for (int i=0; i < numarg; i++) \
-    this->values[i+start] = static_cast<_valtype_>(newvals[i]); \
+    this->values[i+start] = static_cast<const _valtype_>(newvals[i]); \
   this->valueChanged(); \
 } \
  \

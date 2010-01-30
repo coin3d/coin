@@ -25009,9 +25009,7 @@ else
 fi
 
 
-## Mac OS X uses some weird "framework" options.
 
-## It's usually libGL.so on UNIX systems and opengl32.lib on MSWindows.
 sim_ac_ogl_glnames="GL opengl32"
 sim_ac_ogl_mesaglnames=MesaGL
 
@@ -25806,8 +25804,6 @@ fi
     * )
 
 sim_ac_save_libs=$LIBS
-## Not directly needed by the wgl*() calls, but to create a
-## context we need functions from this library.
 sim_ac_wgl_libs="-lgdi32"
 LIBS="$LIBS $sim_ac_wgl_libs"
 
@@ -27295,7 +27291,6 @@ esac
 
 
 
-## Microsoft Developer Studio Project files
 COIN_DSP_LIBDIRS=
 COIN_DSP_LIBS=
 COIN_DSP_INCS=
