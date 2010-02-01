@@ -1,1 +1,2 @@
 build/general = http://hg.sim.no/GeneralMSVCGeneration/default
+src/extensions/superglu =  http://hg.sim.no/superglu/default
