@@ -22,8 +22,8 @@
 \**************************************************************************/
 
 /*!
-  \class SbPlane SbPlane.h Inventor/SbLinear.h
-  \brief The SbPlane class represents a plane in 3D space.
+  \class SbDPPlane SbDPPlane.h Inventor/SbLinear.h
+  \brief The SbDPPlane class represents a plane in 3D space.
   \ingroup base
 
   SbDPPlane is used by many other classes in Coin.  It provides a way of
@@ -204,7 +204,7 @@ SbDPPlane::transform(const SbDPMatrix & matrix)
 
   if (this->normal.normalize() == 0.0f) {
 #if COIN_DEBUG
-    SoDebugError::postWarning("SbPlane::transform",
+    SoDebugError::postWarning("SbDPPlane::transform",
                               "The transformation invalidated the plane.");
 #endif // COIN_DEBUG
   }
