@@ -2,6 +2,9 @@
 @MACOSX_TRUE@macosx_boost_add = 
 @MACOSX_FALSE@macosx_boost_add =
 
+@USE_SYSTEM_EXPAT_FALSE@EXPAT_LINKFLAG = 
+@USE_SYSTEM_EXPAT_TRUE@EXPAT_LINKFLAG = -lexpat
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 top_builddir = ..
@@ -15,10 +18,10 @@ EXEEXT = @EXEEXT@
 @MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
 @MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -l Coin
 
-TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite -I$(top_srcdir)/src
-TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@ -DCOIN_INT_TEST_SUITE
-TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS)
-TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@
+TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
+TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
+TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS) $(EXPAT_LINKFLAG)
+TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@ 
 
 EMPTY =
 
@@ -29,16 +32,16 @@ TEST_SUITE_OBJECTS = \
 	StandardTests.$(OBJEXT) \
 	actionsSoCallbackAction.$(OBJEXT) \
 	actionsSoWriteAction.$(OBJEXT) \
-	baserbptree.$(OBJEXT) \
+	baseSbBSPTree.$(OBJEXT) \
 	baseSbBox2d.$(OBJEXT) \
 	baseSbBox2f.$(OBJEXT) \
 	baseSbBox2i32.$(OBJEXT) \
 	baseSbBox2s.$(OBJEXT) \
 	baseSbBox3i32.$(OBJEXT) \
 	baseSbBox3s.$(OBJEXT) \
-	baseSbBSPTree.$(OBJEXT) \
 	baseSbByteBuffer.$(OBJEXT) \
 	baseSbDPMatrix.$(OBJEXT) \
+	baseSbDPPlane.$(OBJEXT) \
 	baseSbDPRotation.$(OBJEXT) \
 	baseSbMatrix.$(OBJEXT) \
 	baseSbRotation.$(OBJEXT) \
@@ -47,7 +50,9 @@ TEST_SUITE_OBJECTS = \
 	baseSbVec3f.$(OBJEXT) \
 	baseSbVec3s.$(OBJEXT) \
 	baseSbVec3us.$(OBJEXT) \
+	baseSbVec4f.$(OBJEXT) \
 	baseSbViewVolume.$(OBJEXT) \
+	baserbptree.$(OBJEXT) \
 	draggersSoTransformerDragger.$(OBJEXT) \
 	fieldsSoMFBitMask.$(OBJEXT) \
 	fieldsSoMFBool.$(OBJEXT) \
@@ -103,8 +108,8 @@ TEST_SUITE_OBJECTS = \
 	fieldsSoSFEngine.$(OBJEXT) \
 	fieldsSoSFEnum.$(OBJEXT) \
 	fieldsSoSFFloat.$(OBJEXT) \
-	fieldsSoSFImage3.$(OBJEXT) \
 	fieldsSoSFImage.$(OBJEXT) \
+	fieldsSoSFImage3.$(OBJEXT) \
 	fieldsSoSFInt32.$(OBJEXT) \
 	fieldsSoSFMatrix.$(OBJEXT) \
 	fieldsSoSFName.$(OBJEXT) \
@@ -146,7 +151,6 @@ TEST_SUITE_OBJECTS = \
 	miscSoDB.$(OBJEXT) \
 	miscSoType.$(OBJEXT) \
 	nodesSoAnnotation.$(OBJEXT) \
-	scxmlSbStringConvert.$(OBJEXT) \
 	scxmlScXMLMinimumEvaluator.$(OBJEXT) \
 	shadersSoFragmentShader.$(OBJEXT) \
 	shadersSoGeometryShader.$(OBJEXT) \
@@ -167,16 +171,16 @@ TEST_SUITE_OBJECTS = \
 TEST_SUITE_BUILT_FILES = \
 	actionsSoCallbackAction.cpp \
 	actionsSoWriteAction.cpp \
-	baserbptree.cpp \
+	baseSbBSPTree.cpp \
 	baseSbBox2d.cpp \
 	baseSbBox2f.cpp \
 	baseSbBox2i32.cpp \
 	baseSbBox2s.cpp \
 	baseSbBox3i32.cpp \
 	baseSbBox3s.cpp \
-	baseSbBSPTree.cpp \
 	baseSbByteBuffer.cpp \
 	baseSbDPMatrix.cpp \
+	baseSbDPPlane.cpp \
 	baseSbDPRotation.cpp \
 	baseSbMatrix.cpp \
 	baseSbRotation.cpp \
@@ -185,7 +189,9 @@ TEST_SUITE_BUILT_FILES = \
 	baseSbVec3f.cpp \
 	baseSbVec3s.cpp \
 	baseSbVec3us.cpp \
+	baseSbVec4f.cpp \
 	baseSbViewVolume.cpp \
+	baserbptree.cpp \
 	draggersSoTransformerDragger.cpp \
 	fieldsSoMFBitMask.cpp \
 	fieldsSoMFBool.cpp \
@@ -241,8 +247,8 @@ TEST_SUITE_BUILT_FILES = \
 	fieldsSoSFEngine.cpp \
 	fieldsSoSFEnum.cpp \
 	fieldsSoSFFloat.cpp \
-	fieldsSoSFImage3.cpp \
 	fieldsSoSFImage.cpp \
+	fieldsSoSFImage3.cpp \
 	fieldsSoSFInt32.cpp \
 	fieldsSoSFMatrix.cpp \
 	fieldsSoSFName.cpp \
@@ -284,7 +290,6 @@ TEST_SUITE_BUILT_FILES = \
 	miscSoDB.cpp \
 	miscSoType.cpp \
 	nodesSoAnnotation.cpp \
-	scxmlSbStringConvert.cpp \
 	scxmlScXMLMinimumEvaluator.cpp \
 	shadersSoFragmentShader.cpp \
 	shadersSoGeometryShader.cpp \
@@ -366,11 +371,11 @@ actionsSoWriteAction.cpp: $(top_srcdir)/src/actions/SoWriteAction.cpp $(srcdir)/
 actionsSoWriteAction.$(OBJEXT): actionsSoWriteAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c actionsSoWriteAction.cpp
 
-baserbptree.cpp: $(top_srcdir)/src/base/rbptree.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/base/rbptree.cpp
+baseSbBSPTree.cpp: $(top_srcdir)/src/base/SbBSPTree.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBSPTree.cpp
 
-baserbptree.$(OBJEXT): baserbptree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baserbptree.cpp
+baseSbBSPTree.$(OBJEXT): baseSbBSPTree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBSPTree.cpp
 
 baseSbBox2d.cpp: $(top_srcdir)/src/base/SbBox2d.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2d.cpp
@@ -408,12 +413,6 @@ baseSbBox3s.cpp: $(top_srcdir)/src/base/SbBox3s.cpp $(srcdir)/makeextract.sh
 baseSbBox3s.$(OBJEXT): baseSbBox3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox3s.cpp
 
-baseSbBSPTree.cpp: $(top_srcdir)/src/base/SbBSPTree.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBSPTree.cpp
-
-baseSbBSPTree.$(OBJEXT): baseSbBSPTree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBSPTree.cpp
-
 baseSbByteBuffer.cpp: $(top_srcdir)/src/base/SbByteBuffer.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbByteBuffer.cpp
 
@@ -425,6 +424,12 @@ baseSbDPMatrix.cpp: $(top_srcdir)/src/base/SbDPMatrix.cpp $(srcdir)/makeextract.
 
 baseSbDPMatrix.$(OBJEXT): baseSbDPMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPMatrix.cpp
+
+baseSbDPPlane.cpp: $(top_srcdir)/src/base/SbDPPlane.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPPlane.cpp
+
+baseSbDPPlane.$(OBJEXT): baseSbDPPlane.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPPlane.cpp
 
 baseSbDPRotation.cpp: $(top_srcdir)/src/base/SbDPRotation.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPRotation.cpp
@@ -474,11 +479,23 @@ baseSbVec3us.cpp: $(top_srcdir)/src/base/SbVec3us.cpp $(srcdir)/makeextract.sh
 baseSbVec3us.$(OBJEXT): baseSbVec3us.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3us.cpp
 
+baseSbVec4f.cpp: $(top_srcdir)/src/base/SbVec4f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec4f.cpp
+
+baseSbVec4f.$(OBJEXT): baseSbVec4f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec4f.cpp
+
 baseSbViewVolume.cpp: $(top_srcdir)/src/base/SbViewVolume.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbViewVolume.cpp
 
 baseSbViewVolume.$(OBJEXT): baseSbViewVolume.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbViewVolume.cpp
+
+baserbptree.cpp: $(top_srcdir)/src/base/rbptree.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/rbptree.cpp
+
+baserbptree.$(OBJEXT): baserbptree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baserbptree.cpp
 
 draggersSoTransformerDragger.cpp: $(top_srcdir)/src/draggers/SoTransformerDragger.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/draggers/SoTransformerDragger.cpp
@@ -810,17 +827,17 @@ fieldsSoSFFloat.cpp: $(top_srcdir)/src/fields/SoSFFloat.cpp $(srcdir)/makeextrac
 fieldsSoSFFloat.$(OBJEXT): fieldsSoSFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFFloat.cpp
 
-fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
-
-fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
-
 fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
 
 fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
+
+fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
+
+fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
 
 fieldsSoSFInt32.cpp: $(top_srcdir)/src/fields/SoSFInt32.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFInt32.cpp
@@ -1067,12 +1084,6 @@ nodesSoAnnotation.cpp: $(top_srcdir)/src/nodes/SoAnnotation.cpp $(srcdir)/makeex
 
 nodesSoAnnotation.$(OBJEXT): nodesSoAnnotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c nodesSoAnnotation.cpp
-
-scxmlSbStringConvert.cpp: $(top_srcdir)/src/scxml/SbStringConvert.cpp $(srcdir)/makeextract.sh
-	$(srcdir)/makeextract.sh $(top_srcdir) src/scxml/SbStringConvert.cpp
-
-scxmlSbStringConvert.$(OBJEXT): scxmlSbStringConvert.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
-	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c scxmlSbStringConvert.cpp
 
 scxmlScXMLMinimumEvaluator.cpp: $(top_srcdir)/src/scxml/ScXMLMinimumEvaluator.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/scxml/ScXMLMinimumEvaluator.cpp
