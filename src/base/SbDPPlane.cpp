@@ -367,3 +367,24 @@ SbDPPlane::print(FILE * fp) const
   (void)fprintf(fp, "  %f", this->getDistanceFromOrigin());
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbDPPlane.h>
+#include <Inventor/SbDPLine.h>
+BOOST_AUTO_TEST_CASE(signCorrect) {
+  SbDPPlane plane1(SbVec3d(0.0, 0.0, 1.0), 3.0);
+  SbDPPlane plane2(SbVec3d(1.0, 0.0, 0.0), 21.0);
+  SbDPLine line;
+  plane1.intersect(plane2, line); 
+
+  SbVec3d intersect = line.getPosition();
+  SbVec3d vec(21, 0, -3);
+
+  BOOST_CHECK_MESSAGE(
+                      intersect==vec,
+                      "Incorrect value for intersection"
+                      );
+  
+  
+}
+#endif //COIN_TEST_SUITE
