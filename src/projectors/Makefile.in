@@ -332,9 +332,6 @@ EXTRA_libprojectors_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libprojectors_la_CXXFLAGS = $(AM_CXXFLAGS)
-libprojectors_la_CFLAGS = $(AM_CFLAGS)
-
 libprojectors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -344,9 +341,6 @@ projectors_lst_SOURCES = $(BuildSources)
 EXTRA_projectors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-projectors_lst_CXXFLAGS = $(AM_CXXFLAGS)
-projectors_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/projectors
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -363,18 +357,15 @@ am__projectors_lst_SOURCES_DIST = SbCylinderPlaneProjector.cpp \
 	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
 	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
 	SbSphereSheetProjector.cpp all-projectors-cpp.cpp
-am__objects_1 = projectors_lst-all-projectors-cpp.$(OBJEXT)
-am__objects_2 = projectors_lst-SbCylinderPlaneProjector.$(OBJEXT) \
-	projectors_lst-SbCylinderProjector.$(OBJEXT) \
-	projectors_lst-SbCylinderSectionProjector.$(OBJEXT) \
-	projectors_lst-SbCylinderSheetProjector.$(OBJEXT) \
-	projectors_lst-SbLineProjector.$(OBJEXT) \
-	projectors_lst-SbPlaneProjector.$(OBJEXT) \
-	projectors_lst-SbProjector.$(OBJEXT) \
-	projectors_lst-SbSpherePlaneProjector.$(OBJEXT) \
-	projectors_lst-SbSphereProjector.$(OBJEXT) \
-	projectors_lst-SbSphereSectionProjector.$(OBJEXT) \
-	projectors_lst-SbSphereSheetProjector.$(OBJEXT)
+am__objects_1 = all-projectors-cpp.$(OBJEXT)
+am__objects_2 = SbCylinderPlaneProjector.$(OBJEXT) \
+	SbCylinderProjector.$(OBJEXT) \
+	SbCylinderSectionProjector.$(OBJEXT) \
+	SbCylinderSheetProjector.$(OBJEXT) SbLineProjector.$(OBJEXT) \
+	SbPlaneProjector.$(OBJEXT) SbProjector.$(OBJEXT) \
+	SbSpherePlaneProjector.$(OBJEXT) SbSphereProjector.$(OBJEXT) \
+	SbSphereSectionProjector.$(OBJEXT) \
+	SbSphereSheetProjector.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_projectors_lst_OBJECTS = $(am__objects_3)
@@ -395,18 +386,12 @@ am__libprojectors_la_SOURCES_DIST = SbCylinderPlaneProjector.cpp \
 	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
 	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
 	SbSphereSheetProjector.cpp all-projectors-cpp.cpp
-am__objects_6 = libprojectors_la-all-projectors-cpp.lo
-am__objects_7 = libprojectors_la-SbCylinderPlaneProjector.lo \
-	libprojectors_la-SbCylinderProjector.lo \
-	libprojectors_la-SbCylinderSectionProjector.lo \
-	libprojectors_la-SbCylinderSheetProjector.lo \
-	libprojectors_la-SbLineProjector.lo \
-	libprojectors_la-SbPlaneProjector.lo \
-	libprojectors_la-SbProjector.lo \
-	libprojectors_la-SbSpherePlaneProjector.lo \
-	libprojectors_la-SbSphereProjector.lo \
-	libprojectors_la-SbSphereSectionProjector.lo \
-	libprojectors_la-SbSphereSheetProjector.lo
+am__objects_6 = all-projectors-cpp.lo
+am__objects_7 = SbCylinderPlaneProjector.lo SbCylinderProjector.lo \
+	SbCylinderSectionProjector.lo SbCylinderSheetProjector.lo \
+	SbLineProjector.lo SbPlaneProjector.lo SbProjector.lo \
+	SbSpherePlaneProjector.lo SbSphereProjector.lo \
+	SbSphereSectionProjector.lo SbSphereSheetProjector.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libprojectors_la_OBJECTS = $(am__objects_8)
@@ -426,15 +411,7 @@ am__libprojectors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SbSpherePlaneProjector.cpp SbSphereProjector.cpp \
 	SbSphereSectionProjector.cpp SbSphereSheetProjector.cpp \
 	all-projectors-cpp.cpp
-am__objects_10 = all-projectors-cpp.lo
-am__objects_11 = SbCylinderPlaneProjector.lo SbCylinderProjector.lo \
-	SbCylinderSectionProjector.lo SbCylinderSheetProjector.lo \
-	SbLineProjector.lo SbPlaneProjector.lo SbProjector.lo \
-	SbSpherePlaneProjector.lo SbSphereProjector.lo \
-	SbSphereSectionProjector.lo SbSphereSheetProjector.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libprojectors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libprojectors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-projectors-cpp.cpp SbCylinderPlaneProjector.cpp \
 	SbCylinderProjector.cpp SbCylinderSectionProjector.cpp \
@@ -447,41 +424,29 @@ libprojectors@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbCylinderPlaneProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbCylinderPlaneProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbCylinderProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbCylinderProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbCylinderSectionProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbCylinderSectionProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbCylinderSheetProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbCylinderSheetProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbLineProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbLineProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbPlaneProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbPlaneProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbSpherePlaneProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbSpherePlaneProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbSphereProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbSphereProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbSphereSectionProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbSphereSectionProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbSphereSheetProjector.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbSphereSheetProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbCylinderProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbLineProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbPlaneProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbSphereProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprojectors_la-all-projectors-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbCylinderProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbLineProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbPlaneProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbSphereProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/projectors_lst-all-projectors-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -562,41 +527,29 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderPlaneProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderPlaneProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderSectionProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderSectionProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderSheetProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbCylinderSheetProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbLineProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbLineProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPlaneProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPlaneProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSpherePlaneProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSpherePlaneProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSectionProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSectionProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSheetProjector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSheetProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbCylinderProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbLineProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbPlaneProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbSphereProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprojectors_la-all-projectors-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbCylinderProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbLineProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbPlaneProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbSphereProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/projectors_lst-all-projectors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -633,798 +586,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-projectors_lst-all-projectors-cpp.o: all-projectors-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-all-projectors-cpp.o -MD -MP -MF "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-all-projectors-cpp.o `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo" "$(DEPDIR)/projectors_lst-all-projectors-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-projectors-cpp.cpp' object='projectors_lst-all-projectors-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-all-projectors-cpp.Po' tmpdepfile='$(DEPDIR)/projectors_lst-all-projectors-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-all-projectors-cpp.o `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp
-
-projectors_lst-all-projectors-cpp.obj: all-projectors-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-all-projectors-cpp.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-all-projectors-cpp.obj `if test -f 'all-projectors-cpp.cpp'; then $(CYGPATH_W) 'all-projectors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-projectors-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo" "$(DEPDIR)/projectors_lst-all-projectors-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-projectors-cpp.cpp' object='projectors_lst-all-projectors-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-all-projectors-cpp.Po' tmpdepfile='$(DEPDIR)/projectors_lst-all-projectors-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-all-projectors-cpp.obj `if test -f 'all-projectors-cpp.cpp'; then $(CYGPATH_W) 'all-projectors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-projectors-cpp.cpp'; fi`
-
-projectors_lst-all-projectors-cpp.lo: all-projectors-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-all-projectors-cpp.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-all-projectors-cpp.lo `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo" "$(DEPDIR)/projectors_lst-all-projectors-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-all-projectors-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-projectors-cpp.cpp' object='projectors_lst-all-projectors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-all-projectors-cpp.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-all-projectors-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-all-projectors-cpp.lo `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp
-
-projectors_lst-SbCylinderPlaneProjector.o: SbCylinderPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderPlaneProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderPlaneProjector.o `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderPlaneProjector.cpp' object='projectors_lst-SbCylinderPlaneProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderPlaneProjector.o `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp
-
-projectors_lst-SbCylinderPlaneProjector.obj: SbCylinderPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderPlaneProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderPlaneProjector.obj `if test -f 'SbCylinderPlaneProjector.cpp'; then $(CYGPATH_W) 'SbCylinderPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderPlaneProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderPlaneProjector.cpp' object='projectors_lst-SbCylinderPlaneProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderPlaneProjector.obj `if test -f 'SbCylinderPlaneProjector.cpp'; then $(CYGPATH_W) 'SbCylinderPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderPlaneProjector.cpp'; fi`
-
-projectors_lst-SbCylinderPlaneProjector.lo: SbCylinderPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderPlaneProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderPlaneProjector.lo `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderPlaneProjector.cpp' object='projectors_lst-SbCylinderPlaneProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderPlaneProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderPlaneProjector.lo `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp
-
-projectors_lst-SbCylinderProjector.o: SbCylinderProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderProjector.o `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderProjector.cpp' object='projectors_lst-SbCylinderProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderProjector.o `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp
-
-projectors_lst-SbCylinderProjector.obj: SbCylinderProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderProjector.obj `if test -f 'SbCylinderProjector.cpp'; then $(CYGPATH_W) 'SbCylinderProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderProjector.cpp' object='projectors_lst-SbCylinderProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderProjector.obj `if test -f 'SbCylinderProjector.cpp'; then $(CYGPATH_W) 'SbCylinderProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderProjector.cpp'; fi`
-
-projectors_lst-SbCylinderProjector.lo: SbCylinderProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderProjector.lo `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderProjector.cpp' object='projectors_lst-SbCylinderProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderProjector.lo `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp
-
-projectors_lst-SbCylinderSectionProjector.o: SbCylinderSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderSectionProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderSectionProjector.o `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSectionProjector.cpp' object='projectors_lst-SbCylinderSectionProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderSectionProjector.o `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp
-
-projectors_lst-SbCylinderSectionProjector.obj: SbCylinderSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderSectionProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderSectionProjector.obj `if test -f 'SbCylinderSectionProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSectionProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSectionProjector.cpp' object='projectors_lst-SbCylinderSectionProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderSectionProjector.obj `if test -f 'SbCylinderSectionProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSectionProjector.cpp'; fi`
-
-projectors_lst-SbCylinderSectionProjector.lo: SbCylinderSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderSectionProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderSectionProjector.lo `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSectionProjector.cpp' object='projectors_lst-SbCylinderSectionProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderSectionProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderSectionProjector.lo `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp
-
-projectors_lst-SbCylinderSheetProjector.o: SbCylinderSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderSheetProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderSheetProjector.o `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSheetProjector.cpp' object='projectors_lst-SbCylinderSheetProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderSheetProjector.o `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp
-
-projectors_lst-SbCylinderSheetProjector.obj: SbCylinderSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderSheetProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderSheetProjector.obj `if test -f 'SbCylinderSheetProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSheetProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSheetProjector.cpp' object='projectors_lst-SbCylinderSheetProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderSheetProjector.obj `if test -f 'SbCylinderSheetProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSheetProjector.cpp'; fi`
-
-projectors_lst-SbCylinderSheetProjector.lo: SbCylinderSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbCylinderSheetProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbCylinderSheetProjector.lo `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo" "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSheetProjector.cpp' object='projectors_lst-SbCylinderSheetProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbCylinderSheetProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbCylinderSheetProjector.lo `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp
-
-projectors_lst-SbLineProjector.o: SbLineProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbLineProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbLineProjector.o `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo" "$(DEPDIR)/projectors_lst-SbLineProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbLineProjector.cpp' object='projectors_lst-SbLineProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbLineProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbLineProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbLineProjector.o `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp
-
-projectors_lst-SbLineProjector.obj: SbLineProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbLineProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbLineProjector.obj `if test -f 'SbLineProjector.cpp'; then $(CYGPATH_W) 'SbLineProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbLineProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo" "$(DEPDIR)/projectors_lst-SbLineProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbLineProjector.cpp' object='projectors_lst-SbLineProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbLineProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbLineProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbLineProjector.obj `if test -f 'SbLineProjector.cpp'; then $(CYGPATH_W) 'SbLineProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbLineProjector.cpp'; fi`
-
-projectors_lst-SbLineProjector.lo: SbLineProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbLineProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbLineProjector.lo `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo" "$(DEPDIR)/projectors_lst-SbLineProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbLineProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbLineProjector.cpp' object='projectors_lst-SbLineProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbLineProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbLineProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbLineProjector.lo `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp
-
-projectors_lst-SbPlaneProjector.o: SbPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbPlaneProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbPlaneProjector.o `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPlaneProjector.cpp' object='projectors_lst-SbPlaneProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbPlaneProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbPlaneProjector.o `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp
-
-projectors_lst-SbPlaneProjector.obj: SbPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbPlaneProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbPlaneProjector.obj `if test -f 'SbPlaneProjector.cpp'; then $(CYGPATH_W) 'SbPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPlaneProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPlaneProjector.cpp' object='projectors_lst-SbPlaneProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbPlaneProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbPlaneProjector.obj `if test -f 'SbPlaneProjector.cpp'; then $(CYGPATH_W) 'SbPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPlaneProjector.cpp'; fi`
-
-projectors_lst-SbPlaneProjector.lo: SbPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbPlaneProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbPlaneProjector.lo `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbPlaneProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPlaneProjector.cpp' object='projectors_lst-SbPlaneProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbPlaneProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbPlaneProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbPlaneProjector.lo `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp
-
-projectors_lst-SbProjector.o: SbProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbProjector.o `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbProjector.Tpo" "$(DEPDIR)/projectors_lst-SbProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProjector.cpp' object='projectors_lst-SbProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbProjector.o `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp
-
-projectors_lst-SbProjector.obj: SbProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbProjector.obj `if test -f 'SbProjector.cpp'; then $(CYGPATH_W) 'SbProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbProjector.Tpo" "$(DEPDIR)/projectors_lst-SbProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProjector.cpp' object='projectors_lst-SbProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbProjector.obj `if test -f 'SbProjector.cpp'; then $(CYGPATH_W) 'SbProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProjector.cpp'; fi`
-
-projectors_lst-SbProjector.lo: SbProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbProjector.lo `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbProjector.Tpo" "$(DEPDIR)/projectors_lst-SbProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProjector.cpp' object='projectors_lst-SbProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbProjector.lo `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp
-
-projectors_lst-SbSpherePlaneProjector.o: SbSpherePlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSpherePlaneProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSpherePlaneProjector.o `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSpherePlaneProjector.cpp' object='projectors_lst-SbSpherePlaneProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSpherePlaneProjector.o `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp
-
-projectors_lst-SbSpherePlaneProjector.obj: SbSpherePlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSpherePlaneProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSpherePlaneProjector.obj `if test -f 'SbSpherePlaneProjector.cpp'; then $(CYGPATH_W) 'SbSpherePlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSpherePlaneProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSpherePlaneProjector.cpp' object='projectors_lst-SbSpherePlaneProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSpherePlaneProjector.obj `if test -f 'SbSpherePlaneProjector.cpp'; then $(CYGPATH_W) 'SbSpherePlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSpherePlaneProjector.cpp'; fi`
-
-projectors_lst-SbSpherePlaneProjector.lo: SbSpherePlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSpherePlaneProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSpherePlaneProjector.lo `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSpherePlaneProjector.cpp' object='projectors_lst-SbSpherePlaneProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbSpherePlaneProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSpherePlaneProjector.lo `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp
-
-projectors_lst-SbSphereProjector.o: SbSphereProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereProjector.o `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereProjector.cpp' object='projectors_lst-SbSphereProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereProjector.o `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp
-
-projectors_lst-SbSphereProjector.obj: SbSphereProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereProjector.obj `if test -f 'SbSphereProjector.cpp'; then $(CYGPATH_W) 'SbSphereProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereProjector.cpp' object='projectors_lst-SbSphereProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereProjector.obj `if test -f 'SbSphereProjector.cpp'; then $(CYGPATH_W) 'SbSphereProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereProjector.cpp'; fi`
-
-projectors_lst-SbSphereProjector.lo: SbSphereProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereProjector.lo `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereProjector.cpp' object='projectors_lst-SbSphereProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereProjector.lo `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp
-
-projectors_lst-SbSphereSectionProjector.o: SbSphereSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereSectionProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereSectionProjector.o `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSectionProjector.cpp' object='projectors_lst-SbSphereSectionProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereSectionProjector.o `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp
-
-projectors_lst-SbSphereSectionProjector.obj: SbSphereSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereSectionProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereSectionProjector.obj `if test -f 'SbSphereSectionProjector.cpp'; then $(CYGPATH_W) 'SbSphereSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSectionProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSectionProjector.cpp' object='projectors_lst-SbSphereSectionProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereSectionProjector.obj `if test -f 'SbSphereSectionProjector.cpp'; then $(CYGPATH_W) 'SbSphereSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSectionProjector.cpp'; fi`
-
-projectors_lst-SbSphereSectionProjector.lo: SbSphereSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereSectionProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereSectionProjector.lo `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSectionProjector.cpp' object='projectors_lst-SbSphereSectionProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereSectionProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereSectionProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereSectionProjector.lo `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp
-
-projectors_lst-SbSphereSheetProjector.o: SbSphereSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereSheetProjector.o -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereSheetProjector.o `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSheetProjector.cpp' object='projectors_lst-SbSphereSheetProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereSheetProjector.o `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp
-
-projectors_lst-SbSphereSheetProjector.obj: SbSphereSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereSheetProjector.obj -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereSheetProjector.obj `if test -f 'SbSphereSheetProjector.cpp'; then $(CYGPATH_W) 'SbSphereSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSheetProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSheetProjector.cpp' object='projectors_lst-SbSphereSheetProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Po' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereSheetProjector.obj `if test -f 'SbSphereSheetProjector.cpp'; then $(CYGPATH_W) 'SbSphereSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSheetProjector.cpp'; fi`
-
-projectors_lst-SbSphereSheetProjector.lo: SbSphereSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -MT projectors_lst-SbSphereSheetProjector.lo -MD -MP -MF "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o projectors_lst-SbSphereSheetProjector.lo `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo" "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSheetProjector.cpp' object='projectors_lst-SbSphereSheetProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/projectors_lst-SbSphereSheetProjector.Plo' tmpdepfile='$(DEPDIR)/projectors_lst-SbSphereSheetProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(projectors_lst_CXXFLAGS) $(CXXFLAGS) -c -o projectors_lst-SbSphereSheetProjector.lo `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp
-
-libprojectors_la-all-projectors-cpp.o: all-projectors-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-all-projectors-cpp.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-all-projectors-cpp.o `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo" "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-projectors-cpp.cpp' object='libprojectors_la-all-projectors-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-all-projectors-cpp.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-all-projectors-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-all-projectors-cpp.o `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp
-
-libprojectors_la-all-projectors-cpp.obj: all-projectors-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-all-projectors-cpp.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-all-projectors-cpp.obj `if test -f 'all-projectors-cpp.cpp'; then $(CYGPATH_W) 'all-projectors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-projectors-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo" "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-projectors-cpp.cpp' object='libprojectors_la-all-projectors-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-all-projectors-cpp.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-all-projectors-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-all-projectors-cpp.obj `if test -f 'all-projectors-cpp.cpp'; then $(CYGPATH_W) 'all-projectors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-projectors-cpp.cpp'; fi`
-
-libprojectors_la-all-projectors-cpp.lo: all-projectors-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-all-projectors-cpp.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-all-projectors-cpp.lo `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo" "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-all-projectors-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-projectors-cpp.cpp' object='libprojectors_la-all-projectors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-all-projectors-cpp.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-all-projectors-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-all-projectors-cpp.lo `test -f 'all-projectors-cpp.cpp' || echo '$(srcdir)/'`all-projectors-cpp.cpp
-
-libprojectors_la-SbCylinderPlaneProjector.o: SbCylinderPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderPlaneProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderPlaneProjector.o `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderPlaneProjector.cpp' object='libprojectors_la-SbCylinderPlaneProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderPlaneProjector.o `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp
-
-libprojectors_la-SbCylinderPlaneProjector.obj: SbCylinderPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderPlaneProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderPlaneProjector.obj `if test -f 'SbCylinderPlaneProjector.cpp'; then $(CYGPATH_W) 'SbCylinderPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderPlaneProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderPlaneProjector.cpp' object='libprojectors_la-SbCylinderPlaneProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderPlaneProjector.obj `if test -f 'SbCylinderPlaneProjector.cpp'; then $(CYGPATH_W) 'SbCylinderPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderPlaneProjector.cpp'; fi`
-
-libprojectors_la-SbCylinderPlaneProjector.lo: SbCylinderPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderPlaneProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderPlaneProjector.lo `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderPlaneProjector.cpp' object='libprojectors_la-SbCylinderPlaneProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderPlaneProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderPlaneProjector.lo `test -f 'SbCylinderPlaneProjector.cpp' || echo '$(srcdir)/'`SbCylinderPlaneProjector.cpp
-
-libprojectors_la-SbCylinderProjector.o: SbCylinderProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderProjector.o `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderProjector.cpp' object='libprojectors_la-SbCylinderProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderProjector.o `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp
-
-libprojectors_la-SbCylinderProjector.obj: SbCylinderProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderProjector.obj `if test -f 'SbCylinderProjector.cpp'; then $(CYGPATH_W) 'SbCylinderProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderProjector.cpp' object='libprojectors_la-SbCylinderProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderProjector.obj `if test -f 'SbCylinderProjector.cpp'; then $(CYGPATH_W) 'SbCylinderProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderProjector.cpp'; fi`
-
-libprojectors_la-SbCylinderProjector.lo: SbCylinderProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderProjector.lo `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderProjector.cpp' object='libprojectors_la-SbCylinderProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderProjector.lo `test -f 'SbCylinderProjector.cpp' || echo '$(srcdir)/'`SbCylinderProjector.cpp
-
-libprojectors_la-SbCylinderSectionProjector.o: SbCylinderSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderSectionProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderSectionProjector.o `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSectionProjector.cpp' object='libprojectors_la-SbCylinderSectionProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderSectionProjector.o `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp
-
-libprojectors_la-SbCylinderSectionProjector.obj: SbCylinderSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderSectionProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderSectionProjector.obj `if test -f 'SbCylinderSectionProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSectionProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSectionProjector.cpp' object='libprojectors_la-SbCylinderSectionProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderSectionProjector.obj `if test -f 'SbCylinderSectionProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSectionProjector.cpp'; fi`
-
-libprojectors_la-SbCylinderSectionProjector.lo: SbCylinderSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderSectionProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderSectionProjector.lo `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSectionProjector.cpp' object='libprojectors_la-SbCylinderSectionProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderSectionProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderSectionProjector.lo `test -f 'SbCylinderSectionProjector.cpp' || echo '$(srcdir)/'`SbCylinderSectionProjector.cpp
-
-libprojectors_la-SbCylinderSheetProjector.o: SbCylinderSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderSheetProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderSheetProjector.o `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSheetProjector.cpp' object='libprojectors_la-SbCylinderSheetProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderSheetProjector.o `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp
-
-libprojectors_la-SbCylinderSheetProjector.obj: SbCylinderSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderSheetProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderSheetProjector.obj `if test -f 'SbCylinderSheetProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSheetProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSheetProjector.cpp' object='libprojectors_la-SbCylinderSheetProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderSheetProjector.obj `if test -f 'SbCylinderSheetProjector.cpp'; then $(CYGPATH_W) 'SbCylinderSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbCylinderSheetProjector.cpp'; fi`
-
-libprojectors_la-SbCylinderSheetProjector.lo: SbCylinderSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbCylinderSheetProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbCylinderSheetProjector.lo `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbCylinderSheetProjector.cpp' object='libprojectors_la-SbCylinderSheetProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbCylinderSheetProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbCylinderSheetProjector.lo `test -f 'SbCylinderSheetProjector.cpp' || echo '$(srcdir)/'`SbCylinderSheetProjector.cpp
-
-libprojectors_la-SbLineProjector.o: SbLineProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbLineProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbLineProjector.o `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbLineProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbLineProjector.cpp' object='libprojectors_la-SbLineProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbLineProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbLineProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbLineProjector.o `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp
-
-libprojectors_la-SbLineProjector.obj: SbLineProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbLineProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbLineProjector.obj `if test -f 'SbLineProjector.cpp'; then $(CYGPATH_W) 'SbLineProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbLineProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbLineProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbLineProjector.cpp' object='libprojectors_la-SbLineProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbLineProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbLineProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbLineProjector.obj `if test -f 'SbLineProjector.cpp'; then $(CYGPATH_W) 'SbLineProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbLineProjector.cpp'; fi`
-
-libprojectors_la-SbLineProjector.lo: SbLineProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbLineProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbLineProjector.lo `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbLineProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbLineProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbLineProjector.cpp' object='libprojectors_la-SbLineProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbLineProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbLineProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbLineProjector.lo `test -f 'SbLineProjector.cpp' || echo '$(srcdir)/'`SbLineProjector.cpp
-
-libprojectors_la-SbPlaneProjector.o: SbPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbPlaneProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbPlaneProjector.o `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPlaneProjector.cpp' object='libprojectors_la-SbPlaneProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbPlaneProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbPlaneProjector.o `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp
-
-libprojectors_la-SbPlaneProjector.obj: SbPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbPlaneProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbPlaneProjector.obj `if test -f 'SbPlaneProjector.cpp'; then $(CYGPATH_W) 'SbPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPlaneProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPlaneProjector.cpp' object='libprojectors_la-SbPlaneProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbPlaneProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbPlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbPlaneProjector.obj `if test -f 'SbPlaneProjector.cpp'; then $(CYGPATH_W) 'SbPlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPlaneProjector.cpp'; fi`
-
-libprojectors_la-SbPlaneProjector.lo: SbPlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbPlaneProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbPlaneProjector.lo `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbPlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPlaneProjector.cpp' object='libprojectors_la-SbPlaneProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbPlaneProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbPlaneProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbPlaneProjector.lo `test -f 'SbPlaneProjector.cpp' || echo '$(srcdir)/'`SbPlaneProjector.cpp
-
-libprojectors_la-SbProjector.o: SbProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbProjector.o `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProjector.cpp' object='libprojectors_la-SbProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbProjector.o `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp
-
-libprojectors_la-SbProjector.obj: SbProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbProjector.obj `if test -f 'SbProjector.cpp'; then $(CYGPATH_W) 'SbProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProjector.cpp' object='libprojectors_la-SbProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbProjector.obj `if test -f 'SbProjector.cpp'; then $(CYGPATH_W) 'SbProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProjector.cpp'; fi`
-
-libprojectors_la-SbProjector.lo: SbProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbProjector.lo `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProjector.cpp' object='libprojectors_la-SbProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbProjector.lo `test -f 'SbProjector.cpp' || echo '$(srcdir)/'`SbProjector.cpp
-
-libprojectors_la-SbSpherePlaneProjector.o: SbSpherePlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSpherePlaneProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSpherePlaneProjector.o `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSpherePlaneProjector.cpp' object='libprojectors_la-SbSpherePlaneProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSpherePlaneProjector.o `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp
-
-libprojectors_la-SbSpherePlaneProjector.obj: SbSpherePlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSpherePlaneProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSpherePlaneProjector.obj `if test -f 'SbSpherePlaneProjector.cpp'; then $(CYGPATH_W) 'SbSpherePlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSpherePlaneProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSpherePlaneProjector.cpp' object='libprojectors_la-SbSpherePlaneProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSpherePlaneProjector.obj `if test -f 'SbSpherePlaneProjector.cpp'; then $(CYGPATH_W) 'SbSpherePlaneProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSpherePlaneProjector.cpp'; fi`
-
-libprojectors_la-SbSpherePlaneProjector.lo: SbSpherePlaneProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSpherePlaneProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSpherePlaneProjector.lo `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSpherePlaneProjector.cpp' object='libprojectors_la-SbSpherePlaneProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSpherePlaneProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSpherePlaneProjector.lo `test -f 'SbSpherePlaneProjector.cpp' || echo '$(srcdir)/'`SbSpherePlaneProjector.cpp
-
-libprojectors_la-SbSphereProjector.o: SbSphereProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereProjector.o `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereProjector.cpp' object='libprojectors_la-SbSphereProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereProjector.o `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp
-
-libprojectors_la-SbSphereProjector.obj: SbSphereProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereProjector.obj `if test -f 'SbSphereProjector.cpp'; then $(CYGPATH_W) 'SbSphereProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereProjector.cpp' object='libprojectors_la-SbSphereProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereProjector.obj `if test -f 'SbSphereProjector.cpp'; then $(CYGPATH_W) 'SbSphereProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereProjector.cpp'; fi`
-
-libprojectors_la-SbSphereProjector.lo: SbSphereProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereProjector.lo `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereProjector.cpp' object='libprojectors_la-SbSphereProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereProjector.lo `test -f 'SbSphereProjector.cpp' || echo '$(srcdir)/'`SbSphereProjector.cpp
-
-libprojectors_la-SbSphereSectionProjector.o: SbSphereSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereSectionProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereSectionProjector.o `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSectionProjector.cpp' object='libprojectors_la-SbSphereSectionProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereSectionProjector.o `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp
-
-libprojectors_la-SbSphereSectionProjector.obj: SbSphereSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereSectionProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereSectionProjector.obj `if test -f 'SbSphereSectionProjector.cpp'; then $(CYGPATH_W) 'SbSphereSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSectionProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSectionProjector.cpp' object='libprojectors_la-SbSphereSectionProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereSectionProjector.obj `if test -f 'SbSphereSectionProjector.cpp'; then $(CYGPATH_W) 'SbSphereSectionProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSectionProjector.cpp'; fi`
-
-libprojectors_la-SbSphereSectionProjector.lo: SbSphereSectionProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereSectionProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereSectionProjector.lo `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSectionProjector.cpp' object='libprojectors_la-SbSphereSectionProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereSectionProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereSectionProjector.lo `test -f 'SbSphereSectionProjector.cpp' || echo '$(srcdir)/'`SbSphereSectionProjector.cpp
-
-libprojectors_la-SbSphereSheetProjector.o: SbSphereSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereSheetProjector.o -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereSheetProjector.o `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSheetProjector.cpp' object='libprojectors_la-SbSphereSheetProjector.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereSheetProjector.o `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp
-
-libprojectors_la-SbSphereSheetProjector.obj: SbSphereSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereSheetProjector.obj -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereSheetProjector.obj `if test -f 'SbSphereSheetProjector.cpp'; then $(CYGPATH_W) 'SbSphereSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSheetProjector.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSheetProjector.cpp' object='libprojectors_la-SbSphereSheetProjector.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Po' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereSheetProjector.obj `if test -f 'SbSphereSheetProjector.cpp'; then $(CYGPATH_W) 'SbSphereSheetProjector.cpp'; else $(CYGPATH_W) '$(srcdir)/SbSphereSheetProjector.cpp'; fi`
-
-libprojectors_la-SbSphereSheetProjector.lo: SbSphereSheetProjector.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -MT libprojectors_la-SbSphereSheetProjector.lo -MD -MP -MF "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprojectors_la-SbSphereSheetProjector.lo `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo" "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbSphereSheetProjector.cpp' object='libprojectors_la-SbSphereSheetProjector.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.Plo' tmpdepfile='$(DEPDIR)/libprojectors_la-SbSphereSheetProjector.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprojectors_la_CXXFLAGS) $(CXXFLAGS) -c -o libprojectors_la-SbSphereSheetProjector.lo `test -f 'SbSphereSheetProjector.cpp' || echo '$(srcdir)/'`SbSphereSheetProjector.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

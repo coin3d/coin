@@ -326,9 +326,6 @@ EXTRA_libbundles_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libbundles_la_CXXFLAGS = $(AM_CXXFLAGS)
-libbundles_la_CFLAGS = $(AM_CFLAGS)
-
 libbundles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -338,9 +335,6 @@ bundles_lst_SOURCES = $(BuildSources)
 EXTRA_bundles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-bundles_lst_CXXFLAGS = $(AM_CXXFLAGS)
-bundles_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/bundles
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -354,12 +348,10 @@ bundles_lst_LIBADD =
 am__bundles_lst_SOURCES_DIST = SoBundle.cpp SoMaterialBundle.cpp \
 	SoNormalBundle.cpp SoVertexAttributeBundle.cpp \
 	SoTextureCoordinateBundle.cpp all-bundles-cpp.cpp
-am__objects_1 = bundles_lst-all-bundles-cpp.$(OBJEXT)
-am__objects_2 = bundles_lst-SoBundle.$(OBJEXT) \
-	bundles_lst-SoMaterialBundle.$(OBJEXT) \
-	bundles_lst-SoNormalBundle.$(OBJEXT) \
-	bundles_lst-SoVertexAttributeBundle.$(OBJEXT) \
-	bundles_lst-SoTextureCoordinateBundle.$(OBJEXT)
+am__objects_1 = all-bundles-cpp.$(OBJEXT)
+am__objects_2 = SoBundle.$(OBJEXT) SoMaterialBundle.$(OBJEXT) \
+	SoNormalBundle.$(OBJEXT) SoVertexAttributeBundle.$(OBJEXT) \
+	SoTextureCoordinateBundle.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_bundles_lst_OBJECTS = $(am__objects_3)
@@ -374,12 +366,9 @@ libbundles_la_LIBADD =
 am__libbundles_la_SOURCES_DIST = SoBundle.cpp SoMaterialBundle.cpp \
 	SoNormalBundle.cpp SoVertexAttributeBundle.cpp \
 	SoTextureCoordinateBundle.cpp all-bundles-cpp.cpp
-am__objects_6 = libbundles_la-all-bundles-cpp.lo
-am__objects_7 = libbundles_la-SoBundle.lo \
-	libbundles_la-SoMaterialBundle.lo \
-	libbundles_la-SoNormalBundle.lo \
-	libbundles_la-SoVertexAttributeBundle.lo \
-	libbundles_la-SoTextureCoordinateBundle.lo
+am__objects_6 = all-bundles-cpp.lo
+am__objects_7 = SoBundle.lo SoMaterialBundle.lo SoNormalBundle.lo \
+	SoVertexAttributeBundle.lo SoTextureCoordinateBundle.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libbundles_la_OBJECTS = $(am__objects_8)
@@ -393,12 +382,7 @@ am__libbundles@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBundle.cpp \
 	SoMaterialBundle.cpp SoNormalBundle.cpp \
 	SoVertexAttributeBundle.cpp SoTextureCoordinateBundle.cpp \
 	all-bundles-cpp.cpp
-am__objects_10 = all-bundles-cpp.lo
-am__objects_11 = SoBundle.lo SoMaterialBundle.lo SoNormalBundle.lo \
-	SoVertexAttributeBundle.lo SoTextureCoordinateBundle.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libbundles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libbundles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-bundles-cpp.cpp SoBundle.cpp SoMaterialBundle.cpp \
 	SoNormalBundle.cpp SoVertexAttributeBundle.cpp \
@@ -407,24 +391,17 @@ libbundles@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libbundles@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoBundle.Plo \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoBundle.Plo ./$(DEPDIR)/SoBundle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMaterialBundle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMaterialBundle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalBundle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNormalBundle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBundle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBundle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeBundle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexAttributeBundle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-bundles-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/bundles_lst-SoBundle.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/bundles_lst-SoMaterialBundle.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/bundles_lst-SoNormalBundle.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/bundles_lst-all-bundles-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/libbundles_la-SoBundle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libbundles_la-SoMaterialBundle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libbundles_la-SoNormalBundle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libbundles_la-all-bundles-cpp.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/all-bundles-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -505,23 +482,17 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBundle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMaterialBundle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMaterialBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalBundle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBundle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeBundle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexAttributeBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-bundles-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bundles_lst-SoBundle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bundles_lst-SoMaterialBundle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bundles_lst-SoNormalBundle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bundles_lst-all-bundles-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbundles_la-SoBundle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbundles_la-SoMaterialBundle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbundles_la-SoNormalBundle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbundles_la-all-bundles-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-bundles-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -558,402 +529,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-bundles_lst-all-bundles-cpp.o: all-bundles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-all-bundles-cpp.o -MD -MP -MF "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-all-bundles-cpp.o `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo" "$(DEPDIR)/bundles_lst-all-bundles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-bundles-cpp.cpp' object='bundles_lst-all-bundles-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-all-bundles-cpp.Po' tmpdepfile='$(DEPDIR)/bundles_lst-all-bundles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-all-bundles-cpp.o `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp
-
-bundles_lst-all-bundles-cpp.obj: all-bundles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-all-bundles-cpp.obj -MD -MP -MF "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-all-bundles-cpp.obj `if test -f 'all-bundles-cpp.cpp'; then $(CYGPATH_W) 'all-bundles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-bundles-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo" "$(DEPDIR)/bundles_lst-all-bundles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-bundles-cpp.cpp' object='bundles_lst-all-bundles-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-all-bundles-cpp.Po' tmpdepfile='$(DEPDIR)/bundles_lst-all-bundles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-all-bundles-cpp.obj `if test -f 'all-bundles-cpp.cpp'; then $(CYGPATH_W) 'all-bundles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-bundles-cpp.cpp'; fi`
-
-bundles_lst-all-bundles-cpp.lo: all-bundles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-all-bundles-cpp.lo -MD -MP -MF "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-all-bundles-cpp.lo `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo" "$(DEPDIR)/bundles_lst-all-bundles-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-all-bundles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-bundles-cpp.cpp' object='bundles_lst-all-bundles-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-all-bundles-cpp.Plo' tmpdepfile='$(DEPDIR)/bundles_lst-all-bundles-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-all-bundles-cpp.lo `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp
-
-bundles_lst-SoBundle.o: SoBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoBundle.o -MD -MP -MF "$(DEPDIR)/bundles_lst-SoBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoBundle.o `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoBundle.Tpo" "$(DEPDIR)/bundles_lst-SoBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBundle.cpp' object='bundles_lst-SoBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoBundle.o `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp
-
-bundles_lst-SoBundle.obj: SoBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoBundle.obj -MD -MP -MF "$(DEPDIR)/bundles_lst-SoBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoBundle.obj `if test -f 'SoBundle.cpp'; then $(CYGPATH_W) 'SoBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoBundle.Tpo" "$(DEPDIR)/bundles_lst-SoBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBundle.cpp' object='bundles_lst-SoBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoBundle.obj `if test -f 'SoBundle.cpp'; then $(CYGPATH_W) 'SoBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBundle.cpp'; fi`
-
-bundles_lst-SoBundle.lo: SoBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoBundle.lo -MD -MP -MF "$(DEPDIR)/bundles_lst-SoBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoBundle.lo `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoBundle.Tpo" "$(DEPDIR)/bundles_lst-SoBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBundle.cpp' object='bundles_lst-SoBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoBundle.Plo' tmpdepfile='$(DEPDIR)/bundles_lst-SoBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoBundle.lo `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp
-
-bundles_lst-SoMaterialBundle.o: SoMaterialBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoMaterialBundle.o -MD -MP -MF "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoMaterialBundle.o `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo" "$(DEPDIR)/bundles_lst-SoMaterialBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMaterialBundle.cpp' object='bundles_lst-SoMaterialBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoMaterialBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoMaterialBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoMaterialBundle.o `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp
-
-bundles_lst-SoMaterialBundle.obj: SoMaterialBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoMaterialBundle.obj -MD -MP -MF "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoMaterialBundle.obj `if test -f 'SoMaterialBundle.cpp'; then $(CYGPATH_W) 'SoMaterialBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMaterialBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo" "$(DEPDIR)/bundles_lst-SoMaterialBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMaterialBundle.cpp' object='bundles_lst-SoMaterialBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoMaterialBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoMaterialBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoMaterialBundle.obj `if test -f 'SoMaterialBundle.cpp'; then $(CYGPATH_W) 'SoMaterialBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMaterialBundle.cpp'; fi`
-
-bundles_lst-SoMaterialBundle.lo: SoMaterialBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoMaterialBundle.lo -MD -MP -MF "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoMaterialBundle.lo `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo" "$(DEPDIR)/bundles_lst-SoMaterialBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoMaterialBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMaterialBundle.cpp' object='bundles_lst-SoMaterialBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoMaterialBundle.Plo' tmpdepfile='$(DEPDIR)/bundles_lst-SoMaterialBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoMaterialBundle.lo `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp
-
-bundles_lst-SoNormalBundle.o: SoNormalBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoNormalBundle.o -MD -MP -MF "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoNormalBundle.o `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo" "$(DEPDIR)/bundles_lst-SoNormalBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalBundle.cpp' object='bundles_lst-SoNormalBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoNormalBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoNormalBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoNormalBundle.o `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp
-
-bundles_lst-SoNormalBundle.obj: SoNormalBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoNormalBundle.obj -MD -MP -MF "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoNormalBundle.obj `if test -f 'SoNormalBundle.cpp'; then $(CYGPATH_W) 'SoNormalBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo" "$(DEPDIR)/bundles_lst-SoNormalBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalBundle.cpp' object='bundles_lst-SoNormalBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoNormalBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoNormalBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoNormalBundle.obj `if test -f 'SoNormalBundle.cpp'; then $(CYGPATH_W) 'SoNormalBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalBundle.cpp'; fi`
-
-bundles_lst-SoNormalBundle.lo: SoNormalBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoNormalBundle.lo -MD -MP -MF "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoNormalBundle.lo `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo" "$(DEPDIR)/bundles_lst-SoNormalBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoNormalBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalBundle.cpp' object='bundles_lst-SoNormalBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoNormalBundle.Plo' tmpdepfile='$(DEPDIR)/bundles_lst-SoNormalBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoNormalBundle.lo `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp
-
-bundles_lst-SoVertexAttributeBundle.o: SoVertexAttributeBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoVertexAttributeBundle.o -MD -MP -MF "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoVertexAttributeBundle.o `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo" "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexAttributeBundle.cpp' object='bundles_lst-SoVertexAttributeBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoVertexAttributeBundle.o `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp
-
-bundles_lst-SoVertexAttributeBundle.obj: SoVertexAttributeBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoVertexAttributeBundle.obj -MD -MP -MF "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoVertexAttributeBundle.obj `if test -f 'SoVertexAttributeBundle.cpp'; then $(CYGPATH_W) 'SoVertexAttributeBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexAttributeBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo" "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexAttributeBundle.cpp' object='bundles_lst-SoVertexAttributeBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoVertexAttributeBundle.obj `if test -f 'SoVertexAttributeBundle.cpp'; then $(CYGPATH_W) 'SoVertexAttributeBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexAttributeBundle.cpp'; fi`
-
-bundles_lst-SoVertexAttributeBundle.lo: SoVertexAttributeBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoVertexAttributeBundle.lo -MD -MP -MF "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoVertexAttributeBundle.lo `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo" "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexAttributeBundle.cpp' object='bundles_lst-SoVertexAttributeBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.Plo' tmpdepfile='$(DEPDIR)/bundles_lst-SoVertexAttributeBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoVertexAttributeBundle.lo `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp
-
-bundles_lst-SoTextureCoordinateBundle.o: SoTextureCoordinateBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoTextureCoordinateBundle.o -MD -MP -MF "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoTextureCoordinateBundle.o `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo" "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateBundle.cpp' object='bundles_lst-SoTextureCoordinateBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoTextureCoordinateBundle.o `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp
-
-bundles_lst-SoTextureCoordinateBundle.obj: SoTextureCoordinateBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoTextureCoordinateBundle.obj -MD -MP -MF "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoTextureCoordinateBundle.obj `if test -f 'SoTextureCoordinateBundle.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo" "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateBundle.cpp' object='bundles_lst-SoTextureCoordinateBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Po' tmpdepfile='$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoTextureCoordinateBundle.obj `if test -f 'SoTextureCoordinateBundle.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateBundle.cpp'; fi`
-
-bundles_lst-SoTextureCoordinateBundle.lo: SoTextureCoordinateBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -MT bundles_lst-SoTextureCoordinateBundle.lo -MD -MP -MF "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o bundles_lst-SoTextureCoordinateBundle.lo `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo" "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateBundle.cpp' object='bundles_lst-SoTextureCoordinateBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.Plo' tmpdepfile='$(DEPDIR)/bundles_lst-SoTextureCoordinateBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(bundles_lst_CXXFLAGS) $(CXXFLAGS) -c -o bundles_lst-SoTextureCoordinateBundle.lo `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp
-
-libbundles_la-all-bundles-cpp.o: all-bundles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-all-bundles-cpp.o -MD -MP -MF "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-all-bundles-cpp.o `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo" "$(DEPDIR)/libbundles_la-all-bundles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-bundles-cpp.cpp' object='libbundles_la-all-bundles-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-all-bundles-cpp.Po' tmpdepfile='$(DEPDIR)/libbundles_la-all-bundles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-all-bundles-cpp.o `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp
-
-libbundles_la-all-bundles-cpp.obj: all-bundles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-all-bundles-cpp.obj -MD -MP -MF "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-all-bundles-cpp.obj `if test -f 'all-bundles-cpp.cpp'; then $(CYGPATH_W) 'all-bundles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-bundles-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo" "$(DEPDIR)/libbundles_la-all-bundles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-bundles-cpp.cpp' object='libbundles_la-all-bundles-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-all-bundles-cpp.Po' tmpdepfile='$(DEPDIR)/libbundles_la-all-bundles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-all-bundles-cpp.obj `if test -f 'all-bundles-cpp.cpp'; then $(CYGPATH_W) 'all-bundles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-bundles-cpp.cpp'; fi`
-
-libbundles_la-all-bundles-cpp.lo: all-bundles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-all-bundles-cpp.lo -MD -MP -MF "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-all-bundles-cpp.lo `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo" "$(DEPDIR)/libbundles_la-all-bundles-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-all-bundles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-bundles-cpp.cpp' object='libbundles_la-all-bundles-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-all-bundles-cpp.Plo' tmpdepfile='$(DEPDIR)/libbundles_la-all-bundles-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-all-bundles-cpp.lo `test -f 'all-bundles-cpp.cpp' || echo '$(srcdir)/'`all-bundles-cpp.cpp
-
-libbundles_la-SoBundle.o: SoBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoBundle.o -MD -MP -MF "$(DEPDIR)/libbundles_la-SoBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoBundle.o `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoBundle.Tpo" "$(DEPDIR)/libbundles_la-SoBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBundle.cpp' object='libbundles_la-SoBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoBundle.o `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp
-
-libbundles_la-SoBundle.obj: SoBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoBundle.obj -MD -MP -MF "$(DEPDIR)/libbundles_la-SoBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoBundle.obj `if test -f 'SoBundle.cpp'; then $(CYGPATH_W) 'SoBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoBundle.Tpo" "$(DEPDIR)/libbundles_la-SoBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBundle.cpp' object='libbundles_la-SoBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoBundle.obj `if test -f 'SoBundle.cpp'; then $(CYGPATH_W) 'SoBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBundle.cpp'; fi`
-
-libbundles_la-SoBundle.lo: SoBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoBundle.lo -MD -MP -MF "$(DEPDIR)/libbundles_la-SoBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoBundle.lo `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoBundle.Tpo" "$(DEPDIR)/libbundles_la-SoBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBundle.cpp' object='libbundles_la-SoBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoBundle.Plo' tmpdepfile='$(DEPDIR)/libbundles_la-SoBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoBundle.lo `test -f 'SoBundle.cpp' || echo '$(srcdir)/'`SoBundle.cpp
-
-libbundles_la-SoMaterialBundle.o: SoMaterialBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoMaterialBundle.o -MD -MP -MF "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoMaterialBundle.o `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo" "$(DEPDIR)/libbundles_la-SoMaterialBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMaterialBundle.cpp' object='libbundles_la-SoMaterialBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoMaterialBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoMaterialBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoMaterialBundle.o `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp
-
-libbundles_la-SoMaterialBundle.obj: SoMaterialBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoMaterialBundle.obj -MD -MP -MF "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoMaterialBundle.obj `if test -f 'SoMaterialBundle.cpp'; then $(CYGPATH_W) 'SoMaterialBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMaterialBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo" "$(DEPDIR)/libbundles_la-SoMaterialBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMaterialBundle.cpp' object='libbundles_la-SoMaterialBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoMaterialBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoMaterialBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoMaterialBundle.obj `if test -f 'SoMaterialBundle.cpp'; then $(CYGPATH_W) 'SoMaterialBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMaterialBundle.cpp'; fi`
-
-libbundles_la-SoMaterialBundle.lo: SoMaterialBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoMaterialBundle.lo -MD -MP -MF "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoMaterialBundle.lo `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo" "$(DEPDIR)/libbundles_la-SoMaterialBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoMaterialBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMaterialBundle.cpp' object='libbundles_la-SoMaterialBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoMaterialBundle.Plo' tmpdepfile='$(DEPDIR)/libbundles_la-SoMaterialBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoMaterialBundle.lo `test -f 'SoMaterialBundle.cpp' || echo '$(srcdir)/'`SoMaterialBundle.cpp
-
-libbundles_la-SoNormalBundle.o: SoNormalBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoNormalBundle.o -MD -MP -MF "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoNormalBundle.o `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo" "$(DEPDIR)/libbundles_la-SoNormalBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalBundle.cpp' object='libbundles_la-SoNormalBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoNormalBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoNormalBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoNormalBundle.o `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp
-
-libbundles_la-SoNormalBundle.obj: SoNormalBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoNormalBundle.obj -MD -MP -MF "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoNormalBundle.obj `if test -f 'SoNormalBundle.cpp'; then $(CYGPATH_W) 'SoNormalBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo" "$(DEPDIR)/libbundles_la-SoNormalBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalBundle.cpp' object='libbundles_la-SoNormalBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoNormalBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoNormalBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoNormalBundle.obj `if test -f 'SoNormalBundle.cpp'; then $(CYGPATH_W) 'SoNormalBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalBundle.cpp'; fi`
-
-libbundles_la-SoNormalBundle.lo: SoNormalBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoNormalBundle.lo -MD -MP -MF "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoNormalBundle.lo `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo" "$(DEPDIR)/libbundles_la-SoNormalBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoNormalBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalBundle.cpp' object='libbundles_la-SoNormalBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoNormalBundle.Plo' tmpdepfile='$(DEPDIR)/libbundles_la-SoNormalBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoNormalBundle.lo `test -f 'SoNormalBundle.cpp' || echo '$(srcdir)/'`SoNormalBundle.cpp
-
-libbundles_la-SoVertexAttributeBundle.o: SoVertexAttributeBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoVertexAttributeBundle.o -MD -MP -MF "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoVertexAttributeBundle.o `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo" "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexAttributeBundle.cpp' object='libbundles_la-SoVertexAttributeBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoVertexAttributeBundle.o `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp
-
-libbundles_la-SoVertexAttributeBundle.obj: SoVertexAttributeBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoVertexAttributeBundle.obj -MD -MP -MF "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoVertexAttributeBundle.obj `if test -f 'SoVertexAttributeBundle.cpp'; then $(CYGPATH_W) 'SoVertexAttributeBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexAttributeBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo" "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexAttributeBundle.cpp' object='libbundles_la-SoVertexAttributeBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoVertexAttributeBundle.obj `if test -f 'SoVertexAttributeBundle.cpp'; then $(CYGPATH_W) 'SoVertexAttributeBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexAttributeBundle.cpp'; fi`
-
-libbundles_la-SoVertexAttributeBundle.lo: SoVertexAttributeBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoVertexAttributeBundle.lo -MD -MP -MF "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoVertexAttributeBundle.lo `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo" "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexAttributeBundle.cpp' object='libbundles_la-SoVertexAttributeBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.Plo' tmpdepfile='$(DEPDIR)/libbundles_la-SoVertexAttributeBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoVertexAttributeBundle.lo `test -f 'SoVertexAttributeBundle.cpp' || echo '$(srcdir)/'`SoVertexAttributeBundle.cpp
-
-libbundles_la-SoTextureCoordinateBundle.o: SoTextureCoordinateBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoTextureCoordinateBundle.o -MD -MP -MF "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoTextureCoordinateBundle.o `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo" "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateBundle.cpp' object='libbundles_la-SoTextureCoordinateBundle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoTextureCoordinateBundle.o `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp
-
-libbundles_la-SoTextureCoordinateBundle.obj: SoTextureCoordinateBundle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoTextureCoordinateBundle.obj -MD -MP -MF "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoTextureCoordinateBundle.obj `if test -f 'SoTextureCoordinateBundle.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateBundle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo" "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateBundle.cpp' object='libbundles_la-SoTextureCoordinateBundle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Po' tmpdepfile='$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoTextureCoordinateBundle.obj `if test -f 'SoTextureCoordinateBundle.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateBundle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateBundle.cpp'; fi`
-
-libbundles_la-SoTextureCoordinateBundle.lo: SoTextureCoordinateBundle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -MT libbundles_la-SoTextureCoordinateBundle.lo -MD -MP -MF "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libbundles_la-SoTextureCoordinateBundle.lo `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo" "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateBundle.cpp' object='libbundles_la-SoTextureCoordinateBundle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.Plo' tmpdepfile='$(DEPDIR)/libbundles_la-SoTextureCoordinateBundle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libbundles_la_CXXFLAGS) $(CXXFLAGS) -c -o libbundles_la-SoTextureCoordinateBundle.lo `test -f 'SoTextureCoordinateBundle.cpp' || echo '$(srcdir)/'`SoTextureCoordinateBundle.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -337,9 +337,6 @@ EXTRA_libforeignfiles_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libforeignfiles_la_CXXFLAGS = $(AM_CXXFLAGS)
-libforeignfiles_la_CFLAGS = $(AM_CFLAGS)
-
 libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -349,9 +346,6 @@ foreignfiles_lst_SOURCES = $(BuildSources)
 EXTRA_foreignfiles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-foreignfiles_lst_CXXFLAGS = $(AM_CXXFLAGS)
-foreignfiles_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/foreignfiles
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -364,10 +358,9 @@ foreignfiles_lst_AR = $(AR) cru
 foreignfiles_lst_LIBADD =
 am__foreignfiles_lst_SOURCES_DIST = SoForeignFileKit.cpp \
 	SoSTLFileKit.cpp steel-wrapper.cpp all-foreignfiles-cpp.cpp
-am__objects_1 = foreignfiles_lst-all-foreignfiles-cpp.$(OBJEXT)
-am__objects_2 = foreignfiles_lst-SoForeignFileKit.$(OBJEXT) \
-	foreignfiles_lst-SoSTLFileKit.$(OBJEXT) \
-	foreignfiles_lst-steel-wrapper.$(OBJEXT)
+am__objects_1 = all-foreignfiles-cpp.$(OBJEXT)
+am__objects_2 = SoForeignFileKit.$(OBJEXT) SoSTLFileKit.$(OBJEXT) \
+	steel-wrapper.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_foreignfiles_lst_OBJECTS = $(am__objects_3)
@@ -381,10 +374,8 @@ libforeignfiles_la_LDFLAGS =
 libforeignfiles_la_LIBADD =
 am__libforeignfiles_la_SOURCES_DIST = SoForeignFileKit.cpp \
 	SoSTLFileKit.cpp steel-wrapper.cpp all-foreignfiles-cpp.cpp
-am__objects_6 = libforeignfiles_la-all-foreignfiles-cpp.lo
-am__objects_7 = libforeignfiles_la-SoForeignFileKit.lo \
-	libforeignfiles_la-SoSTLFileKit.lo \
-	libforeignfiles_la-steel-wrapper.lo
+am__objects_6 = all-foreignfiles-cpp.lo
+am__objects_7 = SoForeignFileKit.lo SoSTLFileKit.lo steel-wrapper.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libforeignfiles_la_OBJECTS = $(am__objects_8)
@@ -397,11 +388,7 @@ libforeignfiles@SUFFIX@LINKHACK_la_LIBADD =
 am__libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoForeignFileKit.cpp SoSTLFileKit.cpp steel-wrapper.cpp \
 	all-foreignfiles-cpp.cpp
-am__objects_10 = all-foreignfiles-cpp.lo
-am__objects_11 = SoForeignFileKit.lo SoSTLFileKit.lo steel-wrapper.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES_DIST = steel.h \
 	all-foreignfiles-cpp.cpp SoForeignFileKit.cpp SoSTLFileKit.cpp \
 	steel-wrapper.cpp
@@ -410,17 +397,13 @@ libforeignfiles@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoForeignFileKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoForeignFileKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSTLFileKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSTLFileKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/foreignfiles_lst-steel-wrapper.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libforeignfiles_la-steel-wrapper.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/steel-wrapper.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/all-foreignfiles-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/steel-wrapper.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/steel-wrapper.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -508,17 +491,13 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoForeignFileKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoForeignFileKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSTLFileKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSTLFileKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/foreignfiles_lst-steel-wrapper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libforeignfiles_la-steel-wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-foreignfiles-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel-wrapper.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/steel-wrapper.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -555,270 +534,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-foreignfiles_lst-all-foreignfiles-cpp.o: all-foreignfiles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-all-foreignfiles-cpp.o -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-all-foreignfiles-cpp.o `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo" "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-foreignfiles-cpp.cpp' object='foreignfiles_lst-all-foreignfiles-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-all-foreignfiles-cpp.o `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp
-
-foreignfiles_lst-all-foreignfiles-cpp.obj: all-foreignfiles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-all-foreignfiles-cpp.obj -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-all-foreignfiles-cpp.obj `if test -f 'all-foreignfiles-cpp.cpp'; then $(CYGPATH_W) 'all-foreignfiles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-foreignfiles-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo" "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-foreignfiles-cpp.cpp' object='foreignfiles_lst-all-foreignfiles-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-all-foreignfiles-cpp.obj `if test -f 'all-foreignfiles-cpp.cpp'; then $(CYGPATH_W) 'all-foreignfiles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-foreignfiles-cpp.cpp'; fi`
-
-foreignfiles_lst-all-foreignfiles-cpp.lo: all-foreignfiles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-all-foreignfiles-cpp.lo -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-all-foreignfiles-cpp.lo `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo" "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-foreignfiles-cpp.cpp' object='foreignfiles_lst-all-foreignfiles-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.Plo' tmpdepfile='$(DEPDIR)/foreignfiles_lst-all-foreignfiles-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-all-foreignfiles-cpp.lo `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp
-
-foreignfiles_lst-SoForeignFileKit.o: SoForeignFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-SoForeignFileKit.o -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-SoForeignFileKit.o `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo" "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoForeignFileKit.cpp' object='foreignfiles_lst-SoForeignFileKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-SoForeignFileKit.o `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp
-
-foreignfiles_lst-SoForeignFileKit.obj: SoForeignFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-SoForeignFileKit.obj -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-SoForeignFileKit.obj `if test -f 'SoForeignFileKit.cpp'; then $(CYGPATH_W) 'SoForeignFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoForeignFileKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo" "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoForeignFileKit.cpp' object='foreignfiles_lst-SoForeignFileKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-SoForeignFileKit.obj `if test -f 'SoForeignFileKit.cpp'; then $(CYGPATH_W) 'SoForeignFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoForeignFileKit.cpp'; fi`
-
-foreignfiles_lst-SoForeignFileKit.lo: SoForeignFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-SoForeignFileKit.lo -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-SoForeignFileKit.lo `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo" "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoForeignFileKit.cpp' object='foreignfiles_lst-SoForeignFileKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.Plo' tmpdepfile='$(DEPDIR)/foreignfiles_lst-SoForeignFileKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-SoForeignFileKit.lo `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp
-
-foreignfiles_lst-SoSTLFileKit.o: SoSTLFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-SoSTLFileKit.o -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-SoSTLFileKit.o `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo" "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSTLFileKit.cpp' object='foreignfiles_lst-SoSTLFileKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-SoSTLFileKit.o `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp
-
-foreignfiles_lst-SoSTLFileKit.obj: SoSTLFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-SoSTLFileKit.obj -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-SoSTLFileKit.obj `if test -f 'SoSTLFileKit.cpp'; then $(CYGPATH_W) 'SoSTLFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSTLFileKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo" "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSTLFileKit.cpp' object='foreignfiles_lst-SoSTLFileKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-SoSTLFileKit.obj `if test -f 'SoSTLFileKit.cpp'; then $(CYGPATH_W) 'SoSTLFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSTLFileKit.cpp'; fi`
-
-foreignfiles_lst-SoSTLFileKit.lo: SoSTLFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-SoSTLFileKit.lo -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-SoSTLFileKit.lo `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo" "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSTLFileKit.cpp' object='foreignfiles_lst-SoSTLFileKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.Plo' tmpdepfile='$(DEPDIR)/foreignfiles_lst-SoSTLFileKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-SoSTLFileKit.lo `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp
-
-foreignfiles_lst-steel-wrapper.o: steel-wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-steel-wrapper.o -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-steel-wrapper.o `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo" "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='steel-wrapper.cpp' object='foreignfiles_lst-steel-wrapper.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-steel-wrapper.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-steel-wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-steel-wrapper.o `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp
-
-foreignfiles_lst-steel-wrapper.obj: steel-wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-steel-wrapper.obj -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-steel-wrapper.obj `if test -f 'steel-wrapper.cpp'; then $(CYGPATH_W) 'steel-wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/steel-wrapper.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo" "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='steel-wrapper.cpp' object='foreignfiles_lst-steel-wrapper.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-steel-wrapper.Po' tmpdepfile='$(DEPDIR)/foreignfiles_lst-steel-wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-steel-wrapper.obj `if test -f 'steel-wrapper.cpp'; then $(CYGPATH_W) 'steel-wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/steel-wrapper.cpp'; fi`
-
-foreignfiles_lst-steel-wrapper.lo: steel-wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -MT foreignfiles_lst-steel-wrapper.lo -MD -MP -MF "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o foreignfiles_lst-steel-wrapper.lo `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo" "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/foreignfiles_lst-steel-wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='steel-wrapper.cpp' object='foreignfiles_lst-steel-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/foreignfiles_lst-steel-wrapper.Plo' tmpdepfile='$(DEPDIR)/foreignfiles_lst-steel-wrapper.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(foreignfiles_lst_CXXFLAGS) $(CXXFLAGS) -c -o foreignfiles_lst-steel-wrapper.lo `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp
-
-libforeignfiles_la-all-foreignfiles-cpp.o: all-foreignfiles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-all-foreignfiles-cpp.o -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-all-foreignfiles-cpp.o `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo" "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-foreignfiles-cpp.cpp' object='libforeignfiles_la-all-foreignfiles-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-all-foreignfiles-cpp.o `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp
-
-libforeignfiles_la-all-foreignfiles-cpp.obj: all-foreignfiles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-all-foreignfiles-cpp.obj -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-all-foreignfiles-cpp.obj `if test -f 'all-foreignfiles-cpp.cpp'; then $(CYGPATH_W) 'all-foreignfiles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-foreignfiles-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo" "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-foreignfiles-cpp.cpp' object='libforeignfiles_la-all-foreignfiles-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-all-foreignfiles-cpp.obj `if test -f 'all-foreignfiles-cpp.cpp'; then $(CYGPATH_W) 'all-foreignfiles-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-foreignfiles-cpp.cpp'; fi`
-
-libforeignfiles_la-all-foreignfiles-cpp.lo: all-foreignfiles-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-all-foreignfiles-cpp.lo -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-all-foreignfiles-cpp.lo `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo" "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-foreignfiles-cpp.cpp' object='libforeignfiles_la-all-foreignfiles-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.Plo' tmpdepfile='$(DEPDIR)/libforeignfiles_la-all-foreignfiles-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-all-foreignfiles-cpp.lo `test -f 'all-foreignfiles-cpp.cpp' || echo '$(srcdir)/'`all-foreignfiles-cpp.cpp
-
-libforeignfiles_la-SoForeignFileKit.o: SoForeignFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-SoForeignFileKit.o -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-SoForeignFileKit.o `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo" "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoForeignFileKit.cpp' object='libforeignfiles_la-SoForeignFileKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-SoForeignFileKit.o `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp
-
-libforeignfiles_la-SoForeignFileKit.obj: SoForeignFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-SoForeignFileKit.obj -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-SoForeignFileKit.obj `if test -f 'SoForeignFileKit.cpp'; then $(CYGPATH_W) 'SoForeignFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoForeignFileKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo" "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoForeignFileKit.cpp' object='libforeignfiles_la-SoForeignFileKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-SoForeignFileKit.obj `if test -f 'SoForeignFileKit.cpp'; then $(CYGPATH_W) 'SoForeignFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoForeignFileKit.cpp'; fi`
-
-libforeignfiles_la-SoForeignFileKit.lo: SoForeignFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-SoForeignFileKit.lo -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-SoForeignFileKit.lo `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo" "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoForeignFileKit.cpp' object='libforeignfiles_la-SoForeignFileKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.Plo' tmpdepfile='$(DEPDIR)/libforeignfiles_la-SoForeignFileKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-SoForeignFileKit.lo `test -f 'SoForeignFileKit.cpp' || echo '$(srcdir)/'`SoForeignFileKit.cpp
-
-libforeignfiles_la-SoSTLFileKit.o: SoSTLFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-SoSTLFileKit.o -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-SoSTLFileKit.o `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo" "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSTLFileKit.cpp' object='libforeignfiles_la-SoSTLFileKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-SoSTLFileKit.o `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp
-
-libforeignfiles_la-SoSTLFileKit.obj: SoSTLFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-SoSTLFileKit.obj -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-SoSTLFileKit.obj `if test -f 'SoSTLFileKit.cpp'; then $(CYGPATH_W) 'SoSTLFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSTLFileKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo" "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSTLFileKit.cpp' object='libforeignfiles_la-SoSTLFileKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-SoSTLFileKit.obj `if test -f 'SoSTLFileKit.cpp'; then $(CYGPATH_W) 'SoSTLFileKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSTLFileKit.cpp'; fi`
-
-libforeignfiles_la-SoSTLFileKit.lo: SoSTLFileKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-SoSTLFileKit.lo -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-SoSTLFileKit.lo `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo" "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSTLFileKit.cpp' object='libforeignfiles_la-SoSTLFileKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.Plo' tmpdepfile='$(DEPDIR)/libforeignfiles_la-SoSTLFileKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-SoSTLFileKit.lo `test -f 'SoSTLFileKit.cpp' || echo '$(srcdir)/'`SoSTLFileKit.cpp
-
-libforeignfiles_la-steel-wrapper.o: steel-wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-steel-wrapper.o -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-steel-wrapper.o `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo" "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='steel-wrapper.cpp' object='libforeignfiles_la-steel-wrapper.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-steel-wrapper.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-steel-wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-steel-wrapper.o `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp
-
-libforeignfiles_la-steel-wrapper.obj: steel-wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-steel-wrapper.obj -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-steel-wrapper.obj `if test -f 'steel-wrapper.cpp'; then $(CYGPATH_W) 'steel-wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/steel-wrapper.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo" "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='steel-wrapper.cpp' object='libforeignfiles_la-steel-wrapper.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-steel-wrapper.Po' tmpdepfile='$(DEPDIR)/libforeignfiles_la-steel-wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-steel-wrapper.obj `if test -f 'steel-wrapper.cpp'; then $(CYGPATH_W) 'steel-wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/steel-wrapper.cpp'; fi`
-
-libforeignfiles_la-steel-wrapper.lo: steel-wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -MT libforeignfiles_la-steel-wrapper.lo -MD -MP -MF "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libforeignfiles_la-steel-wrapper.lo `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo" "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libforeignfiles_la-steel-wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='steel-wrapper.cpp' object='libforeignfiles_la-steel-wrapper.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libforeignfiles_la-steel-wrapper.Plo' tmpdepfile='$(DEPDIR)/libforeignfiles_la-steel-wrapper.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libforeignfiles_la_CXXFLAGS) $(CXXFLAGS) -c -o libforeignfiles_la-steel-wrapper.lo `test -f 'steel-wrapper.cpp' || echo '$(srcdir)/'`steel-wrapper.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

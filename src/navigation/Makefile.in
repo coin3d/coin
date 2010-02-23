@@ -340,9 +340,6 @@ EXTRA_libnavigation_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libnavigation_la_CXXFLAGS = $(AM_CXXFLAGS)
-libnavigation_la_CFLAGS = $(AM_CFLAGS)
-
 libnavigation@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -352,9 +349,6 @@ navigation_lst_SOURCES = $(BuildSources)
 EXTRA_navigation_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-navigation_lst_CXXFLAGS = $(AM_CXXFLAGS)
-navigation_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/navigation
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -372,19 +366,14 @@ am__navigation_lst_SOURCES_DIST = SoCameraUtils.cpp \
 	SoScXMLZoomTarget.cpp SoScXMLDollyTarget.cpp \
 	SoScXMLMiscTarget.cpp SoScXMLFlightControlTarget.cpp \
 	SoScXMLMotionTarget.cpp all-navigation-cpp.cpp
-am__objects_1 = navigation_lst-all-navigation-cpp.$(OBJEXT)
-am__objects_2 = navigation_lst-SoCameraUtils.$(OBJEXT) \
-	navigation_lst-SoScXMLNavigation.$(OBJEXT) \
-	navigation_lst-SoScXMLNavigationTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLPanTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLRotateTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLSeekTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLSpinTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLZoomTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLDollyTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLMiscTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLFlightControlTarget.$(OBJEXT) \
-	navigation_lst-SoScXMLMotionTarget.$(OBJEXT)
+am__objects_1 = all-navigation-cpp.$(OBJEXT)
+am__objects_2 = SoCameraUtils.$(OBJEXT) SoScXMLNavigation.$(OBJEXT) \
+	SoScXMLNavigationTarget.$(OBJEXT) SoScXMLPanTarget.$(OBJEXT) \
+	SoScXMLRotateTarget.$(OBJEXT) SoScXMLSeekTarget.$(OBJEXT) \
+	SoScXMLSpinTarget.$(OBJEXT) SoScXMLZoomTarget.$(OBJEXT) \
+	SoScXMLDollyTarget.$(OBJEXT) SoScXMLMiscTarget.$(OBJEXT) \
+	SoScXMLFlightControlTarget.$(OBJEXT) \
+	SoScXMLMotionTarget.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_navigation_lst_OBJECTS = $(am__objects_3)
@@ -408,19 +397,13 @@ am__libnavigation_la_SOURCES_DIST = SoCameraUtils.cpp \
 	SoScXMLZoomTarget.cpp SoScXMLDollyTarget.cpp \
 	SoScXMLMiscTarget.cpp SoScXMLFlightControlTarget.cpp \
 	SoScXMLMotionTarget.cpp all-navigation-cpp.cpp
-am__objects_7 = libnavigation_la-all-navigation-cpp.lo
-am__objects_8 = libnavigation_la-SoCameraUtils.lo \
-	libnavigation_la-SoScXMLNavigation.lo \
-	libnavigation_la-SoScXMLNavigationTarget.lo \
-	libnavigation_la-SoScXMLPanTarget.lo \
-	libnavigation_la-SoScXMLRotateTarget.lo \
-	libnavigation_la-SoScXMLSeekTarget.lo \
-	libnavigation_la-SoScXMLSpinTarget.lo \
-	libnavigation_la-SoScXMLZoomTarget.lo \
-	libnavigation_la-SoScXMLDollyTarget.lo \
-	libnavigation_la-SoScXMLMiscTarget.lo \
-	libnavigation_la-SoScXMLFlightControlTarget.lo \
-	libnavigation_la-SoScXMLMotionTarget.lo
+am__objects_7 = all-navigation-cpp.lo
+am__objects_8 = SoCameraUtils.lo SoScXMLNavigation.lo \
+	SoScXMLNavigationTarget.lo SoScXMLPanTarget.lo \
+	SoScXMLRotateTarget.lo SoScXMLSeekTarget.lo \
+	SoScXMLSpinTarget.lo SoScXMLZoomTarget.lo SoScXMLDollyTarget.lo \
+	SoScXMLMiscTarget.lo SoScXMLFlightControlTarget.lo \
+	SoScXMLMotionTarget.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libnavigation_la_OBJECTS = $(am__objects_9)
@@ -442,16 +425,7 @@ am__libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = SoCameraUtils.cpp \
 	SoScXMLZoomTarget.cpp SoScXMLDollyTarget.cpp \
 	SoScXMLMiscTarget.cpp SoScXMLFlightControlTarget.cpp \
 	SoScXMLMotionTarget.cpp all-navigation-cpp.cpp
-am__objects_12 = all-navigation-cpp.lo
-am__objects_13 = SoCameraUtils.lo SoScXMLNavigation.lo \
-	SoScXMLNavigationTarget.lo SoScXMLPanTarget.lo \
-	SoScXMLRotateTarget.lo SoScXMLSeekTarget.lo \
-	SoScXMLSpinTarget.lo SoScXMLZoomTarget.lo SoScXMLDollyTarget.lo \
-	SoScXMLMiscTarget.lo SoScXMLFlightControlTarget.lo \
-	SoScXMLMotionTarget.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_14 = $(am__objects_12)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_14 = $(am__objects_13)
-am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_14)
+am_libnavigation@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libnavigation@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoCameraUtils.h common-xml.cpp examiner-xml.cpp plane-xml.cpp \
 	all-navigation-cpp.cpp SoCameraUtils.cpp SoScXMLNavigation.cpp \
@@ -465,53 +439,36 @@ libnavigation@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoCameraUtils.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoCameraUtils.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLDollyTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLDollyTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLFlightControlTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLFlightControlTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMiscTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMiscTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMotionTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLMotionTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigation.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigation.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigationTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLNavigationTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLPanTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLPanTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLRotateTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLRotateTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSeekTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSeekTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSpinTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLSpinTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLZoomTarget.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLZoomTarget.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-navigation-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common-xml.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/common-xml.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/examiner-xml.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoCameraUtils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-all-navigation-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-common-xml.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-examiner-xml.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnavigation_la-plane-xml.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoCameraUtils.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLNavigation.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-all-navigation-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-common-xml.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-examiner-xml.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/navigation_lst-plane-xml.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/plane-xml.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/examiner-xml.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/plane-xml.Plo ./$(DEPDIR)/plane-xml.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -599,53 +556,37 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCameraUtils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCameraUtils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLDollyTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLDollyTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLFlightControlTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLFlightControlTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMiscTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMiscTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMotionTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLMotionTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigationTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLNavigationTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLPanTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLPanTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLRotateTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLRotateTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSeekTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSeekTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSpinTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLSpinTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLZoomTarget.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLZoomTarget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-navigation-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-xml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common-xml.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/examiner-xml.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoCameraUtils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-all-navigation-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-common-xml.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-examiner-xml.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnavigation_la-plane-xml.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoCameraUtils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLNavigation.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-all-navigation-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-common-xml.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-examiner-xml.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/navigation_lst-plane-xml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/examiner-xml.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plane-xml.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plane-xml.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -682,1062 +623,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-navigation_lst-all-navigation-cpp.o: all-navigation-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-all-navigation-cpp.o -MD -MP -MF "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-all-navigation-cpp.o `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo" "$(DEPDIR)/navigation_lst-all-navigation-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-navigation-cpp.cpp' object='navigation_lst-all-navigation-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-all-navigation-cpp.Po' tmpdepfile='$(DEPDIR)/navigation_lst-all-navigation-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-all-navigation-cpp.o `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp
-
-navigation_lst-all-navigation-cpp.obj: all-navigation-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-all-navigation-cpp.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-all-navigation-cpp.obj `if test -f 'all-navigation-cpp.cpp'; then $(CYGPATH_W) 'all-navigation-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-navigation-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo" "$(DEPDIR)/navigation_lst-all-navigation-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-navigation-cpp.cpp' object='navigation_lst-all-navigation-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-all-navigation-cpp.Po' tmpdepfile='$(DEPDIR)/navigation_lst-all-navigation-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-all-navigation-cpp.obj `if test -f 'all-navigation-cpp.cpp'; then $(CYGPATH_W) 'all-navigation-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-navigation-cpp.cpp'; fi`
-
-navigation_lst-all-navigation-cpp.lo: all-navigation-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-all-navigation-cpp.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-all-navigation-cpp.lo `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo" "$(DEPDIR)/navigation_lst-all-navigation-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-all-navigation-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-navigation-cpp.cpp' object='navigation_lst-all-navigation-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-all-navigation-cpp.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-all-navigation-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-all-navigation-cpp.lo `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp
-
-navigation_lst-SoCameraUtils.o: SoCameraUtils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoCameraUtils.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoCameraUtils.o `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo" "$(DEPDIR)/navigation_lst-SoCameraUtils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraUtils.cpp' object='navigation_lst-SoCameraUtils.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoCameraUtils.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoCameraUtils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoCameraUtils.o `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp
-
-navigation_lst-SoCameraUtils.obj: SoCameraUtils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoCameraUtils.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoCameraUtils.obj `if test -f 'SoCameraUtils.cpp'; then $(CYGPATH_W) 'SoCameraUtils.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraUtils.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo" "$(DEPDIR)/navigation_lst-SoCameraUtils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraUtils.cpp' object='navigation_lst-SoCameraUtils.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoCameraUtils.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoCameraUtils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoCameraUtils.obj `if test -f 'SoCameraUtils.cpp'; then $(CYGPATH_W) 'SoCameraUtils.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraUtils.cpp'; fi`
-
-navigation_lst-SoCameraUtils.lo: SoCameraUtils.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoCameraUtils.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoCameraUtils.lo `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo" "$(DEPDIR)/navigation_lst-SoCameraUtils.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoCameraUtils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraUtils.cpp' object='navigation_lst-SoCameraUtils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoCameraUtils.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoCameraUtils.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoCameraUtils.lo `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp
-
-navigation_lst-SoScXMLNavigation.o: SoScXMLNavigation.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLNavigation.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLNavigation.o `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigation.cpp' object='navigation_lst-SoScXMLNavigation.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLNavigation.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLNavigation.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLNavigation.o `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp
-
-navigation_lst-SoScXMLNavigation.obj: SoScXMLNavigation.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLNavigation.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLNavigation.obj `if test -f 'SoScXMLNavigation.cpp'; then $(CYGPATH_W) 'SoScXMLNavigation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigation.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigation.cpp' object='navigation_lst-SoScXMLNavigation.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLNavigation.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLNavigation.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLNavigation.obj `if test -f 'SoScXMLNavigation.cpp'; then $(CYGPATH_W) 'SoScXMLNavigation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigation.cpp'; fi`
-
-navigation_lst-SoScXMLNavigation.lo: SoScXMLNavigation.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLNavigation.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLNavigation.lo `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLNavigation.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigation.cpp' object='navigation_lst-SoScXMLNavigation.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLNavigation.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLNavigation.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLNavigation.lo `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp
-
-navigation_lst-SoScXMLNavigationTarget.o: SoScXMLNavigationTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLNavigationTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLNavigationTarget.o `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigationTarget.cpp' object='navigation_lst-SoScXMLNavigationTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLNavigationTarget.o `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp
-
-navigation_lst-SoScXMLNavigationTarget.obj: SoScXMLNavigationTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLNavigationTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLNavigationTarget.obj `if test -f 'SoScXMLNavigationTarget.cpp'; then $(CYGPATH_W) 'SoScXMLNavigationTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigationTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigationTarget.cpp' object='navigation_lst-SoScXMLNavigationTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLNavigationTarget.obj `if test -f 'SoScXMLNavigationTarget.cpp'; then $(CYGPATH_W) 'SoScXMLNavigationTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigationTarget.cpp'; fi`
-
-navigation_lst-SoScXMLNavigationTarget.lo: SoScXMLNavigationTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLNavigationTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLNavigationTarget.lo `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigationTarget.cpp' object='navigation_lst-SoScXMLNavigationTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLNavigationTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLNavigationTarget.lo `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp
-
-navigation_lst-SoScXMLPanTarget.o: SoScXMLPanTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLPanTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLPanTarget.o `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLPanTarget.cpp' object='navigation_lst-SoScXMLPanTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLPanTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLPanTarget.o `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp
-
-navigation_lst-SoScXMLPanTarget.obj: SoScXMLPanTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLPanTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLPanTarget.obj `if test -f 'SoScXMLPanTarget.cpp'; then $(CYGPATH_W) 'SoScXMLPanTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLPanTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLPanTarget.cpp' object='navigation_lst-SoScXMLPanTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLPanTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLPanTarget.obj `if test -f 'SoScXMLPanTarget.cpp'; then $(CYGPATH_W) 'SoScXMLPanTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLPanTarget.cpp'; fi`
-
-navigation_lst-SoScXMLPanTarget.lo: SoScXMLPanTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLPanTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLPanTarget.lo `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLPanTarget.cpp' object='navigation_lst-SoScXMLPanTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLPanTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLPanTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLPanTarget.lo `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp
-
-navigation_lst-SoScXMLRotateTarget.o: SoScXMLRotateTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLRotateTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLRotateTarget.o `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLRotateTarget.cpp' object='navigation_lst-SoScXMLRotateTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLRotateTarget.o `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp
-
-navigation_lst-SoScXMLRotateTarget.obj: SoScXMLRotateTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLRotateTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLRotateTarget.obj `if test -f 'SoScXMLRotateTarget.cpp'; then $(CYGPATH_W) 'SoScXMLRotateTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLRotateTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLRotateTarget.cpp' object='navigation_lst-SoScXMLRotateTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLRotateTarget.obj `if test -f 'SoScXMLRotateTarget.cpp'; then $(CYGPATH_W) 'SoScXMLRotateTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLRotateTarget.cpp'; fi`
-
-navigation_lst-SoScXMLRotateTarget.lo: SoScXMLRotateTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLRotateTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLRotateTarget.lo `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLRotateTarget.cpp' object='navigation_lst-SoScXMLRotateTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLRotateTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLRotateTarget.lo `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp
-
-navigation_lst-SoScXMLSeekTarget.o: SoScXMLSeekTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLSeekTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLSeekTarget.o `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSeekTarget.cpp' object='navigation_lst-SoScXMLSeekTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLSeekTarget.o `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp
-
-navigation_lst-SoScXMLSeekTarget.obj: SoScXMLSeekTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLSeekTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLSeekTarget.obj `if test -f 'SoScXMLSeekTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSeekTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSeekTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSeekTarget.cpp' object='navigation_lst-SoScXMLSeekTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLSeekTarget.obj `if test -f 'SoScXMLSeekTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSeekTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSeekTarget.cpp'; fi`
-
-navigation_lst-SoScXMLSeekTarget.lo: SoScXMLSeekTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLSeekTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLSeekTarget.lo `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSeekTarget.cpp' object='navigation_lst-SoScXMLSeekTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLSeekTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLSeekTarget.lo `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp
-
-navigation_lst-SoScXMLSpinTarget.o: SoScXMLSpinTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLSpinTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLSpinTarget.o `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSpinTarget.cpp' object='navigation_lst-SoScXMLSpinTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLSpinTarget.o `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp
-
-navigation_lst-SoScXMLSpinTarget.obj: SoScXMLSpinTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLSpinTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLSpinTarget.obj `if test -f 'SoScXMLSpinTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSpinTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSpinTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSpinTarget.cpp' object='navigation_lst-SoScXMLSpinTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLSpinTarget.obj `if test -f 'SoScXMLSpinTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSpinTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSpinTarget.cpp'; fi`
-
-navigation_lst-SoScXMLSpinTarget.lo: SoScXMLSpinTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLSpinTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLSpinTarget.lo `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSpinTarget.cpp' object='navigation_lst-SoScXMLSpinTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLSpinTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLSpinTarget.lo `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp
-
-navigation_lst-SoScXMLZoomTarget.o: SoScXMLZoomTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLZoomTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLZoomTarget.o `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLZoomTarget.cpp' object='navigation_lst-SoScXMLZoomTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLZoomTarget.o `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp
-
-navigation_lst-SoScXMLZoomTarget.obj: SoScXMLZoomTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLZoomTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLZoomTarget.obj `if test -f 'SoScXMLZoomTarget.cpp'; then $(CYGPATH_W) 'SoScXMLZoomTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLZoomTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLZoomTarget.cpp' object='navigation_lst-SoScXMLZoomTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLZoomTarget.obj `if test -f 'SoScXMLZoomTarget.cpp'; then $(CYGPATH_W) 'SoScXMLZoomTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLZoomTarget.cpp'; fi`
-
-navigation_lst-SoScXMLZoomTarget.lo: SoScXMLZoomTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLZoomTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLZoomTarget.lo `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLZoomTarget.cpp' object='navigation_lst-SoScXMLZoomTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLZoomTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLZoomTarget.lo `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp
-
-navigation_lst-SoScXMLDollyTarget.o: SoScXMLDollyTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLDollyTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLDollyTarget.o `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLDollyTarget.cpp' object='navigation_lst-SoScXMLDollyTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLDollyTarget.o `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp
-
-navigation_lst-SoScXMLDollyTarget.obj: SoScXMLDollyTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLDollyTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLDollyTarget.obj `if test -f 'SoScXMLDollyTarget.cpp'; then $(CYGPATH_W) 'SoScXMLDollyTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLDollyTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLDollyTarget.cpp' object='navigation_lst-SoScXMLDollyTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLDollyTarget.obj `if test -f 'SoScXMLDollyTarget.cpp'; then $(CYGPATH_W) 'SoScXMLDollyTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLDollyTarget.cpp'; fi`
-
-navigation_lst-SoScXMLDollyTarget.lo: SoScXMLDollyTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLDollyTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLDollyTarget.lo `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLDollyTarget.cpp' object='navigation_lst-SoScXMLDollyTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLDollyTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLDollyTarget.lo `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp
-
-navigation_lst-SoScXMLMiscTarget.o: SoScXMLMiscTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLMiscTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLMiscTarget.o `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMiscTarget.cpp' object='navigation_lst-SoScXMLMiscTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLMiscTarget.o `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp
-
-navigation_lst-SoScXMLMiscTarget.obj: SoScXMLMiscTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLMiscTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLMiscTarget.obj `if test -f 'SoScXMLMiscTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMiscTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMiscTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMiscTarget.cpp' object='navigation_lst-SoScXMLMiscTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLMiscTarget.obj `if test -f 'SoScXMLMiscTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMiscTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMiscTarget.cpp'; fi`
-
-navigation_lst-SoScXMLMiscTarget.lo: SoScXMLMiscTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLMiscTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLMiscTarget.lo `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMiscTarget.cpp' object='navigation_lst-SoScXMLMiscTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLMiscTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLMiscTarget.lo `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp
-
-navigation_lst-SoScXMLFlightControlTarget.o: SoScXMLFlightControlTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLFlightControlTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLFlightControlTarget.o `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLFlightControlTarget.cpp' object='navigation_lst-SoScXMLFlightControlTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLFlightControlTarget.o `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp
-
-navigation_lst-SoScXMLFlightControlTarget.obj: SoScXMLFlightControlTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLFlightControlTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLFlightControlTarget.obj `if test -f 'SoScXMLFlightControlTarget.cpp'; then $(CYGPATH_W) 'SoScXMLFlightControlTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLFlightControlTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLFlightControlTarget.cpp' object='navigation_lst-SoScXMLFlightControlTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLFlightControlTarget.obj `if test -f 'SoScXMLFlightControlTarget.cpp'; then $(CYGPATH_W) 'SoScXMLFlightControlTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLFlightControlTarget.cpp'; fi`
-
-navigation_lst-SoScXMLFlightControlTarget.lo: SoScXMLFlightControlTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLFlightControlTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLFlightControlTarget.lo `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLFlightControlTarget.cpp' object='navigation_lst-SoScXMLFlightControlTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLFlightControlTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLFlightControlTarget.lo `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp
-
-navigation_lst-SoScXMLMotionTarget.o: SoScXMLMotionTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLMotionTarget.o -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLMotionTarget.o `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMotionTarget.cpp' object='navigation_lst-SoScXMLMotionTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLMotionTarget.o `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp
-
-navigation_lst-SoScXMLMotionTarget.obj: SoScXMLMotionTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLMotionTarget.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLMotionTarget.obj `if test -f 'SoScXMLMotionTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMotionTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMotionTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMotionTarget.cpp' object='navigation_lst-SoScXMLMotionTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Po' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLMotionTarget.obj `if test -f 'SoScXMLMotionTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMotionTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMotionTarget.cpp'; fi`
-
-navigation_lst-SoScXMLMotionTarget.lo: SoScXMLMotionTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-SoScXMLMotionTarget.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-SoScXMLMotionTarget.lo `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo" "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMotionTarget.cpp' object='navigation_lst-SoScXMLMotionTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-SoScXMLMotionTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-SoScXMLMotionTarget.lo `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp
-
-navigation_lst-common-xml.o: common-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-common-xml.o -MD -MP -MF "$(DEPDIR)/navigation_lst-common-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-common-xml.o `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-common-xml.Tpo" "$(DEPDIR)/navigation_lst-common-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-common-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common-xml.cpp' object='navigation_lst-common-xml.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-common-xml.Po' tmpdepfile='$(DEPDIR)/navigation_lst-common-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-common-xml.o `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp
-
-navigation_lst-common-xml.obj: common-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-common-xml.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-common-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-common-xml.obj `if test -f 'common-xml.cpp'; then $(CYGPATH_W) 'common-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/common-xml.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-common-xml.Tpo" "$(DEPDIR)/navigation_lst-common-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-common-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common-xml.cpp' object='navigation_lst-common-xml.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-common-xml.Po' tmpdepfile='$(DEPDIR)/navigation_lst-common-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-common-xml.obj `if test -f 'common-xml.cpp'; then $(CYGPATH_W) 'common-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/common-xml.cpp'; fi`
-
-navigation_lst-common-xml.lo: common-xml.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-common-xml.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-common-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-common-xml.lo `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-common-xml.Tpo" "$(DEPDIR)/navigation_lst-common-xml.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-common-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common-xml.cpp' object='navigation_lst-common-xml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-common-xml.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-common-xml.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-common-xml.lo `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp
-
-navigation_lst-examiner-xml.o: examiner-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-examiner-xml.o -MD -MP -MF "$(DEPDIR)/navigation_lst-examiner-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-examiner-xml.o `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-examiner-xml.Tpo" "$(DEPDIR)/navigation_lst-examiner-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-examiner-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='examiner-xml.cpp' object='navigation_lst-examiner-xml.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-examiner-xml.Po' tmpdepfile='$(DEPDIR)/navigation_lst-examiner-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-examiner-xml.o `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp
-
-navigation_lst-examiner-xml.obj: examiner-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-examiner-xml.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-examiner-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-examiner-xml.obj `if test -f 'examiner-xml.cpp'; then $(CYGPATH_W) 'examiner-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/examiner-xml.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-examiner-xml.Tpo" "$(DEPDIR)/navigation_lst-examiner-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-examiner-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='examiner-xml.cpp' object='navigation_lst-examiner-xml.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-examiner-xml.Po' tmpdepfile='$(DEPDIR)/navigation_lst-examiner-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-examiner-xml.obj `if test -f 'examiner-xml.cpp'; then $(CYGPATH_W) 'examiner-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/examiner-xml.cpp'; fi`
-
-navigation_lst-examiner-xml.lo: examiner-xml.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-examiner-xml.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-examiner-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-examiner-xml.lo `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-examiner-xml.Tpo" "$(DEPDIR)/navigation_lst-examiner-xml.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-examiner-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='examiner-xml.cpp' object='navigation_lst-examiner-xml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-examiner-xml.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-examiner-xml.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-examiner-xml.lo `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp
-
-navigation_lst-plane-xml.o: plane-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-plane-xml.o -MD -MP -MF "$(DEPDIR)/navigation_lst-plane-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-plane-xml.o `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-plane-xml.Tpo" "$(DEPDIR)/navigation_lst-plane-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-plane-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plane-xml.cpp' object='navigation_lst-plane-xml.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-plane-xml.Po' tmpdepfile='$(DEPDIR)/navigation_lst-plane-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-plane-xml.o `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp
-
-navigation_lst-plane-xml.obj: plane-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-plane-xml.obj -MD -MP -MF "$(DEPDIR)/navigation_lst-plane-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-plane-xml.obj `if test -f 'plane-xml.cpp'; then $(CYGPATH_W) 'plane-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/plane-xml.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-plane-xml.Tpo" "$(DEPDIR)/navigation_lst-plane-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-plane-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plane-xml.cpp' object='navigation_lst-plane-xml.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-plane-xml.Po' tmpdepfile='$(DEPDIR)/navigation_lst-plane-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-plane-xml.obj `if test -f 'plane-xml.cpp'; then $(CYGPATH_W) 'plane-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/plane-xml.cpp'; fi`
-
-navigation_lst-plane-xml.lo: plane-xml.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -MT navigation_lst-plane-xml.lo -MD -MP -MF "$(DEPDIR)/navigation_lst-plane-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o navigation_lst-plane-xml.lo `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/navigation_lst-plane-xml.Tpo" "$(DEPDIR)/navigation_lst-plane-xml.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/navigation_lst-plane-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plane-xml.cpp' object='navigation_lst-plane-xml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/navigation_lst-plane-xml.Plo' tmpdepfile='$(DEPDIR)/navigation_lst-plane-xml.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(navigation_lst_CXXFLAGS) $(CXXFLAGS) -c -o navigation_lst-plane-xml.lo `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp
-
-libnavigation_la-all-navigation-cpp.o: all-navigation-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-all-navigation-cpp.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-all-navigation-cpp.o `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo" "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-navigation-cpp.cpp' object='libnavigation_la-all-navigation-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-all-navigation-cpp.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-all-navigation-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-all-navigation-cpp.o `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp
-
-libnavigation_la-all-navigation-cpp.obj: all-navigation-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-all-navigation-cpp.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-all-navigation-cpp.obj `if test -f 'all-navigation-cpp.cpp'; then $(CYGPATH_W) 'all-navigation-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-navigation-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo" "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-navigation-cpp.cpp' object='libnavigation_la-all-navigation-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-all-navigation-cpp.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-all-navigation-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-all-navigation-cpp.obj `if test -f 'all-navigation-cpp.cpp'; then $(CYGPATH_W) 'all-navigation-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-navigation-cpp.cpp'; fi`
-
-libnavigation_la-all-navigation-cpp.lo: all-navigation-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-all-navigation-cpp.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-all-navigation-cpp.lo `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo" "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-all-navigation-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-navigation-cpp.cpp' object='libnavigation_la-all-navigation-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-all-navigation-cpp.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-all-navigation-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-all-navigation-cpp.lo `test -f 'all-navigation-cpp.cpp' || echo '$(srcdir)/'`all-navigation-cpp.cpp
-
-libnavigation_la-SoCameraUtils.o: SoCameraUtils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoCameraUtils.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoCameraUtils.o `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo" "$(DEPDIR)/libnavigation_la-SoCameraUtils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraUtils.cpp' object='libnavigation_la-SoCameraUtils.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoCameraUtils.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoCameraUtils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoCameraUtils.o `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp
-
-libnavigation_la-SoCameraUtils.obj: SoCameraUtils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoCameraUtils.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoCameraUtils.obj `if test -f 'SoCameraUtils.cpp'; then $(CYGPATH_W) 'SoCameraUtils.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraUtils.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo" "$(DEPDIR)/libnavigation_la-SoCameraUtils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraUtils.cpp' object='libnavigation_la-SoCameraUtils.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoCameraUtils.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoCameraUtils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoCameraUtils.obj `if test -f 'SoCameraUtils.cpp'; then $(CYGPATH_W) 'SoCameraUtils.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraUtils.cpp'; fi`
-
-libnavigation_la-SoCameraUtils.lo: SoCameraUtils.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoCameraUtils.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoCameraUtils.lo `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo" "$(DEPDIR)/libnavigation_la-SoCameraUtils.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoCameraUtils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraUtils.cpp' object='libnavigation_la-SoCameraUtils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoCameraUtils.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoCameraUtils.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoCameraUtils.lo `test -f 'SoCameraUtils.cpp' || echo '$(srcdir)/'`SoCameraUtils.cpp
-
-libnavigation_la-SoScXMLNavigation.o: SoScXMLNavigation.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLNavigation.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLNavigation.o `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigation.cpp' object='libnavigation_la-SoScXMLNavigation.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigation.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLNavigation.o `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp
-
-libnavigation_la-SoScXMLNavigation.obj: SoScXMLNavigation.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLNavigation.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLNavigation.obj `if test -f 'SoScXMLNavigation.cpp'; then $(CYGPATH_W) 'SoScXMLNavigation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigation.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigation.cpp' object='libnavigation_la-SoScXMLNavigation.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigation.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLNavigation.obj `if test -f 'SoScXMLNavigation.cpp'; then $(CYGPATH_W) 'SoScXMLNavigation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigation.cpp'; fi`
-
-libnavigation_la-SoScXMLNavigation.lo: SoScXMLNavigation.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLNavigation.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLNavigation.lo `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigation.cpp' object='libnavigation_la-SoScXMLNavigation.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigation.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigation.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLNavigation.lo `test -f 'SoScXMLNavigation.cpp' || echo '$(srcdir)/'`SoScXMLNavigation.cpp
-
-libnavigation_la-SoScXMLNavigationTarget.o: SoScXMLNavigationTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLNavigationTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLNavigationTarget.o `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigationTarget.cpp' object='libnavigation_la-SoScXMLNavigationTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLNavigationTarget.o `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp
-
-libnavigation_la-SoScXMLNavigationTarget.obj: SoScXMLNavigationTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLNavigationTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLNavigationTarget.obj `if test -f 'SoScXMLNavigationTarget.cpp'; then $(CYGPATH_W) 'SoScXMLNavigationTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigationTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigationTarget.cpp' object='libnavigation_la-SoScXMLNavigationTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLNavigationTarget.obj `if test -f 'SoScXMLNavigationTarget.cpp'; then $(CYGPATH_W) 'SoScXMLNavigationTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLNavigationTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLNavigationTarget.lo: SoScXMLNavigationTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLNavigationTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLNavigationTarget.lo `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLNavigationTarget.cpp' object='libnavigation_la-SoScXMLNavigationTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLNavigationTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLNavigationTarget.lo `test -f 'SoScXMLNavigationTarget.cpp' || echo '$(srcdir)/'`SoScXMLNavigationTarget.cpp
-
-libnavigation_la-SoScXMLPanTarget.o: SoScXMLPanTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLPanTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLPanTarget.o `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLPanTarget.cpp' object='libnavigation_la-SoScXMLPanTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLPanTarget.o `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp
-
-libnavigation_la-SoScXMLPanTarget.obj: SoScXMLPanTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLPanTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLPanTarget.obj `if test -f 'SoScXMLPanTarget.cpp'; then $(CYGPATH_W) 'SoScXMLPanTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLPanTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLPanTarget.cpp' object='libnavigation_la-SoScXMLPanTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLPanTarget.obj `if test -f 'SoScXMLPanTarget.cpp'; then $(CYGPATH_W) 'SoScXMLPanTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLPanTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLPanTarget.lo: SoScXMLPanTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLPanTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLPanTarget.lo `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLPanTarget.cpp' object='libnavigation_la-SoScXMLPanTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLPanTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLPanTarget.lo `test -f 'SoScXMLPanTarget.cpp' || echo '$(srcdir)/'`SoScXMLPanTarget.cpp
-
-libnavigation_la-SoScXMLRotateTarget.o: SoScXMLRotateTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLRotateTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLRotateTarget.o `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLRotateTarget.cpp' object='libnavigation_la-SoScXMLRotateTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLRotateTarget.o `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp
-
-libnavigation_la-SoScXMLRotateTarget.obj: SoScXMLRotateTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLRotateTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLRotateTarget.obj `if test -f 'SoScXMLRotateTarget.cpp'; then $(CYGPATH_W) 'SoScXMLRotateTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLRotateTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLRotateTarget.cpp' object='libnavigation_la-SoScXMLRotateTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLRotateTarget.obj `if test -f 'SoScXMLRotateTarget.cpp'; then $(CYGPATH_W) 'SoScXMLRotateTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLRotateTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLRotateTarget.lo: SoScXMLRotateTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLRotateTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLRotateTarget.lo `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLRotateTarget.cpp' object='libnavigation_la-SoScXMLRotateTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLRotateTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLRotateTarget.lo `test -f 'SoScXMLRotateTarget.cpp' || echo '$(srcdir)/'`SoScXMLRotateTarget.cpp
-
-libnavigation_la-SoScXMLSeekTarget.o: SoScXMLSeekTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLSeekTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLSeekTarget.o `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSeekTarget.cpp' object='libnavigation_la-SoScXMLSeekTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLSeekTarget.o `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp
-
-libnavigation_la-SoScXMLSeekTarget.obj: SoScXMLSeekTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLSeekTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLSeekTarget.obj `if test -f 'SoScXMLSeekTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSeekTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSeekTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSeekTarget.cpp' object='libnavigation_la-SoScXMLSeekTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLSeekTarget.obj `if test -f 'SoScXMLSeekTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSeekTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSeekTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLSeekTarget.lo: SoScXMLSeekTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLSeekTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLSeekTarget.lo `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSeekTarget.cpp' object='libnavigation_la-SoScXMLSeekTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLSeekTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLSeekTarget.lo `test -f 'SoScXMLSeekTarget.cpp' || echo '$(srcdir)/'`SoScXMLSeekTarget.cpp
-
-libnavigation_la-SoScXMLSpinTarget.o: SoScXMLSpinTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLSpinTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLSpinTarget.o `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSpinTarget.cpp' object='libnavigation_la-SoScXMLSpinTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLSpinTarget.o `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp
-
-libnavigation_la-SoScXMLSpinTarget.obj: SoScXMLSpinTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLSpinTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLSpinTarget.obj `if test -f 'SoScXMLSpinTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSpinTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSpinTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSpinTarget.cpp' object='libnavigation_la-SoScXMLSpinTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLSpinTarget.obj `if test -f 'SoScXMLSpinTarget.cpp'; then $(CYGPATH_W) 'SoScXMLSpinTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLSpinTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLSpinTarget.lo: SoScXMLSpinTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLSpinTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLSpinTarget.lo `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLSpinTarget.cpp' object='libnavigation_la-SoScXMLSpinTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLSpinTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLSpinTarget.lo `test -f 'SoScXMLSpinTarget.cpp' || echo '$(srcdir)/'`SoScXMLSpinTarget.cpp
-
-libnavigation_la-SoScXMLZoomTarget.o: SoScXMLZoomTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLZoomTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLZoomTarget.o `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLZoomTarget.cpp' object='libnavigation_la-SoScXMLZoomTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLZoomTarget.o `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp
-
-libnavigation_la-SoScXMLZoomTarget.obj: SoScXMLZoomTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLZoomTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLZoomTarget.obj `if test -f 'SoScXMLZoomTarget.cpp'; then $(CYGPATH_W) 'SoScXMLZoomTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLZoomTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLZoomTarget.cpp' object='libnavigation_la-SoScXMLZoomTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLZoomTarget.obj `if test -f 'SoScXMLZoomTarget.cpp'; then $(CYGPATH_W) 'SoScXMLZoomTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLZoomTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLZoomTarget.lo: SoScXMLZoomTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLZoomTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLZoomTarget.lo `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLZoomTarget.cpp' object='libnavigation_la-SoScXMLZoomTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLZoomTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLZoomTarget.lo `test -f 'SoScXMLZoomTarget.cpp' || echo '$(srcdir)/'`SoScXMLZoomTarget.cpp
-
-libnavigation_la-SoScXMLDollyTarget.o: SoScXMLDollyTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLDollyTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLDollyTarget.o `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLDollyTarget.cpp' object='libnavigation_la-SoScXMLDollyTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLDollyTarget.o `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp
-
-libnavigation_la-SoScXMLDollyTarget.obj: SoScXMLDollyTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLDollyTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLDollyTarget.obj `if test -f 'SoScXMLDollyTarget.cpp'; then $(CYGPATH_W) 'SoScXMLDollyTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLDollyTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLDollyTarget.cpp' object='libnavigation_la-SoScXMLDollyTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLDollyTarget.obj `if test -f 'SoScXMLDollyTarget.cpp'; then $(CYGPATH_W) 'SoScXMLDollyTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLDollyTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLDollyTarget.lo: SoScXMLDollyTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLDollyTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLDollyTarget.lo `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLDollyTarget.cpp' object='libnavigation_la-SoScXMLDollyTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLDollyTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLDollyTarget.lo `test -f 'SoScXMLDollyTarget.cpp' || echo '$(srcdir)/'`SoScXMLDollyTarget.cpp
-
-libnavigation_la-SoScXMLMiscTarget.o: SoScXMLMiscTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLMiscTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLMiscTarget.o `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMiscTarget.cpp' object='libnavigation_la-SoScXMLMiscTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLMiscTarget.o `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp
-
-libnavigation_la-SoScXMLMiscTarget.obj: SoScXMLMiscTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLMiscTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLMiscTarget.obj `if test -f 'SoScXMLMiscTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMiscTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMiscTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMiscTarget.cpp' object='libnavigation_la-SoScXMLMiscTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLMiscTarget.obj `if test -f 'SoScXMLMiscTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMiscTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMiscTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLMiscTarget.lo: SoScXMLMiscTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLMiscTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLMiscTarget.lo `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMiscTarget.cpp' object='libnavigation_la-SoScXMLMiscTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLMiscTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLMiscTarget.lo `test -f 'SoScXMLMiscTarget.cpp' || echo '$(srcdir)/'`SoScXMLMiscTarget.cpp
-
-libnavigation_la-SoScXMLFlightControlTarget.o: SoScXMLFlightControlTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLFlightControlTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLFlightControlTarget.o `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLFlightControlTarget.cpp' object='libnavigation_la-SoScXMLFlightControlTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLFlightControlTarget.o `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp
-
-libnavigation_la-SoScXMLFlightControlTarget.obj: SoScXMLFlightControlTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLFlightControlTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLFlightControlTarget.obj `if test -f 'SoScXMLFlightControlTarget.cpp'; then $(CYGPATH_W) 'SoScXMLFlightControlTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLFlightControlTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLFlightControlTarget.cpp' object='libnavigation_la-SoScXMLFlightControlTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLFlightControlTarget.obj `if test -f 'SoScXMLFlightControlTarget.cpp'; then $(CYGPATH_W) 'SoScXMLFlightControlTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLFlightControlTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLFlightControlTarget.lo: SoScXMLFlightControlTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLFlightControlTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLFlightControlTarget.lo `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLFlightControlTarget.cpp' object='libnavigation_la-SoScXMLFlightControlTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLFlightControlTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLFlightControlTarget.lo `test -f 'SoScXMLFlightControlTarget.cpp' || echo '$(srcdir)/'`SoScXMLFlightControlTarget.cpp
-
-libnavigation_la-SoScXMLMotionTarget.o: SoScXMLMotionTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLMotionTarget.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLMotionTarget.o `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMotionTarget.cpp' object='libnavigation_la-SoScXMLMotionTarget.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLMotionTarget.o `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp
-
-libnavigation_la-SoScXMLMotionTarget.obj: SoScXMLMotionTarget.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLMotionTarget.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLMotionTarget.obj `if test -f 'SoScXMLMotionTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMotionTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMotionTarget.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMotionTarget.cpp' object='libnavigation_la-SoScXMLMotionTarget.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLMotionTarget.obj `if test -f 'SoScXMLMotionTarget.cpp'; then $(CYGPATH_W) 'SoScXMLMotionTarget.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLMotionTarget.cpp'; fi`
-
-libnavigation_la-SoScXMLMotionTarget.lo: SoScXMLMotionTarget.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-SoScXMLMotionTarget.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-SoScXMLMotionTarget.lo `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo" "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLMotionTarget.cpp' object='libnavigation_la-SoScXMLMotionTarget.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-SoScXMLMotionTarget.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-SoScXMLMotionTarget.lo `test -f 'SoScXMLMotionTarget.cpp' || echo '$(srcdir)/'`SoScXMLMotionTarget.cpp
-
-libnavigation_la-common-xml.o: common-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-common-xml.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-common-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-common-xml.o `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-common-xml.Tpo" "$(DEPDIR)/libnavigation_la-common-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-common-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common-xml.cpp' object='libnavigation_la-common-xml.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-common-xml.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-common-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-common-xml.o `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp
-
-libnavigation_la-common-xml.obj: common-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-common-xml.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-common-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-common-xml.obj `if test -f 'common-xml.cpp'; then $(CYGPATH_W) 'common-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/common-xml.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-common-xml.Tpo" "$(DEPDIR)/libnavigation_la-common-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-common-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common-xml.cpp' object='libnavigation_la-common-xml.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-common-xml.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-common-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-common-xml.obj `if test -f 'common-xml.cpp'; then $(CYGPATH_W) 'common-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/common-xml.cpp'; fi`
-
-libnavigation_la-common-xml.lo: common-xml.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-common-xml.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-common-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-common-xml.lo `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-common-xml.Tpo" "$(DEPDIR)/libnavigation_la-common-xml.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-common-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common-xml.cpp' object='libnavigation_la-common-xml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-common-xml.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-common-xml.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-common-xml.lo `test -f 'common-xml.cpp' || echo '$(srcdir)/'`common-xml.cpp
-
-libnavigation_la-examiner-xml.o: examiner-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-examiner-xml.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-examiner-xml.o `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo" "$(DEPDIR)/libnavigation_la-examiner-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='examiner-xml.cpp' object='libnavigation_la-examiner-xml.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-examiner-xml.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-examiner-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-examiner-xml.o `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp
-
-libnavigation_la-examiner-xml.obj: examiner-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-examiner-xml.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-examiner-xml.obj `if test -f 'examiner-xml.cpp'; then $(CYGPATH_W) 'examiner-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/examiner-xml.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo" "$(DEPDIR)/libnavigation_la-examiner-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='examiner-xml.cpp' object='libnavigation_la-examiner-xml.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-examiner-xml.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-examiner-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-examiner-xml.obj `if test -f 'examiner-xml.cpp'; then $(CYGPATH_W) 'examiner-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/examiner-xml.cpp'; fi`
-
-libnavigation_la-examiner-xml.lo: examiner-xml.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-examiner-xml.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-examiner-xml.lo `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo" "$(DEPDIR)/libnavigation_la-examiner-xml.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-examiner-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='examiner-xml.cpp' object='libnavigation_la-examiner-xml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-examiner-xml.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-examiner-xml.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-examiner-xml.lo `test -f 'examiner-xml.cpp' || echo '$(srcdir)/'`examiner-xml.cpp
-
-libnavigation_la-plane-xml.o: plane-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-plane-xml.o -MD -MP -MF "$(DEPDIR)/libnavigation_la-plane-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-plane-xml.o `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-plane-xml.Tpo" "$(DEPDIR)/libnavigation_la-plane-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-plane-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plane-xml.cpp' object='libnavigation_la-plane-xml.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-plane-xml.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-plane-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-plane-xml.o `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp
-
-libnavigation_la-plane-xml.obj: plane-xml.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-plane-xml.obj -MD -MP -MF "$(DEPDIR)/libnavigation_la-plane-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-plane-xml.obj `if test -f 'plane-xml.cpp'; then $(CYGPATH_W) 'plane-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/plane-xml.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-plane-xml.Tpo" "$(DEPDIR)/libnavigation_la-plane-xml.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-plane-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plane-xml.cpp' object='libnavigation_la-plane-xml.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-plane-xml.Po' tmpdepfile='$(DEPDIR)/libnavigation_la-plane-xml.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-plane-xml.obj `if test -f 'plane-xml.cpp'; then $(CYGPATH_W) 'plane-xml.cpp'; else $(CYGPATH_W) '$(srcdir)/plane-xml.cpp'; fi`
-
-libnavigation_la-plane-xml.lo: plane-xml.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -MT libnavigation_la-plane-xml.lo -MD -MP -MF "$(DEPDIR)/libnavigation_la-plane-xml.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnavigation_la-plane-xml.lo `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnavigation_la-plane-xml.Tpo" "$(DEPDIR)/libnavigation_la-plane-xml.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnavigation_la-plane-xml.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='plane-xml.cpp' object='libnavigation_la-plane-xml.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnavigation_la-plane-xml.Plo' tmpdepfile='$(DEPDIR)/libnavigation_la-plane-xml.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnavigation_la_CXXFLAGS) $(CXXFLAGS) -c -o libnavigation_la-plane-xml.lo `test -f 'plane-xml.cpp' || echo '$(srcdir)/'`plane-xml.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

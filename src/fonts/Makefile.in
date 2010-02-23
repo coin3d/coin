@@ -355,9 +355,6 @@ EXTRA_libfonts_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libfonts_la_CXXFLAGS = $(AM_CXXFLAGS)
-libfonts_la_CFLAGS = $(AM_CFLAGS)
-
 libfonts@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -367,9 +364,6 @@ fonts_lst_SOURCES = $(BuildSources)
 EXTRA_fonts_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-fonts_lst_CXXFLAGS = $(AM_CXXFLAGS)
-fonts_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/fonts
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -384,13 +378,11 @@ am__fonts_lst_SOURCES_DIST = fontlib_wrapper.cpp win32.cpp freetype.cpp \
 	fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
 	default3dfont.cpp default2dfont.cpp common.cpp \
 	all-fonts-cpp.cpp
-am__objects_1 = fonts_lst-all-fonts-cpp.$(OBJEXT)
-am__objects_2 = fonts_lst-fontlib_wrapper.$(OBJEXT) \
-	fonts_lst-win32.$(OBJEXT) fonts_lst-freetype.$(OBJEXT) \
-	fonts_lst-fontspec.$(OBJEXT) fonts_lst-glyph.$(OBJEXT) \
-	fonts_lst-glyph2d.$(OBJEXT) fonts_lst-glyph3d.$(OBJEXT) \
-	fonts_lst-default3dfont.$(OBJEXT) \
-	fonts_lst-default2dfont.$(OBJEXT) fonts_lst-common.$(OBJEXT)
+am__objects_1 = all-fonts-cpp.$(OBJEXT)
+am__objects_2 = fontlib_wrapper.$(OBJEXT) win32.$(OBJEXT) \
+	freetype.$(OBJEXT) fontspec.$(OBJEXT) glyph.$(OBJEXT) \
+	glyph2d.$(OBJEXT) glyph3d.$(OBJEXT) default3dfont.$(OBJEXT) \
+	default2dfont.$(OBJEXT) common.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_fonts_lst_OBJECTS = $(am__objects_3)
@@ -409,12 +401,10 @@ am__libfonts_la_SOURCES_DIST = fontlib_wrapper.cpp win32.cpp \
 	freetype.cpp fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
 	default3dfont.cpp default2dfont.cpp common.cpp \
 	all-fonts-cpp.cpp
-am__objects_6 = libfonts_la-all-fonts-cpp.lo
-am__objects_7 = libfonts_la-fontlib_wrapper.lo libfonts_la-win32.lo \
-	libfonts_la-freetype.lo libfonts_la-fontspec.lo \
-	libfonts_la-glyph.lo libfonts_la-glyph2d.lo \
-	libfonts_la-glyph3d.lo libfonts_la-default3dfont.lo \
-	libfonts_la-default2dfont.lo libfonts_la-common.lo
+am__objects_6 = all-fonts-cpp.lo
+am__objects_7 = fontlib_wrapper.lo win32.lo freetype.lo fontspec.lo \
+	glyph.lo glyph2d.lo glyph3d.lo default3dfont.lo \
+	default2dfont.lo common.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libfonts_la_OBJECTS = $(am__objects_8)
@@ -432,13 +422,7 @@ am__libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST = fontlib_wrapper.cpp \
 	win32.cpp freetype.cpp fontspec.cpp glyph.cpp glyph2d.cpp \
 	glyph3d.cpp default3dfont.cpp default2dfont.cpp common.cpp \
 	all-fonts-cpp.cpp
-am__objects_10 = all-fonts-cpp.lo
-am__objects_11 = fontlib_wrapper.lo win32.lo freetype.lo fontspec.lo \
-	glyph.lo glyph2d.lo glyph3d.lo default3dfont.lo \
-	default2dfont.lo common.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libfonts@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libfonts@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST = fontlib_wrapper.h \
 	win32.h freetype.h fontspec.h glyph.h glyph2d.h glyph3d.h \
 	defaultfonts.h builtin2dfonts.icc font13.icc font17.icc \
@@ -451,36 +435,19 @@ libfonts@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/all-fonts-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/common.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/default2dfont.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-fonts-cpp.Po ./$(DEPDIR)/common.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/common.Po ./$(DEPDIR)/default2dfont.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/default2dfont.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/default3dfont.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/default3dfont.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/fontlib_wrapper.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-all-fonts-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-common.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-default2dfont.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-default3dfont.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-fontlib_wrapper.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-fontspec.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-freetype.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-glyph.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-glyph2d.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-glyph3d.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fonts_lst-win32.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/fontspec.Plo ./$(DEPDIR)/freetype.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/glyph.Plo ./$(DEPDIR)/glyph2d.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/glyph3d.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-all-fonts-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-common.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-default2dfont.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-default3dfont.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-fontlib_wrapper.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-fontspec.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-freetype.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-glyph.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-glyph2d.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-glyph3d.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libfonts_la-win32.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/win32.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/fontlib_wrapper.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/fontspec.Plo ./$(DEPDIR)/fontspec.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/freetype.Plo ./$(DEPDIR)/freetype.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/glyph.Plo ./$(DEPDIR)/glyph.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/glyph2d.Plo ./$(DEPDIR)/glyph2d.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/glyph3d.Plo ./$(DEPDIR)/glyph3d.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/win32.Plo ./$(DEPDIR)/win32.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -568,38 +535,27 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fonts-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fonts-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default2dfont.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default2dfont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default3dfont.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default3dfont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fontlib_wrapper.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-all-fonts-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-common.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-default2dfont.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-default3dfont.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-fontlib_wrapper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-fontspec.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-freetype.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-glyph.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-glyph2d.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-glyph3d.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_lst-win32.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fontlib_wrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fontspec.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fontspec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freetype.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freetype.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph2d.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph2d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph3d.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-all-fonts-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-common.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-default2dfont.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-default3dfont.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-fontlib_wrapper.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-fontspec.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-freetype.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-glyph.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-glyph2d.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-glyph3d.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfonts_la-win32.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glyph3d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/win32.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/win32.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -636,732 +592,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-fonts_lst-all-fonts-cpp.o: all-fonts-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-all-fonts-cpp.o -MD -MP -MF "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-all-fonts-cpp.o `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo" "$(DEPDIR)/fonts_lst-all-fonts-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-fonts-cpp.cpp' object='fonts_lst-all-fonts-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-all-fonts-cpp.Po' tmpdepfile='$(DEPDIR)/fonts_lst-all-fonts-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-all-fonts-cpp.o `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp
-
-fonts_lst-all-fonts-cpp.obj: all-fonts-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-all-fonts-cpp.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-all-fonts-cpp.obj `if test -f 'all-fonts-cpp.cpp'; then $(CYGPATH_W) 'all-fonts-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-fonts-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo" "$(DEPDIR)/fonts_lst-all-fonts-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-fonts-cpp.cpp' object='fonts_lst-all-fonts-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-all-fonts-cpp.Po' tmpdepfile='$(DEPDIR)/fonts_lst-all-fonts-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-all-fonts-cpp.obj `if test -f 'all-fonts-cpp.cpp'; then $(CYGPATH_W) 'all-fonts-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-fonts-cpp.cpp'; fi`
-
-fonts_lst-all-fonts-cpp.lo: all-fonts-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-all-fonts-cpp.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-all-fonts-cpp.lo `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo" "$(DEPDIR)/fonts_lst-all-fonts-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-all-fonts-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-fonts-cpp.cpp' object='fonts_lst-all-fonts-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-all-fonts-cpp.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-all-fonts-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-all-fonts-cpp.lo `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp
-
-fonts_lst-fontlib_wrapper.o: fontlib_wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-fontlib_wrapper.o -MD -MP -MF "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-fontlib_wrapper.o `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo" "$(DEPDIR)/fonts_lst-fontlib_wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontlib_wrapper.cpp' object='fonts_lst-fontlib_wrapper.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-fontlib_wrapper.Po' tmpdepfile='$(DEPDIR)/fonts_lst-fontlib_wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-fontlib_wrapper.o `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp
-
-fonts_lst-fontlib_wrapper.obj: fontlib_wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-fontlib_wrapper.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-fontlib_wrapper.obj `if test -f 'fontlib_wrapper.cpp'; then $(CYGPATH_W) 'fontlib_wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/fontlib_wrapper.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo" "$(DEPDIR)/fonts_lst-fontlib_wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontlib_wrapper.cpp' object='fonts_lst-fontlib_wrapper.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-fontlib_wrapper.Po' tmpdepfile='$(DEPDIR)/fonts_lst-fontlib_wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-fontlib_wrapper.obj `if test -f 'fontlib_wrapper.cpp'; then $(CYGPATH_W) 'fontlib_wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/fontlib_wrapper.cpp'; fi`
-
-fonts_lst-fontlib_wrapper.lo: fontlib_wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-fontlib_wrapper.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-fontlib_wrapper.lo `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo" "$(DEPDIR)/fonts_lst-fontlib_wrapper.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-fontlib_wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontlib_wrapper.cpp' object='fonts_lst-fontlib_wrapper.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-fontlib_wrapper.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-fontlib_wrapper.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-fontlib_wrapper.lo `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp
-
-fonts_lst-win32.o: win32.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-win32.o -MD -MP -MF "$(DEPDIR)/fonts_lst-win32.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-win32.o `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-win32.Tpo" "$(DEPDIR)/fonts_lst-win32.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-win32.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='win32.cpp' object='fonts_lst-win32.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-win32.Po' tmpdepfile='$(DEPDIR)/fonts_lst-win32.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-win32.o `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp
-
-fonts_lst-win32.obj: win32.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-win32.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-win32.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-win32.obj `if test -f 'win32.cpp'; then $(CYGPATH_W) 'win32.cpp'; else $(CYGPATH_W) '$(srcdir)/win32.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-win32.Tpo" "$(DEPDIR)/fonts_lst-win32.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-win32.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='win32.cpp' object='fonts_lst-win32.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-win32.Po' tmpdepfile='$(DEPDIR)/fonts_lst-win32.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-win32.obj `if test -f 'win32.cpp'; then $(CYGPATH_W) 'win32.cpp'; else $(CYGPATH_W) '$(srcdir)/win32.cpp'; fi`
-
-fonts_lst-win32.lo: win32.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-win32.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-win32.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-win32.lo `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-win32.Tpo" "$(DEPDIR)/fonts_lst-win32.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-win32.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='win32.cpp' object='fonts_lst-win32.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-win32.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-win32.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-win32.lo `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp
-
-fonts_lst-freetype.o: freetype.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-freetype.o -MD -MP -MF "$(DEPDIR)/fonts_lst-freetype.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-freetype.o `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-freetype.Tpo" "$(DEPDIR)/fonts_lst-freetype.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-freetype.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='freetype.cpp' object='fonts_lst-freetype.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-freetype.Po' tmpdepfile='$(DEPDIR)/fonts_lst-freetype.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-freetype.o `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp
-
-fonts_lst-freetype.obj: freetype.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-freetype.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-freetype.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-freetype.obj `if test -f 'freetype.cpp'; then $(CYGPATH_W) 'freetype.cpp'; else $(CYGPATH_W) '$(srcdir)/freetype.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-freetype.Tpo" "$(DEPDIR)/fonts_lst-freetype.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-freetype.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='freetype.cpp' object='fonts_lst-freetype.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-freetype.Po' tmpdepfile='$(DEPDIR)/fonts_lst-freetype.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-freetype.obj `if test -f 'freetype.cpp'; then $(CYGPATH_W) 'freetype.cpp'; else $(CYGPATH_W) '$(srcdir)/freetype.cpp'; fi`
-
-fonts_lst-freetype.lo: freetype.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-freetype.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-freetype.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-freetype.lo `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-freetype.Tpo" "$(DEPDIR)/fonts_lst-freetype.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-freetype.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='freetype.cpp' object='fonts_lst-freetype.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-freetype.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-freetype.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-freetype.lo `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp
-
-fonts_lst-fontspec.o: fontspec.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-fontspec.o -MD -MP -MF "$(DEPDIR)/fonts_lst-fontspec.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-fontspec.o `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-fontspec.Tpo" "$(DEPDIR)/fonts_lst-fontspec.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-fontspec.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontspec.cpp' object='fonts_lst-fontspec.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-fontspec.Po' tmpdepfile='$(DEPDIR)/fonts_lst-fontspec.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-fontspec.o `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp
-
-fonts_lst-fontspec.obj: fontspec.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-fontspec.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-fontspec.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-fontspec.obj `if test -f 'fontspec.cpp'; then $(CYGPATH_W) 'fontspec.cpp'; else $(CYGPATH_W) '$(srcdir)/fontspec.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-fontspec.Tpo" "$(DEPDIR)/fonts_lst-fontspec.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-fontspec.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontspec.cpp' object='fonts_lst-fontspec.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-fontspec.Po' tmpdepfile='$(DEPDIR)/fonts_lst-fontspec.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-fontspec.obj `if test -f 'fontspec.cpp'; then $(CYGPATH_W) 'fontspec.cpp'; else $(CYGPATH_W) '$(srcdir)/fontspec.cpp'; fi`
-
-fonts_lst-fontspec.lo: fontspec.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-fontspec.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-fontspec.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-fontspec.lo `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-fontspec.Tpo" "$(DEPDIR)/fonts_lst-fontspec.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-fontspec.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontspec.cpp' object='fonts_lst-fontspec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-fontspec.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-fontspec.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-fontspec.lo `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp
-
-fonts_lst-glyph.o: glyph.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph.o -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph.o `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph.Tpo" "$(DEPDIR)/fonts_lst-glyph.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph.cpp' object='fonts_lst-glyph.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph.Po' tmpdepfile='$(DEPDIR)/fonts_lst-glyph.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph.o `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp
-
-fonts_lst-glyph.obj: glyph.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph.obj `if test -f 'glyph.cpp'; then $(CYGPATH_W) 'glyph.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph.Tpo" "$(DEPDIR)/fonts_lst-glyph.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph.cpp' object='fonts_lst-glyph.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph.Po' tmpdepfile='$(DEPDIR)/fonts_lst-glyph.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph.obj `if test -f 'glyph.cpp'; then $(CYGPATH_W) 'glyph.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph.cpp'; fi`
-
-fonts_lst-glyph.lo: glyph.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph.lo `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph.Tpo" "$(DEPDIR)/fonts_lst-glyph.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph.cpp' object='fonts_lst-glyph.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-glyph.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph.lo `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp
-
-fonts_lst-glyph2d.o: glyph2d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph2d.o -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph2d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph2d.o `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph2d.Tpo" "$(DEPDIR)/fonts_lst-glyph2d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph2d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph2d.cpp' object='fonts_lst-glyph2d.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph2d.Po' tmpdepfile='$(DEPDIR)/fonts_lst-glyph2d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph2d.o `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp
-
-fonts_lst-glyph2d.obj: glyph2d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph2d.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph2d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph2d.obj `if test -f 'glyph2d.cpp'; then $(CYGPATH_W) 'glyph2d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph2d.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph2d.Tpo" "$(DEPDIR)/fonts_lst-glyph2d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph2d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph2d.cpp' object='fonts_lst-glyph2d.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph2d.Po' tmpdepfile='$(DEPDIR)/fonts_lst-glyph2d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph2d.obj `if test -f 'glyph2d.cpp'; then $(CYGPATH_W) 'glyph2d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph2d.cpp'; fi`
-
-fonts_lst-glyph2d.lo: glyph2d.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph2d.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph2d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph2d.lo `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph2d.Tpo" "$(DEPDIR)/fonts_lst-glyph2d.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph2d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph2d.cpp' object='fonts_lst-glyph2d.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph2d.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-glyph2d.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph2d.lo `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp
-
-fonts_lst-glyph3d.o: glyph3d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph3d.o -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph3d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph3d.o `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph3d.Tpo" "$(DEPDIR)/fonts_lst-glyph3d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph3d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph3d.cpp' object='fonts_lst-glyph3d.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph3d.Po' tmpdepfile='$(DEPDIR)/fonts_lst-glyph3d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph3d.o `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp
-
-fonts_lst-glyph3d.obj: glyph3d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph3d.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph3d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph3d.obj `if test -f 'glyph3d.cpp'; then $(CYGPATH_W) 'glyph3d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph3d.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph3d.Tpo" "$(DEPDIR)/fonts_lst-glyph3d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph3d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph3d.cpp' object='fonts_lst-glyph3d.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph3d.Po' tmpdepfile='$(DEPDIR)/fonts_lst-glyph3d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph3d.obj `if test -f 'glyph3d.cpp'; then $(CYGPATH_W) 'glyph3d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph3d.cpp'; fi`
-
-fonts_lst-glyph3d.lo: glyph3d.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-glyph3d.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-glyph3d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-glyph3d.lo `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-glyph3d.Tpo" "$(DEPDIR)/fonts_lst-glyph3d.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-glyph3d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph3d.cpp' object='fonts_lst-glyph3d.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-glyph3d.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-glyph3d.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-glyph3d.lo `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp
-
-fonts_lst-default3dfont.o: default3dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-default3dfont.o -MD -MP -MF "$(DEPDIR)/fonts_lst-default3dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-default3dfont.o `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-default3dfont.Tpo" "$(DEPDIR)/fonts_lst-default3dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-default3dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default3dfont.cpp' object='fonts_lst-default3dfont.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-default3dfont.Po' tmpdepfile='$(DEPDIR)/fonts_lst-default3dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-default3dfont.o `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp
-
-fonts_lst-default3dfont.obj: default3dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-default3dfont.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-default3dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-default3dfont.obj `if test -f 'default3dfont.cpp'; then $(CYGPATH_W) 'default3dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default3dfont.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-default3dfont.Tpo" "$(DEPDIR)/fonts_lst-default3dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-default3dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default3dfont.cpp' object='fonts_lst-default3dfont.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-default3dfont.Po' tmpdepfile='$(DEPDIR)/fonts_lst-default3dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-default3dfont.obj `if test -f 'default3dfont.cpp'; then $(CYGPATH_W) 'default3dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default3dfont.cpp'; fi`
-
-fonts_lst-default3dfont.lo: default3dfont.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-default3dfont.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-default3dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-default3dfont.lo `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-default3dfont.Tpo" "$(DEPDIR)/fonts_lst-default3dfont.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-default3dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default3dfont.cpp' object='fonts_lst-default3dfont.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-default3dfont.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-default3dfont.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-default3dfont.lo `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp
-
-fonts_lst-default2dfont.o: default2dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-default2dfont.o -MD -MP -MF "$(DEPDIR)/fonts_lst-default2dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-default2dfont.o `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-default2dfont.Tpo" "$(DEPDIR)/fonts_lst-default2dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-default2dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default2dfont.cpp' object='fonts_lst-default2dfont.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-default2dfont.Po' tmpdepfile='$(DEPDIR)/fonts_lst-default2dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-default2dfont.o `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp
-
-fonts_lst-default2dfont.obj: default2dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-default2dfont.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-default2dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-default2dfont.obj `if test -f 'default2dfont.cpp'; then $(CYGPATH_W) 'default2dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default2dfont.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-default2dfont.Tpo" "$(DEPDIR)/fonts_lst-default2dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-default2dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default2dfont.cpp' object='fonts_lst-default2dfont.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-default2dfont.Po' tmpdepfile='$(DEPDIR)/fonts_lst-default2dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-default2dfont.obj `if test -f 'default2dfont.cpp'; then $(CYGPATH_W) 'default2dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default2dfont.cpp'; fi`
-
-fonts_lst-default2dfont.lo: default2dfont.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-default2dfont.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-default2dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-default2dfont.lo `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-default2dfont.Tpo" "$(DEPDIR)/fonts_lst-default2dfont.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-default2dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default2dfont.cpp' object='fonts_lst-default2dfont.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-default2dfont.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-default2dfont.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-default2dfont.lo `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp
-
-fonts_lst-common.o: common.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-common.o -MD -MP -MF "$(DEPDIR)/fonts_lst-common.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-common.Tpo" "$(DEPDIR)/fonts_lst-common.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-common.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common.cpp' object='fonts_lst-common.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-common.Po' tmpdepfile='$(DEPDIR)/fonts_lst-common.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
-
-fonts_lst-common.obj: common.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-common.obj -MD -MP -MF "$(DEPDIR)/fonts_lst-common.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-common.Tpo" "$(DEPDIR)/fonts_lst-common.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-common.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common.cpp' object='fonts_lst-common.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-common.Po' tmpdepfile='$(DEPDIR)/fonts_lst-common.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`
-
-fonts_lst-common.lo: common.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -MT fonts_lst-common.lo -MD -MP -MF "$(DEPDIR)/fonts_lst-common.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o fonts_lst-common.lo `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/fonts_lst-common.Tpo" "$(DEPDIR)/fonts_lst-common.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/fonts_lst-common.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common.cpp' object='fonts_lst-common.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/fonts_lst-common.Plo' tmpdepfile='$(DEPDIR)/fonts_lst-common.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(fonts_lst_CXXFLAGS) $(CXXFLAGS) -c -o fonts_lst-common.lo `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
-
-libfonts_la-all-fonts-cpp.o: all-fonts-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-all-fonts-cpp.o -MD -MP -MF "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-all-fonts-cpp.o `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo" "$(DEPDIR)/libfonts_la-all-fonts-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-fonts-cpp.cpp' object='libfonts_la-all-fonts-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-all-fonts-cpp.Po' tmpdepfile='$(DEPDIR)/libfonts_la-all-fonts-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-all-fonts-cpp.o `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp
-
-libfonts_la-all-fonts-cpp.obj: all-fonts-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-all-fonts-cpp.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-all-fonts-cpp.obj `if test -f 'all-fonts-cpp.cpp'; then $(CYGPATH_W) 'all-fonts-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-fonts-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo" "$(DEPDIR)/libfonts_la-all-fonts-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-fonts-cpp.cpp' object='libfonts_la-all-fonts-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-all-fonts-cpp.Po' tmpdepfile='$(DEPDIR)/libfonts_la-all-fonts-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-all-fonts-cpp.obj `if test -f 'all-fonts-cpp.cpp'; then $(CYGPATH_W) 'all-fonts-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-fonts-cpp.cpp'; fi`
-
-libfonts_la-all-fonts-cpp.lo: all-fonts-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-all-fonts-cpp.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-all-fonts-cpp.lo `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo" "$(DEPDIR)/libfonts_la-all-fonts-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-all-fonts-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-fonts-cpp.cpp' object='libfonts_la-all-fonts-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-all-fonts-cpp.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-all-fonts-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-all-fonts-cpp.lo `test -f 'all-fonts-cpp.cpp' || echo '$(srcdir)/'`all-fonts-cpp.cpp
-
-libfonts_la-fontlib_wrapper.o: fontlib_wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-fontlib_wrapper.o -MD -MP -MF "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-fontlib_wrapper.o `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo" "$(DEPDIR)/libfonts_la-fontlib_wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontlib_wrapper.cpp' object='libfonts_la-fontlib_wrapper.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-fontlib_wrapper.Po' tmpdepfile='$(DEPDIR)/libfonts_la-fontlib_wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-fontlib_wrapper.o `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp
-
-libfonts_la-fontlib_wrapper.obj: fontlib_wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-fontlib_wrapper.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-fontlib_wrapper.obj `if test -f 'fontlib_wrapper.cpp'; then $(CYGPATH_W) 'fontlib_wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/fontlib_wrapper.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo" "$(DEPDIR)/libfonts_la-fontlib_wrapper.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontlib_wrapper.cpp' object='libfonts_la-fontlib_wrapper.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-fontlib_wrapper.Po' tmpdepfile='$(DEPDIR)/libfonts_la-fontlib_wrapper.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-fontlib_wrapper.obj `if test -f 'fontlib_wrapper.cpp'; then $(CYGPATH_W) 'fontlib_wrapper.cpp'; else $(CYGPATH_W) '$(srcdir)/fontlib_wrapper.cpp'; fi`
-
-libfonts_la-fontlib_wrapper.lo: fontlib_wrapper.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-fontlib_wrapper.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-fontlib_wrapper.lo `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo" "$(DEPDIR)/libfonts_la-fontlib_wrapper.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-fontlib_wrapper.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontlib_wrapper.cpp' object='libfonts_la-fontlib_wrapper.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-fontlib_wrapper.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-fontlib_wrapper.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-fontlib_wrapper.lo `test -f 'fontlib_wrapper.cpp' || echo '$(srcdir)/'`fontlib_wrapper.cpp
-
-libfonts_la-win32.o: win32.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-win32.o -MD -MP -MF "$(DEPDIR)/libfonts_la-win32.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-win32.o `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-win32.Tpo" "$(DEPDIR)/libfonts_la-win32.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-win32.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='win32.cpp' object='libfonts_la-win32.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-win32.Po' tmpdepfile='$(DEPDIR)/libfonts_la-win32.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-win32.o `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp
-
-libfonts_la-win32.obj: win32.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-win32.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-win32.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-win32.obj `if test -f 'win32.cpp'; then $(CYGPATH_W) 'win32.cpp'; else $(CYGPATH_W) '$(srcdir)/win32.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-win32.Tpo" "$(DEPDIR)/libfonts_la-win32.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-win32.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='win32.cpp' object='libfonts_la-win32.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-win32.Po' tmpdepfile='$(DEPDIR)/libfonts_la-win32.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-win32.obj `if test -f 'win32.cpp'; then $(CYGPATH_W) 'win32.cpp'; else $(CYGPATH_W) '$(srcdir)/win32.cpp'; fi`
-
-libfonts_la-win32.lo: win32.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-win32.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-win32.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-win32.lo `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-win32.Tpo" "$(DEPDIR)/libfonts_la-win32.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-win32.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='win32.cpp' object='libfonts_la-win32.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-win32.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-win32.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-win32.lo `test -f 'win32.cpp' || echo '$(srcdir)/'`win32.cpp
-
-libfonts_la-freetype.o: freetype.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-freetype.o -MD -MP -MF "$(DEPDIR)/libfonts_la-freetype.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-freetype.o `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-freetype.Tpo" "$(DEPDIR)/libfonts_la-freetype.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-freetype.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='freetype.cpp' object='libfonts_la-freetype.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-freetype.Po' tmpdepfile='$(DEPDIR)/libfonts_la-freetype.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-freetype.o `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp
-
-libfonts_la-freetype.obj: freetype.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-freetype.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-freetype.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-freetype.obj `if test -f 'freetype.cpp'; then $(CYGPATH_W) 'freetype.cpp'; else $(CYGPATH_W) '$(srcdir)/freetype.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-freetype.Tpo" "$(DEPDIR)/libfonts_la-freetype.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-freetype.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='freetype.cpp' object='libfonts_la-freetype.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-freetype.Po' tmpdepfile='$(DEPDIR)/libfonts_la-freetype.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-freetype.obj `if test -f 'freetype.cpp'; then $(CYGPATH_W) 'freetype.cpp'; else $(CYGPATH_W) '$(srcdir)/freetype.cpp'; fi`
-
-libfonts_la-freetype.lo: freetype.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-freetype.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-freetype.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-freetype.lo `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-freetype.Tpo" "$(DEPDIR)/libfonts_la-freetype.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-freetype.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='freetype.cpp' object='libfonts_la-freetype.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-freetype.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-freetype.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-freetype.lo `test -f 'freetype.cpp' || echo '$(srcdir)/'`freetype.cpp
-
-libfonts_la-fontspec.o: fontspec.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-fontspec.o -MD -MP -MF "$(DEPDIR)/libfonts_la-fontspec.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-fontspec.o `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-fontspec.Tpo" "$(DEPDIR)/libfonts_la-fontspec.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-fontspec.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontspec.cpp' object='libfonts_la-fontspec.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-fontspec.Po' tmpdepfile='$(DEPDIR)/libfonts_la-fontspec.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-fontspec.o `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp
-
-libfonts_la-fontspec.obj: fontspec.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-fontspec.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-fontspec.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-fontspec.obj `if test -f 'fontspec.cpp'; then $(CYGPATH_W) 'fontspec.cpp'; else $(CYGPATH_W) '$(srcdir)/fontspec.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-fontspec.Tpo" "$(DEPDIR)/libfonts_la-fontspec.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-fontspec.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontspec.cpp' object='libfonts_la-fontspec.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-fontspec.Po' tmpdepfile='$(DEPDIR)/libfonts_la-fontspec.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-fontspec.obj `if test -f 'fontspec.cpp'; then $(CYGPATH_W) 'fontspec.cpp'; else $(CYGPATH_W) '$(srcdir)/fontspec.cpp'; fi`
-
-libfonts_la-fontspec.lo: fontspec.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-fontspec.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-fontspec.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-fontspec.lo `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-fontspec.Tpo" "$(DEPDIR)/libfonts_la-fontspec.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-fontspec.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='fontspec.cpp' object='libfonts_la-fontspec.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-fontspec.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-fontspec.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-fontspec.lo `test -f 'fontspec.cpp' || echo '$(srcdir)/'`fontspec.cpp
-
-libfonts_la-glyph.o: glyph.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph.o -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph.o `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph.Tpo" "$(DEPDIR)/libfonts_la-glyph.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph.cpp' object='libfonts_la-glyph.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph.Po' tmpdepfile='$(DEPDIR)/libfonts_la-glyph.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph.o `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp
-
-libfonts_la-glyph.obj: glyph.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph.obj `if test -f 'glyph.cpp'; then $(CYGPATH_W) 'glyph.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph.Tpo" "$(DEPDIR)/libfonts_la-glyph.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph.cpp' object='libfonts_la-glyph.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph.Po' tmpdepfile='$(DEPDIR)/libfonts_la-glyph.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph.obj `if test -f 'glyph.cpp'; then $(CYGPATH_W) 'glyph.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph.cpp'; fi`
-
-libfonts_la-glyph.lo: glyph.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph.lo `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph.Tpo" "$(DEPDIR)/libfonts_la-glyph.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph.cpp' object='libfonts_la-glyph.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-glyph.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph.lo `test -f 'glyph.cpp' || echo '$(srcdir)/'`glyph.cpp
-
-libfonts_la-glyph2d.o: glyph2d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph2d.o -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph2d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph2d.o `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph2d.Tpo" "$(DEPDIR)/libfonts_la-glyph2d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph2d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph2d.cpp' object='libfonts_la-glyph2d.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph2d.Po' tmpdepfile='$(DEPDIR)/libfonts_la-glyph2d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph2d.o `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp
-
-libfonts_la-glyph2d.obj: glyph2d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph2d.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph2d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph2d.obj `if test -f 'glyph2d.cpp'; then $(CYGPATH_W) 'glyph2d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph2d.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph2d.Tpo" "$(DEPDIR)/libfonts_la-glyph2d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph2d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph2d.cpp' object='libfonts_la-glyph2d.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph2d.Po' tmpdepfile='$(DEPDIR)/libfonts_la-glyph2d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph2d.obj `if test -f 'glyph2d.cpp'; then $(CYGPATH_W) 'glyph2d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph2d.cpp'; fi`
-
-libfonts_la-glyph2d.lo: glyph2d.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph2d.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph2d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph2d.lo `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph2d.Tpo" "$(DEPDIR)/libfonts_la-glyph2d.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph2d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph2d.cpp' object='libfonts_la-glyph2d.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph2d.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-glyph2d.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph2d.lo `test -f 'glyph2d.cpp' || echo '$(srcdir)/'`glyph2d.cpp
-
-libfonts_la-glyph3d.o: glyph3d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph3d.o -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph3d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph3d.o `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph3d.Tpo" "$(DEPDIR)/libfonts_la-glyph3d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph3d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph3d.cpp' object='libfonts_la-glyph3d.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph3d.Po' tmpdepfile='$(DEPDIR)/libfonts_la-glyph3d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph3d.o `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp
-
-libfonts_la-glyph3d.obj: glyph3d.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph3d.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph3d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph3d.obj `if test -f 'glyph3d.cpp'; then $(CYGPATH_W) 'glyph3d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph3d.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph3d.Tpo" "$(DEPDIR)/libfonts_la-glyph3d.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph3d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph3d.cpp' object='libfonts_la-glyph3d.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph3d.Po' tmpdepfile='$(DEPDIR)/libfonts_la-glyph3d.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph3d.obj `if test -f 'glyph3d.cpp'; then $(CYGPATH_W) 'glyph3d.cpp'; else $(CYGPATH_W) '$(srcdir)/glyph3d.cpp'; fi`
-
-libfonts_la-glyph3d.lo: glyph3d.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-glyph3d.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-glyph3d.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-glyph3d.lo `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-glyph3d.Tpo" "$(DEPDIR)/libfonts_la-glyph3d.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-glyph3d.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='glyph3d.cpp' object='libfonts_la-glyph3d.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-glyph3d.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-glyph3d.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-glyph3d.lo `test -f 'glyph3d.cpp' || echo '$(srcdir)/'`glyph3d.cpp
-
-libfonts_la-default3dfont.o: default3dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-default3dfont.o -MD -MP -MF "$(DEPDIR)/libfonts_la-default3dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-default3dfont.o `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-default3dfont.Tpo" "$(DEPDIR)/libfonts_la-default3dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-default3dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default3dfont.cpp' object='libfonts_la-default3dfont.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-default3dfont.Po' tmpdepfile='$(DEPDIR)/libfonts_la-default3dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-default3dfont.o `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp
-
-libfonts_la-default3dfont.obj: default3dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-default3dfont.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-default3dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-default3dfont.obj `if test -f 'default3dfont.cpp'; then $(CYGPATH_W) 'default3dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default3dfont.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-default3dfont.Tpo" "$(DEPDIR)/libfonts_la-default3dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-default3dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default3dfont.cpp' object='libfonts_la-default3dfont.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-default3dfont.Po' tmpdepfile='$(DEPDIR)/libfonts_la-default3dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-default3dfont.obj `if test -f 'default3dfont.cpp'; then $(CYGPATH_W) 'default3dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default3dfont.cpp'; fi`
-
-libfonts_la-default3dfont.lo: default3dfont.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-default3dfont.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-default3dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-default3dfont.lo `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-default3dfont.Tpo" "$(DEPDIR)/libfonts_la-default3dfont.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-default3dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default3dfont.cpp' object='libfonts_la-default3dfont.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-default3dfont.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-default3dfont.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-default3dfont.lo `test -f 'default3dfont.cpp' || echo '$(srcdir)/'`default3dfont.cpp
-
-libfonts_la-default2dfont.o: default2dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-default2dfont.o -MD -MP -MF "$(DEPDIR)/libfonts_la-default2dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-default2dfont.o `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-default2dfont.Tpo" "$(DEPDIR)/libfonts_la-default2dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-default2dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default2dfont.cpp' object='libfonts_la-default2dfont.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-default2dfont.Po' tmpdepfile='$(DEPDIR)/libfonts_la-default2dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-default2dfont.o `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp
-
-libfonts_la-default2dfont.obj: default2dfont.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-default2dfont.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-default2dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-default2dfont.obj `if test -f 'default2dfont.cpp'; then $(CYGPATH_W) 'default2dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default2dfont.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-default2dfont.Tpo" "$(DEPDIR)/libfonts_la-default2dfont.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-default2dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default2dfont.cpp' object='libfonts_la-default2dfont.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-default2dfont.Po' tmpdepfile='$(DEPDIR)/libfonts_la-default2dfont.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-default2dfont.obj `if test -f 'default2dfont.cpp'; then $(CYGPATH_W) 'default2dfont.cpp'; else $(CYGPATH_W) '$(srcdir)/default2dfont.cpp'; fi`
-
-libfonts_la-default2dfont.lo: default2dfont.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-default2dfont.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-default2dfont.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-default2dfont.lo `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-default2dfont.Tpo" "$(DEPDIR)/libfonts_la-default2dfont.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-default2dfont.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='default2dfont.cpp' object='libfonts_la-default2dfont.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-default2dfont.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-default2dfont.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-default2dfont.lo `test -f 'default2dfont.cpp' || echo '$(srcdir)/'`default2dfont.cpp
-
-libfonts_la-common.o: common.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-common.o -MD -MP -MF "$(DEPDIR)/libfonts_la-common.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-common.Tpo" "$(DEPDIR)/libfonts_la-common.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-common.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common.cpp' object='libfonts_la-common.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-common.Po' tmpdepfile='$(DEPDIR)/libfonts_la-common.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-common.o `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
-
-libfonts_la-common.obj: common.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-common.obj -MD -MP -MF "$(DEPDIR)/libfonts_la-common.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-common.Tpo" "$(DEPDIR)/libfonts_la-common.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-common.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common.cpp' object='libfonts_la-common.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-common.Po' tmpdepfile='$(DEPDIR)/libfonts_la-common.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-common.obj `if test -f 'common.cpp'; then $(CYGPATH_W) 'common.cpp'; else $(CYGPATH_W) '$(srcdir)/common.cpp'; fi`
-
-libfonts_la-common.lo: common.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -MT libfonts_la-common.lo -MD -MP -MF "$(DEPDIR)/libfonts_la-common.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libfonts_la-common.lo `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libfonts_la-common.Tpo" "$(DEPDIR)/libfonts_la-common.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libfonts_la-common.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='common.cpp' object='libfonts_la-common.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libfonts_la-common.Plo' tmpdepfile='$(DEPDIR)/libfonts_la-common.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libfonts_la_CXXFLAGS) $(CXXFLAGS) -c -o libfonts_la-common.lo `test -f 'common.cpp' || echo '$(srcdir)/'`common.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

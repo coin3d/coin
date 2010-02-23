@@ -340,9 +340,6 @@ EXTRA_libcaches_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libcaches_la_CXXFLAGS = $(AM_CXXFLAGS)
-libcaches_la_CFLAGS = $(AM_CFLAGS)
-
 libcaches@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -352,9 +349,6 @@ caches_lst_SOURCES = $(BuildSources)
 EXTRA_caches_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-caches_lst_CXXFLAGS = $(AM_CXXFLAGS)
-caches_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/caches
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -370,18 +364,13 @@ am__caches_lst_SOURCES_DIST = SoBoundingBoxCache.cpp SoCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
 	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp \
 	SoShaderProgramCache.cpp SoVBOCache.cpp all-caches-cpp.cpp
-am__objects_1 = caches_lst-all-caches-cpp.$(OBJEXT)
-am__objects_2 = caches_lst-SoBoundingBoxCache.$(OBJEXT) \
-	caches_lst-SoCache.$(OBJEXT) \
-	caches_lst-SoConvexDataCache.$(OBJEXT) \
-	caches_lst-SoGLCacheList.$(OBJEXT) \
-	caches_lst-SoGLRenderCache.$(OBJEXT) \
-	caches_lst-SoNormalCache.$(OBJEXT) \
-	caches_lst-SoTextureCoordinateCache.$(OBJEXT) \
-	caches_lst-SoPrimitiveVertexCache.$(OBJEXT) \
-	caches_lst-SoGlyphCache.$(OBJEXT) \
-	caches_lst-SoShaderProgramCache.$(OBJEXT) \
-	caches_lst-SoVBOCache.$(OBJEXT)
+am__objects_1 = all-caches-cpp.$(OBJEXT)
+am__objects_2 = SoBoundingBoxCache.$(OBJEXT) SoCache.$(OBJEXT) \
+	SoConvexDataCache.$(OBJEXT) SoGLCacheList.$(OBJEXT) \
+	SoGLRenderCache.$(OBJEXT) SoNormalCache.$(OBJEXT) \
+	SoTextureCoordinateCache.$(OBJEXT) \
+	SoPrimitiveVertexCache.$(OBJEXT) SoGlyphCache.$(OBJEXT) \
+	SoShaderProgramCache.$(OBJEXT) SoVBOCache.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_caches_lst_OBJECTS = $(am__objects_3)
@@ -401,15 +390,11 @@ am__libcaches_la_SOURCES_DIST = SoBoundingBoxCache.cpp SoCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
 	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp \
 	SoShaderProgramCache.cpp SoVBOCache.cpp all-caches-cpp.cpp
-am__objects_6 = libcaches_la-all-caches-cpp.lo
-am__objects_7 = libcaches_la-SoBoundingBoxCache.lo \
-	libcaches_la-SoCache.lo libcaches_la-SoConvexDataCache.lo \
-	libcaches_la-SoGLCacheList.lo libcaches_la-SoGLRenderCache.lo \
-	libcaches_la-SoNormalCache.lo \
-	libcaches_la-SoTextureCoordinateCache.lo \
-	libcaches_la-SoPrimitiveVertexCache.lo \
-	libcaches_la-SoGlyphCache.lo \
-	libcaches_la-SoShaderProgramCache.lo libcaches_la-SoVBOCache.lo
+am__objects_6 = all-caches-cpp.lo
+am__objects_7 = SoBoundingBoxCache.lo SoCache.lo SoConvexDataCache.lo \
+	SoGLCacheList.lo SoGLRenderCache.lo SoNormalCache.lo \
+	SoTextureCoordinateCache.lo SoPrimitiveVertexCache.lo \
+	SoGlyphCache.lo SoShaderProgramCache.lo SoVBOCache.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libcaches_la_OBJECTS = $(am__objects_8)
@@ -428,14 +413,7 @@ am__libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoundingBoxCache.cpp \
 	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
 	SoGlyphCache.cpp SoShaderProgramCache.cpp SoVBOCache.cpp \
 	all-caches-cpp.cpp
-am__objects_10 = all-caches-cpp.lo
-am__objects_11 = SoBoundingBoxCache.lo SoCache.lo SoConvexDataCache.lo \
-	SoGLCacheList.lo SoGLRenderCache.lo SoNormalCache.lo \
-	SoTextureCoordinateCache.lo SoPrimitiveVertexCache.lo \
-	SoGlyphCache.lo SoShaderProgramCache.lo SoVBOCache.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libcaches@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libcaches@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGlyphCache.h \
 	SoShaderProgramCache.h SoVBOCache.h all-caches-cpp.cpp \
 	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
@@ -447,41 +425,28 @@ libcaches@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoBoundingBoxCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBoundingBoxCache.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoCache.Plo ./$(DEPDIR)/SoCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoConvexDataCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoConvexDataCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLCacheList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCacheList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLRenderCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLRenderCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGlyphCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGlyphCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNormalCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPrimitiveVertexCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoPrimitiveVertexCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShaderProgramCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderProgramCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVBOCache.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVBOCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoBoundingBoxCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoConvexDataCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoGLCacheList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoGLRenderCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoGlyphCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoNormalCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoShaderProgramCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-SoVBOCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/caches_lst-all-caches-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoConvexDataCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoGLCacheList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoGLRenderCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoGlyphCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoNormalCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoShaderProgramCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-SoVBOCache.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libcaches_la-all-caches-cpp.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -569,41 +534,29 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBoundingBoxCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBoundingBoxCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoConvexDataCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoConvexDataCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCacheList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCacheList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLRenderCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLRenderCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGlyphCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGlyphCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPrimitiveVertexCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPrimitiveVertexCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderProgramCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderProgramCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVBOCache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVBOCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoBoundingBoxCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoConvexDataCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoGLCacheList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoGLRenderCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoGlyphCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoNormalCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoShaderProgramCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-SoVBOCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caches_lst-all-caches-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoConvexDataCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoGLCacheList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoGLRenderCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoGlyphCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoNormalCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoShaderProgramCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-SoVBOCache.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcaches_la-all-caches-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -640,798 +593,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-caches_lst-all-caches-cpp.o: all-caches-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-all-caches-cpp.o -MD -MP -MF "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-all-caches-cpp.o `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo" "$(DEPDIR)/caches_lst-all-caches-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-caches-cpp.cpp' object='caches_lst-all-caches-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-all-caches-cpp.Po' tmpdepfile='$(DEPDIR)/caches_lst-all-caches-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-all-caches-cpp.o `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp
-
-caches_lst-all-caches-cpp.obj: all-caches-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-all-caches-cpp.obj -MD -MP -MF "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-all-caches-cpp.obj `if test -f 'all-caches-cpp.cpp'; then $(CYGPATH_W) 'all-caches-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-caches-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo" "$(DEPDIR)/caches_lst-all-caches-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-caches-cpp.cpp' object='caches_lst-all-caches-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-all-caches-cpp.Po' tmpdepfile='$(DEPDIR)/caches_lst-all-caches-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-all-caches-cpp.obj `if test -f 'all-caches-cpp.cpp'; then $(CYGPATH_W) 'all-caches-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-caches-cpp.cpp'; fi`
-
-caches_lst-all-caches-cpp.lo: all-caches-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-all-caches-cpp.lo -MD -MP -MF "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-all-caches-cpp.lo `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo" "$(DEPDIR)/caches_lst-all-caches-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-all-caches-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-caches-cpp.cpp' object='caches_lst-all-caches-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-all-caches-cpp.Plo' tmpdepfile='$(DEPDIR)/caches_lst-all-caches-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-all-caches-cpp.lo `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp
-
-caches_lst-SoBoundingBoxCache.o: SoBoundingBoxCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoBoundingBoxCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoBoundingBoxCache.o `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo" "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBoundingBoxCache.cpp' object='caches_lst-SoBoundingBoxCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoBoundingBoxCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoBoundingBoxCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoBoundingBoxCache.o `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp
-
-caches_lst-SoBoundingBoxCache.obj: SoBoundingBoxCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoBoundingBoxCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoBoundingBoxCache.obj `if test -f 'SoBoundingBoxCache.cpp'; then $(CYGPATH_W) 'SoBoundingBoxCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBoundingBoxCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo" "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBoundingBoxCache.cpp' object='caches_lst-SoBoundingBoxCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoBoundingBoxCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoBoundingBoxCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoBoundingBoxCache.obj `if test -f 'SoBoundingBoxCache.cpp'; then $(CYGPATH_W) 'SoBoundingBoxCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBoundingBoxCache.cpp'; fi`
-
-caches_lst-SoBoundingBoxCache.lo: SoBoundingBoxCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoBoundingBoxCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoBoundingBoxCache.lo `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo" "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoBoundingBoxCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBoundingBoxCache.cpp' object='caches_lst-SoBoundingBoxCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoBoundingBoxCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoBoundingBoxCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoBoundingBoxCache.lo `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp
-
-caches_lst-SoCache.o: SoCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoCache.o `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoCache.Tpo" "$(DEPDIR)/caches_lst-SoCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCache.cpp' object='caches_lst-SoCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoCache.o `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp
-
-caches_lst-SoCache.obj: SoCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoCache.obj `if test -f 'SoCache.cpp'; then $(CYGPATH_W) 'SoCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoCache.Tpo" "$(DEPDIR)/caches_lst-SoCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCache.cpp' object='caches_lst-SoCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoCache.obj `if test -f 'SoCache.cpp'; then $(CYGPATH_W) 'SoCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCache.cpp'; fi`
-
-caches_lst-SoCache.lo: SoCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoCache.lo `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoCache.Tpo" "$(DEPDIR)/caches_lst-SoCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCache.cpp' object='caches_lst-SoCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoCache.lo `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp
-
-caches_lst-SoConvexDataCache.o: SoConvexDataCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoConvexDataCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoConvexDataCache.o `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo" "$(DEPDIR)/caches_lst-SoConvexDataCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConvexDataCache.cpp' object='caches_lst-SoConvexDataCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoConvexDataCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoConvexDataCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoConvexDataCache.o `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp
-
-caches_lst-SoConvexDataCache.obj: SoConvexDataCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoConvexDataCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoConvexDataCache.obj `if test -f 'SoConvexDataCache.cpp'; then $(CYGPATH_W) 'SoConvexDataCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConvexDataCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo" "$(DEPDIR)/caches_lst-SoConvexDataCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConvexDataCache.cpp' object='caches_lst-SoConvexDataCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoConvexDataCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoConvexDataCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoConvexDataCache.obj `if test -f 'SoConvexDataCache.cpp'; then $(CYGPATH_W) 'SoConvexDataCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConvexDataCache.cpp'; fi`
-
-caches_lst-SoConvexDataCache.lo: SoConvexDataCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoConvexDataCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoConvexDataCache.lo `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo" "$(DEPDIR)/caches_lst-SoConvexDataCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoConvexDataCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConvexDataCache.cpp' object='caches_lst-SoConvexDataCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoConvexDataCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoConvexDataCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoConvexDataCache.lo `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp
-
-caches_lst-SoGLCacheList.o: SoGLCacheList.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGLCacheList.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGLCacheList.o `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo" "$(DEPDIR)/caches_lst-SoGLCacheList.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCacheList.cpp' object='caches_lst-SoGLCacheList.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGLCacheList.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoGLCacheList.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGLCacheList.o `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp
-
-caches_lst-SoGLCacheList.obj: SoGLCacheList.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGLCacheList.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGLCacheList.obj `if test -f 'SoGLCacheList.cpp'; then $(CYGPATH_W) 'SoGLCacheList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCacheList.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo" "$(DEPDIR)/caches_lst-SoGLCacheList.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCacheList.cpp' object='caches_lst-SoGLCacheList.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGLCacheList.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoGLCacheList.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGLCacheList.obj `if test -f 'SoGLCacheList.cpp'; then $(CYGPATH_W) 'SoGLCacheList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCacheList.cpp'; fi`
-
-caches_lst-SoGLCacheList.lo: SoGLCacheList.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGLCacheList.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGLCacheList.lo `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo" "$(DEPDIR)/caches_lst-SoGLCacheList.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGLCacheList.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCacheList.cpp' object='caches_lst-SoGLCacheList.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGLCacheList.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoGLCacheList.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGLCacheList.lo `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp
-
-caches_lst-SoGLRenderCache.o: SoGLRenderCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGLRenderCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGLRenderCache.o `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo" "$(DEPDIR)/caches_lst-SoGLRenderCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLRenderCache.cpp' object='caches_lst-SoGLRenderCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGLRenderCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoGLRenderCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGLRenderCache.o `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp
-
-caches_lst-SoGLRenderCache.obj: SoGLRenderCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGLRenderCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGLRenderCache.obj `if test -f 'SoGLRenderCache.cpp'; then $(CYGPATH_W) 'SoGLRenderCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLRenderCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo" "$(DEPDIR)/caches_lst-SoGLRenderCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLRenderCache.cpp' object='caches_lst-SoGLRenderCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGLRenderCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoGLRenderCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGLRenderCache.obj `if test -f 'SoGLRenderCache.cpp'; then $(CYGPATH_W) 'SoGLRenderCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLRenderCache.cpp'; fi`
-
-caches_lst-SoGLRenderCache.lo: SoGLRenderCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGLRenderCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGLRenderCache.lo `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo" "$(DEPDIR)/caches_lst-SoGLRenderCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGLRenderCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLRenderCache.cpp' object='caches_lst-SoGLRenderCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGLRenderCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoGLRenderCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGLRenderCache.lo `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp
-
-caches_lst-SoNormalCache.o: SoNormalCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoNormalCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoNormalCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoNormalCache.o `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoNormalCache.Tpo" "$(DEPDIR)/caches_lst-SoNormalCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoNormalCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalCache.cpp' object='caches_lst-SoNormalCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoNormalCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoNormalCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoNormalCache.o `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp
-
-caches_lst-SoNormalCache.obj: SoNormalCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoNormalCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoNormalCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoNormalCache.obj `if test -f 'SoNormalCache.cpp'; then $(CYGPATH_W) 'SoNormalCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoNormalCache.Tpo" "$(DEPDIR)/caches_lst-SoNormalCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoNormalCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalCache.cpp' object='caches_lst-SoNormalCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoNormalCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoNormalCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoNormalCache.obj `if test -f 'SoNormalCache.cpp'; then $(CYGPATH_W) 'SoNormalCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalCache.cpp'; fi`
-
-caches_lst-SoNormalCache.lo: SoNormalCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoNormalCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoNormalCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoNormalCache.lo `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoNormalCache.Tpo" "$(DEPDIR)/caches_lst-SoNormalCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoNormalCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalCache.cpp' object='caches_lst-SoNormalCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoNormalCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoNormalCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoNormalCache.lo `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp
-
-caches_lst-SoTextureCoordinateCache.o: SoTextureCoordinateCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoTextureCoordinateCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoTextureCoordinateCache.o `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo" "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateCache.cpp' object='caches_lst-SoTextureCoordinateCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoTextureCoordinateCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoTextureCoordinateCache.o `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp
-
-caches_lst-SoTextureCoordinateCache.obj: SoTextureCoordinateCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoTextureCoordinateCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoTextureCoordinateCache.obj `if test -f 'SoTextureCoordinateCache.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo" "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateCache.cpp' object='caches_lst-SoTextureCoordinateCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoTextureCoordinateCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoTextureCoordinateCache.obj `if test -f 'SoTextureCoordinateCache.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateCache.cpp'; fi`
-
-caches_lst-SoTextureCoordinateCache.lo: SoTextureCoordinateCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoTextureCoordinateCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoTextureCoordinateCache.lo `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo" "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateCache.cpp' object='caches_lst-SoTextureCoordinateCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoTextureCoordinateCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoTextureCoordinateCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoTextureCoordinateCache.lo `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp
-
-caches_lst-SoPrimitiveVertexCache.o: SoPrimitiveVertexCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoPrimitiveVertexCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoPrimitiveVertexCache.o `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo" "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPrimitiveVertexCache.cpp' object='caches_lst-SoPrimitiveVertexCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoPrimitiveVertexCache.o `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp
-
-caches_lst-SoPrimitiveVertexCache.obj: SoPrimitiveVertexCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoPrimitiveVertexCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoPrimitiveVertexCache.obj `if test -f 'SoPrimitiveVertexCache.cpp'; then $(CYGPATH_W) 'SoPrimitiveVertexCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPrimitiveVertexCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo" "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPrimitiveVertexCache.cpp' object='caches_lst-SoPrimitiveVertexCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoPrimitiveVertexCache.obj `if test -f 'SoPrimitiveVertexCache.cpp'; then $(CYGPATH_W) 'SoPrimitiveVertexCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPrimitiveVertexCache.cpp'; fi`
-
-caches_lst-SoPrimitiveVertexCache.lo: SoPrimitiveVertexCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoPrimitiveVertexCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoPrimitiveVertexCache.lo `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo" "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPrimitiveVertexCache.cpp' object='caches_lst-SoPrimitiveVertexCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoPrimitiveVertexCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoPrimitiveVertexCache.lo `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp
-
-caches_lst-SoGlyphCache.o: SoGlyphCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGlyphCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGlyphCache.o `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo" "$(DEPDIR)/caches_lst-SoGlyphCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGlyphCache.cpp' object='caches_lst-SoGlyphCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGlyphCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoGlyphCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGlyphCache.o `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp
-
-caches_lst-SoGlyphCache.obj: SoGlyphCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGlyphCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGlyphCache.obj `if test -f 'SoGlyphCache.cpp'; then $(CYGPATH_W) 'SoGlyphCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGlyphCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo" "$(DEPDIR)/caches_lst-SoGlyphCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGlyphCache.cpp' object='caches_lst-SoGlyphCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGlyphCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoGlyphCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGlyphCache.obj `if test -f 'SoGlyphCache.cpp'; then $(CYGPATH_W) 'SoGlyphCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGlyphCache.cpp'; fi`
-
-caches_lst-SoGlyphCache.lo: SoGlyphCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoGlyphCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoGlyphCache.lo `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo" "$(DEPDIR)/caches_lst-SoGlyphCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoGlyphCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGlyphCache.cpp' object='caches_lst-SoGlyphCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoGlyphCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoGlyphCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoGlyphCache.lo `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp
-
-caches_lst-SoShaderProgramCache.o: SoShaderProgramCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoShaderProgramCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoShaderProgramCache.o `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo" "$(DEPDIR)/caches_lst-SoShaderProgramCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShaderProgramCache.cpp' object='caches_lst-SoShaderProgramCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoShaderProgramCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoShaderProgramCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoShaderProgramCache.o `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp
-
-caches_lst-SoShaderProgramCache.obj: SoShaderProgramCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoShaderProgramCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoShaderProgramCache.obj `if test -f 'SoShaderProgramCache.cpp'; then $(CYGPATH_W) 'SoShaderProgramCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShaderProgramCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo" "$(DEPDIR)/caches_lst-SoShaderProgramCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShaderProgramCache.cpp' object='caches_lst-SoShaderProgramCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoShaderProgramCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoShaderProgramCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoShaderProgramCache.obj `if test -f 'SoShaderProgramCache.cpp'; then $(CYGPATH_W) 'SoShaderProgramCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShaderProgramCache.cpp'; fi`
-
-caches_lst-SoShaderProgramCache.lo: SoShaderProgramCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoShaderProgramCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoShaderProgramCache.lo `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo" "$(DEPDIR)/caches_lst-SoShaderProgramCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoShaderProgramCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShaderProgramCache.cpp' object='caches_lst-SoShaderProgramCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoShaderProgramCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoShaderProgramCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoShaderProgramCache.lo `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp
-
-caches_lst-SoVBOCache.o: SoVBOCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoVBOCache.o -MD -MP -MF "$(DEPDIR)/caches_lst-SoVBOCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoVBOCache.o `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoVBOCache.Tpo" "$(DEPDIR)/caches_lst-SoVBOCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoVBOCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBOCache.cpp' object='caches_lst-SoVBOCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoVBOCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoVBOCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoVBOCache.o `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp
-
-caches_lst-SoVBOCache.obj: SoVBOCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoVBOCache.obj -MD -MP -MF "$(DEPDIR)/caches_lst-SoVBOCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoVBOCache.obj `if test -f 'SoVBOCache.cpp'; then $(CYGPATH_W) 'SoVBOCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBOCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoVBOCache.Tpo" "$(DEPDIR)/caches_lst-SoVBOCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoVBOCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBOCache.cpp' object='caches_lst-SoVBOCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoVBOCache.Po' tmpdepfile='$(DEPDIR)/caches_lst-SoVBOCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoVBOCache.obj `if test -f 'SoVBOCache.cpp'; then $(CYGPATH_W) 'SoVBOCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBOCache.cpp'; fi`
-
-caches_lst-SoVBOCache.lo: SoVBOCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -MT caches_lst-SoVBOCache.lo -MD -MP -MF "$(DEPDIR)/caches_lst-SoVBOCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o caches_lst-SoVBOCache.lo `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/caches_lst-SoVBOCache.Tpo" "$(DEPDIR)/caches_lst-SoVBOCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/caches_lst-SoVBOCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBOCache.cpp' object='caches_lst-SoVBOCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/caches_lst-SoVBOCache.Plo' tmpdepfile='$(DEPDIR)/caches_lst-SoVBOCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(caches_lst_CXXFLAGS) $(CXXFLAGS) -c -o caches_lst-SoVBOCache.lo `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp
-
-libcaches_la-all-caches-cpp.o: all-caches-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-all-caches-cpp.o -MD -MP -MF "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-all-caches-cpp.o `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo" "$(DEPDIR)/libcaches_la-all-caches-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-caches-cpp.cpp' object='libcaches_la-all-caches-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-all-caches-cpp.Po' tmpdepfile='$(DEPDIR)/libcaches_la-all-caches-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-all-caches-cpp.o `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp
-
-libcaches_la-all-caches-cpp.obj: all-caches-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-all-caches-cpp.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-all-caches-cpp.obj `if test -f 'all-caches-cpp.cpp'; then $(CYGPATH_W) 'all-caches-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-caches-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo" "$(DEPDIR)/libcaches_la-all-caches-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-caches-cpp.cpp' object='libcaches_la-all-caches-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-all-caches-cpp.Po' tmpdepfile='$(DEPDIR)/libcaches_la-all-caches-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-all-caches-cpp.obj `if test -f 'all-caches-cpp.cpp'; then $(CYGPATH_W) 'all-caches-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-caches-cpp.cpp'; fi`
-
-libcaches_la-all-caches-cpp.lo: all-caches-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-all-caches-cpp.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-all-caches-cpp.lo `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo" "$(DEPDIR)/libcaches_la-all-caches-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-all-caches-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-caches-cpp.cpp' object='libcaches_la-all-caches-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-all-caches-cpp.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-all-caches-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-all-caches-cpp.lo `test -f 'all-caches-cpp.cpp' || echo '$(srcdir)/'`all-caches-cpp.cpp
-
-libcaches_la-SoBoundingBoxCache.o: SoBoundingBoxCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoBoundingBoxCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoBoundingBoxCache.o `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo" "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBoundingBoxCache.cpp' object='libcaches_la-SoBoundingBoxCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoBoundingBoxCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoBoundingBoxCache.o `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp
-
-libcaches_la-SoBoundingBoxCache.obj: SoBoundingBoxCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoBoundingBoxCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoBoundingBoxCache.obj `if test -f 'SoBoundingBoxCache.cpp'; then $(CYGPATH_W) 'SoBoundingBoxCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBoundingBoxCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo" "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBoundingBoxCache.cpp' object='libcaches_la-SoBoundingBoxCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoBoundingBoxCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoBoundingBoxCache.obj `if test -f 'SoBoundingBoxCache.cpp'; then $(CYGPATH_W) 'SoBoundingBoxCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBoundingBoxCache.cpp'; fi`
-
-libcaches_la-SoBoundingBoxCache.lo: SoBoundingBoxCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoBoundingBoxCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoBoundingBoxCache.lo `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo" "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBoundingBoxCache.cpp' object='libcaches_la-SoBoundingBoxCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoBoundingBoxCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoBoundingBoxCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoBoundingBoxCache.lo `test -f 'SoBoundingBoxCache.cpp' || echo '$(srcdir)/'`SoBoundingBoxCache.cpp
-
-libcaches_la-SoCache.o: SoCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoCache.o `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoCache.Tpo" "$(DEPDIR)/libcaches_la-SoCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCache.cpp' object='libcaches_la-SoCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoCache.o `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp
-
-libcaches_la-SoCache.obj: SoCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoCache.obj `if test -f 'SoCache.cpp'; then $(CYGPATH_W) 'SoCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoCache.Tpo" "$(DEPDIR)/libcaches_la-SoCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCache.cpp' object='libcaches_la-SoCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoCache.obj `if test -f 'SoCache.cpp'; then $(CYGPATH_W) 'SoCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCache.cpp'; fi`
-
-libcaches_la-SoCache.lo: SoCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoCache.lo `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoCache.Tpo" "$(DEPDIR)/libcaches_la-SoCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCache.cpp' object='libcaches_la-SoCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoCache.lo `test -f 'SoCache.cpp' || echo '$(srcdir)/'`SoCache.cpp
-
-libcaches_la-SoConvexDataCache.o: SoConvexDataCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoConvexDataCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoConvexDataCache.o `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo" "$(DEPDIR)/libcaches_la-SoConvexDataCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConvexDataCache.cpp' object='libcaches_la-SoConvexDataCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoConvexDataCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoConvexDataCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoConvexDataCache.o `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp
-
-libcaches_la-SoConvexDataCache.obj: SoConvexDataCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoConvexDataCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoConvexDataCache.obj `if test -f 'SoConvexDataCache.cpp'; then $(CYGPATH_W) 'SoConvexDataCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConvexDataCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo" "$(DEPDIR)/libcaches_la-SoConvexDataCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConvexDataCache.cpp' object='libcaches_la-SoConvexDataCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoConvexDataCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoConvexDataCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoConvexDataCache.obj `if test -f 'SoConvexDataCache.cpp'; then $(CYGPATH_W) 'SoConvexDataCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConvexDataCache.cpp'; fi`
-
-libcaches_la-SoConvexDataCache.lo: SoConvexDataCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoConvexDataCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoConvexDataCache.lo `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo" "$(DEPDIR)/libcaches_la-SoConvexDataCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoConvexDataCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConvexDataCache.cpp' object='libcaches_la-SoConvexDataCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoConvexDataCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoConvexDataCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoConvexDataCache.lo `test -f 'SoConvexDataCache.cpp' || echo '$(srcdir)/'`SoConvexDataCache.cpp
-
-libcaches_la-SoGLCacheList.o: SoGLCacheList.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGLCacheList.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGLCacheList.o `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo" "$(DEPDIR)/libcaches_la-SoGLCacheList.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCacheList.cpp' object='libcaches_la-SoGLCacheList.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGLCacheList.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoGLCacheList.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGLCacheList.o `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp
-
-libcaches_la-SoGLCacheList.obj: SoGLCacheList.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGLCacheList.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGLCacheList.obj `if test -f 'SoGLCacheList.cpp'; then $(CYGPATH_W) 'SoGLCacheList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCacheList.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo" "$(DEPDIR)/libcaches_la-SoGLCacheList.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCacheList.cpp' object='libcaches_la-SoGLCacheList.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGLCacheList.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoGLCacheList.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGLCacheList.obj `if test -f 'SoGLCacheList.cpp'; then $(CYGPATH_W) 'SoGLCacheList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCacheList.cpp'; fi`
-
-libcaches_la-SoGLCacheList.lo: SoGLCacheList.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGLCacheList.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGLCacheList.lo `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo" "$(DEPDIR)/libcaches_la-SoGLCacheList.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGLCacheList.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCacheList.cpp' object='libcaches_la-SoGLCacheList.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGLCacheList.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoGLCacheList.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGLCacheList.lo `test -f 'SoGLCacheList.cpp' || echo '$(srcdir)/'`SoGLCacheList.cpp
-
-libcaches_la-SoGLRenderCache.o: SoGLRenderCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGLRenderCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGLRenderCache.o `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo" "$(DEPDIR)/libcaches_la-SoGLRenderCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLRenderCache.cpp' object='libcaches_la-SoGLRenderCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGLRenderCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoGLRenderCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGLRenderCache.o `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp
-
-libcaches_la-SoGLRenderCache.obj: SoGLRenderCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGLRenderCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGLRenderCache.obj `if test -f 'SoGLRenderCache.cpp'; then $(CYGPATH_W) 'SoGLRenderCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLRenderCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo" "$(DEPDIR)/libcaches_la-SoGLRenderCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLRenderCache.cpp' object='libcaches_la-SoGLRenderCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGLRenderCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoGLRenderCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGLRenderCache.obj `if test -f 'SoGLRenderCache.cpp'; then $(CYGPATH_W) 'SoGLRenderCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLRenderCache.cpp'; fi`
-
-libcaches_la-SoGLRenderCache.lo: SoGLRenderCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGLRenderCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGLRenderCache.lo `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo" "$(DEPDIR)/libcaches_la-SoGLRenderCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGLRenderCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLRenderCache.cpp' object='libcaches_la-SoGLRenderCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGLRenderCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoGLRenderCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGLRenderCache.lo `test -f 'SoGLRenderCache.cpp' || echo '$(srcdir)/'`SoGLRenderCache.cpp
-
-libcaches_la-SoNormalCache.o: SoNormalCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoNormalCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoNormalCache.o `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo" "$(DEPDIR)/libcaches_la-SoNormalCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalCache.cpp' object='libcaches_la-SoNormalCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoNormalCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoNormalCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoNormalCache.o `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp
-
-libcaches_la-SoNormalCache.obj: SoNormalCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoNormalCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoNormalCache.obj `if test -f 'SoNormalCache.cpp'; then $(CYGPATH_W) 'SoNormalCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo" "$(DEPDIR)/libcaches_la-SoNormalCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalCache.cpp' object='libcaches_la-SoNormalCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoNormalCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoNormalCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoNormalCache.obj `if test -f 'SoNormalCache.cpp'; then $(CYGPATH_W) 'SoNormalCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNormalCache.cpp'; fi`
-
-libcaches_la-SoNormalCache.lo: SoNormalCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoNormalCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoNormalCache.lo `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo" "$(DEPDIR)/libcaches_la-SoNormalCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoNormalCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNormalCache.cpp' object='libcaches_la-SoNormalCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoNormalCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoNormalCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoNormalCache.lo `test -f 'SoNormalCache.cpp' || echo '$(srcdir)/'`SoNormalCache.cpp
-
-libcaches_la-SoTextureCoordinateCache.o: SoTextureCoordinateCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoTextureCoordinateCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoTextureCoordinateCache.o `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo" "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateCache.cpp' object='libcaches_la-SoTextureCoordinateCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoTextureCoordinateCache.o `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp
-
-libcaches_la-SoTextureCoordinateCache.obj: SoTextureCoordinateCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoTextureCoordinateCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoTextureCoordinateCache.obj `if test -f 'SoTextureCoordinateCache.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo" "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateCache.cpp' object='libcaches_la-SoTextureCoordinateCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoTextureCoordinateCache.obj `if test -f 'SoTextureCoordinateCache.cpp'; then $(CYGPATH_W) 'SoTextureCoordinateCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextureCoordinateCache.cpp'; fi`
-
-libcaches_la-SoTextureCoordinateCache.lo: SoTextureCoordinateCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoTextureCoordinateCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoTextureCoordinateCache.lo `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo" "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextureCoordinateCache.cpp' object='libcaches_la-SoTextureCoordinateCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoTextureCoordinateCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoTextureCoordinateCache.lo `test -f 'SoTextureCoordinateCache.cpp' || echo '$(srcdir)/'`SoTextureCoordinateCache.cpp
-
-libcaches_la-SoPrimitiveVertexCache.o: SoPrimitiveVertexCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoPrimitiveVertexCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoPrimitiveVertexCache.o `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo" "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPrimitiveVertexCache.cpp' object='libcaches_la-SoPrimitiveVertexCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoPrimitiveVertexCache.o `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp
-
-libcaches_la-SoPrimitiveVertexCache.obj: SoPrimitiveVertexCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoPrimitiveVertexCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoPrimitiveVertexCache.obj `if test -f 'SoPrimitiveVertexCache.cpp'; then $(CYGPATH_W) 'SoPrimitiveVertexCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPrimitiveVertexCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo" "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPrimitiveVertexCache.cpp' object='libcaches_la-SoPrimitiveVertexCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoPrimitiveVertexCache.obj `if test -f 'SoPrimitiveVertexCache.cpp'; then $(CYGPATH_W) 'SoPrimitiveVertexCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPrimitiveVertexCache.cpp'; fi`
-
-libcaches_la-SoPrimitiveVertexCache.lo: SoPrimitiveVertexCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoPrimitiveVertexCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoPrimitiveVertexCache.lo `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo" "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPrimitiveVertexCache.cpp' object='libcaches_la-SoPrimitiveVertexCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoPrimitiveVertexCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoPrimitiveVertexCache.lo `test -f 'SoPrimitiveVertexCache.cpp' || echo '$(srcdir)/'`SoPrimitiveVertexCache.cpp
-
-libcaches_la-SoGlyphCache.o: SoGlyphCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGlyphCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGlyphCache.o `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo" "$(DEPDIR)/libcaches_la-SoGlyphCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGlyphCache.cpp' object='libcaches_la-SoGlyphCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGlyphCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoGlyphCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGlyphCache.o `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp
-
-libcaches_la-SoGlyphCache.obj: SoGlyphCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGlyphCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGlyphCache.obj `if test -f 'SoGlyphCache.cpp'; then $(CYGPATH_W) 'SoGlyphCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGlyphCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo" "$(DEPDIR)/libcaches_la-SoGlyphCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGlyphCache.cpp' object='libcaches_la-SoGlyphCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGlyphCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoGlyphCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGlyphCache.obj `if test -f 'SoGlyphCache.cpp'; then $(CYGPATH_W) 'SoGlyphCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGlyphCache.cpp'; fi`
-
-libcaches_la-SoGlyphCache.lo: SoGlyphCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoGlyphCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoGlyphCache.lo `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo" "$(DEPDIR)/libcaches_la-SoGlyphCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoGlyphCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGlyphCache.cpp' object='libcaches_la-SoGlyphCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoGlyphCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoGlyphCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoGlyphCache.lo `test -f 'SoGlyphCache.cpp' || echo '$(srcdir)/'`SoGlyphCache.cpp
-
-libcaches_la-SoShaderProgramCache.o: SoShaderProgramCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoShaderProgramCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoShaderProgramCache.o `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo" "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShaderProgramCache.cpp' object='libcaches_la-SoShaderProgramCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoShaderProgramCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoShaderProgramCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoShaderProgramCache.o `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp
-
-libcaches_la-SoShaderProgramCache.obj: SoShaderProgramCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoShaderProgramCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoShaderProgramCache.obj `if test -f 'SoShaderProgramCache.cpp'; then $(CYGPATH_W) 'SoShaderProgramCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShaderProgramCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo" "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShaderProgramCache.cpp' object='libcaches_la-SoShaderProgramCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoShaderProgramCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoShaderProgramCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoShaderProgramCache.obj `if test -f 'SoShaderProgramCache.cpp'; then $(CYGPATH_W) 'SoShaderProgramCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShaderProgramCache.cpp'; fi`
-
-libcaches_la-SoShaderProgramCache.lo: SoShaderProgramCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoShaderProgramCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoShaderProgramCache.lo `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo" "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoShaderProgramCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShaderProgramCache.cpp' object='libcaches_la-SoShaderProgramCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoShaderProgramCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoShaderProgramCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoShaderProgramCache.lo `test -f 'SoShaderProgramCache.cpp' || echo '$(srcdir)/'`SoShaderProgramCache.cpp
-
-libcaches_la-SoVBOCache.o: SoVBOCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoVBOCache.o -MD -MP -MF "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoVBOCache.o `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo" "$(DEPDIR)/libcaches_la-SoVBOCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBOCache.cpp' object='libcaches_la-SoVBOCache.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoVBOCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoVBOCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoVBOCache.o `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp
-
-libcaches_la-SoVBOCache.obj: SoVBOCache.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoVBOCache.obj -MD -MP -MF "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoVBOCache.obj `if test -f 'SoVBOCache.cpp'; then $(CYGPATH_W) 'SoVBOCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBOCache.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo" "$(DEPDIR)/libcaches_la-SoVBOCache.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBOCache.cpp' object='libcaches_la-SoVBOCache.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoVBOCache.Po' tmpdepfile='$(DEPDIR)/libcaches_la-SoVBOCache.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoVBOCache.obj `if test -f 'SoVBOCache.cpp'; then $(CYGPATH_W) 'SoVBOCache.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBOCache.cpp'; fi`
-
-libcaches_la-SoVBOCache.lo: SoVBOCache.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -MT libcaches_la-SoVBOCache.lo -MD -MP -MF "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libcaches_la-SoVBOCache.lo `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo" "$(DEPDIR)/libcaches_la-SoVBOCache.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libcaches_la-SoVBOCache.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBOCache.cpp' object='libcaches_la-SoVBOCache.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libcaches_la-SoVBOCache.Plo' tmpdepfile='$(DEPDIR)/libcaches_la-SoVBOCache.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcaches_la_CXXFLAGS) $(CXXFLAGS) -c -o libcaches_la-SoVBOCache.lo `test -f 'SoVBOCache.cpp' || echo '$(srcdir)/'`SoVBOCache.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -335,9 +335,6 @@ EXTRA_libformat3ds_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libformat3ds_la_CXXFLAGS = $(AM_CXXFLAGS)
-libformat3ds_la_CFLAGS = $(AM_CFLAGS)
-
 libformat3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -347,9 +344,6 @@ format3ds_lst_SOURCES = $(BuildSources)
 EXTRA_format3ds_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-format3ds_lst_CXXFLAGS = $(AM_CXXFLAGS)
-format3ds_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/3ds
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -362,15 +356,11 @@ format3ds_lst_AR = $(AR) cru
 format3ds_lst_LIBADD =
 am__format3ds_lst_SOURCES_DIST = 3dsLoader.cpp SoStream.cpp \
 	3ds-dummy.cpp all-3ds-cpp.cpp
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_1 = \
-@BUILD_3DS_CAPABILITIES_TRUE@	format3ds_lst-all-3ds-cpp.$(OBJEXT)
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_1 = \
-@BUILD_3DS_CAPABILITIES_FALSE@	format3ds_lst-3ds-dummy.$(OBJEXT)
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_2 = \
-@BUILD_3DS_CAPABILITIES_TRUE@	format3ds_lst-3dsLoader.$(OBJEXT) \
-@BUILD_3DS_CAPABILITIES_TRUE@	format3ds_lst-SoStream.$(OBJEXT)
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_2 = \
-@BUILD_3DS_CAPABILITIES_FALSE@	format3ds_lst-3ds-dummy.$(OBJEXT)
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_1 = all-3ds-cpp.$(OBJEXT)
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_1 = 3ds-dummy.$(OBJEXT)
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_2 = 3dsLoader.$(OBJEXT) \
+@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.$(OBJEXT)
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_2 = 3ds-dummy.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_format3ds_lst_OBJECTS = $(am__objects_3)
@@ -383,15 +373,10 @@ libformat3ds_la_LDFLAGS =
 libformat3ds_la_LIBADD =
 am__libformat3ds_la_SOURCES_DIST = 3dsLoader.cpp SoStream.cpp \
 	3ds-dummy.cpp all-3ds-cpp.cpp
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_7 = \
-@BUILD_3DS_CAPABILITIES_TRUE@	libformat3ds_la-all-3ds-cpp.lo
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_7 = \
-@BUILD_3DS_CAPABILITIES_FALSE@	libformat3ds_la-3ds-dummy.lo
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_8 = \
-@BUILD_3DS_CAPABILITIES_TRUE@	libformat3ds_la-3dsLoader.lo \
-@BUILD_3DS_CAPABILITIES_TRUE@	libformat3ds_la-SoStream.lo
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_8 = \
-@BUILD_3DS_CAPABILITIES_FALSE@	libformat3ds_la-3ds-dummy.lo
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_7 = all-3ds-cpp.lo
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_7 = 3ds-dummy.lo
+@BUILD_3DS_CAPABILITIES_TRUE@am__objects_8 = 3dsLoader.lo SoStream.lo
+@BUILD_3DS_CAPABILITIES_FALSE@am__objects_8 = 3ds-dummy.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libformat3ds_la_OBJECTS = $(am__objects_9)
@@ -402,13 +387,7 @@ libformat3ds@SUFFIX@LINKHACK_la_LDFLAGS =
 libformat3ds@SUFFIX@LINKHACK_la_LIBADD =
 am__libformat3ds@SUFFIX@LINKHACK_la_SOURCES_DIST = 3dsLoader.cpp \
 	SoStream.cpp 3ds-dummy.cpp all-3ds-cpp.cpp
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_12 = all-3ds-cpp.lo
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_12 = 3ds-dummy.lo
-@BUILD_3DS_CAPABILITIES_TRUE@am__objects_13 = 3dsLoader.lo SoStream.lo
-@BUILD_3DS_CAPABILITIES_FALSE@am__objects_13 = 3ds-dummy.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_14 = $(am__objects_12)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_14 = $(am__objects_13)
-am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_14)
+am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES_DIST = 3dsLoader.h \
 	SoStream.h 3ds-dummy.cpp 3dsLoader.cpp SoStream.cpp \
 	all-3ds-cpp.cpp
@@ -417,16 +396,10 @@ libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/3ds-dummy.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/3dsLoader.Plo ./$(DEPDIR)/SoStream.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-3ds-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/format3ds_lst-3ds-dummy.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/format3ds_lst-3dsLoader.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/format3ds_lst-SoStream.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/format3ds_lst-all-3ds-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/libformat3ds_la-3ds-dummy.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libformat3ds_la-3dsLoader.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libformat3ds_la-SoStream.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/3ds-dummy.Po ./$(DEPDIR)/3dsLoader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/3dsLoader.Po ./$(DEPDIR)/SoStream.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoStream.Po ./$(DEPDIR)/all-3ds-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-3ds-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -514,17 +487,13 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/3ds-dummy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/3ds-dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/3dsLoader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/3dsLoader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoStream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoStream.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-3ds-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/format3ds_lst-3ds-dummy.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/format3ds_lst-3dsLoader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/format3ds_lst-SoStream.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/format3ds_lst-all-3ds-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libformat3ds_la-3ds-dummy.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libformat3ds_la-3dsLoader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libformat3ds_la-SoStream.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-3ds-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -561,270 +530,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-format3ds_lst-all-3ds-cpp.o: all-3ds-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-all-3ds-cpp.o -MD -MP -MF "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-all-3ds-cpp.o `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo" "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-3ds-cpp.cpp' object='format3ds_lst-all-3ds-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-all-3ds-cpp.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-all-3ds-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-all-3ds-cpp.o `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp
-
-format3ds_lst-all-3ds-cpp.obj: all-3ds-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-all-3ds-cpp.obj -MD -MP -MF "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-all-3ds-cpp.obj `if test -f 'all-3ds-cpp.cpp'; then $(CYGPATH_W) 'all-3ds-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-3ds-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo" "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-3ds-cpp.cpp' object='format3ds_lst-all-3ds-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-all-3ds-cpp.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-all-3ds-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-all-3ds-cpp.obj `if test -f 'all-3ds-cpp.cpp'; then $(CYGPATH_W) 'all-3ds-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-3ds-cpp.cpp'; fi`
-
-format3ds_lst-all-3ds-cpp.lo: all-3ds-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-all-3ds-cpp.lo -MD -MP -MF "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-all-3ds-cpp.lo `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo" "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-all-3ds-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-3ds-cpp.cpp' object='format3ds_lst-all-3ds-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-all-3ds-cpp.Plo' tmpdepfile='$(DEPDIR)/format3ds_lst-all-3ds-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-all-3ds-cpp.lo `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp
-
-format3ds_lst-3ds-dummy.o: 3ds-dummy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-3ds-dummy.o -MD -MP -MF "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-3ds-dummy.o `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo" "$(DEPDIR)/format3ds_lst-3ds-dummy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds-dummy.cpp' object='format3ds_lst-3ds-dummy.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-3ds-dummy.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-3ds-dummy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-3ds-dummy.o `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp
-
-format3ds_lst-3ds-dummy.obj: 3ds-dummy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-3ds-dummy.obj -MD -MP -MF "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-3ds-dummy.obj `if test -f '3ds-dummy.cpp'; then $(CYGPATH_W) '3ds-dummy.cpp'; else $(CYGPATH_W) '$(srcdir)/3ds-dummy.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo" "$(DEPDIR)/format3ds_lst-3ds-dummy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds-dummy.cpp' object='format3ds_lst-3ds-dummy.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-3ds-dummy.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-3ds-dummy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-3ds-dummy.obj `if test -f '3ds-dummy.cpp'; then $(CYGPATH_W) '3ds-dummy.cpp'; else $(CYGPATH_W) '$(srcdir)/3ds-dummy.cpp'; fi`
-
-format3ds_lst-3ds-dummy.lo: 3ds-dummy.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-3ds-dummy.lo -MD -MP -MF "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-3ds-dummy.lo `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo" "$(DEPDIR)/format3ds_lst-3ds-dummy.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-3ds-dummy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds-dummy.cpp' object='format3ds_lst-3ds-dummy.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-3ds-dummy.Plo' tmpdepfile='$(DEPDIR)/format3ds_lst-3ds-dummy.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-3ds-dummy.lo `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp
-
-format3ds_lst-3dsLoader.o: 3dsLoader.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-3dsLoader.o -MD -MP -MF "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-3dsLoader.o `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo" "$(DEPDIR)/format3ds_lst-3dsLoader.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3dsLoader.cpp' object='format3ds_lst-3dsLoader.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-3dsLoader.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-3dsLoader.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-3dsLoader.o `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp
-
-format3ds_lst-3dsLoader.obj: 3dsLoader.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-3dsLoader.obj -MD -MP -MF "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-3dsLoader.obj `if test -f '3dsLoader.cpp'; then $(CYGPATH_W) '3dsLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/3dsLoader.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo" "$(DEPDIR)/format3ds_lst-3dsLoader.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3dsLoader.cpp' object='format3ds_lst-3dsLoader.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-3dsLoader.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-3dsLoader.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-3dsLoader.obj `if test -f '3dsLoader.cpp'; then $(CYGPATH_W) '3dsLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/3dsLoader.cpp'; fi`
-
-format3ds_lst-3dsLoader.lo: 3dsLoader.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-3dsLoader.lo -MD -MP -MF "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-3dsLoader.lo `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo" "$(DEPDIR)/format3ds_lst-3dsLoader.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-3dsLoader.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3dsLoader.cpp' object='format3ds_lst-3dsLoader.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-3dsLoader.Plo' tmpdepfile='$(DEPDIR)/format3ds_lst-3dsLoader.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-3dsLoader.lo `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp
-
-format3ds_lst-SoStream.o: SoStream.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-SoStream.o -MD -MP -MF "$(DEPDIR)/format3ds_lst-SoStream.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-SoStream.o `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-SoStream.Tpo" "$(DEPDIR)/format3ds_lst-SoStream.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-SoStream.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoStream.cpp' object='format3ds_lst-SoStream.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-SoStream.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-SoStream.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-SoStream.o `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp
-
-format3ds_lst-SoStream.obj: SoStream.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-SoStream.obj -MD -MP -MF "$(DEPDIR)/format3ds_lst-SoStream.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-SoStream.obj `if test -f 'SoStream.cpp'; then $(CYGPATH_W) 'SoStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoStream.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-SoStream.Tpo" "$(DEPDIR)/format3ds_lst-SoStream.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-SoStream.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoStream.cpp' object='format3ds_lst-SoStream.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-SoStream.Po' tmpdepfile='$(DEPDIR)/format3ds_lst-SoStream.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-SoStream.obj `if test -f 'SoStream.cpp'; then $(CYGPATH_W) 'SoStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoStream.cpp'; fi`
-
-format3ds_lst-SoStream.lo: SoStream.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -MT format3ds_lst-SoStream.lo -MD -MP -MF "$(DEPDIR)/format3ds_lst-SoStream.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o format3ds_lst-SoStream.lo `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/format3ds_lst-SoStream.Tpo" "$(DEPDIR)/format3ds_lst-SoStream.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/format3ds_lst-SoStream.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoStream.cpp' object='format3ds_lst-SoStream.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/format3ds_lst-SoStream.Plo' tmpdepfile='$(DEPDIR)/format3ds_lst-SoStream.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(format3ds_lst_CXXFLAGS) $(CXXFLAGS) -c -o format3ds_lst-SoStream.lo `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp
-
-libformat3ds_la-all-3ds-cpp.o: all-3ds-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-all-3ds-cpp.o -MD -MP -MF "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-all-3ds-cpp.o `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo" "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-3ds-cpp.cpp' object='libformat3ds_la-all-3ds-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-all-3ds-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-all-3ds-cpp.o `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp
-
-libformat3ds_la-all-3ds-cpp.obj: all-3ds-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-all-3ds-cpp.obj -MD -MP -MF "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-all-3ds-cpp.obj `if test -f 'all-3ds-cpp.cpp'; then $(CYGPATH_W) 'all-3ds-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-3ds-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo" "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-3ds-cpp.cpp' object='libformat3ds_la-all-3ds-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-all-3ds-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-all-3ds-cpp.obj `if test -f 'all-3ds-cpp.cpp'; then $(CYGPATH_W) 'all-3ds-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-3ds-cpp.cpp'; fi`
-
-libformat3ds_la-all-3ds-cpp.lo: all-3ds-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-all-3ds-cpp.lo -MD -MP -MF "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-all-3ds-cpp.lo `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo" "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-3ds-cpp.cpp' object='libformat3ds_la-all-3ds-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-all-3ds-cpp.Plo' tmpdepfile='$(DEPDIR)/libformat3ds_la-all-3ds-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-all-3ds-cpp.lo `test -f 'all-3ds-cpp.cpp' || echo '$(srcdir)/'`all-3ds-cpp.cpp
-
-libformat3ds_la-3ds-dummy.o: 3ds-dummy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-3ds-dummy.o -MD -MP -MF "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-3ds-dummy.o `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo" "$(DEPDIR)/libformat3ds_la-3ds-dummy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds-dummy.cpp' object='libformat3ds_la-3ds-dummy.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-3ds-dummy.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-3ds-dummy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-3ds-dummy.o `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp
-
-libformat3ds_la-3ds-dummy.obj: 3ds-dummy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-3ds-dummy.obj -MD -MP -MF "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-3ds-dummy.obj `if test -f '3ds-dummy.cpp'; then $(CYGPATH_W) '3ds-dummy.cpp'; else $(CYGPATH_W) '$(srcdir)/3ds-dummy.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo" "$(DEPDIR)/libformat3ds_la-3ds-dummy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds-dummy.cpp' object='libformat3ds_la-3ds-dummy.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-3ds-dummy.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-3ds-dummy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-3ds-dummy.obj `if test -f '3ds-dummy.cpp'; then $(CYGPATH_W) '3ds-dummy.cpp'; else $(CYGPATH_W) '$(srcdir)/3ds-dummy.cpp'; fi`
-
-libformat3ds_la-3ds-dummy.lo: 3ds-dummy.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-3ds-dummy.lo -MD -MP -MF "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-3ds-dummy.lo `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo" "$(DEPDIR)/libformat3ds_la-3ds-dummy.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-3ds-dummy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3ds-dummy.cpp' object='libformat3ds_la-3ds-dummy.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-3ds-dummy.Plo' tmpdepfile='$(DEPDIR)/libformat3ds_la-3ds-dummy.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-3ds-dummy.lo `test -f '3ds-dummy.cpp' || echo '$(srcdir)/'`3ds-dummy.cpp
-
-libformat3ds_la-3dsLoader.o: 3dsLoader.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-3dsLoader.o -MD -MP -MF "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-3dsLoader.o `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo" "$(DEPDIR)/libformat3ds_la-3dsLoader.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3dsLoader.cpp' object='libformat3ds_la-3dsLoader.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-3dsLoader.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-3dsLoader.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-3dsLoader.o `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp
-
-libformat3ds_la-3dsLoader.obj: 3dsLoader.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-3dsLoader.obj -MD -MP -MF "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-3dsLoader.obj `if test -f '3dsLoader.cpp'; then $(CYGPATH_W) '3dsLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/3dsLoader.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo" "$(DEPDIR)/libformat3ds_la-3dsLoader.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3dsLoader.cpp' object='libformat3ds_la-3dsLoader.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-3dsLoader.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-3dsLoader.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-3dsLoader.obj `if test -f '3dsLoader.cpp'; then $(CYGPATH_W) '3dsLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/3dsLoader.cpp'; fi`
-
-libformat3ds_la-3dsLoader.lo: 3dsLoader.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-3dsLoader.lo -MD -MP -MF "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-3dsLoader.lo `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo" "$(DEPDIR)/libformat3ds_la-3dsLoader.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-3dsLoader.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='3dsLoader.cpp' object='libformat3ds_la-3dsLoader.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-3dsLoader.Plo' tmpdepfile='$(DEPDIR)/libformat3ds_la-3dsLoader.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-3dsLoader.lo `test -f '3dsLoader.cpp' || echo '$(srcdir)/'`3dsLoader.cpp
-
-libformat3ds_la-SoStream.o: SoStream.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-SoStream.o -MD -MP -MF "$(DEPDIR)/libformat3ds_la-SoStream.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-SoStream.o `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-SoStream.Tpo" "$(DEPDIR)/libformat3ds_la-SoStream.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-SoStream.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoStream.cpp' object='libformat3ds_la-SoStream.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-SoStream.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-SoStream.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-SoStream.o `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp
-
-libformat3ds_la-SoStream.obj: SoStream.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-SoStream.obj -MD -MP -MF "$(DEPDIR)/libformat3ds_la-SoStream.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-SoStream.obj `if test -f 'SoStream.cpp'; then $(CYGPATH_W) 'SoStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoStream.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-SoStream.Tpo" "$(DEPDIR)/libformat3ds_la-SoStream.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-SoStream.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoStream.cpp' object='libformat3ds_la-SoStream.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-SoStream.Po' tmpdepfile='$(DEPDIR)/libformat3ds_la-SoStream.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-SoStream.obj `if test -f 'SoStream.cpp'; then $(CYGPATH_W) 'SoStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoStream.cpp'; fi`
-
-libformat3ds_la-SoStream.lo: SoStream.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -MT libformat3ds_la-SoStream.lo -MD -MP -MF "$(DEPDIR)/libformat3ds_la-SoStream.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libformat3ds_la-SoStream.lo `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libformat3ds_la-SoStream.Tpo" "$(DEPDIR)/libformat3ds_la-SoStream.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libformat3ds_la-SoStream.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoStream.cpp' object='libformat3ds_la-SoStream.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libformat3ds_la-SoStream.Plo' tmpdepfile='$(DEPDIR)/libformat3ds_la-SoStream.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libformat3ds_la_CXXFLAGS) $(CXXFLAGS) -c -o libformat3ds_la-SoStream.lo `test -f 'SoStream.cpp' || echo '$(srcdir)/'`SoStream.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
