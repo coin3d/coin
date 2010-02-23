@@ -334,9 +334,6 @@ EXTRA_libxml_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libxml_la_CXXFLAGS = $(AM_CXXFLAGS)
-libxml_la_CFLAGS = $(AM_CFLAGS)
-
 libxml@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libxml@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -346,9 +343,6 @@ xml_lst_SOURCES = $(BuildSources)
 EXTRA_xml_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-xml_lst_CXXFLAGS = $(AM_CXXFLAGS)
-xml_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/xml
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -361,10 +355,9 @@ xml_lst_AR = $(AR) cru
 xml_lst_LIBADD =
 am__xml_lst_SOURCES_DIST = document.cpp element.cpp attribute.cpp \
 	entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
-am__objects_1 = xml_lst-all-xml-cpp.$(OBJEXT)
-am__objects_2 = xml_lst-document.$(OBJEXT) xml_lst-element.$(OBJEXT) \
-	xml_lst-attribute.$(OBJEXT) xml_lst-entity.$(OBJEXT) \
-	xml_lst-utils.$(OBJEXT) xml_lst-path.$(OBJEXT)
+am__objects_1 = all-xml-cpp.$(OBJEXT)
+am__objects_2 = document.$(OBJEXT) element.$(OBJEXT) attribute.$(OBJEXT) \
+	entity.$(OBJEXT) utils.$(OBJEXT) path.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_xml_lst_OBJECTS = $(am__objects_3)
@@ -378,10 +371,9 @@ libxml_la_LDFLAGS =
 libxml_la_LIBADD =
 am__libxml_la_SOURCES_DIST = document.cpp element.cpp attribute.cpp \
 	entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
-am__objects_6 = libxml_la-all-xml-cpp.lo
-am__objects_7 = libxml_la-document.lo libxml_la-element.lo \
-	libxml_la-attribute.lo libxml_la-entity.lo libxml_la-utils.lo \
-	libxml_la-path.lo
+am__objects_6 = all-xml-cpp.lo
+am__objects_7 = document.lo element.lo attribute.lo entity.lo utils.lo \
+	path.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libxml_la_OBJECTS = $(am__objects_8)
@@ -393,12 +385,7 @@ libxml@SUFFIX@LINKHACK_la_LDFLAGS =
 libxml@SUFFIX@LINKHACK_la_LIBADD =
 am__libxml@SUFFIX@LINKHACK_la_SOURCES_DIST = document.cpp element.cpp \
 	attribute.cpp entity.cpp utils.cpp path.cpp all-xml-cpp.cpp
-am__objects_10 = all-xml-cpp.lo
-am__objects_11 = document.lo element.lo attribute.lo entity.lo utils.lo \
-	path.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libxml@SUFFIX@LINKHACK_la_SOURCES_DIST = utils.h documentp.h \
 	elementp.h attributep.h all-xml-cpp.cpp document.cpp \
 	element.cpp attribute.cpp entity.cpp utils.cpp path.cpp
@@ -407,23 +394,13 @@ libxml@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/all-xml-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/attribute.Plo ./$(DEPDIR)/document.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/element.Plo ./$(DEPDIR)/entity.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-all-xml-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-attribute.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-document.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-element.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-entity.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-path.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libxml_la-utils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/path.Plo ./$(DEPDIR)/utils.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-all-xml-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-attribute.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-document.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-element.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-entity.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-path.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xml_lst-utils.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-xml-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/attribute.Plo ./$(DEPDIR)/attribute.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/document.Plo ./$(DEPDIR)/document.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/element.Plo ./$(DEPDIR)/element.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/entity.Plo ./$(DEPDIR)/entity.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/path.Plo ./$(DEPDIR)/path.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/utils.Plo ./$(DEPDIR)/utils.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -517,26 +494,19 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-xml-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attribute.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attribute.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/document.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/document.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/element.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/element.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/entity.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-all-xml-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-attribute.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-document.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-element.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-entity.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-path.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libxml_la-utils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/entity.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/path.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/path.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-all-xml-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-attribute.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-document.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-element.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-entity.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-path.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xml_lst-utils.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -573,468 +543,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-xml_lst-all-xml-cpp.o: all-xml-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-all-xml-cpp.o -MD -MP -MF "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-all-xml-cpp.o `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo" "$(DEPDIR)/xml_lst-all-xml-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-xml-cpp.cpp' object='xml_lst-all-xml-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-all-xml-cpp.Po' tmpdepfile='$(DEPDIR)/xml_lst-all-xml-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-all-xml-cpp.o `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp
-
-xml_lst-all-xml-cpp.obj: all-xml-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-all-xml-cpp.obj -MD -MP -MF "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-all-xml-cpp.obj `if test -f 'all-xml-cpp.cpp'; then $(CYGPATH_W) 'all-xml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-xml-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo" "$(DEPDIR)/xml_lst-all-xml-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-xml-cpp.cpp' object='xml_lst-all-xml-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-all-xml-cpp.Po' tmpdepfile='$(DEPDIR)/xml_lst-all-xml-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-all-xml-cpp.obj `if test -f 'all-xml-cpp.cpp'; then $(CYGPATH_W) 'all-xml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-xml-cpp.cpp'; fi`
-
-xml_lst-all-xml-cpp.lo: all-xml-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-all-xml-cpp.lo -MD -MP -MF "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-all-xml-cpp.lo `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo" "$(DEPDIR)/xml_lst-all-xml-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-all-xml-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-xml-cpp.cpp' object='xml_lst-all-xml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-all-xml-cpp.Plo' tmpdepfile='$(DEPDIR)/xml_lst-all-xml-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-all-xml-cpp.lo `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp
-
-xml_lst-document.o: document.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-document.o -MD -MP -MF "$(DEPDIR)/xml_lst-document.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-document.o `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-document.Tpo" "$(DEPDIR)/xml_lst-document.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-document.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='document.cpp' object='xml_lst-document.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-document.Po' tmpdepfile='$(DEPDIR)/xml_lst-document.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-document.o `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp
-
-xml_lst-document.obj: document.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-document.obj -MD -MP -MF "$(DEPDIR)/xml_lst-document.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-document.obj `if test -f 'document.cpp'; then $(CYGPATH_W) 'document.cpp'; else $(CYGPATH_W) '$(srcdir)/document.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-document.Tpo" "$(DEPDIR)/xml_lst-document.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-document.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='document.cpp' object='xml_lst-document.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-document.Po' tmpdepfile='$(DEPDIR)/xml_lst-document.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-document.obj `if test -f 'document.cpp'; then $(CYGPATH_W) 'document.cpp'; else $(CYGPATH_W) '$(srcdir)/document.cpp'; fi`
-
-xml_lst-document.lo: document.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-document.lo -MD -MP -MF "$(DEPDIR)/xml_lst-document.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-document.lo `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-document.Tpo" "$(DEPDIR)/xml_lst-document.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-document.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='document.cpp' object='xml_lst-document.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-document.Plo' tmpdepfile='$(DEPDIR)/xml_lst-document.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-document.lo `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp
-
-xml_lst-element.o: element.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-element.o -MD -MP -MF "$(DEPDIR)/xml_lst-element.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-element.o `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-element.Tpo" "$(DEPDIR)/xml_lst-element.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-element.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='element.cpp' object='xml_lst-element.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-element.Po' tmpdepfile='$(DEPDIR)/xml_lst-element.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-element.o `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp
-
-xml_lst-element.obj: element.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-element.obj -MD -MP -MF "$(DEPDIR)/xml_lst-element.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-element.obj `if test -f 'element.cpp'; then $(CYGPATH_W) 'element.cpp'; else $(CYGPATH_W) '$(srcdir)/element.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-element.Tpo" "$(DEPDIR)/xml_lst-element.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-element.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='element.cpp' object='xml_lst-element.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-element.Po' tmpdepfile='$(DEPDIR)/xml_lst-element.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-element.obj `if test -f 'element.cpp'; then $(CYGPATH_W) 'element.cpp'; else $(CYGPATH_W) '$(srcdir)/element.cpp'; fi`
-
-xml_lst-element.lo: element.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-element.lo -MD -MP -MF "$(DEPDIR)/xml_lst-element.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-element.lo `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-element.Tpo" "$(DEPDIR)/xml_lst-element.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-element.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='element.cpp' object='xml_lst-element.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-element.Plo' tmpdepfile='$(DEPDIR)/xml_lst-element.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-element.lo `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp
-
-xml_lst-attribute.o: attribute.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-attribute.o -MD -MP -MF "$(DEPDIR)/xml_lst-attribute.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-attribute.o `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-attribute.Tpo" "$(DEPDIR)/xml_lst-attribute.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-attribute.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='attribute.cpp' object='xml_lst-attribute.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-attribute.Po' tmpdepfile='$(DEPDIR)/xml_lst-attribute.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-attribute.o `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp
-
-xml_lst-attribute.obj: attribute.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-attribute.obj -MD -MP -MF "$(DEPDIR)/xml_lst-attribute.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-attribute.obj `if test -f 'attribute.cpp'; then $(CYGPATH_W) 'attribute.cpp'; else $(CYGPATH_W) '$(srcdir)/attribute.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-attribute.Tpo" "$(DEPDIR)/xml_lst-attribute.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-attribute.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='attribute.cpp' object='xml_lst-attribute.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-attribute.Po' tmpdepfile='$(DEPDIR)/xml_lst-attribute.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-attribute.obj `if test -f 'attribute.cpp'; then $(CYGPATH_W) 'attribute.cpp'; else $(CYGPATH_W) '$(srcdir)/attribute.cpp'; fi`
-
-xml_lst-attribute.lo: attribute.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-attribute.lo -MD -MP -MF "$(DEPDIR)/xml_lst-attribute.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-attribute.lo `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-attribute.Tpo" "$(DEPDIR)/xml_lst-attribute.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-attribute.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='attribute.cpp' object='xml_lst-attribute.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-attribute.Plo' tmpdepfile='$(DEPDIR)/xml_lst-attribute.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-attribute.lo `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp
-
-xml_lst-entity.o: entity.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-entity.o -MD -MP -MF "$(DEPDIR)/xml_lst-entity.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-entity.o `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-entity.Tpo" "$(DEPDIR)/xml_lst-entity.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-entity.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='entity.cpp' object='xml_lst-entity.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-entity.Po' tmpdepfile='$(DEPDIR)/xml_lst-entity.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-entity.o `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp
-
-xml_lst-entity.obj: entity.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-entity.obj -MD -MP -MF "$(DEPDIR)/xml_lst-entity.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-entity.obj `if test -f 'entity.cpp'; then $(CYGPATH_W) 'entity.cpp'; else $(CYGPATH_W) '$(srcdir)/entity.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-entity.Tpo" "$(DEPDIR)/xml_lst-entity.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-entity.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='entity.cpp' object='xml_lst-entity.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-entity.Po' tmpdepfile='$(DEPDIR)/xml_lst-entity.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-entity.obj `if test -f 'entity.cpp'; then $(CYGPATH_W) 'entity.cpp'; else $(CYGPATH_W) '$(srcdir)/entity.cpp'; fi`
-
-xml_lst-entity.lo: entity.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-entity.lo -MD -MP -MF "$(DEPDIR)/xml_lst-entity.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-entity.lo `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-entity.Tpo" "$(DEPDIR)/xml_lst-entity.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-entity.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='entity.cpp' object='xml_lst-entity.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-entity.Plo' tmpdepfile='$(DEPDIR)/xml_lst-entity.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-entity.lo `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp
-
-xml_lst-utils.o: utils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-utils.o -MD -MP -MF "$(DEPDIR)/xml_lst-utils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-utils.o `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-utils.Tpo" "$(DEPDIR)/xml_lst-utils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-utils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils.cpp' object='xml_lst-utils.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-utils.Po' tmpdepfile='$(DEPDIR)/xml_lst-utils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-utils.o `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp
-
-xml_lst-utils.obj: utils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-utils.obj -MD -MP -MF "$(DEPDIR)/xml_lst-utils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-utils.obj `if test -f 'utils.cpp'; then $(CYGPATH_W) 'utils.cpp'; else $(CYGPATH_W) '$(srcdir)/utils.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-utils.Tpo" "$(DEPDIR)/xml_lst-utils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-utils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils.cpp' object='xml_lst-utils.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-utils.Po' tmpdepfile='$(DEPDIR)/xml_lst-utils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-utils.obj `if test -f 'utils.cpp'; then $(CYGPATH_W) 'utils.cpp'; else $(CYGPATH_W) '$(srcdir)/utils.cpp'; fi`
-
-xml_lst-utils.lo: utils.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-utils.lo -MD -MP -MF "$(DEPDIR)/xml_lst-utils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-utils.lo `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-utils.Tpo" "$(DEPDIR)/xml_lst-utils.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-utils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils.cpp' object='xml_lst-utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-utils.Plo' tmpdepfile='$(DEPDIR)/xml_lst-utils.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-utils.lo `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp
-
-xml_lst-path.o: path.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-path.o -MD -MP -MF "$(DEPDIR)/xml_lst-path.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-path.o `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-path.Tpo" "$(DEPDIR)/xml_lst-path.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-path.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='path.cpp' object='xml_lst-path.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-path.Po' tmpdepfile='$(DEPDIR)/xml_lst-path.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-path.o `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp
-
-xml_lst-path.obj: path.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-path.obj -MD -MP -MF "$(DEPDIR)/xml_lst-path.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-path.obj `if test -f 'path.cpp'; then $(CYGPATH_W) 'path.cpp'; else $(CYGPATH_W) '$(srcdir)/path.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-path.Tpo" "$(DEPDIR)/xml_lst-path.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-path.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='path.cpp' object='xml_lst-path.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-path.Po' tmpdepfile='$(DEPDIR)/xml_lst-path.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-path.obj `if test -f 'path.cpp'; then $(CYGPATH_W) 'path.cpp'; else $(CYGPATH_W) '$(srcdir)/path.cpp'; fi`
-
-xml_lst-path.lo: path.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -MT xml_lst-path.lo -MD -MP -MF "$(DEPDIR)/xml_lst-path.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o xml_lst-path.lo `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/xml_lst-path.Tpo" "$(DEPDIR)/xml_lst-path.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/xml_lst-path.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='path.cpp' object='xml_lst-path.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/xml_lst-path.Plo' tmpdepfile='$(DEPDIR)/xml_lst-path.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(xml_lst_CXXFLAGS) $(CXXFLAGS) -c -o xml_lst-path.lo `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp
-
-libxml_la-all-xml-cpp.o: all-xml-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-all-xml-cpp.o -MD -MP -MF "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-all-xml-cpp.o `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo" "$(DEPDIR)/libxml_la-all-xml-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-xml-cpp.cpp' object='libxml_la-all-xml-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-all-xml-cpp.Po' tmpdepfile='$(DEPDIR)/libxml_la-all-xml-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-all-xml-cpp.o `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp
-
-libxml_la-all-xml-cpp.obj: all-xml-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-all-xml-cpp.obj -MD -MP -MF "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-all-xml-cpp.obj `if test -f 'all-xml-cpp.cpp'; then $(CYGPATH_W) 'all-xml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-xml-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo" "$(DEPDIR)/libxml_la-all-xml-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-xml-cpp.cpp' object='libxml_la-all-xml-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-all-xml-cpp.Po' tmpdepfile='$(DEPDIR)/libxml_la-all-xml-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-all-xml-cpp.obj `if test -f 'all-xml-cpp.cpp'; then $(CYGPATH_W) 'all-xml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-xml-cpp.cpp'; fi`
-
-libxml_la-all-xml-cpp.lo: all-xml-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-all-xml-cpp.lo -MD -MP -MF "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-all-xml-cpp.lo `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo" "$(DEPDIR)/libxml_la-all-xml-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-all-xml-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-xml-cpp.cpp' object='libxml_la-all-xml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-all-xml-cpp.Plo' tmpdepfile='$(DEPDIR)/libxml_la-all-xml-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-all-xml-cpp.lo `test -f 'all-xml-cpp.cpp' || echo '$(srcdir)/'`all-xml-cpp.cpp
-
-libxml_la-document.o: document.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-document.o -MD -MP -MF "$(DEPDIR)/libxml_la-document.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-document.o `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-document.Tpo" "$(DEPDIR)/libxml_la-document.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-document.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='document.cpp' object='libxml_la-document.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-document.Po' tmpdepfile='$(DEPDIR)/libxml_la-document.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-document.o `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp
-
-libxml_la-document.obj: document.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-document.obj -MD -MP -MF "$(DEPDIR)/libxml_la-document.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-document.obj `if test -f 'document.cpp'; then $(CYGPATH_W) 'document.cpp'; else $(CYGPATH_W) '$(srcdir)/document.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-document.Tpo" "$(DEPDIR)/libxml_la-document.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-document.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='document.cpp' object='libxml_la-document.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-document.Po' tmpdepfile='$(DEPDIR)/libxml_la-document.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-document.obj `if test -f 'document.cpp'; then $(CYGPATH_W) 'document.cpp'; else $(CYGPATH_W) '$(srcdir)/document.cpp'; fi`
-
-libxml_la-document.lo: document.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-document.lo -MD -MP -MF "$(DEPDIR)/libxml_la-document.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-document.lo `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-document.Tpo" "$(DEPDIR)/libxml_la-document.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-document.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='document.cpp' object='libxml_la-document.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-document.Plo' tmpdepfile='$(DEPDIR)/libxml_la-document.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-document.lo `test -f 'document.cpp' || echo '$(srcdir)/'`document.cpp
-
-libxml_la-element.o: element.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-element.o -MD -MP -MF "$(DEPDIR)/libxml_la-element.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-element.o `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-element.Tpo" "$(DEPDIR)/libxml_la-element.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-element.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='element.cpp' object='libxml_la-element.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-element.Po' tmpdepfile='$(DEPDIR)/libxml_la-element.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-element.o `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp
-
-libxml_la-element.obj: element.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-element.obj -MD -MP -MF "$(DEPDIR)/libxml_la-element.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-element.obj `if test -f 'element.cpp'; then $(CYGPATH_W) 'element.cpp'; else $(CYGPATH_W) '$(srcdir)/element.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-element.Tpo" "$(DEPDIR)/libxml_la-element.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-element.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='element.cpp' object='libxml_la-element.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-element.Po' tmpdepfile='$(DEPDIR)/libxml_la-element.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-element.obj `if test -f 'element.cpp'; then $(CYGPATH_W) 'element.cpp'; else $(CYGPATH_W) '$(srcdir)/element.cpp'; fi`
-
-libxml_la-element.lo: element.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-element.lo -MD -MP -MF "$(DEPDIR)/libxml_la-element.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-element.lo `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-element.Tpo" "$(DEPDIR)/libxml_la-element.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-element.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='element.cpp' object='libxml_la-element.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-element.Plo' tmpdepfile='$(DEPDIR)/libxml_la-element.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-element.lo `test -f 'element.cpp' || echo '$(srcdir)/'`element.cpp
-
-libxml_la-attribute.o: attribute.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-attribute.o -MD -MP -MF "$(DEPDIR)/libxml_la-attribute.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-attribute.o `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-attribute.Tpo" "$(DEPDIR)/libxml_la-attribute.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-attribute.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='attribute.cpp' object='libxml_la-attribute.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-attribute.Po' tmpdepfile='$(DEPDIR)/libxml_la-attribute.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-attribute.o `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp
-
-libxml_la-attribute.obj: attribute.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-attribute.obj -MD -MP -MF "$(DEPDIR)/libxml_la-attribute.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-attribute.obj `if test -f 'attribute.cpp'; then $(CYGPATH_W) 'attribute.cpp'; else $(CYGPATH_W) '$(srcdir)/attribute.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-attribute.Tpo" "$(DEPDIR)/libxml_la-attribute.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-attribute.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='attribute.cpp' object='libxml_la-attribute.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-attribute.Po' tmpdepfile='$(DEPDIR)/libxml_la-attribute.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-attribute.obj `if test -f 'attribute.cpp'; then $(CYGPATH_W) 'attribute.cpp'; else $(CYGPATH_W) '$(srcdir)/attribute.cpp'; fi`
-
-libxml_la-attribute.lo: attribute.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-attribute.lo -MD -MP -MF "$(DEPDIR)/libxml_la-attribute.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-attribute.lo `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-attribute.Tpo" "$(DEPDIR)/libxml_la-attribute.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-attribute.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='attribute.cpp' object='libxml_la-attribute.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-attribute.Plo' tmpdepfile='$(DEPDIR)/libxml_la-attribute.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-attribute.lo `test -f 'attribute.cpp' || echo '$(srcdir)/'`attribute.cpp
-
-libxml_la-entity.o: entity.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-entity.o -MD -MP -MF "$(DEPDIR)/libxml_la-entity.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-entity.o `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-entity.Tpo" "$(DEPDIR)/libxml_la-entity.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-entity.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='entity.cpp' object='libxml_la-entity.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-entity.Po' tmpdepfile='$(DEPDIR)/libxml_la-entity.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-entity.o `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp
-
-libxml_la-entity.obj: entity.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-entity.obj -MD -MP -MF "$(DEPDIR)/libxml_la-entity.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-entity.obj `if test -f 'entity.cpp'; then $(CYGPATH_W) 'entity.cpp'; else $(CYGPATH_W) '$(srcdir)/entity.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-entity.Tpo" "$(DEPDIR)/libxml_la-entity.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-entity.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='entity.cpp' object='libxml_la-entity.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-entity.Po' tmpdepfile='$(DEPDIR)/libxml_la-entity.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-entity.obj `if test -f 'entity.cpp'; then $(CYGPATH_W) 'entity.cpp'; else $(CYGPATH_W) '$(srcdir)/entity.cpp'; fi`
-
-libxml_la-entity.lo: entity.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-entity.lo -MD -MP -MF "$(DEPDIR)/libxml_la-entity.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-entity.lo `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-entity.Tpo" "$(DEPDIR)/libxml_la-entity.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-entity.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='entity.cpp' object='libxml_la-entity.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-entity.Plo' tmpdepfile='$(DEPDIR)/libxml_la-entity.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-entity.lo `test -f 'entity.cpp' || echo '$(srcdir)/'`entity.cpp
-
-libxml_la-utils.o: utils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-utils.o -MD -MP -MF "$(DEPDIR)/libxml_la-utils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-utils.o `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-utils.Tpo" "$(DEPDIR)/libxml_la-utils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-utils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils.cpp' object='libxml_la-utils.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-utils.Po' tmpdepfile='$(DEPDIR)/libxml_la-utils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-utils.o `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp
-
-libxml_la-utils.obj: utils.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-utils.obj -MD -MP -MF "$(DEPDIR)/libxml_la-utils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-utils.obj `if test -f 'utils.cpp'; then $(CYGPATH_W) 'utils.cpp'; else $(CYGPATH_W) '$(srcdir)/utils.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-utils.Tpo" "$(DEPDIR)/libxml_la-utils.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-utils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils.cpp' object='libxml_la-utils.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-utils.Po' tmpdepfile='$(DEPDIR)/libxml_la-utils.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-utils.obj `if test -f 'utils.cpp'; then $(CYGPATH_W) 'utils.cpp'; else $(CYGPATH_W) '$(srcdir)/utils.cpp'; fi`
-
-libxml_la-utils.lo: utils.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-utils.lo -MD -MP -MF "$(DEPDIR)/libxml_la-utils.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-utils.lo `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-utils.Tpo" "$(DEPDIR)/libxml_la-utils.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-utils.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils.cpp' object='libxml_la-utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-utils.Plo' tmpdepfile='$(DEPDIR)/libxml_la-utils.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-utils.lo `test -f 'utils.cpp' || echo '$(srcdir)/'`utils.cpp
-
-libxml_la-path.o: path.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-path.o -MD -MP -MF "$(DEPDIR)/libxml_la-path.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-path.o `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-path.Tpo" "$(DEPDIR)/libxml_la-path.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-path.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='path.cpp' object='libxml_la-path.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-path.Po' tmpdepfile='$(DEPDIR)/libxml_la-path.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-path.o `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp
-
-libxml_la-path.obj: path.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-path.obj -MD -MP -MF "$(DEPDIR)/libxml_la-path.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-path.obj `if test -f 'path.cpp'; then $(CYGPATH_W) 'path.cpp'; else $(CYGPATH_W) '$(srcdir)/path.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-path.Tpo" "$(DEPDIR)/libxml_la-path.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-path.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='path.cpp' object='libxml_la-path.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-path.Po' tmpdepfile='$(DEPDIR)/libxml_la-path.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-path.obj `if test -f 'path.cpp'; then $(CYGPATH_W) 'path.cpp'; else $(CYGPATH_W) '$(srcdir)/path.cpp'; fi`
-
-libxml_la-path.lo: path.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -MT libxml_la-path.lo -MD -MP -MF "$(DEPDIR)/libxml_la-path.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libxml_la-path.lo `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libxml_la-path.Tpo" "$(DEPDIR)/libxml_la-path.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libxml_la-path.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='path.cpp' object='libxml_la-path.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libxml_la-path.Plo' tmpdepfile='$(DEPDIR)/libxml_la-path.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libxml_la-path.lo `test -f 'path.cpp' || echo '$(srcdir)/'`path.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

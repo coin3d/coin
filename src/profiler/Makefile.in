@@ -340,9 +340,6 @@ EXTRA_libprofiler_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libprofiler_la_CXXFLAGS = $(AM_CXXFLAGS)
-libprofiler_la_CFLAGS = $(AM_CFLAGS)
-
 libprofiler@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -352,9 +349,6 @@ profiler_lst_SOURCES = $(BuildSources)
 EXTRA_profiler_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-profiler_lst_CXXFLAGS = $(AM_CXXFLAGS)
-profiler_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/profiler
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -371,18 +365,13 @@ am__profiler_lst_SOURCES_DIST = SoProfiler.cpp SoProfilerElement.cpp \
 	SoScrollingGraphKit.cpp SoNodeVisualize.cpp \
 	SoProfilerTopKit.cpp SoProfilerVisualizeKit.cpp \
 	SbProfilingData.cpp all-profiler-cpp.cpp
-am__objects_1 = profiler_lst-all-profiler-cpp.$(OBJEXT)
-am__objects_2 = profiler_lst-SoProfiler.$(OBJEXT) \
-	profiler_lst-SoProfilerElement.$(OBJEXT) \
-	profiler_lst-SoProfilerOverlayKit.$(OBJEXT) \
-	profiler_lst-SoProfilerStats.$(OBJEXT) \
-	profiler_lst-SoProfilingReportGenerator.$(OBJEXT) \
-	profiler_lst-SoProfilerTopEngine.$(OBJEXT) \
-	profiler_lst-SoScrollingGraphKit.$(OBJEXT) \
-	profiler_lst-SoNodeVisualize.$(OBJEXT) \
-	profiler_lst-SoProfilerTopKit.$(OBJEXT) \
-	profiler_lst-SoProfilerVisualizeKit.$(OBJEXT) \
-	profiler_lst-SbProfilingData.$(OBJEXT)
+am__objects_1 = all-profiler-cpp.$(OBJEXT)
+am__objects_2 = SoProfiler.$(OBJEXT) SoProfilerElement.$(OBJEXT) \
+	SoProfilerOverlayKit.$(OBJEXT) SoProfilerStats.$(OBJEXT) \
+	SoProfilingReportGenerator.$(OBJEXT) \
+	SoProfilerTopEngine.$(OBJEXT) SoScrollingGraphKit.$(OBJEXT) \
+	SoNodeVisualize.$(OBJEXT) SoProfilerTopKit.$(OBJEXT) \
+	SoProfilerVisualizeKit.$(OBJEXT) SbProfilingData.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_profiler_lst_OBJECTS = $(am__objects_3)
@@ -404,18 +393,12 @@ am__libprofiler_la_SOURCES_DIST = SoProfiler.cpp SoProfilerElement.cpp \
 	SoScrollingGraphKit.cpp SoNodeVisualize.cpp \
 	SoProfilerTopKit.cpp SoProfilerVisualizeKit.cpp \
 	SbProfilingData.cpp all-profiler-cpp.cpp
-am__objects_6 = libprofiler_la-all-profiler-cpp.lo
-am__objects_7 = libprofiler_la-SoProfiler.lo \
-	libprofiler_la-SoProfilerElement.lo \
-	libprofiler_la-SoProfilerOverlayKit.lo \
-	libprofiler_la-SoProfilerStats.lo \
-	libprofiler_la-SoProfilingReportGenerator.lo \
-	libprofiler_la-SoProfilerTopEngine.lo \
-	libprofiler_la-SoScrollingGraphKit.lo \
-	libprofiler_la-SoNodeVisualize.lo \
-	libprofiler_la-SoProfilerTopKit.lo \
-	libprofiler_la-SoProfilerVisualizeKit.lo \
-	libprofiler_la-SbProfilingData.lo
+am__objects_6 = all-profiler-cpp.lo
+am__objects_7 = SoProfiler.lo SoProfilerElement.lo \
+	SoProfilerOverlayKit.lo SoProfilerStats.lo \
+	SoProfilingReportGenerator.lo SoProfilerTopEngine.lo \
+	SoScrollingGraphKit.lo SoNodeVisualize.lo SoProfilerTopKit.lo \
+	SoProfilerVisualizeKit.lo SbProfilingData.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libprofiler_la_OBJECTS = $(am__objects_8)
@@ -436,15 +419,7 @@ am__libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = SoProfiler.cpp \
 	SoNodeVisualize.cpp SoProfilerTopKit.cpp \
 	SoProfilerVisualizeKit.cpp SbProfilingData.cpp \
 	all-profiler-cpp.cpp
-am__objects_10 = all-profiler-cpp.lo
-am__objects_11 = SoProfiler.lo SoProfilerElement.lo \
-	SoProfilerOverlayKit.lo SoProfilerStats.lo \
-	SoProfilingReportGenerator.lo SoProfilerTopEngine.lo \
-	SoScrollingGraphKit.lo SoNodeVisualize.lo SoProfilerTopKit.lo \
-	SoProfilerVisualizeKit.lo SbProfilingData.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libprofiler@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libprofiler@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libprofiler@SUFFIX@LINKHACK_la_SOURCES_DIST = SoProfilerP.h \
 	SoNodeProfiling.h inventormaps.icc all-profiler-cpp.cpp \
 	SoProfiler.cpp SoProfilerElement.cpp SoProfilerOverlayKit.cpp \
@@ -457,41 +432,29 @@ libprofiler@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbProfilingData.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbProfilingData.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodeVisualize.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNodeVisualize.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfiler.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfiler.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilerElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilerElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilerOverlayKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilerOverlayKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilerStats.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilerStats.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilerTopEngine.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilerTopEngine.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilerTopKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilerTopKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilerVisualizeKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilerVisualizeKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoProfilingReportGenerator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoProfilingReportGenerator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScrollingGraphKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoScrollingGraphKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-profiler-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SbProfilingData.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoNodeVisualize.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfiler.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilerElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilerStats.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libprofiler_la-all-profiler-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SbProfilingData.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoNodeVisualize.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfiler.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilerElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilerStats.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilerTopKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/profiler_lst-all-profiler-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-profiler-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -579,41 +542,29 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbProfilingData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbProfilingData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeVisualize.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeVisualize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfiler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfiler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerOverlayKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerOverlayKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerStats.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerStats.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerTopEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerTopEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerTopKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerTopKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerVisualizeKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilerVisualizeKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilingReportGenerator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoProfilingReportGenerator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScrollingGraphKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScrollingGraphKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-profiler-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SbProfilingData.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoNodeVisualize.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfiler.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilerElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilerStats.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libprofiler_la-all-profiler-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SbProfilingData.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoNodeVisualize.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfiler.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilerElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilerStats.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilerTopKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/profiler_lst-all-profiler-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-profiler-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -650,798 +601,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-profiler_lst-all-profiler-cpp.o: all-profiler-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-all-profiler-cpp.o -MD -MP -MF "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-all-profiler-cpp.o `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo" "$(DEPDIR)/profiler_lst-all-profiler-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-profiler-cpp.cpp' object='profiler_lst-all-profiler-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-all-profiler-cpp.Po' tmpdepfile='$(DEPDIR)/profiler_lst-all-profiler-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-all-profiler-cpp.o `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp
-
-profiler_lst-all-profiler-cpp.obj: all-profiler-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-all-profiler-cpp.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-all-profiler-cpp.obj `if test -f 'all-profiler-cpp.cpp'; then $(CYGPATH_W) 'all-profiler-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-profiler-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo" "$(DEPDIR)/profiler_lst-all-profiler-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-profiler-cpp.cpp' object='profiler_lst-all-profiler-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-all-profiler-cpp.Po' tmpdepfile='$(DEPDIR)/profiler_lst-all-profiler-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-all-profiler-cpp.obj `if test -f 'all-profiler-cpp.cpp'; then $(CYGPATH_W) 'all-profiler-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-profiler-cpp.cpp'; fi`
-
-profiler_lst-all-profiler-cpp.lo: all-profiler-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-all-profiler-cpp.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-all-profiler-cpp.lo `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo" "$(DEPDIR)/profiler_lst-all-profiler-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-all-profiler-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-profiler-cpp.cpp' object='profiler_lst-all-profiler-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-all-profiler-cpp.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-all-profiler-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-all-profiler-cpp.lo `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp
-
-profiler_lst-SoProfiler.o: SoProfiler.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfiler.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfiler.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfiler.o `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfiler.Tpo" "$(DEPDIR)/profiler_lst-SoProfiler.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfiler.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfiler.cpp' object='profiler_lst-SoProfiler.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfiler.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfiler.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfiler.o `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp
-
-profiler_lst-SoProfiler.obj: SoProfiler.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfiler.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfiler.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfiler.obj `if test -f 'SoProfiler.cpp'; then $(CYGPATH_W) 'SoProfiler.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfiler.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfiler.Tpo" "$(DEPDIR)/profiler_lst-SoProfiler.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfiler.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfiler.cpp' object='profiler_lst-SoProfiler.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfiler.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfiler.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfiler.obj `if test -f 'SoProfiler.cpp'; then $(CYGPATH_W) 'SoProfiler.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfiler.cpp'; fi`
-
-profiler_lst-SoProfiler.lo: SoProfiler.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfiler.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfiler.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfiler.lo `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfiler.Tpo" "$(DEPDIR)/profiler_lst-SoProfiler.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfiler.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfiler.cpp' object='profiler_lst-SoProfiler.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfiler.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfiler.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfiler.lo `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp
-
-profiler_lst-SoProfilerElement.o: SoProfilerElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerElement.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerElement.o `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerElement.cpp' object='profiler_lst-SoProfilerElement.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerElement.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerElement.o `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp
-
-profiler_lst-SoProfilerElement.obj: SoProfilerElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerElement.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerElement.obj `if test -f 'SoProfilerElement.cpp'; then $(CYGPATH_W) 'SoProfilerElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerElement.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerElement.cpp' object='profiler_lst-SoProfilerElement.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerElement.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerElement.obj `if test -f 'SoProfilerElement.cpp'; then $(CYGPATH_W) 'SoProfilerElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerElement.cpp'; fi`
-
-profiler_lst-SoProfilerElement.lo: SoProfilerElement.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerElement.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerElement.lo `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerElement.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerElement.cpp' object='profiler_lst-SoProfilerElement.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerElement.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerElement.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerElement.lo `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp
-
-profiler_lst-SoProfilerOverlayKit.o: SoProfilerOverlayKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerOverlayKit.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerOverlayKit.o `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerOverlayKit.cpp' object='profiler_lst-SoProfilerOverlayKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerOverlayKit.o `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp
-
-profiler_lst-SoProfilerOverlayKit.obj: SoProfilerOverlayKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerOverlayKit.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerOverlayKit.obj `if test -f 'SoProfilerOverlayKit.cpp'; then $(CYGPATH_W) 'SoProfilerOverlayKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerOverlayKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerOverlayKit.cpp' object='profiler_lst-SoProfilerOverlayKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerOverlayKit.obj `if test -f 'SoProfilerOverlayKit.cpp'; then $(CYGPATH_W) 'SoProfilerOverlayKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerOverlayKit.cpp'; fi`
-
-profiler_lst-SoProfilerOverlayKit.lo: SoProfilerOverlayKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerOverlayKit.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerOverlayKit.lo `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerOverlayKit.cpp' object='profiler_lst-SoProfilerOverlayKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerOverlayKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerOverlayKit.lo `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp
-
-profiler_lst-SoProfilerStats.o: SoProfilerStats.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerStats.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerStats.o `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerStats.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerStats.cpp' object='profiler_lst-SoProfilerStats.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerStats.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerStats.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerStats.o `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp
-
-profiler_lst-SoProfilerStats.obj: SoProfilerStats.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerStats.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerStats.obj `if test -f 'SoProfilerStats.cpp'; then $(CYGPATH_W) 'SoProfilerStats.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerStats.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerStats.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerStats.cpp' object='profiler_lst-SoProfilerStats.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerStats.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerStats.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerStats.obj `if test -f 'SoProfilerStats.cpp'; then $(CYGPATH_W) 'SoProfilerStats.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerStats.cpp'; fi`
-
-profiler_lst-SoProfilerStats.lo: SoProfilerStats.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerStats.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerStats.lo `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerStats.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerStats.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerStats.cpp' object='profiler_lst-SoProfilerStats.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerStats.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerStats.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerStats.lo `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp
-
-profiler_lst-SoProfilingReportGenerator.o: SoProfilingReportGenerator.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilingReportGenerator.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilingReportGenerator.o `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo" "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilingReportGenerator.cpp' object='profiler_lst-SoProfilingReportGenerator.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilingReportGenerator.o `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp
-
-profiler_lst-SoProfilingReportGenerator.obj: SoProfilingReportGenerator.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilingReportGenerator.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilingReportGenerator.obj `if test -f 'SoProfilingReportGenerator.cpp'; then $(CYGPATH_W) 'SoProfilingReportGenerator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilingReportGenerator.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo" "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilingReportGenerator.cpp' object='profiler_lst-SoProfilingReportGenerator.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilingReportGenerator.obj `if test -f 'SoProfilingReportGenerator.cpp'; then $(CYGPATH_W) 'SoProfilingReportGenerator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilingReportGenerator.cpp'; fi`
-
-profiler_lst-SoProfilingReportGenerator.lo: SoProfilingReportGenerator.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilingReportGenerator.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilingReportGenerator.lo `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo" "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilingReportGenerator.cpp' object='profiler_lst-SoProfilingReportGenerator.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilingReportGenerator.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilingReportGenerator.lo `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp
-
-profiler_lst-SoProfilerTopEngine.o: SoProfilerTopEngine.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerTopEngine.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerTopEngine.o `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopEngine.cpp' object='profiler_lst-SoProfilerTopEngine.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerTopEngine.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerTopEngine.o `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp
-
-profiler_lst-SoProfilerTopEngine.obj: SoProfilerTopEngine.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerTopEngine.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerTopEngine.obj `if test -f 'SoProfilerTopEngine.cpp'; then $(CYGPATH_W) 'SoProfilerTopEngine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopEngine.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopEngine.cpp' object='profiler_lst-SoProfilerTopEngine.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerTopEngine.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerTopEngine.obj `if test -f 'SoProfilerTopEngine.cpp'; then $(CYGPATH_W) 'SoProfilerTopEngine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopEngine.cpp'; fi`
-
-profiler_lst-SoProfilerTopEngine.lo: SoProfilerTopEngine.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerTopEngine.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerTopEngine.lo `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopEngine.cpp' object='profiler_lst-SoProfilerTopEngine.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerTopEngine.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerTopEngine.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerTopEngine.lo `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp
-
-profiler_lst-SoScrollingGraphKit.o: SoScrollingGraphKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoScrollingGraphKit.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoScrollingGraphKit.o `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo" "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScrollingGraphKit.cpp' object='profiler_lst-SoScrollingGraphKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoScrollingGraphKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoScrollingGraphKit.o `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp
-
-profiler_lst-SoScrollingGraphKit.obj: SoScrollingGraphKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoScrollingGraphKit.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoScrollingGraphKit.obj `if test -f 'SoScrollingGraphKit.cpp'; then $(CYGPATH_W) 'SoScrollingGraphKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScrollingGraphKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo" "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScrollingGraphKit.cpp' object='profiler_lst-SoScrollingGraphKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoScrollingGraphKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoScrollingGraphKit.obj `if test -f 'SoScrollingGraphKit.cpp'; then $(CYGPATH_W) 'SoScrollingGraphKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScrollingGraphKit.cpp'; fi`
-
-profiler_lst-SoScrollingGraphKit.lo: SoScrollingGraphKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoScrollingGraphKit.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoScrollingGraphKit.lo `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo" "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScrollingGraphKit.cpp' object='profiler_lst-SoScrollingGraphKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoScrollingGraphKit.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoScrollingGraphKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoScrollingGraphKit.lo `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp
-
-profiler_lst-SoNodeVisualize.o: SoNodeVisualize.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoNodeVisualize.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoNodeVisualize.o `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo" "$(DEPDIR)/profiler_lst-SoNodeVisualize.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeVisualize.cpp' object='profiler_lst-SoNodeVisualize.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoNodeVisualize.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoNodeVisualize.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoNodeVisualize.o `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp
-
-profiler_lst-SoNodeVisualize.obj: SoNodeVisualize.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoNodeVisualize.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoNodeVisualize.obj `if test -f 'SoNodeVisualize.cpp'; then $(CYGPATH_W) 'SoNodeVisualize.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeVisualize.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo" "$(DEPDIR)/profiler_lst-SoNodeVisualize.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeVisualize.cpp' object='profiler_lst-SoNodeVisualize.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoNodeVisualize.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoNodeVisualize.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoNodeVisualize.obj `if test -f 'SoNodeVisualize.cpp'; then $(CYGPATH_W) 'SoNodeVisualize.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeVisualize.cpp'; fi`
-
-profiler_lst-SoNodeVisualize.lo: SoNodeVisualize.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoNodeVisualize.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoNodeVisualize.lo `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo" "$(DEPDIR)/profiler_lst-SoNodeVisualize.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoNodeVisualize.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeVisualize.cpp' object='profiler_lst-SoNodeVisualize.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoNodeVisualize.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoNodeVisualize.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoNodeVisualize.lo `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp
-
-profiler_lst-SoProfilerTopKit.o: SoProfilerTopKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerTopKit.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerTopKit.o `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopKit.cpp' object='profiler_lst-SoProfilerTopKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerTopKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerTopKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerTopKit.o `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp
-
-profiler_lst-SoProfilerTopKit.obj: SoProfilerTopKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerTopKit.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerTopKit.obj `if test -f 'SoProfilerTopKit.cpp'; then $(CYGPATH_W) 'SoProfilerTopKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopKit.cpp' object='profiler_lst-SoProfilerTopKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerTopKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerTopKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerTopKit.obj `if test -f 'SoProfilerTopKit.cpp'; then $(CYGPATH_W) 'SoProfilerTopKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopKit.cpp'; fi`
-
-profiler_lst-SoProfilerTopKit.lo: SoProfilerTopKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerTopKit.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerTopKit.lo `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerTopKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopKit.cpp' object='profiler_lst-SoProfilerTopKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerTopKit.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerTopKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerTopKit.lo `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp
-
-profiler_lst-SoProfilerVisualizeKit.o: SoProfilerVisualizeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerVisualizeKit.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerVisualizeKit.o `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerVisualizeKit.cpp' object='profiler_lst-SoProfilerVisualizeKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerVisualizeKit.o `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp
-
-profiler_lst-SoProfilerVisualizeKit.obj: SoProfilerVisualizeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerVisualizeKit.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerVisualizeKit.obj `if test -f 'SoProfilerVisualizeKit.cpp'; then $(CYGPATH_W) 'SoProfilerVisualizeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerVisualizeKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerVisualizeKit.cpp' object='profiler_lst-SoProfilerVisualizeKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerVisualizeKit.obj `if test -f 'SoProfilerVisualizeKit.cpp'; then $(CYGPATH_W) 'SoProfilerVisualizeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerVisualizeKit.cpp'; fi`
-
-profiler_lst-SoProfilerVisualizeKit.lo: SoProfilerVisualizeKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SoProfilerVisualizeKit.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SoProfilerVisualizeKit.lo `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo" "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerVisualizeKit.cpp' object='profiler_lst-SoProfilerVisualizeKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SoProfilerVisualizeKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SoProfilerVisualizeKit.lo `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp
-
-profiler_lst-SbProfilingData.o: SbProfilingData.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SbProfilingData.o -MD -MP -MF "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SbProfilingData.o `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo" "$(DEPDIR)/profiler_lst-SbProfilingData.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProfilingData.cpp' object='profiler_lst-SbProfilingData.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SbProfilingData.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SbProfilingData.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SbProfilingData.o `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp
-
-profiler_lst-SbProfilingData.obj: SbProfilingData.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SbProfilingData.obj -MD -MP -MF "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SbProfilingData.obj `if test -f 'SbProfilingData.cpp'; then $(CYGPATH_W) 'SbProfilingData.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProfilingData.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo" "$(DEPDIR)/profiler_lst-SbProfilingData.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProfilingData.cpp' object='profiler_lst-SbProfilingData.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SbProfilingData.Po' tmpdepfile='$(DEPDIR)/profiler_lst-SbProfilingData.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SbProfilingData.obj `if test -f 'SbProfilingData.cpp'; then $(CYGPATH_W) 'SbProfilingData.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProfilingData.cpp'; fi`
-
-profiler_lst-SbProfilingData.lo: SbProfilingData.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -MT profiler_lst-SbProfilingData.lo -MD -MP -MF "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o profiler_lst-SbProfilingData.lo `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo" "$(DEPDIR)/profiler_lst-SbProfilingData.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/profiler_lst-SbProfilingData.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProfilingData.cpp' object='profiler_lst-SbProfilingData.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/profiler_lst-SbProfilingData.Plo' tmpdepfile='$(DEPDIR)/profiler_lst-SbProfilingData.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(profiler_lst_CXXFLAGS) $(CXXFLAGS) -c -o profiler_lst-SbProfilingData.lo `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp
-
-libprofiler_la-all-profiler-cpp.o: all-profiler-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-all-profiler-cpp.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-all-profiler-cpp.o `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo" "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-profiler-cpp.cpp' object='libprofiler_la-all-profiler-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-all-profiler-cpp.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-all-profiler-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-all-profiler-cpp.o `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp
-
-libprofiler_la-all-profiler-cpp.obj: all-profiler-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-all-profiler-cpp.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-all-profiler-cpp.obj `if test -f 'all-profiler-cpp.cpp'; then $(CYGPATH_W) 'all-profiler-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-profiler-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo" "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-profiler-cpp.cpp' object='libprofiler_la-all-profiler-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-all-profiler-cpp.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-all-profiler-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-all-profiler-cpp.obj `if test -f 'all-profiler-cpp.cpp'; then $(CYGPATH_W) 'all-profiler-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-profiler-cpp.cpp'; fi`
-
-libprofiler_la-all-profiler-cpp.lo: all-profiler-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-all-profiler-cpp.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-all-profiler-cpp.lo `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo" "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-all-profiler-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-profiler-cpp.cpp' object='libprofiler_la-all-profiler-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-all-profiler-cpp.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-all-profiler-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-all-profiler-cpp.lo `test -f 'all-profiler-cpp.cpp' || echo '$(srcdir)/'`all-profiler-cpp.cpp
-
-libprofiler_la-SoProfiler.o: SoProfiler.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfiler.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfiler.o `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo" "$(DEPDIR)/libprofiler_la-SoProfiler.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfiler.cpp' object='libprofiler_la-SoProfiler.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfiler.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfiler.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfiler.o `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp
-
-libprofiler_la-SoProfiler.obj: SoProfiler.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfiler.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfiler.obj `if test -f 'SoProfiler.cpp'; then $(CYGPATH_W) 'SoProfiler.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfiler.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo" "$(DEPDIR)/libprofiler_la-SoProfiler.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfiler.cpp' object='libprofiler_la-SoProfiler.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfiler.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfiler.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfiler.obj `if test -f 'SoProfiler.cpp'; then $(CYGPATH_W) 'SoProfiler.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfiler.cpp'; fi`
-
-libprofiler_la-SoProfiler.lo: SoProfiler.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfiler.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfiler.lo `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo" "$(DEPDIR)/libprofiler_la-SoProfiler.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfiler.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfiler.cpp' object='libprofiler_la-SoProfiler.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfiler.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfiler.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfiler.lo `test -f 'SoProfiler.cpp' || echo '$(srcdir)/'`SoProfiler.cpp
-
-libprofiler_la-SoProfilerElement.o: SoProfilerElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerElement.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerElement.o `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerElement.cpp' object='libprofiler_la-SoProfilerElement.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerElement.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerElement.o `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp
-
-libprofiler_la-SoProfilerElement.obj: SoProfilerElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerElement.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerElement.obj `if test -f 'SoProfilerElement.cpp'; then $(CYGPATH_W) 'SoProfilerElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerElement.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerElement.cpp' object='libprofiler_la-SoProfilerElement.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerElement.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerElement.obj `if test -f 'SoProfilerElement.cpp'; then $(CYGPATH_W) 'SoProfilerElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerElement.cpp'; fi`
-
-libprofiler_la-SoProfilerElement.lo: SoProfilerElement.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerElement.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerElement.lo `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerElement.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerElement.cpp' object='libprofiler_la-SoProfilerElement.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerElement.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerElement.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerElement.lo `test -f 'SoProfilerElement.cpp' || echo '$(srcdir)/'`SoProfilerElement.cpp
-
-libprofiler_la-SoProfilerOverlayKit.o: SoProfilerOverlayKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerOverlayKit.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerOverlayKit.o `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerOverlayKit.cpp' object='libprofiler_la-SoProfilerOverlayKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerOverlayKit.o `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp
-
-libprofiler_la-SoProfilerOverlayKit.obj: SoProfilerOverlayKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerOverlayKit.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerOverlayKit.obj `if test -f 'SoProfilerOverlayKit.cpp'; then $(CYGPATH_W) 'SoProfilerOverlayKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerOverlayKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerOverlayKit.cpp' object='libprofiler_la-SoProfilerOverlayKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerOverlayKit.obj `if test -f 'SoProfilerOverlayKit.cpp'; then $(CYGPATH_W) 'SoProfilerOverlayKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerOverlayKit.cpp'; fi`
-
-libprofiler_la-SoProfilerOverlayKit.lo: SoProfilerOverlayKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerOverlayKit.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerOverlayKit.lo `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerOverlayKit.cpp' object='libprofiler_la-SoProfilerOverlayKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerOverlayKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerOverlayKit.lo `test -f 'SoProfilerOverlayKit.cpp' || echo '$(srcdir)/'`SoProfilerOverlayKit.cpp
-
-libprofiler_la-SoProfilerStats.o: SoProfilerStats.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerStats.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerStats.o `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerStats.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerStats.cpp' object='libprofiler_la-SoProfilerStats.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerStats.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerStats.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerStats.o `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp
-
-libprofiler_la-SoProfilerStats.obj: SoProfilerStats.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerStats.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerStats.obj `if test -f 'SoProfilerStats.cpp'; then $(CYGPATH_W) 'SoProfilerStats.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerStats.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerStats.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerStats.cpp' object='libprofiler_la-SoProfilerStats.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerStats.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerStats.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerStats.obj `if test -f 'SoProfilerStats.cpp'; then $(CYGPATH_W) 'SoProfilerStats.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerStats.cpp'; fi`
-
-libprofiler_la-SoProfilerStats.lo: SoProfilerStats.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerStats.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerStats.lo `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerStats.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerStats.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerStats.cpp' object='libprofiler_la-SoProfilerStats.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerStats.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerStats.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerStats.lo `test -f 'SoProfilerStats.cpp' || echo '$(srcdir)/'`SoProfilerStats.cpp
-
-libprofiler_la-SoProfilingReportGenerator.o: SoProfilingReportGenerator.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilingReportGenerator.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilingReportGenerator.o `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilingReportGenerator.cpp' object='libprofiler_la-SoProfilingReportGenerator.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilingReportGenerator.o `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp
-
-libprofiler_la-SoProfilingReportGenerator.obj: SoProfilingReportGenerator.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilingReportGenerator.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilingReportGenerator.obj `if test -f 'SoProfilingReportGenerator.cpp'; then $(CYGPATH_W) 'SoProfilingReportGenerator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilingReportGenerator.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilingReportGenerator.cpp' object='libprofiler_la-SoProfilingReportGenerator.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilingReportGenerator.obj `if test -f 'SoProfilingReportGenerator.cpp'; then $(CYGPATH_W) 'SoProfilingReportGenerator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilingReportGenerator.cpp'; fi`
-
-libprofiler_la-SoProfilingReportGenerator.lo: SoProfilingReportGenerator.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilingReportGenerator.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilingReportGenerator.lo `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilingReportGenerator.cpp' object='libprofiler_la-SoProfilingReportGenerator.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilingReportGenerator.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilingReportGenerator.lo `test -f 'SoProfilingReportGenerator.cpp' || echo '$(srcdir)/'`SoProfilingReportGenerator.cpp
-
-libprofiler_la-SoProfilerTopEngine.o: SoProfilerTopEngine.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerTopEngine.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerTopEngine.o `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopEngine.cpp' object='libprofiler_la-SoProfilerTopEngine.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerTopEngine.o `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp
-
-libprofiler_la-SoProfilerTopEngine.obj: SoProfilerTopEngine.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerTopEngine.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerTopEngine.obj `if test -f 'SoProfilerTopEngine.cpp'; then $(CYGPATH_W) 'SoProfilerTopEngine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopEngine.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopEngine.cpp' object='libprofiler_la-SoProfilerTopEngine.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerTopEngine.obj `if test -f 'SoProfilerTopEngine.cpp'; then $(CYGPATH_W) 'SoProfilerTopEngine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopEngine.cpp'; fi`
-
-libprofiler_la-SoProfilerTopEngine.lo: SoProfilerTopEngine.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerTopEngine.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerTopEngine.lo `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopEngine.cpp' object='libprofiler_la-SoProfilerTopEngine.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerTopEngine.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerTopEngine.lo `test -f 'SoProfilerTopEngine.cpp' || echo '$(srcdir)/'`SoProfilerTopEngine.cpp
-
-libprofiler_la-SoScrollingGraphKit.o: SoScrollingGraphKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoScrollingGraphKit.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoScrollingGraphKit.o `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo" "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScrollingGraphKit.cpp' object='libprofiler_la-SoScrollingGraphKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoScrollingGraphKit.o `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp
-
-libprofiler_la-SoScrollingGraphKit.obj: SoScrollingGraphKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoScrollingGraphKit.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoScrollingGraphKit.obj `if test -f 'SoScrollingGraphKit.cpp'; then $(CYGPATH_W) 'SoScrollingGraphKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScrollingGraphKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo" "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScrollingGraphKit.cpp' object='libprofiler_la-SoScrollingGraphKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoScrollingGraphKit.obj `if test -f 'SoScrollingGraphKit.cpp'; then $(CYGPATH_W) 'SoScrollingGraphKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScrollingGraphKit.cpp'; fi`
-
-libprofiler_la-SoScrollingGraphKit.lo: SoScrollingGraphKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoScrollingGraphKit.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoScrollingGraphKit.lo `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo" "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScrollingGraphKit.cpp' object='libprofiler_la-SoScrollingGraphKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoScrollingGraphKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoScrollingGraphKit.lo `test -f 'SoScrollingGraphKit.cpp' || echo '$(srcdir)/'`SoScrollingGraphKit.cpp
-
-libprofiler_la-SoNodeVisualize.o: SoNodeVisualize.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoNodeVisualize.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoNodeVisualize.o `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo" "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeVisualize.cpp' object='libprofiler_la-SoNodeVisualize.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoNodeVisualize.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoNodeVisualize.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoNodeVisualize.o `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp
-
-libprofiler_la-SoNodeVisualize.obj: SoNodeVisualize.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoNodeVisualize.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoNodeVisualize.obj `if test -f 'SoNodeVisualize.cpp'; then $(CYGPATH_W) 'SoNodeVisualize.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeVisualize.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo" "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeVisualize.cpp' object='libprofiler_la-SoNodeVisualize.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoNodeVisualize.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoNodeVisualize.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoNodeVisualize.obj `if test -f 'SoNodeVisualize.cpp'; then $(CYGPATH_W) 'SoNodeVisualize.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeVisualize.cpp'; fi`
-
-libprofiler_la-SoNodeVisualize.lo: SoNodeVisualize.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoNodeVisualize.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoNodeVisualize.lo `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo" "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoNodeVisualize.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeVisualize.cpp' object='libprofiler_la-SoNodeVisualize.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoNodeVisualize.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoNodeVisualize.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoNodeVisualize.lo `test -f 'SoNodeVisualize.cpp' || echo '$(srcdir)/'`SoNodeVisualize.cpp
-
-libprofiler_la-SoProfilerTopKit.o: SoProfilerTopKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerTopKit.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerTopKit.o `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopKit.cpp' object='libprofiler_la-SoProfilerTopKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerTopKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerTopKit.o `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp
-
-libprofiler_la-SoProfilerTopKit.obj: SoProfilerTopKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerTopKit.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerTopKit.obj `if test -f 'SoProfilerTopKit.cpp'; then $(CYGPATH_W) 'SoProfilerTopKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopKit.cpp' object='libprofiler_la-SoProfilerTopKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerTopKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerTopKit.obj `if test -f 'SoProfilerTopKit.cpp'; then $(CYGPATH_W) 'SoProfilerTopKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerTopKit.cpp'; fi`
-
-libprofiler_la-SoProfilerTopKit.lo: SoProfilerTopKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerTopKit.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerTopKit.lo `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerTopKit.cpp' object='libprofiler_la-SoProfilerTopKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerTopKit.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerTopKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerTopKit.lo `test -f 'SoProfilerTopKit.cpp' || echo '$(srcdir)/'`SoProfilerTopKit.cpp
-
-libprofiler_la-SoProfilerVisualizeKit.o: SoProfilerVisualizeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerVisualizeKit.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerVisualizeKit.o `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerVisualizeKit.cpp' object='libprofiler_la-SoProfilerVisualizeKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerVisualizeKit.o `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp
-
-libprofiler_la-SoProfilerVisualizeKit.obj: SoProfilerVisualizeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerVisualizeKit.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerVisualizeKit.obj `if test -f 'SoProfilerVisualizeKit.cpp'; then $(CYGPATH_W) 'SoProfilerVisualizeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerVisualizeKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerVisualizeKit.cpp' object='libprofiler_la-SoProfilerVisualizeKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerVisualizeKit.obj `if test -f 'SoProfilerVisualizeKit.cpp'; then $(CYGPATH_W) 'SoProfilerVisualizeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoProfilerVisualizeKit.cpp'; fi`
-
-libprofiler_la-SoProfilerVisualizeKit.lo: SoProfilerVisualizeKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SoProfilerVisualizeKit.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SoProfilerVisualizeKit.lo `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo" "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoProfilerVisualizeKit.cpp' object='libprofiler_la-SoProfilerVisualizeKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SoProfilerVisualizeKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SoProfilerVisualizeKit.lo `test -f 'SoProfilerVisualizeKit.cpp' || echo '$(srcdir)/'`SoProfilerVisualizeKit.cpp
-
-libprofiler_la-SbProfilingData.o: SbProfilingData.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SbProfilingData.o -MD -MP -MF "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SbProfilingData.o `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo" "$(DEPDIR)/libprofiler_la-SbProfilingData.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProfilingData.cpp' object='libprofiler_la-SbProfilingData.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SbProfilingData.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SbProfilingData.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SbProfilingData.o `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp
-
-libprofiler_la-SbProfilingData.obj: SbProfilingData.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SbProfilingData.obj -MD -MP -MF "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SbProfilingData.obj `if test -f 'SbProfilingData.cpp'; then $(CYGPATH_W) 'SbProfilingData.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProfilingData.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo" "$(DEPDIR)/libprofiler_la-SbProfilingData.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProfilingData.cpp' object='libprofiler_la-SbProfilingData.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SbProfilingData.Po' tmpdepfile='$(DEPDIR)/libprofiler_la-SbProfilingData.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SbProfilingData.obj `if test -f 'SbProfilingData.cpp'; then $(CYGPATH_W) 'SbProfilingData.cpp'; else $(CYGPATH_W) '$(srcdir)/SbProfilingData.cpp'; fi`
-
-libprofiler_la-SbProfilingData.lo: SbProfilingData.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -MT libprofiler_la-SbProfilingData.lo -MD -MP -MF "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libprofiler_la-SbProfilingData.lo `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo" "$(DEPDIR)/libprofiler_la-SbProfilingData.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libprofiler_la-SbProfilingData.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbProfilingData.cpp' object='libprofiler_la-SbProfilingData.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libprofiler_la-SbProfilingData.Plo' tmpdepfile='$(DEPDIR)/libprofiler_la-SbProfilingData.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libprofiler_la_CXXFLAGS) $(CXXFLAGS) -c -o libprofiler_la-SbProfilingData.lo `test -f 'SbProfilingData.cpp' || echo '$(srcdir)/'`SbProfilingData.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -338,9 +338,6 @@ EXTRA_libnodekits_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libnodekits_la_CXXFLAGS = $(AM_CXXFLAGS)
-libnodekits_la_CFLAGS = $(AM_CFLAGS)
-
 libnodekits@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -350,9 +347,6 @@ nodekits_lst_SOURCES = $(BuildSources)
 EXTRA_nodekits_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-nodekits_lst_CXXFLAGS = $(AM_CXXFLAGS)
-nodekits_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/nodekits
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -368,20 +362,14 @@ am__nodekits_lst_SOURCES_DIST = SoNodeKit.cpp SoNodeKitPath.cpp \
 	SoAppearanceKit.cpp SoCameraKit.cpp SoInteractionKit.cpp \
 	SoLightKit.cpp SoSceneKit.cpp SoSeparatorKit.cpp SoShapeKit.cpp \
 	SoWrapperKit.cpp all-nodekits-cpp.cpp
-am__objects_1 = nodekits_lst-all-nodekits-cpp.$(OBJEXT)
-am__objects_2 = nodekits_lst-SoNodeKit.$(OBJEXT) \
-	nodekits_lst-SoNodeKitPath.$(OBJEXT) \
-	nodekits_lst-SoNodeKitListPart.$(OBJEXT) \
-	nodekits_lst-SoNodekitCatalog.$(OBJEXT) \
-	nodekits_lst-SoBaseKit.$(OBJEXT) \
-	nodekits_lst-SoAppearanceKit.$(OBJEXT) \
-	nodekits_lst-SoCameraKit.$(OBJEXT) \
-	nodekits_lst-SoInteractionKit.$(OBJEXT) \
-	nodekits_lst-SoLightKit.$(OBJEXT) \
-	nodekits_lst-SoSceneKit.$(OBJEXT) \
-	nodekits_lst-SoSeparatorKit.$(OBJEXT) \
-	nodekits_lst-SoShapeKit.$(OBJEXT) \
-	nodekits_lst-SoWrapperKit.$(OBJEXT)
+am__objects_1 = all-nodekits-cpp.$(OBJEXT)
+am__objects_2 = SoNodeKit.$(OBJEXT) SoNodeKitPath.$(OBJEXT) \
+	SoNodeKitListPart.$(OBJEXT) SoNodekitCatalog.$(OBJEXT) \
+	SoBaseKit.$(OBJEXT) SoAppearanceKit.$(OBJEXT) \
+	SoCameraKit.$(OBJEXT) SoInteractionKit.$(OBJEXT) \
+	SoLightKit.$(OBJEXT) SoSceneKit.$(OBJEXT) \
+	SoSeparatorKit.$(OBJEXT) SoShapeKit.$(OBJEXT) \
+	SoWrapperKit.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_nodekits_lst_OBJECTS = $(am__objects_3)
@@ -401,15 +389,11 @@ am__libnodekits_la_SOURCES_DIST = SoNodeKit.cpp SoNodeKitPath.cpp \
 	SoAppearanceKit.cpp SoCameraKit.cpp SoInteractionKit.cpp \
 	SoLightKit.cpp SoSceneKit.cpp SoSeparatorKit.cpp SoShapeKit.cpp \
 	SoWrapperKit.cpp all-nodekits-cpp.cpp
-am__objects_6 = libnodekits_la-all-nodekits-cpp.lo
-am__objects_7 = libnodekits_la-SoNodeKit.lo \
-	libnodekits_la-SoNodeKitPath.lo \
-	libnodekits_la-SoNodeKitListPart.lo \
-	libnodekits_la-SoNodekitCatalog.lo libnodekits_la-SoBaseKit.lo \
-	libnodekits_la-SoAppearanceKit.lo libnodekits_la-SoCameraKit.lo \
-	libnodekits_la-SoInteractionKit.lo libnodekits_la-SoLightKit.lo \
-	libnodekits_la-SoSceneKit.lo libnodekits_la-SoSeparatorKit.lo \
-	libnodekits_la-SoShapeKit.lo libnodekits_la-SoWrapperKit.lo
+am__objects_6 = all-nodekits-cpp.lo
+am__objects_7 = SoNodeKit.lo SoNodeKitPath.lo SoNodeKitListPart.lo \
+	SoNodekitCatalog.lo SoBaseKit.lo SoAppearanceKit.lo \
+	SoCameraKit.lo SoInteractionKit.lo SoLightKit.lo SoSceneKit.lo \
+	SoSeparatorKit.lo SoShapeKit.lo SoWrapperKit.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libnodekits_la_OBJECTS = $(am__objects_8)
@@ -428,14 +412,7 @@ am__libnodekits@SUFFIX@LINKHACK_la_SOURCES_DIST = SoNodeKit.cpp \
 	SoInteractionKit.cpp SoLightKit.cpp SoSceneKit.cpp \
 	SoSeparatorKit.cpp SoShapeKit.cpp SoWrapperKit.cpp \
 	all-nodekits-cpp.cpp
-am__objects_10 = all-nodekits-cpp.lo
-am__objects_11 = SoNodeKit.lo SoNodeKitPath.lo SoNodeKitListPart.lo \
-	SoNodekitCatalog.lo SoBaseKit.lo SoAppearanceKit.lo \
-	SoCameraKit.lo SoInteractionKit.lo SoLightKit.lo SoSceneKit.lo \
-	SoSeparatorKit.lo SoShapeKit.lo SoWrapperKit.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libnodekits@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libnodekits@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubKitP.h \
 	all-nodekits-cpp.cpp SoNodeKit.cpp SoNodeKitPath.cpp \
 	SoNodeKitListPart.cpp SoNodekitCatalog.cpp SoBaseKit.cpp \
@@ -447,47 +424,31 @@ libnodekits@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoAppearanceKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBaseKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAppearanceKit.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBaseKit.Plo ./$(DEPDIR)/SoBaseKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCameraKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoCameraKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInteractionKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoInteractionKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLightKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNodeKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoLightKit.Po ./$(DEPDIR)/SoNodeKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNodeKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodeKitListPart.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNodeKitListPart.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodeKitPath.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNodeKitPath.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodekitCatalog.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoNodekitCatalog.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSceneKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSceneKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSeparatorKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSeparatorKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShapeKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShapeKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWrapperKit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoWrapperKit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-nodekits-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoAppearanceKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoBaseKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoCameraKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoInteractionKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoLightKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoNodeKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoNodeKitPath.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoSceneKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoSeparatorKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoShapeKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-SoWrapperKit.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoAppearanceKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoBaseKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoCameraKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoInteractionKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoLightKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoNodeKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoNodeKitPath.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoSceneKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoSeparatorKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoShapeKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-SoWrapperKit.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodekits-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -575,47 +536,33 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAppearanceKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAppearanceKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCameraKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCameraKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInteractionKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInteractionKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLightKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLightKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKitListPart.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKitListPart.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKitPath.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKitPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodekitCatalog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodekitCatalog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSeparatorKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSeparatorKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShapeKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShapeKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWrapperKit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWrapperKit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodekits-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoAppearanceKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoBaseKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoCameraKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoInteractionKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoLightKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoNodeKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoNodeKitPath.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoSceneKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoSeparatorKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoShapeKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-SoWrapperKit.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoAppearanceKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoBaseKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoCameraKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoInteractionKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoLightKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoNodeKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoNodeKitPath.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoSceneKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoSeparatorKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoShapeKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-SoWrapperKit.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodekits-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -652,930 +599,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-nodekits_lst-all-nodekits-cpp.o: all-nodekits-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-all-nodekits-cpp.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-all-nodekits-cpp.o `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo" "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-nodekits-cpp.cpp' object='nodekits_lst-all-nodekits-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-all-nodekits-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-all-nodekits-cpp.o `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp
-
-nodekits_lst-all-nodekits-cpp.obj: all-nodekits-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-all-nodekits-cpp.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-all-nodekits-cpp.obj `if test -f 'all-nodekits-cpp.cpp'; then $(CYGPATH_W) 'all-nodekits-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-nodekits-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo" "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-nodekits-cpp.cpp' object='nodekits_lst-all-nodekits-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-all-nodekits-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-all-nodekits-cpp.obj `if test -f 'all-nodekits-cpp.cpp'; then $(CYGPATH_W) 'all-nodekits-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-nodekits-cpp.cpp'; fi`
-
-nodekits_lst-all-nodekits-cpp.lo: all-nodekits-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-all-nodekits-cpp.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-all-nodekits-cpp.lo `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo" "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-nodekits-cpp.cpp' object='nodekits_lst-all-nodekits-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-all-nodekits-cpp.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-all-nodekits-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-all-nodekits-cpp.lo `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp
-
-nodekits_lst-SoNodeKit.o: SoNodeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKit.o `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKit.cpp' object='nodekits_lst-SoNodeKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKit.o `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp
-
-nodekits_lst-SoNodeKit.obj: SoNodeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKit.obj `if test -f 'SoNodeKit.cpp'; then $(CYGPATH_W) 'SoNodeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKit.cpp' object='nodekits_lst-SoNodeKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKit.obj `if test -f 'SoNodeKit.cpp'; then $(CYGPATH_W) 'SoNodeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKit.cpp'; fi`
-
-nodekits_lst-SoNodeKit.lo: SoNodeKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKit.lo `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKit.cpp' object='nodekits_lst-SoNodeKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKit.lo `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp
-
-nodekits_lst-SoNodeKitPath.o: SoNodeKitPath.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKitPath.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKitPath.o `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitPath.cpp' object='nodekits_lst-SoNodeKitPath.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKitPath.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKitPath.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKitPath.o `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp
-
-nodekits_lst-SoNodeKitPath.obj: SoNodeKitPath.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKitPath.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKitPath.obj `if test -f 'SoNodeKitPath.cpp'; then $(CYGPATH_W) 'SoNodeKitPath.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitPath.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitPath.cpp' object='nodekits_lst-SoNodeKitPath.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKitPath.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKitPath.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKitPath.obj `if test -f 'SoNodeKitPath.cpp'; then $(CYGPATH_W) 'SoNodeKitPath.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitPath.cpp'; fi`
-
-nodekits_lst-SoNodeKitPath.lo: SoNodeKitPath.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKitPath.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKitPath.lo `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKitPath.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitPath.cpp' object='nodekits_lst-SoNodeKitPath.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKitPath.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKitPath.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKitPath.lo `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp
-
-nodekits_lst-SoNodeKitListPart.o: SoNodeKitListPart.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKitListPart.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKitListPart.o `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitListPart.cpp' object='nodekits_lst-SoNodeKitListPart.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKitListPart.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKitListPart.o `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp
-
-nodekits_lst-SoNodeKitListPart.obj: SoNodeKitListPart.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKitListPart.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKitListPart.obj `if test -f 'SoNodeKitListPart.cpp'; then $(CYGPATH_W) 'SoNodeKitListPart.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitListPart.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitListPart.cpp' object='nodekits_lst-SoNodeKitListPart.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKitListPart.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKitListPart.obj `if test -f 'SoNodeKitListPart.cpp'; then $(CYGPATH_W) 'SoNodeKitListPart.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitListPart.cpp'; fi`
-
-nodekits_lst-SoNodeKitListPart.lo: SoNodeKitListPart.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodeKitListPart.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodeKitListPart.lo `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo" "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitListPart.cpp' object='nodekits_lst-SoNodeKitListPart.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodeKitListPart.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodeKitListPart.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodeKitListPart.lo `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp
-
-nodekits_lst-SoNodekitCatalog.o: SoNodekitCatalog.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodekitCatalog.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodekitCatalog.o `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo" "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodekitCatalog.cpp' object='nodekits_lst-SoNodekitCatalog.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodekitCatalog.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodekitCatalog.o `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp
-
-nodekits_lst-SoNodekitCatalog.obj: SoNodekitCatalog.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodekitCatalog.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodekitCatalog.obj `if test -f 'SoNodekitCatalog.cpp'; then $(CYGPATH_W) 'SoNodekitCatalog.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodekitCatalog.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo" "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodekitCatalog.cpp' object='nodekits_lst-SoNodekitCatalog.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodekitCatalog.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodekitCatalog.obj `if test -f 'SoNodekitCatalog.cpp'; then $(CYGPATH_W) 'SoNodekitCatalog.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodekitCatalog.cpp'; fi`
-
-nodekits_lst-SoNodekitCatalog.lo: SoNodekitCatalog.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoNodekitCatalog.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoNodekitCatalog.lo `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo" "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodekitCatalog.cpp' object='nodekits_lst-SoNodekitCatalog.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoNodekitCatalog.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoNodekitCatalog.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoNodekitCatalog.lo `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp
-
-nodekits_lst-SoBaseKit.o: SoBaseKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoBaseKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoBaseKit.o `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo" "$(DEPDIR)/nodekits_lst-SoBaseKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseKit.cpp' object='nodekits_lst-SoBaseKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoBaseKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoBaseKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoBaseKit.o `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp
-
-nodekits_lst-SoBaseKit.obj: SoBaseKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoBaseKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoBaseKit.obj `if test -f 'SoBaseKit.cpp'; then $(CYGPATH_W) 'SoBaseKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo" "$(DEPDIR)/nodekits_lst-SoBaseKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseKit.cpp' object='nodekits_lst-SoBaseKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoBaseKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoBaseKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoBaseKit.obj `if test -f 'SoBaseKit.cpp'; then $(CYGPATH_W) 'SoBaseKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseKit.cpp'; fi`
-
-nodekits_lst-SoBaseKit.lo: SoBaseKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoBaseKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoBaseKit.lo `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo" "$(DEPDIR)/nodekits_lst-SoBaseKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoBaseKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseKit.cpp' object='nodekits_lst-SoBaseKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoBaseKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoBaseKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoBaseKit.lo `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp
-
-nodekits_lst-SoAppearanceKit.o: SoAppearanceKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoAppearanceKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoAppearanceKit.o `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo" "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAppearanceKit.cpp' object='nodekits_lst-SoAppearanceKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoAppearanceKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoAppearanceKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoAppearanceKit.o `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp
-
-nodekits_lst-SoAppearanceKit.obj: SoAppearanceKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoAppearanceKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoAppearanceKit.obj `if test -f 'SoAppearanceKit.cpp'; then $(CYGPATH_W) 'SoAppearanceKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAppearanceKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo" "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAppearanceKit.cpp' object='nodekits_lst-SoAppearanceKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoAppearanceKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoAppearanceKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoAppearanceKit.obj `if test -f 'SoAppearanceKit.cpp'; then $(CYGPATH_W) 'SoAppearanceKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAppearanceKit.cpp'; fi`
-
-nodekits_lst-SoAppearanceKit.lo: SoAppearanceKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoAppearanceKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoAppearanceKit.lo `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo" "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoAppearanceKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAppearanceKit.cpp' object='nodekits_lst-SoAppearanceKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoAppearanceKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoAppearanceKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoAppearanceKit.lo `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp
-
-nodekits_lst-SoCameraKit.o: SoCameraKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoCameraKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoCameraKit.o `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo" "$(DEPDIR)/nodekits_lst-SoCameraKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraKit.cpp' object='nodekits_lst-SoCameraKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoCameraKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoCameraKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoCameraKit.o `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp
-
-nodekits_lst-SoCameraKit.obj: SoCameraKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoCameraKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoCameraKit.obj `if test -f 'SoCameraKit.cpp'; then $(CYGPATH_W) 'SoCameraKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo" "$(DEPDIR)/nodekits_lst-SoCameraKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraKit.cpp' object='nodekits_lst-SoCameraKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoCameraKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoCameraKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoCameraKit.obj `if test -f 'SoCameraKit.cpp'; then $(CYGPATH_W) 'SoCameraKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraKit.cpp'; fi`
-
-nodekits_lst-SoCameraKit.lo: SoCameraKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoCameraKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoCameraKit.lo `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo" "$(DEPDIR)/nodekits_lst-SoCameraKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoCameraKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraKit.cpp' object='nodekits_lst-SoCameraKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoCameraKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoCameraKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoCameraKit.lo `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp
-
-nodekits_lst-SoInteractionKit.o: SoInteractionKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoInteractionKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoInteractionKit.o `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo" "$(DEPDIR)/nodekits_lst-SoInteractionKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInteractionKit.cpp' object='nodekits_lst-SoInteractionKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoInteractionKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoInteractionKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoInteractionKit.o `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp
-
-nodekits_lst-SoInteractionKit.obj: SoInteractionKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoInteractionKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoInteractionKit.obj `if test -f 'SoInteractionKit.cpp'; then $(CYGPATH_W) 'SoInteractionKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInteractionKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo" "$(DEPDIR)/nodekits_lst-SoInteractionKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInteractionKit.cpp' object='nodekits_lst-SoInteractionKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoInteractionKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoInteractionKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoInteractionKit.obj `if test -f 'SoInteractionKit.cpp'; then $(CYGPATH_W) 'SoInteractionKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInteractionKit.cpp'; fi`
-
-nodekits_lst-SoInteractionKit.lo: SoInteractionKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoInteractionKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoInteractionKit.lo `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo" "$(DEPDIR)/nodekits_lst-SoInteractionKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoInteractionKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInteractionKit.cpp' object='nodekits_lst-SoInteractionKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoInteractionKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoInteractionKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoInteractionKit.lo `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp
-
-nodekits_lst-SoLightKit.o: SoLightKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoLightKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoLightKit.o `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo" "$(DEPDIR)/nodekits_lst-SoLightKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLightKit.cpp' object='nodekits_lst-SoLightKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoLightKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoLightKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoLightKit.o `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp
-
-nodekits_lst-SoLightKit.obj: SoLightKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoLightKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoLightKit.obj `if test -f 'SoLightKit.cpp'; then $(CYGPATH_W) 'SoLightKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLightKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo" "$(DEPDIR)/nodekits_lst-SoLightKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLightKit.cpp' object='nodekits_lst-SoLightKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoLightKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoLightKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoLightKit.obj `if test -f 'SoLightKit.cpp'; then $(CYGPATH_W) 'SoLightKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLightKit.cpp'; fi`
-
-nodekits_lst-SoLightKit.lo: SoLightKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoLightKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoLightKit.lo `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo" "$(DEPDIR)/nodekits_lst-SoLightKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoLightKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLightKit.cpp' object='nodekits_lst-SoLightKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoLightKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoLightKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoLightKit.lo `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp
-
-nodekits_lst-SoSceneKit.o: SoSceneKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoSceneKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoSceneKit.o `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo" "$(DEPDIR)/nodekits_lst-SoSceneKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSceneKit.cpp' object='nodekits_lst-SoSceneKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoSceneKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoSceneKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoSceneKit.o `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp
-
-nodekits_lst-SoSceneKit.obj: SoSceneKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoSceneKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoSceneKit.obj `if test -f 'SoSceneKit.cpp'; then $(CYGPATH_W) 'SoSceneKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSceneKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo" "$(DEPDIR)/nodekits_lst-SoSceneKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSceneKit.cpp' object='nodekits_lst-SoSceneKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoSceneKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoSceneKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoSceneKit.obj `if test -f 'SoSceneKit.cpp'; then $(CYGPATH_W) 'SoSceneKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSceneKit.cpp'; fi`
-
-nodekits_lst-SoSceneKit.lo: SoSceneKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoSceneKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoSceneKit.lo `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo" "$(DEPDIR)/nodekits_lst-SoSceneKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoSceneKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSceneKit.cpp' object='nodekits_lst-SoSceneKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoSceneKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoSceneKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoSceneKit.lo `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp
-
-nodekits_lst-SoSeparatorKit.o: SoSeparatorKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoSeparatorKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoSeparatorKit.o `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo" "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSeparatorKit.cpp' object='nodekits_lst-SoSeparatorKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoSeparatorKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoSeparatorKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoSeparatorKit.o `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp
-
-nodekits_lst-SoSeparatorKit.obj: SoSeparatorKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoSeparatorKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoSeparatorKit.obj `if test -f 'SoSeparatorKit.cpp'; then $(CYGPATH_W) 'SoSeparatorKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSeparatorKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo" "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSeparatorKit.cpp' object='nodekits_lst-SoSeparatorKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoSeparatorKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoSeparatorKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoSeparatorKit.obj `if test -f 'SoSeparatorKit.cpp'; then $(CYGPATH_W) 'SoSeparatorKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSeparatorKit.cpp'; fi`
-
-nodekits_lst-SoSeparatorKit.lo: SoSeparatorKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoSeparatorKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoSeparatorKit.lo `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo" "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoSeparatorKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSeparatorKit.cpp' object='nodekits_lst-SoSeparatorKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoSeparatorKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoSeparatorKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoSeparatorKit.lo `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp
-
-nodekits_lst-SoShapeKit.o: SoShapeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoShapeKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoShapeKit.o `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo" "$(DEPDIR)/nodekits_lst-SoShapeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeKit.cpp' object='nodekits_lst-SoShapeKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoShapeKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoShapeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoShapeKit.o `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp
-
-nodekits_lst-SoShapeKit.obj: SoShapeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoShapeKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoShapeKit.obj `if test -f 'SoShapeKit.cpp'; then $(CYGPATH_W) 'SoShapeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo" "$(DEPDIR)/nodekits_lst-SoShapeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeKit.cpp' object='nodekits_lst-SoShapeKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoShapeKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoShapeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoShapeKit.obj `if test -f 'SoShapeKit.cpp'; then $(CYGPATH_W) 'SoShapeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeKit.cpp'; fi`
-
-nodekits_lst-SoShapeKit.lo: SoShapeKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoShapeKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoShapeKit.lo `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo" "$(DEPDIR)/nodekits_lst-SoShapeKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoShapeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeKit.cpp' object='nodekits_lst-SoShapeKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoShapeKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoShapeKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoShapeKit.lo `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp
-
-nodekits_lst-SoWrapperKit.o: SoWrapperKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoWrapperKit.o -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoWrapperKit.o `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo" "$(DEPDIR)/nodekits_lst-SoWrapperKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWrapperKit.cpp' object='nodekits_lst-SoWrapperKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoWrapperKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoWrapperKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoWrapperKit.o `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp
-
-nodekits_lst-SoWrapperKit.obj: SoWrapperKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoWrapperKit.obj -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoWrapperKit.obj `if test -f 'SoWrapperKit.cpp'; then $(CYGPATH_W) 'SoWrapperKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWrapperKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo" "$(DEPDIR)/nodekits_lst-SoWrapperKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWrapperKit.cpp' object='nodekits_lst-SoWrapperKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoWrapperKit.Po' tmpdepfile='$(DEPDIR)/nodekits_lst-SoWrapperKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoWrapperKit.obj `if test -f 'SoWrapperKit.cpp'; then $(CYGPATH_W) 'SoWrapperKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWrapperKit.cpp'; fi`
-
-nodekits_lst-SoWrapperKit.lo: SoWrapperKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -MT nodekits_lst-SoWrapperKit.lo -MD -MP -MF "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o nodekits_lst-SoWrapperKit.lo `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo" "$(DEPDIR)/nodekits_lst-SoWrapperKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/nodekits_lst-SoWrapperKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWrapperKit.cpp' object='nodekits_lst-SoWrapperKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/nodekits_lst-SoWrapperKit.Plo' tmpdepfile='$(DEPDIR)/nodekits_lst-SoWrapperKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(nodekits_lst_CXXFLAGS) $(CXXFLAGS) -c -o nodekits_lst-SoWrapperKit.lo `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp
-
-libnodekits_la-all-nodekits-cpp.o: all-nodekits-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-all-nodekits-cpp.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-all-nodekits-cpp.o `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo" "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-nodekits-cpp.cpp' object='libnodekits_la-all-nodekits-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-all-nodekits-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-all-nodekits-cpp.o `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp
-
-libnodekits_la-all-nodekits-cpp.obj: all-nodekits-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-all-nodekits-cpp.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-all-nodekits-cpp.obj `if test -f 'all-nodekits-cpp.cpp'; then $(CYGPATH_W) 'all-nodekits-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-nodekits-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo" "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-nodekits-cpp.cpp' object='libnodekits_la-all-nodekits-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-all-nodekits-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-all-nodekits-cpp.obj `if test -f 'all-nodekits-cpp.cpp'; then $(CYGPATH_W) 'all-nodekits-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-nodekits-cpp.cpp'; fi`
-
-libnodekits_la-all-nodekits-cpp.lo: all-nodekits-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-all-nodekits-cpp.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-all-nodekits-cpp.lo `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo" "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-nodekits-cpp.cpp' object='libnodekits_la-all-nodekits-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-all-nodekits-cpp.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-all-nodekits-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-all-nodekits-cpp.lo `test -f 'all-nodekits-cpp.cpp' || echo '$(srcdir)/'`all-nodekits-cpp.cpp
-
-libnodekits_la-SoNodeKit.o: SoNodeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKit.o `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKit.cpp' object='libnodekits_la-SoNodeKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKit.o `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp
-
-libnodekits_la-SoNodeKit.obj: SoNodeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKit.obj `if test -f 'SoNodeKit.cpp'; then $(CYGPATH_W) 'SoNodeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKit.cpp' object='libnodekits_la-SoNodeKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKit.obj `if test -f 'SoNodeKit.cpp'; then $(CYGPATH_W) 'SoNodeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKit.cpp'; fi`
-
-libnodekits_la-SoNodeKit.lo: SoNodeKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKit.lo `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKit.cpp' object='libnodekits_la-SoNodeKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKit.lo `test -f 'SoNodeKit.cpp' || echo '$(srcdir)/'`SoNodeKit.cpp
-
-libnodekits_la-SoNodeKitPath.o: SoNodeKitPath.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKitPath.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKitPath.o `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitPath.cpp' object='libnodekits_la-SoNodeKitPath.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKitPath.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKitPath.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKitPath.o `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp
-
-libnodekits_la-SoNodeKitPath.obj: SoNodeKitPath.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKitPath.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKitPath.obj `if test -f 'SoNodeKitPath.cpp'; then $(CYGPATH_W) 'SoNodeKitPath.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitPath.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitPath.cpp' object='libnodekits_la-SoNodeKitPath.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKitPath.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKitPath.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKitPath.obj `if test -f 'SoNodeKitPath.cpp'; then $(CYGPATH_W) 'SoNodeKitPath.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitPath.cpp'; fi`
-
-libnodekits_la-SoNodeKitPath.lo: SoNodeKitPath.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKitPath.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKitPath.lo `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKitPath.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitPath.cpp' object='libnodekits_la-SoNodeKitPath.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKitPath.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKitPath.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKitPath.lo `test -f 'SoNodeKitPath.cpp' || echo '$(srcdir)/'`SoNodeKitPath.cpp
-
-libnodekits_la-SoNodeKitListPart.o: SoNodeKitListPart.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKitListPart.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKitListPart.o `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitListPart.cpp' object='libnodekits_la-SoNodeKitListPart.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKitListPart.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKitListPart.o `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp
-
-libnodekits_la-SoNodeKitListPart.obj: SoNodeKitListPart.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKitListPart.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKitListPart.obj `if test -f 'SoNodeKitListPart.cpp'; then $(CYGPATH_W) 'SoNodeKitListPart.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitListPart.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitListPart.cpp' object='libnodekits_la-SoNodeKitListPart.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKitListPart.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKitListPart.obj `if test -f 'SoNodeKitListPart.cpp'; then $(CYGPATH_W) 'SoNodeKitListPart.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitListPart.cpp'; fi`
-
-libnodekits_la-SoNodeKitListPart.lo: SoNodeKitListPart.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodeKitListPart.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodeKitListPart.lo `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo" "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitListPart.cpp' object='libnodekits_la-SoNodeKitListPart.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodeKitListPart.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodeKitListPart.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodeKitListPart.lo `test -f 'SoNodeKitListPart.cpp' || echo '$(srcdir)/'`SoNodeKitListPart.cpp
-
-libnodekits_la-SoNodekitCatalog.o: SoNodekitCatalog.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodekitCatalog.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodekitCatalog.o `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo" "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodekitCatalog.cpp' object='libnodekits_la-SoNodekitCatalog.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodekitCatalog.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodekitCatalog.o `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp
-
-libnodekits_la-SoNodekitCatalog.obj: SoNodekitCatalog.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodekitCatalog.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodekitCatalog.obj `if test -f 'SoNodekitCatalog.cpp'; then $(CYGPATH_W) 'SoNodekitCatalog.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodekitCatalog.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo" "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodekitCatalog.cpp' object='libnodekits_la-SoNodekitCatalog.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodekitCatalog.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodekitCatalog.obj `if test -f 'SoNodekitCatalog.cpp'; then $(CYGPATH_W) 'SoNodekitCatalog.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodekitCatalog.cpp'; fi`
-
-libnodekits_la-SoNodekitCatalog.lo: SoNodekitCatalog.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoNodekitCatalog.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoNodekitCatalog.lo `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo" "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodekitCatalog.cpp' object='libnodekits_la-SoNodekitCatalog.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoNodekitCatalog.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoNodekitCatalog.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoNodekitCatalog.lo `test -f 'SoNodekitCatalog.cpp' || echo '$(srcdir)/'`SoNodekitCatalog.cpp
-
-libnodekits_la-SoBaseKit.o: SoBaseKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoBaseKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoBaseKit.o `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo" "$(DEPDIR)/libnodekits_la-SoBaseKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseKit.cpp' object='libnodekits_la-SoBaseKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoBaseKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoBaseKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoBaseKit.o `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp
-
-libnodekits_la-SoBaseKit.obj: SoBaseKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoBaseKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoBaseKit.obj `if test -f 'SoBaseKit.cpp'; then $(CYGPATH_W) 'SoBaseKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo" "$(DEPDIR)/libnodekits_la-SoBaseKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseKit.cpp' object='libnodekits_la-SoBaseKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoBaseKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoBaseKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoBaseKit.obj `if test -f 'SoBaseKit.cpp'; then $(CYGPATH_W) 'SoBaseKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseKit.cpp'; fi`
-
-libnodekits_la-SoBaseKit.lo: SoBaseKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoBaseKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoBaseKit.lo `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo" "$(DEPDIR)/libnodekits_la-SoBaseKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoBaseKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseKit.cpp' object='libnodekits_la-SoBaseKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoBaseKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoBaseKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoBaseKit.lo `test -f 'SoBaseKit.cpp' || echo '$(srcdir)/'`SoBaseKit.cpp
-
-libnodekits_la-SoAppearanceKit.o: SoAppearanceKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoAppearanceKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoAppearanceKit.o `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo" "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAppearanceKit.cpp' object='libnodekits_la-SoAppearanceKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoAppearanceKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoAppearanceKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoAppearanceKit.o `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp
-
-libnodekits_la-SoAppearanceKit.obj: SoAppearanceKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoAppearanceKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoAppearanceKit.obj `if test -f 'SoAppearanceKit.cpp'; then $(CYGPATH_W) 'SoAppearanceKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAppearanceKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo" "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAppearanceKit.cpp' object='libnodekits_la-SoAppearanceKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoAppearanceKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoAppearanceKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoAppearanceKit.obj `if test -f 'SoAppearanceKit.cpp'; then $(CYGPATH_W) 'SoAppearanceKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAppearanceKit.cpp'; fi`
-
-libnodekits_la-SoAppearanceKit.lo: SoAppearanceKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoAppearanceKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoAppearanceKit.lo `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo" "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoAppearanceKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAppearanceKit.cpp' object='libnodekits_la-SoAppearanceKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoAppearanceKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoAppearanceKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoAppearanceKit.lo `test -f 'SoAppearanceKit.cpp' || echo '$(srcdir)/'`SoAppearanceKit.cpp
-
-libnodekits_la-SoCameraKit.o: SoCameraKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoCameraKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoCameraKit.o `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo" "$(DEPDIR)/libnodekits_la-SoCameraKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraKit.cpp' object='libnodekits_la-SoCameraKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoCameraKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoCameraKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoCameraKit.o `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp
-
-libnodekits_la-SoCameraKit.obj: SoCameraKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoCameraKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoCameraKit.obj `if test -f 'SoCameraKit.cpp'; then $(CYGPATH_W) 'SoCameraKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo" "$(DEPDIR)/libnodekits_la-SoCameraKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraKit.cpp' object='libnodekits_la-SoCameraKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoCameraKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoCameraKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoCameraKit.obj `if test -f 'SoCameraKit.cpp'; then $(CYGPATH_W) 'SoCameraKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCameraKit.cpp'; fi`
-
-libnodekits_la-SoCameraKit.lo: SoCameraKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoCameraKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoCameraKit.lo `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo" "$(DEPDIR)/libnodekits_la-SoCameraKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoCameraKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCameraKit.cpp' object='libnodekits_la-SoCameraKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoCameraKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoCameraKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoCameraKit.lo `test -f 'SoCameraKit.cpp' || echo '$(srcdir)/'`SoCameraKit.cpp
-
-libnodekits_la-SoInteractionKit.o: SoInteractionKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoInteractionKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoInteractionKit.o `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo" "$(DEPDIR)/libnodekits_la-SoInteractionKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInteractionKit.cpp' object='libnodekits_la-SoInteractionKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoInteractionKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoInteractionKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoInteractionKit.o `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp
-
-libnodekits_la-SoInteractionKit.obj: SoInteractionKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoInteractionKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoInteractionKit.obj `if test -f 'SoInteractionKit.cpp'; then $(CYGPATH_W) 'SoInteractionKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInteractionKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo" "$(DEPDIR)/libnodekits_la-SoInteractionKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInteractionKit.cpp' object='libnodekits_la-SoInteractionKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoInteractionKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoInteractionKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoInteractionKit.obj `if test -f 'SoInteractionKit.cpp'; then $(CYGPATH_W) 'SoInteractionKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInteractionKit.cpp'; fi`
-
-libnodekits_la-SoInteractionKit.lo: SoInteractionKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoInteractionKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoInteractionKit.lo `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo" "$(DEPDIR)/libnodekits_la-SoInteractionKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoInteractionKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInteractionKit.cpp' object='libnodekits_la-SoInteractionKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoInteractionKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoInteractionKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoInteractionKit.lo `test -f 'SoInteractionKit.cpp' || echo '$(srcdir)/'`SoInteractionKit.cpp
-
-libnodekits_la-SoLightKit.o: SoLightKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoLightKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoLightKit.o `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo" "$(DEPDIR)/libnodekits_la-SoLightKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLightKit.cpp' object='libnodekits_la-SoLightKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoLightKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoLightKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoLightKit.o `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp
-
-libnodekits_la-SoLightKit.obj: SoLightKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoLightKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoLightKit.obj `if test -f 'SoLightKit.cpp'; then $(CYGPATH_W) 'SoLightKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLightKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo" "$(DEPDIR)/libnodekits_la-SoLightKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLightKit.cpp' object='libnodekits_la-SoLightKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoLightKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoLightKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoLightKit.obj `if test -f 'SoLightKit.cpp'; then $(CYGPATH_W) 'SoLightKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLightKit.cpp'; fi`
-
-libnodekits_la-SoLightKit.lo: SoLightKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoLightKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoLightKit.lo `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo" "$(DEPDIR)/libnodekits_la-SoLightKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoLightKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLightKit.cpp' object='libnodekits_la-SoLightKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoLightKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoLightKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoLightKit.lo `test -f 'SoLightKit.cpp' || echo '$(srcdir)/'`SoLightKit.cpp
-
-libnodekits_la-SoSceneKit.o: SoSceneKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoSceneKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoSceneKit.o `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo" "$(DEPDIR)/libnodekits_la-SoSceneKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSceneKit.cpp' object='libnodekits_la-SoSceneKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoSceneKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoSceneKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoSceneKit.o `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp
-
-libnodekits_la-SoSceneKit.obj: SoSceneKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoSceneKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoSceneKit.obj `if test -f 'SoSceneKit.cpp'; then $(CYGPATH_W) 'SoSceneKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSceneKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo" "$(DEPDIR)/libnodekits_la-SoSceneKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSceneKit.cpp' object='libnodekits_la-SoSceneKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoSceneKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoSceneKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoSceneKit.obj `if test -f 'SoSceneKit.cpp'; then $(CYGPATH_W) 'SoSceneKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSceneKit.cpp'; fi`
-
-libnodekits_la-SoSceneKit.lo: SoSceneKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoSceneKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoSceneKit.lo `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo" "$(DEPDIR)/libnodekits_la-SoSceneKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoSceneKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSceneKit.cpp' object='libnodekits_la-SoSceneKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoSceneKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoSceneKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoSceneKit.lo `test -f 'SoSceneKit.cpp' || echo '$(srcdir)/'`SoSceneKit.cpp
-
-libnodekits_la-SoSeparatorKit.o: SoSeparatorKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoSeparatorKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoSeparatorKit.o `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo" "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSeparatorKit.cpp' object='libnodekits_la-SoSeparatorKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoSeparatorKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoSeparatorKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoSeparatorKit.o `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp
-
-libnodekits_la-SoSeparatorKit.obj: SoSeparatorKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoSeparatorKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoSeparatorKit.obj `if test -f 'SoSeparatorKit.cpp'; then $(CYGPATH_W) 'SoSeparatorKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSeparatorKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo" "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSeparatorKit.cpp' object='libnodekits_la-SoSeparatorKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoSeparatorKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoSeparatorKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoSeparatorKit.obj `if test -f 'SoSeparatorKit.cpp'; then $(CYGPATH_W) 'SoSeparatorKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSeparatorKit.cpp'; fi`
-
-libnodekits_la-SoSeparatorKit.lo: SoSeparatorKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoSeparatorKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoSeparatorKit.lo `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo" "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoSeparatorKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSeparatorKit.cpp' object='libnodekits_la-SoSeparatorKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoSeparatorKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoSeparatorKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoSeparatorKit.lo `test -f 'SoSeparatorKit.cpp' || echo '$(srcdir)/'`SoSeparatorKit.cpp
-
-libnodekits_la-SoShapeKit.o: SoShapeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoShapeKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoShapeKit.o `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo" "$(DEPDIR)/libnodekits_la-SoShapeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeKit.cpp' object='libnodekits_la-SoShapeKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoShapeKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoShapeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoShapeKit.o `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp
-
-libnodekits_la-SoShapeKit.obj: SoShapeKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoShapeKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoShapeKit.obj `if test -f 'SoShapeKit.cpp'; then $(CYGPATH_W) 'SoShapeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo" "$(DEPDIR)/libnodekits_la-SoShapeKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeKit.cpp' object='libnodekits_la-SoShapeKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoShapeKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoShapeKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoShapeKit.obj `if test -f 'SoShapeKit.cpp'; then $(CYGPATH_W) 'SoShapeKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeKit.cpp'; fi`
-
-libnodekits_la-SoShapeKit.lo: SoShapeKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoShapeKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoShapeKit.lo `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo" "$(DEPDIR)/libnodekits_la-SoShapeKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoShapeKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeKit.cpp' object='libnodekits_la-SoShapeKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoShapeKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoShapeKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoShapeKit.lo `test -f 'SoShapeKit.cpp' || echo '$(srcdir)/'`SoShapeKit.cpp
-
-libnodekits_la-SoWrapperKit.o: SoWrapperKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoWrapperKit.o -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoWrapperKit.o `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo" "$(DEPDIR)/libnodekits_la-SoWrapperKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWrapperKit.cpp' object='libnodekits_la-SoWrapperKit.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoWrapperKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoWrapperKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoWrapperKit.o `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp
-
-libnodekits_la-SoWrapperKit.obj: SoWrapperKit.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoWrapperKit.obj -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoWrapperKit.obj `if test -f 'SoWrapperKit.cpp'; then $(CYGPATH_W) 'SoWrapperKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWrapperKit.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo" "$(DEPDIR)/libnodekits_la-SoWrapperKit.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWrapperKit.cpp' object='libnodekits_la-SoWrapperKit.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoWrapperKit.Po' tmpdepfile='$(DEPDIR)/libnodekits_la-SoWrapperKit.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoWrapperKit.obj `if test -f 'SoWrapperKit.cpp'; then $(CYGPATH_W) 'SoWrapperKit.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWrapperKit.cpp'; fi`
-
-libnodekits_la-SoWrapperKit.lo: SoWrapperKit.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -MT libnodekits_la-SoWrapperKit.lo -MD -MP -MF "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libnodekits_la-SoWrapperKit.lo `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo" "$(DEPDIR)/libnodekits_la-SoWrapperKit.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libnodekits_la-SoWrapperKit.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWrapperKit.cpp' object='libnodekits_la-SoWrapperKit.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libnodekits_la-SoWrapperKit.Plo' tmpdepfile='$(DEPDIR)/libnodekits_la-SoWrapperKit.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libnodekits_la_CXXFLAGS) $(CXXFLAGS) -c -o libnodekits_la-SoWrapperKit.lo `test -f 'SoWrapperKit.cpp' || echo '$(srcdir)/'`SoWrapperKit.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -329,9 +329,6 @@ EXTRA_libshadows_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libshadows_la_CXXFLAGS = $(AM_CXXFLAGS)
-libshadows_la_CFLAGS = $(AM_CFLAGS)
-
 libshadows@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libshadows@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -341,9 +338,6 @@ shadows_lst_SOURCES = $(BuildSources)
 EXTRA_shadows_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-shadows_lst_CXXFLAGS = $(AM_CXXFLAGS)
-shadows_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/shadows
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -358,14 +352,11 @@ am__shadows_lst_SOURCES_DIST = SoShadowGroup.cpp SoShadowStyle.cpp \
 	SoShadowSpotLight.cpp SoShadowDirectionalLight.cpp \
 	SoShadowStyleElement.cpp SoShadowCulling.cpp \
 	SoGLShadowCullingElement.cpp all-shadows-cpp.cpp
-am__objects_1 = shadows_lst-all-shadows-cpp.$(OBJEXT)
-am__objects_2 = shadows_lst-SoShadowGroup.$(OBJEXT) \
-	shadows_lst-SoShadowStyle.$(OBJEXT) \
-	shadows_lst-SoShadowSpotLight.$(OBJEXT) \
-	shadows_lst-SoShadowDirectionalLight.$(OBJEXT) \
-	shadows_lst-SoShadowStyleElement.$(OBJEXT) \
-	shadows_lst-SoShadowCulling.$(OBJEXT) \
-	shadows_lst-SoGLShadowCullingElement.$(OBJEXT)
+am__objects_1 = all-shadows-cpp.$(OBJEXT)
+am__objects_2 = SoShadowGroup.$(OBJEXT) SoShadowStyle.$(OBJEXT) \
+	SoShadowSpotLight.$(OBJEXT) SoShadowDirectionalLight.$(OBJEXT) \
+	SoShadowStyleElement.$(OBJEXT) SoShadowCulling.$(OBJEXT) \
+	SoGLShadowCullingElement.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_shadows_lst_OBJECTS = $(am__objects_3)
@@ -382,14 +373,10 @@ am__libshadows_la_SOURCES_DIST = SoShadowGroup.cpp SoShadowStyle.cpp \
 	SoShadowSpotLight.cpp SoShadowDirectionalLight.cpp \
 	SoShadowStyleElement.cpp SoShadowCulling.cpp \
 	SoGLShadowCullingElement.cpp all-shadows-cpp.cpp
-am__objects_6 = libshadows_la-all-shadows-cpp.lo
-am__objects_7 = libshadows_la-SoShadowGroup.lo \
-	libshadows_la-SoShadowStyle.lo \
-	libshadows_la-SoShadowSpotLight.lo \
-	libshadows_la-SoShadowDirectionalLight.lo \
-	libshadows_la-SoShadowStyleElement.lo \
-	libshadows_la-SoShadowCulling.lo \
-	libshadows_la-SoGLShadowCullingElement.lo
+am__objects_6 = all-shadows-cpp.lo
+am__objects_7 = SoShadowGroup.lo SoShadowStyle.lo SoShadowSpotLight.lo \
+	SoShadowDirectionalLight.lo SoShadowStyleElement.lo \
+	SoShadowCulling.lo SoGLShadowCullingElement.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libshadows_la_OBJECTS = $(am__objects_8)
@@ -405,13 +392,7 @@ am__libshadows@SUFFIX@LINKHACK_la_SOURCES_DIST = SoShadowGroup.cpp \
 	SoShadowDirectionalLight.cpp SoShadowStyleElement.cpp \
 	SoShadowCulling.cpp SoGLShadowCullingElement.cpp \
 	all-shadows-cpp.cpp
-am__objects_10 = all-shadows-cpp.lo
-am__objects_11 = SoShadowGroup.lo SoShadowStyle.lo SoShadowSpotLight.lo \
-	SoShadowDirectionalLight.lo SoShadowStyleElement.lo \
-	SoShadowCulling.lo SoGLShadowCullingElement.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libshadows@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libshadows@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshadows@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-shadows-cpp.cpp SoShadowGroup.cpp SoShadowStyle.cpp \
 	SoShadowSpotLight.cpp SoShadowDirectionalLight.cpp \
@@ -422,29 +403,21 @@ libshadows@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoGLShadowCullingElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShadowCullingElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowCulling.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowCulling.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowDirectionalLight.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowDirectionalLight.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowGroup.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowGroup.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowSpotLight.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowSpotLight.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyleElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShadowStyleElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoShadowCulling.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoShadowGroup.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoShadowSpotLight.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoShadowStyle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-SoShadowStyleElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libshadows_la-all-shadows-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoShadowCulling.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoShadowGroup.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoShadowSpotLight.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoShadowStyle.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-SoShadowStyleElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/shadows_lst-all-shadows-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-shadows-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -525,29 +498,21 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShadowCullingElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShadowCullingElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowCulling.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowCulling.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowDirectionalLight.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowDirectionalLight.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowGroup.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowGroup.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowSpotLight.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowSpotLight.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyleElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShadowStyleElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoShadowCulling.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoShadowGroup.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoShadowSpotLight.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoShadowStyle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-SoShadowStyleElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libshadows_la-all-shadows-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoShadowCulling.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoShadowGroup.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoShadowSpotLight.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoShadowStyle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-SoShadowStyleElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadows_lst-all-shadows-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shadows-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -584,534 +549,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-shadows_lst-all-shadows-cpp.o: all-shadows-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-all-shadows-cpp.o -MD -MP -MF "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-all-shadows-cpp.o `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo" "$(DEPDIR)/shadows_lst-all-shadows-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-shadows-cpp.cpp' object='shadows_lst-all-shadows-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-all-shadows-cpp.Po' tmpdepfile='$(DEPDIR)/shadows_lst-all-shadows-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-all-shadows-cpp.o `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp
-
-shadows_lst-all-shadows-cpp.obj: all-shadows-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-all-shadows-cpp.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-all-shadows-cpp.obj `if test -f 'all-shadows-cpp.cpp'; then $(CYGPATH_W) 'all-shadows-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-shadows-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo" "$(DEPDIR)/shadows_lst-all-shadows-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-shadows-cpp.cpp' object='shadows_lst-all-shadows-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-all-shadows-cpp.Po' tmpdepfile='$(DEPDIR)/shadows_lst-all-shadows-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-all-shadows-cpp.obj `if test -f 'all-shadows-cpp.cpp'; then $(CYGPATH_W) 'all-shadows-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-shadows-cpp.cpp'; fi`
-
-shadows_lst-all-shadows-cpp.lo: all-shadows-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-all-shadows-cpp.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-all-shadows-cpp.lo `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo" "$(DEPDIR)/shadows_lst-all-shadows-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-all-shadows-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-shadows-cpp.cpp' object='shadows_lst-all-shadows-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-all-shadows-cpp.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-all-shadows-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-all-shadows-cpp.lo `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp
-
-shadows_lst-SoShadowGroup.o: SoShadowGroup.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowGroup.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowGroup.o `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo" "$(DEPDIR)/shadows_lst-SoShadowGroup.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowGroup.cpp' object='shadows_lst-SoShadowGroup.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowGroup.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowGroup.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowGroup.o `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp
-
-shadows_lst-SoShadowGroup.obj: SoShadowGroup.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowGroup.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowGroup.obj `if test -f 'SoShadowGroup.cpp'; then $(CYGPATH_W) 'SoShadowGroup.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowGroup.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo" "$(DEPDIR)/shadows_lst-SoShadowGroup.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowGroup.cpp' object='shadows_lst-SoShadowGroup.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowGroup.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowGroup.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowGroup.obj `if test -f 'SoShadowGroup.cpp'; then $(CYGPATH_W) 'SoShadowGroup.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowGroup.cpp'; fi`
-
-shadows_lst-SoShadowGroup.lo: SoShadowGroup.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowGroup.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowGroup.lo `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo" "$(DEPDIR)/shadows_lst-SoShadowGroup.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowGroup.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowGroup.cpp' object='shadows_lst-SoShadowGroup.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowGroup.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowGroup.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowGroup.lo `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp
-
-shadows_lst-SoShadowStyle.o: SoShadowStyle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowStyle.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowStyle.o `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo" "$(DEPDIR)/shadows_lst-SoShadowStyle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyle.cpp' object='shadows_lst-SoShadowStyle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowStyle.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowStyle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowStyle.o `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp
-
-shadows_lst-SoShadowStyle.obj: SoShadowStyle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowStyle.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowStyle.obj `if test -f 'SoShadowStyle.cpp'; then $(CYGPATH_W) 'SoShadowStyle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo" "$(DEPDIR)/shadows_lst-SoShadowStyle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyle.cpp' object='shadows_lst-SoShadowStyle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowStyle.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowStyle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowStyle.obj `if test -f 'SoShadowStyle.cpp'; then $(CYGPATH_W) 'SoShadowStyle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyle.cpp'; fi`
-
-shadows_lst-SoShadowStyle.lo: SoShadowStyle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowStyle.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowStyle.lo `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo" "$(DEPDIR)/shadows_lst-SoShadowStyle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowStyle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyle.cpp' object='shadows_lst-SoShadowStyle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowStyle.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowStyle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowStyle.lo `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp
-
-shadows_lst-SoShadowSpotLight.o: SoShadowSpotLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowSpotLight.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowSpotLight.o `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo" "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowSpotLight.cpp' object='shadows_lst-SoShadowSpotLight.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowSpotLight.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowSpotLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowSpotLight.o `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp
-
-shadows_lst-SoShadowSpotLight.obj: SoShadowSpotLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowSpotLight.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowSpotLight.obj `if test -f 'SoShadowSpotLight.cpp'; then $(CYGPATH_W) 'SoShadowSpotLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowSpotLight.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo" "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowSpotLight.cpp' object='shadows_lst-SoShadowSpotLight.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowSpotLight.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowSpotLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowSpotLight.obj `if test -f 'SoShadowSpotLight.cpp'; then $(CYGPATH_W) 'SoShadowSpotLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowSpotLight.cpp'; fi`
-
-shadows_lst-SoShadowSpotLight.lo: SoShadowSpotLight.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowSpotLight.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowSpotLight.lo `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo" "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowSpotLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowSpotLight.cpp' object='shadows_lst-SoShadowSpotLight.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowSpotLight.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowSpotLight.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowSpotLight.lo `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp
-
-shadows_lst-SoShadowDirectionalLight.o: SoShadowDirectionalLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowDirectionalLight.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowDirectionalLight.o `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo" "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowDirectionalLight.cpp' object='shadows_lst-SoShadowDirectionalLight.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowDirectionalLight.o `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp
-
-shadows_lst-SoShadowDirectionalLight.obj: SoShadowDirectionalLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowDirectionalLight.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowDirectionalLight.obj `if test -f 'SoShadowDirectionalLight.cpp'; then $(CYGPATH_W) 'SoShadowDirectionalLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowDirectionalLight.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo" "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowDirectionalLight.cpp' object='shadows_lst-SoShadowDirectionalLight.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowDirectionalLight.obj `if test -f 'SoShadowDirectionalLight.cpp'; then $(CYGPATH_W) 'SoShadowDirectionalLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowDirectionalLight.cpp'; fi`
-
-shadows_lst-SoShadowDirectionalLight.lo: SoShadowDirectionalLight.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowDirectionalLight.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowDirectionalLight.lo `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo" "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowDirectionalLight.cpp' object='shadows_lst-SoShadowDirectionalLight.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowDirectionalLight.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowDirectionalLight.lo `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp
-
-shadows_lst-SoShadowStyleElement.o: SoShadowStyleElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowStyleElement.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowStyleElement.o `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo" "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyleElement.cpp' object='shadows_lst-SoShadowStyleElement.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowStyleElement.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowStyleElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowStyleElement.o `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp
-
-shadows_lst-SoShadowStyleElement.obj: SoShadowStyleElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowStyleElement.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowStyleElement.obj `if test -f 'SoShadowStyleElement.cpp'; then $(CYGPATH_W) 'SoShadowStyleElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyleElement.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo" "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyleElement.cpp' object='shadows_lst-SoShadowStyleElement.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowStyleElement.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowStyleElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowStyleElement.obj `if test -f 'SoShadowStyleElement.cpp'; then $(CYGPATH_W) 'SoShadowStyleElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyleElement.cpp'; fi`
-
-shadows_lst-SoShadowStyleElement.lo: SoShadowStyleElement.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowStyleElement.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowStyleElement.lo `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo" "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowStyleElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyleElement.cpp' object='shadows_lst-SoShadowStyleElement.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowStyleElement.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowStyleElement.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowStyleElement.lo `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp
-
-shadows_lst-SoShadowCulling.o: SoShadowCulling.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowCulling.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowCulling.o `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo" "$(DEPDIR)/shadows_lst-SoShadowCulling.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowCulling.cpp' object='shadows_lst-SoShadowCulling.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowCulling.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowCulling.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowCulling.o `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp
-
-shadows_lst-SoShadowCulling.obj: SoShadowCulling.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowCulling.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowCulling.obj `if test -f 'SoShadowCulling.cpp'; then $(CYGPATH_W) 'SoShadowCulling.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowCulling.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo" "$(DEPDIR)/shadows_lst-SoShadowCulling.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowCulling.cpp' object='shadows_lst-SoShadowCulling.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowCulling.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowCulling.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowCulling.obj `if test -f 'SoShadowCulling.cpp'; then $(CYGPATH_W) 'SoShadowCulling.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowCulling.cpp'; fi`
-
-shadows_lst-SoShadowCulling.lo: SoShadowCulling.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoShadowCulling.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoShadowCulling.lo `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo" "$(DEPDIR)/shadows_lst-SoShadowCulling.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoShadowCulling.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowCulling.cpp' object='shadows_lst-SoShadowCulling.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoShadowCulling.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoShadowCulling.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoShadowCulling.lo `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp
-
-shadows_lst-SoGLShadowCullingElement.o: SoGLShadowCullingElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoGLShadowCullingElement.o -MD -MP -MF "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoGLShadowCullingElement.o `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo" "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLShadowCullingElement.cpp' object='shadows_lst-SoGLShadowCullingElement.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoGLShadowCullingElement.o `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp
-
-shadows_lst-SoGLShadowCullingElement.obj: SoGLShadowCullingElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoGLShadowCullingElement.obj -MD -MP -MF "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoGLShadowCullingElement.obj `if test -f 'SoGLShadowCullingElement.cpp'; then $(CYGPATH_W) 'SoGLShadowCullingElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLShadowCullingElement.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo" "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLShadowCullingElement.cpp' object='shadows_lst-SoGLShadowCullingElement.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Po' tmpdepfile='$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoGLShadowCullingElement.obj `if test -f 'SoGLShadowCullingElement.cpp'; then $(CYGPATH_W) 'SoGLShadowCullingElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLShadowCullingElement.cpp'; fi`
-
-shadows_lst-SoGLShadowCullingElement.lo: SoGLShadowCullingElement.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -MT shadows_lst-SoGLShadowCullingElement.lo -MD -MP -MF "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o shadows_lst-SoGLShadowCullingElement.lo `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo" "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLShadowCullingElement.cpp' object='shadows_lst-SoGLShadowCullingElement.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.Plo' tmpdepfile='$(DEPDIR)/shadows_lst-SoGLShadowCullingElement.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shadows_lst_CXXFLAGS) $(CXXFLAGS) -c -o shadows_lst-SoGLShadowCullingElement.lo `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp
-
-libshadows_la-all-shadows-cpp.o: all-shadows-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-all-shadows-cpp.o -MD -MP -MF "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-all-shadows-cpp.o `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo" "$(DEPDIR)/libshadows_la-all-shadows-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-shadows-cpp.cpp' object='libshadows_la-all-shadows-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-all-shadows-cpp.Po' tmpdepfile='$(DEPDIR)/libshadows_la-all-shadows-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-all-shadows-cpp.o `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp
-
-libshadows_la-all-shadows-cpp.obj: all-shadows-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-all-shadows-cpp.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-all-shadows-cpp.obj `if test -f 'all-shadows-cpp.cpp'; then $(CYGPATH_W) 'all-shadows-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-shadows-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo" "$(DEPDIR)/libshadows_la-all-shadows-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-shadows-cpp.cpp' object='libshadows_la-all-shadows-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-all-shadows-cpp.Po' tmpdepfile='$(DEPDIR)/libshadows_la-all-shadows-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-all-shadows-cpp.obj `if test -f 'all-shadows-cpp.cpp'; then $(CYGPATH_W) 'all-shadows-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-shadows-cpp.cpp'; fi`
-
-libshadows_la-all-shadows-cpp.lo: all-shadows-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-all-shadows-cpp.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-all-shadows-cpp.lo `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo" "$(DEPDIR)/libshadows_la-all-shadows-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-all-shadows-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-shadows-cpp.cpp' object='libshadows_la-all-shadows-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-all-shadows-cpp.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-all-shadows-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-all-shadows-cpp.lo `test -f 'all-shadows-cpp.cpp' || echo '$(srcdir)/'`all-shadows-cpp.cpp
-
-libshadows_la-SoShadowGroup.o: SoShadowGroup.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowGroup.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowGroup.o `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo" "$(DEPDIR)/libshadows_la-SoShadowGroup.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowGroup.cpp' object='libshadows_la-SoShadowGroup.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowGroup.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowGroup.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowGroup.o `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp
-
-libshadows_la-SoShadowGroup.obj: SoShadowGroup.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowGroup.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowGroup.obj `if test -f 'SoShadowGroup.cpp'; then $(CYGPATH_W) 'SoShadowGroup.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowGroup.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo" "$(DEPDIR)/libshadows_la-SoShadowGroup.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowGroup.cpp' object='libshadows_la-SoShadowGroup.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowGroup.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowGroup.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowGroup.obj `if test -f 'SoShadowGroup.cpp'; then $(CYGPATH_W) 'SoShadowGroup.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowGroup.cpp'; fi`
-
-libshadows_la-SoShadowGroup.lo: SoShadowGroup.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowGroup.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowGroup.lo `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo" "$(DEPDIR)/libshadows_la-SoShadowGroup.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowGroup.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowGroup.cpp' object='libshadows_la-SoShadowGroup.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowGroup.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowGroup.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowGroup.lo `test -f 'SoShadowGroup.cpp' || echo '$(srcdir)/'`SoShadowGroup.cpp
-
-libshadows_la-SoShadowStyle.o: SoShadowStyle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowStyle.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowStyle.o `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo" "$(DEPDIR)/libshadows_la-SoShadowStyle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyle.cpp' object='libshadows_la-SoShadowStyle.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowStyle.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowStyle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowStyle.o `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp
-
-libshadows_la-SoShadowStyle.obj: SoShadowStyle.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowStyle.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowStyle.obj `if test -f 'SoShadowStyle.cpp'; then $(CYGPATH_W) 'SoShadowStyle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyle.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo" "$(DEPDIR)/libshadows_la-SoShadowStyle.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyle.cpp' object='libshadows_la-SoShadowStyle.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowStyle.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowStyle.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowStyle.obj `if test -f 'SoShadowStyle.cpp'; then $(CYGPATH_W) 'SoShadowStyle.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyle.cpp'; fi`
-
-libshadows_la-SoShadowStyle.lo: SoShadowStyle.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowStyle.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowStyle.lo `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo" "$(DEPDIR)/libshadows_la-SoShadowStyle.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowStyle.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyle.cpp' object='libshadows_la-SoShadowStyle.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowStyle.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowStyle.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowStyle.lo `test -f 'SoShadowStyle.cpp' || echo '$(srcdir)/'`SoShadowStyle.cpp
-
-libshadows_la-SoShadowSpotLight.o: SoShadowSpotLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowSpotLight.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowSpotLight.o `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo" "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowSpotLight.cpp' object='libshadows_la-SoShadowSpotLight.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowSpotLight.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowSpotLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowSpotLight.o `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp
-
-libshadows_la-SoShadowSpotLight.obj: SoShadowSpotLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowSpotLight.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowSpotLight.obj `if test -f 'SoShadowSpotLight.cpp'; then $(CYGPATH_W) 'SoShadowSpotLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowSpotLight.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo" "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowSpotLight.cpp' object='libshadows_la-SoShadowSpotLight.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowSpotLight.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowSpotLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowSpotLight.obj `if test -f 'SoShadowSpotLight.cpp'; then $(CYGPATH_W) 'SoShadowSpotLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowSpotLight.cpp'; fi`
-
-libshadows_la-SoShadowSpotLight.lo: SoShadowSpotLight.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowSpotLight.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowSpotLight.lo `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo" "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowSpotLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowSpotLight.cpp' object='libshadows_la-SoShadowSpotLight.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowSpotLight.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowSpotLight.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowSpotLight.lo `test -f 'SoShadowSpotLight.cpp' || echo '$(srcdir)/'`SoShadowSpotLight.cpp
-
-libshadows_la-SoShadowDirectionalLight.o: SoShadowDirectionalLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowDirectionalLight.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowDirectionalLight.o `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo" "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowDirectionalLight.cpp' object='libshadows_la-SoShadowDirectionalLight.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowDirectionalLight.o `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp
-
-libshadows_la-SoShadowDirectionalLight.obj: SoShadowDirectionalLight.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowDirectionalLight.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowDirectionalLight.obj `if test -f 'SoShadowDirectionalLight.cpp'; then $(CYGPATH_W) 'SoShadowDirectionalLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowDirectionalLight.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo" "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowDirectionalLight.cpp' object='libshadows_la-SoShadowDirectionalLight.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowDirectionalLight.obj `if test -f 'SoShadowDirectionalLight.cpp'; then $(CYGPATH_W) 'SoShadowDirectionalLight.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowDirectionalLight.cpp'; fi`
-
-libshadows_la-SoShadowDirectionalLight.lo: SoShadowDirectionalLight.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowDirectionalLight.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowDirectionalLight.lo `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo" "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowDirectionalLight.cpp' object='libshadows_la-SoShadowDirectionalLight.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowDirectionalLight.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowDirectionalLight.lo `test -f 'SoShadowDirectionalLight.cpp' || echo '$(srcdir)/'`SoShadowDirectionalLight.cpp
-
-libshadows_la-SoShadowStyleElement.o: SoShadowStyleElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowStyleElement.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowStyleElement.o `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo" "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyleElement.cpp' object='libshadows_la-SoShadowStyleElement.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowStyleElement.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowStyleElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowStyleElement.o `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp
-
-libshadows_la-SoShadowStyleElement.obj: SoShadowStyleElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowStyleElement.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowStyleElement.obj `if test -f 'SoShadowStyleElement.cpp'; then $(CYGPATH_W) 'SoShadowStyleElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyleElement.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo" "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyleElement.cpp' object='libshadows_la-SoShadowStyleElement.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowStyleElement.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowStyleElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowStyleElement.obj `if test -f 'SoShadowStyleElement.cpp'; then $(CYGPATH_W) 'SoShadowStyleElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowStyleElement.cpp'; fi`
-
-libshadows_la-SoShadowStyleElement.lo: SoShadowStyleElement.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowStyleElement.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowStyleElement.lo `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo" "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowStyleElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowStyleElement.cpp' object='libshadows_la-SoShadowStyleElement.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowStyleElement.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowStyleElement.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowStyleElement.lo `test -f 'SoShadowStyleElement.cpp' || echo '$(srcdir)/'`SoShadowStyleElement.cpp
-
-libshadows_la-SoShadowCulling.o: SoShadowCulling.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowCulling.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowCulling.o `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo" "$(DEPDIR)/libshadows_la-SoShadowCulling.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowCulling.cpp' object='libshadows_la-SoShadowCulling.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowCulling.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowCulling.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowCulling.o `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp
-
-libshadows_la-SoShadowCulling.obj: SoShadowCulling.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowCulling.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowCulling.obj `if test -f 'SoShadowCulling.cpp'; then $(CYGPATH_W) 'SoShadowCulling.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowCulling.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo" "$(DEPDIR)/libshadows_la-SoShadowCulling.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowCulling.cpp' object='libshadows_la-SoShadowCulling.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowCulling.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowCulling.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowCulling.obj `if test -f 'SoShadowCulling.cpp'; then $(CYGPATH_W) 'SoShadowCulling.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShadowCulling.cpp'; fi`
-
-libshadows_la-SoShadowCulling.lo: SoShadowCulling.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoShadowCulling.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoShadowCulling.lo `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo" "$(DEPDIR)/libshadows_la-SoShadowCulling.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoShadowCulling.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShadowCulling.cpp' object='libshadows_la-SoShadowCulling.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoShadowCulling.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoShadowCulling.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoShadowCulling.lo `test -f 'SoShadowCulling.cpp' || echo '$(srcdir)/'`SoShadowCulling.cpp
-
-libshadows_la-SoGLShadowCullingElement.o: SoGLShadowCullingElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoGLShadowCullingElement.o -MD -MP -MF "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoGLShadowCullingElement.o `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo" "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLShadowCullingElement.cpp' object='libshadows_la-SoGLShadowCullingElement.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoGLShadowCullingElement.o `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp
-
-libshadows_la-SoGLShadowCullingElement.obj: SoGLShadowCullingElement.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoGLShadowCullingElement.obj -MD -MP -MF "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoGLShadowCullingElement.obj `if test -f 'SoGLShadowCullingElement.cpp'; then $(CYGPATH_W) 'SoGLShadowCullingElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLShadowCullingElement.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo" "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLShadowCullingElement.cpp' object='libshadows_la-SoGLShadowCullingElement.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Po' tmpdepfile='$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoGLShadowCullingElement.obj `if test -f 'SoGLShadowCullingElement.cpp'; then $(CYGPATH_W) 'SoGLShadowCullingElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLShadowCullingElement.cpp'; fi`
-
-libshadows_la-SoGLShadowCullingElement.lo: SoGLShadowCullingElement.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -MT libshadows_la-SoGLShadowCullingElement.lo -MD -MP -MF "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libshadows_la-SoGLShadowCullingElement.lo `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo" "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLShadowCullingElement.cpp' object='libshadows_la-SoGLShadowCullingElement.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.Plo' tmpdepfile='$(DEPDIR)/libshadows_la-SoGLShadowCullingElement.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libshadows_la_CXXFLAGS) $(CXXFLAGS) -c -o libshadows_la-SoGLShadowCullingElement.lo `test -f 'SoGLShadowCullingElement.cpp' || echo '$(srcdir)/'`SoGLShadowCullingElement.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

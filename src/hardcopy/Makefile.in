@@ -331,9 +331,6 @@ EXTRA_libhardcopy_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-libhardcopy_la_CXXFLAGS = $(AM_CXXFLAGS)
-libhardcopy_la_CFLAGS = $(AM_CFLAGS)
-
 libhardcopy@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -343,9 +340,6 @@ hardcopy_lst_SOURCES = $(BuildSources)
 EXTRA_hardcopy_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-
-hardcopy_lst_CXXFLAGS = $(AM_CXXFLAGS)
-hardcopy_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/hardcopy
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -359,13 +353,10 @@ hardcopy_lst_LIBADD =
 am__hardcopy_lst_SOURCES_DIST = HardCopy.cpp PSVectorOutput.cpp \
 	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
 	VectorizePSAction.cpp all-hardcopy-cpp.cpp
-am__objects_1 = hardcopy_lst-all-hardcopy-cpp.$(OBJEXT)
-am__objects_2 = hardcopy_lst-HardCopy.$(OBJEXT) \
-	hardcopy_lst-PSVectorOutput.$(OBJEXT) \
-	hardcopy_lst-VectorOutput.$(OBJEXT) \
-	hardcopy_lst-VectorizeAction.$(OBJEXT) \
-	hardcopy_lst-VectorizeActionP.$(OBJEXT) \
-	hardcopy_lst-VectorizePSAction.$(OBJEXT)
+am__objects_1 = all-hardcopy-cpp.$(OBJEXT)
+am__objects_2 = HardCopy.$(OBJEXT) PSVectorOutput.$(OBJEXT) \
+	VectorOutput.$(OBJEXT) VectorizeAction.$(OBJEXT) \
+	VectorizeActionP.$(OBJEXT) VectorizePSAction.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_hardcopy_lst_OBJECTS = $(am__objects_3)
@@ -381,12 +372,9 @@ libhardcopy_la_LIBADD =
 am__libhardcopy_la_SOURCES_DIST = HardCopy.cpp PSVectorOutput.cpp \
 	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
 	VectorizePSAction.cpp all-hardcopy-cpp.cpp
-am__objects_6 = libhardcopy_la-all-hardcopy-cpp.lo
-am__objects_7 = libhardcopy_la-HardCopy.lo \
-	libhardcopy_la-PSVectorOutput.lo libhardcopy_la-VectorOutput.lo \
-	libhardcopy_la-VectorizeAction.lo \
-	libhardcopy_la-VectorizeActionP.lo \
-	libhardcopy_la-VectorizePSAction.lo
+am__objects_6 = all-hardcopy-cpp.lo
+am__objects_7 = HardCopy.lo PSVectorOutput.lo VectorOutput.lo \
+	VectorizeAction.lo VectorizeActionP.lo VectorizePSAction.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libhardcopy_la_OBJECTS = $(am__objects_8)
@@ -400,12 +388,7 @@ libhardcopy@SUFFIX@LINKHACK_la_LIBADD =
 am__libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = HardCopy.cpp \
 	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
 	VectorizeActionP.cpp VectorizePSAction.cpp all-hardcopy-cpp.cpp
-am__objects_10 = all-hardcopy-cpp.lo
-am__objects_11 = HardCopy.lo PSVectorOutput.lo VectorOutput.lo \
-	VectorizeAction.lo VectorizeActionP.lo VectorizePSAction.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
-am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
+am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
 	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
@@ -414,27 +397,19 @@ libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/HardCopy.Plo \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/HardCopy.Plo ./$(DEPDIR)/HardCopy.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/PSVectorOutput.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/PSVectorOutput.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorOutput.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/VectorOutput.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizeAction.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/VectorizeAction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizeActionP.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/VectorizeActionP.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizePSAction.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/VectorizePSAction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-HardCopy.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-PSVectorOutput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-VectorOutput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-VectorizeAction.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-VectorizeActionP.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-VectorizePSAction.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-HardCopy.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-PSVectorOutput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-VectorOutput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-VectorizeAction.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-VectorizeActionP.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-VectorizePSAction.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -522,26 +497,19 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HardCopy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HardCopy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PSVectorOutput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PSVectorOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorOutput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeAction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeActionP.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeActionP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizePSAction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizePSAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-HardCopy.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-PSVectorOutput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-VectorOutput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-VectorizeAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-VectorizeActionP.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-VectorizePSAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-HardCopy.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-PSVectorOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-VectorOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-VectorizeAction.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-VectorizeActionP.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-VectorizePSAction.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -578,468 +546,6 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
-
-hardcopy_lst-all-hardcopy-cpp.o: all-hardcopy-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-all-hardcopy-cpp.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-all-hardcopy-cpp.o `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo" "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-hardcopy-cpp.cpp' object='hardcopy_lst-all-hardcopy-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-all-hardcopy-cpp.o `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp
-
-hardcopy_lst-all-hardcopy-cpp.obj: all-hardcopy-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-all-hardcopy-cpp.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-all-hardcopy-cpp.obj `if test -f 'all-hardcopy-cpp.cpp'; then $(CYGPATH_W) 'all-hardcopy-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-hardcopy-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo" "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-hardcopy-cpp.cpp' object='hardcopy_lst-all-hardcopy-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-all-hardcopy-cpp.obj `if test -f 'all-hardcopy-cpp.cpp'; then $(CYGPATH_W) 'all-hardcopy-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-hardcopy-cpp.cpp'; fi`
-
-hardcopy_lst-all-hardcopy-cpp.lo: all-hardcopy-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-all-hardcopy-cpp.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-all-hardcopy-cpp.lo `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo" "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-hardcopy-cpp.cpp' object='hardcopy_lst-all-hardcopy-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-all-hardcopy-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-all-hardcopy-cpp.lo `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp
-
-hardcopy_lst-HardCopy.o: HardCopy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-HardCopy.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-HardCopy.o `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo" "$(DEPDIR)/hardcopy_lst-HardCopy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='HardCopy.cpp' object='hardcopy_lst-HardCopy.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-HardCopy.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-HardCopy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-HardCopy.o `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp
-
-hardcopy_lst-HardCopy.obj: HardCopy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-HardCopy.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-HardCopy.obj `if test -f 'HardCopy.cpp'; then $(CYGPATH_W) 'HardCopy.cpp'; else $(CYGPATH_W) '$(srcdir)/HardCopy.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo" "$(DEPDIR)/hardcopy_lst-HardCopy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='HardCopy.cpp' object='hardcopy_lst-HardCopy.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-HardCopy.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-HardCopy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-HardCopy.obj `if test -f 'HardCopy.cpp'; then $(CYGPATH_W) 'HardCopy.cpp'; else $(CYGPATH_W) '$(srcdir)/HardCopy.cpp'; fi`
-
-hardcopy_lst-HardCopy.lo: HardCopy.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-HardCopy.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-HardCopy.lo `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo" "$(DEPDIR)/hardcopy_lst-HardCopy.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-HardCopy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='HardCopy.cpp' object='hardcopy_lst-HardCopy.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-HardCopy.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-HardCopy.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-HardCopy.lo `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp
-
-hardcopy_lst-PSVectorOutput.o: PSVectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-PSVectorOutput.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-PSVectorOutput.o `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo" "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='PSVectorOutput.cpp' object='hardcopy_lst-PSVectorOutput.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-PSVectorOutput.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-PSVectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-PSVectorOutput.o `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp
-
-hardcopy_lst-PSVectorOutput.obj: PSVectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-PSVectorOutput.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-PSVectorOutput.obj `if test -f 'PSVectorOutput.cpp'; then $(CYGPATH_W) 'PSVectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/PSVectorOutput.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo" "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='PSVectorOutput.cpp' object='hardcopy_lst-PSVectorOutput.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-PSVectorOutput.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-PSVectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-PSVectorOutput.obj `if test -f 'PSVectorOutput.cpp'; then $(CYGPATH_W) 'PSVectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/PSVectorOutput.cpp'; fi`
-
-hardcopy_lst-PSVectorOutput.lo: PSVectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-PSVectorOutput.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-PSVectorOutput.lo `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo" "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-PSVectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='PSVectorOutput.cpp' object='hardcopy_lst-PSVectorOutput.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-PSVectorOutput.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-PSVectorOutput.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-PSVectorOutput.lo `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp
-
-hardcopy_lst-VectorOutput.o: VectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorOutput.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorOutput.o `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo" "$(DEPDIR)/hardcopy_lst-VectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorOutput.cpp' object='hardcopy_lst-VectorOutput.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorOutput.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorOutput.o `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp
-
-hardcopy_lst-VectorOutput.obj: VectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorOutput.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorOutput.obj `if test -f 'VectorOutput.cpp'; then $(CYGPATH_W) 'VectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorOutput.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo" "$(DEPDIR)/hardcopy_lst-VectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorOutput.cpp' object='hardcopy_lst-VectorOutput.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorOutput.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorOutput.obj `if test -f 'VectorOutput.cpp'; then $(CYGPATH_W) 'VectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorOutput.cpp'; fi`
-
-hardcopy_lst-VectorOutput.lo: VectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorOutput.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorOutput.lo `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo" "$(DEPDIR)/hardcopy_lst-VectorOutput.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorOutput.cpp' object='hardcopy_lst-VectorOutput.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorOutput.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorOutput.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorOutput.lo `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp
-
-hardcopy_lst-VectorizeAction.o: VectorizeAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizeAction.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizeAction.o `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizeAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeAction.cpp' object='hardcopy_lst-VectorizeAction.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizeAction.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizeAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizeAction.o `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp
-
-hardcopy_lst-VectorizeAction.obj: VectorizeAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizeAction.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizeAction.obj `if test -f 'VectorizeAction.cpp'; then $(CYGPATH_W) 'VectorizeAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeAction.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizeAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeAction.cpp' object='hardcopy_lst-VectorizeAction.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizeAction.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizeAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizeAction.obj `if test -f 'VectorizeAction.cpp'; then $(CYGPATH_W) 'VectorizeAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeAction.cpp'; fi`
-
-hardcopy_lst-VectorizeAction.lo: VectorizeAction.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizeAction.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizeAction.lo `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizeAction.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizeAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeAction.cpp' object='hardcopy_lst-VectorizeAction.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizeAction.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizeAction.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizeAction.lo `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp
-
-hardcopy_lst-VectorizeActionP.o: VectorizeActionP.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizeActionP.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizeActionP.o `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeActionP.cpp' object='hardcopy_lst-VectorizeActionP.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizeActionP.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizeActionP.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizeActionP.o `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp
-
-hardcopy_lst-VectorizeActionP.obj: VectorizeActionP.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizeActionP.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizeActionP.obj `if test -f 'VectorizeActionP.cpp'; then $(CYGPATH_W) 'VectorizeActionP.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeActionP.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeActionP.cpp' object='hardcopy_lst-VectorizeActionP.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizeActionP.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizeActionP.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizeActionP.obj `if test -f 'VectorizeActionP.cpp'; then $(CYGPATH_W) 'VectorizeActionP.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeActionP.cpp'; fi`
-
-hardcopy_lst-VectorizeActionP.lo: VectorizeActionP.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizeActionP.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizeActionP.lo `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizeActionP.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeActionP.cpp' object='hardcopy_lst-VectorizeActionP.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizeActionP.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizeActionP.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizeActionP.lo `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp
-
-hardcopy_lst-VectorizePSAction.o: VectorizePSAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizePSAction.o -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizePSAction.o `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizePSAction.cpp' object='hardcopy_lst-VectorizePSAction.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizePSAction.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizePSAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizePSAction.o `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp
-
-hardcopy_lst-VectorizePSAction.obj: VectorizePSAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizePSAction.obj -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizePSAction.obj `if test -f 'VectorizePSAction.cpp'; then $(CYGPATH_W) 'VectorizePSAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizePSAction.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizePSAction.cpp' object='hardcopy_lst-VectorizePSAction.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizePSAction.Po' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizePSAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizePSAction.obj `if test -f 'VectorizePSAction.cpp'; then $(CYGPATH_W) 'VectorizePSAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizePSAction.cpp'; fi`
-
-hardcopy_lst-VectorizePSAction.lo: VectorizePSAction.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -MT hardcopy_lst-VectorizePSAction.lo -MD -MP -MF "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o hardcopy_lst-VectorizePSAction.lo `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo" "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/hardcopy_lst-VectorizePSAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizePSAction.cpp' object='hardcopy_lst-VectorizePSAction.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/hardcopy_lst-VectorizePSAction.Plo' tmpdepfile='$(DEPDIR)/hardcopy_lst-VectorizePSAction.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(hardcopy_lst_CXXFLAGS) $(CXXFLAGS) -c -o hardcopy_lst-VectorizePSAction.lo `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp
-
-libhardcopy_la-all-hardcopy-cpp.o: all-hardcopy-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-all-hardcopy-cpp.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-all-hardcopy-cpp.o `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo" "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-hardcopy-cpp.cpp' object='libhardcopy_la-all-hardcopy-cpp.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-all-hardcopy-cpp.o `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp
-
-libhardcopy_la-all-hardcopy-cpp.obj: all-hardcopy-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-all-hardcopy-cpp.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-all-hardcopy-cpp.obj `if test -f 'all-hardcopy-cpp.cpp'; then $(CYGPATH_W) 'all-hardcopy-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-hardcopy-cpp.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo" "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-hardcopy-cpp.cpp' object='libhardcopy_la-all-hardcopy-cpp.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-all-hardcopy-cpp.obj `if test -f 'all-hardcopy-cpp.cpp'; then $(CYGPATH_W) 'all-hardcopy-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-hardcopy-cpp.cpp'; fi`
-
-libhardcopy_la-all-hardcopy-cpp.lo: all-hardcopy-cpp.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-all-hardcopy-cpp.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-all-hardcopy-cpp.lo `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo" "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-hardcopy-cpp.cpp' object='libhardcopy_la-all-hardcopy-cpp.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-all-hardcopy-cpp.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-all-hardcopy-cpp.lo `test -f 'all-hardcopy-cpp.cpp' || echo '$(srcdir)/'`all-hardcopy-cpp.cpp
-
-libhardcopy_la-HardCopy.o: HardCopy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-HardCopy.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-HardCopy.o `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo" "$(DEPDIR)/libhardcopy_la-HardCopy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='HardCopy.cpp' object='libhardcopy_la-HardCopy.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-HardCopy.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-HardCopy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-HardCopy.o `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp
-
-libhardcopy_la-HardCopy.obj: HardCopy.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-HardCopy.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-HardCopy.obj `if test -f 'HardCopy.cpp'; then $(CYGPATH_W) 'HardCopy.cpp'; else $(CYGPATH_W) '$(srcdir)/HardCopy.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo" "$(DEPDIR)/libhardcopy_la-HardCopy.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='HardCopy.cpp' object='libhardcopy_la-HardCopy.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-HardCopy.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-HardCopy.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-HardCopy.obj `if test -f 'HardCopy.cpp'; then $(CYGPATH_W) 'HardCopy.cpp'; else $(CYGPATH_W) '$(srcdir)/HardCopy.cpp'; fi`
-
-libhardcopy_la-HardCopy.lo: HardCopy.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-HardCopy.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-HardCopy.lo `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo" "$(DEPDIR)/libhardcopy_la-HardCopy.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-HardCopy.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='HardCopy.cpp' object='libhardcopy_la-HardCopy.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-HardCopy.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-HardCopy.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-HardCopy.lo `test -f 'HardCopy.cpp' || echo '$(srcdir)/'`HardCopy.cpp
-
-libhardcopy_la-PSVectorOutput.o: PSVectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-PSVectorOutput.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-PSVectorOutput.o `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo" "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='PSVectorOutput.cpp' object='libhardcopy_la-PSVectorOutput.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-PSVectorOutput.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-PSVectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-PSVectorOutput.o `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp
-
-libhardcopy_la-PSVectorOutput.obj: PSVectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-PSVectorOutput.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-PSVectorOutput.obj `if test -f 'PSVectorOutput.cpp'; then $(CYGPATH_W) 'PSVectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/PSVectorOutput.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo" "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='PSVectorOutput.cpp' object='libhardcopy_la-PSVectorOutput.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-PSVectorOutput.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-PSVectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-PSVectorOutput.obj `if test -f 'PSVectorOutput.cpp'; then $(CYGPATH_W) 'PSVectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/PSVectorOutput.cpp'; fi`
-
-libhardcopy_la-PSVectorOutput.lo: PSVectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-PSVectorOutput.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-PSVectorOutput.lo `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo" "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-PSVectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='PSVectorOutput.cpp' object='libhardcopy_la-PSVectorOutput.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-PSVectorOutput.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-PSVectorOutput.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-PSVectorOutput.lo `test -f 'PSVectorOutput.cpp' || echo '$(srcdir)/'`PSVectorOutput.cpp
-
-libhardcopy_la-VectorOutput.o: VectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorOutput.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorOutput.o `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo" "$(DEPDIR)/libhardcopy_la-VectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorOutput.cpp' object='libhardcopy_la-VectorOutput.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorOutput.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorOutput.o `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp
-
-libhardcopy_la-VectorOutput.obj: VectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorOutput.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorOutput.obj `if test -f 'VectorOutput.cpp'; then $(CYGPATH_W) 'VectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorOutput.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo" "$(DEPDIR)/libhardcopy_la-VectorOutput.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorOutput.cpp' object='libhardcopy_la-VectorOutput.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorOutput.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorOutput.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorOutput.obj `if test -f 'VectorOutput.cpp'; then $(CYGPATH_W) 'VectorOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorOutput.cpp'; fi`
-
-libhardcopy_la-VectorOutput.lo: VectorOutput.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorOutput.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorOutput.lo `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo" "$(DEPDIR)/libhardcopy_la-VectorOutput.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorOutput.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorOutput.cpp' object='libhardcopy_la-VectorOutput.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorOutput.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorOutput.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorOutput.lo `test -f 'VectorOutput.cpp' || echo '$(srcdir)/'`VectorOutput.cpp
-
-libhardcopy_la-VectorizeAction.o: VectorizeAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizeAction.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizeAction.o `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizeAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeAction.cpp' object='libhardcopy_la-VectorizeAction.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizeAction.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizeAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizeAction.o `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp
-
-libhardcopy_la-VectorizeAction.obj: VectorizeAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizeAction.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizeAction.obj `if test -f 'VectorizeAction.cpp'; then $(CYGPATH_W) 'VectorizeAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeAction.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizeAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeAction.cpp' object='libhardcopy_la-VectorizeAction.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizeAction.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizeAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizeAction.obj `if test -f 'VectorizeAction.cpp'; then $(CYGPATH_W) 'VectorizeAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeAction.cpp'; fi`
-
-libhardcopy_la-VectorizeAction.lo: VectorizeAction.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizeAction.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizeAction.lo `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizeAction.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizeAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeAction.cpp' object='libhardcopy_la-VectorizeAction.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizeAction.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizeAction.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizeAction.lo `test -f 'VectorizeAction.cpp' || echo '$(srcdir)/'`VectorizeAction.cpp
-
-libhardcopy_la-VectorizeActionP.o: VectorizeActionP.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizeActionP.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizeActionP.o `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeActionP.cpp' object='libhardcopy_la-VectorizeActionP.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizeActionP.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizeActionP.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizeActionP.o `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp
-
-libhardcopy_la-VectorizeActionP.obj: VectorizeActionP.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizeActionP.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizeActionP.obj `if test -f 'VectorizeActionP.cpp'; then $(CYGPATH_W) 'VectorizeActionP.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeActionP.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeActionP.cpp' object='libhardcopy_la-VectorizeActionP.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizeActionP.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizeActionP.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizeActionP.obj `if test -f 'VectorizeActionP.cpp'; then $(CYGPATH_W) 'VectorizeActionP.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizeActionP.cpp'; fi`
-
-libhardcopy_la-VectorizeActionP.lo: VectorizeActionP.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizeActionP.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizeActionP.lo `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizeActionP.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizeActionP.cpp' object='libhardcopy_la-VectorizeActionP.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizeActionP.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizeActionP.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizeActionP.lo `test -f 'VectorizeActionP.cpp' || echo '$(srcdir)/'`VectorizeActionP.cpp
-
-libhardcopy_la-VectorizePSAction.o: VectorizePSAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizePSAction.o -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizePSAction.o `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizePSAction.cpp' object='libhardcopy_la-VectorizePSAction.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizePSAction.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizePSAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizePSAction.o `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp
-
-libhardcopy_la-VectorizePSAction.obj: VectorizePSAction.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizePSAction.obj -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizePSAction.obj `if test -f 'VectorizePSAction.cpp'; then $(CYGPATH_W) 'VectorizePSAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizePSAction.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizePSAction.cpp' object='libhardcopy_la-VectorizePSAction.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizePSAction.Po' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizePSAction.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizePSAction.obj `if test -f 'VectorizePSAction.cpp'; then $(CYGPATH_W) 'VectorizePSAction.cpp'; else $(CYGPATH_W) '$(srcdir)/VectorizePSAction.cpp'; fi`
-
-libhardcopy_la-VectorizePSAction.lo: VectorizePSAction.cpp
-@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -MT libhardcopy_la-VectorizePSAction.lo -MD -MP -MF "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o libhardcopy_la-VectorizePSAction.lo `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo" "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libhardcopy_la-VectorizePSAction.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VectorizePSAction.cpp' object='libhardcopy_la-VectorizePSAction.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libhardcopy_la-VectorizePSAction.Plo' tmpdepfile='$(DEPDIR)/libhardcopy_la-VectorizePSAction.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhardcopy_la_CXXFLAGS) $(CXXFLAGS) -c -o libhardcopy_la-VectorizePSAction.lo `test -f 'VectorizePSAction.cpp' || echo '$(srcdir)/'`VectorizePSAction.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
