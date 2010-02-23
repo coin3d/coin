@@ -338,6 +338,9 @@ EXTRA_libsoscxml_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libsoscxml_la_CXXFLAGS = $(AM_CXXFLAGS)
+libsoscxml_la_CFLAGS = $(AM_CFLAGS)
+
 libsoscxml@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libsoscxml@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -347,6 +350,9 @@ soscxml_lst_SOURCES = $(BuildSources)
 EXTRA_soscxml_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+soscxml_lst_CXXFLAGS = $(AM_CXXFLAGS)
+soscxml_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/soscxml
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -360,10 +366,12 @@ soscxml_lst_LIBADD =
 am__soscxml_lst_SOURCES_DIST = ScXMLCoinEvaluator.cpp SoScXMLEvent.cpp \
 	SoScXMLStateMachine.cpp eval-coin-tab.cpp eval-coin.cpp \
 	all-soscxml-cpp.cpp
-am__objects_1 = all-soscxml-cpp.$(OBJEXT)
-am__objects_2 = ScXMLCoinEvaluator.$(OBJEXT) SoScXMLEvent.$(OBJEXT) \
-	SoScXMLStateMachine.$(OBJEXT) eval-coin-tab.$(OBJEXT) \
-	eval-coin.$(OBJEXT)
+am__objects_1 = soscxml_lst-all-soscxml-cpp.$(OBJEXT)
+am__objects_2 = soscxml_lst-ScXMLCoinEvaluator.$(OBJEXT) \
+	soscxml_lst-SoScXMLEvent.$(OBJEXT) \
+	soscxml_lst-SoScXMLStateMachine.$(OBJEXT) \
+	soscxml_lst-eval-coin-tab.$(OBJEXT) \
+	soscxml_lst-eval-coin.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_soscxml_lst_OBJECTS = $(am__objects_3)
@@ -378,9 +386,11 @@ libsoscxml_la_LIBADD =
 am__libsoscxml_la_SOURCES_DIST = ScXMLCoinEvaluator.cpp SoScXMLEvent.cpp \
 	SoScXMLStateMachine.cpp eval-coin-tab.cpp eval-coin.cpp \
 	all-soscxml-cpp.cpp
-am__objects_6 = all-soscxml-cpp.lo
-am__objects_7 = ScXMLCoinEvaluator.lo SoScXMLEvent.lo \
-	SoScXMLStateMachine.lo eval-coin-tab.lo eval-coin.lo
+am__objects_6 = libsoscxml_la-all-soscxml-cpp.lo
+am__objects_7 = libsoscxml_la-ScXMLCoinEvaluator.lo \
+	libsoscxml_la-SoScXMLEvent.lo \
+	libsoscxml_la-SoScXMLStateMachine.lo \
+	libsoscxml_la-eval-coin-tab.lo libsoscxml_la-eval-coin.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libsoscxml_la_OBJECTS = $(am__objects_8)
@@ -393,7 +403,12 @@ libsoscxml@SUFFIX@LINKHACK_la_LIBADD =
 am__libsoscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = ScXMLCoinEvaluator.cpp \
 	SoScXMLEvent.cpp SoScXMLStateMachine.cpp eval-coin-tab.cpp \
 	eval-coin.cpp all-soscxml-cpp.cpp
-am_libsoscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-soscxml-cpp.lo
+am__objects_11 = ScXMLCoinEvaluator.lo SoScXMLEvent.lo \
+	SoScXMLStateMachine.lo eval-coin-tab.lo eval-coin.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libsoscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libsoscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-soscxml-cpp.cpp ScXMLCoinEvaluator.cpp SoScXMLEvent.cpp \
 	SoScXMLStateMachine.cpp eval-coin-tab.cpp eval-coin.cpp
@@ -402,16 +417,23 @@ libsoscxml@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/ScXMLCoinEvaluator.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/ScXMLCoinEvaluator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLEvent.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLEvent.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScXMLStateMachine.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoScXMLStateMachine.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-soscxml-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-soscxml-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/eval-coin-tab.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/eval-coin-tab.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/eval-coin.Plo ./$(DEPDIR)/eval-coin.Po
+@AMDEP_TRUE@	./$(DEPDIR)/eval-coin.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsoscxml_la-eval-coin-tab.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsoscxml_la-eval-coin.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/soscxml_lst-SoScXMLEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/soscxml_lst-eval-coin-tab.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/soscxml_lst-eval-coin.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -437,7 +459,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/soscxml/Makefile
+	  $(AUTOMAKE) --gnu  src/soscxml/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -492,17 +514,23 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLCoinEvaluator.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLCoinEvaluator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLStateMachine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScXMLStateMachine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-soscxml-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-soscxml-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-coin-tab.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-coin-tab.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-coin.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-coin.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsoscxml_la-eval-coin-tab.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsoscxml_la-eval-coin.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soscxml_lst-SoScXMLEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soscxml_lst-eval-coin-tab.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soscxml_lst-eval-coin.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -539,6 +567,402 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+soscxml_lst-all-soscxml-cpp.o: all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-all-soscxml-cpp.o -MD -MP -MF "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-all-soscxml-cpp.o `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo" "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-soscxml-cpp.cpp' object='soscxml_lst-all-soscxml-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-all-soscxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-all-soscxml-cpp.o `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp
+
+soscxml_lst-all-soscxml-cpp.obj: all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-all-soscxml-cpp.obj -MD -MP -MF "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-all-soscxml-cpp.obj `if test -f 'all-soscxml-cpp.cpp'; then $(CYGPATH_W) 'all-soscxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-soscxml-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo" "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-soscxml-cpp.cpp' object='soscxml_lst-all-soscxml-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-all-soscxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-all-soscxml-cpp.obj `if test -f 'all-soscxml-cpp.cpp'; then $(CYGPATH_W) 'all-soscxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-soscxml-cpp.cpp'; fi`
+
+soscxml_lst-all-soscxml-cpp.lo: all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-all-soscxml-cpp.lo -MD -MP -MF "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-all-soscxml-cpp.lo `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo" "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-soscxml-cpp.cpp' object='soscxml_lst-all-soscxml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-all-soscxml-cpp.Plo' tmpdepfile='$(DEPDIR)/soscxml_lst-all-soscxml-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-all-soscxml-cpp.lo `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp
+
+soscxml_lst-ScXMLCoinEvaluator.o: ScXMLCoinEvaluator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-ScXMLCoinEvaluator.o -MD -MP -MF "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-ScXMLCoinEvaluator.o `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo" "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ScXMLCoinEvaluator.cpp' object='soscxml_lst-ScXMLCoinEvaluator.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-ScXMLCoinEvaluator.o `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp
+
+soscxml_lst-ScXMLCoinEvaluator.obj: ScXMLCoinEvaluator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-ScXMLCoinEvaluator.obj -MD -MP -MF "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-ScXMLCoinEvaluator.obj `if test -f 'ScXMLCoinEvaluator.cpp'; then $(CYGPATH_W) 'ScXMLCoinEvaluator.cpp'; else $(CYGPATH_W) '$(srcdir)/ScXMLCoinEvaluator.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo" "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ScXMLCoinEvaluator.cpp' object='soscxml_lst-ScXMLCoinEvaluator.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-ScXMLCoinEvaluator.obj `if test -f 'ScXMLCoinEvaluator.cpp'; then $(CYGPATH_W) 'ScXMLCoinEvaluator.cpp'; else $(CYGPATH_W) '$(srcdir)/ScXMLCoinEvaluator.cpp'; fi`
+
+soscxml_lst-ScXMLCoinEvaluator.lo: ScXMLCoinEvaluator.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-ScXMLCoinEvaluator.lo -MD -MP -MF "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-ScXMLCoinEvaluator.lo `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo" "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ScXMLCoinEvaluator.cpp' object='soscxml_lst-ScXMLCoinEvaluator.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.Plo' tmpdepfile='$(DEPDIR)/soscxml_lst-ScXMLCoinEvaluator.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-ScXMLCoinEvaluator.lo `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp
+
+soscxml_lst-SoScXMLEvent.o: SoScXMLEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-SoScXMLEvent.o -MD -MP -MF "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-SoScXMLEvent.o `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo" "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLEvent.cpp' object='soscxml_lst-SoScXMLEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-SoScXMLEvent.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-SoScXMLEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-SoScXMLEvent.o `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp
+
+soscxml_lst-SoScXMLEvent.obj: SoScXMLEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-SoScXMLEvent.obj -MD -MP -MF "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-SoScXMLEvent.obj `if test -f 'SoScXMLEvent.cpp'; then $(CYGPATH_W) 'SoScXMLEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo" "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLEvent.cpp' object='soscxml_lst-SoScXMLEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-SoScXMLEvent.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-SoScXMLEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-SoScXMLEvent.obj `if test -f 'SoScXMLEvent.cpp'; then $(CYGPATH_W) 'SoScXMLEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLEvent.cpp'; fi`
+
+soscxml_lst-SoScXMLEvent.lo: SoScXMLEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-SoScXMLEvent.lo -MD -MP -MF "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-SoScXMLEvent.lo `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo" "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-SoScXMLEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLEvent.cpp' object='soscxml_lst-SoScXMLEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-SoScXMLEvent.Plo' tmpdepfile='$(DEPDIR)/soscxml_lst-SoScXMLEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-SoScXMLEvent.lo `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp
+
+soscxml_lst-SoScXMLStateMachine.o: SoScXMLStateMachine.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-SoScXMLStateMachine.o -MD -MP -MF "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-SoScXMLStateMachine.o `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo" "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLStateMachine.cpp' object='soscxml_lst-SoScXMLStateMachine.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-SoScXMLStateMachine.o `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp
+
+soscxml_lst-SoScXMLStateMachine.obj: SoScXMLStateMachine.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-SoScXMLStateMachine.obj -MD -MP -MF "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-SoScXMLStateMachine.obj `if test -f 'SoScXMLStateMachine.cpp'; then $(CYGPATH_W) 'SoScXMLStateMachine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLStateMachine.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo" "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLStateMachine.cpp' object='soscxml_lst-SoScXMLStateMachine.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-SoScXMLStateMachine.obj `if test -f 'SoScXMLStateMachine.cpp'; then $(CYGPATH_W) 'SoScXMLStateMachine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLStateMachine.cpp'; fi`
+
+soscxml_lst-SoScXMLStateMachine.lo: SoScXMLStateMachine.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-SoScXMLStateMachine.lo -MD -MP -MF "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-SoScXMLStateMachine.lo `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo" "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLStateMachine.cpp' object='soscxml_lst-SoScXMLStateMachine.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.Plo' tmpdepfile='$(DEPDIR)/soscxml_lst-SoScXMLStateMachine.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-SoScXMLStateMachine.lo `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp
+
+soscxml_lst-eval-coin-tab.o: eval-coin-tab.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-eval-coin-tab.o -MD -MP -MF "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-eval-coin-tab.o `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo" "$(DEPDIR)/soscxml_lst-eval-coin-tab.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin-tab.cpp' object='soscxml_lst-eval-coin-tab.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-eval-coin-tab.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-eval-coin-tab.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-eval-coin-tab.o `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp
+
+soscxml_lst-eval-coin-tab.obj: eval-coin-tab.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-eval-coin-tab.obj -MD -MP -MF "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-eval-coin-tab.obj `if test -f 'eval-coin-tab.cpp'; then $(CYGPATH_W) 'eval-coin-tab.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin-tab.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo" "$(DEPDIR)/soscxml_lst-eval-coin-tab.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin-tab.cpp' object='soscxml_lst-eval-coin-tab.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-eval-coin-tab.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-eval-coin-tab.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-eval-coin-tab.obj `if test -f 'eval-coin-tab.cpp'; then $(CYGPATH_W) 'eval-coin-tab.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin-tab.cpp'; fi`
+
+soscxml_lst-eval-coin-tab.lo: eval-coin-tab.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-eval-coin-tab.lo -MD -MP -MF "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-eval-coin-tab.lo `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo" "$(DEPDIR)/soscxml_lst-eval-coin-tab.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-eval-coin-tab.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin-tab.cpp' object='soscxml_lst-eval-coin-tab.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-eval-coin-tab.Plo' tmpdepfile='$(DEPDIR)/soscxml_lst-eval-coin-tab.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-eval-coin-tab.lo `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp
+
+soscxml_lst-eval-coin.o: eval-coin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-eval-coin.o -MD -MP -MF "$(DEPDIR)/soscxml_lst-eval-coin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-eval-coin.o `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-eval-coin.Tpo" "$(DEPDIR)/soscxml_lst-eval-coin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-eval-coin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin.cpp' object='soscxml_lst-eval-coin.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-eval-coin.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-eval-coin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-eval-coin.o `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp
+
+soscxml_lst-eval-coin.obj: eval-coin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-eval-coin.obj -MD -MP -MF "$(DEPDIR)/soscxml_lst-eval-coin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-eval-coin.obj `if test -f 'eval-coin.cpp'; then $(CYGPATH_W) 'eval-coin.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-eval-coin.Tpo" "$(DEPDIR)/soscxml_lst-eval-coin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-eval-coin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin.cpp' object='soscxml_lst-eval-coin.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-eval-coin.Po' tmpdepfile='$(DEPDIR)/soscxml_lst-eval-coin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-eval-coin.obj `if test -f 'eval-coin.cpp'; then $(CYGPATH_W) 'eval-coin.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin.cpp'; fi`
+
+soscxml_lst-eval-coin.lo: eval-coin.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -MT soscxml_lst-eval-coin.lo -MD -MP -MF "$(DEPDIR)/soscxml_lst-eval-coin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o soscxml_lst-eval-coin.lo `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/soscxml_lst-eval-coin.Tpo" "$(DEPDIR)/soscxml_lst-eval-coin.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/soscxml_lst-eval-coin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin.cpp' object='soscxml_lst-eval-coin.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/soscxml_lst-eval-coin.Plo' tmpdepfile='$(DEPDIR)/soscxml_lst-eval-coin.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(soscxml_lst_CXXFLAGS) $(CXXFLAGS) -c -o soscxml_lst-eval-coin.lo `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp
+
+libsoscxml_la-all-soscxml-cpp.o: all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-all-soscxml-cpp.o -MD -MP -MF "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-all-soscxml-cpp.o `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo" "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-soscxml-cpp.cpp' object='libsoscxml_la-all-soscxml-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-all-soscxml-cpp.o `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp
+
+libsoscxml_la-all-soscxml-cpp.obj: all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-all-soscxml-cpp.obj -MD -MP -MF "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-all-soscxml-cpp.obj `if test -f 'all-soscxml-cpp.cpp'; then $(CYGPATH_W) 'all-soscxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-soscxml-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo" "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-soscxml-cpp.cpp' object='libsoscxml_la-all-soscxml-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-all-soscxml-cpp.obj `if test -f 'all-soscxml-cpp.cpp'; then $(CYGPATH_W) 'all-soscxml-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-soscxml-cpp.cpp'; fi`
+
+libsoscxml_la-all-soscxml-cpp.lo: all-soscxml-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-all-soscxml-cpp.lo -MD -MP -MF "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-all-soscxml-cpp.lo `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo" "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-soscxml-cpp.cpp' object='libsoscxml_la-all-soscxml-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.Plo' tmpdepfile='$(DEPDIR)/libsoscxml_la-all-soscxml-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-all-soscxml-cpp.lo `test -f 'all-soscxml-cpp.cpp' || echo '$(srcdir)/'`all-soscxml-cpp.cpp
+
+libsoscxml_la-ScXMLCoinEvaluator.o: ScXMLCoinEvaluator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-ScXMLCoinEvaluator.o -MD -MP -MF "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-ScXMLCoinEvaluator.o `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo" "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ScXMLCoinEvaluator.cpp' object='libsoscxml_la-ScXMLCoinEvaluator.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-ScXMLCoinEvaluator.o `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp
+
+libsoscxml_la-ScXMLCoinEvaluator.obj: ScXMLCoinEvaluator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-ScXMLCoinEvaluator.obj -MD -MP -MF "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-ScXMLCoinEvaluator.obj `if test -f 'ScXMLCoinEvaluator.cpp'; then $(CYGPATH_W) 'ScXMLCoinEvaluator.cpp'; else $(CYGPATH_W) '$(srcdir)/ScXMLCoinEvaluator.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo" "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ScXMLCoinEvaluator.cpp' object='libsoscxml_la-ScXMLCoinEvaluator.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-ScXMLCoinEvaluator.obj `if test -f 'ScXMLCoinEvaluator.cpp'; then $(CYGPATH_W) 'ScXMLCoinEvaluator.cpp'; else $(CYGPATH_W) '$(srcdir)/ScXMLCoinEvaluator.cpp'; fi`
+
+libsoscxml_la-ScXMLCoinEvaluator.lo: ScXMLCoinEvaluator.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-ScXMLCoinEvaluator.lo -MD -MP -MF "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-ScXMLCoinEvaluator.lo `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo" "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ScXMLCoinEvaluator.cpp' object='libsoscxml_la-ScXMLCoinEvaluator.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.Plo' tmpdepfile='$(DEPDIR)/libsoscxml_la-ScXMLCoinEvaluator.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-ScXMLCoinEvaluator.lo `test -f 'ScXMLCoinEvaluator.cpp' || echo '$(srcdir)/'`ScXMLCoinEvaluator.cpp
+
+libsoscxml_la-SoScXMLEvent.o: SoScXMLEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-SoScXMLEvent.o -MD -MP -MF "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-SoScXMLEvent.o `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo" "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLEvent.cpp' object='libsoscxml_la-SoScXMLEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-SoScXMLEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-SoScXMLEvent.o `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp
+
+libsoscxml_la-SoScXMLEvent.obj: SoScXMLEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-SoScXMLEvent.obj -MD -MP -MF "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-SoScXMLEvent.obj `if test -f 'SoScXMLEvent.cpp'; then $(CYGPATH_W) 'SoScXMLEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo" "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLEvent.cpp' object='libsoscxml_la-SoScXMLEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-SoScXMLEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-SoScXMLEvent.obj `if test -f 'SoScXMLEvent.cpp'; then $(CYGPATH_W) 'SoScXMLEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLEvent.cpp'; fi`
+
+libsoscxml_la-SoScXMLEvent.lo: SoScXMLEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-SoScXMLEvent.lo -MD -MP -MF "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-SoScXMLEvent.lo `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo" "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLEvent.cpp' object='libsoscxml_la-SoScXMLEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-SoScXMLEvent.Plo' tmpdepfile='$(DEPDIR)/libsoscxml_la-SoScXMLEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-SoScXMLEvent.lo `test -f 'SoScXMLEvent.cpp' || echo '$(srcdir)/'`SoScXMLEvent.cpp
+
+libsoscxml_la-SoScXMLStateMachine.o: SoScXMLStateMachine.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-SoScXMLStateMachine.o -MD -MP -MF "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-SoScXMLStateMachine.o `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo" "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLStateMachine.cpp' object='libsoscxml_la-SoScXMLStateMachine.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-SoScXMLStateMachine.o `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp
+
+libsoscxml_la-SoScXMLStateMachine.obj: SoScXMLStateMachine.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-SoScXMLStateMachine.obj -MD -MP -MF "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-SoScXMLStateMachine.obj `if test -f 'SoScXMLStateMachine.cpp'; then $(CYGPATH_W) 'SoScXMLStateMachine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLStateMachine.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo" "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLStateMachine.cpp' object='libsoscxml_la-SoScXMLStateMachine.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-SoScXMLStateMachine.obj `if test -f 'SoScXMLStateMachine.cpp'; then $(CYGPATH_W) 'SoScXMLStateMachine.cpp'; else $(CYGPATH_W) '$(srcdir)/SoScXMLStateMachine.cpp'; fi`
+
+libsoscxml_la-SoScXMLStateMachine.lo: SoScXMLStateMachine.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-SoScXMLStateMachine.lo -MD -MP -MF "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-SoScXMLStateMachine.lo `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo" "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoScXMLStateMachine.cpp' object='libsoscxml_la-SoScXMLStateMachine.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.Plo' tmpdepfile='$(DEPDIR)/libsoscxml_la-SoScXMLStateMachine.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-SoScXMLStateMachine.lo `test -f 'SoScXMLStateMachine.cpp' || echo '$(srcdir)/'`SoScXMLStateMachine.cpp
+
+libsoscxml_la-eval-coin-tab.o: eval-coin-tab.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-eval-coin-tab.o -MD -MP -MF "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-eval-coin-tab.o `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo" "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin-tab.cpp' object='libsoscxml_la-eval-coin-tab.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-eval-coin-tab.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-eval-coin-tab.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-eval-coin-tab.o `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp
+
+libsoscxml_la-eval-coin-tab.obj: eval-coin-tab.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-eval-coin-tab.obj -MD -MP -MF "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-eval-coin-tab.obj `if test -f 'eval-coin-tab.cpp'; then $(CYGPATH_W) 'eval-coin-tab.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin-tab.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo" "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin-tab.cpp' object='libsoscxml_la-eval-coin-tab.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-eval-coin-tab.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-eval-coin-tab.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-eval-coin-tab.obj `if test -f 'eval-coin-tab.cpp'; then $(CYGPATH_W) 'eval-coin-tab.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin-tab.cpp'; fi`
+
+libsoscxml_la-eval-coin-tab.lo: eval-coin-tab.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-eval-coin-tab.lo -MD -MP -MF "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-eval-coin-tab.lo `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo" "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-eval-coin-tab.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin-tab.cpp' object='libsoscxml_la-eval-coin-tab.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-eval-coin-tab.Plo' tmpdepfile='$(DEPDIR)/libsoscxml_la-eval-coin-tab.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-eval-coin-tab.lo `test -f 'eval-coin-tab.cpp' || echo '$(srcdir)/'`eval-coin-tab.cpp
+
+libsoscxml_la-eval-coin.o: eval-coin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-eval-coin.o -MD -MP -MF "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-eval-coin.o `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo" "$(DEPDIR)/libsoscxml_la-eval-coin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin.cpp' object='libsoscxml_la-eval-coin.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-eval-coin.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-eval-coin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-eval-coin.o `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp
+
+libsoscxml_la-eval-coin.obj: eval-coin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-eval-coin.obj -MD -MP -MF "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-eval-coin.obj `if test -f 'eval-coin.cpp'; then $(CYGPATH_W) 'eval-coin.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo" "$(DEPDIR)/libsoscxml_la-eval-coin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin.cpp' object='libsoscxml_la-eval-coin.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-eval-coin.Po' tmpdepfile='$(DEPDIR)/libsoscxml_la-eval-coin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-eval-coin.obj `if test -f 'eval-coin.cpp'; then $(CYGPATH_W) 'eval-coin.cpp'; else $(CYGPATH_W) '$(srcdir)/eval-coin.cpp'; fi`
+
+libsoscxml_la-eval-coin.lo: eval-coin.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -MT libsoscxml_la-eval-coin.lo -MD -MP -MF "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsoscxml_la-eval-coin.lo `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo" "$(DEPDIR)/libsoscxml_la-eval-coin.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsoscxml_la-eval-coin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='eval-coin.cpp' object='libsoscxml_la-eval-coin.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsoscxml_la-eval-coin.Plo' tmpdepfile='$(DEPDIR)/libsoscxml_la-eval-coin.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsoscxml_la_CXXFLAGS) $(CXXFLAGS) -c -o libsoscxml_la-eval-coin.lo `test -f 'eval-coin.cpp' || echo '$(srcdir)/'`eval-coin.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -234,6 +234,15 @@ SoSFImage::readValue(SoInput * in)
       SoReadError::post(in, "Premature end of file");
       return FALSE;
     }
+    // images are padded to a 4-byte alignment
+    int padsize = ((buffersize + 3) / 4) * 4 - buffersize;
+    if (padsize) {
+      unsigned char pads[3]; // pad is at most 3 bytes
+      if (!in->readBinaryArray(pads, padsize)) {
+        SoReadError::post(in, "Premature end of file");
+        return FALSE;
+      }
+    }
   }
   else {
     int byte = 0;

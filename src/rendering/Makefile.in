@@ -350,6 +350,9 @@ EXTRA_librendering_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+librendering_la_CXXFLAGS = $(AM_CXXFLAGS)
+librendering_la_CFLAGS = $(AM_CFLAGS)
+
 librendering@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -359,6 +362,9 @@ rendering_lst_SOURCES = $(BuildSources)
 EXTRA_rendering_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+rendering_lst_CXXFLAGS = $(AM_CXXFLAGS)
+rendering_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/rendering
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -376,15 +382,22 @@ am__rendering_lst_SOURCES_DIST = SoGL.cpp SoGLBigImage.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp \
 	all-rendering-cpp.cpp
-am__objects_1 = all-rendering-cpp.$(OBJEXT)
-am__objects_2 = SoGL.$(OBJEXT) SoGLBigImage.$(OBJEXT) \
-	SoGLDriverDatabase.$(OBJEXT) SoGLImage.$(OBJEXT) \
-	SoGLCubeMapImage.$(OBJEXT) SoGLNurbs.$(OBJEXT) \
-	SoRenderManager.$(OBJEXT) SoRenderManagerP.$(OBJEXT) \
-	SoOffscreenRenderer.$(OBJEXT) SoOffscreenCGData.$(OBJEXT) \
-	SoOffscreenGLXData.$(OBJEXT) SoOffscreenWGLData.$(OBJEXT) \
-	SoVBO.$(OBJEXT) SoVertexArrayIndexer.$(OBJEXT) \
-	CoinOffscreenGLCanvas.$(OBJEXT)
+am__objects_1 = rendering_lst-all-rendering-cpp.$(OBJEXT)
+am__objects_2 = rendering_lst-SoGL.$(OBJEXT) \
+	rendering_lst-SoGLBigImage.$(OBJEXT) \
+	rendering_lst-SoGLDriverDatabase.$(OBJEXT) \
+	rendering_lst-SoGLImage.$(OBJEXT) \
+	rendering_lst-SoGLCubeMapImage.$(OBJEXT) \
+	rendering_lst-SoGLNurbs.$(OBJEXT) \
+	rendering_lst-SoRenderManager.$(OBJEXT) \
+	rendering_lst-SoRenderManagerP.$(OBJEXT) \
+	rendering_lst-SoOffscreenRenderer.$(OBJEXT) \
+	rendering_lst-SoOffscreenCGData.$(OBJEXT) \
+	rendering_lst-SoOffscreenGLXData.$(OBJEXT) \
+	rendering_lst-SoOffscreenWGLData.$(OBJEXT) \
+	rendering_lst-SoVBO.$(OBJEXT) \
+	rendering_lst-SoVertexArrayIndexer.$(OBJEXT) \
+	rendering_lst-CoinOffscreenGLCanvas.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_rendering_lst_OBJECTS = $(am__objects_3)
@@ -410,13 +423,19 @@ am__librendering_la_SOURCES_DIST = SoGL.cpp SoGLBigImage.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoVBO.cpp \
 	SoVertexArrayIndexer.cpp CoinOffscreenGLCanvas.cpp \
 	all-rendering-cpp.cpp
-am__objects_6 = all-rendering-cpp.lo
-am__objects_7 = SoGL.lo SoGLBigImage.lo SoGLDriverDatabase.lo \
-	SoGLImage.lo SoGLCubeMapImage.lo SoGLNurbs.lo \
-	SoRenderManager.lo SoRenderManagerP.lo SoOffscreenRenderer.lo \
-	SoOffscreenCGData.lo SoOffscreenGLXData.lo \
-	SoOffscreenWGLData.lo SoVBO.lo SoVertexArrayIndexer.lo \
-	CoinOffscreenGLCanvas.lo
+am__objects_6 = librendering_la-all-rendering-cpp.lo
+am__objects_7 = librendering_la-SoGL.lo librendering_la-SoGLBigImage.lo \
+	librendering_la-SoGLDriverDatabase.lo \
+	librendering_la-SoGLImage.lo \
+	librendering_la-SoGLCubeMapImage.lo \
+	librendering_la-SoGLNurbs.lo librendering_la-SoRenderManager.lo \
+	librendering_la-SoRenderManagerP.lo \
+	librendering_la-SoOffscreenRenderer.lo \
+	librendering_la-SoOffscreenCGData.lo \
+	librendering_la-SoOffscreenGLXData.lo \
+	librendering_la-SoOffscreenWGLData.lo librendering_la-SoVBO.lo \
+	librendering_la-SoVertexArrayIndexer.lo \
+	librendering_la-CoinOffscreenGLCanvas.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_librendering_la_OBJECTS = $(am__objects_8)
@@ -440,7 +459,16 @@ am__librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGL.cpp \
 	SoOffscreenCGData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoVBO.cpp SoVertexArrayIndexer.cpp \
 	CoinOffscreenGLCanvas.cpp all-rendering-cpp.cpp
-am_librendering@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-rendering-cpp.lo
+am__objects_11 = SoGL.lo SoGLBigImage.lo SoGLDriverDatabase.lo \
+	SoGLImage.lo SoGLCubeMapImage.lo SoGLNurbs.lo \
+	SoRenderManager.lo SoRenderManagerP.lo SoOffscreenRenderer.lo \
+	SoOffscreenCGData.lo SoOffscreenGLXData.lo \
+	SoOffscreenWGLData.lo SoVBO.lo SoVertexArrayIndexer.lo \
+	CoinOffscreenGLCanvas.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_librendering@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h SoGL.h \
 	SoGLNurbs.h CoinOffscreenGLCanvas.h SoVBO.h \
 	SoVertexArrayIndexer.h SoOffscreenCGData.h SoOffscreenGLXData.h \
@@ -457,33 +485,51 @@ librendering@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/CoinOffscreenGLCanvas.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CoinOffscreenGLCanvas.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGL.Plo ./$(DEPDIR)/SoGL.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLBigImage.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLBigImage.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGL.Plo ./$(DEPDIR)/SoGLBigImage.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLCubeMapImage.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLCubeMapImage.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLDriverDatabase.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLDriverDatabase.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLImage.Plo ./$(DEPDIR)/SoGLImage.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLNurbs.Plo ./$(DEPDIR)/SoGLNurbs.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLImage.Plo ./$(DEPDIR)/SoGLNurbs.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenCGData.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenCGData.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenGLXData.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenGLXData.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenRenderer.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenRenderer.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenWGLData.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenWGLData.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoRenderManager.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoRenderManager.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoRenderManagerP.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoRenderManagerP.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoVBO.Plo ./$(DEPDIR)/SoVBO.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVBO.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexArrayIndexer.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoVertexArrayIndexer.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-rendering-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-rendering-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoGL.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoGLBigImage.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoGLCubeMapImage.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoGLDriverDatabase.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoGLImage.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoGLNurbs.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoOffscreenCGData.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoOffscreenGLXData.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoOffscreenRenderer.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoOffscreenWGLData.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoRenderManager.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoRenderManagerP.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoVBO.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/librendering_la-all-rendering-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoGL.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoGLBigImage.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoGLImage.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoGLNurbs.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoOffscreenCGData.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoRenderManager.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoRenderManagerP.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoVBO.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rendering_lst-all-rendering-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -516,7 +562,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/rendering/Makefile
+	  $(AUTOMAKE) --gnu  src/rendering/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -571,37 +617,53 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinOffscreenGLCanvas.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CoinOffscreenGLCanvas.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGL.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGL.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLBigImage.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLBigImage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCubeMapImage.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCubeMapImage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDriverDatabase.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLDriverDatabase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLImage.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLImage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLNurbs.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLNurbs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenCGData.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenCGData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenGLXData.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenGLXData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenRenderer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenRenderer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenWGLData.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenWGLData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManager.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManagerP.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRenderManagerP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVBO.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVBO.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexArrayIndexer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexArrayIndexer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-rendering-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-rendering-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoGL.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoGLBigImage.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoGLCubeMapImage.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoGLDriverDatabase.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoGLImage.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoGLNurbs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoOffscreenCGData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoOffscreenGLXData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoOffscreenRenderer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoOffscreenWGLData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoRenderManager.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoRenderManagerP.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoVBO.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librendering_la-all-rendering-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoGL.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoGLBigImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoGLImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoGLNurbs.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoOffscreenCGData.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoRenderManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoRenderManagerP.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoVBO.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rendering_lst-all-rendering-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -638,6 +700,1062 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+rendering_lst-all-rendering-cpp.o: all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-all-rendering-cpp.o -MD -MP -MF "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-all-rendering-cpp.o `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo" "$(DEPDIR)/rendering_lst-all-rendering-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-rendering-cpp.cpp' object='rendering_lst-all-rendering-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-all-rendering-cpp.Po' tmpdepfile='$(DEPDIR)/rendering_lst-all-rendering-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-all-rendering-cpp.o `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp
+
+rendering_lst-all-rendering-cpp.obj: all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-all-rendering-cpp.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-all-rendering-cpp.obj `if test -f 'all-rendering-cpp.cpp'; then $(CYGPATH_W) 'all-rendering-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-rendering-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo" "$(DEPDIR)/rendering_lst-all-rendering-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-rendering-cpp.cpp' object='rendering_lst-all-rendering-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-all-rendering-cpp.Po' tmpdepfile='$(DEPDIR)/rendering_lst-all-rendering-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-all-rendering-cpp.obj `if test -f 'all-rendering-cpp.cpp'; then $(CYGPATH_W) 'all-rendering-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-rendering-cpp.cpp'; fi`
+
+rendering_lst-all-rendering-cpp.lo: all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-all-rendering-cpp.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-all-rendering-cpp.lo `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo" "$(DEPDIR)/rendering_lst-all-rendering-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-rendering-cpp.cpp' object='rendering_lst-all-rendering-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-all-rendering-cpp.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-all-rendering-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-all-rendering-cpp.lo `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp
+
+rendering_lst-SoGL.o: SoGL.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGL.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGL.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGL.o `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGL.Tpo" "$(DEPDIR)/rendering_lst-SoGL.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGL.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGL.cpp' object='rendering_lst-SoGL.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGL.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGL.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGL.o `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp
+
+rendering_lst-SoGL.obj: SoGL.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGL.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGL.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGL.obj `if test -f 'SoGL.cpp'; then $(CYGPATH_W) 'SoGL.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGL.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGL.Tpo" "$(DEPDIR)/rendering_lst-SoGL.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGL.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGL.cpp' object='rendering_lst-SoGL.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGL.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGL.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGL.obj `if test -f 'SoGL.cpp'; then $(CYGPATH_W) 'SoGL.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGL.cpp'; fi`
+
+rendering_lst-SoGL.lo: SoGL.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGL.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGL.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGL.lo `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGL.Tpo" "$(DEPDIR)/rendering_lst-SoGL.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGL.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGL.cpp' object='rendering_lst-SoGL.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGL.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoGL.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGL.lo `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp
+
+rendering_lst-SoGLBigImage.o: SoGLBigImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLBigImage.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLBigImage.o `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLBigImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLBigImage.cpp' object='rendering_lst-SoGLBigImage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLBigImage.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLBigImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLBigImage.o `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp
+
+rendering_lst-SoGLBigImage.obj: SoGLBigImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLBigImage.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLBigImage.obj `if test -f 'SoGLBigImage.cpp'; then $(CYGPATH_W) 'SoGLBigImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLBigImage.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLBigImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLBigImage.cpp' object='rendering_lst-SoGLBigImage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLBigImage.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLBigImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLBigImage.obj `if test -f 'SoGLBigImage.cpp'; then $(CYGPATH_W) 'SoGLBigImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLBigImage.cpp'; fi`
+
+rendering_lst-SoGLBigImage.lo: SoGLBigImage.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLBigImage.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLBigImage.lo `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLBigImage.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLBigImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLBigImage.cpp' object='rendering_lst-SoGLBigImage.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLBigImage.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLBigImage.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLBigImage.lo `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp
+
+rendering_lst-SoGLDriverDatabase.o: SoGLDriverDatabase.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLDriverDatabase.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLDriverDatabase.o `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo" "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLDriverDatabase.cpp' object='rendering_lst-SoGLDriverDatabase.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLDriverDatabase.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLDriverDatabase.o `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp
+
+rendering_lst-SoGLDriverDatabase.obj: SoGLDriverDatabase.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLDriverDatabase.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLDriverDatabase.obj `if test -f 'SoGLDriverDatabase.cpp'; then $(CYGPATH_W) 'SoGLDriverDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLDriverDatabase.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo" "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLDriverDatabase.cpp' object='rendering_lst-SoGLDriverDatabase.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLDriverDatabase.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLDriverDatabase.obj `if test -f 'SoGLDriverDatabase.cpp'; then $(CYGPATH_W) 'SoGLDriverDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLDriverDatabase.cpp'; fi`
+
+rendering_lst-SoGLDriverDatabase.lo: SoGLDriverDatabase.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLDriverDatabase.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLDriverDatabase.lo `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo" "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLDriverDatabase.cpp' object='rendering_lst-SoGLDriverDatabase.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLDriverDatabase.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLDriverDatabase.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLDriverDatabase.lo `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp
+
+rendering_lst-SoGLImage.o: SoGLImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLImage.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLImage.o `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLImage.cpp' object='rendering_lst-SoGLImage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLImage.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLImage.o `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp
+
+rendering_lst-SoGLImage.obj: SoGLImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLImage.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLImage.obj `if test -f 'SoGLImage.cpp'; then $(CYGPATH_W) 'SoGLImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLImage.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLImage.cpp' object='rendering_lst-SoGLImage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLImage.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLImage.obj `if test -f 'SoGLImage.cpp'; then $(CYGPATH_W) 'SoGLImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLImage.cpp'; fi`
+
+rendering_lst-SoGLImage.lo: SoGLImage.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLImage.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLImage.lo `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLImage.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLImage.cpp' object='rendering_lst-SoGLImage.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLImage.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLImage.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLImage.lo `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp
+
+rendering_lst-SoGLCubeMapImage.o: SoGLCubeMapImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLCubeMapImage.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLCubeMapImage.o `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCubeMapImage.cpp' object='rendering_lst-SoGLCubeMapImage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLCubeMapImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLCubeMapImage.o `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp
+
+rendering_lst-SoGLCubeMapImage.obj: SoGLCubeMapImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLCubeMapImage.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLCubeMapImage.obj `if test -f 'SoGLCubeMapImage.cpp'; then $(CYGPATH_W) 'SoGLCubeMapImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCubeMapImage.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCubeMapImage.cpp' object='rendering_lst-SoGLCubeMapImage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLCubeMapImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLCubeMapImage.obj `if test -f 'SoGLCubeMapImage.cpp'; then $(CYGPATH_W) 'SoGLCubeMapImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCubeMapImage.cpp'; fi`
+
+rendering_lst-SoGLCubeMapImage.lo: SoGLCubeMapImage.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLCubeMapImage.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLCubeMapImage.lo `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo" "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCubeMapImage.cpp' object='rendering_lst-SoGLCubeMapImage.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLCubeMapImage.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLCubeMapImage.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLCubeMapImage.lo `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp
+
+rendering_lst-SoGLNurbs.o: SoGLNurbs.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLNurbs.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLNurbs.o `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo" "$(DEPDIR)/rendering_lst-SoGLNurbs.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLNurbs.cpp' object='rendering_lst-SoGLNurbs.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLNurbs.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLNurbs.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLNurbs.o `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp
+
+rendering_lst-SoGLNurbs.obj: SoGLNurbs.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLNurbs.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLNurbs.obj `if test -f 'SoGLNurbs.cpp'; then $(CYGPATH_W) 'SoGLNurbs.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLNurbs.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo" "$(DEPDIR)/rendering_lst-SoGLNurbs.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLNurbs.cpp' object='rendering_lst-SoGLNurbs.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLNurbs.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLNurbs.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLNurbs.obj `if test -f 'SoGLNurbs.cpp'; then $(CYGPATH_W) 'SoGLNurbs.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLNurbs.cpp'; fi`
+
+rendering_lst-SoGLNurbs.lo: SoGLNurbs.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoGLNurbs.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoGLNurbs.lo `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo" "$(DEPDIR)/rendering_lst-SoGLNurbs.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoGLNurbs.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLNurbs.cpp' object='rendering_lst-SoGLNurbs.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoGLNurbs.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoGLNurbs.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoGLNurbs.lo `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp
+
+rendering_lst-SoRenderManager.o: SoRenderManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoRenderManager.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoRenderManager.o `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo" "$(DEPDIR)/rendering_lst-SoRenderManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManager.cpp' object='rendering_lst-SoRenderManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoRenderManager.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoRenderManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoRenderManager.o `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp
+
+rendering_lst-SoRenderManager.obj: SoRenderManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoRenderManager.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoRenderManager.obj `if test -f 'SoRenderManager.cpp'; then $(CYGPATH_W) 'SoRenderManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManager.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo" "$(DEPDIR)/rendering_lst-SoRenderManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManager.cpp' object='rendering_lst-SoRenderManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoRenderManager.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoRenderManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoRenderManager.obj `if test -f 'SoRenderManager.cpp'; then $(CYGPATH_W) 'SoRenderManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManager.cpp'; fi`
+
+rendering_lst-SoRenderManager.lo: SoRenderManager.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoRenderManager.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoRenderManager.lo `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo" "$(DEPDIR)/rendering_lst-SoRenderManager.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoRenderManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManager.cpp' object='rendering_lst-SoRenderManager.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoRenderManager.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoRenderManager.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoRenderManager.lo `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp
+
+rendering_lst-SoRenderManagerP.o: SoRenderManagerP.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoRenderManagerP.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoRenderManagerP.o `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo" "$(DEPDIR)/rendering_lst-SoRenderManagerP.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManagerP.cpp' object='rendering_lst-SoRenderManagerP.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoRenderManagerP.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoRenderManagerP.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoRenderManagerP.o `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp
+
+rendering_lst-SoRenderManagerP.obj: SoRenderManagerP.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoRenderManagerP.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoRenderManagerP.obj `if test -f 'SoRenderManagerP.cpp'; then $(CYGPATH_W) 'SoRenderManagerP.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManagerP.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo" "$(DEPDIR)/rendering_lst-SoRenderManagerP.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManagerP.cpp' object='rendering_lst-SoRenderManagerP.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoRenderManagerP.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoRenderManagerP.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoRenderManagerP.obj `if test -f 'SoRenderManagerP.cpp'; then $(CYGPATH_W) 'SoRenderManagerP.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManagerP.cpp'; fi`
+
+rendering_lst-SoRenderManagerP.lo: SoRenderManagerP.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoRenderManagerP.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoRenderManagerP.lo `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo" "$(DEPDIR)/rendering_lst-SoRenderManagerP.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoRenderManagerP.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManagerP.cpp' object='rendering_lst-SoRenderManagerP.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoRenderManagerP.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoRenderManagerP.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoRenderManagerP.lo `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp
+
+rendering_lst-SoOffscreenRenderer.o: SoOffscreenRenderer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenRenderer.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenRenderer.o `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenRenderer.cpp' object='rendering_lst-SoOffscreenRenderer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenRenderer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenRenderer.o `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp
+
+rendering_lst-SoOffscreenRenderer.obj: SoOffscreenRenderer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenRenderer.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenRenderer.obj `if test -f 'SoOffscreenRenderer.cpp'; then $(CYGPATH_W) 'SoOffscreenRenderer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenRenderer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenRenderer.cpp' object='rendering_lst-SoOffscreenRenderer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenRenderer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenRenderer.obj `if test -f 'SoOffscreenRenderer.cpp'; then $(CYGPATH_W) 'SoOffscreenRenderer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenRenderer.cpp'; fi`
+
+rendering_lst-SoOffscreenRenderer.lo: SoOffscreenRenderer.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenRenderer.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenRenderer.lo `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenRenderer.cpp' object='rendering_lst-SoOffscreenRenderer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenRenderer.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenRenderer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenRenderer.lo `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp
+
+rendering_lst-SoOffscreenCGData.o: SoOffscreenCGData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenCGData.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenCGData.o `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenCGData.cpp' object='rendering_lst-SoOffscreenCGData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenCGData.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenCGData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenCGData.o `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp
+
+rendering_lst-SoOffscreenCGData.obj: SoOffscreenCGData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenCGData.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenCGData.obj `if test -f 'SoOffscreenCGData.cpp'; then $(CYGPATH_W) 'SoOffscreenCGData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenCGData.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenCGData.cpp' object='rendering_lst-SoOffscreenCGData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenCGData.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenCGData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenCGData.obj `if test -f 'SoOffscreenCGData.cpp'; then $(CYGPATH_W) 'SoOffscreenCGData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenCGData.cpp'; fi`
+
+rendering_lst-SoOffscreenCGData.lo: SoOffscreenCGData.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenCGData.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenCGData.lo `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenCGData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenCGData.cpp' object='rendering_lst-SoOffscreenCGData.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenCGData.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenCGData.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenCGData.lo `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp
+
+rendering_lst-SoOffscreenGLXData.o: SoOffscreenGLXData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenGLXData.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenGLXData.o `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenGLXData.cpp' object='rendering_lst-SoOffscreenGLXData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenGLXData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenGLXData.o `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp
+
+rendering_lst-SoOffscreenGLXData.obj: SoOffscreenGLXData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenGLXData.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenGLXData.obj `if test -f 'SoOffscreenGLXData.cpp'; then $(CYGPATH_W) 'SoOffscreenGLXData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenGLXData.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenGLXData.cpp' object='rendering_lst-SoOffscreenGLXData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenGLXData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenGLXData.obj `if test -f 'SoOffscreenGLXData.cpp'; then $(CYGPATH_W) 'SoOffscreenGLXData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenGLXData.cpp'; fi`
+
+rendering_lst-SoOffscreenGLXData.lo: SoOffscreenGLXData.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenGLXData.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenGLXData.lo `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenGLXData.cpp' object='rendering_lst-SoOffscreenGLXData.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenGLXData.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenGLXData.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenGLXData.lo `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp
+
+rendering_lst-SoOffscreenWGLData.o: SoOffscreenWGLData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenWGLData.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenWGLData.o `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenWGLData.cpp' object='rendering_lst-SoOffscreenWGLData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenWGLData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenWGLData.o `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp
+
+rendering_lst-SoOffscreenWGLData.obj: SoOffscreenWGLData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenWGLData.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenWGLData.obj `if test -f 'SoOffscreenWGLData.cpp'; then $(CYGPATH_W) 'SoOffscreenWGLData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenWGLData.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenWGLData.cpp' object='rendering_lst-SoOffscreenWGLData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenWGLData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenWGLData.obj `if test -f 'SoOffscreenWGLData.cpp'; then $(CYGPATH_W) 'SoOffscreenWGLData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenWGLData.cpp'; fi`
+
+rendering_lst-SoOffscreenWGLData.lo: SoOffscreenWGLData.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoOffscreenWGLData.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoOffscreenWGLData.lo `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo" "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenWGLData.cpp' object='rendering_lst-SoOffscreenWGLData.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoOffscreenWGLData.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoOffscreenWGLData.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoOffscreenWGLData.lo `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp
+
+rendering_lst-SoVBO.o: SoVBO.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoVBO.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoVBO.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoVBO.o `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoVBO.Tpo" "$(DEPDIR)/rendering_lst-SoVBO.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoVBO.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBO.cpp' object='rendering_lst-SoVBO.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoVBO.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoVBO.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoVBO.o `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp
+
+rendering_lst-SoVBO.obj: SoVBO.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoVBO.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoVBO.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoVBO.obj `if test -f 'SoVBO.cpp'; then $(CYGPATH_W) 'SoVBO.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBO.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoVBO.Tpo" "$(DEPDIR)/rendering_lst-SoVBO.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoVBO.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBO.cpp' object='rendering_lst-SoVBO.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoVBO.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoVBO.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoVBO.obj `if test -f 'SoVBO.cpp'; then $(CYGPATH_W) 'SoVBO.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBO.cpp'; fi`
+
+rendering_lst-SoVBO.lo: SoVBO.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoVBO.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoVBO.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoVBO.lo `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoVBO.Tpo" "$(DEPDIR)/rendering_lst-SoVBO.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoVBO.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBO.cpp' object='rendering_lst-SoVBO.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoVBO.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoVBO.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoVBO.lo `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp
+
+rendering_lst-SoVertexArrayIndexer.o: SoVertexArrayIndexer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoVertexArrayIndexer.o -MD -MP -MF "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoVertexArrayIndexer.o `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo" "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexArrayIndexer.cpp' object='rendering_lst-SoVertexArrayIndexer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoVertexArrayIndexer.o `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp
+
+rendering_lst-SoVertexArrayIndexer.obj: SoVertexArrayIndexer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoVertexArrayIndexer.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoVertexArrayIndexer.obj `if test -f 'SoVertexArrayIndexer.cpp'; then $(CYGPATH_W) 'SoVertexArrayIndexer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexArrayIndexer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo" "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexArrayIndexer.cpp' object='rendering_lst-SoVertexArrayIndexer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Po' tmpdepfile='$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoVertexArrayIndexer.obj `if test -f 'SoVertexArrayIndexer.cpp'; then $(CYGPATH_W) 'SoVertexArrayIndexer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexArrayIndexer.cpp'; fi`
+
+rendering_lst-SoVertexArrayIndexer.lo: SoVertexArrayIndexer.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-SoVertexArrayIndexer.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-SoVertexArrayIndexer.lo `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo" "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexArrayIndexer.cpp' object='rendering_lst-SoVertexArrayIndexer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-SoVertexArrayIndexer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-SoVertexArrayIndexer.lo `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp
+
+rendering_lst-CoinOffscreenGLCanvas.o: CoinOffscreenGLCanvas.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-CoinOffscreenGLCanvas.o -MD -MP -MF "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-CoinOffscreenGLCanvas.o `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo" "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CoinOffscreenGLCanvas.cpp' object='rendering_lst-CoinOffscreenGLCanvas.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Po' tmpdepfile='$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-CoinOffscreenGLCanvas.o `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp
+
+rendering_lst-CoinOffscreenGLCanvas.obj: CoinOffscreenGLCanvas.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-CoinOffscreenGLCanvas.obj -MD -MP -MF "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-CoinOffscreenGLCanvas.obj `if test -f 'CoinOffscreenGLCanvas.cpp'; then $(CYGPATH_W) 'CoinOffscreenGLCanvas.cpp'; else $(CYGPATH_W) '$(srcdir)/CoinOffscreenGLCanvas.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo" "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CoinOffscreenGLCanvas.cpp' object='rendering_lst-CoinOffscreenGLCanvas.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Po' tmpdepfile='$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-CoinOffscreenGLCanvas.obj `if test -f 'CoinOffscreenGLCanvas.cpp'; then $(CYGPATH_W) 'CoinOffscreenGLCanvas.cpp'; else $(CYGPATH_W) '$(srcdir)/CoinOffscreenGLCanvas.cpp'; fi`
+
+rendering_lst-CoinOffscreenGLCanvas.lo: CoinOffscreenGLCanvas.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -MT rendering_lst-CoinOffscreenGLCanvas.lo -MD -MP -MF "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o rendering_lst-CoinOffscreenGLCanvas.lo `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo" "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CoinOffscreenGLCanvas.cpp' object='rendering_lst-CoinOffscreenGLCanvas.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.Plo' tmpdepfile='$(DEPDIR)/rendering_lst-CoinOffscreenGLCanvas.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(rendering_lst_CXXFLAGS) $(CXXFLAGS) -c -o rendering_lst-CoinOffscreenGLCanvas.lo `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp
+
+librendering_la-all-rendering-cpp.o: all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-all-rendering-cpp.o -MD -MP -MF "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-all-rendering-cpp.o `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo" "$(DEPDIR)/librendering_la-all-rendering-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-rendering-cpp.cpp' object='librendering_la-all-rendering-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-all-rendering-cpp.Po' tmpdepfile='$(DEPDIR)/librendering_la-all-rendering-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-all-rendering-cpp.o `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp
+
+librendering_la-all-rendering-cpp.obj: all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-all-rendering-cpp.obj -MD -MP -MF "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-all-rendering-cpp.obj `if test -f 'all-rendering-cpp.cpp'; then $(CYGPATH_W) 'all-rendering-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-rendering-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo" "$(DEPDIR)/librendering_la-all-rendering-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-rendering-cpp.cpp' object='librendering_la-all-rendering-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-all-rendering-cpp.Po' tmpdepfile='$(DEPDIR)/librendering_la-all-rendering-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-all-rendering-cpp.obj `if test -f 'all-rendering-cpp.cpp'; then $(CYGPATH_W) 'all-rendering-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-rendering-cpp.cpp'; fi`
+
+librendering_la-all-rendering-cpp.lo: all-rendering-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-all-rendering-cpp.lo -MD -MP -MF "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-all-rendering-cpp.lo `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo" "$(DEPDIR)/librendering_la-all-rendering-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-all-rendering-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-rendering-cpp.cpp' object='librendering_la-all-rendering-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-all-rendering-cpp.Plo' tmpdepfile='$(DEPDIR)/librendering_la-all-rendering-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-all-rendering-cpp.lo `test -f 'all-rendering-cpp.cpp' || echo '$(srcdir)/'`all-rendering-cpp.cpp
+
+librendering_la-SoGL.o: SoGL.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGL.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoGL.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGL.o `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGL.Tpo" "$(DEPDIR)/librendering_la-SoGL.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGL.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGL.cpp' object='librendering_la-SoGL.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGL.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGL.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGL.o `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp
+
+librendering_la-SoGL.obj: SoGL.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGL.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoGL.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGL.obj `if test -f 'SoGL.cpp'; then $(CYGPATH_W) 'SoGL.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGL.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGL.Tpo" "$(DEPDIR)/librendering_la-SoGL.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGL.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGL.cpp' object='librendering_la-SoGL.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGL.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGL.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGL.obj `if test -f 'SoGL.cpp'; then $(CYGPATH_W) 'SoGL.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGL.cpp'; fi`
+
+librendering_la-SoGL.lo: SoGL.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGL.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoGL.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGL.lo `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGL.Tpo" "$(DEPDIR)/librendering_la-SoGL.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGL.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGL.cpp' object='librendering_la-SoGL.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGL.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoGL.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGL.lo `test -f 'SoGL.cpp' || echo '$(srcdir)/'`SoGL.cpp
+
+librendering_la-SoGLBigImage.o: SoGLBigImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLBigImage.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLBigImage.o `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo" "$(DEPDIR)/librendering_la-SoGLBigImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLBigImage.cpp' object='librendering_la-SoGLBigImage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLBigImage.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLBigImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLBigImage.o `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp
+
+librendering_la-SoGLBigImage.obj: SoGLBigImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLBigImage.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLBigImage.obj `if test -f 'SoGLBigImage.cpp'; then $(CYGPATH_W) 'SoGLBigImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLBigImage.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo" "$(DEPDIR)/librendering_la-SoGLBigImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLBigImage.cpp' object='librendering_la-SoGLBigImage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLBigImage.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLBigImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLBigImage.obj `if test -f 'SoGLBigImage.cpp'; then $(CYGPATH_W) 'SoGLBigImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLBigImage.cpp'; fi`
+
+librendering_la-SoGLBigImage.lo: SoGLBigImage.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLBigImage.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLBigImage.lo `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo" "$(DEPDIR)/librendering_la-SoGLBigImage.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLBigImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLBigImage.cpp' object='librendering_la-SoGLBigImage.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLBigImage.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoGLBigImage.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLBigImage.lo `test -f 'SoGLBigImage.cpp' || echo '$(srcdir)/'`SoGLBigImage.cpp
+
+librendering_la-SoGLDriverDatabase.o: SoGLDriverDatabase.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLDriverDatabase.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLDriverDatabase.o `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo" "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLDriverDatabase.cpp' object='librendering_la-SoGLDriverDatabase.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLDriverDatabase.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLDriverDatabase.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLDriverDatabase.o `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp
+
+librendering_la-SoGLDriverDatabase.obj: SoGLDriverDatabase.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLDriverDatabase.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLDriverDatabase.obj `if test -f 'SoGLDriverDatabase.cpp'; then $(CYGPATH_W) 'SoGLDriverDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLDriverDatabase.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo" "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLDriverDatabase.cpp' object='librendering_la-SoGLDriverDatabase.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLDriverDatabase.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLDriverDatabase.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLDriverDatabase.obj `if test -f 'SoGLDriverDatabase.cpp'; then $(CYGPATH_W) 'SoGLDriverDatabase.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLDriverDatabase.cpp'; fi`
+
+librendering_la-SoGLDriverDatabase.lo: SoGLDriverDatabase.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLDriverDatabase.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLDriverDatabase.lo `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo" "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLDriverDatabase.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLDriverDatabase.cpp' object='librendering_la-SoGLDriverDatabase.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLDriverDatabase.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoGLDriverDatabase.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLDriverDatabase.lo `test -f 'SoGLDriverDatabase.cpp' || echo '$(srcdir)/'`SoGLDriverDatabase.cpp
+
+librendering_la-SoGLImage.o: SoGLImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLImage.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLImage.o `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLImage.Tpo" "$(DEPDIR)/librendering_la-SoGLImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLImage.cpp' object='librendering_la-SoGLImage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLImage.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLImage.o `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp
+
+librendering_la-SoGLImage.obj: SoGLImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLImage.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLImage.obj `if test -f 'SoGLImage.cpp'; then $(CYGPATH_W) 'SoGLImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLImage.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLImage.Tpo" "$(DEPDIR)/librendering_la-SoGLImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLImage.cpp' object='librendering_la-SoGLImage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLImage.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLImage.obj `if test -f 'SoGLImage.cpp'; then $(CYGPATH_W) 'SoGLImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLImage.cpp'; fi`
+
+librendering_la-SoGLImage.lo: SoGLImage.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLImage.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLImage.lo `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLImage.Tpo" "$(DEPDIR)/librendering_la-SoGLImage.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLImage.cpp' object='librendering_la-SoGLImage.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLImage.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoGLImage.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLImage.lo `test -f 'SoGLImage.cpp' || echo '$(srcdir)/'`SoGLImage.cpp
+
+librendering_la-SoGLCubeMapImage.o: SoGLCubeMapImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLCubeMapImage.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLCubeMapImage.o `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo" "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCubeMapImage.cpp' object='librendering_la-SoGLCubeMapImage.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLCubeMapImage.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLCubeMapImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLCubeMapImage.o `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp
+
+librendering_la-SoGLCubeMapImage.obj: SoGLCubeMapImage.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLCubeMapImage.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLCubeMapImage.obj `if test -f 'SoGLCubeMapImage.cpp'; then $(CYGPATH_W) 'SoGLCubeMapImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCubeMapImage.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo" "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCubeMapImage.cpp' object='librendering_la-SoGLCubeMapImage.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLCubeMapImage.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLCubeMapImage.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLCubeMapImage.obj `if test -f 'SoGLCubeMapImage.cpp'; then $(CYGPATH_W) 'SoGLCubeMapImage.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLCubeMapImage.cpp'; fi`
+
+librendering_la-SoGLCubeMapImage.lo: SoGLCubeMapImage.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLCubeMapImage.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLCubeMapImage.lo `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo" "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLCubeMapImage.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLCubeMapImage.cpp' object='librendering_la-SoGLCubeMapImage.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLCubeMapImage.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoGLCubeMapImage.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLCubeMapImage.lo `test -f 'SoGLCubeMapImage.cpp' || echo '$(srcdir)/'`SoGLCubeMapImage.cpp
+
+librendering_la-SoGLNurbs.o: SoGLNurbs.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLNurbs.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLNurbs.o `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo" "$(DEPDIR)/librendering_la-SoGLNurbs.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLNurbs.cpp' object='librendering_la-SoGLNurbs.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLNurbs.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLNurbs.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLNurbs.o `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp
+
+librendering_la-SoGLNurbs.obj: SoGLNurbs.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLNurbs.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLNurbs.obj `if test -f 'SoGLNurbs.cpp'; then $(CYGPATH_W) 'SoGLNurbs.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLNurbs.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo" "$(DEPDIR)/librendering_la-SoGLNurbs.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLNurbs.cpp' object='librendering_la-SoGLNurbs.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLNurbs.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoGLNurbs.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLNurbs.obj `if test -f 'SoGLNurbs.cpp'; then $(CYGPATH_W) 'SoGLNurbs.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGLNurbs.cpp'; fi`
+
+librendering_la-SoGLNurbs.lo: SoGLNurbs.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoGLNurbs.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoGLNurbs.lo `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo" "$(DEPDIR)/librendering_la-SoGLNurbs.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoGLNurbs.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGLNurbs.cpp' object='librendering_la-SoGLNurbs.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoGLNurbs.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoGLNurbs.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoGLNurbs.lo `test -f 'SoGLNurbs.cpp' || echo '$(srcdir)/'`SoGLNurbs.cpp
+
+librendering_la-SoRenderManager.o: SoRenderManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoRenderManager.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoRenderManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoRenderManager.o `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoRenderManager.Tpo" "$(DEPDIR)/librendering_la-SoRenderManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoRenderManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManager.cpp' object='librendering_la-SoRenderManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoRenderManager.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoRenderManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoRenderManager.o `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp
+
+librendering_la-SoRenderManager.obj: SoRenderManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoRenderManager.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoRenderManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoRenderManager.obj `if test -f 'SoRenderManager.cpp'; then $(CYGPATH_W) 'SoRenderManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManager.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoRenderManager.Tpo" "$(DEPDIR)/librendering_la-SoRenderManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoRenderManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManager.cpp' object='librendering_la-SoRenderManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoRenderManager.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoRenderManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoRenderManager.obj `if test -f 'SoRenderManager.cpp'; then $(CYGPATH_W) 'SoRenderManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManager.cpp'; fi`
+
+librendering_la-SoRenderManager.lo: SoRenderManager.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoRenderManager.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoRenderManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoRenderManager.lo `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoRenderManager.Tpo" "$(DEPDIR)/librendering_la-SoRenderManager.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoRenderManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManager.cpp' object='librendering_la-SoRenderManager.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoRenderManager.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoRenderManager.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoRenderManager.lo `test -f 'SoRenderManager.cpp' || echo '$(srcdir)/'`SoRenderManager.cpp
+
+librendering_la-SoRenderManagerP.o: SoRenderManagerP.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoRenderManagerP.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoRenderManagerP.o `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo" "$(DEPDIR)/librendering_la-SoRenderManagerP.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManagerP.cpp' object='librendering_la-SoRenderManagerP.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoRenderManagerP.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoRenderManagerP.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoRenderManagerP.o `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp
+
+librendering_la-SoRenderManagerP.obj: SoRenderManagerP.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoRenderManagerP.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoRenderManagerP.obj `if test -f 'SoRenderManagerP.cpp'; then $(CYGPATH_W) 'SoRenderManagerP.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManagerP.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo" "$(DEPDIR)/librendering_la-SoRenderManagerP.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManagerP.cpp' object='librendering_la-SoRenderManagerP.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoRenderManagerP.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoRenderManagerP.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoRenderManagerP.obj `if test -f 'SoRenderManagerP.cpp'; then $(CYGPATH_W) 'SoRenderManagerP.cpp'; else $(CYGPATH_W) '$(srcdir)/SoRenderManagerP.cpp'; fi`
+
+librendering_la-SoRenderManagerP.lo: SoRenderManagerP.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoRenderManagerP.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoRenderManagerP.lo `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo" "$(DEPDIR)/librendering_la-SoRenderManagerP.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoRenderManagerP.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoRenderManagerP.cpp' object='librendering_la-SoRenderManagerP.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoRenderManagerP.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoRenderManagerP.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoRenderManagerP.lo `test -f 'SoRenderManagerP.cpp' || echo '$(srcdir)/'`SoRenderManagerP.cpp
+
+librendering_la-SoOffscreenRenderer.o: SoOffscreenRenderer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenRenderer.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenRenderer.o `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenRenderer.cpp' object='librendering_la-SoOffscreenRenderer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenRenderer.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenRenderer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenRenderer.o `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp
+
+librendering_la-SoOffscreenRenderer.obj: SoOffscreenRenderer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenRenderer.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenRenderer.obj `if test -f 'SoOffscreenRenderer.cpp'; then $(CYGPATH_W) 'SoOffscreenRenderer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenRenderer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenRenderer.cpp' object='librendering_la-SoOffscreenRenderer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenRenderer.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenRenderer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenRenderer.obj `if test -f 'SoOffscreenRenderer.cpp'; then $(CYGPATH_W) 'SoOffscreenRenderer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenRenderer.cpp'; fi`
+
+librendering_la-SoOffscreenRenderer.lo: SoOffscreenRenderer.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenRenderer.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenRenderer.lo `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenRenderer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenRenderer.cpp' object='librendering_la-SoOffscreenRenderer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenRenderer.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenRenderer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenRenderer.lo `test -f 'SoOffscreenRenderer.cpp' || echo '$(srcdir)/'`SoOffscreenRenderer.cpp
+
+librendering_la-SoOffscreenCGData.o: SoOffscreenCGData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenCGData.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenCGData.o `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenCGData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenCGData.cpp' object='librendering_la-SoOffscreenCGData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenCGData.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenCGData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenCGData.o `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp
+
+librendering_la-SoOffscreenCGData.obj: SoOffscreenCGData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenCGData.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenCGData.obj `if test -f 'SoOffscreenCGData.cpp'; then $(CYGPATH_W) 'SoOffscreenCGData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenCGData.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenCGData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenCGData.cpp' object='librendering_la-SoOffscreenCGData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenCGData.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenCGData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenCGData.obj `if test -f 'SoOffscreenCGData.cpp'; then $(CYGPATH_W) 'SoOffscreenCGData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenCGData.cpp'; fi`
+
+librendering_la-SoOffscreenCGData.lo: SoOffscreenCGData.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenCGData.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenCGData.lo `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenCGData.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenCGData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenCGData.cpp' object='librendering_la-SoOffscreenCGData.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenCGData.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenCGData.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenCGData.lo `test -f 'SoOffscreenCGData.cpp' || echo '$(srcdir)/'`SoOffscreenCGData.cpp
+
+librendering_la-SoOffscreenGLXData.o: SoOffscreenGLXData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenGLXData.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenGLXData.o `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenGLXData.cpp' object='librendering_la-SoOffscreenGLXData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenGLXData.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenGLXData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenGLXData.o `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp
+
+librendering_la-SoOffscreenGLXData.obj: SoOffscreenGLXData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenGLXData.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenGLXData.obj `if test -f 'SoOffscreenGLXData.cpp'; then $(CYGPATH_W) 'SoOffscreenGLXData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenGLXData.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenGLXData.cpp' object='librendering_la-SoOffscreenGLXData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenGLXData.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenGLXData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenGLXData.obj `if test -f 'SoOffscreenGLXData.cpp'; then $(CYGPATH_W) 'SoOffscreenGLXData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenGLXData.cpp'; fi`
+
+librendering_la-SoOffscreenGLXData.lo: SoOffscreenGLXData.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenGLXData.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenGLXData.lo `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenGLXData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenGLXData.cpp' object='librendering_la-SoOffscreenGLXData.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenGLXData.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenGLXData.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenGLXData.lo `test -f 'SoOffscreenGLXData.cpp' || echo '$(srcdir)/'`SoOffscreenGLXData.cpp
+
+librendering_la-SoOffscreenWGLData.o: SoOffscreenWGLData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenWGLData.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenWGLData.o `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenWGLData.cpp' object='librendering_la-SoOffscreenWGLData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenWGLData.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenWGLData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenWGLData.o `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp
+
+librendering_la-SoOffscreenWGLData.obj: SoOffscreenWGLData.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenWGLData.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenWGLData.obj `if test -f 'SoOffscreenWGLData.cpp'; then $(CYGPATH_W) 'SoOffscreenWGLData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenWGLData.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenWGLData.cpp' object='librendering_la-SoOffscreenWGLData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenWGLData.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenWGLData.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenWGLData.obj `if test -f 'SoOffscreenWGLData.cpp'; then $(CYGPATH_W) 'SoOffscreenWGLData.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOffscreenWGLData.cpp'; fi`
+
+librendering_la-SoOffscreenWGLData.lo: SoOffscreenWGLData.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoOffscreenWGLData.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoOffscreenWGLData.lo `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo" "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoOffscreenWGLData.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOffscreenWGLData.cpp' object='librendering_la-SoOffscreenWGLData.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoOffscreenWGLData.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoOffscreenWGLData.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoOffscreenWGLData.lo `test -f 'SoOffscreenWGLData.cpp' || echo '$(srcdir)/'`SoOffscreenWGLData.cpp
+
+librendering_la-SoVBO.o: SoVBO.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoVBO.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoVBO.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoVBO.o `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoVBO.Tpo" "$(DEPDIR)/librendering_la-SoVBO.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoVBO.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBO.cpp' object='librendering_la-SoVBO.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoVBO.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoVBO.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoVBO.o `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp
+
+librendering_la-SoVBO.obj: SoVBO.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoVBO.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoVBO.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoVBO.obj `if test -f 'SoVBO.cpp'; then $(CYGPATH_W) 'SoVBO.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBO.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoVBO.Tpo" "$(DEPDIR)/librendering_la-SoVBO.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoVBO.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBO.cpp' object='librendering_la-SoVBO.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoVBO.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoVBO.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoVBO.obj `if test -f 'SoVBO.cpp'; then $(CYGPATH_W) 'SoVBO.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVBO.cpp'; fi`
+
+librendering_la-SoVBO.lo: SoVBO.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoVBO.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoVBO.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoVBO.lo `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoVBO.Tpo" "$(DEPDIR)/librendering_la-SoVBO.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoVBO.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVBO.cpp' object='librendering_la-SoVBO.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoVBO.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoVBO.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoVBO.lo `test -f 'SoVBO.cpp' || echo '$(srcdir)/'`SoVBO.cpp
+
+librendering_la-SoVertexArrayIndexer.o: SoVertexArrayIndexer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoVertexArrayIndexer.o -MD -MP -MF "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoVertexArrayIndexer.o `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo" "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexArrayIndexer.cpp' object='librendering_la-SoVertexArrayIndexer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoVertexArrayIndexer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoVertexArrayIndexer.o `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp
+
+librendering_la-SoVertexArrayIndexer.obj: SoVertexArrayIndexer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoVertexArrayIndexer.obj -MD -MP -MF "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoVertexArrayIndexer.obj `if test -f 'SoVertexArrayIndexer.cpp'; then $(CYGPATH_W) 'SoVertexArrayIndexer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexArrayIndexer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo" "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexArrayIndexer.cpp' object='librendering_la-SoVertexArrayIndexer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Po' tmpdepfile='$(DEPDIR)/librendering_la-SoVertexArrayIndexer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoVertexArrayIndexer.obj `if test -f 'SoVertexArrayIndexer.cpp'; then $(CYGPATH_W) 'SoVertexArrayIndexer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoVertexArrayIndexer.cpp'; fi`
+
+librendering_la-SoVertexArrayIndexer.lo: SoVertexArrayIndexer.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-SoVertexArrayIndexer.lo -MD -MP -MF "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-SoVertexArrayIndexer.lo `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo" "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoVertexArrayIndexer.cpp' object='librendering_la-SoVertexArrayIndexer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-SoVertexArrayIndexer.Plo' tmpdepfile='$(DEPDIR)/librendering_la-SoVertexArrayIndexer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-SoVertexArrayIndexer.lo `test -f 'SoVertexArrayIndexer.cpp' || echo '$(srcdir)/'`SoVertexArrayIndexer.cpp
+
+librendering_la-CoinOffscreenGLCanvas.o: CoinOffscreenGLCanvas.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-CoinOffscreenGLCanvas.o -MD -MP -MF "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-CoinOffscreenGLCanvas.o `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo" "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CoinOffscreenGLCanvas.cpp' object='librendering_la-CoinOffscreenGLCanvas.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Po' tmpdepfile='$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-CoinOffscreenGLCanvas.o `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp
+
+librendering_la-CoinOffscreenGLCanvas.obj: CoinOffscreenGLCanvas.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-CoinOffscreenGLCanvas.obj -MD -MP -MF "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-CoinOffscreenGLCanvas.obj `if test -f 'CoinOffscreenGLCanvas.cpp'; then $(CYGPATH_W) 'CoinOffscreenGLCanvas.cpp'; else $(CYGPATH_W) '$(srcdir)/CoinOffscreenGLCanvas.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo" "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CoinOffscreenGLCanvas.cpp' object='librendering_la-CoinOffscreenGLCanvas.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Po' tmpdepfile='$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-CoinOffscreenGLCanvas.obj `if test -f 'CoinOffscreenGLCanvas.cpp'; then $(CYGPATH_W) 'CoinOffscreenGLCanvas.cpp'; else $(CYGPATH_W) '$(srcdir)/CoinOffscreenGLCanvas.cpp'; fi`
+
+librendering_la-CoinOffscreenGLCanvas.lo: CoinOffscreenGLCanvas.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -MT librendering_la-CoinOffscreenGLCanvas.lo -MD -MP -MF "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o librendering_la-CoinOffscreenGLCanvas.lo `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo" "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CoinOffscreenGLCanvas.cpp' object='librendering_la-CoinOffscreenGLCanvas.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.Plo' tmpdepfile='$(DEPDIR)/librendering_la-CoinOffscreenGLCanvas.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librendering_la_CXXFLAGS) $(CXXFLAGS) -c -o librendering_la-CoinOffscreenGLCanvas.lo `test -f 'CoinOffscreenGLCanvas.cpp' || echo '$(srcdir)/'`CoinOffscreenGLCanvas.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

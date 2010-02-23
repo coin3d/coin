@@ -340,6 +340,9 @@ EXTRA_libgeo_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libgeo_la_CXXFLAGS = $(AM_CXXFLAGS)
+libgeo_la_CFLAGS = $(AM_CFLAGS)
+
 libgeo@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -349,6 +352,9 @@ geo_lst_SOURCES = $(BuildSources)
 EXTRA_geo_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+geo_lst_CXXFLAGS = $(AM_CXXFLAGS)
+geo_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/geo
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -363,13 +369,15 @@ am__geo_lst_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
 	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp all-geo-cpp.cpp
-am__objects_1 = all-geo-cpp.$(OBJEXT)
-am__objects_2 = SoGeo.$(OBJEXT) SoGeoOrigin.$(OBJEXT) \
-	SoGeoLocation.$(OBJEXT) SoGeoElement.$(OBJEXT) \
-	SoGeoSeparator.$(OBJEXT) SoGeoCoordinate.$(OBJEXT) \
-	SbGeoAngle.$(OBJEXT) SbGeoEllipsoid.$(OBJEXT) \
-	SbGeoProjection.$(OBJEXT) SbPolarStereographic.$(OBJEXT) \
-	SbUTMProjection.$(OBJEXT)
+am__objects_1 = geo_lst-all-geo-cpp.$(OBJEXT)
+am__objects_2 = geo_lst-SoGeo.$(OBJEXT) geo_lst-SoGeoOrigin.$(OBJEXT) \
+	geo_lst-SoGeoLocation.$(OBJEXT) geo_lst-SoGeoElement.$(OBJEXT) \
+	geo_lst-SoGeoSeparator.$(OBJEXT) \
+	geo_lst-SoGeoCoordinate.$(OBJEXT) geo_lst-SbGeoAngle.$(OBJEXT) \
+	geo_lst-SbGeoEllipsoid.$(OBJEXT) \
+	geo_lst-SbGeoProjection.$(OBJEXT) \
+	geo_lst-SbPolarStereographic.$(OBJEXT) \
+	geo_lst-SbUTMProjection.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_geo_lst_OBJECTS = $(am__objects_3)
@@ -388,11 +396,13 @@ am__libgeo_la_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
 	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp all-geo-cpp.cpp
-am__objects_6 = all-geo-cpp.lo
-am__objects_7 = SoGeo.lo SoGeoOrigin.lo SoGeoLocation.lo SoGeoElement.lo \
-	SoGeoSeparator.lo SoGeoCoordinate.lo SbGeoAngle.lo \
-	SbGeoEllipsoid.lo SbGeoProjection.lo SbPolarStereographic.lo \
-	SbUTMProjection.lo
+am__objects_6 = libgeo_la-all-geo-cpp.lo
+am__objects_7 = libgeo_la-SoGeo.lo libgeo_la-SoGeoOrigin.lo \
+	libgeo_la-SoGeoLocation.lo libgeo_la-SoGeoElement.lo \
+	libgeo_la-SoGeoSeparator.lo libgeo_la-SoGeoCoordinate.lo \
+	libgeo_la-SbGeoAngle.lo libgeo_la-SbGeoEllipsoid.lo \
+	libgeo_la-SbGeoProjection.lo libgeo_la-SbPolarStereographic.lo \
+	libgeo_la-SbUTMProjection.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libgeo_la_OBJECTS = $(am__objects_8)
@@ -410,7 +420,14 @@ am__libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp \
 	SoGeoCoordinate.cpp SbGeoAngle.cpp SbGeoEllipsoid.cpp \
 	SbGeoProjection.cpp SbPolarStereographic.cpp \
 	SbUTMProjection.cpp all-geo-cpp.cpp
-am_libgeo@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-geo-cpp.lo
+am__objects_11 = SoGeo.lo SoGeoOrigin.lo SoGeoLocation.lo \
+	SoGeoElement.lo SoGeoSeparator.lo SoGeoCoordinate.lo \
+	SbGeoAngle.lo SbGeoEllipsoid.lo SbGeoProjection.lo \
+	SbPolarStereographic.lo SbUTMProjection.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libgeo@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeo.h SbGeoAngle.h \
 	SbGeoEllipsoid.h SbGeoProjection.h SbUTMProjection.h \
 	SbPolarStereographic.h all-geo-cpp.cpp SoGeo.cpp \
@@ -423,28 +440,41 @@ libgeo@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbGeoAngle.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbGeoAngle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbGeoEllipsoid.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbGeoEllipsoid.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbGeoProjection.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbGeoProjection.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbPolarStereographic.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbPolarStereographic.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbUTMProjection.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbUTMProjection.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGeo.Plo ./$(DEPDIR)/SoGeo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGeo.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoCoordinate.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGeoCoordinate.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGeoElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoLocation.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGeoLocation.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoOrigin.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGeoOrigin.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGeoSeparator.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGeoSeparator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-geo-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-geo-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SbGeoAngle.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SbGeoEllipsoid.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SbGeoProjection.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SbPolarStereographic.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SbUTMProjection.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SoGeo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SoGeoCoordinate.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SoGeoElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SoGeoLocation.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SoGeoOrigin.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-SoGeoSeparator.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/geo_lst-all-geo-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SbGeoAngle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SbGeoProjection.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SbPolarStereographic.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SbUTMProjection.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SoGeo.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SoGeoCoordinate.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SoGeoElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SoGeoLocation.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SoGeoOrigin.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-SoGeoSeparator.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libgeo_la-all-geo-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -476,7 +506,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/geo/Makefile
+	  $(AUTOMAKE) --gnu  src/geo/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -531,29 +561,41 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbGeoAngle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbGeoAngle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbGeoEllipsoid.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbGeoEllipsoid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbGeoProjection.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbGeoProjection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPolarStereographic.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPolarStereographic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbUTMProjection.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbUTMProjection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoCoordinate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoCoordinate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoLocation.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoLocation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoOrigin.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoOrigin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoSeparator.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGeoSeparator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-geo-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-geo-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SbGeoAngle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SbGeoEllipsoid.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SbGeoProjection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SbPolarStereographic.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SbUTMProjection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SoGeo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SoGeoCoordinate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SoGeoElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SoGeoLocation.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SoGeoOrigin.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-SoGeoSeparator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geo_lst-all-geo-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SbGeoAngle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SbGeoProjection.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SbPolarStereographic.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SbUTMProjection.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SoGeo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SoGeoCoordinate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SoGeoElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SoGeoLocation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SoGeoOrigin.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-SoGeoSeparator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgeo_la-all-geo-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -590,6 +632,798 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+geo_lst-all-geo-cpp.o: all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-all-geo-cpp.o -MD -MP -MF "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-all-geo-cpp.o `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo" "$(DEPDIR)/geo_lst-all-geo-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-geo-cpp.cpp' object='geo_lst-all-geo-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-all-geo-cpp.Po' tmpdepfile='$(DEPDIR)/geo_lst-all-geo-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-all-geo-cpp.o `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp
+
+geo_lst-all-geo-cpp.obj: all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-all-geo-cpp.obj -MD -MP -MF "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-all-geo-cpp.obj `if test -f 'all-geo-cpp.cpp'; then $(CYGPATH_W) 'all-geo-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-geo-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo" "$(DEPDIR)/geo_lst-all-geo-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-geo-cpp.cpp' object='geo_lst-all-geo-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-all-geo-cpp.Po' tmpdepfile='$(DEPDIR)/geo_lst-all-geo-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-all-geo-cpp.obj `if test -f 'all-geo-cpp.cpp'; then $(CYGPATH_W) 'all-geo-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-geo-cpp.cpp'; fi`
+
+geo_lst-all-geo-cpp.lo: all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-all-geo-cpp.lo -MD -MP -MF "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-all-geo-cpp.lo `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo" "$(DEPDIR)/geo_lst-all-geo-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-geo-cpp.cpp' object='geo_lst-all-geo-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-all-geo-cpp.Plo' tmpdepfile='$(DEPDIR)/geo_lst-all-geo-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-all-geo-cpp.lo `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp
+
+geo_lst-SoGeo.o: SoGeo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeo.o -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeo.o `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeo.Tpo" "$(DEPDIR)/geo_lst-SoGeo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeo.cpp' object='geo_lst-SoGeo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeo.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeo.o `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp
+
+geo_lst-SoGeo.obj: SoGeo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeo.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeo.obj `if test -f 'SoGeo.cpp'; then $(CYGPATH_W) 'SoGeo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeo.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeo.Tpo" "$(DEPDIR)/geo_lst-SoGeo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeo.cpp' object='geo_lst-SoGeo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeo.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeo.obj `if test -f 'SoGeo.cpp'; then $(CYGPATH_W) 'SoGeo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeo.cpp'; fi`
+
+geo_lst-SoGeo.lo: SoGeo.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeo.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeo.lo `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeo.Tpo" "$(DEPDIR)/geo_lst-SoGeo.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeo.cpp' object='geo_lst-SoGeo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeo.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SoGeo.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeo.lo `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp
+
+geo_lst-SoGeoOrigin.o: SoGeoOrigin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoOrigin.o -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoOrigin.o `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo" "$(DEPDIR)/geo_lst-SoGeoOrigin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoOrigin.cpp' object='geo_lst-SoGeoOrigin.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoOrigin.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoOrigin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoOrigin.o `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp
+
+geo_lst-SoGeoOrigin.obj: SoGeoOrigin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoOrigin.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoOrigin.obj `if test -f 'SoGeoOrigin.cpp'; then $(CYGPATH_W) 'SoGeoOrigin.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoOrigin.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo" "$(DEPDIR)/geo_lst-SoGeoOrigin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoOrigin.cpp' object='geo_lst-SoGeoOrigin.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoOrigin.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoOrigin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoOrigin.obj `if test -f 'SoGeoOrigin.cpp'; then $(CYGPATH_W) 'SoGeoOrigin.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoOrigin.cpp'; fi`
+
+geo_lst-SoGeoOrigin.lo: SoGeoOrigin.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoOrigin.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoOrigin.lo `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo" "$(DEPDIR)/geo_lst-SoGeoOrigin.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoOrigin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoOrigin.cpp' object='geo_lst-SoGeoOrigin.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoOrigin.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoOrigin.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoOrigin.lo `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp
+
+geo_lst-SoGeoLocation.o: SoGeoLocation.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoLocation.o -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoLocation.o `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo" "$(DEPDIR)/geo_lst-SoGeoLocation.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoLocation.cpp' object='geo_lst-SoGeoLocation.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoLocation.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoLocation.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoLocation.o `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp
+
+geo_lst-SoGeoLocation.obj: SoGeoLocation.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoLocation.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoLocation.obj `if test -f 'SoGeoLocation.cpp'; then $(CYGPATH_W) 'SoGeoLocation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoLocation.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo" "$(DEPDIR)/geo_lst-SoGeoLocation.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoLocation.cpp' object='geo_lst-SoGeoLocation.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoLocation.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoLocation.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoLocation.obj `if test -f 'SoGeoLocation.cpp'; then $(CYGPATH_W) 'SoGeoLocation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoLocation.cpp'; fi`
+
+geo_lst-SoGeoLocation.lo: SoGeoLocation.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoLocation.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoLocation.lo `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo" "$(DEPDIR)/geo_lst-SoGeoLocation.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoLocation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoLocation.cpp' object='geo_lst-SoGeoLocation.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoLocation.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoLocation.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoLocation.lo `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp
+
+geo_lst-SoGeoElement.o: SoGeoElement.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoElement.o -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoElement.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoElement.o `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoElement.Tpo" "$(DEPDIR)/geo_lst-SoGeoElement.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoElement.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoElement.cpp' object='geo_lst-SoGeoElement.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoElement.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoElement.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoElement.o `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp
+
+geo_lst-SoGeoElement.obj: SoGeoElement.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoElement.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoElement.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoElement.obj `if test -f 'SoGeoElement.cpp'; then $(CYGPATH_W) 'SoGeoElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoElement.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoElement.Tpo" "$(DEPDIR)/geo_lst-SoGeoElement.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoElement.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoElement.cpp' object='geo_lst-SoGeoElement.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoElement.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoElement.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoElement.obj `if test -f 'SoGeoElement.cpp'; then $(CYGPATH_W) 'SoGeoElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoElement.cpp'; fi`
+
+geo_lst-SoGeoElement.lo: SoGeoElement.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoElement.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoElement.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoElement.lo `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoElement.Tpo" "$(DEPDIR)/geo_lst-SoGeoElement.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoElement.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoElement.cpp' object='geo_lst-SoGeoElement.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoElement.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoElement.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoElement.lo `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp
+
+geo_lst-SoGeoSeparator.o: SoGeoSeparator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoSeparator.o -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoSeparator.o `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo" "$(DEPDIR)/geo_lst-SoGeoSeparator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoSeparator.cpp' object='geo_lst-SoGeoSeparator.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoSeparator.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoSeparator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoSeparator.o `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp
+
+geo_lst-SoGeoSeparator.obj: SoGeoSeparator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoSeparator.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoSeparator.obj `if test -f 'SoGeoSeparator.cpp'; then $(CYGPATH_W) 'SoGeoSeparator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoSeparator.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo" "$(DEPDIR)/geo_lst-SoGeoSeparator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoSeparator.cpp' object='geo_lst-SoGeoSeparator.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoSeparator.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoSeparator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoSeparator.obj `if test -f 'SoGeoSeparator.cpp'; then $(CYGPATH_W) 'SoGeoSeparator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoSeparator.cpp'; fi`
+
+geo_lst-SoGeoSeparator.lo: SoGeoSeparator.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoSeparator.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoSeparator.lo `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo" "$(DEPDIR)/geo_lst-SoGeoSeparator.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoSeparator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoSeparator.cpp' object='geo_lst-SoGeoSeparator.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoSeparator.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoSeparator.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoSeparator.lo `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp
+
+geo_lst-SoGeoCoordinate.o: SoGeoCoordinate.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoCoordinate.o -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoCoordinate.o `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo" "$(DEPDIR)/geo_lst-SoGeoCoordinate.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoCoordinate.cpp' object='geo_lst-SoGeoCoordinate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoCoordinate.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoCoordinate.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoCoordinate.o `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp
+
+geo_lst-SoGeoCoordinate.obj: SoGeoCoordinate.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoCoordinate.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoCoordinate.obj `if test -f 'SoGeoCoordinate.cpp'; then $(CYGPATH_W) 'SoGeoCoordinate.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoCoordinate.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo" "$(DEPDIR)/geo_lst-SoGeoCoordinate.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoCoordinate.cpp' object='geo_lst-SoGeoCoordinate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoCoordinate.Po' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoCoordinate.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoCoordinate.obj `if test -f 'SoGeoCoordinate.cpp'; then $(CYGPATH_W) 'SoGeoCoordinate.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoCoordinate.cpp'; fi`
+
+geo_lst-SoGeoCoordinate.lo: SoGeoCoordinate.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SoGeoCoordinate.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SoGeoCoordinate.lo `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo" "$(DEPDIR)/geo_lst-SoGeoCoordinate.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SoGeoCoordinate.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoCoordinate.cpp' object='geo_lst-SoGeoCoordinate.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SoGeoCoordinate.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SoGeoCoordinate.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SoGeoCoordinate.lo `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp
+
+geo_lst-SbGeoAngle.o: SbGeoAngle.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoAngle.o -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoAngle.o `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo" "$(DEPDIR)/geo_lst-SbGeoAngle.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoAngle.cpp' object='geo_lst-SbGeoAngle.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoAngle.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoAngle.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoAngle.o `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp
+
+geo_lst-SbGeoAngle.obj: SbGeoAngle.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoAngle.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoAngle.obj `if test -f 'SbGeoAngle.cpp'; then $(CYGPATH_W) 'SbGeoAngle.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoAngle.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo" "$(DEPDIR)/geo_lst-SbGeoAngle.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoAngle.cpp' object='geo_lst-SbGeoAngle.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoAngle.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoAngle.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoAngle.obj `if test -f 'SbGeoAngle.cpp'; then $(CYGPATH_W) 'SbGeoAngle.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoAngle.cpp'; fi`
+
+geo_lst-SbGeoAngle.lo: SbGeoAngle.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoAngle.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoAngle.lo `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo" "$(DEPDIR)/geo_lst-SbGeoAngle.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoAngle.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoAngle.cpp' object='geo_lst-SbGeoAngle.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoAngle.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoAngle.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoAngle.lo `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp
+
+geo_lst-SbGeoEllipsoid.o: SbGeoEllipsoid.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoEllipsoid.o -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoEllipsoid.o `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo" "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoEllipsoid.cpp' object='geo_lst-SbGeoEllipsoid.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoEllipsoid.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoEllipsoid.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoEllipsoid.o `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp
+
+geo_lst-SbGeoEllipsoid.obj: SbGeoEllipsoid.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoEllipsoid.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoEllipsoid.obj `if test -f 'SbGeoEllipsoid.cpp'; then $(CYGPATH_W) 'SbGeoEllipsoid.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoEllipsoid.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo" "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoEllipsoid.cpp' object='geo_lst-SbGeoEllipsoid.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoEllipsoid.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoEllipsoid.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoEllipsoid.obj `if test -f 'SbGeoEllipsoid.cpp'; then $(CYGPATH_W) 'SbGeoEllipsoid.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoEllipsoid.cpp'; fi`
+
+geo_lst-SbGeoEllipsoid.lo: SbGeoEllipsoid.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoEllipsoid.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoEllipsoid.lo `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo" "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoEllipsoid.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoEllipsoid.cpp' object='geo_lst-SbGeoEllipsoid.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoEllipsoid.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoEllipsoid.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoEllipsoid.lo `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp
+
+geo_lst-SbGeoProjection.o: SbGeoProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoProjection.o -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoProjection.o `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo" "$(DEPDIR)/geo_lst-SbGeoProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoProjection.cpp' object='geo_lst-SbGeoProjection.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoProjection.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoProjection.o `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp
+
+geo_lst-SbGeoProjection.obj: SbGeoProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoProjection.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoProjection.obj `if test -f 'SbGeoProjection.cpp'; then $(CYGPATH_W) 'SbGeoProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoProjection.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo" "$(DEPDIR)/geo_lst-SbGeoProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoProjection.cpp' object='geo_lst-SbGeoProjection.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoProjection.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoProjection.obj `if test -f 'SbGeoProjection.cpp'; then $(CYGPATH_W) 'SbGeoProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoProjection.cpp'; fi`
+
+geo_lst-SbGeoProjection.lo: SbGeoProjection.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbGeoProjection.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbGeoProjection.lo `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo" "$(DEPDIR)/geo_lst-SbGeoProjection.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbGeoProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoProjection.cpp' object='geo_lst-SbGeoProjection.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbGeoProjection.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SbGeoProjection.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbGeoProjection.lo `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp
+
+geo_lst-SbPolarStereographic.o: SbPolarStereographic.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbPolarStereographic.o -MD -MP -MF "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbPolarStereographic.o `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo" "$(DEPDIR)/geo_lst-SbPolarStereographic.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPolarStereographic.cpp' object='geo_lst-SbPolarStereographic.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbPolarStereographic.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbPolarStereographic.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbPolarStereographic.o `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp
+
+geo_lst-SbPolarStereographic.obj: SbPolarStereographic.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbPolarStereographic.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbPolarStereographic.obj `if test -f 'SbPolarStereographic.cpp'; then $(CYGPATH_W) 'SbPolarStereographic.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPolarStereographic.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo" "$(DEPDIR)/geo_lst-SbPolarStereographic.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPolarStereographic.cpp' object='geo_lst-SbPolarStereographic.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbPolarStereographic.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbPolarStereographic.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbPolarStereographic.obj `if test -f 'SbPolarStereographic.cpp'; then $(CYGPATH_W) 'SbPolarStereographic.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPolarStereographic.cpp'; fi`
+
+geo_lst-SbPolarStereographic.lo: SbPolarStereographic.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbPolarStereographic.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbPolarStereographic.lo `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo" "$(DEPDIR)/geo_lst-SbPolarStereographic.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbPolarStereographic.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPolarStereographic.cpp' object='geo_lst-SbPolarStereographic.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbPolarStereographic.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SbPolarStereographic.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbPolarStereographic.lo `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp
+
+geo_lst-SbUTMProjection.o: SbUTMProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbUTMProjection.o -MD -MP -MF "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbUTMProjection.o `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo" "$(DEPDIR)/geo_lst-SbUTMProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbUTMProjection.cpp' object='geo_lst-SbUTMProjection.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbUTMProjection.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbUTMProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbUTMProjection.o `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp
+
+geo_lst-SbUTMProjection.obj: SbUTMProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbUTMProjection.obj -MD -MP -MF "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbUTMProjection.obj `if test -f 'SbUTMProjection.cpp'; then $(CYGPATH_W) 'SbUTMProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbUTMProjection.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo" "$(DEPDIR)/geo_lst-SbUTMProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbUTMProjection.cpp' object='geo_lst-SbUTMProjection.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbUTMProjection.Po' tmpdepfile='$(DEPDIR)/geo_lst-SbUTMProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbUTMProjection.obj `if test -f 'SbUTMProjection.cpp'; then $(CYGPATH_W) 'SbUTMProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbUTMProjection.cpp'; fi`
+
+geo_lst-SbUTMProjection.lo: SbUTMProjection.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -MT geo_lst-SbUTMProjection.lo -MD -MP -MF "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o geo_lst-SbUTMProjection.lo `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo" "$(DEPDIR)/geo_lst-SbUTMProjection.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/geo_lst-SbUTMProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbUTMProjection.cpp' object='geo_lst-SbUTMProjection.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/geo_lst-SbUTMProjection.Plo' tmpdepfile='$(DEPDIR)/geo_lst-SbUTMProjection.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(geo_lst_CXXFLAGS) $(CXXFLAGS) -c -o geo_lst-SbUTMProjection.lo `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp
+
+libgeo_la-all-geo-cpp.o: all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-all-geo-cpp.o -MD -MP -MF "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-all-geo-cpp.o `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo" "$(DEPDIR)/libgeo_la-all-geo-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-geo-cpp.cpp' object='libgeo_la-all-geo-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-all-geo-cpp.Po' tmpdepfile='$(DEPDIR)/libgeo_la-all-geo-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-all-geo-cpp.o `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp
+
+libgeo_la-all-geo-cpp.obj: all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-all-geo-cpp.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-all-geo-cpp.obj `if test -f 'all-geo-cpp.cpp'; then $(CYGPATH_W) 'all-geo-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-geo-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo" "$(DEPDIR)/libgeo_la-all-geo-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-geo-cpp.cpp' object='libgeo_la-all-geo-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-all-geo-cpp.Po' tmpdepfile='$(DEPDIR)/libgeo_la-all-geo-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-all-geo-cpp.obj `if test -f 'all-geo-cpp.cpp'; then $(CYGPATH_W) 'all-geo-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-geo-cpp.cpp'; fi`
+
+libgeo_la-all-geo-cpp.lo: all-geo-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-all-geo-cpp.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-all-geo-cpp.lo `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo" "$(DEPDIR)/libgeo_la-all-geo-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-all-geo-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-geo-cpp.cpp' object='libgeo_la-all-geo-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-all-geo-cpp.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-all-geo-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-all-geo-cpp.lo `test -f 'all-geo-cpp.cpp' || echo '$(srcdir)/'`all-geo-cpp.cpp
+
+libgeo_la-SoGeo.o: SoGeo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeo.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeo.o `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeo.Tpo" "$(DEPDIR)/libgeo_la-SoGeo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeo.cpp' object='libgeo_la-SoGeo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeo.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeo.o `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp
+
+libgeo_la-SoGeo.obj: SoGeo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeo.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeo.obj `if test -f 'SoGeo.cpp'; then $(CYGPATH_W) 'SoGeo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeo.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeo.Tpo" "$(DEPDIR)/libgeo_la-SoGeo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeo.cpp' object='libgeo_la-SoGeo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeo.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeo.obj `if test -f 'SoGeo.cpp'; then $(CYGPATH_W) 'SoGeo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeo.cpp'; fi`
+
+libgeo_la-SoGeo.lo: SoGeo.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeo.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeo.lo `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeo.Tpo" "$(DEPDIR)/libgeo_la-SoGeo.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeo.cpp' object='libgeo_la-SoGeo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeo.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeo.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeo.lo `test -f 'SoGeo.cpp' || echo '$(srcdir)/'`SoGeo.cpp
+
+libgeo_la-SoGeoOrigin.o: SoGeoOrigin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoOrigin.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoOrigin.o `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo" "$(DEPDIR)/libgeo_la-SoGeoOrigin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoOrigin.cpp' object='libgeo_la-SoGeoOrigin.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoOrigin.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoOrigin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoOrigin.o `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp
+
+libgeo_la-SoGeoOrigin.obj: SoGeoOrigin.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoOrigin.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoOrigin.obj `if test -f 'SoGeoOrigin.cpp'; then $(CYGPATH_W) 'SoGeoOrigin.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoOrigin.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo" "$(DEPDIR)/libgeo_la-SoGeoOrigin.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoOrigin.cpp' object='libgeo_la-SoGeoOrigin.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoOrigin.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoOrigin.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoOrigin.obj `if test -f 'SoGeoOrigin.cpp'; then $(CYGPATH_W) 'SoGeoOrigin.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoOrigin.cpp'; fi`
+
+libgeo_la-SoGeoOrigin.lo: SoGeoOrigin.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoOrigin.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoOrigin.lo `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo" "$(DEPDIR)/libgeo_la-SoGeoOrigin.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoOrigin.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoOrigin.cpp' object='libgeo_la-SoGeoOrigin.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoOrigin.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoOrigin.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoOrigin.lo `test -f 'SoGeoOrigin.cpp' || echo '$(srcdir)/'`SoGeoOrigin.cpp
+
+libgeo_la-SoGeoLocation.o: SoGeoLocation.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoLocation.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoLocation.o `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo" "$(DEPDIR)/libgeo_la-SoGeoLocation.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoLocation.cpp' object='libgeo_la-SoGeoLocation.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoLocation.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoLocation.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoLocation.o `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp
+
+libgeo_la-SoGeoLocation.obj: SoGeoLocation.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoLocation.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoLocation.obj `if test -f 'SoGeoLocation.cpp'; then $(CYGPATH_W) 'SoGeoLocation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoLocation.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo" "$(DEPDIR)/libgeo_la-SoGeoLocation.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoLocation.cpp' object='libgeo_la-SoGeoLocation.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoLocation.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoLocation.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoLocation.obj `if test -f 'SoGeoLocation.cpp'; then $(CYGPATH_W) 'SoGeoLocation.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoLocation.cpp'; fi`
+
+libgeo_la-SoGeoLocation.lo: SoGeoLocation.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoLocation.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoLocation.lo `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo" "$(DEPDIR)/libgeo_la-SoGeoLocation.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoLocation.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoLocation.cpp' object='libgeo_la-SoGeoLocation.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoLocation.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoLocation.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoLocation.lo `test -f 'SoGeoLocation.cpp' || echo '$(srcdir)/'`SoGeoLocation.cpp
+
+libgeo_la-SoGeoElement.o: SoGeoElement.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoElement.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoElement.o `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo" "$(DEPDIR)/libgeo_la-SoGeoElement.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoElement.cpp' object='libgeo_la-SoGeoElement.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoElement.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoElement.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoElement.o `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp
+
+libgeo_la-SoGeoElement.obj: SoGeoElement.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoElement.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoElement.obj `if test -f 'SoGeoElement.cpp'; then $(CYGPATH_W) 'SoGeoElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoElement.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo" "$(DEPDIR)/libgeo_la-SoGeoElement.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoElement.cpp' object='libgeo_la-SoGeoElement.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoElement.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoElement.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoElement.obj `if test -f 'SoGeoElement.cpp'; then $(CYGPATH_W) 'SoGeoElement.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoElement.cpp'; fi`
+
+libgeo_la-SoGeoElement.lo: SoGeoElement.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoElement.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoElement.lo `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo" "$(DEPDIR)/libgeo_la-SoGeoElement.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoElement.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoElement.cpp' object='libgeo_la-SoGeoElement.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoElement.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoElement.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoElement.lo `test -f 'SoGeoElement.cpp' || echo '$(srcdir)/'`SoGeoElement.cpp
+
+libgeo_la-SoGeoSeparator.o: SoGeoSeparator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoSeparator.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoSeparator.o `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo" "$(DEPDIR)/libgeo_la-SoGeoSeparator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoSeparator.cpp' object='libgeo_la-SoGeoSeparator.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoSeparator.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoSeparator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoSeparator.o `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp
+
+libgeo_la-SoGeoSeparator.obj: SoGeoSeparator.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoSeparator.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoSeparator.obj `if test -f 'SoGeoSeparator.cpp'; then $(CYGPATH_W) 'SoGeoSeparator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoSeparator.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo" "$(DEPDIR)/libgeo_la-SoGeoSeparator.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoSeparator.cpp' object='libgeo_la-SoGeoSeparator.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoSeparator.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoSeparator.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoSeparator.obj `if test -f 'SoGeoSeparator.cpp'; then $(CYGPATH_W) 'SoGeoSeparator.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoSeparator.cpp'; fi`
+
+libgeo_la-SoGeoSeparator.lo: SoGeoSeparator.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoSeparator.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoSeparator.lo `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo" "$(DEPDIR)/libgeo_la-SoGeoSeparator.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoSeparator.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoSeparator.cpp' object='libgeo_la-SoGeoSeparator.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoSeparator.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoSeparator.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoSeparator.lo `test -f 'SoGeoSeparator.cpp' || echo '$(srcdir)/'`SoGeoSeparator.cpp
+
+libgeo_la-SoGeoCoordinate.o: SoGeoCoordinate.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoCoordinate.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoCoordinate.o `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo" "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoCoordinate.cpp' object='libgeo_la-SoGeoCoordinate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoCoordinate.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoCoordinate.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoCoordinate.o `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp
+
+libgeo_la-SoGeoCoordinate.obj: SoGeoCoordinate.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoCoordinate.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoCoordinate.obj `if test -f 'SoGeoCoordinate.cpp'; then $(CYGPATH_W) 'SoGeoCoordinate.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoCoordinate.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo" "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoCoordinate.cpp' object='libgeo_la-SoGeoCoordinate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoCoordinate.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoCoordinate.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoCoordinate.obj `if test -f 'SoGeoCoordinate.cpp'; then $(CYGPATH_W) 'SoGeoCoordinate.cpp'; else $(CYGPATH_W) '$(srcdir)/SoGeoCoordinate.cpp'; fi`
+
+libgeo_la-SoGeoCoordinate.lo: SoGeoCoordinate.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SoGeoCoordinate.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SoGeoCoordinate.lo `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo" "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SoGeoCoordinate.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoGeoCoordinate.cpp' object='libgeo_la-SoGeoCoordinate.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SoGeoCoordinate.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SoGeoCoordinate.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SoGeoCoordinate.lo `test -f 'SoGeoCoordinate.cpp' || echo '$(srcdir)/'`SoGeoCoordinate.cpp
+
+libgeo_la-SbGeoAngle.o: SbGeoAngle.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoAngle.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoAngle.o `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo" "$(DEPDIR)/libgeo_la-SbGeoAngle.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoAngle.cpp' object='libgeo_la-SbGeoAngle.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoAngle.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoAngle.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoAngle.o `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp
+
+libgeo_la-SbGeoAngle.obj: SbGeoAngle.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoAngle.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoAngle.obj `if test -f 'SbGeoAngle.cpp'; then $(CYGPATH_W) 'SbGeoAngle.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoAngle.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo" "$(DEPDIR)/libgeo_la-SbGeoAngle.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoAngle.cpp' object='libgeo_la-SbGeoAngle.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoAngle.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoAngle.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoAngle.obj `if test -f 'SbGeoAngle.cpp'; then $(CYGPATH_W) 'SbGeoAngle.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoAngle.cpp'; fi`
+
+libgeo_la-SbGeoAngle.lo: SbGeoAngle.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoAngle.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoAngle.lo `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo" "$(DEPDIR)/libgeo_la-SbGeoAngle.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoAngle.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoAngle.cpp' object='libgeo_la-SbGeoAngle.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoAngle.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoAngle.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoAngle.lo `test -f 'SbGeoAngle.cpp' || echo '$(srcdir)/'`SbGeoAngle.cpp
+
+libgeo_la-SbGeoEllipsoid.o: SbGeoEllipsoid.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoEllipsoid.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoEllipsoid.o `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo" "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoEllipsoid.cpp' object='libgeo_la-SbGeoEllipsoid.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoEllipsoid.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoEllipsoid.o `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp
+
+libgeo_la-SbGeoEllipsoid.obj: SbGeoEllipsoid.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoEllipsoid.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoEllipsoid.obj `if test -f 'SbGeoEllipsoid.cpp'; then $(CYGPATH_W) 'SbGeoEllipsoid.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoEllipsoid.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo" "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoEllipsoid.cpp' object='libgeo_la-SbGeoEllipsoid.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoEllipsoid.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoEllipsoid.obj `if test -f 'SbGeoEllipsoid.cpp'; then $(CYGPATH_W) 'SbGeoEllipsoid.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoEllipsoid.cpp'; fi`
+
+libgeo_la-SbGeoEllipsoid.lo: SbGeoEllipsoid.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoEllipsoid.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoEllipsoid.lo `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo" "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoEllipsoid.cpp' object='libgeo_la-SbGeoEllipsoid.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoEllipsoid.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoEllipsoid.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoEllipsoid.lo `test -f 'SbGeoEllipsoid.cpp' || echo '$(srcdir)/'`SbGeoEllipsoid.cpp
+
+libgeo_la-SbGeoProjection.o: SbGeoProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoProjection.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoProjection.o `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo" "$(DEPDIR)/libgeo_la-SbGeoProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoProjection.cpp' object='libgeo_la-SbGeoProjection.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoProjection.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoProjection.o `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp
+
+libgeo_la-SbGeoProjection.obj: SbGeoProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoProjection.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoProjection.obj `if test -f 'SbGeoProjection.cpp'; then $(CYGPATH_W) 'SbGeoProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoProjection.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo" "$(DEPDIR)/libgeo_la-SbGeoProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoProjection.cpp' object='libgeo_la-SbGeoProjection.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoProjection.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoProjection.obj `if test -f 'SbGeoProjection.cpp'; then $(CYGPATH_W) 'SbGeoProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbGeoProjection.cpp'; fi`
+
+libgeo_la-SbGeoProjection.lo: SbGeoProjection.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbGeoProjection.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbGeoProjection.lo `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo" "$(DEPDIR)/libgeo_la-SbGeoProjection.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbGeoProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbGeoProjection.cpp' object='libgeo_la-SbGeoProjection.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbGeoProjection.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SbGeoProjection.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbGeoProjection.lo `test -f 'SbGeoProjection.cpp' || echo '$(srcdir)/'`SbGeoProjection.cpp
+
+libgeo_la-SbPolarStereographic.o: SbPolarStereographic.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbPolarStereographic.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbPolarStereographic.o `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo" "$(DEPDIR)/libgeo_la-SbPolarStereographic.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPolarStereographic.cpp' object='libgeo_la-SbPolarStereographic.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbPolarStereographic.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbPolarStereographic.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbPolarStereographic.o `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp
+
+libgeo_la-SbPolarStereographic.obj: SbPolarStereographic.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbPolarStereographic.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbPolarStereographic.obj `if test -f 'SbPolarStereographic.cpp'; then $(CYGPATH_W) 'SbPolarStereographic.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPolarStereographic.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo" "$(DEPDIR)/libgeo_la-SbPolarStereographic.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPolarStereographic.cpp' object='libgeo_la-SbPolarStereographic.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbPolarStereographic.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbPolarStereographic.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbPolarStereographic.obj `if test -f 'SbPolarStereographic.cpp'; then $(CYGPATH_W) 'SbPolarStereographic.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPolarStereographic.cpp'; fi`
+
+libgeo_la-SbPolarStereographic.lo: SbPolarStereographic.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbPolarStereographic.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbPolarStereographic.lo `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo" "$(DEPDIR)/libgeo_la-SbPolarStereographic.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbPolarStereographic.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPolarStereographic.cpp' object='libgeo_la-SbPolarStereographic.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbPolarStereographic.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SbPolarStereographic.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbPolarStereographic.lo `test -f 'SbPolarStereographic.cpp' || echo '$(srcdir)/'`SbPolarStereographic.cpp
+
+libgeo_la-SbUTMProjection.o: SbUTMProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbUTMProjection.o -MD -MP -MF "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbUTMProjection.o `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo" "$(DEPDIR)/libgeo_la-SbUTMProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbUTMProjection.cpp' object='libgeo_la-SbUTMProjection.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbUTMProjection.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbUTMProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbUTMProjection.o `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp
+
+libgeo_la-SbUTMProjection.obj: SbUTMProjection.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbUTMProjection.obj -MD -MP -MF "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbUTMProjection.obj `if test -f 'SbUTMProjection.cpp'; then $(CYGPATH_W) 'SbUTMProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbUTMProjection.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo" "$(DEPDIR)/libgeo_la-SbUTMProjection.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbUTMProjection.cpp' object='libgeo_la-SbUTMProjection.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbUTMProjection.Po' tmpdepfile='$(DEPDIR)/libgeo_la-SbUTMProjection.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbUTMProjection.obj `if test -f 'SbUTMProjection.cpp'; then $(CYGPATH_W) 'SbUTMProjection.cpp'; else $(CYGPATH_W) '$(srcdir)/SbUTMProjection.cpp'; fi`
+
+libgeo_la-SbUTMProjection.lo: SbUTMProjection.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -MT libgeo_la-SbUTMProjection.lo -MD -MP -MF "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libgeo_la-SbUTMProjection.lo `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo" "$(DEPDIR)/libgeo_la-SbUTMProjection.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libgeo_la-SbUTMProjection.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbUTMProjection.cpp' object='libgeo_la-SbUTMProjection.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libgeo_la-SbUTMProjection.Plo' tmpdepfile='$(DEPDIR)/libgeo_la-SbUTMProjection.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgeo_la_CXXFLAGS) $(CXXFLAGS) -c -o libgeo_la-SbUTMProjection.lo `test -f 'SbUTMProjection.cpp' || echo '$(srcdir)/'`SbUTMProjection.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

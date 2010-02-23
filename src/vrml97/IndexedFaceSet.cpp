@@ -529,7 +529,8 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     !convexcacheused && !normalCacheUsed &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
-    ((tbind == NONE) || ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
+    ((tbind == NONE && !tb.needCoordinates()) || 
+     ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
     ((mbind == NONE) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
     SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
 

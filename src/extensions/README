@@ -7,6 +7,6 @@ just ignore it.
 To embed superglu in Coin, checkout the superglu Subversion repository
 into this directory like this:
 
-  svn co https://svn.coin3d.org/repos/superglu/trunk/ superglu/
+  hg clone https://hg.sim.no/superglu/default superglu
 
 Then rerun configure and rebuild Coin.

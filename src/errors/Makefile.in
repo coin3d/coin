@@ -327,6 +327,9 @@ EXTRA_liberrors_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+liberrors_la_CXXFLAGS = $(AM_CXXFLAGS)
+liberrors_la_CFLAGS = $(AM_CFLAGS)
+
 liberrors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -336,6 +339,9 @@ errors_lst_SOURCES = $(BuildSources)
 EXTRA_errors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+errors_lst_CXXFLAGS = $(AM_CXXFLAGS)
+errors_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/errors
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -349,10 +355,12 @@ errors_lst_LIBADD =
 am__errors_lst_SOURCES_DIST = error.cpp debugerror.cpp SoDebugError.cpp \
 	SoError.cpp SoMemoryError.cpp SoReadError.cpp \
 	all-errors-cpp.cpp
-am__objects_1 = all-errors-cpp.$(OBJEXT)
-am__objects_2 = error.$(OBJEXT) debugerror.$(OBJEXT) \
-	SoDebugError.$(OBJEXT) SoError.$(OBJEXT) \
-	SoMemoryError.$(OBJEXT) SoReadError.$(OBJEXT)
+am__objects_1 = errors_lst-all-errors-cpp.$(OBJEXT)
+am__objects_2 = errors_lst-error.$(OBJEXT) \
+	errors_lst-debugerror.$(OBJEXT) \
+	errors_lst-SoDebugError.$(OBJEXT) errors_lst-SoError.$(OBJEXT) \
+	errors_lst-SoMemoryError.$(OBJEXT) \
+	errors_lst-SoReadError.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_errors_lst_OBJECTS = $(am__objects_3)
@@ -367,9 +375,10 @@ liberrors_la_LIBADD =
 am__liberrors_la_SOURCES_DIST = error.cpp debugerror.cpp \
 	SoDebugError.cpp SoError.cpp SoMemoryError.cpp SoReadError.cpp \
 	all-errors-cpp.cpp
-am__objects_6 = all-errors-cpp.lo
-am__objects_7 = error.lo debugerror.lo SoDebugError.lo SoError.lo \
-	SoMemoryError.lo SoReadError.lo
+am__objects_6 = liberrors_la-all-errors-cpp.lo
+am__objects_7 = liberrors_la-error.lo liberrors_la-debugerror.lo \
+	liberrors_la-SoDebugError.lo liberrors_la-SoError.lo \
+	liberrors_la-SoMemoryError.lo liberrors_la-SoReadError.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_liberrors_la_OBJECTS = $(am__objects_8)
@@ -382,7 +391,12 @@ liberrors@SUFFIX@LINKHACK_la_LIBADD =
 am__liberrors@SUFFIX@LINKHACK_la_SOURCES_DIST = error.cpp debugerror.cpp \
 	SoDebugError.cpp SoError.cpp SoMemoryError.cpp SoReadError.cpp \
 	all-errors-cpp.cpp
-am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-errors-cpp.lo
+am__objects_11 = error.lo debugerror.lo SoDebugError.lo SoError.lo \
+	SoMemoryError.lo SoReadError.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES_DIST = all-errors-cpp.cpp \
 	error.cpp debugerror.cpp SoDebugError.cpp SoError.cpp \
 	SoMemoryError.cpp SoReadError.cpp
@@ -391,17 +405,25 @@ liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoDebugError.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDebugError.Po ./$(DEPDIR)/SoError.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoError.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoError.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMemoryError.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoMemoryError.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoReadError.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoReadError.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-errors-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-errors-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/debugerror.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/debugerror.Po ./$(DEPDIR)/error.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/error.Po
+@AMDEP_TRUE@	./$(DEPDIR)/debugerror.Plo ./$(DEPDIR)/error.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-SoDebugError.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-SoError.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-SoMemoryError.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-SoReadError.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-all-errors-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-debugerror.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/errors_lst-error.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-SoDebugError.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-SoError.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-SoMemoryError.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-SoReadError.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-all-errors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-debugerror.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liberrors_la-error.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -427,7 +449,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/errors/Makefile
+	  $(AUTOMAKE) --gnu  src/errors/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -482,19 +504,26 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDebugError.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDebugError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoError.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMemoryError.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMemoryError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoReadError.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoReadError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-errors-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-errors-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debugerror.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debugerror.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-SoDebugError.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-SoError.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-SoMemoryError.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-SoReadError.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-all-errors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-debugerror.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/errors_lst-error.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-SoDebugError.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-SoError.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-SoMemoryError.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-SoReadError.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-all-errors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-debugerror.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liberrors_la-error.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -531,6 +560,468 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+errors_lst-all-errors-cpp.o: all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-all-errors-cpp.o -MD -MP -MF "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-all-errors-cpp.o `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo" "$(DEPDIR)/errors_lst-all-errors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-errors-cpp.cpp' object='errors_lst-all-errors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-all-errors-cpp.Po' tmpdepfile='$(DEPDIR)/errors_lst-all-errors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-all-errors-cpp.o `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp
+
+errors_lst-all-errors-cpp.obj: all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-all-errors-cpp.obj -MD -MP -MF "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-all-errors-cpp.obj `if test -f 'all-errors-cpp.cpp'; then $(CYGPATH_W) 'all-errors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-errors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo" "$(DEPDIR)/errors_lst-all-errors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-errors-cpp.cpp' object='errors_lst-all-errors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-all-errors-cpp.Po' tmpdepfile='$(DEPDIR)/errors_lst-all-errors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-all-errors-cpp.obj `if test -f 'all-errors-cpp.cpp'; then $(CYGPATH_W) 'all-errors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-errors-cpp.cpp'; fi`
+
+errors_lst-all-errors-cpp.lo: all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-all-errors-cpp.lo -MD -MP -MF "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-all-errors-cpp.lo `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo" "$(DEPDIR)/errors_lst-all-errors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-errors-cpp.cpp' object='errors_lst-all-errors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-all-errors-cpp.Plo' tmpdepfile='$(DEPDIR)/errors_lst-all-errors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-all-errors-cpp.lo `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp
+
+errors_lst-error.o: error.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-error.o -MD -MP -MF "$(DEPDIR)/errors_lst-error.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-error.o `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-error.Tpo" "$(DEPDIR)/errors_lst-error.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-error.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='error.cpp' object='errors_lst-error.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-error.Po' tmpdepfile='$(DEPDIR)/errors_lst-error.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-error.o `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp
+
+errors_lst-error.obj: error.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-error.obj -MD -MP -MF "$(DEPDIR)/errors_lst-error.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-error.obj `if test -f 'error.cpp'; then $(CYGPATH_W) 'error.cpp'; else $(CYGPATH_W) '$(srcdir)/error.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-error.Tpo" "$(DEPDIR)/errors_lst-error.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-error.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='error.cpp' object='errors_lst-error.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-error.Po' tmpdepfile='$(DEPDIR)/errors_lst-error.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-error.obj `if test -f 'error.cpp'; then $(CYGPATH_W) 'error.cpp'; else $(CYGPATH_W) '$(srcdir)/error.cpp'; fi`
+
+errors_lst-error.lo: error.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-error.lo -MD -MP -MF "$(DEPDIR)/errors_lst-error.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-error.lo `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-error.Tpo" "$(DEPDIR)/errors_lst-error.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-error.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='error.cpp' object='errors_lst-error.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-error.Plo' tmpdepfile='$(DEPDIR)/errors_lst-error.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-error.lo `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp
+
+errors_lst-debugerror.o: debugerror.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-debugerror.o -MD -MP -MF "$(DEPDIR)/errors_lst-debugerror.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-debugerror.o `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-debugerror.Tpo" "$(DEPDIR)/errors_lst-debugerror.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-debugerror.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='debugerror.cpp' object='errors_lst-debugerror.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-debugerror.Po' tmpdepfile='$(DEPDIR)/errors_lst-debugerror.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-debugerror.o `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp
+
+errors_lst-debugerror.obj: debugerror.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-debugerror.obj -MD -MP -MF "$(DEPDIR)/errors_lst-debugerror.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-debugerror.obj `if test -f 'debugerror.cpp'; then $(CYGPATH_W) 'debugerror.cpp'; else $(CYGPATH_W) '$(srcdir)/debugerror.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-debugerror.Tpo" "$(DEPDIR)/errors_lst-debugerror.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-debugerror.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='debugerror.cpp' object='errors_lst-debugerror.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-debugerror.Po' tmpdepfile='$(DEPDIR)/errors_lst-debugerror.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-debugerror.obj `if test -f 'debugerror.cpp'; then $(CYGPATH_W) 'debugerror.cpp'; else $(CYGPATH_W) '$(srcdir)/debugerror.cpp'; fi`
+
+errors_lst-debugerror.lo: debugerror.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-debugerror.lo -MD -MP -MF "$(DEPDIR)/errors_lst-debugerror.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-debugerror.lo `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-debugerror.Tpo" "$(DEPDIR)/errors_lst-debugerror.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-debugerror.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='debugerror.cpp' object='errors_lst-debugerror.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-debugerror.Plo' tmpdepfile='$(DEPDIR)/errors_lst-debugerror.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-debugerror.lo `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp
+
+errors_lst-SoDebugError.o: SoDebugError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoDebugError.o -MD -MP -MF "$(DEPDIR)/errors_lst-SoDebugError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoDebugError.o `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoDebugError.Tpo" "$(DEPDIR)/errors_lst-SoDebugError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoDebugError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDebugError.cpp' object='errors_lst-SoDebugError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoDebugError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoDebugError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoDebugError.o `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp
+
+errors_lst-SoDebugError.obj: SoDebugError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoDebugError.obj -MD -MP -MF "$(DEPDIR)/errors_lst-SoDebugError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoDebugError.obj `if test -f 'SoDebugError.cpp'; then $(CYGPATH_W) 'SoDebugError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDebugError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoDebugError.Tpo" "$(DEPDIR)/errors_lst-SoDebugError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoDebugError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDebugError.cpp' object='errors_lst-SoDebugError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoDebugError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoDebugError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoDebugError.obj `if test -f 'SoDebugError.cpp'; then $(CYGPATH_W) 'SoDebugError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDebugError.cpp'; fi`
+
+errors_lst-SoDebugError.lo: SoDebugError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoDebugError.lo -MD -MP -MF "$(DEPDIR)/errors_lst-SoDebugError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoDebugError.lo `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoDebugError.Tpo" "$(DEPDIR)/errors_lst-SoDebugError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoDebugError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDebugError.cpp' object='errors_lst-SoDebugError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoDebugError.Plo' tmpdepfile='$(DEPDIR)/errors_lst-SoDebugError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoDebugError.lo `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp
+
+errors_lst-SoError.o: SoError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoError.o -MD -MP -MF "$(DEPDIR)/errors_lst-SoError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoError.o `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoError.Tpo" "$(DEPDIR)/errors_lst-SoError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoError.cpp' object='errors_lst-SoError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoError.o `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp
+
+errors_lst-SoError.obj: SoError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoError.obj -MD -MP -MF "$(DEPDIR)/errors_lst-SoError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoError.obj `if test -f 'SoError.cpp'; then $(CYGPATH_W) 'SoError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoError.Tpo" "$(DEPDIR)/errors_lst-SoError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoError.cpp' object='errors_lst-SoError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoError.obj `if test -f 'SoError.cpp'; then $(CYGPATH_W) 'SoError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoError.cpp'; fi`
+
+errors_lst-SoError.lo: SoError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoError.lo -MD -MP -MF "$(DEPDIR)/errors_lst-SoError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoError.lo `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoError.Tpo" "$(DEPDIR)/errors_lst-SoError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoError.cpp' object='errors_lst-SoError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoError.Plo' tmpdepfile='$(DEPDIR)/errors_lst-SoError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoError.lo `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp
+
+errors_lst-SoMemoryError.o: SoMemoryError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoMemoryError.o -MD -MP -MF "$(DEPDIR)/errors_lst-SoMemoryError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoMemoryError.o `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoMemoryError.Tpo" "$(DEPDIR)/errors_lst-SoMemoryError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoMemoryError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMemoryError.cpp' object='errors_lst-SoMemoryError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoMemoryError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoMemoryError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoMemoryError.o `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp
+
+errors_lst-SoMemoryError.obj: SoMemoryError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoMemoryError.obj -MD -MP -MF "$(DEPDIR)/errors_lst-SoMemoryError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoMemoryError.obj `if test -f 'SoMemoryError.cpp'; then $(CYGPATH_W) 'SoMemoryError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMemoryError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoMemoryError.Tpo" "$(DEPDIR)/errors_lst-SoMemoryError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoMemoryError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMemoryError.cpp' object='errors_lst-SoMemoryError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoMemoryError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoMemoryError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoMemoryError.obj `if test -f 'SoMemoryError.cpp'; then $(CYGPATH_W) 'SoMemoryError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMemoryError.cpp'; fi`
+
+errors_lst-SoMemoryError.lo: SoMemoryError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoMemoryError.lo -MD -MP -MF "$(DEPDIR)/errors_lst-SoMemoryError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoMemoryError.lo `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoMemoryError.Tpo" "$(DEPDIR)/errors_lst-SoMemoryError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoMemoryError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMemoryError.cpp' object='errors_lst-SoMemoryError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoMemoryError.Plo' tmpdepfile='$(DEPDIR)/errors_lst-SoMemoryError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoMemoryError.lo `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp
+
+errors_lst-SoReadError.o: SoReadError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoReadError.o -MD -MP -MF "$(DEPDIR)/errors_lst-SoReadError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoReadError.o `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoReadError.Tpo" "$(DEPDIR)/errors_lst-SoReadError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoReadError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoReadError.cpp' object='errors_lst-SoReadError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoReadError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoReadError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoReadError.o `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp
+
+errors_lst-SoReadError.obj: SoReadError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoReadError.obj -MD -MP -MF "$(DEPDIR)/errors_lst-SoReadError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoReadError.obj `if test -f 'SoReadError.cpp'; then $(CYGPATH_W) 'SoReadError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoReadError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoReadError.Tpo" "$(DEPDIR)/errors_lst-SoReadError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoReadError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoReadError.cpp' object='errors_lst-SoReadError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoReadError.Po' tmpdepfile='$(DEPDIR)/errors_lst-SoReadError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoReadError.obj `if test -f 'SoReadError.cpp'; then $(CYGPATH_W) 'SoReadError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoReadError.cpp'; fi`
+
+errors_lst-SoReadError.lo: SoReadError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -MT errors_lst-SoReadError.lo -MD -MP -MF "$(DEPDIR)/errors_lst-SoReadError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o errors_lst-SoReadError.lo `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/errors_lst-SoReadError.Tpo" "$(DEPDIR)/errors_lst-SoReadError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/errors_lst-SoReadError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoReadError.cpp' object='errors_lst-SoReadError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/errors_lst-SoReadError.Plo' tmpdepfile='$(DEPDIR)/errors_lst-SoReadError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(errors_lst_CXXFLAGS) $(CXXFLAGS) -c -o errors_lst-SoReadError.lo `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp
+
+liberrors_la-all-errors-cpp.o: all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-all-errors-cpp.o -MD -MP -MF "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-all-errors-cpp.o `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo" "$(DEPDIR)/liberrors_la-all-errors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-errors-cpp.cpp' object='liberrors_la-all-errors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-all-errors-cpp.Po' tmpdepfile='$(DEPDIR)/liberrors_la-all-errors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-all-errors-cpp.o `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp
+
+liberrors_la-all-errors-cpp.obj: all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-all-errors-cpp.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-all-errors-cpp.obj `if test -f 'all-errors-cpp.cpp'; then $(CYGPATH_W) 'all-errors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-errors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo" "$(DEPDIR)/liberrors_la-all-errors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-errors-cpp.cpp' object='liberrors_la-all-errors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-all-errors-cpp.Po' tmpdepfile='$(DEPDIR)/liberrors_la-all-errors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-all-errors-cpp.obj `if test -f 'all-errors-cpp.cpp'; then $(CYGPATH_W) 'all-errors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-errors-cpp.cpp'; fi`
+
+liberrors_la-all-errors-cpp.lo: all-errors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-all-errors-cpp.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-all-errors-cpp.lo `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo" "$(DEPDIR)/liberrors_la-all-errors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-all-errors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-errors-cpp.cpp' object='liberrors_la-all-errors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-all-errors-cpp.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-all-errors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-all-errors-cpp.lo `test -f 'all-errors-cpp.cpp' || echo '$(srcdir)/'`all-errors-cpp.cpp
+
+liberrors_la-error.o: error.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-error.o -MD -MP -MF "$(DEPDIR)/liberrors_la-error.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-error.o `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-error.Tpo" "$(DEPDIR)/liberrors_la-error.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-error.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='error.cpp' object='liberrors_la-error.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-error.Po' tmpdepfile='$(DEPDIR)/liberrors_la-error.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-error.o `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp
+
+liberrors_la-error.obj: error.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-error.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-error.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-error.obj `if test -f 'error.cpp'; then $(CYGPATH_W) 'error.cpp'; else $(CYGPATH_W) '$(srcdir)/error.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-error.Tpo" "$(DEPDIR)/liberrors_la-error.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-error.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='error.cpp' object='liberrors_la-error.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-error.Po' tmpdepfile='$(DEPDIR)/liberrors_la-error.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-error.obj `if test -f 'error.cpp'; then $(CYGPATH_W) 'error.cpp'; else $(CYGPATH_W) '$(srcdir)/error.cpp'; fi`
+
+liberrors_la-error.lo: error.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-error.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-error.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-error.lo `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-error.Tpo" "$(DEPDIR)/liberrors_la-error.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-error.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='error.cpp' object='liberrors_la-error.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-error.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-error.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-error.lo `test -f 'error.cpp' || echo '$(srcdir)/'`error.cpp
+
+liberrors_la-debugerror.o: debugerror.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-debugerror.o -MD -MP -MF "$(DEPDIR)/liberrors_la-debugerror.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-debugerror.o `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-debugerror.Tpo" "$(DEPDIR)/liberrors_la-debugerror.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-debugerror.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='debugerror.cpp' object='liberrors_la-debugerror.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-debugerror.Po' tmpdepfile='$(DEPDIR)/liberrors_la-debugerror.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-debugerror.o `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp
+
+liberrors_la-debugerror.obj: debugerror.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-debugerror.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-debugerror.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-debugerror.obj `if test -f 'debugerror.cpp'; then $(CYGPATH_W) 'debugerror.cpp'; else $(CYGPATH_W) '$(srcdir)/debugerror.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-debugerror.Tpo" "$(DEPDIR)/liberrors_la-debugerror.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-debugerror.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='debugerror.cpp' object='liberrors_la-debugerror.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-debugerror.Po' tmpdepfile='$(DEPDIR)/liberrors_la-debugerror.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-debugerror.obj `if test -f 'debugerror.cpp'; then $(CYGPATH_W) 'debugerror.cpp'; else $(CYGPATH_W) '$(srcdir)/debugerror.cpp'; fi`
+
+liberrors_la-debugerror.lo: debugerror.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-debugerror.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-debugerror.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-debugerror.lo `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-debugerror.Tpo" "$(DEPDIR)/liberrors_la-debugerror.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-debugerror.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='debugerror.cpp' object='liberrors_la-debugerror.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-debugerror.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-debugerror.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-debugerror.lo `test -f 'debugerror.cpp' || echo '$(srcdir)/'`debugerror.cpp
+
+liberrors_la-SoDebugError.o: SoDebugError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoDebugError.o -MD -MP -MF "$(DEPDIR)/liberrors_la-SoDebugError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoDebugError.o `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoDebugError.Tpo" "$(DEPDIR)/liberrors_la-SoDebugError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoDebugError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDebugError.cpp' object='liberrors_la-SoDebugError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoDebugError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoDebugError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoDebugError.o `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp
+
+liberrors_la-SoDebugError.obj: SoDebugError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoDebugError.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-SoDebugError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoDebugError.obj `if test -f 'SoDebugError.cpp'; then $(CYGPATH_W) 'SoDebugError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDebugError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoDebugError.Tpo" "$(DEPDIR)/liberrors_la-SoDebugError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoDebugError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDebugError.cpp' object='liberrors_la-SoDebugError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoDebugError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoDebugError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoDebugError.obj `if test -f 'SoDebugError.cpp'; then $(CYGPATH_W) 'SoDebugError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDebugError.cpp'; fi`
+
+liberrors_la-SoDebugError.lo: SoDebugError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoDebugError.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-SoDebugError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoDebugError.lo `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoDebugError.Tpo" "$(DEPDIR)/liberrors_la-SoDebugError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoDebugError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDebugError.cpp' object='liberrors_la-SoDebugError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoDebugError.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-SoDebugError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoDebugError.lo `test -f 'SoDebugError.cpp' || echo '$(srcdir)/'`SoDebugError.cpp
+
+liberrors_la-SoError.o: SoError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoError.o -MD -MP -MF "$(DEPDIR)/liberrors_la-SoError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoError.o `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoError.Tpo" "$(DEPDIR)/liberrors_la-SoError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoError.cpp' object='liberrors_la-SoError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoError.o `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp
+
+liberrors_la-SoError.obj: SoError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoError.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-SoError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoError.obj `if test -f 'SoError.cpp'; then $(CYGPATH_W) 'SoError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoError.Tpo" "$(DEPDIR)/liberrors_la-SoError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoError.cpp' object='liberrors_la-SoError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoError.obj `if test -f 'SoError.cpp'; then $(CYGPATH_W) 'SoError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoError.cpp'; fi`
+
+liberrors_la-SoError.lo: SoError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoError.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-SoError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoError.lo `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoError.Tpo" "$(DEPDIR)/liberrors_la-SoError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoError.cpp' object='liberrors_la-SoError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoError.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-SoError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoError.lo `test -f 'SoError.cpp' || echo '$(srcdir)/'`SoError.cpp
+
+liberrors_la-SoMemoryError.o: SoMemoryError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoMemoryError.o -MD -MP -MF "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoMemoryError.o `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo" "$(DEPDIR)/liberrors_la-SoMemoryError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMemoryError.cpp' object='liberrors_la-SoMemoryError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoMemoryError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoMemoryError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoMemoryError.o `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp
+
+liberrors_la-SoMemoryError.obj: SoMemoryError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoMemoryError.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoMemoryError.obj `if test -f 'SoMemoryError.cpp'; then $(CYGPATH_W) 'SoMemoryError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMemoryError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo" "$(DEPDIR)/liberrors_la-SoMemoryError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMemoryError.cpp' object='liberrors_la-SoMemoryError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoMemoryError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoMemoryError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoMemoryError.obj `if test -f 'SoMemoryError.cpp'; then $(CYGPATH_W) 'SoMemoryError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMemoryError.cpp'; fi`
+
+liberrors_la-SoMemoryError.lo: SoMemoryError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoMemoryError.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoMemoryError.lo `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo" "$(DEPDIR)/liberrors_la-SoMemoryError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoMemoryError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMemoryError.cpp' object='liberrors_la-SoMemoryError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoMemoryError.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-SoMemoryError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoMemoryError.lo `test -f 'SoMemoryError.cpp' || echo '$(srcdir)/'`SoMemoryError.cpp
+
+liberrors_la-SoReadError.o: SoReadError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoReadError.o -MD -MP -MF "$(DEPDIR)/liberrors_la-SoReadError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoReadError.o `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoReadError.Tpo" "$(DEPDIR)/liberrors_la-SoReadError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoReadError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoReadError.cpp' object='liberrors_la-SoReadError.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoReadError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoReadError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoReadError.o `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp
+
+liberrors_la-SoReadError.obj: SoReadError.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoReadError.obj -MD -MP -MF "$(DEPDIR)/liberrors_la-SoReadError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoReadError.obj `if test -f 'SoReadError.cpp'; then $(CYGPATH_W) 'SoReadError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoReadError.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoReadError.Tpo" "$(DEPDIR)/liberrors_la-SoReadError.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoReadError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoReadError.cpp' object='liberrors_la-SoReadError.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoReadError.Po' tmpdepfile='$(DEPDIR)/liberrors_la-SoReadError.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoReadError.obj `if test -f 'SoReadError.cpp'; then $(CYGPATH_W) 'SoReadError.cpp'; else $(CYGPATH_W) '$(srcdir)/SoReadError.cpp'; fi`
+
+liberrors_la-SoReadError.lo: SoReadError.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -MT liberrors_la-SoReadError.lo -MD -MP -MF "$(DEPDIR)/liberrors_la-SoReadError.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liberrors_la-SoReadError.lo `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liberrors_la-SoReadError.Tpo" "$(DEPDIR)/liberrors_la-SoReadError.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liberrors_la-SoReadError.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoReadError.cpp' object='liberrors_la-SoReadError.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liberrors_la-SoReadError.Plo' tmpdepfile='$(DEPDIR)/liberrors_la-SoReadError.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liberrors_la_CXXFLAGS) $(CXXFLAGS) -c -o liberrors_la-SoReadError.lo `test -f 'SoReadError.cpp' || echo '$(srcdir)/'`SoReadError.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

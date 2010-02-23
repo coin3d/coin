@@ -1587,8 +1587,8 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	installdirs-recursive install-recursive uninstall-recursive \
 	check-recursive installcheck-recursive
 DIST_COMMON = README $(dist_m4data_DATA) $(srcdir)/include/Makefile.inc \
-	AUTHORS COPYING INSTALL Makefile.am Makefile.in NEWS THANKS \
-	aclocal.m4 cfg/config.guess cfg/config.sub cfg/depcomp \
+	AUTHORS COPYING ChangeLog INSTALL Makefile.am Makefile.in NEWS \
+	THANKS aclocal.m4 cfg/config.guess cfg/config.sub cfg/depcomp \
 	cfg/install-sh cfg/ltconfig cfg/ltmain.sh cfg/missing \
 	cfg/mkinstalldirs cfg/texinfo.tex configure configure.ac
 DIST_SUBDIRS = . bin include data src man html
@@ -1601,7 +1601,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(srcdir)/include/Makefile.inc $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  Makefile
+	  $(AUTOMAKE) --gnu  Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe)
 

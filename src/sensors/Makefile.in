@@ -333,6 +333,9 @@ EXTRA_libsensors_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libsensors_la_CXXFLAGS = $(AM_CXXFLAGS)
+libsensors_la_CFLAGS = $(AM_CFLAGS)
+
 libsensors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -342,6 +345,9 @@ sensors_lst_SOURCES = $(BuildSources)
 EXTRA_sensors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+sensors_lst_CXXFLAGS = $(AM_CXXFLAGS)
+sensors_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/sensors
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -357,13 +363,19 @@ am__sensors_lst_SOURCES_DIST = SoAlarmSensor.cpp SoDataSensor.cpp \
 	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
 	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
 	SoTimerSensor.cpp all-sensors-cpp.cpp
-am__objects_1 = all-sensors-cpp.$(OBJEXT)
-am__objects_2 = SoAlarmSensor.$(OBJEXT) SoDataSensor.$(OBJEXT) \
-	SoDelayQueueSensor.$(OBJEXT) SoFieldSensor.$(OBJEXT) \
-	SoIdleSensor.$(OBJEXT) SoNodeSensor.$(OBJEXT) \
-	SoOneShotSensor.$(OBJEXT) SoPathSensor.$(OBJEXT) \
-	SoSensor.$(OBJEXT) SoSensorManager.$(OBJEXT) \
-	SoTimerQueueSensor.$(OBJEXT) SoTimerSensor.$(OBJEXT)
+am__objects_1 = sensors_lst-all-sensors-cpp.$(OBJEXT)
+am__objects_2 = sensors_lst-SoAlarmSensor.$(OBJEXT) \
+	sensors_lst-SoDataSensor.$(OBJEXT) \
+	sensors_lst-SoDelayQueueSensor.$(OBJEXT) \
+	sensors_lst-SoFieldSensor.$(OBJEXT) \
+	sensors_lst-SoIdleSensor.$(OBJEXT) \
+	sensors_lst-SoNodeSensor.$(OBJEXT) \
+	sensors_lst-SoOneShotSensor.$(OBJEXT) \
+	sensors_lst-SoPathSensor.$(OBJEXT) \
+	sensors_lst-SoSensor.$(OBJEXT) \
+	sensors_lst-SoSensorManager.$(OBJEXT) \
+	sensors_lst-SoTimerQueueSensor.$(OBJEXT) \
+	sensors_lst-SoTimerSensor.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_sensors_lst_OBJECTS = $(am__objects_3)
@@ -382,11 +394,16 @@ am__libsensors_la_SOURCES_DIST = SoAlarmSensor.cpp SoDataSensor.cpp \
 	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
 	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
 	SoTimerSensor.cpp all-sensors-cpp.cpp
-am__objects_6 = all-sensors-cpp.lo
-am__objects_7 = SoAlarmSensor.lo SoDataSensor.lo SoDelayQueueSensor.lo \
-	SoFieldSensor.lo SoIdleSensor.lo SoNodeSensor.lo \
-	SoOneShotSensor.lo SoPathSensor.lo SoSensor.lo \
-	SoSensorManager.lo SoTimerQueueSensor.lo SoTimerSensor.lo
+am__objects_6 = libsensors_la-all-sensors-cpp.lo
+am__objects_7 = libsensors_la-SoAlarmSensor.lo \
+	libsensors_la-SoDataSensor.lo \
+	libsensors_la-SoDelayQueueSensor.lo \
+	libsensors_la-SoFieldSensor.lo libsensors_la-SoIdleSensor.lo \
+	libsensors_la-SoNodeSensor.lo libsensors_la-SoOneShotSensor.lo \
+	libsensors_la-SoPathSensor.lo libsensors_la-SoSensor.lo \
+	libsensors_la-SoSensorManager.lo \
+	libsensors_la-SoTimerQueueSensor.lo \
+	libsensors_la-SoTimerSensor.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libsensors_la_OBJECTS = $(am__objects_8)
@@ -403,7 +420,14 @@ am__libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAlarmSensor.cpp \
 	SoIdleSensor.cpp SoNodeSensor.cpp SoOneShotSensor.cpp \
 	SoPathSensor.cpp SoSensor.cpp SoSensorManager.cpp \
 	SoTimerQueueSensor.cpp SoTimerSensor.cpp all-sensors-cpp.cpp
-am_libsensors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-sensors-cpp.lo
+am__objects_11 = SoAlarmSensor.lo SoDataSensor.lo SoDelayQueueSensor.lo \
+	SoFieldSensor.lo SoIdleSensor.lo SoNodeSensor.lo \
+	SoOneShotSensor.lo SoPathSensor.lo SoSensor.lo \
+	SoSensorManager.lo SoTimerQueueSensor.lo SoTimerSensor.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libsensors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
 	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
@@ -415,30 +439,44 @@ libsensors@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoAlarmSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoAlarmSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDataSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDataSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDelayQueueSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDelayQueueSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFieldSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoFieldSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIdleSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoIdleSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodeSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNodeSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOneShotSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOneShotSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPathSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPathSensor.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoSensor.Plo ./$(DEPDIR)/SoSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSensor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSensorManager.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoSensorManager.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimerQueueSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTimerQueueSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimerSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTimerSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoAlarmSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoDataSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoFieldSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoIdleSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoNodeSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoOneShotSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoPathSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoSensorManager.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-SoTimerSensor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libsensors_la-all-sensors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoAlarmSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoDataSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoFieldSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoIdleSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoNodeSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoOneShotSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoPathSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoSensorManager.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-SoTimerSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sensors_lst-all-sensors-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -464,7 +502,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/sensors/Makefile
+	  $(AUTOMAKE) --gnu  src/sensors/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -519,31 +557,44 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAlarmSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAlarmSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDataSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDataSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDelayQueueSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDelayQueueSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIdleSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIdleSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOneShotSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOneShotSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSensorManager.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSensorManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerQueueSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerQueueSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerSensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoAlarmSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoDataSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoFieldSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoIdleSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoNodeSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoOneShotSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoPathSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoSensorManager.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-SoTimerSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsensors_la-all-sensors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoAlarmSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoDataSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoFieldSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoIdleSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoNodeSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoOneShotSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoPathSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoSensorManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-SoTimerSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sensors_lst-all-sensors-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -580,6 +631,864 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+sensors_lst-all-sensors-cpp.o: all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-all-sensors-cpp.o -MD -MP -MF "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-all-sensors-cpp.o `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo" "$(DEPDIR)/sensors_lst-all-sensors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-sensors-cpp.cpp' object='sensors_lst-all-sensors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-all-sensors-cpp.Po' tmpdepfile='$(DEPDIR)/sensors_lst-all-sensors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-all-sensors-cpp.o `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp
+
+sensors_lst-all-sensors-cpp.obj: all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-all-sensors-cpp.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-all-sensors-cpp.obj `if test -f 'all-sensors-cpp.cpp'; then $(CYGPATH_W) 'all-sensors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-sensors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo" "$(DEPDIR)/sensors_lst-all-sensors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-sensors-cpp.cpp' object='sensors_lst-all-sensors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-all-sensors-cpp.Po' tmpdepfile='$(DEPDIR)/sensors_lst-all-sensors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-all-sensors-cpp.obj `if test -f 'all-sensors-cpp.cpp'; then $(CYGPATH_W) 'all-sensors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-sensors-cpp.cpp'; fi`
+
+sensors_lst-all-sensors-cpp.lo: all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-all-sensors-cpp.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-all-sensors-cpp.lo `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo" "$(DEPDIR)/sensors_lst-all-sensors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-sensors-cpp.cpp' object='sensors_lst-all-sensors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-all-sensors-cpp.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-all-sensors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-all-sensors-cpp.lo `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp
+
+sensors_lst-SoAlarmSensor.o: SoAlarmSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoAlarmSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoAlarmSensor.o `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo" "$(DEPDIR)/sensors_lst-SoAlarmSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAlarmSensor.cpp' object='sensors_lst-SoAlarmSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoAlarmSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoAlarmSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoAlarmSensor.o `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp
+
+sensors_lst-SoAlarmSensor.obj: SoAlarmSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoAlarmSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoAlarmSensor.obj `if test -f 'SoAlarmSensor.cpp'; then $(CYGPATH_W) 'SoAlarmSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAlarmSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo" "$(DEPDIR)/sensors_lst-SoAlarmSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAlarmSensor.cpp' object='sensors_lst-SoAlarmSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoAlarmSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoAlarmSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoAlarmSensor.obj `if test -f 'SoAlarmSensor.cpp'; then $(CYGPATH_W) 'SoAlarmSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAlarmSensor.cpp'; fi`
+
+sensors_lst-SoAlarmSensor.lo: SoAlarmSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoAlarmSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoAlarmSensor.lo `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo" "$(DEPDIR)/sensors_lst-SoAlarmSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoAlarmSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAlarmSensor.cpp' object='sensors_lst-SoAlarmSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoAlarmSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoAlarmSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoAlarmSensor.lo `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp
+
+sensors_lst-SoDataSensor.o: SoDataSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoDataSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoDataSensor.o `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo" "$(DEPDIR)/sensors_lst-SoDataSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDataSensor.cpp' object='sensors_lst-SoDataSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoDataSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoDataSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoDataSensor.o `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp
+
+sensors_lst-SoDataSensor.obj: SoDataSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoDataSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoDataSensor.obj `if test -f 'SoDataSensor.cpp'; then $(CYGPATH_W) 'SoDataSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDataSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo" "$(DEPDIR)/sensors_lst-SoDataSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDataSensor.cpp' object='sensors_lst-SoDataSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoDataSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoDataSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoDataSensor.obj `if test -f 'SoDataSensor.cpp'; then $(CYGPATH_W) 'SoDataSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDataSensor.cpp'; fi`
+
+sensors_lst-SoDataSensor.lo: SoDataSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoDataSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoDataSensor.lo `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo" "$(DEPDIR)/sensors_lst-SoDataSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoDataSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDataSensor.cpp' object='sensors_lst-SoDataSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoDataSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoDataSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoDataSensor.lo `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp
+
+sensors_lst-SoDelayQueueSensor.o: SoDelayQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoDelayQueueSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoDelayQueueSensor.o `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo" "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDelayQueueSensor.cpp' object='sensors_lst-SoDelayQueueSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoDelayQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoDelayQueueSensor.o `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp
+
+sensors_lst-SoDelayQueueSensor.obj: SoDelayQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoDelayQueueSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoDelayQueueSensor.obj `if test -f 'SoDelayQueueSensor.cpp'; then $(CYGPATH_W) 'SoDelayQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDelayQueueSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo" "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDelayQueueSensor.cpp' object='sensors_lst-SoDelayQueueSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoDelayQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoDelayQueueSensor.obj `if test -f 'SoDelayQueueSensor.cpp'; then $(CYGPATH_W) 'SoDelayQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDelayQueueSensor.cpp'; fi`
+
+sensors_lst-SoDelayQueueSensor.lo: SoDelayQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoDelayQueueSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoDelayQueueSensor.lo `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo" "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDelayQueueSensor.cpp' object='sensors_lst-SoDelayQueueSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoDelayQueueSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoDelayQueueSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoDelayQueueSensor.lo `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp
+
+sensors_lst-SoFieldSensor.o: SoFieldSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoFieldSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoFieldSensor.o `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo" "$(DEPDIR)/sensors_lst-SoFieldSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldSensor.cpp' object='sensors_lst-SoFieldSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoFieldSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoFieldSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoFieldSensor.o `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp
+
+sensors_lst-SoFieldSensor.obj: SoFieldSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoFieldSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoFieldSensor.obj `if test -f 'SoFieldSensor.cpp'; then $(CYGPATH_W) 'SoFieldSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo" "$(DEPDIR)/sensors_lst-SoFieldSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldSensor.cpp' object='sensors_lst-SoFieldSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoFieldSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoFieldSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoFieldSensor.obj `if test -f 'SoFieldSensor.cpp'; then $(CYGPATH_W) 'SoFieldSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldSensor.cpp'; fi`
+
+sensors_lst-SoFieldSensor.lo: SoFieldSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoFieldSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoFieldSensor.lo `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo" "$(DEPDIR)/sensors_lst-SoFieldSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoFieldSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldSensor.cpp' object='sensors_lst-SoFieldSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoFieldSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoFieldSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoFieldSensor.lo `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp
+
+sensors_lst-SoIdleSensor.o: SoIdleSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoIdleSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoIdleSensor.o `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo" "$(DEPDIR)/sensors_lst-SoIdleSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoIdleSensor.cpp' object='sensors_lst-SoIdleSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoIdleSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoIdleSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoIdleSensor.o `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp
+
+sensors_lst-SoIdleSensor.obj: SoIdleSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoIdleSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoIdleSensor.obj `if test -f 'SoIdleSensor.cpp'; then $(CYGPATH_W) 'SoIdleSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoIdleSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo" "$(DEPDIR)/sensors_lst-SoIdleSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoIdleSensor.cpp' object='sensors_lst-SoIdleSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoIdleSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoIdleSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoIdleSensor.obj `if test -f 'SoIdleSensor.cpp'; then $(CYGPATH_W) 'SoIdleSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoIdleSensor.cpp'; fi`
+
+sensors_lst-SoIdleSensor.lo: SoIdleSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoIdleSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoIdleSensor.lo `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo" "$(DEPDIR)/sensors_lst-SoIdleSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoIdleSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoIdleSensor.cpp' object='sensors_lst-SoIdleSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoIdleSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoIdleSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoIdleSensor.lo `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp
+
+sensors_lst-SoNodeSensor.o: SoNodeSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoNodeSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoNodeSensor.o `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo" "$(DEPDIR)/sensors_lst-SoNodeSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeSensor.cpp' object='sensors_lst-SoNodeSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoNodeSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoNodeSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoNodeSensor.o `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp
+
+sensors_lst-SoNodeSensor.obj: SoNodeSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoNodeSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoNodeSensor.obj `if test -f 'SoNodeSensor.cpp'; then $(CYGPATH_W) 'SoNodeSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo" "$(DEPDIR)/sensors_lst-SoNodeSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeSensor.cpp' object='sensors_lst-SoNodeSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoNodeSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoNodeSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoNodeSensor.obj `if test -f 'SoNodeSensor.cpp'; then $(CYGPATH_W) 'SoNodeSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeSensor.cpp'; fi`
+
+sensors_lst-SoNodeSensor.lo: SoNodeSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoNodeSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoNodeSensor.lo `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo" "$(DEPDIR)/sensors_lst-SoNodeSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoNodeSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeSensor.cpp' object='sensors_lst-SoNodeSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoNodeSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoNodeSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoNodeSensor.lo `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp
+
+sensors_lst-SoOneShotSensor.o: SoOneShotSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoOneShotSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoOneShotSensor.o `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo" "$(DEPDIR)/sensors_lst-SoOneShotSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOneShotSensor.cpp' object='sensors_lst-SoOneShotSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoOneShotSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoOneShotSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoOneShotSensor.o `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp
+
+sensors_lst-SoOneShotSensor.obj: SoOneShotSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoOneShotSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoOneShotSensor.obj `if test -f 'SoOneShotSensor.cpp'; then $(CYGPATH_W) 'SoOneShotSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOneShotSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo" "$(DEPDIR)/sensors_lst-SoOneShotSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOneShotSensor.cpp' object='sensors_lst-SoOneShotSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoOneShotSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoOneShotSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoOneShotSensor.obj `if test -f 'SoOneShotSensor.cpp'; then $(CYGPATH_W) 'SoOneShotSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOneShotSensor.cpp'; fi`
+
+sensors_lst-SoOneShotSensor.lo: SoOneShotSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoOneShotSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoOneShotSensor.lo `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo" "$(DEPDIR)/sensors_lst-SoOneShotSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoOneShotSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOneShotSensor.cpp' object='sensors_lst-SoOneShotSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoOneShotSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoOneShotSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoOneShotSensor.lo `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp
+
+sensors_lst-SoPathSensor.o: SoPathSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoPathSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoPathSensor.o `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo" "$(DEPDIR)/sensors_lst-SoPathSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathSensor.cpp' object='sensors_lst-SoPathSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoPathSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoPathSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoPathSensor.o `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp
+
+sensors_lst-SoPathSensor.obj: SoPathSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoPathSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoPathSensor.obj `if test -f 'SoPathSensor.cpp'; then $(CYGPATH_W) 'SoPathSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo" "$(DEPDIR)/sensors_lst-SoPathSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathSensor.cpp' object='sensors_lst-SoPathSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoPathSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoPathSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoPathSensor.obj `if test -f 'SoPathSensor.cpp'; then $(CYGPATH_W) 'SoPathSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathSensor.cpp'; fi`
+
+sensors_lst-SoPathSensor.lo: SoPathSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoPathSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoPathSensor.lo `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo" "$(DEPDIR)/sensors_lst-SoPathSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoPathSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathSensor.cpp' object='sensors_lst-SoPathSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoPathSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoPathSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoPathSensor.lo `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp
+
+sensors_lst-SoSensor.o: SoSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoSensor.o `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoSensor.Tpo" "$(DEPDIR)/sensors_lst-SoSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensor.cpp' object='sensors_lst-SoSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoSensor.o `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp
+
+sensors_lst-SoSensor.obj: SoSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoSensor.obj `if test -f 'SoSensor.cpp'; then $(CYGPATH_W) 'SoSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoSensor.Tpo" "$(DEPDIR)/sensors_lst-SoSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensor.cpp' object='sensors_lst-SoSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoSensor.obj `if test -f 'SoSensor.cpp'; then $(CYGPATH_W) 'SoSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensor.cpp'; fi`
+
+sensors_lst-SoSensor.lo: SoSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoSensor.lo `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoSensor.Tpo" "$(DEPDIR)/sensors_lst-SoSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensor.cpp' object='sensors_lst-SoSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoSensor.lo `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp
+
+sensors_lst-SoSensorManager.o: SoSensorManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoSensorManager.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoSensorManager.o `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo" "$(DEPDIR)/sensors_lst-SoSensorManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensorManager.cpp' object='sensors_lst-SoSensorManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoSensorManager.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoSensorManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoSensorManager.o `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp
+
+sensors_lst-SoSensorManager.obj: SoSensorManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoSensorManager.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoSensorManager.obj `if test -f 'SoSensorManager.cpp'; then $(CYGPATH_W) 'SoSensorManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensorManager.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo" "$(DEPDIR)/sensors_lst-SoSensorManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensorManager.cpp' object='sensors_lst-SoSensorManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoSensorManager.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoSensorManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoSensorManager.obj `if test -f 'SoSensorManager.cpp'; then $(CYGPATH_W) 'SoSensorManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensorManager.cpp'; fi`
+
+sensors_lst-SoSensorManager.lo: SoSensorManager.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoSensorManager.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoSensorManager.lo `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo" "$(DEPDIR)/sensors_lst-SoSensorManager.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoSensorManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensorManager.cpp' object='sensors_lst-SoSensorManager.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoSensorManager.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoSensorManager.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoSensorManager.lo `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp
+
+sensors_lst-SoTimerQueueSensor.o: SoTimerQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoTimerQueueSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoTimerQueueSensor.o `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo" "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerQueueSensor.cpp' object='sensors_lst-SoTimerQueueSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoTimerQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoTimerQueueSensor.o `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp
+
+sensors_lst-SoTimerQueueSensor.obj: SoTimerQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoTimerQueueSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoTimerQueueSensor.obj `if test -f 'SoTimerQueueSensor.cpp'; then $(CYGPATH_W) 'SoTimerQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerQueueSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo" "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerQueueSensor.cpp' object='sensors_lst-SoTimerQueueSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoTimerQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoTimerQueueSensor.obj `if test -f 'SoTimerQueueSensor.cpp'; then $(CYGPATH_W) 'SoTimerQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerQueueSensor.cpp'; fi`
+
+sensors_lst-SoTimerQueueSensor.lo: SoTimerQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoTimerQueueSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoTimerQueueSensor.lo `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo" "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerQueueSensor.cpp' object='sensors_lst-SoTimerQueueSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoTimerQueueSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoTimerQueueSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoTimerQueueSensor.lo `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp
+
+sensors_lst-SoTimerSensor.o: SoTimerSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoTimerSensor.o -MD -MP -MF "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoTimerSensor.o `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo" "$(DEPDIR)/sensors_lst-SoTimerSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerSensor.cpp' object='sensors_lst-SoTimerSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoTimerSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoTimerSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoTimerSensor.o `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp
+
+sensors_lst-SoTimerSensor.obj: SoTimerSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoTimerSensor.obj -MD -MP -MF "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoTimerSensor.obj `if test -f 'SoTimerSensor.cpp'; then $(CYGPATH_W) 'SoTimerSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo" "$(DEPDIR)/sensors_lst-SoTimerSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerSensor.cpp' object='sensors_lst-SoTimerSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoTimerSensor.Po' tmpdepfile='$(DEPDIR)/sensors_lst-SoTimerSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoTimerSensor.obj `if test -f 'SoTimerSensor.cpp'; then $(CYGPATH_W) 'SoTimerSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerSensor.cpp'; fi`
+
+sensors_lst-SoTimerSensor.lo: SoTimerSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -MT sensors_lst-SoTimerSensor.lo -MD -MP -MF "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o sensors_lst-SoTimerSensor.lo `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo" "$(DEPDIR)/sensors_lst-SoTimerSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/sensors_lst-SoTimerSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerSensor.cpp' object='sensors_lst-SoTimerSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/sensors_lst-SoTimerSensor.Plo' tmpdepfile='$(DEPDIR)/sensors_lst-SoTimerSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sensors_lst_CXXFLAGS) $(CXXFLAGS) -c -o sensors_lst-SoTimerSensor.lo `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp
+
+libsensors_la-all-sensors-cpp.o: all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-all-sensors-cpp.o -MD -MP -MF "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-all-sensors-cpp.o `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo" "$(DEPDIR)/libsensors_la-all-sensors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-sensors-cpp.cpp' object='libsensors_la-all-sensors-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-all-sensors-cpp.Po' tmpdepfile='$(DEPDIR)/libsensors_la-all-sensors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-all-sensors-cpp.o `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp
+
+libsensors_la-all-sensors-cpp.obj: all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-all-sensors-cpp.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-all-sensors-cpp.obj `if test -f 'all-sensors-cpp.cpp'; then $(CYGPATH_W) 'all-sensors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-sensors-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo" "$(DEPDIR)/libsensors_la-all-sensors-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-sensors-cpp.cpp' object='libsensors_la-all-sensors-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-all-sensors-cpp.Po' tmpdepfile='$(DEPDIR)/libsensors_la-all-sensors-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-all-sensors-cpp.obj `if test -f 'all-sensors-cpp.cpp'; then $(CYGPATH_W) 'all-sensors-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-sensors-cpp.cpp'; fi`
+
+libsensors_la-all-sensors-cpp.lo: all-sensors-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-all-sensors-cpp.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-all-sensors-cpp.lo `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo" "$(DEPDIR)/libsensors_la-all-sensors-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-all-sensors-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-sensors-cpp.cpp' object='libsensors_la-all-sensors-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-all-sensors-cpp.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-all-sensors-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-all-sensors-cpp.lo `test -f 'all-sensors-cpp.cpp' || echo '$(srcdir)/'`all-sensors-cpp.cpp
+
+libsensors_la-SoAlarmSensor.o: SoAlarmSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoAlarmSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoAlarmSensor.o `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo" "$(DEPDIR)/libsensors_la-SoAlarmSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAlarmSensor.cpp' object='libsensors_la-SoAlarmSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoAlarmSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoAlarmSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoAlarmSensor.o `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp
+
+libsensors_la-SoAlarmSensor.obj: SoAlarmSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoAlarmSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoAlarmSensor.obj `if test -f 'SoAlarmSensor.cpp'; then $(CYGPATH_W) 'SoAlarmSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAlarmSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo" "$(DEPDIR)/libsensors_la-SoAlarmSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAlarmSensor.cpp' object='libsensors_la-SoAlarmSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoAlarmSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoAlarmSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoAlarmSensor.obj `if test -f 'SoAlarmSensor.cpp'; then $(CYGPATH_W) 'SoAlarmSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAlarmSensor.cpp'; fi`
+
+libsensors_la-SoAlarmSensor.lo: SoAlarmSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoAlarmSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoAlarmSensor.lo `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo" "$(DEPDIR)/libsensors_la-SoAlarmSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoAlarmSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAlarmSensor.cpp' object='libsensors_la-SoAlarmSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoAlarmSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoAlarmSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoAlarmSensor.lo `test -f 'SoAlarmSensor.cpp' || echo '$(srcdir)/'`SoAlarmSensor.cpp
+
+libsensors_la-SoDataSensor.o: SoDataSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoDataSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoDataSensor.o `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo" "$(DEPDIR)/libsensors_la-SoDataSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDataSensor.cpp' object='libsensors_la-SoDataSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoDataSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoDataSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoDataSensor.o `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp
+
+libsensors_la-SoDataSensor.obj: SoDataSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoDataSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoDataSensor.obj `if test -f 'SoDataSensor.cpp'; then $(CYGPATH_W) 'SoDataSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDataSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo" "$(DEPDIR)/libsensors_la-SoDataSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDataSensor.cpp' object='libsensors_la-SoDataSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoDataSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoDataSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoDataSensor.obj `if test -f 'SoDataSensor.cpp'; then $(CYGPATH_W) 'SoDataSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDataSensor.cpp'; fi`
+
+libsensors_la-SoDataSensor.lo: SoDataSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoDataSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoDataSensor.lo `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo" "$(DEPDIR)/libsensors_la-SoDataSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoDataSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDataSensor.cpp' object='libsensors_la-SoDataSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoDataSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoDataSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoDataSensor.lo `test -f 'SoDataSensor.cpp' || echo '$(srcdir)/'`SoDataSensor.cpp
+
+libsensors_la-SoDelayQueueSensor.o: SoDelayQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoDelayQueueSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoDelayQueueSensor.o `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo" "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDelayQueueSensor.cpp' object='libsensors_la-SoDelayQueueSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoDelayQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoDelayQueueSensor.o `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp
+
+libsensors_la-SoDelayQueueSensor.obj: SoDelayQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoDelayQueueSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoDelayQueueSensor.obj `if test -f 'SoDelayQueueSensor.cpp'; then $(CYGPATH_W) 'SoDelayQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDelayQueueSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo" "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDelayQueueSensor.cpp' object='libsensors_la-SoDelayQueueSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoDelayQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoDelayQueueSensor.obj `if test -f 'SoDelayQueueSensor.cpp'; then $(CYGPATH_W) 'SoDelayQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDelayQueueSensor.cpp'; fi`
+
+libsensors_la-SoDelayQueueSensor.lo: SoDelayQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoDelayQueueSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoDelayQueueSensor.lo `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo" "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDelayQueueSensor.cpp' object='libsensors_la-SoDelayQueueSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoDelayQueueSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoDelayQueueSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoDelayQueueSensor.lo `test -f 'SoDelayQueueSensor.cpp' || echo '$(srcdir)/'`SoDelayQueueSensor.cpp
+
+libsensors_la-SoFieldSensor.o: SoFieldSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoFieldSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoFieldSensor.o `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo" "$(DEPDIR)/libsensors_la-SoFieldSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldSensor.cpp' object='libsensors_la-SoFieldSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoFieldSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoFieldSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoFieldSensor.o `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp
+
+libsensors_la-SoFieldSensor.obj: SoFieldSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoFieldSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoFieldSensor.obj `if test -f 'SoFieldSensor.cpp'; then $(CYGPATH_W) 'SoFieldSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo" "$(DEPDIR)/libsensors_la-SoFieldSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldSensor.cpp' object='libsensors_la-SoFieldSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoFieldSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoFieldSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoFieldSensor.obj `if test -f 'SoFieldSensor.cpp'; then $(CYGPATH_W) 'SoFieldSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldSensor.cpp'; fi`
+
+libsensors_la-SoFieldSensor.lo: SoFieldSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoFieldSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoFieldSensor.lo `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo" "$(DEPDIR)/libsensors_la-SoFieldSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoFieldSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldSensor.cpp' object='libsensors_la-SoFieldSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoFieldSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoFieldSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoFieldSensor.lo `test -f 'SoFieldSensor.cpp' || echo '$(srcdir)/'`SoFieldSensor.cpp
+
+libsensors_la-SoIdleSensor.o: SoIdleSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoIdleSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoIdleSensor.o `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo" "$(DEPDIR)/libsensors_la-SoIdleSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoIdleSensor.cpp' object='libsensors_la-SoIdleSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoIdleSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoIdleSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoIdleSensor.o `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp
+
+libsensors_la-SoIdleSensor.obj: SoIdleSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoIdleSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoIdleSensor.obj `if test -f 'SoIdleSensor.cpp'; then $(CYGPATH_W) 'SoIdleSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoIdleSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo" "$(DEPDIR)/libsensors_la-SoIdleSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoIdleSensor.cpp' object='libsensors_la-SoIdleSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoIdleSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoIdleSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoIdleSensor.obj `if test -f 'SoIdleSensor.cpp'; then $(CYGPATH_W) 'SoIdleSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoIdleSensor.cpp'; fi`
+
+libsensors_la-SoIdleSensor.lo: SoIdleSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoIdleSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoIdleSensor.lo `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo" "$(DEPDIR)/libsensors_la-SoIdleSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoIdleSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoIdleSensor.cpp' object='libsensors_la-SoIdleSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoIdleSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoIdleSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoIdleSensor.lo `test -f 'SoIdleSensor.cpp' || echo '$(srcdir)/'`SoIdleSensor.cpp
+
+libsensors_la-SoNodeSensor.o: SoNodeSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoNodeSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoNodeSensor.o `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo" "$(DEPDIR)/libsensors_la-SoNodeSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeSensor.cpp' object='libsensors_la-SoNodeSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoNodeSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoNodeSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoNodeSensor.o `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp
+
+libsensors_la-SoNodeSensor.obj: SoNodeSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoNodeSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoNodeSensor.obj `if test -f 'SoNodeSensor.cpp'; then $(CYGPATH_W) 'SoNodeSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo" "$(DEPDIR)/libsensors_la-SoNodeSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeSensor.cpp' object='libsensors_la-SoNodeSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoNodeSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoNodeSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoNodeSensor.obj `if test -f 'SoNodeSensor.cpp'; then $(CYGPATH_W) 'SoNodeSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeSensor.cpp'; fi`
+
+libsensors_la-SoNodeSensor.lo: SoNodeSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoNodeSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoNodeSensor.lo `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo" "$(DEPDIR)/libsensors_la-SoNodeSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoNodeSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeSensor.cpp' object='libsensors_la-SoNodeSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoNodeSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoNodeSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoNodeSensor.lo `test -f 'SoNodeSensor.cpp' || echo '$(srcdir)/'`SoNodeSensor.cpp
+
+libsensors_la-SoOneShotSensor.o: SoOneShotSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoOneShotSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoOneShotSensor.o `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo" "$(DEPDIR)/libsensors_la-SoOneShotSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOneShotSensor.cpp' object='libsensors_la-SoOneShotSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoOneShotSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoOneShotSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoOneShotSensor.o `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp
+
+libsensors_la-SoOneShotSensor.obj: SoOneShotSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoOneShotSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoOneShotSensor.obj `if test -f 'SoOneShotSensor.cpp'; then $(CYGPATH_W) 'SoOneShotSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOneShotSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo" "$(DEPDIR)/libsensors_la-SoOneShotSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOneShotSensor.cpp' object='libsensors_la-SoOneShotSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoOneShotSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoOneShotSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoOneShotSensor.obj `if test -f 'SoOneShotSensor.cpp'; then $(CYGPATH_W) 'SoOneShotSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOneShotSensor.cpp'; fi`
+
+libsensors_la-SoOneShotSensor.lo: SoOneShotSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoOneShotSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoOneShotSensor.lo `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo" "$(DEPDIR)/libsensors_la-SoOneShotSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoOneShotSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOneShotSensor.cpp' object='libsensors_la-SoOneShotSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoOneShotSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoOneShotSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoOneShotSensor.lo `test -f 'SoOneShotSensor.cpp' || echo '$(srcdir)/'`SoOneShotSensor.cpp
+
+libsensors_la-SoPathSensor.o: SoPathSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoPathSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoPathSensor.o `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo" "$(DEPDIR)/libsensors_la-SoPathSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathSensor.cpp' object='libsensors_la-SoPathSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoPathSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoPathSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoPathSensor.o `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp
+
+libsensors_la-SoPathSensor.obj: SoPathSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoPathSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoPathSensor.obj `if test -f 'SoPathSensor.cpp'; then $(CYGPATH_W) 'SoPathSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo" "$(DEPDIR)/libsensors_la-SoPathSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathSensor.cpp' object='libsensors_la-SoPathSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoPathSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoPathSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoPathSensor.obj `if test -f 'SoPathSensor.cpp'; then $(CYGPATH_W) 'SoPathSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathSensor.cpp'; fi`
+
+libsensors_la-SoPathSensor.lo: SoPathSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoPathSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoPathSensor.lo `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo" "$(DEPDIR)/libsensors_la-SoPathSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoPathSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathSensor.cpp' object='libsensors_la-SoPathSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoPathSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoPathSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoPathSensor.lo `test -f 'SoPathSensor.cpp' || echo '$(srcdir)/'`SoPathSensor.cpp
+
+libsensors_la-SoSensor.o: SoSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoSensor.o `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoSensor.Tpo" "$(DEPDIR)/libsensors_la-SoSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensor.cpp' object='libsensors_la-SoSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoSensor.o `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp
+
+libsensors_la-SoSensor.obj: SoSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoSensor.obj `if test -f 'SoSensor.cpp'; then $(CYGPATH_W) 'SoSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoSensor.Tpo" "$(DEPDIR)/libsensors_la-SoSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensor.cpp' object='libsensors_la-SoSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoSensor.obj `if test -f 'SoSensor.cpp'; then $(CYGPATH_W) 'SoSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensor.cpp'; fi`
+
+libsensors_la-SoSensor.lo: SoSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoSensor.lo `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoSensor.Tpo" "$(DEPDIR)/libsensors_la-SoSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensor.cpp' object='libsensors_la-SoSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoSensor.lo `test -f 'SoSensor.cpp' || echo '$(srcdir)/'`SoSensor.cpp
+
+libsensors_la-SoSensorManager.o: SoSensorManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoSensorManager.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoSensorManager.o `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo" "$(DEPDIR)/libsensors_la-SoSensorManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensorManager.cpp' object='libsensors_la-SoSensorManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoSensorManager.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoSensorManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoSensorManager.o `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp
+
+libsensors_la-SoSensorManager.obj: SoSensorManager.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoSensorManager.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoSensorManager.obj `if test -f 'SoSensorManager.cpp'; then $(CYGPATH_W) 'SoSensorManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensorManager.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo" "$(DEPDIR)/libsensors_la-SoSensorManager.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensorManager.cpp' object='libsensors_la-SoSensorManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoSensorManager.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoSensorManager.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoSensorManager.obj `if test -f 'SoSensorManager.cpp'; then $(CYGPATH_W) 'SoSensorManager.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSensorManager.cpp'; fi`
+
+libsensors_la-SoSensorManager.lo: SoSensorManager.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoSensorManager.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoSensorManager.lo `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo" "$(DEPDIR)/libsensors_la-SoSensorManager.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoSensorManager.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSensorManager.cpp' object='libsensors_la-SoSensorManager.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoSensorManager.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoSensorManager.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoSensorManager.lo `test -f 'SoSensorManager.cpp' || echo '$(srcdir)/'`SoSensorManager.cpp
+
+libsensors_la-SoTimerQueueSensor.o: SoTimerQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoTimerQueueSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoTimerQueueSensor.o `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo" "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerQueueSensor.cpp' object='libsensors_la-SoTimerQueueSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoTimerQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoTimerQueueSensor.o `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp
+
+libsensors_la-SoTimerQueueSensor.obj: SoTimerQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoTimerQueueSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoTimerQueueSensor.obj `if test -f 'SoTimerQueueSensor.cpp'; then $(CYGPATH_W) 'SoTimerQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerQueueSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo" "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerQueueSensor.cpp' object='libsensors_la-SoTimerQueueSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoTimerQueueSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoTimerQueueSensor.obj `if test -f 'SoTimerQueueSensor.cpp'; then $(CYGPATH_W) 'SoTimerQueueSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerQueueSensor.cpp'; fi`
+
+libsensors_la-SoTimerQueueSensor.lo: SoTimerQueueSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoTimerQueueSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoTimerQueueSensor.lo `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo" "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerQueueSensor.cpp' object='libsensors_la-SoTimerQueueSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoTimerQueueSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoTimerQueueSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoTimerQueueSensor.lo `test -f 'SoTimerQueueSensor.cpp' || echo '$(srcdir)/'`SoTimerQueueSensor.cpp
+
+libsensors_la-SoTimerSensor.o: SoTimerSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoTimerSensor.o -MD -MP -MF "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoTimerSensor.o `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo" "$(DEPDIR)/libsensors_la-SoTimerSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerSensor.cpp' object='libsensors_la-SoTimerSensor.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoTimerSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoTimerSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoTimerSensor.o `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp
+
+libsensors_la-SoTimerSensor.obj: SoTimerSensor.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoTimerSensor.obj -MD -MP -MF "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoTimerSensor.obj `if test -f 'SoTimerSensor.cpp'; then $(CYGPATH_W) 'SoTimerSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerSensor.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo" "$(DEPDIR)/libsensors_la-SoTimerSensor.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerSensor.cpp' object='libsensors_la-SoTimerSensor.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoTimerSensor.Po' tmpdepfile='$(DEPDIR)/libsensors_la-SoTimerSensor.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoTimerSensor.obj `if test -f 'SoTimerSensor.cpp'; then $(CYGPATH_W) 'SoTimerSensor.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTimerSensor.cpp'; fi`
+
+libsensors_la-SoTimerSensor.lo: SoTimerSensor.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -MT libsensors_la-SoTimerSensor.lo -MD -MP -MF "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libsensors_la-SoTimerSensor.lo `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo" "$(DEPDIR)/libsensors_la-SoTimerSensor.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libsensors_la-SoTimerSensor.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTimerSensor.cpp' object='libsensors_la-SoTimerSensor.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libsensors_la-SoTimerSensor.Plo' tmpdepfile='$(DEPDIR)/libsensors_la-SoTimerSensor.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsensors_la_CXXFLAGS) $(CXXFLAGS) -c -o libsensors_la-SoTimerSensor.lo `test -f 'SoTimerSensor.cpp' || echo '$(srcdir)/'`SoTimerSensor.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

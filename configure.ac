@@ -389,7 +389,7 @@ else
   SIM_AC_CONFIGURATION_SETTING([Generate Java wrapper], [No (default)])
 fi
 
- *******************************************************************
+# *******************************************************************
 # See if we should build with 3ds import capabilities.
 
 sim_ac_enable_3ds_import=false
