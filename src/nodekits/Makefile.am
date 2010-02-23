@@ -80,9 +80,6 @@ libnodekits_la_SOURCES = $(BuildSources)
 EXTRA_libnodekits_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libnodekits_la_CXXFLAGS = $(AM_CXXFLAGS)
-libnodekits_la_CFLAGS = $(AM_CFLAGS)
-
 libnodekits@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -90,9 +87,6 @@ EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 nodekits_lst_SOURCES = $(BuildSources)
 EXTRA_nodekits_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-nodekits_lst_CXXFLAGS = $(AM_CXXFLAGS)
-nodekits_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 nodekits.lst: Makefile $(nodekits_lst_OBJECTS)

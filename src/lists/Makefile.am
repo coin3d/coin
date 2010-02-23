@@ -82,9 +82,6 @@ liblists_la_SOURCES = $(BuildSources)
 EXTRA_liblists_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-liblists_la_CXXFLAGS = $(AM_CXXFLAGS)
-liblists_la_CFLAGS = $(AM_CFLAGS)
-
 liblists@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -92,9 +89,6 @@ EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
 lists_lst_SOURCES = $(BuildSources)
 EXTRA_lists_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-lists_lst_CXXFLAGS = $(AM_CXXFLAGS)
-lists_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 lists.lst: Makefile $(lists_lst_OBJECTS)

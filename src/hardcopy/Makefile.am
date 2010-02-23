@@ -71,9 +71,6 @@ libhardcopy_la_SOURCES = $(BuildSources)
 EXTRA_libhardcopy_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libhardcopy_la_CXXFLAGS = $(AM_CXXFLAGS)
-libhardcopy_la_CFLAGS = $(AM_CFLAGS)
-
 libhardcopy@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -81,9 +78,6 @@ EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES = \
 hardcopy_lst_SOURCES = $(BuildSources)
 EXTRA_hardcopy_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-hardcopy_lst_CXXFLAGS = $(AM_CXXFLAGS)
-hardcopy_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 hardcopy.lst: Makefile $(hardcopy_lst_OBJECTS)

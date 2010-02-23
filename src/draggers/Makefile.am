@@ -88,9 +88,6 @@ libdraggers_la_SOURCES = $(BuildSources)
 EXTRA_libdraggers_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libdraggers_la_CXXFLAGS = $(AM_CXXFLAGS)
-libdraggers_la_CFLAGS = $(AM_CFLAGS)
-
 libdraggers@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -98,9 +95,6 @@ EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 draggers_lst_SOURCES = $(BuildSources)
 EXTRA_draggers_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-draggers_lst_CXXFLAGS = $(AM_CXXFLAGS)
-draggers_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 draggers.lst: Makefile $(draggers_lst_OBJECTS)

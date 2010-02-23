@@ -78,9 +78,6 @@ libformat3ds_la_SOURCES = $(BuildSources)
 EXTRA_libformat3ds_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libformat3ds_la_CXXFLAGS = $(AM_CXXFLAGS)
-libformat3ds_la_CFLAGS = $(AM_CFLAGS)
-
 libformat3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -88,9 +85,6 @@ EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES = \
 format3ds_lst_SOURCES = $(BuildSources)
 EXTRA_format3ds_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-format3ds_lst_CXXFLAGS = $(AM_CXXFLAGS)
-format3ds_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 format3ds.lst: Makefile $(format3ds_lst_OBJECTS)

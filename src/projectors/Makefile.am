@@ -75,9 +75,6 @@ libprojectors_la_SOURCES = $(BuildSources)
 EXTRA_libprojectors_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libprojectors_la_CXXFLAGS = $(AM_CXXFLAGS)
-libprojectors_la_CFLAGS = $(AM_CFLAGS)
-
 libprojectors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -85,9 +82,6 @@ EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES = \
 projectors_lst_SOURCES = $(BuildSources)
 EXTRA_projectors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-projectors_lst_CXXFLAGS = $(AM_CXXFLAGS)
-projectors_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 projectors.lst: Makefile $(projectors_lst_OBJECTS)

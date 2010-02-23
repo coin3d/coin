@@ -86,9 +86,6 @@ libactions_la_SOURCES = $(BuildSources)
 EXTRA_libactions_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libactions_la_CXXFLAGS = $(AM_CXXFLAGS)
-libactions_la_CFLAGS = $(AM_CFLAGS)
-
 libactions@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -96,9 +93,6 @@ EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES = \
 actions_lst_SOURCES = $(BuildSources)
 EXTRA_actions_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-actions_lst_CXXFLAGS = $(AM_CXXFLAGS)
-actions_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 actions.lst: Makefile $(actions_lst_OBJECTS)
