@@ -77,9 +77,6 @@ libmanips_la_SOURCES = $(BuildSources)
 EXTRA_libmanips_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libmanips_la_CXXFLAGS = $(AM_CXXFLAGS)
-libmanips_la_CFLAGS = $(AM_CFLAGS)
-
 libmanips@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -87,9 +84,6 @@ EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 manips_lst_SOURCES = $(BuildSources)
 EXTRA_manips_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-manips_lst_CXXFLAGS = $(AM_CXXFLAGS)
-manips_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 manips.lst: Makefile $(manips_lst_OBJECTS)

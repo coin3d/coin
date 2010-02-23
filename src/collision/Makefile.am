@@ -67,9 +67,6 @@ libcollision_la_SOURCES = $(BuildSources)
 EXTRA_libcollision_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libcollision_la_CXXFLAGS = $(AM_CXXFLAGS)
-libcollision_la_CFLAGS = $(AM_CFLAGS)
-
 libcollision@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libcollision@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -77,9 +74,6 @@ EXTRA_libcollision@SUFFIX@LINKHACK_la_SOURCES = \
 collision_lst_SOURCES = $(BuildSources)
 EXTRA_collision_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-collision_lst_CXXFLAGS = $(AM_CXXFLAGS)
-collision_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 collision.lst: Makefile $(collision_lst_OBJECTS)

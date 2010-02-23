@@ -143,10 +143,6 @@ endif
 PrivateHeaders =
 
 libCoin@SUFFIX@_la_SOURCES = $(RegularSources)
-
-libCoin@SUFFIX@_la_CFLAGS = $(AM_CFLAGS)
-libCoin@SUFFIX@_la_CXXFLAGS = $(AM_CXXFLAGS)
-
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = $(RegularSources)
 
 EXTRA_libCoin@SUFFIX@_la_SOURCES = $(PrivateHeaders)

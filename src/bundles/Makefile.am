@@ -69,9 +69,6 @@ libbundles_la_SOURCES = $(BuildSources)
 EXTRA_libbundles_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libbundles_la_CXXFLAGS = $(AM_CXXFLAGS)
-libbundles_la_CFLAGS = $(AM_CFLAGS)
-
 libbundles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -79,9 +76,6 @@ EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 bundles_lst_SOURCES = $(BuildSources)
 EXTRA_bundles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-bundles_lst_CXXFLAGS = $(AM_CXXFLAGS)
-bundles_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 bundles.lst: Makefile $(bundles_lst_OBJECTS)

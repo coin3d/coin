@@ -80,9 +80,6 @@ libexpat_la_SOURCES = $(BuildSources)
 EXTRA_libexpat_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libexpat_la_CXXFLAGS = $(AM_CXXFLAGS)
-libexpat_la_CFLAGS = $(AM_CFLAGS)
-
 libexpat@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -90,9 +87,6 @@ EXTRA_libexpat@SUFFIX@LINKHACK_la_SOURCES = \
 expat_lst_SOURCES = $(BuildSources)
 EXTRA_expat_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-expat_lst_CXXFLAGS = $(AM_CXXFLAGS)
-expat_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 expat.lst: Makefile $(expat_lst_OBJECTS)

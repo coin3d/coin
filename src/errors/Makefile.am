@@ -70,9 +70,6 @@ liberrors_la_SOURCES = $(BuildSources)
 EXTRA_liberrors_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-liberrors_la_CXXFLAGS = $(AM_CXXFLAGS)
-liberrors_la_CFLAGS = $(AM_CFLAGS)
-
 liberrors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -80,9 +77,6 @@ EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES = \
 errors_lst_SOURCES = $(BuildSources)
 EXTRA_errors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-errors_lst_CXXFLAGS = $(AM_CXXFLAGS)
-errors_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 errors.lst: Makefile $(errors_lst_OBJECTS)

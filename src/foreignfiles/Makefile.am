@@ -78,9 +78,6 @@ libforeignfiles_la_SOURCES = $(BuildSources)
 EXTRA_libforeignfiles_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libforeignfiles_la_CXXFLAGS = $(AM_CXXFLAGS)
-libforeignfiles_la_CFLAGS = $(AM_CFLAGS)
-
 libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -88,9 +85,6 @@ EXTRA_libforeignfiles@SUFFIX@LINKHACK_la_SOURCES = \
 foreignfiles_lst_SOURCES = $(BuildSources)
 EXTRA_foreignfiles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-foreignfiles_lst_CXXFLAGS = $(AM_CXXFLAGS)
-foreignfiles_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 foreignfiles.lst: Makefile $(foreignfiles_lst_OBJECTS)

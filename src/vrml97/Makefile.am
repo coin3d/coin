@@ -138,9 +138,6 @@ libvrml97_la_SOURCES = $(BuildSources)
 EXTRA_libvrml97_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libvrml97_la_CXXFLAGS = $(AM_CXXFLAGS)
-libvrml97_la_CFLAGS = $(AM_CFLAGS)
-
 libvrml97@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -148,9 +145,6 @@ EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES = \
 vrml97_lst_SOURCES = $(BuildSources)
 EXTRA_vrml97_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-vrml97_lst_CXXFLAGS = $(AM_CXXFLAGS)
-vrml97_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 vrml97.lst: Makefile $(vrml97_lst_OBJECTS)

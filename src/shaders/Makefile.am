@@ -99,9 +99,6 @@ libshaders_la_SOURCES = $(BuildSources)
 EXTRA_libshaders_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libshaders_la_CXXFLAGS = $(AM_CXXFLAGS)
-libshaders_la_CFLAGS = $(AM_CFLAGS)
-
 libshaders@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -109,9 +106,6 @@ EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES = \
 shaders_lst_SOURCES = $(BuildSources)
 EXTRA_shaders_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-shaders_lst_CXXFLAGS = $(AM_CXXFLAGS)
-shaders_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 shaders.lst: Makefile $(shaders_lst_OBJECTS)

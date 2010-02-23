@@ -73,9 +73,6 @@ libdetails_la_SOURCES = $(BuildSources)
 EXTRA_libdetails_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libdetails_la_CXXFLAGS = $(AM_CXXFLAGS)
-libdetails_la_CFLAGS = $(AM_CFLAGS)
-
 libdetails@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -83,9 +80,6 @@ EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES = \
 details_lst_SOURCES = $(BuildSources)
 EXTRA_details_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
-
-details_lst_CXXFLAGS = $(AM_CXXFLAGS)
-details_lst_CFLAGS = $(AM_CFLAGS)
 
 # this rule causes a make warning, so we remove it when it is not in use
 details.lst: Makefile $(details_lst_OBJECTS)
