@@ -328,6 +328,9 @@ EXTRA_libupgraders_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libupgraders_la_CXXFLAGS = $(AM_CXXFLAGS)
+libupgraders_la_CFLAGS = $(AM_CFLAGS)
+
 libupgraders@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libupgraders@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -337,6 +340,9 @@ upgraders_lst_SOURCES = $(BuildSources)
 EXTRA_upgraders_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+upgraders_lst_CXXFLAGS = $(AM_CXXFLAGS)
+upgraders_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/upgraders
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -349,9 +355,10 @@ upgraders_lst_AR = $(AR) cru
 upgraders_lst_LIBADD =
 am__upgraders_lst_SOURCES_DIST = SoUpgrader.cpp SoPackedColorV20.cpp \
 	SoShapeHintsV10.cpp all-upgraders-cpp.cpp
-am__objects_1 = all-upgraders-cpp.$(OBJEXT)
-am__objects_2 = SoUpgrader.$(OBJEXT) SoPackedColorV20.$(OBJEXT) \
-	SoShapeHintsV10.$(OBJEXT)
+am__objects_1 = upgraders_lst-all-upgraders-cpp.$(OBJEXT)
+am__objects_2 = upgraders_lst-SoUpgrader.$(OBJEXT) \
+	upgraders_lst-SoPackedColorV20.$(OBJEXT) \
+	upgraders_lst-SoShapeHintsV10.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_upgraders_lst_OBJECTS = $(am__objects_3)
@@ -365,8 +372,10 @@ libupgraders_la_LDFLAGS =
 libupgraders_la_LIBADD =
 am__libupgraders_la_SOURCES_DIST = SoUpgrader.cpp SoPackedColorV20.cpp \
 	SoShapeHintsV10.cpp all-upgraders-cpp.cpp
-am__objects_6 = all-upgraders-cpp.lo
-am__objects_7 = SoUpgrader.lo SoPackedColorV20.lo SoShapeHintsV10.lo
+am__objects_6 = libupgraders_la-all-upgraders-cpp.lo
+am__objects_7 = libupgraders_la-SoUpgrader.lo \
+	libupgraders_la-SoPackedColorV20.lo \
+	libupgraders_la-SoShapeHintsV10.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libupgraders_la_OBJECTS = $(am__objects_8)
@@ -378,7 +387,11 @@ libupgraders@SUFFIX@LINKHACK_la_LDFLAGS =
 libupgraders@SUFFIX@LINKHACK_la_LIBADD =
 am__libupgraders@SUFFIX@LINKHACK_la_SOURCES_DIST = SoUpgrader.cpp \
 	SoPackedColorV20.cpp SoShapeHintsV10.cpp all-upgraders-cpp.cpp
-am_libupgraders@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-upgraders-cpp.lo
+am__objects_11 = SoUpgrader.lo SoPackedColorV20.lo SoShapeHintsV10.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libupgraders@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libupgraders@SUFFIX@LINKHACK_la_SOURCES_DIST = SoUpgrader.h \
 	SoPackedColorV20.h SoShapeHintsV10.h all-upgraders-cpp.cpp \
 	SoUpgrader.cpp SoPackedColorV20.cpp SoShapeHintsV10.cpp
@@ -387,13 +400,17 @@ libupgraders@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoPackedColorV20.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPackedColorV20.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoShapeHintsV10.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoShapeHintsV10.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/libupgraders_la-SoPackedColorV20.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libupgraders_la-SoUpgrader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/upgraders_lst-SoPackedColorV20.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/upgraders_lst-SoUpgrader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -426,7 +443,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/upgraders/Makefile
+	  $(AUTOMAKE) --gnu  src/upgraders/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -481,13 +498,17 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPackedColorV20.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPackedColorV20.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShapeHintsV10.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShapeHintsV10.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUpgrader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUpgrader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libupgraders_la-SoPackedColorV20.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libupgraders_la-SoUpgrader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/upgraders_lst-SoPackedColorV20.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/upgraders_lst-SoUpgrader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -524,6 +545,270 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+upgraders_lst-all-upgraders-cpp.o: all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-all-upgraders-cpp.o -MD -MP -MF "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-all-upgraders-cpp.o `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo" "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-upgraders-cpp.cpp' object='upgraders_lst-all-upgraders-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-all-upgraders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-all-upgraders-cpp.o `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp
+
+upgraders_lst-all-upgraders-cpp.obj: all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-all-upgraders-cpp.obj -MD -MP -MF "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-all-upgraders-cpp.obj `if test -f 'all-upgraders-cpp.cpp'; then $(CYGPATH_W) 'all-upgraders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-upgraders-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo" "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-upgraders-cpp.cpp' object='upgraders_lst-all-upgraders-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-all-upgraders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-all-upgraders-cpp.obj `if test -f 'all-upgraders-cpp.cpp'; then $(CYGPATH_W) 'all-upgraders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-upgraders-cpp.cpp'; fi`
+
+upgraders_lst-all-upgraders-cpp.lo: all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-all-upgraders-cpp.lo -MD -MP -MF "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-all-upgraders-cpp.lo `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo" "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-upgraders-cpp.cpp' object='upgraders_lst-all-upgraders-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-all-upgraders-cpp.Plo' tmpdepfile='$(DEPDIR)/upgraders_lst-all-upgraders-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-all-upgraders-cpp.lo `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp
+
+upgraders_lst-SoUpgrader.o: SoUpgrader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoUpgrader.o -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoUpgrader.o `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo" "$(DEPDIR)/upgraders_lst-SoUpgrader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoUpgrader.cpp' object='upgraders_lst-SoUpgrader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoUpgrader.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-SoUpgrader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoUpgrader.o `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp
+
+upgraders_lst-SoUpgrader.obj: SoUpgrader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoUpgrader.obj -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoUpgrader.obj `if test -f 'SoUpgrader.cpp'; then $(CYGPATH_W) 'SoUpgrader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoUpgrader.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo" "$(DEPDIR)/upgraders_lst-SoUpgrader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoUpgrader.cpp' object='upgraders_lst-SoUpgrader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoUpgrader.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-SoUpgrader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoUpgrader.obj `if test -f 'SoUpgrader.cpp'; then $(CYGPATH_W) 'SoUpgrader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoUpgrader.cpp'; fi`
+
+upgraders_lst-SoUpgrader.lo: SoUpgrader.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoUpgrader.lo -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoUpgrader.lo `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo" "$(DEPDIR)/upgraders_lst-SoUpgrader.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoUpgrader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoUpgrader.cpp' object='upgraders_lst-SoUpgrader.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoUpgrader.Plo' tmpdepfile='$(DEPDIR)/upgraders_lst-SoUpgrader.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoUpgrader.lo `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp
+
+upgraders_lst-SoPackedColorV20.o: SoPackedColorV20.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoPackedColorV20.o -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoPackedColorV20.o `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo" "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPackedColorV20.cpp' object='upgraders_lst-SoPackedColorV20.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoPackedColorV20.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-SoPackedColorV20.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoPackedColorV20.o `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp
+
+upgraders_lst-SoPackedColorV20.obj: SoPackedColorV20.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoPackedColorV20.obj -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoPackedColorV20.obj `if test -f 'SoPackedColorV20.cpp'; then $(CYGPATH_W) 'SoPackedColorV20.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPackedColorV20.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo" "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPackedColorV20.cpp' object='upgraders_lst-SoPackedColorV20.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoPackedColorV20.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-SoPackedColorV20.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoPackedColorV20.obj `if test -f 'SoPackedColorV20.cpp'; then $(CYGPATH_W) 'SoPackedColorV20.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPackedColorV20.cpp'; fi`
+
+upgraders_lst-SoPackedColorV20.lo: SoPackedColorV20.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoPackedColorV20.lo -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoPackedColorV20.lo `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo" "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoPackedColorV20.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPackedColorV20.cpp' object='upgraders_lst-SoPackedColorV20.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoPackedColorV20.Plo' tmpdepfile='$(DEPDIR)/upgraders_lst-SoPackedColorV20.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoPackedColorV20.lo `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp
+
+upgraders_lst-SoShapeHintsV10.o: SoShapeHintsV10.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoShapeHintsV10.o -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoShapeHintsV10.o `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo" "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeHintsV10.cpp' object='upgraders_lst-SoShapeHintsV10.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-SoShapeHintsV10.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoShapeHintsV10.o `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp
+
+upgraders_lst-SoShapeHintsV10.obj: SoShapeHintsV10.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoShapeHintsV10.obj -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoShapeHintsV10.obj `if test -f 'SoShapeHintsV10.cpp'; then $(CYGPATH_W) 'SoShapeHintsV10.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeHintsV10.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo" "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeHintsV10.cpp' object='upgraders_lst-SoShapeHintsV10.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Po' tmpdepfile='$(DEPDIR)/upgraders_lst-SoShapeHintsV10.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoShapeHintsV10.obj `if test -f 'SoShapeHintsV10.cpp'; then $(CYGPATH_W) 'SoShapeHintsV10.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeHintsV10.cpp'; fi`
+
+upgraders_lst-SoShapeHintsV10.lo: SoShapeHintsV10.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -MT upgraders_lst-SoShapeHintsV10.lo -MD -MP -MF "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o upgraders_lst-SoShapeHintsV10.lo `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo" "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeHintsV10.cpp' object='upgraders_lst-SoShapeHintsV10.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/upgraders_lst-SoShapeHintsV10.Plo' tmpdepfile='$(DEPDIR)/upgraders_lst-SoShapeHintsV10.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(upgraders_lst_CXXFLAGS) $(CXXFLAGS) -c -o upgraders_lst-SoShapeHintsV10.lo `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp
+
+libupgraders_la-all-upgraders-cpp.o: all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-all-upgraders-cpp.o -MD -MP -MF "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-all-upgraders-cpp.o `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo" "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-upgraders-cpp.cpp' object='libupgraders_la-all-upgraders-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-all-upgraders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-all-upgraders-cpp.o `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp
+
+libupgraders_la-all-upgraders-cpp.obj: all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-all-upgraders-cpp.obj -MD -MP -MF "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-all-upgraders-cpp.obj `if test -f 'all-upgraders-cpp.cpp'; then $(CYGPATH_W) 'all-upgraders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-upgraders-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo" "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-upgraders-cpp.cpp' object='libupgraders_la-all-upgraders-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-all-upgraders-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-all-upgraders-cpp.obj `if test -f 'all-upgraders-cpp.cpp'; then $(CYGPATH_W) 'all-upgraders-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-upgraders-cpp.cpp'; fi`
+
+libupgraders_la-all-upgraders-cpp.lo: all-upgraders-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-all-upgraders-cpp.lo -MD -MP -MF "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-all-upgraders-cpp.lo `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo" "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-upgraders-cpp.cpp' object='libupgraders_la-all-upgraders-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-all-upgraders-cpp.Plo' tmpdepfile='$(DEPDIR)/libupgraders_la-all-upgraders-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-all-upgraders-cpp.lo `test -f 'all-upgraders-cpp.cpp' || echo '$(srcdir)/'`all-upgraders-cpp.cpp
+
+libupgraders_la-SoUpgrader.o: SoUpgrader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoUpgrader.o -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoUpgrader.o `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo" "$(DEPDIR)/libupgraders_la-SoUpgrader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoUpgrader.cpp' object='libupgraders_la-SoUpgrader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoUpgrader.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-SoUpgrader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoUpgrader.o `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp
+
+libupgraders_la-SoUpgrader.obj: SoUpgrader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoUpgrader.obj -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoUpgrader.obj `if test -f 'SoUpgrader.cpp'; then $(CYGPATH_W) 'SoUpgrader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoUpgrader.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo" "$(DEPDIR)/libupgraders_la-SoUpgrader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoUpgrader.cpp' object='libupgraders_la-SoUpgrader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoUpgrader.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-SoUpgrader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoUpgrader.obj `if test -f 'SoUpgrader.cpp'; then $(CYGPATH_W) 'SoUpgrader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoUpgrader.cpp'; fi`
+
+libupgraders_la-SoUpgrader.lo: SoUpgrader.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoUpgrader.lo -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoUpgrader.lo `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo" "$(DEPDIR)/libupgraders_la-SoUpgrader.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoUpgrader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoUpgrader.cpp' object='libupgraders_la-SoUpgrader.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoUpgrader.Plo' tmpdepfile='$(DEPDIR)/libupgraders_la-SoUpgrader.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoUpgrader.lo `test -f 'SoUpgrader.cpp' || echo '$(srcdir)/'`SoUpgrader.cpp
+
+libupgraders_la-SoPackedColorV20.o: SoPackedColorV20.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoPackedColorV20.o -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoPackedColorV20.o `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo" "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPackedColorV20.cpp' object='libupgraders_la-SoPackedColorV20.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoPackedColorV20.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-SoPackedColorV20.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoPackedColorV20.o `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp
+
+libupgraders_la-SoPackedColorV20.obj: SoPackedColorV20.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoPackedColorV20.obj -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoPackedColorV20.obj `if test -f 'SoPackedColorV20.cpp'; then $(CYGPATH_W) 'SoPackedColorV20.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPackedColorV20.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo" "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPackedColorV20.cpp' object='libupgraders_la-SoPackedColorV20.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoPackedColorV20.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-SoPackedColorV20.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoPackedColorV20.obj `if test -f 'SoPackedColorV20.cpp'; then $(CYGPATH_W) 'SoPackedColorV20.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPackedColorV20.cpp'; fi`
+
+libupgraders_la-SoPackedColorV20.lo: SoPackedColorV20.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoPackedColorV20.lo -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoPackedColorV20.lo `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo" "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoPackedColorV20.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPackedColorV20.cpp' object='libupgraders_la-SoPackedColorV20.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoPackedColorV20.Plo' tmpdepfile='$(DEPDIR)/libupgraders_la-SoPackedColorV20.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoPackedColorV20.lo `test -f 'SoPackedColorV20.cpp' || echo '$(srcdir)/'`SoPackedColorV20.cpp
+
+libupgraders_la-SoShapeHintsV10.o: SoShapeHintsV10.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoShapeHintsV10.o -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoShapeHintsV10.o `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo" "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeHintsV10.cpp' object='libupgraders_la-SoShapeHintsV10.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-SoShapeHintsV10.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoShapeHintsV10.o `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp
+
+libupgraders_la-SoShapeHintsV10.obj: SoShapeHintsV10.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoShapeHintsV10.obj -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoShapeHintsV10.obj `if test -f 'SoShapeHintsV10.cpp'; then $(CYGPATH_W) 'SoShapeHintsV10.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeHintsV10.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo" "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeHintsV10.cpp' object='libupgraders_la-SoShapeHintsV10.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Po' tmpdepfile='$(DEPDIR)/libupgraders_la-SoShapeHintsV10.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoShapeHintsV10.obj `if test -f 'SoShapeHintsV10.cpp'; then $(CYGPATH_W) 'SoShapeHintsV10.cpp'; else $(CYGPATH_W) '$(srcdir)/SoShapeHintsV10.cpp'; fi`
+
+libupgraders_la-SoShapeHintsV10.lo: SoShapeHintsV10.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -MT libupgraders_la-SoShapeHintsV10.lo -MD -MP -MF "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libupgraders_la-SoShapeHintsV10.lo `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo" "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoShapeHintsV10.cpp' object='libupgraders_la-SoShapeHintsV10.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libupgraders_la-SoShapeHintsV10.Plo' tmpdepfile='$(DEPDIR)/libupgraders_la-SoShapeHintsV10.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libupgraders_la_CXXFLAGS) $(CXXFLAGS) -c -o libupgraders_la-SoShapeHintsV10.lo `test -f 'SoShapeHintsV10.cpp' || echo '$(srcdir)/'`SoShapeHintsV10.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

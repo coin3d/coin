@@ -339,6 +339,9 @@ EXTRA_liblists_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+liblists_la_CXXFLAGS = $(AM_CXXFLAGS)
+liblists_la_CFLAGS = $(AM_CFLAGS)
+
 liblists@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -348,6 +351,9 @@ lists_lst_SOURCES = $(BuildSources)
 EXTRA_lists_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+lists_lst_CXXFLAGS = $(AM_CXXFLAGS)
+lists_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/lists
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -365,15 +371,22 @@ am__lists_lst_SOURCES_DIST = SbList.cpp SbPList.cpp SbIntList.cpp \
 	SoEngineOutputList.cpp SoFieldList.cpp SoNodeList.cpp \
 	SoPathList.cpp SoPickedPointList.cpp SoTypeList.cpp \
 	all-lists-cpp.cpp
-am__objects_1 = all-lists-cpp.$(OBJEXT)
-am__objects_2 = SbList.$(OBJEXT) SbPList.$(OBJEXT) SbIntList.$(OBJEXT) \
-	SbVec3fList.$(OBJEXT) SbStringList.$(OBJEXT) \
-	SoActionMethodList.$(OBJEXT) SoAuditorList.$(OBJEXT) \
-	SoBaseList.$(OBJEXT) SoCallbackList.$(OBJEXT) \
-	SoDetailList.$(OBJEXT) SoEnabledElementsList.$(OBJEXT) \
-	SoEngineList.$(OBJEXT) SoEngineOutputList.$(OBJEXT) \
-	SoFieldList.$(OBJEXT) SoNodeList.$(OBJEXT) SoPathList.$(OBJEXT) \
-	SoPickedPointList.$(OBJEXT) SoTypeList.$(OBJEXT)
+am__objects_1 = lists_lst-all-lists-cpp.$(OBJEXT)
+am__objects_2 = lists_lst-SbList.$(OBJEXT) lists_lst-SbPList.$(OBJEXT) \
+	lists_lst-SbIntList.$(OBJEXT) lists_lst-SbVec3fList.$(OBJEXT) \
+	lists_lst-SbStringList.$(OBJEXT) \
+	lists_lst-SoActionMethodList.$(OBJEXT) \
+	lists_lst-SoAuditorList.$(OBJEXT) \
+	lists_lst-SoBaseList.$(OBJEXT) \
+	lists_lst-SoCallbackList.$(OBJEXT) \
+	lists_lst-SoDetailList.$(OBJEXT) \
+	lists_lst-SoEnabledElementsList.$(OBJEXT) \
+	lists_lst-SoEngineList.$(OBJEXT) \
+	lists_lst-SoEngineOutputList.$(OBJEXT) \
+	lists_lst-SoFieldList.$(OBJEXT) lists_lst-SoNodeList.$(OBJEXT) \
+	lists_lst-SoPathList.$(OBJEXT) \
+	lists_lst-SoPickedPointList.$(OBJEXT) \
+	lists_lst-SoTypeList.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_lists_lst_OBJECTS = $(am__objects_3)
@@ -396,13 +409,17 @@ am__liblists_la_SOURCES_DIST = SbList.cpp SbPList.cpp SbIntList.cpp \
 	SoEngineOutputList.cpp SoFieldList.cpp SoNodeList.cpp \
 	SoPathList.cpp SoPickedPointList.cpp SoTypeList.cpp \
 	all-lists-cpp.cpp
-am__objects_6 = all-lists-cpp.lo
-am__objects_7 = SbList.lo SbPList.lo SbIntList.lo SbVec3fList.lo \
-	SbStringList.lo SoActionMethodList.lo SoAuditorList.lo \
-	SoBaseList.lo SoCallbackList.lo SoDetailList.lo \
-	SoEnabledElementsList.lo SoEngineList.lo SoEngineOutputList.lo \
-	SoFieldList.lo SoNodeList.lo SoPathList.lo SoPickedPointList.lo \
-	SoTypeList.lo
+am__objects_6 = liblists_la-all-lists-cpp.lo
+am__objects_7 = liblists_la-SbList.lo liblists_la-SbPList.lo \
+	liblists_la-SbIntList.lo liblists_la-SbVec3fList.lo \
+	liblists_la-SbStringList.lo liblists_la-SoActionMethodList.lo \
+	liblists_la-SoAuditorList.lo liblists_la-SoBaseList.lo \
+	liblists_la-SoCallbackList.lo liblists_la-SoDetailList.lo \
+	liblists_la-SoEnabledElementsList.lo \
+	liblists_la-SoEngineList.lo liblists_la-SoEngineOutputList.lo \
+	liblists_la-SoFieldList.lo liblists_la-SoNodeList.lo \
+	liblists_la-SoPathList.lo liblists_la-SoPickedPointList.lo \
+	liblists_la-SoTypeList.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_liblists_la_OBJECTS = $(am__objects_8)
@@ -423,7 +440,16 @@ am__liblists@SUFFIX@LINKHACK_la_SOURCES_DIST = SbList.cpp SbPList.cpp \
 	SoEngineList.cpp SoEngineOutputList.cpp SoFieldList.cpp \
 	SoNodeList.cpp SoPathList.cpp SoPickedPointList.cpp \
 	SoTypeList.cpp all-lists-cpp.cpp
-am_liblists@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-lists-cpp.lo
+am__objects_11 = SbList.lo SbPList.lo SbIntList.lo SbVec3fList.lo \
+	SbStringList.lo SoActionMethodList.lo SoAuditorList.lo \
+	SoBaseList.lo SoCallbackList.lo SoDetailList.lo \
+	SoEnabledElementsList.lo SoEngineList.lo SoEngineOutputList.lo \
+	SoFieldList.lo SoNodeList.lo SoPathList.lo SoPickedPointList.lo \
+	SoTypeList.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_liblists@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES_DIST = all-lists-cpp.cpp \
 	SbList.cpp SbPList.cpp SbIntList.cpp SbVec3fList.cpp \
 	SbStringList.cpp SoActionMethodList.cpp SoAuditorList.cpp \
@@ -435,41 +461,62 @@ liblists@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_liblists@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbIntList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbIntList.Po ./$(DEPDIR)/SbList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbList.Po ./$(DEPDIR)/SbPList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbPList.Po ./$(DEPDIR)/SbStringList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbStringList.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbIntList.Plo ./$(DEPDIR)/SbList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbPList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SbStringList.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbVec3fList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbVec3fList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoActionMethodList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoActionMethodList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAuditorList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoAuditorList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBaseList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBaseList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCallbackList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCallbackList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDetailList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDetailList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoEnabledElementsList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEnabledElementsList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoEngineList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEngineList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoEngineOutputList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEngineOutputList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFieldList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoFieldList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodeList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNodeList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPathList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPathList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPickedPointList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPickedPointList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTypeList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTypeList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-lists-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-lists-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SbIntList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SbList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SbPList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SbStringList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SbVec3fList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoActionMethodList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoAuditorList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoBaseList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoCallbackList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoDetailList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoEnabledElementsList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoEngineList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoEngineOutputList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoFieldList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoNodeList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoPathList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoPickedPointList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-SoTypeList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/liblists_la-all-lists-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SbIntList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SbList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SbPList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SbStringList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SbVec3fList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoActionMethodList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoAuditorList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoBaseList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoCallbackList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoDetailList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoEnabledElementsList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoEngineList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoEngineOutputList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoFieldList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoNodeList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoPathList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoPickedPointList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-SoTypeList.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lists_lst-all-lists-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -495,7 +542,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/lists/Makefile
+	  $(AUTOMAKE) --gnu  src/lists/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -550,43 +597,62 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbIntList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbIntList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbStringList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbStringList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec3fList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec3fList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoActionMethodList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoActionMethodList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAuditorList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAuditorList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallbackList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallbackList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDetailList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDetailList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEnabledElementsList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEnabledElementsList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineOutputList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineOutputList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPickedPointList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPickedPointList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTypeList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTypeList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-lists-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-lists-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SbIntList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SbList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SbPList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SbStringList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SbVec3fList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoActionMethodList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoAuditorList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoBaseList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoCallbackList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoDetailList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoEnabledElementsList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoEngineList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoEngineOutputList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoFieldList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoNodeList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoPathList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoPickedPointList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-SoTypeList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liblists_la-all-lists-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SbIntList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SbList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SbPList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SbStringList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SbVec3fList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoActionMethodList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoAuditorList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoBaseList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoCallbackList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoDetailList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoEnabledElementsList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoEngineList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoEngineOutputList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoFieldList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoNodeList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoPathList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoPickedPointList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-SoTypeList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lists_lst-all-lists-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -623,6 +689,1260 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+lists_lst-all-lists-cpp.o: all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-all-lists-cpp.o -MD -MP -MF "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-all-lists-cpp.o `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo" "$(DEPDIR)/lists_lst-all-lists-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-lists-cpp.cpp' object='lists_lst-all-lists-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-all-lists-cpp.Po' tmpdepfile='$(DEPDIR)/lists_lst-all-lists-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-all-lists-cpp.o `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp
+
+lists_lst-all-lists-cpp.obj: all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-all-lists-cpp.obj -MD -MP -MF "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-all-lists-cpp.obj `if test -f 'all-lists-cpp.cpp'; then $(CYGPATH_W) 'all-lists-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-lists-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo" "$(DEPDIR)/lists_lst-all-lists-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-lists-cpp.cpp' object='lists_lst-all-lists-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-all-lists-cpp.Po' tmpdepfile='$(DEPDIR)/lists_lst-all-lists-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-all-lists-cpp.obj `if test -f 'all-lists-cpp.cpp'; then $(CYGPATH_W) 'all-lists-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-lists-cpp.cpp'; fi`
+
+lists_lst-all-lists-cpp.lo: all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-all-lists-cpp.lo -MD -MP -MF "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-all-lists-cpp.lo `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo" "$(DEPDIR)/lists_lst-all-lists-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-lists-cpp.cpp' object='lists_lst-all-lists-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-all-lists-cpp.Plo' tmpdepfile='$(DEPDIR)/lists_lst-all-lists-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-all-lists-cpp.lo `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp
+
+lists_lst-SbList.o: SbList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SbList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbList.o `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbList.Tpo" "$(DEPDIR)/lists_lst-SbList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbList.cpp' object='lists_lst-SbList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbList.o `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp
+
+lists_lst-SbList.obj: SbList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SbList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbList.obj `if test -f 'SbList.cpp'; then $(CYGPATH_W) 'SbList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbList.Tpo" "$(DEPDIR)/lists_lst-SbList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbList.cpp' object='lists_lst-SbList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbList.obj `if test -f 'SbList.cpp'; then $(CYGPATH_W) 'SbList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbList.cpp'; fi`
+
+lists_lst-SbList.lo: SbList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SbList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbList.lo `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbList.Tpo" "$(DEPDIR)/lists_lst-SbList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbList.cpp' object='lists_lst-SbList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SbList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbList.lo `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp
+
+lists_lst-SbPList.o: SbPList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbPList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SbPList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbPList.o `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbPList.Tpo" "$(DEPDIR)/lists_lst-SbPList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbPList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPList.cpp' object='lists_lst-SbPList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbPList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbPList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbPList.o `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp
+
+lists_lst-SbPList.obj: SbPList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbPList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SbPList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbPList.obj `if test -f 'SbPList.cpp'; then $(CYGPATH_W) 'SbPList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbPList.Tpo" "$(DEPDIR)/lists_lst-SbPList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbPList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPList.cpp' object='lists_lst-SbPList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbPList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbPList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbPList.obj `if test -f 'SbPList.cpp'; then $(CYGPATH_W) 'SbPList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPList.cpp'; fi`
+
+lists_lst-SbPList.lo: SbPList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbPList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SbPList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbPList.lo `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbPList.Tpo" "$(DEPDIR)/lists_lst-SbPList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbPList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPList.cpp' object='lists_lst-SbPList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbPList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SbPList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbPList.lo `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp
+
+lists_lst-SbIntList.o: SbIntList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbIntList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SbIntList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbIntList.o `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbIntList.Tpo" "$(DEPDIR)/lists_lst-SbIntList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbIntList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbIntList.cpp' object='lists_lst-SbIntList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbIntList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbIntList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbIntList.o `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp
+
+lists_lst-SbIntList.obj: SbIntList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbIntList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SbIntList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbIntList.obj `if test -f 'SbIntList.cpp'; then $(CYGPATH_W) 'SbIntList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbIntList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbIntList.Tpo" "$(DEPDIR)/lists_lst-SbIntList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbIntList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbIntList.cpp' object='lists_lst-SbIntList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbIntList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbIntList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbIntList.obj `if test -f 'SbIntList.cpp'; then $(CYGPATH_W) 'SbIntList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbIntList.cpp'; fi`
+
+lists_lst-SbIntList.lo: SbIntList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbIntList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SbIntList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbIntList.lo `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbIntList.Tpo" "$(DEPDIR)/lists_lst-SbIntList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbIntList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbIntList.cpp' object='lists_lst-SbIntList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbIntList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SbIntList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbIntList.lo `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp
+
+lists_lst-SbVec3fList.o: SbVec3fList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbVec3fList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SbVec3fList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbVec3fList.o `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbVec3fList.Tpo" "$(DEPDIR)/lists_lst-SbVec3fList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbVec3fList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbVec3fList.cpp' object='lists_lst-SbVec3fList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbVec3fList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbVec3fList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbVec3fList.o `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp
+
+lists_lst-SbVec3fList.obj: SbVec3fList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbVec3fList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SbVec3fList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbVec3fList.obj `if test -f 'SbVec3fList.cpp'; then $(CYGPATH_W) 'SbVec3fList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbVec3fList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbVec3fList.Tpo" "$(DEPDIR)/lists_lst-SbVec3fList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbVec3fList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbVec3fList.cpp' object='lists_lst-SbVec3fList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbVec3fList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbVec3fList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbVec3fList.obj `if test -f 'SbVec3fList.cpp'; then $(CYGPATH_W) 'SbVec3fList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbVec3fList.cpp'; fi`
+
+lists_lst-SbVec3fList.lo: SbVec3fList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbVec3fList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SbVec3fList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbVec3fList.lo `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbVec3fList.Tpo" "$(DEPDIR)/lists_lst-SbVec3fList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbVec3fList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbVec3fList.cpp' object='lists_lst-SbVec3fList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbVec3fList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SbVec3fList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbVec3fList.lo `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp
+
+lists_lst-SbStringList.o: SbStringList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbStringList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SbStringList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbStringList.o `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbStringList.Tpo" "$(DEPDIR)/lists_lst-SbStringList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbStringList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbStringList.cpp' object='lists_lst-SbStringList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbStringList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbStringList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbStringList.o `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp
+
+lists_lst-SbStringList.obj: SbStringList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbStringList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SbStringList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbStringList.obj `if test -f 'SbStringList.cpp'; then $(CYGPATH_W) 'SbStringList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbStringList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbStringList.Tpo" "$(DEPDIR)/lists_lst-SbStringList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbStringList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbStringList.cpp' object='lists_lst-SbStringList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbStringList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SbStringList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbStringList.obj `if test -f 'SbStringList.cpp'; then $(CYGPATH_W) 'SbStringList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbStringList.cpp'; fi`
+
+lists_lst-SbStringList.lo: SbStringList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SbStringList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SbStringList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SbStringList.lo `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SbStringList.Tpo" "$(DEPDIR)/lists_lst-SbStringList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SbStringList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbStringList.cpp' object='lists_lst-SbStringList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SbStringList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SbStringList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SbStringList.lo `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp
+
+lists_lst-SoActionMethodList.o: SoActionMethodList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoActionMethodList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoActionMethodList.o `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo" "$(DEPDIR)/lists_lst-SoActionMethodList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoActionMethodList.cpp' object='lists_lst-SoActionMethodList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoActionMethodList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoActionMethodList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoActionMethodList.o `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp
+
+lists_lst-SoActionMethodList.obj: SoActionMethodList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoActionMethodList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoActionMethodList.obj `if test -f 'SoActionMethodList.cpp'; then $(CYGPATH_W) 'SoActionMethodList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoActionMethodList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo" "$(DEPDIR)/lists_lst-SoActionMethodList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoActionMethodList.cpp' object='lists_lst-SoActionMethodList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoActionMethodList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoActionMethodList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoActionMethodList.obj `if test -f 'SoActionMethodList.cpp'; then $(CYGPATH_W) 'SoActionMethodList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoActionMethodList.cpp'; fi`
+
+lists_lst-SoActionMethodList.lo: SoActionMethodList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoActionMethodList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoActionMethodList.lo `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo" "$(DEPDIR)/lists_lst-SoActionMethodList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoActionMethodList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoActionMethodList.cpp' object='lists_lst-SoActionMethodList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoActionMethodList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoActionMethodList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoActionMethodList.lo `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp
+
+lists_lst-SoAuditorList.o: SoAuditorList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoAuditorList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoAuditorList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoAuditorList.o `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoAuditorList.Tpo" "$(DEPDIR)/lists_lst-SoAuditorList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoAuditorList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAuditorList.cpp' object='lists_lst-SoAuditorList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoAuditorList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoAuditorList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoAuditorList.o `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp
+
+lists_lst-SoAuditorList.obj: SoAuditorList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoAuditorList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoAuditorList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoAuditorList.obj `if test -f 'SoAuditorList.cpp'; then $(CYGPATH_W) 'SoAuditorList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAuditorList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoAuditorList.Tpo" "$(DEPDIR)/lists_lst-SoAuditorList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoAuditorList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAuditorList.cpp' object='lists_lst-SoAuditorList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoAuditorList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoAuditorList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoAuditorList.obj `if test -f 'SoAuditorList.cpp'; then $(CYGPATH_W) 'SoAuditorList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAuditorList.cpp'; fi`
+
+lists_lst-SoAuditorList.lo: SoAuditorList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoAuditorList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoAuditorList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoAuditorList.lo `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoAuditorList.Tpo" "$(DEPDIR)/lists_lst-SoAuditorList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoAuditorList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAuditorList.cpp' object='lists_lst-SoAuditorList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoAuditorList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoAuditorList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoAuditorList.lo `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp
+
+lists_lst-SoBaseList.o: SoBaseList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoBaseList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoBaseList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoBaseList.o `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoBaseList.Tpo" "$(DEPDIR)/lists_lst-SoBaseList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoBaseList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseList.cpp' object='lists_lst-SoBaseList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoBaseList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoBaseList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoBaseList.o `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp
+
+lists_lst-SoBaseList.obj: SoBaseList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoBaseList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoBaseList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoBaseList.obj `if test -f 'SoBaseList.cpp'; then $(CYGPATH_W) 'SoBaseList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoBaseList.Tpo" "$(DEPDIR)/lists_lst-SoBaseList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoBaseList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseList.cpp' object='lists_lst-SoBaseList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoBaseList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoBaseList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoBaseList.obj `if test -f 'SoBaseList.cpp'; then $(CYGPATH_W) 'SoBaseList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseList.cpp'; fi`
+
+lists_lst-SoBaseList.lo: SoBaseList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoBaseList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoBaseList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoBaseList.lo `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoBaseList.Tpo" "$(DEPDIR)/lists_lst-SoBaseList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoBaseList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseList.cpp' object='lists_lst-SoBaseList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoBaseList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoBaseList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoBaseList.lo `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp
+
+lists_lst-SoCallbackList.o: SoCallbackList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoCallbackList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoCallbackList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoCallbackList.o `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoCallbackList.Tpo" "$(DEPDIR)/lists_lst-SoCallbackList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoCallbackList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCallbackList.cpp' object='lists_lst-SoCallbackList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoCallbackList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoCallbackList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoCallbackList.o `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp
+
+lists_lst-SoCallbackList.obj: SoCallbackList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoCallbackList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoCallbackList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoCallbackList.obj `if test -f 'SoCallbackList.cpp'; then $(CYGPATH_W) 'SoCallbackList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCallbackList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoCallbackList.Tpo" "$(DEPDIR)/lists_lst-SoCallbackList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoCallbackList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCallbackList.cpp' object='lists_lst-SoCallbackList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoCallbackList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoCallbackList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoCallbackList.obj `if test -f 'SoCallbackList.cpp'; then $(CYGPATH_W) 'SoCallbackList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCallbackList.cpp'; fi`
+
+lists_lst-SoCallbackList.lo: SoCallbackList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoCallbackList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoCallbackList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoCallbackList.lo `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoCallbackList.Tpo" "$(DEPDIR)/lists_lst-SoCallbackList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoCallbackList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCallbackList.cpp' object='lists_lst-SoCallbackList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoCallbackList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoCallbackList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoCallbackList.lo `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp
+
+lists_lst-SoDetailList.o: SoDetailList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoDetailList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoDetailList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoDetailList.o `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoDetailList.Tpo" "$(DEPDIR)/lists_lst-SoDetailList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoDetailList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetailList.cpp' object='lists_lst-SoDetailList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoDetailList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoDetailList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoDetailList.o `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp
+
+lists_lst-SoDetailList.obj: SoDetailList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoDetailList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoDetailList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoDetailList.obj `if test -f 'SoDetailList.cpp'; then $(CYGPATH_W) 'SoDetailList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetailList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoDetailList.Tpo" "$(DEPDIR)/lists_lst-SoDetailList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoDetailList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetailList.cpp' object='lists_lst-SoDetailList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoDetailList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoDetailList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoDetailList.obj `if test -f 'SoDetailList.cpp'; then $(CYGPATH_W) 'SoDetailList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetailList.cpp'; fi`
+
+lists_lst-SoDetailList.lo: SoDetailList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoDetailList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoDetailList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoDetailList.lo `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoDetailList.Tpo" "$(DEPDIR)/lists_lst-SoDetailList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoDetailList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetailList.cpp' object='lists_lst-SoDetailList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoDetailList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoDetailList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoDetailList.lo `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp
+
+lists_lst-SoEnabledElementsList.o: SoEnabledElementsList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEnabledElementsList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEnabledElementsList.o `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo" "$(DEPDIR)/lists_lst-SoEnabledElementsList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEnabledElementsList.cpp' object='lists_lst-SoEnabledElementsList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEnabledElementsList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoEnabledElementsList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEnabledElementsList.o `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp
+
+lists_lst-SoEnabledElementsList.obj: SoEnabledElementsList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEnabledElementsList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEnabledElementsList.obj `if test -f 'SoEnabledElementsList.cpp'; then $(CYGPATH_W) 'SoEnabledElementsList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEnabledElementsList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo" "$(DEPDIR)/lists_lst-SoEnabledElementsList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEnabledElementsList.cpp' object='lists_lst-SoEnabledElementsList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEnabledElementsList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoEnabledElementsList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEnabledElementsList.obj `if test -f 'SoEnabledElementsList.cpp'; then $(CYGPATH_W) 'SoEnabledElementsList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEnabledElementsList.cpp'; fi`
+
+lists_lst-SoEnabledElementsList.lo: SoEnabledElementsList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEnabledElementsList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEnabledElementsList.lo `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo" "$(DEPDIR)/lists_lst-SoEnabledElementsList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEnabledElementsList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEnabledElementsList.cpp' object='lists_lst-SoEnabledElementsList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEnabledElementsList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoEnabledElementsList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEnabledElementsList.lo `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp
+
+lists_lst-SoEngineList.o: SoEngineList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEngineList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoEngineList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEngineList.o `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEngineList.Tpo" "$(DEPDIR)/lists_lst-SoEngineList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEngineList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineList.cpp' object='lists_lst-SoEngineList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEngineList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoEngineList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEngineList.o `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp
+
+lists_lst-SoEngineList.obj: SoEngineList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEngineList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoEngineList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEngineList.obj `if test -f 'SoEngineList.cpp'; then $(CYGPATH_W) 'SoEngineList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEngineList.Tpo" "$(DEPDIR)/lists_lst-SoEngineList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEngineList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineList.cpp' object='lists_lst-SoEngineList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEngineList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoEngineList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEngineList.obj `if test -f 'SoEngineList.cpp'; then $(CYGPATH_W) 'SoEngineList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineList.cpp'; fi`
+
+lists_lst-SoEngineList.lo: SoEngineList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEngineList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoEngineList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEngineList.lo `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEngineList.Tpo" "$(DEPDIR)/lists_lst-SoEngineList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEngineList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineList.cpp' object='lists_lst-SoEngineList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEngineList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoEngineList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEngineList.lo `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp
+
+lists_lst-SoEngineOutputList.o: SoEngineOutputList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEngineOutputList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEngineOutputList.o `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo" "$(DEPDIR)/lists_lst-SoEngineOutputList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineOutputList.cpp' object='lists_lst-SoEngineOutputList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEngineOutputList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoEngineOutputList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEngineOutputList.o `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp
+
+lists_lst-SoEngineOutputList.obj: SoEngineOutputList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEngineOutputList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEngineOutputList.obj `if test -f 'SoEngineOutputList.cpp'; then $(CYGPATH_W) 'SoEngineOutputList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineOutputList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo" "$(DEPDIR)/lists_lst-SoEngineOutputList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineOutputList.cpp' object='lists_lst-SoEngineOutputList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEngineOutputList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoEngineOutputList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEngineOutputList.obj `if test -f 'SoEngineOutputList.cpp'; then $(CYGPATH_W) 'SoEngineOutputList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineOutputList.cpp'; fi`
+
+lists_lst-SoEngineOutputList.lo: SoEngineOutputList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoEngineOutputList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoEngineOutputList.lo `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo" "$(DEPDIR)/lists_lst-SoEngineOutputList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoEngineOutputList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineOutputList.cpp' object='lists_lst-SoEngineOutputList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoEngineOutputList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoEngineOutputList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoEngineOutputList.lo `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp
+
+lists_lst-SoFieldList.o: SoFieldList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoFieldList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoFieldList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoFieldList.o `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoFieldList.Tpo" "$(DEPDIR)/lists_lst-SoFieldList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoFieldList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldList.cpp' object='lists_lst-SoFieldList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoFieldList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoFieldList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoFieldList.o `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp
+
+lists_lst-SoFieldList.obj: SoFieldList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoFieldList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoFieldList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoFieldList.obj `if test -f 'SoFieldList.cpp'; then $(CYGPATH_W) 'SoFieldList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoFieldList.Tpo" "$(DEPDIR)/lists_lst-SoFieldList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoFieldList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldList.cpp' object='lists_lst-SoFieldList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoFieldList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoFieldList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoFieldList.obj `if test -f 'SoFieldList.cpp'; then $(CYGPATH_W) 'SoFieldList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldList.cpp'; fi`
+
+lists_lst-SoFieldList.lo: SoFieldList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoFieldList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoFieldList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoFieldList.lo `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoFieldList.Tpo" "$(DEPDIR)/lists_lst-SoFieldList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoFieldList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldList.cpp' object='lists_lst-SoFieldList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoFieldList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoFieldList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoFieldList.lo `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp
+
+lists_lst-SoNodeList.o: SoNodeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoNodeList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoNodeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoNodeList.o `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoNodeList.Tpo" "$(DEPDIR)/lists_lst-SoNodeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoNodeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeList.cpp' object='lists_lst-SoNodeList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoNodeList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoNodeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoNodeList.o `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp
+
+lists_lst-SoNodeList.obj: SoNodeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoNodeList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoNodeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoNodeList.obj `if test -f 'SoNodeList.cpp'; then $(CYGPATH_W) 'SoNodeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoNodeList.Tpo" "$(DEPDIR)/lists_lst-SoNodeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoNodeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeList.cpp' object='lists_lst-SoNodeList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoNodeList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoNodeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoNodeList.obj `if test -f 'SoNodeList.cpp'; then $(CYGPATH_W) 'SoNodeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeList.cpp'; fi`
+
+lists_lst-SoNodeList.lo: SoNodeList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoNodeList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoNodeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoNodeList.lo `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoNodeList.Tpo" "$(DEPDIR)/lists_lst-SoNodeList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoNodeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeList.cpp' object='lists_lst-SoNodeList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoNodeList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoNodeList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoNodeList.lo `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp
+
+lists_lst-SoPathList.o: SoPathList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoPathList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoPathList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoPathList.o `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoPathList.Tpo" "$(DEPDIR)/lists_lst-SoPathList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoPathList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathList.cpp' object='lists_lst-SoPathList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoPathList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoPathList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoPathList.o `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp
+
+lists_lst-SoPathList.obj: SoPathList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoPathList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoPathList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoPathList.obj `if test -f 'SoPathList.cpp'; then $(CYGPATH_W) 'SoPathList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoPathList.Tpo" "$(DEPDIR)/lists_lst-SoPathList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoPathList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathList.cpp' object='lists_lst-SoPathList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoPathList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoPathList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoPathList.obj `if test -f 'SoPathList.cpp'; then $(CYGPATH_W) 'SoPathList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathList.cpp'; fi`
+
+lists_lst-SoPathList.lo: SoPathList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoPathList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoPathList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoPathList.lo `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoPathList.Tpo" "$(DEPDIR)/lists_lst-SoPathList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoPathList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathList.cpp' object='lists_lst-SoPathList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoPathList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoPathList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoPathList.lo `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp
+
+lists_lst-SoPickedPointList.o: SoPickedPointList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoPickedPointList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoPickedPointList.o `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo" "$(DEPDIR)/lists_lst-SoPickedPointList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPickedPointList.cpp' object='lists_lst-SoPickedPointList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoPickedPointList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoPickedPointList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoPickedPointList.o `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp
+
+lists_lst-SoPickedPointList.obj: SoPickedPointList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoPickedPointList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoPickedPointList.obj `if test -f 'SoPickedPointList.cpp'; then $(CYGPATH_W) 'SoPickedPointList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPickedPointList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo" "$(DEPDIR)/lists_lst-SoPickedPointList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPickedPointList.cpp' object='lists_lst-SoPickedPointList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoPickedPointList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoPickedPointList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoPickedPointList.obj `if test -f 'SoPickedPointList.cpp'; then $(CYGPATH_W) 'SoPickedPointList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPickedPointList.cpp'; fi`
+
+lists_lst-SoPickedPointList.lo: SoPickedPointList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoPickedPointList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoPickedPointList.lo `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo" "$(DEPDIR)/lists_lst-SoPickedPointList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoPickedPointList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPickedPointList.cpp' object='lists_lst-SoPickedPointList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoPickedPointList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoPickedPointList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoPickedPointList.lo `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp
+
+lists_lst-SoTypeList.o: SoTypeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoTypeList.o -MD -MP -MF "$(DEPDIR)/lists_lst-SoTypeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoTypeList.o `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoTypeList.Tpo" "$(DEPDIR)/lists_lst-SoTypeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoTypeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTypeList.cpp' object='lists_lst-SoTypeList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoTypeList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoTypeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoTypeList.o `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp
+
+lists_lst-SoTypeList.obj: SoTypeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoTypeList.obj -MD -MP -MF "$(DEPDIR)/lists_lst-SoTypeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoTypeList.obj `if test -f 'SoTypeList.cpp'; then $(CYGPATH_W) 'SoTypeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTypeList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoTypeList.Tpo" "$(DEPDIR)/lists_lst-SoTypeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoTypeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTypeList.cpp' object='lists_lst-SoTypeList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoTypeList.Po' tmpdepfile='$(DEPDIR)/lists_lst-SoTypeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoTypeList.obj `if test -f 'SoTypeList.cpp'; then $(CYGPATH_W) 'SoTypeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTypeList.cpp'; fi`
+
+lists_lst-SoTypeList.lo: SoTypeList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -MT lists_lst-SoTypeList.lo -MD -MP -MF "$(DEPDIR)/lists_lst-SoTypeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o lists_lst-SoTypeList.lo `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/lists_lst-SoTypeList.Tpo" "$(DEPDIR)/lists_lst-SoTypeList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/lists_lst-SoTypeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTypeList.cpp' object='lists_lst-SoTypeList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/lists_lst-SoTypeList.Plo' tmpdepfile='$(DEPDIR)/lists_lst-SoTypeList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lists_lst_CXXFLAGS) $(CXXFLAGS) -c -o lists_lst-SoTypeList.lo `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp
+
+liblists_la-all-lists-cpp.o: all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-all-lists-cpp.o -MD -MP -MF "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-all-lists-cpp.o `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo" "$(DEPDIR)/liblists_la-all-lists-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-lists-cpp.cpp' object='liblists_la-all-lists-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-all-lists-cpp.Po' tmpdepfile='$(DEPDIR)/liblists_la-all-lists-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-all-lists-cpp.o `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp
+
+liblists_la-all-lists-cpp.obj: all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-all-lists-cpp.obj -MD -MP -MF "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-all-lists-cpp.obj `if test -f 'all-lists-cpp.cpp'; then $(CYGPATH_W) 'all-lists-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-lists-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo" "$(DEPDIR)/liblists_la-all-lists-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-lists-cpp.cpp' object='liblists_la-all-lists-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-all-lists-cpp.Po' tmpdepfile='$(DEPDIR)/liblists_la-all-lists-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-all-lists-cpp.obj `if test -f 'all-lists-cpp.cpp'; then $(CYGPATH_W) 'all-lists-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-lists-cpp.cpp'; fi`
+
+liblists_la-all-lists-cpp.lo: all-lists-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-all-lists-cpp.lo -MD -MP -MF "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-all-lists-cpp.lo `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo" "$(DEPDIR)/liblists_la-all-lists-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-all-lists-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-lists-cpp.cpp' object='liblists_la-all-lists-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-all-lists-cpp.Plo' tmpdepfile='$(DEPDIR)/liblists_la-all-lists-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-all-lists-cpp.lo `test -f 'all-lists-cpp.cpp' || echo '$(srcdir)/'`all-lists-cpp.cpp
+
+liblists_la-SbList.o: SbList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SbList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbList.o `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbList.Tpo" "$(DEPDIR)/liblists_la-SbList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbList.cpp' object='liblists_la-SbList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbList.o `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp
+
+liblists_la-SbList.obj: SbList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SbList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbList.obj `if test -f 'SbList.cpp'; then $(CYGPATH_W) 'SbList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbList.Tpo" "$(DEPDIR)/liblists_la-SbList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbList.cpp' object='liblists_la-SbList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbList.obj `if test -f 'SbList.cpp'; then $(CYGPATH_W) 'SbList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbList.cpp'; fi`
+
+liblists_la-SbList.lo: SbList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SbList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbList.lo `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbList.Tpo" "$(DEPDIR)/liblists_la-SbList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbList.cpp' object='liblists_la-SbList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SbList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbList.lo `test -f 'SbList.cpp' || echo '$(srcdir)/'`SbList.cpp
+
+liblists_la-SbPList.o: SbPList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbPList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SbPList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbPList.o `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbPList.Tpo" "$(DEPDIR)/liblists_la-SbPList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbPList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPList.cpp' object='liblists_la-SbPList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbPList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbPList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbPList.o `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp
+
+liblists_la-SbPList.obj: SbPList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbPList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SbPList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbPList.obj `if test -f 'SbPList.cpp'; then $(CYGPATH_W) 'SbPList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbPList.Tpo" "$(DEPDIR)/liblists_la-SbPList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbPList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPList.cpp' object='liblists_la-SbPList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbPList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbPList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbPList.obj `if test -f 'SbPList.cpp'; then $(CYGPATH_W) 'SbPList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbPList.cpp'; fi`
+
+liblists_la-SbPList.lo: SbPList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbPList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SbPList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbPList.lo `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbPList.Tpo" "$(DEPDIR)/liblists_la-SbPList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbPList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbPList.cpp' object='liblists_la-SbPList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbPList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SbPList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbPList.lo `test -f 'SbPList.cpp' || echo '$(srcdir)/'`SbPList.cpp
+
+liblists_la-SbIntList.o: SbIntList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbIntList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SbIntList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbIntList.o `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbIntList.Tpo" "$(DEPDIR)/liblists_la-SbIntList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbIntList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbIntList.cpp' object='liblists_la-SbIntList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbIntList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbIntList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbIntList.o `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp
+
+liblists_la-SbIntList.obj: SbIntList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbIntList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SbIntList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbIntList.obj `if test -f 'SbIntList.cpp'; then $(CYGPATH_W) 'SbIntList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbIntList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbIntList.Tpo" "$(DEPDIR)/liblists_la-SbIntList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbIntList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbIntList.cpp' object='liblists_la-SbIntList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbIntList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbIntList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbIntList.obj `if test -f 'SbIntList.cpp'; then $(CYGPATH_W) 'SbIntList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbIntList.cpp'; fi`
+
+liblists_la-SbIntList.lo: SbIntList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbIntList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SbIntList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbIntList.lo `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbIntList.Tpo" "$(DEPDIR)/liblists_la-SbIntList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbIntList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbIntList.cpp' object='liblists_la-SbIntList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbIntList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SbIntList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbIntList.lo `test -f 'SbIntList.cpp' || echo '$(srcdir)/'`SbIntList.cpp
+
+liblists_la-SbVec3fList.o: SbVec3fList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbVec3fList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SbVec3fList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbVec3fList.o `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbVec3fList.Tpo" "$(DEPDIR)/liblists_la-SbVec3fList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbVec3fList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbVec3fList.cpp' object='liblists_la-SbVec3fList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbVec3fList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbVec3fList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbVec3fList.o `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp
+
+liblists_la-SbVec3fList.obj: SbVec3fList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbVec3fList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SbVec3fList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbVec3fList.obj `if test -f 'SbVec3fList.cpp'; then $(CYGPATH_W) 'SbVec3fList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbVec3fList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbVec3fList.Tpo" "$(DEPDIR)/liblists_la-SbVec3fList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbVec3fList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbVec3fList.cpp' object='liblists_la-SbVec3fList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbVec3fList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbVec3fList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbVec3fList.obj `if test -f 'SbVec3fList.cpp'; then $(CYGPATH_W) 'SbVec3fList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbVec3fList.cpp'; fi`
+
+liblists_la-SbVec3fList.lo: SbVec3fList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbVec3fList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SbVec3fList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbVec3fList.lo `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbVec3fList.Tpo" "$(DEPDIR)/liblists_la-SbVec3fList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbVec3fList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbVec3fList.cpp' object='liblists_la-SbVec3fList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbVec3fList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SbVec3fList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbVec3fList.lo `test -f 'SbVec3fList.cpp' || echo '$(srcdir)/'`SbVec3fList.cpp
+
+liblists_la-SbStringList.o: SbStringList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbStringList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SbStringList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbStringList.o `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbStringList.Tpo" "$(DEPDIR)/liblists_la-SbStringList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbStringList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbStringList.cpp' object='liblists_la-SbStringList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbStringList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbStringList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbStringList.o `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp
+
+liblists_la-SbStringList.obj: SbStringList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbStringList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SbStringList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbStringList.obj `if test -f 'SbStringList.cpp'; then $(CYGPATH_W) 'SbStringList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbStringList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbStringList.Tpo" "$(DEPDIR)/liblists_la-SbStringList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbStringList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbStringList.cpp' object='liblists_la-SbStringList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbStringList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SbStringList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbStringList.obj `if test -f 'SbStringList.cpp'; then $(CYGPATH_W) 'SbStringList.cpp'; else $(CYGPATH_W) '$(srcdir)/SbStringList.cpp'; fi`
+
+liblists_la-SbStringList.lo: SbStringList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SbStringList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SbStringList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SbStringList.lo `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SbStringList.Tpo" "$(DEPDIR)/liblists_la-SbStringList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SbStringList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SbStringList.cpp' object='liblists_la-SbStringList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SbStringList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SbStringList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SbStringList.lo `test -f 'SbStringList.cpp' || echo '$(srcdir)/'`SbStringList.cpp
+
+liblists_la-SoActionMethodList.o: SoActionMethodList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoActionMethodList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoActionMethodList.o `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo" "$(DEPDIR)/liblists_la-SoActionMethodList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoActionMethodList.cpp' object='liblists_la-SoActionMethodList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoActionMethodList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoActionMethodList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoActionMethodList.o `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp
+
+liblists_la-SoActionMethodList.obj: SoActionMethodList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoActionMethodList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoActionMethodList.obj `if test -f 'SoActionMethodList.cpp'; then $(CYGPATH_W) 'SoActionMethodList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoActionMethodList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo" "$(DEPDIR)/liblists_la-SoActionMethodList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoActionMethodList.cpp' object='liblists_la-SoActionMethodList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoActionMethodList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoActionMethodList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoActionMethodList.obj `if test -f 'SoActionMethodList.cpp'; then $(CYGPATH_W) 'SoActionMethodList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoActionMethodList.cpp'; fi`
+
+liblists_la-SoActionMethodList.lo: SoActionMethodList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoActionMethodList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoActionMethodList.lo `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo" "$(DEPDIR)/liblists_la-SoActionMethodList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoActionMethodList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoActionMethodList.cpp' object='liblists_la-SoActionMethodList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoActionMethodList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoActionMethodList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoActionMethodList.lo `test -f 'SoActionMethodList.cpp' || echo '$(srcdir)/'`SoActionMethodList.cpp
+
+liblists_la-SoAuditorList.o: SoAuditorList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoAuditorList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoAuditorList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoAuditorList.o `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoAuditorList.Tpo" "$(DEPDIR)/liblists_la-SoAuditorList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoAuditorList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAuditorList.cpp' object='liblists_la-SoAuditorList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoAuditorList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoAuditorList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoAuditorList.o `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp
+
+liblists_la-SoAuditorList.obj: SoAuditorList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoAuditorList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoAuditorList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoAuditorList.obj `if test -f 'SoAuditorList.cpp'; then $(CYGPATH_W) 'SoAuditorList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAuditorList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoAuditorList.Tpo" "$(DEPDIR)/liblists_la-SoAuditorList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoAuditorList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAuditorList.cpp' object='liblists_la-SoAuditorList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoAuditorList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoAuditorList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoAuditorList.obj `if test -f 'SoAuditorList.cpp'; then $(CYGPATH_W) 'SoAuditorList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoAuditorList.cpp'; fi`
+
+liblists_la-SoAuditorList.lo: SoAuditorList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoAuditorList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoAuditorList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoAuditorList.lo `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoAuditorList.Tpo" "$(DEPDIR)/liblists_la-SoAuditorList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoAuditorList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoAuditorList.cpp' object='liblists_la-SoAuditorList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoAuditorList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoAuditorList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoAuditorList.lo `test -f 'SoAuditorList.cpp' || echo '$(srcdir)/'`SoAuditorList.cpp
+
+liblists_la-SoBaseList.o: SoBaseList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoBaseList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoBaseList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoBaseList.o `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoBaseList.Tpo" "$(DEPDIR)/liblists_la-SoBaseList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoBaseList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseList.cpp' object='liblists_la-SoBaseList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoBaseList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoBaseList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoBaseList.o `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp
+
+liblists_la-SoBaseList.obj: SoBaseList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoBaseList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoBaseList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoBaseList.obj `if test -f 'SoBaseList.cpp'; then $(CYGPATH_W) 'SoBaseList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoBaseList.Tpo" "$(DEPDIR)/liblists_la-SoBaseList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoBaseList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseList.cpp' object='liblists_la-SoBaseList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoBaseList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoBaseList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoBaseList.obj `if test -f 'SoBaseList.cpp'; then $(CYGPATH_W) 'SoBaseList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoBaseList.cpp'; fi`
+
+liblists_la-SoBaseList.lo: SoBaseList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoBaseList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoBaseList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoBaseList.lo `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoBaseList.Tpo" "$(DEPDIR)/liblists_la-SoBaseList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoBaseList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoBaseList.cpp' object='liblists_la-SoBaseList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoBaseList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoBaseList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoBaseList.lo `test -f 'SoBaseList.cpp' || echo '$(srcdir)/'`SoBaseList.cpp
+
+liblists_la-SoCallbackList.o: SoCallbackList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoCallbackList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoCallbackList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoCallbackList.o `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoCallbackList.Tpo" "$(DEPDIR)/liblists_la-SoCallbackList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoCallbackList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCallbackList.cpp' object='liblists_la-SoCallbackList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoCallbackList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoCallbackList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoCallbackList.o `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp
+
+liblists_la-SoCallbackList.obj: SoCallbackList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoCallbackList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoCallbackList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoCallbackList.obj `if test -f 'SoCallbackList.cpp'; then $(CYGPATH_W) 'SoCallbackList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCallbackList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoCallbackList.Tpo" "$(DEPDIR)/liblists_la-SoCallbackList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoCallbackList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCallbackList.cpp' object='liblists_la-SoCallbackList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoCallbackList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoCallbackList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoCallbackList.obj `if test -f 'SoCallbackList.cpp'; then $(CYGPATH_W) 'SoCallbackList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCallbackList.cpp'; fi`
+
+liblists_la-SoCallbackList.lo: SoCallbackList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoCallbackList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoCallbackList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoCallbackList.lo `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoCallbackList.Tpo" "$(DEPDIR)/liblists_la-SoCallbackList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoCallbackList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCallbackList.cpp' object='liblists_la-SoCallbackList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoCallbackList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoCallbackList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoCallbackList.lo `test -f 'SoCallbackList.cpp' || echo '$(srcdir)/'`SoCallbackList.cpp
+
+liblists_la-SoDetailList.o: SoDetailList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoDetailList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoDetailList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoDetailList.o `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoDetailList.Tpo" "$(DEPDIR)/liblists_la-SoDetailList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoDetailList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetailList.cpp' object='liblists_la-SoDetailList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoDetailList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoDetailList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoDetailList.o `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp
+
+liblists_la-SoDetailList.obj: SoDetailList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoDetailList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoDetailList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoDetailList.obj `if test -f 'SoDetailList.cpp'; then $(CYGPATH_W) 'SoDetailList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetailList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoDetailList.Tpo" "$(DEPDIR)/liblists_la-SoDetailList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoDetailList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetailList.cpp' object='liblists_la-SoDetailList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoDetailList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoDetailList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoDetailList.obj `if test -f 'SoDetailList.cpp'; then $(CYGPATH_W) 'SoDetailList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetailList.cpp'; fi`
+
+liblists_la-SoDetailList.lo: SoDetailList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoDetailList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoDetailList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoDetailList.lo `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoDetailList.Tpo" "$(DEPDIR)/liblists_la-SoDetailList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoDetailList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetailList.cpp' object='liblists_la-SoDetailList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoDetailList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoDetailList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoDetailList.lo `test -f 'SoDetailList.cpp' || echo '$(srcdir)/'`SoDetailList.cpp
+
+liblists_la-SoEnabledElementsList.o: SoEnabledElementsList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEnabledElementsList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEnabledElementsList.o `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo" "$(DEPDIR)/liblists_la-SoEnabledElementsList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEnabledElementsList.cpp' object='liblists_la-SoEnabledElementsList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEnabledElementsList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoEnabledElementsList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEnabledElementsList.o `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp
+
+liblists_la-SoEnabledElementsList.obj: SoEnabledElementsList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEnabledElementsList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEnabledElementsList.obj `if test -f 'SoEnabledElementsList.cpp'; then $(CYGPATH_W) 'SoEnabledElementsList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEnabledElementsList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo" "$(DEPDIR)/liblists_la-SoEnabledElementsList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEnabledElementsList.cpp' object='liblists_la-SoEnabledElementsList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEnabledElementsList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoEnabledElementsList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEnabledElementsList.obj `if test -f 'SoEnabledElementsList.cpp'; then $(CYGPATH_W) 'SoEnabledElementsList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEnabledElementsList.cpp'; fi`
+
+liblists_la-SoEnabledElementsList.lo: SoEnabledElementsList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEnabledElementsList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEnabledElementsList.lo `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo" "$(DEPDIR)/liblists_la-SoEnabledElementsList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEnabledElementsList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEnabledElementsList.cpp' object='liblists_la-SoEnabledElementsList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEnabledElementsList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoEnabledElementsList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEnabledElementsList.lo `test -f 'SoEnabledElementsList.cpp' || echo '$(srcdir)/'`SoEnabledElementsList.cpp
+
+liblists_la-SoEngineList.o: SoEngineList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEngineList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoEngineList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEngineList.o `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEngineList.Tpo" "$(DEPDIR)/liblists_la-SoEngineList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEngineList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineList.cpp' object='liblists_la-SoEngineList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEngineList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoEngineList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEngineList.o `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp
+
+liblists_la-SoEngineList.obj: SoEngineList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEngineList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoEngineList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEngineList.obj `if test -f 'SoEngineList.cpp'; then $(CYGPATH_W) 'SoEngineList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEngineList.Tpo" "$(DEPDIR)/liblists_la-SoEngineList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEngineList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineList.cpp' object='liblists_la-SoEngineList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEngineList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoEngineList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEngineList.obj `if test -f 'SoEngineList.cpp'; then $(CYGPATH_W) 'SoEngineList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineList.cpp'; fi`
+
+liblists_la-SoEngineList.lo: SoEngineList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEngineList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoEngineList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEngineList.lo `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEngineList.Tpo" "$(DEPDIR)/liblists_la-SoEngineList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEngineList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineList.cpp' object='liblists_la-SoEngineList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEngineList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoEngineList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEngineList.lo `test -f 'SoEngineList.cpp' || echo '$(srcdir)/'`SoEngineList.cpp
+
+liblists_la-SoEngineOutputList.o: SoEngineOutputList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEngineOutputList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEngineOutputList.o `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo" "$(DEPDIR)/liblists_la-SoEngineOutputList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineOutputList.cpp' object='liblists_la-SoEngineOutputList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEngineOutputList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoEngineOutputList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEngineOutputList.o `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp
+
+liblists_la-SoEngineOutputList.obj: SoEngineOutputList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEngineOutputList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEngineOutputList.obj `if test -f 'SoEngineOutputList.cpp'; then $(CYGPATH_W) 'SoEngineOutputList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineOutputList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo" "$(DEPDIR)/liblists_la-SoEngineOutputList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineOutputList.cpp' object='liblists_la-SoEngineOutputList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEngineOutputList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoEngineOutputList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEngineOutputList.obj `if test -f 'SoEngineOutputList.cpp'; then $(CYGPATH_W) 'SoEngineOutputList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEngineOutputList.cpp'; fi`
+
+liblists_la-SoEngineOutputList.lo: SoEngineOutputList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoEngineOutputList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoEngineOutputList.lo `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo" "$(DEPDIR)/liblists_la-SoEngineOutputList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoEngineOutputList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEngineOutputList.cpp' object='liblists_la-SoEngineOutputList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoEngineOutputList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoEngineOutputList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoEngineOutputList.lo `test -f 'SoEngineOutputList.cpp' || echo '$(srcdir)/'`SoEngineOutputList.cpp
+
+liblists_la-SoFieldList.o: SoFieldList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoFieldList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoFieldList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoFieldList.o `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoFieldList.Tpo" "$(DEPDIR)/liblists_la-SoFieldList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoFieldList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldList.cpp' object='liblists_la-SoFieldList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoFieldList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoFieldList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoFieldList.o `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp
+
+liblists_la-SoFieldList.obj: SoFieldList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoFieldList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoFieldList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoFieldList.obj `if test -f 'SoFieldList.cpp'; then $(CYGPATH_W) 'SoFieldList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoFieldList.Tpo" "$(DEPDIR)/liblists_la-SoFieldList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoFieldList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldList.cpp' object='liblists_la-SoFieldList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoFieldList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoFieldList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoFieldList.obj `if test -f 'SoFieldList.cpp'; then $(CYGPATH_W) 'SoFieldList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFieldList.cpp'; fi`
+
+liblists_la-SoFieldList.lo: SoFieldList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoFieldList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoFieldList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoFieldList.lo `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoFieldList.Tpo" "$(DEPDIR)/liblists_la-SoFieldList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoFieldList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFieldList.cpp' object='liblists_la-SoFieldList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoFieldList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoFieldList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoFieldList.lo `test -f 'SoFieldList.cpp' || echo '$(srcdir)/'`SoFieldList.cpp
+
+liblists_la-SoNodeList.o: SoNodeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoNodeList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoNodeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoNodeList.o `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoNodeList.Tpo" "$(DEPDIR)/liblists_la-SoNodeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoNodeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeList.cpp' object='liblists_la-SoNodeList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoNodeList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoNodeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoNodeList.o `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp
+
+liblists_la-SoNodeList.obj: SoNodeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoNodeList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoNodeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoNodeList.obj `if test -f 'SoNodeList.cpp'; then $(CYGPATH_W) 'SoNodeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoNodeList.Tpo" "$(DEPDIR)/liblists_la-SoNodeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoNodeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeList.cpp' object='liblists_la-SoNodeList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoNodeList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoNodeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoNodeList.obj `if test -f 'SoNodeList.cpp'; then $(CYGPATH_W) 'SoNodeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeList.cpp'; fi`
+
+liblists_la-SoNodeList.lo: SoNodeList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoNodeList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoNodeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoNodeList.lo `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoNodeList.Tpo" "$(DEPDIR)/liblists_la-SoNodeList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoNodeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeList.cpp' object='liblists_la-SoNodeList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoNodeList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoNodeList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoNodeList.lo `test -f 'SoNodeList.cpp' || echo '$(srcdir)/'`SoNodeList.cpp
+
+liblists_la-SoPathList.o: SoPathList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoPathList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoPathList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoPathList.o `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoPathList.Tpo" "$(DEPDIR)/liblists_la-SoPathList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoPathList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathList.cpp' object='liblists_la-SoPathList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoPathList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoPathList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoPathList.o `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp
+
+liblists_la-SoPathList.obj: SoPathList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoPathList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoPathList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoPathList.obj `if test -f 'SoPathList.cpp'; then $(CYGPATH_W) 'SoPathList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoPathList.Tpo" "$(DEPDIR)/liblists_la-SoPathList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoPathList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathList.cpp' object='liblists_la-SoPathList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoPathList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoPathList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoPathList.obj `if test -f 'SoPathList.cpp'; then $(CYGPATH_W) 'SoPathList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPathList.cpp'; fi`
+
+liblists_la-SoPathList.lo: SoPathList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoPathList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoPathList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoPathList.lo `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoPathList.Tpo" "$(DEPDIR)/liblists_la-SoPathList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoPathList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPathList.cpp' object='liblists_la-SoPathList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoPathList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoPathList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoPathList.lo `test -f 'SoPathList.cpp' || echo '$(srcdir)/'`SoPathList.cpp
+
+liblists_la-SoPickedPointList.o: SoPickedPointList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoPickedPointList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoPickedPointList.o `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo" "$(DEPDIR)/liblists_la-SoPickedPointList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPickedPointList.cpp' object='liblists_la-SoPickedPointList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoPickedPointList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoPickedPointList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoPickedPointList.o `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp
+
+liblists_la-SoPickedPointList.obj: SoPickedPointList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoPickedPointList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoPickedPointList.obj `if test -f 'SoPickedPointList.cpp'; then $(CYGPATH_W) 'SoPickedPointList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPickedPointList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo" "$(DEPDIR)/liblists_la-SoPickedPointList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPickedPointList.cpp' object='liblists_la-SoPickedPointList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoPickedPointList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoPickedPointList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoPickedPointList.obj `if test -f 'SoPickedPointList.cpp'; then $(CYGPATH_W) 'SoPickedPointList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPickedPointList.cpp'; fi`
+
+liblists_la-SoPickedPointList.lo: SoPickedPointList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoPickedPointList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoPickedPointList.lo `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo" "$(DEPDIR)/liblists_la-SoPickedPointList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoPickedPointList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPickedPointList.cpp' object='liblists_la-SoPickedPointList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoPickedPointList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoPickedPointList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoPickedPointList.lo `test -f 'SoPickedPointList.cpp' || echo '$(srcdir)/'`SoPickedPointList.cpp
+
+liblists_la-SoTypeList.o: SoTypeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoTypeList.o -MD -MP -MF "$(DEPDIR)/liblists_la-SoTypeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoTypeList.o `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoTypeList.Tpo" "$(DEPDIR)/liblists_la-SoTypeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoTypeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTypeList.cpp' object='liblists_la-SoTypeList.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoTypeList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoTypeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoTypeList.o `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp
+
+liblists_la-SoTypeList.obj: SoTypeList.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoTypeList.obj -MD -MP -MF "$(DEPDIR)/liblists_la-SoTypeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoTypeList.obj `if test -f 'SoTypeList.cpp'; then $(CYGPATH_W) 'SoTypeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTypeList.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoTypeList.Tpo" "$(DEPDIR)/liblists_la-SoTypeList.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoTypeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTypeList.cpp' object='liblists_la-SoTypeList.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoTypeList.Po' tmpdepfile='$(DEPDIR)/liblists_la-SoTypeList.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoTypeList.obj `if test -f 'SoTypeList.cpp'; then $(CYGPATH_W) 'SoTypeList.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTypeList.cpp'; fi`
+
+liblists_la-SoTypeList.lo: SoTypeList.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -MT liblists_la-SoTypeList.lo -MD -MP -MF "$(DEPDIR)/liblists_la-SoTypeList.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o liblists_la-SoTypeList.lo `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/liblists_la-SoTypeList.Tpo" "$(DEPDIR)/liblists_la-SoTypeList.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/liblists_la-SoTypeList.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTypeList.cpp' object='liblists_la-SoTypeList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/liblists_la-SoTypeList.Plo' tmpdepfile='$(DEPDIR)/liblists_la-SoTypeList.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liblists_la_CXXFLAGS) $(CXXFLAGS) -c -o liblists_la-SoTypeList.lo `test -f 'SoTypeList.cpp' || echo '$(srcdir)/'`SoTypeList.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

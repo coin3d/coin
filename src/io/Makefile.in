@@ -341,6 +341,9 @@ EXTRA_libio_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libio_la_CXXFLAGS = $(AM_CXXFLAGS)
+libio_la_CFLAGS = $(AM_CFLAGS)
+
 libio@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -350,6 +353,9 @@ io_lst_SOURCES = $(BuildSources)
 EXTRA_io_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+io_lst_CXXFLAGS = $(AM_CXXFLAGS)
+io_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/io
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -364,12 +370,13 @@ am__io_lst_SOURCES_DIST = SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
 	SoWriterefCounter.cpp gzmemio.cpp all-io-cpp.cpp
-am__objects_1 = all-io-cpp.$(OBJEXT)
-am__objects_2 = SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
-	SoInput_Reader.$(OBJEXT) SoOutput.$(OBJEXT) \
-	SoOutput_Writer.$(OBJEXT) SoByteStream.$(OBJEXT) \
-	SoTranSender.$(OBJEXT) SoTranReceiver.$(OBJEXT) \
-	SoWriterefCounter.$(OBJEXT) gzmemio.$(OBJEXT)
+am__objects_1 = io_lst-all-io-cpp.$(OBJEXT)
+am__objects_2 = io_lst-SoInput.$(OBJEXT) \
+	io_lst-SoInput_FileInfo.$(OBJEXT) \
+	io_lst-SoInput_Reader.$(OBJEXT) io_lst-SoOutput.$(OBJEXT) \
+	io_lst-SoOutput_Writer.$(OBJEXT) io_lst-SoByteStream.$(OBJEXT) \
+	io_lst-SoTranSender.$(OBJEXT) io_lst-SoTranReceiver.$(OBJEXT) \
+	io_lst-SoWriterefCounter.$(OBJEXT) io_lst-gzmemio.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_io_lst_OBJECTS = $(am__objects_3)
@@ -388,10 +395,12 @@ am__libio_la_SOURCES_DIST = SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
 	SoWriterefCounter.cpp gzmemio.cpp all-io-cpp.cpp
-am__objects_6 = all-io-cpp.lo
-am__objects_7 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
-	SoOutput.lo SoOutput_Writer.lo SoByteStream.lo SoTranSender.lo \
-	SoTranReceiver.lo SoWriterefCounter.lo gzmemio.lo
+am__objects_6 = libio_la-all-io-cpp.lo
+am__objects_7 = libio_la-SoInput.lo libio_la-SoInput_FileInfo.lo \
+	libio_la-SoInput_Reader.lo libio_la-SoOutput.lo \
+	libio_la-SoOutput_Writer.lo libio_la-SoByteStream.lo \
+	libio_la-SoTranSender.lo libio_la-SoTranReceiver.lo \
+	libio_la-SoWriterefCounter.lo libio_la-gzmemio.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libio_la_OBJECTS = $(am__objects_8)
@@ -409,7 +418,13 @@ am__libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput.cpp \
 	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
 	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.cpp \
 	all-io-cpp.cpp
-am_libio@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-io-cpp.lo
+am__objects_11 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
+	SoOutput.lo SoOutput_Writer.lo SoByteStream.lo SoTranSender.lo \
+	SoTranReceiver.lo SoWriterefCounter.lo gzmemio.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libio@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput_FileInfo.h \
 	SoInput_Reader.h SoOutput_Writer.h SoWriterefCounter.h \
 	SoInputP.h gzmemio.h all-io-cpp.cpp SoInput.cpp \
@@ -421,24 +436,37 @@ libio@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoByteStream.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoByteStream.Po ./$(DEPDIR)/SoInput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoInput.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInput_FileInfo.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput_FileInfo.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInput_Reader.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput_Reader.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOutput.Plo ./$(DEPDIR)/SoOutput.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoOutput.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOutput_Writer.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOutput_Writer.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranReceiver.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTranReceiver.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWriterefCounter.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoWriterefCounter.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Po ./$(DEPDIR)/gzmemio.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/gzmemio.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Plo ./$(DEPDIR)/gzmemio.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoByteStream.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoInput.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoInput_FileInfo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoInput_Reader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoOutput.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoOutput_Writer.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoTranReceiver.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoTranSender.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-SoWriterefCounter.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-all-io-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/io_lst-gzmemio.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoByteStream.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoInput.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoInput_FileInfo.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoInput_Reader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoOutput.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoOutput_Writer.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoTranReceiver.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoTranSender.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-SoWriterefCounter.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-all-io-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libio_la-gzmemio.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -470,7 +498,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/io/Makefile
+	  $(AUTOMAKE) --gnu  src/io/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -525,27 +553,38 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoByteStream.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoByteStream.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_FileInfo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_FileInfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_Reader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_Reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput_Writer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput_Writer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranReceiver.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranReceiver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriterefCounter.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriterefCounter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoByteStream.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoInput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoInput_FileInfo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoInput_Reader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoOutput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoOutput_Writer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoTranReceiver.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoTranSender.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-SoWriterefCounter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-all-io-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io_lst-gzmemio.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoByteStream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoInput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoInput_FileInfo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoInput_Reader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoOutput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoOutput_Writer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoTranReceiver.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoTranSender.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-SoWriterefCounter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-all-io-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libio_la-gzmemio.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -582,6 +621,732 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+io_lst-all-io-cpp.o: all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-all-io-cpp.o -MD -MP -MF "$(DEPDIR)/io_lst-all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-all-io-cpp.o `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-all-io-cpp.Tpo" "$(DEPDIR)/io_lst-all-io-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-io-cpp.cpp' object='io_lst-all-io-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-all-io-cpp.Po' tmpdepfile='$(DEPDIR)/io_lst-all-io-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-all-io-cpp.o `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp
+
+io_lst-all-io-cpp.obj: all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-all-io-cpp.obj -MD -MP -MF "$(DEPDIR)/io_lst-all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-all-io-cpp.obj `if test -f 'all-io-cpp.cpp'; then $(CYGPATH_W) 'all-io-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-io-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-all-io-cpp.Tpo" "$(DEPDIR)/io_lst-all-io-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-io-cpp.cpp' object='io_lst-all-io-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-all-io-cpp.Po' tmpdepfile='$(DEPDIR)/io_lst-all-io-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-all-io-cpp.obj `if test -f 'all-io-cpp.cpp'; then $(CYGPATH_W) 'all-io-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-io-cpp.cpp'; fi`
+
+io_lst-all-io-cpp.lo: all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-all-io-cpp.lo -MD -MP -MF "$(DEPDIR)/io_lst-all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-all-io-cpp.lo `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-all-io-cpp.Tpo" "$(DEPDIR)/io_lst-all-io-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-io-cpp.cpp' object='io_lst-all-io-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-all-io-cpp.Plo' tmpdepfile='$(DEPDIR)/io_lst-all-io-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-all-io-cpp.lo `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp
+
+io_lst-SoInput.o: SoInput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput.o -MD -MP -MF "$(DEPDIR)/io_lst-SoInput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput.o `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput.Tpo" "$(DEPDIR)/io_lst-SoInput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput.cpp' object='io_lst-SoInput.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput.Po' tmpdepfile='$(DEPDIR)/io_lst-SoInput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput.o `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp
+
+io_lst-SoInput.obj: SoInput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoInput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput.obj `if test -f 'SoInput.cpp'; then $(CYGPATH_W) 'SoInput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput.Tpo" "$(DEPDIR)/io_lst-SoInput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput.cpp' object='io_lst-SoInput.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput.Po' tmpdepfile='$(DEPDIR)/io_lst-SoInput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput.obj `if test -f 'SoInput.cpp'; then $(CYGPATH_W) 'SoInput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput.cpp'; fi`
+
+io_lst-SoInput.lo: SoInput.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoInput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput.lo `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput.Tpo" "$(DEPDIR)/io_lst-SoInput.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput.cpp' object='io_lst-SoInput.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoInput.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput.lo `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp
+
+io_lst-SoInput_FileInfo.o: SoInput_FileInfo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput_FileInfo.o -MD -MP -MF "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput_FileInfo.o `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo" "$(DEPDIR)/io_lst-SoInput_FileInfo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_FileInfo.cpp' object='io_lst-SoInput_FileInfo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput_FileInfo.Po' tmpdepfile='$(DEPDIR)/io_lst-SoInput_FileInfo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput_FileInfo.o `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp
+
+io_lst-SoInput_FileInfo.obj: SoInput_FileInfo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput_FileInfo.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput_FileInfo.obj `if test -f 'SoInput_FileInfo.cpp'; then $(CYGPATH_W) 'SoInput_FileInfo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_FileInfo.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo" "$(DEPDIR)/io_lst-SoInput_FileInfo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_FileInfo.cpp' object='io_lst-SoInput_FileInfo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput_FileInfo.Po' tmpdepfile='$(DEPDIR)/io_lst-SoInput_FileInfo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput_FileInfo.obj `if test -f 'SoInput_FileInfo.cpp'; then $(CYGPATH_W) 'SoInput_FileInfo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_FileInfo.cpp'; fi`
+
+io_lst-SoInput_FileInfo.lo: SoInput_FileInfo.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput_FileInfo.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput_FileInfo.lo `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo" "$(DEPDIR)/io_lst-SoInput_FileInfo.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput_FileInfo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_FileInfo.cpp' object='io_lst-SoInput_FileInfo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput_FileInfo.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoInput_FileInfo.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput_FileInfo.lo `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp
+
+io_lst-SoInput_Reader.o: SoInput_Reader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput_Reader.o -MD -MP -MF "$(DEPDIR)/io_lst-SoInput_Reader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput_Reader.o `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput_Reader.Tpo" "$(DEPDIR)/io_lst-SoInput_Reader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput_Reader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_Reader.cpp' object='io_lst-SoInput_Reader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput_Reader.Po' tmpdepfile='$(DEPDIR)/io_lst-SoInput_Reader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput_Reader.o `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp
+
+io_lst-SoInput_Reader.obj: SoInput_Reader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput_Reader.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoInput_Reader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput_Reader.obj `if test -f 'SoInput_Reader.cpp'; then $(CYGPATH_W) 'SoInput_Reader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_Reader.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput_Reader.Tpo" "$(DEPDIR)/io_lst-SoInput_Reader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput_Reader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_Reader.cpp' object='io_lst-SoInput_Reader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput_Reader.Po' tmpdepfile='$(DEPDIR)/io_lst-SoInput_Reader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput_Reader.obj `if test -f 'SoInput_Reader.cpp'; then $(CYGPATH_W) 'SoInput_Reader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_Reader.cpp'; fi`
+
+io_lst-SoInput_Reader.lo: SoInput_Reader.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoInput_Reader.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoInput_Reader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoInput_Reader.lo `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoInput_Reader.Tpo" "$(DEPDIR)/io_lst-SoInput_Reader.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoInput_Reader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_Reader.cpp' object='io_lst-SoInput_Reader.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoInput_Reader.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoInput_Reader.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoInput_Reader.lo `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp
+
+io_lst-SoOutput.o: SoOutput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoOutput.o -MD -MP -MF "$(DEPDIR)/io_lst-SoOutput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoOutput.o `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoOutput.Tpo" "$(DEPDIR)/io_lst-SoOutput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoOutput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput.cpp' object='io_lst-SoOutput.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoOutput.Po' tmpdepfile='$(DEPDIR)/io_lst-SoOutput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoOutput.o `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp
+
+io_lst-SoOutput.obj: SoOutput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoOutput.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoOutput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoOutput.obj `if test -f 'SoOutput.cpp'; then $(CYGPATH_W) 'SoOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoOutput.Tpo" "$(DEPDIR)/io_lst-SoOutput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoOutput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput.cpp' object='io_lst-SoOutput.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoOutput.Po' tmpdepfile='$(DEPDIR)/io_lst-SoOutput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoOutput.obj `if test -f 'SoOutput.cpp'; then $(CYGPATH_W) 'SoOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput.cpp'; fi`
+
+io_lst-SoOutput.lo: SoOutput.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoOutput.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoOutput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoOutput.lo `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoOutput.Tpo" "$(DEPDIR)/io_lst-SoOutput.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoOutput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput.cpp' object='io_lst-SoOutput.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoOutput.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoOutput.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoOutput.lo `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp
+
+io_lst-SoOutput_Writer.o: SoOutput_Writer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoOutput_Writer.o -MD -MP -MF "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoOutput_Writer.o `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo" "$(DEPDIR)/io_lst-SoOutput_Writer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput_Writer.cpp' object='io_lst-SoOutput_Writer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoOutput_Writer.Po' tmpdepfile='$(DEPDIR)/io_lst-SoOutput_Writer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoOutput_Writer.o `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp
+
+io_lst-SoOutput_Writer.obj: SoOutput_Writer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoOutput_Writer.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoOutput_Writer.obj `if test -f 'SoOutput_Writer.cpp'; then $(CYGPATH_W) 'SoOutput_Writer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput_Writer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo" "$(DEPDIR)/io_lst-SoOutput_Writer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput_Writer.cpp' object='io_lst-SoOutput_Writer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoOutput_Writer.Po' tmpdepfile='$(DEPDIR)/io_lst-SoOutput_Writer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoOutput_Writer.obj `if test -f 'SoOutput_Writer.cpp'; then $(CYGPATH_W) 'SoOutput_Writer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput_Writer.cpp'; fi`
+
+io_lst-SoOutput_Writer.lo: SoOutput_Writer.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoOutput_Writer.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoOutput_Writer.lo `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo" "$(DEPDIR)/io_lst-SoOutput_Writer.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoOutput_Writer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput_Writer.cpp' object='io_lst-SoOutput_Writer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoOutput_Writer.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoOutput_Writer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoOutput_Writer.lo `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp
+
+io_lst-SoByteStream.o: SoByteStream.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoByteStream.o -MD -MP -MF "$(DEPDIR)/io_lst-SoByteStream.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoByteStream.o `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoByteStream.Tpo" "$(DEPDIR)/io_lst-SoByteStream.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoByteStream.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoByteStream.cpp' object='io_lst-SoByteStream.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoByteStream.Po' tmpdepfile='$(DEPDIR)/io_lst-SoByteStream.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoByteStream.o `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp
+
+io_lst-SoByteStream.obj: SoByteStream.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoByteStream.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoByteStream.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoByteStream.obj `if test -f 'SoByteStream.cpp'; then $(CYGPATH_W) 'SoByteStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoByteStream.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoByteStream.Tpo" "$(DEPDIR)/io_lst-SoByteStream.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoByteStream.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoByteStream.cpp' object='io_lst-SoByteStream.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoByteStream.Po' tmpdepfile='$(DEPDIR)/io_lst-SoByteStream.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoByteStream.obj `if test -f 'SoByteStream.cpp'; then $(CYGPATH_W) 'SoByteStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoByteStream.cpp'; fi`
+
+io_lst-SoByteStream.lo: SoByteStream.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoByteStream.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoByteStream.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoByteStream.lo `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoByteStream.Tpo" "$(DEPDIR)/io_lst-SoByteStream.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoByteStream.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoByteStream.cpp' object='io_lst-SoByteStream.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoByteStream.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoByteStream.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoByteStream.lo `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp
+
+io_lst-SoTranSender.o: SoTranSender.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoTranSender.o -MD -MP -MF "$(DEPDIR)/io_lst-SoTranSender.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoTranSender.o `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoTranSender.Tpo" "$(DEPDIR)/io_lst-SoTranSender.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoTranSender.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranSender.cpp' object='io_lst-SoTranSender.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoTranSender.Po' tmpdepfile='$(DEPDIR)/io_lst-SoTranSender.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoTranSender.o `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp
+
+io_lst-SoTranSender.obj: SoTranSender.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoTranSender.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoTranSender.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoTranSender.obj `if test -f 'SoTranSender.cpp'; then $(CYGPATH_W) 'SoTranSender.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranSender.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoTranSender.Tpo" "$(DEPDIR)/io_lst-SoTranSender.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoTranSender.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranSender.cpp' object='io_lst-SoTranSender.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoTranSender.Po' tmpdepfile='$(DEPDIR)/io_lst-SoTranSender.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoTranSender.obj `if test -f 'SoTranSender.cpp'; then $(CYGPATH_W) 'SoTranSender.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranSender.cpp'; fi`
+
+io_lst-SoTranSender.lo: SoTranSender.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoTranSender.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoTranSender.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoTranSender.lo `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoTranSender.Tpo" "$(DEPDIR)/io_lst-SoTranSender.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoTranSender.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranSender.cpp' object='io_lst-SoTranSender.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoTranSender.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoTranSender.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoTranSender.lo `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp
+
+io_lst-SoTranReceiver.o: SoTranReceiver.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoTranReceiver.o -MD -MP -MF "$(DEPDIR)/io_lst-SoTranReceiver.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoTranReceiver.o `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoTranReceiver.Tpo" "$(DEPDIR)/io_lst-SoTranReceiver.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoTranReceiver.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranReceiver.cpp' object='io_lst-SoTranReceiver.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoTranReceiver.Po' tmpdepfile='$(DEPDIR)/io_lst-SoTranReceiver.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoTranReceiver.o `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp
+
+io_lst-SoTranReceiver.obj: SoTranReceiver.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoTranReceiver.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoTranReceiver.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoTranReceiver.obj `if test -f 'SoTranReceiver.cpp'; then $(CYGPATH_W) 'SoTranReceiver.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranReceiver.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoTranReceiver.Tpo" "$(DEPDIR)/io_lst-SoTranReceiver.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoTranReceiver.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranReceiver.cpp' object='io_lst-SoTranReceiver.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoTranReceiver.Po' tmpdepfile='$(DEPDIR)/io_lst-SoTranReceiver.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoTranReceiver.obj `if test -f 'SoTranReceiver.cpp'; then $(CYGPATH_W) 'SoTranReceiver.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranReceiver.cpp'; fi`
+
+io_lst-SoTranReceiver.lo: SoTranReceiver.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoTranReceiver.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoTranReceiver.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoTranReceiver.lo `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoTranReceiver.Tpo" "$(DEPDIR)/io_lst-SoTranReceiver.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoTranReceiver.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranReceiver.cpp' object='io_lst-SoTranReceiver.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoTranReceiver.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoTranReceiver.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoTranReceiver.lo `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp
+
+io_lst-SoWriterefCounter.o: SoWriterefCounter.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoWriterefCounter.o -MD -MP -MF "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoWriterefCounter.o `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo" "$(DEPDIR)/io_lst-SoWriterefCounter.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWriterefCounter.cpp' object='io_lst-SoWriterefCounter.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoWriterefCounter.Po' tmpdepfile='$(DEPDIR)/io_lst-SoWriterefCounter.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoWriterefCounter.o `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp
+
+io_lst-SoWriterefCounter.obj: SoWriterefCounter.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoWriterefCounter.obj -MD -MP -MF "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoWriterefCounter.obj `if test -f 'SoWriterefCounter.cpp'; then $(CYGPATH_W) 'SoWriterefCounter.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWriterefCounter.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo" "$(DEPDIR)/io_lst-SoWriterefCounter.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWriterefCounter.cpp' object='io_lst-SoWriterefCounter.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoWriterefCounter.Po' tmpdepfile='$(DEPDIR)/io_lst-SoWriterefCounter.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoWriterefCounter.obj `if test -f 'SoWriterefCounter.cpp'; then $(CYGPATH_W) 'SoWriterefCounter.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWriterefCounter.cpp'; fi`
+
+io_lst-SoWriterefCounter.lo: SoWriterefCounter.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-SoWriterefCounter.lo -MD -MP -MF "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-SoWriterefCounter.lo `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo" "$(DEPDIR)/io_lst-SoWriterefCounter.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-SoWriterefCounter.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWriterefCounter.cpp' object='io_lst-SoWriterefCounter.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-SoWriterefCounter.Plo' tmpdepfile='$(DEPDIR)/io_lst-SoWriterefCounter.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-SoWriterefCounter.lo `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp
+
+io_lst-gzmemio.o: gzmemio.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-gzmemio.o -MD -MP -MF "$(DEPDIR)/io_lst-gzmemio.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-gzmemio.o `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-gzmemio.Tpo" "$(DEPDIR)/io_lst-gzmemio.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-gzmemio.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gzmemio.cpp' object='io_lst-gzmemio.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-gzmemio.Po' tmpdepfile='$(DEPDIR)/io_lst-gzmemio.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-gzmemio.o `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp
+
+io_lst-gzmemio.obj: gzmemio.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-gzmemio.obj -MD -MP -MF "$(DEPDIR)/io_lst-gzmemio.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-gzmemio.obj `if test -f 'gzmemio.cpp'; then $(CYGPATH_W) 'gzmemio.cpp'; else $(CYGPATH_W) '$(srcdir)/gzmemio.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-gzmemio.Tpo" "$(DEPDIR)/io_lst-gzmemio.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-gzmemio.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gzmemio.cpp' object='io_lst-gzmemio.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-gzmemio.Po' tmpdepfile='$(DEPDIR)/io_lst-gzmemio.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-gzmemio.obj `if test -f 'gzmemio.cpp'; then $(CYGPATH_W) 'gzmemio.cpp'; else $(CYGPATH_W) '$(srcdir)/gzmemio.cpp'; fi`
+
+io_lst-gzmemio.lo: gzmemio.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -MT io_lst-gzmemio.lo -MD -MP -MF "$(DEPDIR)/io_lst-gzmemio.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o io_lst-gzmemio.lo `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/io_lst-gzmemio.Tpo" "$(DEPDIR)/io_lst-gzmemio.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/io_lst-gzmemio.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gzmemio.cpp' object='io_lst-gzmemio.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/io_lst-gzmemio.Plo' tmpdepfile='$(DEPDIR)/io_lst-gzmemio.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(io_lst_CXXFLAGS) $(CXXFLAGS) -c -o io_lst-gzmemio.lo `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp
+
+libio_la-all-io-cpp.o: all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-all-io-cpp.o -MD -MP -MF "$(DEPDIR)/libio_la-all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-all-io-cpp.o `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-all-io-cpp.Tpo" "$(DEPDIR)/libio_la-all-io-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-io-cpp.cpp' object='libio_la-all-io-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-all-io-cpp.Po' tmpdepfile='$(DEPDIR)/libio_la-all-io-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-all-io-cpp.o `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp
+
+libio_la-all-io-cpp.obj: all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-all-io-cpp.obj -MD -MP -MF "$(DEPDIR)/libio_la-all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-all-io-cpp.obj `if test -f 'all-io-cpp.cpp'; then $(CYGPATH_W) 'all-io-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-io-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-all-io-cpp.Tpo" "$(DEPDIR)/libio_la-all-io-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-io-cpp.cpp' object='libio_la-all-io-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-all-io-cpp.Po' tmpdepfile='$(DEPDIR)/libio_la-all-io-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-all-io-cpp.obj `if test -f 'all-io-cpp.cpp'; then $(CYGPATH_W) 'all-io-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-io-cpp.cpp'; fi`
+
+libio_la-all-io-cpp.lo: all-io-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-all-io-cpp.lo -MD -MP -MF "$(DEPDIR)/libio_la-all-io-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-all-io-cpp.lo `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-all-io-cpp.Tpo" "$(DEPDIR)/libio_la-all-io-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-all-io-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-io-cpp.cpp' object='libio_la-all-io-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-all-io-cpp.Plo' tmpdepfile='$(DEPDIR)/libio_la-all-io-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-all-io-cpp.lo `test -f 'all-io-cpp.cpp' || echo '$(srcdir)/'`all-io-cpp.cpp
+
+libio_la-SoInput.o: SoInput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput.o -MD -MP -MF "$(DEPDIR)/libio_la-SoInput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput.o `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput.Tpo" "$(DEPDIR)/libio_la-SoInput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput.cpp' object='libio_la-SoInput.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput.Po' tmpdepfile='$(DEPDIR)/libio_la-SoInput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput.o `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp
+
+libio_la-SoInput.obj: SoInput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoInput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput.obj `if test -f 'SoInput.cpp'; then $(CYGPATH_W) 'SoInput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput.Tpo" "$(DEPDIR)/libio_la-SoInput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput.cpp' object='libio_la-SoInput.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput.Po' tmpdepfile='$(DEPDIR)/libio_la-SoInput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput.obj `if test -f 'SoInput.cpp'; then $(CYGPATH_W) 'SoInput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput.cpp'; fi`
+
+libio_la-SoInput.lo: SoInput.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoInput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput.lo `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput.Tpo" "$(DEPDIR)/libio_la-SoInput.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput.cpp' object='libio_la-SoInput.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoInput.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput.lo `test -f 'SoInput.cpp' || echo '$(srcdir)/'`SoInput.cpp
+
+libio_la-SoInput_FileInfo.o: SoInput_FileInfo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput_FileInfo.o -MD -MP -MF "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput_FileInfo.o `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo" "$(DEPDIR)/libio_la-SoInput_FileInfo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_FileInfo.cpp' object='libio_la-SoInput_FileInfo.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput_FileInfo.Po' tmpdepfile='$(DEPDIR)/libio_la-SoInput_FileInfo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput_FileInfo.o `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp
+
+libio_la-SoInput_FileInfo.obj: SoInput_FileInfo.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput_FileInfo.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput_FileInfo.obj `if test -f 'SoInput_FileInfo.cpp'; then $(CYGPATH_W) 'SoInput_FileInfo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_FileInfo.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo" "$(DEPDIR)/libio_la-SoInput_FileInfo.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_FileInfo.cpp' object='libio_la-SoInput_FileInfo.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput_FileInfo.Po' tmpdepfile='$(DEPDIR)/libio_la-SoInput_FileInfo.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput_FileInfo.obj `if test -f 'SoInput_FileInfo.cpp'; then $(CYGPATH_W) 'SoInput_FileInfo.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_FileInfo.cpp'; fi`
+
+libio_la-SoInput_FileInfo.lo: SoInput_FileInfo.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput_FileInfo.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput_FileInfo.lo `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo" "$(DEPDIR)/libio_la-SoInput_FileInfo.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput_FileInfo.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_FileInfo.cpp' object='libio_la-SoInput_FileInfo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput_FileInfo.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoInput_FileInfo.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput_FileInfo.lo `test -f 'SoInput_FileInfo.cpp' || echo '$(srcdir)/'`SoInput_FileInfo.cpp
+
+libio_la-SoInput_Reader.o: SoInput_Reader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput_Reader.o -MD -MP -MF "$(DEPDIR)/libio_la-SoInput_Reader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput_Reader.o `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput_Reader.Tpo" "$(DEPDIR)/libio_la-SoInput_Reader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput_Reader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_Reader.cpp' object='libio_la-SoInput_Reader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput_Reader.Po' tmpdepfile='$(DEPDIR)/libio_la-SoInput_Reader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput_Reader.o `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp
+
+libio_la-SoInput_Reader.obj: SoInput_Reader.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput_Reader.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoInput_Reader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput_Reader.obj `if test -f 'SoInput_Reader.cpp'; then $(CYGPATH_W) 'SoInput_Reader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_Reader.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput_Reader.Tpo" "$(DEPDIR)/libio_la-SoInput_Reader.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput_Reader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_Reader.cpp' object='libio_la-SoInput_Reader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput_Reader.Po' tmpdepfile='$(DEPDIR)/libio_la-SoInput_Reader.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput_Reader.obj `if test -f 'SoInput_Reader.cpp'; then $(CYGPATH_W) 'SoInput_Reader.cpp'; else $(CYGPATH_W) '$(srcdir)/SoInput_Reader.cpp'; fi`
+
+libio_la-SoInput_Reader.lo: SoInput_Reader.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoInput_Reader.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoInput_Reader.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoInput_Reader.lo `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoInput_Reader.Tpo" "$(DEPDIR)/libio_la-SoInput_Reader.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoInput_Reader.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoInput_Reader.cpp' object='libio_la-SoInput_Reader.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoInput_Reader.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoInput_Reader.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoInput_Reader.lo `test -f 'SoInput_Reader.cpp' || echo '$(srcdir)/'`SoInput_Reader.cpp
+
+libio_la-SoOutput.o: SoOutput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoOutput.o -MD -MP -MF "$(DEPDIR)/libio_la-SoOutput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoOutput.o `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoOutput.Tpo" "$(DEPDIR)/libio_la-SoOutput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoOutput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput.cpp' object='libio_la-SoOutput.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoOutput.Po' tmpdepfile='$(DEPDIR)/libio_la-SoOutput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoOutput.o `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp
+
+libio_la-SoOutput.obj: SoOutput.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoOutput.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoOutput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoOutput.obj `if test -f 'SoOutput.cpp'; then $(CYGPATH_W) 'SoOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoOutput.Tpo" "$(DEPDIR)/libio_la-SoOutput.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoOutput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput.cpp' object='libio_la-SoOutput.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoOutput.Po' tmpdepfile='$(DEPDIR)/libio_la-SoOutput.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoOutput.obj `if test -f 'SoOutput.cpp'; then $(CYGPATH_W) 'SoOutput.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput.cpp'; fi`
+
+libio_la-SoOutput.lo: SoOutput.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoOutput.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoOutput.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoOutput.lo `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoOutput.Tpo" "$(DEPDIR)/libio_la-SoOutput.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoOutput.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput.cpp' object='libio_la-SoOutput.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoOutput.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoOutput.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoOutput.lo `test -f 'SoOutput.cpp' || echo '$(srcdir)/'`SoOutput.cpp
+
+libio_la-SoOutput_Writer.o: SoOutput_Writer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoOutput_Writer.o -MD -MP -MF "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoOutput_Writer.o `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo" "$(DEPDIR)/libio_la-SoOutput_Writer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput_Writer.cpp' object='libio_la-SoOutput_Writer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoOutput_Writer.Po' tmpdepfile='$(DEPDIR)/libio_la-SoOutput_Writer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoOutput_Writer.o `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp
+
+libio_la-SoOutput_Writer.obj: SoOutput_Writer.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoOutput_Writer.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoOutput_Writer.obj `if test -f 'SoOutput_Writer.cpp'; then $(CYGPATH_W) 'SoOutput_Writer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput_Writer.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo" "$(DEPDIR)/libio_la-SoOutput_Writer.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput_Writer.cpp' object='libio_la-SoOutput_Writer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoOutput_Writer.Po' tmpdepfile='$(DEPDIR)/libio_la-SoOutput_Writer.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoOutput_Writer.obj `if test -f 'SoOutput_Writer.cpp'; then $(CYGPATH_W) 'SoOutput_Writer.cpp'; else $(CYGPATH_W) '$(srcdir)/SoOutput_Writer.cpp'; fi`
+
+libio_la-SoOutput_Writer.lo: SoOutput_Writer.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoOutput_Writer.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoOutput_Writer.lo `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo" "$(DEPDIR)/libio_la-SoOutput_Writer.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoOutput_Writer.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoOutput_Writer.cpp' object='libio_la-SoOutput_Writer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoOutput_Writer.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoOutput_Writer.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoOutput_Writer.lo `test -f 'SoOutput_Writer.cpp' || echo '$(srcdir)/'`SoOutput_Writer.cpp
+
+libio_la-SoByteStream.o: SoByteStream.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoByteStream.o -MD -MP -MF "$(DEPDIR)/libio_la-SoByteStream.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoByteStream.o `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoByteStream.Tpo" "$(DEPDIR)/libio_la-SoByteStream.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoByteStream.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoByteStream.cpp' object='libio_la-SoByteStream.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoByteStream.Po' tmpdepfile='$(DEPDIR)/libio_la-SoByteStream.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoByteStream.o `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp
+
+libio_la-SoByteStream.obj: SoByteStream.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoByteStream.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoByteStream.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoByteStream.obj `if test -f 'SoByteStream.cpp'; then $(CYGPATH_W) 'SoByteStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoByteStream.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoByteStream.Tpo" "$(DEPDIR)/libio_la-SoByteStream.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoByteStream.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoByteStream.cpp' object='libio_la-SoByteStream.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoByteStream.Po' tmpdepfile='$(DEPDIR)/libio_la-SoByteStream.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoByteStream.obj `if test -f 'SoByteStream.cpp'; then $(CYGPATH_W) 'SoByteStream.cpp'; else $(CYGPATH_W) '$(srcdir)/SoByteStream.cpp'; fi`
+
+libio_la-SoByteStream.lo: SoByteStream.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoByteStream.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoByteStream.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoByteStream.lo `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoByteStream.Tpo" "$(DEPDIR)/libio_la-SoByteStream.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoByteStream.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoByteStream.cpp' object='libio_la-SoByteStream.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoByteStream.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoByteStream.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoByteStream.lo `test -f 'SoByteStream.cpp' || echo '$(srcdir)/'`SoByteStream.cpp
+
+libio_la-SoTranSender.o: SoTranSender.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoTranSender.o -MD -MP -MF "$(DEPDIR)/libio_la-SoTranSender.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoTranSender.o `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoTranSender.Tpo" "$(DEPDIR)/libio_la-SoTranSender.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoTranSender.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranSender.cpp' object='libio_la-SoTranSender.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoTranSender.Po' tmpdepfile='$(DEPDIR)/libio_la-SoTranSender.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoTranSender.o `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp
+
+libio_la-SoTranSender.obj: SoTranSender.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoTranSender.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoTranSender.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoTranSender.obj `if test -f 'SoTranSender.cpp'; then $(CYGPATH_W) 'SoTranSender.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranSender.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoTranSender.Tpo" "$(DEPDIR)/libio_la-SoTranSender.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoTranSender.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranSender.cpp' object='libio_la-SoTranSender.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoTranSender.Po' tmpdepfile='$(DEPDIR)/libio_la-SoTranSender.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoTranSender.obj `if test -f 'SoTranSender.cpp'; then $(CYGPATH_W) 'SoTranSender.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranSender.cpp'; fi`
+
+libio_la-SoTranSender.lo: SoTranSender.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoTranSender.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoTranSender.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoTranSender.lo `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoTranSender.Tpo" "$(DEPDIR)/libio_la-SoTranSender.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoTranSender.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranSender.cpp' object='libio_la-SoTranSender.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoTranSender.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoTranSender.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoTranSender.lo `test -f 'SoTranSender.cpp' || echo '$(srcdir)/'`SoTranSender.cpp
+
+libio_la-SoTranReceiver.o: SoTranReceiver.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoTranReceiver.o -MD -MP -MF "$(DEPDIR)/libio_la-SoTranReceiver.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoTranReceiver.o `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoTranReceiver.Tpo" "$(DEPDIR)/libio_la-SoTranReceiver.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoTranReceiver.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranReceiver.cpp' object='libio_la-SoTranReceiver.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoTranReceiver.Po' tmpdepfile='$(DEPDIR)/libio_la-SoTranReceiver.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoTranReceiver.o `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp
+
+libio_la-SoTranReceiver.obj: SoTranReceiver.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoTranReceiver.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoTranReceiver.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoTranReceiver.obj `if test -f 'SoTranReceiver.cpp'; then $(CYGPATH_W) 'SoTranReceiver.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranReceiver.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoTranReceiver.Tpo" "$(DEPDIR)/libio_la-SoTranReceiver.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoTranReceiver.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranReceiver.cpp' object='libio_la-SoTranReceiver.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoTranReceiver.Po' tmpdepfile='$(DEPDIR)/libio_la-SoTranReceiver.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoTranReceiver.obj `if test -f 'SoTranReceiver.cpp'; then $(CYGPATH_W) 'SoTranReceiver.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTranReceiver.cpp'; fi`
+
+libio_la-SoTranReceiver.lo: SoTranReceiver.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoTranReceiver.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoTranReceiver.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoTranReceiver.lo `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoTranReceiver.Tpo" "$(DEPDIR)/libio_la-SoTranReceiver.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoTranReceiver.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTranReceiver.cpp' object='libio_la-SoTranReceiver.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoTranReceiver.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoTranReceiver.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoTranReceiver.lo `test -f 'SoTranReceiver.cpp' || echo '$(srcdir)/'`SoTranReceiver.cpp
+
+libio_la-SoWriterefCounter.o: SoWriterefCounter.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoWriterefCounter.o -MD -MP -MF "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoWriterefCounter.o `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo" "$(DEPDIR)/libio_la-SoWriterefCounter.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWriterefCounter.cpp' object='libio_la-SoWriterefCounter.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoWriterefCounter.Po' tmpdepfile='$(DEPDIR)/libio_la-SoWriterefCounter.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoWriterefCounter.o `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp
+
+libio_la-SoWriterefCounter.obj: SoWriterefCounter.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoWriterefCounter.obj -MD -MP -MF "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoWriterefCounter.obj `if test -f 'SoWriterefCounter.cpp'; then $(CYGPATH_W) 'SoWriterefCounter.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWriterefCounter.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo" "$(DEPDIR)/libio_la-SoWriterefCounter.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWriterefCounter.cpp' object='libio_la-SoWriterefCounter.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoWriterefCounter.Po' tmpdepfile='$(DEPDIR)/libio_la-SoWriterefCounter.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoWriterefCounter.obj `if test -f 'SoWriterefCounter.cpp'; then $(CYGPATH_W) 'SoWriterefCounter.cpp'; else $(CYGPATH_W) '$(srcdir)/SoWriterefCounter.cpp'; fi`
+
+libio_la-SoWriterefCounter.lo: SoWriterefCounter.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-SoWriterefCounter.lo -MD -MP -MF "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-SoWriterefCounter.lo `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo" "$(DEPDIR)/libio_la-SoWriterefCounter.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-SoWriterefCounter.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoWriterefCounter.cpp' object='libio_la-SoWriterefCounter.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-SoWriterefCounter.Plo' tmpdepfile='$(DEPDIR)/libio_la-SoWriterefCounter.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-SoWriterefCounter.lo `test -f 'SoWriterefCounter.cpp' || echo '$(srcdir)/'`SoWriterefCounter.cpp
+
+libio_la-gzmemio.o: gzmemio.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-gzmemio.o -MD -MP -MF "$(DEPDIR)/libio_la-gzmemio.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-gzmemio.o `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-gzmemio.Tpo" "$(DEPDIR)/libio_la-gzmemio.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-gzmemio.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gzmemio.cpp' object='libio_la-gzmemio.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-gzmemio.Po' tmpdepfile='$(DEPDIR)/libio_la-gzmemio.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-gzmemio.o `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp
+
+libio_la-gzmemio.obj: gzmemio.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-gzmemio.obj -MD -MP -MF "$(DEPDIR)/libio_la-gzmemio.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-gzmemio.obj `if test -f 'gzmemio.cpp'; then $(CYGPATH_W) 'gzmemio.cpp'; else $(CYGPATH_W) '$(srcdir)/gzmemio.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-gzmemio.Tpo" "$(DEPDIR)/libio_la-gzmemio.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-gzmemio.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gzmemio.cpp' object='libio_la-gzmemio.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-gzmemio.Po' tmpdepfile='$(DEPDIR)/libio_la-gzmemio.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-gzmemio.obj `if test -f 'gzmemio.cpp'; then $(CYGPATH_W) 'gzmemio.cpp'; else $(CYGPATH_W) '$(srcdir)/gzmemio.cpp'; fi`
+
+libio_la-gzmemio.lo: gzmemio.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -MT libio_la-gzmemio.lo -MD -MP -MF "$(DEPDIR)/libio_la-gzmemio.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libio_la-gzmemio.lo `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libio_la-gzmemio.Tpo" "$(DEPDIR)/libio_la-gzmemio.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libio_la-gzmemio.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='gzmemio.cpp' object='libio_la-gzmemio.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libio_la-gzmemio.Plo' tmpdepfile='$(DEPDIR)/libio_la-gzmemio.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libio_la_CXXFLAGS) $(CXXFLAGS) -c -o libio_la-gzmemio.lo `test -f 'gzmemio.cpp' || echo '$(srcdir)/'`gzmemio.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

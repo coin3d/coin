@@ -328,6 +328,9 @@ EXTRA_libevents_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libevents_la_CXXFLAGS = $(AM_CXXFLAGS)
+libevents_la_CFLAGS = $(AM_CFLAGS)
+
 libevents@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -337,6 +340,9 @@ events_lst_SOURCES = $(BuildSources)
 EXTRA_events_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+events_lst_CXXFLAGS = $(AM_CXXFLAGS)
+events_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/events
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -351,11 +357,14 @@ am__events_lst_SOURCES_DIST = SoButtonEvent.cpp SoEvent.cpp \
 	SoKeyboardEvent.cpp SoLocation2Event.cpp SoMotion3Event.cpp \
 	SoMouseButtonEvent.cpp SoSpaceballButtonEvent.cpp \
 	all-events-cpp.cpp
-am__objects_1 = all-events-cpp.$(OBJEXT)
-am__objects_2 = SoButtonEvent.$(OBJEXT) SoEvent.$(OBJEXT) \
-	SoKeyboardEvent.$(OBJEXT) SoLocation2Event.$(OBJEXT) \
-	SoMotion3Event.$(OBJEXT) SoMouseButtonEvent.$(OBJEXT) \
-	SoSpaceballButtonEvent.$(OBJEXT)
+am__objects_1 = events_lst-all-events-cpp.$(OBJEXT)
+am__objects_2 = events_lst-SoButtonEvent.$(OBJEXT) \
+	events_lst-SoEvent.$(OBJEXT) \
+	events_lst-SoKeyboardEvent.$(OBJEXT) \
+	events_lst-SoLocation2Event.$(OBJEXT) \
+	events_lst-SoMotion3Event.$(OBJEXT) \
+	events_lst-SoMouseButtonEvent.$(OBJEXT) \
+	events_lst-SoSpaceballButtonEvent.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_events_lst_OBJECTS = $(am__objects_3)
@@ -372,10 +381,12 @@ am__libevents_la_SOURCES_DIST = SoButtonEvent.cpp SoEvent.cpp \
 	SoKeyboardEvent.cpp SoLocation2Event.cpp SoMotion3Event.cpp \
 	SoMouseButtonEvent.cpp SoSpaceballButtonEvent.cpp \
 	all-events-cpp.cpp
-am__objects_6 = all-events-cpp.lo
-am__objects_7 = SoButtonEvent.lo SoEvent.lo SoKeyboardEvent.lo \
-	SoLocation2Event.lo SoMotion3Event.lo SoMouseButtonEvent.lo \
-	SoSpaceballButtonEvent.lo
+am__objects_6 = libevents_la-all-events-cpp.lo
+am__objects_7 = libevents_la-SoButtonEvent.lo libevents_la-SoEvent.lo \
+	libevents_la-SoKeyboardEvent.lo \
+	libevents_la-SoLocation2Event.lo libevents_la-SoMotion3Event.lo \
+	libevents_la-SoMouseButtonEvent.lo \
+	libevents_la-SoSpaceballButtonEvent.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libevents_la_OBJECTS = $(am__objects_8)
@@ -390,7 +401,13 @@ am__libevents@SUFFIX@LINKHACK_la_SOURCES_DIST = SoButtonEvent.cpp \
 	SoEvent.cpp SoKeyboardEvent.cpp SoLocation2Event.cpp \
 	SoMotion3Event.cpp SoMouseButtonEvent.cpp \
 	SoSpaceballButtonEvent.cpp all-events-cpp.cpp
-am_libevents@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-events-cpp.lo
+am__objects_11 = SoButtonEvent.lo SoEvent.lo SoKeyboardEvent.lo \
+	SoLocation2Event.lo SoMotion3Event.lo SoMouseButtonEvent.lo \
+	SoSpaceballButtonEvent.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libevents@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES_DIST = all-events-cpp.cpp \
 	SoButtonEvent.cpp SoEvent.cpp SoKeyboardEvent.cpp \
 	SoLocation2Event.cpp SoMotion3Event.cpp SoMouseButtonEvent.cpp \
@@ -400,20 +417,29 @@ libevents@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoButtonEvent.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoButtonEvent.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEvent.Plo ./$(DEPDIR)/SoEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoEvent.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoKeyboardEvent.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoKeyboardEvent.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLocation2Event.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoLocation2Event.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMotion3Event.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoMotion3Event.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMouseButtonEvent.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoMouseButtonEvent.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSpaceballButtonEvent.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoSpaceballButtonEvent.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-events-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-events-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoButtonEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoKeyboardEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoLocation2Event.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoMotion3Event.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoMouseButtonEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/events_lst-all-events-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoButtonEvent.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoEvent.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoKeyboardEvent.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoLocation2Event.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoMotion3Event.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoMouseButtonEvent.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libevents_la-all-events-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -439,7 +465,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/events/Makefile
+	  $(AUTOMAKE) --gnu  src/events/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -494,21 +520,29 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoButtonEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoButtonEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoKeyboardEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoKeyboardEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLocation2Event.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLocation2Event.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMotion3Event.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMotion3Event.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMouseButtonEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMouseButtonEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSpaceballButtonEvent.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSpaceballButtonEvent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-events-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-events-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoButtonEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoKeyboardEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoLocation2Event.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoMotion3Event.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoMouseButtonEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events_lst-all-events-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoButtonEvent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoEvent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoKeyboardEvent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoLocation2Event.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoMotion3Event.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoMouseButtonEvent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libevents_la-all-events-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -545,6 +579,534 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+events_lst-all-events-cpp.o: all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-all-events-cpp.o -MD -MP -MF "$(DEPDIR)/events_lst-all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-all-events-cpp.o `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-all-events-cpp.Tpo" "$(DEPDIR)/events_lst-all-events-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-events-cpp.cpp' object='events_lst-all-events-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-all-events-cpp.Po' tmpdepfile='$(DEPDIR)/events_lst-all-events-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-all-events-cpp.o `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp
+
+events_lst-all-events-cpp.obj: all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-all-events-cpp.obj -MD -MP -MF "$(DEPDIR)/events_lst-all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-all-events-cpp.obj `if test -f 'all-events-cpp.cpp'; then $(CYGPATH_W) 'all-events-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-events-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-all-events-cpp.Tpo" "$(DEPDIR)/events_lst-all-events-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-events-cpp.cpp' object='events_lst-all-events-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-all-events-cpp.Po' tmpdepfile='$(DEPDIR)/events_lst-all-events-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-all-events-cpp.obj `if test -f 'all-events-cpp.cpp'; then $(CYGPATH_W) 'all-events-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-events-cpp.cpp'; fi`
+
+events_lst-all-events-cpp.lo: all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-all-events-cpp.lo -MD -MP -MF "$(DEPDIR)/events_lst-all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-all-events-cpp.lo `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-all-events-cpp.Tpo" "$(DEPDIR)/events_lst-all-events-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-events-cpp.cpp' object='events_lst-all-events-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-all-events-cpp.Plo' tmpdepfile='$(DEPDIR)/events_lst-all-events-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-all-events-cpp.lo `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp
+
+events_lst-SoButtonEvent.o: SoButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoButtonEvent.o -MD -MP -MF "$(DEPDIR)/events_lst-SoButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoButtonEvent.o `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoButtonEvent.cpp' object='events_lst-SoButtonEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoButtonEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoButtonEvent.o `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp
+
+events_lst-SoButtonEvent.obj: SoButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoButtonEvent.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoButtonEvent.obj `if test -f 'SoButtonEvent.cpp'; then $(CYGPATH_W) 'SoButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoButtonEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoButtonEvent.cpp' object='events_lst-SoButtonEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoButtonEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoButtonEvent.obj `if test -f 'SoButtonEvent.cpp'; then $(CYGPATH_W) 'SoButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoButtonEvent.cpp'; fi`
+
+events_lst-SoButtonEvent.lo: SoButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoButtonEvent.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoButtonEvent.lo `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoButtonEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoButtonEvent.cpp' object='events_lst-SoButtonEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoButtonEvent.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoButtonEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoButtonEvent.lo `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp
+
+events_lst-SoEvent.o: SoEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoEvent.o -MD -MP -MF "$(DEPDIR)/events_lst-SoEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoEvent.o `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoEvent.Tpo" "$(DEPDIR)/events_lst-SoEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEvent.cpp' object='events_lst-SoEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoEvent.o `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp
+
+events_lst-SoEvent.obj: SoEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoEvent.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoEvent.obj `if test -f 'SoEvent.cpp'; then $(CYGPATH_W) 'SoEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoEvent.Tpo" "$(DEPDIR)/events_lst-SoEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEvent.cpp' object='events_lst-SoEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoEvent.obj `if test -f 'SoEvent.cpp'; then $(CYGPATH_W) 'SoEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEvent.cpp'; fi`
+
+events_lst-SoEvent.lo: SoEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoEvent.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoEvent.lo `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoEvent.Tpo" "$(DEPDIR)/events_lst-SoEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEvent.cpp' object='events_lst-SoEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoEvent.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoEvent.lo `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp
+
+events_lst-SoKeyboardEvent.o: SoKeyboardEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoKeyboardEvent.o -MD -MP -MF "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoKeyboardEvent.o `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo" "$(DEPDIR)/events_lst-SoKeyboardEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoKeyboardEvent.cpp' object='events_lst-SoKeyboardEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoKeyboardEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoKeyboardEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoKeyboardEvent.o `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp
+
+events_lst-SoKeyboardEvent.obj: SoKeyboardEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoKeyboardEvent.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoKeyboardEvent.obj `if test -f 'SoKeyboardEvent.cpp'; then $(CYGPATH_W) 'SoKeyboardEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoKeyboardEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo" "$(DEPDIR)/events_lst-SoKeyboardEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoKeyboardEvent.cpp' object='events_lst-SoKeyboardEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoKeyboardEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoKeyboardEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoKeyboardEvent.obj `if test -f 'SoKeyboardEvent.cpp'; then $(CYGPATH_W) 'SoKeyboardEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoKeyboardEvent.cpp'; fi`
+
+events_lst-SoKeyboardEvent.lo: SoKeyboardEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoKeyboardEvent.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoKeyboardEvent.lo `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo" "$(DEPDIR)/events_lst-SoKeyboardEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoKeyboardEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoKeyboardEvent.cpp' object='events_lst-SoKeyboardEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoKeyboardEvent.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoKeyboardEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoKeyboardEvent.lo `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp
+
+events_lst-SoLocation2Event.o: SoLocation2Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoLocation2Event.o -MD -MP -MF "$(DEPDIR)/events_lst-SoLocation2Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoLocation2Event.o `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoLocation2Event.Tpo" "$(DEPDIR)/events_lst-SoLocation2Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoLocation2Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLocation2Event.cpp' object='events_lst-SoLocation2Event.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoLocation2Event.Po' tmpdepfile='$(DEPDIR)/events_lst-SoLocation2Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoLocation2Event.o `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp
+
+events_lst-SoLocation2Event.obj: SoLocation2Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoLocation2Event.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoLocation2Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoLocation2Event.obj `if test -f 'SoLocation2Event.cpp'; then $(CYGPATH_W) 'SoLocation2Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLocation2Event.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoLocation2Event.Tpo" "$(DEPDIR)/events_lst-SoLocation2Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoLocation2Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLocation2Event.cpp' object='events_lst-SoLocation2Event.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoLocation2Event.Po' tmpdepfile='$(DEPDIR)/events_lst-SoLocation2Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoLocation2Event.obj `if test -f 'SoLocation2Event.cpp'; then $(CYGPATH_W) 'SoLocation2Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLocation2Event.cpp'; fi`
+
+events_lst-SoLocation2Event.lo: SoLocation2Event.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoLocation2Event.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoLocation2Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoLocation2Event.lo `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoLocation2Event.Tpo" "$(DEPDIR)/events_lst-SoLocation2Event.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoLocation2Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLocation2Event.cpp' object='events_lst-SoLocation2Event.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoLocation2Event.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoLocation2Event.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoLocation2Event.lo `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp
+
+events_lst-SoMotion3Event.o: SoMotion3Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoMotion3Event.o -MD -MP -MF "$(DEPDIR)/events_lst-SoMotion3Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoMotion3Event.o `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoMotion3Event.Tpo" "$(DEPDIR)/events_lst-SoMotion3Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoMotion3Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMotion3Event.cpp' object='events_lst-SoMotion3Event.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoMotion3Event.Po' tmpdepfile='$(DEPDIR)/events_lst-SoMotion3Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoMotion3Event.o `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp
+
+events_lst-SoMotion3Event.obj: SoMotion3Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoMotion3Event.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoMotion3Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoMotion3Event.obj `if test -f 'SoMotion3Event.cpp'; then $(CYGPATH_W) 'SoMotion3Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMotion3Event.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoMotion3Event.Tpo" "$(DEPDIR)/events_lst-SoMotion3Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoMotion3Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMotion3Event.cpp' object='events_lst-SoMotion3Event.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoMotion3Event.Po' tmpdepfile='$(DEPDIR)/events_lst-SoMotion3Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoMotion3Event.obj `if test -f 'SoMotion3Event.cpp'; then $(CYGPATH_W) 'SoMotion3Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMotion3Event.cpp'; fi`
+
+events_lst-SoMotion3Event.lo: SoMotion3Event.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoMotion3Event.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoMotion3Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoMotion3Event.lo `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoMotion3Event.Tpo" "$(DEPDIR)/events_lst-SoMotion3Event.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoMotion3Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMotion3Event.cpp' object='events_lst-SoMotion3Event.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoMotion3Event.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoMotion3Event.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoMotion3Event.lo `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp
+
+events_lst-SoMouseButtonEvent.o: SoMouseButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoMouseButtonEvent.o -MD -MP -MF "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoMouseButtonEvent.o `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoMouseButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMouseButtonEvent.cpp' object='events_lst-SoMouseButtonEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoMouseButtonEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoMouseButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoMouseButtonEvent.o `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp
+
+events_lst-SoMouseButtonEvent.obj: SoMouseButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoMouseButtonEvent.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoMouseButtonEvent.obj `if test -f 'SoMouseButtonEvent.cpp'; then $(CYGPATH_W) 'SoMouseButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMouseButtonEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoMouseButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMouseButtonEvent.cpp' object='events_lst-SoMouseButtonEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoMouseButtonEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoMouseButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoMouseButtonEvent.obj `if test -f 'SoMouseButtonEvent.cpp'; then $(CYGPATH_W) 'SoMouseButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMouseButtonEvent.cpp'; fi`
+
+events_lst-SoMouseButtonEvent.lo: SoMouseButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoMouseButtonEvent.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoMouseButtonEvent.lo `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoMouseButtonEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoMouseButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMouseButtonEvent.cpp' object='events_lst-SoMouseButtonEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoMouseButtonEvent.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoMouseButtonEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoMouseButtonEvent.lo `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp
+
+events_lst-SoSpaceballButtonEvent.o: SoSpaceballButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoSpaceballButtonEvent.o -MD -MP -MF "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoSpaceballButtonEvent.o `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpaceballButtonEvent.cpp' object='events_lst-SoSpaceballButtonEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoSpaceballButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoSpaceballButtonEvent.o `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp
+
+events_lst-SoSpaceballButtonEvent.obj: SoSpaceballButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoSpaceballButtonEvent.obj -MD -MP -MF "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoSpaceballButtonEvent.obj `if test -f 'SoSpaceballButtonEvent.cpp'; then $(CYGPATH_W) 'SoSpaceballButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpaceballButtonEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpaceballButtonEvent.cpp' object='events_lst-SoSpaceballButtonEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Po' tmpdepfile='$(DEPDIR)/events_lst-SoSpaceballButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoSpaceballButtonEvent.obj `if test -f 'SoSpaceballButtonEvent.cpp'; then $(CYGPATH_W) 'SoSpaceballButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpaceballButtonEvent.cpp'; fi`
+
+events_lst-SoSpaceballButtonEvent.lo: SoSpaceballButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -MT events_lst-SoSpaceballButtonEvent.lo -MD -MP -MF "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o events_lst-SoSpaceballButtonEvent.lo `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo" "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpaceballButtonEvent.cpp' object='events_lst-SoSpaceballButtonEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/events_lst-SoSpaceballButtonEvent.Plo' tmpdepfile='$(DEPDIR)/events_lst-SoSpaceballButtonEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(events_lst_CXXFLAGS) $(CXXFLAGS) -c -o events_lst-SoSpaceballButtonEvent.lo `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp
+
+libevents_la-all-events-cpp.o: all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-all-events-cpp.o -MD -MP -MF "$(DEPDIR)/libevents_la-all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-all-events-cpp.o `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-all-events-cpp.Tpo" "$(DEPDIR)/libevents_la-all-events-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-events-cpp.cpp' object='libevents_la-all-events-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-all-events-cpp.Po' tmpdepfile='$(DEPDIR)/libevents_la-all-events-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-all-events-cpp.o `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp
+
+libevents_la-all-events-cpp.obj: all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-all-events-cpp.obj -MD -MP -MF "$(DEPDIR)/libevents_la-all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-all-events-cpp.obj `if test -f 'all-events-cpp.cpp'; then $(CYGPATH_W) 'all-events-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-events-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-all-events-cpp.Tpo" "$(DEPDIR)/libevents_la-all-events-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-events-cpp.cpp' object='libevents_la-all-events-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-all-events-cpp.Po' tmpdepfile='$(DEPDIR)/libevents_la-all-events-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-all-events-cpp.obj `if test -f 'all-events-cpp.cpp'; then $(CYGPATH_W) 'all-events-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-events-cpp.cpp'; fi`
+
+libevents_la-all-events-cpp.lo: all-events-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-all-events-cpp.lo -MD -MP -MF "$(DEPDIR)/libevents_la-all-events-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-all-events-cpp.lo `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-all-events-cpp.Tpo" "$(DEPDIR)/libevents_la-all-events-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-all-events-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-events-cpp.cpp' object='libevents_la-all-events-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-all-events-cpp.Plo' tmpdepfile='$(DEPDIR)/libevents_la-all-events-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-all-events-cpp.lo `test -f 'all-events-cpp.cpp' || echo '$(srcdir)/'`all-events-cpp.cpp
+
+libevents_la-SoButtonEvent.o: SoButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoButtonEvent.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoButtonEvent.o `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoButtonEvent.cpp' object='libevents_la-SoButtonEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoButtonEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoButtonEvent.o `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp
+
+libevents_la-SoButtonEvent.obj: SoButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoButtonEvent.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoButtonEvent.obj `if test -f 'SoButtonEvent.cpp'; then $(CYGPATH_W) 'SoButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoButtonEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoButtonEvent.cpp' object='libevents_la-SoButtonEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoButtonEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoButtonEvent.obj `if test -f 'SoButtonEvent.cpp'; then $(CYGPATH_W) 'SoButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoButtonEvent.cpp'; fi`
+
+libevents_la-SoButtonEvent.lo: SoButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoButtonEvent.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoButtonEvent.lo `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoButtonEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoButtonEvent.cpp' object='libevents_la-SoButtonEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoButtonEvent.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoButtonEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoButtonEvent.lo `test -f 'SoButtonEvent.cpp' || echo '$(srcdir)/'`SoButtonEvent.cpp
+
+libevents_la-SoEvent.o: SoEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoEvent.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoEvent.o `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoEvent.Tpo" "$(DEPDIR)/libevents_la-SoEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEvent.cpp' object='libevents_la-SoEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoEvent.o `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp
+
+libevents_la-SoEvent.obj: SoEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoEvent.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoEvent.obj `if test -f 'SoEvent.cpp'; then $(CYGPATH_W) 'SoEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoEvent.Tpo" "$(DEPDIR)/libevents_la-SoEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEvent.cpp' object='libevents_la-SoEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoEvent.obj `if test -f 'SoEvent.cpp'; then $(CYGPATH_W) 'SoEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoEvent.cpp'; fi`
+
+libevents_la-SoEvent.lo: SoEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoEvent.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoEvent.lo `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoEvent.Tpo" "$(DEPDIR)/libevents_la-SoEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoEvent.cpp' object='libevents_la-SoEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoEvent.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoEvent.lo `test -f 'SoEvent.cpp' || echo '$(srcdir)/'`SoEvent.cpp
+
+libevents_la-SoKeyboardEvent.o: SoKeyboardEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoKeyboardEvent.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoKeyboardEvent.o `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo" "$(DEPDIR)/libevents_la-SoKeyboardEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoKeyboardEvent.cpp' object='libevents_la-SoKeyboardEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoKeyboardEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoKeyboardEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoKeyboardEvent.o `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp
+
+libevents_la-SoKeyboardEvent.obj: SoKeyboardEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoKeyboardEvent.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoKeyboardEvent.obj `if test -f 'SoKeyboardEvent.cpp'; then $(CYGPATH_W) 'SoKeyboardEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoKeyboardEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo" "$(DEPDIR)/libevents_la-SoKeyboardEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoKeyboardEvent.cpp' object='libevents_la-SoKeyboardEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoKeyboardEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoKeyboardEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoKeyboardEvent.obj `if test -f 'SoKeyboardEvent.cpp'; then $(CYGPATH_W) 'SoKeyboardEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoKeyboardEvent.cpp'; fi`
+
+libevents_la-SoKeyboardEvent.lo: SoKeyboardEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoKeyboardEvent.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoKeyboardEvent.lo `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo" "$(DEPDIR)/libevents_la-SoKeyboardEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoKeyboardEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoKeyboardEvent.cpp' object='libevents_la-SoKeyboardEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoKeyboardEvent.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoKeyboardEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoKeyboardEvent.lo `test -f 'SoKeyboardEvent.cpp' || echo '$(srcdir)/'`SoKeyboardEvent.cpp
+
+libevents_la-SoLocation2Event.o: SoLocation2Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoLocation2Event.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoLocation2Event.o `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo" "$(DEPDIR)/libevents_la-SoLocation2Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLocation2Event.cpp' object='libevents_la-SoLocation2Event.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoLocation2Event.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoLocation2Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoLocation2Event.o `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp
+
+libevents_la-SoLocation2Event.obj: SoLocation2Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoLocation2Event.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoLocation2Event.obj `if test -f 'SoLocation2Event.cpp'; then $(CYGPATH_W) 'SoLocation2Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLocation2Event.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo" "$(DEPDIR)/libevents_la-SoLocation2Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLocation2Event.cpp' object='libevents_la-SoLocation2Event.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoLocation2Event.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoLocation2Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoLocation2Event.obj `if test -f 'SoLocation2Event.cpp'; then $(CYGPATH_W) 'SoLocation2Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLocation2Event.cpp'; fi`
+
+libevents_la-SoLocation2Event.lo: SoLocation2Event.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoLocation2Event.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoLocation2Event.lo `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo" "$(DEPDIR)/libevents_la-SoLocation2Event.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoLocation2Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLocation2Event.cpp' object='libevents_la-SoLocation2Event.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoLocation2Event.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoLocation2Event.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoLocation2Event.lo `test -f 'SoLocation2Event.cpp' || echo '$(srcdir)/'`SoLocation2Event.cpp
+
+libevents_la-SoMotion3Event.o: SoMotion3Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoMotion3Event.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoMotion3Event.o `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo" "$(DEPDIR)/libevents_la-SoMotion3Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMotion3Event.cpp' object='libevents_la-SoMotion3Event.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoMotion3Event.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoMotion3Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoMotion3Event.o `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp
+
+libevents_la-SoMotion3Event.obj: SoMotion3Event.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoMotion3Event.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoMotion3Event.obj `if test -f 'SoMotion3Event.cpp'; then $(CYGPATH_W) 'SoMotion3Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMotion3Event.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo" "$(DEPDIR)/libevents_la-SoMotion3Event.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMotion3Event.cpp' object='libevents_la-SoMotion3Event.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoMotion3Event.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoMotion3Event.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoMotion3Event.obj `if test -f 'SoMotion3Event.cpp'; then $(CYGPATH_W) 'SoMotion3Event.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMotion3Event.cpp'; fi`
+
+libevents_la-SoMotion3Event.lo: SoMotion3Event.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoMotion3Event.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoMotion3Event.lo `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo" "$(DEPDIR)/libevents_la-SoMotion3Event.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoMotion3Event.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMotion3Event.cpp' object='libevents_la-SoMotion3Event.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoMotion3Event.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoMotion3Event.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoMotion3Event.lo `test -f 'SoMotion3Event.cpp' || echo '$(srcdir)/'`SoMotion3Event.cpp
+
+libevents_la-SoMouseButtonEvent.o: SoMouseButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoMouseButtonEvent.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoMouseButtonEvent.o `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMouseButtonEvent.cpp' object='libevents_la-SoMouseButtonEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoMouseButtonEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoMouseButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoMouseButtonEvent.o `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp
+
+libevents_la-SoMouseButtonEvent.obj: SoMouseButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoMouseButtonEvent.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoMouseButtonEvent.obj `if test -f 'SoMouseButtonEvent.cpp'; then $(CYGPATH_W) 'SoMouseButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMouseButtonEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMouseButtonEvent.cpp' object='libevents_la-SoMouseButtonEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoMouseButtonEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoMouseButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoMouseButtonEvent.obj `if test -f 'SoMouseButtonEvent.cpp'; then $(CYGPATH_W) 'SoMouseButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoMouseButtonEvent.cpp'; fi`
+
+libevents_la-SoMouseButtonEvent.lo: SoMouseButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoMouseButtonEvent.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoMouseButtonEvent.lo `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoMouseButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoMouseButtonEvent.cpp' object='libevents_la-SoMouseButtonEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoMouseButtonEvent.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoMouseButtonEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoMouseButtonEvent.lo `test -f 'SoMouseButtonEvent.cpp' || echo '$(srcdir)/'`SoMouseButtonEvent.cpp
+
+libevents_la-SoSpaceballButtonEvent.o: SoSpaceballButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoSpaceballButtonEvent.o -MD -MP -MF "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoSpaceballButtonEvent.o `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpaceballButtonEvent.cpp' object='libevents_la-SoSpaceballButtonEvent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoSpaceballButtonEvent.o `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp
+
+libevents_la-SoSpaceballButtonEvent.obj: SoSpaceballButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoSpaceballButtonEvent.obj -MD -MP -MF "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoSpaceballButtonEvent.obj `if test -f 'SoSpaceballButtonEvent.cpp'; then $(CYGPATH_W) 'SoSpaceballButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpaceballButtonEvent.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpaceballButtonEvent.cpp' object='libevents_la-SoSpaceballButtonEvent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Po' tmpdepfile='$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoSpaceballButtonEvent.obj `if test -f 'SoSpaceballButtonEvent.cpp'; then $(CYGPATH_W) 'SoSpaceballButtonEvent.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpaceballButtonEvent.cpp'; fi`
+
+libevents_la-SoSpaceballButtonEvent.lo: SoSpaceballButtonEvent.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -MT libevents_la-SoSpaceballButtonEvent.lo -MD -MP -MF "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libevents_la-SoSpaceballButtonEvent.lo `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo" "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpaceballButtonEvent.cpp' object='libevents_la-SoSpaceballButtonEvent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.Plo' tmpdepfile='$(DEPDIR)/libevents_la-SoSpaceballButtonEvent.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libevents_la_CXXFLAGS) $(CXXFLAGS) -c -o libevents_la-SoSpaceballButtonEvent.lo `test -f 'SoSpaceballButtonEvent.cpp' || echo '$(srcdir)/'`SoSpaceballButtonEvent.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

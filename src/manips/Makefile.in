@@ -334,6 +334,9 @@ EXTRA_libmanips_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libmanips_la_CXXFLAGS = $(AM_CXXFLAGS)
+libmanips_la_CFLAGS = $(AM_CFLAGS)
+
 libmanips@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -343,6 +346,9 @@ manips_lst_SOURCES = $(BuildSources)
 EXTRA_manips_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+manips_lst_CXXFLAGS = $(AM_CXXFLAGS)
+manips_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/manips
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -359,14 +365,20 @@ am__manips_lst_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
-am__objects_1 = all-manips-cpp.$(OBJEXT)
-am__objects_2 = SoClipPlaneManip.$(OBJEXT) \
-	SoDirectionalLightManip.$(OBJEXT) SoPointLightManip.$(OBJEXT) \
-	SoSpotLightManip.$(OBJEXT) SoTransformManip.$(OBJEXT) \
-	SoCenterballManip.$(OBJEXT) SoHandleBoxManip.$(OBJEXT) \
-	SoJackManip.$(OBJEXT) SoTabBoxManip.$(OBJEXT) \
-	SoTrackballManip.$(OBJEXT) SoTransformBoxManip.$(OBJEXT) \
-	SoTransformerManip.$(OBJEXT) commoncode.$(OBJEXT)
+am__objects_1 = manips_lst-all-manips-cpp.$(OBJEXT)
+am__objects_2 = manips_lst-SoClipPlaneManip.$(OBJEXT) \
+	manips_lst-SoDirectionalLightManip.$(OBJEXT) \
+	manips_lst-SoPointLightManip.$(OBJEXT) \
+	manips_lst-SoSpotLightManip.$(OBJEXT) \
+	manips_lst-SoTransformManip.$(OBJEXT) \
+	manips_lst-SoCenterballManip.$(OBJEXT) \
+	manips_lst-SoHandleBoxManip.$(OBJEXT) \
+	manips_lst-SoJackManip.$(OBJEXT) \
+	manips_lst-SoTabBoxManip.$(OBJEXT) \
+	manips_lst-SoTrackballManip.$(OBJEXT) \
+	manips_lst-SoTransformBoxManip.$(OBJEXT) \
+	manips_lst-SoTransformerManip.$(OBJEXT) \
+	manips_lst-commoncode.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_manips_lst_OBJECTS = $(am__objects_3)
@@ -387,12 +399,17 @@ am__libmanips_la_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
-am__objects_6 = all-manips-cpp.lo
-am__objects_7 = SoClipPlaneManip.lo SoDirectionalLightManip.lo \
-	SoPointLightManip.lo SoSpotLightManip.lo SoTransformManip.lo \
-	SoCenterballManip.lo SoHandleBoxManip.lo SoJackManip.lo \
-	SoTabBoxManip.lo SoTrackballManip.lo SoTransformBoxManip.lo \
-	SoTransformerManip.lo commoncode.lo
+am__objects_6 = libmanips_la-all-manips-cpp.lo
+am__objects_7 = libmanips_la-SoClipPlaneManip.lo \
+	libmanips_la-SoDirectionalLightManip.lo \
+	libmanips_la-SoPointLightManip.lo \
+	libmanips_la-SoSpotLightManip.lo \
+	libmanips_la-SoTransformManip.lo \
+	libmanips_la-SoCenterballManip.lo \
+	libmanips_la-SoHandleBoxManip.lo libmanips_la-SoJackManip.lo \
+	libmanips_la-SoTabBoxManip.lo libmanips_la-SoTrackballManip.lo \
+	libmanips_la-SoTransformBoxManip.lo \
+	libmanips_la-SoTransformerManip.lo libmanips_la-commoncode.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmanips_la_OBJECTS = $(am__objects_8)
@@ -411,7 +428,15 @@ am__libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
-am_libmanips@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-manips-cpp.lo
+am__objects_11 = SoClipPlaneManip.lo SoDirectionalLightManip.lo \
+	SoPointLightManip.lo SoSpotLightManip.lo SoTransformManip.lo \
+	SoCenterballManip.lo SoHandleBoxManip.lo SoJackManip.lo \
+	SoTabBoxManip.lo SoTrackballManip.lo SoTransformBoxManip.lo \
+	SoTransformerManip.lo commoncode.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libmanips@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = all-manips-cpp.cpp \
 	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
 	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
@@ -423,33 +448,47 @@ libmanips@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoCenterballManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCenterballManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoClipPlaneManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoClipPlaneManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoDirectionalLightManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDirectionalLightManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoHandleBoxManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoHandleBoxManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoJackManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoJackManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPointLightManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPointLightManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSpotLightManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoSpotLightManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTabBoxManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTabBoxManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTrackballManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTrackballManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformBoxManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTransformBoxManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTransformManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformerManip.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTransformerManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/commoncode.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/commoncode.Po
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoCenterballManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoClipPlaneManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoHandleBoxManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoJackManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoPointLightManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoSpotLightManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoTabBoxManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoTrackballManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoTransformBoxManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoTransformManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-SoTransformerManip.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-all-manips-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libmanips_la-commoncode.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoCenterballManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoClipPlaneManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoDirectionalLightManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoHandleBoxManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoJackManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoPointLightManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoSpotLightManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoTabBoxManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoTrackballManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoTransformBoxManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoTransformManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-SoTransformerManip.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-all-manips-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/manips_lst-commoncode.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -475,7 +514,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/manips/Makefile
+	  $(AUTOMAKE) --gnu  src/manips/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -530,33 +569,47 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCenterballManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCenterballManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoClipPlaneManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoClipPlaneManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDirectionalLightManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDirectionalLightManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoHandleBoxManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoHandleBoxManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoJackManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoJackManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPointLightManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPointLightManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSpotLightManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSpotLightManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTabBoxManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTabBoxManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTrackballManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTrackballManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformBoxManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformBoxManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformerManip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformerManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/commoncode.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/commoncode.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoCenterballManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoClipPlaneManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoHandleBoxManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoJackManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoPointLightManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoSpotLightManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoTabBoxManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoTrackballManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoTransformBoxManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoTransformManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-SoTransformerManip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-all-manips-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmanips_la-commoncode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoCenterballManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoClipPlaneManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoDirectionalLightManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoHandleBoxManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoJackManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoPointLightManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoSpotLightManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoTabBoxManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoTrackballManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoTransformBoxManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoTransformManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-SoTransformerManip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-all-manips-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/manips_lst-commoncode.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -593,6 +646,930 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+manips_lst-all-manips-cpp.o: all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-all-manips-cpp.o -MD -MP -MF "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-all-manips-cpp.o `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo" "$(DEPDIR)/manips_lst-all-manips-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-manips-cpp.cpp' object='manips_lst-all-manips-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-all-manips-cpp.Po' tmpdepfile='$(DEPDIR)/manips_lst-all-manips-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-all-manips-cpp.o `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp
+
+manips_lst-all-manips-cpp.obj: all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-all-manips-cpp.obj -MD -MP -MF "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-all-manips-cpp.obj `if test -f 'all-manips-cpp.cpp'; then $(CYGPATH_W) 'all-manips-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-manips-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo" "$(DEPDIR)/manips_lst-all-manips-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-manips-cpp.cpp' object='manips_lst-all-manips-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-all-manips-cpp.Po' tmpdepfile='$(DEPDIR)/manips_lst-all-manips-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-all-manips-cpp.obj `if test -f 'all-manips-cpp.cpp'; then $(CYGPATH_W) 'all-manips-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-manips-cpp.cpp'; fi`
+
+manips_lst-all-manips-cpp.lo: all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-all-manips-cpp.lo -MD -MP -MF "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-all-manips-cpp.lo `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo" "$(DEPDIR)/manips_lst-all-manips-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-manips-cpp.cpp' object='manips_lst-all-manips-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-all-manips-cpp.Plo' tmpdepfile='$(DEPDIR)/manips_lst-all-manips-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-all-manips-cpp.lo `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp
+
+manips_lst-SoClipPlaneManip.o: SoClipPlaneManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoClipPlaneManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoClipPlaneManip.o `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo" "$(DEPDIR)/manips_lst-SoClipPlaneManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoClipPlaneManip.cpp' object='manips_lst-SoClipPlaneManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoClipPlaneManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoClipPlaneManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoClipPlaneManip.o `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp
+
+manips_lst-SoClipPlaneManip.obj: SoClipPlaneManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoClipPlaneManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoClipPlaneManip.obj `if test -f 'SoClipPlaneManip.cpp'; then $(CYGPATH_W) 'SoClipPlaneManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoClipPlaneManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo" "$(DEPDIR)/manips_lst-SoClipPlaneManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoClipPlaneManip.cpp' object='manips_lst-SoClipPlaneManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoClipPlaneManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoClipPlaneManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoClipPlaneManip.obj `if test -f 'SoClipPlaneManip.cpp'; then $(CYGPATH_W) 'SoClipPlaneManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoClipPlaneManip.cpp'; fi`
+
+manips_lst-SoClipPlaneManip.lo: SoClipPlaneManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoClipPlaneManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoClipPlaneManip.lo `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo" "$(DEPDIR)/manips_lst-SoClipPlaneManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoClipPlaneManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoClipPlaneManip.cpp' object='manips_lst-SoClipPlaneManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoClipPlaneManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoClipPlaneManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoClipPlaneManip.lo `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp
+
+manips_lst-SoDirectionalLightManip.o: SoDirectionalLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoDirectionalLightManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoDirectionalLightManip.o `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo" "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDirectionalLightManip.cpp' object='manips_lst-SoDirectionalLightManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoDirectionalLightManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoDirectionalLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoDirectionalLightManip.o `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp
+
+manips_lst-SoDirectionalLightManip.obj: SoDirectionalLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoDirectionalLightManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoDirectionalLightManip.obj `if test -f 'SoDirectionalLightManip.cpp'; then $(CYGPATH_W) 'SoDirectionalLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDirectionalLightManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo" "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDirectionalLightManip.cpp' object='manips_lst-SoDirectionalLightManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoDirectionalLightManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoDirectionalLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoDirectionalLightManip.obj `if test -f 'SoDirectionalLightManip.cpp'; then $(CYGPATH_W) 'SoDirectionalLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDirectionalLightManip.cpp'; fi`
+
+manips_lst-SoDirectionalLightManip.lo: SoDirectionalLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoDirectionalLightManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoDirectionalLightManip.lo `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo" "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoDirectionalLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDirectionalLightManip.cpp' object='manips_lst-SoDirectionalLightManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoDirectionalLightManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoDirectionalLightManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoDirectionalLightManip.lo `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp
+
+manips_lst-SoPointLightManip.o: SoPointLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoPointLightManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoPointLightManip.o `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo" "$(DEPDIR)/manips_lst-SoPointLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointLightManip.cpp' object='manips_lst-SoPointLightManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoPointLightManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoPointLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoPointLightManip.o `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp
+
+manips_lst-SoPointLightManip.obj: SoPointLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoPointLightManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoPointLightManip.obj `if test -f 'SoPointLightManip.cpp'; then $(CYGPATH_W) 'SoPointLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointLightManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo" "$(DEPDIR)/manips_lst-SoPointLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointLightManip.cpp' object='manips_lst-SoPointLightManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoPointLightManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoPointLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoPointLightManip.obj `if test -f 'SoPointLightManip.cpp'; then $(CYGPATH_W) 'SoPointLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointLightManip.cpp'; fi`
+
+manips_lst-SoPointLightManip.lo: SoPointLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoPointLightManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoPointLightManip.lo `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo" "$(DEPDIR)/manips_lst-SoPointLightManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoPointLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointLightManip.cpp' object='manips_lst-SoPointLightManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoPointLightManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoPointLightManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoPointLightManip.lo `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp
+
+manips_lst-SoSpotLightManip.o: SoSpotLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoSpotLightManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoSpotLightManip.o `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo" "$(DEPDIR)/manips_lst-SoSpotLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpotLightManip.cpp' object='manips_lst-SoSpotLightManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoSpotLightManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoSpotLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoSpotLightManip.o `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp
+
+manips_lst-SoSpotLightManip.obj: SoSpotLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoSpotLightManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoSpotLightManip.obj `if test -f 'SoSpotLightManip.cpp'; then $(CYGPATH_W) 'SoSpotLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpotLightManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo" "$(DEPDIR)/manips_lst-SoSpotLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpotLightManip.cpp' object='manips_lst-SoSpotLightManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoSpotLightManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoSpotLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoSpotLightManip.obj `if test -f 'SoSpotLightManip.cpp'; then $(CYGPATH_W) 'SoSpotLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpotLightManip.cpp'; fi`
+
+manips_lst-SoSpotLightManip.lo: SoSpotLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoSpotLightManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoSpotLightManip.lo `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo" "$(DEPDIR)/manips_lst-SoSpotLightManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoSpotLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpotLightManip.cpp' object='manips_lst-SoSpotLightManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoSpotLightManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoSpotLightManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoSpotLightManip.lo `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp
+
+manips_lst-SoTransformManip.o: SoTransformManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformManip.o `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformManip.cpp' object='manips_lst-SoTransformManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformManip.o `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp
+
+manips_lst-SoTransformManip.obj: SoTransformManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformManip.obj `if test -f 'SoTransformManip.cpp'; then $(CYGPATH_W) 'SoTransformManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformManip.cpp' object='manips_lst-SoTransformManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformManip.obj `if test -f 'SoTransformManip.cpp'; then $(CYGPATH_W) 'SoTransformManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformManip.cpp'; fi`
+
+manips_lst-SoTransformManip.lo: SoTransformManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformManip.lo `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformManip.cpp' object='manips_lst-SoTransformManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformManip.lo `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp
+
+manips_lst-SoCenterballManip.o: SoCenterballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoCenterballManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoCenterballManip.o `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo" "$(DEPDIR)/manips_lst-SoCenterballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCenterballManip.cpp' object='manips_lst-SoCenterballManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoCenterballManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoCenterballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoCenterballManip.o `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp
+
+manips_lst-SoCenterballManip.obj: SoCenterballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoCenterballManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoCenterballManip.obj `if test -f 'SoCenterballManip.cpp'; then $(CYGPATH_W) 'SoCenterballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCenterballManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo" "$(DEPDIR)/manips_lst-SoCenterballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCenterballManip.cpp' object='manips_lst-SoCenterballManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoCenterballManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoCenterballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoCenterballManip.obj `if test -f 'SoCenterballManip.cpp'; then $(CYGPATH_W) 'SoCenterballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCenterballManip.cpp'; fi`
+
+manips_lst-SoCenterballManip.lo: SoCenterballManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoCenterballManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoCenterballManip.lo `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo" "$(DEPDIR)/manips_lst-SoCenterballManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoCenterballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCenterballManip.cpp' object='manips_lst-SoCenterballManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoCenterballManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoCenterballManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoCenterballManip.lo `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp
+
+manips_lst-SoHandleBoxManip.o: SoHandleBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoHandleBoxManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoHandleBoxManip.o `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoHandleBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoHandleBoxManip.cpp' object='manips_lst-SoHandleBoxManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoHandleBoxManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoHandleBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoHandleBoxManip.o `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp
+
+manips_lst-SoHandleBoxManip.obj: SoHandleBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoHandleBoxManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoHandleBoxManip.obj `if test -f 'SoHandleBoxManip.cpp'; then $(CYGPATH_W) 'SoHandleBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoHandleBoxManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoHandleBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoHandleBoxManip.cpp' object='manips_lst-SoHandleBoxManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoHandleBoxManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoHandleBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoHandleBoxManip.obj `if test -f 'SoHandleBoxManip.cpp'; then $(CYGPATH_W) 'SoHandleBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoHandleBoxManip.cpp'; fi`
+
+manips_lst-SoHandleBoxManip.lo: SoHandleBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoHandleBoxManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoHandleBoxManip.lo `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoHandleBoxManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoHandleBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoHandleBoxManip.cpp' object='manips_lst-SoHandleBoxManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoHandleBoxManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoHandleBoxManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoHandleBoxManip.lo `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp
+
+manips_lst-SoJackManip.o: SoJackManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoJackManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoJackManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoJackManip.o `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoJackManip.Tpo" "$(DEPDIR)/manips_lst-SoJackManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoJackManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoJackManip.cpp' object='manips_lst-SoJackManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoJackManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoJackManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoJackManip.o `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp
+
+manips_lst-SoJackManip.obj: SoJackManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoJackManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoJackManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoJackManip.obj `if test -f 'SoJackManip.cpp'; then $(CYGPATH_W) 'SoJackManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoJackManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoJackManip.Tpo" "$(DEPDIR)/manips_lst-SoJackManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoJackManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoJackManip.cpp' object='manips_lst-SoJackManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoJackManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoJackManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoJackManip.obj `if test -f 'SoJackManip.cpp'; then $(CYGPATH_W) 'SoJackManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoJackManip.cpp'; fi`
+
+manips_lst-SoJackManip.lo: SoJackManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoJackManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoJackManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoJackManip.lo `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoJackManip.Tpo" "$(DEPDIR)/manips_lst-SoJackManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoJackManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoJackManip.cpp' object='manips_lst-SoJackManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoJackManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoJackManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoJackManip.lo `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp
+
+manips_lst-SoTabBoxManip.o: SoTabBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTabBoxManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTabBoxManip.o `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoTabBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTabBoxManip.cpp' object='manips_lst-SoTabBoxManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTabBoxManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTabBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTabBoxManip.o `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp
+
+manips_lst-SoTabBoxManip.obj: SoTabBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTabBoxManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTabBoxManip.obj `if test -f 'SoTabBoxManip.cpp'; then $(CYGPATH_W) 'SoTabBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTabBoxManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoTabBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTabBoxManip.cpp' object='manips_lst-SoTabBoxManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTabBoxManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTabBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTabBoxManip.obj `if test -f 'SoTabBoxManip.cpp'; then $(CYGPATH_W) 'SoTabBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTabBoxManip.cpp'; fi`
+
+manips_lst-SoTabBoxManip.lo: SoTabBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTabBoxManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTabBoxManip.lo `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoTabBoxManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTabBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTabBoxManip.cpp' object='manips_lst-SoTabBoxManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTabBoxManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoTabBoxManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTabBoxManip.lo `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp
+
+manips_lst-SoTrackballManip.o: SoTrackballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTrackballManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTrackballManip.o `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo" "$(DEPDIR)/manips_lst-SoTrackballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTrackballManip.cpp' object='manips_lst-SoTrackballManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTrackballManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTrackballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTrackballManip.o `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp
+
+manips_lst-SoTrackballManip.obj: SoTrackballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTrackballManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTrackballManip.obj `if test -f 'SoTrackballManip.cpp'; then $(CYGPATH_W) 'SoTrackballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTrackballManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo" "$(DEPDIR)/manips_lst-SoTrackballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTrackballManip.cpp' object='manips_lst-SoTrackballManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTrackballManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTrackballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTrackballManip.obj `if test -f 'SoTrackballManip.cpp'; then $(CYGPATH_W) 'SoTrackballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTrackballManip.cpp'; fi`
+
+manips_lst-SoTrackballManip.lo: SoTrackballManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTrackballManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTrackballManip.lo `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo" "$(DEPDIR)/manips_lst-SoTrackballManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTrackballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTrackballManip.cpp' object='manips_lst-SoTrackballManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTrackballManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoTrackballManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTrackballManip.lo `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp
+
+manips_lst-SoTransformBoxManip.o: SoTransformBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformBoxManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformBoxManip.o `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformBoxManip.cpp' object='manips_lst-SoTransformBoxManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformBoxManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformBoxManip.o `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp
+
+manips_lst-SoTransformBoxManip.obj: SoTransformBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformBoxManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformBoxManip.obj `if test -f 'SoTransformBoxManip.cpp'; then $(CYGPATH_W) 'SoTransformBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformBoxManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformBoxManip.cpp' object='manips_lst-SoTransformBoxManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformBoxManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformBoxManip.obj `if test -f 'SoTransformBoxManip.cpp'; then $(CYGPATH_W) 'SoTransformBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformBoxManip.cpp'; fi`
+
+manips_lst-SoTransformBoxManip.lo: SoTransformBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformBoxManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformBoxManip.lo `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformBoxManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformBoxManip.cpp' object='manips_lst-SoTransformBoxManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformBoxManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformBoxManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformBoxManip.lo `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp
+
+manips_lst-SoTransformerManip.o: SoTransformerManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformerManip.o -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformerManip.o `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformerManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformerManip.cpp' object='manips_lst-SoTransformerManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformerManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformerManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformerManip.o `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp
+
+manips_lst-SoTransformerManip.obj: SoTransformerManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformerManip.obj -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformerManip.obj `if test -f 'SoTransformerManip.cpp'; then $(CYGPATH_W) 'SoTransformerManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformerManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformerManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformerManip.cpp' object='manips_lst-SoTransformerManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformerManip.Po' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformerManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformerManip.obj `if test -f 'SoTransformerManip.cpp'; then $(CYGPATH_W) 'SoTransformerManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformerManip.cpp'; fi`
+
+manips_lst-SoTransformerManip.lo: SoTransformerManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-SoTransformerManip.lo -MD -MP -MF "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-SoTransformerManip.lo `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo" "$(DEPDIR)/manips_lst-SoTransformerManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-SoTransformerManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformerManip.cpp' object='manips_lst-SoTransformerManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-SoTransformerManip.Plo' tmpdepfile='$(DEPDIR)/manips_lst-SoTransformerManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-SoTransformerManip.lo `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp
+
+manips_lst-commoncode.o: commoncode.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-commoncode.o -MD -MP -MF "$(DEPDIR)/manips_lst-commoncode.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-commoncode.o `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-commoncode.Tpo" "$(DEPDIR)/manips_lst-commoncode.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-commoncode.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='commoncode.cpp' object='manips_lst-commoncode.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-commoncode.Po' tmpdepfile='$(DEPDIR)/manips_lst-commoncode.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-commoncode.o `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp
+
+manips_lst-commoncode.obj: commoncode.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-commoncode.obj -MD -MP -MF "$(DEPDIR)/manips_lst-commoncode.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-commoncode.obj `if test -f 'commoncode.cpp'; then $(CYGPATH_W) 'commoncode.cpp'; else $(CYGPATH_W) '$(srcdir)/commoncode.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-commoncode.Tpo" "$(DEPDIR)/manips_lst-commoncode.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-commoncode.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='commoncode.cpp' object='manips_lst-commoncode.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-commoncode.Po' tmpdepfile='$(DEPDIR)/manips_lst-commoncode.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-commoncode.obj `if test -f 'commoncode.cpp'; then $(CYGPATH_W) 'commoncode.cpp'; else $(CYGPATH_W) '$(srcdir)/commoncode.cpp'; fi`
+
+manips_lst-commoncode.lo: commoncode.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -MT manips_lst-commoncode.lo -MD -MP -MF "$(DEPDIR)/manips_lst-commoncode.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o manips_lst-commoncode.lo `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/manips_lst-commoncode.Tpo" "$(DEPDIR)/manips_lst-commoncode.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/manips_lst-commoncode.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='commoncode.cpp' object='manips_lst-commoncode.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/manips_lst-commoncode.Plo' tmpdepfile='$(DEPDIR)/manips_lst-commoncode.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(manips_lst_CXXFLAGS) $(CXXFLAGS) -c -o manips_lst-commoncode.lo `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp
+
+libmanips_la-all-manips-cpp.o: all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-all-manips-cpp.o -MD -MP -MF "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-all-manips-cpp.o `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo" "$(DEPDIR)/libmanips_la-all-manips-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-manips-cpp.cpp' object='libmanips_la-all-manips-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-all-manips-cpp.Po' tmpdepfile='$(DEPDIR)/libmanips_la-all-manips-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-all-manips-cpp.o `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp
+
+libmanips_la-all-manips-cpp.obj: all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-all-manips-cpp.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-all-manips-cpp.obj `if test -f 'all-manips-cpp.cpp'; then $(CYGPATH_W) 'all-manips-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-manips-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo" "$(DEPDIR)/libmanips_la-all-manips-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-manips-cpp.cpp' object='libmanips_la-all-manips-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-all-manips-cpp.Po' tmpdepfile='$(DEPDIR)/libmanips_la-all-manips-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-all-manips-cpp.obj `if test -f 'all-manips-cpp.cpp'; then $(CYGPATH_W) 'all-manips-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-manips-cpp.cpp'; fi`
+
+libmanips_la-all-manips-cpp.lo: all-manips-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-all-manips-cpp.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-all-manips-cpp.lo `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo" "$(DEPDIR)/libmanips_la-all-manips-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-all-manips-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-manips-cpp.cpp' object='libmanips_la-all-manips-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-all-manips-cpp.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-all-manips-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-all-manips-cpp.lo `test -f 'all-manips-cpp.cpp' || echo '$(srcdir)/'`all-manips-cpp.cpp
+
+libmanips_la-SoClipPlaneManip.o: SoClipPlaneManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoClipPlaneManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoClipPlaneManip.o `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo" "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoClipPlaneManip.cpp' object='libmanips_la-SoClipPlaneManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoClipPlaneManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoClipPlaneManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoClipPlaneManip.o `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp
+
+libmanips_la-SoClipPlaneManip.obj: SoClipPlaneManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoClipPlaneManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoClipPlaneManip.obj `if test -f 'SoClipPlaneManip.cpp'; then $(CYGPATH_W) 'SoClipPlaneManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoClipPlaneManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo" "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoClipPlaneManip.cpp' object='libmanips_la-SoClipPlaneManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoClipPlaneManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoClipPlaneManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoClipPlaneManip.obj `if test -f 'SoClipPlaneManip.cpp'; then $(CYGPATH_W) 'SoClipPlaneManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoClipPlaneManip.cpp'; fi`
+
+libmanips_la-SoClipPlaneManip.lo: SoClipPlaneManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoClipPlaneManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoClipPlaneManip.lo `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo" "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoClipPlaneManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoClipPlaneManip.cpp' object='libmanips_la-SoClipPlaneManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoClipPlaneManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoClipPlaneManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoClipPlaneManip.lo `test -f 'SoClipPlaneManip.cpp' || echo '$(srcdir)/'`SoClipPlaneManip.cpp
+
+libmanips_la-SoDirectionalLightManip.o: SoDirectionalLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoDirectionalLightManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoDirectionalLightManip.o `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDirectionalLightManip.cpp' object='libmanips_la-SoDirectionalLightManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoDirectionalLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoDirectionalLightManip.o `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp
+
+libmanips_la-SoDirectionalLightManip.obj: SoDirectionalLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoDirectionalLightManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoDirectionalLightManip.obj `if test -f 'SoDirectionalLightManip.cpp'; then $(CYGPATH_W) 'SoDirectionalLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDirectionalLightManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDirectionalLightManip.cpp' object='libmanips_la-SoDirectionalLightManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoDirectionalLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoDirectionalLightManip.obj `if test -f 'SoDirectionalLightManip.cpp'; then $(CYGPATH_W) 'SoDirectionalLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDirectionalLightManip.cpp'; fi`
+
+libmanips_la-SoDirectionalLightManip.lo: SoDirectionalLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoDirectionalLightManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoDirectionalLightManip.lo `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDirectionalLightManip.cpp' object='libmanips_la-SoDirectionalLightManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoDirectionalLightManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoDirectionalLightManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoDirectionalLightManip.lo `test -f 'SoDirectionalLightManip.cpp' || echo '$(srcdir)/'`SoDirectionalLightManip.cpp
+
+libmanips_la-SoPointLightManip.o: SoPointLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoPointLightManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoPointLightManip.o `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoPointLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointLightManip.cpp' object='libmanips_la-SoPointLightManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoPointLightManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoPointLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoPointLightManip.o `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp
+
+libmanips_la-SoPointLightManip.obj: SoPointLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoPointLightManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoPointLightManip.obj `if test -f 'SoPointLightManip.cpp'; then $(CYGPATH_W) 'SoPointLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointLightManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoPointLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointLightManip.cpp' object='libmanips_la-SoPointLightManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoPointLightManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoPointLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoPointLightManip.obj `if test -f 'SoPointLightManip.cpp'; then $(CYGPATH_W) 'SoPointLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointLightManip.cpp'; fi`
+
+libmanips_la-SoPointLightManip.lo: SoPointLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoPointLightManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoPointLightManip.lo `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoPointLightManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoPointLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointLightManip.cpp' object='libmanips_la-SoPointLightManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoPointLightManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoPointLightManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoPointLightManip.lo `test -f 'SoPointLightManip.cpp' || echo '$(srcdir)/'`SoPointLightManip.cpp
+
+libmanips_la-SoSpotLightManip.o: SoSpotLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoSpotLightManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoSpotLightManip.o `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoSpotLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpotLightManip.cpp' object='libmanips_la-SoSpotLightManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoSpotLightManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoSpotLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoSpotLightManip.o `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp
+
+libmanips_la-SoSpotLightManip.obj: SoSpotLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoSpotLightManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoSpotLightManip.obj `if test -f 'SoSpotLightManip.cpp'; then $(CYGPATH_W) 'SoSpotLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpotLightManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoSpotLightManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpotLightManip.cpp' object='libmanips_la-SoSpotLightManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoSpotLightManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoSpotLightManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoSpotLightManip.obj `if test -f 'SoSpotLightManip.cpp'; then $(CYGPATH_W) 'SoSpotLightManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoSpotLightManip.cpp'; fi`
+
+libmanips_la-SoSpotLightManip.lo: SoSpotLightManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoSpotLightManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoSpotLightManip.lo `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo" "$(DEPDIR)/libmanips_la-SoSpotLightManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoSpotLightManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoSpotLightManip.cpp' object='libmanips_la-SoSpotLightManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoSpotLightManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoSpotLightManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoSpotLightManip.lo `test -f 'SoSpotLightManip.cpp' || echo '$(srcdir)/'`SoSpotLightManip.cpp
+
+libmanips_la-SoTransformManip.o: SoTransformManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformManip.o `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformManip.cpp' object='libmanips_la-SoTransformManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformManip.o `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp
+
+libmanips_la-SoTransformManip.obj: SoTransformManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformManip.obj `if test -f 'SoTransformManip.cpp'; then $(CYGPATH_W) 'SoTransformManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformManip.cpp' object='libmanips_la-SoTransformManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformManip.obj `if test -f 'SoTransformManip.cpp'; then $(CYGPATH_W) 'SoTransformManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformManip.cpp'; fi`
+
+libmanips_la-SoTransformManip.lo: SoTransformManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformManip.lo `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformManip.cpp' object='libmanips_la-SoTransformManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformManip.lo `test -f 'SoTransformManip.cpp' || echo '$(srcdir)/'`SoTransformManip.cpp
+
+libmanips_la-SoCenterballManip.o: SoCenterballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoCenterballManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoCenterballManip.o `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo" "$(DEPDIR)/libmanips_la-SoCenterballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCenterballManip.cpp' object='libmanips_la-SoCenterballManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoCenterballManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoCenterballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoCenterballManip.o `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp
+
+libmanips_la-SoCenterballManip.obj: SoCenterballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoCenterballManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoCenterballManip.obj `if test -f 'SoCenterballManip.cpp'; then $(CYGPATH_W) 'SoCenterballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCenterballManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo" "$(DEPDIR)/libmanips_la-SoCenterballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCenterballManip.cpp' object='libmanips_la-SoCenterballManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoCenterballManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoCenterballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoCenterballManip.obj `if test -f 'SoCenterballManip.cpp'; then $(CYGPATH_W) 'SoCenterballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCenterballManip.cpp'; fi`
+
+libmanips_la-SoCenterballManip.lo: SoCenterballManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoCenterballManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoCenterballManip.lo `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo" "$(DEPDIR)/libmanips_la-SoCenterballManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoCenterballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCenterballManip.cpp' object='libmanips_la-SoCenterballManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoCenterballManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoCenterballManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoCenterballManip.lo `test -f 'SoCenterballManip.cpp' || echo '$(srcdir)/'`SoCenterballManip.cpp
+
+libmanips_la-SoHandleBoxManip.o: SoHandleBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoHandleBoxManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoHandleBoxManip.o `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoHandleBoxManip.cpp' object='libmanips_la-SoHandleBoxManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoHandleBoxManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoHandleBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoHandleBoxManip.o `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp
+
+libmanips_la-SoHandleBoxManip.obj: SoHandleBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoHandleBoxManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoHandleBoxManip.obj `if test -f 'SoHandleBoxManip.cpp'; then $(CYGPATH_W) 'SoHandleBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoHandleBoxManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoHandleBoxManip.cpp' object='libmanips_la-SoHandleBoxManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoHandleBoxManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoHandleBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoHandleBoxManip.obj `if test -f 'SoHandleBoxManip.cpp'; then $(CYGPATH_W) 'SoHandleBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoHandleBoxManip.cpp'; fi`
+
+libmanips_la-SoHandleBoxManip.lo: SoHandleBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoHandleBoxManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoHandleBoxManip.lo `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoHandleBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoHandleBoxManip.cpp' object='libmanips_la-SoHandleBoxManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoHandleBoxManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoHandleBoxManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoHandleBoxManip.lo `test -f 'SoHandleBoxManip.cpp' || echo '$(srcdir)/'`SoHandleBoxManip.cpp
+
+libmanips_la-SoJackManip.o: SoJackManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoJackManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoJackManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoJackManip.o `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoJackManip.Tpo" "$(DEPDIR)/libmanips_la-SoJackManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoJackManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoJackManip.cpp' object='libmanips_la-SoJackManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoJackManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoJackManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoJackManip.o `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp
+
+libmanips_la-SoJackManip.obj: SoJackManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoJackManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoJackManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoJackManip.obj `if test -f 'SoJackManip.cpp'; then $(CYGPATH_W) 'SoJackManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoJackManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoJackManip.Tpo" "$(DEPDIR)/libmanips_la-SoJackManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoJackManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoJackManip.cpp' object='libmanips_la-SoJackManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoJackManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoJackManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoJackManip.obj `if test -f 'SoJackManip.cpp'; then $(CYGPATH_W) 'SoJackManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoJackManip.cpp'; fi`
+
+libmanips_la-SoJackManip.lo: SoJackManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoJackManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoJackManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoJackManip.lo `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoJackManip.Tpo" "$(DEPDIR)/libmanips_la-SoJackManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoJackManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoJackManip.cpp' object='libmanips_la-SoJackManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoJackManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoJackManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoJackManip.lo `test -f 'SoJackManip.cpp' || echo '$(srcdir)/'`SoJackManip.cpp
+
+libmanips_la-SoTabBoxManip.o: SoTabBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTabBoxManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTabBoxManip.o `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoTabBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTabBoxManip.cpp' object='libmanips_la-SoTabBoxManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTabBoxManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTabBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTabBoxManip.o `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp
+
+libmanips_la-SoTabBoxManip.obj: SoTabBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTabBoxManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTabBoxManip.obj `if test -f 'SoTabBoxManip.cpp'; then $(CYGPATH_W) 'SoTabBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTabBoxManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoTabBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTabBoxManip.cpp' object='libmanips_la-SoTabBoxManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTabBoxManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTabBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTabBoxManip.obj `if test -f 'SoTabBoxManip.cpp'; then $(CYGPATH_W) 'SoTabBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTabBoxManip.cpp'; fi`
+
+libmanips_la-SoTabBoxManip.lo: SoTabBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTabBoxManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTabBoxManip.lo `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoTabBoxManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTabBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTabBoxManip.cpp' object='libmanips_la-SoTabBoxManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTabBoxManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoTabBoxManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTabBoxManip.lo `test -f 'SoTabBoxManip.cpp' || echo '$(srcdir)/'`SoTabBoxManip.cpp
+
+libmanips_la-SoTrackballManip.o: SoTrackballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTrackballManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTrackballManip.o `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo" "$(DEPDIR)/libmanips_la-SoTrackballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTrackballManip.cpp' object='libmanips_la-SoTrackballManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTrackballManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTrackballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTrackballManip.o `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp
+
+libmanips_la-SoTrackballManip.obj: SoTrackballManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTrackballManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTrackballManip.obj `if test -f 'SoTrackballManip.cpp'; then $(CYGPATH_W) 'SoTrackballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTrackballManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo" "$(DEPDIR)/libmanips_la-SoTrackballManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTrackballManip.cpp' object='libmanips_la-SoTrackballManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTrackballManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTrackballManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTrackballManip.obj `if test -f 'SoTrackballManip.cpp'; then $(CYGPATH_W) 'SoTrackballManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTrackballManip.cpp'; fi`
+
+libmanips_la-SoTrackballManip.lo: SoTrackballManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTrackballManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTrackballManip.lo `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo" "$(DEPDIR)/libmanips_la-SoTrackballManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTrackballManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTrackballManip.cpp' object='libmanips_la-SoTrackballManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTrackballManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoTrackballManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTrackballManip.lo `test -f 'SoTrackballManip.cpp' || echo '$(srcdir)/'`SoTrackballManip.cpp
+
+libmanips_la-SoTransformBoxManip.o: SoTransformBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformBoxManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformBoxManip.o `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformBoxManip.cpp' object='libmanips_la-SoTransformBoxManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformBoxManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformBoxManip.o `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp
+
+libmanips_la-SoTransformBoxManip.obj: SoTransformBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformBoxManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformBoxManip.obj `if test -f 'SoTransformBoxManip.cpp'; then $(CYGPATH_W) 'SoTransformBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformBoxManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformBoxManip.cpp' object='libmanips_la-SoTransformBoxManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformBoxManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformBoxManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformBoxManip.obj `if test -f 'SoTransformBoxManip.cpp'; then $(CYGPATH_W) 'SoTransformBoxManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformBoxManip.cpp'; fi`
+
+libmanips_la-SoTransformBoxManip.lo: SoTransformBoxManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformBoxManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformBoxManip.lo `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformBoxManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformBoxManip.cpp' object='libmanips_la-SoTransformBoxManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformBoxManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformBoxManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformBoxManip.lo `test -f 'SoTransformBoxManip.cpp' || echo '$(srcdir)/'`SoTransformBoxManip.cpp
+
+libmanips_la-SoTransformerManip.o: SoTransformerManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformerManip.o -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformerManip.o `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformerManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformerManip.cpp' object='libmanips_la-SoTransformerManip.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformerManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformerManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformerManip.o `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp
+
+libmanips_la-SoTransformerManip.obj: SoTransformerManip.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformerManip.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformerManip.obj `if test -f 'SoTransformerManip.cpp'; then $(CYGPATH_W) 'SoTransformerManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformerManip.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformerManip.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformerManip.cpp' object='libmanips_la-SoTransformerManip.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformerManip.Po' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformerManip.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformerManip.obj `if test -f 'SoTransformerManip.cpp'; then $(CYGPATH_W) 'SoTransformerManip.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTransformerManip.cpp'; fi`
+
+libmanips_la-SoTransformerManip.lo: SoTransformerManip.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-SoTransformerManip.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-SoTransformerManip.lo `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo" "$(DEPDIR)/libmanips_la-SoTransformerManip.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-SoTransformerManip.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTransformerManip.cpp' object='libmanips_la-SoTransformerManip.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-SoTransformerManip.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-SoTransformerManip.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-SoTransformerManip.lo `test -f 'SoTransformerManip.cpp' || echo '$(srcdir)/'`SoTransformerManip.cpp
+
+libmanips_la-commoncode.o: commoncode.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-commoncode.o -MD -MP -MF "$(DEPDIR)/libmanips_la-commoncode.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-commoncode.o `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-commoncode.Tpo" "$(DEPDIR)/libmanips_la-commoncode.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-commoncode.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='commoncode.cpp' object='libmanips_la-commoncode.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-commoncode.Po' tmpdepfile='$(DEPDIR)/libmanips_la-commoncode.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-commoncode.o `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp
+
+libmanips_la-commoncode.obj: commoncode.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-commoncode.obj -MD -MP -MF "$(DEPDIR)/libmanips_la-commoncode.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-commoncode.obj `if test -f 'commoncode.cpp'; then $(CYGPATH_W) 'commoncode.cpp'; else $(CYGPATH_W) '$(srcdir)/commoncode.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-commoncode.Tpo" "$(DEPDIR)/libmanips_la-commoncode.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-commoncode.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='commoncode.cpp' object='libmanips_la-commoncode.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-commoncode.Po' tmpdepfile='$(DEPDIR)/libmanips_la-commoncode.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-commoncode.obj `if test -f 'commoncode.cpp'; then $(CYGPATH_W) 'commoncode.cpp'; else $(CYGPATH_W) '$(srcdir)/commoncode.cpp'; fi`
+
+libmanips_la-commoncode.lo: commoncode.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -MT libmanips_la-commoncode.lo -MD -MP -MF "$(DEPDIR)/libmanips_la-commoncode.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libmanips_la-commoncode.lo `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libmanips_la-commoncode.Tpo" "$(DEPDIR)/libmanips_la-commoncode.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libmanips_la-commoncode.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='commoncode.cpp' object='libmanips_la-commoncode.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libmanips_la-commoncode.Plo' tmpdepfile='$(DEPDIR)/libmanips_la-commoncode.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmanips_la_CXXFLAGS) $(CXXFLAGS) -c -o libmanips_la-commoncode.lo `test -f 'commoncode.cpp' || echo '$(srcdir)/'`commoncode.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

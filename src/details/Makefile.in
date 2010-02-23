@@ -330,6 +330,9 @@ EXTRA_libdetails_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
+libdetails_la_CXXFLAGS = $(AM_CXXFLAGS)
+libdetails_la_CFLAGS = $(AM_CFLAGS)
+
 libdetails@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
@@ -339,6 +342,9 @@ details_lst_SOURCES = $(BuildSources)
 EXTRA_details_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
+
+details_lst_CXXFLAGS = $(AM_CXXFLAGS)
+details_lst_CFLAGS = $(AM_CFLAGS)
 subdir = src/details
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -353,12 +359,16 @@ am__details_lst_SOURCES_DIST = SoDetail.cpp SoConeDetail.cpp \
 	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
 	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
 	SoTextDetail.cpp all-details-cpp.cpp
-am__objects_1 = all-details-cpp.$(OBJEXT)
-am__objects_2 = SoDetail.$(OBJEXT) SoConeDetail.$(OBJEXT) \
-	SoCubeDetail.$(OBJEXT) SoCylinderDetail.$(OBJEXT) \
-	SoFaceDetail.$(OBJEXT) SoLineDetail.$(OBJEXT) \
-	SoNodeKitDetail.$(OBJEXT) SoPointDetail.$(OBJEXT) \
-	SoTextDetail.$(OBJEXT)
+am__objects_1 = details_lst-all-details-cpp.$(OBJEXT)
+am__objects_2 = details_lst-SoDetail.$(OBJEXT) \
+	details_lst-SoConeDetail.$(OBJEXT) \
+	details_lst-SoCubeDetail.$(OBJEXT) \
+	details_lst-SoCylinderDetail.$(OBJEXT) \
+	details_lst-SoFaceDetail.$(OBJEXT) \
+	details_lst-SoLineDetail.$(OBJEXT) \
+	details_lst-SoNodeKitDetail.$(OBJEXT) \
+	details_lst-SoPointDetail.$(OBJEXT) \
+	details_lst-SoTextDetail.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_details_lst_OBJECTS = $(am__objects_3)
@@ -375,10 +385,12 @@ am__libdetails_la_SOURCES_DIST = SoDetail.cpp SoConeDetail.cpp \
 	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
 	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
 	SoTextDetail.cpp all-details-cpp.cpp
-am__objects_6 = all-details-cpp.lo
-am__objects_7 = SoDetail.lo SoConeDetail.lo SoCubeDetail.lo \
-	SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo \
-	SoNodeKitDetail.lo SoPointDetail.lo SoTextDetail.lo
+am__objects_6 = libdetails_la-all-details-cpp.lo
+am__objects_7 = libdetails_la-SoDetail.lo libdetails_la-SoConeDetail.lo \
+	libdetails_la-SoCubeDetail.lo libdetails_la-SoCylinderDetail.lo \
+	libdetails_la-SoFaceDetail.lo libdetails_la-SoLineDetail.lo \
+	libdetails_la-SoNodeKitDetail.lo libdetails_la-SoPointDetail.lo \
+	libdetails_la-SoTextDetail.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libdetails_la_OBJECTS = $(am__objects_8)
@@ -393,7 +405,13 @@ am__libdetails@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDetail.cpp \
 	SoConeDetail.cpp SoCubeDetail.cpp SoCylinderDetail.cpp \
 	SoFaceDetail.cpp SoLineDetail.cpp SoNodeKitDetail.cpp \
 	SoPointDetail.cpp SoTextDetail.cpp all-details-cpp.cpp
-am_libdetails@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__objects_10 = all-details-cpp.lo
+am__objects_11 = SoDetail.lo SoConeDetail.lo SoCubeDetail.lo \
+	SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo \
+	SoNodeKitDetail.lo SoPointDetail.lo SoTextDetail.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_12 = $(am__objects_10)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_12 = $(am__objects_11)
+am_libdetails@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_12)
 am__EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-details-cpp.cpp SoDetail.cpp SoConeDetail.cpp \
 	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
@@ -404,24 +422,35 @@ libdetails@SUFFIX@LINKHACK_la_OBJECTS = \
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoConeDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoConeDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCubeDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCubeDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCylinderDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCylinderDetail.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDetail.Plo ./$(DEPDIR)/SoDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoDetail.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoFaceDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoFaceDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLineDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoLineDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNodeKitDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNodeKitDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPointDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPointDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-details-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-details-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoConeDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoCubeDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoCylinderDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoFaceDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoLineDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoNodeKitDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoPointDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-SoTextDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/details_lst-all-details-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoConeDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoCubeDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoCylinderDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoFaceDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoLineDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoNodeKitDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoPointDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-SoTextDetail.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libdetails_la-all-details-cpp.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -447,7 +476,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/details/Makefile
+	  $(AUTOMAKE) --gnu  src/details/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -502,25 +531,35 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoConeDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoConeDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCubeDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCubeDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCylinderDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCylinderDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFaceDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFaceDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLineDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLineDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKitDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeKitDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPointDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPointDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextDetail.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-details-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-details-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoConeDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoCubeDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoCylinderDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoFaceDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoLineDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoNodeKitDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoPointDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-SoTextDetail.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/details_lst-all-details-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoConeDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoCubeDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoCylinderDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoFaceDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoLineDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoNodeKitDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoPointDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-SoTextDetail.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdetails_la-all-details-cpp.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -557,6 +596,666 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+details_lst-all-details-cpp.o: all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-all-details-cpp.o -MD -MP -MF "$(DEPDIR)/details_lst-all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-all-details-cpp.o `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-all-details-cpp.Tpo" "$(DEPDIR)/details_lst-all-details-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-details-cpp.cpp' object='details_lst-all-details-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-all-details-cpp.Po' tmpdepfile='$(DEPDIR)/details_lst-all-details-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-all-details-cpp.o `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp
+
+details_lst-all-details-cpp.obj: all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-all-details-cpp.obj -MD -MP -MF "$(DEPDIR)/details_lst-all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-all-details-cpp.obj `if test -f 'all-details-cpp.cpp'; then $(CYGPATH_W) 'all-details-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-details-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-all-details-cpp.Tpo" "$(DEPDIR)/details_lst-all-details-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-details-cpp.cpp' object='details_lst-all-details-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-all-details-cpp.Po' tmpdepfile='$(DEPDIR)/details_lst-all-details-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-all-details-cpp.obj `if test -f 'all-details-cpp.cpp'; then $(CYGPATH_W) 'all-details-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-details-cpp.cpp'; fi`
+
+details_lst-all-details-cpp.lo: all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-all-details-cpp.lo -MD -MP -MF "$(DEPDIR)/details_lst-all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-all-details-cpp.lo `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-all-details-cpp.Tpo" "$(DEPDIR)/details_lst-all-details-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-details-cpp.cpp' object='details_lst-all-details-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-all-details-cpp.Plo' tmpdepfile='$(DEPDIR)/details_lst-all-details-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-all-details-cpp.lo `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp
+
+details_lst-SoDetail.o: SoDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoDetail.o `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoDetail.Tpo" "$(DEPDIR)/details_lst-SoDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetail.cpp' object='details_lst-SoDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoDetail.o `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp
+
+details_lst-SoDetail.obj: SoDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoDetail.obj `if test -f 'SoDetail.cpp'; then $(CYGPATH_W) 'SoDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoDetail.Tpo" "$(DEPDIR)/details_lst-SoDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetail.cpp' object='details_lst-SoDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoDetail.obj `if test -f 'SoDetail.cpp'; then $(CYGPATH_W) 'SoDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetail.cpp'; fi`
+
+details_lst-SoDetail.lo: SoDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoDetail.lo `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoDetail.Tpo" "$(DEPDIR)/details_lst-SoDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetail.cpp' object='details_lst-SoDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoDetail.lo `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp
+
+details_lst-SoConeDetail.o: SoConeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoConeDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoConeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoConeDetail.o `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoConeDetail.Tpo" "$(DEPDIR)/details_lst-SoConeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoConeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConeDetail.cpp' object='details_lst-SoConeDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoConeDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoConeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoConeDetail.o `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp
+
+details_lst-SoConeDetail.obj: SoConeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoConeDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoConeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoConeDetail.obj `if test -f 'SoConeDetail.cpp'; then $(CYGPATH_W) 'SoConeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConeDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoConeDetail.Tpo" "$(DEPDIR)/details_lst-SoConeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoConeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConeDetail.cpp' object='details_lst-SoConeDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoConeDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoConeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoConeDetail.obj `if test -f 'SoConeDetail.cpp'; then $(CYGPATH_W) 'SoConeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConeDetail.cpp'; fi`
+
+details_lst-SoConeDetail.lo: SoConeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoConeDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoConeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoConeDetail.lo `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoConeDetail.Tpo" "$(DEPDIR)/details_lst-SoConeDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoConeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConeDetail.cpp' object='details_lst-SoConeDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoConeDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoConeDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoConeDetail.lo `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp
+
+details_lst-SoCubeDetail.o: SoCubeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoCubeDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoCubeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoCubeDetail.o `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoCubeDetail.Tpo" "$(DEPDIR)/details_lst-SoCubeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoCubeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCubeDetail.cpp' object='details_lst-SoCubeDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoCubeDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoCubeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoCubeDetail.o `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp
+
+details_lst-SoCubeDetail.obj: SoCubeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoCubeDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoCubeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoCubeDetail.obj `if test -f 'SoCubeDetail.cpp'; then $(CYGPATH_W) 'SoCubeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCubeDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoCubeDetail.Tpo" "$(DEPDIR)/details_lst-SoCubeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoCubeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCubeDetail.cpp' object='details_lst-SoCubeDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoCubeDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoCubeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoCubeDetail.obj `if test -f 'SoCubeDetail.cpp'; then $(CYGPATH_W) 'SoCubeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCubeDetail.cpp'; fi`
+
+details_lst-SoCubeDetail.lo: SoCubeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoCubeDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoCubeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoCubeDetail.lo `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoCubeDetail.Tpo" "$(DEPDIR)/details_lst-SoCubeDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoCubeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCubeDetail.cpp' object='details_lst-SoCubeDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoCubeDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoCubeDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoCubeDetail.lo `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp
+
+details_lst-SoCylinderDetail.o: SoCylinderDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoCylinderDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoCylinderDetail.o `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo" "$(DEPDIR)/details_lst-SoCylinderDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCylinderDetail.cpp' object='details_lst-SoCylinderDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoCylinderDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoCylinderDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoCylinderDetail.o `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp
+
+details_lst-SoCylinderDetail.obj: SoCylinderDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoCylinderDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoCylinderDetail.obj `if test -f 'SoCylinderDetail.cpp'; then $(CYGPATH_W) 'SoCylinderDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCylinderDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo" "$(DEPDIR)/details_lst-SoCylinderDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCylinderDetail.cpp' object='details_lst-SoCylinderDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoCylinderDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoCylinderDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoCylinderDetail.obj `if test -f 'SoCylinderDetail.cpp'; then $(CYGPATH_W) 'SoCylinderDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCylinderDetail.cpp'; fi`
+
+details_lst-SoCylinderDetail.lo: SoCylinderDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoCylinderDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoCylinderDetail.lo `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo" "$(DEPDIR)/details_lst-SoCylinderDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoCylinderDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCylinderDetail.cpp' object='details_lst-SoCylinderDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoCylinderDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoCylinderDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoCylinderDetail.lo `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp
+
+details_lst-SoFaceDetail.o: SoFaceDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoFaceDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoFaceDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoFaceDetail.o `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoFaceDetail.Tpo" "$(DEPDIR)/details_lst-SoFaceDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoFaceDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFaceDetail.cpp' object='details_lst-SoFaceDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoFaceDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoFaceDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoFaceDetail.o `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp
+
+details_lst-SoFaceDetail.obj: SoFaceDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoFaceDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoFaceDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoFaceDetail.obj `if test -f 'SoFaceDetail.cpp'; then $(CYGPATH_W) 'SoFaceDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFaceDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoFaceDetail.Tpo" "$(DEPDIR)/details_lst-SoFaceDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoFaceDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFaceDetail.cpp' object='details_lst-SoFaceDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoFaceDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoFaceDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoFaceDetail.obj `if test -f 'SoFaceDetail.cpp'; then $(CYGPATH_W) 'SoFaceDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFaceDetail.cpp'; fi`
+
+details_lst-SoFaceDetail.lo: SoFaceDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoFaceDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoFaceDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoFaceDetail.lo `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoFaceDetail.Tpo" "$(DEPDIR)/details_lst-SoFaceDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoFaceDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFaceDetail.cpp' object='details_lst-SoFaceDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoFaceDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoFaceDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoFaceDetail.lo `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp
+
+details_lst-SoLineDetail.o: SoLineDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoLineDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoLineDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoLineDetail.o `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoLineDetail.Tpo" "$(DEPDIR)/details_lst-SoLineDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoLineDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLineDetail.cpp' object='details_lst-SoLineDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoLineDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoLineDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoLineDetail.o `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp
+
+details_lst-SoLineDetail.obj: SoLineDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoLineDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoLineDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoLineDetail.obj `if test -f 'SoLineDetail.cpp'; then $(CYGPATH_W) 'SoLineDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLineDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoLineDetail.Tpo" "$(DEPDIR)/details_lst-SoLineDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoLineDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLineDetail.cpp' object='details_lst-SoLineDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoLineDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoLineDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoLineDetail.obj `if test -f 'SoLineDetail.cpp'; then $(CYGPATH_W) 'SoLineDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLineDetail.cpp'; fi`
+
+details_lst-SoLineDetail.lo: SoLineDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoLineDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoLineDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoLineDetail.lo `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoLineDetail.Tpo" "$(DEPDIR)/details_lst-SoLineDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoLineDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLineDetail.cpp' object='details_lst-SoLineDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoLineDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoLineDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoLineDetail.lo `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp
+
+details_lst-SoNodeKitDetail.o: SoNodeKitDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoNodeKitDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoNodeKitDetail.o `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo" "$(DEPDIR)/details_lst-SoNodeKitDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitDetail.cpp' object='details_lst-SoNodeKitDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoNodeKitDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoNodeKitDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoNodeKitDetail.o `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp
+
+details_lst-SoNodeKitDetail.obj: SoNodeKitDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoNodeKitDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoNodeKitDetail.obj `if test -f 'SoNodeKitDetail.cpp'; then $(CYGPATH_W) 'SoNodeKitDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo" "$(DEPDIR)/details_lst-SoNodeKitDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitDetail.cpp' object='details_lst-SoNodeKitDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoNodeKitDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoNodeKitDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoNodeKitDetail.obj `if test -f 'SoNodeKitDetail.cpp'; then $(CYGPATH_W) 'SoNodeKitDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitDetail.cpp'; fi`
+
+details_lst-SoNodeKitDetail.lo: SoNodeKitDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoNodeKitDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoNodeKitDetail.lo `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo" "$(DEPDIR)/details_lst-SoNodeKitDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoNodeKitDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitDetail.cpp' object='details_lst-SoNodeKitDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoNodeKitDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoNodeKitDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoNodeKitDetail.lo `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp
+
+details_lst-SoPointDetail.o: SoPointDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoPointDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoPointDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoPointDetail.o `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoPointDetail.Tpo" "$(DEPDIR)/details_lst-SoPointDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoPointDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointDetail.cpp' object='details_lst-SoPointDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoPointDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoPointDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoPointDetail.o `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp
+
+details_lst-SoPointDetail.obj: SoPointDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoPointDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoPointDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoPointDetail.obj `if test -f 'SoPointDetail.cpp'; then $(CYGPATH_W) 'SoPointDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoPointDetail.Tpo" "$(DEPDIR)/details_lst-SoPointDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoPointDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointDetail.cpp' object='details_lst-SoPointDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoPointDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoPointDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoPointDetail.obj `if test -f 'SoPointDetail.cpp'; then $(CYGPATH_W) 'SoPointDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointDetail.cpp'; fi`
+
+details_lst-SoPointDetail.lo: SoPointDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoPointDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoPointDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoPointDetail.lo `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoPointDetail.Tpo" "$(DEPDIR)/details_lst-SoPointDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoPointDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointDetail.cpp' object='details_lst-SoPointDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoPointDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoPointDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoPointDetail.lo `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp
+
+details_lst-SoTextDetail.o: SoTextDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoTextDetail.o -MD -MP -MF "$(DEPDIR)/details_lst-SoTextDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoTextDetail.o `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoTextDetail.Tpo" "$(DEPDIR)/details_lst-SoTextDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoTextDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextDetail.cpp' object='details_lst-SoTextDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoTextDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoTextDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoTextDetail.o `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp
+
+details_lst-SoTextDetail.obj: SoTextDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoTextDetail.obj -MD -MP -MF "$(DEPDIR)/details_lst-SoTextDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoTextDetail.obj `if test -f 'SoTextDetail.cpp'; then $(CYGPATH_W) 'SoTextDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoTextDetail.Tpo" "$(DEPDIR)/details_lst-SoTextDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoTextDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextDetail.cpp' object='details_lst-SoTextDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoTextDetail.Po' tmpdepfile='$(DEPDIR)/details_lst-SoTextDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoTextDetail.obj `if test -f 'SoTextDetail.cpp'; then $(CYGPATH_W) 'SoTextDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextDetail.cpp'; fi`
+
+details_lst-SoTextDetail.lo: SoTextDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -MT details_lst-SoTextDetail.lo -MD -MP -MF "$(DEPDIR)/details_lst-SoTextDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o details_lst-SoTextDetail.lo `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/details_lst-SoTextDetail.Tpo" "$(DEPDIR)/details_lst-SoTextDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/details_lst-SoTextDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextDetail.cpp' object='details_lst-SoTextDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/details_lst-SoTextDetail.Plo' tmpdepfile='$(DEPDIR)/details_lst-SoTextDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(details_lst_CXXFLAGS) $(CXXFLAGS) -c -o details_lst-SoTextDetail.lo `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp
+
+libdetails_la-all-details-cpp.o: all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-all-details-cpp.o -MD -MP -MF "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-all-details-cpp.o `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo" "$(DEPDIR)/libdetails_la-all-details-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-details-cpp.cpp' object='libdetails_la-all-details-cpp.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-all-details-cpp.Po' tmpdepfile='$(DEPDIR)/libdetails_la-all-details-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-all-details-cpp.o `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp
+
+libdetails_la-all-details-cpp.obj: all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-all-details-cpp.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-all-details-cpp.obj `if test -f 'all-details-cpp.cpp'; then $(CYGPATH_W) 'all-details-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-details-cpp.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo" "$(DEPDIR)/libdetails_la-all-details-cpp.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-details-cpp.cpp' object='libdetails_la-all-details-cpp.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-all-details-cpp.Po' tmpdepfile='$(DEPDIR)/libdetails_la-all-details-cpp.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-all-details-cpp.obj `if test -f 'all-details-cpp.cpp'; then $(CYGPATH_W) 'all-details-cpp.cpp'; else $(CYGPATH_W) '$(srcdir)/all-details-cpp.cpp'; fi`
+
+libdetails_la-all-details-cpp.lo: all-details-cpp.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-all-details-cpp.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-all-details-cpp.lo `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo" "$(DEPDIR)/libdetails_la-all-details-cpp.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-all-details-cpp.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='all-details-cpp.cpp' object='libdetails_la-all-details-cpp.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-all-details-cpp.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-all-details-cpp.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-all-details-cpp.lo `test -f 'all-details-cpp.cpp' || echo '$(srcdir)/'`all-details-cpp.cpp
+
+libdetails_la-SoDetail.o: SoDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoDetail.o `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoDetail.Tpo" "$(DEPDIR)/libdetails_la-SoDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetail.cpp' object='libdetails_la-SoDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoDetail.o `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp
+
+libdetails_la-SoDetail.obj: SoDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoDetail.obj `if test -f 'SoDetail.cpp'; then $(CYGPATH_W) 'SoDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoDetail.Tpo" "$(DEPDIR)/libdetails_la-SoDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetail.cpp' object='libdetails_la-SoDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoDetail.obj `if test -f 'SoDetail.cpp'; then $(CYGPATH_W) 'SoDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoDetail.cpp'; fi`
+
+libdetails_la-SoDetail.lo: SoDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoDetail.lo `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoDetail.Tpo" "$(DEPDIR)/libdetails_la-SoDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoDetail.cpp' object='libdetails_la-SoDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoDetail.lo `test -f 'SoDetail.cpp' || echo '$(srcdir)/'`SoDetail.cpp
+
+libdetails_la-SoConeDetail.o: SoConeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoConeDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoConeDetail.o `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo" "$(DEPDIR)/libdetails_la-SoConeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConeDetail.cpp' object='libdetails_la-SoConeDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoConeDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoConeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoConeDetail.o `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp
+
+libdetails_la-SoConeDetail.obj: SoConeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoConeDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoConeDetail.obj `if test -f 'SoConeDetail.cpp'; then $(CYGPATH_W) 'SoConeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConeDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo" "$(DEPDIR)/libdetails_la-SoConeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConeDetail.cpp' object='libdetails_la-SoConeDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoConeDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoConeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoConeDetail.obj `if test -f 'SoConeDetail.cpp'; then $(CYGPATH_W) 'SoConeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoConeDetail.cpp'; fi`
+
+libdetails_la-SoConeDetail.lo: SoConeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoConeDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoConeDetail.lo `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo" "$(DEPDIR)/libdetails_la-SoConeDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoConeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoConeDetail.cpp' object='libdetails_la-SoConeDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoConeDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoConeDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoConeDetail.lo `test -f 'SoConeDetail.cpp' || echo '$(srcdir)/'`SoConeDetail.cpp
+
+libdetails_la-SoCubeDetail.o: SoCubeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoCubeDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoCubeDetail.o `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo" "$(DEPDIR)/libdetails_la-SoCubeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCubeDetail.cpp' object='libdetails_la-SoCubeDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoCubeDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoCubeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoCubeDetail.o `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp
+
+libdetails_la-SoCubeDetail.obj: SoCubeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoCubeDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoCubeDetail.obj `if test -f 'SoCubeDetail.cpp'; then $(CYGPATH_W) 'SoCubeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCubeDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo" "$(DEPDIR)/libdetails_la-SoCubeDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCubeDetail.cpp' object='libdetails_la-SoCubeDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoCubeDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoCubeDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoCubeDetail.obj `if test -f 'SoCubeDetail.cpp'; then $(CYGPATH_W) 'SoCubeDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCubeDetail.cpp'; fi`
+
+libdetails_la-SoCubeDetail.lo: SoCubeDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoCubeDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoCubeDetail.lo `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo" "$(DEPDIR)/libdetails_la-SoCubeDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoCubeDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCubeDetail.cpp' object='libdetails_la-SoCubeDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoCubeDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoCubeDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoCubeDetail.lo `test -f 'SoCubeDetail.cpp' || echo '$(srcdir)/'`SoCubeDetail.cpp
+
+libdetails_la-SoCylinderDetail.o: SoCylinderDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoCylinderDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoCylinderDetail.o `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo" "$(DEPDIR)/libdetails_la-SoCylinderDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCylinderDetail.cpp' object='libdetails_la-SoCylinderDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoCylinderDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoCylinderDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoCylinderDetail.o `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp
+
+libdetails_la-SoCylinderDetail.obj: SoCylinderDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoCylinderDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoCylinderDetail.obj `if test -f 'SoCylinderDetail.cpp'; then $(CYGPATH_W) 'SoCylinderDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCylinderDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo" "$(DEPDIR)/libdetails_la-SoCylinderDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCylinderDetail.cpp' object='libdetails_la-SoCylinderDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoCylinderDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoCylinderDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoCylinderDetail.obj `if test -f 'SoCylinderDetail.cpp'; then $(CYGPATH_W) 'SoCylinderDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoCylinderDetail.cpp'; fi`
+
+libdetails_la-SoCylinderDetail.lo: SoCylinderDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoCylinderDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoCylinderDetail.lo `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo" "$(DEPDIR)/libdetails_la-SoCylinderDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoCylinderDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoCylinderDetail.cpp' object='libdetails_la-SoCylinderDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoCylinderDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoCylinderDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoCylinderDetail.lo `test -f 'SoCylinderDetail.cpp' || echo '$(srcdir)/'`SoCylinderDetail.cpp
+
+libdetails_la-SoFaceDetail.o: SoFaceDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoFaceDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoFaceDetail.o `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo" "$(DEPDIR)/libdetails_la-SoFaceDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFaceDetail.cpp' object='libdetails_la-SoFaceDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoFaceDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoFaceDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoFaceDetail.o `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp
+
+libdetails_la-SoFaceDetail.obj: SoFaceDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoFaceDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoFaceDetail.obj `if test -f 'SoFaceDetail.cpp'; then $(CYGPATH_W) 'SoFaceDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFaceDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo" "$(DEPDIR)/libdetails_la-SoFaceDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFaceDetail.cpp' object='libdetails_la-SoFaceDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoFaceDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoFaceDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoFaceDetail.obj `if test -f 'SoFaceDetail.cpp'; then $(CYGPATH_W) 'SoFaceDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoFaceDetail.cpp'; fi`
+
+libdetails_la-SoFaceDetail.lo: SoFaceDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoFaceDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoFaceDetail.lo `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo" "$(DEPDIR)/libdetails_la-SoFaceDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoFaceDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoFaceDetail.cpp' object='libdetails_la-SoFaceDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoFaceDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoFaceDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoFaceDetail.lo `test -f 'SoFaceDetail.cpp' || echo '$(srcdir)/'`SoFaceDetail.cpp
+
+libdetails_la-SoLineDetail.o: SoLineDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoLineDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoLineDetail.o `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo" "$(DEPDIR)/libdetails_la-SoLineDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLineDetail.cpp' object='libdetails_la-SoLineDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoLineDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoLineDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoLineDetail.o `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp
+
+libdetails_la-SoLineDetail.obj: SoLineDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoLineDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoLineDetail.obj `if test -f 'SoLineDetail.cpp'; then $(CYGPATH_W) 'SoLineDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLineDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo" "$(DEPDIR)/libdetails_la-SoLineDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLineDetail.cpp' object='libdetails_la-SoLineDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoLineDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoLineDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoLineDetail.obj `if test -f 'SoLineDetail.cpp'; then $(CYGPATH_W) 'SoLineDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoLineDetail.cpp'; fi`
+
+libdetails_la-SoLineDetail.lo: SoLineDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoLineDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoLineDetail.lo `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo" "$(DEPDIR)/libdetails_la-SoLineDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoLineDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoLineDetail.cpp' object='libdetails_la-SoLineDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoLineDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoLineDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoLineDetail.lo `test -f 'SoLineDetail.cpp' || echo '$(srcdir)/'`SoLineDetail.cpp
+
+libdetails_la-SoNodeKitDetail.o: SoNodeKitDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoNodeKitDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoNodeKitDetail.o `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo" "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitDetail.cpp' object='libdetails_la-SoNodeKitDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoNodeKitDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoNodeKitDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoNodeKitDetail.o `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp
+
+libdetails_la-SoNodeKitDetail.obj: SoNodeKitDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoNodeKitDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoNodeKitDetail.obj `if test -f 'SoNodeKitDetail.cpp'; then $(CYGPATH_W) 'SoNodeKitDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo" "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitDetail.cpp' object='libdetails_la-SoNodeKitDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoNodeKitDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoNodeKitDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoNodeKitDetail.obj `if test -f 'SoNodeKitDetail.cpp'; then $(CYGPATH_W) 'SoNodeKitDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoNodeKitDetail.cpp'; fi`
+
+libdetails_la-SoNodeKitDetail.lo: SoNodeKitDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoNodeKitDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoNodeKitDetail.lo `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo" "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoNodeKitDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoNodeKitDetail.cpp' object='libdetails_la-SoNodeKitDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoNodeKitDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoNodeKitDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoNodeKitDetail.lo `test -f 'SoNodeKitDetail.cpp' || echo '$(srcdir)/'`SoNodeKitDetail.cpp
+
+libdetails_la-SoPointDetail.o: SoPointDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoPointDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoPointDetail.o `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo" "$(DEPDIR)/libdetails_la-SoPointDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointDetail.cpp' object='libdetails_la-SoPointDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoPointDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoPointDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoPointDetail.o `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp
+
+libdetails_la-SoPointDetail.obj: SoPointDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoPointDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoPointDetail.obj `if test -f 'SoPointDetail.cpp'; then $(CYGPATH_W) 'SoPointDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo" "$(DEPDIR)/libdetails_la-SoPointDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointDetail.cpp' object='libdetails_la-SoPointDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoPointDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoPointDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoPointDetail.obj `if test -f 'SoPointDetail.cpp'; then $(CYGPATH_W) 'SoPointDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoPointDetail.cpp'; fi`
+
+libdetails_la-SoPointDetail.lo: SoPointDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoPointDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoPointDetail.lo `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo" "$(DEPDIR)/libdetails_la-SoPointDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoPointDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoPointDetail.cpp' object='libdetails_la-SoPointDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoPointDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoPointDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoPointDetail.lo `test -f 'SoPointDetail.cpp' || echo '$(srcdir)/'`SoPointDetail.cpp
+
+libdetails_la-SoTextDetail.o: SoTextDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoTextDetail.o -MD -MP -MF "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoTextDetail.o `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo" "$(DEPDIR)/libdetails_la-SoTextDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextDetail.cpp' object='libdetails_la-SoTextDetail.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoTextDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoTextDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoTextDetail.o `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp
+
+libdetails_la-SoTextDetail.obj: SoTextDetail.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoTextDetail.obj -MD -MP -MF "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoTextDetail.obj `if test -f 'SoTextDetail.cpp'; then $(CYGPATH_W) 'SoTextDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextDetail.cpp'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo" "$(DEPDIR)/libdetails_la-SoTextDetail.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextDetail.cpp' object='libdetails_la-SoTextDetail.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoTextDetail.Po' tmpdepfile='$(DEPDIR)/libdetails_la-SoTextDetail.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoTextDetail.obj `if test -f 'SoTextDetail.cpp'; then $(CYGPATH_W) 'SoTextDetail.cpp'; else $(CYGPATH_W) '$(srcdir)/SoTextDetail.cpp'; fi`
+
+libdetails_la-SoTextDetail.lo: SoTextDetail.cpp
+@am__fastdepCXX_TRUE@	if $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -MT libdetails_la-SoTextDetail.lo -MD -MP -MF "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o libdetails_la-SoTextDetail.lo `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo" "$(DEPDIR)/libdetails_la-SoTextDetail.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/libdetails_la-SoTextDetail.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='SoTextDetail.cpp' object='libdetails_la-SoTextDetail.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/libdetails_la-SoTextDetail.Plo' tmpdepfile='$(DEPDIR)/libdetails_la-SoTextDetail.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdetails_la_CXXFLAGS) $(CXXFLAGS) -c -o libdetails_la-SoTextDetail.lo `test -f 'SoTextDetail.cpp' || echo '$(srcdir)/'`SoTextDetail.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo
