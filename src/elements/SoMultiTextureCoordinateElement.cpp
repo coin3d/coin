@@ -432,7 +432,7 @@ SoMultiTextureCoordinateElement::init(SoState * state)
 int32_t
 SoMultiTextureCoordinateElement::getNum(const int unit) const
 {
-  assert(unit < PRIVATE(this)->unitdata.getLength());
+  PRIVATE(this)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
   return ud.numCoords;
 }
