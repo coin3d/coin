@@ -61,7 +61,7 @@ rm -f ./config.cache
 # The options must cover the set of install-directories in the %files section.
 $RPM_SOURCE_DIR/Coin/configure \
                        --bindir=@bindir@ --includedir=@includedir@ \
-                       --libdir=@libdir@ --datadir=@datadir@ \
+                       --libdir=@libdir@ --datadir=@datarootdir@ \
                        --mandir=@mandir@ --with-man
 make
 
@@ -860,28 +860,28 @@ make doxygen-doc
 @mandir@/man3/SoWWWAnchor.3
 @mandir@/man3/SoWWWInline.3
 @mandir@/man3/SoWriteAction.3
-@datadir@/Coin/draggerDefaults/centerballDragger.iv
-@datadir@/Coin/draggerDefaults/directionalLightDragger.iv
-@datadir@/Coin/draggerDefaults/dragPointDragger.iv
-@datadir@/Coin/draggerDefaults/handleBoxDragger.iv
-@datadir@/Coin/draggerDefaults/jackDragger.iv
-@datadir@/Coin/draggerDefaults/pointLightDragger.iv
-@datadir@/Coin/draggerDefaults/rotateCylindricalDragger.iv
-@datadir@/Coin/draggerDefaults/rotateDiscDragger.iv
-@datadir@/Coin/draggerDefaults/rotateSphericalDragger.iv
-@datadir@/Coin/draggerDefaults/scale1Dragger.iv
-@datadir@/Coin/draggerDefaults/scale2Dragger.iv
-@datadir@/Coin/draggerDefaults/scale2UniformDragger.iv
-@datadir@/Coin/draggerDefaults/scaleUniformDragger.iv
-@datadir@/Coin/draggerDefaults/spotLightDragger.iv
-@datadir@/Coin/draggerDefaults/tabBoxDragger.iv
-@datadir@/Coin/draggerDefaults/tabPlaneDragger.iv
-@datadir@/Coin/draggerDefaults/trackballDragger.iv
-@datadir@/Coin/draggerDefaults/transformBoxDragger.iv
-@datadir@/Coin/draggerDefaults/transformerDragger.iv
-@datadir@/Coin/draggerDefaults/translate1Dragger.iv
-@datadir@/Coin/draggerDefaults/translate2Dragger.iv
-@datadir@/aclocal/coin.m4
+@datarootdir@/Coin/draggerDefaults/centerballDragger.iv
+@datarootdir@/Coin/draggerDefaults/directionalLightDragger.iv
+@datarootdir@/Coin/draggerDefaults/dragPointDragger.iv
+@datarootdir@/Coin/draggerDefaults/handleBoxDragger.iv
+@datarootdir@/Coin/draggerDefaults/jackDragger.iv
+@datarootdir@/Coin/draggerDefaults/pointLightDragger.iv
+@datarootdir@/Coin/draggerDefaults/rotateCylindricalDragger.iv
+@datarootdir@/Coin/draggerDefaults/rotateDiscDragger.iv
+@datarootdir@/Coin/draggerDefaults/rotateSphericalDragger.iv
+@datarootdir@/Coin/draggerDefaults/scale1Dragger.iv
+@datarootdir@/Coin/draggerDefaults/scale2Dragger.iv
+@datarootdir@/Coin/draggerDefaults/scale2UniformDragger.iv
+@datarootdir@/Coin/draggerDefaults/scaleUniformDragger.iv
+@datarootdir@/Coin/draggerDefaults/spotLightDragger.iv
+@datarootdir@/Coin/draggerDefaults/tabBoxDragger.iv
+@datarootdir@/Coin/draggerDefaults/tabPlaneDragger.iv
+@datarootdir@/Coin/draggerDefaults/trackballDragger.iv
+@datarootdir@/Coin/draggerDefaults/transformBoxDragger.iv
+@datarootdir@/Coin/draggerDefaults/transformerDragger.iv
+@datarootdir@/Coin/draggerDefaults/translate1Dragger.iv
+@datarootdir@/Coin/draggerDefaults/translate2Dragger.iv
+@datarootdir@/aclocal/coin.m4
 
 
 %clean
