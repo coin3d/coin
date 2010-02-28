@@ -2,6 +2,8 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
+datarootdir=@datadir@
+datadir=${datarootdir}
 
 Name: Coin
 Description: a high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
@@ -14,7 +16,6 @@ Cflags: -I${includedir} @COIN_EXTRA_CFLAGS@ @COIN_EXTRA_CPPFLAGS@
 coin_host=@host@
 compiler=@COIN_COMPILER@
 compiler_is_gcc=@ac_compiler_gnu@
-datadir=@datadir@
 frameworkdir=@frameworkdir@
 htmldir=@htmldir@
 msvcrt=@COIN_MSVC_LIBC@
