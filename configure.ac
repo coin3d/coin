@@ -893,9 +893,6 @@ AM_CONDITIONAL(BUILD_LIBRARY, $sim_ac_build_library)
 # * Do we want to build the documentation?
 # *******************************************************************
 
-AC_ARG_VAR([htmldir],
-           [destination for HTML docs (default ${datadir}/Coin/html)])
-
 AC_ARG_ENABLE(html,
   AC_HELP_STRING([--enable-html], [build and install Coin HTML documentation]),
   [case $enableval in
@@ -905,14 +902,12 @@ AC_ARG_ENABLE(html,
   [want_html=no])
 
 case $htmldir in
-"")
-  htmldir="$datadir/Coin/html"
-  ;;
 /*)
   # do nothing - absolute path
   ;;
 *)
-  htmldir="\${prefix}/$htmldir"
+  # expand $docdir and append /html
+  htmldir=`eval echo ${docdir}`/html
   ;;
 esac
 
