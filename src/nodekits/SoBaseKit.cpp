@@ -1995,9 +1995,12 @@ SoBaseKit::createDefaultParts(void)
   // only do this if the catalog has been created
   if (catalog) {
     for (int i = 1; i < PRIVATE(this)->instancelist.getLength(); i++) {
-      if (PRIVATE(this)->instancelist[i]->getValue() == NULL && !catalog->isNullByDefault(i)) {
-        this->makePart(i);
-        PRIVATE(this)->instancelist[i]->setDefault(TRUE);
+      if (!catalog->isNullByDefault(i)) {
+        SoNode * old = PRIVATE(this)->instancelist[i]->getValue();
+        if ((old == NULL || ! old->isOfType(catalog->getDefaultType(i)) )) {
+          this->makePart(i);
+          PRIVATE(this)->instancelist[i]->setDefault(TRUE);
+        }
       }
     }
   }
@@ -2316,7 +2319,6 @@ SoBaseKit::makePart(const int partnum)
   assert(partnum > 0 && partnum < PRIVATE(this)->instancelist.getLength());
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   assert(catalog);
-  assert(PRIVATE(this)->instancelist[partnum]->getValue() == NULL);
 
   SoNode * node = (SoNode *)catalog->getDefaultType(partnum).createInstance();
   if (catalog->isList(partnum)) {
