@@ -27,7 +27,7 @@ Release: @coin_configure_date@
 Copyright: GNU General Public License ("GPL")
 Group: Development/Libraries
 URL: http://www.coin3d.org
-Vendor: Kongsberg SIM
+Vendor: Kongsberg Oil & Gas Technologies
 Packager: Morten Eriksen <mortene@sim.no>
 
 %description
@@ -42,11 +42,11 @@ complex visualization purposes.
 
 %prep
 cd $RPM_SOURCE_DIR
-export CVSROOT=:pserver:cvs@cvs.sim.no:/export/cvsroot
 if test ! -d Coin; then
-  cvs checkout -P Coin
+  hg clone http://hg.sim.no/Coin/default Coin
 else
-  cvs update -dP Coin
+  hg -RCoin pull -u
+  hg -RCoin update
 fi
 
 
