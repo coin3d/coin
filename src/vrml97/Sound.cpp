@@ -213,6 +213,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
+#include "coindefs.h"
 
 #include <stddef.h>
 
@@ -536,7 +537,7 @@ SoVRMLSound::~SoVRMLSound(void)
 */
 
 void
-SoVRMLSound::setDopplerVelocity(float velocity)
+SoVRMLSound::setDopplerVelocity(float COIN_UNUSED_ARG(velocity))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::setDopplerVelocity",
@@ -564,7 +565,7 @@ SoVRMLSound::getDopplerVelocity() const
 */
 
 void
-SoVRMLSound::setDopplerFactor(float factor)
+SoVRMLSound::setDopplerFactor(float COIN_UNUSED_ARG(factor))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::setDopplerFactor",
@@ -592,7 +593,7 @@ SoVRMLSound::getDopplerFactor() const
 */
 
 void
-SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
+SoVRMLSound::startPlaying(SoPath * COIN_UNUSED_ARG(path), void * COIN_UNUSED_ARG(userdataptr))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::startPlaying",
@@ -605,7 +606,7 @@ SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
 */
 
 void
-SoVRMLSound::stopPlaying(SoPath *path, void *userdataptr)
+SoVRMLSound::stopPlaying(SoPath * COIN_UNUSED_ARG(path), void * COIN_UNUSED_ARG(userdataptr))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::stopPlaying",
@@ -1124,7 +1125,7 @@ SoVRMLSoundP::threadCallback()
 }
 
 void
-SoVRMLSoundP::timercb(void * data, SoSensor * s)
+SoVRMLSoundP::timercb(void * data, SoSensor * COIN_UNUSED_ARG(s))
 {
   SoVRMLSoundP * thisp = (SoVRMLSoundP*) data;
   thisp->fillBuffers();

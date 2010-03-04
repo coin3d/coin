@@ -67,6 +67,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLSphere.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -180,7 +181,7 @@ SoVRMLSphere::generatePrimitives(SoAction * action)
 
 // Doc in parent
 void
-SoVRMLSphere::computeBBox(SoAction * action,
+SoVRMLSphere::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                           SbBox3f & box,
                           SbVec3f & center)
 {

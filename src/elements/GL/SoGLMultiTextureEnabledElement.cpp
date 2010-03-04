@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -85,7 +86,7 @@ SoGLMultiTextureEnabledElement::push(SoState * state)
 
 // Documented in superclass. Overridden to track GL state.
 void
-SoGLMultiTextureEnabledElement::pop(SoState * state,
+SoGLMultiTextureEnabledElement::pop(SoState * COIN_UNUSED_ARG(state),
                                     const SoElement * prevTopElement)
 {
   SoGLMultiTextureEnabledElement * prev = (SoGLMultiTextureEnabledElement*) prevTopElement;

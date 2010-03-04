@@ -457,7 +457,7 @@ cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child)
     return;
   }
 
-  int numchildren = cc_xml_elt_get_num_children(elt);
+  //int numchildren = cc_xml_elt_get_num_children(elt);
   elt->children.append(child);
   child->parent = elt;
 }

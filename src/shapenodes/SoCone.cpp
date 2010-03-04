@@ -64,6 +64,7 @@
 */
 
 #include <Inventor/nodes/SoCone.h>
+#include "coindefs.h"
 
 #include <assert.h>
 #include <math.h>
@@ -149,7 +150,7 @@ SoCone::initClass(void)
 
 // Doc from parent.
 void
-SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoCone::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box, SbVec3f & center)
 {
   float r = this->bottomRadius.getValue();
   float h = this->height.getValue();

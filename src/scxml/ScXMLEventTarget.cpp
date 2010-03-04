@@ -111,7 +111,7 @@ public:
 };
 
 void
-ScXMLEventTarget::PImpl::delay_event_alarm_cb(void * userdata, SoSensor * sensor)
+ScXMLEventTarget::PImpl::delay_event_alarm_cb(void * userdata, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   assert(userdata);
   DelayEventData * eventdata = static_cast<DelayEventData *>(userdata);
@@ -568,7 +568,7 @@ ScXMLEventTarget::getNextExternalEvent(void)
   This function processes one event.  The base class implementation does nothing.
 */
 SbBool
-ScXMLEventTarget::processOneEvent(const ScXMLEvent * event)
+ScXMLEventTarget::processOneEvent(const ScXMLEvent * COIN_UNUSED_ARG(event))
 {
   return FALSE;
 }
@@ -648,9 +648,9 @@ ScXMLEventTarget::sendExternalEvent(const ScXMLSendElt * sendelt)
         return FALSE;
       }
       if (delaystr[len-2] == 'm') {
-        delay = atof(delaystr) / 1000.0f;
+        delay = float(atof(delaystr)) / 1000.0f;
       } else {
-        delay = atof(delaystr);
+        delay = float(atof(delaystr));
       }
     } else {
       SoDebugError::post("ScXMLEventTarget::sendExternalEvent",

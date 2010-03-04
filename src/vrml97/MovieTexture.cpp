@@ -162,6 +162,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLMovieTexture.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 
@@ -202,7 +203,7 @@ SoVRMLMovieTexture::~SoVRMLMovieTexture()
 
 // Doc in parent
 void
-SoVRMLMovieTexture::GLRender(SoGLRenderAction * action)
+SoVRMLMovieTexture::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 

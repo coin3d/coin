@@ -27,6 +27,7 @@
 // *************************************************************************
 
 #include "rendering/SoGL.h"
+#include "coindefs.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -2107,9 +2108,9 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
 
 static void
 sogl_render_pointset_m0n0t0(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
+                            const SbVec3f * COIN_UNUSED_ARG(normals),
+                            SoMaterialBundle * COIN_UNUSED_ARG(mb),
+                            const SoTextureCoordinateBundle * COIN_UNUSED_ARG(tb),
                             int32_t numpts,
                             int32_t idx)
 {
@@ -2134,8 +2135,8 @@ sogl_render_pointset_m0n0t0(const SoGLCoordinateElement * coords,
 
 static void
 sogl_render_pointset_m0n0t1(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
+                            const SbVec3f * COIN_UNUSED_ARG(normals),
+                            SoMaterialBundle * COIN_UNUSED_ARG(mb),
                             const SoTextureCoordinateBundle * tb,
                             int32_t numpts,
                             int32_t idx)
@@ -2154,8 +2155,8 @@ sogl_render_pointset_m0n0t1(const SoGLCoordinateElement * coords,
 static void
 sogl_render_pointset_m0n1t0(const SoGLCoordinateElement * coords,
                             const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
+                            SoMaterialBundle * COIN_UNUSED_ARG(mb),
+                            const SoTextureCoordinateBundle * COIN_UNUSED_ARG(tb),
                             int32_t numpts,
                             int32_t idx)
 {
@@ -2170,7 +2171,7 @@ sogl_render_pointset_m0n1t0(const SoGLCoordinateElement * coords,
 static void
 sogl_render_pointset_m0n1t1(const SoGLCoordinateElement * coords,
                             const SbVec3f * normals,
-                            SoMaterialBundle * mb,
+                            SoMaterialBundle * COIN_UNUSED_ARG(mb),
                             const SoTextureCoordinateBundle * tb,
                             int32_t numpts,
                             int32_t idx)
@@ -2189,9 +2190,9 @@ sogl_render_pointset_m0n1t1(const SoGLCoordinateElement * coords,
 
 static void
 sogl_render_pointset_m1n0t0(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
+                            const SbVec3f * COIN_UNUSED_ARG(normals),
                             SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
+                            const SoTextureCoordinateBundle * COIN_UNUSED_ARG(tb),
                             int32_t numpts,
                             int32_t idx)
 {
@@ -2222,7 +2223,7 @@ sogl_render_pointset_m1n0t0(const SoGLCoordinateElement * coords,
 
 static void
 sogl_render_pointset_m1n0t1(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
+                            const SbVec3f * COIN_UNUSED_ARG(normals),
                             SoMaterialBundle * mb,
                             const SoTextureCoordinateBundle * tb,
                             int32_t numpts,
@@ -2245,7 +2246,7 @@ static void
 sogl_render_pointset_m1n1t0(const SoGLCoordinateElement * coords,
                             const SbVec3f * normals,
                             SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
+                            const SoTextureCoordinateBundle * COIN_UNUSED_ARG(tb),
                             int32_t numpts,
                             int32_t idx)
 {

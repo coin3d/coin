@@ -81,6 +81,7 @@
 */
 
 #include <Inventor/nodes/SoCylinder.h>
+#include "coindefs.h"
 
 #include <math.h>
 
@@ -167,7 +168,7 @@ SoCylinder::initClass(void)
 
 // Doc in parent.
 void
-SoCylinder::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoCylinder::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box, SbVec3f & center)
 {
 
   float r = this->radius.getValue();

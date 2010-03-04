@@ -29,6 +29,7 @@
  */
 
 #include "glue/gl_agl.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -55,34 +56,34 @@
 #ifndef HAVE_AGL
 
 
-SbBool aglglue_context_is_using_pbuffer(void * ctx)
+SbBool aglglue_context_is_using_pbuffer(void * COIN_UNUSED_ARG(ctx))
 {
   /* FIXME: Not sure how to handle this -- I think we should never get
      here in the first place if we don't have AGL at all. kyrah 20031123 */
   return FALSE;
 }
 
-void * aglglue_getprocaddress(const char * fname)
+void * aglglue_getprocaddress(const char * COIN_UNUSED_ARG(fname))
 {
   return NULL;
 }
 
-void * aglglue_context_create_offscreen(unsigned int width, 
-                                        unsigned int height) { 
+void * aglglue_context_create_offscreen(unsigned int COIN_UNUSED_ARG(width), 
+                                        unsigned int COIN_UNUSED_ARG(height)) { 
   assert(FALSE); return NULL; 
 }
 
-SbBool aglglue_context_make_current(void * ctx)
+SbBool aglglue_context_make_current(void * COIN_UNUSED_ARG(ctx))
 { 
   assert(FALSE); return FALSE; 
 }
 
-void aglglue_context_reinstate_previous(void * ctx) 
+void aglglue_context_reinstate_previous(void * COIN_UNUSED_ARG(ctx)) 
 { 
   assert(FALSE); 
 }
 
-void aglglue_context_destruct(void * ctx) 
+void aglglue_context_destruct(void * COIN_UNUSED_ARG(ctx)) 
 { 
   assert(FALSE); 
 }

@@ -194,7 +194,7 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
   mb.sendFirst(); // always do this, even if mbind != OVERALL
 
   const SbMatrix & mat = SoModelMatrixElement::get(state);
-  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  //const SbViewVolume & vv = SoViewVolumeElement::get(state);
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
                                  SoProjectionMatrixElement::get(state));

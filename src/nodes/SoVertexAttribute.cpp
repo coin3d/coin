@@ -315,7 +315,7 @@ SoVertexAttribute::write(SoWriteAction * action)
 }
 
 SbBool
-SoVertexAttribute::readInstance(SoInput * in, unsigned short flags)
+SoVertexAttribute::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   PRIVATE(this)->isreading = TRUE;
   // avoid triggering in the notify()-function while reading the file.

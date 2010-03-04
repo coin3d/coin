@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "SoRenderManagerP.h"
+#include "coindefs.h"
 
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -83,7 +84,7 @@ SoRenderManagerP::cleanup(void)
 }
 
 void
-SoRenderManagerP::updateClippingPlanesCB(void * closure, SoSensor * sensor)
+SoRenderManagerP::updateClippingPlanesCB(void * closure, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoRenderManagerP * thisp = (SoRenderManagerP *) closure;
   if (thisp->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
@@ -288,7 +289,7 @@ SoRenderManager::Superimposition::setEnabled(SbBool yes)
 }
 
 void
-SoRenderManager::Superimposition::changeCB(void * data, SoSensor * sensor)
+SoRenderManager::Superimposition::changeCB(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   Superimposition * thisp = (Superimposition *) data;
   assert(thisp && PRIVATE(thisp)->manager);

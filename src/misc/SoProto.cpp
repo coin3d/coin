@@ -124,7 +124,7 @@ static SoProto *
 soproto_fetchextern_default_cb(SoInput * in,
                                const SbString * urls,
                                const int numurls,
-                               void * closure)
+                               void * COIN_UNUSED_ARG(closure))
 {
   if (numurls == 0) return NULL;
   SbString filename(urls[0]);
@@ -355,7 +355,7 @@ SoProto::getProtoName(void) const
 
 // Documented in superclass. Overridden to read Proto definition.
 SbBool
-SoProto::readInstance(SoInput * in, unsigned short flags)
+SoProto::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   SbName protoname;
 
@@ -1091,7 +1091,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 }
 
 SbBool
-SoProto::setupExtern(SoInput * in, SoProto * externproto)
+SoProto::setupExtern(SoInput * COIN_UNUSED_ARG(in), SoProto * externproto)
 {
   assert(externproto);
   PRIVATE(this)->extprotonode = externproto;

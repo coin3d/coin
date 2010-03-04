@@ -441,7 +441,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   know if you need this method for anything, and we'll implement it.
 */
 SbBox3f
-SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
+SoText3::getCharacterBounds(SoState * COIN_UNUSED_ARG(state), int COIN_UNUSED_ARG(stringindex), int COIN_UNUSED_ARG(charindex))
 {
   COIN_OBSOLETED();
   return SbBox3f();
@@ -554,11 +554,11 @@ SoText3::generatePrimitives(SoAction * action)
 
 // doc in parent
 SoDetail *
-SoText3::createTriangleDetail(SoRayPickAction * action,
+SoText3::createTriangleDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
                               const SoPrimitiveVertex * v1,
-                              const SoPrimitiveVertex * v2,
-                              const SoPrimitiveVertex * v3,
-                              SoPickedPoint * pp)
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
+                              SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   // generatePrimitives() places text details inside each primitive vertex
   assert(v1->getDetail());
@@ -954,13 +954,13 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
 // render text geometry
 void
-SoText3::render(SoState * state, unsigned int part)
+SoText3::render(SoState * COIN_UNUSED_ARG(state), unsigned int COIN_UNUSED_ARG(part))
 {
   assert(FALSE && "obsoleted");
 }
 
 void
-SoText3::generate(SoAction * action, unsigned int part)
+SoText3::generate(SoAction * COIN_UNUSED_ARG(action), unsigned int COIN_UNUSED_ARG(part))
 {
   assert(FALSE && "obsoleted");
 }

@@ -692,7 +692,7 @@ SoVRMLGroup::GLRenderInPath(SoGLRenderAction * action)
 
 // Doc in parent
 void
-SoVRMLGroup::GLRenderOffPath(SoGLRenderAction * action)
+SoVRMLGroup::GLRenderOffPath(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }

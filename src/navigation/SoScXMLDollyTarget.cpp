@@ -290,8 +290,8 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     if (inherited::getEventDouble(event, "absminfocaldistance", absminfocaldistance, FALSE) &&
         inherited::getEventDouble(event, "absmaxfocaldistance", absmaxfocaldistance, FALSE)) {
       data->rangeislimited = TRUE;
-      data->absminfocaldistance = absminfocaldistance;
-      data->absmaxfocaldistance = absmaxfocaldistance;
+      data->absminfocaldistance = float(absminfocaldistance);
+      data->absmaxfocaldistance = float(absmaxfocaldistance);
     }
     else {
       data->rangeislimited = FALSE;
@@ -300,7 +300,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     if (inherited::getEventDouble(event, "setfocaldistance", focaldistance, FALSE)) {
       // immediate setting of focal distance
       SoCamera * camera = statemachine->getActiveCamera();
-      camera->focalDistance.setValue(focaldistance);
+      camera->focalDistance.setValue(float(focaldistance));
     }
 
     const char * motiontype = event->getAssociation("motiontype");
@@ -416,7 +416,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
 
     float diff = static_cast<float>(count * stepsize);
     if (eventname == STEP_IN()) { diff = -diff; }
-    SoScXMLDollyTarget::step(camera, exp, diff, absminfocaldistance, absmaxfocaldistance);
+    SoScXMLDollyTarget::step(camera, exp, float(diff), float(absminfocaldistance), float(absmaxfocaldistance));
     return TRUE;
   }
 

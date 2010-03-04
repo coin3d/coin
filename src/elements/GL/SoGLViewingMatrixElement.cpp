@@ -33,6 +33,7 @@
   the scene graph.
 */
 
+#include "coindefs.h"
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 
@@ -86,7 +87,7 @@ SoGLViewingMatrixElement::push(SoState * stateptr)
 // doc in parent
 void
 SoGLViewingMatrixElement::pop(SoState * stateptr,
-                              const SoElement * prevTopElement)
+                              const SoElement * COIN_UNUSED_ARG(prevTopElement))
 {
   this->capture(stateptr);
   this->updategl();

@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "glue/GLUWrapper.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -216,7 +217,7 @@ GLUWrapper_gluGetString(GLenum name)
 
 /* Replacement function for gluScaleImage(). */
 static GLint APIENTRY
-GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * e, GLsizei f, GLsizei g, GLenum h, GLvoid * i)
+GLUWrapper_gluScaleImage(GLenum COIN_UNUSED_ARG(a), GLsizei COIN_UNUSED_ARG(b), GLsizei COIN_UNUSED_ARG(c), GLenum COIN_UNUSED_ARG(d), const void * COIN_UNUSED_ARG(e), GLsizei COIN_UNUSED_ARG(f), GLsizei COIN_UNUSED_ARG(g), GLenum COIN_UNUSED_ARG(h), GLvoid * COIN_UNUSED_ARG(i))
 {
   /* Just a void function. */
 

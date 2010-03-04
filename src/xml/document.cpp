@@ -286,7 +286,7 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 }
 
 void
-cc_xml_doc_expat_processing_instruction_handler_cb(void * userdata, const XML_Char * target, const XML_Char * pidata)
+cc_xml_doc_expat_processing_instruction_handler_cb(void * COIN_UNUSED_ARG(userdata), const XML_Char * COIN_UNUSED_ARG(target), const XML_Char * COIN_UNUSED_ARG(pidata))
 {
 #ifdef DEV_DEBUG
   fprintf(stdout, "received processing Instruction...\n");
@@ -779,7 +779,7 @@ cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
 */
 
 cc_xml_path *
-cc_xml_doc_diff(const cc_xml_doc * doc, const cc_xml_doc * other)
+cc_xml_doc_diff(const cc_xml_doc * COIN_UNUSED_ARG(doc), const cc_xml_doc * COIN_UNUSED_ARG(other))
 {
 #ifdef DEV_DEBUG
   COIN_STUB();

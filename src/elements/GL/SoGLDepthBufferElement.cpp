@@ -29,8 +29,8 @@
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */
-
 #include <Inventor/elements/SoGLDepthBufferElement.h>
+#include "coindefs.h"
 
 #include <cassert>
 
@@ -83,7 +83,7 @@ SoGLDepthBufferElement::push(SoState * state)
   Internal Coin method.
 */
 void
-SoGLDepthBufferElement::pop(SoState * state,
+SoGLDepthBufferElement::pop(SoState * COIN_UNUSED_ARG(state),
                             const SoElement * prevTopElement)
 {
   const SoGLDepthBufferElement * prev =

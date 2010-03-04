@@ -28,6 +28,7 @@
 #ifdef HAVE_NODEKITS
 
 #include <Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h>
+#include "coindefs.h"
 
 #include <Inventor/system/gl.h>
 #include <Inventor/SbVec2s.h>
@@ -42,12 +43,12 @@
 #include "nodekits/SoSubKitP.h"
 
 namespace {
-  void enableDepthTest(void * userdata, SoAction * action)
+  void enableDepthTest(void * COIN_UNUSED_ARG(userdata), SoAction * COIN_UNUSED_ARG(action))
   {
     glEnable(GL_DEPTH_TEST);
   }
 
-  void disableDepthTest(void * userdata, SoAction * action)
+  void disableDepthTest(void * COIN_UNUSED_ARG(userdata), SoAction * COIN_UNUSED_ARG(action))
   {
     glDisable(GL_DEPTH_TEST);
   }

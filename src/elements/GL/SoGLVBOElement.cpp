@@ -138,7 +138,7 @@ SoGLVBOElement::setTexCoordVBO(SoState * state, const int unit, SoVBO * vbo)
 
 // doc in parent
 void
-SoGLVBOElement::init(SoState *state)
+SoGLVBOElement::init(SoState * COIN_UNUSED_ARG(state))
 {
   PRIVATE(this)->vertexvbo = NULL;
   PRIVATE(this)->normalvbo = NULL;
@@ -148,7 +148,7 @@ SoGLVBOElement::init(SoState *state)
 
 // doc in parent
 void
-SoGLVBOElement::push(SoState *state)
+SoGLVBOElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoGLVBOElement * prev = (SoGLVBOElement *)
     this->getNextInStack();
@@ -165,14 +165,14 @@ SoGLVBOElement::push(SoState *state)
 
 // doc in parent
 void
-SoGLVBOElement::pop(SoState *state, const SoElement * prevtopelement)
+SoGLVBOElement::pop(SoState * COIN_UNUSED_ARG(state), const SoElement * COIN_UNUSED_ARG(prevtopelement))
 {
   // nothing to do
 }
 
 // doc in parent
 SbBool
-SoGLVBOElement::matches(const SoElement * elt) const
+SoGLVBOElement::matches(const SoElement * COIN_UNUSED_ARG(elt)) const
 {
   assert(0 && "should never get here");
   return TRUE;

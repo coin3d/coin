@@ -53,6 +53,7 @@
 
 #include <Inventor/elements/SoGLPointSizeElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include "coindefs.h"
 
 #include <cfloat>
 #ifdef HAVE_CONFIG_H
@@ -105,7 +106,7 @@ SoGLPointSizeElement::push(SoState * state)
 
 // Doc in super.
 void
-SoGLPointSizeElement::pop(SoState * state,
+SoGLPointSizeElement::pop(SoState * COIN_UNUSED_ARG(state),
                           const SoElement * prevTopElement)
 {
   SoGLPointSizeElement * prev = (SoGLPointSizeElement*)prevTopElement;

@@ -107,6 +107,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLCylinder.h>
+#include "coindefs.h"
 
 #include <math.h>
 
@@ -253,7 +254,7 @@ SoVRMLCylinder::generatePrimitives(SoAction * action)
 
 // Doc in parent
 void
-SoVRMLCylinder::computeBBox(SoAction * action,
+SoVRMLCylinder::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                             SbBox3f & box,
                             SbVec3f & center)
 {

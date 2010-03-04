@@ -57,7 +57,7 @@ ScXMLElseEltReader::ScXMLElseEltReader(void)
 }
 
 ScXMLElt *
-ScXMLElseEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLElseEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLElseElt * elseelt = new ScXMLElseElt;
@@ -125,7 +125,7 @@ void
 ScXMLElseElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLElseElt * orig = coin_assert_cast<const ScXMLElseElt *>(rhs);
+  /*const ScXMLElseElt * orig = */coin_assert_cast<const ScXMLElseElt *>(rhs);
 }
 
 #undef PRIVATE

@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLElt.h>
+#include "coindefs.h"
 
 /*!
   \class ScXMLElt ScXMLElt.h Inventor/scxml/ScXMLElt.h
@@ -229,7 +230,7 @@ ScXMLElt::clone(void) const
 }
 
 void
-ScXMLElt::copyContents(const ScXMLElt * rhs)
+ScXMLElt::copyContents(const ScXMLElt * COIN_UNUSED_ARG(rhs))
 {
   // FIXME: copy XMLattribute map, otherwise xmlns attrs will be lost.
 }

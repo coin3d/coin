@@ -88,6 +88,7 @@
 */
 
 #include <Inventor/nodes/SoText2.h>
+#include "coindefs.h"
 
 #include <limits.h>
 #include <string.h>
@@ -211,7 +212,7 @@ public:
   unsigned char * pixel_buffer;
   int pixel_buffer_size;
 
-  static void sensor_cb(void * userdata, SoSensor * s) {
+  static void sensor_cb(void * userdata, SoSensor * COIN_UNUSED_ARG(s)) {
     SoText2P * thisp = (SoText2P*) userdata;
     thisp->lock();
     if (thisp->cache) thisp->cache->invalidate();
@@ -636,7 +637,7 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 // doc in super
 void
-SoText2::generatePrimitives(SoAction * action)
+SoText2::generatePrimitives(SoAction * COIN_UNUSED_ARG(action))
 {
   // This is supposed to be empty. There are no primitives.
 }

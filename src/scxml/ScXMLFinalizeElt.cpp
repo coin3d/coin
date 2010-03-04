@@ -57,7 +57,7 @@ ScXMLFinalizeEltReader::ScXMLFinalizeEltReader(void)
 }
 
 ScXMLElt *
-ScXMLFinalizeEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLFinalizeEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLFinalizeElt * finalize = new ScXMLFinalizeElt;
@@ -125,7 +125,7 @@ void
 ScXMLFinalizeElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLFinalizeElt * orig = coin_assert_cast<const ScXMLFinalizeElt *>(rhs);
+  /*const ScXMLFinalizeElt * orig = */coin_assert_cast<const ScXMLFinalizeElt *>(rhs);
 }
 
 #undef PRIVATE

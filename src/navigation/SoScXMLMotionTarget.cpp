@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/navigation/SoScXMLMotionTarget.h>
+#include "coindefs.h"
 
 /*!
   \class SoScXMLMotionTarget SoScXMLMotionTarget.h Inventor/navigation/SoScXMLMotionTarget.h
@@ -86,7 +87,7 @@ SoScXMLMotionTarget::~SoScXMLMotionTarget(void)
 }
 
 SbBool
-SoScXMLMotionTarget::processOneEvent(const ScXMLEvent * event)
+SoScXMLMotionTarget::processOneEvent(const ScXMLEvent * COIN_UNUSED_ARG(event))
 {
   return FALSE;
 }

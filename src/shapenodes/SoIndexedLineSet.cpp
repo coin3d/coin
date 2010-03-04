@@ -409,7 +409,7 @@ SoIndexedLineSet::generateDefaultNormals(SoState *, SoNormalBundle *)
 
 // Documented in superclass.
 SbBool
-SoIndexedLineSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
+SoIndexedLineSet::generateDefaultNormals(SoState * COIN_UNUSED_ARG(state), SoNormalCache * nc)
 {
   // not possible to generate normals for IndexedLineSet
   nc->set(0, NULL);

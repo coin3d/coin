@@ -23,6 +23,7 @@
 
 #include "SoGLARBShaderParameter.h"
 #include "SoGLARBShaderObject.h"
+#include "coindefs.h"
 
 #include <string.h>
 
@@ -130,68 +131,68 @@ SoGLARBShaderParameter::setMatrixArray(const SoGLShaderObject *, const int,
 }
 
 void
-SoGLARBShaderParameter::set1i(const SoGLShaderObject * shader,
-                              const int32_t value, const char * name,
+SoGLARBShaderParameter::set1i(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                              const int32_t COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                               const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
-SoGLARBShaderParameter::set2i(const SoGLShaderObject * shader,
-                              const int32_t * value, const char * name,
+SoGLARBShaderParameter::set2i(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                              const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                               const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
-SoGLARBShaderParameter::set3i(const SoGLShaderObject * shader,
-                              const int32_t * value, const char * name,
+SoGLARBShaderParameter::set3i(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                              const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                               const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
-SoGLARBShaderParameter::set4i(const SoGLShaderObject * shader,
-                              const int32_t * value, const char * name,
+SoGLARBShaderParameter::set4i(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                              const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                               const int)
 {
   // FIXME not implemented yet -- 20050222 martin
 }
 
 void
-SoGLARBShaderParameter::set1iv(const SoGLShaderObject * shader,
-                               const int num,
-                               const int32_t * value, const char * name,
+SoGLARBShaderParameter::set1iv(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                               const int COIN_UNUSED_ARG(num),
+                               const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                                const int)
 {
   // probably not supported. pederb, 20070530
 }
 
 void
-SoGLARBShaderParameter::set2iv(const SoGLShaderObject * shader,
-                               const int num,
-                               const int32_t * value, const char * name,
+SoGLARBShaderParameter::set2iv(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                               const int COIN_UNUSED_ARG(num),
+                               const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                                const int)
 {
   // probably not supported. pederb, 20070530
 }
 
 void
-SoGLARBShaderParameter::set3iv(const SoGLShaderObject * shader,
-                               const int num,
-                               const int32_t * value, const char * name,
+SoGLARBShaderParameter::set3iv(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                               const int COIN_UNUSED_ARG(num),
+                               const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                                const int)
 {
   // probably not supported. pederb, 20070530
 }
 
 void
-SoGLARBShaderParameter::set4iv(const SoGLShaderObject * shader,
-                               const int num,
-                               const int32_t * value, const char * name,
+SoGLARBShaderParameter::set4iv(const SoGLShaderObject * COIN_UNUSED_ARG(shader),
+                               const int COIN_UNUSED_ARG(num),
+                               const int32_t * COIN_UNUSED_ARG(value), const char * COIN_UNUSED_ARG(name),
                                const int)
 {
   // probably not supported. pederb, 20070530

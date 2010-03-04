@@ -339,7 +339,7 @@ SoBumpMap::doAction(SoAction * action)
 
 // doc from parent
 void
-SoBumpMap::callback(SoCallbackAction * action)
+SoBumpMap::callback(SoCallbackAction * COIN_UNUSED_ARG(action))
 {
   // not supported for SoCallbackAction yet
   // SoBumpMap::doAction(action);

@@ -274,7 +274,7 @@ SoVRMLBillboard::getBoundingBox(SoGetBoundingBoxAction * action)
 
 // Doc in parent
 void
-SoVRMLBillboard::getMatrix(SoGetMatrixAction * action)
+SoVRMLBillboard::getMatrix(SoGetMatrixAction * COIN_UNUSED_ARG(action))
 {
   // FIXME: hmmm, what should I do here. pederb, 2001-10-30
 }
@@ -400,7 +400,7 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
 
 // Doc in parent
 void
-SoVRMLBillboard::GLRenderOffPath(SoGLRenderAction * action)
+SoVRMLBillboard::GLRenderOffPath(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }

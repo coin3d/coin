@@ -31,6 +31,7 @@
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
+#include "coindefs.h"
 
 #ifdef HAVE_VRML97
 #include "vrml97/JS_VRMLClasses.h"
@@ -166,8 +167,8 @@ static void SpiderMonkey_ErrorHandler(JSContext * cx, const char * message,
   Easy to use print function for spidermonkey.
   print("hello", "world", 123, obj) will return "hello world 123 [some obj]"
  */
-static JSBool JavascriptPrint(JSContext * cx, JSObject * obj, 
-                              uintN argc, jsval * argv, jsval * rval)
+static JSBool JavascriptPrint(JSContext * cx, JSObject * COIN_UNUSED_ARG(obj), 
+                              uintN argc, jsval * argv, jsval * COIN_UNUSED_ARG(rval))
 {
   SbString out;
 

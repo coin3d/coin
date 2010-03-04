@@ -43,6 +43,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLVertexPoint.h>
+#include "coindefs.h"
 
 #include <stddef.h>
 
@@ -135,7 +136,7 @@ SoVRMLVertexPoint::notify(SoNotList * list)
 
 // Doc in parent
 void
-SoVRMLVertexPoint::computeBBox(SoAction * action, SbBox3f & box,
+SoVRMLVertexPoint::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box,
                                SbVec3f & center)
 {
   SoVRMLCoordinate * node = (SoVRMLCoordinate*) this->coord.getValue();

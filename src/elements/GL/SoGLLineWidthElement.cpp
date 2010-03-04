@@ -52,6 +52,7 @@
 */
 
 #include <Inventor/elements/SoGLLineWidthElement.h>
+#include "coindefs.h"
 
 #include <cfloat>
 #ifdef HAVE_CONFIG_H
@@ -107,7 +108,7 @@ SoGLLineWidthElement::push(SoState * stateptr)
 
 // doc in super
 void
-SoGLLineWidthElement::pop(SoState * stateptr, const SoElement * prevTopElement)
+SoGLLineWidthElement::pop(SoState * COIN_UNUSED_ARG(stateptr), const SoElement * prevTopElement)
 {
   SoGLLineWidthElement * prev = (SoGLLineWidthElement*)prevTopElement;
   if (this->data != prev->data) {

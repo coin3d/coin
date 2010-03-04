@@ -159,7 +159,7 @@ public:
   //
   // Callback from SoGLCacheContextElement
   //
-  static void really_delete_object(void * closure, uint32_t contextid) {
+  static void really_delete_object(void * closure, uint32_t COIN_UNUSED_ARG(contextid)) {
     SoGLShaderObject * obj = (SoGLShaderObject*) closure;
     delete obj;
   }
@@ -447,7 +447,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       assert(this->owner->isOfType(SoGeometryShader::getClassTypeId()));
       shaderobject->setShaderType(SoGLShaderObject::GEOMETRY);
 
-      SoGeometryShader * geomshader = (SoGeometryShader*) this->owner;
+      //SoGeometryShader * geomshader = (SoGeometryShader*) this->owner;
 
     }
 

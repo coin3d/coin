@@ -53,6 +53,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedShape.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
@@ -155,7 +156,7 @@ SoVRMLIndexedShape::notify(SoNotList * list)
 
 // Doc in parent
 void
-SoVRMLIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
+SoVRMLIndexedShape::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box,
                                 SbVec3f & center)
 {
   SoVRMLCoordinate * node = (SoVRMLCoordinate*) this->coord.getValue();

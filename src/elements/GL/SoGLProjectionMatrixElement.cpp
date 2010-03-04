@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
+#include "coindefs.h"
 
 
 #ifdef HAVE_CONFIG_H
@@ -64,7 +65,7 @@ SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement(void)
 //! FIXME: write doc.
 
 void
-SoGLProjectionMatrixElement::pop(SoState * state,
+SoGLProjectionMatrixElement::pop(SoState * COIN_UNUSED_ARG(state),
                                  const SoElement * prevTopElement)
 {
   this->capture(state);

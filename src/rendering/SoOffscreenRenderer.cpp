@@ -600,7 +600,7 @@ SoOffscreenRenderer::getGLRenderAction(void) const
 // *************************************************************************
 
 static void
-pre_render_cb(void * userdata, SoGLRenderAction * action)
+pre_render_cb(void * COIN_UNUSED_ARG(userdata), SoGLRenderAction * action)
 {
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
   action->setRenderingIsRemote(FALSE);
@@ -1588,7 +1588,7 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
   \since Coin 3.1
 */
 void
-SoOffscreenRenderer::setPbufferEnable(SbBool enable)
+SoOffscreenRenderer::setPbufferEnable(SbBool COIN_UNUSED_ARG(enable))
 {
   // FIXME: change the semantics of this function from just ignoring
   // the input argument, to using it for shutting off pbuffers if

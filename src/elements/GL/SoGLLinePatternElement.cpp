@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoGLLinePatternElement.h>
+#include "coindefs.h"
 
 
 #ifdef HAVE_CONFIG_H
@@ -85,7 +86,7 @@ SoGLLinePatternElement::push(SoState * state)
 //! FIXME: write doc.
 
 void
-SoGLLinePatternElement::pop(SoState * state,
+SoGLLinePatternElement::pop(SoState * COIN_UNUSED_ARG(state),
                             const SoElement * prevTopElement)
 {
   SoGLLinePatternElement * prev = (SoGLLinePatternElement*) prevTopElement;

@@ -251,7 +251,7 @@ SoGLDisplayList::open(SoState * state, int index)
   Close this display list/texture object.
 */
 void
-SoGLDisplayList::close(SoState * state)
+SoGLDisplayList::close(SoState * COIN_UNUSED_ARG(state))
 {
   if (PRIVATE(this)->type == DISPLAY_LIST) {
     glEndList();
@@ -384,7 +384,7 @@ SoGLDisplayList::getTextureTarget(void) const
   \since Coin 2.0
 */
 void
-SoGLDisplayList::bindTexture(SoState *state)
+SoGLDisplayList::bindTexture(SoState * COIN_UNUSED_ARG(state))
 {
   const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
   assert(cc_glglue_has_texture_objects(glw));

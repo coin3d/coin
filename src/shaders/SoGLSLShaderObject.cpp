@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "shaders/SoGLSLShaderObject.h"
+#include "coindefs.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -224,7 +225,7 @@ SoGLSLShaderObject::didOpenGLErrorOccur(const SbString & source)
 #include <stdio.h>
 
 void
-SoGLSLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value)
+SoGLSLShaderObject::updateCoinParameter(SoState * COIN_UNUSED_ARG(state), const SbName & name, SoShaderParameter * param, const int value)
 {
   COIN_GLhandle pHandle = this->programHandle;
   if (pHandle) {

@@ -221,7 +221,7 @@ SbBool bumphack = TRUE;
 // *************************************************************************
 
 static void
-soshape_bumprender_diffuseprogramdeletion(unsigned long key, void * value)
+soshape_bumprender_diffuseprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
 {
 #if 0 // FIXME: clean-up routines not implemented yet (for no good
       // reason, really). 20050524 mortene.
@@ -235,7 +235,7 @@ soshape_bumprender_diffuseprogramdeletion(unsigned long key, void * value)
 }
 
 static void
-soshape_bumprender_specularprogramdeletion(unsigned long key, void * value)
+soshape_bumprender_specularprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
 {
 #if 0 // FIXME: clean-up routines not implemented yet (for no good
       // reason, really). 20050524 mortene.
@@ -455,7 +455,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
                                     shininess * 64, 0.0f, 0.0f, 1.0f);
 
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
-  const SbMatrix & vm = SoViewingMatrixElement::get(state);
+  //const SbMatrix & vm = SoViewingMatrixElement::get(state);
 
   SbVec3f eyepos = vv.getProjectionPoint();
   SoModelMatrixElement::get(state).inverse().multVecMatrix(eyepos, eyepos);
@@ -497,7 +497,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
 
-  const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
+  //const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tptr = this->tangentlist.getArrayPtr();
   
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
@@ -724,7 +724,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
 {
   const cc_glglue * glue = sogl_glue_instance(state);
   int lastenabled = -1;
-  const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  //const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
@@ -760,7 +760,7 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
   const int numv = cache->getNumVertices();
   const GLint * idxptr = cache->getTriangleIndices();
   const SbVec3f * vertices = cache->getVertexArray();
-  const SbVec3f * normals = cache->getNormalArray();
+  //const SbVec3f * normals = cache->getNormalArray();
   const SbVec2f * bumpcoords = cache->getBumpCoordArray();
 
   this->tangentlist.truncate(0);
@@ -806,7 +806,7 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 }
 
 void
-soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light)
+soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * COIN_UNUSED_ARG(light))
 {
   SbVec3f thelightvec;
   SbVec3f tlightvec;

@@ -23,6 +23,7 @@
 
 /*! \file SbProfilingData.h */
 #include <Inventor/annex/Profiler/SbProfilingData.h>
+#include "coindefs.h"
 
 #include <algorithm> // std::reverse
 #include <cstring>
@@ -516,7 +517,7 @@ SbProfilingData::getParentIndex(int idx) const
  */
 
 int
-SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int pathlen)
+SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG(pathlen))
 {
 
   std::vector<int> lastentrypathindexes;
@@ -576,7 +577,7 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int pathlen)
  */
 
 int
-SbProfilingData::getIndexNoCreate(const SoPath * path, int pathlen) const
+SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathlen)) const
 {
   const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
 

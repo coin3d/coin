@@ -152,6 +152,7 @@
 
 /*! \file SoVRMLAudioClip.h */
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+#include "coindefs.h"
 
 #include <string.h>
 #include <stdio.h> // for EOF
@@ -724,15 +725,15 @@ SoVRMLAudioClipP::internal_close_wrapper(void *datasource,
 }
 
 void * 
-SoVRMLAudioClipP::internal_open(const SbStringList &url, 
-                                SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_open(const SbStringList & COIN_UNUSED_ARG(url), 
+                                SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return NULL;
 }
 
 size_t
-SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
-                                int &channelsref, SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer, int numframes,
+                                int &channelsref, SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   // 20021007 thammer note: this method might be called from a thread
   // different from the thread which created the "main" Coin thread.
@@ -886,19 +887,19 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
 }
 
 int    
-SoVRMLAudioClipP::internal_seek(void *datasource, long offset, int whence,
+SoVRMLAudioClipP::internal_seek(void * COIN_UNUSED_ARG(datasource), long COIN_UNUSED_ARG(offset), int whence,
                        SoVRMLAudioClip *clip)
 {
   return -1;
 }
 long   
-SoVRMLAudioClipP::internal_tell(void *datasource, SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_tell(void * COIN_UNUSED_ARG(datasource), SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return -1;
 }
 
 int    
-SoVRMLAudioClipP::internal_close(void *datasource, SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_close(void * COIN_UNUSED_ARG(datasource), SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return 0;
 }

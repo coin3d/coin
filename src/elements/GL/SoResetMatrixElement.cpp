@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+#include "coindefs.h"
 #include "elements/GL/SoResetMatrixElement.h"
 
 SO_ELEMENT_SOURCE(SoResetMatrixElement);
@@ -41,7 +42,7 @@ SoResetMatrixElement::~SoResetMatrixElement(void)
 
 // doc in parent
 void
-SoResetMatrixElement::init(SoState * stateptr)
+SoResetMatrixElement::init(SoState * COIN_UNUSED_ARG(stateptr))
 {
   this->matrix = SbMatrix::identity();
 }

@@ -663,8 +663,8 @@ SoTexture2::rayPick(SoRayPickAction * action)
   requested.
 */
 SbBool
-SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
-                      unsigned char *& bytes)
+SoTexture2::readImage(const SbString & COIN_UNUSED_ARG(fname), int & COIN_UNUSED_ARG(w), int & COIN_UNUSED_ARG(h), int & COIN_UNUSED_ARG(nc),
+                      unsigned char *& COIN_UNUSED_ARG(bytes))
 {
   COIN_OBSOLETED();
   return FALSE;

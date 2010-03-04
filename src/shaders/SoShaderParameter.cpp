@@ -103,7 +103,7 @@ public:
       deleteGLParameter(param);
     }
   }
-  static void deleteGLParameter(SoGLShaderParameter * param) {
+  static void deleteGLParameter(SoGLShaderParameter * COIN_UNUSED_ARG(param)) {
     // FIXME: schedule for delete, pederb 2005-11-30
   }
   // FIXME: add a cache context destruction callback, pederb 2005-11-30

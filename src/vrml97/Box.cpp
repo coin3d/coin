@@ -77,6 +77,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLBox.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
@@ -184,7 +185,7 @@ SoVRMLBox::generatePrimitives(SoAction * action)
 // Doc in parent
 void
 SoVRMLBox::computeBBox(SoAction * action,
-                       SbBox3f & box,
+                       SbBox3f & COIN_UNUSED_ARG(box),
                        SbVec3f & center)
 {
   center.setValue(0.0f, 0.0f, 0.0f);

@@ -953,7 +953,7 @@ SoSeparator::notify(SoNotList * nl)
   you need this function, and we'll consider implementing it.
 */
 SbBool
-SoSeparator::cullTest(SoGLRenderAction * action, int & cullresults)
+SoSeparator::cullTest(SoGLRenderAction * COIN_UNUSED_ARG(action), int & COIN_UNUSED_ARG(cullresults))
 {
   COIN_OBSOLETED();
   return FALSE;

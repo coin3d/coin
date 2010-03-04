@@ -27,7 +27,7 @@
 #include <coindefs.h> // COIN_STUB
 #include <stdlib.h>
 
-SoTranSender::SoTranSender(SoOutput * output)
+SoTranSender::SoTranSender(SoOutput * COIN_UNUSED_ARG(output))
 {
   COIN_STUB();
 }
@@ -45,31 +45,31 @@ SoTranSender::getOutput(void) const
 }
 
 void
-SoTranSender::insert(SoNode * node)
+SoTranSender::insert(SoNode * COIN_UNUSED_ARG(node))
 {
   COIN_STUB();
 }
 
 void
-SoTranSender::insert(SoNode * node, SoNode * parent, int n)
+SoTranSender::insert(SoNode * COIN_UNUSED_ARG(node), SoNode * COIN_UNUSED_ARG(parent), int COIN_UNUSED_ARG(n))
 {
   COIN_STUB();
 }
 
 void
-SoTranSender::remove(SoNode * parent, int n)
+SoTranSender::remove(SoNode * COIN_UNUSED_ARG(parent), int COIN_UNUSED_ARG(n))
 {
   COIN_STUB();
 }
 
 void
-SoTranSender::replace(SoNode * parent, int n, SoNode * newnode)
+SoTranSender::replace(SoNode * COIN_UNUSED_ARG(parent), int COIN_UNUSED_ARG(n), SoNode * COIN_UNUSED_ARG(newnode))
 {
   COIN_STUB();
 }
 
 void
-SoTranSender::modify(SoNode * node)
+SoTranSender::modify(SoNode * COIN_UNUSED_ARG(node))
 {
   COIN_STUB();
 }

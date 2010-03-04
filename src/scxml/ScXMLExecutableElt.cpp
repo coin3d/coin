@@ -70,11 +70,11 @@ void
 ScXMLExecutableElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLExecutableElt * orig = coin_assert_cast<const ScXMLExecutableElt *>(rhs);
+  /*const ScXMLExecutableElt * orig = */coin_assert_cast<const ScXMLExecutableElt *>(rhs);
 }
 
 void
-ScXMLExecutableElt::execute(ScXMLStateMachine * statemachine) const
+ScXMLExecutableElt::execute(ScXMLStateMachine * COIN_UNUSED_ARG(statemachine)) const
 {
   // nada
   // make abstract?

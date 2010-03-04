@@ -99,6 +99,7 @@
 */
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -255,9 +256,9 @@ namespace { namespace SoGL { namespace TriStripSet {
                        const SbVec3f *normals,
                        SoMaterialBundle * mb,
                        const SoTextureCoordinateBundle * tb,
-                       int nbind,
-                       int mbind,
-                       int doTextures,
+                       int COIN_UNUSED_ARG(nbind),
+                       int COIN_UNUSED_ARG(mbind),
+                       int COIN_UNUSED_ARG(doTextures),
                        int32_t idx,
                        const int32_t *ptr,
                        const int32_t *end,

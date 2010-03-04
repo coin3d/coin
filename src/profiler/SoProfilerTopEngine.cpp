@@ -261,7 +261,7 @@ SoProfilerTopEngine::evaluate(void)
   const bool have_maxtimings = (this->statisticsTimingsMax.getNum() == inputsize);
   const bool have_olddata =
     ((PRIVATE(this)->datasize == inputsize) && (PRIVATE(this)->data != NULL));
-  const int olddatasize = PRIVATE(this)->datasize;
+  /*const int olddatasize = */PRIVATE(this)->datasize;
   SoProfilerTopEngineP::StatDataItem * const olddata = PRIVATE(this)->data;
 
   //if (PRIVATE(this)->tmpdata && PRIVATE(this)->datasize == inputsize) {

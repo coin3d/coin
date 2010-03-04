@@ -69,6 +69,7 @@
 */
 
 #include <Inventor/nodes/SoSphere.h>
+#include "coindefs.h"
 
 #include <Inventor/SbSphere.h>
 #include <Inventor/SoPickedPoint.h>
@@ -162,7 +163,7 @@ SoSphere::GLRender(SoGLRenderAction * action)
 
 // Documented in superclass.
 void
-SoSphere::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoSphere::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box, SbVec3f & center)
 {
   float r = this->radius.getValue();
 

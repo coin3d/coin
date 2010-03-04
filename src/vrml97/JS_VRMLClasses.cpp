@@ -281,7 +281,7 @@ struct CoinVrmlJsSFHandler {
 
 template <class MFFieldClass, class SFFieldClass, CoinVrmlJs::ClassDescriptor * desc>
 struct CoinVrmlJsMFHandler {
-  static JSBool constructor(JSContext * cx, JSObject * obj, uintN argc, jsval * argv, jsval * rval)
+  static JSBool constructor(JSContext * cx, JSObject * obj, uintN argc, jsval * argv, jsval * COIN_UNUSED_ARG(rval))
   {
     jsval * val = new jsval;
     JSObject * array = spidermonkey()->JS_NewArrayObject(cx, 0, NULL);
@@ -586,8 +586,8 @@ static JSBool SFRotationConstructor(JSContext * cx, JSObject * obj,
 // *************************************************************************
 // functions
 
-static JSBool SFNode_ref(JSContext * cx, JSObject * obj, uintN argc,
-                         jsval * argv, jsval * rval)
+static JSBool SFNode_ref(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                         jsval * COIN_UNUSED_ARG(argv), jsval * COIN_UNUSED_ARG(rval))
 {
   // Check if the JS object has already been garbage collected. This
   // must be done to prevent a Java script from crashing the
@@ -603,8 +603,8 @@ static JSBool SFNode_ref(JSContext * cx, JSObject * obj, uintN argc,
   return JSVAL_TRUE;
 }
 
-static JSBool SFNode_unref(JSContext * cx, JSObject * obj, uintN argc,
-                           jsval * argv, jsval * rval)
+static JSBool SFNode_unref(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                           jsval * COIN_UNUSED_ARG(argv), jsval * COIN_UNUSED_ARG(rval))
 {
   // Check if the JS object has already been garbage collected. This
   // must be done to prevent a Java script from crashing the
@@ -627,8 +627,8 @@ buffer_realloc(void * bufptr, size_t size)
   return buffer;
 }
 
-static JSBool SFNode_toString(JSContext * cx, JSObject * obj, uintN argc,
-                              jsval * argv, jsval * rval)
+static JSBool SFNode_toString(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                              jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   // Check if the JS object has already been garbage collected. This
   // must be done to prevent a Java script from crashing the
@@ -661,7 +661,7 @@ static JSBool SFNode_toString(JSContext * cx, JSObject * obj, uintN argc,
   return JSVAL_TRUE;
 }
 
-static void SFNode_deleteCB(void * data, SoSensor * sensor)
+static void SFNode_deleteCB(void * COIN_UNUSED_ARG(data), SoSensor * sensor)
 {
   SoNode * node = ((SoNodeSensor *) sensor)->getAttachedNode();
   void * tmp;
@@ -782,74 +782,74 @@ static JSBool SFVec3d_divide(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
-static JSBool SFVec2f_dot(JSContext *cx, JSObject *obj, uintN argc,
-                          jsval *argv, jsval *rval)
+static JSBool SFVec2f_dot(JSContext *cx, JSObject * COIN_UNUSED_ARG(obj), uintN argc,
+                          jsval *argv, jsval * COIN_UNUSED_ARG(rval))
 {
-  SbVec2f & vec1 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
+  //SbVec2f & vec1 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
   if (argc >= 1 && JSVAL_IS_SFVEC2F(cx, argv[0])) {
-    SbVec2f & vec2 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
+    //SbVec2f & vec2 = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
 
-    float dot = vec1.dot(vec2);
-    JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
+    //float dot = vec1.dot(vec2);
+    //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
     return JS_TRUE;
   }
   return JS_FALSE;
 }
 
-static JSBool SFVec3f_dot(JSContext *cx, JSObject *obj, uintN argc,
-                          jsval *argv, jsval *rval)
+static JSBool SFVec3f_dot(JSContext *cx, JSObject * COIN_UNUSED_ARG(obj), uintN argc,
+                          jsval *argv, jsval * COIN_UNUSED_ARG(rval))
 {
-  SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
+  //SbVec3f & vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
   if (argc >= 1 && JSVAL_IS_SFVEC3F(cx, argv[0])) {
 
-    SbVec3f & vec2 = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
+    //SbVec3f & vec2 = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
 
-    float dot = vec.dot(vec2);
-    JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
+    //float dot = vec.dot(vec2);
+    //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
     return JS_TRUE;
   }
   return JS_FALSE;
 }
 
-static JSBool SFVec3d_dot(JSContext *cx, JSObject *obj, uintN argc,
-                          jsval *argv, jsval *rval)
+static JSBool SFVec3d_dot(JSContext *cx, JSObject * COIN_UNUSED_ARG(obj), uintN argc,
+                          jsval *argv, jsval * COIN_UNUSED_ARG(rval))
 {
-  SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+  //SbVec3d & vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
 
   if (argc >= 1 && JSVAL_IS_SFVEC3D(cx, argv[0])) {
 
-    SbVec3d & vec2 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
+    //SbVec3d & vec2 = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
 
-    double dot = vec.dot(vec2);
-    JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
+    //double dot = vec.dot(vec2);
+    //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, dot, rval);
     return JS_TRUE;
   }
   return JS_FALSE;
 }
 
-static JSBool SFVec2_length(JSContext * cx, JSObject * obj, uintN argc,
-                            jsval * argv, jsval * rval)
+static JSBool SFVec2_length(JSContext * COIN_UNUSED_ARG(cx), JSObject * COIN_UNUSED_ARG(obj), uintN COIN_UNUSED_ARG(argc),
+                            jsval * COIN_UNUSED_ARG(argv), jsval * COIN_UNUSED_ARG(rval))
 {
-  SbVec2f * vec = (SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
-  JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
+  //SbVec2f * vec = (SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
+  //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
   return JS_TRUE;
 }
 
-static JSBool SFVec3f_length(JSContext * cx, JSObject * obj, uintN argc,
-                            jsval * argv, jsval * rval)
+static JSBool SFVec3f_length(JSContext * COIN_UNUSED_ARG(cx), JSObject * COIN_UNUSED_ARG(obj), uintN COIN_UNUSED_ARG(argc),
+                            jsval * COIN_UNUSED_ARG(argv), jsval * COIN_UNUSED_ARG(rval))
 {
-  SbVec3f * vec = (SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
-  JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
+  //SbVec3f * vec = (SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
+  //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
   return JS_TRUE;
 }
 
-static JSBool SFVec3d_length(JSContext * cx, JSObject * obj, uintN argc,
-                            jsval * argv, jsval * rval)
+static JSBool SFVec3d_length(JSContext * COIN_UNUSED_ARG(cx), JSObject * COIN_UNUSED_ARG(obj), uintN COIN_UNUSED_ARG(argc),
+                            jsval * COIN_UNUSED_ARG(argv), jsval * COIN_UNUSED_ARG(rval))
 {
-  SbVec3d * vec = (SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
-  JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
+  //SbVec3d * vec = (SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
+  //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, vec->length(), rval);
   return JS_TRUE;
 }
 
@@ -900,8 +900,8 @@ static JSBool SFVec3d_multiply(JSContext * cx, JSObject * obj, uintN argc,
   return JS_FALSE;
 }
 
-static JSBool SFVec2f_normalize(JSContext * cx, JSObject * obj, uintN argc,
-                                jsval * argv, jsval * rval)
+static JSBool SFVec2f_normalize(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec2f vec = *(SbVec2f *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.normalize();
@@ -909,8 +909,8 @@ static JSBool SFVec2f_normalize(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFVec3f_normalize(JSContext * cx, JSObject * obj, uintN argc,
-                                jsval * argv, jsval * rval)
+static JSBool SFVec3f_normalize(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec3f vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.normalize();
@@ -918,8 +918,8 @@ static JSBool SFVec3f_normalize(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFVec3d_normalize(JSContext * cx, JSObject * obj, uintN argc,
-                                jsval * argv, jsval * rval)
+static JSBool SFVec3d_normalize(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec3d vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.normalize();
@@ -927,8 +927,8 @@ static JSBool SFVec3d_normalize(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFVec3f_negate(JSContext * cx, JSObject * obj, uintN argc,
-                                     jsval * argv, jsval * rval)
+static JSBool SFVec3f_negate(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                     jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec3f vec = *(SbVec3f *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.negate();
@@ -936,8 +936,8 @@ static JSBool SFVec3f_negate(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFVec3d_negate(JSContext * cx, JSObject * obj, uintN argc,
-                                     jsval * argv, jsval * rval)
+static JSBool SFVec3d_negate(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                     jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec3d vec = *(SbVec3d *)spidermonkey()->JS_GetPrivate(cx, obj);
   vec.negate();
@@ -1012,8 +1012,8 @@ static JSBool SFColor_setHSV(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFColor_getHSV(JSContext * cx, JSObject * obj, uintN argc,
-                             jsval * argv, jsval * rval)
+static JSBool SFColor_getHSV(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                             jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbColor & color = *(SbColor *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -1030,8 +1030,8 @@ static JSBool SFColor_getHSV(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFRotation_getAxis(JSContext * cx, JSObject * obj, uintN argc,
-                                 jsval * argv, jsval * rval)
+static JSBool SFRotation_getAxis(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                 jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec4f & rot = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
   SbVec3f axis(rot[0], rot[1], rot[2]);
@@ -1039,8 +1039,8 @@ static JSBool SFRotation_getAxis(JSContext * cx, JSObject * obj, uintN argc,
   return JS_TRUE;
 }
 
-static JSBool SFRotation_inverse(JSContext * cx, JSObject * obj, uintN argc,
-                                 jsval * argv, jsval * rval)
+static JSBool SFRotation_inverse(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_ARG(argc),
+                                 jsval * COIN_UNUSED_ARG(argv), jsval * rval)
 {
   SbVec4f & rot = *(SbVec4f *)spidermonkey()->JS_GetPrivate(cx, obj);
 
@@ -1472,7 +1472,7 @@ static JSBool SFNodeConstructor(JSContext * cx, JSObject * obj,
   if (argc >= 1 && JSVAL_IS_STRING(argv[0])) {
     JSString * js = JSVAL_TO_STRING(argv[0]);
     char * str = spidermonkey()->JS_GetStringBytes(js);
-    size_t len = spidermonkey()->JS_GetStringLength(js);
+    //size_t len = spidermonkey()->JS_GetStringLength(js);
 
     // FIXME: what about UTF8? 20050701 erikgors.
 
@@ -1617,7 +1617,7 @@ static SbBool SFRotation_jsval2field(JSContext * cx, const jsval v, SoField * f)
   return FALSE;
 }
 
-static SbBool SFString_jsval2field(JSContext * cx, const jsval v, SoField * f)
+static SbBool SFString_jsval2field(JSContext * COIN_UNUSED_ARG(cx), const jsval v, SoField * f)
 {
   if (JSVAL_IS_STRING(v)) {
     const char * str = spidermonkey()->JS_GetStringBytes(JSVAL_TO_STRING(v));
@@ -1674,7 +1674,7 @@ static SbBool SFVec3d_jsval2field(JSContext * cx, const jsval v, SoField * f)
 // *************************************************************************
 // field2jsval
 
-static void SFBool_field2jsval(JSContext * cx, const SoField * f, jsval * v)
+static void SFBool_field2jsval(JSContext * COIN_UNUSED_ARG(cx), const SoField * f, jsval * v)
 {
   const SbBool val = ((SoSFBool *)f)->getValue();
   *v = BOOLEAN_TO_JSVAL(val);
@@ -1687,19 +1687,19 @@ static void SFColor_field2jsval(JSContext * cx, const SoField * f, jsval *v)
   *v = OBJECT_TO_JSVAL(obj);
 }
 
-static void SFFloat_field2jsval(JSContext * cx, const SoField * f, jsval * v)
+static void SFFloat_field2jsval(JSContext * COIN_UNUSED_ARG(cx), const SoField * COIN_UNUSED_ARG(f), jsval * COIN_UNUSED_ARG(v))
 {
-  const float val = ((SoSFFloat *)f)->getValue();
-  JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, val, v);
+  //const float val = ((SoSFFloat *)f)->getValue();
+  //JSBool ok = spidermonkey()->JS_NewDoubleValue(cx, val, v);
 }
 
-static void SFInt32_field2jsval(JSContext * cx, const SoField * f, jsval * v)
+static void SFInt32_field2jsval(JSContext * COIN_UNUSED_ARG(cx), const SoField * f, jsval * v)
 {
   const int32_t val = ((SoSFInt32 *)f)->getValue();
   *v = INT_TO_JSVAL(val);
 }
 
-static void SFEnum_field2jsval(JSContext * cx, const SoField * f, jsval * v)
+static void SFEnum_field2jsval(JSContext * COIN_UNUSED_ARG(cx), const SoField * f, jsval * v)
 {
   const int32_t val = ((SoSFInt32 *)f)->getValue();
   *v = INT_TO_JSVAL(val);

@@ -309,7 +309,7 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
   have been private in Open Inventor.
 */
 void
-SoNurbsCurve::sendPrimitive(SoAction * a, SoPrimitiveVertex * p)
+SoNurbsCurve::sendPrimitive(SoAction * COIN_UNUSED_ARG(a), SoPrimitiveVertex * COIN_UNUSED_ARG(p))
 {
   COIN_OBSOLETED();
 }
@@ -339,10 +339,10 @@ SoNurbsCurve::generatePrimitives(SoAction * action)
 
 // Documented in superclass.
 SoDetail *
-SoNurbsCurve::createLineSegmentDetail(SoRayPickAction * action,
-                                      const SoPrimitiveVertex * v1,
-                                      const SoPrimitiveVertex * v2,
-                                      SoPickedPoint * pp)
+SoNurbsCurve::createLineSegmentDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                                      SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   return NULL;
 }

@@ -39,6 +39,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateSphere.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -81,7 +82,7 @@ so_texcoordsphere_construct_data(void * closure)
 }
 
 static void
-so_texcoordsphere_destruct_data(void * closure)
+so_texcoordsphere_destruct_data(void * COIN_UNUSED_ARG(closure))
 {
 }
 
@@ -195,7 +196,7 @@ textureCoordinateSphereCallback(void * userdata,
 }
 
 SbVec4f
-SoTextureCoordinateSphereP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
+SoTextureCoordinateSphereP::calculateTextureCoordinate(SbVec3f point, SbVec3f COIN_UNUSED_ARG(n))
 {
 
   // FIXME: This way of mapping will always lead to artifacts in the

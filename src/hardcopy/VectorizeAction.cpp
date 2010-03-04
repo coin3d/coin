@@ -167,6 +167,7 @@
 // *************************************************************************
 
 #include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include "coindefs.h"
 
 #include <Inventor/SbViewportRegion.h>
 
@@ -495,7 +496,7 @@ SoVectorizeAction::printViewport(void) const
   Should be overridden by subclasses to print an item.
 */
 void
-SoVectorizeAction::printItem(const SoVectorizeItem * item) const
+SoVectorizeAction::printItem(const SoVectorizeItem * COIN_UNUSED_ARG(item)) const
 {
 }
 
@@ -650,7 +651,7 @@ SoVectorizeAction::getStartPosition(DimensionUnit u) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setColorTranslationMethod(ColorTranslationMethod method)
+SoVectorizeAction::setColorTranslationMethod(ColorTranslationMethod COIN_UNUSED_ARG(method))
 {
 }
 
@@ -667,7 +668,7 @@ SoVectorizeAction::getColorTranslationMethod(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setLineEndStyle(EndLineStyle style)
+SoVectorizeAction::setLineEndStyle(EndLineStyle COIN_UNUSED_ARG(style))
 {
 }
 
@@ -684,7 +685,7 @@ SoVectorizeAction::getLineEndStyle(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setLineJoinsStyle(JoinLineStyle style)
+SoVectorizeAction::setLineJoinsStyle(JoinLineStyle COIN_UNUSED_ARG(style))
 {
 }
 
@@ -701,7 +702,7 @@ SoVectorizeAction::getLineJoinsStyle(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setHLHSRMode(HLHSRMode mode)
+SoVectorizeAction::setHLHSRMode(HLHSRMode COIN_UNUSED_ARG(mode))
 {
 }
 
@@ -718,7 +719,7 @@ SoVectorizeAction::getHLHSRMode(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setBorder(float width)
+SoVectorizeAction::setBorder(float COIN_UNUSED_ARG(width))
 {
 }
 
@@ -726,7 +727,7 @@ SoVectorizeAction::setBorder(float width)
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setBorder (float width, SbColor color)
+SoVectorizeAction::setBorder(float COIN_UNUSED_ARG(width), SbColor COIN_UNUSED_ARG(color))
 {
 }
 
@@ -734,7 +735,7 @@ SoVectorizeAction::setBorder (float width, SbColor color)
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setMiterLimit(float limit)
+SoVectorizeAction::setMiterLimit(float COIN_UNUSED_ARG(limit))
 {
 }
 
@@ -748,10 +749,10 @@ SoVectorizeAction::getMiterLimit(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setPenDescription(int num_pens,
-                                     const SbColor* colors,
-                                     const float * widths,
-                                     DimensionUnit u)
+SoVectorizeAction::setPenDescription(int COIN_UNUSED_ARG(num_pens),
+                                     const SbColor * COIN_UNUSED_ARG(colors),
+                                     const float * COIN_UNUSED_ARG(widths),
+                                     DimensionUnit COIN_UNUSED_ARG(u))
 {
 }
 
@@ -759,9 +760,9 @@ SoVectorizeAction::setPenDescription(int num_pens,
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::getPenDescription(SbColor * colors,
-                                     float * widths,
-                                     DimensionUnit u) const
+SoVectorizeAction::getPenDescription(SbColor * COIN_UNUSED_ARG(colors),
+                                     float * COIN_UNUSED_ARG(widths),
+                                     DimensionUnit COIN_UNUSED_ARG(u)) const
 {
 }
 
@@ -778,7 +779,7 @@ SoVectorizeAction::getPenNum(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::setColorPriority(SbBool priority)
+SoVectorizeAction::setColorPriority(SbBool COIN_UNUSED_ARG(priority))
 {
 }
 
@@ -795,7 +796,7 @@ SoVectorizeAction::getColorPriority(void) const
   Not implemented yet. Provided for TGS OIV compatibility.
 */
 void
-SoVectorizeAction::enableLighting(SbBool flag)
+SoVectorizeAction::enableLighting(SbBool COIN_UNUSED_ARG(flag))
 {
 }
 /*!

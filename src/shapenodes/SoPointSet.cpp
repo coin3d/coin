@@ -299,7 +299,7 @@ SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 
 // Documented in superclass.
 SbBool
-SoPointSet::generateDefaultNormals(SoState * state, SoNormalBundle * bundle)
+SoPointSet::generateDefaultNormals(SoState * COIN_UNUSED_ARG(state), SoNormalBundle * COIN_UNUSED_ARG(bundle))
 {
   // Overridden to avoid (faulty) compiler warnings with some version
   // of g++.

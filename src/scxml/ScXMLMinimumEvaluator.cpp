@@ -113,7 +113,7 @@ ScXMLMinimumEvaluator::evaluate(const char * expression) const
   Returns FALSE. The minimum profile does not implement the data module.
 */
 SbBool
-ScXMLMinimumEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
+ScXMLMinimumEvaluator::setAtLocation(const char * COIN_UNUSED_ARG(location), ScXMLDataObj * COIN_UNUSED_ARG(obj))
 {
   return FALSE;
 }
@@ -122,7 +122,7 @@ ScXMLMinimumEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
   Returns NULL. The minimum profile does not implement the data module.
 */
 ScXMLDataObj *
-ScXMLMinimumEvaluator::locate(const char * location) const
+ScXMLMinimumEvaluator::locate(const char * COIN_UNUSED_ARG(location)) const
 {
   return NULL;
 }

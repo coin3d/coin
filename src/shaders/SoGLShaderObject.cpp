@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "SoGLShaderObject.h"
+#include "coindefs.h"
 
 #include <assert.h>
 
@@ -95,7 +96,7 @@ SoGLShaderObject::getParametersDirty(void) const
 }
 
 void
-SoGLShaderObject::updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int val)
+SoGLShaderObject::updateCoinParameter(SoState * COIN_UNUSED_ARG(state), const SbName & COIN_UNUSED_ARG(name), SoShaderParameter * COIN_UNUSED_ARG(param), const int COIN_UNUSED_ARG(val))
 {
 }
 

@@ -53,6 +53,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLLight.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 
@@ -89,7 +90,7 @@ SoVRMLLight::~SoVRMLLight()
 
 // Doc in parent
 void
-SoVRMLLight::GLRender(SoGLRenderAction * action)
+SoVRMLLight::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 

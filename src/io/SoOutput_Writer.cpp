@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "io/SoOutput_Writer.h"
+#include "coindefs.h"
 
 #include <string.h>
 #include <assert.h>
@@ -129,7 +130,7 @@ SoOutput_FileWriter::getType(void) const
 }
 
 size_t
-SoOutput_FileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+SoOutput_FileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
   assert(this->fp);
   return fwrite(buf, 1, numbytes, this->fp);
@@ -254,7 +255,7 @@ SoOutput_GZFileWriter::getType(void) const
 }
 
 size_t
-SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
   if (this->gzfp) {
     // FIXME: the numbytes cast (as size_t can be 64 bits wide) is
@@ -317,7 +318,7 @@ SoOutput_BZ2FileWriter::getType(void) const
 }
 
 size_t
-SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;

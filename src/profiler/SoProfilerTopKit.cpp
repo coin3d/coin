@@ -28,6 +28,7 @@
 #ifdef HAVE_NODEKITS
 
 #include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
+#include "coindefs.h"
 
 #include <boost/intrusive_ptr.hpp>
 
@@ -69,7 +70,7 @@ public:
 };
 
 void
-SoProfilerTopKitP::statsNodeChanged(void * userdata, SoSensor * sensor)
+SoProfilerTopKitP::statsNodeChanged(void * userdata, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoProfilerTopKit * thisp = (SoProfilerTopKit *)userdata;
 

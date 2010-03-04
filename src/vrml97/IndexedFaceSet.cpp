@@ -684,8 +684,8 @@ SoVRMLIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc in parent
 SbBool
-SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * s,
-                                             SoNormalBundle * nb)
+SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * COIN_UNUSED_ARG(s),
+                                             SoNormalBundle * COIN_UNUSED_ARG(nb))
 {
   return FALSE;
 }

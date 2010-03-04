@@ -35,6 +35,7 @@
 
 /*! \file storage.h */
 #include <Inventor/C/threads/storage.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -79,7 +80,7 @@ cc_storage_init(unsigned int size, void (*constructor)(void *),
 }
 
 static void
-cc_storage_hash_destruct_cb(uintptr_t key, void * val, void * closure)
+cc_storage_hash_destruct_cb(uintptr_t COIN_UNUSED_ARG(key), void * val, void * closure)
 {
   cc_storage * storage = (cc_storage*) closure;
   
@@ -164,7 +165,7 @@ typedef struct {
 /* callback from cc_dict_apply. will simply call the function specified
    in cc_storage_apply_to_appl */
 static void 
-storage_hash_apply(uintptr_t key, void * val, void * closure)
+storage_hash_apply(uintptr_t COIN_UNUSED_ARG(key), void * val, void * closure)
 {
   cc_storage_hash_apply_data * data = 
     (cc_storage_hash_apply_data*) closure;
@@ -197,7 +198,7 @@ cc_storage_apply_to_all(cc_storage * storage,
 /* ********************************************************************** */
 
 void 
-cc_storage_thread_cleanup(unsigned long threadid)
+cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
 {
   /* FIXME: remove and destruct all data for this thread for all storages */
 }

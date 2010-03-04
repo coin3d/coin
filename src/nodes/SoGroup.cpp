@@ -545,7 +545,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 // *************************************************************************
 
 void
-SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
+SoGroupP::childGLRender(SoGroup * COIN_UNUSED_ARG(thisp), SoNode * child, SoGLRenderAction * action)
 {
   child->GLRender(action);
 }
@@ -553,7 +553,7 @@ SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * acti
 // This function is called for each child to traverse, and
 // action->getCurPath() is already updated at this point.
 void
-SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
+SoGroupP::childGLRenderProfiler(SoGroup * COIN_UNUSED_ARG(thisp), SoNode * child, SoGLRenderAction * action)
 {
   SoNodeProfiling profiling;
   profiling.preTraversal(action);

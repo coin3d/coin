@@ -260,6 +260,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
+#include "coindefs.h"
 
 #include <float.h>
 
@@ -634,7 +635,7 @@ SoVRMLElevationGrid::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc in parent
 void
-SoVRMLElevationGrid::computeBBox(SoAction * action,
+SoVRMLElevationGrid::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                                  SbBox3f & bbox,
                                  SbVec3f & center)
 {

@@ -264,7 +264,7 @@ SoScXMLSeekTarget::processOneEvent(const ScXMLEvent * event)
       }
 
       SbVec2s vpsize = statemachine->getViewportRegion().getViewportSizePixels();
-      screenpos.setValue(float(vpsize[0])*mouseposn[0], float(vpsize[1])*mouseposn[1]);
+      screenpos.setValue(short(vpsize[0] * mouseposn[0]), short(vpsize[1] * mouseposn[1]));
     }
 
     assert(this->raypickaction);
@@ -336,7 +336,7 @@ SoScXMLSeekTarget::processOneEvent(const ScXMLEvent * event)
 
     SbTime currenttime = SbTime::getTimeOfDay();
 
-    float t = (currenttime.getValue() - data->seekstart.getValue()) / data->seektime;
+    float t = float((currenttime.getValue() - data->seekstart.getValue()) / data->seektime);
     if (t >= 1.0f) t = 1.0f;
 
     SbBool end = (t == 1.0f);

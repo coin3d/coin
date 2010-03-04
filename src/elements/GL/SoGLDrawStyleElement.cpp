@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/elements/SoGLDrawStyleElement.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -72,7 +73,7 @@ SoGLDrawStyleElement::push(SoState * state)
 
 // doc in superclass
 void
-SoGLDrawStyleElement::pop(SoState * state,
+SoGLDrawStyleElement::pop(SoState * COIN_UNUSED_ARG(state),
                           const SoElement * prevTopElement)
 {
   SoGLDrawStyleElement * prev = (SoGLDrawStyleElement*) prevTopElement;

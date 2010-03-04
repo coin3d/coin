@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+#include "coindefs.h"
 #include "fonts/win32.h"
 
 #include <stdlib.h>
@@ -60,18 +61,18 @@
 SbBool cc_flww32_initialize(void) { return FALSE; }
 void cc_flww32_exit(void) { }
 
-void * cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexity) { assert(FALSE); return NULL; }
-void cc_flww32_get_font_name(void * font, cc_string * str) { assert(FALSE); }
-void cc_flww32_done_font(void * font) { assert(FALSE); }
+void * cc_flww32_get_font(const char * COIN_UNUSED_ARG(fontname), int COIN_UNUSED_ARG(sizey), float COIN_UNUSED_ARG(angle), float COIN_UNUSED_ARG(complexity)) { assert(FALSE); return NULL; }
+void cc_flww32_get_font_name(void * COIN_UNUSED_ARG(font), cc_string * COIN_UNUSED_ARG(str)) { assert(FALSE); }
+void cc_flww32_done_font(void * COIN_UNUSED_ARG(font)) { assert(FALSE); }
 
-int cc_flww32_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-void cc_flww32_get_vector_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
-void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
-void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
-void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
+int cc_flww32_get_glyph(void * COIN_UNUSED_ARG(font), unsigned int COIN_UNUSED_ARG(charidx)) { assert(FALSE); return 0; }
+void cc_flww32_get_vector_advance(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph), float * COIN_UNUSED_ARG(x), float * COIN_UNUSED_ARG(y)) { assert(FALSE); }
+void cc_flww32_get_bitmap_kerning(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph1), int COIN_UNUSED_ARG(glyph2), int * COIN_UNUSED_ARG(x), int * COIN_UNUSED_ARG(y)) { assert(FALSE); }
+void cc_flww32_get_vector_kerning(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph1), int COIN_UNUSED_ARG(glyph2), float * COIN_UNUSED_ARG(x), float * COIN_UNUSED_ARG(y)) { assert(FALSE); }
+void cc_flww32_done_glyph(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph)) { assert(FALSE); }
 
-struct cc_font_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
-struct cc_font_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
+struct cc_font_bitmap * cc_flww32_get_bitmap(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph)) { assert(FALSE); return NULL; }
+struct cc_font_vector_glyph * cc_flww32_get_vector_glyph(void * COIN_UNUSED_ARG(font), unsigned int COIN_UNUSED_ARG(glyph), float COIN_UNUSED_ARG(complexity)){ assert(FALSE); return NULL; }
 
 
 #else /* HAVE_WIN32_API */

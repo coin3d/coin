@@ -1105,7 +1105,7 @@ SoPath::cleanupClass(void)
 // stream. See the documentation on write() for an explanation of the
 // file format.
 SbBool
-SoPath::readInstance(SoInput * in, unsigned short flags)
+SoPath::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;

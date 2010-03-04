@@ -388,7 +388,7 @@ SoScXMLRotateTarget::processOneEvent(const ScXMLEvent * event)
       SoScXMLRotateTarget::setFocalPoint(camera, worldspace, upvector);
     }
     if (usefocaldistance) {
-      SoScXMLDollyTarget::jump(camera, focaldistance);
+      SoScXMLDollyTarget::jump(camera, float(focaldistance));
     }
 
     return TRUE;

@@ -31,6 +31,7 @@
 #include <Inventor/elements/SoGLEnvironmentElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/SbColor4f.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -68,7 +69,7 @@ SoGLEnvironmentElement::init(SoState * state)
 }
 
 void
-SoGLEnvironmentElement::pop(SoState * state,
+SoGLEnvironmentElement::pop(SoState * COIN_UNUSED_ARG(state),
                            const SoElement * prevTopElement)
 {
   this->capture(state);

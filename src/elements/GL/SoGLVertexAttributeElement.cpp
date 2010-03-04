@@ -78,7 +78,7 @@ typedef SoVertexAttributeData * Type;
 //
 // send attributes to gl
 //
-static void send_attribs(const Key & key,
+static void send_attribs(const Key & COIN_UNUSED_ARG(key),
                          const Type & attribdata,
                          void * closure)
 {
@@ -143,7 +143,7 @@ static void send_attribs(const Key & key,
 //
 static void query_attribs(const Key & key,
                           const Type & attribdata,
-                          void * closure)
+                          void * COIN_UNUSED_ARG(closure))
 {
   SoVertexAttributeData * data = (SoVertexAttributeData *) attribdata;
   const cc_glglue * glue = sogl_glue_instance(data->state);
@@ -168,7 +168,7 @@ static void query_attribs(const Key & key,
 //
 // enable vertex array rendering, with or without vbo
 //
-static void enable_vbo(const Key & key,
+static void enable_vbo(const Key & COIN_UNUSED_ARG(key),
                        const Type & attribdata,
                        void * closure)
 {
@@ -204,7 +204,7 @@ static void enable_vbo(const Key & key,
 //
 // disable vertex array rendering, with or without vbo
 //
-static void disable_vbo(const Key & key,
+static void disable_vbo(const Key & COIN_UNUSED_ARG(key),
                         const Type & attribdata,
                         void * closure)
 {
