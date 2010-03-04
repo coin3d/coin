@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "SoSceneManagerP.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -78,7 +79,7 @@ SoSceneManagerP::searchForCamera(SoNode * root,
 }
 
 void 
-SoSceneManagerP::renderCB(void * userdata, class SoRenderManager * mgr)
+SoSceneManagerP::renderCB(void * userdata, class SoRenderManager * COIN_UNUSED_ARG(mgr))
 {
   SoSceneManagerP * thisp = (SoSceneManagerP *) userdata;
   assert(thisp);

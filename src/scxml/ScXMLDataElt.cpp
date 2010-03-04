@@ -85,7 +85,7 @@ ScXMLDataEltReader::ScXMLDataEltReader(void)
 }
 
 ScXMLElt *
-ScXMLDataEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLDataEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLDataElt * data = new ScXMLDataElt;

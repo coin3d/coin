@@ -55,6 +55,7 @@
 // *************************************************************************
 
 #include <Inventor/misc/SoGLBigImage.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -288,7 +289,7 @@ SoGLBigImage::setData(const SbImage * image,
 
 
 SoGLDisplayList *
-SoGLBigImage::getGLDisplayList(SoState * state)
+SoGLBigImage::getGLDisplayList(SoState * COIN_UNUSED_ARG(state))
 {
   return NULL;
 }

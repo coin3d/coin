@@ -57,7 +57,7 @@ ScXMLParamEltReader::ScXMLParamEltReader(void)
 }
 
 ScXMLElt *
-ScXMLParamEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLParamEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLParamElt * param = new ScXMLParamElt;

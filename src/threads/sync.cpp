@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/C/threads/sync.h>
+#include "coindefs.h"
 
 #include <stddef.h>
 
@@ -41,7 +42,7 @@ extern "C" {
 static cc_dict * sync_hash_table = NULL;
 
 static void
-sync_hash_cb(uintptr_t key, void * val, void * closure)
+sync_hash_cb(uintptr_t COIN_UNUSED_ARG(key), void * val, void * COIN_UNUSED_ARG(closure))
 {
   cc_mutex_destruct((cc_mutex*) val);
 }

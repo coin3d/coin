@@ -28,6 +28,7 @@
 #ifdef HAVE_NODEKITS
 
 #include <ForeignFiles/SoSTLFileKit.h>
+#include "coindefs.h"
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
@@ -736,7 +737,7 @@ SoSTLFileKit::add_facet_cb(void * closure,
 
 void
 SoSTLFileKit::put_facet_cb(void * closure,
-                           SoCallbackAction * action,
+                           SoCallbackAction * COIN_UNUSED_ARG(action),
                            const SoPrimitiveVertex * v1,
                            const SoPrimitiveVertex * v2,
                            const SoPrimitiveVertex * v3)

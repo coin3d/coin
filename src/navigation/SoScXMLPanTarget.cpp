@@ -275,7 +275,7 @@ SoScXMLPanTarget::processOneEvent(const ScXMLEvent * event)
     if (isworldspace) {
       SoScXMLPanTarget::panSetFocalPoint(camera, worldspace);
       if (usefocaldistance) {
-        SoScXMLDollyTarget::jump(camera, focaldistance);
+        SoScXMLDollyTarget::jump(camera, float(focaldistance));
       }
       if (useupvector) {
         SoScXMLFlightControlTarget::resetRoll(camera, upvector);
@@ -288,7 +288,7 @@ SoScXMLPanTarget::processOneEvent(const ScXMLEvent * event)
       SoScXMLPanTarget::panCamera(camera, vp.getViewportAspectRatio(), panplane,
                                   screenspace, SbVec2f(0.5f, 0.5f));
       if (usefocaldistance) {
-        SoScXMLDollyTarget::jump(camera, focaldistance);
+        SoScXMLDollyTarget::jump(camera, float(focaldistance));
       }
       if (useupvector) {
         SoScXMLFlightControlTarget::resetRoll(camera, upvector);

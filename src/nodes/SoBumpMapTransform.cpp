@@ -47,6 +47,7 @@
 */
 
 #include <Inventor/nodes/SoBumpMapTransform.h>
+#include "coindefs.h"
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -139,7 +140,7 @@ SoBumpMapTransform::callback(SoCallbackAction *action)
 
 // Documented in superclass.
 void
-SoBumpMapTransform::getMatrix(SoGetMatrixAction * action)
+SoBumpMapTransform::getMatrix(SoGetMatrixAction * COIN_UNUSED_ARG(action))
 {
   // do nothing
 }

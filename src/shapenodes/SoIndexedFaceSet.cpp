@@ -942,7 +942,7 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 //
 SbBool
 SoIndexedFaceSet::useConvexCache(SoAction * action,
-                                 const SbVec3f * normals,
+                                 const SbVec3f * COIN_UNUSED_ARG(normals),
                                  const int32_t * nindices,
                                  const SbBool normalsfromcache)
 {

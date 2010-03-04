@@ -51,6 +51,7 @@
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbPlane.h>
 #include <assert.h>
+#include "coindefs.h"
 
 /*!
   \fn SbProjector::~SbProjector()
@@ -249,7 +250,7 @@ SbProjector::verifyProjection(const SbVec3f & projpt) const
   \since Coin 3.0
 */
 SbBool 
-SbProjector::tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result)
+SbProjector::tryProject(const SbVec2f & point, const float COIN_UNUSED_ARG(epsilon), SbVec3f & result)
 {
   result = this->project(point);
   return TRUE;

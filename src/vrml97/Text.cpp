@@ -110,6 +110,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLText.h>
+#include "coindefs.h"
 
 #include <float.h> // FLT_MIN
 #include <stddef.h>
@@ -200,7 +201,7 @@ SoVRMLText::initClass(void)
 }
 
 static void 
-fontstylechangeCB(void * data, SoSensor * sensor)
+fontstylechangeCB(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoVRMLTextP * pimpl = (SoVRMLTextP *) data;
   pimpl->lock();
@@ -242,7 +243,7 @@ SoVRMLText::SoVRMLText(void)
 }
 
 float
-SoVRMLTextP::getWidth(const int idx, const float fontsize)
+SoVRMLTextP::getWidth(const int idx, const float COIN_UNUSED_ARG(fontsize))
 {
   float w = this->glyphwidths[idx];
   float maxe = PUBLIC(this)->maxExtent.getValue();

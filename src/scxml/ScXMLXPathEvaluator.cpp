@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLXPathEvaluator.h>
+#include "coindefs.h"
 
 /*!
   \class ScXMLXPathEvaluator ScXMLXPathEvaluator.h Inventor/scxml/ScXMLXPathEvaluator.h
@@ -59,21 +60,21 @@ ScXMLXPathEvaluator::~ScXMLXPathEvaluator(void)
 }
 
 ScXMLDataObj *
-ScXMLXPathEvaluator::evaluate(const char * expression) const
+ScXMLXPathEvaluator::evaluate(const char * COIN_UNUSED_ARG(expression)) const
 {
   // FIXME: not implemented
   return NULL;
 }
 
 SbBool
-ScXMLXPathEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
+ScXMLXPathEvaluator::setAtLocation(const char * COIN_UNUSED_ARG(location), ScXMLDataObj * COIN_UNUSED_ARG(obj))
 {
   // FIXME: not implemented
   return FALSE;
 }
 
 ScXMLDataObj *
-ScXMLXPathEvaluator::locate(const char * location) const
+ScXMLXPathEvaluator::locate(const char * COIN_UNUSED_ARG(location)) const
 {
   // FIXME: not implemented
   return NULL;

@@ -100,6 +100,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLCone.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -236,7 +237,7 @@ SoVRMLCone::generatePrimitives(SoAction * action)
 
 // Doc in parent
 void
-SoVRMLCone::computeBBox(SoAction * action,
+SoVRMLCone::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                         SbBox3f & box,
                         SbVec3f & center)
 {

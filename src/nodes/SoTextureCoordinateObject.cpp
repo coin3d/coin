@@ -42,6 +42,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateObject.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -111,8 +112,8 @@ SoTextureCoordinateObject::initClass(void)
 // generates texture coordinates for callback and raypick action
 const SbVec4f &
 SoTextureCoordinateObject::generate(void * userdata,
-                                    const SbVec3f &p ,
-                                    const SbVec3f & n)
+                                    const SbVec3f & COIN_UNUSED_ARG(p),
+                                    const SbVec3f & COIN_UNUSED_ARG(n))
 {
   SoTextureCoordinateObject *thisp =
     (SoTextureCoordinateObject*) userdata;
@@ -166,6 +167,6 @@ SoTextureCoordinateObject::pick(SoPickAction * action)
 
 // texgen callback. Turns on plane texgen in OpenGL
 void
-SoTextureCoordinateObject::handleTexgen(void *data)
+SoTextureCoordinateObject::handleTexgen(void * COIN_UNUSED_ARG(data))
 {
 }

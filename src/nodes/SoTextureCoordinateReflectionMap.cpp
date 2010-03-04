@@ -40,6 +40,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateReflectionMap.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 #include <float.h>
@@ -176,7 +177,7 @@ SoTextureCoordinateReflectionMap::pick(SoPickAction * action)
 }
 
 void
-SoTextureCoordinateReflectionMap::handleTexgen(void * data)
+SoTextureCoordinateReflectionMap::handleTexgen(void * COIN_UNUSED_ARG(data))
 {
   glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
   glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);  

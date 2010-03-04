@@ -1170,7 +1170,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   int matnr = 0;
 
   const SbMatrix & mat = SoModelMatrixElement::get(state);
-  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  //const SbViewVolume & vv = SoViewVolumeElement::get(state);
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
                                  SoProjectionMatrixElement::get(state));
@@ -1474,7 +1474,7 @@ SoMarkerSet::removeMarker(int idx)
   public Open Inventor API.
 */
 SbBool
-SoMarkerSet::isMarkerBitSet(int idx, int bitNumber)
+SoMarkerSet::isMarkerBitSet(int COIN_UNUSED_ARG(idx), int COIN_UNUSED_ARG(bitNumber))
 {
   // FIXME: seems simple enough to support.. 20010815 mortene.
   COIN_OBSOLETED();

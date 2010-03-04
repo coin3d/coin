@@ -194,6 +194,7 @@
 
 /*! \file SoShaderProgram.h */
 #include <Inventor/nodes/SoShaderProgram.h>
+#include "coindefs.h"
 
 #include <assert.h>
 
@@ -375,7 +376,7 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
 }
 
 void
-SoShaderProgramP::sensorCB(void * data, SoSensor *)
+SoShaderProgramP::sensorCB(void * COIN_UNUSED_ARG(data), SoSensor *)
 {
   // nothing to do now
 }

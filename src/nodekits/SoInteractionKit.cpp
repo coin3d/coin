@@ -512,7 +512,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
 SbBool
 SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
                                       SoNode * node,
-                                      SbBool anypart,
+                                      SbBool COIN_UNUSED_ARG(anypart),
                                       SbBool onlyifdefault)
 {
   SoBaseKit * kit = this;
@@ -748,7 +748,7 @@ SoInteractionKit::fieldSensorCB(void * d, SoSensor * s)
   Obsoleted in Coin.
 */
 void
-SoInteractionKit::connectSeparatorFields(SoSeparator * dest, SbBool onOff)
+SoInteractionKit::connectSeparatorFields(SoSeparator * COIN_UNUSED_ARG(dest), SbBool onOff)
 {
   COIN_OBSOLETED();
   SoDebugError::postWarning("SoInteractionKit::connectSeparatorFields",

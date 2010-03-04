@@ -838,7 +838,7 @@ namespace {
 SbBox3f 
 SbViewVolume::intersectionBox(const SbBox3f & box) const
 {
-  int i, j;
+  int i;
   SbVec3f vvpts[8];
   SbBox3f commonVolume;
   SbVec3f bmin = box.getMin();

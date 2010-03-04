@@ -669,7 +669,7 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
 //! FIXME: write doc
 
 void
-SoGLLazyElement::sendVPPacked(SoState* stateptr, const unsigned char* pcolor)
+SoGLLazyElement::sendVPPacked(SoState* COIN_UNUSED_ARG(stateptr), const unsigned char* COIN_UNUSED_ARG(pcolor))
 {
   assert(0 && "Not implemented yet. Provided for API compatibility.");
 }

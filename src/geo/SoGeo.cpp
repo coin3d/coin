@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "SoGeo.h"
+#include "coindefs.h"
 #include <Inventor/nodes/SoGeoOrigin.h>
 #include <Inventor/nodes/SoGeoLocation.h>
 #include <Inventor/nodes/SoGeoSeparator.h>
@@ -64,7 +65,7 @@ static int find_utm_zone(const SbString & s)
 }
 
 static SbDPMatrix find_coordinate_system(const SbString * system,
-                                         const int numsys,
+                                         const int COIN_UNUSED_ARG(numsys),
                                          const SbVec3d & coords)
 {
   SbVec3d p;
@@ -163,7 +164,7 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
 // UTM zone from lat/long
 //
 static SbUTMProjection find_utm_projection(const SbString * system,
-                                           const int numsystem,
+                                           const int COIN_UNUSED_ARG(numsystem),
                                            const SbVec3d & coords,
                                            SbVec3d & projcoords)
 {

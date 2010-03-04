@@ -58,7 +58,7 @@ ScXMLValidateEltReader::ScXMLValidateEltReader(void)
 }
 
 ScXMLElt *
-ScXMLValidateEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLValidateEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLValidateElt * validate = new ScXMLValidateElt;

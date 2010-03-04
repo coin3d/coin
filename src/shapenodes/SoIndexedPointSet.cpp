@@ -413,7 +413,7 @@ SoIndexedPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 
 // Documented in superclass.
 SbBool
-SoIndexedPointSet::generateDefaultNormals(SoState * state, SoNormalBundle * bundle)
+SoIndexedPointSet::generateDefaultNormals(SoState * COIN_UNUSED_ARG(state), SoNormalBundle * COIN_UNUSED_ARG(bundle))
 {
   // Overridden to avoid (faulty) compiler warnings with some version
   // of g++.

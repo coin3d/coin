@@ -151,7 +151,7 @@ ScXMLDataModelElt::~ScXMLDataModelElt(void)
 }
 
 void
-ScXMLDataModelElt::setSchemaAttribute(const char * schema)
+ScXMLDataModelElt::setSchemaAttribute(const char * COIN_UNUSED_ARG(schema))
 {
 }
 

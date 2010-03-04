@@ -450,7 +450,7 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
   if ((parent != NULL) && (this->node != NULL)) {
     const unsigned long CRITICAL = 10;
 
-    SoNode * parent = this->parent->node;
+    /*SoNode * parent = */this->parent->node;
     // FIXME: larsa
     unsigned long msec = 0; // stats->getTotalProfilingTime(parent, this->node).getMsecValue();
     msec = SbMax<unsigned long>(CRITICAL, msec);

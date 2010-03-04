@@ -193,7 +193,7 @@ SoScrollingGraphKit::~SoScrollingGraphKit(void)
 }
 
 void
-SoScrollingGraphKit::addValuesCB(void * closure, SoSensor * sensor)
+SoScrollingGraphKit::addValuesCB(void * closure, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoScrollingGraphKit * kit = static_cast<SoScrollingGraphKit *>(closure);
 
@@ -229,7 +229,7 @@ SoScrollingGraphKitP::pullStatistics(void)
   int c;
   for (c = 0; c < numvalues; ++c) { // make sure all the grraph structs needed are created
     SbName key = kit->addKeys[c];
-    Graph * graph = this->getGraph(key);
+    /*Graph * graph = */this->getGraph(key);
   }
   const int numgraphs = this->graphs.getNumElements();
   for (c = 0; c < numgraphs; ++c) { // initialize default for all graphs
@@ -445,7 +445,7 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
     int idx = 0;
     float maxypos = 0.0f, maxprevypos = 0.0f;
     while (datum) {
-      const int numvalues = datum->datum.getLength();
+      /*const int numvalues = */datum->datum.getLength();
 
       float value = 0.0f, prev = 0.0f;
 #if LINEUP

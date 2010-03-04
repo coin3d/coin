@@ -53,6 +53,7 @@
 // FIXME: font support for outline glyphs. 200303?? preng.
   
 #include <Inventor/misc/SoGlyph.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -105,7 +106,7 @@ public:
   void setup3DFontData();
 
   static SoGlyph * createSystemGlyph(const char character, const SbName & font);
-  static SoGlyph * createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};  static SoGlyph * createSystemGlyph(const char character, int fontid);
+  static SoGlyph * createSystemGlyph(const unsigned int COIN_UNUSED_ARG(character), SoState * COIN_UNUSED_ARG(state)) {return NULL;};  static SoGlyph * createSystemGlyph(const char character, int fontid);
 };
 
 #define PRIVATE(p) ((p)->pimpl)
@@ -647,7 +648,7 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
   The returned buffer should \e not be deallocated by the caller.
 */
 unsigned char *
-SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
+SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool COIN_UNUSED_ARG(antialiased)) const
 {
   if (PRIVATE(this)->bitmap == NULL) {
     PRIVATE(this)->bitmap = cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
@@ -704,13 +705,13 @@ SoGlyphP::setup3DFontData(void)
 
 // should handle platform-specific font loading
 SoGlyph *
-SoGlyphP::createSystemGlyph(const char character, int fontid)
+SoGlyphP::createSystemGlyph(const char COIN_UNUSED_ARG(character), int COIN_UNUSED_ARG(fontid))
 { 
   return NULL;
 }
 
 SoGlyph *
-SoGlyphP::createSystemGlyph(const char character, const SbName & font)
+SoGlyphP::createSystemGlyph(const char COIN_UNUSED_ARG(character), const SbName & COIN_UNUSED_ARG(font))
 {
   return NULL;
 }

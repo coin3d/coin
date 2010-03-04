@@ -829,7 +829,7 @@ SoExtSelection::initClass(void)
   else has been rendered -- and this is the strategy we apply in Coin.
 */
 void
-SoExtSelection::useOverlay(SbBool overlay)
+SoExtSelection::useOverlay(SbBool COIN_UNUSED_ARG(overlay))
 {
   COIN_OBSOLETED();
 }
@@ -867,7 +867,7 @@ SoExtSelection::getOverlaySceneGraph(void)
   Obsoleted in Coin, use SoExtSelection::setLassoColor() instead.
 */
 void
-SoExtSelection::setOverlayLassoColorIndex(const int index)
+SoExtSelection::setOverlayLassoColorIndex(const int COIN_UNUSED_ARG(index))
 {
   COIN_OBSOLETED();
 }
@@ -1242,7 +1242,7 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 */
 
 void
-SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
+SoExtSelection::select(SoNode * COIN_UNUSED_ARG(root), int COIN_UNUSED_ARG(numcoords), SbVec3f * COIN_UNUSED_ARG(lasso), const SbViewportRegion & COIN_UNUSED_ARG(vp), SbBool COIN_UNUSED_ARG(shiftpolicy))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1255,7 +1255,7 @@ SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbVi
 */
 
 void
-SoExtSelection::select(SoNode * root, int numcoords, SbVec2f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
+SoExtSelection::select(SoNode * COIN_UNUSED_ARG(root), int COIN_UNUSED_ARG(numcoords), SbVec2f * COIN_UNUSED_ARG(lasso), const SbViewportRegion & COIN_UNUSED_ARG(vp), SbBool COIN_UNUSED_ARG(shiftpolicy))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1267,7 +1267,7 @@ SoExtSelection::select(SoNode * root, int numcoords, SbVec2f * lasso, const SbVi
   This function is currently just stubbed.
 */
 const SbVec2s *
-SoExtSelection::getLassoCoordsDC (int &numCoords)
+SoExtSelection::getLassoCoordsDC (int &COIN_UNUSED_ARG(numCoords))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1280,7 +1280,7 @@ SoExtSelection::getLassoCoordsDC (int &numCoords)
   This function is currently just stubbed.
 */
 const SbVec3f *
-SoExtSelection::getLassoCoordsWC (int &numCoords)
+SoExtSelection::getLassoCoordsWC (int &COIN_UNUSED_ARG(numCoords))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1394,7 +1394,7 @@ SoExtSelection::wasShiftDown(void) const
 
 // timer callback for rendering lasso animation.
 void
-SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
+SoExtSelectionP::timercallback(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoExtSelection * ext = (SoExtSelection *)data;
   if (ext == NULL) return;
@@ -1427,7 +1427,7 @@ SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const So
 
 // callback that is called for a shape after all primitives have been processed
 SoCallbackAction::Response
-SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
+SoExtSelectionP::postShapeCallback(void * data, SoCallbackAction * action, const SoNode * COIN_UNUSED_ARG(node))
 {
   SoExtSelection * ext = (SoExtSelection*)data;
 
@@ -1469,7 +1469,7 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
 SoCallbackAction::Response
 SoExtSelectionP::cameraCB(void * data,
                           SoCallbackAction * action,
-                          const SoNode * node)
+                          const SoNode * COIN_UNUSED_ARG(node))
 {
   SoExtSelection * thisp = (SoExtSelection*) data;
 
@@ -2473,7 +2473,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
 
 
 SbBool
-SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
+SoExtSelectionP::scanOffscreenBuffer(SoNode * COIN_UNUSED_ARG(sceneRoot))
 {
 
   const SbViewportRegion vpr = renderer->getViewportRegion();

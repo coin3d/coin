@@ -43,6 +43,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLTexture.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 
@@ -77,7 +78,7 @@ SoVRMLTexture::~SoVRMLTexture()
 
 // Doc in parent
 void
-SoVRMLTexture::GLRender(SoGLRenderAction * action)
+SoVRMLTexture::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 

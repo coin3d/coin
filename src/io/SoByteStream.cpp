@@ -39,19 +39,19 @@ SoByteStream::~SoByteStream()
 }
 
 void
-SoByteStream::convert(SoNode * node, SbBool binary)
+SoByteStream::convert(SoNode * COIN_UNUSED_ARG(node), SbBool COIN_UNUSED_ARG(binary))
 {
   COIN_STUB();
 }
 
 void
-SoByteStream::convert(SoPath * path, SbBool binary)
+SoByteStream::convert(SoPath * COIN_UNUSED_ARG(path), SbBool COIN_UNUSED_ARG(binary))
 {
   COIN_STUB();
 }
 
 void
-SoByteStream::convert(SoPathList * pl, SbBool binary)
+SoByteStream::convert(SoPathList * COIN_UNUSED_ARG(pl), SbBool COIN_UNUSED_ARG(binary))
 {
   COIN_STUB();
 }
@@ -71,21 +71,21 @@ SoByteStream::getNumBytes(void)
 }
 
 SoPathList *
-SoByteStream::unconvert(SoByteStream * stream)
+SoByteStream::unconvert(SoByteStream * COIN_UNUSED_ARG(stream))
 {
   COIN_STUB();
   return NULL;
 }
 
 SoPathList *
-SoByteStream::unconvert(void * data, uint32_t bytesinstream)
+SoByteStream::unconvert(void * COIN_UNUSED_ARG(data), uint32_t COIN_UNUSED_ARG(bytesinstream))
 {
   COIN_STUB();
   return NULL;
 }
 
 void
-SoByteStream::copy(void * d, size_t len)
+SoByteStream::copy(void * COIN_UNUSED_ARG(d), size_t COIN_UNUSED_ARG(len))
 {
   COIN_STUB();
 }

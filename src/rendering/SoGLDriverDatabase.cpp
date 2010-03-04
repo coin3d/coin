@@ -482,7 +482,7 @@ SoGLDriverDatabaseP::findVendor(const cc_xml_elt * platform, const char * vendor
   Used to find a specific driver element inside a vendor element.
 */
 cc_xml_element *
-SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * context)
+SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * COIN_UNUSED_ARG(context))
 {
   unsigned int numDrivers = cc_xml_elt_get_num_children_of_type(vendor, "driver");
 
@@ -608,7 +608,7 @@ SoGLDriverDatabaseP::findGLDriver(const cc_glglue * context)
 
           if (vendor) {
             addFeatures(context, vendor, driver);
-            const cc_xml_element * driver = findDriver(vendor, context);
+            /*const cc_xml_element * driver = */findDriver(vendor, context);
 
             // FIXME: Implement driver matching
             // oyshole, 20080314
@@ -721,7 +721,7 @@ SoGLDriverDatabaseP::mergeFeature(cc_xml_elt * destination, const cc_xml_elt * f
   Merge the driver element \a driver into the vendor element \a vendor
 */
 SbBool
-SoGLDriverDatabaseP::mergeDriver(cc_xml_elt * vendor, const cc_xml_elt * driver)
+SoGLDriverDatabaseP::mergeDriver(cc_xml_elt * COIN_UNUSED_ARG(vendor), const cc_xml_elt * COIN_UNUSED_ARG(driver))
 {
   return TRUE;
 }
@@ -1010,7 +1010,7 @@ SoGLDriverDatabaseP::loadDefaultDatabase()
   Add the features under \a element to the SoGLDriver specified in \a driver
 */
 void
-SoGLDriverDatabaseP::addFeatures(const cc_glglue * context, const cc_xml_element * element, SoGLDriver * driver)
+SoGLDriverDatabaseP::addFeatures(const cc_glglue * COIN_UNUSED_ARG(context), const cc_xml_element * element, SoGLDriver * driver)
 {
   unsigned int numfeatures = cc_xml_elt_get_num_children_of_type(element, "feature");
 

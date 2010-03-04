@@ -172,6 +172,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLProximitySensor.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAction.h>
@@ -309,19 +310,19 @@ SoVRMLProximitySensor::GLRender(SoGLRenderAction * action)
 
 // Doc in parent
 void
-SoVRMLProximitySensor::callback(SoCallbackAction * action)
+SoVRMLProximitySensor::callback(SoCallbackAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 void
-SoVRMLProximitySensor::rayPick(SoRayPickAction * action)
+SoVRMLProximitySensor::rayPick(SoRayPickAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 void
-SoVRMLProximitySensor::getBoundingBox(SoGetBoundingBoxAction * action)
+SoVRMLProximitySensor::getBoundingBox(SoGetBoundingBoxAction * COIN_UNUSED_ARG(action))
 {
 }
 

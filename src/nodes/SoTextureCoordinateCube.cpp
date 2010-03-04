@@ -41,6 +41,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateCube.h>
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -83,7 +84,7 @@ so_texcoordcube_construct_data(void * closure)
 }
 
 static void
-so_texcoordcube_destruct_data(void * closure)
+so_texcoordcube_destruct_data(void * COIN_UNUSED_ARG(closure))
 {
 }
 

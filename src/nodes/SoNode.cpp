@@ -782,7 +782,7 @@ SoNode::getByName(const SbName & name, SoNodeList & l)
   action.
 */
 void
-SoNode::doAction(SoAction * action)
+SoNode::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -838,7 +838,7 @@ SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
   also overrides this method to change the relevant state variables.
 */
 void
-SoNode::getBoundingBox(SoGetBoundingBoxAction * action)
+SoNode::getBoundingBox(SoGetBoundingBoxAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -867,7 +867,7 @@ SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
   variables.
 */
 void
-SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -927,7 +927,7 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
   at OpenGL overrides this method.
 */
 void
-SoNode::GLRender(SoGLRenderAction * action)
+SoNode::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -999,7 +999,7 @@ SoNode::callbackS(SoAction * action, SoNode * node)
   SoCallbackAction for extracting information about the scene graph.
 */
 void
-SoNode::callback(SoCallbackAction * action)
+SoNode::callback(SoCallbackAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -1026,7 +1026,7 @@ SoNode::getMatrixS(SoAction * action, SoNode * node)
   this node (if any).
 */
 void
-SoNode::getMatrix(SoGetMatrixAction * action)
+SoNode::getMatrix(SoGetMatrixAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -1056,7 +1056,7 @@ SoNode::handleEventS(SoAction * action, SoNode * node)
   done also overrides this method.
 */
 void
-SoNode::handleEvent(SoHandleEventAction * action)
+SoNode::handleEvent(SoHandleEventAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -1082,7 +1082,7 @@ SoNode::pickS(SoAction * action, SoNode * node)
   Does common processing for SoPickAction \a action instances.
 */
 void
-SoNode::pick(SoPickAction * action)
+SoNode::pick(SoPickAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -1280,7 +1280,7 @@ SoNode::audioRenderS(SoAction * action, SoNode * node)
   Does common processing for SoAudioRenderAction \a action instances.
 */
 void
-SoNode::audioRender(SoAudioRenderAction * action)
+SoNode::audioRender(SoAudioRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 

@@ -44,6 +44,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoBlinker.h>
+#include "coindefs.h"
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -80,7 +81,7 @@ class SoBlinkerP {
 public:
   SoBlinkerP(SoBlinker * master) : master(master) { }
 
-  static void whichChildCB(void * closure, SoSensor * sensor) {
+  static void whichChildCB(void * closure, SoSensor * COIN_UNUSED_ARG(sensor)) {
     SoBlinkerP * thisp = (SoBlinkerP*) closure;
     thisp->counter->reset.setValue(thisp->whichvalue);
 

@@ -48,6 +48,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoFile.h>
+#include "coindefs.h"
 
 #include <string.h>
 
@@ -314,7 +315,7 @@ SoFile::readNamedFile(SoInput * in)
 
 // Callback for the field sensor.
 void
-SoFile::nameFieldModified(void * userdata, SoSensor * sensor)
+SoFile::nameFieldModified(void * userdata, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoFile * that = (SoFile *)userdata;
   SoInput in;

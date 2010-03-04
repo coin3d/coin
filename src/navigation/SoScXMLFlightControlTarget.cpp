@@ -168,7 +168,7 @@ SoScXMLFlightControlTarget::processOneEvent(const ScXMLEvent * event)
       return FALSE;
     }
 
-    SoScXMLFlightControlTarget::pitch(camera, angle);
+    SoScXMLFlightControlTarget::pitch(camera, float(angle));
   }
 
   else if (eventname == YAW()) {
@@ -180,7 +180,7 @@ SoScXMLFlightControlTarget::processOneEvent(const ScXMLEvent * event)
       return FALSE;
     }
 
-    SoScXMLFlightControlTarget::yaw(camera, angle);
+    SoScXMLFlightControlTarget::yaw(camera, float(angle));
   }
 
   else if (eventname == ROLL()) {
@@ -192,7 +192,7 @@ SoScXMLFlightControlTarget::processOneEvent(const ScXMLEvent * event)
       return FALSE;
     }
 
-    SoScXMLFlightControlTarget::roll(camera, angle);
+    SoScXMLFlightControlTarget::roll(camera, float(angle));
   }
 
   else if (eventname == RESET_ROLL()) {

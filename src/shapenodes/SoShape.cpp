@@ -889,11 +889,11 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
   SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
-SoShape::createTriangleDetail(SoRayPickAction * action,
-                              const SoPrimitiveVertex * /*v1*/,
-                              const SoPrimitiveVertex * /*v2*/,
-                              const SoPrimitiveVertex * /*v3*/,
-                              SoPickedPoint * pp)
+SoShape::createTriangleDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
+                              SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   soshape_staticdata * shapedata = soshape_get_staticdata();
 
@@ -924,10 +924,10 @@ SoShape::createTriangleDetail(SoRayPickAction * action,
   SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
-SoShape::createLineSegmentDetail(SoRayPickAction * action,
-                                 const SoPrimitiveVertex * /* v1 */,
-                                 const SoPrimitiveVertex * /* v2 */,
-                                 SoPickedPoint * pp)
+SoShape::createLineSegmentDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                                 const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                                 const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                                 SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   soshape_staticdata * shapedata = soshape_get_staticdata();
 
@@ -1344,7 +1344,7 @@ SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   Inventor API.
  */
 float
-SoShape::getDecimatedComplexity(SoState * state, float complexity)
+SoShape::getDecimatedComplexity(SoState * COIN_UNUSED_ARG(state), float complexity)
 {
   COIN_OBSOLETED();
   return 1.0f * complexity;
@@ -1380,7 +1380,7 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
   \COININTERNAL
  */
 SbBool
-SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * COIN_UNUSED_ARG(action))
 {
   return TRUE; // FIXME: what to do here? pederb 1999-11-25
 }

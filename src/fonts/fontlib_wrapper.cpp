@@ -23,6 +23,7 @@
 
 /* ********************************************************************** */
 
+#include "coindefs.h"
 #include "fonts/fontlib_wrapper.h"
 
 #include <stdio.h>
@@ -302,7 +303,7 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
 }
 
 static void
-fontstruct_rmglyph_apply(uintptr_t key, void * val, void * closure)
+fontstruct_rmglyph_apply(uintptr_t key, void * COIN_UNUSED_ARG(val), void * closure)
 {
   fontstruct_rmglyph((struct cc_flw_font *)closure, (unsigned int)key);
 }

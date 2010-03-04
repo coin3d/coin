@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLECMAScriptEvaluator.h>
+#include "coindefs.h"
 
 /*!
   \class ScXMLECMAScriptEvaluator ScXMLECMAScriptEvaluator.h Inventor/scxml/ScXMLECMAScriptEvaluator.h
@@ -59,21 +60,21 @@ ScXMLECMAScriptEvaluator::~ScXMLECMAScriptEvaluator(void)
 }
 
 ScXMLDataObj *
-ScXMLECMAScriptEvaluator::evaluate(const char * expression) const
+ScXMLECMAScriptEvaluator::evaluate(const char * COIN_UNUSED_ARG(expression)) const
 {
   // FIXME: not implemented
   return NULL;
 }
 
 SbBool
-ScXMLECMAScriptEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
+ScXMLECMAScriptEvaluator::setAtLocation(const char * COIN_UNUSED_ARG(location), ScXMLDataObj * COIN_UNUSED_ARG(obj))
 {
   // FIXME: not implemented
   return FALSE;
 }
 
 ScXMLDataObj *
-ScXMLECMAScriptEvaluator::locate(const char * location) const
+ScXMLECMAScriptEvaluator::locate(const char * COIN_UNUSED_ARG(location)) const
 {
   // FIXME: not implemented
   return NULL;

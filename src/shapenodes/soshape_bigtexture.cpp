@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "shapenodes/soshape_bigtexture.h"
+#include "coindefs.h"
 
 #include <stdlib.h>
 
@@ -201,7 +202,7 @@ soshape_bigtexture::endShape(SoState * state,
 }
 
 void
-soshape_bigtexture::triangle(SoState * state,
+soshape_bigtexture::triangle(SoState * COIN_UNUSED_ARG(state),
                              const SoPrimitiveVertex * v1,
                              const SoPrimitiveVertex * v2,
                              const SoPrimitiveVertex * v3)

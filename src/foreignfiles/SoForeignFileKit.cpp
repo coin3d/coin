@@ -93,7 +93,7 @@
 
 class SoForeignFileKitP {
 public:
-  SoForeignFileKitP(SoForeignFileKit * api) { }
+  SoForeignFileKitP(SoForeignFileKit * COIN_UNUSED_ARG(api)) { }
 
   static SbHash<const char *, SoType> * fileexts;
 
@@ -159,7 +159,7 @@ SoForeignFileKit::~SoForeignFileKit(void)
   FIXME: \e identify is not implemented
  */
 SbBool
-SoForeignFileKit::registerFileExtension(SoType handler, SbName extension, SoForeignFileIdentifyFunc * identify)
+SoForeignFileKit::registerFileExtension(SoType handler, SbName extension, SoForeignFileIdentifyFunc * COIN_UNUSED_ARG(identify))
 {
   assert(SoForeignFileKitP::fileexts != NULL);
   assert(handler.canCreateInstance());
@@ -309,7 +309,7 @@ SoForeignFileKit::createForeignFileKit(SoInput * in, SbBool exhaust)
   Checks if this concrete class can read the given file.
 */
 SbBool
-SoForeignFileKit::canReadFile(const char * filename) const
+SoForeignFileKit::canReadFile(const char * COIN_UNUSED_ARG(filename)) const
 {
   return FALSE;
 }
@@ -320,7 +320,7 @@ SoForeignFileKit::canReadFile(const char * filename) const
   If you need a pure Coin scenegraph, call convert().
 */
 SbBool
-SoForeignFileKit::readFile(const char * filename)
+SoForeignFileKit::readFile(const char * COIN_UNUSED_ARG(filename))
 {
   return FALSE;
 }
@@ -329,7 +329,7 @@ SoForeignFileKit::readFile(const char * filename)
   Checks if this concrete class can write to the given file.
 */
 SbBool
-SoForeignFileKit::canWriteFile(const char * filename) const
+SoForeignFileKit::canWriteFile(const char * COIN_UNUSED_ARG(filename)) const
 {
   return FALSE;
 }
@@ -340,7 +340,7 @@ SoForeignFileKit::canWriteFile(const char * filename) const
   \sa canWriteFile
 */
 SbBool
-SoForeignFileKit::writeFile(const char * filename)
+SoForeignFileKit::writeFile(const char * COIN_UNUSED_ARG(filename))
 {
   return FALSE;
 }

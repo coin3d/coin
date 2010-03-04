@@ -29,6 +29,7 @@
  */
 
 #include "glue/gl_cgl.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -50,32 +51,32 @@
 
 #ifndef HAVE_CGL
 
-SbBool cglglue_context_is_using_pbuffer(void * ctx)
+SbBool cglglue_context_is_using_pbuffer(void * COIN_UNUSED_ARG(ctx))
 {
   assert(FALSE); return FALSE;
 }
 
-void * cglglue_getprocaddress(const char * fname)
+void * cglglue_getprocaddress(const char * COIN_UNUSED_ARG(fname))
 {
   assert(FALSE); return NULL;
 }
 
-void * cglglue_context_create_offscreen(unsigned int width, 
-                                        unsigned int height) { 
+void * cglglue_context_create_offscreen(unsigned int COIN_UNUSED_ARG(width), 
+                                        unsigned int COIN_UNUSED_ARG(height)) { 
   assert(FALSE); return NULL; 
 }
 
-SbBool cglglue_context_make_current(void * ctx)
+SbBool cglglue_context_make_current(void * COIN_UNUSED_ARG(ctx))
 { 
   assert(FALSE); return FALSE; 
 }
 
-void cglglue_context_reinstate_previous(void * ctx) 
+void cglglue_context_reinstate_previous(void * COIN_UNUSED_ARG(ctx)) 
 { 
   assert(FALSE); 
 }
 
-void cglglue_context_destruct(void * ctx) 
+void cglglue_context_destruct(void * COIN_UNUSED_ARG(ctx)) 
 { 
   assert(FALSE); 
 }

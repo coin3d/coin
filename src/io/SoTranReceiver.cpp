@@ -27,7 +27,7 @@
 #include <coindefs.h> // COIN_STUB
 
 
-SoTranReceiver::SoTranReceiver(SoGroup * root)
+SoTranReceiver::SoTranReceiver(SoGroup * COIN_UNUSED_ARG(root))
 {
   COIN_STUB();
 }
@@ -38,7 +38,7 @@ SoTranReceiver::~SoTranReceiver()
 }
 
 SbBool
-SoTranReceiver::interpret(SoInput * in)
+SoTranReceiver::interpret(SoInput * COIN_UNUSED_ARG(in))
 {
   COIN_STUB();
   return FALSE;

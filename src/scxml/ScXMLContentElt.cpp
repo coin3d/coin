@@ -58,7 +58,7 @@ ScXMLContentEltReader::ScXMLContentEltReader(void)
 }
 
 ScXMLElt *
-ScXMLContentEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLContentEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLContentElt * content = new ScXMLContentElt;
@@ -128,7 +128,7 @@ void
 ScXMLContentElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLContentElt * orig = coin_assert_cast<const ScXMLContentElt *>(rhs);
+  /*const ScXMLContentElt * orig = */coin_assert_cast<const ScXMLContentElt *>(rhs);
 }
 
 #undef PRIVATE

@@ -395,8 +395,8 @@ SoVBO::shouldCreateVBO(SoState * state, const uint32_t contextid, const int numd
 }
 
 SbBool
-SoVBO::shouldRenderAsVertexArrays(SoState * state,
-                                  const uint32_t contextid,
+SoVBO::shouldRenderAsVertexArrays(SoState * COIN_UNUSED_ARG(state),
+                                  const uint32_t COIN_UNUSED_ARG(contextid),
                                   const int numdata)
 {
   // FIXME: consider also using results from the performance tests
@@ -420,7 +420,7 @@ SoVBO::isVBOFast(const uint32_t contextid)
 // callback from glglue (when a new glglue instance is created)
 //
 void
-SoVBO::context_created(const uint32_t contextid, void * closure)
+SoVBO::context_created(const uint32_t contextid, void * COIN_UNUSED_ARG(closure))
 {
   SoVBO::testGLPerformance(contextid);
 }

@@ -57,7 +57,7 @@ ScXMLEventEltReader::ScXMLEventEltReader(void)
 }
 
 ScXMLElt *
-ScXMLEventEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLEventEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLEventElt * event = new ScXMLEventElt;
@@ -169,7 +169,7 @@ ScXMLEventElt::search(const char * attrname, const char * attrvalue) const
 }
 
 ScXMLEvent *
-ScXMLEventElt::createEvent(ScXMLEventTarget * host) const
+ScXMLEventElt::createEvent(ScXMLEventTarget * COIN_UNUSED_ARG(host)) const
 {
   ScXMLEvent * event = new ScXMLEvent;
   event->setEventName(this->getNameAttribute());

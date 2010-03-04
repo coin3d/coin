@@ -23,6 +23,7 @@
 
 /*! \file SoProfilingReportGenerator.h */
 #include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
+#include "coindefs.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -480,7 +481,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
           if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
         }
       }
-      CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
+      /*CallbackResponse response = */reportcallback(userdata, entryidx, text.getString());
     }
   }
   else if (categorization == NAMES) {
@@ -533,7 +534,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
           if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
         }
       }
-      CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
+      /*CallbackResponse response = */reportcallback(userdata, entryidx, text.getString());
     }
   }
   else if (categorization == TYPES) {
@@ -586,7 +587,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
           if ((i + 1) < print->numfunctions) { text += OUTPUT_PADDING; }
         }
       }
-      CallbackResponse response = reportcallback(userdata, entryidx, text.getString());
+      /*CallbackResponse response = */reportcallback(userdata, entryidx, text.getString());
     }
   }
   else {
@@ -1447,7 +1448,7 @@ SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, 
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
-SoProfilingReportGenerator::stdoutCB(void * userdata, int entryidx, const char * text)
+SoProfilingReportGenerator::stdoutCB(void * COIN_UNUSED_ARG(userdata), int COIN_UNUSED_ARG(entryidx), const char * text)
 {
   fprintf(coin_get_stdout(), "%s\n", text);
   return CONTINUE;
@@ -1459,7 +1460,7 @@ SoProfilingReportGenerator::stdoutCB(void * userdata, int entryidx, const char *
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
-SoProfilingReportGenerator::stderrCB(void * userdata, int entryidx, const char * text)
+SoProfilingReportGenerator::stderrCB(void * COIN_UNUSED_ARG(userdata), int COIN_UNUSED_ARG(entryidx), const char * text)
 {
   fprintf(coin_get_stderr(), "%s\n", text);
   return CONTINUE;

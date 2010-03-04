@@ -210,7 +210,7 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
     SbProfilingNodeTypeKey k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
-      TypeTimings & timings = it->second;
+      /*TypeTimings & timings = */it->second;
       SbTime totaltime, maxtime;
       uint32_t count;
       data.getStatsForType(k, totaltime, maxtime, count);
@@ -305,7 +305,7 @@ SoProfilerStatsP::updateNodeTypeTimingFields()
 } // updateNodeTypeTimingFields
 
 void
-SoProfilerStatsP::updateActionTimingFields(SoProfilerElement * e)
+SoProfilerStatsP::updateActionTimingFields(SoProfilerElement * COIN_UNUSED_ARG(e))
 {
   SbList<int16_t> actions;
   this->action_timings.makeKeyList(actions);
@@ -472,7 +472,7 @@ SoProfilerStats::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc from superclass.
 void
-SoProfilerStats::notify(SoNotList *l)
+SoProfilerStats::notify(SoNotList * COIN_UNUSED_ARG(l))
 {
   // we disable notifications from this node, to avoid constant
   // redraws of the scene graph.

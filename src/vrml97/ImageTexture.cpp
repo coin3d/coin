@@ -174,6 +174,7 @@
 
 /*! \file SoVRMLImageTexture.h */
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+#include "coindefs.h"
 
 #include <assert.h>
 
@@ -674,7 +675,7 @@ SoVRMLImageTexture::glimage_callback(void * closure)
 }
 
 SbBool
-SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * closure, 
+SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * COIN_UNUSED_ARG(closure), 
                                           SoVRMLImageTexture * thisp)
 {
   SbBool ret = TRUE;
@@ -837,7 +838,7 @@ SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
 }
 
 void 
-SoVRMLImageTextureP::timersensor_cb(void * data, SoSensor * sensor)
+SoVRMLImageTextureP::timersensor_cb(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoVRMLImageTextureP * thisp = (SoVRMLImageTextureP*) data;
   

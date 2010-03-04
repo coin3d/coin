@@ -277,7 +277,7 @@ ScXMLInvokeElt::copyContents(const ScXMLElt * rhs)
       coin_assert_cast<ScXMLFinalizeElt *>(orig->getFinalize()->clone());
     this->setFinalize(finalize);
   }
-  int c;
+  //int c;
   for (int c = 0; c < orig->getNumParams(); ++c) {
     ScXMLParamElt * param =
       coin_assert_cast<ScXMLParamElt *>(orig->getParam(c)->clone());

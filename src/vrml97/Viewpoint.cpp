@@ -292,6 +292,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLViewpoint.h>
+#include "coindefs.h"
 
 #include <math.h>
 
@@ -336,7 +337,7 @@ SoVRMLViewpoint::~SoVRMLViewpoint()
 
 // Doc in parent
 void
-SoVRMLViewpoint::GLRender(SoGLRenderAction * action)
+SoVRMLViewpoint::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 

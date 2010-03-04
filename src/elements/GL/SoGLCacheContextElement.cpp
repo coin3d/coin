@@ -30,6 +30,7 @@
 // *************************************************************************
 
 /*! \file SoGLCacheContextElement.h */
+#include "coindefs.h"
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
 #include <cstdlib>
@@ -113,7 +114,7 @@ static void soglcachecontext_cleanup(void)
 // from inside this class every time ::set() is called.
 //
 void
-SoGLCacheContextElement::cleanupContext(uint32_t contextid, void * userdata)
+SoGLCacheContextElement::cleanupContext(uint32_t contextid, void * COIN_UNUSED_ARG(userdata))
 {
   int context = (int) contextid;
 
@@ -181,7 +182,7 @@ SoGLCacheContextElement::~SoGLCacheContextElement()
 
 // doc from parent
 void
-SoGLCacheContextElement::init(SoState * state)
+SoGLCacheContextElement::init(SoState * COIN_UNUSED_ARG(state))
 {
   // these values will be set up in set(), but initialize them anyway
   this->context = 0;
@@ -337,7 +338,7 @@ SoGLCacheContextElement::getOpenGLVersion(SoState * state,
   In Coin, we just return TRUE for the moment.
 */
 SbBool
-SoGLCacheContextElement::areMipMapsFast(SoState * state)
+SoGLCacheContextElement::areMipMapsFast(SoState * COIN_UNUSED_ARG(state))
 {
   return TRUE; // FIXME: how do we test this? pederb 20001003
 }

@@ -244,6 +244,7 @@
 
 
 #include <Inventor/VRMLnodes/SoVRMLNavigationInfo.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 
@@ -293,7 +294,7 @@ SoVRMLNavigationInfo::~SoVRMLNavigationInfo() // virtual, protected
 
 // Doc in parent
 void
-SoVRMLNavigationInfo::GLRender(SoGLRenderAction * action)
+SoVRMLNavigationInfo::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 

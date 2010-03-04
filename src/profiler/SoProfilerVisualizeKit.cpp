@@ -28,6 +28,7 @@
 #ifdef HAVE_NODEKITS
 
 #include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#include "coindefs.h"
 
 #include <boost/scoped_ptr.hpp>
 
@@ -49,9 +50,9 @@
 namespace {
   // anonymous namespace for trigger functions, to change how
   // visualization occur.
-  void cacheSensorCB(void * data, SoSensor * sense){
+  void cacheSensorCB(void * data, SoSensor * COIN_UNUSED_ARG(sense)){
     SoProfilerVisualizeKit * kit = (SoProfilerVisualizeKit*)data;
-    SoNode * root = kit->root.getValue();
+    /*SoNode * root = */kit->root.getValue();
     if(!kit->root.getValue())
       return;
 
@@ -65,7 +66,7 @@ namespace {
     }
   }
 
-  void rootChangedCB(void * data, SoSensor * sense){
+  void rootChangedCB(void * data, SoSensor * COIN_UNUSED_ARG(sense)){
     // FIXME 20071109 rolvs: Is it possible to automatically detect structural changes
     // in the scenegraph? Perhaps from Inventor/misc/SoNotRec.h or something. Now
     // we build the SoNodeVisualize-tree on every root-change
@@ -75,7 +76,7 @@ namespace {
         kit->setPart("visualtree", SoNodeVisualize::visualizeTree(kit->root.getValue(), 1));
   }
 
-  void statsCB(void * data, SoSensor * s) {
+  void statsCB(void * data, SoSensor * COIN_UNUSED_ARG(s)) {
     SoProfilerVisualizeKit * kit = (SoProfilerVisualizeKit*)data;
     kit->statsTrigger.disconnect();
     SoNode * node = kit->stats.getValue();

@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoSceneTextureCubeMap.h>
+#include "coindefs.h"
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -292,7 +293,7 @@ SoSceneTextureCubeMap::GLRender(SoGLRenderAction * action)
 
 // Documented in superclass.
 void
-SoSceneTextureCubeMap::doAction(SoAction * action)
+SoSceneTextureCubeMap::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
   // not implemented yet
 }
@@ -675,7 +676,7 @@ SoSceneTextureCubeMapP::updateCamera(const SoGLCubeMapImage::Target target)
 }
 
 void
-SoSceneTextureCubeMapP::prerendercb(void * userdata, SoGLRenderAction * action)
+SoSceneTextureCubeMapP::prerendercb(void * userdata, SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
   SoSceneTextureCubeMap * thisp = (SoSceneTextureCubeMap*) userdata;
   SbColor col = thisp->backgroundColor.getValue();

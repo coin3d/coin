@@ -422,7 +422,7 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   private in Inventor.
 */
 void
-SoSwitch::traverseChildren(SoAction * action)
+SoSwitch::traverseChildren(SoAction * COIN_UNUSED_ARG(action))
 {
   COIN_OBSOLETED();
 }

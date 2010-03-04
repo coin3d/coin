@@ -36,6 +36,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedLine.h>
+#include "coindefs.h"
 
 #include <stddef.h>
 
@@ -67,7 +68,7 @@ SoVRMLIndexedLine::~SoVRMLIndexedLine() // virtual, protected
 
 // Doc in superclass.
 void
-SoVRMLIndexedLine::computeBBox(SoAction * action,
+SoVRMLIndexedLine::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                                SbBox3f & box,
                                SbVec3f & center)
 {
@@ -89,15 +90,15 @@ SoVRMLIndexedLine::computeBBox(SoAction * action,
 }
 
 int
-SoVRMLIndexedLine::getNumVerts(int startcoord)
+SoVRMLIndexedLine::getNumVerts(int COIN_UNUSED_ARG(startcoord))
 {
-  // FIXME: why is there just a dummy implementation of this method?
+  // FIXME: why is there just a dummy implementation of this method?)
   // Please document special cases like this.  20030603 mortene.
   return 0;
 }
 
 void
-SoVRMLIndexedLine::setupIndices(int numFaces)
+SoVRMLIndexedLine::setupIndices(int COIN_UNUSED_ARG(numFaces))
 {
   // FIXME: why is there just a dummy implementation of this method?
   // Please document special cases like this.  20030603 mortene.

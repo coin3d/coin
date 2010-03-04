@@ -67,8 +67,8 @@ SbUTMProjection::project(const SbGeoAngle & LatRad,
   }
 
   const double deg2rad = M_PI / 180;
-  const double rad2deg = 180.0 / M_PI;
-  const double FOURTHPI = M_PI / 4;
+  //const double rad2deg = 180.0 / M_PI;
+  //const double FOURTHPI = M_PI / 4;
 
   LongOrigin = (ZoneNumber - 1)*6 - 180 + 3;  //+3 puts origin in middle of zone
   LongOriginRad = LongOrigin * deg2rad;

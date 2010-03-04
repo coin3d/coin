@@ -41,6 +41,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoLinearProfile.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 
@@ -131,7 +132,7 @@ SoLinearProfile::initClass(void)
 void
 SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
                               float *& points, int & floatspervec,
-                              int32_t & numknots, float *& knotvector)
+                              int32_t & numknots, float *& COIN_UNUSED_ARG(knotvector))
 {
   SbList <float> * coordListLinearProfile = 
     so_linearprofile_get_coordlist();

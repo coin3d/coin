@@ -450,7 +450,7 @@ SoTextureCubeMap::GLRender(SoGLRenderAction * action)
 
 // Documented in superclass.
 void
-SoTextureCubeMap::doAction(SoAction * action)
+SoTextureCubeMap::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
 #if 0 // not implemented yet
   SoState * state = action->getState();
@@ -513,8 +513,8 @@ SoTextureCubeMap::rayPick(SoRayPickAction * action)
   requested.
 */
 SbBool
-SoTextureCubeMap::readImage(const SbString & fname, int & w, int & h, int & nc,
-                      unsigned char *& bytes)
+SoTextureCubeMap::readImage(const SbString & COIN_UNUSED_ARG(fname), int & COIN_UNUSED_ARG(w), int & COIN_UNUSED_ARG(h), int & COIN_UNUSED_ARG(nc),
+                      unsigned char *& COIN_UNUSED_ARG(bytes))
 {
   COIN_OBSOLETED();
   return FALSE;
@@ -610,7 +610,7 @@ SoTextureCubeMap::loadFilename(const SbString & filename, SoSFImage * image)
 // called when filename changes
 //
 void
-SoTextureCubeMap::filenameSensorCB(void * data, SoSensor * s)
+SoTextureCubeMap::filenameSensorCB(void * data, SoSensor * COIN_UNUSED_ARG(s))
 {
   SoTextureCubeMap * thisp = (SoTextureCubeMap*) data;
 

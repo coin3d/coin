@@ -57,6 +57,7 @@
 */
 
 #include <Inventor/nodes/SoCube.h>
+#include "coindefs.h"
 
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
@@ -199,7 +200,7 @@ SoCube::generatePrimitives(SoAction * action)
 
 // Doc in parent.
 void
-SoCube::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoCube::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box, SbVec3f & center)
 {
   center.setValue(0.0f, 0.0f, 0.0f);
   float w, h, d;

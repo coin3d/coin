@@ -157,6 +157,7 @@
 // *************************************************************************
 
 #include <Inventor/VRMLnodes/SoVRMLBackground.h>
+#include "coindefs.h"
 
 #include <assert.h>
 #include <string.h>
@@ -353,7 +354,7 @@ public:
 // boundingbox, so we just invalidate the bbox cache so stop the node
 // from being culled.
 static void 
-background_bbfix(SoAction * action, SoNode * node)
+background_bbfix(SoAction * action, SoNode * COIN_UNUSED_ARG(node))
 {
   SoCacheElement::invalidate(action->getState());
 }
@@ -995,7 +996,7 @@ background_vrmltexturechangeCB(void * data, SoSensor * sensor)
 }
 
 void
-background_geometrychangeCB(void * data, SoSensor * sensor)
+background_geometrychangeCB(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
 

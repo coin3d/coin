@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
+#include "coindefs.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -90,7 +91,7 @@ SoGLPolygonOffsetElement::push(SoState * stateptr)
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::pop(SoState * stateptr, const SoElement * prevTopElement)
+SoGLPolygonOffsetElement::pop(SoState * COIN_UNUSED_ARG(stateptr), const SoElement * prevTopElement)
 {
   const SoGLPolygonOffsetElement * prev =
     (const SoGLPolygonOffsetElement*)prevTopElement;

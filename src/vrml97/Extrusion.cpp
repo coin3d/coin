@@ -680,7 +680,7 @@ SoVRMLExtrusion::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc in parent
 void
-SoVRMLExtrusion::computeBBox(SoAction * action,
+SoVRMLExtrusion::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                              SbBox3f & box,
                              SbVec3f & center)
 {
@@ -916,11 +916,11 @@ SoVRMLExtrusion::notify(SoNotList * list)
 
 // Doc in parent
 SoDetail *
-SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
-                                      const SoPrimitiveVertex * v1,
-                                      const SoPrimitiveVertex * v2,
-                                      const SoPrimitiveVertex * v3,
-                                      SoPickedPoint * pp)
+SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
+                                      SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   // no triangle detail for Extrusion
   return NULL;

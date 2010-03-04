@@ -63,7 +63,7 @@ ScXMLElseIfEltReader::ScXMLElseIfEltReader(void)
 }
 
 ScXMLElt *
-ScXMLElseIfEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm)
+ScXMLElseIfEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * COIN_UNUSED_ARG(doc), ScXMLStateMachine * COIN_UNUSED_ARG(sm))
 {
   assert(container && xmlelt);
   ScXMLElseIfElt * elseifelt = new ScXMLElseIfElt;

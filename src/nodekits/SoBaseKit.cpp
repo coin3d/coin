@@ -1583,7 +1583,7 @@ SoBaseKit::copyContents(const SoFieldContainer * fromfc,
   const SoBaseKit * srckit = (const SoBaseKit*) fromfc;
 
   // convenient reference
-  const SbList <SoSFNode*> & srcfields = srckit->getCatalogInstances();
+  /*const SbList <SoSFNode*> & srcfields =*/ srckit->getCatalogInstances();
 
   const int n = PRIVATE(this)->instancelist.getLength();
 
@@ -2050,14 +2050,14 @@ SoBaseKit::catalogError(void)
   documentation.)
 */
 SbBool
-SoBaseKit::setUpConnections(SbBool onoff, SbBool doitalways)
+SoBaseKit::setUpConnections(SbBool COIN_UNUSED_ARG(onoff), SbBool COIN_UNUSED_ARG(doitalways))
 {
   return this->connectionsSetUp;
 }
 
 // doc in super
 SbBool
-SoBaseKit::readInstance(SoInput * in, unsigned short flags)
+SoBaseKit::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   int i;
 
@@ -2549,7 +2549,7 @@ SoBaseKitP::testParentWrite(void)
 // that child node pointer, not the copied part.
 void
 SoBaseKitP::copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
-                      const SbBool copyconnections)
+                      const SbBool COIN_UNUSED_ARG(copyconnections))
 {
   int i;
   const int n = this->instancelist.getLength();

@@ -1039,8 +1039,8 @@ SoDB::getSensorManager(void)
   NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
 */
 int
-SoDB::doSelect(int nfds, void * readfds, void * writefds,
-               void * exceptfds, struct timeval * usertimeout)
+SoDB::doSelect(int COIN_UNUSED_ARG(nfds), void * COIN_UNUSED_ARG(readfds), void * COIN_UNUSED_ARG(writefds),
+               void * COIN_UNUSED_ARG(exceptfds), struct timeval * COIN_UNUSED_ARG(usertimeout))
 {
   assert(FALSE && "obsoleted method");
   return 0;

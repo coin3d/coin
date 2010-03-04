@@ -120,7 +120,7 @@ SoBase::PImpl::removeName2Obj(SoBase * const base, const char * const name)
 
 // Remove a reference from an instance pointer to its associated name.
 void
-SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const name)
+SoBase::PImpl::removeObj2Name(SoBase * const base, const char * const COIN_UNUSED_ARG(name))
 {
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
   SoBase::PImpl::obj2name->erase(base);

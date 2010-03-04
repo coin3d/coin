@@ -394,7 +394,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
     while (transit != transitions.end()) {
       if (transit->second->isSelfReferencing()) {
         ScXMLElt * containerobj = transit->second->getContainer();
-        ScXMLAbstractStateElt * targetobj = PRIVATE(this)->description->getStateById(transit->second->getTargetAttribute());
+        /*ScXMLAbstractStateElt * targetobj = */PRIVATE(this)->description->getStateById(transit->second->getTargetAttribute());
 
         if (containerobj->isOfType(ScXMLStateElt::getClassTypeId())) {
           ScXMLStateElt * state = static_cast<ScXMLStateElt *>(containerobj);
@@ -762,7 +762,7 @@ ScXMLStateMachine::PImpl::invokeStateChangeCallbacks(const char * identifier, Sb
 // *************************************************************************
 
 void
-ScXMLStateMachine::setVariable(const char * name, const char * value)
+ScXMLStateMachine::setVariable(const char * name, const char * COIN_UNUSED_ARG(value))
 {
   assert(name);
   if (name[0] == '_') { // reserved system variables

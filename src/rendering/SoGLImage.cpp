@@ -1759,7 +1759,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                                 const unsigned char *const texture,
                                 const int numComponents,
                                 const int w, const int h, const int d,
-                                const SbBool dlist, //FIXME: Not in use (kintel 20011129)
+                                const SbBool COIN_UNUSED_ARG(dlist), //FIXME: Not in use (kintel 20011129)
                                 const SbBool mipmap,
                                 const int border)
 {

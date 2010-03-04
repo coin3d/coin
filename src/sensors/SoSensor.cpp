@@ -193,7 +193,7 @@ SoSensor::trigger(void)
   Open Inventor function not implemented in Coin.
  */
 void
-SoSensor::setNextInQueue(SoSensor * next)
+SoSensor::setNextInQueue(SoSensor * COIN_UNUSED_ARG(next))
 {
   COIN_OBSOLETED();
 }

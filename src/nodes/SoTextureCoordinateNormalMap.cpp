@@ -60,6 +60,7 @@
 // FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
 
 #include <Inventor/nodes/SoTextureCoordinateNormalMap.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 #include <float.h>
@@ -125,9 +126,9 @@ SoTextureCoordinateNormalMap::initClass(void)
 
 // generates texture coordinates for GLRender, callback and pick actions
 const SbVec4f &
-SoTextureCoordinateNormalMap::generate(void *userdata,
-                                         const SbVec3f & /* p */,
-                                         const SbVec3f &n)
+SoTextureCoordinateNormalMap::generate(void * COIN_UNUSED_ARG(userdata),
+                                         const SbVec3f & COIN_UNUSED_ARG(p),
+                                         const SbVec3f & COIN_UNUSED_ARG(n))
 {
   return *SoTextureCoordinateNormalMapP::dummy_texcoords;
 }

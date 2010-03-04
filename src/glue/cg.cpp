@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "glue/cg.h"
+#include "coindefs.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -584,12 +585,12 @@ glue_cgCreateProgramFromEffect(CGeffect effect, CGprofile profile, const char * 
 }
 
 void 
-glue_cgDestroyEffect(CGeffect effect)
+glue_cgDestroyEffect(CGeffect COIN_UNUSED_ARG(effect))
 {
 }
 
 CGbool 
-glue_cgIsEffect(CGeffect effect)
+glue_cgIsEffect(CGeffect COIN_UNUSED_ARG(effect))
 {
   return FALSE;
 }

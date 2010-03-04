@@ -146,6 +146,7 @@
 
 /*! \file SoVRMLScript.h */
 #include <Inventor/VRMLnodes/SoVRMLScript.h>
+#include "coindefs.h"
 
 #include <assert.h>
 
@@ -398,7 +399,7 @@ SoVRMLScript::setScriptEvaluateCB(SoVRMLScriptEvaluateCB * cb,
 
 // Doc in superclass
 void
-SoVRMLScript::doAction(SoAction * action)
+SoVRMLScript::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
 }
 
@@ -611,7 +612,7 @@ SoVRMLScript::getFieldData(void) const
 
 // Doc in superclass
 SbBool
-SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
+SoVRMLScript::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   // avoid triggering the eval cb while reading the file.
   PRIVATE(this)->isreading = TRUE;

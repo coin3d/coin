@@ -249,6 +249,7 @@
 
 
 #include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
+#include "coindefs.h"
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 
@@ -296,38 +297,38 @@ SoVRMLFontStyle::getFontName(void)
 
 // Doc in parent
 void
-SoVRMLFontStyle::doAction(SoAction * action)
+SoVRMLFontStyle::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 void
-SoVRMLFontStyle::callback(SoCallbackAction * action)
+SoVRMLFontStyle::callback(SoCallbackAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 void
-SoVRMLFontStyle::GLRender(SoGLRenderAction * action)
+SoVRMLFontStyle::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 void
-SoVRMLFontStyle::getBoundingBox(SoGetBoundingBoxAction * action)
+SoVRMLFontStyle::getBoundingBox(SoGetBoundingBoxAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 
 void
-SoVRMLFontStyle::pick(SoPickAction * action)
+SoVRMLFontStyle::pick(SoPickAction * COIN_UNUSED_ARG(action))
 {
 }
 
 // Doc in parent
 void
-SoVRMLFontStyle::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoVRMLFontStyle::getPrimitiveCount(SoGetPrimitiveCountAction * COIN_UNUSED_ARG(action))
 {
 }
 

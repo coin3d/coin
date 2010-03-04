@@ -116,6 +116,7 @@
 
 /*! \file SoVRMLInline.h */
 #include <Inventor/VRMLnodes/SoVRMLInline.h>
+#include "coindefs.h"
 
 #include <stdlib.h>
 
@@ -557,8 +558,8 @@ SoVRMLInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 void
-SoVRMLInline::addBoundingBoxChild(SbVec3f center,
-                                  SbVec3f size)
+SoVRMLInline::addBoundingBoxChild(SbVec3f COIN_UNUSED_ARG(center),
+                                  SbVec3f COIN_UNUSED_ARG(size))
 {
   // FIXME: implement
 }
@@ -660,7 +661,7 @@ SoVRMLInline::readLocalFile(SoInput * in)
 
 // Callback for the field sensor.
 void
-SoVRMLInline::urlFieldModified(void * userdata, SoSensor * sensor)
+SoVRMLInline::urlFieldModified(void * userdata, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoVRMLInline * thisp = (SoVRMLInline *)userdata;
   SoInput in;

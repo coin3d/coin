@@ -202,7 +202,7 @@ SoBase::SoBase(void)
 #if COIN_DEBUG
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
-    void * dummy;
+    //void * dummy;
     assert(SoBase::PImpl::allbaseobj->find(this)!=SoBase::PImpl::allbaseobj->const_end());
     (*SoBase::PImpl::allbaseobj)[this]=NULL;
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
@@ -228,10 +228,10 @@ SoBase::~SoBase()
   this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
 
   if (SoBase::PImpl::auditordict) {
-    SoAuditorList * l;
+    //SoAuditorList * l;
     if (SoBase::PImpl::auditordict->find(this)!=SoBase::PImpl::auditordict->const_end()) {
       SoBase::PImpl::auditordict->erase(this);
-      delete l;
+      //delete l;
     }
   }
   cc_rbptree_clean(&this->auditortree);
@@ -636,7 +636,7 @@ SoBase::getName(void) const
   // you have invoked SoDB::cleanup().
   assert(SoBase::PImpl::obj2name);
 
-  const char * value = NULL;
+  //const char * value = NULL;
   CC_MUTEX_LOCK(SoBase::PImpl::obj2name_mutex);
   SbHash<const SoBase *, const char *>::const_iterator tmp = SoBase::PImpl::obj2name->find(this);
   SbBool found = (tmp != SoBase::PImpl::obj2name->const_end());
@@ -825,7 +825,7 @@ SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
   \sa addAuditor()
 */
 void
-SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
+SoBase::removeAuditor(void * const auditor, const SoNotRec::Type COIN_UNUSED_ARG(type))
 {
   cc_rbptree_remove(&this->auditortree, auditor);
 }
@@ -1367,7 +1367,7 @@ SoBase::getCurrentWriteCounter(void)
   \since Coin 2.0
 */
 SbBool
-SoBase::connectRoute(SoInput * in,
+SoBase::connectRoute(SoInput * COIN_UNUSED_ARG(in),
                      const SbName & fromnodename, const SbName & fromfieldname,
                      const SbName & tonodename, const SbName & tofieldname)
 {
