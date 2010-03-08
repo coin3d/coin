@@ -5,7 +5,7 @@
 	<key>IFPkgDescriptionDeleteWarning</key>
 	<string></string>
 	<key>IFPkgDescriptionDescription</key>
-	<string>Coin @VERSION@ by Kongsberg SIM AS, installed as Inventor.framework</string>
+	<string>Coin @VERSION@ by Kongsberg Oil &amp; Gas Technologies AS, installed as Inventor.framework</string>
 	<key>IFPkgDescriptionTitle</key>
 	<string>Coin</string>
 	<key>IFPkgDescriptionVersion</key>

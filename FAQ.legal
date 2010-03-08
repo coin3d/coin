@@ -23,8 +23,8 @@ Q 0.1:  Is it possible to use the Coin library without the restrictions
         of the GNU GPL?
 
 A:      Yes, as a service for those who would like to use the Coin library
-        in proprietary software, we at Kongsberg SIM offer the "Coin
-        Professional Edition License" which buys developers that are
+        in proprietary software, we at Kongsberg Oil & Gas Technologies offer
+        the "Coin Professional Edition License" which buys developers that are
         license holders the option to use the library with no strings
         attached.  The "Coin Professional Edition License" covers all the
         Coin libraries, unless otherwise specified.
@@ -37,8 +37,8 @@ A:      Yes, as a service for those who would like to use the Coin library
         The Coin Professional Edition License additionally covers
         other libraries in the "Coin family" for no extra cost,
         including all the GUI toolkits (SoQt, SoWin, SoGtk, SoXt,
-        Sc21) and Kongsberg SIM's 3D file format libraries Dime
-        and Profit.
+        Sc21) and Kongsberg Oil & Gas Technologies's 3D file format libraries
+        Dime and Profit.
 
         See <URL:http://www.coin3d.org> for more information about the
         details of these libraries.
@@ -70,10 +70,10 @@ Q 0.2:  How can you sell a "Professional Edition License" when the
         library is released under the GNU GPL? Wouldn't that be
         disallowed by the GNU GPL?
 
-A:      Kongsberg SIM can do this dual licensing "trick" with Coin
-        because we are full copyright holders -- ie we own every single
-        line of code written for the Coin library. Therefore we are able
-        to license the Coin library both as Free Software aswell as
+A:      Kongsberg Oil & Gas Technologies can do this dual licensing "trick"
+        with Coin because we are full copyright holders -- ie we own every
+        single line of code written for the Coin library. Therefore we are
+        able to license the Coin library both as Free Software aswell as
         under a special purpose license for proprietary software
         vendors. (If you are familiar with TrollTech's "Qt" library,
         they use the same strategy.)
