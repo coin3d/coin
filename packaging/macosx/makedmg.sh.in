@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2004-2009 Kongsberg SIM, All rights reserved.
+# Copyright (C) Kongsberg Oil & Gas Technologies, All rights reserved.
 #
 # This script (almost) automatically creates a dmg file for distribution
 # from a directory of source files.
