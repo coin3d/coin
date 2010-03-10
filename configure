@@ -32053,6 +32053,8 @@ else
   sim_ac_configuration_settings="Coin build type:dynamic .dll${release_string} + .pdb"
 fi
 
+      CFLAGS="-g $CFLAGS"
+      CXXFLAGS="-g $CXXFLAGS"
       LIBFLAGS="$LIBFLAGS ${debug_flag} /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
       ;;
     esac
