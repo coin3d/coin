@@ -371,6 +371,7 @@ SbDPPlane::print(FILE * fp) const
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbDPPlane.h>
+#include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbTypeInfo.h>
 
@@ -454,25 +455,41 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
       float X2=slew(XMin,XMax,XSteps,x2);
       for (int x3=0;x3<XSteps;++x3) {
         float X3=slew(XMin,XMax,XSteps,x3);
+        SbVec3f fv1(X1,X2,X3);
+        SbVec3d dv1(X1,X2,X3);
+        
         for (int x4=0;x4<XSteps;++x4) {
           float X4=slew(XMin,XMax,XSteps,x4);
-          
-          SbPlane fp(SbVec3f(X1,X2,X3),X4);
-          SbDPPlane dp(SbVec3d(X1,X2,X3),X4);
 
-          check_compare(fp.getDistanceFromOrigin(),dp.getDistanceFromOrigin(), "Distance from origin differs", 64);
-          check_compare(fp.getNormal(),dp.getNormal(),"Comparing normals yields different results",.000001f);
+          SbPlane fp1(fv1,X4);
+          SbDPPlane dp1(dv1,X4);
+
+          check_compare(fp1.getDistanceFromOrigin(),dp1.getDistanceFromOrigin(), "Distance from origin differs", 64);
+          check_compare(fp1.getNormal(),dp1.getNormal(),"Comparing normals yields different results",.000001f);
           for (int y1=0;y1<YSteps;++y1) {
             float Y1=slew(YMin,YMax,YSteps,y1);
             for (int y2=0;y2<YSteps;++y2) {
               float Y2=slew(YMin,YMax,YSteps,y2);
               for (int y3=0;y3<YSteps;++y3) {
                 float Y3=slew(YMin,YMax,YSteps,y3);
-                SbVec3f fv(Y1,Y2,Y3);
-                SbVec3d dv(Y1,Y2,Y3);
-                BOOST_CHECK_MESSAGE(fp.isInHalfSpace(fv)==dp.isInHalfSpace(dv), "Wrong halfspace");
-                //FIXME: Add test for intersection as well.
-                
+                SbVec3f fv2(Y1,Y2,Y3);
+                SbVec3d dv2(Y1,Y2,Y3);
+                BOOST_CHECK_MESSAGE(fp1.isInHalfSpace(fv2)==dp1.isInHalfSpace(dv2), "Wrong halfspace");
+                for (int y4=0;y4<YSteps;++y4) {
+                  float Y4=slew(YMin,YMax,YSteps,y3);
+                  SbPlane fp2(fv2,Y4);
+                  SbDPPlane dp2(dv2,Y4);
+
+                  SbLine fLine;
+                  fp1.intersect(fp2, fLine);
+
+                  SbDPLine dLine;
+                  dp1.intersect(dp2, dLine); 
+
+                  check_compare(fLine.getDirection(),dLine.getDirection(), "Intersection direction differs", .1f);
+                  
+
+                }
               }
             }
           }
