@@ -369,9 +369,17 @@ SbDPPlane::print(FILE * fp) const
 }
 
 #ifdef COIN_TEST_SUITE
-#include <Inventor/SbDPPlane.h>
 #include <Inventor/SbDPLine.h>
-BOOST_AUTO_TEST_CASE(signCorrect) {
+#include <Inventor/SbDPPlane.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbTypeInfo.h>
+
+#include <cfloat>
+#include <algorithm>
+#include <cmath>
+
+BOOST_AUTO_TEST_CASE(signCorrect)
+{
   SbDPPlane plane1(SbVec3d(0.0, 0.0, 1.0), 3.0);
   SbDPPlane plane2(SbVec3d(1.0, 0.0, 0.0), 21.0);
   SbDPLine line;
@@ -387,4 +395,151 @@ BOOST_AUTO_TEST_CASE(signCorrect) {
   
   
 }
+
+float slew(float Start, float End, int steps, int step) {
+  const float S = log(Start<0?-Start:Start);
+  const float E = log(End<0?-End:End);
+
+  --steps;
+
+  float res=0;
+
+  assert(Start<End);
+
+  if (Start<0 && End < 0 ) {
+    res=-exp(S+step*(E-S)/steps);
+  }
+  else if(Start>0 && End>0) {
+    res=exp(S+step*(E-S)/steps);
+  }
+  else {
+    float ZeroPoint = S*steps/(E+S);
+    if(step<ZeroPoint) {
+      res=-exp(S-2*step*S/ZeroPoint);
+    }
+    else if (step==ZeroPoint) {
+      res=0;
+    }
+    else {
+      res=exp(2*E*(step-ZeroPoint)/(steps-ZeroPoint)-E);
+    }
+  }
+
+  return res;
+}
+
+template <unsigned int Dimensions>
+struct fCompare {
+  template <typename T, typename S, typename U>
+  static bool cmp(const T & v1, const S & v2, U tolerance = 64) {
+    for (int i=0;i<SbTypeInfo<T>::Dimensions;++i) {
+      if (!floatEquals(static_cast<float>(v1[i]),static_cast<float>(v2[i]),tolerance))
+        return false;
+    }
+    return true;
+  }
+};
+
+template <>
+struct fCompare<1> {
+  template <typename T, typename S, typename U>
+  static bool cmp(const T & v1, const S & v2, U tolerance = 64) {
+    return floatEquals(static_cast<float>(v1),static_cast<float>(v2),tolerance);
+  }
+};
+
+template <unsigned int Dimensions>
+struct to {
+  template<typename T>
+  static std::string 
+  String(const T & v) 
+  {
+    return v.toString().getString();
+  }
+};
+
+template <>
+struct to<1> {
+  template<typename T>
+  static std::string 
+  String(const T & v) 
+  {
+    return  boost::lexical_cast<std::string>(v);
+  }
+};
+
+template <typename T, typename S, typename U>
+bool
+fuzzyCompare(const T & v1, const S & v2, U tolerance = 64) 
+{
+  BOOST_STATIC_ASSERT(SbTypeInfo<T>::Dimensions==SbTypeInfo<S>::Dimensions);
+  return fCompare<SbTypeInfo<T>::Dimensions>::cmp(v1,v2,tolerance);
+}
+
+template<typename T, typename S, typename U> 
+bool
+inline 
+boost_check_compare(const T & v1, const S & v2, const std::string & txt, U tolerance = 64)
+{
+  BOOST_CHECK_MESSAGE(fuzzyCompare(v1,v2, tolerance), txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
+}
+
+BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
+{
+  const float delX = 1;
+  const float delY = .1;
+
+  const float XMax = pow(2,FLT_MAX_EXP/3);
+  const float XMin = -XMax;
+
+  const float YMax = pow(2,FLT_MAX_EXP/2);
+  const float YMin = -YMax;
+
+#ifdef TEST_SUITE_QUICK
+  const int XSteps = 6;
+  const int YSteps = 6;
+#endif //TEST_SUITE_QUICK
+#ifdef TEST_SUITE_THOROUG
+  const int XSteps = 10;
+  const int YSteps = 10;
+#endif //TEST_SUITE_THOROUG
+#ifdef TEST_SUITE_EXPANSIVE
+  const int XSteps = 100;
+#endif //TEST_SUITE_EXPANSIVE
+ 
+  for (int x1=0;x1<XSteps;++x1) {
+    float X1=slew(XMin,XMax,XSteps,x1);
+    for (int x2=0;x2<XSteps;++x2) {
+      float X2=slew(XMin,XMax,XSteps,x2);
+      for (int x3=0;x3<XSteps;++x3) {
+        float X3=slew(XMin,XMax,XSteps,x3);
+        for (int x4=0;x4<XSteps;++x4) {
+          float X4=slew(XMin,XMax,XSteps,x4);
+          
+          SbPlane fp(SbVec3f(X1,X2,X3),X4);
+          SbDPPlane dp(SbVec3d(X1,X2,X3),X4);
+
+          boost_check_compare(fp.getDistanceFromOrigin(),dp.getDistanceFromOrigin(), "jalla", 64);
+          boost_check_compare(fp.getNormal(),dp.getNormal(),"Comparing normals yields different results",.000001f);
+          for (int y1=0;y1<YSteps;++y1) {
+            float Y1=slew(YMin,YMax,YSteps,y1);
+            for (int y2=0;y2<YSteps;++y2) {
+              float Y2=slew(YMin,YMax,YSteps,y2);
+              for (int y3=0;y3<YSteps;++y3) {
+                float Y3=slew(YMin,YMax,YSteps,y3);
+                SbVec3f fv(Y1,Y2,Y3);
+                SbVec3d dv(Y1,Y2,Y3);
+                BOOST_CHECK_MESSAGE(fp.isInHalfSpace(fv)==dp.isInHalfSpace(dv), "Wrong halfspace");
+                //FIXME: Add test for intersection as well.
+                
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+}
+
 #endif //COIN_TEST_SUITE
