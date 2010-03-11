@@ -377,6 +377,8 @@ SbPlane::print(FILE * fp) const
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
 
+using namespace SIM::Coin::TestSuite;
+
 BOOST_AUTO_TEST_CASE(signCorrect)
 {
   SbPlane plane1(SbVec3f(0.0, 0.0, 1.0), 3.0);
@@ -387,7 +389,7 @@ BOOST_AUTO_TEST_CASE(signCorrect)
   SbVec3f intersect = line.getPosition();
   SbVec3f vec(21, 0, 3);
 
-  boost_check_compare(intersect,vec, "SbPlane SignCorrect", .1f);
+  check_compare(intersect,vec, "SbPlane SignCorrect", .1f);
 
 }
 
