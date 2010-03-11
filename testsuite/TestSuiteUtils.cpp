@@ -268,7 +268,8 @@ namespace {
   {
     char buf[1024];
 #ifdef USE_POSIX
-    getcwd(buf,sizeof(buf));
+    if (!getcwd(buf,sizeof(buf)))
+      return NULL;
 #endif //USE_POSIX
 #ifdef USE_WIN32
     GetCurrentDirectory(sizeof(buf),buf);
