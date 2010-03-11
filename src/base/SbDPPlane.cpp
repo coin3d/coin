@@ -378,24 +378,6 @@ SbDPPlane::print(FILE * fp) const
 #include <algorithm>
 #include <cmath>
 
-BOOST_AUTO_TEST_CASE(signCorrect)
-{
-  SbDPPlane plane1(SbVec3d(0.0, 0.0, 1.0), 3.0);
-  SbDPPlane plane2(SbVec3d(1.0, 0.0, 0.0), 21.0);
-  SbDPLine line;
-  plane1.intersect(plane2, line); 
-
-  SbVec3d intersect = line.getPosition();
-  SbVec3d vec(21, 0, -3);
-
-  BOOST_CHECK_MESSAGE(
-                      intersect==vec,
-                      "Incorrect value for intersection"
-                      );
-  
-  
-}
-
 float slew(float Start, float End, int steps, int step) {
   const float S = log(Start<0?-Start:Start);
   const float E = log(End<0?-End:End);
@@ -428,60 +410,17 @@ float slew(float Start, float End, int steps, int step) {
   return res;
 }
 
-template <unsigned int Dimensions>
-struct fCompare {
-  template <typename T, typename S, typename U>
-  static bool cmp(const T & v1, const S & v2, U tolerance = 64) {
-    for (int i=0;i<SbTypeInfo<T>::Dimensions;++i) {
-      if (!floatEquals(static_cast<float>(v1[i]),static_cast<float>(v2[i]),tolerance))
-        return false;
-    }
-    return true;
-  }
-};
-
-template <>
-struct fCompare<1> {
-  template <typename T, typename S, typename U>
-  static bool cmp(const T & v1, const S & v2, U tolerance = 64) {
-    return floatEquals(static_cast<float>(v1),static_cast<float>(v2),tolerance);
-  }
-};
-
-template <unsigned int Dimensions>
-struct to {
-  template<typename T>
-  static std::string 
-  String(const T & v) 
-  {
-    return v.toString().getString();
-  }
-};
-
-template <>
-struct to<1> {
-  template<typename T>
-  static std::string 
-  String(const T & v) 
-  {
-    return  boost::lexical_cast<std::string>(v);
-  }
-};
-
-template <typename T, typename S, typename U>
-bool
-fuzzyCompare(const T & v1, const S & v2, U tolerance = 64) 
+BOOST_AUTO_TEST_CASE(signCorrect)
 {
-  BOOST_STATIC_ASSERT(SbTypeInfo<T>::Dimensions==SbTypeInfo<S>::Dimensions);
-  return fCompare<SbTypeInfo<T>::Dimensions>::cmp(v1,v2,tolerance);
-}
+  SbDPPlane plane1(SbVec3d(0.0, 0.0, 1.0), 3.0);
+  SbDPPlane plane2(SbVec3d(1.0, 0.0, 0.0), 21.0);
+  SbDPLine line;
+  plane1.intersect(plane2, line); 
 
-template<typename T, typename S, typename U> 
-bool
-inline 
-boost_check_compare(const T & v1, const S & v2, const std::string & txt, U tolerance = 64)
-{
-  BOOST_CHECK_MESSAGE(fuzzyCompare(v1,v2, tolerance), txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
+  SbVec3d intersect = line.getPosition();
+  SbVec3d vec(21, 0, 3);
+
+  boost_check_compare(intersect,vec, "SbDPPlane SignCorrect", .1f);
 }
 
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
@@ -519,7 +458,7 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
           SbPlane fp(SbVec3f(X1,X2,X3),X4);
           SbDPPlane dp(SbVec3d(X1,X2,X3),X4);
 
-          boost_check_compare(fp.getDistanceFromOrigin(),dp.getDistanceFromOrigin(), "jalla", 64);
+          boost_check_compare(fp.getDistanceFromOrigin(),dp.getDistanceFromOrigin(), "Distance from origin differs", 64);
           boost_check_compare(fp.getNormal(),dp.getNormal(),"Comparing normals yields different results",.000001f);
           for (int y1=0;y1<YSteps;++y1) {
             float Y1=slew(YMin,YMax,YSteps,y1);
