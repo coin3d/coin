@@ -378,6 +378,8 @@ SbDPPlane::print(FILE * fp) const
 #include <algorithm>
 #include <cmath>
 
+using namespace SIM::Coin::TestSuite;
+
 float slew(float Start, float End, int steps, int step) {
   const float S = log(Start<0?-Start:Start);
   const float E = log(End<0?-End:End);
@@ -420,7 +422,7 @@ BOOST_AUTO_TEST_CASE(signCorrect)
   SbVec3d intersect = line.getPosition();
   SbVec3d vec(21, 0, 3);
 
-  boost_check_compare(intersect,vec, "SbDPPlane SignCorrect", .1f);
+  check_compare(intersect,vec, "SbDPPlane SignCorrect", .1f);
 }
 
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
@@ -458,8 +460,8 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
           SbPlane fp(SbVec3f(X1,X2,X3),X4);
           SbDPPlane dp(SbVec3d(X1,X2,X3),X4);
 
-          boost_check_compare(fp.getDistanceFromOrigin(),dp.getDistanceFromOrigin(), "Distance from origin differs", 64);
-          boost_check_compare(fp.getNormal(),dp.getNormal(),"Comparing normals yields different results",.000001f);
+          check_compare(fp.getDistanceFromOrigin(),dp.getDistanceFromOrigin(), "Distance from origin differs", 64);
+          check_compare(fp.getNormal(),dp.getNormal(),"Comparing normals yields different results",.000001f);
           for (int y1=0;y1<YSteps;++y1) {
             float Y1=slew(YMin,YMax,YSteps,y1);
             for (int y2=0;y2<YSteps;++y2) {

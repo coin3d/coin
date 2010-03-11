@@ -75,6 +75,7 @@ floatEquals(float a, float b, float tol)
 
 namespace SIM { namespace Coin { namespace TestSuite {
 
+namespace internal {
 template <unsigned int Dimensions>
 struct fCompare {
   template <typename T, typename S, typename U>
@@ -99,7 +100,7 @@ template <typename T, typename S, typename U>
 bool
 fuzzyCompare(const T & v1, const S & v2, U tolerance = 64) 
 {
-  BOOST_STATIC_ASSERT(SbTypeInfo<T>::Dimensions==SbTypeInfo<S>::Dimensions);
+  BOOST_STATIC_ASSERT(static_cast<int>(SbTypeInfo<T>::Dimensions)==static_cast<int>(SbTypeInfo<S>::Dimensions));
   return fCompare<SbTypeInfo<T>::Dimensions>::cmp(v1,v2,tolerance);
 }
 
@@ -122,19 +123,17 @@ struct to<1> {
     return  boost::lexical_cast<std::string>(v);
   }
 };
+} //namespace internal
 
+ template<typename T, typename S, typename U> 
+   bool
+   inline 
+   check_compare(const T & v1, const S & v2, const std::string & txt, U tolerance = 64)
+   {
+     using namespace internal;
+     BOOST_CHECK_MESSAGE(fuzzyCompare(v1,v2, tolerance), txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
+   }
 }}}
-
-
-//FIXME: Move this into SIM::Coin::TestSuite
-template<typename T, typename S, typename U> 
-bool
-inline 
-boost_check_compare(const T & v1, const S & v2, const std::string & txt, U tolerance = 64)
-{
-  using namespace SIM::Coin::TestSuite;
-  BOOST_CHECK_MESSAGE(fuzzyCompare(v1,v2, tolerance), txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
-}
 
 
 /*
