@@ -5,6 +5,7 @@
 #include <ostream>
 #include <boost/lexical_cast.hpp>
 #include <Inventor/SbBasic.h>
+#include <Inventor/SbTypeInfo.h>
 
 #ifndef TEST_SUITE_THOROUGNESS
 /*
@@ -64,10 +65,77 @@ inline
 bool
 floatEquals(float a, float b, float tol)
 {
+  float tol2 = tol*tol;
+  if (fabs(a)<tol2&&fabs(b)<tol2)
+    return true;
   return fabs(b-a)/fabs(a)<tol;
 }
 
 #define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 1), std::string("unexpected value: expected ") + boost::lexical_cast<std::string>((Y)) +", got " + boost::lexical_cast<std::string>((X)) + " difference is: " + boost::lexical_cast<std::string>((X)-(Y)))
+
+namespace SIM { namespace Coin { namespace TestSuite {
+
+template <unsigned int Dimensions>
+struct fCompare {
+  template <typename T, typename S, typename U>
+  static bool cmp(const T & v1, const S & v2, U tolerance = 64) {
+    for (int i=0;i<SbTypeInfo<T>::Dimensions;++i) {
+      if (!floatEquals(static_cast<float>(v1[i]),static_cast<float>(v2[i]),tolerance))
+        return false;
+    }
+    return true;
+  }
+};
+
+template <>
+struct fCompare<1> {
+  template <typename T, typename S, typename U>
+  static bool cmp(const T & v1, const S & v2, U tolerance = 64) {
+    return floatEquals(static_cast<float>(v1),static_cast<float>(v2),tolerance);
+  }
+};
+
+template <typename T, typename S, typename U>
+bool
+fuzzyCompare(const T & v1, const S & v2, U tolerance = 64) 
+{
+  BOOST_STATIC_ASSERT(SbTypeInfo<T>::Dimensions==SbTypeInfo<S>::Dimensions);
+  return fCompare<SbTypeInfo<T>::Dimensions>::cmp(v1,v2,tolerance);
+}
+
+template <unsigned int Dimensions>
+struct to {
+  template<typename T>
+  static std::string 
+  String(const T & v) 
+  {
+    return v.toString().getString();
+  }
+};
+
+template <>
+struct to<1> {
+  template<typename T>
+  static std::string 
+  String(const T & v) 
+  {
+    return  boost::lexical_cast<std::string>(v);
+  }
+};
+
+}}}
+
+
+//FIXME: Move this into SIM::Coin::TestSuite
+template<typename T, typename S, typename U> 
+bool
+inline 
+boost_check_compare(const T & v1, const S & v2, const std::string & txt, U tolerance = 64)
+{
+  using namespace SIM::Coin::TestSuite;
+  BOOST_CHECK_MESSAGE(fuzzyCompare(v1,v2, tolerance), txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
+}
+
 
 /*
  * The following ostream << operators are needed for the Boost.Test macros
