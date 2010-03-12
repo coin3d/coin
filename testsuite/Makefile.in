@@ -19,7 +19,7 @@ EXEEXT = @EXEEXT@
 @MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -l Coin
 
 TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
-TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
+TS_CPPFLAGS = $(TS_INCLUDES) @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@ -Werror -g2
 TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS) $(EXPAT_LINKFLAG)
 TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@ 
 
