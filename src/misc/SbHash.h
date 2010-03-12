@@ -176,8 +176,6 @@ class SbHash {
     }
 
     inline void setNextUsedBucket() {
-      if (this->index<this->master->size)
-        ++this->index;
       for (; this->index < this->master->size; ++this->index) {
         if (this->master->buckets[this->index]) {
           this->elem = this->master->buckets[this->index];
@@ -192,6 +190,8 @@ class SbHash {
         this->elem = this->elem->next;
         return;
       }
+      if (this->index<this->master->size)
+        ++this->index;
       setNextUsedBucket();
     }
 
@@ -240,8 +240,6 @@ class SbHash {
     }
 
     inline void setNextUsedBucket() {
-      if (this->index<this->master->size)
-        ++this->index;
       for (; this->index < this->master->size; ++this->index) {
         if (this->master->buckets[this->index]) {
           this->elem = this->master->buckets[this->index];
@@ -256,6 +254,8 @@ class SbHash {
         this->elem = this->elem->next;
         return;
       }
+      if (this->index<this->master->size)
+        ++this->index;
       setNextUsedBucket();
     }
 
