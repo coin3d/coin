@@ -176,7 +176,7 @@ SoContextHandler::destructingContext(uint32_t contextid)
   CC_MUTEX_UNLOCK(socontexthandler_mutex);
 
   qsort((void*) listcopy.getArrayPtr(),
-        socontexthandler_hashlist->getNumElements(),
+        listcopy.getLength(),
         sizeof(socontexthandler_cbitem),
         socontexthandler_qsortcb);
 
