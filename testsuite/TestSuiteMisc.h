@@ -131,7 +131,9 @@ struct to<1> {
    check_compare(const T & v1, const S & v2, const std::string & txt, U tolerance = 64)
    {
      using namespace internal;
-     BOOST_CHECK_MESSAGE(fuzzyCompare(v1,v2, tolerance), txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
+     bool cmp=fuzzyCompare(v1,v2, tolerance);
+     BOOST_CHECK_MESSAGE(cmp, txt+": "+to<SbTypeInfo<T>::Dimensions>::String(v1) + " != "+ to<SbTypeInfo<T>::Dimensions>::String(v2) );
+     return cmp;
    }
 }}}
 
