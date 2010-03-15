@@ -310,7 +310,7 @@ SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line) const
   }
   else if (dir2[1] > dir2[0] && dir2[1] > DBL_EPSILON) {
     // then get a point on the XZ plane
-    invdet = 1.0f / xdir[1];
+    invdet = -1.0f / xdir[1];
     xpt = SbVec3d(pl1n[2] * pl2w - pl2n[2] * pl1w, 0.0f,
                   pl2n[0] * pl1w - pl1n[0] * pl2w);
   }
@@ -327,7 +327,7 @@ SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line) const
   invdet = 1.0f / static_cast<double>(sqrt(dir2[0] + dir2[1] + dir2[2]));
 
   xdir *= invdet;
-  line = SbDPLine(xpt, xpt+xdir);
+  line.setPosDir(xpt, xdir);
   return TRUE;
 }
 
