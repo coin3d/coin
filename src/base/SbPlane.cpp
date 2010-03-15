@@ -332,7 +332,7 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line) const
   invdet = 1.0f / static_cast<float>(sqrt(dir2[0] + dir2[1] + dir2[2]));
 
   xdir *= invdet;
-  line = SbLine(xpt, xpt + xdir);
+  line.setPosDir(xpt, xdir);
   return TRUE;
 }
 
