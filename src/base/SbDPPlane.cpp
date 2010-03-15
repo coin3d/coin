@@ -434,7 +434,7 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
   const float XMax = pow(2,FLT_MAX_EXP/3);
   const float XMin = -XMax;
 
-  const float YMax = pow(2,FLT_MAX_EXP/2);
+  const float YMax = pow(2,FLT_MAX_EXP/3);
   const float YMin = -YMax;
 
 #ifdef TEST_SUITE_QUICK
@@ -448,6 +448,8 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
 #ifdef TEST_SUITE_EXPANSIVE
   const int XSteps = 100;
 #endif //TEST_SUITE_EXPANSIVE
+
+  int count=0;
  
   for (int x1=0;x1<XSteps;++x1) {
     float X1=slew(XMin,XMax,XSteps,x1);
@@ -474,21 +476,36 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
                 float Y3=slew(YMin,YMax,YSteps,y3);
                 SbVec3f fv2(Y1,Y2,Y3);
                 SbVec3d dv2(Y1,Y2,Y3);
-                BOOST_CHECK_MESSAGE(fp1.isInHalfSpace(fv2)==dp1.isInHalfSpace(dv2), "Wrong halfspace");
+
+                //A bit arbitrary, this holds
+                const float tol = .03f;
+                BOOST_CHECK_MESSAGE(
+                                    floatEquals(fp1.getDistance(fv2),dp1.getDistance(dv2),tol)||
+                                    fabs(fp1.getDistance(fv2)-dp1.getDistance(dv2))/fabs(dp1.getDistanceFromOrigin())<tol,
+                                    "Distance from plane is significantly different");
                 for (int y4=0;y4<YSteps;++y4) {
                   float Y4=slew(YMin,YMax,YSteps,y3);
                   SbPlane fp2(fv2,Y4);
                   SbDPPlane dp2(dv2,Y4);
 
                   SbLine fLine;
-                  fp1.intersect(fp2, fLine);
-
                   SbDPLine dLine;
-                  dp1.intersect(dp2, dLine); 
+                  bool failed=false;
+                  if (!fp1.intersect(fp2, fLine)) {
+                    failed = true;
+                  }
+                  if (!dp1.intersect(dp2, dLine)) {
+                    BOOST_CHECK_MESSAGE(failed,"Float intersection worked, but double intersection failed");
+                    failed = true;
+                  }
+                  if (failed)
+                    continue;
 
-                  check_compare(fLine.getDirection(),dLine.getDirection(), "Intersection direction differs", .1f);
-                  
 
+                  SbVec3f fDir(fLine.getDirection());
+                  SbVec3d dDir(dLine.getDirection());
+
+                  check_compare(fDir,dDir, "Intersection direction differs", .004f);
                 }
               }
             }
