@@ -104,6 +104,18 @@ SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
 }
 
 /*!
+  Set position and direction
+
+  \since Coin 4.0
+*/
+void
+SbLine::setPosDir(const SbVec3f & position, const SbVec3f & direction)
+{
+  this->pos = position;
+  this->dir = direction;
+}
+
+/*!
   Returns the two closest points on the lines.  If the lines are
   parallel, all points are equally close and we return \c FALSE. If
   the lines are not parallel, the point positions will be stored in \a
