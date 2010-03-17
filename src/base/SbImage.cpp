@@ -445,21 +445,23 @@ SbImage::readFile(const SbString & filename,
 
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
-  if (finalname.getLength() == 0) {
-    SoDebugError::post("SbImage::readFile",
-                       "couldn't find '%s'.", filename.getString());
-    return FALSE;
-  }
 
   // use callback to load the image if it's set
   if (SbImageP::readimagecallbacks) {
     for (int i = 0; i < SbImageP::readimagecallbacks->getLength(); i++) {
       SbImageP::ReadImageCBData cbdata = (*SbImageP::readimagecallbacks)[i];
-      if (cbdata.cb(finalname, this, cbdata.closure)) return TRUE;
+      if (finalname.getLength() > 0 && cbdata.cb(finalname, this, cbdata.closure)) return TRUE;
+      if (cbdata.cb(filename, this, cbdata.closure)) return TRUE;
     }
     if (!simage_wrapper()->available) {
       return FALSE;
     }
+  }
+
+  if (finalname.getLength() == 0) {
+    SoDebugError::post("SbImage::readFile",
+                       "couldn't find '%s'.", filename.getString());
+    return FALSE;
   }
   
   // try simage
@@ -469,8 +471,6 @@ SbImage::readFile(const SbString & filename,
                               "can not import any images from disk.");
     return FALSE;
   }
-
-
 
   assert(simage_wrapper()->simage_read_image);
   int w, h, nc;
