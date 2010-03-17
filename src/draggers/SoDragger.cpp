@@ -1541,11 +1541,16 @@ typedef struct {
 static sodragger_vv_data * vvdata = NULL;
 
 static SoCallbackAction::Response
-sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_UNUSED_ARG(node))
+sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
 {
-  sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
-  data->vv = SoViewVolumeElement::get(action->getState());
-  return SoCallbackAction::CONTINUE;
+  if (node->isOfType(SoDragger::getClassTypeId())) {
+    return (userdata==node)?SoCallbackAction::ABORT:SoCallbackAction::CONTINUE;
+  }
+  else {
+    sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
+    data->vv = SoViewVolumeElement::get(action->getState());
+    return SoCallbackAction::CONTINUE;
+  }
 }
 
 extern "C" {
@@ -1580,6 +1585,7 @@ SoDragger::setCameraInfo(SoAction * action)
     if (PRIVATE(this)->cbaction == NULL) {
       PRIVATE(this)->cbaction = new SoCallbackAction;
       PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), sodragger_vv_cb, vvdata);
+      PRIVATE(this)->cbaction->addPostCallback(SoDragger::getClassTypeId(), sodragger_vv_cb, this);
     }
     PRIVATE(this)->cbaction->setViewportRegion(PRIVATE(this)->viewport);
     PRIVATE(this)->cbaction->apply(PRIVATE(this)->draggercache->path);
