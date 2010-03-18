@@ -43,48 +43,77 @@
   // [then use image buffer in a texture, or write it to file, or whatever]
   \endcode
 
-  And a complete, simple, stand-alone example:
+  And here a complete stand-alone example with a moving camera saving multiple
+  frames to disk as JPGs:
 
   \code
   #include <Inventor/SoDB.h>
   #include <Inventor/SoOffscreenRenderer.h>
+  #include <Inventor/engines/SoInterpolateVec3f.h>
   #include <Inventor/nodes/SoCube.h>
   #include <Inventor/nodes/SoDirectionalLight.h>
   #include <Inventor/nodes/SoPerspectiveCamera.h>
   #include <Inventor/nodes/SoSeparator.h>
 
-  int
-  main(int argc, char ** argv)
+  #include <iostream>
+
+  int main()
   {
+    // Init Coin
     SoDB::init();
 
-    SoPerspectiveCamera * camera = new SoPerspectiveCamera;
-    SoDirectionalLight * light = new SoDirectionalLight;
-    SoCube * cube = new SoCube;
-
+    // The root node
     SoSeparator * root = new SoSeparator;
-    root->addChild(camera);
-    root->addChild(light);
-    root->addChild(cube);
     root->ref();
 
-    SbViewportRegion vpr;
-    vpr.setWindowSize(400, 400);
+    // It is mandatory to have at least one light for the offscreen renderer
+    SoDirectionalLight * light = new SoDirectionalLight;
+    root->addChild(light);
 
-    light->direction.setValue(1, -1.2, -0.5);
+    // It is mandatory to have at least one camera for the offscreen renderer
+    SoPerspectiveCamera * camera = new SoPerspectiveCamera;
+    SbRotation cameraRotation = SbRotation::identity();
+    cameraRotation *= SbRotation(SbVec3f(1, 0, 0), -0.4f);
+    cameraRotation *= SbRotation(SbVec3f(0, 1, 0), 0.4f);
+    camera->orientation = cameraRotation;
+    root->addChild(camera);
 
-    camera->position.setValue(-2, 2, 2);
-    camera->pointAt(SbVec3f(0, 0, 0));
-    camera->viewAll(cube, vpr);
+    // Something to show... A box
+    SoCube * cube = new SoCube;
+    root->addChild(cube);
 
-    SoOffscreenRenderer osr(vpr);
-    SbBool ok = osr.render(root);
-    if (!ok) { exit(1); }
+    // Set up the two camera positions we want to move the camera between
+    SoInterpolateVec3f * interpolate = new SoInterpolateVec3f;
+    interpolate->input0 = SbVec3f(2, 2, 9);
+    interpolate->input1 = SbVec3f(2, 2, 5);
+    camera->position.connectFrom(&interpolate->output);
 
-    ok = osr.writeToRGB("test-image.rgb");
-    if (!ok) { exit(1); }
+    // Set up the offscreen renderer
+    SbViewportRegion vpRegion(400, 300);
+    SoOffscreenRenderer offscreenRenderer(vpRegion);
 
-    (void)puts("Image written successfully.");
+    // How many frames to render for the video
+    int frames = 5;
+    std::cout << "Writing " << frames << " frames..." << std::endl;
+
+    for (int i = 0; i < frames; i++) {
+      // Update the camera position
+      interpolate->alpha = float(i) / (frames - 1);
+
+      // Render the scene
+      SbBool ok = offscreenRenderer.render(root);
+
+      // Save the image to disk
+      SbString filename = SbString("coinvideo-") + (i + 1) + ".jpg";
+      if (ok) {
+        offscreenRenderer.writeToFile(filename.getString(), "jpg");
+      } else {
+        std::cout << "Error saving image: " << filename.getString() << std::endl;
+        break;
+      }
+    }
+
+    std::cout << "Done!" << std::endl;
 
     root->unref();
     return 0;
