@@ -30,6 +30,56 @@
   subsystem about how particular aspects of the subsequent geometry in
   the scene graph should be drawn.
 
+  Here is an example on how to display a scene in wireframe mode
+  which only shows the triangles facing towards the camera.
+
+  \code
+  #include <Inventor/nodes/SoCone.h>
+  #include <Inventor/nodes/SoDrawStyle.h>
+  #include <Inventor/nodes/SoLightModel.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoShapeHints.h>
+  #include <Inventor/Win/SoWin.h>
+  #include <Inventor/Win/viewers/SoWinExaminerViewer.h>
+
+  int main(int, char * argv[])
+  {
+    HWND window = SoWin::init(argv[0]);
+
+    SoSeparator * root = new SoSeparator;
+
+    // wireframe
+    SoDrawStyle * drawStyle = new SoDrawStyle;
+    drawStyle->style = SoDrawStyle::LINES;
+    root->addChild(drawStyle);
+
+    // back-face culling
+    SoShapeHints * shapeHints = new SoShapeHints;
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    shapeHints->shapeType = SoShapeHints::SOLID;
+    root->addChild(shapeHints);
+
+    // keep a solid color
+    SoLightModel * lightModel = new SoLightModel;
+    lightModel->model = SoLightModel::BASE_COLOR;
+    root->addChild(lightModel);
+
+    // a cone
+    SoCone * cone = new SoCone;
+    root->addChild(cone);
+
+    // set up a window
+    SoWinExaminerViewer * viewer = new SoWinExaminerViewer(window);
+    SbViewportRegion vpRegion = viewer->getViewportRegion();
+    viewer->setSceneGraph(root);
+    viewer->show();
+
+    SoWin::mainLoop();
+    delete viewer;
+    return 0;
+  }
+  \endcode
+
   The default settings of the rendering system is tuned towards
   programmer convenience. For instance, the default is to render both
   sides of all polygons to make sure we avoid any "holes" in the
