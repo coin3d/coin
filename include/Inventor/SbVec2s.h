@@ -67,9 +67,9 @@ public:
   int32_t dot(SbVec2s v) const { return vec[0] * v[0] + vec[1] * v[1]; }
   void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; }
 
-  SbVec2s & operator *= (int d) { vec[0] *= d; vec[1] *= d; return *this; }
+  SbVec2s & operator *= (int d) { vec[0] = short(vec[0] * d); vec[1] = short(vec[1] * d); return *this; }
   SbVec2s & operator *= (double d);
-  SbVec2s & operator /= (int d) { SbDividerChk("SbVec2s::operator/=(int)", d); vec[0] /= d; vec[1] /= d; return *this; }
+  SbVec2s & operator /= (int d) { SbDividerChk("SbVec2s::operator/=(int)", d); vec[0] = short(vec[0] / d); vec[1] = short(vec[1] / d); return *this; }
   SbVec2s & operator /= (double d) { SbDividerChk("SbVec2s::operator/=(double)", d); return operator *= (1.0 / d); }
   SbVec2s & operator += (SbVec2s v) { vec[0] += v[0]; vec[1] += v[1]; return *this; }
   SbVec2s & operator -= (SbVec2s v) { vec[0] -= v[0]; vec[1] -= v[1]; return *this; }
