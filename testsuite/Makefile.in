@@ -43,6 +43,7 @@ TEST_SUITE_OBJECTS = \
 	baseSbDPMatrix.$(OBJEXT) \
 	baseSbDPPlane.$(OBJEXT) \
 	baseSbDPRotation.$(OBJEXT) \
+	baseSbImage.$(OBJEXT) \
 	baseSbMatrix.$(OBJEXT) \
 	baseSbPlane.$(OBJEXT) \
 	baseSbRotation.$(OBJEXT) \
@@ -183,6 +184,7 @@ TEST_SUITE_BUILT_FILES = \
 	baseSbDPMatrix.cpp \
 	baseSbDPPlane.cpp \
 	baseSbDPRotation.cpp \
+	baseSbImage.cpp \
 	baseSbMatrix.cpp \
 	baseSbPlane.cpp \
 	baseSbRotation.cpp \
@@ -438,6 +440,12 @@ baseSbDPRotation.cpp: $(top_srcdir)/src/base/SbDPRotation.cpp $(srcdir)/makeextr
 
 baseSbDPRotation.$(OBJEXT): baseSbDPRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPRotation.cpp
+
+baseSbImage.cpp: $(top_srcdir)/src/base/SbImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbImage.cpp
+
+baseSbImage.$(OBJEXT): baseSbImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbImage.cpp
 
 baseSbMatrix.cpp: $(top_srcdir)/src/base/SbMatrix.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbMatrix.cpp
