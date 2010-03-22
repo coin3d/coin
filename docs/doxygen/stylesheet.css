@@ -14,6 +14,9 @@ H2 {
 H3 {
        font-size: 100%;
 }
+IMG {
+       border: 0;
+}
 CAPTION { font-weight: bold }
 DIV.qindex {
        width: 100%;
