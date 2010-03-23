@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,19 +11,19 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
 /*!
-  \class SbPlane SbPlane.h Inventor/SbLinear.h
-  \brief The SbPlane class represents a plane in 3D space.
+  \class SbDPPlane SbDPPlane.h Inventor/SbLinear.h
+  \brief The SbDPPlane class represents a plane in 3D space.
   \ingroup base
 
   SbDPPlane is used by many other classes in Coin.  It provides a way of
@@ -204,7 +204,7 @@ SbDPPlane::transform(const SbDPMatrix & matrix)
 
   if (this->normal.normalize() == 0.0f) {
 #if COIN_DEBUG
-    SoDebugError::postWarning("SbPlane::transform",
+    SoDebugError::postWarning("SbDPPlane::transform",
                               "The transformation invalidated the plane.");
 #endif // COIN_DEBUG
   }
@@ -367,3 +367,24 @@ SbDPPlane::print(FILE * fp) const
   (void)fprintf(fp, "  %f", this->getDistanceFromOrigin());
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbDPPlane.h>
+#include <Inventor/SbDPLine.h>
+BOOST_AUTO_TEST_CASE(signCorrect) {
+  SbDPPlane plane1(SbVec3d(0.0, 0.0, 1.0), 3.0);
+  SbDPPlane plane2(SbVec3d(1.0, 0.0, 0.0), 21.0);
+  SbDPLine line;
+  plane1.intersect(plane2, line); 
+
+  SbVec3d intersect = line.getPosition();
+  SbVec3d vec(21, 0, -3);
+
+  BOOST_CHECK_MESSAGE(
+                      intersect==vec,
+                      "Incorrect value for intersection"
+                      );
+  
+  
+}
+#endif //COIN_TEST_SUITE

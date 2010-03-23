@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -138,7 +138,7 @@ SoGLVBOElement::setTexCoordVBO(SoState * state, const int unit, SoVBO * vbo)
 
 // doc in parent
 void
-SoGLVBOElement::init(SoState *state)
+SoGLVBOElement::init(SoState * COIN_UNUSED_ARG(state))
 {
   PRIVATE(this)->vertexvbo = NULL;
   PRIVATE(this)->normalvbo = NULL;
@@ -148,7 +148,7 @@ SoGLVBOElement::init(SoState *state)
 
 // doc in parent
 void
-SoGLVBOElement::push(SoState *state)
+SoGLVBOElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoGLVBOElement * prev = (SoGLVBOElement *)
     this->getNextInStack();
@@ -165,14 +165,14 @@ SoGLVBOElement::push(SoState *state)
 
 // doc in parent
 void
-SoGLVBOElement::pop(SoState *state, const SoElement * prevtopelement)
+SoGLVBOElement::pop(SoState * COIN_UNUSED_ARG(state), const SoElement * COIN_UNUSED_ARG(prevtopelement))
 {
   // nothing to do
 }
 
 // doc in parent
 SbBool
-SoGLVBOElement::matches(const SoElement * elt) const
+SoGLVBOElement::matches(const SoElement * COIN_UNUSED_ARG(elt)) const
 {
   assert(0 && "should never get here");
   return TRUE;

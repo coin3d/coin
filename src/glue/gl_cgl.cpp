@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -29,6 +29,7 @@
  */
 
 #include "glue/gl_cgl.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -50,32 +51,32 @@
 
 #ifndef HAVE_CGL
 
-SbBool cglglue_context_is_using_pbuffer(void * ctx)
+SbBool cglglue_context_is_using_pbuffer(void * COIN_UNUSED_ARG(ctx))
 {
   assert(FALSE); return FALSE;
 }
 
-void * cglglue_getprocaddress(const char * fname)
+void * cglglue_getprocaddress(const char * COIN_UNUSED_ARG(fname))
 {
   assert(FALSE); return NULL;
 }
 
-void * cglglue_context_create_offscreen(unsigned int width, 
-                                        unsigned int height) { 
+void * cglglue_context_create_offscreen(unsigned int COIN_UNUSED_ARG(width), 
+                                        unsigned int COIN_UNUSED_ARG(height)) { 
   assert(FALSE); return NULL; 
 }
 
-SbBool cglglue_context_make_current(void * ctx)
+SbBool cglglue_context_make_current(void * COIN_UNUSED_ARG(ctx))
 { 
   assert(FALSE); return FALSE; 
 }
 
-void cglglue_context_reinstate_previous(void * ctx) 
+void cglglue_context_reinstate_previous(void * COIN_UNUSED_ARG(ctx)) 
 { 
   assert(FALSE); 
 }
 
-void cglglue_context_destruct(void * ctx) 
+void cglglue_context_destruct(void * COIN_UNUSED_ARG(ctx)) 
 { 
   assert(FALSE); 
 }

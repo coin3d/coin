@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -593,7 +593,7 @@ returnpoint:
 static cc_dict * gldict = NULL;
 
 static void
-free_glglue_instance(uintptr_t key, void * value, void * closure)
+free_glglue_instance(uintptr_t COIN_UNUSED_ARG(key), void * value, void * COIN_UNUSED_ARG(closure))
 {
   cc_glglue * glue = (cc_glglue*) value;
   cc_dict_destruct(glue->glextdict);
@@ -1990,8 +1990,8 @@ glglue_check_trident_clampedge_bug(const char * vendor,
 
 static SbBool
 glglue_check_ati_vbo_in_displaylist_bug(const char * vendor,
-                                        const char * renderer,
-                                        const char * version)
+                                        const char * COIN_UNUSED_ARG(renderer),
+                                        const char * COIN_UNUSED_ARG(version))
 {
   /*
    * FIXME: is there a better way to test if we're on Mac OS X
@@ -4745,7 +4745,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 }
 
 SbBool
-cc_glglue_context_can_render_to_texture(void * ctx)
+cc_glglue_context_can_render_to_texture(void * COIN_UNUSED_ARG(ctx))
 {
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return FALSE;
@@ -4768,7 +4768,7 @@ cc_glglue_context_can_render_to_texture(void * ctx)
 
 
 void
-cc_glglue_context_bind_pbuffer(void * ctx)
+cc_glglue_context_bind_pbuffer(void * COIN_UNUSED_ARG(ctx))
 {
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return;
@@ -4794,7 +4794,7 @@ cc_glglue_context_bind_pbuffer(void * ctx)
 }
 
 void
-cc_glglue_context_release_pbuffer(void * ctx)
+cc_glglue_context_release_pbuffer(void * COIN_UNUSED_ARG(ctx))
 {
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return;
@@ -4817,7 +4817,7 @@ cc_glglue_context_release_pbuffer(void * ctx)
 }
 
 SbBool
-cc_glglue_context_pbuffer_is_bound(void * ctx)
+cc_glglue_context_pbuffer_is_bound(void * COIN_UNUSED_ARG(ctx))
 {
   /* No render-to-texture support in external offscreen rendering. */
   if (offscreen_cb) return FALSE;
@@ -4842,7 +4842,7 @@ cc_glglue_context_pbuffer_is_bound(void * ctx)
 
 /* This abomination is needed to support SoOffscreenRenderer::getDC(). */
 const void *
-cc_glglue_win32_HDC(void * ctx)
+cc_glglue_win32_HDC(void * COIN_UNUSED_ARG(ctx))
 {
 #if defined(HAVE_WGL)
   return wglglue_context_win32_HDC(ctx);
@@ -4850,7 +4850,7 @@ cc_glglue_win32_HDC(void * ctx)
   return NULL;
 #endif /* not WGL */
 }
-void cc_glglue_win32_updateHDCBitmap(void *ctx)
+void cc_glglue_win32_updateHDCBitmap(void * COIN_UNUSED_ARG(ctx))
 {
 #if defined(HAVE_WGL)
   wglglue_copy_to_bitmap_win32_HDC(ctx);
@@ -5068,7 +5068,7 @@ GLint coin_glglue_get_internal_texture_format(const cc_glglue * glw,
   Convert from num components to client texture format for use
   in glTexImage*D's format parameter.
 */
-GLenum coin_glglue_get_texture_format(const cc_glglue * glw, int numcomponents)
+GLenum coin_glglue_get_texture_format(const cc_glglue * COIN_UNUSED_ARG(glw), int numcomponents)
 {
   GLenum format;
   switch (numcomponents) {

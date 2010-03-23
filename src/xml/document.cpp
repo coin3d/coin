@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -286,7 +286,7 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 }
 
 void
-cc_xml_doc_expat_processing_instruction_handler_cb(void * userdata, const XML_Char * target, const XML_Char * pidata)
+cc_xml_doc_expat_processing_instruction_handler_cb(void * COIN_UNUSED_ARG(userdata), const XML_Char * COIN_UNUSED_ARG(target), const XML_Char * COIN_UNUSED_ARG(pidata))
 {
 #ifdef DEV_DEBUG
   fprintf(stdout, "received processing Instruction...\n");
@@ -779,7 +779,7 @@ cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
 */
 
 cc_xml_path *
-cc_xml_doc_diff(const cc_xml_doc * doc, const cc_xml_doc * other)
+cc_xml_doc_diff(const cc_xml_doc * COIN_UNUSED_ARG(doc), const cc_xml_doc * COIN_UNUSED_ARG(other))
 {
 #ifdef DEV_DEBUG
   COIN_STUB();

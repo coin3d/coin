@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,17 +11,18 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
 #include "navigation/SoCameraUtils.h"
+#include "coindefs.h"
 
 #include <cassert>
 #include <cmath>
@@ -239,7 +240,7 @@ SoOrthoPerspectiveCameraManager::getCastCamera(void) const
 void
 SoOrthoPerspectiveCameraManager::setZoomValue(float zoomvalue, SbBool limit)
 {
-  static const float defaultangle = M_PI / 4.0f;
+  static const float defaultangle = float(M_PI_4);
   static const float defaultheight = sin(defaultangle) / cos(defaultangle);
 
   SoOrthographicCamera * camera = this->getCastCamera();
@@ -282,7 +283,7 @@ SoOrthoPerspectiveCameraManager::adjustZoom(float factor, SbBool limit)
 float
 SoOrthoPerspectiveCameraManager::getZoomFactor(void) const
 {
-  static const float defaultangle = M_PI / 4.0f;
+  static const float defaultangle = float(M_PI_4);
   static const float defaultheight = sin(defaultangle) / cos(defaultangle);
 
   SoOrthographicCamera * camera = this->getCastCamera();
@@ -307,7 +308,7 @@ SoOrthoPerspectiveCameraManager::setZoomValueByDolly(float zoomvalue, SbBool lim
     return;
   }
 
-  static const float defaultangle = M_PI / 4.0f;
+  static const float defaultangle = float(M_PI_4);
   static const float defaultheight = sin(defaultangle) / cos(defaultangle);
 
   // these are absolute, and wipes out existing non-dollied zoom. should fix
@@ -390,7 +391,7 @@ void
 SoPerspectiveCameraManager::setZoomValue(float inzoomvalue, SbBool limit)
 {
   // default* defines what zoom=1.0 is
-  static const float defaultangle = M_PI / 4.0f;
+  static const float defaultangle = float(M_PI_4);
   static const float defaultheight = sin(defaultangle) / cos(defaultangle);
 
   float zoomvalue = inzoomvalue;
@@ -435,7 +436,7 @@ SoPerspectiveCameraManager::getZoomFactor(void) const
 {
   // zoombydolly does not affect angle for SoPerspectiveCamera handling, so
   // there is no need to compensate for that here.
-  static const float defaultangle = M_PI / 4.0f;
+  static const float defaultangle = float(M_PI_4);
   static const float defaultheight = sin(defaultangle) / cos(defaultangle);
 
   SoPerspectiveCamera * camera = this->getCastCamera();
@@ -448,7 +449,7 @@ SoPerspectiveCameraManager::getZoomFactor(void) const
 }
 
 void
-SoPerspectiveCameraManager::setZoomValueByDolly(float zoomvalue, SbBool limit)
+SoPerspectiveCameraManager::setZoomValueByDolly(float zoomvalue, SbBool COIN_UNUSED_ARG(limit))
 {
   if (!this->havezoombydollylimits) {
     // without unitydistance, we don't know anything
@@ -541,17 +542,17 @@ SoFrustumCameraManager::getCastCamera(void) const
 
 
 void
-SoFrustumCameraManager::setZoomValue(float zoomvalue, SbBool limit)
+SoFrustumCameraManager::setZoomValue(float COIN_UNUSED_ARG(zoomvalue), SbBool COIN_UNUSED_ARG(limit))
 {
 }
 
 void
-SoFrustumCameraManager::adjustZoomValue(float diffvalue, SbBool limit)
+SoFrustumCameraManager::adjustZoomValue(float COIN_UNUSED_ARG(diffvalue), SbBool COIN_UNUSED_ARG(limit))
 {
 }
 
 void
-SoFrustumCameraManager::adjustZoom(float factor, SbBool limit)
+SoFrustumCameraManager::adjustZoom(float COIN_UNUSED_ARG(factor), SbBool COIN_UNUSED_ARG(limit))
 {
 }
 
@@ -563,17 +564,17 @@ SoFrustumCameraManager::getZoomFactor(void) const
 
 
 void
-SoFrustumCameraManager::setZoomValueByDolly(float zoomvalue, SbBool limit)
+SoFrustumCameraManager::setZoomValueByDolly(float COIN_UNUSED_ARG(zoomvalue), SbBool COIN_UNUSED_ARG(limit))
 {
 }
 
 void
-SoFrustumCameraManager::adjustZoomByDollyDistance(float distance, SbBool limit)
+SoFrustumCameraManager::adjustZoomByDollyDistance(float COIN_UNUSED_ARG(distance), SbBool COIN_UNUSED_ARG(limit))
 {
 }
 
 void
-SoFrustumCameraManager::adjustZoomByDolly(float factor, SbBool limit)
+SoFrustumCameraManager::adjustZoomByDolly(float COIN_UNUSED_ARG(factor), SbBool COIN_UNUSED_ARG(limit))
 {
 }
 

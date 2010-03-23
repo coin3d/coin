@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,17 +11,18 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
 #include "glue/gl_wgl.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -51,19 +52,19 @@
 
 /* Dummy implementations, for when WGL is not available: */
 
-void * coin_wgl_getprocaddress(const cc_glglue * glue, const char * fname) { return NULL; }
+void * coin_wgl_getprocaddress(const cc_glglue * COIN_UNUSED_ARG(glue), const char * COIN_UNUSED_ARG(fname)) { return NULL; }
 
-void * wglglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); return NULL; }
-SbBool wglglue_context_make_current(void * ctx) { assert(FALSE); return FALSE; }
-void wglglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
-void wglglue_context_destruct(void * ctx) { assert(FALSE); }
+void * wglglue_context_create_offscreen(unsigned int COIN_UNUSED_ARG(width), unsigned int COIN_UNUSED_ARG(height)) { assert(FALSE); return NULL; }
+SbBool wglglue_context_make_current(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); return FALSE; }
+void wglglue_context_reinstate_previous(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); }
+void wglglue_context_destruct(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); }
 
-void wglglue_context_bind_pbuffer(void * ctx) { assert(FALSE); }
-void wglglue_context_release_pbuffer(void * ctx) { assert(FALSE); }
-SbBool wglglue_context_pbuffer_is_bound(void * ctx) { assert(FALSE); return FALSE; }
-SbBool wglglue_context_can_render_to_texture(void * ctx) { assert(FALSE); return FALSE; }
+void wglglue_context_bind_pbuffer(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); }
+void wglglue_context_release_pbuffer(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); }
+SbBool wglglue_context_pbuffer_is_bound(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); return FALSE; }
+SbBool wglglue_context_can_render_to_texture(void * COIN_UNUSED_ARG(ctx)) { assert(FALSE); return FALSE; }
 
-SbBool wglglue_context_pbuffer_max(void * ctx, unsigned int * lims) { assert(FALSE); return FALSE; }
+SbBool wglglue_context_pbuffer_max(void * COIN_UNUSED_ARG(ctx), unsigned int * COIN_UNUSED_ARG(lims)) { assert(FALSE); return FALSE; }
 
 /* ********************************************************************** */
 

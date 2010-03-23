@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -210,7 +210,7 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
     SbProfilingNodeTypeKey k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
-      TypeTimings & timings = it->second;
+      /*TypeTimings & timings = */it->second;
       SbTime totaltime, maxtime;
       uint32_t count;
       data.getStatsForType(k, totaltime, maxtime, count);
@@ -305,7 +305,7 @@ SoProfilerStatsP::updateNodeTypeTimingFields()
 } // updateNodeTypeTimingFields
 
 void
-SoProfilerStatsP::updateActionTimingFields(SoProfilerElement * e)
+SoProfilerStatsP::updateActionTimingFields(SoProfilerElement * COIN_UNUSED_ARG(e))
 {
   SbList<int16_t> actions;
   this->action_timings.makeKeyList(actions);
@@ -472,7 +472,7 @@ SoProfilerStats::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc from superclass.
 void
-SoProfilerStats::notify(SoNotList *l)
+SoProfilerStats::notify(SoNotList * COIN_UNUSED_ARG(l))
 {
   // we disable notifications from this node, to avoid constant
   // redraws of the scene graph.

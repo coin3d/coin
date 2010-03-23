@@ -1,5 +1,5 @@
-This is Coin-@VERSION@ by Kongsberg SIM. Double-click on Coin.pkg
-to start installation. If you do not want to use an installer, you can
+This is Coin-@VERSION@ by Kongsberg Oil & Gas Technologies. Double-click on
+Coin.pkg to start installation. If you do not want to use an installer, you can
 find a package containing only the framework itself (called
 Coin-@VERSION@-no_inst.dmg) at ftp://ftp.sim.no/pub/coin/bin/macosx.
 

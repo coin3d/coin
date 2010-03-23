@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -29,6 +29,56 @@
   The SoShapeHints node is used to set up clues to the rendering
   subsystem about how particular aspects of the subsequent geometry in
   the scene graph should be drawn.
+
+  Here is an example on how to display a scene in wireframe mode
+  which only shows the triangles facing towards the camera.
+
+  \code
+  #include <Inventor/nodes/SoCone.h>
+  #include <Inventor/nodes/SoDrawStyle.h>
+  #include <Inventor/nodes/SoLightModel.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoShapeHints.h>
+  #include <Inventor/Win/SoWin.h>
+  #include <Inventor/Win/viewers/SoWinExaminerViewer.h>
+
+  int main(int, char * argv[])
+  {
+    HWND window = SoWin::init(argv[0]);
+
+    SoSeparator * root = new SoSeparator;
+
+    // wireframe
+    SoDrawStyle * drawStyle = new SoDrawStyle;
+    drawStyle->style = SoDrawStyle::LINES;
+    root->addChild(drawStyle);
+
+    // back-face culling
+    SoShapeHints * shapeHints = new SoShapeHints;
+    shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    shapeHints->shapeType = SoShapeHints::SOLID;
+    root->addChild(shapeHints);
+
+    // keep a solid color
+    SoLightModel * lightModel = new SoLightModel;
+    lightModel->model = SoLightModel::BASE_COLOR;
+    root->addChild(lightModel);
+
+    // a cone
+    SoCone * cone = new SoCone;
+    root->addChild(cone);
+
+    // set up a window
+    SoWinExaminerViewer * viewer = new SoWinExaminerViewer(window);
+    SbViewportRegion vpRegion = viewer->getViewportRegion();
+    viewer->setSceneGraph(root);
+    viewer->show();
+
+    SoWin::mainLoop();
+    delete viewer;
+    return 0;
+  }
+  \endcode
 
   The default settings of the rendering system is tuned towards
   programmer convenience. For instance, the default is to render both

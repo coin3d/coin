@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -31,6 +31,7 @@
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
+#include "coindefs.h"
 
 #ifdef HAVE_VRML97
 #include "vrml97/JS_VRMLClasses.h"
@@ -166,8 +167,8 @@ static void SpiderMonkey_ErrorHandler(JSContext * cx, const char * message,
   Easy to use print function for spidermonkey.
   print("hello", "world", 123, obj) will return "hello world 123 [some obj]"
  */
-static JSBool JavascriptPrint(JSContext * cx, JSObject * obj, 
-                              uintN argc, jsval * argv, jsval * rval)
+static JSBool JavascriptPrint(JSContext * cx, JSObject * COIN_UNUSED_ARG(obj), 
+                              uintN argc, jsval * argv, jsval * COIN_UNUSED_ARG(rval))
 {
   SbString out;
 

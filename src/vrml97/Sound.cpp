@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -213,6 +213,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
+#include "coindefs.h"
 
 #include <stddef.h>
 
@@ -536,7 +537,7 @@ SoVRMLSound::~SoVRMLSound(void)
 */
 
 void
-SoVRMLSound::setDopplerVelocity(float velocity)
+SoVRMLSound::setDopplerVelocity(float COIN_UNUSED_ARG(velocity))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::setDopplerVelocity",
@@ -564,7 +565,7 @@ SoVRMLSound::getDopplerVelocity() const
 */
 
 void
-SoVRMLSound::setDopplerFactor(float factor)
+SoVRMLSound::setDopplerFactor(float COIN_UNUSED_ARG(factor))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::setDopplerFactor",
@@ -592,7 +593,7 @@ SoVRMLSound::getDopplerFactor() const
 */
 
 void
-SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
+SoVRMLSound::startPlaying(SoPath * COIN_UNUSED_ARG(path), void * COIN_UNUSED_ARG(userdataptr))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::startPlaying",
@@ -605,7 +606,7 @@ SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
 */
 
 void
-SoVRMLSound::stopPlaying(SoPath *path, void *userdataptr)
+SoVRMLSound::stopPlaying(SoPath * COIN_UNUSED_ARG(path), void * COIN_UNUSED_ARG(userdataptr))
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::stopPlaying",
@@ -1124,7 +1125,7 @@ SoVRMLSoundP::threadCallback()
 }
 
 void
-SoVRMLSoundP::timercb(void * data, SoSensor * s)
+SoVRMLSoundP::timercb(void * data, SoSensor * COIN_UNUSED_ARG(s))
 {
   SoVRMLSoundP * thisp = (SoVRMLSoundP*) data;
   thisp->fillBuffers();

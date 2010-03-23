@@ -46,7 +46,6 @@ if test ! -d Coin; then
   hg clone http://hg.sim.no/Coin/default Coin
 else
   hg -RCoin pull -u
-  hg -RCoin update
 fi
 
 

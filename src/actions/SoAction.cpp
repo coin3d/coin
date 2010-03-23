@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -470,12 +470,6 @@ SoAction::apply(SoNode * root)
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
 
-  // if a new element has been enabled, we need to recreate the state
-  if (this->state &&
-      (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
-    delete this->state;
-    this->state = NULL;
-  }
   PRIVATE(this)->terminated = FALSE;
 
   this->currentpathcode = SoAction::NO_PATH;
@@ -631,13 +625,6 @@ SoAction::apply(SoPath * path)
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
 
-  // if a new element has been enabled, we need to recreate the state
-  if (this->state &&
-      (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
-    delete this->state;
-    this->state = NULL;
-  }
-
   PRIVATE(this)->terminated = FALSE;
 
 #if COIN_DEBUG
@@ -700,13 +687,6 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   AppliedCode storedcode = PRIVATE(this)->appliedcode;
   SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
   PathCode storedcurr = this->currentpathcode;
-
-  // if a new element has been enabled, we need to recreate the state
-  if (this->state &&
-      (this->getEnabledElements().getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
-    delete this->state;
-    this->state = NULL;
-  }
 
   PRIVATE(this)->terminated = FALSE;
 
@@ -1097,6 +1077,13 @@ SoAction::hasTerminated(void) const
 SoState *
 SoAction::getState(void) const
 {
+  // if a new element has been enabled, we need to recreate the state
+  if (this->state &&
+      (SoEnabledElementsList::getCounter() != PRIVATE(this)->prevenabledelementscounter)) {
+    SoAction * thisp = const_cast<SoAction*> (this);
+    delete thisp->state;
+    thisp->state = NULL;
+  }
   if (this->state == NULL) {
     // cast away constness to set state
     const_cast<SoAction*>(this)->state =

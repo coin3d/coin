@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -78,7 +78,7 @@ typedef SoVertexAttributeData * Type;
 //
 // send attributes to gl
 //
-static void send_attribs(const Key & key,
+static void send_attribs(const Key & COIN_UNUSED_ARG(key),
                          const Type & attribdata,
                          void * closure)
 {
@@ -143,7 +143,7 @@ static void send_attribs(const Key & key,
 //
 static void query_attribs(const Key & key,
                           const Type & attribdata,
-                          void * closure)
+                          void * COIN_UNUSED_ARG(closure))
 {
   SoVertexAttributeData * data = (SoVertexAttributeData *) attribdata;
   const cc_glglue * glue = sogl_glue_instance(data->state);
@@ -168,7 +168,7 @@ static void query_attribs(const Key & key,
 //
 // enable vertex array rendering, with or without vbo
 //
-static void enable_vbo(const Key & key,
+static void enable_vbo(const Key & COIN_UNUSED_ARG(key),
                        const Type & attribdata,
                        void * closure)
 {
@@ -205,7 +205,7 @@ static void enable_vbo(const Key & key,
 //
 // disable vertex array rendering, with or without vbo
 //
-static void disable_vbo(const Key & key,
+static void disable_vbo(const Key & COIN_UNUSED_ARG(key),
                         const Type & attribdata,
                         void * closure)
 {

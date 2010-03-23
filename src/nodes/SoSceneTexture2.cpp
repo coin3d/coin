@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -247,6 +247,7 @@
 */
 
 #include <Inventor/nodes/SoSceneTexture2.h>
+#include "coindefs.h"
 
 #include <assert.h>
 #include <string.h>
@@ -532,7 +533,7 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
 
 // Documented in superclass.
 void
-SoSceneTexture2::doAction(SoAction * action)
+SoSceneTexture2::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
 #if 0 // disabled until we figure out what to do here, pederb 2003-11-27
   SoState * state = action->getState();
@@ -678,7 +679,7 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
 }
 
 void
-SoSceneTexture2P::updateFrameBuffer(SoState * state, const float quality)
+SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG(quality))
 {
   int i;
   SbVec2s size = PUBLIC(this)->size.getValue();
@@ -978,7 +979,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
 }
 
 void
-SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
+SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * COIN_UNUSED_ARG(action))
 {
   SoSceneTexture2 * thisp = (SoSceneTexture2*) userdata;
   SbVec4f col = thisp->backgroundColor.getValue();
