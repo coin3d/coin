@@ -130,10 +130,10 @@ SoGLVBOElement::setTexCoordVBO(SoState * state, const int unit, SoVBO * vbo)
 {
   SoGLVBOElement * elem = getElement(state);
   const int n = PRIVATE(elem)->texcoordvbo.getLength();
-  for (int i = n; i < unit; i++) {
+  for (int i = n; i <= unit; i++) {
     PRIVATE(elem)->texcoordvbo.append(NULL);
   }
-  PRIVATE(elem)->texcoordvbo.append(vbo);
+  PRIVATE(elem)->texcoordvbo[unit] = vbo;
 }
 
 // doc in parent
