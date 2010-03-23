@@ -190,6 +190,7 @@ static void enable_vbo(const Key & key,
   if (data->vbo) {
     data->vbo->bindBuffer(action->getCacheContext());
   } else {
+    cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0);
     dataptr = attribdata->dataptr;
   }
 
