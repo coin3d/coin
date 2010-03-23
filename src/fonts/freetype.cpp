@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -32,6 +32,7 @@
 
    20050613 mortene. */
 
+#include "coindefs.h"
 #include "fonts/freetype.h"
 
 #ifdef HAVE_CONFIG_H
@@ -453,7 +454,7 @@ cc_flwft_initialize(void)
 }
 
 static void
-clean_fontmap_hash(uintptr_t key, void * val, void * closure)
+clean_fontmap_hash(uintptr_t COIN_UNUSED_ARG(key), void * val, void * COIN_UNUSED_ARG(closure))
 {
   cc_dynarray * array = (cc_dynarray *)val;
   cc_dynarray_destruct(array);
@@ -869,7 +870,7 @@ cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float
 }
 
 void
-cc_flwft_done_glyph(void * font, int glyph)
+cc_flwft_done_glyph(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph))
 {
 }
 
@@ -1130,7 +1131,7 @@ flwft_addTessVertex(double * vertex)
    contour. (so "move to" means "lift pencil, jump to and start new
    contour".) */
 static int
-flwft_moveToCallback(FT_Vector * to, void * user)
+flwft_moveToCallback(FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   if (flwft_tessellator.contour_open) {
@@ -1153,7 +1154,7 @@ flwft_moveToCallback(FT_Vector * to, void * user)
 /* "line to" in this context means that the current contour is
    continued with a line to the given point. */
 static int
-flwft_lineToCallback(FT_Vector * to, void * user)
+flwft_lineToCallback(FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   double vertex[3];
@@ -1171,7 +1172,7 @@ flwft_lineToCallback(FT_Vector * to, void * user)
 }
 
 static int
-flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
+flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   int i;
@@ -1226,7 +1227,7 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
 }
 
 static int
-flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user)
+flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   /*
@@ -1391,7 +1392,7 @@ flwft_endCallback(void)
 }
 
 static void
-flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
+flwft_combineCallback(GLdouble coords[3], GLvoid * COIN_UNUSED_ARG(vertex_data), GLfloat /*weight*/[4], int **dataOut)
 {
   /* FIXME: I believe this callback may not actually be necessary.
      20060227 mortene. */

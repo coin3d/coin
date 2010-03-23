@@ -5,7 +5,7 @@
 	<key>IFPkgDescriptionDeleteWarning</key>
 	<string></string>
 	<key>IFPkgDescriptionDescription</key>
-	<string>The Coin commandline tools for Coin @VERSION@ by Kongsberg SIM AS</string>
+	<string>The Coin commandline tools for Coin @VERSION@ by Kongsberg Oil &amp; Gas Technologies AS</string>
 	<key>IFPkgDescriptionTitle</key>
 	<string>CoinTools</string>
 	<key>IFPkgDescriptionVersion</key>

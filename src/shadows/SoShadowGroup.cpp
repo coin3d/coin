@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -264,6 +264,7 @@
 // *************************************************************************
 
 #include <FXViz/nodes/SoShadowGroup.h>
+#include "coindefs.h"
 
 #include <math.h>
 
@@ -670,7 +671,7 @@ public:
       }
     }
   }
-  void getQuality(SoState * state, SbBool & perpixelspot, SbBool & perpixelother) {
+  void getQuality(SoState * COIN_UNUSED_ARG(state), SbBool & perpixelspot, SbBool & perpixelother) {
     float quality = this->master->quality.getValue();
     perpixelspot = FALSE;
     perpixelother = FALSE;
@@ -1118,7 +1119,7 @@ SoShadowLightCache::toCameraSpace(const SbXfBox3f & worldbox) const
 }
 
 void
-SoShadowGroupP::updateSpotCamera(SoState * state, SoShadowLightCache * cache, const SbMatrix & transform)
+SoShadowGroupP::updateSpotCamera(SoState * COIN_UNUSED_ARG(state), SoShadowLightCache * cache, const SbMatrix & transform)
 {
   SoCamera * cam = cache->camera;
   SoSpotLight * light = static_cast<SoSpotLight*> (cache->light);
@@ -1292,7 +1293,7 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
 
   cache->fragment_lightplane->value.setValue(N[0], N[1], N[2], D);
 
-  SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
+  //SoShadowGroup::VisibilityFlag visflag = (SoShadowGroup::VisibilityFlag) PUBLIC(this)->visibilityFlag.getValue();
 
   float visnear = cam->nearDistance.getValue();
   float visfar = cam->farDistance.getValue();
@@ -1307,7 +1308,7 @@ SoShadowGroupP::updateDirectionalCamera(SoState * state, SoShadowLightCache * ca
     cam->farDistance = cache->farval;
   }
 
-  float realfarval = cache->farval*1.1;
+  float realfarval = cache->farval * 1.1f;
   cache->fragment_farval->value = realfarval;
   cache->vsm_farval->value = realfarval;
 
@@ -2293,7 +2294,7 @@ SoShadowLightCache::createGaussSG(SoShaderProgram * program, SoSceneTexture2 * t
 }
 
 void
-SoShadowLightCache::shadowmap_glcallback(void * closure, SoAction * action)
+SoShadowLightCache::shadowmap_glcallback(void * COIN_UNUSED_ARG(closure), SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     SoState * state = action->getState();
@@ -2311,7 +2312,7 @@ SoShadowLightCache::shadowmap_glcallback(void * closure, SoAction * action)
 }
 
 void
-SoShadowLightCache::shadowmap_post_glcallback(void * closure, SoAction * action)
+SoShadowLightCache::shadowmap_post_glcallback(void * COIN_UNUSED_ARG(closure), SoAction * action)
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     // for debugging the shadow map

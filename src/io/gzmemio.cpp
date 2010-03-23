@@ -27,6 +27,7 @@
 */
 
 #include "io/gzmemio.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -143,8 +144,8 @@ static int cc_gzm_ferror(cc_gzm_file * file);
 void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
 {
   int err;
-  int level = Z_DEFAULT_COMPRESSION; /* compression level */
-  int strategy = Z_DEFAULT_STRATEGY; /* compression strategy */
+  //int level = Z_DEFAULT_COMPRESSION; /* compression level */
+  //int strategy = Z_DEFAULT_STRATEGY; /* compression strategy */
   cc_gzm_stream * s;
 
 
@@ -844,7 +845,7 @@ cc_gzm_fread(void * ptr, size_t size, size_t nmemb, cc_gzm_file * file)
 }
 
 static int
-cc_gzm_ferror(cc_gzm_file * file)
+cc_gzm_ferror(cc_gzm_file * COIN_UNUSED_ARG(file))
 {
   return 0;
 }

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -114,10 +114,10 @@ ScXMLDocument::PImpl::fillIdentifierMaps(ScXMLElt * object)
   }
 
   if (object->isOfType(ScXMLAnchorElt::getClassTypeId())) {
-    ScXMLAnchorElt * anchor = static_cast<ScXMLAnchorElt *>(object);
+    /*ScXMLAnchorElt * anchor = */static_cast<ScXMLAnchorElt *>(object);
   }
   else if (object->isOfType(ScXMLDataElt::getClassTypeId())) {
-    ScXMLDataElt * data = static_cast<ScXMLDataElt *>(object);
+    /*ScXMLDataElt * data = */static_cast<ScXMLDataElt *>(object);
   }
   else if (object->isOfType(ScXMLScxmlElt::getClassTypeId())) {
     ScXMLScxmlElt * root = static_cast<ScXMLScxmlElt *>(object);
@@ -133,7 +133,7 @@ ScXMLDocument::PImpl::fillIdentifierMaps(ScXMLElt * object)
     }
   }
   else if (object->isOfType(ScXMLFinalElt::getClassTypeId())) {
-    ScXMLFinalElt * final = static_cast<ScXMLFinalElt *>(object);
+    /*ScXMLFinalElt * final = */static_cast<ScXMLFinalElt *>(object);
   }
   else if (object->isOfType(ScXMLHistoryElt::getClassTypeId())) {
     const ScXMLHistoryElt * history = static_cast<ScXMLHistoryElt *>(object);
@@ -148,7 +148,7 @@ ScXMLDocument::PImpl::fillIdentifierMaps(ScXMLElt * object)
     }
   }
   else if (object->isOfType(ScXMLInvokeElt::getClassTypeId())) {
-    ScXMLInvokeElt * invoke = static_cast<ScXMLInvokeElt *>(object);
+    /*ScXMLInvokeElt * invoke = */static_cast<ScXMLInvokeElt *>(object);
   }
   else if (object->isOfType(ScXMLOnEntryElt::getClassTypeId())) {
     ScXMLOnEntryElt * onentry = static_cast<ScXMLOnEntryElt *>(object);
@@ -206,13 +206,13 @@ ScXMLDocument::PImpl::fillIdentifierMaps(ScXMLElt * object)
     }
   }
   else if (object->isOfType(ScXMLLogElt::getClassTypeId())) {
-    ScXMLLogElt * log = static_cast<ScXMLLogElt *>(object);
+    /*ScXMLLogElt * log = */static_cast<ScXMLLogElt *>(object);
   }
   else if (object->isOfType(ScXMLSendElt::getClassTypeId())) {
-    ScXMLSendElt * send = static_cast<ScXMLSendElt *>(object);
+    /*ScXMLSendElt * send = */static_cast<ScXMLSendElt *>(object);
   }
   else if (object->isOfType(ScXMLAssignElt::getClassTypeId())) {
-    ScXMLAssignElt * assign = static_cast<ScXMLAssignElt *>(object);
+    /*ScXMLAssignElt * assign = */static_cast<ScXMLAssignElt *>(object);
   }
   else if (object->isOfType(ScXMLDataModelElt::getClassTypeId())) {
     ScXMLDataModelElt * datamodel = static_cast<ScXMLDataModelElt *>(object);
@@ -251,7 +251,7 @@ ScXMLDocument::~ScXMLDocument(void)
 {
 }
 
-void intrusive_ptr_add_ref(cc_xml_doc * doc) {
+void intrusive_ptr_add_ref(cc_xml_doc * COIN_UNUSED_ARG(doc)) {
   // nada
 }
 
@@ -265,7 +265,7 @@ ScXMLDocument::readFile(const char * filename)
   ScXMLDocument * scxmldoc = NULL;
 
   if (strncmp(filename, "coin:", 5) == 0) { // is a "resource"
-    size_t buffersize = 0;
+    //size_t buffersize = 0;
     SbByteBuffer buffer = CoinResources::get(filename);
     if (likely(buffer.isValid())) {
       scxmldoc = ScXMLDocument::readBuffer(buffer);

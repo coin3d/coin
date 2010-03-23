@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -193,7 +193,7 @@ SoScrollingGraphKit::~SoScrollingGraphKit(void)
 }
 
 void
-SoScrollingGraphKit::addValuesCB(void * closure, SoSensor * sensor)
+SoScrollingGraphKit::addValuesCB(void * closure, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoScrollingGraphKit * kit = static_cast<SoScrollingGraphKit *>(closure);
 
@@ -229,7 +229,7 @@ SoScrollingGraphKitP::pullStatistics(void)
   int c;
   for (c = 0; c < numvalues; ++c) { // make sure all the grraph structs needed are created
     SbName key = kit->addKeys[c];
-    Graph * graph = this->getGraph(key);
+    /*Graph * graph = */this->getGraph(key);
   }
   const int numgraphs = this->graphs.getNumElements();
   for (c = 0; c < numgraphs; ++c) { // initialize default for all graphs
@@ -445,7 +445,7 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
     int idx = 0;
     float maxypos = 0.0f, maxprevypos = 0.0f;
     while (datum) {
-      const int numvalues = datum->datum.getLength();
+      /*const int numvalues = */datum->datum.getLength();
 
       float value = 0.0f, prev = 0.0f;
 #if LINEUP

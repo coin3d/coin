@@ -2157,6 +2157,8 @@ if $BUILD_WITH_MSVC; then
     *)
       SIM_AC_CONFIGURATION_SETTING([Coin build type],
                                    [dynamic .dll${release_string} + .pdb])
+      CFLAGS="-g $CFLAGS"
+      CXXFLAGS="-g $CXXFLAGS"
       LIBFLAGS="$LIBFLAGS ${debug_flag} /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
       ;;
     esac

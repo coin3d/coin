@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,17 +11,18 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
 #include <Inventor/scxml/ScXMLElt.h>
+#include "coindefs.h"
 
 /*!
   \class ScXMLElt ScXMLElt.h Inventor/scxml/ScXMLElt.h
@@ -229,7 +230,7 @@ ScXMLElt::clone(void) const
 }
 
 void
-ScXMLElt::copyContents(const ScXMLElt * rhs)
+ScXMLElt::copyContents(const ScXMLElt * COIN_UNUSED_ARG(rhs))
 {
   // FIXME: copy XMLattribute map, otherwise xmlns attrs will be lost.
 }

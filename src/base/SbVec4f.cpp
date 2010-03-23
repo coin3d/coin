@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -193,9 +193,15 @@ float
 SbVec4f::normalize(void)
 {
   float len = this->length();
+  //This number is found by doing some testing, but I suspect it to be a bit to high. BFG
+  static const float NORMALIZATION_TOLERANCE = 1.0/16777216;
 
   if (len > 0.0f) {
-    operator/=(len);
+    //We don't want to normalize if we are close enough, as we are
+    //probably just going to make things worse
+    if (SbAbs(len-1.0) > NORMALIZATION_TOLERANCE) {
+      operator/=(len);
+    }
   }
 #if COIN_DEBUG
   else if (coin_debug_normalize()) {
@@ -404,3 +410,53 @@ SbVec4f::print(FILE * fp) const
     this->vec[3] );
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(noNormalizingNormalized)
+{
+  const int FLOAT_SENSITIVITY = 0;
+  const float SQRT2 = sqrt(2)/2;
+  SbVec4f vec(0,-SQRT2,0,SQRT2);
+
+  vec.normalize();
+  for (int i=0;i<4;++i) {
+    int premultiply = ((i&0x1)*((i&0x2)-1));
+    float testVal = premultiply*SQRT2;
+    BOOST_CHECK_MESSAGE(
+                        testVal==vec[i],
+                        std::string("Wrong value when trying to access value #")
+                        + boost::lexical_cast<std::string>(i)
+                        + ": "
+                        + boost::lexical_cast<std::string>(vec[i]) +
+                        " == "
+                        + boost::lexical_cast<std::string>(testVal)
+                        );
+  }
+
+}
+
+BOOST_AUTO_TEST_CASE(normalizingDeNormalized)
+{
+  const int FLOAT_SENSITIVITY = 1;
+  const float SQRT2 = sqrt(2)/2;
+  SbVec4f vec(0,-1,0,1);
+
+  vec.normalize();
+  for (int i=0;i<4;++i) {
+    int premultiply = ((i&0x1)*((i&0x2)-1));
+    float testVal = premultiply*SQRT2;
+    BOOST_CHECK_MESSAGE(
+                        floatEquals(testVal,vec[i],FLOAT_SENSITIVITY),
+                        std::string("Wrong value when trying to access value #")
+                        + boost::lexical_cast<std::string>(i)
+                        + ": "
+                        + boost::lexical_cast<std::string>(vec[i]) +
+                        " == "
+                        + boost::lexical_cast<std::string>(testVal)
+                        );
+  }
+
+}
+
+#endif //COIN_TEST_SUITE

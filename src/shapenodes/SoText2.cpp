@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -88,6 +88,7 @@
 */
 
 #include <Inventor/nodes/SoText2.h>
+#include "coindefs.h"
 
 #include <limits.h>
 #include <string.h>
@@ -211,7 +212,7 @@ public:
   unsigned char * pixel_buffer;
   int pixel_buffer_size;
 
-  static void sensor_cb(void * userdata, SoSensor * s) {
+  static void sensor_cb(void * userdata, SoSensor * COIN_UNUSED_ARG(s)) {
     SoText2P * thisp = (SoText2P*) userdata;
     thisp->lock();
     if (thisp->cache) thisp->cache->invalidate();
@@ -636,7 +637,7 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 // doc in super
 void
-SoText2::generatePrimitives(SoAction * action)
+SoText2::generatePrimitives(SoAction * COIN_UNUSED_ARG(action))
 {
   // This is supposed to be empty. There are no primitives.
 }

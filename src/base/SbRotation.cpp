@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -733,26 +733,6 @@ SbRotation::print(FILE * fp) const
 #include <Inventor/SbVec3f.h>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
-
-// Test for almostEquality
-static bool floatEquals(float A, float B, int maxUlps)
-{
-    // Make sure maxUlps is non-negative and small enough that the
-    // default NAN won't compare as equal to anything.
-    assert(maxUlps > 0 && maxUlps < 4 * 1024 * 1024);
-    int aInt = *(int*)&A;
-    // Make aInt lexicographically ordered as a twos-complement int
-    if (aInt < 0)
-        aInt = 0x80000000 - aInt;
-    // Make bInt lexicographically ordered as a twos-complement int
-    int bInt = *(int*)&B;
-    if (bInt < 0)
-        bInt = 0x80000000 - bInt;
-    int intDiff = abs(aInt - bInt);
-    if (intDiff <= maxUlps)
-        return true;
-    return false;
-}
 
 typedef SbRotation ToTest;
 BOOST_AUTO_TEST_CASE(operatorBrackets)

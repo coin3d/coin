@@ -9,24 +9,25 @@ hints and tips for you.
 ===================
 
 First of all, you should make sure you are building from the latest
-sources from the Subversion repository you want to work with. This is
-done by using the Subversion for staying in sync with the sourcecode
-repository we at Kongsberg SIM are using. Follow the instructions on
-the webpages at <URL:http://www.coin3d.org/doc/svn_access/>.
+sources from the Mercurial repository you want to work with. This is
+done by using the Mercurial for staying in sync with the sourcecode
+repository we at Kongsberg Oil & Gas Technologies are using. Follow
+the instructions on the webpages at
+<URL:http://www.coin3d.org/doc/mercurial_access>.
 
-Be aware that Coin has three source repositories.  "Coin" is the head
+Be aware that Coin has three source repositories. "Coin" is the head
 development repository which is unstable and may contain unportable
-code and break binary compatibility from time to time.  "Coin-1" is
-the repository that contains the code for the latest Coin-1.* release.
+code and break binary compatibility from time to time. "Coin-1" is the
+repository that contains the code for the latest Coin-1.* release.
 "Coin-2" is the repository we release the Coin 2.* releases from and
 will always contain stable code that does not break upwards binary
 compatibility. You can hack on either, but for your application
 development efforts' sake you might want to follow Coin-2.
 
-If you are not familiar with Subversion, check out the Subversion
-homepages at <URL:http://subversion.tigris.org/> and specifically the
-Subversion documention in the available online book at
-<URL:http://svnbook.org/>.
+If you are not familiar with Mercurial, check out the Mercurial
+homepages at <URL:http://mercurial.selenic.com/> and specifically the
+Mercurial documentation in the available online book at
+<URL:http://hgbook.red-bean.com/>.
 
 
 2 Surviving a Large C++ Project
@@ -52,23 +53,22 @@ demonstration purposes):
   $ cd $HOME
   $ mkdir code
   $ cd code
-  $ svn co https://svn.coin3d.org/repos/simage/trunk simage
-  [Subversion doing its thing]
-  $ svn co https://svn.coin3d.org/repos/Coin/trunk Coin
-  [Subversion doing its thing]
-  $ svn co https://svn.coin3d.org/repos/SoXt/trunk SoXt
-  [Subversion doing its thing]
+  $ hg clone http://hg.sim.no/simage/default simage
+  [Mercurial doing its thing]
+  $ hg clone http://hg.sim.no/Coin/default Coin
+  [Mercurial doing its thing]
+  $ hg clone http://hg.sim.no/SoXt/default SoXt
+  [Mercurial doing its thing]
 
         Note: you might want to work with a particular branch from
-        Subversion, if so use the "branches" instead of "trunk"
-        subdirectory above. (We are adhering to the standard
-        repository layout convention of the Subversion book)
+        Mercurial, if so use the "branches" instead of "default"
+        repository above.
 
         Note2: if you have already checked out the sources at an
         earlier point in time, you just ``cd'' to the sourcecode
         directories and do
 
-                $ svn update
+        $ hg pull -u
 
         instead of the full checkout.
 
@@ -95,11 +95,11 @@ demonstration purposes):
         subdirectory under $WORKDIR/compile/Coin/src/. The brilliance of
         this little trick will be explained later in the walk-through.
 
-        Note for Mac OS X users: --enable-hacking requires Mac OS 
+        Note for Mac OS X users: --enable-hacking requires Mac OS
         version 10.3 or higher. It also works with the Mac OS X
         framework build, however note that you'll need to set your
         DYLD_LIBRARY_PATH to include Inventor.framework/Libraries.
-        Universal Binaries are not supported. 
+        Universal Binaries are not supported.
 
   $ make install
 
@@ -111,7 +111,6 @@ demonstration purposes):
         Shared library files for all sub-dirs in the Coin sourcecode
         tree should now have been installed in $WORKDIR/install, along
         with a top-level libCoin.so file.
-
 
         Now, Libtool's .la-scheme for storing information about
         installed libraries doesn't work too well when trying to build
@@ -258,22 +257,17 @@ and explains the principles applied fairly well.
 4 Misc Configurations
 =====================
 
-* Subversion
+* Mercurial
 
-  In order to disallow the storage of your subversion password with
-  the standard Subversion command line client have a look at the
-  "[auth]" section in your ~/.subversion/config file:
+  In order to allow the storage of your Mercurial password with the
+  standard Mercurial command line client in a convenient but secure
+  fashion have a look at the Keyring Extension:
 
-  [auth]
-  ### Set store-passwords to 'no' to avoid storing passwords in the
-  ### auth/ area of your config directory.  It defaults to 'yes'.
-  ### Note that this option only prevents saving of *new* passwords;
-  ### it doesn't invalidate existing passwords.  (To do that, remove
-  ### the cache files by hand as described in the Subversion book.)
-  # store-passwords = no
+  http://mercurial.selenic.com/wiki/KeyringExtension
 
-  This might come in handy if you have to check in outside of your
-  trusted workstation.
+  As the default on Mercurial is to prompt you for a password it is
+  somewhat safe apart from the regular caveats to check in outside of
+  your trusted workstation.
 
 * emacs
 
@@ -293,19 +287,19 @@ and explains the principles applied fairly well.
 
 * vim
 
-  To insert spaces instead of tab characters (using 2 space characters 
+  To insert spaces instead of tab characters (using 2 space characters
   every time you press 'tab', and also using 2 spaces for
   auto-indentation), add the following to your ~/.vimrc file:
 
-    set expandtab 
+    set expandtab
     set tabstop=2
     set shiftwidth=2
 
 * MS Visual Studio
-  
+
   Under tools -> options, choose the Tabs group and check the radio button
   that says "insert spaces" and choose tab size 2.
-  
+
 
 5 The Build Environment
 =======================
@@ -361,7 +355,7 @@ and explains the principles applied fairly well.
 
   * If new source files were introduced:
 
-        * Add them to the Subversion repository.
+        * Add them to the Mercurial repository.
 
         * Add the header and any generated doc files for the class to
           build/coin.spec.in (for RPM generation).
@@ -406,8 +400,8 @@ build.
 
 To be able to bootstrap the Coin repository (or any other SIM code
 repository), you need to check out the "simacros" modules from Coin's
-Subversion master repository. Then, in a UNIX shell, ''cd'' to the
-base directory of the Coin module (where the source code for Coin is
+Mercurial main repository. Then, in a UNIX shell, ''cd'' to the base
+directory of the Coin module (where the source code for Coin is
 located) and run ''<simacrosdir>/bin/bootstrap''.
 
 Note that bootstrapping before committing changes to
@@ -602,72 +596,75 @@ MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
 
 ==============================================================================
 
-Subversion maintenance
+Mercurial maintenance
 ======================
 
 New "Coin-MAJOR" repositories will be branched off the head "Coin"
-repository. "Branching" in this context means to copy the "trunk/"
-subdirectory to the "branches/" directory through the standard
-subversion "copy" command.
+repository. "Branching" in this context means to clone the "default/"
+subdirectory to the "Coin/" directory through the standard
+Mercurial "clone" command.
 
 When this happens, the Coin repository should be tagged with the
-symbolic name "coin-MAJOR.0.0".
+symbolic name "coin-MAJOR.MINOR".
 
-All releases will be made from the Coin-MAJOR repositories.  When a new
-release is made from one of those, the sources will be tagged with the
-symbolic name "coin-MAJOR_MINOR_MICRO".  This was forgotten for the
-Coin-1.0.0 release, but for MAJOR.0.0 releases this is not very important
-as it will coincide with the initial import of the repository.
+All releases will be made from the Coin-MAJOR.MINOR repositories.
+When a new release is made from one of those, the sources will be
+tagged with the symbolic name "Coin-MAJOR.MINOR.MICRO". This was
+forgotten for the Coin-1.0.0 release, but for MAJOR.0.0 releases this
+is not very important as it will coincide with the initial import of
+the repository.
 
-Releases made from Coin-MAJOR repositories will be in sequence.  When the
-MINOR version number is increased, no more releases of the MINOR - 1 branch
-will be made.
+Releases made from Coin-MAJOR repositories will be in sequence. When
+the MINOR version number is increased, no more releases of the MINOR -
+1 branch will be made.
 
 
 Making Releases
 ===============
 
-(FIXME: hasn't the following description been superseded by the
-Coin/RELEASE document? 20030901 mortene.)
+Make sure to consult Coin/docs/RELEASE.txt for detailed and up2date
+release procedures.
 
-When a new release is to be made, configure.ac must be updated with new
-version information.  Make sure COIN_BETA is set to [] (empty), and the
-release version number is set up.  Run bootstrap and check that
-"make distcheck" works.  Commit the changes with a message about setting
-the version number to MAJOR.MINOR.MICRO.
+When a new release is to be made, configure.ac must be updated with
+new version information. Make sure COIN_BETA is set to [] (empty), and
+the release version number is set up. Run bootstrap and check that
+"make distcheck" works. Commit the changes with a message about
+setting the version number to MAJOR.MINOR.MICRO.
 
-Add a Subversion tag on the new version number.
-  $ svn copy https://svn.coin3d.org/repos/Coin/trunk \
-             https://svn.coin3d.org/repos/Coin/tags/coin-MAJOR.MINOR.MICRO \
+Add a Mercurial tag on the new version number.
+
+  $ hg tag Coin-MAJOR.MINOR.MICRO \
       -m "Tagging the MAJOR.MINOR.MICRO release of the 'Coin' project."
 
-Edit configure.ac again and increase micro (unless a new minor will be the
-next release) and set COIN_BETA to [a].  Rerun bootstrap, and commit the
-new setup with a message about setting the version number again.
+Edit configure.ac again and increase micro (unless a new minor will be
+the next release) and set COIN_BETA to [a]. Rerun bootstrap, and
+commit the new setup with a message about setting the version number
+again.
 
 These two version-increment commits should happen without getting any
 unrelated commits inbetween them so there won't be multiple states of
-the Subversion repository with a release version number.
+the Mercurial repository with a release version number.
 
-Then go back to the tag (svn update
-https://svn.coin3d.org/repos/Coin/tags/coin-MAJOR.MINOR.MICRO) and
+Then go back to the tag (hg update -rCoin-MAJOR.MINOR.MICRO) and
 prepare the release.
 
-Source release tarballs are created with "make dist".  Binary releases are
-created from the source release tarball.
+Source release tarballs are created with:
+
+  $ hg archive -tzip Coin-MAJOR.MINOR.MICRO.zip
+  $ hg archive -ttgz Coin-MAJOR.MINOR.MICRO.tar.gz
+
+Binary releases are created from the source release tarball combining
+the respective the buildbot output from the binary snapshot directory.
 
 
 Correcting Erroneous Log Messages
 =================================
 
 Sometimes commits ends up with incorrect log messages due to the
-committer being a bit too trigger-happy. The following Subversion FAQ
-item describes how to achieve that:
-  http://subversion.tigris.org/faq.html#change-log-msg
+committer being a bit too trigger-happy. The following Mercurial book
+chapter describes how to achieve that:
 
-  Short version:
-
-  $ svn propset -r <rev> --revprop svn:log "new log message" URL
+  http://hgbook.red-bean.com/read/finding-and-fixing-mistakes.html
 
 Do this instead of reversing and reapplying, or other round-about and
 confusing techniques...
@@ -889,7 +886,7 @@ First, the larger issues:
         compilers we want the code to be compatible with.
 
       - Don't use exceptions.
-  
+
 
 Enough about the larger issues, now for the mucky details that has
 been written down to guide the Coin programmers in being consistent
@@ -1155,13 +1152,13 @@ just one rule which is an absolute must:
           * Coin x.y              - What Coin version it first occured in.
           * TGS Inventor x.y[.z]  - What TGS OIV version it first occured in.
           * Inventor x.y[.z]      - What SGI OIV version it first occured in.
-          * YYYY-MM-DD            - What date it was added to Coin. Will be 
-                                    converted to the correct COIN-x.y for each 
+          * YYYY-MM-DD            - What date it was added to Coin. Will be
+                                    converted to the correct COIN-x.y for each
                                     Coin release.
           Use ',' as a separator if more than one implementation supports
-          the extension. If an extension is introduced in two branches of 
-          Coin, tag both in cases as (COIN-1.1, COIN-2.1) but only once if 
-          you mean COIN-1.1 and later (e.g. all 2.x releases support the 
+          the extension. If an extension is introduced in two branches of
+          Coin, tag both in cases as (COIN-1.1, COIN-2.1) but only once if
+          you mean COIN-1.1 and later (e.g. all 2.x releases support the
           extension). The z release numbers should normally never be used
           as adding features between patchlevel releases would break binary
           compatibility, but at least TGS is known to break this "rule".

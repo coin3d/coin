@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,12 +14,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -67,9 +67,9 @@ public:
   int32_t dot(SbVec2s v) const { return vec[0] * v[0] + vec[1] * v[1]; }
   void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; }
 
-  SbVec2s & operator *= (int d) { vec[0] *= d; vec[1] *= d; return *this; }
+  SbVec2s & operator *= (int d) { vec[0] = short(vec[0] * d); vec[1] = short(vec[1] * d); return *this; }
   SbVec2s & operator *= (double d);
-  SbVec2s & operator /= (int d) { SbDividerChk("SbVec2s::operator/=(int)", d); vec[0] /= d; vec[1] /= d; return *this; }
+  SbVec2s & operator /= (int d) { SbDividerChk("SbVec2s::operator/=(int)", d); vec[0] = short(vec[0] / d); vec[1] = short(vec[1] / d); return *this; }
   SbVec2s & operator /= (double d) { SbDividerChk("SbVec2s::operator/=(double)", d); return operator *= (1.0 / d); }
   SbVec2s & operator += (SbVec2s v) { vec[0] += v[0]; vec[1] += v[1]; return *this; }
   SbVec2s & operator -= (SbVec2s v) { vec[0] -= v[0]; vec[1] -= v[1]; return *this; }

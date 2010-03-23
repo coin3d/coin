@@ -1,9 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Copyright (C) 1998-2001 by Systems in Motion. All rights reserved.
+;;; Copyright (C) Kongsberg Oil & Gas Technologies. All rights reserved.
 ;;; Written by mortene@sim.no, 2000-09-22.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Copyright (C) 1998-2001 by Systems in Motion. All rights reserved.
+;;; Copyright (C) Kongsberg Oil & Gas Technologies. All rights reserved.
 ;;; Written by mortene@sim.no, 2000-09-22.
 
 ;;; Eval following region

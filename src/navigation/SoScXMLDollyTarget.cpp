@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2008 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -290,8 +290,8 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     if (inherited::getEventDouble(event, "absminfocaldistance", absminfocaldistance, FALSE) &&
         inherited::getEventDouble(event, "absmaxfocaldistance", absmaxfocaldistance, FALSE)) {
       data->rangeislimited = TRUE;
-      data->absminfocaldistance = absminfocaldistance;
-      data->absmaxfocaldistance = absmaxfocaldistance;
+      data->absminfocaldistance = float(absminfocaldistance);
+      data->absmaxfocaldistance = float(absmaxfocaldistance);
     }
     else {
       data->rangeislimited = FALSE;
@@ -300,7 +300,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     if (inherited::getEventDouble(event, "setfocaldistance", focaldistance, FALSE)) {
       // immediate setting of focal distance
       SoCamera * camera = statemachine->getActiveCamera();
-      camera->focalDistance.setValue(focaldistance);
+      camera->focalDistance.setValue(float(focaldistance));
     }
 
     const char * motiontype = event->getAssociation("motiontype");
@@ -416,7 +416,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
 
     float diff = static_cast<float>(count * stepsize);
     if (eventname == STEP_IN()) { diff = -diff; }
-    SoScXMLDollyTarget::step(camera, exp, diff, absminfocaldistance, absmaxfocaldistance);
+    SoScXMLDollyTarget::step(camera, exp, float(diff), float(absminfocaldistance), float(absmaxfocaldistance));
     return TRUE;
   }
 
