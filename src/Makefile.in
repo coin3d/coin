@@ -44,55 +44,17 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 subdir = src
-DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(srcdir)/discard.h.in $(srcdir)/setup.h.in
+DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Coin.rc.in \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(srcdir)/discard.h.in \
+	$(srcdir)/setup.h.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/../simacros/bin/../cfg/m4/bz2.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_debug.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_exceptions.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_functionname.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_profiling.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_rtti.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_symbols.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_warnings.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compiler_capabilities.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/configuration_summary.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/cpp_search_order.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/dates.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/dl.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/doxygen_detection.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/errors.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/exit.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/fontconfig.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/freetype.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/gendsp.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/general.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/mac.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/macro_quoting.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/mathlib.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/misc_compiler.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/nprintf.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/openal.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/opengl.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/packagemaker.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/project.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/pthread.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/sim.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/simage.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/sourcedir.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/spidermonkey.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/uniqify_option_list.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/w32api.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/wrapmsvc.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/x11.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/zlib.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = discard.h config.h setup.h
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = Coin.rc
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libdir)"
 libLIBRARIES_INSTALL = $(INSTALL_DATA)
 LIBRARIES = $(lib_LIBRARIES)
@@ -434,6 +396,7 @@ CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 COIN_BETA_VERSION = @COIN_BETA_VERSION@
+COIN_BUILD_YEAR = @COIN_BUILD_YEAR@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
@@ -859,6 +822,8 @@ stamp-h3: $(srcdir)/setup.h.in $(top_builddir)/config.status
 
 distclean-hdr:
 	-rm -f discard.h stamp-h1 config.h stamp-h2 setup.h stamp-h3
+Coin.rc: $(top_builddir)/config.status $(srcdir)/Coin.rc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-libLIBRARIES: $(lib_LIBRARIES)
 	@$(NORMAL_INSTALL)
 	test -z "$(libdir)" || $(mkdir_p) "$(DESTDIR)$(libdir)"
@@ -2335,7 +2300,7 @@ uninstall-info: uninstall-info-recursive
 # **************************************************************************
 # Custom rule for linking a Visual C++ (MS Windows) library.
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile Coin.RES \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
@@ -2343,10 +2308,10 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
 	echo "Linking $$basename.lib..."; \
 	echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS); \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) Coin.RES; \
 	$(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) Coin.RES ;
 
 # **************************************************************************
 
@@ -2444,6 +2409,9 @@ uninstall-local:
 	  fi \
 	done; \
 	:
+
+Coin.RES: Coin.rc
+	rc Coin.rc
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
