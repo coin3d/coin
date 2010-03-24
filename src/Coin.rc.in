@@ -18,11 +18,11 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "Kongsberg Oil & Gas Technologies AS"
-            VALUE "FileDescription", "Coin3D, 3D graphics rendering library"
+            VALUE "FileDescription", "Coin3D, 3D graphics rendering library - www.coin3d.org"
             VALUE "FileVersion","@COIN_MAJOR_VERSION@, @COIN_MINOR_VERSION@, @COIN_MICRO_VERSION@, @COIN_BETA_VERSION@"
             VALUE "InternalName", "Coin"
-            VALUE "LegalCopyright", "Copyright (c) @COIN_BUILD_YEAR@ Kongsberg SIM AS"
-            VALUE "OriginalFilename", "@COIN_MAJOR_VERSION@@SUFFIX@.dll"
+            VALUE "LegalCopyright", "Copyright (c) @COIN_BUILD_YEAR@ Kongsberg Oil & Gas Technologies AS"
+            VALUE "OriginalFilename", "Coin@COIN_MAJOR_VERSION@@SUFFIX@.dll"
             VALUE "ProductName", "Coin3D"
             VALUE "ProductVersion","@COIN_MAJOR_VERSION@, @COIN_MINOR_VERSION@, @COIN_MICRO_VERSION@, @COIN_BETA_VERSION@"
         END

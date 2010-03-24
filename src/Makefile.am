@@ -196,7 +196,7 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 # **************************************************************************
 # Custom rule for linking a Visual C++ (MS Windows) library.
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile misc/Coin.RES \
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile Coin.RES \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
@@ -204,10 +204,10 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile misc/Coin.RES \
 	echo "Linking $$basename.lib..."; \
 	echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) misc/Coin.RES; \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) Coin.RES; \
 	$(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) misc/Coin.RES ;
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) Coin.RES ;
 
 # **************************************************************************
 
@@ -313,5 +313,5 @@ uninstall-local:
 	:
 
 
-misc/Coin.RES: misc/Coin.rc
-	rc misc/Coin.rc
+Coin.RES: Coin.rc
+	rc Coin.rc
