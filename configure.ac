@@ -133,6 +133,10 @@ AC_SUBST([frameworkdir])
 
 # **************************************************************************
 
+ac_build_year=$(date +%Y)
+
+
+AC_SUBST([COIN_BUILD_YEAR], $ac_build_year)
 AC_SUBST([COIN_MAJOR_VERSION], [COIN_MAJOR])
 AC_SUBST([COIN_MINOR_VERSION], [COIN_MINOR])
 AC_SUBST([COIN_MICRO_VERSION], [COIN_MICRO])
@@ -2293,6 +2297,7 @@ SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_d
 # **************************************************************************
 
 AM_CONFIG_HEADER([src/discard.h src/config.h src/setup.h])
+AC_CONFIG_FILES([src/misc/Coin.rc])
 
 # SIM_AC_COIN_CONFIG_H_CHECK
 
