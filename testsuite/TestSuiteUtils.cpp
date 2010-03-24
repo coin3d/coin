@@ -67,7 +67,6 @@ should_filter(const SbString & msg)
 {
   filterset * filters = messagefilters;
   while (filters != NULL) {
-    const char * pattern = NULL;
     for (int i = 0; filters->filters[i] != NULL; ++i) {
       if (msg.find(filters->filters[i])) {
         return 1;
@@ -268,7 +267,8 @@ namespace {
   {
     char buf[1024];
 #ifdef USE_POSIX
-    getcwd(buf,sizeof(buf));
+    if (!getcwd(buf,sizeof(buf)))
+      return NULL;
 #endif //USE_POSIX
 #ifdef USE_WIN32
     GetCurrentDirectory(sizeof(buf),buf);
@@ -337,9 +337,9 @@ namespace {
     if ( !exists( dir_path ) ) return false;
 #ifdef USE_POSIX
     DIR * dh;
-    if (dh = opendir(dir_path.c_str())) {
+    if ((dh = opendir(dir_path.c_str()))) {
       struct dirent * itr;
-      while (itr = readdir(dh)) {
+      while ((itr = readdir(dh))) {
         std::string filename = itr->d_name;
 #endif //USE_POSIX
 #ifdef USE_WIN32

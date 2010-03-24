@@ -41,6 +41,7 @@ public:
           const SbVec2s & size, const int bytesperpixel);
   SbImage(const unsigned char * bytes,
           const SbVec3s & size, const int bytesperpixel);
+  SbImage(const SbImage & image);
   ~SbImage();
 
   void setValue(const SbVec2s & size, const int bytesperpixel,
