@@ -34,6 +34,7 @@ public:
   SbDPLine(void);
   SbDPLine(const SbVec3d& p0, const SbVec3d& p1);
   void setValue(const SbVec3d& p0, const SbVec3d& p1);
+  void setPosDir(const SbVec3d & position, const SbVec3d & direction);
   SbBool getClosestPoints(const SbDPLine& line2,
                           SbVec3d& ptOnThis, SbVec3d& ptOnLine2) const;
   SbVec3d getClosestPoint(const SbVec3d& point) const;

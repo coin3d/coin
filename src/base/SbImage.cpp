@@ -201,6 +201,17 @@ SbImage::SbImage(const unsigned char * bytes,
 }
 
 /*!
+  Copy constructor
+
+  \since Coin 4.0
+ */
+SbImage::SbImage(const SbImage & that)
+{
+  PRIVATE(this) = new SbImageP;
+  *this=that;
+}
+
+/*!
   Destructor.
 */
 SbImage::~SbImage(void)
@@ -690,3 +701,37 @@ SbImage::removeReadImageCB(SbImageReadImageCB * cb, void * closure)
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(copyConstruct) 
+{
+  unsigned char buf [4];
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    buf[i]=i;
+  }
+
+  SbImage bar(buf,SbVec2s(2,2),1);
+
+  SbImage foo(bar);
+
+  SbVec2s tmp1;
+  int tmp2;
+
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==bar.getValue(tmp1,tmp2)[i],"Input value error");
+  }
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    foo.getValue(tmp1,tmp2)[i]=sizeof(buf)-i;
+  }
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==sizeof(buf)-bar.getValue(tmp1,tmp2)[i],"Error after changing second buffer");
+  }
+
+}
+#endif //COIN_TEST_SUITE
+

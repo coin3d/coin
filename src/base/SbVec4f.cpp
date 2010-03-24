@@ -415,7 +415,6 @@ SbVec4f::print(FILE * fp) const
 
 BOOST_AUTO_TEST_CASE(noNormalizingNormalized)
 {
-  const int FLOAT_SENSITIVITY = 0;
   const float SQRT2 = sqrt(2)/2;
   SbVec4f vec(0,-SQRT2,0,SQRT2);
 
