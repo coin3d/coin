@@ -114,7 +114,6 @@
 
   \sa SoType
 
-  \ingroup nodes
   \since Coin 2.0
 */
 
