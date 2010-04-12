@@ -40,6 +40,11 @@
   picking, since the tesselated representation used internally is not
   the same as the one you see rendered by OpenGL on-screen.)
 
+  Each control point has a weight that changes the shape of its basis function.
+  Weight is analogous to having magnets pulling on the curve.
+  Coordinate3 sets control points to have an equal weight of 1.0 (nonrational).
+  Use Coordinate4 to specify x, y, z and weight values (rational).  
+
   A small usage example (drawing a circle using a rational curve):
 
   \code
