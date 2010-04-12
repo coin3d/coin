@@ -29,6 +29,10 @@
   Use nodes of this type if you want to set up profiles that are
   smooth curves.
 
+  Use ProfileCoordinate2 for nonrational profile where weight is 1.0 (default),
+  and ProfileCoordinate3 for rational profile curves to specify the weight.
+  Weight is analogous to having magnets pulling on the curve.
+
   A typical usage case for SoNurbsProfile is to specify NURBS trimming
   curves. For example:
 
