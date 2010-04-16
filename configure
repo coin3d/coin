@@ -785,6 +785,8 @@ X_LIBS
 X_PRE_LIBS
 X_CFLAGS
 XMKMF
+HAVE_CORETEXT_FALSE
+HAVE_CORETEXT_TRUE
 HAVE_FREETYPE_FALSE
 HAVE_FREETYPE_TRUE
 HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING_FALSE
@@ -1048,6 +1050,7 @@ enable_dl_spidermonkey
 with_spidermonkey
 enable_dl_freetype
 with_freetype
+enable_coretext
 enable_dl_zlib
 with_zlib
 enable_dl_libbzip2
@@ -1753,6 +1756,8 @@ Optional Features:
                           possible [[default=--enable-dl-spidermonkey]]
   --disable-dl-freetype   disable runtime dynamic linking for freetype if
                           possible [[default=--enable-dl-freetype]]
+  --disable-coretext      disable usage of the CoreText framework on OS X
+                          [[default=--enable-coretext]]
   --disable-dl-zlib       disable runtime dynamic linking for libz if possible
                           [[default=--enable-dl-zlib]]
   --disable-dl-libbzip2   disable runtime dynamic linking for libz if possible
@@ -6598,7 +6603,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6601 "configure"' > conftest.$ac_ext
+  echo '#line 6606 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8631,11 +8636,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8634: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8639: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8638: \$? = $ac_status" >&5
+   echo "$as_me:8643: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8921,11 +8926,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8924: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8929: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8928: \$? = $ac_status" >&5
+   echo "$as_me:8933: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9025,11 +9030,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9028: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9033: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9032: \$? = $ac_status" >&5
+   echo "$as_me:9037: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11050,7 +11055,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11053 "configure"
+#line 11058 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11150,7 +11155,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11153 "configure"
+#line 11158 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13491,11 +13496,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13494: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13499: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13498: \$? = $ac_status" >&5
+   echo "$as_me:13503: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13595,11 +13600,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13598: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13603: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13602: \$? = $ac_status" >&5
+   echo "$as_me:13607: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15178,11 +15183,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15181: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15186: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15185: \$? = $ac_status" >&5
+   echo "$as_me:15190: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -15282,11 +15287,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15285: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15290: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15289: \$? = $ac_status" >&5
+   echo "$as_me:15294: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17443,11 +17448,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17446: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17451: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17450: \$? = $ac_status" >&5
+   echo "$as_me:17455: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17733,11 +17738,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17736: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17741: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17740: \$? = $ac_status" >&5
+   echo "$as_me:17745: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17837,11 +17842,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17840: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17845: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:17844: \$? = $ac_status" >&5
+   echo "$as_me:17849: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -28566,6 +28571,97 @@ else
 fi
 
 
+# **************************************************************************
+# Set us up for using TrueType fonts through the Core Text framework
+# on the Mac.
+
+# Check whether --enable-coretext was given.
+if test "${enable_coretext+set}" = set; then :
+  enableval=$enable_coretext; case "${enableval}" in
+    yes | true) enable_coretext=true ;;
+    no | false) enable_coretext=false ;;
+    *)
+as_fn_error "invalid value \"${enableval}\" for \"--enable-coretext\" configure argument" "$LINENO" 5
+ ;;
+  esac
+else
+  enable_coretext=true
+fi
+
+
+if $enable_coretext; then
+  : ${sim_ac_have_coretext=false}
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Coretext framework" >&5
+$as_echo_n "checking for Coretext framework... " >&6; }
+$sim_ac_have_coretext && break
+sim_ac_coretext_save_LIBS=$LIBS
+sim_ac_coretext_libs="-Wl,-framework,ApplicationServices"
+LIBS="$sim_ac_coretext_libs $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <ApplicationServices/ApplicationServices.h>
+int
+main ()
+{
+CTFontRef times24Font = CTFontCreateWithName(CFSTR("Times"), 24.0, NULL);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  sim_ac_have_coretext=true
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$sim_ac_coretext_save_LIBS
+if $sim_ac_have_coretext; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: success ($sim_ac_coretext_libs)" >&5
+$as_echo "success ($sim_ac_coretext_libs)" >&6; }
+
+
+$as_echo "#define HAVE_CORETEXT 1" >>confdefs.h
+
+    CPPFLAGS="$CPPFLAGS $sim_ac_coretext_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_coretext_ldflags"
+    LIBS="$sim_ac_coretext_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_coretext_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_coretext_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_coretext_libs $COIN_EXTRA_LIBS"
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Core Text framework:Yes"
+else
+  sim_ac_configuration_settings="Core Text framework:Yes"
+fi
+
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: failure" >&5
+$as_echo "failure" >&6; }
+
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coretext framework:No"
+else
+  sim_ac_configuration_settings="Coretext framework:No"
+fi
+
+
+fi
+
+fi
+
+
+
+if $sim_ac_have_coretext; then
+  HAVE_CORETEXT_TRUE=
+  HAVE_CORETEXT_FALSE='#'
+else
+  HAVE_CORETEXT_TRUE='#'
+  HAVE_CORETEXT_FALSE=
+fi
+
+
 # *******************************************************************
 # * Math library
 # *******************************************************************
@@ -29923,7 +30019,9 @@ else
 fi
 
 
+## Mac OS X uses some weird "framework" options.
 
+## It's usually libGL.so on UNIX systems and opengl32.lib on MSWindows.
 sim_ac_ogl_glnames="GL opengl32"
 sim_ac_ogl_mesaglnames=MesaGL
 
@@ -30718,6 +30816,8 @@ fi
     * )
 
 sim_ac_save_libs=$LIBS
+## Not directly needed by the wgl*() calls, but to create a
+## context we need functions from this library.
 sim_ac_wgl_libs="-lgdi32"
 LIBS="$LIBS $sim_ac_wgl_libs"
 
@@ -32215,6 +32315,7 @@ esac
 
 
 
+## Microsoft Developer Studio Project files
 COIN_DSP_LIBDIRS=
 COIN_DSP_LIBS=
 COIN_DSP_INCS=
@@ -32513,6 +32614,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${HAVE_FREETYPE_TRUE}" && test -z "${HAVE_FREETYPE_FALSE}"; then
   as_fn_error "conditional \"HAVE_FREETYPE\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_CORETEXT_TRUE}" && test -z "${HAVE_CORETEXT_FALSE}"; then
+  as_fn_error "conditional \"HAVE_CORETEXT\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${HACKING_COMPACT_BUILD_TRUE}" && test -z "${HACKING_COMPACT_BUILD_FALSE}"; then
