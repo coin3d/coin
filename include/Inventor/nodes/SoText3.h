@@ -34,7 +34,6 @@
 
 class SoSensor;
 class SoFieldSensor;
-class SoGlyph;
 
 class COIN_DLL_API SoText3 : public SoShape {
   typedef SoShape inherited;

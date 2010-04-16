@@ -52,7 +52,6 @@
 #include "SoEventManager.cpp"
 #include "SoFullPath.cpp"
 #include "SoGenerate.cpp"
-#include "SoGlyph.cpp"
 #include "SoInteraction.cpp"
 #include "SoJavaScriptEngine.cpp"
 #include "SoLightPath.cpp"

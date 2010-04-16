@@ -21,7 +21,6 @@ PublicHeaders = \
 	SoTranSender.h \
 	SoLightPath.h \
 	SoTempPath.h \
-	SoGlyph.h \
 	SoAudioDevice.h \
 	SoScriptEngine.h \
 	SoJavaScriptEngine.h \

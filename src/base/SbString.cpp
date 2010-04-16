@@ -175,7 +175,8 @@ SbString::lower() const
 {
   int lenthis = this->getLength();
   SbString newstr;
-  for (int i=0;i<lenthis;i++) {
+
+  for (int i = 0; i < lenthis; i++) {
     newstr += tolower((*this)[i]);
   }
   return newstr;
@@ -191,7 +192,8 @@ SbString::upper() const
 {
   int lenthis = this->getLength();
   SbString newstr;
-  for (int i=0;i<lenthis;i++) {
+
+  for (int i = 0; i < lenthis; i++) {
     newstr += toupper((*this)[i]);
   }
   return newstr;
