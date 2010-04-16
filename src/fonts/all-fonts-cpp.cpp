@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include "fontlib_wrapper.cpp"
+#include "coretext.cpp"
 #include "win32.cpp"
 #include "freetype.cpp"
 

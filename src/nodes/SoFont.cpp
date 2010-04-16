@@ -186,7 +186,7 @@
     }
   \endcode
 
-  \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
+  \sa SoFontStyle, SoText2, SoText3, SoAsciiText
 */
 
 #include <Inventor/nodes/SoFont.h>

@@ -624,11 +624,12 @@ find_font_file(const char * fontname, unsigned int pixelsize)
 }
 
 void *
-cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
+cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
 {
   FT_Face face;
-  const char * fontfilename = find_font_file(fontname, pixelsize);
   FT_Error error;
+  const char * fontfilename = find_font_file(fontname, pixelsize);
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
@@ -650,7 +651,11 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
                            face->family_name, face->style_name);
   }
 
-  cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
+
+  cc_flwft_set_charmap(face,
+		       disable_utf8 ?
+		       FT_ENCODING_ADOBE_LATIN_1 : FT_ENCODING_UNICODE);
+
   return face;
 }
 
@@ -767,7 +772,7 @@ cc_flwft_set_char_size(void * font, int height)
 
   /* set the size for the face by using default values of FreeType for
    * the resolution */
-  error = cc_ftglue_FT_Set_Char_Size(face, (height<<6), (height<<6), 0, 0);
+  error = cc_ftglue_FT_Set_Char_Size(face, 0, (height<<6), 0, 0);
   if (error) {
     cc_debugerror_post("cc_flwft_set_char_size",
                        "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
@@ -899,15 +904,15 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                           "FT_Load_Glyph() => error %d",
-                                           error);
+					    "FT_Load_Glyph() => error %d",
+					    error);
     return NULL;
   }
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &g);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                           "FT_Get_Glyph() => error %d",
-                                           error);
+					    "FT_Get_Glyph() => error %d",
+					    error);
     return NULL;
   }
 
@@ -921,8 +926,8 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
     error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
     if (error) {
       if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                             "FT_Glyph_To_Bitmap() => error %d",
-                                             error);
+					      "FT_Glyph_To_Bitmap() => error %d",
+					      error);
       return NULL;
     }
   }
@@ -980,7 +985,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
 
   face = (FT_Face) font;
 
-  error = cc_ftglue_FT_Set_Char_Size(face, (flwft_3dfontsize<<6), (flwft_3dfontsize<<6), 0, 0);
+  error = cc_ftglue_FT_Set_Char_Size(face, 0, (flwft_3dfontsize<<6), 0, 0);
   if (error != 0) {
     /* FIXME: No message is printed here because returning NULL will
        force glyph3d.c to use the builtin font. This happens whenever
@@ -1375,21 +1380,15 @@ flwft_vertexCallback(GLvoid * data)
 static void
 flwft_beginCallback(GLenum which)
 {
-
-  flwft_tessellator.triangle_mode = which;
-  if (which == GL_TRIANGLE_FAN)
-    flwft_tessellator.triangle_fan_root_index = -1;
-  else
-    flwft_tessellator.triangle_fan_root_index = 0;
+  flwft_tessellator.triangle_mode = which;  
+  flwft_tessellator.triangle_fan_root_index = (which==GL_TRIANGLE_FAN) ? -1 : 0;
   flwft_tessellator.triangle_index_counter = 0;
   flwft_tessellator.triangle_strip_flipflop = FALSE;
-
 }
 
 static void
 flwft_endCallback(void)
-{
-}
+{}
 
 static void
 flwft_combineCallback(GLdouble coords[3], GLvoid * COIN_UNUSED_ARG(vertex_data), GLfloat /*weight*/[4], int **dataOut)

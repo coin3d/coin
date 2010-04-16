@@ -346,10 +346,7 @@ EXTRA_DIST = \
 	testsuite/TestSuiteMisc.cpp \
 	testsuite/makeextract.sh \
 	testsuite/makemakefile.sh \
-	testsuite/README \
-	include/boost/Makefile.inc \
-	include/boost.README \
-	$(BOOST_HEADER_FILES)
+	testsuite/README
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
