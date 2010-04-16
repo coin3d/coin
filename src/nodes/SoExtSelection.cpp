@@ -34,9 +34,10 @@
   complex, due to it's non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
-  directory of Kongsberg Oil & Gas Technologies's SoGuiExamples CVS module.
-  Further information and links for downloading and building this module
-  should be available at <a href="http://www.coin3d.org">www.coin3d.org</a>.
+  directory of Kongsberg Oil & Gas Technologies's SoGuiExamples
+  Mercurial repository. Further information and links for downloading
+  and building this module should be available at <a
+  href="http://www.coin3d.org">www.coin3d.org</a>.
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
