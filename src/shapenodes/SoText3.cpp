@@ -146,6 +146,7 @@
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/SbBox2f.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/system/gl.h>
