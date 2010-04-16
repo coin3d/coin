@@ -626,8 +626,9 @@ void *
 cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
 {
   FT_Face face;
-  const char * fontfilename = find_font_file(fontname, pixelsize);
   FT_Error error;
+  const char * fontfilename = find_font_file(fontname, pixelsize);
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
@@ -649,7 +650,11 @@ cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
                            face->family_name, face->style_name);
   }
 
-  cc_flwft_set_charmap(face, FT_ENCODING_UNICODE);
+
+  cc_flwft_set_charmap(face,
+		       disable_utf8 ?
+		       FT_ENCODING_ADOBE_LATIN_1 : FT_ENCODING_UNICODE);
+
   return face;
 }
 
