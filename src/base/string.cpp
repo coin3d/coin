@@ -621,37 +621,56 @@ cc_string_utf8_encode(char * buffer, size_t buflen, uint32_t value)
 uint32_t
 cc_string_utf8_get_char(const char * str)
 {
-  uint32_t value;
-  size_t declen = cc_string_utf8_decode(str, strlen(str), &value);
-  assert(declen);
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
+  uint32_t value = 0;
+  size_t declen = 0;
+
+  if (disable_utf8 && (*str != '\0')) {
+    value = static_cast<uint8_t>(*str);
+  } else {
+    declen = cc_string_utf8_decode(str, strlen(str), &value);
+    assert(declen);
+  }
   return value;
 }
 
 const char *
 cc_string_utf8_next_char(const char * str)
 {
-  uint32_t value;
-  size_t declen = cc_string_utf8_decode(str, strlen(str), &value);
-  assert(declen);
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
+  uint32_t value = 0;
+  size_t declen = 0;
+
+  if (disable_utf8) {
+    declen = 1;
+  } else {
+    declen = cc_string_utf8_decode(str, strlen(str), &value);
+    assert(declen);
+  }
   return str+declen;
 }
 
 size_t
 cc_string_utf8_validate_length(const char * str)
 {
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
   const char * s = str;
   size_t declen = 0;
   size_t srclen = strlen(str);
   size_t utf8len = 0;
-  uint32_t value;
+  uint32_t value = 0;
 
-  while (srclen) {
-    if (!(declen = cc_string_utf8_decode(s, srclen, &value))) {
-      return 0;
+  if (disable_utf8) {
+    utf8len = srclen;
+  } else {
+    while (srclen) {
+      if (!(declen = cc_string_utf8_decode(s, srclen, &value))) {
+	return 0;
+      }
+      srclen -= declen;
+      s += declen;
+      ++utf8len;
     }
-    srclen -= declen;
-    s += declen;
-    ++utf8len;
   }
 
   return utf8len;
