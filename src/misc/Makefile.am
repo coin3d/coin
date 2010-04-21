@@ -12,6 +12,7 @@ RegularSources = \
 	SoDebug.cpp \
 	SoFullPath.cpp \
 	SoGenerate.cpp \
+	SoGlyph.cpp \
 	SoInteraction.cpp \
 	SoJavaScriptEngine.cpp \
 	SoLightPath.cpp \
