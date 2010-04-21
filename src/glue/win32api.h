@@ -70,6 +70,7 @@ extern "C" {
   typedef int (WINAPI * GetObject_t)(HGDIOBJ, int, LPVOID);
  
   struct cc_win32_api {
+    GetTextFace_t GetTextFaceA;
     GetTextFace_t GetTextFaceW;
     LocalFree_t LocalFree;
     GetVersionEx_t GetVersionEx;
