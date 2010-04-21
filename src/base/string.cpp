@@ -625,11 +625,17 @@ cc_string_utf8_get_char(const char * str)
   uint32_t value = 0;
   size_t declen = 0;
 
-  if (disable_utf8 && (*str != '\0')) {
+  if (disable_utf8) {
     value = static_cast<uint8_t>(*str);
   } else {
     declen = cc_string_utf8_decode(str, strlen(str), &value);
-    assert(declen);
+    if (!declen) {
+      cc_debugerror_postinfo("cc_string_utf8_get_char",
+			     "UTF-8 decoding of string \"%s\" failed.\n\n"
+			     "To disable UTF-8 support and fall back to pre"
+			     "Coin 4.0 behavior, set the\nenvironment variable "
+			     "COIN_DISABLE_UTF8=1 and re-run the application.\n", str);
+    }
   }
   return value;
 }
@@ -645,7 +651,13 @@ cc_string_utf8_next_char(const char * str)
     declen = 1;
   } else {
     declen = cc_string_utf8_decode(str, strlen(str), &value);
-    assert(declen);
+    if (!declen) {
+      cc_debugerror_postinfo("cc_string_utf8_get_char",
+			     "UTF-8 decoding of string \"%s\" failed.\n\n"
+			     "To disable UTF-8 support and fall back to pre"
+			     "Coin 4.0 behavior, set the\nenvironment variable "
+			     "COIN_DISABLE_UTF8=1 and re-run the application.\n", str);
+    }
   }
   return str+declen;
 }
@@ -665,6 +677,11 @@ cc_string_utf8_validate_length(const char * str)
   } else {
     while (srclen) {
       if (!(declen = cc_string_utf8_decode(s, srclen, &value))) {
+	cc_debugerror_postinfo("cc_string_utf8_get_char",
+			       "UTF-8 decoding of string \"%s\" failed.\n\n"
+			       "To disable UTF-8 support and fall back to pre"
+			       "Coin 4.0 behavior, set the\nenvironment variable "
+			       "COIN_DISABLE_UTF8=1 and re-run the application.\n", str);
 	return 0;
       }
       srclen -= declen;
