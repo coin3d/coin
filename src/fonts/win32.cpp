@@ -624,7 +624,6 @@ cc_flww32_get_font_name(void * font, cc_string * str)
 {
   int size, newsize;
   char * s;
-  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
   /* Connect device context to font. */
   FontContext fontContext(cc_flww32_globals.devctx, (HFONT)font, "cc_flww32_get_font_name");
@@ -633,21 +632,14 @@ cc_flww32_get_font_name(void * font, cc_string * str)
     return;
   }
 
-  if (disable_utf8) {
-    size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
-  } else {
-    size = cc_win32()->GetTextFaceW(cc_flww32_globals.devctx, 0, NULL);
-  }
+  size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
 
   /* 'size' will never be 0. Then GetTextFaceW would have asserted. */
   s = (char *)malloc(size);
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
 
-  if (disable_utf8) {
-    newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
-  } else {
-    newsize = cc_win32()->GetTextFaceW(cc_flww32_globals.devctx, size, reinterpret_cast<LPTSTR>(s));
-  }
+  newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
+
   cc_string_set_text(str, s);
 
   /* FIXME: this should be handled better. See FIXME about making an
@@ -658,7 +650,7 @@ cc_flww32_get_font_name(void * font, cc_string * str)
        means that the system has cropped the string. Requested font
        will most probably not be found. */
     SoDebugError::postWarning("cc_flww32_get_font_name",
-                              "GetTextFaceW(). The length of the returned fontname is"
+                              "GetTextFace(). The length of the returned fontname is"
                               " >= expected size. Fontname has been cropped.");
   }
 
