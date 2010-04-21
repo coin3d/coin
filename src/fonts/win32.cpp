@@ -644,7 +644,7 @@ cc_flww32_get_font_name(void * font, cc_string * str)
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
 
   if (disable_utf8) {
-    newsize = cc_win32()->GetTextFaceW(cc_flww32_globals.devctx, size, s);
+    newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
   } else {
     newsize = cc_win32()->GetTextFaceW(cc_flww32_globals.devctx, size, reinterpret_cast<LPTSTR>(s));
   }
