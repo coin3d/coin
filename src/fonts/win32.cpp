@@ -711,6 +711,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 {
   LOGFONT lfont;
   GLYPHMETRICS gm;
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
   /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME
      fails if the idmatrix is static. Newer versions seems to not mind
@@ -1063,7 +1064,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   HBITMAP membmp;
   HDC screendc;
   TCHAR glyph_str[1];
-  WCHAR glyph_wstr[1];
+  WCHAR glyph_strw[1];
   struct cc_font_vector_glyph * new_vector_glyph;
   void * tmp;
   unsigned int size;
