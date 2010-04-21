@@ -915,13 +915,23 @@ cc_flww32_get_bitmap(void * font, int glyph)
     w32bitmap = (uint8_t *)malloc(ret);
     assert(w32bitmap != NULL); /* FIXME: be robust. 20030530 mortene. */
 
-    ret = GetGlyphOutlineW(cc_flww32_globals.devctx,
-                           glyph, /* character to query */
-                           GGO_GRAY8_BITMAP, /* format of data to return */
-                           &gm, /* metrics */
-                           size, /* size of buffer for data */
-                           w32bitmap, /* buffer for data */
-                           &identitymatrix); /* transformation matrix */
+    if (disable_utf8) {
+      ret = GetGlyphOutline(cc_flww32_globals.devctx,
+			     glyph, /* character to query */
+			     GGO_GRAY8_BITMAP, /* format of data to return */
+			     &gm, /* metrics */
+			     size, /* size of buffer for data */
+			     w32bitmap, /* buffer for data */
+			     &identitymatrix); /* transformation matrix */
+    } else {
+      ret = GetGlyphOutlineW(cc_flww32_globals.devctx,
+			     glyph, /* character to query */
+			     GGO_GRAY8_BITMAP, /* format of data to return */
+			     &gm, /* metrics */
+			     size, /* size of buffer for data */
+			     w32bitmap, /* buffer for data */
+			     &identitymatrix); /* transformation matrix */
+    }
 
     if (ret == GDI_ERROR) {
       cc_string str;
