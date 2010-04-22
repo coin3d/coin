@@ -38,7 +38,7 @@ public:
   SoGroup(void);
 
   SoGroup(int nchildren);
- 
+
   virtual void addChild(SoNode * node);
   virtual void insertChild(SoNode * child, int newchildindex);
   virtual SoNode * getChild(int index) const;
@@ -70,13 +70,13 @@ protected:
   virtual SbBool readChildren(SoInput * in);
 
   virtual void copyContents(const SoFieldContainer * from,
-                            SbBool copyconnections);
+			    SbBool copyconnections);
 
   virtual SoNotRec createNotRec(void);
 
-  void setOperation(const SoNotRec::OperationType operationType = SoNotRec::UNSPECIFIED,
-                    const SoNode * changedChild = NULL,
-                    const int changedIndex = -1);
+  void setOperation(const SoNotRec::OperationType opType = SoNotRec::UNSPECIFIED,
+		    const SoNode * cc = NULL,
+		    const int ci = -1);
 
   SoChildList * children;
 

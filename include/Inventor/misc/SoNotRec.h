@@ -61,10 +61,10 @@ public:
   int getIndex(void) const;
   int getFieldNumIndices(void) const;
   const SoBase * const getGroupChild(void) const;
-  void setOperationType(const SoNotRec::OperationType operationType);
-  void setIndex(const int index);
-  void setFieldNumIndices(const int fieldNumIndices);
-  void setGroupChild(const SoBase * const);
+  void setOperationType(const SoNotRec::OperationType opType);
+  void setIndex(const int idx);
+  void setFieldNumIndices(const int fldnumind);
+  void setGroupChild(const SoBase * const gc);
 
 private:
   Type type;

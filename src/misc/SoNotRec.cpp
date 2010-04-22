@@ -161,25 +161,25 @@ SoNotRec::getGroupChild(void) const
 }
 
 void
-SoNotRec::setOperationType(const SoNotRec::OperationType operationType)
+SoNotRec::setOperationType(const SoNotRec::OperationType opType)
 {
-  this->operationType = operationType;
+  this->operationType = opType;
 }
 
 void
-SoNotRec::setIndex(const int index)
+SoNotRec::setIndex(const int idx)
 {
-  this->index = index;
+  this->index = idx;
 }
 
 void
-SoNotRec::setFieldNumIndices(const int fieldNumIndices)
+SoNotRec::setFieldNumIndices(const int fldnumind)
 {
-  this->fieldNumIndices = fieldNumIndices;
+  this->fieldNumIndices = fldnumind;
 }
 
 void
-SoNotRec::setGroupChild(const SoBase * const groupChild)
+SoNotRec::setGroupChild(const SoBase * const gc)
 {
-  this->groupChild = groupChild;
+  this->groupChild = gc;
 }
