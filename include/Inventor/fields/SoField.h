@@ -145,7 +145,7 @@ protected:
 
   SbBool isDestructing(void) const;
 
-  virtual SoNotRec createNotRec(SoBase * container);
+  virtual SoNotRec createNotRec(SoBase * cont);
 
 private:
 

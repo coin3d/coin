@@ -847,24 +847,24 @@ SoMField::allocValues(int newnum)
 #endif // DOXYGEN_SKIP_THIS
 
 SoNotRec
-SoMField::createNotRec(SoBase * container)
+SoMField::createNotRec(SoBase * cont)
 {
-  SoNotRec rec(inherited::createNotRec(container));
-  rec.setIndex(changedIndex);
-  rec.setFieldNumIndices(numChangedIndices);
+  SoNotRec rec(inherited::createNotRec(cont));
+  rec.setIndex(this->changedIndex);
+  rec.setFieldNumIndices(this->numChangedIndices);
   return rec;
 }
 
 void
-SoMField::setChangedIndex(const int changedIndex)
+SoMField::setChangedIndex(const int chgidx)
 {
-  this->changedIndex = changedIndex;
+  this->changedIndex = chgidx;
   this->numChangedIndices = 1;
 }
 
 void
-SoMField::setChangedIndices(const int changedIndex,const int numChangedIndices)
+SoMField::setChangedIndices(const int chgidx, const int numchgind)
 {
-  this->changedIndex = changedIndex;
-  this->numChangedIndices = numChangedIndices;
+  this->changedIndex = chgidx;
+  this->numChangedIndices = numchgind;
 }

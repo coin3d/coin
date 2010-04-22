@@ -65,8 +65,8 @@ protected:
 
   virtual SoNotRec createNotRec(SoBase * container);
 
-  void setChangedIndex(const int changedIndex);
-  void setChangedIndices(const int changedIndex = -1,const int numChangedIndices = 0);
+  void setChangedIndex(const int chgidx);
+  void setChangedIndices(const int chgidx = -1, const int numchgind = 0);
 
   int num;
   int maxNum;
@@ -84,7 +84,7 @@ private:
   virtual int getNumValuesPerLine(void) const;
 
   static SoType classTypeId;
-  int changedIndex,numChangedIndices;
+  int changedIndex, numChangedIndices;
 };
 
 // inline methods
