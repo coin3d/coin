@@ -1491,7 +1491,7 @@ SoField::notify(SoNotList * nlist)
   if (this->isNotifyEnabled()) {
     SoFieldContainer * container = this->getContainer();
     this->setStatusBits(FLAG_ISNOTIFIED);
-    SoNotRec rec(container);
+    SoNotRec rec(createNotRec(container));
     nlist->append(&rec, this);
     nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
 
@@ -2551,6 +2551,17 @@ SbBool
 SoField::isDestructing(void) const
 {
   return this->getStatus(FLAG_ISDESTRUCTING);
+}
+
+/*!
+  \internal
+*/
+SoNotRec
+SoField::createNotRec(SoBase * container)
+{
+  SoNotRec rec(container);
+  rec.setOperationType(SoNotRec::FIELD_UPDATE);
+  return rec;
 }
 
 /*!

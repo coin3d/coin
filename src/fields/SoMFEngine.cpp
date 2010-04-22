@@ -148,7 +148,9 @@ SoMFEngine::setValues(const int start, const int numarg, const SoEngine ** newva
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
+  this->setChangedIndices(start,numarg);
   if (notificstate) this->valueChanged();
+  this->setChangedIndices();
 }
 
 void
@@ -202,6 +204,7 @@ SoMFEngine::set1Value(const int idx, SoEngine * newval)
 #endif // COIN_INTERNAL_SOMFPATH
     }
 
+    this->setChangedIndex(idx);
     this->values[idx] = newval;
 #ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads[idx] = newval ? newval->getHead() : NULL;
@@ -211,6 +214,7 @@ SoMFEngine::set1Value(const int idx, SoEngine * newval)
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
   if (notificstate) this->valueChanged();
+  this->setChangedIndices();
 }
 
 void

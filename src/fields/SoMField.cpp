@@ -364,7 +364,9 @@ SoMField::set1(const int index, const char * const valuestring)
     this->num = oldnum; // restore old number of items in field
     return FALSE;
   }
+  this->setChangedIndex(index);
   this->valueChanged();
+  this->setChangedIndices();
   return TRUE;
 }
 
@@ -843,3 +845,26 @@ SoMField::allocValues(int newnum)
   this->num = newnum;
 }
 #endif // DOXYGEN_SKIP_THIS
+
+SoNotRec
+SoMField::createNotRec(SoBase * container)
+{
+  SoNotRec rec(inherited::createNotRec(container));
+  rec.setIndex(changedIndex);
+  rec.setFieldNumIndices(numChangedIndices);
+  return rec;
+}
+
+void
+SoMField::setChangedIndex(const int changedIndex)
+{
+  this->changedIndex = changedIndex;
+  this->numChangedIndices = 1;
+}
+
+void
+SoMField::setChangedIndices(const int changedIndex,const int numChangedIndices)
+{
+  this->changedIndex = changedIndex;
+  this->numChangedIndices = numChangedIndices;
+}

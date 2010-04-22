@@ -644,7 +644,7 @@ SoFieldContainer::notify(SoNotList * l)
   if (flags & FLAG_DONOTIFY) {
     if (l->getLastRec()->getType() == SoNotRec::PARENT) {
       // we were notified from a child node. Create a new SoNotRec.
-      SoNotRec rec(this);
+      SoNotRec rec(createNotRec());
       l->append(&rec);
       inherited::notify(l);
     }

@@ -51,7 +51,7 @@
   Constructor. Initializes the record with \a notifbase pointer.
 */
 SoNotRec::SoNotRec(SoBase * const notifbase)
-  : type((SoNotRec::Type)-1), base(notifbase), prev(NULL)
+  : type((SoNotRec::Type)-1), base(notifbase), prev(NULL), index(-1), fieldNumIndices(0), operationType(UNSPECIFIED), groupChild(NULL)
 {
 }
 
@@ -134,4 +134,52 @@ SoNotRec::print(FILE * const file) const
     (void)fprintf(file," base is NULL\n");
   }
 #endif // COIN_DEBUG
+}
+
+SoNotRec::OperationType
+SoNotRec::getOperationType(void) const
+{
+  return operationType;
+}
+
+int
+SoNotRec::getIndex(void) const
+{
+  return index;
+}
+
+int
+SoNotRec::getFieldNumIndices(void) const
+{
+  return fieldNumIndices;
+}
+
+const SoBase * const
+SoNotRec::getGroupChild(void) const
+{
+  return groupChild;
+}
+
+void
+SoNotRec::setOperationType(const SoNotRec::OperationType operationType)
+{
+  this->operationType = operationType;
+}
+
+void
+SoNotRec::setIndex(const int index)
+{
+  this->index = index;
+}
+
+void
+SoNotRec::setFieldNumIndices(const int fieldNumIndices)
+{
+  this->fieldNumIndices = fieldNumIndices;
+}
+
+void
+SoNotRec::setGroupChild(const SoBase * const groupChild)
+{
+  this->groupChild = groupChild;
 }

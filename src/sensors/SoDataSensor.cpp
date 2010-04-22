@@ -35,6 +35,7 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/misc/SoNotification.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/fields/SoSFNode.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -58,7 +59,13 @@ SoDataSensor::SoDataSensor(void)
     findpath(FALSE),
     triggerfield(NULL),
     triggernode(NULL),
-    triggerpath(NULL)
+    triggerpath(NULL),
+    triggeroperationtype(SoNotRec::UNSPECIFIED),
+    triggerindex(-1),
+    triggerfieldnumindices(0),
+    triggergroupchild(NULL),
+    triggerpreviousfield(NULL),
+    triggerpreviousnode(NULL)
 {
 }
 
@@ -75,7 +82,13 @@ SoDataSensor::SoDataSensor(SoSensorCB * func, void * data)
     findpath(FALSE),
     triggerfield(NULL),
     triggernode(NULL),
-    triggerpath(NULL)
+    triggerpath(NULL),
+    triggeroperationtype(SoNotRec::UNSPECIFIED),
+    triggerindex(-1),
+    triggerfieldnumindices(0),
+    triggergroupchild(NULL),
+    triggerpreviousfield(NULL),
+    triggerpreviousnode(NULL)
 {
 }
 
@@ -186,6 +199,60 @@ SoDataSensor::getTriggerPathFlag(void) const
   return this->findpath;
 }
 
+SoNotRec::OperationType
+SoDataSensor::getTriggerOperationType(void) const
+{
+  return this->triggeroperationtype;
+}
+
+int
+SoDataSensor::getTriggerIndex(void) const
+{
+  return this->triggerindex;
+}
+
+int
+SoDataSensor::getTriggerFieldNumIndices(void) const
+{
+  return this->triggerfieldnumindices;
+}
+
+SoNode *
+SoDataSensor::getTriggerGroupChild(void) const
+{
+  return this->triggergroupchild;
+}
+
+/*!
+  Returns a pointer to the previous node causing the sensor to trigger, or \c
+  NULL if there was no such node.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerNode()
+*/
+SoNode *
+SoDataSensor::getTriggerPrevNode(void) const
+{
+  return this->triggerpreviousnode;
+}
+
+/*!
+  Returns a pointer to the previous field causing the sensor to trigger, or \c
+  NULL if the change didn't start at a field.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerField()
+*/
+SoField *
+SoDataSensor::getTriggerPrevField(void) const
+{
+  return this->triggerpreviousfield;
+}
+
 // Doc from superclass.
 void
 SoDataSensor::trigger(void)
@@ -195,6 +262,12 @@ SoDataSensor::trigger(void)
   this->triggernode = NULL;
   if (this->triggerpath) this->triggerpath->unref();
   this->triggerpath = NULL;
+  this->triggeroperationtype = SoNotRec::UNSPECIFIED;
+  this->triggerindex = -1;
+  this->triggerfieldnumindices = 0;
+  this->triggergroupchild = NULL;
+  this->triggerpreviousfield = NULL;
+  this->triggerpreviousnode = NULL;
 }
 
 /*!
@@ -223,6 +296,16 @@ SoDataSensor::notify(SoNotList * l)
     SoNotRec * record = l->getFirstRecAtNode();
     this->triggernode = (SoNode *) (record ? record->getBase() : NULL);
 
+    if (this->triggerfield && this->triggerfield->isOfType(SoSFNode::getClassTypeId())) {
+      this->triggerpreviousfield = l->getPreviousField();
+      SoNotRec * prevNodeRec = l->getPreviousNodeRec();
+      this->triggerpreviousnode = (SoNode *) (prevNodeRec ? prevNodeRec->getBase(): NULL);
+    }
+    else {
+      this->triggerpreviousfield = NULL;
+      this->triggerpreviousnode = NULL;
+    }
+
     if (this->findpath && this->triggernode) {
       const SoNotRec * record = l->getLastRec();
       // find last record with node base (we know there's at least one
@@ -238,6 +321,11 @@ SoDataSensor::notify(SoNotList * l)
         this->triggerpath->append((SoNode*) record->getBase());
       }
     }
+
+    this->triggeroperationtype = record ? record->getOperationType(): SoNotRec::UNSPECIFIED;
+    this->triggerindex = record ? record->getIndex(): -1;
+    this->triggerfieldnumindices = record ? record->getFieldNumIndices(): 0;
+    this->triggergroupchild = (SoNode *) (record ? record->getGroupChild(): NULL);
   }
   this->schedule();
 }

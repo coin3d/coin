@@ -321,7 +321,7 @@ SoEngine::notify(SoNotList * nl)
   }
 
   // add ourself to the notification list
-  SoNotRec rec(this);
+  SoNotRec rec(createNotRec());
   rec.setType(SoNotRec::ENGINE);
   nl->append(&rec);
 

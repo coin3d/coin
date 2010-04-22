@@ -152,7 +152,9 @@ SoMFNode::setValues(const int start, const int numarg, const SoNode ** newvals)
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
+  this->setChangedIndices(start,numarg);
   if (notificstate) this->valueChanged();
+  this->setChangedIndices();
 }
 
 void
@@ -206,6 +208,7 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
 #endif // COIN_INTERNAL_SOMFPATH
     }
 
+    this->setChangedIndex(idx);
     this->values[idx] = newval;
 #ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads[idx] = newval ? newval->getHead() : NULL;
@@ -215,6 +218,7 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
   if (notificstate) this->valueChanged();
+  this->setChangedIndices();
 }
 
 void
