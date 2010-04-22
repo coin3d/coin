@@ -104,6 +104,8 @@ protected:
   static void staticDataLock(void);
   static void staticDataUnlock(void);
 
+  virtual SoNotRec createNotRec(void);
+
 private:
   static void cleanClass(void);
 

@@ -244,6 +244,7 @@ SoGroup::SoGroup(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this);
+  this->setOperation();
 }
 
 /*!
@@ -259,6 +260,7 @@ SoGroup::SoGroup(int nchildren)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this, nchildren);
+  this->setOperation();
 }
 
 /*!
@@ -404,6 +406,27 @@ SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
   }
 }
 
+SoNotRec
+SoGroup::createNotRec(void)
+{
+  SoNotRec rec(inherited::createNotRec());
+  rec.setOperationType(operationType);
+  rec.setGroupChild(changedChild);
+  rec.setIndex(changedIndex);
+  return rec;
+}
+
+/*!
+  \internal
+*/
+void
+SoGroup::setOperation(const SoNotRec::OperationType operationType,const SoNode * changedChild,const int changedIndex)
+{
+  this->operationType = operationType;
+  this->changedChild = changedChild;
+  this->changedIndex = changedIndex;
+}
+
 /*!
   Append a child \a node to the list of children nodes this group node
   is managing.
@@ -415,7 +438,9 @@ void
 SoGroup::addChild(SoNode * node)
 {
   assert(node != NULL);
+  this->setOperation(SoNotRec::GROUP_ADDCHILD,node);
   this->getChildren()->append(node);
+  this->setOperation();
 }
 
 /*!
@@ -437,7 +462,9 @@ SoGroup::insertChild(SoNode * child, int newchildindex)
     return;
   }
 #endif // COIN_DEBUG
+  this->setOperation(SoNotRec::GROUP_INSERTCHILD,child,newchildindex);
   this->getChildren()->insert(child, newchildindex);
+  this->setOperation();
 }
 
 /*!
@@ -457,7 +484,9 @@ SoGroup::removeChild(int childindex)
     return;
   }
 #endif // COIN_DEBUG
+  this->setOperation(SoNotRec::GROUP_REMOVECHILD,NULL,childindex);
   this->getChildren()->remove(childindex);
+  this->setOperation();
 }
 
 /*!
@@ -760,7 +789,9 @@ SoGroup::removeChild(SoNode * child)
 void
 SoGroup::removeAllChildren(void)
 {
+  this->setOperation(SoNotRec::GROUP_REMOVEALLCHILDREN);
   this->getChildren()->truncate(0);
+  this->setOperation();
 }
 
 /*!
@@ -780,7 +811,9 @@ SoGroup::replaceChild(int index, SoNode * newchild)
   // Note: its imperative that we use set() here, and not a
   // remove+insert pair of calls as that would puck up SoChildList
   // auditing from SoPath instances.
+  this->setOperation(SoNotRec::GROUP_REPLACECHILD,newchild,index);
   this->getChildren()->set(index, newchild);
+  this->setOperation();
 }
 
 /*!

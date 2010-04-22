@@ -49,6 +49,9 @@ public:
 
   void print(FILE * const file = stdout) const;
 
+  SoNotRec * getPreviousNodeRec(void) const;
+  SoField * getPreviousField(void) const;
+
 private:
   SoNotRec * head;
   SoNotRec * tail;
@@ -56,6 +59,8 @@ private:
   SoField * lastfield;
   SoEngineOutput * lastengine;
   uint32_t stamp;
+  SoNotRec * previousnoderec;
+  SoField * previousfield;
 };
 
 #endif // !COIN_SONOTIFICATION_H

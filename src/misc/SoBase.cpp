@@ -773,7 +773,7 @@ void
 SoBase::startNotify(void)
 {
   SoNotList l;
-  SoNotRec rec(this);
+  SoNotRec rec(createNotRec());
   l.append(&rec);
   l.setLastType(SoNotRec::CONTAINER);
 
@@ -1534,6 +1534,15 @@ void
 SoBase::staticDataUnlock(void)
 {
   CC_MUTEX_UNLOCK(SoBase::PImpl::global_mutex);
+}
+
+/*!
+  \internal
+*/
+SoNotRec
+SoBase::createNotRec(void)
+{
+  return SoNotRec(this);
 }
 
 #undef ALIVE_PATTERN

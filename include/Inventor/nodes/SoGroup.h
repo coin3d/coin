@@ -72,11 +72,21 @@ protected:
   virtual void copyContents(const SoFieldContainer * from,
                             SbBool copyconnections);
 
+  virtual SoNotRec createNotRec(void);
+
+  void setOperation(const SoNotRec::OperationType operationType = SoNotRec::UNSPECIFIED,
+                    const SoNode * changedChild = NULL,
+                    const int changedIndex = -1);
+
   SoChildList * children;
 
 private:
   friend class SoUnknownNode; // Let SoUnknownNode access readChildren().
   SoGroupP * pimpl;
+
+  int changedIndex;
+  const SoNode * changedChild;
+  SoNotRec::OperationType operationType;
 };
 
 #endif // !COIN_SOGROUP_H

@@ -45,6 +45,8 @@ SoNotList::SoNotList(void)
   this->firstnoderec = NULL;
   this->lastfield = NULL;
   this->lastengine = NULL;
+  this->previousfield = NULL;
+  this->previousnoderec = NULL;
   // this is used in SoNode::notify() to stop a notification
   // when a node has already been notified.
   this->stamp = SoNode::getNextNodeId();
@@ -100,6 +102,20 @@ SoNotList::append(SoNotRec * const rec, SoField * const field)
   assert(field);
   this->lastfield = field;
   this->append(rec);
+
+  if (this->lastfield == NULL) {
+    this->lastfield = field;
+    this->firstnoderec = rec;
+    this->previousnoderec = rec;
+  }
+  else {
+    if (this->previousfield == NULL)
+      this->previousfield = this->lastfield;
+    else
+      this->previousfield = NULL;
+    this->lastfield = field;
+    this->firstnoderec = rec;
+  }
 }
 
 /*!
@@ -213,4 +229,22 @@ SoNotList::print(FILE * const file) const
                 this->getFirstRecAtNode(),
                 this->getLastField(), fname.getString());
 #endif // COIN_DEBUG
+}
+
+/*!
+  Returns the previous record in the list which is derived from SoBase.
+*/
+SoNotRec *
+SoNotList::getPreviousNodeRec(void) const
+{
+  return this->previousnoderec;
+}
+
+/*!
+  Returns the previous field touched by notification.
+*/
+SoField *
+SoNotList::getPreviousField(void) const
+{
+  return this->previousfield;
 }
