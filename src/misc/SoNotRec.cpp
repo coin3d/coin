@@ -37,6 +37,13 @@
   within the record.
 */
 
+/*!
+  \enum SoNotRec::OperationType
+
+  This enum is used to specify the type of the scenegraph operation
+  causing the notification.
+*/
+
 #include <Inventor/misc/SoNotRec.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
