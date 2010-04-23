@@ -180,7 +180,7 @@ SoDataSensor::getTriggerPath(void) const
   graph is an expensive operation.
 
   \sa getTriggerPathFlag(), getTriggerPath()
- */
+*/
 void
 SoDataSensor::setTriggerPathFlag(SbBool flag)
 {
@@ -192,31 +192,64 @@ SoDataSensor::setTriggerPathFlag(SbBool flag)
   the sensor find the path of the node which caused it.
 
   \sa setTriggerPathFlag(), getTriggerPath()
- */
+*/
 SbBool
 SoDataSensor::getTriggerPathFlag(void) const
 {
   return this->findpath;
 }
 
+/*!
+  Returns the type of the scenegraph operation on the node that caused
+  the sensor to trigger.
+
+  \sa getTriggerNode(), getTriggerField(), getTriggerGroupChild()
+*/
 SoNotRec::OperationType
 SoDataSensor::getTriggerOperationType(void) const
 {
   return this->triggeroperationtype;
 }
 
+/*!
+  Returns the index of the child node or value in the node or
+  multifield that caused the sensor to trigger.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerFieldNumIndices(), getTriggerGroupChild(), getTriggerNode(), getTriggerField()
+*/
 int
 SoDataSensor::getTriggerIndex(void) const
 {
   return this->triggerindex;
 }
 
+/*!
+  Returns the number of indices of the multifield that caused the
+  sensor to trigger.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerIndex(), getTriggerField()
+*/
 int
 SoDataSensor::getTriggerFieldNumIndices(void) const
 {
   return this->triggerfieldnumindices;
 }
 
+/*!
+  Returns a pointer to the actual child node in the node that caused
+  the sensor to trigger, or \c NULL if there was no such node.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerNode()
+*/
 SoNode *
 SoDataSensor::getTriggerGroupChild(void) const
 {
