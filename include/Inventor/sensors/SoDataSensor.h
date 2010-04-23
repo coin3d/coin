@@ -69,7 +69,7 @@ private:
   SoNode * triggernode;
   SoPath * triggerpath;
   SoNotRec::OperationType triggeroperationtype;
-  int triggerindex,triggerfieldnumindices;
+  int triggerindex, triggerfieldnumindices;
   SoNode * triggergroupchild;
   SoField * triggerpreviousfield;
   SoNode * triggerpreviousnode;

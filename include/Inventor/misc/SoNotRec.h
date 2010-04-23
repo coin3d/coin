@@ -70,7 +70,7 @@ private:
   Type type;
   SoBase * base;
   const SoNotRec * prev;
-  int index,fieldNumIndices;
+  int index, fieldNumIndices;
   OperationType operationType;
   const SoBase * groupChild;
 };
