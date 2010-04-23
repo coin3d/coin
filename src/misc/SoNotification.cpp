@@ -109,10 +109,11 @@ SoNotList::append(SoNotRec * const rec, SoField * const field)
     this->previousnoderec = rec;
   }
   else {
-    if (this->previousfield == NULL)
+    if (this->previousfield == NULL) {
       this->previousfield = this->lastfield;
-    else
+    } else {
       this->previousfield = NULL;
+    }
     this->lastfield = field;
     this->firstnoderec = rec;
   }

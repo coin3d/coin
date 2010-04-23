@@ -353,7 +353,7 @@ _class_::setValues(const int start, const int numarg, const _valtype_ * newvals)
  \
   for (int i=0; i < numarg; i++) \
     this->values[i+start] = static_cast<const _valtype_>(newvals[i]); \
-  this->setChangedIndices(start,numarg); \
+  this->setChangedIndices(start, numarg); \
   this->valueChanged(); \
   this->setChangedIndices(); \
 } \

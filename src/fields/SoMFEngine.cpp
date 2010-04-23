@@ -148,7 +148,7 @@ SoMFEngine::setValues(const int start, const int numarg, const SoEngine ** newva
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
-  this->setChangedIndices(start,numarg);
+  this->setChangedIndices(start, numarg);
   if (notificstate) this->valueChanged();
   this->setChangedIndices();
 }
