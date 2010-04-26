@@ -61,10 +61,12 @@ public:
   int getIndex(void) const;
   int getFieldNumIndices(void) const;
   const SoBase * const getGroupChild(void) const;
+  const SoBase * const getGroupPrevChild(void) const;
   void setOperationType(const SoNotRec::OperationType opType);
   void setIndex(const int idx);
   void setFieldNumIndices(const int fldnumind);
   void setGroupChild(const SoBase * const gc);
+  void setGroupPrevChild(const SoBase * const pc);
 
 private:
   Type type;
@@ -73,6 +75,7 @@ private:
   int index, fieldNumIndices;
   OperationType operationType;
   const SoBase * groupChild;
+  const SoBase * groupPrevChild;
 };
 
 #endif // !COIN_SONOTREC_H

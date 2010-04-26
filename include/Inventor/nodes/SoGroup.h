@@ -76,6 +76,7 @@ protected:
 
   void setOperation(const SoNotRec::OperationType opType = SoNotRec::UNSPECIFIED,
 		    const SoNode * cc = NULL,
+		    const SoNode * pc = NULL,
 		    const int ci = -1);
 
   SoChildList * children;
@@ -86,6 +87,7 @@ private:
 
   int changedIndex;
   const SoNode * changedChild;
+  const SoNode * changedPrevChild;
   SoNotRec::OperationType operationType;
 };
 

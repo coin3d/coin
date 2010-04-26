@@ -153,11 +153,11 @@ SoChildList::remove(const int index)
     for (int i=0; i < this->auditors.getLength(); i++) {
       this->auditors[i]->removeIndex(this->parent, index);
     }
-  }
-  SoNodeList::remove(index);
-  if (this->parent) {
+    /* notify before removal, so that the notification source gets the
+     * chance to operate on the child to be removed. 20100426 tamer. */
     this->parent->startNotify();
   }
+  SoNodeList::remove(index);
 }
 
 // Documented in superclass. Overridden to handle notification.
@@ -172,12 +172,11 @@ SoChildList::truncate(const int length)
       for (int i = length; i < n; i++) {
         SoNodeList::operator[](i)->removeAuditor(this->parent, SoNotRec::PARENT);
       }
-    }
-    SoNodeList::truncate(length);
-
-    // FIXME: shouldn't we move this startNotify() call to the end of
-    // the function?  pederb, 2002-10-02
-    if (this->parent) {
+      /* FIXME: shouldn't we move this startNotify() call to the end of
+	 the function?  pederb, 2002-10-02 */
+      /* notify before truncation, so that the notification source gets
+	 the chance to operate on the child to be removed. 20100426
+	 tamer. */
       this->parent->startNotify();
       for (int k=0; k < this->auditors.getLength(); k++) {
         for (int j=length; j < n; j++) {
@@ -185,6 +184,7 @@ SoChildList::truncate(const int length)
         }
       }
     }
+    SoNodeList::truncate(length);
   }
 }
 
@@ -230,23 +230,34 @@ SoChildList::set(const int index, SoNode * const node)
   assert(index >= 0 && index < this->getLength());
   if (this->parent) {
     SoNodeList::operator[](index)->removeAuditor(this->parent, SoNotRec::PARENT);
-  }
-  SoBaseList::set(index, (SoBase *)node);
-  if (this->parent) {
     node->addAuditor(this->parent, SoNotRec::PARENT);
   }
+
+  /* keep the node that is to be replaced around until after the
+   * notifications have been sent */
+  SoNode * prevchild = (SoNode *)this->get(index);
+  prevchild->ref();
+
+  SoBaseList::set(index, (SoBase *)node);
+
   // FIXME: shouldn't we move this startNotify() call to the end of
   // the function?  pederb, 2002-10-02
+  /* notify before truncation, so that the notification source gets
+     the chance to operate on the child to be removed. 20100426
+     tamer. */
   if (this->parent) {
     this->parent->startNotify();
-    for (int i=0; i < this->auditors.getLength(); i++)
+    for (int i=0; i < this->auditors.getLength(); i++) {
       this->auditors[i]->replaceIndex(this->parent, index, node);
+    }
   }
+
+  prevchild->unref();
 }
 
 /*!
   Optimized IN_PATH traversal method.
-  
+
   This method is an extension versus the Open Inventor API.
 */
 void
