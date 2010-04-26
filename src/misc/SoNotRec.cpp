@@ -57,8 +57,9 @@
 /*!
   Constructor. Initializes the record with \a notifbase pointer.
 */
-SoNotRec::SoNotRec(SoBase * const notifbase)
-  : type((SoNotRec::Type)-1), base(notifbase), prev(NULL), index(-1), fieldNumIndices(0), operationType(UNSPECIFIED), groupChild(NULL)
+SoNotRec::SoNotRec(SoBase * const notifbase) :
+  type((SoNotRec::Type)-1), base(notifbase), prev(NULL), index(-1),
+  fieldNumIndices(0), operationType(UNSPECIFIED), groupChild(NULL), groupPrevChild(NULL)
 {
 }
 
@@ -167,6 +168,12 @@ SoNotRec::getGroupChild(void) const
   return groupChild;
 }
 
+const SoBase * const
+SoNotRec::getGroupPrevChild(void) const
+{
+  return groupPrevChild;
+}
+
 void
 SoNotRec::setOperationType(const SoNotRec::OperationType opType)
 {
@@ -189,4 +196,10 @@ void
 SoNotRec::setGroupChild(const SoBase * const gc)
 {
   this->groupChild = gc;
+}
+
+void
+SoNotRec::setGroupPrevChild(const SoBase * const pc)
+{
+  this->groupPrevChild = pc;
 }

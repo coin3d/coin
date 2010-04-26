@@ -63,7 +63,8 @@ SoDataSensor::SoDataSensor(void)
     triggeroperationtype(SoNotRec::UNSPECIFIED),
     triggerindex(-1),
     triggerfieldnumindices(0),
-    triggergroupchild(NULL)
+    triggergroupchild(NULL),
+    triggergroupprevchild(NULL)
 {
 }
 
@@ -84,7 +85,8 @@ SoDataSensor::SoDataSensor(SoSensorCB * func, void * data)
     triggeroperationtype(SoNotRec::UNSPECIFIED),
     triggerindex(-1),
     triggerfieldnumindices(0),
-    triggergroupchild(NULL)
+    triggergroupchild(NULL),
+    triggergroupprevchild(NULL)
 {
 }
 
@@ -244,12 +246,29 @@ SoDataSensor::getTriggerFieldNumIndices(void) const
   Please note that this method is an extension to the original SGI
   Inventor API.
 
-  \sa getTriggerNode()
+  \sa getTriggerNode(), getTriggerReplacedGroupChild
 */
 SoNode *
 SoDataSensor::getTriggerGroupChild(void) const
 {
   return this->triggergroupchild;
+}
+
+/*!
+  Returns a pointer to the actual child node for a
+  SoNotRec::GROUP_REPLACECHILD type of operation in the node that is
+  about to be replaced and caused the sensor to trigger, or \c NULL if
+  there was no such node.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerNode(), getTriggerGroupChild
+*/
+SoNode *
+SoDataSensor::getTriggerReplacedGroupChild(void) const
+{
+  return this->triggergroupprevchild;
 }
 
 // Doc from superclass.
@@ -265,6 +284,7 @@ SoDataSensor::trigger(void)
   this->triggerindex = -1;
   this->triggerfieldnumindices = 0;
   this->triggergroupchild = NULL;
+  this->triggergroupprevchild = NULL;
 }
 
 /*!
@@ -309,10 +329,11 @@ SoDataSensor::notify(SoNotList * l)
       }
     }
 
-    this->triggeroperationtype = record ? record->getOperationType(): SoNotRec::UNSPECIFIED;
-    this->triggerindex = record ? record->getIndex(): -1;
-    this->triggerfieldnumindices = record ? record->getFieldNumIndices(): 0;
-    this->triggergroupchild = (SoNode *) (record ? record->getGroupChild(): NULL);
+    this->triggeroperationtype = record ? record->getOperationType() : SoNotRec::UNSPECIFIED;
+    this->triggerindex = record ? record->getIndex() : -1;
+    this->triggerfieldnumindices = record ? record->getFieldNumIndices() : 0;
+    this->triggergroupchild = (SoNode *) (record ? record->getGroupChild() : NULL);
+    this->triggergroupprevchild = (SoNode *) (record ? record->getGroupPrevChild() : NULL);
   }
   this->schedule();
 }
