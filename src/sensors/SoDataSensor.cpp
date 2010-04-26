@@ -63,9 +63,7 @@ SoDataSensor::SoDataSensor(void)
     triggeroperationtype(SoNotRec::UNSPECIFIED),
     triggerindex(-1),
     triggerfieldnumindices(0),
-    triggergroupchild(NULL),
-    triggerpreviousfield(NULL),
-    triggerpreviousnode(NULL)
+    triggergroupchild(NULL)
 {
 }
 
@@ -86,9 +84,7 @@ SoDataSensor::SoDataSensor(SoSensorCB * func, void * data)
     triggeroperationtype(SoNotRec::UNSPECIFIED),
     triggerindex(-1),
     triggerfieldnumindices(0),
-    triggergroupchild(NULL),
-    triggerpreviousfield(NULL),
-    triggerpreviousnode(NULL)
+    triggergroupchild(NULL)
 {
 }
 
@@ -256,36 +252,6 @@ SoDataSensor::getTriggerGroupChild(void) const
   return this->triggergroupchild;
 }
 
-/*!
-  Returns a pointer to the previous node causing the sensor to trigger, or \c
-  NULL if there was no such node.
-
-  Please note that this method is an extension to the original SGI
-  Inventor API.
-
-  \sa getTriggerNode()
-*/
-SoNode *
-SoDataSensor::getTriggerPrevNode(void) const
-{
-  return this->triggerpreviousnode;
-}
-
-/*!
-  Returns a pointer to the previous field causing the sensor to trigger, or \c
-  NULL if the change didn't start at a field.
-
-  Please note that this method is an extension to the original SGI
-  Inventor API.
-
-  \sa getTriggerField()
-*/
-SoField *
-SoDataSensor::getTriggerPrevField(void) const
-{
-  return this->triggerpreviousfield;
-}
-
 // Doc from superclass.
 void
 SoDataSensor::trigger(void)
@@ -299,8 +265,6 @@ SoDataSensor::trigger(void)
   this->triggerindex = -1;
   this->triggerfieldnumindices = 0;
   this->triggergroupchild = NULL;
-  this->triggerpreviousfield = NULL;
-  this->triggerpreviousnode = NULL;
 }
 
 /*!
@@ -328,16 +292,6 @@ SoDataSensor::notify(SoNotList * l)
     this->triggerfield = l->getLastField();
     SoNotRec * record = l->getFirstRecAtNode();
     this->triggernode = (SoNode *) (record ? record->getBase() : NULL);
-
-    if (this->triggerfield && this->triggerfield->isOfType(SoSFNode::getClassTypeId())) {
-      this->triggerpreviousfield = l->getPreviousField();
-      SoNotRec * prevNodeRec = l->getPreviousNodeRec();
-      this->triggerpreviousnode = (SoNode *) (prevNodeRec ? prevNodeRec->getBase(): NULL);
-    }
-    else {
-      this->triggerpreviousfield = NULL;
-      this->triggerpreviousnode = NULL;
-    }
 
     if (this->findpath && this->triggernode) {
       const SoNotRec * record = l->getLastRec();
