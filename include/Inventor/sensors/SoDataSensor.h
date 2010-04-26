@@ -51,8 +51,6 @@ public:
   int getTriggerIndex(void) const;
   int getTriggerFieldNumIndices(void) const;
   SoNode * getTriggerGroupChild(void) const;
-  SoNode * getTriggerPrevNode(void) const;
-  SoField * getTriggerPrevField(void) const;
 
   virtual void trigger(void);
   virtual void notify(SoNotList * l);
@@ -71,8 +69,6 @@ private:
   SoNotRec::OperationType triggeroperationtype;
   int triggerindex, triggerfieldnumindices;
   SoNode * triggergroupchild;
-  SoField * triggerpreviousfield;
-  SoNode * triggerpreviousnode;
 };
 
 #endif // !COIN_SODATASENSOR_H

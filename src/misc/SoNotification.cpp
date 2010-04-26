@@ -39,17 +39,12 @@
 /*!
   Initialize list.
 */
-SoNotList::SoNotList(void)
-{
-  this->head = this->tail = NULL;
-  this->firstnoderec = NULL;
-  this->lastfield = NULL;
-  this->lastengine = NULL;
-  this->previousfield = NULL;
-  this->previousnoderec = NULL;
+SoNotList::SoNotList(void) :
+  head(NULL), tail(NULL), firstnoderec(NULL), lastfield(NULL), lastengine(NULL),
   // this is used in SoNode::notify() to stop a notification
   // when a node has already been notified.
-  this->stamp = SoNode::getNextNodeId();
+  stamp(SoNode::getNextNodeId())
+{
 }
 
 /*!
@@ -84,8 +79,8 @@ SoNotList::append(SoNotRec * const rec)
   rec->setPrevious(this->tail);
   this->tail = rec;
   if (!this->head) this->head = rec;
-  
-  if (!this->firstnoderec && rec->getBase() && rec->getBase()->isOfType(SoNode::getClassTypeId())) 
+
+  if (!this->firstnoderec && rec->getBase() && rec->getBase()->isOfType(SoNode::getClassTypeId()))
     this->firstnoderec = rec;
 }
 
@@ -102,21 +97,6 @@ SoNotList::append(SoNotRec * const rec, SoField * const field)
   assert(field);
   this->lastfield = field;
   this->append(rec);
-
-  if (this->lastfield == NULL) {
-    this->lastfield = field;
-    this->firstnoderec = rec;
-    this->previousnoderec = rec;
-  }
-  else {
-    if (this->previousfield == NULL) {
-      this->previousfield = this->lastfield;
-    } else {
-      this->previousfield = NULL;
-    }
-    this->lastfield = field;
-    this->firstnoderec = rec;
-  }
 }
 
 /*!
@@ -230,22 +210,4 @@ SoNotList::print(FILE * const file) const
                 this->getFirstRecAtNode(),
                 this->getLastField(), fname.getString());
 #endif // COIN_DEBUG
-}
-
-/*!
-  Returns the previous record in the list which is derived from SoBase.
-*/
-SoNotRec *
-SoNotList::getPreviousNodeRec(void) const
-{
-  return this->previousnoderec;
-}
-
-/*!
-  Returns the previous field touched by notification.
-*/
-SoField *
-SoNotList::getPreviousField(void) const
-{
-  return this->previousfield;
 }
