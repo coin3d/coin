@@ -1405,6 +1405,7 @@ void
 SoRenderManager::setRenderMode(const RenderMode mode)
 {
   PRIVATE(this)->rendermode = mode;
+  this->scheduleRedraw();
   PRIVATE(this)->dummynode->touch();
 }
 
@@ -1424,6 +1425,7 @@ void
 SoRenderManager::setStereoMode(const StereoMode mode)
 {
   PRIVATE(this)->stereomode = mode;
+  this->scheduleRedraw();
   PRIVATE(this)->dummynode->touch();
 }
 
@@ -1443,6 +1445,7 @@ void
 SoRenderManager::setStereoOffset(const float offset)
 {
   PRIVATE(this)->stereooffset = offset;
+  this->scheduleRedraw();
   PRIVATE(this)->dummynode->touch();
 }
 
@@ -1466,6 +1469,7 @@ SoRenderManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 {
   PRIVATE(this)->glaction->setSmoothing(smoothing);
   PRIVATE(this)->glaction->setNumPasses(numpasses);
+  this->scheduleRedraw();
 }
 
 /*!
