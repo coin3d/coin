@@ -60,8 +60,8 @@ public:
   SoNotRec::OperationType getOperationType(void) const;
   int getIndex(void) const;
   int getFieldNumIndices(void) const;
-  const SoBase * const getGroupChild(void) const;
-  const SoBase * const getGroupPrevChild(void) const;
+  const SoBase * getGroupChild(void) const;
+  const SoBase * getGroupPrevChild(void) const;
   void setOperationType(const SoNotRec::OperationType opType);
   void setIndex(const int idx);
   void setFieldNumIndices(const int fldnumind);

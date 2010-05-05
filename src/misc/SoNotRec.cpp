@@ -162,13 +162,13 @@ SoNotRec::getFieldNumIndices(void) const
   return fieldNumIndices;
 }
 
-const SoBase * const
+const SoBase *
 SoNotRec::getGroupChild(void) const
 {
   return groupChild;
 }
 
-const SoBase * const
+const SoBase *
 SoNotRec::getGroupPrevChild(void) const
 {
   return groupPrevChild;
