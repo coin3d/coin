@@ -44,9 +44,10 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 subdir = src
-DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(srcdir)/discard.h.in $(srcdir)/setup.h.in
+DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Coin.rc.in \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(srcdir)/discard.h.in \
+	$(srcdir)/setup.h.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/../simacros/bin/../cfg/m4/bz2.m4 \
 	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_debug.m4 \
@@ -92,7 +93,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = discard.h config.h setup.h
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = Coin.rc
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libdir)"
 libLIBRARIES_INSTALL = $(INSTALL_DATA)
 LIBRARIES = $(lib_LIBRARIES)
@@ -434,6 +435,7 @@ CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 COIN_BETA_VERSION = @COIN_BETA_VERSION@
+COIN_BUILD_YEAR = @COIN_BUILD_YEAR@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
@@ -859,6 +861,8 @@ stamp-h3: $(srcdir)/setup.h.in $(top_builddir)/config.status
 
 distclean-hdr:
 	-rm -f discard.h stamp-h1 config.h stamp-h2 setup.h stamp-h3
+Coin.rc: $(top_builddir)/config.status $(srcdir)/Coin.rc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-libLIBRARIES: $(lib_LIBRARIES)
 	@$(NORMAL_INSTALL)
 	test -z "$(libdir)" || $(mkdir_p) "$(DESTDIR)$(libdir)"
@@ -2335,7 +2339,7 @@ uninstall-info: uninstall-info-recursive
 # **************************************************************************
 # Custom rule for linking a Visual C++ (MS Windows) library.
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile Coin.RES \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
@@ -2343,10 +2347,10 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
 	echo "Linking $$basename.lib..."; \
 	echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS); \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) Coin.RES; \
 	$(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS) Coin.RES ;
 
 # **************************************************************************
 
@@ -2444,6 +2448,9 @@ uninstall-local:
 	  fi \
 	done; \
 	:
+
+Coin.RES: Coin.rc
+	rc Coin.rc
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

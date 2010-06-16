@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -34,9 +34,10 @@
   complex, due to it's non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
-  directory of Kongsberg SIM's SoGuiExamples CVS module. Further
-  information and links for downloading and building this module
-  should be available at <a href="http://www.coin3d.org">www.coin3d.org</a>.
+  directory of Kongsberg Oil & Gas Technologies's SoGuiExamples
+  Mercurial repository. Further information and links for downloading
+  and building this module should be available at <a
+  href="http://www.coin3d.org">www.coin3d.org</a>.
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
@@ -829,7 +830,7 @@ SoExtSelection::initClass(void)
   else has been rendered -- and this is the strategy we apply in Coin.
 */
 void
-SoExtSelection::useOverlay(SbBool overlay)
+SoExtSelection::useOverlay(SbBool COIN_UNUSED_ARG(overlay))
 {
   COIN_OBSOLETED();
 }
@@ -867,7 +868,7 @@ SoExtSelection::getOverlaySceneGraph(void)
   Obsoleted in Coin, use SoExtSelection::setLassoColor() instead.
 */
 void
-SoExtSelection::setOverlayLassoColorIndex(const int index)
+SoExtSelection::setOverlayLassoColorIndex(const int COIN_UNUSED_ARG(index))
 {
   COIN_OBSOLETED();
 }
@@ -1242,7 +1243,7 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 */
 
 void
-SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
+SoExtSelection::select(SoNode * COIN_UNUSED_ARG(root), int COIN_UNUSED_ARG(numcoords), SbVec3f * COIN_UNUSED_ARG(lasso), const SbViewportRegion & COIN_UNUSED_ARG(vp), SbBool COIN_UNUSED_ARG(shiftpolicy))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1255,7 +1256,7 @@ SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbVi
 */
 
 void
-SoExtSelection::select(SoNode * root, int numcoords, SbVec2f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
+SoExtSelection::select(SoNode * COIN_UNUSED_ARG(root), int COIN_UNUSED_ARG(numcoords), SbVec2f * COIN_UNUSED_ARG(lasso), const SbViewportRegion & COIN_UNUSED_ARG(vp), SbBool COIN_UNUSED_ARG(shiftpolicy))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1267,7 +1268,7 @@ SoExtSelection::select(SoNode * root, int numcoords, SbVec2f * lasso, const SbVi
   This function is currently just stubbed.
 */
 const SbVec2s *
-SoExtSelection::getLassoCoordsDC (int &numCoords)
+SoExtSelection::getLassoCoordsDC (int &COIN_UNUSED_ARG(numCoords))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1280,7 +1281,7 @@ SoExtSelection::getLassoCoordsDC (int &numCoords)
   This function is currently just stubbed.
 */
 const SbVec3f *
-SoExtSelection::getLassoCoordsWC (int &numCoords)
+SoExtSelection::getLassoCoordsWC (int &COIN_UNUSED_ARG(numCoords))
 {
   // FIXME: Implement this for TGS compatibility...
   COIN_STUB_ONCE();
@@ -1394,7 +1395,7 @@ SoExtSelection::wasShiftDown(void) const
 
 // timer callback for rendering lasso animation.
 void
-SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
+SoExtSelectionP::timercallback(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoExtSelection * ext = (SoExtSelection *)data;
   if (ext == NULL) return;
@@ -1427,7 +1428,7 @@ SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const So
 
 // callback that is called for a shape after all primitives have been processed
 SoCallbackAction::Response
-SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
+SoExtSelectionP::postShapeCallback(void * data, SoCallbackAction * action, const SoNode * COIN_UNUSED_ARG(node))
 {
   SoExtSelection * ext = (SoExtSelection*)data;
 
@@ -1469,7 +1470,7 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
 SoCallbackAction::Response
 SoExtSelectionP::cameraCB(void * data,
                           SoCallbackAction * action,
-                          const SoNode * node)
+                          const SoNode * COIN_UNUSED_ARG(node))
 {
   SoExtSelection * thisp = (SoExtSelection*) data;
 
@@ -2473,7 +2474,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
 
 
 SbBool
-SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
+SoExtSelectionP::scanOffscreenBuffer(SoNode * COIN_UNUSED_ARG(sceneRoot))
 {
 
   const SbViewportRegion vpr = renderer->getViewportRegion();

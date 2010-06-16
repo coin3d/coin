@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,12 +14,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -84,6 +84,12 @@ COIN_DLL_API void cc_string_apply(cc_string * str, cc_apply_f function);
 
 COIN_DLL_API void cc_string_sprintf(cc_string * str, const char * formatstr, ...);
 COIN_DLL_API void cc_string_vsprintf(cc_string * str, const char * formatstr, va_list args);
+
+COIN_DLL_API size_t cc_string_utf8_decode(const char * src, size_t srclen, uint32_t * value);
+COIN_DLL_API size_t cc_string_utf8_encode(char * buffer, size_t buflen, uint32_t value);
+COIN_DLL_API uint32_t cc_string_utf8_get_char(const char * str);
+COIN_DLL_API const char * cc_string_utf8_next_char(const char * str);
+COIN_DLL_API size_t cc_string_utf8_validate_length(const char * str);
 
 /* ********************************************************************** */
 

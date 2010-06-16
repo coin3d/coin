@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,12 +14,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -40,6 +40,16 @@ public:
     ENGINE
   };
 
+  enum OperationType {
+    UNSPECIFIED,
+    FIELD_UPDATE,
+    GROUP_ADDCHILD,
+    GROUP_INSERTCHILD,
+    GROUP_REPLACECHILD,
+    GROUP_REMOVECHILD,
+    GROUP_REMOVEALLCHILDREN
+  };
+
   SoNotRec(SoBase * const notifbase);
   void setType(const SoNotRec::Type type);
   SoBase * getBase(void) const;
@@ -47,11 +57,25 @@ public:
   const SoNotRec * getPrevious(void) const;
   void setPrevious(const SoNotRec * const prev);
   void print(FILE * const file) const;
+  SoNotRec::OperationType getOperationType(void) const;
+  int getIndex(void) const;
+  int getFieldNumIndices(void) const;
+  const SoBase * getGroupChild(void) const;
+  const SoBase * getGroupPrevChild(void) const;
+  void setOperationType(const SoNotRec::OperationType opType);
+  void setIndex(const int idx);
+  void setFieldNumIndices(const int fldnumind);
+  void setGroupChild(const SoBase * const gc);
+  void setGroupPrevChild(const SoBase * const pc);
 
 private:
   Type type;
   SoBase * base;
   const SoNotRec * prev;
+  int index, fieldNumIndices;
+  OperationType operationType;
+  const SoBase * groupChild;
+  const SoBase * groupPrevChild;
 };
 
 #endif // !COIN_SONOTREC_H

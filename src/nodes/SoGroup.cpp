@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -89,58 +89,58 @@
   \code
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-  
+
   #include <Inventor/nodes/SoEventCallback.h>
   #include <Inventor/nodes/SoSeparator.h>
   #include <Inventor/nodes/SoCone.h>
   #include <Inventor/manips/SoPointLightManip.h>
   #include <Inventor/events/SoMouseButtonEvent.h>
-  
+
   SoPointLightManip * global_pointlightmanip;
   SoSeparator * global_root;
-  
+
   // Remove pointlight when clicking right mouse button.
   static void
   mySelectionC(void * ud, SoEventCallback * n)
   {
     const SoMouseButtonEvent * mbe = (SoMouseButtonEvent*) n->getEvent();
-  
+
     if ((mbe->getButton() == SoMouseButtonEvent::BUTTON2) &&
-        (mbe->getState() == SoButtonEvent::DOWN)) {
+	(mbe->getState() == SoButtonEvent::DOWN)) {
       if (global_pointlightmanip) {
-        global_root->removeChild(global_pointlightmanip);
-        global_pointlightmanip = NULL;
+	global_root->removeChild(global_pointlightmanip);
+	global_pointlightmanip = NULL;
       }
     }
   }
-  
+
   int
   main(int argc, char ** argv)
   {
     QWidget * window = SoQt::init(argv[0]);
-  
+
     global_root = new SoSeparator;
     global_root->ref();
-  
+
     SoEventCallback * ecb = new SoEventCallback;
     ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), mySelectionC, 0);
     global_root->addChild(ecb);
-  
+
     global_root->addChild(new SoCone);
-  
+
     global_pointlightmanip = new SoPointLightManip;
     global_root->addChild(global_pointlightmanip);
-  
+
     SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
     viewer->setSceneGraph(global_root);
     viewer->show();
-  
+
     SoQt::show(window);
     SoQt::mainLoop();
-  
+
     global_root->unref();
     delete viewer;
-  
+
     return 0;
   }
   \endcode
@@ -244,6 +244,7 @@ SoGroup::SoGroup(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this);
+  this->setOperation();
 }
 
 /*!
@@ -259,6 +260,7 @@ SoGroup::SoGroup(int nchildren)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this, nchildren);
+  this->setOperation();
 }
 
 /*!
@@ -273,13 +275,13 @@ SoGroup::~SoGroup()
   Returns pointer to child node at \a index.
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 SoNode *
 SoGroup::getChild(int index) const
 {
   assert((index >= 0) && (index < this->getNumChildren()));
-  
+
   return (SoNode*) this->getChildren()->getArrayPtr()[index];
 }
 
@@ -287,7 +289,7 @@ SoGroup::getChild(int index) const
   Returns number of child nodes managed by this group.
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 int
 SoGroup::getNumChildren(void) const
@@ -348,29 +350,29 @@ SoGroup::readChildren(SoInput * in)
     SoBase * child;
     if (SoBase::read(in, child, SoNode::getClassTypeId())) {
       if (child == NULL) {
-        if (in->eof()) {
-          SoReadError::post(in, "Premature end of file");
-          return FALSE;
-        }
-        else {
-          if (in->isBinary()) {
-            SoReadError::post(in, "Couldn't read valid identifier name");
-            return FALSE;
-          }
+	if (in->eof()) {
+	  SoReadError::post(in, "Premature end of file");
+	  return FALSE;
+	}
+	else {
+	  if (in->isBinary()) {
+	    SoReadError::post(in, "Couldn't read valid identifier name");
+	    return FALSE;
+	  }
 
 #if COIN_DEBUG && 0 // debug
-          char m;
-          if (in->read(m)) {
-            SoDebugError::postInfo("SoGroup::readChildren",
-                                   "next char: '%c'", m);
-          }
+	  char m;
+	  if (in->read(m)) {
+	    SoDebugError::postInfo("SoGroup::readChildren",
+				   "next char: '%c'", m);
+	  }
 #endif // debug
-          // Completed reading of children for ASCII format import.
-          return TRUE;
-        }
+	  // Completed reading of children for ASCII format import.
+	  return TRUE;
+	}
       }
       else {
-        this->addChild((SoNode *)child);
+	this->addChild((SoNode *)child);
       }
     }
     else {
@@ -404,18 +406,46 @@ SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
   }
 }
 
+SoNotRec
+SoGroup::createNotRec(void)
+{
+  SoNotRec rec(inherited::createNotRec());
+  rec.setOperationType(operationType);
+  rec.setGroupChild(changedChild);
+  rec.setGroupPrevChild(changedPrevChild);
+  rec.setIndex(changedIndex);
+  return rec;
+}
+
+/*!
+  \internal
+*/
+void
+SoGroup::setOperation(const SoNotRec::OperationType opType,
+		      const SoNode * nc,
+		      const SoNode * pc,
+		      const int ci)
+{
+  this->operationType = opType;
+  this->changedChild = nc;
+  this->changedPrevChild = pc;
+  this->changedIndex = ci;
+}
+
 /*!
   Append a child \a node to the list of children nodes this group node
   is managing.
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 void
 SoGroup::addChild(SoNode * node)
 {
   assert(node != NULL);
+  this->setOperation(SoNotRec::GROUP_ADDCHILD, node);
   this->getChildren()->append(node);
+  this->setOperation();
 }
 
 /*!
@@ -424,7 +454,7 @@ SoGroup::addChild(SoNode * node)
   \a newchildindex must be <= this->getNumChildren()
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 void
 SoGroup::insertChild(SoNode * child, int newchildindex)
@@ -432,19 +462,21 @@ SoGroup::insertChild(SoNode * child, int newchildindex)
 #if COIN_DEBUG
   if (newchildindex < 0 || newchildindex > this->getNumChildren()) {
     SoDebugError::post("SoGroup::insertChild",
-                       "idx %d is out of bounds (groupnode # children == %d)",
-                       newchildindex, this->getNumChildren());
+		       "idx %d is out of bounds (groupnode # children == %d)",
+		       newchildindex, this->getNumChildren());
     return;
   }
 #endif // COIN_DEBUG
+  this->setOperation(SoNotRec::GROUP_INSERTCHILD, child, NULL, newchildindex);
   this->getChildren()->insert(child, newchildindex);
+  this->setOperation();
 }
 
 /*!
   Remove node at \a childindex in our list of children.
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 void
 SoGroup::removeChild(int childindex)
@@ -452,12 +484,16 @@ SoGroup::removeChild(int childindex)
 #if COIN_DEBUG
   if (childindex < 0 || childindex >= this->getNumChildren()) {
     SoDebugError::post("SoGroup::removeChild",
-                       "idx %d is out of bounds (groupnode # children == %d)",
-                       childindex, this->getNumChildren());
+		       "idx %d is out of bounds (groupnode # children == %d)",
+		       childindex, this->getNumChildren());
     return;
   }
 #endif // COIN_DEBUG
+  this->setOperation(SoNotRec::GROUP_REMOVECHILD,
+		     this->getChild(childindex),
+		     NULL, childindex);
   this->getChildren()->remove(childindex);
+  this->setOperation();
 }
 
 /*!
@@ -465,7 +501,7 @@ SoGroup::removeChild(int childindex)
   node is not a child of this group node.
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 int
 SoGroup::findChild(const SoNode * node) const
@@ -533,8 +569,8 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     // If center point is set, accumulate.
     if (action->isCenterSet()) {
       acccenter += action->getCenter();
-        numcenters++;
-        action->resetCenter();
+	numcenters++;
+	action->resetCenter();
     }
   }
 
@@ -545,7 +581,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 // *************************************************************************
 
 void
-SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
+SoGroupP::childGLRender(SoGroup * COIN_UNUSED_ARG(thisp), SoNode * child, SoGLRenderAction * action)
 {
   child->GLRender(action);
 }
@@ -553,7 +589,7 @@ SoGroupP::childGLRender(SoGroup * thisp, SoNode * child, SoGLRenderAction * acti
 // This function is called for each child to traverse, and
 // action->getCurPath() is already updated at this point.
 void
-SoGroupP::childGLRenderProfiler(SoGroup * thisp, SoNode * child, SoGLRenderAction * action)
+SoGroupP::childGLRenderProfiler(SoGroup * COIN_UNUSED_ARG(thisp), SoNode * child, SoGLRenderAction * action)
 {
   SoNodeProfiling profiling;
   profiling.preTraversal(action);
@@ -568,7 +604,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
   int numindices;
   const int * indices;
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
-  
+
   SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
   SoState * state = action->getState();
 
@@ -576,16 +612,16 @@ SoGroup::GLRender(SoGLRenderAction * action)
     int lastchild = indices[numindices - 1];
     for (int i = 0; i <= lastchild && !action->hasTerminated(); i++) {
       SoNode * child = childarray[i];
-      
+
       action->pushCurPath(i, child);
       if (action->getCurPathCode() != SoAction::OFF_PATH ||
-          child->affectsState()) {
-        if (!action->abortNow()) {
-          (*SoGroupP::glrenderfunc)(this, child, action);
-        }
-        else {
-          SoCacheElement::invalidate(state);
-        }
+	  child->affectsState()) {
+	if (!action->abortNow()) {
+	  (*SoGroupP::glrenderfunc)(this, child, action);
+	}
+	else {
+	  SoCacheElement::invalidate(state);
+	}
       }
       action->popCurPath(pathcode);
     }
@@ -597,13 +633,13 @@ SoGroup::GLRender(SoGLRenderAction * action)
       action->popPushCurPath(i, childarray[i]);
 
       if (pathcode == SoAction::OFF_PATH && !childarray[i]->affectsState()) {
-        continue;   
+	continue;
       }
 
       if (action->abortNow()) {
-        // only cache if we do a full traversal
-        SoCacheElement::invalidate(state);
-        break;
+	// only cache if we do a full traversal
+	SoCacheElement::invalidate(state);
+	break;
       }
 
       (*SoGroupP::glrenderfunc)(this, childarray[i], action);
@@ -616,16 +652,16 @@ SoGroup::GLRender(SoGLRenderAction * action)
       // node caused the error.
       static SbBool chkglerr = sogl_glerror_debugging();
       if (chkglerr) {
-        cc_string str;
-        cc_string_construct(&str);
-        const unsigned int errs = coin_catch_gl_errors(&str);
-        if (errs > 0) {
-          SoDebugError::post("SoGroup::GLRender",
-                             "glGetError()s => '%s', nodetype: '%s'",
-                             cc_string_get_text(&str),
-                             (*this->getChildren())[i]->getTypeId().getName().getString());
-        }
-        cc_string_clean(&str);
+	cc_string str;
+	cc_string_construct(&str);
+	const unsigned int errs = coin_catch_gl_errors(&str);
+	if (errs > 0) {
+	  SoDebugError::post("SoGroup::GLRender",
+			     "glGetError()s => '%s', nodetype: '%s'",
+			     cc_string_get_text(&str),
+			     (*this->getChildren())[i]->getTypeId().getName().getString());
+	}
+	cc_string_clean(&str);
       }
 #endif // COIN_DEBUG
 
@@ -730,19 +766,19 @@ SoGroup::getChildren(void) const
   found.
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 void
 SoGroup::removeChild(SoNode * child)
 {
   int idx = this->findChild(child);
-  
+
   if (idx < 0) {
 #if COIN_DEBUG
     SoDebugError::post("SoGroup::removeChild",
-                       "tried to remove non-existent child %p (%s)",
-                       child,
-                       child ? child->getTypeId().getName().getString() : "");
+		       "tried to remove non-existent child %p (%s)",
+		       child,
+		       child ? child->getTypeId().getName().getString() : "");
 #endif // COIN_DEBUG
     return;
   }
@@ -760,7 +796,9 @@ SoGroup::removeChild(SoNode * child)
 void
 SoGroup::removeAllChildren(void)
 {
+  this->setOperation(SoNotRec::GROUP_REMOVEALLCHILDREN);
   this->getChildren()->truncate(0);
+  this->setOperation();
 }
 
 /*!
@@ -772,7 +810,7 @@ SoGroup::removeAllChildren(void)
   \a index must be < this->getNumChildren()
 
   Please note that this method is not virtual in the original SGI
-  Inventor API.  
+  Inventor API.
 */
 void
 SoGroup::replaceChild(int index, SoNode * newchild)
@@ -780,7 +818,10 @@ SoGroup::replaceChild(int index, SoNode * newchild)
   // Note: its imperative that we use set() here, and not a
   // remove+insert pair of calls as that would puck up SoChildList
   // auditing from SoPath instances.
+  this->setOperation(SoNotRec::GROUP_REPLACECHILD, newchild,
+		     this->getChild(index), index);
   this->getChildren()->set(index, newchild);
+  this->setOperation();
 }
 
 /*!
@@ -801,12 +842,12 @@ SoGroup::replaceChild(SoNode * oldchild, SoNode * newchild)
 {
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoGroup::replaceChild",
-                         "(%p) from %p (%s) to %p (%s)",
-                         this,
-                         oldchild,
-                         oldchild->getTypeId().getName().getString(),
-                         newchild,
-                         newchild->getTypeId().getName().getString());
+			 "(%p) from %p (%s) to %p (%s)",
+			 this,
+			 oldchild,
+			 oldchild->getTypeId().getName().getString(),
+			 newchild,
+			 newchild->getTypeId().getName().getString());
 #endif // debug
 
   int idx = this->findChild(oldchild);
@@ -814,10 +855,10 @@ SoGroup::replaceChild(SoNode * oldchild, SoNode * newchild)
 #if COIN_DEBUG
   if (idx < 0 || idx > this->getNumChildren()) {
     SoDebugError::post("SoGroup::replaceChild",
-                       "(%p) Tried to remove non-existent child %p (%s)",
-                       this,
-                       oldchild,
-                       oldchild->getTypeId().getName().getString());
+		       "(%p) Tried to remove non-existent child %p (%s)",
+		       this,
+		       oldchild,
+		       oldchild->getTypeId().getName().getString());
     return;
   }
 #endif // COIN_DEBUG

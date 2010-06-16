@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -332,7 +332,7 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line) const
   invdet = 1.0f / static_cast<float>(sqrt(dir2[0] + dir2[1] + dir2[2]));
 
   xdir *= invdet;
-  line = SbLine(xpt, xpt + xdir);
+  line.setPosDir(xpt, xdir);
   return TRUE;
 }
 
@@ -372,3 +372,25 @@ SbPlane::print(FILE * fp) const
   (void)fprintf(fp, "  %f", this->getDistanceFromOrigin());
 #endif // COIN_DEBUG
 }
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbLine.h>
+
+using namespace SIM::Coin::TestSuite;
+
+BOOST_AUTO_TEST_CASE(signCorrect)
+{
+  SbPlane plane1(SbVec3f(0.0, 0.0, 1.0), 3.0);
+  SbPlane plane2(SbVec3f(1.0, 0.0, 0.0), 21.0);
+  SbLine line;
+  plane1.intersect(plane2, line); 
+
+  SbVec3f intersect = line.getPosition();
+  SbVec3f vec(21, 0, 3);
+
+  check_compare(intersect,vec, "SbPlane SignCorrect", .1f);
+
+}
+
+#endif //COIN_TEST_SUITE

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -34,6 +34,7 @@
 #define SIMAGEWRAPPER_ASSUME_SIMAGE
 #endif /* !HAVE_CONFIG_H */
 
+#include "coindefs.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -118,52 +119,52 @@ simage_wrapper_get_num_savers(void)
 }
 
 static void *
-simage_wrapper_get_saver_handle(int jada)
+simage_wrapper_get_saver_handle(int COIN_UNUSED_ARG(jada))
 {
   return NULL;
 }
 
 static int
-simage_wrapper_check_save_supported(const char * jada)
+simage_wrapper_check_save_supported(const char * COIN_UNUSED_ARG(jada))
 {
   return 0;
 }
 
 static int
-simage_wrapper_save_image(const char * jada,
-                          const unsigned char * jada2,
-                          int jada3, int jada4, int jada5,
-                          const char * jada6)
+simage_wrapper_save_image(const char * COIN_UNUSED_ARG(jada),
+                          const unsigned char * COIN_UNUSED_ARG(jada2),
+                          int COIN_UNUSED_ARG(jada3), int COIN_UNUSED_ARG(jada4), int COIN_UNUSED_ARG(jada5),
+                          const char * COIN_UNUSED_ARG(jada6))
 {
   return 0;
 }
 
 static const char *
-simage_wrapper_get_saver_extensions(void * handle)
+simage_wrapper_get_saver_extensions(void * COIN_UNUSED_ARG(handle))
 {
   return "";
 }
 
 static const char *
-simage_wrapper_get_saver_fullname(void * handle)
+simage_wrapper_get_saver_fullname(void * COIN_UNUSED_ARG(handle))
 {
   return NULL;
 }
 
 static const char *
-simage_wrapper_get_saver_description(void * handle)
+simage_wrapper_get_saver_description(void * COIN_UNUSED_ARG(handle))
 {
   return NULL;
 }
 
 static unsigned char *
-simage_wrapper_resize3d(unsigned char * imagedata,
-                        int width, int height,
-                        int numcomponents,
-                        int layers,
-                        int newwidth,
-                        int newheight,
-                        int newlayers)
+simage_wrapper_resize3d(unsigned char * COIN_UNUSED_ARG(imagedata),
+                        int COIN_UNUSED_ARG(width), int COIN_UNUSED_ARG(height),
+                        int COIN_UNUSED_ARG(numcomponents),
+                        int COIN_UNUSED_ARG(layers),
+                        int COIN_UNUSED_ARG(newwidth),
+                        int COIN_UNUSED_ARG(newheight),
+                        int COIN_UNUSED_ARG(newlayers))
 {
   return NULL;
 }
@@ -175,67 +176,67 @@ simage_wrapper_s_params_create(void)
 }
 
 static void
-simage_wrapper_s_params_destroy(s_params *params)
+simage_wrapper_s_params_destroy(s_params * COIN_UNUSED_ARG(params))
 {
   return;
 }
 
 static void
-simage_wrapper_s_params_set(s_params * params, ...)
+simage_wrapper_s_params_set(s_params * COIN_UNUSED_ARG(params), ...)
 {
   return;
 }
 
 static int
-simage_wrapper_s_params_get(s_params * params, ...)
+simage_wrapper_s_params_get(s_params * COIN_UNUSED_ARG(params), ...)
 {
   return 0;
 }
 
 static s_stream *
-simage_wrapper_s_stream_open(const char * filename,
-              s_params * params /* | NULL */)
+simage_wrapper_s_stream_open(const char * COIN_UNUSED_ARG(filename),
+              s_params * COIN_UNUSED_ARG(params) /* | NULL */)
 {
   return NULL;
 }
 
 static s_stream *
-simage_wrapper_s_stream_create(const char * filename,
-                s_params * params /* | NULL */)
+simage_wrapper_s_stream_create(const char * COIN_UNUSED_ARG(filename),
+                s_params * COIN_UNUSED_ARG(params) /* | NULL */)
 {
   return NULL;
 }
 
 static void *
-simage_wrapper_s_stream_get_buffer(s_stream * stream,
-                    void * prealloc /* | NULL */,
-                    int *size /* | NULL */,
-                    s_params * params /* | NULL */)
+simage_wrapper_s_stream_get_buffer(s_stream * COIN_UNUSED_ARG(stream),
+                    void * COIN_UNUSED_ARG(prealloc) /* | NULL */,
+                    int * COIN_UNUSED_ARG(size) /* | NULL */,
+                    s_params * COIN_UNUSED_ARG(params) /* | NULL */)
 {
   return NULL;
 }
 
 static int
-simage_wrapper_s_stream_put_buffer(s_stream * stream, void * buffer,
-                    int size, s_params * params /* | NULL */)
+simage_wrapper_s_stream_put_buffer(s_stream * COIN_UNUSED_ARG(stream), void * COIN_UNUSED_ARG(buffer),
+                    int COIN_UNUSED_ARG(size), s_params * COIN_UNUSED_ARG(params) /* | NULL */)
 {
   return 0;
 }
 
 static void
-simage_wrapper_s_stream_close(s_stream * stream)
+simage_wrapper_s_stream_close(s_stream * COIN_UNUSED_ARG(stream))
 {
   return;
 }
 
 static void
-simage_wrapper_s_stream_destroy(s_stream * stream)
+simage_wrapper_s_stream_destroy(s_stream * COIN_UNUSED_ARG(stream))
 {
   return;
 }
 
 static s_params *
-simage_wrapper_s_stream_params(s_stream * stream)
+simage_wrapper_s_stream_params(s_stream * COIN_UNUSED_ARG(stream))
 {
   return NULL;
 }

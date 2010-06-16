@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -889,11 +889,11 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
   SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
-SoShape::createTriangleDetail(SoRayPickAction * action,
-                              const SoPrimitiveVertex * /*v1*/,
-                              const SoPrimitiveVertex * /*v2*/,
-                              const SoPrimitiveVertex * /*v3*/,
-                              SoPickedPoint * pp)
+SoShape::createTriangleDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                              const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
+                              SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   soshape_staticdata * shapedata = soshape_get_staticdata();
 
@@ -924,10 +924,10 @@ SoShape::createTriangleDetail(SoRayPickAction * action,
   SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
-SoShape::createLineSegmentDetail(SoRayPickAction * action,
-                                 const SoPrimitiveVertex * /* v1 */,
-                                 const SoPrimitiveVertex * /* v2 */,
-                                 SoPickedPoint * pp)
+SoShape::createLineSegmentDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                                 const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                                 const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                                 SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   soshape_staticdata * shapedata = soshape_get_staticdata();
 
@@ -1344,7 +1344,7 @@ SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   Inventor API.
  */
 float
-SoShape::getDecimatedComplexity(SoState * state, float complexity)
+SoShape::getDecimatedComplexity(SoState * COIN_UNUSED_ARG(state), float complexity)
 {
   COIN_OBSOLETED();
   return 1.0f * complexity;
@@ -1380,7 +1380,7 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
   \COININTERNAL
  */
 SbBool
-SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * COIN_UNUSED_ARG(action))
 {
   return TRUE; // FIXME: what to do here? pederb 1999-11-25
 }

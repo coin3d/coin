@@ -202,7 +202,7 @@ A:      The reason is probably that the two windows do not share the same
             renderaction->setCacheContext(uniqcc);
           }
 
-        This is taken care of automatically by Kongsberg SIM's
+        This is taken care of automatically by Kongsberg Oil & Gas Technologies's
         SoQt / SoGtk / SoXt / SoWin / Sc21 libraries, so you shouldn't
         have to worry about it unless you are making your own GUI
         binding to Coin from scratch.

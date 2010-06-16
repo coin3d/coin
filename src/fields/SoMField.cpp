@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -364,7 +364,9 @@ SoMField::set1(const int index, const char * const valuestring)
     this->num = oldnum; // restore old number of items in field
     return FALSE;
   }
+  this->setChangedIndex(index);
   this->valueChanged();
+  this->setChangedIndices();
   return TRUE;
 }
 
@@ -843,3 +845,26 @@ SoMField::allocValues(int newnum)
   this->num = newnum;
 }
 #endif // DOXYGEN_SKIP_THIS
+
+SoNotRec
+SoMField::createNotRec(SoBase * cont)
+{
+  SoNotRec rec(inherited::createNotRec(cont));
+  rec.setIndex(this->changedIndex);
+  rec.setFieldNumIndices(this->numChangedIndices);
+  return rec;
+}
+
+void
+SoMField::setChangedIndex(const int chgidx)
+{
+  this->changedIndex = chgidx;
+  this->numChangedIndices = 1;
+}
+
+void
+SoMField::setChangedIndices(const int chgidx, const int numchgind)
+{
+  this->changedIndex = chgidx;
+  this->numChangedIndices = numchgind;
+}

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -37,6 +37,13 @@
   within the record.
 */
 
+/*!
+  \enum SoNotRec::OperationType
+
+  This enum is used to specify the type of the scenegraph operation
+  causing the notification.
+*/
+
 #include <Inventor/misc/SoNotRec.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
@@ -50,8 +57,9 @@
 /*!
   Constructor. Initializes the record with \a notifbase pointer.
 */
-SoNotRec::SoNotRec(SoBase * const notifbase)
-  : type((SoNotRec::Type)-1), base(notifbase), prev(NULL)
+SoNotRec::SoNotRec(SoBase * const notifbase) :
+  type((SoNotRec::Type)-1), base(notifbase), prev(NULL), index(-1),
+  fieldNumIndices(0), operationType(UNSPECIFIED), groupChild(NULL), groupPrevChild(NULL)
 {
 }
 
@@ -134,4 +142,64 @@ SoNotRec::print(FILE * const file) const
     (void)fprintf(file," base is NULL\n");
   }
 #endif // COIN_DEBUG
+}
+
+SoNotRec::OperationType
+SoNotRec::getOperationType(void) const
+{
+  return operationType;
+}
+
+int
+SoNotRec::getIndex(void) const
+{
+  return index;
+}
+
+int
+SoNotRec::getFieldNumIndices(void) const
+{
+  return fieldNumIndices;
+}
+
+const SoBase *
+SoNotRec::getGroupChild(void) const
+{
+  return groupChild;
+}
+
+const SoBase *
+SoNotRec::getGroupPrevChild(void) const
+{
+  return groupPrevChild;
+}
+
+void
+SoNotRec::setOperationType(const SoNotRec::OperationType opType)
+{
+  this->operationType = opType;
+}
+
+void
+SoNotRec::setIndex(const int idx)
+{
+  this->index = idx;
+}
+
+void
+SoNotRec::setFieldNumIndices(const int fldnumind)
+{
+  this->fieldNumIndices = fldnumind;
+}
+
+void
+SoNotRec::setGroupChild(const SoBase * const gc)
+{
+  this->groupChild = gc;
+}
+
+void
+SoNotRec::setGroupPrevChild(const SoBase * const pc)
+{
+  this->groupPrevChild = pc;
 }

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,17 +11,18 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
 #include "io/SoOutput_Writer.h"
+#include "coindefs.h"
 
 #include <string.h>
 #include <assert.h>
@@ -129,7 +130,7 @@ SoOutput_FileWriter::getType(void) const
 }
 
 size_t
-SoOutput_FileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+SoOutput_FileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
   assert(this->fp);
   return fwrite(buf, 1, numbytes, this->fp);
@@ -254,7 +255,7 @@ SoOutput_GZFileWriter::getType(void) const
 }
 
 size_t
-SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
   if (this->gzfp) {
     // FIXME: the numbytes cast (as size_t can be 64 bits wide) is
@@ -317,7 +318,7 @@ SoOutput_BZ2FileWriter::getType(void) const
 }
 
 size_t
-SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;

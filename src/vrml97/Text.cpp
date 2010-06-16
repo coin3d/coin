@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -110,6 +110,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLText.h>
+#include "coindefs.h"
 
 #include <float.h> // FLT_MIN
 #include <stddef.h>
@@ -130,7 +131,6 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/system/gl.h>
@@ -200,7 +200,7 @@ SoVRMLText::initClass(void)
 }
 
 static void 
-fontstylechangeCB(void * data, SoSensor * sensor)
+fontstylechangeCB(void * data, SoSensor * COIN_UNUSED_ARG(sensor))
 {
   SoVRMLTextP * pimpl = (SoVRMLTextP *) data;
   pimpl->lock();
@@ -242,7 +242,7 @@ SoVRMLText::SoVRMLText(void)
 }
 
 float
-SoVRMLTextP::getWidth(const int idx, const float fontsize)
+SoVRMLTextP::getWidth(const int idx, const float COIN_UNUSED_ARG(fontsize))
 {
   float w = this->glyphwidths[idx];
   float maxe = PUBLIC(this)->maxExtent.getValue();
@@ -415,14 +415,17 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
      
     cc_glyph3d * prevglyph = NULL;
 
-    const unsigned int len = this->string[i].getLength();
+    SbString str = this->string[i];
+    const char * p = str.getString();
+    size_t len = cc_string_utf8_validate_length(p);
+    assert(len);
+
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
- 
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+      uint32_t glyphidx = 0;
+
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
+
       cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       float advancex, advancey;
@@ -519,15 +522,17 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       int numtris = 0;      
       
       for (int i = 0;i < lines; ++i) {
-        
-        const unsigned int len = this->string[i].getLength();
+	SbString str = this->string[i];
+	const char * p = str.getString();
+	size_t len = cc_string_utf8_validate_length(p);
+	assert(len);
+
         for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
-          
-          // Note that the "unsigned char" cast is needed to avoid 8-bit
-          // chars using the highest bit (i.e. characters above the ASCII
-          // set up to 127) be expanded to huge int numbers that turn
-          // negative when casted to integer size.             
-          const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+	  uint32_t glyphidx = 0;
+
+	  glyphidx = cc_string_utf8_get_char(p);
+	  p = cc_string_utf8_next_char(p);
+
           cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
           
           int cnt = 0;
@@ -874,16 +879,18 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
     }
     
-
+    SbString str = this->string[i];
     cc_glyph3d * prevglyph = NULL;
-    const unsigned int len = this->string[i].getLength();
-    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+    const char * p = str.getString();
+    size_t len = cc_string_utf8_validate_length(p);
+    assert(len);
 
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+      uint32_t glyphidx = 0;
+
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
+
       cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       float advancex, advancey;
@@ -1076,8 +1083,11 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   this->glyphwidths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
-    
-    const unsigned int len = textnode->string[i].getLength();
+    SbString str = textnode->string[i];
+    const char * p = str.getString();
+    size_t len = cc_string_utf8_validate_length(p);
+    assert(len);
+
     float stringwidth = 0.0f;
     const float * maxbbox;
     float kerningx = 0;
@@ -1088,11 +1098,11 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     this->maxglyphbbox.makeEmpty();
 
     for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.   
-      const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
+      uint32_t glyphidx = 0;
+
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
+
       cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       assert(glyph);
       this->cache->addGlyph(glyph);

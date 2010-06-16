@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -153,17 +153,15 @@
   \ingroup envvars profiler
 */
 
-
-/*!
-  \var EnvironmentVariable COIN_PROFILER_OVERLAY
-
 /*
   FIXME: document all variables. pederb, 2004-03-22
 
   UPDATE: a good way to do this, imho, would be to set them up as
   SoDBP::EnvVars members, as is done for a few already, and document
   them one-by-one through Doxygen.  20071106 mortene.
+*/
 
+/*!
   \page Coin_environment_variables Environment variables
 
   Debug related:
@@ -188,6 +186,8 @@
   COIN_FORCE_FREETYPE_OFF
   COIN_FORCE_WIN32FONTS_OFF
   COIN_FONT_PATH
+
+  COIN_DISABLE_UTF8
 
   COIN_GLU_LIBNAME
   COIN_AGLGLUE_NO_PBUFFERS
@@ -286,6 +286,7 @@ EnvironmentVariable COIN_DEBUG_LISTMODULES;
 EnvironmentVariable COIN_DEBUG_SOINPUT_FINDFILE;
 EnvironmentVariable COIN_DEBUG_SOOFFSCREENRENDERER;
 EnvironmentVariable COIN_DEBUG_WRITEREFS;
+EnvironmentVariable COIN_DISABLE_UTF8;
 EnvironmentVariable COIN_DONT_MANGLE_OUTPUT_NAMES;
 EnvironmentVariable COIN_ENABLE_CONFORMANT_GL_CLAMP;
 EnvironmentVariable COIN_ENABLE_VBO;
@@ -474,14 +475,27 @@ EnvironmentVariable SO_SHADER_DIR;
 */
 
 /*!
+  \var EnvironmentVariable COIN_DISABLE_UTF8
+
+  Coin from version 4.0 onwards expects all characters related to text
+  rendering to be UTF-8 encoded.
+
+  This variable should be a set, if you need to reinstate the old
+  behavior of treating all characters according to the Western Latin-1
+  encoding.
+
+  \ingroup envvars
+*/
+
+/*!
   \var EnvironmentVariable COIN_GLBBOX
- 
+
   If the environment variable COIN_GLBBOX is set to 1, rendering action
   traversals will apply a bbox action before rendering.  This will make
   sure bounding box caches are updated (needed for view frustum culling).
   The default Quarter/SoQt/SoWin/SoXt viewers will handle this at their
   end (which is the proper way to do it), so we don't do this by default.
-  
+
   \ingroup envvars
 */
 
@@ -917,4 +931,3 @@ EnvironmentVariable SO_SHADER_DIR;
 
 
 // *************************************************************************
-

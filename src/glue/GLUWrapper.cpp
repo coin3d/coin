@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,17 +11,18 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
 
 #include "glue/GLUWrapper.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -216,7 +217,7 @@ GLUWrapper_gluGetString(GLenum name)
 
 /* Replacement function for gluScaleImage(). */
 static GLint APIENTRY
-GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * e, GLsizei f, GLsizei g, GLenum h, GLvoid * i)
+GLUWrapper_gluScaleImage(GLenum COIN_UNUSED_ARG(a), GLsizei COIN_UNUSED_ARG(b), GLsizei COIN_UNUSED_ARG(c), GLenum COIN_UNUSED_ARG(d), const void * COIN_UNUSED_ARG(e), GLsizei COIN_UNUSED_ARG(f), GLsizei COIN_UNUSED_ARG(g), GLenum COIN_UNUSED_ARG(h), GLvoid * COIN_UNUSED_ARG(i))
 {
   /* Just a void function. */
 

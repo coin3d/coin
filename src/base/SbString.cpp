@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -175,7 +175,8 @@ SbString::lower() const
 {
   int lenthis = this->getLength();
   SbString newstr;
-  for (int i=0;i<lenthis;i++) {
+
+  for (int i = 0; i < lenthis; i++) {
     newstr += tolower((*this)[i]);
   }
   return newstr;
@@ -191,7 +192,8 @@ SbString::upper() const
 {
   int lenthis = this->getLength();
   SbString newstr;
-  for (int i=0;i<lenthis;i++) {
+
+  for (int i = 0; i < lenthis; i++) {
     newstr += toupper((*this)[i]);
   }
   return newstr;

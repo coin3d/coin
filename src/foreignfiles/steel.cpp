@@ -612,7 +612,7 @@ char *stl_yytext;
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -622,12 +622,12 @@ char *stl_yytext;
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -654,6 +654,7 @@ char *stl_yytext;
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "coindefs.h"
 
 #include <Inventor/system/inttypes.h>
 
@@ -2218,7 +2219,7 @@ stl_reader_binary_facet(stl_reader * reader)
 
 static
 int
-stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
+stl_writer_put_binary_facet(stl_writer * writer, stl_facet * COIN_UNUSED_ARG(facet))
 {
   int writeok = 1;
   union {
@@ -2573,7 +2574,7 @@ stl_facet_get_vertex3(stl_facet * facet, stl_real * x, stl_real * y, stl_real * 
  */
 
 void
-stl_facet_set_padding(stl_facet * facet, unsigned int padding)
+stl_facet_set_padding(stl_facet * facet, unsigned int COIN_UNUSED_ARG(padding))
 {
   assert(facet != NULL);
 } /* stl_facet_set_padding() */

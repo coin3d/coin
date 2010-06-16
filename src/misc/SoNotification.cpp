@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -39,15 +39,12 @@
 /*!
   Initialize list.
 */
-SoNotList::SoNotList(void)
-{
-  this->head = this->tail = NULL;
-  this->firstnoderec = NULL;
-  this->lastfield = NULL;
-  this->lastengine = NULL;
+SoNotList::SoNotList(void) :
+  head(NULL), tail(NULL), firstnoderec(NULL), lastfield(NULL), lastengine(NULL),
   // this is used in SoNode::notify() to stop a notification
   // when a node has already been notified.
-  this->stamp = SoNode::getNextNodeId();
+  stamp(SoNode::getNextNodeId())
+{
 }
 
 /*!
@@ -82,8 +79,8 @@ SoNotList::append(SoNotRec * const rec)
   rec->setPrevious(this->tail);
   this->tail = rec;
   if (!this->head) this->head = rec;
-  
-  if (!this->firstnoderec && rec->getBase() && rec->getBase()->isOfType(SoNode::getClassTypeId())) 
+
+  if (!this->firstnoderec && rec->getBase() && rec->getBase()->isOfType(SoNode::getClassTypeId()))
     this->firstnoderec = rec;
 }
 

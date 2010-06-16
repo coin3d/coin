@@ -4,7 +4,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -14,12 +14,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -353,7 +353,9 @@ _class_::setValues(const int start, const int numarg, const _valtype_ * newvals)
  \
   for (int i=0; i < numarg; i++) \
     this->values[i+start] = static_cast<const _valtype_>(newvals[i]); \
+  this->setChangedIndices(start, numarg); \
   this->valueChanged(); \
+  this->setChangedIndices(); \
 } \
  \
 void \
@@ -362,7 +364,9 @@ _class_::set1Value(const int idx, _valref_ value) \
   if (idx+1 > this->maxNum) this->allocValues(idx+1); \
   else if (idx+1 > this->num) this->num = idx+1; \
   this->values[idx] = value; \
+  this->setChangedIndex(idx); \
   this->valueChanged(); \
+  this->setChangedIndices(); \
 } \
  \
 void \
@@ -370,7 +374,9 @@ _class_::setValue(_valref_ value) \
 { \
   this->allocValues(1); \
   this->values[0] = value; \
+  this->setChangedIndex(0); \
   this->valueChanged(); \
+  this->setChangedIndices(); \
 } \
  \
 SbBool \
@@ -415,6 +421,7 @@ _class_::allocValues(int newnum) \
   _valtype_ * newblock; \
   assert(newnum >= 0); \
  \
+  this->setChangedIndices(); \
   if (newnum == 0) { \
     if (!this->userDataIsUsed) delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
     this->setValuesPtr(NULL); \

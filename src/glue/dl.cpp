@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -205,14 +205,13 @@ Type cstyle_cast(FARPROC procaddr)
   is loaded at runtime if needed, while the others are linked with
   Coin at linktime.
 
-  Some platforms have GLU libraries that don't behave properly in
-  certain respects, and some Coin users have particular needs wrt
-  Coin's use of GLU. For these users, we (at Kongsberg SIM) have
-  created a fork og GLU that we have named \b SuperGLU that we have
-  tweaked in certain ways.  This library can be checked out into the
-  Coin source code directory, which will be detected at configure-time
-  and linked statically into Coin and used instead of the GLU
-  libraries on the host system.
+  Some platforms have GLU libraries that don't behave properly in certain
+  respects, and some Coin users have particular needs wrt Coin's use of GLU.
+  For these users, we (at Kongsberg Oil & Gas Technologies) have created a fork
+  og GLU that we have named \b SuperGLU that we have tweaked in certain ways.
+  This library can be checked out into the Coin source code directory, which
+  will be detected at configure-time and linked statically into Coin and used
+  instead of the GLU libraries on the host system.
 
   In addition to these libraries, Coin will use \b AGL on Mac OS X, \b
   WGL on MS Windows, and \b GLX on X Windows Systems for offscreen

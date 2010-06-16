@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -210,7 +210,7 @@
   The header file:
 
   \code
-  // Copyright (C) 1998-2009 by Kongsberg SIM. All rights reserved.
+  // Copyright (C) Kongsberg Oil & Gas Technologies. All rights reserved.
 
   #ifndef COIN_SHAPESCALE_H
   #define COIN_SHAPESCALE_H
@@ -250,7 +250,7 @@
   The source code for the example:
 
   \code
-  // Copyright (C) 1998-2009 by Kongsberg SIM. All rights reserved.
+  // Copyright (C) Kongsberg Oil & Gas Technologies. All rights reserved.
 
   //  The ShapeScale class is used for scaling a shape based on
   //  projected size.
@@ -349,7 +349,7 @@
   And a complete example showing how one can use this node kit:
 
   \code
-  // Copyright (C) 1998-2009 by Kongsberg SIM. All rights reserved.
+  // Copyright (C) Kongsberg Oil & Gas Technologies. All rights reserved.
 
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
@@ -1583,7 +1583,7 @@ SoBaseKit::copyContents(const SoFieldContainer * fromfc,
   const SoBaseKit * srckit = (const SoBaseKit*) fromfc;
 
   // convenient reference
-  const SbList <SoSFNode*> & srcfields = srckit->getCatalogInstances();
+  /*const SbList <SoSFNode*> & srcfields =*/ srckit->getCatalogInstances();
 
   const int n = PRIVATE(this)->instancelist.getLength();
 
@@ -2050,14 +2050,14 @@ SoBaseKit::catalogError(void)
   documentation.)
 */
 SbBool
-SoBaseKit::setUpConnections(SbBool onoff, SbBool doitalways)
+SoBaseKit::setUpConnections(SbBool COIN_UNUSED_ARG(onoff), SbBool COIN_UNUSED_ARG(doitalways))
 {
   return this->connectionsSetUp;
 }
 
 // doc in super
 SbBool
-SoBaseKit::readInstance(SoInput * in, unsigned short flags)
+SoBaseKit::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   int i;
 
@@ -2549,7 +2549,7 @@ SoBaseKitP::testParentWrite(void)
 // that child node pointer, not the copied part.
 void
 SoBaseKitP::copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
-                      const SbBool copyconnections)
+                      const SbBool COIN_UNUSED_ARG(copyconnections))
 {
   int i;
   const int n = this->instancelist.getLength();
