@@ -133,6 +133,10 @@ AC_SUBST([frameworkdir])
 
 # **************************************************************************
 
+ac_build_year=$(date +%Y)
+
+
+AC_SUBST([COIN_BUILD_YEAR], $ac_build_year)
 AC_SUBST([COIN_MAJOR_VERSION], [COIN_MAJOR])
 AC_SUBST([COIN_MINOR_VERSION], [COIN_MINOR])
 AC_SUBST([COIN_MICRO_VERSION], [COIN_MICRO])
@@ -1581,8 +1585,7 @@ if $enable_dl_freetype && $coin_can_do_runtime_linking; then
   SIM_AC_CONFIGURATION_SETTING([FreeType library], [Yes, run-time binding])
 else
   SIM_AC_HAVE_FREETYPE_IFELSE([
-    AC_DEFINE(HAVE_FREETYPE, 1,
-      [define if you have the freetype library])
+    AC_DEFINE(HAVE_FREETYPE, 1, [define if you have the freetype library])
     CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
     LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
     LIBS="$sim_ac_freetype_libs $LIBS"
@@ -1598,6 +1601,41 @@ else
 fi
 
 AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
+
+# **************************************************************************
+# Set us up for using TrueType fonts through the Core Text framework
+# on the Mac.
+
+#
+# disabled until CoreText implementation is in place. 20100410 tamer.
+#
+
+#AC_ARG_ENABLE([coretext],
+#  AC_HELP_STRING([--disable-coretext],
+#                 [disable usage of the CoreText framework on OS X [[default=--enable-coretext]]]),
+#  [case "${enableval}" in
+#    yes | true) enable_coretext=true ;;
+#    no | false) enable_coretext=false ;;
+#    *) SIM_AC_ENABLE_ERROR([--enable-coretext]) ;;
+#  esac],
+#  [enable_coretext=true])
+#
+#if $enable_coretext; then
+#  SIM_AC_HAVE_CORETEXT_IFELSE([
+#    AC_DEFINE(HAVE_CORETEXT, 1, [define if you have the CoreText framework])
+#    CPPFLAGS="$CPPFLAGS $sim_ac_coretext_cppflags"
+#    LDFLAGS="$LDFLAGS $sim_ac_coretext_ldflags"
+#    LIBS="$sim_ac_coretext_libs $LIBS"
+#    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_coretext_cppflags"
+#    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_coretext_ldflags"
+#    COIN_EXTRA_LIBS="$sim_ac_coretext_libs $COIN_EXTRA_LIBS"
+#    SIM_AC_CONFIGURATION_SETTING([Core Text framework], [Yes])
+#  ], [
+#    SIM_AC_CONFIGURATION_SETTING([Coretext framework], [No])
+#  ])
+#fi
+#
+#AM_CONDITIONAL(HAVE_CORETEXT, $sim_ac_have_coretext)
 
 # *******************************************************************
 # * Math library
@@ -2157,6 +2195,8 @@ if $BUILD_WITH_MSVC; then
     *)
       SIM_AC_CONFIGURATION_SETTING([Coin build type],
                                    [dynamic .dll${release_string} + .pdb])
+      CFLAGS="-g $CFLAGS"
+      CXXFLAGS="-g $CXXFLAGS"
       LIBFLAGS="$LIBFLAGS ${debug_flag} /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
       ;;
     esac
@@ -2291,6 +2331,7 @@ SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_d
 # **************************************************************************
 
 AM_CONFIG_HEADER([src/discard.h src/config.h src/setup.h])
+AC_CONFIG_FILES([src/Coin.rc])
 
 # SIM_AC_COIN_CONFIG_H_CHECK
 

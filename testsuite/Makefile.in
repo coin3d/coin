@@ -19,7 +19,7 @@ EXEEXT = @EXEEXT@
 @MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -l Coin
 
 TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
-TS_CPPFLAGS = $(TS_INCLUDES) -g @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@
+TS_CPPFLAGS = $(TS_INCLUDES) @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@ -Werror -g2
 TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS) $(EXPAT_LINKFLAG)
 TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@ 
 
@@ -43,7 +43,9 @@ TEST_SUITE_OBJECTS = \
 	baseSbDPMatrix.$(OBJEXT) \
 	baseSbDPPlane.$(OBJEXT) \
 	baseSbDPRotation.$(OBJEXT) \
+	baseSbImage.$(OBJEXT) \
 	baseSbMatrix.$(OBJEXT) \
+	baseSbPlane.$(OBJEXT) \
 	baseSbRotation.$(OBJEXT) \
 	baseSbString.$(OBJEXT) \
 	baseSbVec3d.$(OBJEXT) \
@@ -182,7 +184,9 @@ TEST_SUITE_BUILT_FILES = \
 	baseSbDPMatrix.cpp \
 	baseSbDPPlane.cpp \
 	baseSbDPRotation.cpp \
+	baseSbImage.cpp \
 	baseSbMatrix.cpp \
+	baseSbPlane.cpp \
 	baseSbRotation.cpp \
 	baseSbString.cpp \
 	baseSbVec3d.cpp \
@@ -437,11 +441,23 @@ baseSbDPRotation.cpp: $(top_srcdir)/src/base/SbDPRotation.cpp $(srcdir)/makeextr
 baseSbDPRotation.$(OBJEXT): baseSbDPRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPRotation.cpp
 
+baseSbImage.cpp: $(top_srcdir)/src/base/SbImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbImage.cpp
+
+baseSbImage.$(OBJEXT): baseSbImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbImage.cpp
+
 baseSbMatrix.cpp: $(top_srcdir)/src/base/SbMatrix.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbMatrix.cpp
 
 baseSbMatrix.$(OBJEXT): baseSbMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
 	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbMatrix.cpp
+
+baseSbPlane.cpp: $(top_srcdir)/src/base/SbPlane.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbPlane.cpp
+
+baseSbPlane.$(OBJEXT): baseSbPlane.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbPlane.cpp
 
 baseSbRotation.cpp: $(top_srcdir)/src/base/SbRotation.cpp $(srcdir)/makeextract.sh
 	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbRotation.cpp

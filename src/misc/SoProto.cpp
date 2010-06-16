@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -124,7 +124,7 @@ static SoProto *
 soproto_fetchextern_default_cb(SoInput * in,
                                const SbString * urls,
                                const int numurls,
-                               void * closure)
+                               void * COIN_UNUSED_ARG(closure))
 {
   if (numurls == 0) return NULL;
   SbString filename(urls[0]);
@@ -355,7 +355,7 @@ SoProto::getProtoName(void) const
 
 // Documented in superclass. Overridden to read Proto definition.
 SbBool
-SoProto::readInstance(SoInput * in, unsigned short flags)
+SoProto::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   SbName protoname;
 
@@ -1091,7 +1091,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 }
 
 SbBool
-SoProto::setupExtern(SoInput * in, SoProto * externproto)
+SoProto::setupExtern(SoInput * COIN_UNUSED_ARG(in), SoProto * externproto)
 {
   assert(externproto);
   PRIVATE(this)->extprotonode = externproto;

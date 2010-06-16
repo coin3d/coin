@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -680,7 +680,7 @@ SoVRMLExtrusion::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc in parent
 void
-SoVRMLExtrusion::computeBBox(SoAction * action,
+SoVRMLExtrusion::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                              SbBox3f & box,
                              SbVec3f & center)
 {
@@ -916,11 +916,11 @@ SoVRMLExtrusion::notify(SoNotList * list)
 
 // Doc in parent
 SoDetail *
-SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
-                                      const SoPrimitiveVertex * v1,
-                                      const SoPrimitiveVertex * v2,
-                                      const SoPrimitiveVertex * v3,
-                                      SoPickedPoint * pp)
+SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * COIN_UNUSED_ARG(action),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v1),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v2),
+                                      const SoPrimitiveVertex * COIN_UNUSED_ARG(v3),
+                                      SoPickedPoint * COIN_UNUSED_ARG(pp))
 {
   // no triangle detail for Extrusion
   return NULL;

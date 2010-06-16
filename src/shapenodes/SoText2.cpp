@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -88,6 +88,7 @@
 */
 
 #include <Inventor/nodes/SoText2.h>
+#include "coindefs.h"
 
 #include <limits.h>
 #include <string.h>
@@ -211,7 +212,7 @@ public:
   unsigned char * pixel_buffer;
   int pixel_buffer_size;
 
-  static void sensor_cb(void * userdata, SoSensor * s) {
+  static void sensor_cb(void * userdata, SoSensor * COIN_UNUSED_ARG(s)) {
     SoText2P * thisp = (SoText2P*) userdata;
     thisp->lock();
     if (thisp->cache) thisp->cache->invalidate();
@@ -387,10 +388,16 @@ SoText2::GLRender(SoGLRenderAction * action)
         break;
       }
 
-      const unsigned int length = str.getLength();
+      const char * p = str.getString();
+      size_t length = cc_string_utf8_validate_length(p);
+      assert(length);
+
       for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-        
-        const uint32_t glyphidx = (const unsigned char) str[strcharidx];
+	uint32_t glyphidx = 0;
+
+	glyphidx = cc_string_utf8_get_char(p);
+	p = cc_string_utf8_next_char(p);
+
         cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
         
         buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
@@ -636,7 +643,7 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 // doc in super
 void
-SoText2::generatePrimitives(SoAction * action)
+SoText2::generatePrimitives(SoAction * COIN_UNUSED_ARG(action))
 {
   // This is supposed to be empty. There are no primitives.
 }
@@ -812,7 +819,6 @@ SoText2P::buildGlyphCache(SoState * state)
 
   for (int i=0; i < nrlines; i++) {
     SbString str = PUBLIC(this)->string[i];
-    const unsigned int length = str.getLength();
     this->positions.append(SbList<SbVec2s>());
 
     int actuallength = 0;
@@ -823,14 +829,17 @@ SoText2P::buildGlyphCache(SoState * state)
     int bitmapsize[2];
     int bitmappos[2];
     const cc_glyph2d * prevglyph = NULL;
+    const char * p = str.getString();
+    unsigned int length = cc_string_utf8_validate_length(p);
+    assert(length);
 
     // fetch all glyphs first
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-      // Note that the "unsigned char" cast is needed to avoid 8-bit
-      // chars using the highest bit (i.e. characters above the ASCII
-      // set up to 127) be expanded to huge int numbers that turn
-      // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) str[strcharidx];
+      uint32_t glyphidx = 0;
+
+      glyphidx = cc_string_utf8_get_char(p);
+      p = cc_string_utf8_next_char(p);
+
       cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
@@ -862,7 +871,6 @@ SoText2P::buildGlyphCache(SoState * state)
 
       penpos += kerning + SbVec2s(advancex,0);
       prevglyph = glyph;
-
     }
 
     this->stringwidth.append(actuallength);

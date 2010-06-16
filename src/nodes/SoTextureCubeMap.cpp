@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -450,7 +450,7 @@ SoTextureCubeMap::GLRender(SoGLRenderAction * action)
 
 // Documented in superclass.
 void
-SoTextureCubeMap::doAction(SoAction * action)
+SoTextureCubeMap::doAction(SoAction * COIN_UNUSED_ARG(action))
 {
 #if 0 // not implemented yet
   SoState * state = action->getState();
@@ -513,8 +513,8 @@ SoTextureCubeMap::rayPick(SoRayPickAction * action)
   requested.
 */
 SbBool
-SoTextureCubeMap::readImage(const SbString & fname, int & w, int & h, int & nc,
-                      unsigned char *& bytes)
+SoTextureCubeMap::readImage(const SbString & COIN_UNUSED_ARG(fname), int & COIN_UNUSED_ARG(w), int & COIN_UNUSED_ARG(h), int & COIN_UNUSED_ARG(nc),
+                      unsigned char *& COIN_UNUSED_ARG(bytes))
 {
   COIN_OBSOLETED();
   return FALSE;
@@ -610,7 +610,7 @@ SoTextureCubeMap::loadFilename(const SbString & filename, SoSFImage * image)
 // called when filename changes
 //
 void
-SoTextureCubeMap::filenameSensorCB(void * data, SoSensor * s)
+SoTextureCubeMap::filenameSensorCB(void * data, SoSensor * COIN_UNUSED_ARG(s))
 {
   SoTextureCubeMap * thisp = (SoTextureCubeMap*) data;
 

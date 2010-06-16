@@ -2,6 +2,7 @@ RegularSources = \
 	fontlib_wrapper.cpp \
 	win32.cpp \
 	freetype.cpp \
+	coretext.cpp \
 	fontspec.cpp \
 	glyph.cpp \
 	glyph2d.cpp \
@@ -19,6 +20,7 @@ PrivateHeaders = \
 	fontlib_wrapper.h \
 	win32.h \
 	freetype.h \
+	coretext.h \
 	fontspec.h \
 	glyph.h \
 	glyph2d.h \

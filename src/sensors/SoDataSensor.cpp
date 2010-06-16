@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -35,6 +35,7 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/misc/SoNotification.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/fields/SoSFNode.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -58,7 +59,12 @@ SoDataSensor::SoDataSensor(void)
     findpath(FALSE),
     triggerfield(NULL),
     triggernode(NULL),
-    triggerpath(NULL)
+    triggerpath(NULL),
+    triggeroperationtype(SoNotRec::UNSPECIFIED),
+    triggerindex(-1),
+    triggerfieldnumindices(0),
+    triggergroupchild(NULL),
+    triggergroupprevchild(NULL)
 {
 }
 
@@ -75,7 +81,12 @@ SoDataSensor::SoDataSensor(SoSensorCB * func, void * data)
     findpath(FALSE),
     triggerfield(NULL),
     triggernode(NULL),
-    triggerpath(NULL)
+    triggerpath(NULL),
+    triggeroperationtype(SoNotRec::UNSPECIFIED),
+    triggerindex(-1),
+    triggerfieldnumindices(0),
+    triggergroupchild(NULL),
+    triggergroupprevchild(NULL)
 {
 }
 
@@ -167,7 +178,7 @@ SoDataSensor::getTriggerPath(void) const
   graph is an expensive operation.
 
   \sa getTriggerPathFlag(), getTriggerPath()
- */
+*/
 void
 SoDataSensor::setTriggerPathFlag(SbBool flag)
 {
@@ -179,11 +190,85 @@ SoDataSensor::setTriggerPathFlag(SbBool flag)
   the sensor find the path of the node which caused it.
 
   \sa setTriggerPathFlag(), getTriggerPath()
- */
+*/
 SbBool
 SoDataSensor::getTriggerPathFlag(void) const
 {
   return this->findpath;
+}
+
+/*!
+  Returns the type of the scenegraph operation on the node that caused
+  the sensor to trigger.
+
+  \sa getTriggerNode(), getTriggerField(), getTriggerGroupChild()
+*/
+SoNotRec::OperationType
+SoDataSensor::getTriggerOperationType(void) const
+{
+  return this->triggeroperationtype;
+}
+
+/*!
+  Returns the index of the child node or value in the node or
+  multifield that caused the sensor to trigger.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerFieldNumIndices(), getTriggerGroupChild(), getTriggerNode(), getTriggerField()
+*/
+int
+SoDataSensor::getTriggerIndex(void) const
+{
+  return this->triggerindex;
+}
+
+/*!
+  Returns the number of indices of the multifield that caused the
+  sensor to trigger.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerIndex(), getTriggerField()
+*/
+int
+SoDataSensor::getTriggerFieldNumIndices(void) const
+{
+  return this->triggerfieldnumindices;
+}
+
+/*!
+  Returns a pointer to the actual child node in the node that caused
+  the sensor to trigger, or \c NULL if there was no such node.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerNode(), getTriggerReplacedGroupChild
+*/
+SoNode *
+SoDataSensor::getTriggerGroupChild(void) const
+{
+  return this->triggergroupchild;
+}
+
+/*!
+  Returns a pointer to the actual child node for a
+  SoNotRec::GROUP_REPLACECHILD type of operation in the node that is
+  about to be replaced and caused the sensor to trigger, or \c NULL if
+  there was no such node.
+
+  Please note that this method is an extension to the original SGI
+  Inventor API.
+
+  \sa getTriggerNode(), getTriggerGroupChild
+*/
+SoNode *
+SoDataSensor::getTriggerReplacedGroupChild(void) const
+{
+  return this->triggergroupprevchild;
 }
 
 // Doc from superclass.
@@ -195,6 +280,11 @@ SoDataSensor::trigger(void)
   this->triggernode = NULL;
   if (this->triggerpath) this->triggerpath->unref();
   this->triggerpath = NULL;
+  this->triggeroperationtype = SoNotRec::UNSPECIFIED;
+  this->triggerindex = -1;
+  this->triggerfieldnumindices = 0;
+  this->triggergroupchild = NULL;
+  this->triggergroupprevchild = NULL;
 }
 
 /*!
@@ -238,6 +328,12 @@ SoDataSensor::notify(SoNotList * l)
         this->triggerpath->append((SoNode*) record->getBase());
       }
     }
+
+    this->triggeroperationtype = record ? record->getOperationType() : SoNotRec::UNSPECIFIED;
+    this->triggerindex = record ? record->getIndex() : -1;
+    this->triggerfieldnumindices = record ? record->getFieldNumIndices() : 0;
+    this->triggergroupchild = (SoNode *) (record ? record->getGroupChild() : NULL);
+    this->triggergroupprevchild = (SoNode *) (record ? record->getGroupPrevChild() : NULL);
   }
   this->schedule();
 }

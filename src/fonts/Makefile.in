@@ -96,60 +96,61 @@ ARFLAGS = cru
 fonts_lst_AR = $(AR) $(ARFLAGS)
 fonts_lst_LIBADD =
 am__fonts_lst_SOURCES_DIST = fontlib_wrapper.cpp win32.cpp \
-	freetype.cpp fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
-	default3dfont.cpp default2dfont.cpp common.cpp \
+	freetype.cpp coretext.cpp fontspec.cpp glyph.cpp glyph2d.cpp \
+	glyph3d.cpp default3dfont.cpp default2dfont.cpp common.cpp \
 	all-fonts-cpp.cpp
 am__objects_1 = fontlib_wrapper.$(OBJEXT) win32.$(OBJEXT) \
-	freetype.$(OBJEXT) fontspec.$(OBJEXT) glyph.$(OBJEXT) \
-	glyph2d.$(OBJEXT) glyph3d.$(OBJEXT) default3dfont.$(OBJEXT) \
-	default2dfont.$(OBJEXT) common.$(OBJEXT)
+	freetype.$(OBJEXT) coretext.$(OBJEXT) fontspec.$(OBJEXT) \
+	glyph.$(OBJEXT) glyph2d.$(OBJEXT) glyph3d.$(OBJEXT) \
+	default3dfont.$(OBJEXT) default2dfont.$(OBJEXT) \
+	common.$(OBJEXT)
 am__objects_2 = all-fonts-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_fonts_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_fonts_lst_SOURCES_DIST = fontlib_wrapper.h win32.h \
-	freetype.h fontspec.h glyph.h glyph2d.h glyph3d.h \
+	freetype.h coretext.h fontspec.h glyph.h glyph2d.h glyph3d.h \
 	defaultfonts.h builtin2dfonts.icc font13.icc font17.icc \
 	font25.icc font33.icc common.h all-fonts-cpp.cpp \
-	fontlib_wrapper.cpp win32.cpp freetype.cpp fontspec.cpp \
-	glyph.cpp glyph2d.cpp glyph3d.cpp default3dfont.cpp \
-	default2dfont.cpp common.cpp
+	fontlib_wrapper.cpp win32.cpp freetype.cpp coretext.cpp \
+	fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
+	default3dfont.cpp default2dfont.cpp common.cpp
 fonts_lst_OBJECTS = $(am_fonts_lst_OBJECTS)
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libfontsincdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libfonts_la_LIBADD =
 am__libfonts_la_SOURCES_DIST = fontlib_wrapper.cpp win32.cpp \
-	freetype.cpp fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
-	default3dfont.cpp default2dfont.cpp common.cpp \
+	freetype.cpp coretext.cpp fontspec.cpp glyph.cpp glyph2d.cpp \
+	glyph3d.cpp default3dfont.cpp default2dfont.cpp common.cpp \
 	all-fonts-cpp.cpp
-am__objects_6 = fontlib_wrapper.lo win32.lo freetype.lo fontspec.lo \
-	glyph.lo glyph2d.lo glyph3d.lo default3dfont.lo \
+am__objects_6 = fontlib_wrapper.lo win32.lo freetype.lo coretext.lo \
+	fontspec.lo glyph.lo glyph2d.lo glyph3d.lo default3dfont.lo \
 	default2dfont.lo common.lo
 am__objects_7 = all-fonts-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_libfonts_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts_la_SOURCES_DIST = fontlib_wrapper.h win32.h \
-	freetype.h fontspec.h glyph.h glyph2d.h glyph3d.h \
+	freetype.h coretext.h fontspec.h glyph.h glyph2d.h glyph3d.h \
 	defaultfonts.h builtin2dfonts.icc font13.icc font17.icc \
 	font25.icc font33.icc common.h all-fonts-cpp.cpp \
-	fontlib_wrapper.cpp win32.cpp freetype.cpp fontspec.cpp \
-	glyph.cpp glyph2d.cpp glyph3d.cpp default3dfont.cpp \
-	default2dfont.cpp common.cpp
+	fontlib_wrapper.cpp win32.cpp freetype.cpp coretext.cpp \
+	fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
+	default3dfont.cpp default2dfont.cpp common.cpp
 libfonts_la_OBJECTS = $(am_libfonts_la_OBJECTS)
 libfonts@SUFFIX@LINKHACK_la_LIBADD =
 am__libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST = fontlib_wrapper.cpp \
-	win32.cpp freetype.cpp fontspec.cpp glyph.cpp glyph2d.cpp \
-	glyph3d.cpp default3dfont.cpp default2dfont.cpp common.cpp \
-	all-fonts-cpp.cpp
+	win32.cpp freetype.cpp coretext.cpp fontspec.cpp glyph.cpp \
+	glyph2d.cpp glyph3d.cpp default3dfont.cpp default2dfont.cpp \
+	common.cpp all-fonts-cpp.cpp
 am_libfonts@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES_DIST =  \
-	fontlib_wrapper.h win32.h freetype.h fontspec.h glyph.h \
-	glyph2d.h glyph3d.h defaultfonts.h builtin2dfonts.icc \
+	fontlib_wrapper.h win32.h freetype.h coretext.h fontspec.h \
+	glyph.h glyph2d.h glyph3d.h defaultfonts.h builtin2dfonts.icc \
 	font13.icc font17.icc font25.icc font33.icc common.h \
 	all-fonts-cpp.cpp fontlib_wrapper.cpp win32.cpp freetype.cpp \
-	fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
+	coretext.cpp fontspec.cpp glyph.cpp glyph2d.cpp glyph3d.cpp \
 	default3dfont.cpp default2dfont.cpp common.cpp
 libfonts@SUFFIX@LINKHACK_la_OBJECTS =  \
 	$(am_libfonts@SUFFIX@LINKHACK_la_OBJECTS)
@@ -158,6 +159,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/all-fonts-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-fonts-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common.Plo ./$(DEPDIR)/common.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/coretext.Plo ./$(DEPDIR)/coretext.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/default2dfont.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/default2dfont.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/default3dfont.Plo \
@@ -233,6 +235,7 @@ CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 COIN_BETA_VERSION = @COIN_BETA_VERSION@
+COIN_BUILD_YEAR = @COIN_BUILD_YEAR@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
@@ -447,6 +450,7 @@ RegularSources = \
 	fontlib_wrapper.cpp \
 	win32.cpp \
 	freetype.cpp \
+	coretext.cpp \
 	fontspec.cpp \
 	glyph.cpp \
 	glyph2d.cpp \
@@ -463,6 +467,7 @@ PrivateHeaders = \
 	fontlib_wrapper.h \
 	win32.h \
 	freetype.h \
+	coretext.h \
 	fontspec.h \
 	glyph.h \
 	glyph2d.h \
@@ -612,6 +617,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-fonts-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/coretext.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/coretext.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default2dfont.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default2dfont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default3dfont.Plo@am__quote@

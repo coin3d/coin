@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -1541,11 +1541,16 @@ typedef struct {
 static sodragger_vv_data * vvdata = NULL;
 
 static SoCallbackAction::Response
-sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * COIN_UNUSED_ARG(node))
+sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
 {
-  sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
-  data->vv = SoViewVolumeElement::get(action->getState());
-  return SoCallbackAction::CONTINUE;
+  if (node->isOfType(SoDragger::getClassTypeId())) {
+    return (userdata==node)?SoCallbackAction::ABORT:SoCallbackAction::CONTINUE;
+  }
+  else {
+    sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
+    data->vv = SoViewVolumeElement::get(action->getState());
+    return SoCallbackAction::CONTINUE;
+  }
 }
 
 extern "C" {
@@ -1580,6 +1585,7 @@ SoDragger::setCameraInfo(SoAction * action)
     if (PRIVATE(this)->cbaction == NULL) {
       PRIVATE(this)->cbaction = new SoCallbackAction;
       PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), sodragger_vv_cb, vvdata);
+      PRIVATE(this)->cbaction->addPostCallback(SoDragger::getClassTypeId(), sodragger_vv_cb, this);
     }
     PRIVATE(this)->cbaction->setViewportRegion(PRIVATE(this)->viewport);
     PRIVATE(this)->cbaction->apply(PRIVATE(this)->draggercache->path);

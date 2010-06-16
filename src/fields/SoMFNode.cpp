@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -152,7 +152,9 @@ SoMFNode::setValues(const int start, const int numarg, const SoNode ** newvals)
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
+  this->setChangedIndices(start, numarg);
   if (notificstate) this->valueChanged();
+  this->setChangedIndices();
 }
 
 void
@@ -206,6 +208,7 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
 #endif // COIN_INTERNAL_SOMFPATH
     }
 
+    this->setChangedIndex(idx);
     this->values[idx] = newval;
 #ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads[idx] = newval ? newval->getHead() : NULL;
@@ -215,6 +218,7 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
   if (notificstate) this->valueChanged();
+  this->setChangedIndices();
 }
 
 void

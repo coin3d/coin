@@ -1,3 +1,13 @@
+New in Coin v4.0.0 (so far):
+* new:
+  - UTF-8 support
+  - Notification system enhancements to provide information on the
+    operational type of the Group node and multi-field changes
+  - new methods: getTriggerOperationType(), getTriggerIndex(),
+    getTriggerFieldNumIndices(), getTriggerGroupChild(),
+    getTriggerReplacedGroupChild in SoDataSensor to access the
+    aforementioned notification system enhancements
+
 New in Coin v3.1.2 (2009-10-14):
 * bugfixes:
   - removePoint() bugfix for SbBSPTree
@@ -8,11 +18,13 @@ New in Coin v3.1.2 (2009-10-14):
   - Bugfix for closed extrusions.
   - Bugfix for using SoPrimitiveVertexCache for other actions than SoGL RenderAction.
   - Increase upper limits for creating VBOs/caches.
+
 New in Coin v3.1.1 (2009-09-08):
 * bugfixes:
   - Fixed NURBS bugs
   - Fixed some issues in SoIndexedPointSet.
   - Fixed a configure problem which made it impossible to create release builds on Windows.
+
 New in Coin v3.1.0 (2009-05-27):
 * new:
   - shape node classes SoIndexedPointSet, SoIndexedMarkerSet

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -32,6 +32,7 @@
 
    20050613 mortene. */
 
+#include "coindefs.h"
 #include "fonts/freetype.h"
 
 #ifdef HAVE_CONFIG_H
@@ -453,7 +454,7 @@ cc_flwft_initialize(void)
 }
 
 static void
-clean_fontmap_hash(uintptr_t key, void * val, void * closure)
+clean_fontmap_hash(uintptr_t COIN_UNUSED_ARG(key), void * val, void * COIN_UNUSED_ARG(closure))
 {
   cc_dynarray * array = (cc_dynarray *)val;
   cc_dynarray_destruct(array);
@@ -623,11 +624,12 @@ find_font_file(const char * fontname, unsigned int pixelsize)
 }
 
 void *
-cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
+cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
 {
   FT_Face face;
-  const char * fontfilename = find_font_file(fontname, pixelsize);
   FT_Error error;
+  const char * fontfilename = find_font_file(fontname, pixelsize);
+  static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
@@ -649,7 +651,11 @@ cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
                            face->family_name, face->style_name);
   }
 
-  cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
+
+  cc_flwft_set_charmap(face,
+		       disable_utf8 ?
+		       FT_ENCODING_ADOBE_LATIN_1 : FT_ENCODING_UNICODE);
+
   return face;
 }
 
@@ -766,7 +772,7 @@ cc_flwft_set_char_size(void * font, int height)
 
   /* set the size for the face by using default values of FreeType for
    * the resolution */
-  error = cc_ftglue_FT_Set_Char_Size(face, (height<<6), (height<<6), 0, 0);
+  error = cc_ftglue_FT_Set_Char_Size(face, 0, (height<<6), 0, 0);
   if (error) {
     cc_debugerror_post("cc_flwft_set_char_size",
                        "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
@@ -869,7 +875,7 @@ cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float
 }
 
 void
-cc_flwft_done_glyph(void * font, int glyph)
+cc_flwft_done_glyph(void * COIN_UNUSED_ARG(font), int COIN_UNUSED_ARG(glyph))
 {
 }
 
@@ -898,15 +904,15 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                           "FT_Load_Glyph() => error %d",
-                                           error);
+					    "FT_Load_Glyph() => error %d",
+					    error);
     return NULL;
   }
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &g);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                           "FT_Get_Glyph() => error %d",
-                                           error);
+					    "FT_Get_Glyph() => error %d",
+					    error);
     return NULL;
   }
 
@@ -920,8 +926,8 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
     error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
     if (error) {
       if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                             "FT_Glyph_To_Bitmap() => error %d",
-                                             error);
+					      "FT_Glyph_To_Bitmap() => error %d",
+					      error);
       return NULL;
     }
   }
@@ -979,7 +985,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
 
   face = (FT_Face) font;
 
-  error = cc_ftglue_FT_Set_Char_Size(face, (flwft_3dfontsize<<6), (flwft_3dfontsize<<6), 0, 0);
+  error = cc_ftglue_FT_Set_Char_Size(face, 0, (flwft_3dfontsize<<6), 0, 0);
   if (error != 0) {
     /* FIXME: No message is printed here because returning NULL will
        force glyph3d.c to use the builtin font. This happens whenever
@@ -1130,7 +1136,7 @@ flwft_addTessVertex(double * vertex)
    contour. (so "move to" means "lift pencil, jump to and start new
    contour".) */
 static int
-flwft_moveToCallback(FT_Vector * to, void * user)
+flwft_moveToCallback(FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   if (flwft_tessellator.contour_open) {
@@ -1153,7 +1159,7 @@ flwft_moveToCallback(FT_Vector * to, void * user)
 /* "line to" in this context means that the current contour is
    continued with a line to the given point. */
 static int
-flwft_lineToCallback(FT_Vector * to, void * user)
+flwft_lineToCallback(FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   double vertex[3];
@@ -1171,7 +1177,7 @@ flwft_lineToCallback(FT_Vector * to, void * user)
 }
 
 static int
-flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
+flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   int i;
@@ -1226,7 +1232,7 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
 }
 
 static int
-flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user)
+flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * COIN_UNUSED_ARG(user))
 {
 
   /*
@@ -1374,24 +1380,18 @@ flwft_vertexCallback(GLvoid * data)
 static void
 flwft_beginCallback(GLenum which)
 {
-
-  flwft_tessellator.triangle_mode = which;
-  if (which == GL_TRIANGLE_FAN)
-    flwft_tessellator.triangle_fan_root_index = -1;
-  else
-    flwft_tessellator.triangle_fan_root_index = 0;
+  flwft_tessellator.triangle_mode = which;  
+  flwft_tessellator.triangle_fan_root_index = (which==GL_TRIANGLE_FAN) ? -1 : 0;
   flwft_tessellator.triangle_index_counter = 0;
   flwft_tessellator.triangle_strip_flipflop = FALSE;
-
 }
 
 static void
 flwft_endCallback(void)
-{
-}
+{}
 
 static void
-flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
+flwft_combineCallback(GLdouble coords[3], GLvoid * COIN_UNUSED_ARG(vertex_data), GLfloat /*weight*/[4], int **dataOut)
 {
   /* FIXME: I believe this callback may not actually be necessary.
      20060227 mortene. */

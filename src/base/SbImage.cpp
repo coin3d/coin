@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -198,6 +198,17 @@ SbImage::SbImage(const unsigned char * bytes,
 {
   PRIVATE(this) = new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
+}
+
+/*!
+  Copy constructor
+
+  \since Coin 4.0
+ */
+SbImage::SbImage(const SbImage & that)
+{
+  PRIVATE(this) = new SbImageP;
+  *this=that;
 }
 
 /*!
@@ -445,21 +456,23 @@ SbImage::readFile(const SbString & filename,
 
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
-  if (finalname.getLength() == 0) {
-    SoDebugError::post("SbImage::readFile",
-                       "couldn't find '%s'.", filename.getString());
-    return FALSE;
-  }
 
   // use callback to load the image if it's set
   if (SbImageP::readimagecallbacks) {
     for (int i = 0; i < SbImageP::readimagecallbacks->getLength(); i++) {
       SbImageP::ReadImageCBData cbdata = (*SbImageP::readimagecallbacks)[i];
-      if (cbdata.cb(finalname, this, cbdata.closure)) return TRUE;
+      if (finalname.getLength() > 0 && cbdata.cb(finalname, this, cbdata.closure)) return TRUE;
+      if (cbdata.cb(filename, this, cbdata.closure)) return TRUE;
     }
     if (!simage_wrapper()->available) {
       return FALSE;
     }
+  }
+
+  if (finalname.getLength() == 0) {
+    SoDebugError::post("SbImage::readFile",
+                       "couldn't find '%s'.", filename.getString());
+    return FALSE;
   }
   
   // try simage
@@ -469,8 +482,6 @@ SbImage::readFile(const SbString & filename,
                               "can not import any images from disk.");
     return FALSE;
   }
-
-
 
   assert(simage_wrapper()->simage_read_image);
   int w, h, nc;
@@ -690,3 +701,37 @@ SbImage::removeReadImageCB(SbImageReadImageCB * cb, void * closure)
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(copyConstruct) 
+{
+  unsigned char buf [4];
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    buf[i]=i;
+  }
+
+  SbImage bar(buf,SbVec2s(2,2),1);
+
+  SbImage foo(bar);
+
+  SbVec2s tmp1;
+  int tmp2;
+
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==bar.getValue(tmp1,tmp2)[i],"Input value error");
+  }
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    foo.getValue(tmp1,tmp2)[i]=sizeof(buf)-i;
+  }
+
+  for (int i=0;i<sizeof(buf); ++i) {
+    BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==sizeof(buf)-bar.getValue(tmp1,tmp2)[i],"Error after changing second buffer");
+  }
+
+}
+#endif //COIN_TEST_SUITE
+

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2009 by Kongsberg SIM.  All rights reserved.
+ *  Copyright (C) by Kongsberg Oil & Gas Technologies.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -11,12 +11,12 @@
  *
  *  For using Coin with software that can not be combined with the GNU
  *  GPL, and for taking advantage of the additional benefits of our
- *  support services, please contact Kongsberg SIM about acquiring
- *  a Coin Professional Edition License.
+ *  support services, please contact Kongsberg Oil & Gas Technologies
+ *  about acquiring a Coin Professional Edition License.
  *
  *  See http://www.coin3d.org/ for more information.
  *
- *  Kongsberg SIM, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  Kongsberg Oil & Gas Technologies, Bygdoy Alle 5, 0257 Oslo, NORWAY.
  *  http://www.sim.no/  sales@sim.no  coin-support@coin3d.org
  *
 \**************************************************************************/
@@ -152,6 +152,7 @@
 
 /*! \file SoVRMLAudioClip.h */
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+#include "coindefs.h"
 
 #include <string.h>
 #include <stdio.h> // for EOF
@@ -724,15 +725,15 @@ SoVRMLAudioClipP::internal_close_wrapper(void *datasource,
 }
 
 void * 
-SoVRMLAudioClipP::internal_open(const SbStringList &url, 
-                                SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_open(const SbStringList & COIN_UNUSED_ARG(url), 
+                                SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return NULL;
 }
 
 size_t
-SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
-                                int &channelsref, SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer, int numframes,
+                                int &channelsref, SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   // 20021007 thammer note: this method might be called from a thread
   // different from the thread which created the "main" Coin thread.
@@ -886,19 +887,19 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
 }
 
 int    
-SoVRMLAudioClipP::internal_seek(void *datasource, long offset, int whence,
+SoVRMLAudioClipP::internal_seek(void * COIN_UNUSED_ARG(datasource), long COIN_UNUSED_ARG(offset), int whence,
                        SoVRMLAudioClip *clip)
 {
   return -1;
 }
 long   
-SoVRMLAudioClipP::internal_tell(void *datasource, SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_tell(void * COIN_UNUSED_ARG(datasource), SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return -1;
 }
 
 int    
-SoVRMLAudioClipP::internal_close(void *datasource, SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_close(void * COIN_UNUSED_ARG(datasource), SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return 0;
 }
