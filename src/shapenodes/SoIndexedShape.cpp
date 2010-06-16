@@ -160,6 +160,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
         if (idx >= 0) {
           box.extendBy(coords[idx]);
           center += coords[idx];
+          numacc++;
         }
       }
 #if COIN_DEBUG
