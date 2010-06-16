@@ -342,6 +342,11 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
 {
   SoState *state = action->getState();
 
+  int i, cnt = PUBLIC(this)->shaderObject.getNum();
+  if (cnt == 0) {
+    SoGLShaderProgramElement::set(state, PUBLIC(this), NULL);
+    return;
+  }
   // FIXME: (Martin 2004-09-21) find an alternative to invalidating the cache
   SoCacheElement::invalidate(state);
 
@@ -350,8 +355,6 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
                                           this->enablecbclosure);
 
   SoGLShaderProgramElement::set(state, PUBLIC(this), &this->glShaderProgram);
-
-  int i, cnt = PUBLIC(this)->shaderObject.getNum();
 
   // load shader objects
   for (i = 0; i <cnt; i++) {
