@@ -26,13 +26,21 @@
 
 #include <Inventor/SbDPMatrix.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3d.h>
 
 class SbString;
 class SbVec3d;
 
-class SoGeo {
+class COIN_DLL_API SoGeo {
 public:
   static void init(void);
+
+  static SbVec3d toGD(const SbString * originsystem,
+                      const int numoriginsys,
+                      const SbVec3d & origincoords);
+  static SbVec3d fromGD(const SbVec3d & gd,
+                        const SbString * tosystem,
+                        const int numtosys);
 
   static SbDPMatrix calculateDPTransform(const SbString * originsystem,
                                          const int numoriginsys,

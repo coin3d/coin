@@ -7,6 +7,7 @@ PublicHeaders = \
 	SoCallbackList.h \
 	SoChildList.h \
 	SoContextHandler.h \
+        SoGeo.h \
 	SoGLImage.h \
 	SoGLCubeMapImage.h \
 	SoGLBigImage.h \
