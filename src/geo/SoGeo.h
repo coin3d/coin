@@ -24,6 +24,7 @@
  *
 \**************************************************************************/
 
+#include <Inventor/SbDPMatrix.h>
 #include <Inventor/SbMatrix.h>
 
 class SbString;
@@ -33,14 +34,20 @@ class SoGeo {
 public:
   static void init(void);
 
+  static SbDPMatrix calculateDPTransform(const SbString * originsystem,
+                                         const int numoriginsys,
+                                         const SbVec3d & origincoords,
+                                         const SbString * localsystem,
+                                         const int numlocalsys,
+                                         const SbVec3d & localcoords);
+
+
   static SbMatrix calculateTransform(const SbString * originsystem,
                                      const int numoriginsys,
                                      const SbVec3d & origincoords,
-
                                      const SbString * localsystem,
                                      const int numlocalsys,
                                      const SbVec3d & localcoords);
-
 };
 
 #endif // COIN_SOGEO_H

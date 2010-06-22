@@ -195,13 +195,13 @@ static SbUTMProjection find_utm_projection(const SbString * system,
   return SbUTMProjection(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
 }
 
-SbMatrix
-SoGeo::calculateTransform(const SbString * originsystem,
-                          const int numoriginsys,
-                          const SbVec3d & geocoords,
-                          const SbString * localsystem,
-                          const int numlocalsys,
-                          const SbVec3d & localcoords)
+SbDPMatrix
+SoGeo::calculateDPTransform(const SbString * originsystem,
+                            const int numoriginsys,
+                            const SbVec3d & geocoords,
+                            const SbString * localsystem,
+                            const int numlocalsys,
+                            const SbVec3d & localcoords)
 {
   // start on 2; the first index is always the projection type, and if UTM the second should always be a zone
   for (int i = 2; i < numoriginsys; i++) {
@@ -222,15 +222,26 @@ SoGeo::calculateTransform(const SbString * originsystem,
 
   SbDPMatrix om = find_coordinate_system(originsystem, numoriginsys, geocoords);
   SbDPMatrix lm = find_coordinate_system(localsystem, numlocalsys, localcoords);
-  SbDPMatrix r = lm * om.inverse();
+  return lm * om.inverse();
+}
 
-  // transform to a single precision matrix.
-  return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),
-                  static_cast<float>(r[0][2]), static_cast<float>(r[0][3]),
-                  static_cast<float>(r[1][0]), static_cast<float>(r[1][1]),
-                  static_cast<float>(r[1][2]), static_cast<float>(r[1][3]),
-                  static_cast<float>(r[2][0]), static_cast<float>(r[2][1]),
-                  static_cast<float>(r[2][2]), static_cast<float>(r[2][3]),
-                  static_cast<float>(r[3][0]), static_cast<float>(r[3][1]),
-                  static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));
+SbMatrix
+SoGeo::calculateTransform(const SbString * originsystem,
+                          const int numoriginsys,
+                          const SbVec3d & geocoords,
+                          const SbString * localsystem,
+                          const int numlocalsys,
+                          const SbVec3d & localcoords) 
+{
+    SbDPMatrix r = SoGeo::calculateDPTransform(originsystem, numoriginsys, geocoords,
+                                               localsystem, numlocalsys, localcoords);
+    // transform to a single precision matrix.
+    return SbMatrix(static_cast<float>(r[0][0]), static_cast<float>(r[0][1]),
+                    static_cast<float>(r[0][2]), static_cast<float>(r[0][3]),
+                    static_cast<float>(r[1][0]), static_cast<float>(r[1][1]),
+                    static_cast<float>(r[1][2]), static_cast<float>(r[1][3]),
+                    static_cast<float>(r[2][0]), static_cast<float>(r[2][1]),
+                    static_cast<float>(r[2][2]), static_cast<float>(r[2][3]),
+                    static_cast<float>(r[3][0]), static_cast<float>(r[3][1]),
+                    static_cast<float>(r[3][2]), static_cast<float>(r[3][3]));
 }
