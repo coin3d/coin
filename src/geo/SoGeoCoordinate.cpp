@@ -42,6 +42,7 @@
 #include <Inventor/nodes/SoGeoCoordinate.h>
 
 #include <Inventor/nodes/SoGeoOrigin.h>
+#include <Inventor/misc/SoGeo.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -50,7 +51,6 @@
 #include <Inventor/lists/SbList.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "geo/SoGeo.h"
 
 // *************************************************************************
 
@@ -127,7 +127,7 @@ SoGeoCoordinate::doAction(SoAction * action)
                        "No SoGeoOrigin node found on stack.");
     return;
   }
-  
+
   if (origin->getNodeId() != PRIVATE(this)->originid ||
       this->getNodeId() != PRIVATE(this)->thisid) {
 

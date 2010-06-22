@@ -21,7 +21,14 @@
  *
 \**************************************************************************/
 
-#include "SoGeo.h"
+/*!
+  \class SoGeo Inventor/misc/SoGeo.h
+  \brief The SoGeo class is used to initialize the geo nodes in Coin, and has some utility geo coordinate functions.
+  
+  
+*/
+
+#include <Inventor/misc/SoGeo.h>
 #include "coindefs.h"
 #include <Inventor/nodes/SoGeoOrigin.h>
 #include <Inventor/nodes/SoGeoLocation.h>
@@ -62,6 +69,30 @@ static int find_utm_zone(const SbString & s)
   if (s[0] != 'Z' && s[1] != 'z') return 0;
 
   return (int) atoi(s.getString()+1);
+}
+
+SbVec3d 
+SoGeo::toGD(const SbString * originsystem,
+            const int numoriginsys,
+            const SbVec3d & origincoords)
+{
+    assert(0 && "not implemented yet");
+    return SbVec3d(0.0, 0.0, 0.0);
+    // to convert from GC to GD see this article
+    // http://en.wikipedia.org/wiki/Geodetic_system
+
+    // SbUTMProjection already supports from UTM to GD
+}
+
+SbVec3d 
+SoGeo::fromGD(const SbVec3d & gd,
+              const SbString * tosystem,
+              const int numtosys)
+{
+    // to convert from GD to GC see this article
+    // http://en.wikipedia.org/wiki/Geodetic_system
+    assert(0 && "not implemented yet");
+    return SbVec3d(0.0, 0.0, 0.0);
 }
 
 static SbDPMatrix find_coordinate_system(const SbString * system,

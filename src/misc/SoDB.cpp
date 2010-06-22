@@ -91,6 +91,7 @@
 #include <Inventor/navigation/SoScXMLNavigation.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/misc/CoinResources.h>
+#include <Inventor/misc/SoGeo.h>
 
 #ifdef HAVE_NODEKITS
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
@@ -98,7 +99,6 @@
 
 #include "coindefs.h" // COIN_STUB()
 #include "shaders/SoShader.h"
-#include "geo/SoGeo.h"
 #include "tidbitsp.h"
 #include "fields/SoGlobalField.h"
 #include "misc/CoinStaticObjectInDLL.h"

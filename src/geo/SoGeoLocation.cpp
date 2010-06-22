@@ -58,9 +58,9 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGeo.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "geo/SoGeo.h"
 
 
 // *************************************************************************
