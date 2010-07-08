@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+#include "SoAlphaTest.cpp"
 #include "SoAnnotation.cpp"
 #include "SoAntiSquish.cpp"
 #include "SoArray.cpp"

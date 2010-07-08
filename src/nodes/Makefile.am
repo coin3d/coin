@@ -2,6 +2,7 @@
 ## 19990904 mortene.
 
 RegularSources = \
+	SoAlphaTest.cpp \
 	SoAnnotation.cpp \
 	SoAntiSquish.cpp \
 	SoArray.cpp \

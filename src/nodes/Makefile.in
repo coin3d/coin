@@ -95,7 +95,7 @@ LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 nodes_lst_AR = $(AR) $(ARFLAGS)
 nodes_lst_LIBADD =
-am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
+am__nodes_lst_SOURCES_DIST = SoAlphaTest.cpp SoAnnotation.cpp SoAntiSquish.cpp \
 	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
 	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
@@ -134,7 +134,7 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoVertexProperty.cpp SoVertexAttribute.cpp \
 	SoVertexAttributeBinding.cpp SoWWWAnchor.cpp SoWWWInline.cpp \
 	all-nodes-cpp.cpp
-am__objects_1 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
+am__objects_1 = SoAlphaTest.$(OBJEXT) SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoArray.$(OBJEXT) SoBaseColor.$(OBJEXT) SoBlinker.$(OBJEXT) \
 	SoBumpMap.$(OBJEXT) SoBumpMapCoordinate.$(OBJEXT) \
 	SoBumpMapTransform.$(OBJEXT) SoCallback.$(OBJEXT) \
@@ -193,7 +193,7 @@ am__objects_2 = all-nodes-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_nodes_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_nodes_lst_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
-	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
+	SoSoundElementHelper.h all-nodes-cpp.cpp SoAlphaTest.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoBumpMap.cpp SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoCallback.cpp SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp \
@@ -236,7 +236,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libnodesincdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libnodes_la_LIBADD =
-am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
+am__libnodes_la_SOURCES_DIST = SoAlphaTest.cpp SoAnnotation.cpp SoAntiSquish.cpp \
 	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp SoCallback.cpp \
 	SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
@@ -275,7 +275,7 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoVertexProperty.cpp SoVertexAttribute.cpp \
 	SoVertexAttributeBinding.cpp SoWWWAnchor.cpp SoWWWInline.cpp \
 	all-nodes-cpp.cpp
-am__objects_6 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
+am__objects_6 = SoAlphaTest.lo SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 	SoBaseColor.lo SoBlinker.lo SoBumpMap.lo \
 	SoBumpMapCoordinate.lo SoBumpMapTransform.lo SoCallback.lo \
 	SoCacheHint.lo SoCamera.lo SoClipPlane.lo SoColorIndex.lo \
@@ -317,7 +317,7 @@ am__objects_7 = all-nodes-cpp.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_libnodes_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodes_la_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
-	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
+	SoSoundElementHelper.h all-nodes-cpp.cpp SoAlphaTest.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoBumpMap.cpp SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoCallback.cpp SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp \
@@ -357,7 +357,7 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoVertexAttributeBinding.cpp SoWWWAnchor.cpp SoWWWInline.cpp
 libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LIBADD =
-am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
+am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAlphaTest.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoBumpMap.cpp SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoCallback.cpp SoCacheHint.cpp SoCamera.cpp SoClipPlane.cpp \
@@ -399,7 +399,7 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubNodeP.h \
 	SoUnknownNode.h SoSoundElementHelper.h all-nodes-cpp.cpp \
-	SoAnnotation.cpp SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp \
+	SoAlphaTest.cpp SoAnnotation.cpp SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp \
 	SoBlinker.cpp SoBumpMap.cpp SoBumpMapCoordinate.cpp \
 	SoBumpMapTransform.cpp SoCallback.cpp SoCacheHint.cpp \
 	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
@@ -443,6 +443,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoAnnotation.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAnnotation.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAlphaTest.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAlphaTest.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAntiSquish.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAntiSquish.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoArray.Plo ./$(DEPDIR)/SoArray.Po \
@@ -906,6 +908,7 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 RegularSources = \
+	SoAlphaTest.cpp \
 	SoAnnotation.cpp \
 	SoAntiSquish.cpp \
 	SoArray.cpp \
@@ -1148,6 +1151,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAlphaTest.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAlphaTest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnotation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnotation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAntiSquish.Plo@am__quote@

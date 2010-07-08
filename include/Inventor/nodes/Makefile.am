@@ -1,4 +1,5 @@
 PublicHeaders = \
+	SoAlphaTest.h \
 	SoAnnotation.h \
 	SoAntiSquish.h \
 	SoArray.h \

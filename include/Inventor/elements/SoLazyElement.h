@@ -136,7 +136,7 @@ public:
   static void setBackfaceCulling(SoState * state, SbBool onoff);
   static void setTwosideLighting(SoState * state, SbBool onoff);
   static void setShadeModel(SoState * state, SbBool flatshading);
-  static void setAlphaTest(SoState * state, SbBool onoff);
+  static void setAlphaTest(SoState * state, int func, float value);
 
   static const SbColor & getDiffuse(SoState* state, int index);
   static float getTransparency(SoState*, int index);
@@ -154,7 +154,7 @@ public:
                                  int & sfactor, int & dfactor);
   
   static int32_t getLightModel(SoState*);
-  static SbBool getAlphaTest(SoState * state);
+  static int getAlphaTest(SoState * state, float & value);
   static SbBool getTwoSidedLighting(SoState * state);
 
   int32_t getNumDiffuse(void) const;
@@ -225,8 +225,8 @@ protected:
     SbBool twoside;
     SbBool culling;
     SbBool flatshading;
-    SbBool alphatest;
-    uint32_t reserved[4];
+    int alphatestfunc;
+    float alphatestvalue;
   } coinstate;
 
 protected:
@@ -264,7 +264,7 @@ protected:
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
   virtual void setShadeModelElt(SbBool flatshading);
-  virtual void setAlphaTestElt(SbBool onoff);
+  virtual void setAlphaTestElt(int func, float value);
 
 private:
   SoLazyElementP * pimpl; // for future use

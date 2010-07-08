@@ -230,17 +230,18 @@ SoGLLazyElement::sendFlatshading(const SbBool onoff) const
 }
 
 inline void
-SoGLLazyElement::sendAlphaTest(const SbBool onoff) const
+SoGLLazyElement::sendAlphaTest(int func, float value) const
 {
-  if (onoff) {
-    glAlphaFunc(GL_GREATER, 0.5f);
+  if (func) {
+    glAlphaFunc((GLenum) func, value);
     glEnable(GL_ALPHA_TEST);
   }
   else {
     glDisable(GL_ALPHA_TEST);
   }
   this->cachebitmask |= ALPHATEST_MASK;
-  this->glstate.alphatest = onoff;
+  this->glstate.alphatestfunc = func;
+  this->glstate.alphatestvalue = value;
 }
 
 
@@ -391,7 +392,8 @@ SoGLLazyElement::init(SoState * stateptr)
   this->glstate.twoside = -1;
   this->glstate.culling = -1;
   this->glstate.flatshading = -1;
-  this->glstate.alphatest = -1;
+  this->glstate.alphatestfunc = -1;
+  this->glstate.alphatestvalue = -1.0f;
   this->glstate.diffuse = 0xccccccff;
   this->glstate.diffusenodeid = 0;
   this->glstate.transpnodeid = 0;
@@ -656,8 +658,9 @@ SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
         }
         break;
       case ALPHATEST_CASE:
-        if (this->glstate.alphatest != (int32_t) this->coinstate.alphatest) {
-          this->sendAlphaTest(this->coinstate.alphatest);
+        if (this->glstate.alphatestfunc != (int32_t) this->coinstate.alphatestfunc ||
+            this->glstate.alphatestvalue != this->coinstate.alphatestvalue) {
+            this->sendAlphaTest(this->coinstate.alphatestfunc, this->coinstate.alphatestvalue);
         }
         break;
       }
@@ -732,7 +735,8 @@ SoGLLazyElement::reset(SoState * stateptr,  uint32_t mask) const
         elem->glstate.flatshading = -1;
         break;
       case ALPHATEST_CASE:
-        elem->glstate.alphatest = -1;
+        elem->glstate.alphatestfunc = -1;
+        elem->glstate.alphatestvalue = -1.0f;
         break;
       }
     }
@@ -954,9 +958,9 @@ SoGLLazyElement::setShadeModelElt(SbBool flatshading)
 }
 
 void
-SoGLLazyElement::setAlphaTestElt(SbBool onoff)
+SoGLLazyElement::setAlphaTestElt(int func, float value)
 {
-  inherited::setAlphaTestElt(onoff);
+  inherited::setAlphaTestElt(func, value);
 }
 
 void
@@ -1073,7 +1077,8 @@ SoGLLazyElement::postCacheCall(const SoState * state, const GLState * poststate)
         elem->glstate.flatshading = poststate->flatshading;
         break;
       case ALPHATEST_CASE:
-        elem->glstate.alphatest = poststate->alphatest;
+        elem->glstate.alphatestfunc = poststate->alphatestfunc;
+        elem->glstate.alphatestvalue = poststate->alphatestvalue;
         break;
       }
     }
@@ -1176,7 +1181,8 @@ SoGLLazyElement::preCacheCall(const SoState * state, const GLState * prestate)
         }
         break;
       case ALPHATEST_CASE:
-        if (curr.alphatest != prestate->alphatest) {
+        if (curr.alphatestfunc != prestate->alphatestfunc ||
+            curr.alphatestvalue != prestate->alphatestvalue) {
           GLLAZY_DEBUG("alphatest failed");
           return FALSE;
         }
