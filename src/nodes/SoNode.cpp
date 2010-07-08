@@ -665,6 +665,7 @@ SoNode::initClasses(void)
   SoVertexAttribute::initClass();
 
   SoDepthBuffer::initClass();
+  SoAlphaTest::initClass();
 }
 
 /*!
