@@ -25,7 +25,21 @@
   \class SoAlphaTest SoAlphaTest.h
   \brief The SoAlphaTest class is a node used to control the GL alpha test function.
 
-  With this node you can control the OpenGL alpha test function.
+  With this node you can control the OpenGL alpha test function. The
+  alpha test function enables you to discard fragments based on its
+  alpha value. For instance, if you set the function to LESS and value to
+  0.5, all fragments with alpha value less than 0.5 (or 128 in pixel
+  values) will be discarded. 
+
+  Alpha testing is typically used when rendering textures where all
+  pixels are either completely opaque or completely
+  transparent. Transparency sorting propblems are avoided when alpha
+  testing is used instead of blending, since depth testing can still
+  be enabled and no sorting or delayed rendering is needed.
+
+  To enable alpha testing instead of transparency blending, insert a
+  TransparencyType node with value = NONE, and an AlphaTest node with
+  function set to LESS and value set to for instance 0.5.
 
   \ingroup nodes
   \COIN_CLASS_EXTENSION
