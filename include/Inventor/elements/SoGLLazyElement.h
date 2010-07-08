@@ -83,7 +83,8 @@ public:
     int32_t culling;
     int32_t twoside;
     int32_t flatshading;
-    int32_t alphatest;
+    int32_t alphatestfunc;
+    float alphatestvalue;
     uint32_t diffusenodeid;
     uint32_t transpnodeid;
     uint32_t reserved[4];
@@ -120,7 +121,7 @@ public:
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
   virtual void setShadeModelElt(SbBool flatshading);
-  virtual void setAlphaTestElt(SbBool onoff);
+  virtual void setAlphaTestElt(int func, float value);
 
   static void beginCaching(SoState * state,
                            SoGLLazyElement::GLState * prestate,
@@ -158,7 +159,7 @@ private:
   void sendVertexOrdering(const VertexOrdering ordering) const;
   void sendTwosideLighting(const SbBool onoff) const;
   void sendBackfaceCulling(const SbBool onoff) const;
-  void sendAlphaTest(const SbBool onoff) const;
+  void sendAlphaTest(int func, float value) const;
   void initGL(void);
   void packColors(SoColorPacker * packer) const;
 

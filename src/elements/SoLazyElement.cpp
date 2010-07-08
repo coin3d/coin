@@ -177,7 +177,8 @@ SoLazyElement::init(SoState * COIN_UNUSED_ARG(state))
   this->coinstate.twoside = FALSE;
   this->coinstate.culling = FALSE;
   this->coinstate.flatshading = FALSE;
-  this->coinstate.alphatest = FALSE;
+  this->coinstate.alphatestfunc = 0;
+  this->coinstate.alphatestvalue = 0.5f;
 }
 
 // ! FIXME: write doc
@@ -575,11 +576,12 @@ SoLazyElement::getTwoSidedLighting(SoState * state)
 }
 
 // ! FIXME: write doc
-SbBool
-SoLazyElement::getAlphaTest(SoState * state)
+int
+SoLazyElement::getAlphaTest(SoState * state, float & value)
 {
   SoLazyElement * elem = getInstance(state);
-  return elem->coinstate.alphatest;
+  value = elem->coinstate.alphatestvalue;
+  return elem->coinstate.alphatestfunc;
 }
 
 // ! FIXME: write doc
@@ -848,12 +850,13 @@ SoLazyElement::setShadeModel(SoState * state, SbBool flatshading)
 }
 
 void
-SoLazyElement::setAlphaTest(SoState * state, SbBool onoff)
+SoLazyElement::setAlphaTest(SoState * state, int func, float value)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
-  if (elem->coinstate.alphatest != onoff) {
+  if (elem->coinstate.alphatestfunc != func ||
+      elem->coinstate.alphatestvalue != value) {
     elem = getWInstance(state);
-    elem->setAlphaTestElt(onoff);
+    elem->setAlphaTestElt(func, value);
     if (state->isCacheOpen()) elem->lazyDidSet(ALPHATEST_MASK);
   }
   else if (state->isCacheOpen()) {
@@ -1103,9 +1106,10 @@ SoLazyElement::setShadeModelElt(SbBool flatshading)
 }
 
 void
-SoLazyElement::setAlphaTestElt(SbBool onoff)
+SoLazyElement::setAlphaTestElt(int func, float value)
 {
-  this->coinstate.alphatest = onoff;
+  this->coinstate.alphatestfunc = func;
+  this->coinstate.alphatestvalue = value;
 }
 
 
