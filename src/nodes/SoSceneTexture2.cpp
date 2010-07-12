@@ -305,6 +305,48 @@
 #include "elements/SoTextureScalePolicyElement.h"
 
 
+// FIXME: The multicontex handling in this class is very messy. Clean
+// it up.  pederb, 2010-07-12
+
+namespace {
+  struct fbo_deletedata {
+    GLuint frameBuffer;
+    GLuint depthBuffer;
+  };
+
+  void fbo_delete_cb(void * closure, uint32_t contextid) {
+    const cc_glglue * glue = cc_glglue_instance(contextid);
+    fbo_deletedata * fbodata = reinterpret_cast<fbo_deletedata*> (closure);
+    if (fbodata->frameBuffer != GL_INVALID_VALUE) {
+      cc_glglue_glDeleteFramebuffers(glue, 1, &fbodata->frameBuffer);
+    }
+    if (fbodata->depthBuffer != GL_INVALID_VALUE) {
+      cc_glglue_glDeleteRenderbuffers(glue, 1, &fbodata->depthBuffer);
+    }
+    delete fbodata;
+  }
+
+  struct fbo_data {
+    GLuint fbo_frameBuffer;
+    GLuint fbo_depthBuffer;
+    SbVec2s fbo_size;
+    SbBool fbo_mipmap;
+    SoGLDisplayList * fbo_texture;
+    SoGLDisplayList * fbo_depthmap;
+    int32_t cachecontext;
+
+    fbo_data(int32_t cachecontext) {
+        this->cachecontext = cachecontext;
+        this->fbo_frameBuffer = GL_INVALID_VALUE;
+        this->fbo_depthBuffer = GL_INVALID_VALUE;
+        this->fbo_texture = NULL;
+        this->fbo_depthmap = NULL;
+        this->fbo_size.setValue(-1,-1);
+        this->fbo_mipmap = FALSE;
+    }
+  };
+};
+
 // *************************************************************************
 
 class SoSceneTexture2P {
@@ -321,7 +363,10 @@ public:
   SbVec2s glcontextsize;
   int contextid;
 
+  fbo_data * fbodata;
   SoGLImage * glimage;
+  int32_t glimagecontext;
+  
   SbBool buffervalid;
 
   SbBool glimagevalid;
@@ -338,13 +383,6 @@ public:
                                   const SbBool warn);
   void deleteFrameBufferObjects(const cc_glglue * glue, SoState * state);
   SbBool checkFramebufferStatus(const cc_glglue * glue, const SbBool warn);
-
-  GLuint fbo_frameBuffer;
-  GLuint fbo_depthBuffer;
-  SoGLDisplayList * fbo_texture;
-  SoGLDisplayList * fbo_depthmap;
-  SbVec2s fbo_size;
-  SbBool fbo_mipmap;
 
   SoGLRenderAction::TransparencyType getTransparencyType(SoState * state);
   SbBool shouldCreateMipmap(SoState * state) {
@@ -476,9 +514,22 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
 
   float quality = SoTextureQualityElement::get(state);
 
-  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int32_t cachecontext = SoGLCacheContextElement::get(state);
+  const cc_glglue * glue = cc_glglue_instance(cachecontext);
   SoNode * root = this->scene.getValue();
 
+  // this is not a very good solution, but just recreate the
+  // pbuffer/framebuffer if the context has changed since it was
+  // created.
+  if (cachecontext != PRIVATE(this)->glimagecontext) {
+    PRIVATE(this)->glimagevalid = FALSE;
+    PRIVATE(this)->buffervalid = FALSE;
+    // this will force the pbuffers and/or framebuffers to be recreated
+    PRIVATE(this)->glcontextsize = SbVec2s(-1, -1);
+    if (PRIVATE(this)->fbodata) {
+      PRIVATE(this)->fbodata->fbo_size = SbVec2s(-1, -1);
+    }
+  }
   LOCK_GLIMAGE(this);
 
   if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid)) {
@@ -617,6 +668,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->buffervalid = FALSE;
   this->glimagevalid = FALSE;
   this->glimage = NULL;
+  this->glimagecontext = 0;
   this->glaction = NULL;
   this->glcontextsize.setValue(-1,-1);
   this->glrectangle = FALSE;
@@ -624,21 +676,14 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->offscreenbuffersize = 0;
   this->canrendertotexture = FALSE;
   this->contextid = -1;
-
-  this->fbo_frameBuffer = GL_INVALID_VALUE;
-  this->fbo_depthBuffer = GL_INVALID_VALUE;
-  this->fbo_texture = NULL;
-  this->fbo_depthmap = NULL;
-  this->fbo_size.setValue(-1,-1);
-  this->fbo_mipmap = FALSE;
+  this->fbodata = NULL;
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
 {
-  // FIXME: free FBO buffers
+  this->deleteFrameBufferObjects(NULL, NULL);
+  delete this->fbodata;
 
-  if (this->fbo_texture) this->fbo_texture->unref(NULL);
-  if (this->fbo_depthmap) this->fbo_depthmap->unref(NULL);
   if (this->glimage) this->glimage->unref(NULL);
   if (this->glcontext != NULL) {
     cc_glglue_context_destruct(this->glcontext);
@@ -686,19 +731,29 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
   SoNode * scene = PUBLIC(this)->scene.getValue();
   assert(scene);
 
-  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int cachecontext = SoGLCacheContextElement::get(state);
+  const cc_glglue * glue = cc_glglue_instance(cachecontext);
   SbBool mipmap = this->shouldCreateMipmap(state);
 
-  if ((this->fbo_size != size) || (mipmap != this->fbo_mipmap)) {
-    this->fbo_mipmap = mipmap;
-    this->fbo_size = size;
+  fbo_data * fbodata = this->fbodata;
+  if (!fbodata) {
+    this->fbodata = fbodata = new fbo_data(0);
+  }
 
+  if ((fbodata->fbo_size != size) || (mipmap != fbodata->fbo_mipmap) || 
+      (cachecontext != fbodata->cachecontext)) {
+    fbodata->fbo_mipmap = mipmap;
+    fbodata->fbo_size = size;
+    fbodata->cachecontext = cachecontext;
+    
     if (this->glimage) {
       this->glimage->unref(NULL);
       this->glimage = NULL;
+      this->glimagecontext = 0;
     }
     if (this->glimage == NULL) {
       this->glimage = new SoGLImage;
+      this->glimagecontext = SoGLCacheContextElement::get(state);
       uint32_t flags = this->glimage->getFlags();
       switch ((SoSceneTexture2::TransparencyFunction) (PUBLIC(this)->transparencyFunction.getValue())) {
       case SoSceneTexture2::NONE:
@@ -735,13 +790,13 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
 
     // FIXME: for some reason we need to do this every frame. Investigate why.
     if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
-      assert(this->fbo_depthmap != NULL);
-      this->glimage->setGLDisplayList(this->fbo_depthmap, state,
+      assert(fbodata->fbo_depthmap != NULL);
+      this->glimage->setGLDisplayList(fbodata->fbo_depthmap, state,
                                       SoGLImage::CLAMP, SoGLImage::CLAMP);
     }
     else {
-      assert(this->fbo_texture != NULL);
-      this->glimage->setGLDisplayList(this->fbo_texture, state);
+      assert(fbodata->fbo_texture != NULL);
+      this->glimage->setGLDisplayList(fbodata->fbo_texture, state);
     }
   }
 
@@ -771,10 +826,10 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
   glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &oldfb );
 
   // set up framebuffer for rendering
-  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, fbodata->fbo_frameBuffer);
   this->checkFramebufferStatus(glue, TRUE);
 
-  SoViewportRegionElement::set(state, SbViewportRegion(this->fbo_size));
+  SoViewportRegionElement::set(state, SbViewportRegion(fbodata->fbo_size));
   SbVec4f col = PUBLIC(this)->backgroundColor.getValue();
   glClearColor(col[0], col[1], col[2], col[3]);
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
@@ -788,14 +843,14 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
 
   if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
     // need to copy the depth buffer into the depth texture object
-    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_depthmap->getFirstIndex());
+    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, fbodata->fbo_depthmap->getFirstIndex());
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0,
-                        this->fbo_size[0], this->fbo_size[1]);
+                        fbodata->fbo_size[0], fbodata->fbo_size[1]);
     cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, 0);
   }
   else {
-    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, this->fbo_texture->getFirstIndex());
-    if (this->fbo_mipmap) {
+    cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, fbodata->fbo_texture->getFirstIndex());
+    if (fbodata->fbo_mipmap) {
       cc_glglue_glGenerateMipmap(glue, GL_TEXTURE_2D);
     }
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, 0);
@@ -835,6 +890,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     if (this->glimage) {
       this->glimage->unref(state);
       this->glimage = NULL;
+      this->glimagecontext = 0;
     }
     if (this->glcontext) {
       cc_glglue_context_destruct(this->glcontext);
@@ -881,7 +937,6 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       // two textures/pbuffers.
       this->glrectangle = TRUE;
     }
-
     // FIXME: make it possible to specify what kind of context you want
     // (RGB or RGBA, I guess). pederb, 2003-11-27
     this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0],
@@ -928,6 +983,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
                    this->offscreenbuffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
     }
+    
     cc_glglue_context_reinstate_previous(this->glcontext);
   }
   if (!this->glimagevalid || (this->glimage == NULL)) {
@@ -937,6 +993,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       this->glimage = NULL;
     }
     this->glimage = new SoGLImage;
+    this->glimagecontext = SoGLCacheContextElement::get(state);
     uint32_t flags = this->glimage->getFlags();
     if (this->glrectangle) {
       flags |= SoGLImage::RECTANGLE;
@@ -1065,22 +1122,25 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                                            const SoSceneTexture2::Type type,
                                            const SbBool warn)
 {
-  assert(this->fbo_texture == NULL);
-  assert(this->fbo_depthmap == NULL);
-  assert(this->fbo_frameBuffer == GL_INVALID_VALUE);
-  assert(this->fbo_depthBuffer == GL_INVALID_VALUE);
+  fbo_data * fbodata = this->fbodata;
+  assert(fbodata);  
+
+  assert(fbodata->fbo_texture == NULL);
+  assert(fbodata->fbo_depthmap == NULL);
+  assert(fbodata->fbo_frameBuffer == GL_INVALID_VALUE);
+  assert(fbodata->fbo_depthBuffer == GL_INVALID_VALUE);
 
   // store old framebuffer
   GLint oldfb;
   glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &oldfb );
 
-  cc_glglue_glGenFramebuffers(glue, 1, &this->fbo_frameBuffer);
-  cc_glglue_glGenRenderbuffers(glue, 1, &this->fbo_depthBuffer);
-  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, this->fbo_frameBuffer);
+  cc_glglue_glGenFramebuffers(glue, 1, &fbodata->fbo_frameBuffer);
+  cc_glglue_glGenRenderbuffers(glue, 1, &fbodata->fbo_depthBuffer);
+  cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, fbodata->fbo_frameBuffer);
 
-  this->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
-  this->fbo_texture->ref();
-  this->fbo_texture->open(state);
+  fbodata->fbo_texture = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+  fbodata->fbo_texture->ref();
+  fbodata->fbo_texture->open(state);
 
   GLenum gltype = GL_FLOAT;
   GLenum internalformat = GL_RGBA8;
@@ -1099,7 +1159,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
 
   glTexImage2D(GL_TEXTURE_2D, 0,
                internalformat,
-               this->fbo_size[0], this->fbo_size[1],
+               fbodata->fbo_size[0], fbodata->fbo_size[1],
                0, /* border */
                format,
                gltype, NULL);
@@ -1120,9 +1180,9 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wraps);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapt);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->fbo_mipmap ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, fbodata->fbo_mipmap ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  if (this->fbo_mipmap) {
+  if (fbodata->fbo_mipmap) {
     cc_glglue_glGenerateMipmap(glue, GL_TEXTURE_2D);
   }
 
@@ -1131,16 +1191,16 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                     cc_glglue_get_max_anisotropy(glue));
   }
 
-  this->fbo_texture->close(state);
+  fbodata->fbo_texture->close(state);
 
   if (type == SoSceneTexture2::DEPTH) {
-    this->fbo_depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
-    this->fbo_depthmap->ref();
-    this->fbo_depthmap->open(state);
+    fbodata->fbo_depthmap = new SoGLDisplayList(state, SoGLDisplayList::TEXTURE_OBJECT);
+    fbodata->fbo_depthmap->ref();
+    fbodata->fbo_depthmap->open(state);
 
     glTexImage2D(GL_TEXTURE_2D, 0,
                  GL_DEPTH_COMPONENT, /* GL_DEPTH_COMPONENT24? */
-                 this->fbo_size[0], this->fbo_size[1],
+                 fbodata->fbo_size[0], fbodata->fbo_size[1],
                  0, /* border */
                  GL_DEPTH_COMPONENT,
                  GL_UNSIGNED_BYTE, NULL);
@@ -1164,30 +1224,30 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                       cc_glglue_get_max_anisotropy(glue));
     }
 
-    this->fbo_depthmap->close(state);
+    fbodata->fbo_depthmap->close(state);
   }
 
-  if (this->fbo_texture != NULL) {
+  if (fbodata->fbo_texture != NULL) {
     // attach texture to framebuffer color object
     cc_glglue_glFramebufferTexture2D(glue,
                                      GL_FRAMEBUFFER_EXT,
                                      GL_COLOR_ATTACHMENT0_EXT,
                                      GL_TEXTURE_2D,
-                                     (GLuint) this->fbo_texture->getFirstIndex(),
+                                     (GLuint) fbodata->fbo_texture->getFirstIndex(),
                                      0);
   }
 
   // create the render buffer
-  cc_glglue_glBindRenderbuffer(glue, GL_RENDERBUFFER_EXT, this->fbo_depthBuffer);
+  cc_glglue_glBindRenderbuffer(glue, GL_RENDERBUFFER_EXT, fbodata->fbo_depthBuffer);
   cc_glglue_glRenderbufferStorage(glue, GL_RENDERBUFFER_EXT,
                                   GL_DEPTH_COMPONENT24,
-                                  this->fbo_size[0], this->fbo_size[1]);
+                                  fbodata->fbo_size[0], fbodata->fbo_size[1]);
   // attach renderbuffer to framebuffer
   cc_glglue_glFramebufferRenderbuffer(glue,
                                       GL_FRAMEBUFFER_EXT,
                                       GL_DEPTH_ATTACHMENT_EXT,
                                       GL_RENDERBUFFER_EXT,
-                                      this->fbo_depthBuffer);
+                                      fbodata->fbo_depthBuffer);
 
   SbBool ret = this->checkFramebufferStatus(glue, warn);
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, (GLint)oldfb);
@@ -1198,22 +1258,36 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
 void
 SoSceneTexture2P::deleteFrameBufferObjects(const cc_glglue * glue, SoState * state)
 {
-  if (this->fbo_texture) {
-    this->fbo_texture->unref(state);
-    this->fbo_texture = NULL;
+  assert(this->fbodata);
+  fbo_data * fbodata = this->fbodata;
+  
+  if (fbodata->fbo_texture) {
+    fbodata->fbo_texture->unref(state);
+    fbodata->fbo_texture = NULL;
   }
-  if (this->fbo_depthmap) {
-    this->fbo_depthmap->unref(state);
-    this->fbo_depthmap = NULL;
+  if (fbodata->fbo_depthmap) {
+    fbodata->fbo_depthmap->unref(state);
+    fbodata->fbo_depthmap = NULL;
   }
-  if (this->fbo_frameBuffer != GL_INVALID_VALUE) {
-    cc_glglue_glDeleteFramebuffers(glue, 1, &this->fbo_frameBuffer);
-    this->fbo_frameBuffer = GL_INVALID_VALUE;
+  if (glue && state && SoGLCacheContextElement::get(state) == fbodata->cachecontext) {
+    if (fbodata->fbo_frameBuffer != GL_INVALID_VALUE) {
+      cc_glglue_glDeleteFramebuffers(glue, 1, &fbodata->fbo_frameBuffer);
+      fbodata->fbo_frameBuffer = GL_INVALID_VALUE;
+    }
+    if (fbodata->fbo_depthBuffer != GL_INVALID_VALUE) {
+      cc_glglue_glDeleteRenderbuffers(glue, 1, &fbodata->fbo_depthBuffer);
+      fbodata->fbo_depthBuffer = GL_INVALID_VALUE;
+    }
   }
-  if (this->fbo_depthBuffer != GL_INVALID_VALUE) {
-    cc_glglue_glDeleteRenderbuffers(glue, 1, &this->fbo_depthBuffer);
-    this->fbo_depthBuffer = GL_INVALID_VALUE;
+  else {
+    fbo_deletedata * dd = new fbo_deletedata;
+    dd->frameBuffer = fbodata->fbo_frameBuffer;
+    dd->depthBuffer = fbodata->fbo_depthBuffer;
+    SoGLCacheContextElement::scheduleDeleteCallback(fbodata->cachecontext,
+                                                    fbo_delete_cb, dd);
   }
+  fbodata->fbo_frameBuffer = GL_INVALID_VALUE;
+  fbodata->fbo_depthBuffer = GL_INVALID_VALUE;
 }
 
 SbBool
