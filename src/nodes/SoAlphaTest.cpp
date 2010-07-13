@@ -27,9 +27,9 @@
 
   With this node you can control the OpenGL alpha test function. The
   alpha test function enables you to discard fragments based on its
-  alpha value. For instance, if you set the function to LESS and value to
-  0.5, all fragments with alpha value less than 0.5 (or 128 in pixel
-  values) will be discarded. 
+  alpha value. For instance, if you set the function to GREATER and
+  value to 0.5, only fragments with alpha value greater than 0.5 will
+  be rendered.
 
   Alpha testing is typically used when rendering textures where all
   pixels are either completely opaque or completely
@@ -39,7 +39,7 @@
 
   To enable alpha testing instead of transparency blending, insert a
   TransparencyType node with value = NONE, and an AlphaTest node with
-  function set to LESS and value set to for instance 0.5.
+  \e function set to GREATER and \e value set to for instance 0.01.
 
   \ingroup nodes
   \COIN_CLASS_EXTENSION
