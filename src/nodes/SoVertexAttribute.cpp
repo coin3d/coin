@@ -185,6 +185,7 @@ SoVertexAttribute::SoVertexAttribute(void)
 
 SoVertexAttribute::~SoVertexAttribute(void)
 {
+  delete PRIVATE(this)->attributedata;
 }
 
 // Doc in superclass
