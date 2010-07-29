@@ -1258,8 +1258,8 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
 void
 SoSceneTexture2P::deleteFrameBufferObjects(const cc_glglue * glue, SoState * state)
 {
-  assert(this->fbodata);
   fbo_data * fbodata = this->fbodata;
+  if (!fbodata) return; // might happen if the scene texture isn't traversed
   
   if (fbodata->fbo_texture) {
     fbodata->fbo_texture->unref(state);
