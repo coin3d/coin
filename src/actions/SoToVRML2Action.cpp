@@ -437,6 +437,9 @@ public:
   static SoCallbackAction::Response push_sep_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response pop_sep_cb(void *, SoCallbackAction *, const SoNode *);
 
+  static SoCallbackAction::Response push_transformsep_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response pop_transformsep_cb(void *, SoCallbackAction *, const SoNode *);
+
   static SoCallbackAction::Response push_switch_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response pop_switch_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response push_lod_cb(void *, SoCallbackAction *, const SoNode *);
@@ -536,6 +539,10 @@ SoToVRML2Action::SoToVRML2Action(void)
 
   ADD_PRE_CB(SoSeparator, push_sep_cb);
   ADD_POST_CB(SoSeparator, pop_sep_cb);
+  
+  ADD_PRE_CB(SoTransformSeparator, push_transformsep_cb);
+  ADD_POST_CB(SoTransformSeparator, pop_transformsep_cb);
+  
   ADD_PRE_CB(SoSwitch, push_switch_cb);
   ADD_POST_CB(SoSwitch, pop_switch_cb);
   ADD_PRE_CB(SoLOD, push_lod_cb);
@@ -981,6 +988,20 @@ SoToVRML2ActionP::pop_sep_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(
 
   THISP(closure)->dict.put(node, grp);
   return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::push_transformsep_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
+{
+  SbString str = "SoTransformSeparator nodes do not have a VRML counterpart, and may not function correctly";
+  SoDebugError::postWarning("SoToVRML2Action::push_transformsep_cb", "%s", str.getString());
+  return push_sep_cb(closure, action, node);  
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::pop_transformsep_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action), const SoNode * node)
+{
+  return pop_sep_cb(closure, action, node);
 }
 
 SoCallbackAction::Response
