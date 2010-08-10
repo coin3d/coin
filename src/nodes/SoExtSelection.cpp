@@ -358,8 +358,8 @@ public:
     SelectionState(SoExtSelection * t)
     {
       this->updatetimer = new SoTimerSensor(&SoExtSelectionP::timercallback, t);
-      this->updatetimer->setBaseTime(SbTime::zero());
-      this->updatetimer->setInterval(SbTime(0.3));
+      this->updatetimer->setInterval(SbTime(0.1));//Aim for 10 FPS
+      //Not setting basetime here, as drift in the timer doesn't matter for the animation
       this->reset();
     }
 

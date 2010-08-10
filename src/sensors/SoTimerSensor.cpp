@@ -93,6 +93,8 @@ SoTimerSensor::~SoTimerSensor(void)
 void
 SoTimerSensor::setBaseTime(const SbTime & baseref)
 {
+  //FIXME: There is some humbug when setting baseTime to 0. Probably a
+  //floating point precision thing. Investigate. wiesener 20100810
   this->base = baseref;
   this->setbasetime = TRUE;
 }
