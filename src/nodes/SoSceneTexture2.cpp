@@ -836,7 +836,18 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
 
   SoGLRenderAction * glaction = (SoGLRenderAction*) state->getAction();
   // traverse the new scene graph
+
+  // clear the abort callback before traversing the internal scene
+  // graph. This will make the FBO version behave like the pbuffer
+  // version, and avoid problems with the offscreen renderer which
+  // uses the abort callback to adjust the original viewport.
+
+  SoGLRenderAction::SoGLRenderAbortCB * old_func;
+  void * old_userdata;
+  glaction->getAbortCallback(old_func, old_userdata);
+  glaction->setAbortCallback(NULL, NULL);
   glaction->switchToNodeTraversal(scene);
+  glaction->setAbortCallback(old_func, old_userdata);
 
   // make sure rendering has completed before switching back to the previous context
   glFlush();
