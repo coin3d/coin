@@ -1536,10 +1536,10 @@ SoRenderManager::getAutoClipping(void) const
 }
 
 /*!
-  When the NbSceneManager::FIXED_NEAR_PLANE autoclipping strategy is
+  When the SoRenderManager::FIXED_NEAR_PLANE autoclipping strategy is
   used, you set the value of the near plane distance with this method.
 
-  \sa setAutoClipping, getNearPlaneValue, NbSceneManager::AutoClippingStrategy
+  \sa setAutoClipping, getNearPlaneValue, SoRenderManager::AutoClippingStrategy
 */
 
 void
@@ -1550,11 +1550,11 @@ SoRenderManager::setNearPlaneValue(float value)
 
 /*!
   This method returns the near plane distance value that will be used
-  when the NbSceneManager::FIXED_NEAR_PLANE autoclipping strategy is used.
+  when the SoRenderManager::FIXED_NEAR_PLANE autoclipping strategy is used.
 
   Default value is 0.6.
 
-  \sa setAutoClipping, setNearPlaneValue,  NbSceneManager::AutoClippingStrategy
+  \sa setAutoClipping, setNearPlaneValue,  SoRenderManager::AutoClippingStrategy
 */
 
 float
