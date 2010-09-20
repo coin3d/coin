@@ -110,10 +110,13 @@ void
 SoMaterialBundle::send(const int index, const SbBool betweenbeginend)
 {
   if (this->firsttime) this->setupElements(betweenbeginend);
-  if (index != this->currindex || (this->coloronly & FLAG_NVIDIA_BUG)) {
+  //if (index != this->currindex || (this->coloronly & FLAG_NVIDIA_BUG)) {
+  // Bug fix: Force setting the color for all indices. ATI cards do not
+  // use the previous color if it is reported as equal, but sets
+  // it to black. - jostein 20/09/2010
     this->lazyelem->sendDiffuseByIndex(index);    
     this->currindex = index;
-  }
+  //}
 }
 
 /*!
