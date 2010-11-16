@@ -681,7 +681,10 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   // the SoAction subclass.
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
-  if (pathlist.getLength() == 0) return;
+  if (pathlist.getLength() == 0) {
+    SoDB::readunlock();
+    return;
+  }
 
   // need to store these in case action in reapplied
   AppliedCode storedcode = PRIVATE(this)->appliedcode;
