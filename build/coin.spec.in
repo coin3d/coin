@@ -457,6 +457,7 @@ make doxygen-doc
 @includedir@/Inventor/nodekits/SoWrapperKit.h
 @includedir@/Inventor/nodes/SoAnnoText3.h
 @includedir@/Inventor/nodes/SoAnnoText3Property.h
+@includedir@/Inventor/nodes/SoAlphaTest.h
 @includedir@/Inventor/nodes/SoAnnotation.h
 @includedir@/Inventor/nodes/SoAntiSquish.h
 @includedir@/Inventor/nodes/SoArray.h
@@ -640,6 +641,7 @@ make doxygen-doc
 @mandir@/man3/SoAlarmSensor.3
 @mandir@/man3/SoAnnoText3.3
 @mandir@/man3/SoAnnoText3Property.3
+@mandir@/man3/SoAlphaTest.3
 @mandir@/man3/SoAnnotation.3
 @mandir@/man3/SoAntiSquish.3
 @mandir@/man3/SoArray.3
@@ -899,7 +901,7 @@ rm SbSpherePlaneProjector.3 SbSphereProjector.3 SbSphereSectionProjector.3
 rm SbSphereSheetProjector.3 SbString.3 SbStringList.3 SbTime.3 SbVec2f.3
 rm SbVec2s.3 SbVec3f.3 SbVec3s.3 SbVec3fList.3 SbVec4f.3 SbViewVolume.3 SbViewportRegion.3
 rm SbXfBox3f.3 SoAction.3 SoActionMethodList.3 SoAlarmSensor.3 SoAnnoText3.3
-rm SoAnnoText3Property.3 SoAnnotation.3 SoAntiSquish.3 SoArray.3 SoAsciiText.3
+rm SoAnnoText3Property.3 SoAlphaTest.3 SoAnnotation.3 SoAntiSquish.3 SoArray.3 SoAsciiText.3
 rm SoAuditorList.3 SoBase.3 SoBaseColor.3 SoBaseList.3 SoBlinker.3
 rm SoBoxHighlightRenderAction.3 SoButtonEvent.3 SoCallback.3 SoCallbackAction.3
 rm SoCallbackList.3 SoCamera.3 SoChildList.3 SoClipPlane.3 SoColorIndex.3

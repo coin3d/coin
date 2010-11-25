@@ -7331,6 +7331,19 @@ SOURCE=..\..\src\navigation\SoScXMLMotionTarget.cpp
 # PROP Default_Filter "c;cpp;ic;icc;h"
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoAlphaTest.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoAnnotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -14289,6 +14302,10 @@ SOURCE=..\..\include\Inventor\nodekits\SoWrapperKit.h
 # End Group
 # Begin Group "Inventor\nodes headers"
 # Set Default_Filter "h"
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoAlphaTest.h
+# End Source File
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoAnnotation.h
