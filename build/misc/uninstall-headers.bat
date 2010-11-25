@@ -558,6 +558,7 @@ del %COINDIR%\include\Inventor\nodekits\SoSceneKit.h
 del %COINDIR%\include\Inventor\nodekits\SoSeparatorKit.h
 del %COINDIR%\include\Inventor\nodekits\SoShapeKit.h
 del %COINDIR%\include\Inventor\nodekits\SoWrapperKit.h
+del %COINDIR%\include\Inventor\nodes\SoAlphaTest.h
 del %COINDIR%\include\Inventor\nodes\SoAnnotation.h
 del %COINDIR%\include\Inventor\nodes\SoAntiSquish.h
 del %COINDIR%\include\Inventor\nodes\SoArray.h

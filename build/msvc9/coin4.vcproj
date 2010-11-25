@@ -29990,6 +29990,60 @@
 				Filter="c;cpp;ic;icc;h"
 				>
 				<File
+					RelativePath="..\..\src\nodes\SoAlphaTest.cpp"
+					>
+					<FileConfiguration
+						Name="DLL (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							ObjectFile=".\Release\nodes/"
+							ProgramDataBaseFileName="Release\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Release)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="3"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							ObjectFile=".\StaticRelease\nodes/"
+							ProgramDataBaseFileName="StaticRelease\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="LIB (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+							BasicRuntimeChecks="3"
+							ObjectFile=".\StaticDebug\nodes/"
+							ProgramDataBaseFileName="StaticDebug\nodes/"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DLL (Debug)|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;YY_NO_UNISTD_H;COIN_INTERNAL;$(NoInherit)"
+							BasicRuntimeChecks="3"
+							ObjectFile=".\Debug\nodes/"
+							ProgramDataBaseFileName="Debug\nodes/"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\src\nodes\SoAnnotation.cpp"
 					>
 					<FileConfiguration
@@ -51334,6 +51388,10 @@
 		<Filter
 			Name="Inventor\nodes headers"
 			>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoAlphaTest.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoAnnotation.h"
 				>

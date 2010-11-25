@@ -558,6 +558,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\nodekits\SoSceneKit.h %COINDIR%\include
 copy /Y ..\%msvc%\..\..\include\Inventor\nodekits\SoSeparatorKit.h %COINDIR%\include\Inventor\nodekits\SoSeparatorKit.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodekits\SoShapeKit.h %COINDIR%\include\Inventor\nodekits\SoShapeKit.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodekits\SoWrapperKit.h %COINDIR%\include\Inventor\nodekits\SoWrapperKit.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoAlphaTest.h %COINDIR%\include\Inventor\nodes\SoAlphaTest.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoAnnotation.h %COINDIR%\include\Inventor\nodes\SoAnnotation.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoAntiSquish.h %COINDIR%\include\Inventor\nodes\SoAntiSquish.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoArray.h %COINDIR%\include\Inventor\nodes\SoArray.h >nul:
