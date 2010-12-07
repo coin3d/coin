@@ -2,6 +2,7 @@
 
 use Expect;
 use IO::Handle;
+use File::Path;
 
 $ticker_mode=2;
 $makeOpts="-j4";
@@ -123,10 +124,9 @@ sub build($$) {
     print "$srcDir\n";
     print "$buildDir\n";
 
-    mkdir $buildDir || die "Could not create $buildDir";
+    mkpath $buildDir || die "Could not create $buildDir";
 
-    chdir ${buildDir};
-    chdir ${buildDir} && system2("rm -rf *", "Removing old build", "rm");
+    chdir ${buildDir} && system2("rm -rf *", "Removing old build", "rm") && die "Could not enter $buildDir";
     system2("${srcDir}/configure @_", "Running configure @_", "configure") == 0 || return 1;
     system2("make ${makeOpts}", "Running make", "make") == 0 || return 2;
     chdir "testsuite";
@@ -220,6 +220,6 @@ sub system2($$$) {
     finish_ticker($identifier);
 
     $es = $out->exitstatus();
-    die "Exit status $es" if ($es!=0);
+#    die "Exit status $es" if ($es!=0);
     return $es;
 }
