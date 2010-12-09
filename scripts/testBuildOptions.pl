@@ -40,16 +40,16 @@ for ($i=0;$i<=$#enableCmds;++$i) {
     push @cmds, "--disable-$enableCmds[$i]";
 }
 
-
 #for ($i=0;$i<=$#withCmds;++$i) {
 #    push @cmds, "--with-$withCmds[$i]\n";
 #}
 
 my @results;
-foreach $cmd (@cmds) {
-    my $res=build($srcDir,$buildDir, $cmd);
+for(my $i=0; $i<=$#cmds; ++$i) {
+    printf "======= %3u of %3u ======\n=", $i+1, $#cmds+1;
+    my $res=build($srcDir,$buildDir, $cmds[$i]);
     push @results, $res;
-    saveBuild($buildDir, $cmd) if ($res);
+    saveBuild($buildDir, $cmds[$i]) if ($res);
 }
 
 local $\="\n";
@@ -220,6 +220,7 @@ sub system2($$$) {
     finish_ticker($identifier);
 
     $es = $out->exitstatus();
+    $out->do_soft_close();
 #    die "Exit status $es" if ($es!=0);
     return $es;
 }
