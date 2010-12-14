@@ -240,6 +240,7 @@ struct wglglue_contextdata {
   SbBool noappglcontextavail;
 
   SbBool supports_render_to_texture;
+  SbBool wanted_render_to_texture;
   SbBool pbufferisbound;
   void *pvBits;
   int pixelformat;
@@ -397,6 +398,7 @@ wglglue_contextdata_init(unsigned int width, unsigned int height)
   context->storeddc = NULL;
   context->noappglcontextavail = FALSE;
   context->supports_render_to_texture = FALSE;
+  context->wanted_render_to_texture = TRUE;
   context->pbufferisbound = FALSE;
   context->pixelformat = 0;
 
@@ -850,7 +852,9 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
     /* if render-to-texture extension not supported, don't attempt to
        set up a pbuffer with those capabilities (could in theory cause
        nasty WGL errors): */
-    if (wglglue_wglBindTexImageARB == NULL) { thetry--; }
+    if (!context->wanted_render_to_texture || wglglue_wglBindTexImageARB == NULL) {
+      thetry--;
+    }
 
     while (thetry > 0) {
       thetry--;
@@ -1027,7 +1031,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
      http://www.oss.sgi.com/projects/ogl-sample/registry/EXT/wgl_pbuffer.txt
 */
 void *
-wglglue_context_create_offscreen(unsigned int width, unsigned int height)
+wglglue_context_create_offscreen(unsigned int width, unsigned int height, SbBool texture)
 {
   struct wglglue_contextdata * swctx, * pbctx;
   SbBool ispbuffer;
@@ -1039,6 +1043,8 @@ wglglue_context_create_offscreen(unsigned int width, unsigned int height)
 
   swctx = wglglue_contextdata_init(width, height);
   assert(swctx);
+
+  swctx->wanted_render_to_texture = texture;
 
   if (wglglue_context_create != NULL) {
 
@@ -1085,6 +1091,8 @@ wglglue_context_create_offscreen(unsigned int width, unsigned int height)
 
   pbctx = wglglue_contextdata_init(width, height);
   assert(pbctx);
+
+  pbctx->wanted_render_to_texture = texture;
 
   /* attempt to create a pbuffer */
   if (!wglglue_context_create_pbuffer(pbctx, FALSE)) {

@@ -37,7 +37,7 @@ extern "C" {
 
 void * coin_wgl_getprocaddress(const cc_glglue * glue, const char * fname);
 
-void * wglglue_context_create_offscreen(unsigned int width, unsigned int height);
+void * wglglue_context_create_offscreen(unsigned int width, unsigned int height, SbBool texture = TRUE);
 SbBool wglglue_context_make_current(void * ctx);
 void wglglue_context_reinstate_previous(void * ctx);
 void wglglue_context_destruct(void * ctx);
