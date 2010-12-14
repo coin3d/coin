@@ -32,6 +32,11 @@
 
 #include "tidbitsp.h"
 
+#if defined(HAVE_CONFIG_H)
+#include "config.h"
+#include "glue/gl_wgl.h"
+#endif /* HAVE_CONFIG_H */
+
 // *************************************************************************
 
 unsigned int CoinOffscreenGLCanvas::tilesizeroof = UINT_MAX;
@@ -166,8 +171,18 @@ CoinOffscreenGLCanvas::tryActivateGLContext(void)
   if (this->size == SbVec2s(0, 0)) { return 0; }
 
   if (this->context == NULL) {
+#if defined(HAVE_WGL)
+    /* NOTE: This discrepancy between the different glue flavors is due to a
+    driver bug that causes the coordinates fed to the gl_FragCoord fragment
+    shader input register to be flipped when using render-to-texture capable
+    pbuffers. Ref COINSUPPORT-1284. 20101214 tarjei. */
+    this->context = wglglue_context_create_offscreen(this->size[0],
+                                                     this->size[1],
+                                                     FALSE);
+#else
     this->context = cc_glglue_context_create_offscreen(this->size[0],
                                                        this->size[1]);
+#endif
     if (CoinOffscreenGLCanvas::debug()) {
       SoDebugError::postInfo("CoinOffscreenGLCanvas::tryActivateGLContext",
                              "Tried to create offscreen context of dimensions "
