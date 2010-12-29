@@ -148,7 +148,7 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
 #if DEBUG_TIMERSENSOR_TRACE // debug
     SoDebugError::postInfo("SoTimerSensor::reschedule",
                            "(setbasetime) base: %lf, new trigger time: %lf",
-                           this->base.getValue(), this->getTriggerTime());
+                           this->base.getValue(), this->getTriggerTime().getValue());
 #endif // debug
   }
   else {
@@ -162,7 +162,7 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
 #if DEBUG_TIMERSENSOR_TRACE
     SoDebugError::postInfo("SoTimerSensor::reschedule",
                            "base: %lf, new trigger time: %lf",
-                           this->base.getValue(), this->getTriggerTime());
+                           this->base.getValue(), this->getTriggerTime().getValue());
 #endif
   }
 
