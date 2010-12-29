@@ -860,7 +860,7 @@ namespace {
         ptr[idx+2] = srfpt[2]/srfpt[3];
 
         sprintf(buffer, "%g %g %g,", srfpt[0]/srfpt[3], srfpt[1]/srfpt[3], srfpt[2]/srfpt[3]);
-        if ( fp ) fprintf(fp, buffer);
+        if ( fp ) fputs(buffer,fp);
       }
       if ( fp ) fprintf(fp, "\n");
     }
@@ -871,7 +871,7 @@ namespace {
         int idxpt = j*vstride + i*ustride;
         // correct the normals if zero normals are present!
         sprintf(buffer, "%g %g %g, ", ptr[idxpt+0]+ptrnormals[idx+0], ptr[idxpt+1]+ptrnormals[idx+1], ptr[idxpt+2]+ptrnormals[idx+2]);
-        if ( fp ) fprintf(fp, buffer);
+        if ( fp ) fputs(buffer, fp);
       }
       if ( fp ) fprintf(fp, "\n");
     }

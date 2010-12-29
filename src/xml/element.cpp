@@ -613,7 +613,7 @@ cc_xml_elt_get_uint32(const cc_xml_elt * elt, uint32_t * value)
   const char * data = cc_xml_elt_get_data(elt);
   assert(value != NULL);
   if ( data == NULL ) return FALSE;
-  if ( sscanf(data, "%ld", value) == 1 ) return TRUE; // FIXME: unsigned
+  if ( sscanf(data, "%u", value) == 1 ) return TRUE; // FIXME: unsigned
   return FALSE;
 }
 
@@ -632,7 +632,7 @@ cc_xml_elt_get_int32(const cc_xml_elt * elt, int32_t * value)
   const char * data = cc_xml_elt_get_data(elt);
   assert(value != NULL);
   if ( data == NULL ) return FALSE;
-  if ( sscanf(data, "%ld", value) == 1 ) return TRUE;
+  if ( sscanf(data, "%u", value) == 1 ) return TRUE;
   return FALSE;
 }
 

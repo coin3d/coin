@@ -104,8 +104,8 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
      infinite recursion. */
   if (debug) {
     printf("cc_string_grow_buffer: "
-           "me->bufsize==%z, me->pointer==%p, me->buffer==%p => "
-           "newsize==%z\n",
+           "me->bufsize==%zu, me->pointer==%p, me->buffer==%p => "
+           "newsize==%zu\n",
            me->bufsize, me->pointer, me->buffer, newsize);
   }
 
