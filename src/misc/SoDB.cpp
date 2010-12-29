@@ -68,6 +68,7 @@
 #endif // HAVE_UNISTD_H
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/SbVec3f.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoDetail.h>
