@@ -217,7 +217,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
 
   /* Can not use cc_debugerror_* interface(), as that could cause an
      infinite recursion. */
-  if (debug) { printf("dst==%p, n==%u, fmtstr=='%s'\n", dst, n, fmtstr); }
+  if (debug) { printf("dst==%p, n==%zu, fmtstr=='%s'\n", dst, n, fmtstr); }
 
 #ifdef HAVE_VA_COPY_MACRO
   /* The C99 va_copy() is available, so use that to help us "rewind"

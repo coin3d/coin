@@ -1158,9 +1158,9 @@ SoToVRMLActionP::vrmlextrusion_cb(void * closure, SoCallbackAction * COIN_UNUSED
   return SoCallbackAction::CONTINUE;
 }
 
+#endif // HAVE_VRML97
+
 #undef NEW_NODE
 #undef PRIVATE
 #undef PUBLIC
 #undef THISP
-
-#endif // HAVE_VRML97

@@ -326,6 +326,11 @@ namespace {
     delete fbodata;
   }
 
+};
+
+// *************************************************************************
+
+class SoSceneTexture2P {
   struct fbo_data {
     GLuint fbo_frameBuffer;
     GLuint fbo_depthBuffer;
@@ -345,11 +350,7 @@ namespace {
         this->fbo_mipmap = FALSE;
     }
   };
-};
 
-// *************************************************************************
-
-class SoSceneTexture2P {
 public:
   SoSceneTexture2P(SoSceneTexture2 * api);
   ~SoSceneTexture2P();

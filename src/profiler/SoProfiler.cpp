@@ -550,11 +550,11 @@ SoProfilerP::dumpToConsole(const SbProfilingData & data)
 
   if (SoProfilerP::shouldClearConsole()) {
     // send ansi-console clear screen code
-    static const char * CLEAR_SEQUENCE = "\033c";
+    static const char CLEAR_SEQUENCE[] = "\033c";
     if (profiler::console::onstdout) {
-      fprintf(coin_get_stdout(), CLEAR_SEQUENCE);
+      fputs(CLEAR_SEQUENCE,coin_get_stdout());
     } else if (profiler::console::onstderr) {
-      fprintf(coin_get_stderr(), CLEAR_SEQUENCE);
+      fputs(CLEAR_SEQUENCE,coin_get_stderr());
     }
   }
 
