@@ -1681,6 +1681,8 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 
 BOOST_AUTO_TEST_CASE(globalRealTimeField)
 {
+  //Need to do this here, since we do not have any manager that calls it for us.
+  SoDB::getSensorManager()->processTimerQueue();
   SoSFTime * realtime = (SoSFTime *)SoDB::getGlobalField("realTime");
 
   BOOST_REQUIRE(realtime != NULL);
