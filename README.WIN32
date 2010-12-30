@@ -5,14 +5,14 @@
 Microsoft Visual Studio
 =======================
 
-The source code archive for Coin comes with Microsoft Visual Studio files
-for building and installing the Coin library.  Visual Studio 6,
-Visual Studio 7/7.1, Visual Studio 8, and Visual Studio 9 are supported.
-For later versions in the future, you can probably just "upgrade" one of
-these to get a working set for that version as well.  Visual Studio 6 will
+The source code archive for Coin comes with Microsoft Visual Studio
+files for building and installing the Coin library.  Visual Studio
+7/7.1, Visual Studio 8, and Visual Studio 9 are supported.  For later
+versions in the future, you can probably just "upgrade" one of these
+to get a working set for that version as well.  Visual Studio 6 will
 not be supported (at the C++ language level) for very much longer.
 
-A separate target "coin3_install" is provided for copying the built Coin
+A separate target "coin4_install" is provided for copying the built Coin
 library into the directory provided in the COINDIR environment variable.
 Set it to e.g. "C:\Coin3D" or wherever you want the Coin SDK to reside by
 using
@@ -24,9 +24,6 @@ target - if the variable isn't set or the directory doesn't exist, the
 installation will break and you won't get a functional SDK.  Using the
 source hierarchy as the SDK is not recommended - let Coin be installed, and
 use COINDIR from your other projects that use Coin.
-
-For Microsoft Visual Studio 6, you will find the complete build file setup
-in the directory "build/msvc6/".  Select the dsw file.
 
 For Microsoft Visual Studio 7/7.1, you will find the complete build file setup
 in the directory build/msvc7/.  Select the sln file.
@@ -145,36 +142,21 @@ Section 01 -- Basic build instructions.
   ...everything is probably set up for you already. If not, you need
   to add something like this to .bashrc and .bash_profile:
 
-  NB: This setup is for MSVC++ 6.0.
+  NB: This setup is for MSVC++ 9.0.
+  For other compilers in the MSVC series, the procedure is similar.
 
-    # the Cygwin path to the Microsoft Visual Studio directory...
-    MSVS_HOME="/cygdrive/c/Program Files/Microsoft Visual Studio"
-    win_MSVS_HOME=`cygpath -w "$MSVS_HOME"`
+    # Load the Visual Studio environment:
+    # Many people add this to be called before launching their cygwin shell
+    call "%VS90COMNTOOLS%\vsvars32.bat" 
 
-    PATH="$PATH:$MSVS_HOME/VC98/Bin:$MSVS_HOME/VC98/Lib"
-    PATH="$PATH:$MSVS_HOME/Common/MSDev98/Bin"
-    LIB="$win_MSVS_HOME\\VC98\\Lib"
-    INCLUDE="$win_MSVS_HOME\\VC98\\Include"
 
-    export PATH LIB INCLUDE
-
-  For MSVC++ 7 and later, the locations have changed.  Try _something
-  like_ the below instead of the corresponding four lines above.  The
-  lines are loosely based on a problem report, and not been verified
-  by us yet though - please tell us if they need some tweaks, or work
-  right out of the box so we might update this information.
-
-    PATH="$PATH:$MSVS_HOME/VC7/Bin:$MSVS_HOME/VC7/Lib:$MSVS_HOME/VC7/PlatformSDK/Lib"
-    PATH="$PATH:$MSVS_HOME/Common/MSDev7/Bin"
-    LIB="$win_MSVS_HOME\\VC7\\Lib;$win_MSVS_HOME\\VC7\\platformSDK\\Lib"
-    INCLUDE="$win_MSVS_HOME\\VC7\\Include;$win_MSVS_HOME\\VC7\\PlatformSDK\\Include"
-
-  Then try again to see that the MSVC environment is working. If not,
-  you need to debug this on your end before proceeding. A good way to
-  debug this is to open a Visual Studio console (Visual
-  Studio/Tools/Visual Studio Console) and examine the PATH, LIB and
-  INCLUDE environment variables there. You can also take a peek in the
-  vsvars32.bat file which is used to set up this environment.
+  Now try again to see that the MSVC environment is working. By
+  running eg. "cl" If not, you need to debug this on your end before
+  proceeding. A good way to debug this is to open a Visual Studio
+  console (Visual Studio/Tools/Visual Studio Console) and examine the
+  PATH, LIB and INCLUDE environment variables there. You can also take
+  a peek in the vsvars32.bat file which is used to set up this
+  environment.
 
   Then, make sure you have not set the variables CC and CXX before
   running configure.  You unset them with these commands:
@@ -187,6 +169,16 @@ Section 01 -- Basic build instructions.
 
         $ [srcdir]/configure
         $ make install
+
+  If you encounter any trouble, the following lines can be run or
+  added to your ~/.bashrc
+
+    #Resolves a linking problem where gcc link shadows MSVC link
+    PATH=`cygpath -p "$VCINSTALLDIR/BIN:$PATH"`
+
+    #Recent Cygwin unsets the TMP environment variable, making
+    #wrapmsvc.exe unhappy
+    [ -n "${TMP}" ] || export TMP=/tmp
 
   To specify which C library Coin should be linked against, you should
   use the --with-msvcrt=<crt> option.  You have the following choices
