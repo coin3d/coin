@@ -100,6 +100,8 @@
     return 0;
   }
   \endcode
+
+  NB: The support for multiple cameras in Coin is limited, and problems with multiple cameras will be considered fixed on a case by case basis.
 */
 
 #include <Inventor/nodes/SoCamera.h>
