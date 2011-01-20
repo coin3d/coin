@@ -2943,6 +2943,8 @@ void
 cc_glglue_glClientActiveTexture(const cc_glglue * w,
                                 GLenum texture)
 {
+  if (!w->glClientActiveTexture && texture == GL_TEXTURE0)
+    return;
   assert(w->glClientActiveTexture);
   w->glClientActiveTexture(texture);
 }
