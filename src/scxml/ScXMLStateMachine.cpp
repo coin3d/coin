@@ -356,7 +356,7 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
         PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getRoot()->getInitialAttribute());
       }
     }
-    transitions.push_back(PImpl::StateTransition(NULL, PRIVATE(this)->initializer.get()));
+    transitions.push_back(PImpl::StateTransition(static_cast<ScXMLElt*>(NULL), PRIVATE(this)->initializer.get()));
   } else {
     for (int c = 0; c < static_cast<int>(PRIVATE(this)->activestatelist.size()); ++c) {
       // containers are also active states and must be checked
