@@ -474,7 +474,7 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
             else if (subarg[0].compare("lines") == 0) {
               // needs numeric argument
               if (subarg.size() == 2) {
-                /*int lines = */atoi(subarg[1].data());
+                /*int lines = atoi(subarg[1].data());*/
               } else {
                 // error: toplist.lines needs a numeric argument`
               }
