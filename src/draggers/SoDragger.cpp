@@ -1659,6 +1659,9 @@ SoDragger::handleEvent(SoHandleEventAction * action)
         path->unref();
       }
     }
+
+    this->ref();
+
     if (didpick) {
       if (!action->getGrabber())
         this->updateDraggerCache(action->getCurPath());
@@ -1721,6 +1724,8 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   }
   if (!action->isHandled())
     inherited::handleEvent(action);
+
+  this->unref();
 }
 
 /*!
@@ -1842,11 +1847,13 @@ void
 SoDragger::childStartCB(void * data, SoDragger * child)
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
+  thisp->ref();
   // make child use the same projector epsilon as its parent
   child->setProjectorEpsilon(thisp->getProjectorEpsilon());
   thisp->saveStartParameters();
   thisp->setActiveChildDragger(child);
   PRIVATE(thisp)->startCB.invokeCallbacks(thisp);
+  thisp->unref();
 }
 
 /*!
@@ -1866,9 +1873,12 @@ void
 SoDragger::childFinishCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
+
+  thisp->ref();
   PRIVATE(thisp)->finishCB.invokeCallbacks(thisp);
   thisp->setActiveChildDragger(NULL);
   if (PRIVATE(thisp)->draggercache) PRIVATE(thisp)->draggercache->truncatePath();
+  thisp->unref();
 }
 
 /*!
