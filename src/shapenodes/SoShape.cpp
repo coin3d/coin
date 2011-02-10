@@ -1599,6 +1599,19 @@ SoShape::startVertexArray(SoGLRenderAction * action,
       mtelem = SoMultiTextureCoordinateElement::getInstance(state);
     }
     SoVBO * vbo;
+    if (!SoGLDriverDatabase::isSupported(glue, SO_GL_MULTITEXTURE)) {
+      static int hasWarned = 0;
+      if (lastenabled>0) {
+	if (!hasWarned) {
+	  SoDebugError::postWarning("SoShape::startVertexArray",
+				    "Multitexturing is not supported on this hardware, but more than one textureunit is in use."
+				  );
+	  hasWarned = 1;
+	}
+      }
+      lastenabled = 0;
+    }
+
     for (int i = 0; i <= lastenabled; i++) {
       if (enabledunits[i] && mtelem->getNum(i)) {
         int dim = mtelem->getDimension(i);
@@ -1609,7 +1622,9 @@ SoShape::startVertexArray(SoGLRenderAction * action,
         case 3: tptr = (const GLvoid*) mtelem->getArrayPtr3(i); break;
         case 4: tptr = (const GLvoid*) mtelem->getArrayPtr4(i); break;
         }
-        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+	if (SoGLDriverDatabase::isSupported(glue, SO_GL_MULTITEXTURE)) {
+	  cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+	}
         vbo = dovbo ? vboelem->getTexCoordVBO(i) : NULL;
         if (vbo) {
           vbo->bindBuffer(contextid);
@@ -1697,13 +1712,19 @@ SoShape::finishVertexArray(SoGLRenderAction * action,
     int lastenabled;
     const SbBool * enabledunits =
       SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+    if (!SoGLDriverDatabase::isSupported(glue, SO_GL_MULTITEXTURE)) {
+      //Should already have warned in StartVertexArray
+      lastenabled = 0;
+    }
     
     const SoMultiTextureCoordinateElement * mtelem =
       SoMultiTextureCoordinateElement::getInstance(state);
     
     for (int i = 0; i <= lastenabled; i++) {
       if (enabledunits[i] && mtelem->getNum(i)) {
-        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+	if (SoGLDriverDatabase::isSupported(glue, SO_GL_MULTITEXTURE)) {
+	  cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+	}
         cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
       }
     }
