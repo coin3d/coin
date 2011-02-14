@@ -203,7 +203,7 @@ SoBase::SoBase(void)
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
     //void * dummy;
-    assert(SoBase::PImpl::allbaseobj->find(this)!=SoBase::PImpl::allbaseobj->const_end());
+    assert(SoBase::PImpl::allbaseobj->find(this)==SoBase::PImpl::allbaseobj->const_end());
     (*SoBase::PImpl::allbaseobj)[this]=NULL;
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
