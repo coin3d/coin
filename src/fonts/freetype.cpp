@@ -420,8 +420,6 @@ cc_flwft_initialize(void)
       cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
     }
 
-    /* FIXME: bad #ifdef, should ideally be a *run-time* check for
-       MSWindows. 20030526 mortene. */
 #ifdef _WIN32
     if ((env = coin_getenv("WINDIR")) != NULL) {
       cc_string fullpath;
