@@ -1612,6 +1612,9 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   // return if handled by a child
   if (action->isHandled()) return;
 
+  // Protect dragger from deletion
+  this->ref();
+
   // this is a special case, to be able to detect when somebody
   // clicks ctrl over a dragger. This has a special meaning for
   // some draggers, and it's the only time the otherEvent callbacks
@@ -1659,8 +1662,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
         path->unref();
       }
     }
-
-    this->ref();
 
     if (didpick) {
       if (!action->getGrabber())
@@ -1725,6 +1726,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   if (!action->isHandled())
     inherited::handleEvent(action);
 
+  // Unprotect dragger
   this->unref();
 }
 
