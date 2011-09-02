@@ -231,6 +231,10 @@ ScXMLEventTarget::registerEventTarget(ScXMLEventTarget * target, const char * se
 void
 ScXMLEventTarget::unregisterEventTarget(ScXMLEventTarget * target, const char * sessionid)
 {
+  // FIXME This was done at the end of the function, but we have multiple exit points so target was sometimes
+  // not removed causing an endless loop.
+  ScXMLEventTarget::PImpl::targets.removeItem(target);
+
   const SbName targettypename(target->getEventTargetType());
   const SbName targetnamename(target->getEventTargetName());
   SbName targetsessionid(SbName::empty());
@@ -285,8 +289,6 @@ ScXMLEventTarget::unregisterEventTarget(ScXMLEventTarget * target, const char * 
     ScXMLP::unlock();
     return;
   }
-
-  ScXMLEventTarget::PImpl::targets.removeItem(target);
   ScXMLP::unlock();
 }
 
