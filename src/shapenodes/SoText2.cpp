@@ -390,13 +390,12 @@ SoText2::GLRender(SoGLRenderAction * action)
 
       const char * p = str.getString();
       size_t length = cc_string_utf8_validate_length(p);
-      assert(length);
 
       for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-	uint32_t glyphidx = 0;
+        uint32_t glyphidx = 0;
 
-	glyphidx = cc_string_utf8_get_char(p);
-	p = cc_string_utf8_next_char(p);
+        glyphidx = cc_string_utf8_get_char(p);
+        p = cc_string_utf8_next_char(p);
 
         cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
         
