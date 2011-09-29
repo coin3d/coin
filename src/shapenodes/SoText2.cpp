@@ -830,7 +830,6 @@ SoText2P::buildGlyphCache(SoState * state)
     const cc_glyph2d * prevglyph = NULL;
     const char * p = str.getString();
     unsigned int length = cc_string_utf8_validate_length(p);
-    assert(length);
 
     // fetch all glyphs first
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
