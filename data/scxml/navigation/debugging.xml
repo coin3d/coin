@@ -203,7 +203,7 @@ with new, experimental developments.
               event="x-coin-navigation.Spin.END"/>
       </onexit>
 
-      <transition event="sim.coin3d.coin.GLRender.PRE_RENDER">
+      <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
         <send targettype="x-coin-navigation" target="Spin"
               event="x-coin-navigation.Spin.UPDATE"/>
       </transition>
@@ -328,7 +328,7 @@ with new, experimental developments.
                 event="x-coin-navigation.Misc.Redraw"/>
         </onentry>
 
-        <transition event="sim.coin3d.coin.GLRender.PRE_RENDER">
+        <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
           <send targettype="x-coin-navigation" target="Seek"
                 event="x-coin-navigation.Seek.UPDATE"/>
         </transition>
