@@ -1,2 +1,2 @@
-build/general = http://hg.sim.no/GeneralMSVCGeneration/default
+build/general = ../generalmsvcgeneration
 include/boost = http://hg.sim.no/boost-header-libs/full
