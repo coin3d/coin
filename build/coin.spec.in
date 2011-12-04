@@ -34,9 +34,8 @@ Packager: Morten Eriksen <mortene@sim.no>
 
 Coin is a retained mode 3D graphics rendering library based on
 OpenGL. It is implemented in C++ and simultaneously released as Free
-Software under the GNU General Public License ("GPL") and under a
-Professional Edition License for developers of proprietary
-software. The application programmer interface (API) is based on the
+Software under the 3-clause BSD license.
+The application programmer interface (API) is based on the
 API of Open Inventor, the de facto standard 3D graphics library for
 complex visualization purposes.
 

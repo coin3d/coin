@@ -2,12 +2,12 @@ This package was debianized by Lars J. Aas <larsa@coin3d.org>
 with guidance from Steve M. Robbins <smr@debian.org>
 on @RFC822_DATE@.
 
-This software is copyright (C) by Kongsberg Oil & Gas Technologies.
+This software is copyright (C) by Kongsberg Oil & Gas Technologies AS
 You are free to distribute this software under the terms of the
-GNU General Public License v2.
+3-clause BSD license.
 
 On Debian systems, the full text of the license can be found in
-the file /usr/share/common-licenses/GPL.
+the file /usr/share/common-licenses/BSD.
 
 The debianized source archive for Coin is built from the standard
 source distribution of Coin by running "make debian-packages" in
