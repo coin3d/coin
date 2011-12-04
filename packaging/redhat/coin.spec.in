@@ -16,7 +16,7 @@ Name: Coin
 Version: @PACKAGE_VERSION@
 Release: 1
 
-Copyright: GNU General Public License V2 (GPL)
+Copyright: BSD
 Group: Development/Libraries
 URL: http://doc.coin3d.org/Coin/
 Vendor: http://www.sim.no/

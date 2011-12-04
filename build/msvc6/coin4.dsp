@@ -169,10 +169,6 @@ SOURCE=..\..\RELNOTES
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\LICENSE.GPL
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\COPYING
 # End Source File
 # Begin Source File

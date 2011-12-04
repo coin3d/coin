@@ -52,7 +52,7 @@ if ( $me =~ m%^[^/\\]% ) {
 
 # List of files that should be entered into the "Documents" project file
 # group if they exist.
-@docfiles = ("README", "README.WIN32", "NEWS", "RELNOTES", "LICENSE.GPL",
+@docfiles = ("README", "README.WIN32", "NEWS", "RELNOTES",
              "COPYING", "THANKS", "ChangeLog");
 
 ############################################################################
