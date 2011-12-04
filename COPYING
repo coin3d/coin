@@ -1,54 +1,29 @@
-
-Coin is copyright (C) by Kongsberg Oil & Gas Technologies. 
+Copyright (c) Kongsberg Oil & Gas Technologies AS
 All rights reserved.
 
-Coin is generally available under three software licenses.  Unless special
-arrangements has been made with SIM, it is the Coin Free Edition that is
-being used.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
 
-1) GNU General Public License ("GPL")
+Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
 
-   SIM is a staunch supporter of Free Software.  We have benefited
-   greatly (and continue to do so) from using Free Software ourselves.
-   To contribute back, SIM distributes Coin freely under the GPL for use
-   in Free Software.  Coin under the GPL is called the Coin Free Edition.
-   See the file LICENSE.GPL for the full license text of the GPL.
+Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
 
-2) Coin Professional Edition License ("Coin PEL")
+Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
 
-   The Coin PEL is a personalized developer license for using Coin for all
-   non-Free Software development.  The PEL gives you the right to develop
-   and distribute proprietary applications with Coin3D and includes free
-   technical support and upgrades.
-
-   For information about acquiring Coin Professional Edition License,
-   go to <URL:http://www.coin3d.org/Coin/prices.php>.  The full license
-   text can be found at <URL:http://www.coin3d.org/Coin/PEL.txt>.
-
-3) Coin Evaluation License ("Coin EL")
-
-   The Coin EL is a time-limited software license for evaluation purposes,
-   with rights similar to those granted by the PEL. The purpose of the
-   Coin EL is to be used in an evaluation phase when deciding whether or
-   not to choose the Coin PEL solution.
-
-   Read about acquiring the Coin EL at <URL:http://www.coin3d.org/Coin/>.
-
-If you want to use Coin for academic projects or educational purposes,
-and neither the GPL nor the Coin PEL are appropriate for you, special
-accomodations might be made on a case-by-case basis.  Please contact us
-at <sales@sim.no> for more information.
-
-See <URL:http://www.coin3d.org/> for additional information.
-
-Contact us at
-
-        support@sim.no / sales@sim.no
-
-Or on dead trees at
-
-        Kongsberg Oil & Gas Technologies
-        Postboks 1283
-        Pirsenteret
-        7462 Trondheim
-        NORWAY
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
