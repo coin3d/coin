@@ -1866,7 +1866,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   this->fragmentshader->parameter.setNum(0);
 
-  for (int i = 0; i < numshadowlights; i++) {
+  for (i = 0; i < numshadowlights; i++) {
     SoShadowLightCache * cache = this->shadowlights[i];
 
     SoShaderParameter1i * shadowmap = this->shadowlights[i]->shadowmapid;
