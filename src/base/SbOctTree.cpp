@@ -220,7 +220,7 @@ SbOctTreeNode::debugTree(FILE *fp, const int indent) const
   const SbVec3f & vmin = this->nodesize.getMin();
   const SbVec3f & vmax = this->nodesize.getMax();
 
-  (void)fprintf(fp, "%s, %d items, ",
+  (void)fprintf(fp, "%s, %u items, ",
                 this->isLeaf() ? "Leaf" : "Group", this->totalNumberOfItems());
   (void)fprintf(fp, "box==<%.2f, %.2f, %.2f>-<%.2f, %.2f, %.2f>",
                 vmin[0], vmin[1], vmin[2], vmax[0], vmax[1], vmax[2]);
