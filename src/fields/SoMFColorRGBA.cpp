@@ -224,7 +224,7 @@ SoMFColorRGBA::set1HSVValue(int idx, float h, float s, float v, float a)
   hue, saturation and value components, respectively.
 */
 void
-SoMFColorRGBA::set1HSVValue(int idx, const float hsva[3])
+SoMFColorRGBA::set1HSVValue(int idx, const float hsva[4])
 {
   this->set1HSVValue(idx, hsva[0], hsva[1], hsva[2], hsva[3]);
 }
