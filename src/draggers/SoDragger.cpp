@@ -1069,12 +1069,59 @@ SoDragger::setStartingPoint(const SbVec3f & point)
   PRIVATE(this)->startingpoint = point;
 }
 
+typedef struct {
+  SbViewVolume vv;
+} sodragger_vv_data;
+
+static sodragger_vv_data * vvdata = NULL;
+
+static SoCallbackAction::Response
+sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
+{
+  if (node->isOfType(SoDragger::getClassTypeId())) {
+    return (userdata==node)?SoCallbackAction::ABORT:SoCallbackAction::CONTINUE;
+  }
+  else {
+    sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
+    data->vv = SoViewVolumeElement::get(action->getState());
+    return SoCallbackAction::CONTINUE;
+  }
+}
+
+extern "C" {
+
+static void vv_data_cleanup(void)
+{
+  delete vvdata;
+  vvdata = NULL;
+}
+
+} // extern "C"
+
 /*!
   Return the current view volume.
 */
 const SbViewVolume &
 SoDragger::getViewVolume(void)
 {
+  // FIXME: this is a temporary fix. We should really make
+  // SoHandleEventAction support transformations so that the correct
+  // view volume can be found directly. pederb, 2002-10-30
+
+  if (PRIVATE(this)->draggercache && PRIVATE(this)->draggercache->path) {
+    if (vvdata == NULL) {
+      vvdata = new sodragger_vv_data;
+      coin_atexit(static_cast<coin_atexit_f *>(vv_data_cleanup), CC_ATEXIT_NORMAL);
+    }
+    if (PRIVATE(this)->cbaction == NULL) {
+      PRIVATE(this)->cbaction = new SoCallbackAction;
+      PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), sodragger_vv_cb, vvdata);
+      PRIVATE(this)->cbaction->addPostCallback(SoDragger::getClassTypeId(), sodragger_vv_cb, this);
+    }
+    PRIVATE(this)->cbaction->setViewportRegion(PRIVATE(this)->viewport);
+    PRIVATE(this)->cbaction->apply(PRIVATE(this)->draggercache->path);
+    PRIVATE(this)->viewvolume = vvdata->vv;
+  }
   return PRIVATE(this)->viewvolume;
 }
 
@@ -1543,35 +1590,6 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
   return FALSE;
 }
 
-typedef struct {
-  SbViewVolume vv;
-} sodragger_vv_data;
-
-static sodragger_vv_data * vvdata = NULL;
-
-static SoCallbackAction::Response
-sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
-{
-  if (node->isOfType(SoDragger::getClassTypeId())) {
-    return (userdata==node)?SoCallbackAction::ABORT:SoCallbackAction::CONTINUE;
-  }
-  else {
-    sodragger_vv_data * data = static_cast<sodragger_vv_data *>(userdata);
-    data->vv = SoViewVolumeElement::get(action->getState());
-    return SoCallbackAction::CONTINUE;
-  }
-}
-
-extern "C" {
-
-static void vv_data_cleanup(void)
-{
-  delete vvdata;
-  vvdata = NULL;
-}
-
-} // extern "C"
-
 /*!
   Store data about the current camera in the given action.
 */
@@ -1581,25 +1599,6 @@ SoDragger::setCameraInfo(SoAction * action)
   SoState * state = action->getState();
   PRIVATE(this)->viewport = SoViewportRegionElement::get(state);;
   PRIVATE(this)->viewvolume = SoViewVolumeElement::get(state);
-
-  // FIXME: this is a temporary fix. We should really make
-  // SoHandleEventAction support transformations so that the correct
-  // view volume can be found directly. pederb, 2002-10-30
-
-  if (PRIVATE(this)->draggercache && PRIVATE(this)->draggercache->path) {
-    if (vvdata == NULL) {
-      vvdata = new sodragger_vv_data;
-      coin_atexit(static_cast<coin_atexit_f *>(vv_data_cleanup), CC_ATEXIT_NORMAL);
-    }
-    if (PRIVATE(this)->cbaction == NULL) {
-      PRIVATE(this)->cbaction = new SoCallbackAction;
-      PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), sodragger_vv_cb, vvdata);
-      PRIVATE(this)->cbaction->addPostCallback(SoDragger::getClassTypeId(), sodragger_vv_cb, this);
-    }
-    PRIVATE(this)->cbaction->setViewportRegion(PRIVATE(this)->viewport);
-    PRIVATE(this)->cbaction->apply(PRIVATE(this)->draggercache->path);
-    PRIVATE(this)->viewvolume = vvdata->vv;
-  }
 }
 
 // Documented in superclass. Overridden to detect picks on dragger.

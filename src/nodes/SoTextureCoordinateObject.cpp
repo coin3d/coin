@@ -121,12 +121,17 @@ SoTextureCoordinateObject::initClass(void)
 // generates texture coordinates for callback and raypick action
 const SbVec4f &
 SoTextureCoordinateObject::generate(void * userdata,
-                                    const SbVec3f & COIN_UNUSED_ARG(p),
+                                    const SbVec3f & p,
                                     const SbVec3f & COIN_UNUSED_ARG(n))
 {
   SoTextureCoordinateObject *thisp =
     (SoTextureCoordinateObject*) userdata;
-
+  
+  SbVec4f p4(p[0], p[1], p[2], 1.0f);
+  thisp->dummy_object.setValue(thisp->factorS.getValue().dot(p4),
+                               thisp->factorT.getValue().dot(p4),
+                               thisp->factorR.getValue().dot(p4),
+                               thisp->factorQ.getValue().dot(p4));
   return thisp->dummy_object;
 }
 
@@ -176,6 +181,23 @@ SoTextureCoordinateObject::pick(SoPickAction * action)
 
 // texgen callback. Turns on plane texgen in OpenGL
 void
-SoTextureCoordinateObject::handleTexgen(void * COIN_UNUSED_ARG(data))
+SoTextureCoordinateObject::handleTexgen(void * data)
 {
+  SoTextureCoordinateObject *thisp = (SoTextureCoordinateObject*)data;
+  glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+  glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+  glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+  glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+
+  const SbVec4f & s = thisp->factorS.getValue();
+  glTexGenfv(GL_S, GL_OBJECT_PLANE, s.getValue());
+
+  const SbVec4f & t = thisp->factorT.getValue();
+  glTexGenfv(GL_T, GL_OBJECT_PLANE, t.getValue());
+  
+  const SbVec4f & r = thisp->factorR.getValue();
+  glTexGenfv(GL_R, GL_OBJECT_PLANE, r.getValue());
+
+  const SbVec4f & q = thisp->factorQ.getValue();
+  glTexGenfv(GL_Q, GL_OBJECT_PLANE, q.getValue());
 }
