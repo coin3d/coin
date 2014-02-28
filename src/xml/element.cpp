@@ -1002,7 +1002,7 @@ cc_xml_elt_create_x(cc_xml_elt * from, cc_xml_path * path)
     idx = cc_xml_path_get_index(path, i);
     if ( current->children.getLength() ) {
       int child;
-      for ( child = 0; i < current->children.getLength(); child++ ) {
+      for ( child = 0; child < current->children.getLength(); child++ ) {
         if ( strcmp(type, cc_xml_elt_get_type(current->children[child])) == 0 ) {
           lastpos = child;
           lastidx += 1;
