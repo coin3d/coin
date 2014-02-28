@@ -1213,8 +1213,8 @@ int
 SbProfilingData::operator == (const SbProfilingData & rhs) const
 {
   if (this->actionType != rhs.actionType) return FALSE;
-  if (this->actionStartTime != rhs.actionStopTime) return FALSE;
-  if (this->actionStartTime != rhs.actionStopTime) return FALSE;
+  if (this->actionStartTime != rhs.actionStartTime) return FALSE;
+  if (this->actionStopTime != rhs.actionStopTime) return FALSE;
   if (PRIVATE(this)->nodeData.size() != PRIVATE(&rhs)->nodeData.size())
     return FALSE;
 
