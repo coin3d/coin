@@ -417,7 +417,7 @@ SoVRMLInline::GLRender(SoGLRenderAction * action)
   BboxVisibility vis = sovrmlinline_bboxvisibility;
   SbVec3f size = this->bboxSize.getValue();
   SoNode * child = this->getChildData();
-  if ((size[0] >= 0.0f && size[1] >= 0.0f && size[1] >= 0.0f) &&
+  if ((size[0] >= 0.0f && size[1] >= 0.0f && size[2] >= 0.0f) &&
       ((vis == ALWAYS) || 
        (vis == UNTIL_LOADED && child == NULL))) {
     SoState * state = action->getState();
