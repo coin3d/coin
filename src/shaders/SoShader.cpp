@@ -359,7 +359,7 @@ SoShader::getNamedScript(const SbName & name, const Type type)
         shader[size] = 0;
         shader_dict->put(shadername, shader);
 
-        if (!fread(shader, size, 1, fp) == 1) {
+        if (!(fread(shader, size, 1, fp) == 1)) {
           SoDebugError::postWarning("SoShader::getNamedScript",
                                     "Unable to read shader: %s",
                                     filename.getString());
