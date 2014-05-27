@@ -632,9 +632,9 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
       return FALSE;
     }
     int parentIdx = catalog->getParentPartNumber(partNum);
-    SoNode * parent = this->getCatalogInstances()[parentIdx]->getValue();
+    SoNode * parent = kit->getCatalogInstances()[parentIdx]->getValue();
     if (parent->isOfType(SoSwitch::getClassTypeId())) {
-      SoNode * node = this->getCatalogInstances()[partNum]->getValue();
+      SoNode * node = kit->getCatalogInstances()[partNum]->getValue();
       SoType type = node->getTypeId();
       if (type == SoGroup::getClassTypeId() ||
           type == SoSeparator::getClassTypeId()) {
