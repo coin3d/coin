@@ -47,7 +47,14 @@
   This block was originally part of Inventor/C/basic.h, but since the
   #undef's were mangled by the config.status process, it did not really
   work as intended.  20070518 larsa
+
+  cmath from "The LLVM Compiler Infrastructure" uses float-versions of the
+  math functions below. Therefore don't undefine them when __clang__ is
+  defined.
+ 
 */
+
+#ifndef __clang__
 
 #undef cosf
 #define cosf(x) NO_SINGLEPREC /* whatever that'll give us a compile error... */
@@ -67,6 +74,9 @@
 #define atanf(x) NO_SINGLEPREC
 #undef atan2f
 #define atan2f(x) NO_SINGLEPREC
+
+#endif // !__clang__
+
 
 /* *********************************************************************** */
 
