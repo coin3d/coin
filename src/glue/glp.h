@@ -562,6 +562,9 @@ typedef void (APIENTRY * COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC)(GLenum target, G
 typedef void (APIENTRY * COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC)(GLenum target, GLenum attachment, GLenum pname, GLint *params);
 typedef void (APIENTRY * COIN_PFNGLGENERATEMIPMAPPROC)(GLenum target);
 
+/* Typedef for new extension string method */
+
+typedef GLubyte* (APIENTRY * COIN_PFNGLGETSTRINGIPROC) (GLenum target, GLuint idx);
 
 
 /* ********************************************************************** */
@@ -827,6 +830,9 @@ struct cc_glglue {
   COIN_PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer;
   COIN_PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC glGetFramebufferAttachmentParameteriv;
   COIN_PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
+
+  /* glGetStringi - part of replacement for obsolete glGetString(GL_EXTENSIONS) in OpenGL 3.0 */
+  COIN_PFNGLGETSTRINGIPROC glGetStringi;
 
   const char * versionstr;
   const char * vendorstr;
