@@ -2048,6 +2048,16 @@
 #define GL_MAX_SAMPLES 0x8D57
 #endif /* GL_MAX_SAMPLES */
 
+/*
+From OpenGL3.0 the glGetString (GL_EXTENSIONS) call is deprecated.
+This is replaced by glGetStringi. However, to find the number of strings
+it is necessary to call glGetIntegerv (GL_NUM_EXTENSIONS, &n)
+Therefore we define the value for GL_NUM_EXTENSIONS here
+*/
+#ifndef GL_NUM_EXTENSIONS
+#define GL_NUM_EXTENSIONS 0x821D
+#endif /* GL_NUM_EXTENSIONS */
+
 /*** GL enums, end ****************************************************/
 /**********************************************************************/
 
