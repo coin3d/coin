@@ -2421,6 +2421,50 @@ cc_glglue_instance(int contextid)
     gi->rendererstr = (const char *)glGetString(GL_RENDERER);
     gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);
 
+	/* Randall O'Reilly reports that the above call is deprecated from OpenGL 3.0
+	   onwards and may, particularly on some Linux systems, return NULL.
+
+	   The recommended method is to use glGetStringi to get each string in turn.
+	   The following code, supplied by Randall, implements this to end up with the
+	   same result as the old method.
+	*/
+	if (gi->extensionsstr == NULL) {
+	  COIN_PFNGLGETSTRINGIPROC glGetStringi = NULL;
+	  glGetStringi = (COIN_PFNGLGETSTRINGIPROC)cc_glglue_getprocaddress(gi, "glGetStringi");
+	  if (glGetStringi != NULL) {
+	    GLint num_strings = 0;
+		glGetIntegerv(GL_NUM_EXTENSIONS, &num_strings);
+		if (num_strings > 0) {
+		  int buffer_size = 1024;
+		  char *ext_strings_buffer = (char *)malloc(buffer_size * sizeof (char));
+		  int buffer_pos = 0;
+		  for (int i_string = 0 ; i_string < num_strings ; i_string++) {
+			const char * extension_string = (char *)glGetStringi (GL_EXTENSIONS, i_string);
+			int extension_string_length = strlen(extension_string);
+			if (buffer_pos + extension_string_length + 1 > buffer_size) {
+			  buffer_size += 1024;
+			  ext_strings_buffer = (char *)realloc(ext_strings_buffer, buffer_size * sizeof (char));
+			}
+			strcpy(ext_strings_buffer + buffer_pos, extension_string);
+			buffer_pos += extension_string_length;
+			ext_strings_buffer[buffer_pos++] = ' '; // space separated, overwrites NULL
+		  }
+		  ext_strings_buffer[++buffer_pos] = '\0'; // NULL terminate
+		  gi->extensionsstr = ext_strings_buffer;
+		  // FIXME: ext_strings_buffer needs to be freed
+		} else {
+		  cc_debugerror_postwarning ("cc_glglue_instance",
+			                         "glGetIntegerv(GL_NUM_EXTENSIONS) did not return a value, "
+									 "so unable to get extensions for this GL driver, ",
+								     "version: %s, vendor: %s", gi->versionstr, gi->vendorstr);
+		}
+	  } else {
+		cc_debugerror_postwarning ("cc_glglue_instance",
+			                       "glGetString(GL_EXTENSIONS) returned null, but glGetStringi "
+								   "procedure not found, so unable to get extensions for this GL driver, "
+								   "version: %s, vendor: %s", gi->versionstr, gi->vendorstr);
+	  }
+	}
     /* read some limits */
 
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gltmp);
