@@ -22,11 +22,13 @@ if "%msvc%"=="msvc6" goto argthreegiven
 if "%msvc%"=="msvc7" goto argthreegiven
 if "%msvc%"=="msvc8" goto argthreegiven
 if "%msvc%"=="msvc9" goto argthreegiven
+if "%msvc%"=="msvc10" goto argthreegiven
 goto argproblem
 :argthreegiven
 
 if "%libname%"=="coin2" goto argfourgiven
 if "%libname%"=="coin3" goto argfourgiven
+if "%libname%"=="coin4" goto argfourgiven
 if "%libname%"=="simage1" goto argfourgiven
 if "%libname%"=="smallchange1" goto argfourgiven
 if "%libname%"=="simvoleon1" goto argfourgiven
