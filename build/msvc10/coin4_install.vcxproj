@@ -206,8 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="coin4.vcxproj">
-      <Project>{30d44d69-597d-7d2a-3253-ce8ebc1d66c1}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Project>{7bc09a06-eeec-f082-2fa8-de274812da5d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
