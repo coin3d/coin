@@ -47,12 +47,12 @@
   This block was originally part of Inventor/C/basic.h, but since the
   #undef's were mangled by the config.status process, it did not really
   work as intended.  20070518 larsa
-
-  cmath from "The LLVM Compiler Infrastructure" uses float-versions of the
-  math functions below. Therefore don't undefine them when __clang__ is
-  defined.
  
-*/
+ cmath from "The LLVM Compiler Infrastructure" uses float-versions of the
+ math functions below. Therefore don't undefine them when __clang__ is
+ defined.
+ 
+ */
 
 #ifndef __clang__
 
