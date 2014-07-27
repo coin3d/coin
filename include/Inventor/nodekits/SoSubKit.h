@@ -143,8 +143,8 @@ PRIVATE_KIT_SOURCE(_class_)
 #define SO_KIT_ADD_CATALOG_ENTRY(_part_, _partclass_, _isdefnull_ , _parent_, _sibling_, _ispublic_) \
   do { \
     classcatalog->addEntry(SO__QUOTE(_part_), \
-                           _partclass_::getClassTypeId(), \
-                           _partclass_::getClassTypeId(), \
+                           SoType::fromName(SO__QUOTE(_partclass_)), \
+                           SoType::fromName(SO__QUOTE(_partclass_)), \
                            _isdefnull_, \
                            SO__QUOTE(_parent_), \
                            SO__QUOTE(_sibling_), \
