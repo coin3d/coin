@@ -139,6 +139,12 @@ public:
   friend int operator!=(const SbString & sbstr, const char * s);
   friend int operator!=(const char * s, const SbString & sbstr);
   friend int operator!=(const SbString & str1, const SbString & str2);
+  friend int operator<(const SbString & sbstr, const char * s);
+  friend int operator<(const char * s, const SbString & sbstr);
+  friend int operator<(const SbString & str1, const SbString & str2);
+  friend int operator>(const SbString & sbstr, const char * s);
+  friend int operator>(const char * s, const SbString & sbstr);
+  friend int operator>(const SbString & str1, const SbString & str2);
   friend const SbString operator+(const SbString & str1, const SbString & str2);
   friend const SbString operator+(const SbString & sbstr, const char * s);
   friend const SbString operator+(const char * s, const SbString & sbstr);
@@ -160,6 +166,20 @@ inline int operator!=(const char * s, const SbString & sbstr)
 { return (cc_string_compare_text(s, sbstr.str.pointer) != 0); }
 inline int operator!=(const SbString & str1, const SbString & str2)
 { return (cc_string_compare_text(str1.str.pointer, str2.str.pointer) != 0); }
+
+inline int operator<(const SbString & sbstr, const char * s)
+{ return (cc_string_compare_text(sbstr.str.pointer, s) < 0); }
+inline int operator<(const char * s, const SbString & sbstr)
+{ return (cc_string_compare_text(s, sbstr.str.pointer) < 0); }
+inline int operator<(const SbString & str1, const SbString & str2)
+{ return (cc_string_compare_text(str1.str.pointer, str2.str.pointer) < 0); }
+
+inline int operator>(const SbString & sbstr, const char * s)
+{ return (cc_string_compare_text(sbstr.str.pointer, s) > 0); }
+inline int operator>(const char * s, const SbString & sbstr)
+{ return (cc_string_compare_text(s, sbstr.str.pointer) > 0); }
+inline int operator>(const SbString & str1, const SbString & str2)
+{ return (cc_string_compare_text(str1.str.pointer, str2.str.pointer) > 0); }
 
 inline const SbString operator+(const SbString & str1, const SbString & str2)
 { 
