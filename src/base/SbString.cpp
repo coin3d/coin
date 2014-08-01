@@ -429,6 +429,60 @@ SbString::print(std::FILE * fp) const
 */
 
 /*!
+  \fn int operator<(const SbString & str, const char * s)
+
+  Less than operator. Results in \c TRUE if the first character that
+  does not match has a lower value in \a str than in \a s.
+
+  \relates SbString
+*/
+
+/*!
+  \fn int operator<(const char * s, const SbString & str)
+
+  Less than operator. Results in \c TRUE if the first character that
+  does not match has a lower value in \a s than in \a str.
+
+  \relates SbString
+*/
+
+/*!
+  \fn int operator<(const SbString & str1, const SbString & str2)
+
+  Less than operator. Results in \c TRUE if the first character that
+  does not match has a lower value in \a str1 than in \a str2.
+
+  \relates SbString
+*/
+
+/*!
+  \fn int operator>(const SbString & str, const char * s)
+
+  Greater than operator. Results in \c TRUE if the first character that
+  does not match has a higher value in \a str than in \a s.
+
+  \relates SbString
+*/
+
+/*!
+  \fn int operator>(const char * s, const SbString & str)
+
+  Greater than operator. Results in \c TRUE if the first character that
+  does not match has a higher value in \a s than in \a str.
+
+  \relates SbString
+*/
+
+/*!
+  \fn int operator>(const SbString & str1, const SbString & str2)
+
+  Greater than operator. Results in \c TRUE if the first character that
+  does not match has a higher value in \a str1 than in \a str2.
+
+  \relates SbString
+*/
+
+/*!
   \fn const SbString operator+(const SbString & str1, const SbString & str2)
 
   Addition operator.
