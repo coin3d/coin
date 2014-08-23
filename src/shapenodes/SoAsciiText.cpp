@@ -385,7 +385,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    assert(length);
+    // No assertion as zero length is handled correctly (results in a new line)
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
@@ -474,7 +474,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       SbString str = this->string[i];
       const char * p = str.getString();
       size_t length = cc_string_utf8_validate_length(p);
-      assert(length);
+      // No assertion as zero length is handled correctly (results in a new line)
 
       for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 	uint32_t glyphidx = 0;
@@ -537,7 +537,7 @@ void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specificati
   SbString str = master->string[i];
   const char * p = str.getString();
   size_t length = cc_string_utf8_validate_length(p);
-  assert(length);
+  // No assertion as zero length is handled correctly (results in a new line)
 
   for (strcharidx = 0; strcharidx < length; strcharidx++) {
     uint32_t glyphidx = 0;
@@ -728,7 +728,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    assert(length);
+    // No assertion as zero length is handled correctly (results in a new line)
       
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {      
       uint32_t glyphidx = 0;
@@ -867,7 +867,7 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
     const float * maxbbox;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    assert(length);
+    // No assertion as zero length is handled correctly (results in a new line)
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
