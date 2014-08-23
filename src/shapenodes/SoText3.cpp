@@ -665,7 +665,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    assert(length);
+    // No assertion as zero length is handled correctly (results in a new line)
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
@@ -1085,7 +1085,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
     cc_glyph3d * prevglyph = NULL;
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    assert(length);
+    // No assertion as zero length is handled correctly (results in a new line)
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
@@ -1454,7 +1454,7 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
     SbString str = textnode->string[i];
     const char * p = str.getString();
     size_t length = cc_string_utf8_validate_length(p);
-    assert(length);
+    // No assertion as zero length is handled correctly (results in a new line)
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       uint32_t glyphidx = 0;
