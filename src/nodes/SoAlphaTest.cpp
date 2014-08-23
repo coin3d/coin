@@ -137,6 +137,7 @@ SoAlphaTest::SoAlphaTest(void)
   SO_NODE_ADD_FIELD(function, (NONE));
   SO_NODE_ADD_FIELD(value, (0.5f));
 
+  SO_NODE_DEFINE_ENUM_VALUE(Function, NONE);
   SO_NODE_DEFINE_ENUM_VALUE(Function, NEVER);
   SO_NODE_DEFINE_ENUM_VALUE(Function, ALWAYS);
   SO_NODE_DEFINE_ENUM_VALUE(Function, LESS);
