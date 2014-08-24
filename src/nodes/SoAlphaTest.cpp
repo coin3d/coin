@@ -68,6 +68,11 @@
 */
 
 /*!
+ \var SoAlphaTest::Function SoAlphaTest::NONE
+ No alpha test is performed.
+*/
+
+/*!
   \var SoAlphaTest::Function SoAlphaTest::NEVER
   Never passes.
 */
@@ -79,38 +84,38 @@
 
 /*!
   \var SoAlphaTest::Function SoAlphaTest::LESS
-  Passes if the incoming depth value is less than the stored depth value.
+  Passes if the incoming alpha value is less than the stored alpha value.
 */
 
 /*!
   \var SoAlphaTest::Function SoAlphaTest::LEQUAL
-  Passes if the incoming depth value is less than or equal to the stored depth value.
+  Passes if the incoming alpha value is less than or equal to the stored alpha value.
 */
 
 /*!
   \var SoAlphaTest::Function SoAlphaTest::EQUAL
-  Passes if the incoming depth value is equal to the stored depth value.
+  Passes if the incoming alpha value is equal to the stored alpha value.
 */
 
 /*!
   \var SoAlphaTest::Function SoAlphaTest::GEQUAL
-  Passes if the incoming depth value is greater than or equal to the stored depth value.
+  Passes if the incoming alpha value is greater than or equal to the stored alpha value.
 */
 
 /*!
   \var SoAlphaTest::Function SoAlphaTest::GREATER
-  Passes if the incoming depth value is greater than the stored depth value.
+  Passes if the incoming alpha value is greater than the stored alpha value.
 */
 
 /*!
   \var SoAlphaTest::Function SoAlphaTest::NOTEQUAL
-  Passes if the incoming depth value is not equal to the stored depth value.
+  Passes if the incoming alpha value is not equal to the stored alpha value.
 */
 
 /*!
   \var SoSFEnum SoAlphaTest::function
 
-  Which depth function to use. Defaults to NONE.
+  Which alpha function to use. Defaults to NONE.
 */
 
 /*!
