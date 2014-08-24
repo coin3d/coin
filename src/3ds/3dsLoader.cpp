@@ -579,7 +579,7 @@ read3dsFile(SoStream *in, SoSeparator *&root,
   sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
   
   // configure creaseAngle on shape hints when normals are computed by shapes
-  if (appendNormals == 0) {
+  if (con.appendNormals == 0) {
     sh->creaseAngle = creaseAngle;
   }
   con.root->addChild(sh);
