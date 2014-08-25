@@ -40,7 +40,7 @@ class SoInput;
 class SoSeparator;
 
 SbBool coin_3ds_read_file(SoInput * in, SoSeparator *& root,
-                          int appendNormals = 2,
+                          int appendNormals = 0,
                           float creaseAngle = 25.f/180.f*M_PI,
                           SbBool loadMaterials = TRUE,
                           SbBool loadTextures = TRUE,
