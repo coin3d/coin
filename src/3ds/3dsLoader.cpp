@@ -525,7 +525,7 @@ static int coin_debug_3ds();
 
 static SbBool
 read3dsFile(SoStream *in, SoSeparator *&root,
-            int appendNormals, float COIN_UNUSED_ARG(creaseAngle),
+            int appendNormals, float creaseAngle,
             SbBool loadMaterials, SbBool loadTextures,
             SbBool loadObjNames, SbBool indexedTriSet,
             SbBool centerModel, float modelSize)
@@ -577,6 +577,11 @@ read3dsFile(SoStream *in, SoSeparator *&root,
   SoShapeHints *sh = new SoShapeHints;
   sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+  
+  // configure creaseAngle on shape hints when normals are computed by shapes
+  if (con.appendNormals == 0) {
+    sh->creaseAngle = creaseAngle;
+  }
   con.root->addChild(sh);
 #endif
 
@@ -598,7 +603,7 @@ read3dsFile(SoStream *in, SoSeparator *&root,
     // normal binding
     SoNormalBinding *nb = new SoNormalBinding;
     if (con.appendNormals == 1)
-      nb->value.setValue(SoNormalBinding::PER_FACE);
+      nb->value.setValue(SoNormalBinding::PER_PART); // normal for each strip of the set
     else
       nb->value.setValue(SoNormalBinding::PER_VERTEX);
     con.root->addChild(nb);
@@ -1081,9 +1086,7 @@ CHUNK(LoadFaceArray)
     if (flags != 7 && coin_debug_3ds() >= 2)
       SoDebugError::postWarning("LoadFaceArray",
                                 "Non-standard face flags: %x, investigate it.\n", flags);
-    con->faceList[i].init(con, a,c,b,flags); // we have to swap two
-                     // indices (b<=>c); It looks like 3ds uses clockwise
-                     // vertex ordering and we need it to be counter-clockwise.
+    con->faceList[i].init(con, a,b,c,flags); // vertex ordering is counter-clockwise.
 
     if (!con->minMaxValid) {
       con->minMaxValid = TRUE;
