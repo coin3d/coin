@@ -44,7 +44,8 @@ extern "C" {
 /* ********************************************************************** */
 
 enum cc_string_constants {
-  CC_STRING_MIN_SIZE = 128 - sizeof(char *) + sizeof(int)
+  CC_STRING_MIN_SIZE = 128 - sizeof(char *) + sizeof(size_t),
+  CC_STRING_RESIZE   = 128
 };
 
 struct cc_string {
@@ -99,6 +100,9 @@ COIN_DLL_API size_t cc_string_utf8_encode(char * buffer, size_t buflen, uint32_t
 COIN_DLL_API uint32_t cc_string_utf8_get_char(const char * str);
 COIN_DLL_API const char * cc_string_utf8_next_char(const char * str);
 COIN_DLL_API size_t cc_string_utf8_validate_length(const char * str);
+
+COIN_DLL_API void cc_string_set_wtext(cc_string * str, const wchar_t * text);
+
 
 /* ********************************************************************** */
 
