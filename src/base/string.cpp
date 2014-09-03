@@ -134,7 +134,7 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
 
     (void) strcpy(newbuf, me->pointer);
 
-    if (me->pointer != me->buffer) { free(me->pointer); }
+    // don't free the default static me->buffer
   }
 
   me->pointer = newbuf;
