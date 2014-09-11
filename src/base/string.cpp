@@ -487,7 +487,7 @@ cc_string_compare(const cc_string * lhs, const cc_string * rhs)
 int
 cc_string_compare_text(const char * lhs, const char * rhs)
 {
-  return lhs && rhs && strcmp(lhs, rhs);
+  return strcmp(lhs ? lhs : "", rhs ? rhs : "");
 } /* cc_string_compare_text() */
 
 /*!
