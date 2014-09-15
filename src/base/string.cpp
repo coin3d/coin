@@ -121,16 +121,22 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
 
   if (newsize <= me->bufsize) { return; }
 
-  /* FIXME: should first try the vastly more efficient realloc() (if
-     the current memory buffer is not the default static, of course).
-     20050425 mortene. */
-  newbuf = static_cast<char *>(malloc(newsize));
-  if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
-  assert(newbuf != NULL);
+  /* Should first try the vastly more efficient realloc() (if
+     the current memory buffer is not the default static, of course). */
+  if (me->pointer != me->buffer) {
+    newbuf = static_cast<char *>(realloc(me->pointer, newsize));
+    if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
+    assert(newbuf != NULL);
+  } else {
+    newbuf = static_cast<char *>(malloc(newsize));
+    if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
+    assert(newbuf != NULL);
 
-  (void) strcpy(newbuf, me->pointer);
+    (void) strcpy(newbuf, me->pointer);
 
-  if (me->pointer != me->buffer) { free(me->pointer); }
+    // don't free the default static me->buffer
+  }
+
   me->pointer = newbuf;
   me->bufsize = newsize;
 }
@@ -481,7 +487,7 @@ cc_string_compare(const cc_string * lhs, const cc_string * rhs)
 int
 cc_string_compare_text(const char * lhs, const char * rhs)
 {
-  return lhs && rhs && strcmp(lhs, rhs);
+  return strcmp(lhs ? lhs : "", rhs ? rhs : "");
 } /* cc_string_compare_text() */
 
 /*!
@@ -701,5 +707,54 @@ cc_string_utf8_validate_length(const char * str)
 
   return utf8len;
 }
+
+
+#if defined HAVE_WINDOWS_H
+#include <Windows.h> // for WideCharToMultiByte
+#endif
+
+void cc_string_set_wtext(cc_string * me, const wchar_t * text)
+{
+  if ( text == NULL ) {
+    // empty string
+    cc_string_set_text(me, NULL);
+  } else {
+    static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
+    if (disable_utf8) {
+      // convert using current locale instead of UTF-8
+      cc_string_sprintf(me, "%ls", text);
+    } else {
+      #if defined HAVE_WINDOWS_H
+      // use WideCharToMultiByte for Windows systems (UTF-16 encoding for wchar_t)
+      int newsize = ::WideCharToMultiByte(CP_UTF8, 0, text, -1, NULL, 0, NULL, NULL);
+      cc_string_grow_buffer(me, newsize);
+      ::WideCharToMultiByte(CP_UTF8, 0, text, -1, me->pointer, newsize, NULL, NULL);
+      #else
+      // other systems use UTF-32
+      if (sizeof(wchar_t) == 4) {
+        const wchar_t * readptr = text;
+        size_t writepos = 0;
+        uint32_t value = 0;
+        do {
+          if ((me->bufsize - writepos) < 4) {
+            // enlarge in bigger chunks for performance reasons
+            cc_string_grow_buffer(me, me->bufsize + CC_STRING_RESIZE);
+          }
+          value = *readptr++;
+          writepos += cc_string_utf8_encode(me->pointer + writepos, 
+                                            me->bufsize - writepos, value);
+        } while (value);
+      } else {
+        cc_debugerror_postinfo("cc_string_set_wtext",
+                   "UTF-8 encoding of string \"%ls\" failed "
+                   "(unsupported wchar_t size).\n\n"
+                   "To disable UTF-8 support and fall back to pre"
+                   "Coin 4.0 behavior, set the\nenvironment variable "
+                   "COIN_DISABLE_UTF8=1 and re-run the application.\n", text);
+      }
+      #endif
+    }
+  }
+} /* cc_string_set_wtext() */
 
 /* ********************************************************************** */
