@@ -129,7 +129,7 @@
 */
 
 /*!
-  \class SoReorganizeAction Inventor/include/SoReorganizeAction.h
+  \class SoReorganizeAction Inventor/actions/SoReorganizeAction.h
   \ingroup actions
   \brief The SoReorganizeAction class reorganizes your scene graph to optimize traversal/rendering.
 

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox2s SbBox.h Inventor/SbBox.h
+  \class SbBox2s SbBox2s.h Inventor/SbBox2s.h
   \brief The SbBox2s class is a 2 dimensional box with short
   integer coordinates.
   \ingroup base

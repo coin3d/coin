@@ -300,8 +300,6 @@ SbBool SoToVRML2Action::doReuseGeometryNodes(void) const { return FALSE; }
 #include <Inventor/VRMLnodes/SoVRMLNodes.h>
 #include <Inventor/VRMLnodes/SoVRML.h>
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoToVRML2ActionP {
 public:
   SoToVRML2ActionP(void)
@@ -470,8 +468,6 @@ public:
                           const SoPrimitiveVertex * v3);
 
 };
-
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)

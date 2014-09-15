@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoDecomposeVec2f SoCompose.h Inventor/engines/SoCompose.h
+  \class SoDecomposeVec2f SoDecomposeVec2f.h Inventor/engines/SoDecomposeVec2f.h
   \brief The SoDecomposeVec2f class is used to decompose 2D vectors into two floats.
   \ingroup engines
 */

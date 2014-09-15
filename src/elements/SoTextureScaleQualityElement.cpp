@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoTextureScaleQualityElement Inventor/elements/SoTextureScaleQualityElement.h
+  \class SoTextureScaleQualityElement /elements/SoTextureScaleQualityElement.h
   \brief The SoTextureScaleQualityElement class is yet to be documented.
   \ingroup elements
 

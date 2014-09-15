@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbSphere SbLinear.h Inventor/SbLinear.h
+  \class SbSphere SbSphere.h Inventor/SbSphere.h
   \brief The SbSphere class is a representation of a sphere.
   \ingroup base
 

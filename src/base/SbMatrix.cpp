@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbMatrix SbLinear.h Inventor/SbLinear.h
+  \class SbMatrix SbMatrix.h Inventor/SbMatrix.h
   \brief The SbMatrix class is a 4x4 dimensional representation of a matrix.
   \ingroup base
 

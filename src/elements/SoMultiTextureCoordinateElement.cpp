@@ -31,8 +31,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoTextureCoordinateElement Inventor/elements/SoTextureCoordinateElement.h
-  \brief The SoTextureCoordinateElement class is yet to be documented.
+  \class SoMultiTextureCoordinateElement Inventor/elements/SoMultiTextureCoordinateElement.h
+  \brief The SoMultiTextureCoordinateElement class is yet to be documented.
   \ingroup elements
 
   FIXME: write doc.

@@ -179,7 +179,7 @@
   the scene shown below:
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/nodekits/basekitexample.png">
+  \image html basekitexample.png "Rendering of Example Scenegraph"
   </center>
 
   Notice that the code needed for creating this simple shape using

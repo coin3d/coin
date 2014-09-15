@@ -31,13 +31,13 @@
 \**************************************************************************/
 
 /*!
-  \class SbVec3f SbLinear.h Inventor/SbLinear.h
+  \class SbVec3f SbVec3f.h Inventor/SbVec3f.h
   \brief The SbVec3f class is a 3 dimensional vector with floating point coordinates.
   \ingroup base
 
   This vector class is used by many other classes in
   Coin. It provides storage for a 3 dimensional vector
-  aswell as simple floating point arithmetic operations.
+  as well as simple floating point arithmetic operations.
 
   \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3d, SbVec4f, SbVec4d.
 */

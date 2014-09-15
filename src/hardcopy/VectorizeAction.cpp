@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoVectorizeAction HardCopy/SoVectorizeAction.h
+  \class SoVectorizeAction SoVectorizeAction.h Inventor/annex/HardCopy/SoVectorizeAction.h
   \brief The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.
   \ingroup hardcopy
 

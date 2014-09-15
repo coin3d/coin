@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/tabbox.png">
+  \image html tabbox.png "Screen Shot of Default Dragger"
   </center>
 
   This dragger lets the end-user do translation and non-uniform

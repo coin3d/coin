@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoShaderGenerator SoShaderGenerator.h Inventor/misc/SoShaderGenerator.h
+  \class SoShaderGenerator SoShaderGenerator.h /misc/SoShaderGenerator.h
   \brief The SoShaderGenerator class is used for simplifying the process of generating shader scripts.
 
   Currently only GLSL scripts are supported.

@@ -72,29 +72,29 @@
 */
 
 /*!
-  \var SoMFName SoProfilerStats::nodeType
+  \var SoMFName SoProfilerStats::renderedNodeType
 
-  Name of type types traversed during the current render traversal.
+  Name of types traversed during the current render traversal.
 
-  This field is tightly connected to the \a timePerNodeType field as
+  This field is tightly connected to the \a renderingTimePerNodeType field as
   they will contain the same number of elements, and each value
-  in \a timePerNodeType matches the node type with the same index in
+  in \a renderingTimePerNodeType matches the node type with the same index in
   this field.
 
-  \sa SoProfilerStats::timePerNodeType
+  \sa SoProfilerStats::renderingTimePerNodeType
 */
 
 /*!
-  \var SoMFTime SoProfilerStats::timePerNodeType
+  \var SoMFTime SoProfilerStats::renderingTimePerNodeType
 
   Time spent, during the current render traversal, per node type.
 
-  This field is tightly connected to the \a nodeType field as
+  This field is tightly connected to the \a renderedNodeType field as
   they will contain the same number of elements, and each value
   in this field matches the node type with the same index in
-  \a nodeType.
+  \a renderedNodeType.
 
-  \sa SoProfilerStats::nodeType
+  \sa SoProfilerStats::renderedNodeType
 */
 
 // *************************************************************************

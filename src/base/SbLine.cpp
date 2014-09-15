@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbLine SbLinear.h Inventor/SbLinear.h
+  \class SbLine SbLine.h Inventor/SbLine.h
   \brief The SbLine class represents a line in 3D space.
   \ingroup base
 

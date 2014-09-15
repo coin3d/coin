@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/translate2.png">
+  \image html translate2.png "Screen Shot of Default Dragger"
   </center>
 
   Use this dragger to allow the end-user of your application to

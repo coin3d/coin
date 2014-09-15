@@ -33,7 +33,7 @@
 #include <Inventor/scxml/ScXMLOnEntryElt.h>
 
 /*!
-  \class ScXMLOnEntry ScXMLOnEntry.h Inventor/scxml/ScXMLOnEntry.h
+  \class ScXMLOnEntryElt ScXMLOnEntryElt.h Inventor/scxml/ScXMLOnEntryElt.h
   \brief implements the &lt;onentry&gt; SCXML element.
 
   \since Coin 3.0

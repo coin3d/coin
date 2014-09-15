@@ -33,7 +33,7 @@
 #include <Inventor/scxml/ScXMLOnExitElt.h>
 
 /*!
-  \class ScXMLOnExit ScXMLOnExit.h Inventor/scxml/ScXMLOnExit.h
+  \class ScXMLOnExitElt ScXMLOnExitElt.h Inventor/scxml/ScXMLOnExitElt.h
   \brief implements the &lt;onexit&gt; SCXML element.
 
   \since Coin 3.0

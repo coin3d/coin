@@ -100,7 +100,7 @@
 */
 
 /*!
-  \var SoGeometryShader::OutputType SoGeometryShader::TRIANLE_STRIP_OUT.
+  \var SoGeometryShader::OutputType SoGeometryShader::TRIANGLE_STRIP_OUT.
 
   Shader generates triangle strips.
 */

@@ -31,8 +31,9 @@
 \**************************************************************************/
 
 /*!
-  \class SbDPRotation SbLinear.h Inventor/SbLinear.h
-  \brief The SbDPRotation class represents a rotation in 3D space.
+  \class SbDPRotation SbDPRotation.h Inventor/SbDPRotation.h
+  \brief The SbDPRotation class represents a rotation in 3D space
+  using double precision data.
   \ingroup base
 
   SbDPRotation is used extensively throughout the Coin library.
@@ -43,12 +44,6 @@
 
   \sa SbDPMatrix
 */
-
-// FIXME: we should _really_ have double-precision classes compatible
-// with those in TGS' API, for several good reasons. So either rename
-// this, make a typedef (if that is sufficient), or write a "wrapper
-// class" around this with inline functions, using with TGS' name for
-// it. 20020225 mortene.
 
 #include <Inventor/SbDPRotation.h>
 

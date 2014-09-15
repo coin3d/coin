@@ -39,7 +39,7 @@
 // *************************************************************************
 
 /*!
-  \class SoVectorOutput HardCopy/SoVectorOutput.h
+  \class SoVectorOutput SoVectorOutput.h Inventor/annex/HardCopy/SoVectorOutput.h
   \brief The SoVectorOutput class is used for setting vector output file.
   \ingroup hardcopy
 

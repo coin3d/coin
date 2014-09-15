@@ -31,15 +31,14 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox3s SbBox.h Inventor/SbBox.h
+  \class SbBox3s SbBox3s.h Inventor/SbBox3s.h
   \brief The SbBox3s class is a 3 dimensional box with short
   integer coordinates.
   \ingroup base
 
   This box class is used by other classes in Coin for data
   exchange. It provides storage for two box corners with short integer
-  coordinates, which is among other things useful for representing
-  screen or canvas areas in absolute window coordinates.
+  coordinates.
 
   \sa SbBox2s, SbBox2f, SbBox2d, SbBox3f, SbBox3d, SbXfBox3f.
   \since Coin 2.0

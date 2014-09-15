@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/dragpoint.png">
+  \image html dragpoint.png "Screen Shot of Default Dragger"
   </center>
 
   This dragger is convenient to use when it is desirable that the

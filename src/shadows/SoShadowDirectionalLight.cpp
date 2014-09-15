@@ -104,7 +104,7 @@
 */
 
 /*!
-  \var SoSFNode SoShadowGroup::shadowMapScene
+  \var SoSFNode SoShadowDirectionalLight::shadowMapScene
 
   The shadow map scene graph. If this is NULL (the default), the node
   will behave as a normal SoDirectionalLight node.
@@ -112,20 +112,20 @@
 */
 
 /*!
-  \var SoSFFloat SoShadowGroup::maxShadowDistance
+  \var SoSFFloat SoShadowDirectionalLight::maxShadowDistance
 
   The maximum distance (from the camera) that we'll see shadows from this light source.
 */
 
 /*!
-  \var SoSFVec3f SoShadowGroup::bboxCenter
+  \var SoSFVec3f SoShadowDirectionalLight::bboxCenter
 
   Can be used to specify the volume that should be used for
   calculating the resulting shadow volume.
 */
 
 /*!
-  \var SoSFVec3f SoShadowGroup::bboxSize
+  \var SoSFVec3f SoShadowDirectionalLight::bboxSize
 
   Can be used to specify the volume that should be used for
   calculating the resulting shadow volume.

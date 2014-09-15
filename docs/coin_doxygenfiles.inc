@@ -31,6 +31,11 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/FXViz/nodes/SoShadowGroup.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/FXViz/nodes/SoShadowSpotLight.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/FXViz/nodes/SoShadowStyle.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/annex/HardCopy/SoHardCopy.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/annex/HardCopy/SoPSVectorOutput.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/annex/HardCopy/SoVectorizeAction.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/annex/HardCopy/SoVectorizePSAction.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/annex/HardCopy/SoVectorOutput.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/Profiler/elements/SoProfilerElement.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/Profiler/nodekits/SoNodeVisualize.h
                          ${path_tag}${coin_src_dir}/include/Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h
@@ -378,6 +383,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoPathList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoPickedPointList.h
                          ${path_tag}${coin_src_dir}/include/Inventor/lists/SoTypeList.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/lock/SoLockMgr.h
                          ${path_tag}${coin_src_dir}/include/Inventor/manips/SoCenterballManip.h
                          ${path_tag}${coin_src_dir}/include/Inventor/manips/SoClipPlaneManip.h
                          ${path_tag}${coin_src_dir}/include/Inventor/manips/SoDirectionalLightManip.h
@@ -432,6 +438,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/nodekits/SoSeparatorKit.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodekits/SoShapeKit.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodekits/SoWrapperKit.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoAlphaTest.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoAnnotation.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoAntiSquish.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoArray.h
@@ -584,6 +591,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/projectors/SbSphereProjector.h
                          ${path_tag}${coin_src_dir}/include/Inventor/projectors/SbSphereSectionProjector.h
                          ${path_tag}${coin_src_dir}/include/Inventor/projectors/SbSphereSheetProjector.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/SbBasic.h
                          ${path_tag}${coin_src_dir}/include/Inventor/SbBox2d.h
                          ${path_tag}${coin_src_dir}/include/Inventor/SbBox2f.h
                          ${path_tag}${coin_src_dir}/include/Inventor/SbBox2i32.h
@@ -779,6 +787,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/VRMLnodes/SoVRMLWorldInfo.h
                          ${path_tag}${coin_src_dir}/include/SoDebug.h
                          ${path_tag}${coin_src_dir}/src/actions/SoAction.cpp
+                         ${path_tag}${coin_src_dir}/src/actions/SoActionP.h
                          ${path_tag}${coin_src_dir}/src/actions/SoAudioRenderAction.cpp
                          ${path_tag}${coin_src_dir}/src/actions/SoBoxHighlightRenderAction.cpp
                          ${path_tag}${coin_src_dir}/src/actions/SoCallbackAction.cpp
@@ -875,12 +884,16 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/caches/SoGLCacheList.cpp
                          ${path_tag}${coin_src_dir}/src/caches/SoGLRenderCache.cpp
                          ${path_tag}${coin_src_dir}/src/caches/SoGlyphCache.cpp
+                         ${path_tag}${coin_src_dir}/src/caches/SoGlyphCache.h
                          ${path_tag}${coin_src_dir}/src/caches/SoNormalCache.cpp
                          ${path_tag}${coin_src_dir}/src/caches/SoPrimitiveVertexCache.cpp
                          ${path_tag}${coin_src_dir}/src/caches/SoShaderProgramCache.cpp
+                         ${path_tag}${coin_src_dir}/src/caches/SoShaderProgramCache.h
                          ${path_tag}${coin_src_dir}/src/caches/SoTextureCoordinateCache.cpp
                          ${path_tag}${coin_src_dir}/src/caches/SoVBOCache.cpp
+                         ${path_tag}${coin_src_dir}/src/caches/SoVBOCache.h
                          ${path_tag}${coin_src_dir}/src/collision/SbTri3f.cpp
+                         ${path_tag}${coin_src_dir}/src/collision/SbTri3f.h
                          ${path_tag}${coin_src_dir}/src/collision/SoIntersectionDetectionAction.cpp
                          ${path_tag}${coin_src_dir}/src/details/SoConeDetail.cpp
                          ${path_tag}${coin_src_dir}/src/details/SoCubeDetail.cpp
@@ -893,6 +906,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/details/SoTextDetail.cpp
                          ${path_tag}${coin_src_dir}/src/doc/Coin_books.dox
                          ${path_tag}${coin_src_dir}/src/doc/Coin_environment.dox
+                         ${path_tag}${coin_src_dir}/src/doc/environment.dox.h
                          ${path_tag}${coin_src_dir}/src/doc/Coin_macros.dox
                          ${path_tag}${coin_src_dir}/src/doc/Coin_main.dox
                          ${path_tag}${coin_src_dir}/src/doc/Coin_modules.dox
@@ -941,13 +955,13 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLProjectionMatrixElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLRenderPassElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLShapeHintsElement.cpp
-                         ${path_tag}${coin_src_dir}/src/elements/GL/SoGLTextureEnabledElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLUpdateAreaElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLVBOElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLVertexAttributeElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLViewingMatrixElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoGLViewportRegionElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/GL/SoResetMatrixElement.cpp
+                         ${path_tag}${coin_src_dir}/src/elements/GL/SoResetMatrixElement.h
                          ${path_tag}${coin_src_dir}/src/elements/SoAccumulatedElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoAmbientColorElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoAnnoText3CharOrientElement.cpp
@@ -1018,7 +1032,9 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureOverrideElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureQualityElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureScalePolicyElement.cpp
+                         ${path_tag}${coin_src_dir}/src/elements/SoTextureScalePolicyElement.h
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureScaleQualityElement.cpp
+                         ${path_tag}${coin_src_dir}/src/elements/SoTextureScaleQualityElement.h
                          ${path_tag}${coin_src_dir}/src/elements/SoTextureUnitElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoTransparencyElement.cpp
                          ${path_tag}${coin_src_dir}/src/elements/SoUnitsElement.cpp
@@ -1187,8 +1203,10 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/hardcopy/VectorizePSAction.cpp
                          ${path_tag}${coin_src_dir}/src/hardcopy/VectorOutput.cpp
                          ${path_tag}${coin_src_dir}/src/io/SoInput.cpp
+                         ${path_tag}${coin_src_dir}/src/io/SoInputP.h
                          ${path_tag}${coin_src_dir}/src/io/SoOutput.cpp
                          ${path_tag}${coin_src_dir}/src/io/SoWriterefCounter.cpp
+                         ${path_tag}${coin_src_dir}/src/io/SoWriterefCounter.h
                          ${path_tag}${coin_src_dir}/src/lists/SbIntList.cpp
                          ${path_tag}${coin_src_dir}/src/lists/SbList.cpp
                          ${path_tag}${coin_src_dir}/src/lists/SbPList.cpp
@@ -1225,6 +1243,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/misc/SoBase.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoChildList.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoCompactPathList.cpp
+                         ${path_tag}${coin_src_dir}/src/misc/SoCompactPathList.h
                          ${path_tag}${coin_src_dir}/src/misc/SoContextHandler.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoDB.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoDebug.cpp
@@ -1245,6 +1264,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/misc/SoProtoInstance.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoSceneManager.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoShaderGenerator.cpp
+                         ${path_tag}${coin_src_dir}/src/misc/SoShaderGenerator.h
                          ${path_tag}${coin_src_dir}/src/misc/SoState.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoTempPath.cpp
                          ${path_tag}${coin_src_dir}/src/misc/SoType.cpp
@@ -1272,6 +1292,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/nodekits/SoSeparatorKit.cpp
                          ${path_tag}${coin_src_dir}/src/nodekits/SoShapeKit.cpp
                          ${path_tag}${coin_src_dir}/src/nodekits/SoWrapperKit.cpp
+                         ${path_tag}${coin_src_dir}/src/nodes/SoAlphaTest.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoAnnotation.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoAntiSquish.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoArray.cpp
@@ -1380,6 +1401,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/profiler/SoProfiler.cpp
                          ${path_tag}${coin_src_dir}/src/profiler/SoProfilerElement.cpp
                          ${path_tag}${coin_src_dir}/src/profiler/SoProfilerOverlayKit.cpp
+                         ${path_tag}${coin_src_dir}/src/profiler/SoProfilerP.h
                          ${path_tag}${coin_src_dir}/src/profiler/SoProfilerStats.cpp
                          ${path_tag}${coin_src_dir}/src/profiler/SoProfilingReportGenerator.cpp
                          ${path_tag}${coin_src_dir}/src/projectors/SbCylinderPlaneProjector.cpp
@@ -1401,7 +1423,9 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/rendering/SoOffscreenRenderer.cpp
                          ${path_tag}${coin_src_dir}/src/rendering/SoRenderManager.cpp
                          ${path_tag}${coin_src_dir}/src/rendering/SoVBO.cpp
+                         ${path_tag}${coin_src_dir}/src/rendering/SoVBO.h
                          ${path_tag}${coin_src_dir}/src/rendering/SoVertexArrayIndexer.cpp
+                         ${path_tag}${coin_src_dir}/src/rendering/SoVertexArrayIndexer.h
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLAbstractStateElt.cpp
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLAnchorElt.cpp
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLAssignElt.cpp
@@ -1430,6 +1454,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLObject.cpp
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLOnEntryElt.cpp
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLOnExitElt.cpp
+                         ${path_tag}${coin_src_dir}/src/scxml/ScXMLP.h
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLParallelElt.cpp
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLParamElt.cpp
                          ${path_tag}${coin_src_dir}/src/scxml/ScXMLScriptElt.cpp
@@ -1455,6 +1480,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/shaders/SoFragmentShader.cpp
                          ${path_tag}${coin_src_dir}/src/shaders/SoGeometryShader.cpp
                          ${path_tag}${coin_src_dir}/src/shaders/SoShader.cpp
+                         ${path_tag}${coin_src_dir}/src/shaders/SoShader.h
                          ${path_tag}${coin_src_dir}/src/shaders/SoShaderObject.cpp
                          ${path_tag}${coin_src_dir}/src/shaders/SoShaderParameter.cpp
                          ${path_tag}${coin_src_dir}/src/shaders/SoShaderProgram.cpp
@@ -1511,8 +1537,11 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/threads/wpool.cpp
                          ${path_tag}${coin_src_dir}/src/tidbits.cpp
                          ${path_tag}${coin_src_dir}/src/upgraders/SoPackedColorV20.cpp
+                         ${path_tag}${coin_src_dir}/src/upgraders/SoPackedColorV20.h
                          ${path_tag}${coin_src_dir}/src/upgraders/SoShapeHintsV10.cpp
+                         ${path_tag}${coin_src_dir}/src/upgraders/SoShapeHintsV10.h
                          ${path_tag}${coin_src_dir}/src/upgraders/SoUpgrader.cpp
+                         ${path_tag}${coin_src_dir}/src/upgraders/SoUpgrader.h
                          ${path_tag}${coin_src_dir}/src/vrml97/Anchor.cpp
                          ${path_tag}${coin_src_dir}/src/vrml97/Appearance.cpp
                          ${path_tag}${coin_src_dir}/src/vrml97/AudioClip.cpp

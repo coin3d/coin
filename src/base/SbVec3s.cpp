@@ -48,7 +48,7 @@
 #include "coinString.h"
 
 /*!
-  \class SbVec3s SbLinear.h Inventor/SbLinear.h
+  \class SbVec3s SbVec3s.h Inventor/SbVec3s.h
   \brief The SbVec3s class is a 3 dimensional vector with short integer
   coordinates.
   \ingroup base

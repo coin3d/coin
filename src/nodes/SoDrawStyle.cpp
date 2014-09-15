@@ -57,7 +57,7 @@
   \endcode
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/nodes/drawstyle.png">
+  \image html drawstyle.png "Rendering of Example Scenegraph"
   </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoComposeMatrix SoCompose.h Inventor/engines/SoCompose.h
+  \class SoComposeMatrix SoComposeMatrix.h Inventor/engines/SoComposeMatrix.h
   \brief The SoComposeMatrix class is used to compose a matrix from miscellaneous transformations.
   \ingroup engines
 */

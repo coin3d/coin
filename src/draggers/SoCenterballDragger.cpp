@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/centerball.png">
+  \image html centerball.png "Screen Shot of Default Dragger"
   </center>
 
   For rotation, click either the ball "bands" to constrain rotation to
@@ -102,6 +102,14 @@
      Sphere { }
   }
   \endverbatim
+
+  <center>
+  \image html centerballdragger_actionexample.png "CenterBall Dragger Action Shot"
+  </center>
+
+  The figure above shows the example scenegraph in a viewer with the nearest cross
+  on the centerball dragger selected. Moving the dragger then moves the associated clip plane
+  over the geometry (the sphere in this case).
 */
 
 #include <Inventor/draggers/SoCenterballDragger.h>

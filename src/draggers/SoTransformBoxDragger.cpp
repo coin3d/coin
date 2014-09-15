@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/transformbox.png">
+  \image html transformbox.png "Screen Shot of Default Dragger"
   </center>
 
   Translate the dragger by clicking and dragging any of the

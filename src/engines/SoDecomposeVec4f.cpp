@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoDecomposeVec4f SoCompose.h Inventor/engines/SoCompose.h
+  \class SoDecomposeVec4f SoDecomposeVec4f.h Inventor/engines/SoDecomposeVec4f.h
   \brief The SoDecomposeVec4f class is used to decompose 4D vectors into four floats.
   \ingroup engines
 */

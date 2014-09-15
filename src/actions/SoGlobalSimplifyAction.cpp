@@ -35,7 +35,7 @@
 // obviously).  --mortene.
 
 /*!
-  \class SoGlobalSimplifyAction Inventor/include/SoGlobalSimplifyAction.h
+  \class SoGlobalSimplifyAction Inventor/actions/SoGlobalSimplifyAction.h
   \brief The SoGlobalSimplifyAction class is for globally simplifying the
   geometry of a scene graph, globally.
 */

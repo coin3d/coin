@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox3f SbBox.h Inventor/SbBox.h
+  \class SbBox3f SbBox3f.h Inventor/SbBox3f.h
   \brief The SbBox3f class is an abstraction for an axis aligned 3 dimensional box.
   \ingroup base
 

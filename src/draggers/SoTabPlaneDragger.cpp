@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/tabplane.png">
+  \image html tabplane.png "Screen Shot of Default Dragger"
   </center>
 
   For translation, click anywhere inside the dragger's plane and move

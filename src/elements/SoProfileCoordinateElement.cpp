@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoProfileCoordinateElement Innventor/elements/SoProfileCoordinateElement.h
+  \class SoProfileCoordinateElement Inventor/elements/SoProfileCoordinateElement.h
   \brief The SoProfileCoordinateElement class is yet to be documented.
   \ingroup elements
 

@@ -35,7 +35,7 @@
 // obviously).  --mortene.
 
 /*!
-  \class SoShapeSimplifyAction Inventor/include/SoShapeSimplifyAction.h
+  \class SoShapeSimplifyAction Inventor/actions/SoShapeSimplifyAction.h
   \brief The SoShapeSimplifyAction class replaces complex primitives
   with simplified polygon representations.
 */

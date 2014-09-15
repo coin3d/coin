@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbVec2s SbLinear.h Inventor/SbLinear.h
+  \class SbVec2s SbVec2s.h Inventor/SbVec2s.h
   \brief The SbVec2s class is a 2 dimensional vector with short integer 
   coordinates.
   \ingroup base

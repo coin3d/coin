@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/handlebox.png">
+  \image html handlebox.png "Screen Shot of Default Dragger"
   </center>
 
   A handlebox dragger is convenient to use for letting the user

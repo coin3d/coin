@@ -33,7 +33,7 @@
 #include <Inventor/misc/CoinResources.h>
 
 /*!
-  \class CoinResources "misc/CoinResources.h"
+  \namespace CoinResources
   \brief Static utility functions for managing data resources at the basic buffer level.
 
   This class is just a static scope for some resource managing

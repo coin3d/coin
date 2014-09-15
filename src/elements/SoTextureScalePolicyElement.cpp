@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoTextureScalePolicyElement Inventor/elements/SoTextureScalePolicyElement.h
+  \class SoTextureScalePolicyElement elements/SoTextureScalePolicyElement.h
   \brief The SoTextureScalePolicyElement class is yet to be documented.
   \ingroup elements
 

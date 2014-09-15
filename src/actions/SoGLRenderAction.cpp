@@ -472,7 +472,7 @@
 */
 
 /*!
-   \enum SortedObjectOrderStrategy
+   \enum SoGLRenderAction::SortedObjectOrderStrategy
 
    Used for enumerating the different transparency sorting strategies.
 
@@ -490,7 +490,7 @@
 */
 
 /*!
-  \var SoGLRenderAction::SortedObjectOrderStrategy BBOX_CLOSEST_CORNER
+  \var SoGLRenderAction::SortedObjectOrderStrategy SoGLRenderAction::BBOX_CLOSEST_CORNER
 
   Do the sorting based on the bounding box corner closest to the camera.
 

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbViewVolume SbLinear.h Inventor/SbLinear.h
+  \class SbViewVolume SbViewVolume.h Inventor/SbViewVolume.h
   \brief The SbViewVolume class is a viewing volume in 3D space.
   \ingroup base
 

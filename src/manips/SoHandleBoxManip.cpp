@@ -41,8 +41,13 @@
   \brief The SoHandleBoxManip class wraps an SoHandleBoxDragger for manipulating a transformation.
   \ingroup manips
 
+  A manipulator is used by replacing the node you want to edit in the
+  graph with the manipulator. Draggers are used to manipulate the
+  node. When manipulation is finished, the node is put back into the
+  graph, replacing the manipulator.
+
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/handlebox.png">
+  \image html handlebox.png "Example of HandleBox Manipulator"
   </center>
 
   \sa SoHandleBoxDragger, SoDragger

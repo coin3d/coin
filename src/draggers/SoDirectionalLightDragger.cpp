@@ -44,12 +44,19 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/directionallight.png">
+  \image html directionallight.png "Screen Shot of Default Dragger"
   </center>
 
   This dragger is well suited to use for setting up the fields of a
   SoDirectionalLight node, as it provides geometry for the end-user to
   interact with a directional vector.
+
+  The image below is an action shot example, with the directional light being red
+  and the camera headlight turned right down.
+
+  <center>
+  \image html directionallightdragger_actionshot.png "DirectionalLight Dragger Action Shot"
+  </center>
 
   For convenience, this dragger also by default contains interaction
   geometry for placing the dragger itself. (SoDirectionalLight nodes

@@ -41,15 +41,15 @@
   \brief The SoJackManip wraps an SoJackDragger for convenience.
   \ingroup manips
 
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/jack.png">
-  </center>
-
   The manipulator class takes care of wrapping up the SoJackDragger in
   a simple and convenient API for the application programmer, making
   it automatically surround the geometry it influences and taking care
   of the book-keeping routines for it's interaction with the relevant
   fields of an SoTransformation node.
+
+  <center>
+  \image html jack.png "Example of Jack Manipulator"
+  </center>
 */
 
 #include <Inventor/manips/SoJackManip.h>
