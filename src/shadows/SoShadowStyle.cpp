@@ -70,7 +70,7 @@
 /*!
   \var SoSFEnum SoShadowStyle::style
 
-  Set the current shadow style. Default value is CAST_SHADOW_AND_SHADOWED.
+  Set the current shadow style. Default value is CASTS_SHADOW_AND_SHADOWED.
 */
 
 /*!
@@ -89,7 +89,7 @@
 */
 
 /*!
-  \var SoShadowStyle::Style SoShadowStyle::CAST_SHADOW_AND_SHADOWED
+  \var SoShadowStyle::Style SoShadowStyle::CASTS_SHADOW_AND_SHADOWED
   Will cast and recieve shadows.
 */
 

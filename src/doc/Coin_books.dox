@@ -70,7 +70,7 @@
   \section vrml2refbook The Annotated VRML2.0 Reference Manual
 
   This book covers the VRML97 (aka VRML 2.0) standard, which Coin has
-  implemented with its Inventor/VRMLnodes/* classes, which is an
+  implemented with its Inventor/VRMLnodes/ classes, which is an
   extension made beyond the Open Inventor V2.1 API.
 
   The VRML97 format has some significant differences from the Inventor

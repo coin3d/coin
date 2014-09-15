@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
+  \image html trackball.png "Screen Shot of Default Dragger"
   </center>
 
   The dragger has three "bands" around a transparent sphere, which

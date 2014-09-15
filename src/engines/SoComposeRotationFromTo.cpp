@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoComposeRotationFromTo SoCompose.h Inventor/engines/SoCompose.h
+  \class SoComposeRotationFromTo SoComposeRotationFromTo.h Inventor/engines/SoComposeRotationFromTo.h
   \brief The SoComposeRotationFromTo class is used to compose rotations based on from and to vectors.
   \ingroup engines
 */

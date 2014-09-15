@@ -94,39 +94,3 @@ cc_barrier_enter(cc_barrier * barrier)
   return 0;
 }
 
-/* ********************************************************************** */
-
-/*!
-  \class SbBarrier Inventor/threads/SbBarrier.h
-  \brief The SbBarrier class implements the "barrier" multi-thread
-  synchronization technique.
-  \ingroup threads
-
-  A barrier is a synchronization mechanism that is used for blocking
-  threads as they enter the barrier until a given number of threads are
-  blocked, at which point all the threads are released again.
-*/
-
-/*!
-  \fn SbBarrier::SbBarrier(unsigned int count)
-
-  Constructor.  The SbBarrier will be set for \c count number of
-  threads.
-*/
-
-/*!
-  \fn SbBarrier::~SbBarrier(void)
-
-  Destructor.
-*/
-
-/*!
-  \fn int SbBarrier::enter(void)
-
-  This method blocks the calling thread on this barrier.  It returns
-  when the given number of threads have been blocked. 1 is
-  returned if the caller was the last thread to enter the barrier,
-  0 otherwise.
-*/
-
-/* ********************************************************************** */

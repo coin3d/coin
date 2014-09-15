@@ -39,7 +39,7 @@
 #include <Inventor/errors/SoDebugError.h>
 
 /*!
-  \class SoCompactPathList Inventor/misc/SoCompactPathList.h
+  \class SoCompactPathList /misc/SoCompactPathList.h
   \brief The SoCompactPathList class is used to optimize SoPathList traversal.
 
   This class creates a lookup table which is used while doing SoPathList traversal.

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoSimplifyAction Inventor/include/SoSimplifyAction.h
+  \class SoSimplifyAction Inventor/actions/SoSimplifyAction.h
   \brief The SoSimplifyAction class is the base class for the simplify
   action classes.
 */

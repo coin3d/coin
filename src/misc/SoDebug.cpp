@@ -65,6 +65,11 @@ inline unsigned int SbHashFunc(const void * key)
 
 namespace {
 
+/*!
+  \struct SoDebug_internal
+  COININTERNAL
+*/
+
 struct SoDebug_internal {
   static SbHash<void *, char *> * namedict;
   static void delete_namedict(void);

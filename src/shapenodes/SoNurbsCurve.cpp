@@ -82,7 +82,9 @@
   PointSet { numPoints 7 }
   \endcode
 
-  <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbscurve-circle.png"></center>
+  <center>
+  \image html nurbscurve-circle.png "Rendering of Example Scenegraph"
+  </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

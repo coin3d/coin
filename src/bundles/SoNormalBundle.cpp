@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoNormalBundle include/Inventor/SoNormalBundle.h
+  \class SoNormalBundle include/Inventor/bundles/SoNormalBundle.h
   \brief The SoNormalBundle class simplifies normal handling.
   \ingroup bundles
 

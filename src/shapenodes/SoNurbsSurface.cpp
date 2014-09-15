@@ -80,7 +80,9 @@
   }
   \endcode
 
-  <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbssurface.png"></center>
+  <center>
+  \image html nurbssurface.png "Rendering of Example Scenegraph"
+  </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

@@ -46,6 +46,57 @@ static cc_debugerror_cb * dbgerr_callback =
 static void * dbgerr_callback_data = NULL;
 static SbBool dbgerr_cleanup_function_set = FALSE;
 
+/*!
+  \struct cc_debugerror debugerror.h Inventor/C/errors/debugerror.h
+  \brief The cc_debugerror type is an internal Coin structure for debug error management.
+  \ingroup errors
+
+  This is a Coin extension.
+*/
+
+/*!
+  \var cc_debugerror::super
+
+  The data from the parent cc_error class.
+  This has the advantage that the cc_debugerror structure can appear to be a cc_error.
+*/
+
+/*!
+  \var cc_debugerror::severity
+
+  The severity level of the debug error.
+*/
+
+/*!
+  \enum CC_DEBUGERROR_SEVERITY
+
+  Specifies the available severity levels of the debug messages.
+*/
+
+/*!
+  \var CC_DEBUGERROR_SEVERITY::CC_DEBUGERROR_ERROR
+
+  An actual error.
+ */
+
+/*!
+  \var CC_DEBUGERROR_SEVERITY::CC_DEBUGERROR_WARNING
+
+  Just a warning.
+ */
+
+/*!
+  \var CC_DEBUGERROR_SEVERITY::CC_DEBUGERROR_INFO
+
+  For information only.
+ */
+
+/*!
+  \typedef void cc_debugerror_cb(const cc_debugerror * err, void * data)
+
+  The definition for a debug error callback handler.
+*/
+
 extern "C" {
 
 static void
@@ -58,11 +109,19 @@ debugerror_cleanup(void)
 
 } // extern "C"
 
+/*!
+  \relates cc_debugerror
+*/
+
 void
 cc_debugerror_init(cc_debugerror * me)
 {
   cc_error_init(reinterpret_cast<cc_error *>(me));
 }
+
+/*!
+  \relates cc_debugerror
+*/
 
 void
 cc_debugerror_clean(cc_debugerror * me)
@@ -70,12 +129,19 @@ cc_debugerror_clean(cc_debugerror * me)
   cc_error_clean(reinterpret_cast<cc_error *>(me));
 }
 
+/*!
+  \relates cc_debugerror
+*/
 
 CC_DEBUGERROR_SEVERITY
 cc_debugerror_get_severity(const cc_debugerror * me)
 {
   return me->severity;
 }
+
+/*!
+  \relates cc_debugerror
+*/
 
 void
 cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data)
@@ -89,11 +155,19 @@ cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data)
   }
 }
 
+/*!
+  \relates cc_debugerror
+*/
+
 cc_debugerror_cb *
 cc_debugerror_get_handler_callback(void)
 {
   return dbgerr_callback;
 }
+
+/*!
+  \relates cc_debugerror
+*/
 
 void *
 cc_debugerror_get_handler_data(void)
@@ -101,12 +175,20 @@ cc_debugerror_get_handler_data(void)
   return dbgerr_callback_data;
 }
 
+/*!
+  \relates cc_debugerror
+*/
+
 cc_debugerror_cb *
 cc_debugerror_get_handler(void ** data)
 {
   *data = dbgerr_callback_data;
   return dbgerr_callback;
 }
+
+/*!
+  \relates cc_debugerror
+*/
 
 static void
 cc_debugerror_internal_post(const char * source, cc_string * msg,
@@ -137,6 +219,10 @@ cc_debugerror_internal_post(const char * source, cc_string * msg,
   cc_debugerror_clean(&deberr);
 }
 
+/*!
+  A macro to simplify posting of debug error messages
+*/
+
 #define CC_DEBUGERROR_POST(SEVERITY, TYPE) \
   cc_string s; \
   va_list args; \
@@ -149,17 +235,29 @@ cc_debugerror_internal_post(const char * source, cc_string * msg,
   cc_debugerror_internal_post(source, &s, SEVERITY, TYPE); \
   cc_string_clean(&s)
 
+/*!
+  \relates cc_debugerror
+*/
+
 void
 cc_debugerror_post(const char * source, const char * format, ...)
 {
   CC_DEBUGERROR_POST(CC_DEBUGERROR_ERROR, "error");
 }
 
+/*!
+  \relates cc_debugerror
+*/
+
 void
 cc_debugerror_postwarning(const char * source, const char * format, ...)
 {
   CC_DEBUGERROR_POST(CC_DEBUGERROR_WARNING, "warning");
 }
+
+/*!
+  \relates cc_debugerror
+*/
 
 void
 cc_debugerror_postinfo(const char * source, const char * format, ...)

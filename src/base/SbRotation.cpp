@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbRotation SbLinear.h Inventor/SbLinear.h
+  \class SbRotation SbRotation.h Inventor/SbRotation.h
   \brief The SbRotation class represents a rotation in 3D space.
   \ingroup base
 

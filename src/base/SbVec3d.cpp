@@ -49,12 +49,12 @@
 #include "coinString.h"
 
 /*!
-  \class SbVec3d SbLinear.h Inventor/SbLinear.h
+  \class SbVec3d SbVec3d.h Inventor/SbVec3d.h
   \brief The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.
   \ingroup base
 
   This vector class provides storage for a 3 dimensional double
-  precision floating point vector aswell as simple floating point
+  precision floating point vector as well as simple floating point
   arithmetic operations.
 
   \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3f, SbVec4f, SbVec4d.

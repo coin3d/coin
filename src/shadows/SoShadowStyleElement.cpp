@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoShadowStyleElement Inventor/elements/SoShadowStyleElement.h
+  \class SoShadowStyleElement SoShadowStyleElement.h Inventor/annex/FXViz/elements/SoShadowStyleElement.h
   \brief The SoShadowStyleElement class is yet to be documented.
   \ingroup elements
 
@@ -44,12 +44,6 @@
 
 
 #include <assert.h>
-
-/*!
-  \fn SoShadowStyleElement::Style
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_SOURCE(SoShadowStyleElement);
 

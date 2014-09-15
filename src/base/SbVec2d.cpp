@@ -31,13 +31,13 @@
 \**************************************************************************/
 
 /*!
-  \class SbVec2d SbLinear.h Inventor/SbLinear.h
+  \class SbVec2d SbVec2d.h Inventor/SbVec2d.h
   \brief The SbVec2d class is a 2 dimensional vector with double precision
   floating point coordinates.
   \ingroup base
 
   This vector class is used by many other classes in
-  Coin. It provides storage for a vector in 2 dimensions aswell
+  Coin. It provides storage for a vector in 2 dimensions as well
   as simple floating point arithmetic operations on this vector.
 
   \sa SbVec2s, SbVec2f, SbVec3s, SbVec3f, SbVec3d, SbVec4f, SbVec4d.

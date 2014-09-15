@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
+  \class SoGLTextureEnabledElement SoGLTextureEnabledElement.h Inventor/elements/SoGLTextureEnabledElement.h
   \brief The SoGLTextureEnabledElement class is an element which controls whether texturing is enabled or not.
   \ingroup elements
 
@@ -39,7 +39,7 @@
 */
 
 /*!
-  \enum SoGLTextureEnabledElement::Mode
+  \enum SoMultiTextureEnabledElement::Mode
 */
 
 /*!

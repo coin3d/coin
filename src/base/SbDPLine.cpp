@@ -31,8 +31,8 @@
 \**************************************************************************/
 
 /*!
-  \class SbDPLine SbDPLinear.h Inventor/SbDPLinear.h
-  \brief The SbDPLine class represents a line in 3D space.
+  \class SbDPLine SbDPLine.h Inventor/SbDPLine.h
+  \brief The SbDPLine class represents a line using double precision coordinates.
   \ingroup base
 
   SbDPLine is used by many other classes in Coin.  It provides a way of
@@ -45,12 +45,6 @@
   \sa SbVec3d
   \since Coin 2.0
 */
-
-// FIXME: we should _really_ have double-precision classes compatible
-// with those in TGS' API, for several good reasons. So either rename
-// this, make a typedef (if that is sufficient), or write a "wrapper
-// class" around this with inline functions, using with TGS' name for
-// it. 20020225 mortene.
 
 #include <cassert>
 #include <Inventor/SbDPLine.h>

@@ -41,16 +41,16 @@
   \brief The SoCenterballManip wraps an SoCenterballDragger for convenience.
   \ingroup manips
 
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/centerball.png">
-  </center>
-
   The manipulator class takes care of wrapping up the
   SoCenterballDragger in a simple and convenient API for the
   application programmer, making it automatically surround the
   geometry it influences and taking care of the book-keeping routines
   for it's interaction with the relevant fields of an SoTransformation
   node.
+
+  <center>
+  \image html centerball.png "Example of CenterBall Manipulator"
+  </center>
 */
 
 #include <Inventor/manips/SoCenterballManip.h>

@@ -41,16 +41,16 @@
   \brief The SoTransformBoxManip wraps an SoTransformBoxDragger for convenience.
   \ingroup manips
 
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/transformbox.png">
-  </center>
-
   The manipulator class takes care of wrapping up the
   SoTransformBoxDragger in a simple and convenient API for the
   application programmer, making it automatically surround the
   geometry it influences and taking care of the book-keeping routines
   for it's interaction with the relevant fields of an SoTransformation
   node.
+
+  <center>
+  \image html transformbox.png "Example of TransformBox Manipulator"
+  </center>
 
   Here's a simple usage example, in the form of an Inventor format
   file:

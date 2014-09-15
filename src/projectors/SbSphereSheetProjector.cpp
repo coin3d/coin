@@ -89,7 +89,7 @@
   like this:
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/projectors/spheresheet.png">
+  \image html spheresheet.png "Rendering of Example Resulting Projections"
   </center>
  */
 

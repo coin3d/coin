@@ -40,6 +40,7 @@ class SbLine;
 class SbRotation;
 class SbVec3f;
 class SbVec4f;
+class SbDPMatrix;
 
 typedef float SbMat[4][4];
 
@@ -52,11 +53,11 @@ public:
            const float a41, const float a42, const float a43, const float a44);
   SbMatrix(const SbMat & matrix);
   SbMatrix(const SbMat * matrix);
-  explicit SbMatrix(const class SbDPMatrix & matrix);
+  explicit SbMatrix(const SbDPMatrix & matrix);
   ~SbMatrix(void);
 
   void setValue(const SbMat & m);
-  void setValue(const class SbDPMatrix & m);
+  void setValue(const SbDPMatrix & m);
   void setValue(const float * pMat);
   const SbMat & getValue(void) const;
 

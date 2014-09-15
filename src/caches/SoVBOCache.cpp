@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoVBOCache SoVBOCache.h
+  \class SoVBOCache caches/SoVBOCache.h
   
   \brief The SoVBOCache is used to organize pointers to SoVBO and SoVertexArrayIndexer instances.
   

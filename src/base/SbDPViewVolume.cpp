@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbDPViewVolume SbLinear.h Inventor/SbLinear.h
+  \class SbDPViewVolume SbDPViewVolume.h Inventor/SbDPViewVolume.h
   \brief The SbDPViewVolume class is a double precision viewing volume in 3D space.
   \ingroup base
 

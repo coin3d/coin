@@ -83,7 +83,9 @@
   }
   \endcode
 
-  <center><img src="http://doc.coin3d.org/images/Coin/nodes/nurbsprofile.png"></center>
+  <center>
+  \image html nurbsprofile.png "Rendering of Example Scenegraph"
+  </center>
 
   Note that the coordinates of the NurbsProfile live in the parametric
   space of the trimmed SoNurbsSurface, and that the same complexity

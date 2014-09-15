@@ -41,16 +41,17 @@
   \brief The SoTrackballManip wraps an SoTrackballDragger for convenience.
   \ingroup manips
 
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
-  </center>
-
   The manipulator class takes care of wrapping up the
   SoTrackballDragger in a simple and convenient API for the
   application programmer, making it automatically surround the
   geometry it influences and taking care of the book-keeping routines
   for it's interaction with the relevant fields of an SoTransformation
   node.
+
+  <center>
+  \image html trackball.png "Example of Trackball Manipulator"
+  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
+  </center>
 
   Here's a dead simple, stand-alone example on how to set up an
   SoTrackballManip in a scenegraph:
@@ -92,7 +93,7 @@
   with the dragger bands.
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball-cone.png">
+  \image html trackball-cone.png "Rendering from Example File Above"
   </center>
 */
 

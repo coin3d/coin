@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbCylinder SbLinear.h Inventor/SbLinear.h
+  \class SbCylinder SbCylinder.h Inventor/SbCylinder.h
   \brief The SbCylinder class is a representation of a cylinder.
   \ingroup base
 

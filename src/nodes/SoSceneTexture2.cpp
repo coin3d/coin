@@ -234,8 +234,8 @@
 /*!
   \var SoSFNode SoSceneTexture2::type
 
-  The type of texture to generate. RGBA_UNSIGNED_BYTE for normal texture, DEPTH for
-  a depth buffer texture, RGBA_FLOAT for a floating point RGBA texture.
+  The type of texture to generate. RGBA8 for normal texture, DEPTH for
+  a depth buffer texture, RGBA32F for a floating point RGBA texture.
   texture. Default is RGBA_UNSIGNED_BYTE.
 
 */
@@ -251,7 +251,7 @@
 */
 
 /*!
-  \var SoSceneTexture2::Type SoSceneTexture2::RGBA_FLOAT
+  \var SoSceneTexture2::Type SoSceneTexture2::RGBA32F
   Specifies a RGBA texture with floating point components.
 */
 

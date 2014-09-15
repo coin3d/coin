@@ -102,7 +102,7 @@
   cube:<br>
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/fields/sosfimage.png">
+  \image html sosfimage.png "Rendering of Example Scenegraph"
   </center>
 
   The cube has only been \e slightly rotated, so as you can see from

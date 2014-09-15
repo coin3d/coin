@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/spotlight.png">
+  \image html spotlight.png "Screen Shot of Default Dragger"
   </center>
 
   This dragger is well suited for setting up the fields of a

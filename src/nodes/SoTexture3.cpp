@@ -47,7 +47,7 @@
   be ignored (set to 0.0).
 
   <center>
-  <img src="http://doc.coin3d.org/images/SoGuiExamples/nodes/texture3.png">
+  \image html texture3.png "Rendering of an Example Texture3"
   </center>
 
   \COIN_CLASS_EXTENSION

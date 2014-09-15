@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/jack.png">
+  \image html jack.png "Screen Shot of Default Dragger"
   </center>
 
   Translation is done with this dragger by picking the flat
@@ -68,7 +68,7 @@
 
   An "action shot" of the SoJackDragger used within an SoClipPlaneManip:
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/jack-in-action.png">
+  \image html jack-in-action.png "Action Shot of Jack Dragger in a Clip Plane Manipulator"
   </center>
 
   The name "Jack dragger" probably stems from this dragger being

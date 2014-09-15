@@ -115,7 +115,7 @@
 */
 
 /*!
-  \var SoSFNode SoShadowGroup::shadowMapScene
+  \var SoSFNode SoShadowSpotLight::shadowMapScene
   
   The shadow map scene graph. If this is NULL (the default), the node
   will behave as a normal SoSpotLight node.  
@@ -123,14 +123,14 @@
 */
 
 /*!
-  \var SoSFFloat SoShadowGroup::nearDistance
+  \var SoSFFloat SoShadowSpotLight::nearDistance
 
   Can be used to set a fixed near distance for this spot light. The value in this
   field will be used if it's set to > 0.0. Default value is -1.0.
 */
 
 /*!
-  \var SoSFFloat SoShadowGroup::farDistance
+  \var SoSFFloat SoShadowSpotLight::farDistance
 
   Can be used to set a fixed far distance for this spot light. The value in this
   field will be used if it's set to > 0.0. Default value is -1.0.

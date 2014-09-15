@@ -214,8 +214,9 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
 
 /* ********************************************************************** */
 
-
-/*!
+// All the documentation below is obsolete - however it may be useful for re-writing
+// So, for now, simply revert to a normal c++ comment.  walroy 20140613
+/*
   \class SbStorage Inventor/threads/SbStorage.h
   \brief The SbStorage class manages thread-local memory.
   \ingroup threads
@@ -234,14 +235,14 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
   returned for any request without considering the current thread id.
 */
 
-/*!
+/*
   \fn SbStorage::SbStorage(unsigned int size)
 
   Constructor.  \a size specifies the number of bytes each thread should
   have in this thread-local memory management object.
 */
 
-/*!
+/*
   \fn SbStorage::SbStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
 
   Constructor.  \a size specifies the number of bytes each thread should
@@ -250,19 +251,19 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
   memory blocks are allocated and freed.
 */
 
-/*!
+/*
   \fn SbStorage::~SbStorage(void)
 
   The destructor.
 */
 
-/*!
+/*
   \fn void * SbStorage::get(void)
 
   This method returns the calling thread's thread-local memory block.
 */
 
-/*!
+/*
   \fn void SbStorage::applyToAll(SbStorageApplyFunc * func, void * closure)
   
   This method will call \a func for all thread local storage data.
@@ -271,7 +272,7 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
 
 /* ********************************************************************** */
 
-/*!
+/*
   \class SbTypedStorage Inventor/threads/SbTypedStorage.h
   \brief The SbTypedStorage class manages generic thread-local memory.
   \ingroup threads
@@ -283,14 +284,14 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
   This provides a mechanism for sharing read/write static data.
 */
 
-/*!
+/*
   \fn SbTypedStorage<Type>::SbTypedStorage(unsigned int size)
 
   Constructor.  \a size specifies the number of bytes each thread should
   have in this thread-local memory management object.
 */
 
-/*!
+/*
   \fn SbTypedStorage<Type>::SbTypedStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
 
   Constructor.  \a size specifies the number of bytes each thread
@@ -299,13 +300,13 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
   called when the actual memory blocks are allocated and freed.
 */
 
-/*!
+/*
   \fn SbTypedStorage<Type>::~SbTypedStorage(void)
 
   The destructor.
 */
 
-/*!
+/*
   \fn Type SbTypedStorage<Type>::get(void)
 
   This method returns the calling thread's thread-local memory block.

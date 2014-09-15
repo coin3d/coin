@@ -47,14 +47,14 @@
 #include "tidbitsp.h" // coin_debug_normalize()
 
 /*!
-  \class SbVec4f SbLinear.h Inventor/SbLinear.h
+  \class SbVec4f SbVec4f.h Inventor/SbVec4f.h
   \brief The SbVec4f class is a 4 dimensional vector with floating point coordinates.
   \ingroup base
 
   This vector class is used by many other classes in
   Coin. It provides storage for a 3 dimensional homogeneoues
   vector (with the 4 components usually referred to as <x, y, z, w>)
-  aswell as simple floating point arithmetic operations.
+  as well as simple floating point arithmetic operations.
 
   \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3f, SbVec3d, SbVec4d.
 */

@@ -53,6 +53,26 @@
 
 /* ********************************************************************** */
 
+/*!
+  \struct cc_error error.h Inventor/C/errors/error.h
+  \brief The cc_error type is an internal Coin structure for error management.
+  \ingroup errors
+
+  This is a Coin extension.
+*/
+
+/*!
+  \var cc_error::debugstring
+
+  The error message.
+*/
+
+/*!
+  \typedef void cc_error_cb(const cc_error * err, void * data)
+
+  The definition for an error callback handler.
+*/
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -69,6 +89,10 @@ static void cc_error_mutex_cleanup(void) {
 
 /* FIXME: should be hidden from public API, and only visible to
    subclasses. 20020526 mortene. */
+/*!
+  \relates cc_error
+*/
+
 void
 cc_error_default_handler_cb(const cc_error * err, void * COIN_UNUSED_ARG(data))
 {
@@ -98,11 +122,19 @@ cc_error_cleanup(void)
   cc_error_cleanup_function_set = FALSE;
 }
 
+/*!
+  \relates cc_error
+*/
+
 void
 cc_error_init(cc_error * me)
 {
   cc_string_construct(&(me->debugstring));
 }
+
+/*!
+  \relates cc_error
+*/
 
 void
 cc_error_clean(cc_error * me)
@@ -110,11 +142,19 @@ cc_error_clean(cc_error * me)
   cc_string_clean(&(me->debugstring));
 }
 
+/*!
+  \relates cc_error
+*/
+
 void
 cc_error_copy(const cc_error * src, cc_error * dst)
 {
   cc_string_set_string(&dst->debugstring, &src->debugstring);
 }
+
+/*!
+  \relates cc_error
+*/
 
 void
 cc_error_set_debug_string(cc_error * me, const char * str)
@@ -122,11 +162,19 @@ cc_error_set_debug_string(cc_error * me, const char * str)
   cc_string_set_text(&(me->debugstring), str);
 }
 
+/*!
+  \relates cc_error
+*/
+
 void
 cc_error_append_to_debug_string(cc_error * me, const char * str)
 {
   cc_string_append_text(&(me->debugstring), str);
 }
+
+/*!
+  \relates cc_error
+*/
 
 void
 cc_error_handle(cc_error * me)
@@ -159,6 +207,10 @@ cc_error_handle(cc_error * me)
 #endif /* COIN_THREADSAFE */
 }
 
+/*!
+  \relates cc_error
+*/
+
 void
 cc_error_set_handler_callback(cc_error_cb * func, void * data)
 {
@@ -171,17 +223,29 @@ cc_error_set_handler_callback(cc_error_cb * func, void * data)
   }
 }
 
+/*!
+  \relates cc_error
+*/
+
 cc_error_cb *
 cc_error_get_handler_callback(void)
 {
   return cc_error_callback;
 }
 
+/*!
+  \relates cc_error
+*/
+
 void *
 cc_error_get_handler_data(void)
 {
   return cc_error_callback_data;
 }
+
+/*!
+  \relates cc_error
+*/
 
 cc_error_cb *
 cc_error_get_handler(void ** data)
@@ -190,11 +254,19 @@ cc_error_get_handler(void ** data)
   return cc_error_callback;
 }
 
+/*!
+  \relates cc_error
+*/
+
 const cc_string *
 cc_error_get_debug_string(const cc_error * me)
 {
   return &(me->debugstring);
 }
+
+/*!
+  \relates cc_error
+*/
 
 void
 cc_error_post_arglist(const char * format, va_list args)
@@ -213,6 +285,10 @@ cc_error_post_arglist(const char * format, va_list args)
 
   cc_string_clean(&s);
 }
+
+/*!
+  \relates cc_error
+*/
 
 void
 cc_error_post(const char * format, ...)

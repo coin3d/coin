@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoPrimitiveVertexCache include/Inventor/SoPrimitiveVertexCache.h
+  \class SoPrimitiveVertexCache include/Inventor/caches/SoPrimitiveVertexCache.h
   The SoPrimitiveVertexClass is used to cache generated triangles.
 */
 

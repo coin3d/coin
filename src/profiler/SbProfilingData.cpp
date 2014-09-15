@@ -135,14 +135,14 @@ public:
 #define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
-  \var SbNodeProfilingData
+  \struct SbNodeProfilingData
   \brief Data structure for gathering scene graph traversal profiling information for one node.
 
   \ingroup profiler
 */
 
 /*!
-  \class SbProfilingData Profiling/SbProfilingData.h
+  \class SbProfilingData
   \brief Data structure for gathering scene graph traversal profiling information.
 
   \ingroup profiler

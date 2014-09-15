@@ -115,7 +115,7 @@
   In examinerviewer the Inventor file looks something like this:
 
   <center>
-    <img src="http://doc.coin3d.org/images/Coin/nodes/asciitext.png">
+  \image html asciitext.png "Rendering of Example Scenegraph"
   </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>

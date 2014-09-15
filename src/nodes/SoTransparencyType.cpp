@@ -44,7 +44,7 @@
   single scene.
  
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/nodes/transparencytype.png">
+  \image html transparencytype.png "Rendering of Different Transparency Modes"
   </center>
 
   \COIN_CLASS_EXTENSION

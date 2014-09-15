@@ -90,7 +90,7 @@
   \endverbatim
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/nodes/text3.png">
+  \image html text3.png "Rendering of Example File"
   </center>
 
 

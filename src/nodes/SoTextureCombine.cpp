@@ -55,6 +55,7 @@
   to textured geometry. A lightmap can look like this:
   
   <center>
+  \image html lightmap.jpg "Rendering of an Example LigntMap"
   <img src="http://doc.coin3d.org/images/Coin/nodes/lightmap.jpg">
   </center>
   
@@ -90,7 +91,7 @@
   The scene above in a viewer:
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/nodes/lightmap_screenshot.png">
+  \image html lightmap_screenshot.png "Rendering of Example Scenegraph"
   </center>
   
   In addition to the functions you can set in rgbOperation (or

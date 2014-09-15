@@ -41,13 +41,13 @@
   \brief The SoTabBoxManip class wraps an SoTabBoxDragger.
   \ingroup manips
 
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/tabbox.png">
-  </center>
-
   The SoTabBoxManip provides a convenient mechanism for the
   application programmer for setting up an SoTabBoxDragger in the
   scene connected to the relevant fields of an SoTransform node.
+
+  <center>
+  \image html tabbox.png "Example of TabBox Manipulator"
+  </center>
 
   The interaction from the end-user with the manipulator will then
   automatically influence the transformation matrix for the geometry

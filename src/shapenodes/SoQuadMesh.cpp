@@ -91,7 +91,7 @@
   The quadmesh geometry resulting from this code looks like this:<br>
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/nodes/quadmesh.png">
+  \image html quadmesh.png "Rendering of Example Scenegraph"
   </center>
 
   Here is another example, this time making a 2x2 grid, with a

@@ -31,8 +31,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoTextureImageElement Inventor/elements/SoTextureImageElement.h
-  \brief The SoTextureImageElement class is yet to be documented.
+  \class SoBumpMapElement Inventor/elements/SoBumpMapElement.h
+  \brief The SoBumpMapElement class is yet to be documented.
   \ingroup elements
 
   FIXME: write doc.
@@ -42,25 +42,6 @@
 #include <cassert>
 
 #include "SbBasicP.h"
-
-/*!
-  \fn SoBumpMapElement::size
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoBumpMapElement::numcomponents
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoBumpMapElement::bytes
-
-  FIXME: write doc.
-*/
-
 
 SO_ELEMENT_SOURCE(SoBumpMapElement);
 

@@ -31,8 +31,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLCacheElement Inventor/elements/SoGLCacheElement.h
-  \brief The SoGLCacheElement class handles OpenGL caches for multiple contexts.
+  \class SoGLCacheContextElement Inventor/elements/SoGLCacheContextElement.h
+  \brief The SoGLCacheContextElement class handles the OpenGL cache for a context.
   \ingroup elements
 */
 

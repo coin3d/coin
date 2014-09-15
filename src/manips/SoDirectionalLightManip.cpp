@@ -41,14 +41,14 @@
   \brief The SoDirectionalLightManip class is used to manipulate SoDirectionalLight nodes.
   \ingroup manips
 
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/directionallight.png">
-  </center>
-
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to manipulate the
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
+
+  <center>
+  \image html directionallight.png "Example of DirectionalLight Manipulator"
+  </center>
 */
 // FIXME: improve the classdoc (snip from SoDirectionalLightDragger
 // doc?). Usage code example. 20011023 mortene.

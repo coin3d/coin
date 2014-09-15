@@ -77,7 +77,9 @@ Separator {
 
   Which results in the following scene:
 
-  <center><img src="http://doc.coin3d.org/images/Coin/nodes/transformaccum.png"></center>
+  <center>
+  \image html transformaccum.png "Rendering of Example Scenegraph"
+  </center>
 */
 
 

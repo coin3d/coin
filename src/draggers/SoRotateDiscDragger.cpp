@@ -44,7 +44,7 @@
   \DRAGGER_DEFAULT_SCREENSHOT
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/rotatedisc.png">
+  \image html rotatedisc.png "Screen Shot of Default Dragger"
   </center>
 
   Use an instance of this dragger class in your scenegraph to let the

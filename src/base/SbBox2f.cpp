@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox2f SbBox.h Inventor/SbBox.h
+  \class SbBox2f SbBox2f.h Inventor/SbBox2f.h
   \brief The SbBox2f class is a 2 dimensional box with floating
   point corner coordinates.
   \ingroup base
