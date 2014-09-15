@@ -56,6 +56,9 @@ public:
   SbString(const char * s)
   { cc_string_construct(&this->str); cc_string_set_text(&this->str, s); }
 
+  SbString(const wchar_t * s)
+  { cc_string_construct(&this->str); cc_string_set_wtext(&this->str, s); }
+
   SbString(const char * s, int start, int end)
   { cc_string_construct(&this->str); cc_string_set_subtext(&this->str, s, start, end); }
 

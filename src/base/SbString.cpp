@@ -238,6 +238,11 @@ SbString::print(std::FILE * fp) const
 */
 
 /*!
+  \fn SbString::SbString(const wchar_t * str)
+  This constructor converts the given string to UTF-8 and assigns it.
+*/
+
+/*!
   \fn SbString::SbString(const char * str, int start, int end)
 
   This constructor constructs a string from the given substring from
