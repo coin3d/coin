@@ -853,7 +853,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = $path_tag$$coin_src_dir$/docs/doxygen/images
+IMAGE_PATH             = @path_tag@@coin_src_dir@/docs/doxygen/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1121,7 +1121,7 @@ HTML_EXTRA_STYLESHEET  = @path_tag@@coin_src_dir@/docs/doxygen/stylesheet.css
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = @path_tag@@coin_src_dir@/docs/doxygen/coin_logo.png
+HTML_EXTRA_FILES       = @path_tag@@coin_src_dir@/docs/doxygen/Coin_logo.png
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the stylesheet and background images according to
