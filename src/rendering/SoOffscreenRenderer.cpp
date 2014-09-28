@@ -921,7 +921,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 	
 	SbViewportRegion region;
 
-	region.setViewportPixels(0,glsize[0]-fullsize[0],fullsize[0],fullsize[1]);
+	region.setViewportPixels(0,0,fullsize[0],fullsize[1]);
 
     this->renderaction->setViewportRegion(region);
 
