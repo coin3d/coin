@@ -144,7 +144,15 @@ SoDBP::removeRealTimeFieldCB(void)
 {
   SoGlobalField * field = SoGlobalField::getGlobalFieldContainer("realTime");
 
-  SoGlobalField::removeGlobalFieldContainer(field);
+//  SoGlobalField::removeGlobalFieldContainer(field);
+  /* 
+    The above function never unref's the field because in the SoGlobalField class
+	the allcontainers list is specifically set to disable referencing. Therefore to
+	delete that actual field we have to unreference it. The unreferencing then
+	automatically removes it from the containers list, so the above call has to be
+	removed. RHW 20141006
+  */
+  field->unref ();
 }
 
 // This is the timer sensor callback which updates the realTime global
