@@ -170,9 +170,14 @@ SoGLMultiTextureCoordinateElement::pop(SoState * state,
 
     if (thisud.texgenCB && !prevud.texgenCB) {enablegen = TRUE; docallback = TRUE;}
     else if (!thisud.texgenCB && prevud.texgenCB) disablegen = TRUE;
-    else if (thisud.texgenCB != prevud.texgenCB) docallback = TRUE;
+    else if (thisud.texgenCB/* != prevud.texgenCB*/) docallback = TRUE;
 
-    if (enablegen || disablegen || docallback) {
+/*
+  See the comments in the setElt function below for the explanation for commenting
+  out the second half of the above else if statement. RHW
+*/
+
+	if (enablegen || disablegen || docallback) {
       // must change texture unit while updating OpenGL
       cc_glglue_glActiveTexture(glue, (GLenum) (int(GL_TEXTURE0) + i));
     }
@@ -326,7 +331,17 @@ SoGLMultiTextureCoordinateElement::setElt(const int unit,
 
   if (func && !ud.texgenCB) {enablegen = TRUE; docallback = TRUE;}
   else if (!func && ud.texgenCB) disablegen = TRUE;
-  else if (func && func != ud.texgenCB) docallback = TRUE;
+  else if (func /* && func != ud.texgenCB */) docallback = TRUE;
+
+  /*
+  The last part of the above if else statement was modified because example 7.3 from The Inventor
+  Mentor was not being correctly reproduced. However, the above solution causes a reduction in
+  execution efficiency.  So...
+
+  FIXME: Consider whether the caching mechanism can be used to overcome this problem.
+
+  RHW 20141007
+  */
 
   if (func) {
     // update SoMultiTextureCoordinateElement type
