@@ -413,6 +413,11 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
 		      DEFAULT_PITCH, /* pitch and family */
 		      fontname); /* typeface name */
   } else {
+    // convert font name from UTF-8 to UTF-16
+    wchar_t fontnameW[256];
+    fontnameW[0] = 0;
+    ::MultiByteToWideChar(CP_UTF8, 0, fontname, -1, fontnameW, sizeof(fontnameW) / sizeof(wchar_t));
+
     font = CreateFontW(-sizey,
 		       /* Using a negative 'sizey'. Otherwise
 			  leads to less details as it seems like
@@ -440,7 +445,7 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
 		       CLIP_DEFAULT_PRECIS, /* clipping precision */
 		       PROOF_QUALITY, /* output quality */
 		       DEFAULT_PITCH, /* pitch and family */
-		       reinterpret_cast<LPCWSTR>(fontname)); /* typeface name */
+		       fontnameW); /* typeface name */
   }
 
   if (!font) {
