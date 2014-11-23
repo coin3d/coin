@@ -121,13 +121,13 @@ SoGLLinePatternElement::updategl()
   //
   // FIXME: store flag to keep enable/disable state, pederb 990624
   //
-  if (this->data == (int32_t) CONTINUOUS) {
+  if ((this->data & 0xffff) == (int32_t) CONTINUOUS) {
     glDisable(GL_LINE_STIPPLE);
   }
   else {
     // Enable line stipple before setting the pattern. This is
     // needed to work around a bug in the nVidia 2.1.1 drivers.
     glEnable(GL_LINE_STIPPLE);
-    glLineStipple(1, (GLushort) this->data);
+    glLineStipple((GLint) (this->data >> 16), (GLushort) (this->data & 0xffff));
   }
 }

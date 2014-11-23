@@ -53,11 +53,14 @@ public:
   virtual void init(SoState * state);
 
   static  void set(SoState * const state, SoNode * const node,
-                   const int32_t pattern);
-  static  void set(SoState * const state, const int32_t pattern);
+                   const int32_t pattern, const int32_t factor = 1);
+  static  void set(SoState * const state, const int32_t pattern,
+                   const int32_t factor = 1);
   static  int32_t get(SoState * const state);
   static  int32_t getDefault();
 
+  static  int32_t getScaleFactor(SoState * const state);
+  static  int32_t getDefaultScaleFactor();
 };
 
 #endif // !COIN_SOLINEPATTERNELEMENT_H
