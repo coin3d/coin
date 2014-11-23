@@ -67,6 +67,7 @@
         pointSize 0
         lineWidth 0
         linePattern 0xffff
+        linePatternScaleFactor 1
     }
   \endcode
 */
@@ -159,7 +160,7 @@
 /*!
   \var SoSFInt32 SoDrawStyle::linePatternScaleFactor
 
-  Multiplier for the bitmask in linePattern (range 1 - 255). Default
+  Multiplier for the bitmask in linePattern (range 1 - 256). Default
   is 1.
 */
 
