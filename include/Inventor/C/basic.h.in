@@ -236,6 +236,29 @@ static const SbBool TRUE = 1;
 
 /* *********************************************************************** */
 
+/* For Visual Studio compiler use COIN_DLL by default and auto-linking. */
+#if !defined(COIN_INTERNAL) && defined(_MSC_VER)
+# if !defined(COIN_NOT_DLL) && !defined(COIN_DLL)
+#  define COIN_DLL
+# endif
+# define COIN_STRINGIFY(str) SO__QUOTE(str)
+# ifdef COIN_DLL
+#  ifdef _DEBUG
+#   pragma comment(lib, "Coin" COIN_STRINGIFY(COIN_MAJOR_VERSION) "d.lib")
+#  else
+#   pragma comment(lib, "Coin" COIN_STRINGIFY(COIN_MAJOR_VERSION) ".lib")
+#  endif
+# else
+#  ifdef _DEBUG
+#   pragma comment(lib, "Coin" COIN_STRINGIFY(COIN_MAJOR_VERSION) "sd.lib")
+#  else
+#   pragma comment(lib, "Coin" COIN_STRINGIFY(COIN_MAJOR_VERSION) "s.lib")
+#  endif
+# endif
+# undef COIN_STRINGIFY
+#endif
+
+
 /* Precaution to avoid an some errors easily made by the application
    programmer. */
 #ifdef COIN_DLL_API
