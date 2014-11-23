@@ -69,9 +69,11 @@ SoLinePatternElement::~SoLinePatternElement(void)
 void
 SoLinePatternElement::set(SoState * const state,
                           SoNode * const node,
-                          const int32_t pattern)
+                          const int32_t pattern,
+                          const int32_t factor)
 {
-    SoInt32Element::set(classStackIndex, state, node, pattern);
+  // pattern and scale factor are stored as single value (pattern: 0 - 15, factor: 16-23)
+  SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factor & 0xff) << 16));
 }
 
 //! FIXME: write doc.
@@ -88,9 +90,10 @@ SoLinePatternElement::init(SoState * state)
 
 //$ EXPORT INLINE
 void
-SoLinePatternElement::set(SoState * const state, const int32_t pattern)
+SoLinePatternElement::set(SoState * const state, const int32_t pattern,
+                          const int32_t factor)
 {
-  set(state, NULL, pattern);
+  set(state, NULL, pattern, factor);
 }
 
 //! FIXME: write doc.
@@ -99,7 +102,7 @@ SoLinePatternElement::set(SoState * const state, const int32_t pattern)
 int32_t
 SoLinePatternElement::get(SoState * const state)
 {
-  return SoInt32Element::get(classStackIndex, state);
+  return SoInt32Element::get(classStackIndex, state) & 0xffff;
 }
 
 //! FIXME: write doc.
@@ -109,4 +112,22 @@ int32_t
 SoLinePatternElement::getDefault()
 {
   return CONTINUOUS;
+}
+
+//! FIXME: write doc.
+
+//$ EXPORT INLINE
+int32_t
+SoLinePatternElement::getScaleFactor(SoState * const state)
+{
+  return SoInt32Element::get(classStackIndex, state) >> 16;
+}
+
+//! FIXME: write doc.
+
+//$ EXPORT INLINE
+int32_t
+SoLinePatternElement::getDefaultScaleFactor()
+{
+  return 1;
 }

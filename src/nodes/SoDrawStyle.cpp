@@ -156,6 +156,12 @@
   Pattern as a bitmask used when drawing lines. Default is 0xffff (no
   "holes").
 */
+/*!
+  \var SoSFInt32 SoDrawStyle::linePatternScaleFactor
+
+  Multiplier for the bitmask in linePattern (range 1 - 255). Default
+  is 1.
+*/
 
 
 // *************************************************************************
@@ -173,6 +179,7 @@ SoDrawStyle::SoDrawStyle(void)
   SO_NODE_ADD_FIELD(pointSize, (0));
   SO_NODE_ADD_FIELD(lineWidth, (0));
   SO_NODE_ADD_FIELD(linePattern, (0xffff));
+  SO_NODE_ADD_FIELD(linePatternScaleFactor, (1));
 
   SO_NODE_DEFINE_ENUM_VALUE(Style, FILLED);
   SO_NODE_DEFINE_ENUM_VALUE(Style, LINES);
@@ -224,7 +231,8 @@ SoDrawStyle::doAction(SoAction * action)
     }
   }
   if (!this->linePattern.isIgnored() && !TEST_OVERRIDE(LINE_PATTERN)) {
-    SoLinePatternElement::set(state, this, this->linePattern.getValue());
+    SoLinePatternElement::set(state, this, this->linePattern.getValue(),
+      this->linePatternScaleFactor.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setLinePatternOverride(state, this, TRUE);
     }
