@@ -71,7 +71,9 @@ SoGLLinePatternElement::~SoGLLinePatternElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes element in state to default value.
+*/
 
 void
 SoGLLinePatternElement::init(SoState * state)
@@ -79,7 +81,9 @@ SoGLLinePatternElement::init(SoState * state)
   inherited::init(state);
 }
 
-//! FIXME: write doc.
+/*!
+  Creates new element in stack.
+*/
 
 void
 SoGLLinePatternElement::push(SoState * state)
@@ -92,7 +96,9 @@ SoGLLinePatternElement::push(SoState * state)
   prev->capture(state);
 }
 
-//! FIXME: write doc.
+/*!
+  Removes element from stack.
+*/
 
 void
 SoGLLinePatternElement::pop(SoState * COIN_UNUSED_ARG(state),
@@ -102,7 +108,7 @@ SoGLLinePatternElement::pop(SoState * COIN_UNUSED_ARG(state),
   if (this->data != prev->data) this->updategl();
 }
 
-//! FIXME: write doc.
+//! Called whenever element value is set. Triggers GL update.
 
 void
 SoGLLinePatternElement::setElt(int32_t pattern)
@@ -113,7 +119,9 @@ SoGLLinePatternElement::setElt(int32_t pattern)
   }
 }
 
-//! FIXME: write doc.
+/*!
+  Applies line stripple patters to OpenGL state.
+*/
 
 void
 SoGLLinePatternElement::updategl()

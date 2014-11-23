@@ -32,10 +32,10 @@
 
 /*!
   \class SoLinePatternElement Inventor/elements/SoLinePatternElement.h
-  \brief The SoLinePatternElement class is yet to be documented.
+  \brief The SoLinePatternElement class defines the line stripple pattern.
   \ingroup elements
 
-  FIXME: write doc.
+  Line strippling is used to mask out fragments of a line.
 */
 
 #include <Inventor/elements/SoLinePatternElement.h>
@@ -64,7 +64,9 @@ SoLinePatternElement::~SoLinePatternElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Sets the given pattern in the state.
+*/
 
 void
 SoLinePatternElement::set(SoState * const state,
@@ -72,21 +74,25 @@ SoLinePatternElement::set(SoState * const state,
                           const int32_t pattern,
                           const int32_t factor)
 {
-  // pattern and scale factor are stored as single value (pattern: 0 - 15, factor: 16-23)
-  SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factor & 0xff) << 16));
+  // pattern and scale factor are stored as single value (pattern: 0 - 15, factor: 16-24)
+  SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factor & 0x1ff) << 16));
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes element in state to default value.
+*/
 
 void
 SoLinePatternElement::init(SoState * state)
 {
   inherited::init(state);
 
-  this->data = SoLinePatternElement::getDefault();
+  this->data = SoLinePatternElement::getDefault() | (SoLinePatternElement::getDefaultScaleFactor() << 16);
 }
 
-//! FIXME: write doc.
+/*!
+  Sets the given pattern in the state.
+*/
 
 //$ EXPORT INLINE
 void
@@ -96,7 +102,9 @@ SoLinePatternElement::set(SoState * const state, const int32_t pattern,
   set(state, NULL, pattern, factor);
 }
 
-//! FIXME: write doc.
+/*!
+  Returns line stripple pattern from state.
+*/
 
 //$ EXPORT INLINE
 int32_t
@@ -105,7 +113,9 @@ SoLinePatternElement::get(SoState * const state)
   return SoInt32Element::get(classStackIndex, state) & 0xffff;
 }
 
-//! FIXME: write doc.
+/*!
+  Returns default line stripple pattern.
+*/
 
 //$ EXPORT INLINE
 int32_t
@@ -114,7 +124,9 @@ SoLinePatternElement::getDefault()
   return CONTINUOUS;
 }
 
-//! FIXME: write doc.
+/*!
+  Returns line stripple pattern scale factor from state.
+*/
 
 //$ EXPORT INLINE
 int32_t
@@ -123,7 +135,9 @@ SoLinePatternElement::getScaleFactor(SoState * const state)
   return SoInt32Element::get(classStackIndex, state) >> 16;
 }
 
-//! FIXME: write doc.
+/*!
+  Returns default line stripple pattern scale factor.
+*/
 
 //$ EXPORT INLINE
 int32_t
