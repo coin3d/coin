@@ -39,6 +39,7 @@
 */
 
 #include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 
 #include <cassert>
@@ -74,8 +75,22 @@ SoLinePatternElement::set(SoState * const state,
                           const int32_t pattern,
                           const int32_t factor)
 {
+  int32_t factorClamped = factor;
+
+#if COIN_DEBUG
+  if (factor < 1) {
+    factorClamped = 1;
+    SoDebugError::postWarning("SoLinePatternElement::set", 
+                              "Factor out of range (%d). Clamped to 1.", factor);
+  } else if (factor > 256) {
+    factorClamped = 256;
+    SoDebugError::postWarning("SoLinePatternElement::set",
+                              "Factor out of range (%d). Clamped to 256.", factor);
+  }
+#endif // COIN_DEBUG
+
   // pattern and scale factor are stored as single value (pattern: 0 - 15, factor: 16-24)
-  SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factor & 0x1ff) << 16));
+  SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factorClamped & 0x1ff) << 16));
 }
 
 /*!
