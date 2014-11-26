@@ -120,7 +120,7 @@ SoGLLinePatternElement::setElt(int32_t pattern)
 }
 
 /*!
-  Applies line stipple patters to OpenGL state.
+  Applies line stipple patterns to OpenGL state.
 */
 
 void
