@@ -32,7 +32,7 @@
 
 /*!
   \class SoLinePatternElement Inventor/elements/SoLinePatternElement.h
-  \brief The SoLinePatternElement class defines the line stripple pattern.
+  \brief The SoLinePatternElement class defines the line stipple pattern.
   \ingroup elements
 
   Line strippling is used to mask out fragments of a line.
@@ -118,7 +118,7 @@ SoLinePatternElement::set(SoState * const state, const int32_t pattern,
 }
 
 /*!
-  Returns line stripple pattern from state.
+  Returns line stipple pattern from state.
 */
 
 //$ EXPORT INLINE
@@ -129,7 +129,7 @@ SoLinePatternElement::get(SoState * const state)
 }
 
 /*!
-  Returns default line stripple pattern.
+  Returns default line stipple pattern.
 */
 
 //$ EXPORT INLINE
@@ -140,7 +140,7 @@ SoLinePatternElement::getDefault()
 }
 
 /*!
-  Returns line stripple pattern scale factor from state.
+  Returns line stipple pattern scale factor from state.
 */
 
 //$ EXPORT INLINE
@@ -151,7 +151,7 @@ SoLinePatternElement::getScaleFactor(SoState * const state)
 }
 
 /*!
-  Returns default line stripple pattern scale factor.
+  Returns default line stipple pattern scale factor.
 */
 
 //$ EXPORT INLINE
