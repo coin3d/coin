@@ -35,7 +35,7 @@
   \brief The SoLinePatternElement class defines the line stipple pattern.
   \ingroup elements
 
-  Line strippling is used to mask out fragments of a line.
+  Line stippling is used to mask out fragments of a line.
 */
 
 #include <Inventor/elements/SoLinePatternElement.h>
