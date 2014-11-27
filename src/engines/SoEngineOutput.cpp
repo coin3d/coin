@@ -276,7 +276,10 @@ SoEngineOutput::addConnection(SoField * f)
   // and unref if the connection is to an SoProtoInstance
   SoFieldContainer * fc = f->getContainer();
 
-  if (fc && !fc->isOfType(SoProtoInstance::getClassTypeId())) {
+  if (fc && !fc->isOfType(SoProtoInstance::getClassTypeId()) &&
+	  // don't reference if the slave and master are in the same container
+	  // else the corresponding unref can never happen RHW
+	  fc != this->getFieldContainer ()) {
     this->getFieldContainer()->ref();
   }
 
@@ -313,7 +316,9 @@ SoEngineOutput::removeConnection(SoField * f)
   // and unref if the connection is to an SoProtoInstance
   SoFieldContainer * fc = f->getContainer();
 
-  if (fc && !fc->isOfType(SoProtoInstance::getClassTypeId())) {
+  if (fc && !fc->isOfType(SoProtoInstance::getClassTypeId()) &&
+	  // we don't want to unref when connected to self RHW
+	  fc != this->getFieldContainer ()) {
     this->getFieldContainer()->unref();
   }
 }
