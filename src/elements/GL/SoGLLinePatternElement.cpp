@@ -32,10 +32,13 @@
 
 /*!
   \class SoGLLinePatternElement Inventor/elements/SoGLLinePatternElement.h
-  \brief The SoGLLinePatternElement class is yet to be documented.
+  \brief The SoGLLinePatternElement class changes the line stipple pattern
+         of the OpenGL render state.
   \ingroup elements
 
-  FIXME: write doc.
+  Requests from the scenegraph to change the stipple pattern when rendering
+  OpenGL line primitives will be made through this element, which forwards
+  it to the appropriate native OpenGL call.
 */
 
 #include <Inventor/elements/SoGLLinePatternElement.h>
