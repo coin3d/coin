@@ -32,13 +32,14 @@
 
 /*!
   \class SoLinePatternElement Inventor/elements/SoLinePatternElement.h
-  \brief The SoLinePatternElement class is yet to be documented.
+  \brief The SoLinePatternElement class defines the line stipple pattern.
   \ingroup elements
 
-  FIXME: write doc.
+  Line stippling is used to mask out fragments of a line.
 */
 
 #include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 
 #include <cassert>
@@ -64,49 +65,98 @@ SoLinePatternElement::~SoLinePatternElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Sets the given pattern in the state.
+*/
 
 void
 SoLinePatternElement::set(SoState * const state,
                           SoNode * const node,
-                          const int32_t pattern)
+                          const int32_t pattern,
+                          const int32_t factor)
 {
-    SoInt32Element::set(classStackIndex, state, node, pattern);
+  int32_t factorClamped = factor;
+
+#if COIN_DEBUG
+  if (factor < 1) {
+    factorClamped = 1;
+    SoDebugError::postWarning("SoLinePatternElement::set", 
+                              "Factor out of range (%d). Clamped to 1.", factor);
+  } else if (factor > 256) {
+    factorClamped = 256;
+    SoDebugError::postWarning("SoLinePatternElement::set",
+                              "Factor out of range (%d). Clamped to 256.", factor);
+  }
+#endif // COIN_DEBUG
+
+  // pattern and scale factor are stored as single value (pattern: 0 - 15, factor: 16-24)
+  SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factorClamped & 0x1ff) << 16));
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes element in state to default value.
+*/
 
 void
 SoLinePatternElement::init(SoState * state)
 {
   inherited::init(state);
 
-  this->data = SoLinePatternElement::getDefault();
+  this->data = SoLinePatternElement::getDefault() | (SoLinePatternElement::getDefaultScaleFactor() << 16);
 }
 
-//! FIXME: write doc.
+/*!
+  Sets the given pattern in the state.
+*/
 
 //$ EXPORT INLINE
 void
-SoLinePatternElement::set(SoState * const state, const int32_t pattern)
+SoLinePatternElement::set(SoState * const state, const int32_t pattern,
+                          const int32_t factor)
 {
-  set(state, NULL, pattern);
+  set(state, NULL, pattern, factor);
 }
 
-//! FIXME: write doc.
+/*!
+  Returns line stipple pattern from state.
+*/
 
 //$ EXPORT INLINE
 int32_t
 SoLinePatternElement::get(SoState * const state)
 {
-  return SoInt32Element::get(classStackIndex, state);
+  return SoInt32Element::get(classStackIndex, state) & 0xffff;
 }
 
-//! FIXME: write doc.
+/*!
+  Returns default line stipple pattern.
+*/
 
 //$ EXPORT INLINE
 int32_t
 SoLinePatternElement::getDefault()
 {
   return CONTINUOUS;
+}
+
+/*!
+  Returns line stipple pattern scale factor from state.
+*/
+
+//$ EXPORT INLINE
+int32_t
+SoLinePatternElement::getScaleFactor(SoState * const state)
+{
+  return SoInt32Element::get(classStackIndex, state) >> 16;
+}
+
+/*!
+  Returns default line stipple pattern scale factor.
+*/
+
+//$ EXPORT INLINE
+int32_t
+SoLinePatternElement::getDefaultScaleFactor()
+{
+  return 1;
 }
