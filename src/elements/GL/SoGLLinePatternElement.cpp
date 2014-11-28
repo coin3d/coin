@@ -32,10 +32,13 @@
 
 /*!
   \class SoGLLinePatternElement Inventor/elements/SoGLLinePatternElement.h
-  \brief The SoGLLinePatternElement class is yet to be documented.
+  \brief The SoGLLinePatternElement class changes the line stipple pattern
+         of the OpenGL render state.
   \ingroup elements
 
-  FIXME: write doc.
+  Requests from the scenegraph to change the stipple pattern when rendering
+  OpenGL line primitives will be made through this element, which forwards
+  it to the appropriate native OpenGL call.
 */
 
 #include <Inventor/elements/SoGLLinePatternElement.h>
@@ -71,7 +74,9 @@ SoGLLinePatternElement::~SoGLLinePatternElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes element in state to default value.
+*/
 
 void
 SoGLLinePatternElement::init(SoState * state)
@@ -79,7 +84,9 @@ SoGLLinePatternElement::init(SoState * state)
   inherited::init(state);
 }
 
-//! FIXME: write doc.
+/*!
+  Creates new element in stack.
+*/
 
 void
 SoGLLinePatternElement::push(SoState * state)
@@ -92,7 +99,9 @@ SoGLLinePatternElement::push(SoState * state)
   prev->capture(state);
 }
 
-//! FIXME: write doc.
+/*!
+  Removes element from stack.
+*/
 
 void
 SoGLLinePatternElement::pop(SoState * COIN_UNUSED_ARG(state),
@@ -102,7 +111,7 @@ SoGLLinePatternElement::pop(SoState * COIN_UNUSED_ARG(state),
   if (this->data != prev->data) this->updategl();
 }
 
-//! FIXME: write doc.
+//! Called whenever element value is set. Triggers GL update.
 
 void
 SoGLLinePatternElement::setElt(int32_t pattern)
@@ -113,7 +122,9 @@ SoGLLinePatternElement::setElt(int32_t pattern)
   }
 }
 
-//! FIXME: write doc.
+/*!
+  Applies line stipple patterns to OpenGL state.
+*/
 
 void
 SoGLLinePatternElement::updategl()
@@ -121,13 +132,13 @@ SoGLLinePatternElement::updategl()
   //
   // FIXME: store flag to keep enable/disable state, pederb 990624
   //
-  if (this->data == (int32_t) CONTINUOUS) {
+  if ((this->data & 0xffff) == (int32_t) CONTINUOUS) {
     glDisable(GL_LINE_STIPPLE);
   }
   else {
     // Enable line stipple before setting the pattern. This is
     // needed to work around a bug in the nVidia 2.1.1 drivers.
     glEnable(GL_LINE_STIPPLE);
-    glLineStipple(1, (GLushort) this->data);
+    glLineStipple((GLint) (this->data >> 16), (GLushort) (this->data & 0xffff));
   }
 }
