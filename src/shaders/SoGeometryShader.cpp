@@ -33,7 +33,7 @@
 /*!
   \class SoGeometryShader SoGeometryShader.h Inventor/nodes/SoGeometryShader.h
   \brief The SoGeometryShader class is used for loading geometry shader programs.
-  \ingroup nodes
+  \ingroup shaders
 
   See \link coin_shaders Shaders in Coin \endlink for more information
   on how to set up a scene graph with shaders.
