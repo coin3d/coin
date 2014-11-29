@@ -32,26 +32,327 @@
 
 /*!
   \class SoShaderParameter SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
-
-  The SoShaderParameter class is the base class for all shader parameter classes.
+  \brief The SoShaderParameter class is the base class for all shader parameter classes.
 
   In addition to the \a name and \a identifier field, all subclasses have a
   \a value field which is used for specifying the parameter value.
+
+  \ingroup shaders
 */
 
 /*!
-  SoSFString SoShaderParameter::name
+  \var SoSFString SoShaderParameter::name
 
   The shader parameter name. Used for Cg and GLSL programs.
 */
 
 /*!
-  SoSFInt32 SoShaderParameter::identifier
+  \var SoSFInt32 SoShaderParameter::identifier
 
   The shader parameter identifier. Used for ARB shader programs.
 */
 
+/*!
+  \class SoUniformShaderParameter SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoUniformShaderParameter class is the base class for all uniform shader variables.
+
+  Uniform shader variables are used to pass parameters from the scene graph to the shader
+  program.
+  
+  In the shader program the variable is declared like this:
+
+  \verbatim
+  uniform float shininess;
+  \endverbatim
+
+  See \link coin_shaders Shaders in Coin \endlink for more information.
+
+  \ingroup shaders
+*/
+
+/*!
+  \fn void SoUniformShaderParameter::updateParameter(SoGLShaderObject *shaderObject)
+  \brief Updates the shader parameter in the OpenGL state with the content of the value field.
+*/
+
+/*!
+  \class SoShaderParameter1f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter1f class is used to define a floating point value as
+         shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFFloat SoShaderParameter1f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter1i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter1i class is used to define an integer value as
+         shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFInt32 SoShaderParameter1i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter2f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter2f class is used to define a two-dimensional floating
+         point value as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFVec2f SoShaderParameter2f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter2i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter2i class is used to define a two-dimensional integer
+         value as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFVec2i32 SoShaderParameter2i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter3f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter3f class is used to define a three-dimensional floating
+         point value as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFVec3f SoShaderParameter3f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter3i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter3i class is used to define a three-dimensional integer
+         value as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFVec3i32 SoShaderParameter3i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter4f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter4f class is used to define a four-dimensional floating
+         point value as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFVec4f SoShaderParameter4f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameter4i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameter4i class is used to define a four-dimensional integer
+         value as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFVec4i32 SoShaderParameter4i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray1f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray1f class is used to define a floating point array as
+         shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFFloat SoShaderParameterArray1f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray1i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray1i class is used to define an integer array as 
+         shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFInt32 SoShaderParameterArray1i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray2f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray2f class is used to define a two-dimensional floating
+         point array as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFVec2f SoShaderParameterArray2f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray2i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray2i class is used to define a two-dimensional integer
+         array as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFVec2i32 SoShaderParameterArray2i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray3f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray3f class is used to define a three-dimensional floating
+         point array as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFVec3f SoShaderParameterArray3f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray3i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray3i class is used to define a three-dimensional integer
+         array as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFVec3i32 SoShaderParameterArray3i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray4f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray4f class is used to define a four-dimensional floating
+         point array as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFVec4f SoShaderParameterArray4f::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterArray4i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterArray4i class is used to define a four-dimensional integer
+         array as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFVec4i32 SoShaderParameter4i::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterMatrix SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterMatrix class is used to define a matrix as shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoSFMatrix SoShaderParameterMatrix::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderParameterMatrixArray SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderParameterMatrixArray class is used to define a matrix array as 
+         shader parameter.
+  \ingroup shaders
+*/
+
+/*!
+  \var SoMFMatrix SoShaderParameterMatrixArray::value
+
+  The shader parameter value.
+*/
+
+/*!
+  \class SoShaderStateMatrixParameter SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
+  \brief The SoShaderStateMatrixParameter class is used to define a matrix as
+         shader parameter whose content is derived from the traversal state.
+
+  Unlike other parameter classes, SoShaderStateMatrixParameter does not have a
+  value field. The value member is protected and updated automatically from the
+  traversal state.
+
+  \ingroup shaders
+*/
+
+/*!
+  \enum SoShaderStateMatrixParameter::MatrixType
+
+  Defines the different matrix types.
+*/
+
+/*!
+  \var SoSFEnum SoShaderStateMatrixParameter::matrixType
+
+  Defines the matrix type value for the uniform shader variable.
+*/
+
+/*!
+  \enum SoShaderStateMatrixParameter::MatrixTransform
+
+  Defines different transformations that can be applied to a matrix.
+*/
+
+/*!
+  \var SoSFEnum SoShaderStateMatrixParameter::matrixTransform
+
+  Defines a transformation that is applied to the matrix value.
+  The default value of IDENTITY keeps the value unchanged.
+*/
+
+
 #include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 
 #include <assert.h>
 
@@ -305,6 +606,12 @@ void SoShaderStateMatrixParameter::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderStateMatrixParameter,
                               SO_FROM_COIN_2_5|SO_FROM_INVENTOR_5_0);
+
+  SO_ENABLE(SoGLRenderAction, SoModelMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoViewingMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoProjectionMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoTextureUnitElement);
 }
 
 SoShaderStateMatrixParameter::SoShaderStateMatrixParameter(void)
@@ -327,6 +634,8 @@ SoShaderStateMatrixParameter::SoShaderStateMatrixParameter(void)
 
   SO_NODE_ADD_FIELD(matrixTransform, (IDENTITY));
   SO_NODE_SET_SF_ENUM_TYPE(matrixTransform, MatrixTransform);
+
+  value = SbMatrix::identity();
 }
 
 SoShaderStateMatrixParameter::~SoShaderStateMatrixParameter()
@@ -334,43 +643,91 @@ SoShaderStateMatrixParameter::~SoShaderStateMatrixParameter()
 
 }
 
-// State matrices only work with CG!!!
-// FIXME: check up why. 20050125 mortene.
+// State matrices work differently with CG!
 // COMMENT: Because they are only defined in CG (and not in ARB or GLSL)
 //          a state matrix uniform delivers the current GL_MODELVIEW,
 //          GL_PROJECTION,... matrices, which can be also accessed via
 //          glstate.matrix.modelview, glstate.matrix.projection,...
 //          since CG 1.2 (or earlier)
 //                                           -- 20050126 martin.
+//          In ARB or GLSL the matrices are retrieved from the state
+//          in the updateValue() method and then set here as uniform
+//          variables of type matrix.
+//                                           -- 20141129 thomas.
 void
 SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
 {
-  if (shader->shaderType() != SoShader::CG_SHADER) return;
   if (this->name.isDefault()) return;
 
   this->ensureParameter(shader);
 
-  CGGLenum type;
+  if (shader->shaderType() == SoShader::CG_SHADER) {
+    CGGLenum type;
+    switch (this->matrixType.getValue()) {
+    case MODELVIEW: type = CG_GL_MODELVIEW_MATRIX; break;
+    case PROJECTION: type = CG_GL_PROJECTION_MATRIX; break;
+    case TEXTURE: type = CG_GL_TEXTURE_MATRIX; break;
+    case MODELVIEW_PROJECTION: type = CG_GL_MODELVIEW_PROJECTION_MATRIX; break;
+    default: assert(FALSE); break;
+    }
+
+    CGGLenum tform;
+    switch (this->matrixTransform.getValue()) {
+    case IDENTITY: tform = CG_GL_MATRIX_IDENTITY; break;
+    case TRANSPOSE: tform = CG_GL_MATRIX_TRANSPOSE; break;
+    case INVERSE: tform = CG_GL_MATRIX_INVERSE; break;
+    case INVERSE_TRANSPOSE: tform = CG_GL_MATRIX_INVERSE_TRANSPOSE; break;
+    default: assert(FALSE); break;
+    }
+
+    SoGLCgShaderParameter * param = (SoGLCgShaderParameter *)
+      this->getGLShaderParameter(shader->getCacheContext());
+    param->setState(shader, type, tform, this->name.getValue().getString());
+  }
+  else {
+    // if not CG then set the value retrieved from state before
+	this->getGLShaderParameter(shader->getCacheContext())->setMatrix(
+        shader,
+        value,
+        this->name.getValue().getString(),
+        this->identifier.getValue());
+  }
+}
+
+/*!
+ * Updates matrix value from state
+ */
+void
+SoShaderStateMatrixParameter::updateValue(SoState *state)
+{
+  SbMatrix matrix = SbMatrix::identity();
   switch (this->matrixType.getValue()) {
-  case MODELVIEW: type = CG_GL_MODELVIEW_MATRIX; break;
-  case PROJECTION: type = CG_GL_PROJECTION_MATRIX; break;
-  case TEXTURE: type = CG_GL_TEXTURE_MATRIX; break;
-  case MODELVIEW_PROJECTION: type = CG_GL_MODELVIEW_PROJECTION_MATRIX; break;
-  default: assert(FALSE); break;
+    case MODELVIEW: {
+      matrix = SoModelMatrixElement::get(state);
+      matrix.multRight(SoViewingMatrixElement::get(state));
+    } break;
+    case PROJECTION: {
+      matrix = SoProjectionMatrixElement::get(state); 
+    } break;
+    case TEXTURE: {
+      int unit = SoTextureUnitElement::get(state);
+      matrix = SoGLMultiTextureMatrixElement::get(state, unit);
+    } break;
+    case MODELVIEW_PROJECTION: {
+      matrix = SoModelMatrixElement::get(state);
+      matrix.multRight(SoViewingMatrixElement::get(state));
+      matrix.multRight(SoProjectionMatrixElement::get(state)); 
+    } break;
+    default: assert(FALSE); break;
   }
 
-  CGGLenum tform;
   switch (this->matrixTransform.getValue()) {
-  case IDENTITY: tform = CG_GL_MATRIX_IDENTITY; break;
-  case TRANSPOSE: tform = CG_GL_MATRIX_TRANSPOSE; break;
-  case INVERSE: tform = CG_GL_MATRIX_INVERSE; break;
-  case INVERSE_TRANSPOSE: tform = CG_GL_MATRIX_INVERSE_TRANSPOSE; break;
+  case IDENTITY: value = matrix; break;
+  case TRANSPOSE: value = matrix.transpose(); break;
+  case INVERSE: value = matrix.inverse(); break;
+  case INVERSE_TRANSPOSE: value = matrix.inverse().transpose(); break;
   default: assert(FALSE); break;
   }
-
-  SoGLCgShaderParameter * param = (SoGLCgShaderParameter *)
-    this->getGLShaderParameter(shader->getCacheContext());
-  param->setState(shader, type, tform, this->name.getValue().getString());
 }
 
 /* **************************************************************************
