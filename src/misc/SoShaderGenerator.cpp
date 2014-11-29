@@ -35,6 +35,8 @@
   \brief The SoShaderGenerator class is used for simplifying the process of generating shader scripts.
 
   Currently only GLSL scripts are supported.
+
+  \ingroup shaders
 */
 
 #include "misc/SoShaderGenerator.h"
