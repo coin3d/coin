@@ -61,6 +61,7 @@
 
 class SoGLShaderParameter;
 class SoGLShaderObject;
+class SoState;
 
 // *************************************************************************
 
@@ -516,6 +517,12 @@ public:
 
   static void initClass(void);
   virtual void updateParameter(SoGLShaderObject *shaderObject);
+  virtual void updateValue(SoState *state);
+
+protected:
+  // Unlike in other parameter classes, here value is not a field because 
+  // it is updated dynamically from the state.
+  SbMatrix value;
 };
 
 #endif /* ! COIN_SOSHADERPARAMETER_H */
