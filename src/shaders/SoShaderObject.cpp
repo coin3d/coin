@@ -32,8 +32,7 @@
 
 /*!
   \class SoShaderObject SoShaderObject.h Inventor/nodes/SoShaderObject.h
-
-  The SoShaderObject class is the superclass for all shader classes in Coin.
+  \brief The SoShaderObject class is the superclass for all shader classes in Coin.
 
   See \link coin_shaders Shaders in Coin \endlink for more information
   on how to set up a scene graph with shaders.
@@ -206,7 +205,7 @@ public:
   void updateParameters(const uint32_t cachecontext, int start, int num);
   void updateAllParameters(const uint32_t cachecontext);
   void updateCoinParameters(const uint32_t cachecontext, SoState * state);
-  void updateStateMatrixParameters(const uint32_t cachecontext);
+  void updateStateMatrixParameters(const uint32_t cachecontext, SoState * state);
   SbBool containStateMatrixParameters(void) const;
   void setSearchDirectories(const SbStringList & list);
 
@@ -354,7 +353,7 @@ SoShaderObject::updateParameters(SoState * state)
 {
   const uint32_t cachecontext = SoGLCacheContextElement::get(state);
   PRIVATE(this)->updateAllParameters(cachecontext);
-  PRIVATE(this)->updateStateMatrixParameters(cachecontext);
+  PRIVATE(this)->updateStateMatrixParameters(cachecontext, state);
   PRIVATE(this)->updateCoinParameters(cachecontext, state);
 }
 
@@ -716,7 +715,7 @@ SoShaderObjectP::updateAllParameters(const uint32_t cachecontext)
 
 // Update state matrix paramaters
 void
-SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext)
+SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext, SoState *state)
 {
 #define STATE_PARAM SoShaderStateMatrixParameter
   if (!this->owner->isActive.getValue()) return;
@@ -727,8 +726,10 @@ SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext)
   int i, cnt = this->owner->parameter.getNum();
   for (i= 0; i <cnt; i++) {
     STATE_PARAM * param = (STATE_PARAM*)this->owner->parameter[i];
-    if (param->isOfType(STATE_PARAM::getClassTypeId()))
+    if (param->isOfType(STATE_PARAM::getClassTypeId())) {
+      param->updateValue(state);
       param->updateParameter(shaderobject);
+	}
   }
 #undef STATE_PARAM
 }

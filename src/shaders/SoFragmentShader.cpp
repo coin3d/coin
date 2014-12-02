@@ -33,7 +33,7 @@
 /*!
   \class SoFragmentShader SoFragmentShader.h Inventor/nodes/SoFragmentShader.h
   \brief The SoFragmentShader class is used for setting up fragment shader programs.
-  \ingroup nodes
+  \ingroup shaders
 
   See \link coin_shaders Shaders in Coin \endlink for more information
   on how to set up a scene graph with shaders.
