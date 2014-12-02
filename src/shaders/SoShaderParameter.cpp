@@ -668,7 +668,7 @@ SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
     case PROJECTION: type = CG_GL_PROJECTION_MATRIX; break;
     case TEXTURE: type = CG_GL_TEXTURE_MATRIX; break;
     case MODELVIEW_PROJECTION: type = CG_GL_MODELVIEW_PROJECTION_MATRIX; break;
-    default: assert(FALSE); break;
+    default: assert(0 && "illegal shader type"); break;
     }
 
     CGGLenum tform;
@@ -677,7 +677,7 @@ SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
     case TRANSPOSE: tform = CG_GL_MATRIX_TRANSPOSE; break;
     case INVERSE: tform = CG_GL_MATRIX_INVERSE; break;
     case INVERSE_TRANSPOSE: tform = CG_GL_MATRIX_INVERSE_TRANSPOSE; break;
-    default: assert(FALSE); break;
+    default: assert(0 && "illegal matrix transform type"); break;
     }
 
     SoGLCgShaderParameter * param = (SoGLCgShaderParameter *)
@@ -718,7 +718,7 @@ SoShaderStateMatrixParameter::updateValue(SoState *state)
       matrix.multRight(SoViewingMatrixElement::get(state));
       matrix.multRight(SoProjectionMatrixElement::get(state)); 
     } break;
-    default: assert(FALSE); break;
+    default: assert(0 && "illegal matrix type"); break;
   }
 
   switch (this->matrixTransform.getValue()) {
@@ -726,7 +726,7 @@ SoShaderStateMatrixParameter::updateValue(SoState *state)
   case TRANSPOSE: value = matrix.transpose(); break;
   case INVERSE: value = matrix.inverse(); break;
   case INVERSE_TRANSPOSE: value = matrix.inverse().transpose(); break;
-  default: assert(FALSE); break;
+  default: assert(0 && "illegal matrix transform type"); break;
   }
 }
 
