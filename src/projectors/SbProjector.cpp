@@ -238,7 +238,6 @@ SbProjector::verifyProjection(const SbVec3f & projpt) const
     SbPlane eyeplane = this->viewVol.getPlane(0.0f);
     SbVec3f wrld;
     this->workingToWorld.multVecMatrix(projpt, wrld);
-    if (eyeplane.isInHalfSpace(wrld)) return FALSE;
     if (this->viewVol.getNearDist() > 0.0f) {
       if (eyeplane.isInHalfSpace(wrld)) return FALSE;
     } else {
