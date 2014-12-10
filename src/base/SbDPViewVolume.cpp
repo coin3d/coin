@@ -156,13 +156,19 @@ SbDPViewVolume::~SbDPViewVolume(void)
 {
 }
 
-// Orthographic projection matrix. From the "OpenGL Programming Guide,
+// Perspective projection matrix. From the "OpenGL Programming Guide,
 // release 1", Appendix G (but with row-major mode).
 static SbDPMatrix
 get_perspective_projection(const double rightminusleft, const double rightplusleft,
                            const double topminusbottom, const double topplusbottom,
                            const double nearval, const double farval)
 {
+#if COIN_DEBUG
+  if (nearval * farval <= 0.0) {
+    SoDebugError::postWarning("SbDPViewVolume::get_perspective_projection",
+                              "Projection frustrum crosses zero. Rendering is unpredicatable.");
+  }
+#endif // COIN_DEBUG
   SbDPMatrix proj;
 
   proj[0][0] = 2.0*nearval/rightminusleft;
@@ -182,11 +188,27 @@ get_perspective_projection(const double rightminusleft, const double rightplusle
   proj[3][2] = -2.0*farval*nearval/(farval-nearval);
   proj[3][3] = 0.0;
 
+  // special handling for reverse perspective projection (see SoPerspectiveCamera documentation)
+  if (nearval < 0.0) {
+    // OpenGL performs clipping in homogeneous space (before computing the perspective division).
+    // i.e. instead of testing for -1 <= z/w <= +1, it checks for -w <= z <= +w. Both conditions
+    // are only equivalent if w > 0.
+    // In the reverse perspective case the projection matrix above leads to negative w values,
+    // but this can be compensated by multiplying the whole matrix by -1.
+    proj[0][0] *= -1.0;
+    proj[1][1] *= -1.0;
+    proj[2][0] *= -1.0;
+    proj[2][1] *= -1.0;
+    proj[2][2] *= -1.0;
+    proj[2][3] *= -1.0;
+    proj[3][2] *= -1.0;
+  }
+
   return proj;
 }
 
 
-// Perspective projection matrix. From the "OpenGL Programming Guide,
+// Orthographic projection matrix. From the "OpenGL Programming Guide,
 // release 1", Appendix G (but with row-major mode).
 static SbDPMatrix
 get_ortho_projection(const double rightminusleft, const double rightplusleft,
