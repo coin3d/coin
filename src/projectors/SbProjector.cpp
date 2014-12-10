@@ -239,6 +239,12 @@ SbProjector::verifyProjection(const SbVec3f & projpt) const
     SbVec3f wrld;
     this->workingToWorld.multVecMatrix(projpt, wrld);
     if (eyeplane.isInHalfSpace(wrld)) return FALSE;
+    if (this->viewVol.getNearDist() > 0.0f) {
+      if (eyeplane.isInHalfSpace(wrld)) return FALSE;
+    } else {
+      // eye plane for reverse perspective view volume lies behind the scene
+      if (!eyeplane.isInHalfSpace(wrld)) return FALSE;
+    }
   }
   return TRUE;
 }

@@ -196,6 +196,9 @@ SbSphereProjector::isPointInFront(const SbVec3f & point) const
     SbVec3f campos;
     this->worldToWorking.multVecMatrix(vv.getProjectionPoint(), campos);
     camdir = campos - this->sphere.getCenter();
+
+	// projection point for reverse perspective view volume lies behind the scene
+    if (vv.getNearDist() < 0.0f) camdir *= -1.0f;
   }
   else {
     this->worldToWorking.multDirMatrix( vv.zVector(), camdir);
