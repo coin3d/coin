@@ -61,6 +61,16 @@
 // doc. 20020120 mortene.
 
 /*!
+  \typedef void * SbClipCallback(const SbVec3f & v0, void * vdata0, 
+                              const SbVec3f & v1, void * vdata1,
+                              const SbVec3f & newvertex,
+                              void * userdata)
+  
+  The type definition for the callback function when additional data handling per vertex
+  is required.
+*/
+
+/*!
   A constructor. Supply a callback if you need to handle additional
   data per vertex.
 */

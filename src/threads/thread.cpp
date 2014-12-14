@@ -30,6 +30,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_thread common.h Inventor/C/threads/common.h
+
+  The structure for a thread.
+*/
+
+/*!
+  \typedef struct cc_thread cc_thread
+
+  The type definition for the thread structure.
+*/
+
+/*!
+  \enum cc_retval {
+    CC_ERROR = 0,
+    CC_OK = 1,
+    CC_TIMEOUT,
+    CC_BUSY
+  }
+
+  The enumerator for return values of thread related functions.
+*/
+
+/*!
+  \typedef enum cc_retval cc_retval
+
+  The type definition for the return value enumerator.
+*/
+
 /*! \file thread.h */
 #include <Inventor/C/threads/thread.h>
 

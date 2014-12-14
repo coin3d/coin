@@ -30,6 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_fifo common.h Inventor/C/threads/common.h
+
+  The structure for a first-in, first-out queue.
+*/
+
+/*!
+  \typedef struct cc_fifo cc_fifo
+
+  The type definition for the first-in, first-out queue structure.
+*/
+
+/*! \file fifo.h */
 #include <Inventor/C/threads/fifo.h>
 
 #include <stdlib.h>
@@ -96,6 +111,7 @@ cc_fifo_struct_clean(cc_fifo * fifo)
 
 /* ********************************************************************** */
 
+/*! Constructs a new first-in, first-out queue. */
 cc_fifo *
 cc_fifo_new(void)
 {
@@ -105,6 +121,7 @@ cc_fifo_new(void)
   return fifo;
 }
 
+/*! Destroys the \a fifo first-in, first-out queue. */
 void
 cc_fifo_delete(cc_fifo * fifo)
 {
@@ -114,6 +131,8 @@ cc_fifo_delete(cc_fifo * fifo)
 
 /* ********************************************************************** */
 
+/*! Appends the \a ptr of type \a type to the end of the \a fifo
+    first-in, first-out queue. */
 void
 cc_fifo_assign(cc_fifo * fifo, void * ptr, uint32_t type)
 {
@@ -128,6 +147,8 @@ cc_fifo_assign(cc_fifo * fifo, void * ptr, uint32_t type)
   cc_mutex_unlock(&fifo->access);
 }
 
+/*! Retrieves the first item from the \a fifo
+    first-in, first-out queue. */
 void
 cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
 {
@@ -150,6 +171,8 @@ cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
   }
 }
 
+/*! Checks the \a fifo first-in, first-out queue to see if an item can be
+    retrieved. If so the properties of the first available item are returned. */
 SbBool
 cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
 {
@@ -174,6 +197,7 @@ cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
 
 /* ********************************************************************** */
 
+/*! Returns the number of elements in the \a fifo first-in, first-out queue. */
 unsigned int
 cc_fifo_size(cc_fifo * fifo)
 {
@@ -204,6 +228,7 @@ cc_fifo_item_delete(cc_fifo_item * item) /* static */
 
 /* ********************************************************************** */
 
+/*! Locks the \a fifo first-in, first-out queue. */
 void
 cc_fifo_lock(cc_fifo * fifo)
 {
@@ -218,6 +243,7 @@ cc_fifo_try_lock(cc_fifo * fifo)
   return cc_mutex_try_lock(&fifo->access);
 }
 
+/*! Unlocks the \a fifo first-in, first-out queue. */
 void
 cc_fifo_unlock(cc_fifo * fifo)
 {
@@ -227,6 +253,7 @@ cc_fifo_unlock(cc_fifo * fifo)
 
 /* ********************************************************************** */
 
+/*! Returns the properties of the first item in the \a fifo first-in, first-out queue. */
 SbBool
 cc_fifo_peek(cc_fifo * fifo, void ** item, uint32_t * type)
 {
@@ -237,6 +264,7 @@ cc_fifo_peek(cc_fifo * fifo, void ** item, uint32_t * type)
   return TRUE;
 }
 
+/*! Checks if the \a fifo first-in, first-out queue contains the \a itemptr item. */
 SbBool
 cc_fifo_contains(cc_fifo * fifo, void * itemptr)
 {
@@ -250,6 +278,7 @@ cc_fifo_contains(cc_fifo * fifo, void * itemptr)
   return FALSE;
 }
 
+/*! Removes from the \a fifo first-in, first-out queue the \a itemptr item if present. */
 SbBool
 cc_fifo_reclaim(cc_fifo * fifo, void * itemptr)
 {

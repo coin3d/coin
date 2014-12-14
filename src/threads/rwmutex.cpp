@@ -30,6 +30,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_rwmutex common.h Inventor/C/threads/common.h
+
+  The structure for a read-write mutex.
+*/
+
+/*!
+  \typedef struct cc_rwmutex cc_rwmutex
+
+  The type definition for the read-write mutex structure.
+*/
+
+/*!
+  \enum cc_precedence {CC_READ_PRECEDENCE, CC_WRITE_PRECEDENCE}
+  
+  The precedence values for the read-write mutex.
+  CC_READ_PRECEDENCE is the default.
+*/
+
+/*!
+  \typedef enum cc_precedence cc_precedence
+
+  The type definition of the cc_precedence enumerator.
+*/
+
+/*! \file rwmutex.h */
 #include <Inventor/C/threads/rwmutex.h>
 
 #include <stdlib.h>
@@ -81,7 +109,7 @@ cc_rwmutex_struct_clean(cc_rwmutex * rwmutex)
   cc_condvar_struct_clean(&rwmutex->write);
 }
 
-/*
+/*!
   Construct a read-write mutex, with read precedence.
 */
 
@@ -105,7 +133,7 @@ cc_rwmutex_construct(void)
   return rwmutex;
 }
 
-/*
+/*!
   Construct a read-write mutex, with read precedence or write precedence.
 */
 
@@ -120,7 +148,7 @@ cc_rwmutex_construct_etc(enum cc_precedence policy)
   return rwmutex;
 }
 
-/*
+/*!
   Destruct a read-write mutex.
 */
 
@@ -144,8 +172,7 @@ cc_rwmutex_destruct(cc_rwmutex * rwmutex)
 
 /* ********************************************************************** */
 
-/*
-*/
+/*! Locks the specified \a rwmutex for writing. */
 int
 cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
 {
@@ -172,8 +199,7 @@ cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
   return CC_OK;
 } /* cc_rwmutex_write_lock() */
 
-/*
-*/
+/*! Check whether the given \a rwmutex* is available for write locking. */
 
 int
 cc_rwmutex_write_try_lock(cc_rwmutex * rwmutex)
@@ -191,8 +217,7 @@ cc_rwmutex_write_try_lock(cc_rwmutex * rwmutex)
   return CC_BUSY;
 } /* cc_rwmutex_write_try_lock() */
 
-/*
-*/
+/*! Unlock the write lock on the given \a rwmutex. */
 
 int
 cc_rwmutex_write_unlock(cc_rwmutex * rwmutex)
@@ -217,9 +242,7 @@ cc_rwmutex_write_unlock(cc_rwmutex * rwmutex)
   return CC_OK;
 }
 
-/*
-*/
-
+/*! Locks the specified \a rwmutex for reading. */
 int
 cc_rwmutex_read_lock(cc_rwmutex * rwmutex)
 {
@@ -245,8 +268,7 @@ cc_rwmutex_read_lock(cc_rwmutex * rwmutex)
   return CC_OK;
 }
 
-/*
-*/
+/*! Check whether the given \a rwmutex* is available for read locking. */
 
 int
 cc_rwmutex_read_try_lock(cc_rwmutex * rwmutex)
@@ -264,8 +286,7 @@ cc_rwmutex_read_try_lock(cc_rwmutex * rwmutex)
   return CC_BUSY;
 }
 
-/*
-*/
+/*! Unlock the read lock on the given \a rwmutex. */
 
 int
 cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)

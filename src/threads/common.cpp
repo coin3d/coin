@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
 #include <Inventor/C/threads/common.h>
 
 #ifdef HAVE_CONFIG_H
@@ -38,6 +39,25 @@
 
 /* ********************************************************************** */
 
+/*!
+  \enum cc_threads_implementation {
+    CC_NO_THREADS = -1,
+    CC_PTHREAD    = 0,
+    CC_W32THREAD
+  }
+
+  The definition of the enumerator for identification of the thread type implemented.
+*/
+
+/*!
+  \typedef enum cc_threads_implementation cc_threads_implementation
+
+  The type definition for the implemented thread enumerator.
+*/
+
+/* ********************************************************************** */
+
+/*! Returns the implemented thread type. */
 int
 cc_thread_implementation(void)
 {

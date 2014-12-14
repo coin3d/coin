@@ -48,6 +48,7 @@ static SbBool dbgerr_cleanup_function_set = FALSE;
 
 /*!
   \struct cc_debugerror debugerror.h Inventor/C/errors/debugerror.h
+  \typedef struct cc_debugerror cc_debugerror
   \brief The cc_debugerror type is an internal Coin structure for debug error management.
   \ingroup errors
 
@@ -69,6 +70,7 @@ static SbBool dbgerr_cleanup_function_set = FALSE;
 
 /*!
   \enum CC_DEBUGERROR_SEVERITY
+  \typedef enum CC_DEBUGERROR_SEVERITY CC_DEBUGERROR_SEVERITY
 
   Specifies the available severity levels of the debug messages.
 */

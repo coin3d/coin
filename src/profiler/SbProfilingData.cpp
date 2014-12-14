@@ -45,6 +45,27 @@
 
 // *************************************************************************
 
+/*!
+  \typedef void * SbProfilingNodeKey
+
+  Type definition for the key node. This is a void * to ensure
+  that it is not inadvertantly dereferenced.
+*/
+
+/*!
+  \typedef int16_t SbProfilingNodeTypeKey
+
+  Type definition for the key node type.
+*/
+
+/*!
+  \typedef const char * SbProfilingNodeNameKey
+
+  Type definition for the key node name.
+*/
+
+// *************************************************************************
+
 // SbNodeProfilingData - internal structure containing profiling data
 // for one node.
 struct SbNodeProfilingData {

@@ -40,6 +40,21 @@
    20050516 mortene.
 */
 
+/*! \file common.h */
+
+/*!
+  \struct cc_mutex common.h Inventor/C/threads/common.h
+
+  The structure for a mutex.
+*/
+
+/*!
+  \typedef struct cc_mutex cc_mutex
+
+  The type definition for the mutex structure.
+*/
+
+/*! \file mutex.h */
 #include <Inventor/C/threads/mutex.h>
 
 #include <stdlib.h>
@@ -125,6 +140,7 @@ const char * COIN_DEBUG_MUTEX_COUNT = "COIN_DEBUG_MUTEX_COUNT";
 
 /**************************************************************************/
 
+/*! Constructs a mutex. */
 cc_mutex *
 cc_mutex_construct(void)
 {
@@ -145,6 +161,7 @@ cc_mutex_construct(void)
   return mutex;
 }
 
+/*! Destroys the \a mutex specified. */
 void
 cc_mutex_destruct(cc_mutex * mutex)
 {
@@ -165,8 +182,7 @@ cc_mutex_destruct(cc_mutex * mutex)
 
 /**************************************************************************/
 
-/*
-*/
+/*! Locks the the \a mutex specified. */
 void
 cc_mutex_lock(cc_mutex * mutex)
 {
@@ -205,8 +221,7 @@ cc_mutex_lock(cc_mutex * mutex)
   }
 }
 
-/*
-*/
+/*! Tests the specified \a mutex to see it is already locked. */
 
 int
 cc_mutex_try_lock(cc_mutex * mutex)
@@ -225,8 +240,7 @@ cc_mutex_try_lock(cc_mutex * mutex)
   return ok;
 }
 
-/*
-*/
+/*! Unlocks the specified \a mutex.*/
 
 void
 cc_mutex_unlock(cc_mutex * mutex)

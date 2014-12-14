@@ -48,6 +48,20 @@ using std::free;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
+
+/*!
+  \typedef int cc_heap_compare_cb(void * o1, void * o2)
+
+  A type definition for heap compare callback function.
+*/
+
+/*! 
+  \typedef struct cc_heap cc_heap
+
+  A type definition for the cc_heap structure
+*/
+
+/* ********************************************************************** */
 /* private functions */
 
 #define HEAP_PARENT(i) (((i)+1) / 2 - 1)

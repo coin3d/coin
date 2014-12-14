@@ -30,6 +30,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_sched common.h Inventor/C/threads/common.h
+
+  The structure for the thread scheduler.
+*/
+
+/*!
+  \typedef struct cc_sched cc_sched
+
+  The type definition for the thread schduler structure.
+*/
+
 /*! \file sched.h */
 #include <Inventor/C/threads/sched.h>
 
@@ -46,7 +60,12 @@
 /* FIXME: Evaluate if some of the new functionality can be ported back 
    to Coin-2. kintel 20061124. */
 
-#ifndef HAVE_THREADS
+#if (!defined HAVE_THREADS) && (!defined DOXYGEN_SKIP_THIS)
+/* The DOXYGEN_SKIP_THIS define has been added to ensure that doxygen
+   ignores this section and finds the documentation under HAVE_THREADS
+   even though HAVE_THREADS will not have been defined.
+
+   20140918 Roy Walmsley */
 
 /* FIXME: instead of disallowing the use of these completely when
    thread support is not available (that's why there are asserts
@@ -71,7 +90,7 @@ void cc_sched_change_priority(cc_sched * sched,
                               uint32_t schedid, 
                               float priority)  { assert(FALSE); }
 
-#else /* HAVE_THREADS */
+#else /* HAVE_THREADS && DOXYGEN_SKIP_THIS*/
 
 #include <stdlib.h>
 
@@ -81,6 +100,14 @@ void cc_sched_change_priority(cc_sched * sched,
 #include <Inventor/C/threads/wpool.h>
 
 #include "threads/schedp.h"
+
+/* ********************************************************************** */
+
+/*!
+  \typedef void cc_sched_f(void * closure)
+
+  The type definition for the work function called when a thread becomes available.
+*/
 
 /* ********************************************************************** */
 

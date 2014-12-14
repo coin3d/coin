@@ -42,6 +42,20 @@
 
 /* ********************************************************************** */
 
+/*! \file common.h */
+
+/*!
+  \struct cc_storage common.h Inventor/C/threads/common.h
+
+  The structure for the thread local memory storage.
+*/
+
+/*!
+  \typedef struct cc_storage cc_storage
+
+  The type definition for the thread local memory storage structure.
+*/
+
 /*! \file storage.h */
 #include <Inventor/C/threads/storage.h>
 #include "coindefs.h"

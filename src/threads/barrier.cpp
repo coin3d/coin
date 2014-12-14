@@ -30,6 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_barrier common.h Inventor/C/threads/common.h
+
+  The structure for the thread barrier.
+*/
+
+/*!
+  \typedef struct cc_barrier cc_barrier
+
+  The type definition for the thread barrier structure.
+*/
+
+/*! \file barrier.h */
 #include <Inventor/C/threads/barrier.h>
 
 #include <stdlib.h>
@@ -43,8 +58,7 @@
 
 /* ********************************************************************** */
 
-/*
-*/
+/*! Constucts a new thread barrier. */
 
 cc_barrier *
 cc_barrier_construct(unsigned int count)
@@ -58,9 +72,7 @@ cc_barrier_construct(unsigned int count)
   return barrier;
 }
 
-/*
-*/
-
+/*! Destroys the \a barrier thread barrier. */
 void
 cc_barrier_destruct(cc_barrier * barrier)
 {
@@ -72,8 +84,8 @@ cc_barrier_destruct(cc_barrier * barrier)
   free(barrier);
 }
 
-/*
-*/
+/*! Increments the barrier counter. If equal to the number of threads
+    it then enables all the threads to proceed. */
 
 int
 cc_barrier_enter(cc_barrier * barrier)
