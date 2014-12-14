@@ -60,9 +60,48 @@ using std::memset;
 #undef COIN_ALLOW_CC_HASH
 
 /* ********************************************************************** */
+
+/*!
+  \typedef uintptr_t cc_hash_key;
+
+  The type definition used locally for a hash key.
+*/
+
+/*
+  \struct cc_hash hash.h Inventor/C/base/hash.h
+
+  Note that the cc_hash structure has been obsolete and should no longer be
+  used. It is maintained purely for backwards compatability.
+  
+  cc_dict is now the preferred structure.
+*/
+
+/*!
+  \typedef struct cc_hash cc_hash;
+
+  The type definition for the cc_hash structure.
+*/
+
+/*!
+  \typedef cc_hash_key cc_hash_func(const cc_hash_key key)
+
+  A type definition for cc_hash_func function pointers.
+*/
+
+/*!
+  \typedef void cc_hash_apply_func(cc_hash_key key, void * val, void * closure)
+
+  A type definition for cc_hash_apply_func function pointers.
+*/
+
+/* ********************************************************************** */
 /* private functions */
 
 extern "C" {
+
+/*!
+  Private default function - actually does nothing.
+*/
 
 static cc_hash_key
 hash_default_hashfunc(const cc_hash_key key)
@@ -72,6 +111,10 @@ hash_default_hashfunc(const cc_hash_key key)
 
 } // extern "C"
 
+/*!
+  Private function that returns the index for a given key.
+*/
+
 static unsigned int
 hash_get_index(cc_hash * ht, cc_hash_key key)
 {
@@ -79,6 +122,10 @@ hash_get_index(cc_hash * ht, cc_hash_key key)
   key = ht->hashfunc(key);
   return key % ht->size;
 }
+
+/*!
+  Private function to resize the hash table.
+*/
 
 static void
 hash_resize(cc_hash * ht, unsigned int newsize)

@@ -47,6 +47,24 @@ using std::free;
 
 /* ********************************************************************** */
 
+/*!
+  \struct cc_memalloc memalloc.h Inventor/C/base/memalloc.h
+
+  The allocator structure for memory.
+*/
+
+/*!
+  \typedef struct cc_memalloc cc_memalloc
+
+  A type definition for the memory allocator structure.
+*/
+
+/*!
+  \typedef int cc_memalloc_strategy_cb(const int numunits_allocated)
+
+  The type definition for the memory allocator strategy callback function.
+*/
+
 /* internal struct used to store a linked list of free'ed items */
 struct cc_memalloc_free {
   struct cc_memalloc_free * next;
@@ -229,7 +247,7 @@ default_strategy(const int numunits_allocated)
 } // extern "C"
 
 /*!
-  Sets the allocator strategy callback. \cb should be a function that
+  Sets the allocator strategy callback. \c cb should be a function that
   returns the number of units to allocated in a block, based on the
   number of units currently allocated.
 

@@ -30,6 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_recmutex common.h Inventor/C/threads/common.h
+
+  The structure for the recursive mutex.
+*/
+
+/*!
+  \typedef struct cc_recmutex cc_recmutex
+
+  The type definition for the recursive mutex structure.
+*/
+
+/*! \file recmutex.h */
 #include <Inventor/C/threads/recmutex.h>
 
 #include <stdlib.h>
@@ -78,9 +93,7 @@ cc_recmutex_struct_clean(cc_recmutex * recmutex)
   cc_condvar_struct_clean(&recmutex->condvar);
 }
 
-/*
-  Construct a recursive mutex.
-*/
+/*! Constructs a recursive mutex. */
 
 cc_recmutex *
 cc_recmutex_construct(void)
@@ -103,9 +116,7 @@ cc_recmutex_construct(void)
 }
 
 
-/*
-  Destruct a recursive mutex.
-*/
+/*! Destroys the recursive mutex \a recmutex. */
 
 void
 cc_recmutex_destruct(cc_recmutex * recmutex)
@@ -162,9 +173,7 @@ static int recmutex_lock_internal(cc_recmutex * recmutex, int wait)
   return level;  
 }
 
-/*
-  Lock a recursive mutex. Returns the nesting level.
-*/
+/*! Locks the recursive mutex \a recmutex. Returns the nesting level. */
 
 int
 cc_recmutex_lock(cc_recmutex * recmutex)
@@ -172,19 +181,16 @@ cc_recmutex_lock(cc_recmutex * recmutex)
   return recmutex_lock_internal(recmutex, TRUE);
 }
 
-/*
-  Attempts to lock a recursive mutex. Returns TRUE if thread got the lock
-  or already had the lock.
-*/
+/*! Attempts to lock the recursive mutex \a recmutex. Returns TRUE if
+    thread got the lock or already had the lock. */
 int 
 cc_recmutex_try_lock(cc_recmutex * recmutex)
 {
   return recmutex_lock_internal(recmutex, FALSE) >= 0;
 }
 
-/*
-  Unlock a recursive mutex. Returns the nesting level after unlock.
-*/
+/*! Unlocks the recursive mutex \a recmutex. Returns the nesting level
+    after unlocking. */
 
 int
 cc_recmutex_unlock(cc_recmutex * recmutex)

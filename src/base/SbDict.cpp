@@ -39,6 +39,31 @@
   An entry consists of an unique key and a generic pointer.
 */
 
+/*!
+  \typedef uintptr_t SbDictKeyType
+
+  The type definition for a dictionary key.
+*/
+
+/*!
+  \typedef void SbDictApplyFunc(SbDictKeyType key, void * value)
+
+  The type definition of the function to be applied to each entry.
+*/
+
+/*!
+  \typedef void SbDictApplyDataFunc(SbDictKeyType key, void * value, void * data)
+
+  The type definition of the function with associated data that is to be
+  applied to each entry.
+*/
+
+/*!
+  \typedef SbDictKeyType SbDictHashingFunc(const SbDictKeyType key)
+
+  The type definition of a dictionary hashing function.
+*/
+
 // *************************************************************************
 
 #define COIN_ALLOW_SBDICT

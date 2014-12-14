@@ -149,6 +149,14 @@ const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
 const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY = "COIN_PROFILER_OVERLAY";
 #endif // DOXYGEN_SKIP_THIS
 
+/*!*************************************************************************
+  \typedef void SoDBHeaderCB(void * data, SoInput * input)
+
+  The type definition for the both pre and post callback functions that may be
+  specified for user defined headers. Note that for all internally defined headers
+  no callback functions are used.
+*/
+
 // *************************************************************************
 
 static SbString * coin_versionstring = NULL;

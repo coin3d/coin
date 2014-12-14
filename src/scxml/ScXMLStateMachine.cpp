@@ -80,6 +80,25 @@
 
 // *************************************************************************
 
+/*!
+  \typedef void ScXMLStateMachineDeleteCB(void * userdata, ScXMLStateMachine * statemachine);
+
+  This is the type definition for all callback functions to be invoked when a state machine
+  is deleted.
+
+  \typedef void ScXMLParallelStateChangeCB(void * userdata,
+                                        ScXMLStateMachine * statemachine,
+                                        int numstates,
+                                        const char ** stateidentifiers,
+                                        SbBool enterstate,
+                                        SbBool success);
+
+  This typedef is currently unused.
+
+*/
+									
+// *************************************************************************
+
 struct EventInfo {
   const ScXMLEvent * eventptr;
   SbBool deallocate;

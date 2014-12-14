@@ -43,16 +43,15 @@
   complex, due to it's non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
-  directory of Kongsberg Oil & Gas Technologies's SoGuiExamples
-  Mercurial repository. Further information and links for downloading
-  and building this module should be available at <a
-  href="http://www.coin3d.org">www.coin3d.org</a>.
+  directory of the SoGuiExamples Mercurial repository. Further information and
+  links for downloading and building this module should be available at <a
+  href="https://bitbucket.org/Coin3D/soguiexamples">bitbucket.org/Coin3D/soguiexamples</a>.
 
   This node class is an extension versus the original SGI Inventor
-  v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
+  v2.1 API. It is based on the API of VSG (was TGS) Inventor's SoExtSelection,
   and we aim to be fully compatible with this node to enable users to
-  switch between using Coin and TGS Inventor.  Please contact us if
-  you find discrepancies between Coin's SoExtSelection and TGS's
+  switch between using Coin and VSG Inventor.  Please contact us if
+  you find discrepancies between Coin's SoExtSelection and VSG's
   SoExtSelection node.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -69,7 +68,7 @@
     }
   \endcode
 
-  \since TGS Inventor 2.5
+  \since VSG Inventor 2.5
   \since Coin 1.0
 */
 

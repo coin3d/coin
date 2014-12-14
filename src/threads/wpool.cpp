@@ -30,6 +30,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_wpool common.h Inventor/C/threads/common.h
+
+  The structure for a worker pool.
+*/
+
+/*!
+  \typedef struct cc_wpool cc_wpool
+
+  The type definition for a worker pool structure.
+*/
+
 /*! \file wpool.h */
 #include <Inventor/C/threads/wpool.h>
 

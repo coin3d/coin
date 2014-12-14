@@ -30,6 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file common.h */
+
+/*!
+  \struct cc_condvar common.h Inventor/C/threads/common.h
+
+  The structure for a conditional variable.
+*/
+
+/*!
+  \typedef struct cc_condvar cc_condvar
+
+  The type definition for the conditional variable structure.
+*/
+
+/*! \file condvar.h */
 #include <Inventor/C/threads/condvar.h>
 
 #include <stdlib.h>
@@ -83,8 +98,7 @@ cc_condvar_struct_clean(cc_condvar * condvar_struct)
 
 /* ********************************************************************** */
 
-/*
-*/
+/*! Constructs a conditional variable. */
 
 cc_condvar *
 cc_condvar_construct(void)
@@ -96,8 +110,7 @@ cc_condvar_construct(void)
   return condvar;
 }
 
-/*
-*/
+/*! Destroys the given \a condvar. */
 
 void
 cc_condvar_destruct(cc_condvar * condvar)
@@ -107,8 +120,8 @@ cc_condvar_destruct(cc_condvar * condvar)
   free(condvar);
 }
 
-/*
-*/
+/*! Wait indefinitely for the \a condvar conditional variable
+    using the specified \a mutex lock. */
 
 int
 cc_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
@@ -120,8 +133,8 @@ cc_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
   return ok;
 }
 
-/*
-*/
+/*! Wait for no more than the \a period for the \a condvar
+    conditional variable using the specified \a mutex lock. */
 
 int
 cc_condvar_timed_wait(cc_condvar * condvar,
@@ -135,8 +148,7 @@ cc_condvar_timed_wait(cc_condvar * condvar,
   return ret;
 }
 
-/*
-*/
+/*! Wake one thread waiting for the \a condvar conditional variable. */
 
 void
 cc_condvar_wake_one(cc_condvar * condvar)
@@ -147,8 +159,8 @@ cc_condvar_wake_one(cc_condvar * condvar)
   assert(ok == CC_OK);
 }
 
-/*
-*/
+/*! Wake all threads waiting for the \a condvar conditional variable. */
+
 void
 cc_condvar_wake_all(cc_condvar * condvar)
 {

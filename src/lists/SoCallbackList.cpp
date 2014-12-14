@@ -48,6 +48,15 @@
 #endif // COIN_DEBUG
 
 /*!
+  \typedef void SoCallbackListCB(void * userdata, void * callbackdata)
+
+  The type definition for callback functions. The \a userdata is supplied
+  alongside the function pointer when it is added to the list. When the
+  callback is invoked the specific \a userdata for that function is supplied,
+  as well as the \a callbackdata that is sent to all functions invoked.
+*/
+
+/*!
   Default constructor.
 */
 SoCallbackList::SoCallbackList(void)

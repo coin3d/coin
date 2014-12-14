@@ -46,6 +46,21 @@
 // 20001026 mortene (original comment by pederb).
 
 /*! \file SbImage.h */
+
+/*!
+  \typedef SbBool SbImageScheduleReadCB(const SbString &, SbImage *, void *)
+
+  The type definition of the callback function that is called when a file is
+  scheduled for reading.
+*/
+
+/*!
+  \typedef SbBool SbImageReadImageCB(const SbString &, SbImage *, void *)
+
+  The type definition of the callback function that is called to actually
+  read the image file.
+*/
+
 #include <Inventor/SbImage.h>
 
 #include <cstring>

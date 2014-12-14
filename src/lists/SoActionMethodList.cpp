@@ -82,6 +82,12 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
+/*!
+  \typedef void (* SoActionMethod)(SoAction *, SoNode *)
+
+  The type definition for all action method functions.
+*/
+
 #define PRIVATE(obj) ((obj)->pimpl)
 
 /*!

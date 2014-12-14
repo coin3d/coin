@@ -68,6 +68,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/C/glue/spidermonkey.h
                          ${path_tag}${coin_src_dir}/include/Inventor/collision/SoIntersectionDetectionAction.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/threads/barrier.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/C/threads/common.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/threads/condvar.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/threads/fifo.h
                          ${path_tag}${coin_src_dir}/include/Inventor/C/threads/mutex.h
@@ -1523,6 +1524,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/soscxml/SoScXMLEvent.cpp
                          ${path_tag}${coin_src_dir}/src/soscxml/SoScXMLStateMachine.cpp
                          ${path_tag}${coin_src_dir}/src/threads/barrier.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/common.cpp
                          ${path_tag}${coin_src_dir}/src/threads/condvar.cpp
                          ${path_tag}${coin_src_dir}/src/threads/fifo.cpp
                          ${path_tag}${coin_src_dir}/src/threads/mutex.cpp

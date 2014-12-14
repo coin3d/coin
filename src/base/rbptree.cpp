@@ -57,6 +57,32 @@ using std::malloc;
 using std::free;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
+/* ********************************************************************** */
+
+/*!
+  \typedef struct cc_rbptree_node cc_rbptree_node
+
+  The type definition for the rbptree node structure.
+*/
+
+/*
+  \struct cc_rbptree rbptree.h Inventor/C/base/rbptree.h
+
+  The structure for the whole rbptree.
+*/
+
+/*!
+  \typedef struct cc_rbptree cc_rbptree
+
+  The type definition for the whole rbptree structure.
+*/
+
+/*!
+  \typedef void cc_rbptree_traversecb(void * p, void * data, void * closure)
+
+  The type definition for a tree traversal callback function.
+*/
+
 static const int RBPTREE_RED = 0;
 static const int RBPTREE_BLACK = 1;
 
@@ -83,7 +109,7 @@ rbptree_atexit_cleanup(void)
 }  // extern "C"
 
 /*
- * left-rotate the subgrap under node 'x'.
+ * left-rotate the subgrap under node \c x.
  */
 static void
 rbptree_left_rotate(cc_rbptree * t, cc_rbptree_node * x)
@@ -117,7 +143,7 @@ rbptree_left_rotate(cc_rbptree * t, cc_rbptree_node * x)
 }
 
 /*
- * right-rotate the subgrap under node 'y'.
+ * right-rotate the subgrap under node \c y.
  */
 static void
 rbptree_right_rotate(cc_rbptree * t, cc_rbptree_node * y)
@@ -354,7 +380,7 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
 }
 
 /*!
- * Initialize \a t. This is needed before making any operations
+ * Initialize \c t. This is needed before making any operations
  * on the tree.
  */
 void
@@ -377,7 +403,7 @@ cc_rbptree_init(cc_rbptree * t)
 }
 
 /*
- * recurively delete the x subgraph.
+ * recurively delete the \c x subgraph.
  */
 static void
 rbptree_recursive_clean(cc_rbptree_node * x)
@@ -391,7 +417,7 @@ rbptree_recursive_clean(cc_rbptree_node * x)
 }
 
 /*!
- * Delete all nodes in \t. After this call, the tree will
+ * Delete all nodes in \c t. After this call, the tree will
  * be reinitialized to an empty tree.
  */
 void
@@ -406,7 +432,7 @@ cc_rbptree_clean(cc_rbptree * t)
 
 
 /*!
- * Insert a new value \a p into \a t.
+ * Insert a new value \c p into \c t.
  */
 void
 cc_rbptree_insert(cc_rbptree * t, void * p, void * data)
@@ -527,7 +553,7 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
 }
 
 /*!
- * Remove the (first) node with value \a p. Returns \e TRUE if \a p
+ * Remove the (first) node with value \c p. Returns \e TRUE if \c p
  * is found and removed, \e FALSE otherwise.
  */
 SbBool
@@ -575,6 +601,9 @@ rbptree_rec_traverse(cc_rbptree_node * x, cc_rbptree_traversecb * func, void * c
   if (x->right != nil) rbptree_rec_traverse(x->right, func, closure);
 }
 
+/*!
+  Traverse the tree \c t
+*/
 void
 cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure)
 {
