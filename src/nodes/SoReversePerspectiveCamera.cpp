@@ -85,12 +85,12 @@ SO_NODE_SOURCE(SoReversePerspectiveCamera);
 */
 SoReversePerspectiveCamera::SoReversePerspectiveCamera()
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoReversePerspectiveCamera);
 
   this->position.setValue (0.0f, 0.0f, -10.0f);
   this->position.setDefault (TRUE);
 
-  this->orientation.setValue (0.0f, 0.0f, 1.0f, 3.14159f);
+  this->orientation.setValue (SbVec3f(0.0f, 0.0f, 1.0f), 3.14159f);
   this->orientation.setDefault (TRUE);
 
   this->nearDistance.setValue (-10.0f);
