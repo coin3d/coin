@@ -642,6 +642,7 @@ del %COINDIR%\include\Inventor\nodes\SoProfileCoordinate2.h
 del %COINDIR%\include\Inventor\nodes\SoProfileCoordinate3.h
 del %COINDIR%\include\Inventor\nodes\SoQuadMesh.h
 del %COINDIR%\include\Inventor\nodes\SoResetTransform.h
+del %COINDIR%\include\Inventor\nodes\SoReversePerspectiveCamera.h
 del %COINDIR%\include\Inventor\nodes\SoRotation.h
 del %COINDIR%\include\Inventor\nodes\SoRotationXYZ.h
 del %COINDIR%\include\Inventor\nodes\SoRotor.h
