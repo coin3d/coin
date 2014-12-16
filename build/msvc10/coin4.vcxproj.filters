@@ -2222,6 +2222,9 @@
     <ClCompile Include="..\..\src\nodes\SoResetTransform.cpp">
       <Filter>Source Files\nodes sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nodes\SoReversePerspectiveCamera.cpp">
+      <Filter>Source Files\nodes sources</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\nodes\SoRotation.cpp">
       <Filter>Source Files\nodes sources</Filter>
     </ClCompile>
@@ -5027,6 +5030,9 @@
       <Filter>Inventor%255cnodes headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\Inventor\nodes\SoResetTransform.h">
+      <Filter>Inventor%255cnodes headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Inventor\nodes\SoReversePerspectiveCamera.h">
       <Filter>Inventor%255cnodes headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\Inventor\nodes\SoRotation.h">

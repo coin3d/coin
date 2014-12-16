@@ -899,6 +899,7 @@
 		E0FC4F400D92D50900EF3BB3 /* SoProfileCoordinate2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A720D92D50400EF3BB3 /* SoProfileCoordinate2.cpp */; };
 		E0FC4F410D92D50900EF3BB3 /* SoProfileCoordinate3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A730D92D50400EF3BB3 /* SoProfileCoordinate3.cpp */; };
 		E0FC4F420D92D50900EF3BB3 /* SoResetTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A740D92D50400EF3BB3 /* SoResetTransform.cpp */; };
+		E0FC4F3B0D92D50900EF3BB3 /* SoReversePerspectiveCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A6D0D92D50400EF3BB3 /* SoReversePerspectiveCamera.cpp */; };
 		E0FC4F430D92D50900EF3BB3 /* SoRotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A750D92D50400EF3BB3 /* SoRotation.cpp */; };
 		E0FC4F440D92D50900EF3BB3 /* SoRotationXYZ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A760D92D50400EF3BB3 /* SoRotationXYZ.cpp */; };
 		E0FC4F450D92D50900EF3BB3 /* SoRotor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FC4A770D92D50400EF3BB3 /* SoRotor.cpp */; };
@@ -3173,6 +3174,7 @@
 		E0FC4A720D92D50400EF3BB3 /* SoProfileCoordinate2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoProfileCoordinate2.cpp; sourceTree = "<group>"; };
 		E0FC4A730D92D50400EF3BB3 /* SoProfileCoordinate3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoProfileCoordinate3.cpp; sourceTree = "<group>"; };
 		E0FC4A740D92D50400EF3BB3 /* SoResetTransform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoResetTransform.cpp; sourceTree = "<group>"; };
+		E0FC4A6D0D92D50400EF3BB3 /* SoReversePerspectiveCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoReversePerspectiveCamera.cpp; sourceTree = "<group>"; };
 		E0FC4A750D92D50400EF3BB3 /* SoRotation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoRotation.cpp; sourceTree = "<group>"; };
 		E0FC4A760D92D50400EF3BB3 /* SoRotationXYZ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoRotationXYZ.cpp; sourceTree = "<group>"; };
 		E0FC4A770D92D50400EF3BB3 /* SoRotor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoRotor.cpp; sourceTree = "<group>"; };
@@ -6442,6 +6444,7 @@
 				E0FC4A720D92D50400EF3BB3 /* SoProfileCoordinate2.cpp */,
 				E0FC4A730D92D50400EF3BB3 /* SoProfileCoordinate3.cpp */,
 				E0FC4A740D92D50400EF3BB3 /* SoResetTransform.cpp */,
+				E0FC4A6D0D92D50400EF3BB3 /* SoReversePerspectiveCamera.cpp */,
 				E0FC4A750D92D50400EF3BB3 /* SoRotation.cpp */,
 				E0FC4A760D92D50400EF3BB3 /* SoRotationXYZ.cpp */,
 				E0FC4A770D92D50400EF3BB3 /* SoRotor.cpp */,
@@ -7842,6 +7845,7 @@
 				E0FC4F400D92D50900EF3BB3 /* SoProfileCoordinate2.cpp in Sources */,
 				E0FC4F410D92D50900EF3BB3 /* SoProfileCoordinate3.cpp in Sources */,
 				E0FC4F420D92D50900EF3BB3 /* SoResetTransform.cpp in Sources */,
+				E0FC4F3B0D92D50900EF3BB3 /* SoReversePerspectiveCamera.cpp in Sources */,
 				E0FC4F430D92D50900EF3BB3 /* SoRotation.cpp in Sources */,
 				E0FC4F440D92D50900EF3BB3 /* SoRotationXYZ.cpp in Sources */,
 				E0FC4F450D92D50900EF3BB3 /* SoRotor.cpp in Sources */,

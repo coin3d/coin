@@ -8068,6 +8068,19 @@ SOURCE=..\..\src\nodes\SoResetTransform.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\nodes\SoReversePerspectiveCamera.cpp
+!IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
+# PROP Intermediate_Dir "Release\nodes"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 DLL (Debug)"
+# PROP Intermediate_Dir "Debug\nodes"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Release)"
+# PROP Intermediate_Dir "StaticRelease\nodes"
+!ELSEIF  "$(CFG)" == "coin4 - Win32 LIB (Debug)"
+# PROP Intermediate_Dir "StaticDebug\nodes"
+!ENDIF
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\nodes\SoRotation.cpp
 !IF  "$(CFG)" == "coin4 - Win32 DLL (Release)"
 # PROP Intermediate_Dir "Release\nodes"
@@ -14633,6 +14646,10 @@ SOURCE=..\..\include\Inventor\nodes\SoQuadMesh.h
 # Begin Source File
 
 SOURCE=..\..\include\Inventor\nodes\SoResetTransform.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\Inventor\nodes\SoReversePerspectiveCamera.h
 # End Source File
 # Begin Source File
 
