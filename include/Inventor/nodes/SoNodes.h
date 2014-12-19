@@ -36,6 +36,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoReversePerspectiveCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoFrustumCamera.h>
 #include <Inventor/nodes/SoShape.h>
