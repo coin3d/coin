@@ -252,7 +252,7 @@ glyph2d_specmatch(const cc_font_specification * spec1,
 
   if ((!cc_string_compare(&spec1->name, &spec2->name)) &&
       (!cc_string_compare(&spec1->style, &spec2->style)) &&
-      (spec1->size == spec2->size)) {
+      (int(spec1->size) == int(spec2->size))) {
     /* No need to compare complexity for 2D fonts */
     return TRUE;
   }
