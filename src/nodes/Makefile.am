@@ -52,6 +52,7 @@ RegularSources = \
 	SoPathSwitch.cpp \
 	SoPendulum.cpp \
 	SoPerspectiveCamera.cpp \
+	SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp \
 	SoPointLight.cpp \
 	SoPolygonOffset.cpp \
