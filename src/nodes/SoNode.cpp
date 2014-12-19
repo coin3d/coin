@@ -543,6 +543,7 @@ SoNode::initClasses(void)
 {
   SoCamera::initClass();
   SoPerspectiveCamera::initClass();
+  SoReversePerspectiveCamera::initClass();
   SoOrthographicCamera::initClass();
   SoFrustumCamera::initClass();
   SoShape::initClass();
