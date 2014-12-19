@@ -1275,18 +1275,20 @@ SoVRMLExtrusionP::generateCoords(void)
       this->tcoord.append(c);
     }
 
-    if (PUBLIC(this)->convex.getValue()) {
+	int offset = PUBLIC(this)->beginCap.getValue() ? 1 : 0;
+
+	if (PUBLIC(this)->convex.getValue()) {
       for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
-        ADD_TRIANGLE(numspine+1, numcross-1,
-                     numspine+1, numcross-1-i,
-                     numspine+1, numcross-2-i);
+        ADD_TRIANGLE(numspine+offset, numcross-1,
+                     numspine+offset, numcross-1-i,
+                     numspine+offset, numcross-2-i);
       }
     }
     else {
       // let the tesselator create triangles
       this->tess.beginPolygon(FALSE);
       for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
-        int theidx = (numspine+1)*numcross + numcross - 1 - i;
+        int theidx = (numspine+offset)*numcross + numcross - 1 - i;
         SbVec3f tc;
         tc.setValue(cross[(numcross-1)-i][0],
                     cross[(numcross-1)-i][1],
