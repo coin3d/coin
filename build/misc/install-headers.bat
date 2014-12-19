@@ -641,6 +641,7 @@ copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoProfile.h %COINDIR%\include\Inv
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoProfileCoordinate2.h %COINDIR%\include\Inventor\nodes\SoProfileCoordinate2.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoProfileCoordinate3.h %COINDIR%\include\Inventor\nodes\SoProfileCoordinate3.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoQuadMesh.h %COINDIR%\include\Inventor\nodes\SoQuadMesh.h >nul:
+copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoReversePerspectiveCamera.h %COINDIR%\include\Inventor\nodes\SoReversePerspectiveCamera.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoResetTransform.h %COINDIR%\include\Inventor\nodes\SoResetTransform.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoRotation.h %COINDIR%\include\Inventor\nodes\SoRotation.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\nodes\SoRotationXYZ.h %COINDIR%\include\Inventor\nodes\SoRotationXYZ.h >nul:

@@ -1289,6 +1289,7 @@ INPUT                  = .\include\Inventor\C\basic.h \ \
                          ..\..\include\Inventor\nodes\SoProfile.h \
                          ..\..\include\Inventor\nodes\SoQuadMesh.h \
                          ..\..\include\Inventor\nodes\SoResetTransform.h \
+                         ..\..\include\Inventor\nodes\SoReversePerspectiveCamera.h \
                          ..\..\include\Inventor\nodes\SoRotation.h \
                          ..\..\include\Inventor\nodes\SoRotationXYZ.h \
                          ..\..\include\Inventor\nodes\SoRotor.h \
@@ -2116,6 +2117,7 @@ INPUT                  = .\include\Inventor\C\basic.h \ \
                          ..\..\src\nodes\SoProfileCoordinate3.cpp \
                          ..\..\src\nodes\SoProfile.cpp \
                          ..\..\src\nodes\SoResetTransform.cpp \
+                         ..\..\src\nodes\SoReversePerspectiveCamera.cpp \
                          ..\..\src\nodes\SoRotation.cpp \
                          ..\..\src\nodes\SoRotationXYZ.cpp \
                          ..\..\src\nodes\SoRotor.cpp \
