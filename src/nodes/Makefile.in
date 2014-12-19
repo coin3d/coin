@@ -109,7 +109,7 @@ am__nodes_lst_SOURCES_DIST = SoAlphaTest.cpp SoAnnotation.cpp SoAntiSquish.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
+	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp \
 	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
@@ -155,7 +155,7 @@ am__objects_1 = SoAlphaTest.$(OBJEXT) SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJE
 	SoNormalBinding.$(OBJEXT) SoNurbsProfile.$(OBJEXT) \
 	SoOrthographicCamera.$(OBJEXT) SoPackedColor.$(OBJEXT) \
 	SoPathSwitch.$(OBJEXT) SoPendulum.$(OBJEXT) \
-	SoPerspectiveCamera.$(OBJEXT) SoPickStyle.$(OBJEXT) \
+	SoPerspectiveCamera.$(OBJEXT) SoReversePerspectiveCamera.$(OBJEXT) SoPickStyle.$(OBJEXT) \
 	SoPointLight.$(OBJEXT) SoPolygonOffset.$(OBJEXT) \
 	SoProfile.$(OBJEXT) SoProfileCoordinate2.$(OBJEXT) \
 	SoProfileCoordinate3.$(OBJEXT) SoResetTransform.$(OBJEXT) \
@@ -207,7 +207,7 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
+	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp \
 	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
@@ -250,7 +250,7 @@ am__libnodes_la_SOURCES_DIST = SoAlphaTest.cpp SoAnnotation.cpp SoAntiSquish.cpp
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
+	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp \
 	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
@@ -289,7 +289,7 @@ am__objects_6 = SoAlphaTest.lo SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 	SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo SoNormal.lo \
 	SoNormalBinding.lo SoNurbsProfile.lo SoOrthographicCamera.lo \
 	SoPackedColor.lo SoPathSwitch.lo SoPendulum.lo \
-	SoPerspectiveCamera.lo SoPickStyle.lo SoPointLight.lo \
+	SoPerspectiveCamera.lo SoReversePerspectiveCamera.lo SoPickStyle.lo SoPointLight.lo \
 	SoPolygonOffset.lo SoProfile.lo SoProfileCoordinate2.lo \
 	SoProfileCoordinate3.lo SoResetTransform.lo SoRotation.lo \
 	SoRotationXYZ.lo SoRotor.lo SoScale.lo SoSceneTexture2.lo \
@@ -331,7 +331,7 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSubNodeP.h SoUnknownNode.h \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
+	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp \
 	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
@@ -371,7 +371,7 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAlphaTest.cpp SoAnnotation.cpp 
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
+	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp \
 	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
@@ -413,7 +413,7 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoSubNodeP.h \
 	SoMatrixTransform.cpp SoMultipleCopy.cpp SoNode.cpp \
 	SoNormal.cpp SoNormalBinding.cpp SoNurbsProfile.cpp \
 	SoOrthographicCamera.cpp SoPackedColor.cpp SoPathSwitch.cpp \
-	SoPendulum.cpp SoPerspectiveCamera.cpp SoPickStyle.cpp \
+	SoPendulum.cpp SoPerspectiveCamera.cpp SoReversePerspectiveCamera.cpp SoPickStyle.cpp \
 	SoPointLight.cpp SoPolygonOffset.cpp SoProfile.cpp \
 	SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
@@ -528,6 +528,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoPendulum.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPerspectiveCamera.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPerspectiveCamera.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoReversePerspectiveCamera.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoReversePerspectiveCamera.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPickStyle.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPickStyle.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPointLight.Plo \
@@ -958,6 +960,7 @@ RegularSources = \
 	SoPathSwitch.cpp \
 	SoPendulum.cpp \
 	SoPerspectiveCamera.cpp \
+	SoReversePerspectiveCamera.cpp \
 	SoPickStyle.cpp \
 	SoPointLight.cpp \
 	SoPolygonOffset.cpp \
@@ -1251,6 +1254,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPendulum.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPerspectiveCamera.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPerspectiveCamera.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoReversePerspectiveCamera.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoReversePerspectiveCamera.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPickStyle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPickStyle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPointLight.Plo@am__quote@

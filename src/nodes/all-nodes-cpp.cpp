@@ -80,6 +80,7 @@
 #include "SoPathSwitch.cpp"
 #include "SoPendulum.cpp"
 #include "SoPerspectiveCamera.cpp"
+#include "SoReversePerspectiveCamera.cpp"
 #include "SoPickStyle.cpp"
 #include "SoPointLight.cpp"
 #include "SoPolygonOffset.cpp"
