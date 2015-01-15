@@ -345,6 +345,7 @@ SoSelection::init(void)
   SO_NODE_DEFINE_ENUM_VALUE(Policy, SINGLE);
   SO_NODE_DEFINE_ENUM_VALUE(Policy, TOGGLE);
   SO_NODE_DEFINE_ENUM_VALUE(Policy, SHIFT);
+  SO_NODE_DEFINE_ENUM_VALUE(Policy, DISABLE);
   SO_NODE_SET_SF_ENUM_TYPE(policy, Policy);
 
   this->selCBList = new SoCallbackList;
