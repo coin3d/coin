@@ -57,7 +57,7 @@ public:
   SoSelection(void);
 
   enum Policy {
-    SINGLE, TOGGLE, SHIFT
+    SINGLE, TOGGLE, SHIFT, DISABLE
   };
 
   SoSFEnum policy;
