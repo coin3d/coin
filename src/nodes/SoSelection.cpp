@@ -212,6 +212,10 @@
   Same as SINGLE, but when shift key is pressed the selection policy
   will be changed to TOGGLE.
 */
+/*!
+  \var SoSelection::Policy SoSelection::DISABLE
+  Disables selection handling.
+*/
 
 
 /*!
@@ -341,6 +345,7 @@ SoSelection::init(void)
   SO_NODE_DEFINE_ENUM_VALUE(Policy, SINGLE);
   SO_NODE_DEFINE_ENUM_VALUE(Policy, TOGGLE);
   SO_NODE_DEFINE_ENUM_VALUE(Policy, SHIFT);
+  SO_NODE_DEFINE_ENUM_VALUE(Policy, DISABLE);
   SO_NODE_SET_SF_ENUM_TYPE(policy, Policy);
 
   this->selCBList = new SoCallbackList;
@@ -718,6 +723,9 @@ void
 SoSelection::invokeSelectionPolicy(SoPath * path,
                                    SbBool shiftdown)
 {
+  if (this->policy.getValue() == SoSelection::DISABLE)
+    return;
+
   SbBool toggle = this->policy.getValue() == SoSelection::TOGGLE ||
     (this->policy.getValue() == SoSelection::SHIFT && shiftdown);
 
