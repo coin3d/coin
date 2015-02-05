@@ -523,6 +523,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoProfile.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoQuadMesh.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoResetTransform.h
+                         ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoPerspectiveCamera.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoRotation.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoRotationXYZ.h
                          ${path_tag}${coin_src_dir}/include/Inventor/nodes/SoRotor.h
@@ -1350,6 +1351,7 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/nodes/SoProfileCoordinate3.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoProfile.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoResetTransform.cpp
+                         ${path_tag}${coin_src_dir}/src/nodes/SoReversePerspectiveCamera.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoRotation.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoRotationXYZ.cpp
                          ${path_tag}${coin_src_dir}/src/nodes/SoRotor.cpp
