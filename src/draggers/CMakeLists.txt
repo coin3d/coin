@@ -1,0 +1,24 @@
+add_library(draggers OBJECT
+	SoDragger.cpp
+	SoCenterballDragger.cpp
+	SoDirectionalLightDragger.cpp
+	SoDragPointDragger.cpp
+	SoHandleBoxDragger.cpp
+	SoJackDragger.cpp
+	SoPointLightDragger.cpp
+	SoRotateCylindricalDragger.cpp
+	SoRotateDiscDragger.cpp
+	SoRotateSphericalDragger.cpp
+	SoScale1Dragger.cpp
+	SoScale2Dragger.cpp
+	SoScale2UniformDragger.cpp
+	SoScaleUniformDragger.cpp
+	SoSpotLightDragger.cpp
+	SoTabBoxDragger.cpp
+	SoTabPlaneDragger.cpp
+	SoTrackballDragger.cpp
+	SoTransformBoxDragger.cpp
+	SoTransformerDragger.cpp
+	SoTranslate1Dragger.cpp
+	SoTranslate2Dragger.cpp
+)

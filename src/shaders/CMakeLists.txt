@@ -1,0 +1,22 @@
+add_library(shaders OBJECT
+	SoFragmentShader.cpp
+	SoGeometryShader.cpp
+	SoGLARBShaderParameter.cpp
+	SoGLARBShaderObject.cpp
+	SoGLARBShaderProgram.cpp
+	SoGLCgShaderObject.cpp
+	SoGLCgShaderParameter.cpp
+	SoGLCgShaderProgram.cpp
+	SoGLSLShaderParameter.cpp
+	SoGLSLShaderObject.cpp
+	SoGLSLShaderProgram.cpp
+	SoGLShaderObject.cpp
+	SoGLShaderParameter.cpp
+	SoGLShaderProgram.cpp
+	SoGLShaderProgramElement.cpp
+	SoShaderObject.cpp
+	SoShaderParameter.cpp
+	SoShaderProgram.cpp
+	SoShader.cpp
+	SoVertexShader.cpp
+)
