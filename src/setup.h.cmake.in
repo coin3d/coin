@@ -1,4 +1,4 @@
-/* src/setup.h.  Generated from setup.h.in by configure.  */
+/* src/setup.h. Generated from setup.h.cmake.in by CMake. */
 /***************************************************************************
  * setup.h
  *

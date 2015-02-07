@@ -1,4 +1,4 @@
-/* include/Inventor/C/basic.h.  Generated from basic.h.in by configure.  */
+/* include/Inventor/C/basic.h. Generated from basic.h.cmake.in by CMake. */
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
