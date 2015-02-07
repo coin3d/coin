@@ -1,0 +1,20 @@
+add_library(lists OBJECT
+	SbList.cpp
+	SbPList.cpp
+	SbIntList.cpp
+	SbVec3fList.cpp
+	SbStringList.cpp
+	SoActionMethodList.cpp
+	SoAuditorList.cpp
+	SoBaseList.cpp
+	SoCallbackList.cpp
+	SoDetailList.cpp
+	SoEnabledElementsList.cpp
+	SoEngineList.cpp
+	SoEngineOutputList.cpp
+	SoFieldList.cpp
+	SoNodeList.cpp
+	SoPathList.cpp
+	SoPickedPointList.cpp
+	SoTypeList.cpp
+)
