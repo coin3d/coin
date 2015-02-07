@@ -56,6 +56,7 @@ add_library(nodes OBJECT
 	SoProfileCoordinate2.cpp
 	SoProfileCoordinate3.cpp
 	SoResetTransform.cpp
+	SoReversePerspectiveCamera.cpp
 	SoRotation.cpp
 	SoRotationXYZ.cpp
 	SoRotor.cpp
