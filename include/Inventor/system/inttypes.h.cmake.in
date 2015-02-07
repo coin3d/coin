@@ -1,4 +1,4 @@
-/* include/Inventor/system/inttypes.h.  Generated from inttypes.h.in by configure.  */
+/* include/Inventor/system/inttypes.h. Generated from inttypes.h.cmake.in by CMake. */
 #ifndef COIN_INTTYPES_H
 #define COIN_INTTYPES_H
 

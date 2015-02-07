@@ -1,3 +1,4 @@
+/* include/Inventor/system/gl-headers.h. Generated from gl-headers.h.cmake.in by CMake. */
 #ifndef COIN_GLHEADERS_H
 #define COIN_GLHEADERS_H
 

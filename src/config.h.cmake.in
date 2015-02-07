@@ -1,5 +1,4 @@
-* src/config.h.  Generated from config.h.in by configure.  */
-/* src/discard.h.in.  Generated from configure.ac by autoheader.  */
+/* src/config.h.  Generated from config.h.cmake.in by CMake. */
 
 
 #ifndef COIN_INTERNAL
