@@ -18,16 +18,20 @@
 /**
 \page coin400 New Features in Coin v4.0.0
 
-Note that Coin 4.0 is still work in progress.
+The build system has been migrated from GNU autotools to CMake.
+Note that Coin 4.0 is still work in progress. 
 
 This is a brief summary of the new features in Coin v4.0.0:
 - Support for UNICODE text (starting with Coin 4.0 strings are
   UTF-8 encoded).
+- View volume and projectors now support reverse perspective camera settings
+- New SoReversePerspectiveCamera node added
 - SoShaderStateMatrixParameter class now supports GLSL/ARB
   shaders in addition to Cg
 - Support for linePatternScaleFactor in SoDrawStyle
 - Support for newer compilers
 - Auto-linking when using Visual Studio compiler
+- ...
 
 Bug fixes:
 - Engine Output Referencing
@@ -36,6 +40,7 @@ Bug fixes:
 - Wrong vertical offset used in SoOffscreenRenderer
 - Incorrect normal binding for 3DS import
 - SoInteractionKit 
+- ...
 
 */
 
