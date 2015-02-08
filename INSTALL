@@ -15,6 +15,73 @@ system.  It does not contain any information about installing binary
 distributions of Coin.
 
 
+CMake build configuration (work in progress)
+=========================
+
+  # 1. Get the sources, e.g., by means of a Mercurial clone:
+
+    hg clone https://bitbucket.org/Coin3D/coin
+
+  # 2. Make a build directory:
+
+    mkdir coin_build
+    cd coin_build
+
+  # 3. Configure the build. If you just want a standard installation
+       (or regenerate the Makefiles using cached options):
+
+    cmake ../coin
+
+       Or you can review the build options and adjust them on the
+       command line:
+
+    cmake -i ../coin
+
+       Or, if available, you can edit all options in a GUI like so:
+
+    cmake-gui ../coin
+
+  # 4. Build the Coin library:
+
+    make
+
+  # 5. Install the Coin library:
+
+    make install
+
+  # 6. Remove object files when you don't need them anymore:
+
+    cd ..
+    rm -rf coin_build
+
+
+CMake configuration options
+===========================
+
+CMAKE_BUILD_TYPE
+
+    Probably the most common types are Debug and Release.
+
+CMAKE_INSTALL_PREFIX
+
+    Install path prefix, prepended onto install directories. If
+    set to "/tmp" then the library will install into "/tmp/lib".
+
+
+Some build tips
+===============
+
+CMake caches the build options and uses these as defaults during
+subsequent runs. To clear the cache, delete the file CMakeCache.txt
+or empty the build directory completely.
+
+If you build both Debug and Release types and don't want to make clean
+and reconfigure each time something changes, use a separate build
+directory for each type.
+
+
+---------- Original Autotools build configuration below ----------
+
 Cookbook Procedure
 ==================
 
