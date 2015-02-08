@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_recmutex common.h Inventor/C/threads/common.h
-
-  The structure for the recursive mutex.
+  \ingroup threads
+  \brief The structure for the recursive mutex.
 */
 
 /*!
   \typedef struct cc_recmutex cc_recmutex
-
-  The type definition for the recursive mutex structure.
+  \ingroup threads
+  \brief The type definition for the recursive mutex structure.
 */
 
 /*! \file recmutex.h */

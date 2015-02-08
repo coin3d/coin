@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_fifo common.h Inventor/C/threads/common.h
-
-  The structure for a first-in, first-out queue.
+  \ingroup threads
+  \brief The structure for a first-in, first-out queue.
 */
 
 /*!
   \typedef struct cc_fifo cc_fifo
-
-  The type definition for the first-in, first-out queue structure.
+  \ingroup threads
+  \brief The type definition for the first-in, first-out queue structure.
 */
 
 /*! \file fifo.h */

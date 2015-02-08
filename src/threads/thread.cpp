@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_thread common.h Inventor/C/threads/common.h
-
-  The structure for a thread.
+  \ingroup threads
+  \brief The structure for a thread.
 */
 
 /*!
   \typedef struct cc_thread cc_thread
-
-  The type definition for the thread structure.
+  \ingroup threads
+  \brief The type definition for the thread structure.
 */
 
 /*!
@@ -51,14 +51,14 @@
     CC_TIMEOUT,
     CC_BUSY
   }
-
-  The enumerator for return values of thread related functions.
+  \ingroup threads
+  \brief The enumerator for return values of thread related functions.
 */
 
 /*!
   \typedef enum cc_retval cc_retval
-
-  The type definition for the return value enumerator.
+  \ingroup threads
+  \brief The type definition for the return value enumerator.
 */
 
 /*! \file thread.h */
@@ -195,7 +195,7 @@ cc_thread_id(void)
       assert(0 && "unexpected failure");
     }
   }
-  return (unsigned long) val;
+  return (unsigned long) (intptr_t) (val);
 }
 
 static void 

@@ -44,14 +44,14 @@
 
 /*!
   \struct cc_mutex common.h Inventor/C/threads/common.h
-
-  The structure for a mutex.
+  \ingroup threads
+  \brief The structure for a mutex.
 */
 
 /*!
   \typedef struct cc_mutex cc_mutex
-
-  The type definition for the mutex structure.
+  \ingroup threads
+  \brief The type definition for the mutex structure.
 */
 
 /*! \file mutex.h */

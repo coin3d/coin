@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_sched common.h Inventor/C/threads/common.h
-
-  The structure for the thread scheduler.
+  \ingroup threads
+  \brief The structure for the thread scheduler.
 */
 
 /*!
   \typedef struct cc_sched cc_sched
-
-  The type definition for the thread schduler structure.
+  \ingroup threads
+  \brief The type definition for the thread schduler structure.
 */
 
 /*! \file sched.h */

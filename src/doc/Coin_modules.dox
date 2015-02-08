@@ -35,10 +35,12 @@
 /*!
   \defgroup actions Action Classes
 
+  \brief
   Actions are objects that traverse a scene graph to drive some
-  scene-related process, one example being OpenGL rendering, and
-  another being ray picking.
+  scene-related process.
 
+  \details
+  One example is OpenGL rendering, and another one ray picking.
   At the most basic level, most action management will be done for the
   user behind the scenes in an SoSceneManager object, and the only
   actions one might need to get acquainted with are SoSearchAction and
@@ -67,6 +69,7 @@
 /*!
   \defgroup base Base Classes
 
+  \brief
   This group is just a lot of basic types for linear algebra, string
   manipulation and misc. other utilities.
 
@@ -77,6 +80,7 @@
 /*!
   \defgroup bundles Bundle Classes
 
+  \brief
   The bundle classes are internal to Coin.
 */
 
@@ -85,6 +89,7 @@
 /*!
   \defgroup caches Cache Classes
 
+  \brief
   The cache classes are internal to Coin.
 */
 
@@ -93,12 +98,15 @@
 /*!
   \defgroup details Detail Classes
 
+  \brief
   Detail classes are objects that deliver additional information
-  wherever the SoPrimitiveVertex class is used.  This goes for ray
-  picking results, and it also goes for primitive generation by
-  SoShape classes for the SoCallbackAction class and fallback shape
-  rendering through primitive generation (a useful debugging trick
-  when debugging for instance raypicking).
+  wherever the SoPrimitiveVertex class is used.
+  
+  \details
+  This goes for ray picking results, and it also goes for primitive
+  generation by SoShape classes for the SoCallbackAction class and
+  fallback shape rendering through primitive generation (a useful
+  debugging trick when debugging for instance raypicking).
 
 */
 
@@ -107,10 +115,13 @@
 /*!
   \defgroup draggers Dragger Classes
 
+  \brief
   Draggers are interactive components in the scene graph that respond
-  to, and are controlled by mouse and keyboard events.  They are used in
-  manipulators as the user interface for the manipulation action, often
-  many draggers combined at the same time.
+  to, and are controlled by mouse and keyboard events.
+  
+  \details
+  They are used in manipulators as the user interface for the
+  manipulation action, often many draggers combined at the same time.
 
   \see manips
 */
@@ -120,13 +131,16 @@
 /*!
   \defgroup elements Element Classes
 
+  \brief
   The element classes in Coin are the containers of state information
-  during action traversals of scene graphs.  One element usually
-  corresponts to one item of information, or sometimes a group of
-  related information values.  The elements work like a stack that is
-  pushed and popped as the action traverses in and out of SoSeparator
-  nodes, and the action will always just inspect the top of the stack
-  when it needs to know a value.
+  during action traversals of scene graphs.
+  
+  \details
+  One element usually corresponts to one item of information, or
+  sometimes a group of related information values. The elements work
+  like a stack that is pushed and popped as the action traverses in
+  and out of SoSeparator nodes, and the action will always just
+  inspect the top of the stack when it needs to know a value.
 
   Elements are internal implementation details of the workings of
   nodes and actions, and is not something one needs to worry about
@@ -141,11 +155,15 @@
 /*!
   \defgroup engines Engine Classes
 
+  \brief
   Engines are scene based objects that convert between field values of
-  various types or performs computations on them.  The most versatile
-  engine is the SoCalculator engine, which you can write your own
-  mathematical expressions to to get it to do almost anything.  The
-  other engines are more custom-tailored for specific purposes.
+  various types or performs computations on them.
+  
+  \details
+  The most versatile engine is the SoCalculator engine, which you can
+  write your own mathematical expressions to to get it to do almost
+  anything.  The other engines are more custom-tailored for specific
+  purposes.
 
 */
 
@@ -154,10 +172,13 @@
 /*!
   \defgroup errors Error Handling Classes
 
+  \brief
   The error classes are static classes that contain a callback pointer
-  for handling errors of the given type.  Coin has default handlers
-  for displaying all the types, but these can be overridden by
-  applications by setting other callbacks.
+  for handling errors of the given type.
+  
+  \details
+  Coin has default handlers for displaying all the types, but these
+  can be overridden by applications by setting other callbacks.
 
 */
 
@@ -166,10 +187,13 @@
 /*!
   \defgroup events Event Classes
 
+  \brief
   These classes are te event types you can send to a scene graph
-  through the SoHandleEventAction.  They are a pretty direct mapping
-  from the various system event types you will have on all the host
-  architectures.
+  through the SoHandleEventAction.
+  
+  \details
+  They are a pretty direct mapping from the various system event types
+  you will have on all the host architectures.
 
 */
 
@@ -178,9 +202,11 @@
 /*!
   \defgroup fields Field Classes
 
+  \brief
   The fields are the data containers in the scene graph.  Nodes and
   engines all use fields to store their public data.
 
+  \details
   Fields can be inter-connected, causing changes at one location in a
   scene graph to cause other parts of the scene graph to automatically
   also get updated.  Direct field-to-field connections will cause
@@ -216,9 +242,12 @@
 /*!
   \defgroup manips Manipulator Classes
 
+  \brief
   Manipulators are objects you can swap back and forth into a scene
-  graph at locations where you have an SoTransform node.  They take
-  the place of the SoTransform, continue to act like the SoTransform,
+  graph at locations where you have an SoTransform node.
+
+  \details
+  They take the place of the SoTransform, continue to act like the SoTransform,
   but in addition give the user a 3D user interface, using draggers,
   for controlling the transform.  When the user is done manipulating,
   the manipulator can swap itself back out, replacing itself with an
@@ -235,6 +264,7 @@
 /*!
   \defgroup navigation Navigation Classes
 
+  \brief
   These contains the actual implementation of the ScXML based navigation system.
 
   \sa scxml
@@ -245,6 +275,10 @@
 /*!
   \defgroup nodekits NodeKit Classes
 
+  \brief
+  Nodekits modularize sub-structures of a scene graph.
+
+  \details
   Wrapping ones head around when, how, and why to create nodekits can
   be difficult in the beginning.  When do you write a nodekit, and
   when do you write a custom node?  It is easy to think in those terms
@@ -289,6 +323,10 @@
 /*!
   \defgroup nodes Node Classes
 
+  \brief
+  Nodes are scene based objects performs various actions such as rendering.
+
+  \details
   This is the set of nodes Coin implements using the original Open
   Inventor pattern, meaning they read and write to and from files
   using the Inventor/VRML1 format, and produce side-effects for
@@ -311,9 +349,13 @@
 /*!
   \defgroup projectors Projector Classes
 
+  \brief
   The projector classes are used to convert between screenspace (2D)
-  locations and locations in worldspace (3D).  They are mostly used in
-  relation to user interaction with the mouse in the viewport.
+  locations and locations in worldspace (3D).  
+  
+  \details
+  They are mostly used in relation to user interaction with the mouse
+  in the viewport.
 
 */
 
@@ -322,6 +364,7 @@
 /*!
   \defgroup sensors Sensor Classes
 
+  \brief
   Sensors are objects that monitor other objects for changes and invoke
   callbacks when changes occur.
 
@@ -332,6 +375,11 @@
 /*!
   \defgroup shaders Shader Classes
 
+  \brief
+  Shaders are programs that run on the graphics processor and replace
+  the formerly fixed OpenGL pipeline.
+
+  \details
   Coin-2.5 added support for Shaders. Shaders replace the fixed
   function vertex and fragment processing in OpenGL by letting the
   user define the processing that takes place at key points in the
@@ -355,6 +403,7 @@
 /*!
   \defgroup soscxml Coin specific State Chart XML Classes
 
+  \brief
   This set of classes implement a coin-specific mode of scxml.
 
   \sa navigation
@@ -376,7 +425,10 @@
 /*!
   \defgroup scxml State Chart XML Classes
 
+  \brief
   This set of classes is a basic implementation of State Chart XML.
+
+  \details
   It is not complete, nor is it necessary conformant to those parts it
   implements.
 
@@ -397,6 +449,7 @@
 /*!
   \defgroup threads Portable Threads Abstraction Classes
 
+  \details
   Coin implements a set of abstractions over the native threads data
   types that can be portably used across all the platforms Coin has
   been ported to.
@@ -408,6 +461,10 @@
 /*!
   \defgroup VRMLnodes VRML97 Classes
 
+  \brief
+  Nodes implementaing the VRML97 standard.
+
+  \details
   This is the set of items specified by VRML97, also known as VRML2.0.
   These nodes are different from VRML1/Inventor nodes in the way you
   structure them into scene-graphs, and in the requirements they set
@@ -427,10 +484,14 @@
 /*!
   \defgroup hardcopy Vectorized Printing Classes
 
+  \brief
   The vectorized printing classes are for rendering to vector devices
-  instead of raster devices.  You can use this to e.g. generate
-  scalable PostScript images for printing instead of raster images
-  that will become pixellated when you scale them up.
+  instead of raster devices.  
+  
+  \details
+  You can use this to e.g. generate scalable PostScript images for
+  printing instead of raster images that will become pixellated when
+  you scale them up.
 
   See below for \ref hardcopy_overview.
 */
@@ -440,6 +501,7 @@
 /*!
   \defgroup XML XML related functions and objects
 
+  \brief
   Coin now has its own XML parser that also canb be used from client code.
 */
 
@@ -448,9 +510,12 @@
 /*!
   \defgroup profiler Scene Graph Profiling
 
-  Coin includes some scene graph profiling functionality.  This
-  functionality is intended for use during application development for
-  identifying performance bottlenecks in Coin-based applications with
+  \brief
+  Coin includes some scene graph profiling functionality.
+  
+  \details
+  This functionality is intended for use during application development
+  for identifying performance bottlenecks in Coin-based applications with
   regards to how Coin is being used and with regards to problems with
   how Coin is implemented.
 
@@ -474,6 +539,7 @@
 /*!
   \defgroup macros Miscellaneous Macros
 
+  \brief
   When extending Coin, there are a number of macros one needs to know
   about and use.
 
@@ -484,10 +550,14 @@
 /*!
   \defgroup envvars Miscellaneous Environment Variables
 
+  \brief
   Various aspects of the Coin runtime behaviour can be controlled through
-  setting different environment variables to some value.  Most of these
-  variables are there for debugging and problem-workaround purposes, but
-  a few are for telling Coin where to locate external resource files.
+  setting different environment variables to some value.
+  
+  \details
+  Most of these variables are there for debugging and problem-workaround
+  purposes, but a few are for telling Coin where to locate external
+  resource files.
 
   Here we will set up a list of some of the environment variables Coin will
   check for and can alter behavior because of.

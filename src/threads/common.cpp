@@ -45,14 +45,14 @@
     CC_PTHREAD    = 0,
     CC_W32THREAD
   }
-
-  The definition of the enumerator for identification of the thread type implemented.
+  \ingroup threads
+  \brief The definition of the enumerator for identification of the thread type implemented.
 */
 
 /*!
   \typedef enum cc_threads_implementation cc_threads_implementation
-
-  The type definition for the implemented thread enumerator.
+  \ingroup threads
+  \brief The type definition for the implemented thread enumerator.
 */
 
 /* ********************************************************************** */

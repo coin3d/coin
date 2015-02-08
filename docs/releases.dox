@@ -1,9 +1,131 @@
 /*!
+\page coin_new_features New Features in Coin
+- @subpage coin400 "New Features in Coin v4.0.0"
+- @subpage coin313 "New Features in Coin v3.1.3"
+- @subpage coin312 "New Features in Coin v3.1.2"
+- @subpage coin311 "New Features in Coin v3.1.1"
+- @subpage coin310 "New Features in Coin v3.1.0"
+- @subpage coin300 "New Features in Coin v3.0.0"
+- @subpage coin250 "New Features in Coin v2.5.0"
+- @subpage coin240 "New Features in Coin v2.4.0"
+- @subpage coin230 "New Features in Coin v2.3.0"
+- @subpage coin220 "New Features in Coin v2.2.0"
+- @subpage coin210 "New Features in Coin v2.1.0"
+- @subpage coin200 "New Features in Coin v2.0.0"
+
+*/ 
+
+/**
+\page coin400 New Features in Coin v4.0.0
+
+Note that Coin 4.0 is still work in progress.
+
+This is a brief summary of the new features in Coin v4.0.0:
+- Support for UNICODE text (starting with Coin 4.0 strings are
+  UTF-8 encoded).
+- SoShaderStateMatrixParameter class now supports GLSL/ARB
+  shaders in addition to Cg
+- Support for linePatternScaleFactor in SoDrawStyle
+- Support for newer compilers
+- Auto-linking when using Visual Studio compiler
+
+Bug fixes:
+- Engine Output Referencing
+- SoTextureCoordinatePlane Rendering Bug
+- Memory leak during SoDB cleanup
+- Wrong vertical offset used in SoOffscreenRenderer
+- Incorrect normal binding for 3DS import
+- SoInteractionKit 
+
+*/
+
+/**
+\page coin313 New Features in Coin v3.1.3
+
+This is a bugfix release.
+
+Due to an underlying buildsystem upgrade, the default location of the
+generated HTML docs changed from $datarootdir/share/Coin/html to
+$datarootdir/share/doc/coin/html.
+
+*/
+
+/**
+\page coin312 New Features in Coin v3.1.2
+
+This is a bugfix release.
+
+*/
+
+/**
+\page coin311 New Features in Coin v3.1.1
+
+This is a bugfix release.
+
+Bugs are fixed in all the NURBS related classes, and SoIndexedPointSet.
+
+*/
+
+/**
+\page coin310 New Features in Coin v3.1.0
+
+This is a brief summary of the new features in Coin v3.1.0:
+- Default transparency type for SoGLRenderAction changed from
+  SCREEN_DOOR to BLEND.
+- SoBase will not keep a list of unnamed / empty named nodes any
+  more. This is both an optimization and improves conformance to SGI /
+  TGS Inventor.
+- SbTesselator does better when handed certain polygons, due to improved
+  precision in internal calculations.
+- Resource usage pressure significantly lower for common case scene
+  graphs with regard to mutex allocations. A not entirely uncommon
+  problem on MS Windows systems for huge scene graphs was that the
+  run-time system ran out of available mutexes -- this is now very
+  unlikely to happen.
+- Builds with G++ and MSVC will have C++ exception support enabled by
+  default.
+- SoSceneManager render callback can be set to NULL to disable it.
+- Non-power-of-two textures are automatically supported if the OpenGL
+  driver has that feature.
+- No other intentional differences in semantics, other than for any bugs
+  fixed.
+
+*/
+
+/**
 \page coin300 New Features in Coin v3.0.0
 
-To come.
+This is a brief summary of the new features in Coin v3.0:
+- New scene graph traversal profiling subsystem.
+- New node SoVertexAttribute which provides vertex attribute support for
+  shaders.
+- New SoDepthBuffer node to control depth buffer settings.
+- New SoShadowSpotLight node in the shadow generation subsystem.
+- New SoHeightMapToNormalMap engine to convert depthmap images to three-
+  component normal maps.
+- SoPickStyle has three new style settings, SHAPE_ON_TOP,
+  BOUNDING_BOX_ON_TOP, and SHAPE_FRONTFACES.
+- Integrated XML parser used for various purposes.
+- GL feature control through a new GLDriverDatabase subsystem which is
+  configurable through XML files.
+- Statechart XML engine, which has been used to implement examiner-mode
+  viewer navigation at the Coin level (earlier this functionality was
+  implemented over and over again in the various GUI libraries).
+- Foreign file format support through SoForeignFileKit, with an example
+  SoSTLFileKit implementation for STL import.
+- There is a testsuite framework based on Boost.Test
+- Translation draggers (1D/2D) are now fitted with new fields minTranslation
+  and maxTranslation to add the ability of restricting the range the draggers
+  can operate in.  When this feature is used, and draggers are stored to
+  file, it has consequences for the file format, and you lose the ability
+  to load those files with older versions of Coin.
+- Slight change in antialiased rendering with SoGLRenderAction::setNumPasses().
+  Antialiased rendering is no longer shifted 1/2 pixel to the left compared to
+  single-pass non-antialiased rendering.
+- Dynamic loading of support libraries for Mac OS X has been changed, which
+  has consequences for which possibilities are available for bundling such
+  libraries when creating your application bundles.
 
-\link coin250 New features for Coin v2.5.0 are here. \endlink
 */
 
 /*!
@@ -172,7 +294,6 @@ This was done primarily to be able to build without automatically
 performing the installation procedure at the same time, but also to offer
 other supplementary targets later like the doc-generation project...
 
-\link coin240 New features for Coin v2.4.0 are here. \endlink
 */
 
 
@@ -200,113 +321,62 @@ For v2.4.6, SbViewVolume::getAlignRotation() was implemented, and
 SoToVRML2Action got support for SoUnits in relation to
 SoVRMLTransform nodes.
 
-\link coin230 New features for Coin v2.3.0 are here. \endlink
 */
 
 /*!
 \page coin230 New Features in Coin v2.3.0
 
-\section multitexturing230 More Multi-Texturing
+This is a brief summary of the new features in Coin v2.3.0:
+- More Multi-Texturing (see SoTextureCombine)
+- Texture coordinate mapping nodes
+  - SoTextureCoordinateCube
+  - SoTextureCoordinateCylinder
+  - SoTextureCoordinateSphere
 
-New nodes:
-- SoTextureCombine
-
-\section texcoordmaps Texture coordinate mapping nodes
-
-New nodes:
-- SoTextureCoordinateCube
-- SoTextureCoordinateCylinder
-- SoTextureCoordinateSphere
-
-\link coin220 New features for Coin v2.2.0 are here. \endlink
 */
 
 /*!
 \page coin220 New Features in Coin v2.2.0
 
-\section multitexturing220 Multi-Texturing
-
-New nodes:
-- SoTextureUnit
-
-\section bumpmapping Bump-Mapping
-
-New nodes:
-- SoBumpMap
-- SoBumpMapCoordinate
-- SoBumpMapTransform
-
-\section fontsupport Better Font Support
-
-TrueType font support for all 3D text primitive types.
-
-\section scenetexture Render To Texture Support
-
-New nodes:
-- SoSceneTexture2
-
-\section misc Misc
-
-REPLACE texture model support for SoTexture2
-
-pbuffer support for SoOffscreenRenderer
-
-New transparency rendering type, SORTED_LAYERS_BLEND
-
-\link coin210 New features for Coin v2.1.0 are here. \endlink
+This is a brief summary of the new features in Coin v2.2.0:
+- Multi-Texturing (see SoTextureUnit)
+- Bump-Mapping
+  - SoBumpMap
+  - SoBumpMapCoordinate
+  - SoBumpMapTransform
+- Better Font Support
+- TrueType font support for all 3D text primitive types.
+- Render To Texture Support (see SoSceneTexture2)
+- REPLACE texture model support for SoTexture2
+- pbuffer support for SoOffscreenRenderer
+- New transparency rendering type, SORTED_LAYERS_BLEND
 
 */
 
 /*!
 \page coin210 New Features in Coin v2.1.0
 
-\section hardcopy HardCopy Support
-
-Vector output to PostScript.
-
-
-\section fonts FreeType and Win32 TrueType Font Support
-
-\section intersectiondetection Intersection Detection
-
-SoIntersectionDetectionAction
-
-\section soselectionhighlight SoLineHighlightRenderAction/SoBoxHighlightRenderAction and Multiple SoSelection Nodes
-
-\section misc210 Misc
-
-\subsection compressedio Compressed File I/O Support
-
-SoOutput::setCompression()
-SoOutput::getAvailableCompressionMethods()
-
-\subsection convenience Additional Convenience Functions
-
-SoInput::setStringArray()
-SoAction::apply(SoAction *)
-
-\subsection copypolicy NO_COPY SoSFImage CopyPolicy
-
-SoSFImage::setValue with CopyPolicy::NO_COPY implemented.
-
-\link coin200 New features for Coin v2.0.0 are here. \endlink
+This is a brief summary of the new features in Coin v2.1.0:
+- HardCopy Support: Vector output to PostScript.
+- FreeType and Win32 TrueType Font Support
+- Intersection Detection with SoIntersectionDetectionAction
+- SoLineHighlightRenderAction / SoBoxHighlightRenderAction and Multiple SoSelection Nodes
+- Compressed File I/O Support (see SoOutput::setCompression(), SoOutput::getAvailableCompressionMethods())
+- Additional Convenience Functions SoInput::setStringArray() and SoAction::apply(SoAction *)
+- NO_COPY SoSFImage CopyPolicy, SoSFImage::setValue with CopyPolicy::NO_COPY implemented.
 
 */
 
 /*!
 \page coin200 New Features in Coin v2.0.0
 
-\section bigimage Big-Image Support
-
-\section textures3d 3D Textures Support
-
-\section sound3d 3D Sound Support
-
-\section vrml97 VRML97 Support
-
-\section macosx Mac OS X Support
-
-\section multipipe Multi-Pipe Rendering Support
+This is a brief summary of the new features in Coin v2.0.0:
+- Big-Image Support
+- 3D Textures Support
+- 3D Sound Support
+- VRML97 Support
+- Mac OS X Support
+- Multi-Pipe Rendering Support
 
 */
 

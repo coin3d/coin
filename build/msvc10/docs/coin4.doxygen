@@ -835,6 +835,7 @@ INPUT                  = .\include\Inventor\C\basic.h \ \
                          ..\..\include\Inventor\C\glue\spidermonkey.h \
                          ..\..\include\Inventor\collision\SoIntersectionDetectionAction.h \
                          ..\..\include\Inventor\C\threads\barrier.h \
+                         ..\..\include\Inventor\C\threads\common.h \
                          ..\..\include\Inventor\C\threads\condvar.h \
                          ..\..\include\Inventor\C\threads\fifo.h \
                          ..\..\include\Inventor\C\threads\mutex.h \
@@ -2292,18 +2293,29 @@ INPUT                  = .\include\Inventor\C\basic.h \ \
                          ..\..\src\soscxml\SoScXMLEvent.cpp \
                          ..\..\src\soscxml\SoScXMLStateMachine.cpp \
                          ..\..\src\threads\barrier.cpp \
+                         ..\..\src\threads\barrierp.h \
+                         ..\..\src\threads\common.cpp \
                          ..\..\src\threads\condvar.cpp \
+                         ..\..\src\threads\condvarp.h \
                          ..\..\src\threads\fifo.cpp \
+                         ..\..\src\threads\fifop.h \
                          ..\..\src\threads\mutex.cpp \
+                         ..\..\src\threads\mutexp.h \
                          ..\..\src\threads\recmutex.cpp \
+                         ..\..\src\threads\recmutexp.h \
                          ..\..\src\threads\rwmutex.cpp \
+                         ..\..\src\threads\rwmutexp.h \
                          ..\..\src\threads\sched.cpp \
                          ..\..\src\threads\schedp.h \
                          ..\..\src\threads\storage.cpp \
+                         ..\..\src\threads\storagep.h \
                          ..\..\src\threads\sync.cpp \
                          ..\..\src\threads\thread.cpp \
+                         ..\..\src\threads\threadp.h \
                          ..\..\src\threads\worker.cpp \
+                         ..\..\src\threads\workerp.h \
                          ..\..\src\threads\wpool.cpp \
+                         ..\..\src\threads\wpoolp.h \
                          ..\..\src\tidbits.cpp \
                          ..\..\src\upgraders\SoPackedColorV20.cpp \
                          ..\..\src\upgraders\SoPackedColorV20.h \
@@ -2995,7 +3007,7 @@ ECLIPSE_DOC_ID         = org.doxygen.Project
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-DISABLE_INDEX          = NO
+DISABLE_INDEX          = YES
 
 # The GENERATE_TREEVIEW tag is used to specify whether a tree-like index
 # structure should be generated to display hierarchical information. If the tag
@@ -3012,7 +3024,7 @@ DISABLE_INDEX          = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = NO
+GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.

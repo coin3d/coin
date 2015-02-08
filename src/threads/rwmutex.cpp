@@ -34,27 +34,28 @@
 
 /*!
   \struct cc_rwmutex common.h Inventor/C/threads/common.h
-
-  The structure for a read-write mutex.
+  \ingroup threads
+  \brief The structure for a read-write mutex.
 */
 
 /*!
   \typedef struct cc_rwmutex cc_rwmutex
-
-  The type definition for the read-write mutex structure.
+  \ingroup threads
+  \brief The type definition for the read-write mutex structure.
 */
 
 /*!
   \enum cc_precedence {CC_READ_PRECEDENCE, CC_WRITE_PRECEDENCE}
-  
-  The precedence values for the read-write mutex.
+  \ingroup threads
+  \brief The precedence values for the read-write mutex.
+  \details
   CC_READ_PRECEDENCE is the default.
 */
 
 /*!
   \typedef enum cc_precedence cc_precedence
-
-  The type definition of the cc_precedence enumerator.
+  \ingroup threads
+  \brief The type definition of the cc_precedence enumerator.
 */
 
 /*! \file rwmutex.h */
