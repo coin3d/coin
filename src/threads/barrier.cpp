@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_barrier common.h Inventor/C/threads/common.h
-
-  The structure for the thread barrier.
+  \ingroup threads
+  \brief The structure for the thread barrier.
 */
 
 /*!
   \typedef struct cc_barrier cc_barrier
-
-  The type definition for the thread barrier structure.
+  \ingroup threads
+  \brief The type definition for the thread barrier structure.
 */
 
 /*! \file barrier.h */

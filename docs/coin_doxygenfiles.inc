@@ -1526,19 +1526,29 @@ DOXYGEN_INPUT="
                          ${path_tag}${coin_src_dir}/src/soscxml/SoScXMLEvent.cpp
                          ${path_tag}${coin_src_dir}/src/soscxml/SoScXMLStateMachine.cpp
                          ${path_tag}${coin_src_dir}/src/threads/barrier.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/barrierp.h
                          ${path_tag}${coin_src_dir}/src/threads/common.cpp
                          ${path_tag}${coin_src_dir}/src/threads/condvar.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/condvarp.h
                          ${path_tag}${coin_src_dir}/src/threads/fifo.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/fifop.h
                          ${path_tag}${coin_src_dir}/src/threads/mutex.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/mutexp.h
                          ${path_tag}${coin_src_dir}/src/threads/recmutex.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/recmutexp.h
                          ${path_tag}${coin_src_dir}/src/threads/rwmutex.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/rwmutexp.h
                          ${path_tag}${coin_src_dir}/src/threads/sched.cpp
                          ${path_tag}${coin_src_dir}/src/threads/schedp.h
                          ${path_tag}${coin_src_dir}/src/threads/storage.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/storagep.h
                          ${path_tag}${coin_src_dir}/src/threads/sync.cpp
                          ${path_tag}${coin_src_dir}/src/threads/thread.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/threadp.h
                          ${path_tag}${coin_src_dir}/src/threads/worker.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/workerp.h
                          ${path_tag}${coin_src_dir}/src/threads/wpool.cpp
+                         ${path_tag}${coin_src_dir}/src/threads/wpoolp.h
                          ${path_tag}${coin_src_dir}/src/tidbits.cpp
                          ${path_tag}${coin_src_dir}/src/upgraders/SoPackedColorV20.cpp
                          ${path_tag}${coin_src_dir}/src/upgraders/SoPackedColorV20.h

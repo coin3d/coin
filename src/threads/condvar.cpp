@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_condvar common.h Inventor/C/threads/common.h
-
-  The structure for a conditional variable.
+  \ingroup threads
+  \brief The structure for a conditional variable.
 */
 
 /*!
   \typedef struct cc_condvar cc_condvar
-
-  The type definition for the conditional variable structure.
+  \ingroup threads
+  \brief The type definition for the conditional variable structure.
 */
 
 /*! \file condvar.h */

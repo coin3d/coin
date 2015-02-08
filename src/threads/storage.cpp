@@ -46,14 +46,14 @@
 
 /*!
   \struct cc_storage common.h Inventor/C/threads/common.h
-
-  The structure for the thread local memory storage.
+  \ingroup threads
+  \brief The structure for the thread local memory storage.
 */
 
 /*!
   \typedef struct cc_storage cc_storage
-
-  The type definition for the thread local memory storage structure.
+  \ingroup threads
+  \brief The type definition for the thread local memory storage structure.
 */
 
 /*! \file storage.h */

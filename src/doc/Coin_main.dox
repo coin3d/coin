@@ -144,3 +144,23 @@
 */
 
 /* *********************************************************************** */
+
+/*!
+  \page related_pages Related Pages
+
+  Selected topics are covered in more depth using separate pages:
+  - @subpage libraries "Coin use of 3rd party libraries"
+  - @subpage dynload_overview "Dynamic Loading of Extension Nodes"
+  - @subpage Coin_environment_variables "Environment Variables"
+  - @subpage compression_overview "File compression"
+  - @subpage foreignfilesupport "Foreign File Format Support"
+  - @subpage hardcopy_overview "A HardCopy Overview"
+  - @subpage multithreading_support "Multithreading Support in Coin"
+  - @subpage profiling_intro "Scene Graph Profiling"
+  - @subpage coin_shaders "Shaders in Coin"
+  - @subpage vbo_rendering "Vertex array and VBO rendering in Coin"
+  - @subpage scxml "State Chart XML"
+  - @subpage xmlparsing "XML Parsing with Coin"
+*/ 
+
+/* *********************************************************************** */

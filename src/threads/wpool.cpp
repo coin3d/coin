@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_wpool common.h Inventor/C/threads/common.h
-
-  The structure for a worker pool.
+  \ingroup threads
+  \brief The structure for a worker pool.
 */
 
 /*!
   \typedef struct cc_wpool cc_wpool
-
-  The type definition for a worker pool structure.
+  \ingroup threads
+  \brief The type definition for a worker pool structure.
 */
 
 /*! \file wpool.h */
@@ -243,7 +243,7 @@ cc_wpool_wait_all(cc_wpool * pool)
 
   Locks the pool so that workers can be started using the
   cc_wpool_start_worker() method. \a numworkersneeded should contain
-  the minumum number of workers that is needed. If \numworkersneeded
+  the minumum number of workers that is needed. If \a numworkersneeded
   workers are available, the pool will be locked and TRUE is returned.
   Otherwise FALSE is returned.
 

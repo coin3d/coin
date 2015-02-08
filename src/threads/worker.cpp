@@ -34,14 +34,14 @@
 
 /*!
   \struct cc_worker common.h Inventor/C/threads/common.h
-
-  The structure for a worker thread.
+  \ingroup threads
+  \brief The structure for a worker thread.
 */
 
 /*!
   \typedef struct cc_worker cc_worker
-
-  The type definition for the worker thread structure.
+  \ingroup threads
+  \brief The type definition for the worker thread structure.
 */
 
 /*! \file worker.h */
