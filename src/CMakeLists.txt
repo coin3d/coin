@@ -1,7 +1,13 @@
 configure_file(config.h.cmake.in config.h)
 configure_file(setup.h.cmake.in setup.h)
 
-add_definitions(-DCOIN_INTERNAL -DCOIN_DEBUG=1 -DHAVE_CONFIG_H)
+add_definitions(-DCOIN_INTERNAL -DHAVE_CONFIG_H)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-DCOIN_DEBUG=1)
+else()
+    add_definitions(-DCOIN_DEBUG=0)
+endif()
 
 include_directories(../include/Inventor/annex . ${CMAKE_CURRENT_BINARY_DIR} ../build/msvc10)
 
@@ -66,7 +72,4 @@ add_library(Coin
 find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
 
-install(TARGETS Coin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
+install(TARGETS Coin DESTINATION lib)

@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(Coin)
+
+option(SHARED "Build shared library when ON, static when OFF." ON)
+if(SHARED)
+	SET(BUILD_SHARED_LIBS ON)
+endif()
+set(CMAKE_DEBUG_POSTFIX "d")
+
 if(WIN32)
 add_definitions(-DHAVE_WINDOWS_H)
 set(HAVE_WIN32_API 1)

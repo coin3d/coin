@@ -1,4 +1,4 @@
-if(WINDOWS)
+if(WIN32)
     set(SIM_INCLUDE_WINDOWS_H "#include <windows.h>")
 endif()
 if(APPLE)
