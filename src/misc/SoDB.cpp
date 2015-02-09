@@ -123,6 +123,13 @@
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #endif // HAVE_VRML97
 
+#ifdef HAVE_X3D
+#include <Inventor/X3Dnodes/SoX3D.h>
+#include <Inventor/X3Dnodes/support/SoX3DEngineOutput.h>
+#include <Inventor/X3Dnodes/SoX3DNodeEngine.h>
+#include <Inventor/X3Dnodes/SoX3DGroup.h>
+#endif // HAVE_X3D
+
 #ifdef HAVE_THREADS
 #include "threads/threadp.h"
 #endif // HAVE_THREADS
@@ -138,6 +145,7 @@
 
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
+#include <Inventor/annex/Profiler/Nodekits/SoNodeVisualize.h>
 #include "profiler/SoProfilerP.h"
 
 // *************************************************************************
@@ -347,6 +355,10 @@ SoDB::init(void)
   so_vrml_init();
 #endif // HAVE_VRML97
 
+#ifdef HAVE_X3D
+  so_x3d_init();
+#endif // HAVE_X3D
+
   SoScXMLNavigation::initClasses();
 
   // Register all valid file format headers.
@@ -360,6 +372,19 @@ SoDB::init(void)
   // that we spit out a /specific/ warning about why VRML97 is not
   // supported in the configuration of the compiled libCoin. 20020808 mortene.
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
+                       NULL, NULL, NULL);
+
+  // FIXME: Similar to above thees are really only valid if the HAVE_X3D
+  // define is in place. If it's not, we should register the header in
+  // a way so that we spit out a /specific/ warning about why X3D is not
+  // supported in the configuration of the compiled libCoin. 20141214 RHW.
+  SoDB::registerHeader(SbString("#X3D V3.3 utf8"), FALSE, 4.0f,
+                       NULL, NULL, NULL);
+  SoDB::registerHeader(SbString("#X3D V3.2 utf8"), FALSE, 4.0f,
+                       NULL, NULL, NULL);
+  SoDB::registerHeader(SbString("#X3D V3.1 utf8"), FALSE, 4.0f,
+                       NULL, NULL, NULL);
+  SoDB::registerHeader(SbString("#X3D V3.0 utf8"), FALSE, 4.0f,
                        NULL, NULL, NULL);
 
   // FIXME: there are nodes in TGS' later Inventor versions that we do
@@ -460,6 +485,10 @@ SoDB::init(void)
   SoProfilerP::parseCoinProfilerVariable();
   if (SoProfiler::isEnabled()) {
     SoProfiler::init();
+  } else {
+	// If the profiler is not enabled the textures static variable in the
+	// SoNodeVisualize causes a memory leak, as the static clean up is not called
+    cc_coin_atexit(SoNodeVisualize::cleanClass);
   }
 
   // Debugging for memory leaks will be easier if we can clean up the
@@ -605,6 +634,13 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
     return (rootnode != NULL);
   }
 
+#ifdef HAVE_X3D
+  if (SoDBP::isXMLFile(in)) {
+    rootnode = SoDBP::readXMLFile(in);
+    return (rootnode != NULL);
+  }
+#endif // HAVE_X3D
+
   // allow engines at the top level of a file
   do {
     if (!SoDB::read(in, baseptr)) return FALSE;
@@ -696,6 +732,24 @@ SoDB::readAllVRML(SoInput * in)
 #else // HAVE_VRML97
   return NULL;
 #endif // ! HAVE_VRML97
+}
+
+/*!
+  Same as SoDB::readAll(), except it return an SoX3DGroup instead
+  of an SoSeparator.
+
+  \sa SoDB::readAll()
+  \since Coin 5.0
+*/
+SoX3DGroup *
+SoDB::readAllX3D(SoInput * in)
+{
+#ifdef HAVE_X3D
+  return (SoX3DGroup*)
+    SoDB::readAllWrapper(in, SoX3DGroup::getClassTypeId());
+#else // HAVE_X3D
+  return NULL;
+#endif // ! HAVE_X3D
 }
 
 /*!
@@ -1196,12 +1250,11 @@ SoDB::enableRealTimeSensor(SbBool on)
 }
 
 // private wrapper for readAll() and readAllVRML()
-SoGroup *
+SoNode *
 SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 {
   assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
   assert(grouptype.canCreateInstance());
-  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
 
   SbBool valid = in->isValidFile();
 
@@ -1232,11 +1285,18 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     }
   }
 
+#ifdef HAVE_X3D
+  if (!valid && SoDBP::isXMLFile(in)) {
+    return SoDBP::readXMLFile(in);
+  }
+#endif
+
   if (!valid) {
     SoReadError::post(in, "Not a valid Inventor file.");
     return NULL;
   }
 
+  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
   const int stackdepth = in->filestack.getLength();
 
   SoGroup * root = (SoGroup *)grouptype.createInstance();
@@ -1562,14 +1622,21 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
     tonodename = "<noname>";
   }
   SoEngineOutput * output = NULL;
-  if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
-    output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
+  SoX3DEngineOutput * x3doutput = NULL;
+  if (from == NULL) {
+	if (fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
+       output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
+#ifdef HAVE_X3D
+	} else if  (fromnode->isOfType(SoX3DNodeEngine::getClassTypeId())) {
+       x3doutput = ((SoX3DNodeEngine*) fromnode)->getOutput(fromfieldname);
+#endif // HAVE_X3D
+	}
   }
 
-  if (to && (from || output)) {
+  if (to && (from || output || x3doutput)) {
     SbBool notnotify = FALSE;
     SbBool append = FALSE;
-    if (output || from->getFieldType() == SoField::EVENTOUT_FIELD) {
+    if (output || x3doutput || from->getFieldType() == SoField::EVENTOUT_FIELD) {
       notnotify = TRUE;
     }
 #if 0 // seems like (reading the VRML97 spec.) fanIn in allowed even to regular fields
@@ -1581,7 +1648,10 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
     // Check if we're already connected.
     SoFieldList fl;
     if (from) from->getForwardConnections(fl);
-    else output->getForwardConnections(fl);
+	else if (output) output->getForwardConnections(fl);
+#ifdef HAVE_X3D
+	else x3doutput->getForwardConnections (fl);
+#endif // HAVE_X3D
     int idx = fl.find(to);
     if (idx != -1) {
 #if COIN_DEBUG
@@ -1596,7 +1666,12 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
 
     // Check that there exists a field converter, if one is needed.
     SoType totype = to->getTypeId();
-    SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
+	SoType fromtype = SoType::badType ();
+	if (from) fromtype = from->getTypeId();
+	else if (output) fromtype = output->getConnectionType();
+#ifdef HAVE_X3D
+	else fromtype = x3doutput->getConnectionType();
+#endif // HAVE_X3D
     if (totype != fromtype) {
       SoType convtype = SoDB::getConverter(fromtype, totype);
       if (convtype == SoType::badType()) {
@@ -1617,7 +1692,10 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
 
     SbBool ok;
     if (from) ok = to->connectFrom(from, notnotify, append);
-    else ok = to->connectFrom(output, notnotify, append);
+    else if (output) ok = to->connectFrom(output, notnotify, append);
+#ifdef HAVE_X3D
+	else ok = to->connectFrom(x3doutput, notnotify, append);
+#endif // HAVE_X3D
     // Both known possible failure points are caught above.
     assert(ok && "unexpected connection error");
   }
