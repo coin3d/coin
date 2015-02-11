@@ -47,7 +47,7 @@
 #include "coindefs.h"
 
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::free;
+using namespace std;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
 
 /* ********************************************************************** */
