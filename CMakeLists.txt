@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(Coin)
+set (COIN_VERSION "4.0.0a")
 
 option(SHARED "Build shared library when ON, static when OFF." ON)
 if(SHARED)
