@@ -906,12 +906,12 @@ set (DOXYGEN_INPUT "@CMAKE_BINARY_DIR@/include/Inventor/C/basic.h \\
                          @CMAKE_SOURCE_DIR@/src/details/SoNodeKitDetail.cpp \\
                          @CMAKE_SOURCE_DIR@/src/details/SoPointDetail.cpp \\
                          @CMAKE_SOURCE_DIR@/src/details/SoTextDetail.cpp \\
-                         @CMAKE_SOURCE_DIR@/src/doc/Coin_books.dox
-                         @CMAKE_SOURCE_DIR@/src/doc/Coin_environment.dox
+                         @CMAKE_SOURCE_DIR@/src/doc/Coin_books.dox \\
+                         @CMAKE_SOURCE_DIR@/src/doc/Coin_environment.dox \\
                          @CMAKE_SOURCE_DIR@/src/doc/environment.dox.h \\
-                         @CMAKE_SOURCE_DIR@/src/doc/Coin_macros.dox
-                         @CMAKE_SOURCE_DIR@/src/doc/Coin_main.dox
-                         @CMAKE_SOURCE_DIR@/src/doc/Coin_modules.dox
+                         @CMAKE_SOURCE_DIR@/src/doc/Coin_macros.dox \\
+                         @CMAKE_SOURCE_DIR@/src/doc/Coin_main.dox \\
+                         @CMAKE_SOURCE_DIR@/src/doc/Coin_modules.dox \\
                          @CMAKE_SOURCE_DIR@/src/draggers/SoCenterballDragger.cpp \\
                          @CMAKE_SOURCE_DIR@/src/draggers/SoDirectionalLightDragger.cpp \\
                          @CMAKE_SOURCE_DIR@/src/draggers/SoDragger.cpp \\
