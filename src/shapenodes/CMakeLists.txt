@@ -1,40 +1,77 @@
+if(COIN_BUILD_SINGLE_LIB)
+	set(COIN_SOURCE ${COIN_SOURCE}
+		shapenodes/SoAsciiText.cpp
+		shapenodes/SoCone.cpp
+		shapenodes/SoCube.cpp
+		shapenodes/SoCylinder.cpp
+		shapenodes/SoFaceSet.cpp
+		shapenodes/SoImage.cpp
+		shapenodes/SoIndexedFaceSet.cpp
+		shapenodes/SoIndexedLineSet.cpp
+		shapenodes/SoIndexedMarkerSet.cpp
+		shapenodes/SoIndexedNurbsCurve.cpp
+		shapenodes/SoIndexedNurbsSurface.cpp
+		shapenodes/SoIndexedPointSet.cpp
+		shapenodes/SoIndexedShape.cpp
+		shapenodes/SoIndexedTriangleStripSet.cpp
+		shapenodes/SoLineSet.cpp
+		shapenodes/SoMarkerSet.cpp
+		shapenodes/SoNonIndexedShape.cpp
+		shapenodes/SoNurbsCurve.cpp
+		shapenodes/SoNurbsSurface.cpp
+		shapenodes/SoPointSet.cpp
+		shapenodes/SoQuadMesh.cpp
+		shapenodes/SoShape.cpp
+		shapenodes/SoSphere.cpp
+		shapenodes/SoText2.cpp
+		shapenodes/SoText3.cpp
+		shapenodes/SoTriangleStripSet.cpp
+		shapenodes/SoVertexShape.cpp
+		shapenodes/soshape_bigtexture.cpp
+		shapenodes/soshape_bumprender.cpp
+		shapenodes/soshape_primdata.cpp
+		shapenodes/soshape_trianglesort.cpp
+		CACHE INTERNAL "COIN_SOURCE"
+	)
+else()
+	add_library(shapenodes OBJECT
+		SoAsciiText.cpp
+		SoCone.cpp
+		SoCube.cpp
+		SoCylinder.cpp
+		SoFaceSet.cpp
+		SoImage.cpp
+		SoIndexedFaceSet.cpp
+		SoIndexedLineSet.cpp
+		SoIndexedMarkerSet.cpp
+		SoIndexedNurbsCurve.cpp
+		SoIndexedNurbsSurface.cpp
+		SoIndexedPointSet.cpp
+		SoIndexedShape.cpp
+		SoIndexedTriangleStripSet.cpp
+		SoLineSet.cpp
+		SoMarkerSet.cpp
+		SoNonIndexedShape.cpp
+		SoNurbsCurve.cpp
+		SoNurbsSurface.cpp
+		SoPointSet.cpp
+		SoQuadMesh.cpp
+		SoShape.cpp
+		SoSphere.cpp
+		SoText2.cpp
+		SoText3.cpp
+		SoTriangleStripSet.cpp
+		SoVertexShape.cpp
+		soshape_bigtexture.cpp
+		soshape_bumprender.cpp
+		soshape_primdata.cpp
+		soshape_trianglesort.cpp
+	)
+endif()
 
-
-add_library(shapenodes OBJECT
-	SoAsciiText.cpp
-	SoCone.cpp
-	SoCube.cpp
-	SoCylinder.cpp
-	SoFaceSet.cpp
-	SoImage.cpp
-	SoIndexedFaceSet.cpp
-	SoIndexedLineSet.cpp
-	SoIndexedMarkerSet.cpp
-	SoIndexedNurbsCurve.cpp
-	SoIndexedNurbsSurface.cpp
-	SoIndexedPointSet.cpp
-	SoIndexedShape.cpp
-	SoIndexedTriangleStripSet.cpp
-	SoLineSet.cpp
-	SoMarkerSet.cpp
-	SoNonIndexedShape.cpp
-	SoNurbsCurve.cpp
-	SoNurbsSurface.cpp
-	SoPointSet.cpp
-	SoQuadMesh.cpp
-	SoShape.cpp
-	SoSphere.cpp
-	SoText2.cpp
-	SoText3.cpp
-	SoTriangleStripSet.cpp
-	SoVertexShape.cpp
-	soshape_bigtexture.cpp
-	soshape_bumprender.cpp
-	soshape_primdata.cpp
-	soshape_trianglesort.cpp
+file(GLOB_RECURSE SOCPP So*.cpp)
+set(COIN_DOCUMENTATION_FILES
+	${COIN_DOCUMENTATION_FILES}
+	${SOCPP}
+	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
 )
-
- 
-
-  
-

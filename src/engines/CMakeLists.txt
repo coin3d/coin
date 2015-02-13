@@ -1,4 +1,49 @@
-add_library(engines OBJECT
+if(COIN_BUILD_SINGLE_LIB)
+	set(COIN_SOURCE ${COIN_SOURCE}
+        engines/SoBoolOperation.cpp
+        engines/SoCalculator.cpp
+        engines/SoComposeMatrix.cpp
+        engines/SoComposeRotation.cpp
+        engines/SoComposeRotationFromTo.cpp
+        engines/SoComposeVec2f.cpp
+        engines/SoComposeVec3f.cpp
+        engines/SoComposeVec4f.cpp
+        engines/SoComputeBoundingBox.cpp
+        engines/SoConcatenate.cpp
+        engines/SoConvertAll.cpp
+        engines/SoCounter.cpp
+        engines/SoDecomposeMatrix.cpp
+        engines/SoDecomposeRotation.cpp
+        engines/SoDecomposeVec2f.cpp
+        engines/SoDecomposeVec3f.cpp
+        engines/SoDecomposeVec4f.cpp
+        engines/SoElapsedTime.cpp
+        engines/SoEngine.cpp
+        engines/SoEngineOutput.cpp
+        engines/SoFieldConverter.cpp
+        engines/SoGate.cpp
+        engines/SoInterpolate.cpp
+        engines/SoInterpolateFloat.cpp
+        engines/SoInterpolateRotation.cpp
+        engines/SoInterpolateVec2f.cpp
+        engines/SoInterpolateVec3f.cpp
+        engines/SoInterpolateVec4f.cpp
+        engines/SoNodeEngine.cpp
+        engines/SoOnOff.cpp
+        engines/SoOneShot.cpp
+        engines/SoOutputData.cpp
+        engines/SoSelectOne.cpp
+        engines/SoTimeCounter.cpp
+        engines/SoTransformVec3f.cpp
+        engines/SoTriggerAny.cpp
+        engines/SoTexture2Convert.cpp
+        engines/SoHeightMapToNormalMap.cpp
+        engines/evaluator.c
+        engines/evaluator_tab.c
+		CACHE INTERNAL "COIN_SOURCE"
+	)
+else()
+	add_library(engines OBJECT
         SoBoolOperation.cpp
         SoCalculator.cpp
         SoComposeMatrix.cpp
@@ -39,4 +84,12 @@ add_library(engines OBJECT
         SoHeightMapToNormalMap.cpp
         evaluator.c
         evaluator_tab.c
+	)
+endif()
+
+file(GLOB_RECURSE SOCPP So*.cpp)
+set(COIN_DOCUMENTATION_FILES
+	${COIN_DOCUMENTATION_FILES}
+	${SOCPP}
+	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
 )
