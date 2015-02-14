@@ -1,16 +1,19 @@
+# source files
+set(COIN_COLLISION_FILES
+	SbTri3f.cpp
+	SoIntersectionDetectionAction.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		collision/SbTri3f.cpp
-		collision/SoIntersectionDetectionAction.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_COLLISION_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} collision/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(collision OBJECT
-		SbTri3f.cpp
-		SoIntersectionDetectionAction.cpp
-	)
+	add_library(collision OBJECT ${COIN_COLLISION_FILES})
 endif()
 
+# define documentation
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
 	${CMAKE_SOURCE_DIR}/src/collision/SbTri3f.cpp

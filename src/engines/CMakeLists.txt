@@ -1,92 +1,57 @@
+# source files
+set(COIN_ENGINES_FILES
+	SoBoolOperation.cpp
+	SoCalculator.cpp
+	SoComposeMatrix.cpp
+	SoComposeRotation.cpp
+	SoComposeRotationFromTo.cpp
+	SoComposeVec2f.cpp
+	SoComposeVec3f.cpp
+	SoComposeVec4f.cpp
+	SoComputeBoundingBox.cpp
+	SoConcatenate.cpp
+	SoConvertAll.cpp
+	SoCounter.cpp
+	SoDecomposeMatrix.cpp
+	SoDecomposeRotation.cpp
+	SoDecomposeVec2f.cpp
+	SoDecomposeVec3f.cpp
+	SoDecomposeVec4f.cpp
+	SoElapsedTime.cpp
+	SoEngine.cpp
+	SoEngineOutput.cpp
+	SoFieldConverter.cpp
+	SoGate.cpp
+	SoInterpolate.cpp
+	SoInterpolateFloat.cpp
+	SoInterpolateRotation.cpp
+	SoInterpolateVec2f.cpp
+	SoInterpolateVec3f.cpp
+	SoInterpolateVec4f.cpp
+	SoNodeEngine.cpp
+	SoOnOff.cpp
+	SoOneShot.cpp
+	SoOutputData.cpp
+	SoSelectOne.cpp
+	SoTimeCounter.cpp
+	SoTransformVec3f.cpp
+	SoTriggerAny.cpp
+	SoTexture2Convert.cpp
+	SoHeightMapToNormalMap.cpp
+	evaluator.c
+	evaluator_tab.c
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-        engines/SoBoolOperation.cpp
-        engines/SoCalculator.cpp
-        engines/SoComposeMatrix.cpp
-        engines/SoComposeRotation.cpp
-        engines/SoComposeRotationFromTo.cpp
-        engines/SoComposeVec2f.cpp
-        engines/SoComposeVec3f.cpp
-        engines/SoComposeVec4f.cpp
-        engines/SoComputeBoundingBox.cpp
-        engines/SoConcatenate.cpp
-        engines/SoConvertAll.cpp
-        engines/SoCounter.cpp
-        engines/SoDecomposeMatrix.cpp
-        engines/SoDecomposeRotation.cpp
-        engines/SoDecomposeVec2f.cpp
-        engines/SoDecomposeVec3f.cpp
-        engines/SoDecomposeVec4f.cpp
-        engines/SoElapsedTime.cpp
-        engines/SoEngine.cpp
-        engines/SoEngineOutput.cpp
-        engines/SoFieldConverter.cpp
-        engines/SoGate.cpp
-        engines/SoInterpolate.cpp
-        engines/SoInterpolateFloat.cpp
-        engines/SoInterpolateRotation.cpp
-        engines/SoInterpolateVec2f.cpp
-        engines/SoInterpolateVec3f.cpp
-        engines/SoInterpolateVec4f.cpp
-        engines/SoNodeEngine.cpp
-        engines/SoOnOff.cpp
-        engines/SoOneShot.cpp
-        engines/SoOutputData.cpp
-        engines/SoSelectOne.cpp
-        engines/SoTimeCounter.cpp
-        engines/SoTransformVec3f.cpp
-        engines/SoTriggerAny.cpp
-        engines/SoTexture2Convert.cpp
-        engines/SoHeightMapToNormalMap.cpp
-        engines/evaluator.c
-        engines/evaluator_tab.c
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_ENGINES_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} engines/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(engines OBJECT
-        SoBoolOperation.cpp
-        SoCalculator.cpp
-        SoComposeMatrix.cpp
-        SoComposeRotation.cpp
-        SoComposeRotationFromTo.cpp
-        SoComposeVec2f.cpp
-        SoComposeVec3f.cpp
-        SoComposeVec4f.cpp
-        SoComputeBoundingBox.cpp
-        SoConcatenate.cpp
-        SoConvertAll.cpp
-        SoCounter.cpp
-        SoDecomposeMatrix.cpp
-        SoDecomposeRotation.cpp
-        SoDecomposeVec2f.cpp
-        SoDecomposeVec3f.cpp
-        SoDecomposeVec4f.cpp
-        SoElapsedTime.cpp
-        SoEngine.cpp
-        SoEngineOutput.cpp
-        SoFieldConverter.cpp
-        SoGate.cpp
-        SoInterpolate.cpp
-        SoInterpolateFloat.cpp
-        SoInterpolateRotation.cpp
-        SoInterpolateVec2f.cpp
-        SoInterpolateVec3f.cpp
-        SoInterpolateVec4f.cpp
-        SoNodeEngine.cpp
-        SoOnOff.cpp
-        SoOneShot.cpp
-        SoOutputData.cpp
-        SoSelectOne.cpp
-        SoTimeCounter.cpp
-        SoTransformVec3f.cpp
-        SoTriggerAny.cpp
-        SoTexture2Convert.cpp
-        SoHeightMapToNormalMap.cpp
-        evaluator.c
-        evaluator_tab.c
-	)
+	add_library(engines OBJECT ${COIN_ENGINES_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

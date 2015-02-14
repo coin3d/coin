@@ -1,32 +1,27 @@
+# source files
+set(COIN_IO_FILES
+	SoInput.cpp
+	SoInput_FileInfo.cpp
+	SoInput_Reader.cpp
+	SoOutput.cpp
+	SoOutput_Writer.cpp
+	SoByteStream.cpp
+	SoTranSender.cpp
+	SoTranReceiver.cpp
+	SoWriterefCounter.cpp
+	gzmemio.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		io/SoInput.cpp
-		io/SoInput_FileInfo.cpp
-		io/SoInput_Reader.cpp
-		io/SoOutput.cpp
-		io/SoOutput_Writer.cpp
-		io/SoByteStream.cpp
-		io/SoTranSender.cpp
-		io/SoTranReceiver.cpp
-		io/SoWriterefCounter.cpp
-		io/gzmemio.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_IO_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} io/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(io OBJECT
-		SoInput.cpp
-		SoInput_FileInfo.cpp
-		SoInput_Reader.cpp
-		SoOutput.cpp
-		SoOutput_Writer.cpp
-		SoByteStream.cpp
-		SoTranSender.cpp
-		SoTranReceiver.cpp
-		SoWriterefCounter.cpp
-		gzmemio.cpp
-	)
+	add_library(io OBJECT ${COIN_IO_FILES})
 endif()
 
+# define documentation
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
 	${CMAKE_SOURCE_DIR}/src/io/SoInput.cpp

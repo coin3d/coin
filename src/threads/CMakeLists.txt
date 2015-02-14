@@ -1,38 +1,30 @@
+# source files
+set(COIN_THREADS_FILES
+	common.cpp
+	thread.cpp
+	mutex.cpp
+	rwmutex.cpp
+	storage.cpp
+	condvar.cpp
+	worker.cpp
+	wpool.cpp
+	recmutex.cpp
+	sched.cpp
+	sync.cpp
+	fifo.cpp
+	barrier.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-        threads/common.cpp
-        threads/thread.cpp
-        threads/mutex.cpp
-        threads/rwmutex.cpp
-        threads/storage.cpp
-        threads/condvar.cpp
-        threads/worker.cpp
-        threads/wpool.cpp
-        threads/recmutex.cpp
-        threads/sched.cpp
-        threads/sync.cpp
-        threads/fifo.cpp
-        threads/barrier.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_THREADS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} threads/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(threads OBJECT
-        common.cpp
-        thread.cpp
-        mutex.cpp
-        rwmutex.cpp
-        storage.cpp
-        condvar.cpp
-        worker.cpp
-        wpool.cpp
-        recmutex.cpp
-        sched.cpp
-        sync.cpp
-        fifo.cpp
-        barrier.cpp
-	)
+	add_library(threads OBJECT ${COIN_THREADS_FILES})
 endif()
 
+# define documentation
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
 	${CMAKE_SOURCE_DIR}/src/threads/barrier.cpp

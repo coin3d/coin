@@ -1,84 +1,53 @@
+# source files
+set(COIN_MISC_FILES
+	AudioTools.cpp
+	CoinStaticObjectInDLL.cpp
+	SoAudioDevice.cpp
+	SoBase.cpp
+	SoBaseP.cpp
+	SoChildList.cpp
+	SoCompactPathList.cpp
+	SoConfigSettings.cpp
+	SoContextHandler.cpp
+	SoDB.cpp
+	SoDebug.cpp
+	SoFullPath.cpp
+	SoGenerate.cpp
+	SoGlyph.cpp
+	SoInteraction.cpp
+	SoJavaScriptEngine.cpp
+	SoLightPath.cpp
+	SoLockManager.cpp
+	SoNormalGenerator.cpp
+	SoNotRec.cpp
+	SoNotification.cpp
+	SoPath.cpp
+	SoPick.cpp
+	SoPickedPoint.cpp
+	SoPrimitiveVertex.cpp
+	SoProto.cpp
+	SoProtoInstance.cpp
+	SoSceneManager.cpp
+	SoSceneManagerP.cpp
+	SoShaderGenerator.cpp
+	SoState.cpp
+	SoTempPath.cpp
+	SoType.cpp
+	CoinResources.cpp
+	SoDBP.cpp
+	SoEventManager.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		misc/AudioTools.cpp
-		misc/CoinStaticObjectInDLL.cpp
-		misc/SoAudioDevice.cpp
-		misc/SoBase.cpp
-		misc/SoBaseP.cpp
-		misc/SoChildList.cpp
-		misc/SoCompactPathList.cpp
-		misc/SoConfigSettings.cpp
-		misc/SoContextHandler.cpp
-		misc/SoDB.cpp
-		misc/SoDebug.cpp
-		misc/SoFullPath.cpp
-		misc/SoGenerate.cpp
-		misc/SoGlyph.cpp
-		misc/SoInteraction.cpp
-		misc/SoJavaScriptEngine.cpp
-		misc/SoLightPath.cpp
-		misc/SoLockManager.cpp
-		misc/SoNormalGenerator.cpp
-		misc/SoNotRec.cpp
-		misc/SoNotification.cpp
-		misc/SoPath.cpp
-		misc/SoPick.cpp
-		misc/SoPickedPoint.cpp
-		misc/SoPrimitiveVertex.cpp
-		misc/SoProto.cpp
-		misc/SoProtoInstance.cpp
-		misc/SoSceneManager.cpp
-		misc/SoSceneManagerP.cpp
-		misc/SoShaderGenerator.cpp
-		misc/SoState.cpp
-		misc/SoTempPath.cpp
-		misc/SoType.cpp
-		misc/CoinResources.cpp
-		misc/SoDBP.cpp
-		misc/SoEventManager.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_MISC_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} misc/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(misc OBJECT
-		AudioTools.cpp
-		CoinStaticObjectInDLL.cpp
-		SoAudioDevice.cpp
-		SoBase.cpp
-		SoBaseP.cpp
-		SoChildList.cpp
-		SoCompactPathList.cpp
-		SoConfigSettings.cpp
-		SoContextHandler.cpp
-		SoDB.cpp
-		SoDebug.cpp
-		SoFullPath.cpp
-		SoGenerate.cpp
-		SoGlyph.cpp
-		SoInteraction.cpp
-		SoJavaScriptEngine.cpp
-		SoLightPath.cpp
-		SoLockManager.cpp
-		SoNormalGenerator.cpp
-		SoNotRec.cpp
-		SoNotification.cpp
-		SoPath.cpp
-		SoPick.cpp
-		SoPickedPoint.cpp
-		SoPrimitiveVertex.cpp
-		SoProto.cpp
-		SoProtoInstance.cpp
-		SoSceneManager.cpp
-		SoSceneManagerP.cpp
-		SoShaderGenerator.cpp
-		SoState.cpp
-		SoTempPath.cpp
-		SoType.cpp
-		CoinResources.cpp
-		SoDBP.cpp
-		SoEventManager.cpp
-	)
+	add_library(misc OBJECT ${COIN_MISC_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

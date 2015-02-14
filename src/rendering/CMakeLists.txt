@@ -1,42 +1,32 @@
+# source files
+set(COIN_RENDERING_FILES
+	SoGL.cpp
+	SoGLBigImage.cpp
+	SoGLDriverDatabase.cpp
+	SoGLImage.cpp
+	SoGLCubeMapImage.cpp
+	SoGLNurbs.cpp
+	SoRenderManager.cpp
+	SoRenderManagerP.cpp
+	SoOffscreenRenderer.cpp
+	SoOffscreenCGData.cpp
+	SoOffscreenGLXData.cpp
+	SoOffscreenWGLData.cpp
+	SoVBO.cpp
+	SoVertexArrayIndexer.cpp
+	CoinOffscreenGLCanvas.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		rendering/SoGL.cpp
-		rendering/SoGLBigImage.cpp
-		rendering/SoGLDriverDatabase.cpp
-		rendering/SoGLImage.cpp
-		rendering/SoGLCubeMapImage.cpp
-		rendering/SoGLNurbs.cpp
-		rendering/SoRenderManager.cpp
-		rendering/SoRenderManagerP.cpp
-		rendering/SoOffscreenRenderer.cpp
-		rendering/SoOffscreenCGData.cpp
-		rendering/SoOffscreenGLXData.cpp
-		rendering/SoOffscreenWGLData.cpp
-		rendering/SoVBO.cpp
-		rendering/SoVertexArrayIndexer.cpp
-		rendering/CoinOffscreenGLCanvas.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_RENDERING_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} rendering/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(rendering OBJECT
-		SoGL.cpp
-		SoGLBigImage.cpp
-		SoGLDriverDatabase.cpp
-		SoGLImage.cpp
-		SoGLCubeMapImage.cpp
-		SoGLNurbs.cpp
-		SoRenderManager.cpp
-		SoRenderManagerP.cpp
-		SoOffscreenRenderer.cpp
-		SoOffscreenCGData.cpp
-		SoOffscreenGLXData.cpp
-		SoOffscreenWGLData.cpp
-		SoVBO.cpp
-		SoVertexArrayIndexer.cpp
-		CoinOffscreenGLCanvas.cpp
-	)
+	add_library(rendering OBJECT ${COIN_RENDERING_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

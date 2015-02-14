@@ -1,48 +1,35 @@
+# source files
+set(COIN_ACTIONS_FILES
+	SoAction.cpp
+	SoBoxHighlightRenderAction.cpp
+	SoCallbackAction.cpp
+	SoGLRenderAction.cpp
+	SoGetBoundingBoxAction.cpp
+	SoGetMatrixAction.cpp
+	SoGetPrimitiveCountAction.cpp
+	SoHandleEventAction.cpp
+	SoLineHighlightRenderAction.cpp
+	SoPickAction.cpp
+	SoRayPickAction.cpp
+	SoReorganizeAction.cpp
+	SoSearchAction.cpp
+	SoSimplifyAction.cpp
+	SoToVRMLAction.cpp
+	SoToVRML2Action.cpp
+	SoWriteAction.cpp
+	SoAudioRenderAction.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		actions/SoAction.cpp
-		actions/SoBoxHighlightRenderAction.cpp
-		actions/SoCallbackAction.cpp
-		actions/SoGLRenderAction.cpp
-		actions/SoGetBoundingBoxAction.cpp
-		actions/SoGetMatrixAction.cpp
-		actions/SoGetPrimitiveCountAction.cpp
-		actions/SoHandleEventAction.cpp
-		actions/SoLineHighlightRenderAction.cpp
-		actions/SoPickAction.cpp
-		actions/SoRayPickAction.cpp
-		actions/SoReorganizeAction.cpp
-		actions/SoSearchAction.cpp
-		actions/SoSimplifyAction.cpp
-		actions/SoToVRMLAction.cpp
-		actions/SoToVRML2Action.cpp
-		actions/SoWriteAction.cpp
-		actions/SoAudioRenderAction.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_ACTIONS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} actions/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(actions OBJECT
-		SoAction.cpp
-		SoBoxHighlightRenderAction.cpp
-		SoCallbackAction.cpp
-		SoGLRenderAction.cpp
-		SoGetBoundingBoxAction.cpp
-		SoGetMatrixAction.cpp
-		SoGetPrimitiveCountAction.cpp
-		SoHandleEventAction.cpp
-		SoLineHighlightRenderAction.cpp
-		SoPickAction.cpp
-		SoRayPickAction.cpp
-		SoReorganizeAction.cpp
-		SoSearchAction.cpp
-		SoSimplifyAction.cpp
-		SoToVRMLAction.cpp
-		SoToVRML2Action.cpp
-		SoWriteAction.cpp
-		SoAudioRenderAction.cpp
-	)
+	add_library(actions OBJECT ${COIN_ACTIONS_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

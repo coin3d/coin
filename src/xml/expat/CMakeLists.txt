@@ -1,14 +1,15 @@
+# source files
+set(COIN_EXPAT_FILES
+	xmlparse.c
+	xmlrole.c
+	xmltok.c
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		xml/expat/xmlparse.c
-		xml/expat/xmlrole.c
-		xml/expat/xmltok.c
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_EXPAT_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} xml/expat/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(expat OBJECT
-		xmlparse.c
-		xmlrole.c
-		xmltok.c
-	)
+	add_library(expat OBJECT ${COIN_EXPAT_FILES})
 endif()

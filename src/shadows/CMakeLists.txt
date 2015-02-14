@@ -1,26 +1,24 @@
+# source files
+set(COIN_SHADOWS_FILES
+	SoShadowGroup.cpp
+	SoShadowStyle.cpp
+	SoShadowSpotLight.cpp
+	SoShadowDirectionalLight.cpp
+	SoShadowStyleElement.cpp
+	SoShadowCulling.cpp
+	SoGLShadowCullingElement.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		shadows/SoShadowGroup.cpp
-		shadows/SoShadowStyle.cpp
-		shadows/SoShadowSpotLight.cpp
-		shadows/SoShadowDirectionalLight.cpp
-		shadows/SoShadowStyleElement.cpp
-		shadows/SoShadowCulling.cpp
-		shadows/SoGLShadowCullingElement.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_SHADOWS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} shadows/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(shadows OBJECT
-		SoShadowGroup.cpp
-		SoShadowStyle.cpp
-		SoShadowSpotLight.cpp
-		SoShadowDirectionalLight.cpp
-		SoShadowStyleElement.cpp
-		SoShadowCulling.cpp
-		SoGLShadowCullingElement.cpp
-	)
+	add_library(shadows OBJECT ${COIN_SHADOWS_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
