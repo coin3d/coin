@@ -131,3 +131,8 @@ find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
 
 install(TARGETS Coin DESTINATION lib)
+
+if(MSVC)
+	set_target_properties(Coin PROPERTIES COMPILE_FLAGS /Fd"$(IntDir)$(TargetName).pdb")
+	install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION ${CMAKE_INSTALL_PREFIX}/lib CONFIGURATIONS Debug)
+endif()
