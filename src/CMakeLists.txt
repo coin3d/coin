@@ -1,5 +1,8 @@
 configure_file(config.h.cmake.in config.h)
 configure_file(setup.h.cmake.in setup.h)
+if(WIN32)
+	configure_file(Coin.rc.cmake.in Coin.rc)
+endif()
 
 add_definitions(-DCOIN_INTERNAL -DHAVE_CONFIG_H)
 
@@ -11,7 +14,11 @@ endif()
 
 include_directories(.. ../include ../include/Inventor/annex . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/src/internal)
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE tidbits.cpp CACHE INTERNAL "COIN_SOURCE")
+	if(WIN32 AND COIN_BUILD_SHARED_LIBS)
+		set(COIN_SOURCE tidbits.cpp ${CMAKE_CURRENT_BINARY_DIR}/Coin.rc CACHE INTERNAL "COIN_SOURCE")
+	else()
+		set(COIN_SOURCE tidbits.cpp CACHE INTERNAL "COIN_SOURCE")
+	endif()
 else()
 	set(COIN_SOURCE)
 endif()
@@ -37,6 +44,11 @@ if(COIN_BUILD_SINGLE_LIB)
 	endif()
 else()
 	if(COIN_BUILD_SHARED_LIBS)
+		if(WIN32 AND COIN_BUILD_SHARED_LIBS)
+			set(COIN_SOURCE tidbits.cpp ${CMAKE_CURRENT_BINARY_DIR}/Coin.rc)
+		else()
+			set(COIN_SOURCE tidbits.cpp)
+		endif()
 		add_library(Coin SHARED
 			$<TARGET_OBJECTS:3ds>
 			$<TARGET_OBJECTS:actions>
@@ -78,7 +90,7 @@ else()
 			$<TARGET_OBJECTS:upgraders>
 			$<TARGET_OBJECTS:vrml97>
 			$<TARGET_OBJECTS:xml>
-			tidbits.cpp
+			${COIN_SOURCE}
 		)
 	else()
 		add_library(Coin STATIC
