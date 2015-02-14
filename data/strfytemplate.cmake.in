@@ -34,53 +34,10 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
-#ifndef SO_SCALE1DRAGGER_IV_H
-#define SO_SCALE1DRAGGER_IV_H
+#ifndef @COIN_HEADER_DEF@
+#define @COIN_HEADER_DEF@
 
-static const char SCALE1DRAGGER_draggergeometry[] =
-  "#Inventor V2.1 ascii\n"
-  "\n"
-  "\n"
-  "DEF SCALE1_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }\n"
-  "DEF SCALE1_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }\n"
-  "DEF SCALE1_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }\n"
-  "\n"
-  "\n"
-  "DEF SCALE1_AXIS Separator {\n"
-  "   PickStyle { style UNPICKABLE }\n"
-  "   Coordinate3 { point [ 1 0 0, -1 0 0 ] }\n"
-  "   IndexedLineSet { coordIndex [ 0, 1, -1 ] }\n"
-  "   Translation { translation -1.05 0 0 }\n"
-  "   PickStyle { style SHAPE }\n"
-  "   DEF SCALE1_MARKER Cube { width 0.10  height 0.10  depth 0.10 }\n"
-  "   Translation { translation 2.10 0 0 }\n"
-  "   USE SCALE1_MARKER\n"
-  "}\n"
-  "\n"
-  "DEF scale1Scaler Separator {\n"
-  "   DrawStyle { lineWidth 2 }\n"
-  "   USE SCALE1_INACTIVE_MATERIAL\n"
-  "   USE SCALE1_AXIS\n"
-  "}\n"
-  "\n"
-  "DEF scale1ScalerActive Separator {\n"
-  "   USE SCALE1_ACTIVE_MATERIAL\n"
-  "   DrawStyle { lineWidth 3 }\n"
-  "   USE SCALE1_AXIS\n"
-  "   DrawStyle { style LINES  lineWidth 1 }\n"
-  "   PickStyle { style SHAPE }\n"
-  "   Cube { }\n"
-  "}\n"
-  "\n"
-  "DEF SCALE1_FEEDBACK Separator {\n"
-  "   PickStyle { style UNPICKABLE }\n"
-  "   USE SCALE1_FEEDBACK_MATERIAL\n"
-  "   DrawStyle { lineWidth 2 }\n"
-  "   Coordinate3 { point [ 0 1.1 0, 0 -1.1 0, 0 0 1.1, 0 0 -1.1 ] }\n"
-  "   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1 ] }\n"
-  "}\n"
-  "\n"
-  "DEF scale1Feedback Separator { USE SCALE1_FEEDBACK }\n"
-  "DEF scale1FeedbackActive Separator { USE SCALE1_FEEDBACK }\n";
+static const char @COIN_TEXTVAR_NAME@[] =
+  "@COIN_STR_SOURCE_CODE@";
 
-#endif /* ! SO_SCALE1DRAGGER_IV_H */
+#endif /* ! @COIN_HEADER_DEF@ */
