@@ -18,12 +18,6 @@ else()
 endif()
 
 # define documentation
-set(COIN_DOCUMENTATION_FILES
-	${COIN_DOCUMENTATION_FILES}
-	${CMAKE_SOURCE_DIR}/src/hardcopy/HardCopy.cpp
-	${CMAKE_SOURCE_DIR}/src/hardcopy/PSVectorOutput.cpp
-	${CMAKE_SOURCE_DIR}/src/hardcopy/VectorizeAction.cpp
-	${CMAKE_SOURCE_DIR}/src/hardcopy/VectorizePSAction.cpp
-	${CMAKE_SOURCE_DIR}/src/hardcopy/VectorOutput.cpp
-	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+foreach(SRCFILE ${COIN_HARDCOPY_FILES})
+	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/hardcopy/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)

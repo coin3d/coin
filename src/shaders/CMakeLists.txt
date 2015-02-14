@@ -32,15 +32,11 @@ else()
 endif()
 
 # define documentation
+foreach(SRCFILE ${COIN_SHADERS_FILES})
+	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/shaders/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
-	${CMAKE_SOURCE_DIR}/src/shaders/SoFragmentShader.cpp
-	${CMAKE_SOURCE_DIR}/src/shaders/SoGeometryShader.cpp
-	${CMAKE_SOURCE_DIR}/src/shaders/SoShader.cpp
 	${CMAKE_SOURCE_DIR}/src/shaders/SoShader.h
-	${CMAKE_SOURCE_DIR}/src/shaders/SoShaderObject.cpp
-	${CMAKE_SOURCE_DIR}/src/shaders/SoShaderParameter.cpp
-	${CMAKE_SOURCE_DIR}/src/shaders/SoShaderProgram.cpp
-	${CMAKE_SOURCE_DIR}/src/shaders/SoVertexShader.cpp
 	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
 )

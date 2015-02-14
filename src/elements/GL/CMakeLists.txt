@@ -1,5 +1,5 @@
 # source files
-set(COIN_ELEMENTS_GL_FILES
+set(COIN_GLELEMENTS_FILES
 	SoGLCacheContextElement.cpp
 	SoGLClipPlaneElement.cpp
 	SoGLColorIndexElement.cpp
@@ -33,18 +33,19 @@ set(COIN_ELEMENTS_GL_FILES
 
 # build library
 if(COIN_BUILD_SINGLE_LIB)
-	foreach(SRCFILE ${COIN_ELEMENTS_GL_FILES})
+	foreach(SRCFILE ${COIN_GLELEMENTS_FILES})
 		set(COIN_SOURCE ${COIN_SOURCE} elements/GL/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
 	endforeach(SRCFILE)
 else()
-	add_library(glelements OBJECT ${COIN_ELEMENTS_GL_FILES})
+	add_library(glelements OBJECT ${COIN_GLELEMENTS_FILES})
 endif()
 
 # define documentation
-file(GLOB_RECURSE SOCPP So*.cpp)
+foreach(SRCFILE ${COIN_GLELEMENTS_FILES})
+	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/elements/GL/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
-	${SOCPP}
 	${CMAKE_SOURCE_DIR}/src/elements/GL/SoResetMatrixElement.h
 	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
 )

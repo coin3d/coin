@@ -83,17 +83,6 @@ else()
 endif()
 
 # define documentation
-file(GLOB_RECURSE SOCPP Sb*.cpp)
-set(COIN_DOCUMENTATION_FILES
-	${COIN_DOCUMENTATION_FILES}
-	${SOCPP}
-	${CMAKE_SOURCE_DIR}/src/base/dict.cpp
-	${CMAKE_SOURCE_DIR}/src/base/hash.cpp
-	${CMAKE_SOURCE_DIR}/src/base/heap.cpp
-	${CMAKE_SOURCE_DIR}/src/base/memalloc.cpp
-	${CMAKE_SOURCE_DIR}/src/base/namemap.cpp
-	${CMAKE_SOURCE_DIR}/src/base/rbptree.cpp
-	${CMAKE_SOURCE_DIR}/src/base/string.cpp
-	${CMAKE_SOURCE_DIR}/src/base/time.cpp
-	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+foreach(SRCFILE ${COIN_BASE_FILES})
+	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/base/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
