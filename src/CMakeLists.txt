@@ -12,7 +12,7 @@ else()
     add_definitions(-DCOIN_DEBUG=0)
 endif()
 
-include_directories(.. ../include ../include/Inventor/annex . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/src/internal)
+include_directories(.. ../include ../include/Inventor/annex . ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR}/data)
 if(COIN_BUILD_SINGLE_LIB)
 	if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 		set(COIN_SOURCE tidbits.cpp ${CMAKE_CURRENT_BINARY_DIR}/Coin.rc CACHE INTERNAL "COIN_SOURCE")
