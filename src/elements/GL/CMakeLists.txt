@@ -1,70 +1,46 @@
+# source files
+set(COIN_ELEMENTS_GL_FILES
+	SoGLCacheContextElement.cpp
+	SoGLClipPlaneElement.cpp
+	SoGLColorIndexElement.cpp
+	SoGLCoordinateElement.cpp
+	SoGLDepthBufferElement.cpp
+	SoGLDrawStyleElement.cpp
+	SoGLEnvironmentElement.cpp
+	SoGLLazyElement.cpp
+	SoGLLightIdElement.cpp
+	SoGLLinePatternElement.cpp
+	SoGLLineWidthElement.cpp
+	SoGLModelMatrixElement.cpp
+	SoGLMultiTextureCoordinateElement.cpp
+	SoGLMultiTextureEnabledElement.cpp
+	SoGLMultiTextureMatrixElement.cpp
+	SoGLMultiTextureImageElement.cpp
+	SoGLNormalElement.cpp
+	SoGLPointSizeElement.cpp
+	SoGLPolygonOffsetElement.cpp
+	SoGLProjectionMatrixElement.cpp
+	SoGLRenderPassElement.cpp
+	SoGLShapeHintsElement.cpp
+	SoGLUpdateAreaElement.cpp
+	SoGLVBOElement.cpp
+	SoGLViewingMatrixElement.cpp
+	SoGLViewportRegionElement.cpp
+	SoGLDisplayList.cpp
+	SoGLVertexAttributeElement.cpp
+	SoResetMatrixElement.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		elements/GL/SoGLCacheContextElement.cpp
-		elements/GL/SoGLClipPlaneElement.cpp
-		elements/GL/SoGLColorIndexElement.cpp
-		elements/GL/SoGLCoordinateElement.cpp
-		elements/GL/SoGLDepthBufferElement.cpp
-		elements/GL/SoGLDrawStyleElement.cpp
-		elements/GL/SoGLEnvironmentElement.cpp
-		elements/GL/SoGLLazyElement.cpp
-		elements/GL/SoGLLightIdElement.cpp
-		elements/GL/SoGLLinePatternElement.cpp
-		elements/GL/SoGLLineWidthElement.cpp
-		elements/GL/SoGLModelMatrixElement.cpp
-		elements/GL/SoGLMultiTextureCoordinateElement.cpp
-		elements/GL/SoGLMultiTextureEnabledElement.cpp
-		elements/GL/SoGLMultiTextureMatrixElement.cpp
-		elements/GL/SoGLMultiTextureImageElement.cpp
-		elements/GL/SoGLNormalElement.cpp
-		elements/GL/SoGLPointSizeElement.cpp
-		elements/GL/SoGLPolygonOffsetElement.cpp
-		elements/GL/SoGLProjectionMatrixElement.cpp
-		elements/GL/SoGLRenderPassElement.cpp
-		elements/GL/SoGLShapeHintsElement.cpp
-		elements/GL/SoGLUpdateAreaElement.cpp
-		elements/GL/SoGLVBOElement.cpp
-		elements/GL/SoGLViewingMatrixElement.cpp
-		elements/GL/SoGLViewportRegionElement.cpp
-		elements/GL/SoGLDisplayList.cpp
-		elements/GL/SoGLVertexAttributeElement.cpp
-		elements/GL/SoResetMatrixElement.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_ELEMENTS_GL_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} elements/GL/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(glelements OBJECT
-		SoGLCacheContextElement.cpp
-		SoGLClipPlaneElement.cpp
-		SoGLColorIndexElement.cpp
-		SoGLCoordinateElement.cpp
-		SoGLDepthBufferElement.cpp
-		SoGLDrawStyleElement.cpp
-		SoGLEnvironmentElement.cpp
-		SoGLLazyElement.cpp
-		SoGLLightIdElement.cpp
-		SoGLLinePatternElement.cpp
-		SoGLLineWidthElement.cpp
-		SoGLModelMatrixElement.cpp
-		SoGLMultiTextureCoordinateElement.cpp
-		SoGLMultiTextureEnabledElement.cpp
-		SoGLMultiTextureMatrixElement.cpp
-		SoGLMultiTextureImageElement.cpp
-		SoGLNormalElement.cpp
-		SoGLPointSizeElement.cpp
-		SoGLPolygonOffsetElement.cpp
-		SoGLProjectionMatrixElement.cpp
-		SoGLRenderPassElement.cpp
-		SoGLShapeHintsElement.cpp
-		SoGLUpdateAreaElement.cpp
-		SoGLVBOElement.cpp
-		SoGLViewingMatrixElement.cpp
-		SoGLViewportRegionElement.cpp
-		SoGLDisplayList.cpp
-		SoGLVertexAttributeElement.cpp
-		SoResetMatrixElement.cpp
-	)
+	add_library(glelements OBJECT ${COIN_ELEMENTS_GL_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

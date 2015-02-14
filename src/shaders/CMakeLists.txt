@@ -1,52 +1,37 @@
+# source files
+set(COIN_SHADERS_FILES
+	SoFragmentShader.cpp
+	SoGeometryShader.cpp
+	SoGLARBShaderParameter.cpp
+	SoGLARBShaderObject.cpp
+	SoGLARBShaderProgram.cpp
+	SoGLCgShaderObject.cpp
+	SoGLCgShaderParameter.cpp
+	SoGLCgShaderProgram.cpp
+	SoGLSLShaderParameter.cpp
+	SoGLSLShaderObject.cpp
+	SoGLSLShaderProgram.cpp
+	SoGLShaderObject.cpp
+	SoGLShaderParameter.cpp
+	SoGLShaderProgram.cpp
+	SoGLShaderProgramElement.cpp
+	SoShaderObject.cpp
+	SoShaderParameter.cpp
+	SoShaderProgram.cpp
+	SoShader.cpp
+	SoVertexShader.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		shaders/SoFragmentShader.cpp
-		shaders/SoGeometryShader.cpp
-		shaders/SoGLARBShaderParameter.cpp
-		shaders/SoGLARBShaderObject.cpp
-		shaders/SoGLARBShaderProgram.cpp
-		shaders/SoGLCgShaderObject.cpp
-		shaders/SoGLCgShaderParameter.cpp
-		shaders/SoGLCgShaderProgram.cpp
-		shaders/SoGLSLShaderParameter.cpp
-		shaders/SoGLSLShaderObject.cpp
-		shaders/SoGLSLShaderProgram.cpp
-		shaders/SoGLShaderObject.cpp
-		shaders/SoGLShaderParameter.cpp
-		shaders/SoGLShaderProgram.cpp
-		shaders/SoGLShaderProgramElement.cpp
-		shaders/SoShaderObject.cpp
-		shaders/SoShaderParameter.cpp
-		shaders/SoShaderProgram.cpp
-		shaders/SoShader.cpp
-		shaders/SoVertexShader.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_SHADERS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} shaders/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(shaders OBJECT
-		SoFragmentShader.cpp
-		SoGeometryShader.cpp
-		SoGLARBShaderParameter.cpp
-		SoGLARBShaderObject.cpp
-		SoGLARBShaderProgram.cpp
-		SoGLCgShaderObject.cpp
-		SoGLCgShaderParameter.cpp
-		SoGLCgShaderProgram.cpp
-		SoGLSLShaderParameter.cpp
-		SoGLSLShaderObject.cpp
-		SoGLSLShaderProgram.cpp
-		SoGLShaderObject.cpp
-		SoGLShaderParameter.cpp
-		SoGLShaderProgram.cpp
-		SoGLShaderProgramElement.cpp
-		SoShaderObject.cpp
-		SoShaderParameter.cpp
-		SoShaderProgram.cpp
-		SoShader.cpp
-		SoVertexShader.cpp
-	)
+	add_library(shaders OBJECT ${COIN_SHADERS_FILES})
 endif()
 
+# define documentation
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
 	${CMAKE_SOURCE_DIR}/src/shaders/SoFragmentShader.cpp

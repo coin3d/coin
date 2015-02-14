@@ -1,22 +1,22 @@
+# source files
+set(COIN_BUNDLES_FILES
+	SoBundle.cpp
+	SoMaterialBundle.cpp
+	SoNormalBundle.cpp
+	SoVertexAttributeBundle.cpp
+	SoTextureCoordinateBundle.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		bundles/SoBundle.cpp
-		bundles/SoMaterialBundle.cpp
-		bundles/SoNormalBundle.cpp
-		bundles/SoVertexAttributeBundle.cpp
-		bundles/SoTextureCoordinateBundle.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_BUNDLES_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} bundles/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(bundles OBJECT
-		SoBundle.cpp
-		SoMaterialBundle.cpp
-		SoNormalBundle.cpp
-		SoVertexAttributeBundle.cpp
-		SoTextureCoordinateBundle.cpp
-	)
+	add_library(bundles OBJECT ${COIN_BUNDLES_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

@@ -1,34 +1,28 @@
+# source files
+set(COIN_CACHES_FILES
+	SoBoundingBoxCache.cpp
+	SoCache.cpp
+	SoConvexDataCache.cpp
+	SoGLCacheList.cpp
+	SoGLRenderCache.cpp
+	SoNormalCache.cpp
+	SoTextureCoordinateCache.cpp
+	SoPrimitiveVertexCache.cpp
+	SoGlyphCache.cpp
+	SoShaderProgramCache.cpp
+	SoVBOCache.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		caches/SoBoundingBoxCache.cpp
-		caches/SoCache.cpp
-		caches/SoConvexDataCache.cpp
-		caches/SoGLCacheList.cpp
-		caches/SoGLRenderCache.cpp
-		caches/SoNormalCache.cpp
-		caches/SoTextureCoordinateCache.cpp
-		caches/SoPrimitiveVertexCache.cpp
-		caches/SoGlyphCache.cpp
-		caches/SoShaderProgramCache.cpp
-		caches/SoVBOCache.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_CACHES_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} caches/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(caches OBJECT
-		SoBoundingBoxCache.cpp
-		SoCache.cpp
-		SoConvexDataCache.cpp
-		SoGLCacheList.cpp
-		SoGLRenderCache.cpp
-		SoNormalCache.cpp
-		SoTextureCoordinateCache.cpp
-		SoPrimitiveVertexCache.cpp
-		SoGlyphCache.cpp
-		SoShaderProgramCache.cpp
-		SoVBOCache.cpp
-	)
+	add_library(caches OBJECT ${COIN_CACHES_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

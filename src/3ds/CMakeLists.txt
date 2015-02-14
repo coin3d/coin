@@ -1,12 +1,14 @@
+# source files
+set(COIN_3DS_FILES
+	3dsLoader.cpp
+	SoStream.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		3ds/3dsLoader.cpp
-		3ds/SoStream.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_3DS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} 3ds/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(3ds OBJECT
-		3dsLoader.cpp
-		SoStream.cpp
-	)
+	add_library(3ds OBJECT ${COIN_3DS_FILES})
 endif()

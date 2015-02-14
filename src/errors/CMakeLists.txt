@@ -1,24 +1,23 @@
+# source files
+set(COIN_ERRORS_FILES
+	error.cpp
+	debugerror.cpp
+	SoDebugError.cpp
+	SoError.cpp
+	SoMemoryError.cpp
+	SoReadError.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-		errors/error.cpp
-		errors/debugerror.cpp
-		errors/SoDebugError.cpp
-		errors/SoError.cpp
-		errors/SoMemoryError.cpp
-		errors/SoReadError.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_ERRORS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} errors/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(errors OBJECT
-		error.cpp
-		debugerror.cpp
-		SoDebugError.cpp
-		SoError.cpp
-		SoMemoryError.cpp
-		SoReadError.cpp
-	)
+	add_library(errors OBJECT ${COIN_ERRORS_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.cpp)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}

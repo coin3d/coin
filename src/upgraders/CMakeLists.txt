@@ -1,18 +1,20 @@
+# source files
+set(COIN_UPGRADERS_FILES
+	SoUpgrader.cpp
+	SoPackedColorV20.cpp
+	SoShapeHintsV10.cpp
+)
+
+# build library
 if(COIN_BUILD_SINGLE_LIB)
-	set(COIN_SOURCE ${COIN_SOURCE}
-        upgraders/SoUpgrader.cpp
-        upgraders/SoPackedColorV20.cpp
-        upgraders/SoShapeHintsV10.cpp
-		CACHE INTERNAL "COIN_SOURCE"
-	)
+	foreach(SRCFILE ${COIN_UPGRADERS_FILES})
+		set(COIN_SOURCE ${COIN_SOURCE} upgraders/${SRCFILE} CACHE INTERNAL "COIN_SOURCE")
+	endforeach(SRCFILE)
 else()
-	add_library(upgraders OBJECT
-        SoUpgrader.cpp
-        SoPackedColorV20.cpp
-        SoShapeHintsV10.cpp
-	)
+	add_library(upgraders OBJECT ${COIN_UPGRADERS_FILES})
 endif()
 
+# define documentation
 file(GLOB_RECURSE SOCPP So*.*)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
