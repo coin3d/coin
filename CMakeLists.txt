@@ -8,6 +8,17 @@ set (COIN_VERSION "${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERS
 
 set(CMAKE_DEBUG_POSTFIX "d")
 option(COIN_BUILD_SHARED_LIBS "Build shared library when ON, static when OFF." ON)
+option(COIN_3DS_IMPORT_CAPABILITIES "3ds import capabilities." ON)
+option(COIN_THREADSAFE "Thread safe traversals." OFF)
+
+if(COIN_3DS_IMPORT_CAPABILITIES)
+    add_definitions(-DHAVE_3DS_IMPORT_CAPABILITIES)
+endif()
+
+if(COIN_THREADSAFE)
+    add_definitions(-DCOIN_THREADSAFE)
+endif()
+
 if(MSVC)
 	option(COIN_BUILD_SINGLE_LIB "Build only one library when ON, multiple when OFF." ON)
 	if (MSVC_VERSION GREATER 1500 OR MSVC_VERSION EQUAL 1500)
@@ -83,3 +94,4 @@ endif()
 set(COIN_DOCUMENTATION_FILES)
 add_subdirectory(include)
 add_subdirectory(src)
+add_subdirectory(data)
