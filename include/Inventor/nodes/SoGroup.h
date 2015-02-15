@@ -71,6 +71,7 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
   virtual SoChildList * getChildren(void) const;
+  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
 
 protected:
   virtual ~SoGroup();
