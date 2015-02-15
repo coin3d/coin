@@ -726,14 +726,35 @@ SoGroup::audioRender(SoAudioRenderAction * action)
 
 // Doc from superclass.
 void
+SoGroup::addWriteReference(SoOutput * out, SbBool isfromfield)
+{
+  // SoGroup::write() used to count write references of children by calling
+  // doAction() when ref was zero in the SoOutput::COUNT_REFS stage. However, 
+  // also field connections may add write references without going through
+  // SoGroup::write(), see SoField::countWriteRefs(). This resulted in wrong
+  // write referene counts. Therefore addWriteReference() was overloaded to
+  // correctly count the write references of children regardless from where
+  // this is called.
+
+  int ref = SoWriterefCounter::instance(out)->getWriteref(this);
+  inherited::addWriteReference(out);
+
+  // Traverse hierarchy only first time around
+  if (ref == 0) {
+    int n = this->getChildren()->getLength();
+    for (int i = 0; i < n; i++) {
+	  (*this->getChildren())[i]->addWriteReference(out);
+    }
+  }
+}
+	
+// Doc from superclass.
+void
 SoGroup::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    int ref = SoWriterefCounter::instance(out)->getWriteref(this);
     this->addWriteReference(out);
-    // Traverse hierarchy only first time around
-    if (ref == 0) SoGroup::doAction((SoAction *)action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;
