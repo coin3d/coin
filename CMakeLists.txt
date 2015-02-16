@@ -8,6 +8,16 @@ set (COIN_VERSION "${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERS
 
 set(CMAKE_DEBUG_POSTFIX "d")
 option(COIN_BUILD_SHARED_LIBS "Build shared library when ON, static when OFF." ON)
+
+option(COIN_THREADSAFE "Thread safe traversals." OFF)
+option(COIN_HAVE_JAVASCRIPT "Javascript capabilities." ON)
+option(HAVE_VRML97 "VRML97 support." ON)
+option(HAVE_NODEKITS "Nodekit support." ON)
+option(HAVE_DRAGGERS "Dragger support." ON)
+option(HAVE_MANIPULATORS "Manipulator support." ON)
+option(HAVE_SOUND "Sound support." ON)
+option(HAVE_3DS_IMPORT_CAPABILITIES "3ds import capabilities." ON)
+
 if(MSVC)
 	option(COIN_BUILD_SINGLE_LIB "Build only one library when ON, multiple when OFF." ON)
 	if (MSVC_VERSION GREATER 1500 OR MSVC_VERSION EQUAL 1500)
@@ -83,3 +93,4 @@ endif()
 set(COIN_DOCUMENTATION_FILES)
 add_subdirectory(include)
 add_subdirectory(src)
+add_subdirectory(data)
