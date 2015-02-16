@@ -22,7 +22,7 @@
  * Default is to have VRML97 support enabled.
  */
 
-#define HAVE_VRML97 /**/
+#cmakedefine HAVE_VRML97
 
 /***************************************************************************
  * HAVE_NODEKITS
@@ -39,7 +39,7 @@
  * Default is to have nodekit support enabled.
  */
 
-#define HAVE_NODEKITS /**/
+#cmakedefine HAVE_NODEKITS
 
 /***************************************************************************
  * HAVE_DRAGGERS
@@ -54,7 +54,7 @@
  * Default is to have dragger support enabled.
  */
 
-#define HAVE_DRAGGERS /**/
+#cmakedefine HAVE_DRAGGERS
 
 /***************************************************************************
  * HAVE_MANIPULATORS
@@ -68,7 +68,7 @@
  * Default is to have manipulators support enabled.
  */
 
-#define HAVE_MANIPULATORS /**/
+#cmakedefine HAVE_MANIPULATORS
 
 /***************************************************************************
  * HAVE_SOUND
@@ -79,7 +79,7 @@
  * Default is to have sound enabled.
  */
 
-#define HAVE_SOUND /**/
+#cmakedefine HAVE_SOUND
 
 /***************************************************************************
  * COIN_THREADSAFE
@@ -94,7 +94,7 @@
  * necessary.
  */
 
-/* #undef COIN_THREADSAFE */
+#cmakedefine COIN_THREADSAFE
 
 /***************************************************************************
  * HAVE_3DS_IMPORT_CAPABILITIES
@@ -102,11 +102,10 @@
  * If you want to be able to import .3ds files directly into Coin, set this
  * define.
  *
- * Default is to not have this define set, as the import code has not been
- * thoroughty tested and robustified by the main Coin developers yet.
+ * Default is to have 3ds import enabled.
  */
 
-/* #undef HAVE_3DS_IMPORT_CAPABILITIES */
+#cmakedefine HAVE_3DS_IMPORT_CAPABILITIES
 
 /***************************************************************************
  * COIN_HAVE_JAVASCRIPT
@@ -120,7 +119,7 @@
  * If VRML97 is disabled, JavaScript support is also disabled.
  */
 
-#define COIN_HAVE_JAVASCRIPT /**/
+#cmakedefine COIN_HAVE_JAVASCRIPT
 
 /***************************************************************************
  * The end.
