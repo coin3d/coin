@@ -10,7 +10,7 @@
 
 
 /* define this to the libCoin beta version letter */
-#define COIN_BETA_VERSION a
+#define COIN_BETA_VERSION @COIN_BETA_VERSION@
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_INT16_T int16_t
@@ -40,13 +40,13 @@
 /* #undef COIN_MACOS_10_2 */
 
 /* define this to the libCoin major version number */
-#define COIN_MAJOR_VERSION 4
+#define COIN_MAJOR_VERSION @COIN_MAJOR_VERSION@
 
 /* define this to the libCoin release version number */
-#define COIN_MICRO_VERSION 0
+#define COIN_MICRO_VERSION @COIN_MICRO_VERSION@
 
 /* define this to the libCoin minor version number */
-#define COIN_MINOR_VERSION 0
+#define COIN_MINOR_VERSION @COIN_MINOR_VERSION@
 
 /* define this to the dynamic library name of Coin */
 #define COIN_SYSTEM_LIBRARY_NAME "libCoin.so"
@@ -223,7 +223,7 @@
 #cmakedefine HAVE_LIBGEN_H
 
 /* define if you have the simage library */
-/* #undef HAVE_LIBSIMAGE */
+#cmakedefine HAVE_LIBSIMAGE
 
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 /* #undef HAVE_MACH_O_DYLD_H */
@@ -418,16 +418,16 @@
 #define PACKAGE_NAME "Coin"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Coin 4.0.0a"
+#define PACKAGE_STRING "Coin @COIN_VERSION@"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "coin"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "4.0.0a"
+#define PACKAGE_VERSION "@COIN_VERSION@"
 
 /* define for runtime linking with simage */
-#define SIMAGE_RUNTIME_LINKING 1
+#cmakedefine SIMAGE_RUNTIME_LINKING
 
 /* define for runtime linking with SpiderMonkey */
 #define SPIDERMONKEY_RUNTIME_LINKING 1
