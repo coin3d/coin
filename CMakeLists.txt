@@ -34,7 +34,6 @@ if(MSVC)
 else()
 	option(COIN_BUILD_SINGLE_LIB "Build only one library when ON, multiple when OFF." OFF)
 endif()
-mark_as_advanced(COIN_BUILD_SINGLE_LIB COIN_BUILD_SHARED_LIBS)
 
 if(WIN32)
 	add_definitions(-DHAVE_WINDOWS_H)
