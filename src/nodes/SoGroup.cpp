@@ -732,7 +732,7 @@ SoGroup::addWriteReference(SoOutput * out, SbBool isfromfield)
   // doAction() when ref was zero in the SoOutput::COUNT_REFS stage. However, 
   // also field connections may add write references without going through
   // SoGroup::write(), see SoField::countWriteRefs(). This resulted in wrong
-  // write referene counts. Therefore addWriteReference() was overloaded to
+  // write reference counts. Therefore addWriteReference() was overloaded to
   // correctly count the write references of children regardless from where
   // this is called.
 
