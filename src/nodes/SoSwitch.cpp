@@ -404,9 +404,8 @@ SoSwitch::write(SoWriteAction * action)
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
-    // Only increase number of writereferences to the top level node
-    // in a tree which is used multiple times.
-    if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) this->getChildren()->traverse(action);
+    // No need to traverse children as SoGroup::addWriteReference() already
+    // handles write references of children.
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;
