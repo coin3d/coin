@@ -622,7 +622,7 @@ Installing onto mounted root file system
     make DESTDIR=/mnt/newrootfs install
 
 
-When Things Fail
+When Things Fail - needs updating
 ================
 
 If you experience configure/build/install problems beyond what can be
