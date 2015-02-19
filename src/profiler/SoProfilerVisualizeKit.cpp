@@ -150,7 +150,7 @@ SoProfilerVisualizeKit::SoProfilerVisualizeKit()
   SO_KIT_ADD_FIELD(separatorsWithGLCaches, (NULL));
 
   this->separatorsWithGLCaches.setNum(0);
-  this->separatorsWithGLCaches.setDefault(NULL);
+  this->separatorsWithGLCaches.setDefault(FALSE);
   PRIVATE(this)->cacheSensor.reset(new SoFieldSensor(cacheSensorCB, this));
   PRIVATE(this)->cacheSensor->attach(&this->separatorsWithGLCaches);
   PRIVATE(this)->rootSensor.reset(new SoFieldSensor(rootChangedCB, this));
