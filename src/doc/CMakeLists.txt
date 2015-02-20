@@ -1,6 +1,6 @@
 #add a target to generate API documentation with Doxygen
 find_package(Doxygen)
-option(COIN_BUILD_DOCUMENTATION "Create and install the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
+option(COIN_BUILD_DOCUMENTATION "Create and install API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
 file(GLOB_RECURSE DOX *.dox*)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
