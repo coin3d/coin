@@ -48,6 +48,7 @@ class SoPath;
 class SoSeparator;
 class SoVRMLGroup;
 class SoGroup;
+class SoX3DGroup;
 
 typedef void SoDBHeaderCB(void * data, SoInput * input);
 
@@ -64,6 +65,7 @@ public:
   static SbBool read(SoInput * input, SoNode *& rootnode);
   static SoSeparator * readAll(SoInput * input);
   static SoVRMLGroup * readAllVRML(SoInput * input);
+  static SoX3DGroup * readAllX3D(SoInput * input);
   static SbBool isValidHeader(const char * teststring);
   static SbBool registerHeader(const SbString & headerstring,
                                SbBool isbinary,
@@ -120,7 +122,7 @@ public:
                           SoNode * to, const char * eventin);
 
 private:
-  static SoGroup * readAllWrapper(SoInput * input, const SoType & grouptype);
+  static SoNode * readAllWrapper(SoInput * input, const SoType & grouptype);
 };
 
 #endif // !COIN_SODB_H
