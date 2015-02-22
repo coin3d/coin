@@ -42,6 +42,17 @@ set(COIN_ENGINES_FILES
 	evaluator_tab.c
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_ENGINES_INTERNAL_FILES
+	SoConvertAll.h
+	SoConvertAll.cpp
+	evaluator.h
+	evaluator.c
+	evaluator_tab.c
+	SoSubEngineP.h
+	SoSubNodeEngineP.h
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_ENGINES_FILES})
@@ -54,4 +65,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_ENGINES_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/engines/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_ENGINES_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/engines/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)

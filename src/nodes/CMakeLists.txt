@@ -108,6 +108,14 @@ set(COIN_NODES_FILES
 	SoWWWInline.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_NODES_INTERNAL_FILES
+	SoSoundElementHelper.h
+	SoSubNodeP.h
+	SoUnknownNode.h
+	SoUnknownNode.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_NODES_FILES})
@@ -120,4 +128,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_NODES_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/nodes/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_NODES_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/nodes/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)

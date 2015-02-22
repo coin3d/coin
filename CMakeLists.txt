@@ -123,7 +123,12 @@ if(NOT HAVE_UNISTD_H)
 	add_definitions(-DYY_NO_UNISTD_H)
 endif()
 
+# COIN_DOCUMENTATION_FILES is filled with all source files.
 set(COIN_DOCUMENTATION_FILES)
+# COIN_INTERNAL_DOCUMENTATION_FILES is filled with source files that are not part of the public API.
+# If COIN_BUILD_INTERNAL_DOCUMENTATION is YES then these files are added to DOXYGEN_INPUT, otherwise
+# they are put in DOXYGEN_EXCLUDE.
+set(COIN_INTERNAL_DOCUMENTATION_FILES)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(data)

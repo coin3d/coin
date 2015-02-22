@@ -15,6 +15,23 @@ set(COIN_THREADS_FILES
 	barrier.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_THREADS_INTERNAL_FILES
+	barrierp.h
+	condvarp.h
+	fifop.h
+	mutexp.h
+	recmutexp.h
+	rwmutexp.h
+	schedp.h
+	storagep.h
+	syncp.h
+	threadp.h
+	threadsutilp.h
+	workerp.h
+	wpoolp.h
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_THREADS_FILES})
@@ -28,18 +45,6 @@ endif()
 foreach(SRCFILE ${COIN_THREADS_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/threads/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
-set(COIN_DOCUMENTATION_FILES
-	${COIN_DOCUMENTATION_FILES}
-	${CMAKE_SOURCE_DIR}/src/threads/barrierp.h
-	${CMAKE_SOURCE_DIR}/src/threads/condvarp.h
-	${CMAKE_SOURCE_DIR}/src/threads/fifop.h
-	${CMAKE_SOURCE_DIR}/src/threads/mutexp.h
-	${CMAKE_SOURCE_DIR}/src/threads/recmutexp.h
-	${CMAKE_SOURCE_DIR}/src/threads/rwmutexp.h
-	${CMAKE_SOURCE_DIR}/src/threads/schedp.h
-	${CMAKE_SOURCE_DIR}/src/threads/storagep.h
-	${CMAKE_SOURCE_DIR}/src/threads/threadp.h
-	${CMAKE_SOURCE_DIR}/src/threads/workerp.h
-	${CMAKE_SOURCE_DIR}/src/threads/wpoolp.h
-	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+foreach(SRCFILE ${COIN_THREADS_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/threads/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
