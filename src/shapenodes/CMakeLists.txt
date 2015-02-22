@@ -33,6 +33,19 @@ set(COIN_SHAPENODES_FILES
 	soshape_trianglesort.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_SHAPENODES_INTERNAL_FILES
+	SoNurbsP.h
+	soshape_bigtexture.h
+	soshape_bigtexture.cpp
+	soshape_bumprender.h
+	soshape_bumprender.cpp
+	soshape_primdata.h
+	soshape_primdata.cpp
+	soshape_trianglesort.h
+	soshape_trianglesort.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_SHAPENODES_FILES})
@@ -45,4 +58,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_SHAPENODES_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/shapenodes/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_SHAPENODES_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/shapenodes/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)

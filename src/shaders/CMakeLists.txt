@@ -22,6 +22,37 @@ set(COIN_SHADERS_FILES
 	SoVertexShader.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_SHADERS_INTERNAL_FILES
+	SoGLARBShaderParameter.h
+	SoGLARBShaderParameter.cpp
+	SoGLARBShaderObject.h
+	SoGLARBShaderObject.cpp
+	SoGLARBShaderProgram.h
+	SoGLARBShaderProgram.cpp
+	SoGLCgShaderObject.h
+	SoGLCgShaderObject.cpp
+	SoGLCgShaderParameter.h
+	SoGLCgShaderParameter.cpp
+	SoGLCgShaderProgram.h
+	SoGLCgShaderProgram.cpp
+	SoGLSLShaderParameter.h
+	SoGLSLShaderParameter.cpp
+	SoGLSLShaderObject.h
+	SoGLSLShaderObject.cpp
+	SoGLSLShaderProgram.h
+	SoGLSLShaderProgram.cpp
+	SoGLShaderObject.h
+	SoGLShaderObject.cpp
+	SoGLShaderParameter.h
+	SoGLShaderParameter.cpp
+	SoGLShaderProgram.h
+	SoGLShaderProgram.cpp
+	SoGLShaderProgramElement.cpp
+	SoShader.h
+	SoShader.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_SHADERS_FILES})
@@ -35,8 +66,6 @@ endif()
 foreach(SRCFILE ${COIN_SHADERS_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/shaders/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
-set(COIN_DOCUMENTATION_FILES
-	${COIN_DOCUMENTATION_FILES}
-	${CMAKE_SOURCE_DIR}/src/shaders/SoShader.h
-	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+foreach(SRCFILE ${COIN_SHADERS_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/shaders/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
+endforeach(SRCFILE)

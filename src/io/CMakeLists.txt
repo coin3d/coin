@@ -1,6 +1,7 @@
 # source files
 set(COIN_IO_FILES
 	SoInput.cpp
+	SoInputP.cpp
 	SoInput_FileInfo.cpp
 	SoInput_Reader.cpp
 	SoOutput.cpp
@@ -9,6 +10,22 @@ set(COIN_IO_FILES
 	SoTranSender.cpp
 	SoTranReceiver.cpp
 	SoWriterefCounter.cpp
+	gzmemio.cpp
+)
+
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_IO_INTERNAL_FILES
+	SoInputP.h
+	SoInputP.cpp
+	SoInput_FileInfo.h
+	SoInput_FileInfo.cpp
+	SoInput_Reader.h
+	SoInput_Reader.cpp
+	SoOutput_Writer.h
+	SoOutput_Writer.cpp
+	SoWriterefCounter.h
+	SoWriterefCounter.cpp
+	gzmemio.h
 	gzmemio.cpp
 )
 
@@ -24,4 +41,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_IO_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/io/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_IO_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/io/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
