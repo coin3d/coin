@@ -73,6 +73,22 @@ set(COIN_BASE_FILES
 	SbXfBox3d.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_BASE_INTERNAL_FILES
+	coinString.h
+	dict.h
+	dict.cpp
+	dictp.h
+	dynarray.h
+	dynarray.cpp
+	hashp.h
+	heapp.h
+	namemap.h
+	namemap.cpp
+	SbGLUTessellator.h
+	SbGLUTessellator.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_BASE_FILES})
@@ -85,4 +101,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_BASE_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/base/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_BASE_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/base/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)

@@ -30,46 +30,53 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-#include <Inventor/C/threads/common.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
+// *************************************************************************
 
-/* ********************************************************************** */
+#include "actions/SoActionP.h"
 
-/*!
-  \enum cc_threads_implementation {
-    CC_NO_THREADS = -1,
-    CC_PTHREAD    = 0,
-    CC_W32THREAD
-  }
-  \ingroup threads
-  \brief The definition of the enumerator for identification of the thread type implemented.
-*/
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#ifdef HAVE_NODEKITS
+#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
+#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
+#endif // HAVE_NODEKITS
 
-/*!
-  \typedef enum cc_threads_implementation cc_threads_implementation
-  \ingroup threads
-  \brief The type definition for the implemented thread enumerator.
-*/
+// *************************************************************************
 
-/* ********************************************************************** */
-
-/*! Returns the implemented thread type. */
-int
-cc_thread_implementation(void)
+SoProfilerStats *
+SoActionP::getProfilerStatsNode(void)
 {
-#ifdef USE_PTHREAD
-  return CC_PTHREAD;
-#endif
+  static SoProfilerStats * pstats = NULL;
+  if (!pstats) {
+    pstats = new SoProfilerStats;
+    pstats->ref();
+  }
+  return pstats;
+}
 
-#ifdef USE_W32THREAD
-  return CC_W32THREAD;
-#endif
+SoNode *
+SoActionP::getProfilerOverlay(void)
+{
+  if (!SoProfiler::isEnabled() || !SoProfiler::isOverlayActive())
+    return NULL;
 
-  return CC_NO_THREADS;
-} /* cc_thread_implementation() */
+  static SoNode * nodekit = NULL;
+#ifdef HAVE_NODEKITS
+  if (nodekit == NULL) {
+    SoProfilerTopKit * kit = new SoProfilerTopKit;
+    kit->ref();
+    kit->setPart("profilingStats",
+                 SoActionP::getProfilerStatsNode());
+    nodekit = kit;
 
-/* ********************************************************************** */
+    SoProfilerVisualizeKit * viskit = new SoProfilerVisualizeKit;
+    viskit->stats.setValue(SoActionP::getProfilerStatsNode());
+    kit->addOverlayGeometry(viskit);
+  }
+#endif // HAVE_NODEKITS
+  return nodekit;
+}
+
+// *************************************************************************
+
+#undef PRIVATE

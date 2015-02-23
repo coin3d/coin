@@ -1,6 +1,7 @@
 # source files
 set(COIN_ACTIONS_FILES
 	SoAction.cpp
+	SoActionP.cpp
 	SoBoxHighlightRenderAction.cpp
 	SoCallbackAction.cpp
 	SoGLRenderAction.cpp
@@ -20,6 +21,13 @@ set(COIN_ACTIONS_FILES
 	SoAudioRenderAction.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_ACTIONS_INTERNAL_FILES
+	SoActionP.h
+	SoActionP.cpp
+	SoSubActionP.h
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_ACTIONS_FILES})
@@ -33,8 +41,6 @@ endif()
 foreach(SRCFILE ${COIN_ACTIONS_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/actions/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
-set(COIN_DOCUMENTATION_FILES
-	${COIN_DOCUMENTATION_FILES}
-	${CMAKE_SOURCE_DIR}/src/actions/SoActionP.h
-	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+foreach(SRCFILE ${COIN_ACTIONS_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/actions/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
+endforeach(SRCFILE)

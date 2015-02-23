@@ -1,6 +1,8 @@
 #add a target to generate API documentation with Doxygen
 find_package(Doxygen)
-option(COIN_BUILD_DOCUMENTATION "Create and install the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
+option(COIN_BUILD_DOCUMENTATION "Create and install API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
+INCLUDE(CMakeDependentOption)
+CMAKE_DEPENDENT_OPTION(COIN_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API (depends on COIN_BUILD_DOCUMENTATION)" OFF "COIN_BUILD_DOCUMENTATION" OFF)
 file(GLOB_RECURSE DOX *.dox*)
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
@@ -38,11 +40,35 @@ if(COIN_BUILD_DOCUMENTATION)
 		set(HHC_PROGRAM)
 	endif()
 
+	set(DOXYGEN_INTERNAL_DOCS NO)
+	set(DOXYGEN_EXTRACT_PRIVATE NO)
+	set(DOXYGEN_WARN_IF_UNDOCUMENTED YES)
+	set(DOXYGEN_EXCLUDE)
+	if(COIN_BUILD_INTERNAL_DOCUMENTATION)
+		set(DOXYGEN_EXTRACT_PRIVATE YES)
+		set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
+		set(DOXYGEN_INTERNAL_DOCS YES)
+		set(COIN_DOCUMENTATION_FILES
+			${COIN_DOCUMENTATION_FILES}
+			${COIN_INTERNAL_DOCUMENTATION_FILES}
+			CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
+		)
+	else()
+		set(COIN_DOCUMENTATION_EXCLUDE_SYMBOLS SoProfilerP)
+		foreach(XF ${COIN_INTERNAL_DOCUMENTATION_FILES})
+			set(DOXYGEN_EXCLUDE "${DOXYGEN_EXCLUDE}                         ${XF} \\\n")
+		endforeach(XF)
+	endif()
 	set(DOXYGEN_INPUT)
+	list(REMOVE_DUPLICATES COIN_DOCUMENTATION_FILES)
 	foreach(XF ${COIN_DOCUMENTATION_FILES})
 		set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${XF} \\\n")
 	endforeach(XF)
 	set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${CMAKE_SOURCE_DIR}/src/tidbits.cpp")
+	set(DOXYGEN_EXCLUDE_SYMBOLS)
+	foreach(XF ${COIN_DOCUMENTATION_EXCLUDE_SYMBOLS})
+		set(DOXYGEN_EXCLUDE_SYMBOLS "${DOXYGEN_EXCLUDE_SYMBOLS}                         ${XF} \\\n")
+	endforeach(XF)
 	set(DOXYFILE ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 	set(DOXYGEN_OUTPUT ${CMAKE_BINARY_DIR}/html/index.html)
 	configure_file(${CMAKE_SOURCE_DIR}/docs/coin.doxygen.cmake.in ${DOXYFILE} @ONLY)

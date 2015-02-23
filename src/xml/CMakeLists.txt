@@ -10,6 +10,15 @@ set(COIN_XML_FILES
 	path.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_XML_INTERNAL_FILES
+	attributep.h
+	documentp.h
+	elementp.h
+	utils.h
+	utils.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_XML_FILES})
@@ -22,4 +31,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_XML_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/xml/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_XML_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/xml/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
