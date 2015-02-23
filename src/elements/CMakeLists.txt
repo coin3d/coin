@@ -85,6 +85,15 @@ set(COIN_ELEMENTS_FILES
 	SoVertexAttributeElement.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_ELEMENTS_INTERNAL_FILES
+	SoTextureScalePolicyElement.h
+	SoTextureScalePolicyElement.cpp
+	SoTextureScaleQualityElement.h
+	SoTextureScaleQualityElement.cpp
+	SoVertexAttributeData.h
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_ELEMENTS_FILES})
@@ -97,4 +106,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_ELEMENTS_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/elements/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_ELEMENTS_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/elements/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)

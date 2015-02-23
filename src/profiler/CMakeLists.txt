@@ -13,6 +13,11 @@ set(COIN_PROFILER_FILES
 	SbProfilingData.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_PROFILER_INTERNAL_FILES
+	SoNodeProfiling.h
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_PROFILER_FILES})
@@ -26,6 +31,11 @@ endif()
 foreach(SRCFILE ${COIN_PROFILER_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/profiler/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_PROFILER_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/profiler/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+
+# SoProfilerP is not quite private, it is included from VRML nodes. The symbol is excluded from public API in doc/CMakeList.txt.
 set(COIN_DOCUMENTATION_FILES
 	${COIN_DOCUMENTATION_FILES}
 	${CMAKE_SOURCE_DIR}/src/profiler/SoProfilerP.h

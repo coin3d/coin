@@ -18,6 +18,35 @@ set(COIN_GLUE_FILES
 	normalization_cubemap.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_GLUE_INTERNAL_FILES
+	cg.h
+	cg.cpp
+	gl_wgl.h
+	gl_wgl.cpp
+	gl_agl.h
+	gl_agl.cpp
+	gl_cgl.h
+	gl_cgl.cpp
+	gl_glx.h
+	gl_glx.cpp
+	GLUWrapper.h
+	GLUWrapper.cpp
+	simage_wrapper.h
+	simage_wrapper.cpp
+	openal_wrapper.h
+	openal_wrapper.cpp
+	win32api.h
+	win32api.cpp
+	zlib.h
+	zlib.cpp
+	bzip2.h
+	bzip2.cpp
+	freetype.h
+	freetype.cpp
+	normalization_cubemap.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_GLUE_FILES})
@@ -30,4 +59,7 @@ endif()
 # define documentation
 foreach(SRCFILE ${COIN_GLUE_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/glue/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
+foreach(SRCFILE ${COIN_GLUE_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/glue/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
 endforeach(SRCFILE)

@@ -17,6 +17,28 @@ set(COIN_RENDERING_FILES
 	CoinOffscreenGLCanvas.cpp
 )
 
+# Files excluded from public API documentation, included in complete documentation.
+set(COIN_RENDERING_INTERNAL_FILES
+	SoGL.h
+	SoGL.cpp
+	SoGLNurbs.h
+	SoGLNurbs.cpp
+	SoRenderManagerP.h
+	SoRenderManagerP.cpp
+	SoOffscreenCGData.h
+	SoOffscreenCGData.cpp
+	SoOffscreenGLXData.h
+	SoOffscreenGLXData.cpp
+	SoOffscreenWGLData.h
+	SoOffscreenWGLData.cpp
+	SoVBO.h
+	SoVBO.cpp
+	SoVertexArrayIndexer.h
+	SoVertexArrayIndexer.cpp
+	CoinOffscreenGLCanvas.h
+	CoinOffscreenGLCanvas.cpp
+)
+
 # build library
 if(COIN_BUILD_SINGLE_LIB)
 	foreach(SRCFILE ${COIN_RENDERING_FILES})
@@ -30,8 +52,6 @@ endif()
 foreach(SRCFILE ${COIN_RENDERING_FILES})
 	set(COIN_DOCUMENTATION_FILES ${COIN_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/rendering/${SRCFILE} CACHE INTERNAL "COIN_DOCUMENTATION_FILES")
 endforeach(SRCFILE)
-set(COIN_DOCUMENTATION_FILES
-	${COIN_DOCUMENTATION_FILES}
-	${CMAKE_SOURCE_DIR}/src/rendering/SoVBO.h
-	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+foreach(SRCFILE ${COIN_RENDERING_INTERNAL_FILES})
+	set(COIN_INTERNAL_DOCUMENTATION_FILES ${COIN_INTERNAL_DOCUMENTATION_FILES} ${CMAKE_SOURCE_DIR}/src/rendering/${SRCFILE} CACHE INTERNAL "COIN_INTERNAL_DOCUMENTATION_FILES")
+endforeach(SRCFILE)
