@@ -98,9 +98,23 @@ CMAKE_INSTALL_PREFIX
     Install path prefix, prepended onto install directories. If
     set to "/tmp" then the library will install into "/tmp/lib".
 
-SHARED
+COIN_BUILD_SHARED_LIBS
 
     Build shared library when ON, static when OFF. Default is ON.
+    
+COIN_BUILD_DOCUMENTATION
+
+    Build HTML documentation on all platforms when ON, as well as man pages on
+    platforms other than Windows. Default is ON.
+    
+COIN_BUILD_INTERNAL_DOCUMENTATION
+
+    Depends on COIN_BUILD_DOCUMENTATION to be ON. When OFF (the default) only
+    the documentation regarding the public API will be built, and warnings for
+    undocumented entities are turned on.
+    When ON the generated documentation will include internal classes, which can
+    be useful for Coin developers. Since it is less common to fully document
+    internal entities, warnings for undocumented entities are turned off.
 
 
 Some build tips
