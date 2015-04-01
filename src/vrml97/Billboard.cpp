@@ -33,7 +33,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-
+#define HAVE_VRML97
 #ifdef HAVE_VRML97
 
 /*!
@@ -176,6 +176,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -283,9 +284,23 @@ SoVRMLBillboard::getBoundingBox(SoGetBoundingBoxAction * action)
 
 // Doc in parent
 void
-SoVRMLBillboard::getMatrix(SoGetMatrixAction * COIN_UNUSED_ARG(action))
+SoVRMLBillboard::getMatrix(SoGetMatrixAction * action)
 {
-  // FIXME: hmmm, what should I do here. pederb, 2001-10-30
+  SoState * state = action->getState();
+  state->push();
+
+  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  SbRotation rot = this->computeRotation(action->getInverse(), vv);
+
+  SbMatrix rotM;
+  rotM.setRotate(rot);
+  action->getMatrix().multLeft(rotM);
+  SbMatrix invRotM;
+  invRotM.setRotate(rot.inverse());
+  action->getInverse().multRight(invRotM);
+
+  SoGroup::getMatrix(action);
+  state->pop();
 }
 
 // Doc in parent
@@ -427,14 +442,27 @@ SoVRMLBillboard::notify(SoNotList * list)
 void
 SoVRMLBillboard::performRotation(SoState * state) const
 {
-  SbVec3f rotaxis = this->axisOfRotation.getValue();
-
   SbMatrix imm = SoModelMatrixElement::get(state).inverse();
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
+
+  SbRotation rot = computeRotation(imm, vv);
+
+  // append the desired rotation to the state
+  SoModelMatrixElement::rotateBy(state, (SoNode*) this, rot);
+}
+
+//
+// private method that computes the needed rotation
+//
+SbRotation
+SoVRMLBillboard::computeRotation(SbMatrix const & invMM, SbViewVolume const & vv) const
+{
+  SbVec3f rotaxis = this->axisOfRotation.getValue();
+
   SbVec3f up, look, right;
   
-  imm.multDirMatrix(vv.getViewUp(), up);
-  imm.multDirMatrix(-vv.getProjectionDirection(), look);
+  invMM.multDirMatrix(vv.getViewUp(), up);
+  invMM.multDirMatrix(-vv.getProjectionDirection(), look);
 
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
     // always orient the billboard towards the viewer
@@ -450,7 +478,7 @@ SoVRMLBillboard::performRotation(SoState * state) const
     // This is more numerically stable, more general, and the code is
     // much nicer, but it also means that we must check specifically
     // for this case.
-    if (rotaxis == SbVec3f(0.0f, 0.0f, 1.0f)) { return; }
+    if (rotaxis == SbVec3f(0.0f, 0.0f, 1.0f)) { return SbRotation::identity(); }
     
     up = rotaxis;
     right = up.cross(look);
@@ -476,9 +504,8 @@ SoVRMLBillboard::performRotation(SoState * state) const
   matrix[2][0] = look[0];
   matrix[2][1] = look[1];
   matrix[2][2] = look[2];
-  
-  // append the desired rotation to the state
-  SoModelMatrixElement::rotateBy(state, (SoNode*) this, SbRotation(matrix));
+
+  return SbRotation(matrix);
 }
 
 #endif // HAVE_VRML97
