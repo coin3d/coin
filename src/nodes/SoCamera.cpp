@@ -785,6 +785,7 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
   SoCamera::doAction(action);
 }
 
+// Doc in superclass.
 void
 SoCamera::getMatrix(SoGetMatrixAction * action)
 {
