@@ -40,7 +40,6 @@
 class SbRotation;
 class SoState;
 class SbViewVolume;
-class SbRotation;
 class SbMatrix;
 
 class COIN_DLL_API SoVRMLBillboard : public SoVRMLParent
