@@ -39,6 +39,8 @@
 
 class SbRotation;
 class SoState;
+class SbViewVolume;
+class SbMatrix;
 
 class COIN_DLL_API SoVRMLBillboard : public SoVRMLParent
 {
@@ -72,6 +74,7 @@ protected:
   virtual ~SoVRMLBillboard();
 
 private:
+  SbRotation computeRotation(SbMatrix const & invMM, SbViewVolume const & vv) const;
   void performRotation(SoState * state) const;
   class SoVRMLBillboardP * pimpl;
 };
