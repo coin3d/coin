@@ -938,7 +938,7 @@ SoRayPickAction::getViewVolume(void)
                    static_cast<float>(m[2][0]), static_cast<float>(m[2][1]),
                  static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
 
-                   static_cast<float>(m[2][0]), static_cast<float>(m[3][1]),
+                   static_cast<float>(m[3][0]), static_cast<float>(m[3][1]),
                  static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
                  );
 
@@ -956,7 +956,7 @@ SoRayPickAction::getViewVolume(void)
                    static_cast<float>(m[2][0]), static_cast<float>(m[2][1]),
                  static_cast<float>(m[2][2]), static_cast<float>(m[2][3]),
 
-                   static_cast<float>(m[2][0]), static_cast<float>(m[3][1]),
+                   static_cast<float>(m[3][0]), static_cast<float>(m[3][1]),
                  static_cast<float>(m[3][2]), static_cast<float>(m[3][3])
                  );
 
