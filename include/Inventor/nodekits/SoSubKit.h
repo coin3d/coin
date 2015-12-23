@@ -117,13 +117,13 @@ PRIVATE_KIT_SOURCE(_class_)
   do { \
     SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_); \
     _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
-  } while (0)
+  } WHILE_0
 
 #define SO_KIT_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_); \
     _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
-  } while (0)
+  } WHILE_0
 
 
 #define SO_KIT_CONSTRUCTOR(_class_) \
@@ -136,7 +136,7 @@ PRIVATE_KIT_SOURCE(_class_)
       cc_coin_atexit_static_internal(_class_::atexit_cleanupkit); \
     } \
     SoBase::staticDataUnlock(); \
-  } while (0)
+  } WHILE_0
 
 
 
@@ -153,7 +153,7 @@ PRIVATE_KIT_SOURCE(_class_)
                            SoType::badType(), \
                            _ispublic_); \
     SO_NODE_ADD_FIELD(_part_,(NULL)); \
-  } while (0)
+  } WHILE_0
 
 
 
@@ -170,7 +170,7 @@ PRIVATE_KIT_SOURCE(_class_)
                            _itemtype_::getClassTypeId(), \
                            _ispublic_); \
     SO_NODE_ADD_FIELD(_part_,(NULL)); \
-  } while (0)
+  } WHILE_0
 
 
 
@@ -187,7 +187,7 @@ PRIVATE_KIT_SOURCE(_class_)
                            SoType::badType(), \
                            _ispublic_); \
     SO_NODE_ADD_FIELD(_part_,(NULL)); \
-  } while (0)
+  } WHILE_0
 
 
 
@@ -195,7 +195,7 @@ PRIVATE_KIT_SOURCE(_class_)
   do { \
     classcatalog->addListItemType(SO__QUOTE(_part_), \
                                   _listitemtype_::getClassTypeId()); \
-  } while (0)
+  } WHILE_0
 
 
 #define SO_KIT_INIT_INSTANCE() \
@@ -223,12 +223,12 @@ PRIVATE_KIT_SOURCE(_class_)
     classcatalog->narrowTypes(SO__QUOTE(_part_), \
                               SoType::fromName(SO__QUOTE(_newpartclassname_)), \
                               SoType::fromName(SO__QUOTE(_newdefaultpartclassname_))); \
-  } while (0)
+  } WHILE_0
 
 
 #define SO_KIT_CHANGE_NULL_BY_DEFAULT(_part_, _newnullbydefault_) \
   do { \
     classcatalog->setNullByDefault(SO__QUOTE(_part_), _newnullbydefault_); \
-  } while (0)
+  } WHILE_0
 
 #endif // !COIN_SOSUBKIT_H

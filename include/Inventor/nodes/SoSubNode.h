@@ -55,6 +55,7 @@
 // *************************************************************************
 
 #include <string.h> /* strcmp used in assert() */
+#include <Inventor/SbBasic.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/fields/SoFieldData.h>
@@ -167,7 +168,7 @@ _class_::createInstance(void) \
        considered native. This is important to get the export code to do \
        the Right Thing. */ \
     this->isBuiltIn = FALSE; \
-  } while (0)
+  } WHILE_0
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_CONSTRUCTOR(_class_) \
@@ -175,7 +176,7 @@ _class_::createInstance(void) \
     SoBase::staticDataLock(); \
     SO_NODE_CONSTRUCTOR_NOLOCK(_class_); \
     SoBase::staticDataUnlock(); \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
@@ -201,7 +202,7 @@ _class_::createInstance(void) \
       SoType::createType(parentType, \
                          _classname_, \
                          _createfunc_, \
-                         SoNode::getNextActionMethodIndex()); \
+                         (uint16_t)SoNode::getNextActionMethodIndex()); \
     SoNode::incNextActionMethodIndex(); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
@@ -209,7 +210,7 @@ _class_::createInstance(void) \
 \
     /* Make sure also external nodes are cleaned up */ \
     cc_coin_atexit_static_internal(_class_::atexit_cleanup); \
-  } while (0)
+  } WHILE_0
 
 
 // FIXME: document. 20000103 mortene.
@@ -217,14 +218,14 @@ _class_::createInstance(void) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
-  } while (0)
+  } WHILE_0
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, NULL, _parentclass_); \
-  } while (0)
+  } WHILE_0
 
 
 // *************************************************************************
@@ -235,14 +236,14 @@ _class_::createInstance(void) \
     this->_field_.setValue _defaultval_;\
     this->_field_.setContainer(this); \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_); \
-  } while (0)
+  } WHILE_0
 
 // New for Coin-3
 #define SO_NODE_ADD_EMPTY_MFIELD(_field_) \
   do { \
     this->_field_.setContainer(this); \
     fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
-  } while (0)
+  } WHILE_0
 
 
 // FIXME: document. 20000103 mortene.
@@ -250,7 +251,7 @@ _class_::createInstance(void) \
   do { \
     fieldData->addEnumValue(SO__QUOTE(_enumname_), \
                             SO__QUOTE(_enumval_), _enumval_); \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
