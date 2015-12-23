@@ -164,7 +164,7 @@ _class_::createInstance(void) \
     /* the Right Thing. */ \
     this->isBuiltIn = FALSE; \
     SoBase::staticDataUnlock(); \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
@@ -186,20 +186,20 @@ _class_::createInstance(void) \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
     cc_coin_atexit_static_internal \
       (reinterpret_cast<coin_atexit_f*>(_class_::atexit_cleanup));  \
-  } while (0)
+  } WHILE_0
 
 
 #define SO_ENGINE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
-  } while (0)
+  } WHILE_0
 
 #define SO_ENGINE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, NULL, _parentclass_); \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
@@ -208,7 +208,7 @@ _class_::createInstance(void) \
     this->_input_.setValue _defaultval_;\
     this->_input_.setContainer(this); \
     inputdata->addField(this, SO__QUOTE(_input_), &this->_input_);\
-  } while (0)
+  } WHILE_0
 
 #define SO_ENGINE_ADD_OUTPUT(_output_, _type_) \
   do { \
@@ -216,7 +216,7 @@ _class_::createInstance(void) \
                           &this->_output_, \
                           _type_::getClassTypeId()); \
     this->_output_.setContainer(this); \
-  } while(0)
+  } WHILE_0
 
 // *************************************************************************
 
@@ -224,7 +224,7 @@ _class_::createInstance(void) \
   do { \
     inputdata->addEnumValue(SO__QUOTE(_enumname_), \
                             SO__QUOTE(_enumval_), _enumval_); \
-  } while (0)
+  } WHILE_0
 
 #define SO_ENGINE_OUTPUT(_engineout_, _fieldtype_, _writeop_) \
   do { \
@@ -245,7 +245,7 @@ _class_::createInstance(void) \
       /* paranoid assertion */ \
       assert(_engineout_.getNumConnections() == SO_ENGINE_OUTPUT_numconnections); \
     } \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
