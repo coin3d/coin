@@ -73,9 +73,9 @@ public:
   int32_t dot(SbVec4b v) const { return vec[0] * v[0] + vec[1] * v[1] + vec[2] * v[2] + vec[3] * v[3]; }
   void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; vec[2] = -vec[2]; vec[3] = -vec[3]; }
 
-  SbVec4b & operator *= (int d) { vec[0] *= d; vec[1] *= d; vec[2] *= d; vec[3] *= d; return *this; }
+  SbVec4b & operator *= (int d) { vec[0] = int8_t(vec[0] * d); vec[1] = int8_t(vec[1] * d); vec[2] = int8_t(vec[2] * d); vec[3] = int8_t(vec[3] * d); return *this; }
   SbVec4b & operator *= (double d);
-  SbVec4b & operator /= (int d) { SbDividerChk("SbVec4b::operator/=(int)", d); vec[0] /= d; vec[1] /= d; vec[2] /= d; vec[3] /= d; return *this; }
+  SbVec4b & operator /= (int d) { SbDividerChk("SbVec4b::operator/=(int)", d); vec[0] = int8_t(vec[0] / d); vec[1] = int8_t(vec[1] / d); vec[2] = int8_t(vec[2] / d); vec[3] = int8_t(vec[3] / d); return *this; }
   SbVec4b & operator /= (double d) { SbDividerChk("SbVec4b::operator/=(double)", d); return operator *= (1.0 / d); }
   SbVec4b & operator += (SbVec4b v) { vec[0] += v[0]; vec[1] += v[1]; vec[2] += v[2]; vec[3] += v[3]; return *this; }
   SbVec4b & operator -= (SbVec4b v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; vec[3] -= v[3]; return *this; }
