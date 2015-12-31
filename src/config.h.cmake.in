@@ -13,16 +13,16 @@
 #define COIN_BETA_VERSION @COIN_BETA_VERSION@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT16_T int16_t
+#cmakedefine COIN_INT16_T @COIN_INT16_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT32_T int32_t
+#cmakedefine COIN_INT32_T @COIN_INT32_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT64_T int64_t
+#cmakedefine COIN_INT64_T @COIN_INT64_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT8_T int8_t
+#cmakedefine COIN_INT8_T @COIN_INT8_T@
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_INTPTR_T intptr_t
@@ -58,16 +58,16 @@
 #define COIN_THREADID_TYPE pthread_t
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT16_T uint16_t
+#cmakedefine COIN_UINT16_T @COIN_UINT16_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT32_T uint32_t
+#cmakedefine COIN_UINT32_T @COIN_UINT32_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT64_T uint64_t
+#cmakedefine COIN_UINT64_T @COIN_UINT64_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT8_T uint8_t
+#cmakedefine COIN_UINT8_T @COIN_UINT8_T@
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_UINTPTR_T uintptr_t
@@ -193,16 +193,16 @@
 #cmakedefine HAVE_ILOGB
 
 /* define this if the type is available on the system */
-#define HAVE_INT16_T 1
+#cmakedefine HAVE_INT16_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_INT32_T 1
+#cmakedefine HAVE_INT32_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_INT64_T 1
+#cmakedefine HAVE_INT64_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_INT8_T 1
+#cmakedefine HAVE_INT8_T 1
 
 /* define this if the type is available on the system */
 #define HAVE_INTPTR_T 1
@@ -277,10 +277,10 @@
 /* #undef HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING */
 
 /* Define to 1 if you have the <stddef.h> header file. */
-#define HAVE_STDDEF_H 1
+#cmakedefine HAVE_STDDEF_H 1
 
 /* Define to 1 if you have the <stdint.h> header file. */
-#define HAVE_STDINT_H 1
+#cmakedefine HAVE_STDINT_H 1
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
@@ -313,7 +313,7 @@
 #cmakedefine HAVE_SYS_TIME_H
 
 /* Define to 1 if you have the <sys/types.h> header file. */
-#define HAVE_SYS_TYPES_H 1
+#cmakedefine HAVE_SYS_TYPES_H 1
 
 /* Define to 1 if you have the <sys/unistd.h> header file. */
 #define HAVE_SYS_UNISTD_H
@@ -331,16 +331,16 @@
 /* #undef HAVE_TLHELP32_H */
 
 /* define this if the type is available on the system */
-#define HAVE_UINT16_T 1
+#cmakedefine HAVE_UINT16_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_UINT32_T 1
+#cmakedefine HAVE_UINT32_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_UINT64_T 1
+#cmakedefine HAVE_UINT64_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_UINT8_T 1
+#cmakedefine HAVE_UINT8_T 1
 
 /* define this if the type is available on the system */
 #define HAVE_UINTPTR_T 1
