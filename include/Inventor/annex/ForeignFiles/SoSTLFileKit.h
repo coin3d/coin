@@ -39,7 +39,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-#include <ForeignFiles/SoForeignFileKit.h>
+#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 
 class SbVec3f;
 class SoCallbackAction;
