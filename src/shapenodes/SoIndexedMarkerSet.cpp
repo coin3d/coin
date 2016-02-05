@@ -209,6 +209,15 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
                                  SoProjectionMatrixElement::get(state));
   SbVec2s vpsize = vp.getViewportSizePixels();
 
+  int numPlanes = 0;
+  glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
+  SbList<SbBool> planesEnabled;
+
+  for (int i = 0; i < numPlanes; ++i) {
+    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + (GLuint)i));
+    glDisable(GL_CLIP_PLANE0 + (GLuint)i);
+  }
+
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
@@ -283,6 +292,12 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
     glPixelStorei(GL_UNPACK_ALIGNMENT, align);
     glRasterPos3f(point[0], point[1], -point[2]);
     glBitmap(size[0], size[1], 0, 0, 0, 0, bytes);
+  }
+
+  for (int i = 0; i < numPlanes; ++i) {
+    if (planesEnabled[i]) {
+      glEnable(GL_CLIP_PLANE0 + (GLuint)i);
+    }
   }
 
   // FIXME: this looks wrong, shouldn't we rather reset the alignment
