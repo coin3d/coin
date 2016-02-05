@@ -385,6 +385,8 @@ SoDragger::SoDragger(void)
 */
 SoDragger::~SoDragger()
 {
+  if (PRIVATE(this)->isgrabbing)
+    this->grabEventsCleanup();
   if (PRIVATE(this)->pickedpath)
     PRIVATE(this)->pickedpath->unref();
   if (PRIVATE(this)->surrogateownerpath)
