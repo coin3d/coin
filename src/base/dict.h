@@ -37,7 +37,7 @@
 #error this is a private header file
 #endif // COIN_INTERNAL
 
-#include <cstdlib>
+#include <stdlib.h>
 #include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
