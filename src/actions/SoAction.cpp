@@ -228,13 +228,7 @@
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
 #include "misc/SoCompactPathList.h"
 
-#include <Inventor/annex/Profiler/SoProfiler.h>
-#include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include "profiler/SoNodeProfiling.h"
-#ifdef HAVE_NODEKITS
-#include <Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h>
-#include <Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h>
-#endif // HAVE_NODEKITS
 
 // define this to debug path traversal
 // #define DEBUG_PATH_TRAVERSAL
@@ -1363,42 +1357,6 @@ SoAction::switchToNodeTraversal(SoNode * node)
   this->currentpathcode = storedpathcode;
   PRIVATE(this)->applieddata = storeddata;
   PRIVATE(this)->appliedcode = storedcode;
-}
-
-// *************************************************************************
-
-SoProfilerStats *
-SoActionP::getProfilerStatsNode(void)
-{
-  static SoProfilerStats * pstats = NULL;
-  if (!pstats) {
-    pstats = new SoProfilerStats;
-    pstats->ref();
-  }
-  return pstats;
-}
-
-SoNode *
-SoActionP::getProfilerOverlay(void)
-{
-  if (!SoProfiler::isEnabled() || !SoProfiler::isOverlayActive())
-    return NULL;
-
-  static SoNode * nodekit = NULL;
-#ifdef HAVE_NODEKITS
-  if (nodekit == NULL) {
-    SoProfilerTopKit * kit = new SoProfilerTopKit;
-    kit->ref();
-    kit->setPart("profilingStats",
-                 SoActionP::getProfilerStatsNode());
-    nodekit = kit;
-
-    SoProfilerVisualizeKit * viskit = new SoProfilerVisualizeKit;
-    viskit->stats.setValue(SoActionP::getProfilerStatsNode());
-    kit->addOverlayGeometry(viskit);
-  }
-#endif // HAVE_NODEKITS
-  return nodekit;
 }
 
 // *************************************************************************
