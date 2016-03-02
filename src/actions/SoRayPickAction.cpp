@@ -327,6 +327,16 @@ SoRayPickAction::setRadius(const float radiusinpixels)
   PRIVATE(this)->radiusinpixels = radiusinpixels;
 }
 
+
+/*!
+  Gets the radius of the picking ray, in screen pixels.
+*/
+float
+SoRayPickAction::getRadius() const
+{
+	return PRIVATE(this)->radiusinpixels;
+}
+
 /*!
   Sets the intersection ray in world-space coordinates.
 

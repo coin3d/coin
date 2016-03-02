@@ -60,6 +60,7 @@ public:
   void setPoint(const SbVec2s & viewportPoint);
   void setNormalizedPoint(const SbVec2f & normpoint);
   void setRadius(const float radiusinpixels);
+  float getRadius() const;
   void setRay(const SbVec3f & start, const SbVec3f & direction,
               float neardistance = -1.0,
               float fardistance = -1.0);
