@@ -332,9 +332,9 @@ SoRayPickAction::setRadius(const float radiusinpixels)
   Gets the radius of the picking ray, in screen pixels.
 */
 float
-SoRayPickAction::getRadius() const
+SoRayPickAction::getRadius(void) const
 {
-	return PRIVATE(this)->radiusinpixels;
+  return PRIVATE(this)->radiusinpixels;
 }
 
 /*!
