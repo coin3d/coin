@@ -142,7 +142,11 @@ endif()
 find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
 
-install(TARGETS Coin DESTINATION lib)
+install(TARGETS Coin
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+)
 
 if(MSVC)
 	set_target_properties(Coin PROPERTIES COMPILE_FLAGS /Fd"$(IntDir)$(TargetName).pdb")
