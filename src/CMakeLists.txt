@@ -149,6 +149,11 @@ install(TARGETS Coin
 )
 
 if(MSVC)
-	set_target_properties(Coin PROPERTIES COMPILE_FLAGS /Fd"$(IntDir)$(TargetName).pdb")
-	install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION ${CMAKE_INSTALL_PREFIX}/lib CONFIGURATIONS Debug)
+	if(COIN_BUILD_SHARED_LIBS)
+		install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION ${CMAKE_INSTALL_PREFIX}/bin CONFIGURATIONS Debug)
+		install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin.pdb DESTINATION ${CMAKE_INSTALL_PREFIX}/bin CONFIGURATIONS RelWithDebInfo)
+	else()
+		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
+		set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
+	endif()
 endif()
