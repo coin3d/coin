@@ -44,6 +44,7 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -190,52 +191,25 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
                               "The line 'l' has no direction.");
 #endif // COIN_DEBUG
 
-  // We know the parameterized equation for a point on a line:
-  //         Q = P + t*D,  P is a known line point, D is the line direction
-  //
-  // And the equation for a point on a sphere:
-  //         |Q - C| = r,  C is the sphere center point, r is the radius
-  //
-  // Combining these, we get this equation which we need to solve for t:
-  //         |P + t*D - C| = r
-  //
-  // A little bit of algebra, and we get a second order equation for t:
-  //         t² + t * 2*(P·D - C·D) + (|P|² + |C|² - 2*P·C - r²) = 0
-  //
-  // Using t = (-b ± sqrt(b² - 4ac))/2a, a = 1, b = 2*(P·D - C·D),
-  //                                     c = (|P|² + |C|² - 2*P·C - r²),
-  //
-  // we can solve for t and backsubstitute into the line equation to
-  // find the enter and exit point (if any).
-  //
-  //                                                        19980823 mortene.
+  // Compute point on the line that is closest to the sphere center.
+  SbVec3f closestpt = l.getClosestPoint(this->getCenter());;
 
-  SbVec3f linepos = l.getPosition();
-  SbVec3f linedir = l.getDirection();
+  // Sphere center, closest point on the line and intersection
+  // point(s) form a right-angled triangle. The distance between closest point
+  // and intersection point(s) can be computed using Pythagoras' theorem.
+  float sqrradius = this->getRadius() * this->getRadius();
+  float sqrdistcenter = (this->getCenter() - closestpt).sqrLength();
+  float sqrdistintersect = sqrradius - sqrdistcenter;
 
-  // just normalize, line will be treated as a point if it has no direction
-  (void) linedir.normalize();
-  SbVec3f scenter = this->getCenter();
-  float r = this->getRadius();
-
-  float b = 2.0f * (linepos.dot(linedir) - scenter.dot(linedir));
-  float c =
-    (linepos[0]*linepos[0] + linepos[1]*linepos[1] + linepos[2]*linepos[2]) +
-    (scenter[0]*scenter[0] + scenter[1]*scenter[1] + scenter[2]*scenter[2]) -
-    2.0f * linepos.dot(scenter) - r*r;
-
-  float core = b*b - 4.0f*c;
-  if(core >= 0.0f) {
-    float t1 = (-b + float(sqrt(core)))/2.0f;
-    float t2 = (-b - float(sqrt(core)))/2.0f;
-
-    if(t1 > t2) SbSwap(t1, t2);
-    enter = linepos + t1*linedir;
-    exit = linepos + t2*linedir;
-    return TRUE;
+  if (sqrdistintersect < 0) {
+    // no intersection of sphere and line exists
+    return FALSE;
   }
   else {
-    return FALSE;
+    float t = sqrt(sqrdistintersect);
+    enter = closestpt - t * l.getDirection();
+    exit  = closestpt + t * l.getDirection();
+    return TRUE;
   }
 }
 
