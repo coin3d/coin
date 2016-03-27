@@ -73,7 +73,7 @@ SbLine::SbLine(void)
   Be aware that the direction vector will be normalized and not be the same
   as \a point - \a origin.
 
-  \sa setValue, getOrigin, getDirection
+  \sa setValue, setPosDir, getOrigin, getDirection
 */
 SbLine::SbLine(const SbVec3f& origin, const SbVec3f& point)
 {
@@ -91,7 +91,12 @@ SbLine::SbLine(const SbVec3f& origin, const SbVec3f& point)
   Be aware that the direction vector will be normalized and not be the same
   as \a point - \a origin.
 
-  \sa setValue, getOrigin, getDirection
+  Method <em>setPosDir(position, direction)</em> should be preferred over a
+  call to <em>setValue(position, position + direction)</em>, because the
+  latter causes numerical problems when \a position has a very large magnitude
+  and \a direction is a normalized direction vector.
+
+  \sa setValue, setPosDir, getOrigin, getDirection
 */
 void
 SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
@@ -113,8 +118,12 @@ SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
 }
 
 /*!
-  Set position and direction
+  Set position and direction.
 
+  Be aware that the direction vector will be normalized and not be the same
+  as provided to this method.
+
+  \sa setValue, getOrigin, getDirection
   \since Coin 4.0
 */
 void
@@ -122,6 +131,7 @@ SbLine::setPosDir(const SbVec3f & position, const SbVec3f & direction)
 {
   this->pos = position;
   this->dir = direction;
+  this->dir.normalize();
 }
 
 /*!
