@@ -135,6 +135,10 @@ check_include_file(superglu.h HAVE_SUPERGLU)
 check_include_file(windows.h HAVE_WINDOWS_H)
 check_include_file(X11/Xlib.h HAVE_X11_AVAILABLE)
 
+if (NOT HAVE_STDINT_H AND NOT HAVE_INTTYPES_H)
+	message(FATAL_ERROR "Could not find inttypes.h nor stdint.h. Look for instructions in the INSTALL file.")
+endif()
+
 include(CheckLibraryExists)
 check_library_exists(dl dlopen "" HAVE_DL_LIB)
 check_library_exists(GL glXChooseVisual "" HAVE_GLX)
