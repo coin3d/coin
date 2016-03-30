@@ -1537,7 +1537,7 @@ SbMatrix::multLineMatrix(const SbLine & src, SbLine & dst) const
   this->multVecMatrix(src.getPosition(), newpt);
   this->multDirMatrix(src.getDirection(), newdir);
 
-  dst.setValue(newpt, newpt + newdir);
+  dst.setPosDir(newpt, newdir);
 }
 
 /*!
