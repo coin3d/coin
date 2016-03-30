@@ -82,7 +82,7 @@ SoType _class_::classTypeId STATIC_SOTYPE_INIT
     /* with priority set to CC_ATEXIT_NORMAL. As it is now, the clean-up functions for */ \
     /* these classes will always be run before all other Coin at-exit clean-ups. 20070126 mortene */ \
     cc_coin_atexit(reinterpret_cast<coin_atexit_f *>(cleanupClass)); \
-  } while (0)
+  } WHILE_0
 
 #define SO_EVENT_INIT_CLASS(_class_, _parentclass_) \
   do { \
@@ -97,7 +97,7 @@ SoType _class_::classTypeId STATIC_SOTYPE_INIT
     /* with priority set to CC_ATEXIT_NORMAL. As it is now, the clean-up functions for */ \
     /* these classes will always be run before all other Coin at-exit clean-ups. 20070126 mortene */ \
     cc_coin_atexit(reinterpret_cast<coin_atexit_f *>(cleanupClass)); \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 

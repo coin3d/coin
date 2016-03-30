@@ -174,7 +174,7 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
 #endif // COIN_DEBUG
 
   // Check if the line is parallel to the plane.
-  if((l.getDirection()).dot(this->normal) == 0.0f) return FALSE;
+  if(fabs(l.getDirection().dot(this->normal)) < FLT_EPSILON) return FALSE;
 
   // From the discussion on SbLine::getClosestPoint() we know that
   // any point on the line can be expressed as:

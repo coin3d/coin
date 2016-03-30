@@ -689,7 +689,7 @@ SoSceneTextureCubeMapP::prerendercb(void * userdata, SoGLRenderAction * COIN_UNU
 {
   SoSceneTextureCubeMap * thisp = (SoSceneTextureCubeMap*) userdata;
   SbColor col = thisp->backgroundColor.getValue();
-  glClearColor(col[0], col[1], col[2], col[3]);
+  glClearColor(col[0], col[1], col[2], 1.0f);
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }
 

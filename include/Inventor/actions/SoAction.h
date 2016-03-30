@@ -64,7 +64,7 @@
     assert(!element::getClassTypeId().isBad()); \
     action::enableElement(element::getClassTypeId(), \
                           element::getClassStackIndex()); \
-  } while (0)
+  } WHILE_0
 
 
 class SoEnabledElementsList;

@@ -385,6 +385,8 @@ SoDragger::SoDragger(void)
 */
 SoDragger::~SoDragger()
 {
+  if (PRIVATE(this)->isgrabbing)
+    this->grabEventsCleanup();
   if (PRIVATE(this)->pickedpath)
     PRIVATE(this)->pickedpath->unref();
   if (PRIVATE(this)->surrogateownerpath)
@@ -1672,6 +1674,8 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     }
 
     if (didpick) {
+      this->setCameraInfo(action);
+
       if (!action->getGrabber())
         this->updateDraggerCache(action->getCurPath());
       else
@@ -1679,7 +1683,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 
       this->isActive = TRUE;
       PRIVATE(this)->didmousemove = FALSE;
-      this->setCameraInfo(action);
       this->setStartingPoint(pp);
       this->eventHandled(event, action);
       if (PRIVATE(this)->pickedpath)

@@ -118,6 +118,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void audioRender(SoAudioRenderAction *action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void getMatrix(SoGetMatrixAction * action);
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);

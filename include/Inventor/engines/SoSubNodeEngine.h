@@ -106,7 +106,7 @@ _class_::createInstance(void) \
     /* the Right Thing. */ \
     this->isBuiltIn = FALSE; \
     SoBase::staticDataUnlock(); \
-  } while (0)
+  } WHILE_0
 
 #define PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
@@ -126,13 +126,13 @@ _class_::createInstance(void) \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
-  } while (0)
+  } WHILE_0
 
 #define SO_NODEENGINE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
-  } while (0)
+  } WHILE_0
 
 #define SO_NODEENGINE_EXIT_CLASS(_class_) \
   _class_::atexit_cleanupnodeengine();
@@ -141,7 +141,7 @@ _class_::createInstance(void) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_INIT_CODE(_class_, classname, NULL, _parentclass_); \
-  } while (0)
+  } WHILE_0
 
 #define SO_NODEENGINE_ADD_OUTPUT(_output_, _type_) \
   do { \
@@ -149,6 +149,6 @@ _class_::createInstance(void) \
                           &this->_output_, \
                           _type_::getClassTypeId()); \
     this->_output_.setNodeContainer(this); \
-  } while(0)
+  } WHILE_0
 
 #endif // COIN_SOSUBNODEENGINE_H
