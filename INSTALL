@@ -84,6 +84,12 @@ CMake build configuration (work in progress)
 
   # 8. Build the INSTALL project from the solution explorer.
 
+  If you are building with MSVC 9 2008, CMake will probably complain that it
+  cannot find stdint.h nor inttypes.h. You can download these from
+  https://code.google.com/archive/p/msinttypes/downloads and copy them some
+  place the compiler can find them, e.g.,
+  c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\INCLUDE.
+
 
 CMake configuration options
 ===========================
