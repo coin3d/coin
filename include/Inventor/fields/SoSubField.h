@@ -131,7 +131,7 @@ public: \
       ( \
        _class_::atexit_cleanup \
        ); \
-  } while (0)
+  } WHILE_0
 
 
 
@@ -139,7 +139,7 @@ public: \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_FIELD_INIT_CLASS(_class_, classname, _parent_, &_class_::createInstance); \
-  } while (0)
+  } WHILE_0
 
 #define SO_SFIELD_CONSTRUCTOR_SOURCE(_class_) \
 _class_::_class_(void) { assert(_class_::classTypeId != SoType::badType()); } \

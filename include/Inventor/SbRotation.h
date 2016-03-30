@@ -65,7 +65,7 @@ public:
   SbRotation & operator*=(const float s);
   friend COIN_DLL_API int operator==(const SbRotation & q1, const SbRotation & q2);
   friend COIN_DLL_API int operator!=(const SbRotation & q1, const SbRotation & q2);
-  float operator[] (size_t n) const;
+  float operator[] (int n) const;
 
   SbBool equals(const SbRotation & r, float tolerance) const;
   friend COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
@@ -89,7 +89,7 @@ COIN_DLL_API int operator ==(const SbRotation & q1, const SbRotation & q2);
 COIN_DLL_API int operator !=(const SbRotation & q1, const SbRotation & q2);
 COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
 
-inline float SbRotation::operator[](size_t n) const
+inline float SbRotation::operator[](int n) const
 {
   //Any limit checking is delegated to SbVec4f
   return quat[n];

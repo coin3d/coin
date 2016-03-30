@@ -98,8 +98,12 @@ SbDPLine::setValue(const SbVec3d& p0, const SbVec3d& p1)
 }
 
 /*!
-  Set position and direction
+  Set position and direction.
 
+  Be aware that the direction vector will be normalized and not be the same
+  as provided to this method.
+
+  \sa setValue, getOrigin, getDirection
   \since Coin 4.0
  */
 void
@@ -107,6 +111,7 @@ SbDPLine::setPosDir(const SbVec3d & position, const SbVec3d & direction)
 {
   this->pos = position;
   this->dir = direction;
+  this->dir.normalize();
 }
 
 /*!

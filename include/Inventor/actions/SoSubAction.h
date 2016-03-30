@@ -45,14 +45,14 @@
 #define SO_ACTION_ADD_METHOD(_nodeclass_, _method_) \
   do { \
     addMethod(_nodeclass_::getClassTypeId(), (SoActionMethod)_method_); \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
 #define SO_ACTION_CONSTRUCTOR(_classname_) \
   do { \
     _classname_::traversalMethods = this->methods; \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 
@@ -130,7 +130,7 @@ _classname_::atexit_cleanup(void) \
     _classname_::enabledElements = new SoEnabledElementsList(_parentclassname_::getClassEnabledElements()); \
     _classname_::methods = new SoActionMethodList(_parentclassname_::getClassActionMethods()); \
     cc_coin_atexit_static_internal(reinterpret_cast<coin_atexit_f *>(_classname_::atexit_cleanup));  \
-  } while (0)
+  } WHILE_0
 
 // *************************************************************************
 

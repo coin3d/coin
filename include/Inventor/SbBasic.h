@@ -105,13 +105,16 @@ inline Type SbSqr(const Type val) {
 #endif // !NDEBUG
 
 
+#ifndef NDEBUG
 template <typename Type>
 inline void SbDividerChk(const char * funcname, Type divider) {
-#ifndef NDEBUG
   if (!(divider != static_cast<Type>(0)))
     cc_debugerror_post(funcname, "divide by zero error.", divider);
-#endif // !NDEBUG
 }
+#else
+template <typename Type>
+inline void SbDividerChk(const char *, Type) {}
+#endif // !NDEBUG
 
 /* ********************************************************************** */
 
@@ -162,5 +165,21 @@ inline void SbDividerChk(const char * funcname, Type divider) {
 #endif
 
 /* ********************************************************************** */
+
+/*
+	Coin wraps many macros in do-while statements to make them usable
+	like a statement. At least the Microsoft compiler complains about
+	this construct with warning C4127: "conditional expression is constant".
+*/
+
+#ifdef _MSC_VER // Microsoft Visual C++
+#define WHILE_0 \
+	__pragma(warning(push)) \
+	__pragma(warning(disable:4127)) \
+		while (0) \
+	__pragma(warning(pop))
+#else
+#define WHILE_0 while (0)
+#endif
 
 #endif /* !COIN_SBBASIC_H */

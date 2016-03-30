@@ -73,7 +73,7 @@ protected:
     const SbName * names; \
     _fieldstorage_->getEnumData(SO__QUOTE(_enumtype_), num, values, names); \
     this->_fieldname_.setEnums(num, values, names); \
-  } while (FALSE)
+  } WHILE_0
 
 
 #define SO_ENGINE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \

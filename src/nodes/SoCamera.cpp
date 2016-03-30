@@ -121,6 +121,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -386,6 +387,8 @@ SoCamera::initClass(void)
   SO_ENABLE(SoGetBoundingBoxAction, SoProjectionMatrixElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoViewVolumeElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoViewingMatrixElement);
+
+  SO_ENABLE(SoGetMatrixAction, SoViewVolumeElement);
 
   SO_ENABLE(SoRayPickAction, SoFocalDistanceElement);
   SO_ENABLE(SoRayPickAction, SoProjectionMatrixElement);
@@ -780,6 +783,17 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCacheElement::invalidate(action->getState());
   SoCamera::doAction(action);
+}
+
+// Doc in superclass.
+void
+SoCamera::getMatrix(SoGetMatrixAction * action)
+{
+  SbViewportRegion vp;
+  SbViewVolume vv;
+  this->getView(action, vv, vp, FALSE);
+  vv.transform(action->getMatrix());
+  SoViewVolumeElement::set(action->getState(), this, vv);
 }
 
 /*!
