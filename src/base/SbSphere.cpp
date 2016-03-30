@@ -44,7 +44,6 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>
-#include <Inventor/SbPlane.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -192,7 +191,7 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
 #endif // COIN_DEBUG
 
   // Compute point on the line that is closest to the sphere center.
-  SbVec3f closestpt = l.getClosestPoint(this->getCenter());;
+  SbVec3f closestpt = l.getClosestPoint(this->getCenter());
 
   // Sphere center, closest point on the line and intersection
   // point(s) form a right-angled triangle. The distance between closest point

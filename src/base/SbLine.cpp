@@ -96,7 +96,7 @@ SbLine::SbLine(const SbVec3f& origin, const SbVec3f& point)
   latter causes numerical problems when \a position has a very large magnitude
   and \a direction is a normalized direction vector.
 
-  \sa setValue, setPosDir, getOrigin, getDirection
+  \sa setPosDir, getOrigin, getDirection
 */
 void
 SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
