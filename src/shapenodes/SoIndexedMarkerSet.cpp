@@ -209,10 +209,13 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
                                  SoProjectionMatrixElement::get(state));
   SbVec2s vpsize = vp.getViewportSizePixels();
 
+  // Symptom treatment against the complete marker set vanishing for certain
+  // view angles. We'll disable the clipping planes temporarily. Individual
+  // markers are still clipped using SoCullElement::cullTest() below.
+  // See https://bitbucket.org/Coin3D/coin/pull-requests/52 for a test case.
   int numPlanes = 0;
   glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
   SbList<SbBool> planesEnabled;
-
   for (int i = 0; i < numPlanes; ++i) {
     planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + (GLuint)i));
     glDisable(GL_CLIP_PLANE0 + (GLuint)i);
