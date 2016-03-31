@@ -1185,6 +1185,18 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
                                  SoProjectionMatrixElement::get(state));
   SbVec2s vpsize = vp.getViewportSizePixels();
 
+  // Symptom treatment against the complete marker set vanishing for certain
+  // view angles. We'll disable the clipping planes temporarily. Individual
+  // markers are still clipped using SoCullElement::cullTest() below.
+  // See https://bitbucket.org/Coin3D/coin/pull-requests/52 for a test case.
+  int numPlanes = 0;
+  glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
+  SbList<SbBool> planesEnabled;
+  for (int i = 0; i < numPlanes; ++i) {
+    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + (GLuint)i));
+    glDisable(GL_CLIP_PLANE0 + (GLuint)i);
+  }
+
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
@@ -1243,6 +1255,12 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
     glRasterPos3f(point[0], point[1], -point[2]);
     glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
+  }
+
+  for (int i = 0; i < numPlanes; ++i) {
+    if (planesEnabled[i]) {
+      glEnable(GL_CLIP_PLANE0 + (GLuint)i);
+    }
   }
 
   // FIXME: this looks wrong, shouldn't we rather reset the alignment
