@@ -213,12 +213,12 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
   // view angles. We'll disable the clipping planes temporarily. Individual
   // markers are still clipped using SoCullElement::cullTest() below.
   // See https://bitbucket.org/Coin3D/coin/pull-requests/52 for a test case.
-  int numPlanes = 0;
+  GLint numPlanes = 0;
   glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
   SbList<SbBool> planesEnabled;
-  for (int i = 0; i < numPlanes; ++i) {
-    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + (GLuint)i));
-    glDisable(GL_CLIP_PLANE0 + (GLuint)i);
+  for (GLint i = 0; i < numPlanes; ++i) {
+    planesEnabled.append(glIsEnabled(GL_CLIP_PLANE0 + i));
+    glDisable(GL_CLIP_PLANE0 + i);
   }
 
   glMatrixMode(GL_MODELVIEW);
@@ -297,9 +297,9 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
     glBitmap(size[0], size[1], 0, 0, 0, 0, bytes);
   }
 
-  for (int i = 0; i < numPlanes; ++i) {
+  for (GLint i = 0; i < numPlanes; ++i) {
     if (planesEnabled[i]) {
-      glEnable(GL_CLIP_PLANE0 + (GLuint)i);
+      glEnable(GL_CLIP_PLANE0 + i);
     }
   }
 
