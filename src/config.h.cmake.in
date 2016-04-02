@@ -361,7 +361,7 @@
 #cmakedefine HAVE_WIN32_API
 
 /* define if the Win32 LoadLibrary method is available */
-/* #undef HAVE_WINDLL_RUNTIME_BINDING */
+#cmakedefine HAVE_WINDLL_RUNTIME_BINDING
 
 /* Define to 1 if you have the <windows.h> header file. */
 #cmakedefine HAVE_WINDOWS_H
