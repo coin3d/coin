@@ -316,6 +316,15 @@ SoHandleEventAction::setPickRadius(const float radiusinpixels)
 }
 
 /*!
+  Gets the pick radius for cursor tracking.
+*/
+float
+SoHandleEventAction::getPickRadius()
+{
+  return PRIVATE(this)->getPickAction()->getRadius();
+}
+
+/*!
   Returns the SoPickedPoint information for the intersection point
   below the cursor.
 */
