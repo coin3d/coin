@@ -73,7 +73,7 @@ public:
 
   void doPick(SoRayPickAction * ra);
   SoRayPickAction * getPickAction(void);
-
+  const SoRayPickAction * SoHandleEventActionP::getPickAction(void) const;
   // Hidden private variables.
 
   SbViewportRegion viewport;
@@ -319,7 +319,7 @@ SoHandleEventAction::setPickRadius(const float radiusinpixels)
   Gets the pick radius for cursor tracking.
 */
 float
-SoHandleEventAction::getPickRadius()
+SoHandleEventAction::getPickRadius(void) const
 {
   return PRIVATE(this)->getPickAction()->getRadius();
 }
@@ -386,6 +386,13 @@ SoHandleEventActionP::getPickAction(void)
   if (this->pickaction == NULL) {
     this->pickaction = new SoRayPickAction(this->viewport);
   }
+  return this->pickaction;
+}
+
+// Singleton pattern for the pick action instance.
+const SoRayPickAction * 
+SoHandleEventActionP::getPickAction(void) const
+{
   return this->pickaction;
 }
 
