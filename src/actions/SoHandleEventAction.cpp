@@ -321,7 +321,12 @@ SoHandleEventAction::setPickRadius(const float radiusinpixels)
 float
 SoHandleEventAction::getPickRadius(void) const
 {
-  return PRIVATE(this)->getPickAction()->getRadius();
+  const SoRayPickAction *pickAction = PRIVATE(this)->getPickAction();
+  if (pickAction)
+    return pickAction->getRadius();
+  else
+    return 0.0f;
+
 }
 
 /*!
