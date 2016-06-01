@@ -144,20 +144,31 @@ else()
 		)
 	endif()
 endif()
+ 
+if(COIN_BUILD_SHARED_LIBS)
+	target_compile_definitions(Coin INTERFACE -DCOIN_DLL)
+else()
+	target_compile_definitions(Coin INTERFACE -DCOIN_NOT_DLL)
+endif()
+
+if(HAVE_LIBSIMAGE)
+	target_link_libraries(Coin simage::simage)
+endif()
 
 find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
+target_include_directories(Coin INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
 
 set_target_properties(Coin PROPERTIES VERSION ${COIN_VERSION})
 
-install(TARGETS Coin
+install(TARGETS Coin EXPORT Coin
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
 )
 
 if(COIN_BUILD_SHARED_LIBS)
-	install(TARGETS	Coin LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+	install(TARGETS	Coin EXPORT Coin LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
 endif()
 
 if(MSVC)
@@ -189,3 +200,8 @@ write_basic_package_version_file(
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake)
+install(EXPORT Coin
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake
+        NAMESPACE Coin::
+        FILE CoinExport.cmake
+        COMPONENT development)
