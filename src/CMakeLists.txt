@@ -148,6 +148,8 @@ endif()
 find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
 
+set_target_properties(Coin PROPERTIES VERSION ${COIN_VERSION})
+
 install(TARGETS Coin
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
