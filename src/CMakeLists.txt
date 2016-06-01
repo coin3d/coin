@@ -149,15 +149,15 @@ find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
 
 install(TARGETS Coin
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 if(MSVC)
 	if(COIN_BUILD_SHARED_LIBS)
-		install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION bin CONFIGURATIONS Debug)
-		install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin.pdb DESTINATION bin CONFIGURATIONS RelWithDebInfo)
+		install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug)
+		install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS RelWithDebInfo)
 	else()
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
 		set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
@@ -165,12 +165,12 @@ if(MSVC)
 endif()
 
 # Support find_package(Coin NO_MODULE).
-set(COIN_INCLUDE_DIR include)
-set(COIN_LIB_DIR lib)
+set(COIN_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
+set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
 include(CMakePackageConfigHelpers)
 configure_package_config_file(CoinConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake
-                              INSTALL_DESTINATION lib/Coin/cmake
+                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake
                               PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR)
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake"
@@ -178,4 +178,4 @@ write_basic_package_version_file(
   COMPATIBILITY SameMajorVersion
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake
-        DESTINATION lib/Coin/cmake)
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake)
