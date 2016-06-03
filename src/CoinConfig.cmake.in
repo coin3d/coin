@@ -77,3 +77,11 @@ endif()
 
 set(Coin_LIBRARY ${Coin_LIBRARY} CACHE FILEPATH "The Coin library")
 mark_as_advanced(Coin_LIBRARY_RELEASE Coin_LIBRARY_DEBUG)
+
+include(CMakeFindDependencyMacro)
+
+if(@simage_FOUND@)
+	find_dependency(simage)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/CoinExport.cmake")
