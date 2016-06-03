@@ -73,7 +73,7 @@ public:
 
   void doPick(SoRayPickAction * ra);
   SoRayPickAction * getPickAction(void);
-  const SoRayPickAction * SoHandleEventActionP::getPickAction(void) const;
+  const SoRayPickAction * getPickAction(void) const;
   // Hidden private variables.
 
   SbViewportRegion viewport;
