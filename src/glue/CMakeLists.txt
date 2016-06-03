@@ -54,6 +54,10 @@ if(COIN_BUILD_SINGLE_LIB)
 	endforeach(SRCFILE)
 else()
 	add_library(glue OBJECT ${COIN_GLUE_FILES})
+	if(HAVE_LIBSIMAGE)
+		target_compile_definitions(glue PRIVATE $<TARGET_PROPERTY:simage::simage,INTERFACE_COMPILE_DEFINITIONS>) 
+		target_include_directories(glue PRIVATE $<TARGET_PROPERTY:simage::simage,INTERFACE_INCLUDE_DIRECTORIES>)
+	endif()
 endif()
 
 # define documentation

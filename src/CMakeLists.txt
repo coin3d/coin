@@ -144,20 +144,41 @@ else()
 		)
 	endif()
 endif()
+ 
+if(COIN_BUILD_SHARED_LIBS)
+	target_compile_definitions(Coin INTERFACE -DCOIN_DLL)
+else()
+	target_compile_definitions(Coin INTERFACE -DCOIN_NOT_DLL)
+endif()
+
+if(HAVE_LIBSIMAGE)
+	target_link_libraries(Coin simage::simage)
+endif()
 
 find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
+target_include_directories(Coin INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
 
-install(TARGETS Coin
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+set_target_properties(Coin PROPERTIES VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION})
+
+install(TARGETS Coin EXPORT Coin
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
 )
+
+if(COIN_BUILD_SHARED_LIBS)
+	install(TARGETS	Coin EXPORT Coin LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+endif()
 
 if(MSVC)
 	if(COIN_BUILD_SHARED_LIBS)
-		install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION bin CONFIGURATIONS Debug)
-		install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin.pdb DESTINATION bin CONFIGURATIONS RelWithDebInfo)
+		if(${CMAKE_MAJOR_VERSION} GREATER 2 AND ${CMAKE_MINOR_VERSION} GREATER 0)
+			install(FILES $<TARGET_PDB_FILE:Coin> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+		else()
+			install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug COMPONENT debug)
+			install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS RelWithDebInfo COMPONENT debug)
+		endif()
 	else()
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
 		set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
@@ -165,12 +186,12 @@ if(MSVC)
 endif()
 
 # Support find_package(Coin NO_MODULE).
-set(COIN_INCLUDE_DIR include)
-set(COIN_LIB_DIR lib)
+set(COIN_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
+set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
 include(CMakePackageConfigHelpers)
 configure_package_config_file(CoinConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake
-                              INSTALL_DESTINATION lib/Coin/cmake
+                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake
                               PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR)
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake"
@@ -178,4 +199,9 @@ write_basic_package_version_file(
   COMPATIBILITY SameMajorVersion
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake
-        DESTINATION lib/Coin/cmake)
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake)
+install(EXPORT Coin
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake
+        NAMESPACE Coin::
+        FILE CoinExport.cmake
+        COMPONENT development)
