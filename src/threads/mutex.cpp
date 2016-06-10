@@ -40,7 +40,7 @@
    20050516 mortene.
 */
 
-/*! \file common.h */
+/*! \file Inventor/C/threads/common.h */
 
 /*!
   \struct cc_mutex common.h Inventor/C/threads/common.h
