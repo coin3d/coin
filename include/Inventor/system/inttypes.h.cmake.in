@@ -78,36 +78,36 @@
 /* The <inttypes.h> header file. */
 #cmakedefine HAVE_INTTYPES_H
 /* The <stdint.h> header file. */
-#define HAVE_STDINT_H 1
+#cmakedefine HAVE_STDINT_H 1
 /* The <sys/types.h> header file. */
-#define HAVE_SYS_TYPES_H 1
+#cmakedefine HAVE_SYS_TYPES_H 1
 /* The <stddef.h> header file. */
-#define HAVE_STDDEF_H 1
+#cmakedefine HAVE_STDDEF_H 1
 
 
 /* If the system defines any of the types "on it's own", the
    respective #define will be set below. */
-#define HAVE_INT8_T 1
-#define HAVE_UINT8_T 1
-#define HAVE_INT16_T 1
-#define HAVE_UINT16_T 1
-#define HAVE_INT32_T 1
-#define HAVE_UINT32_T 1
-#define HAVE_INT64_T 1
-#define HAVE_UINT64_T 1
+#cmakedefine HAVE_INT8_T 1
+#cmakedefine HAVE_UINT8_T 1
+#cmakedefine HAVE_INT16_T 1
+#cmakedefine HAVE_UINT16_T 1
+#cmakedefine HAVE_INT32_T 1
+#cmakedefine HAVE_UINT32_T 1
+#cmakedefine HAVE_INT64_T 1
+#cmakedefine HAVE_UINT64_T 1
 #define HAVE_INTPTR_T 1
 #define HAVE_UINTPTR_T 1
 
 /* The type which the configure script found to match the given
    bitwidth. */
-#define COIN_INT8_T int8_t
-#define COIN_UINT8_T uint8_t
-#define COIN_INT16_T int16_t
-#define COIN_UINT16_T uint16_t
-#define COIN_INT32_T int32_t
-#define COIN_UINT32_T uint32_t
-#define COIN_INT64_T int64_t
-#define COIN_UINT64_T uint64_t
+#cmakedefine COIN_INT8_T @COIN_INT8_T@
+#cmakedefine COIN_UINT8_T @COIN_UINT8_T@
+#cmakedefine COIN_INT16_T @COIN_INT16_T@
+#cmakedefine COIN_UINT16_T @COIN_UINT16_T@
+#cmakedefine COIN_INT32_T @COIN_INT32_T@
+#cmakedefine COIN_UINT32_T @COIN_UINT32_T@
+#cmakedefine COIN_INT64_T @COIN_INT64_T@
+#cmakedefine COIN_UINT64_T @COIN_UINT64_T@
 #define COIN_INTPTR_T intptr_t
 #define COIN_UINTPTR_T uintptr_t
 
