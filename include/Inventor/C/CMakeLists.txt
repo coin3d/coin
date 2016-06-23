@@ -1,0 +1,7 @@
+configure_file(basic.h.cmake.in basic.h)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/basic.h DESTINATION include/Inventor/C)
+set(COIN_DOCUMENTATION_FILES
+	${COIN_DOCUMENTATION_FILES}
+	${CMAKE_CURRENT_BINARY_DIR}/basic.h
+	CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
+)
