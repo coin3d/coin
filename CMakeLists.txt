@@ -184,6 +184,7 @@ elseif(PRETTY_FUNCTION)
 elseif(FUNCTION)
 	set(HAVE_CPP_COMPILER_FUNCTION_NAME_VAR __FUNCTION__)
 endif()
+check_symbol_exists(_splitpath stdlib.h HAVE__SPLITPATH)
 
 if(NOT HAVE_UNISTD_H)
 	add_definitions(-DYY_NO_UNISTD_H)
