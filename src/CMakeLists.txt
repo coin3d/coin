@@ -176,8 +176,8 @@ if(MSVC)
 		if(${CMAKE_MAJOR_VERSION} GREATER 2 AND ${CMAKE_MINOR_VERSION} GREATER 0)
 			install(FILES $<TARGET_PDB_FILE:Coin> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
 		else()
-			install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coind.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug COMPONENT debug)
-			install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS RelWithDebInfo COMPONENT debug)
+			install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coin${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug COMPONENT debug)
+			install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin${CMAKE_RELWITHDEBINFO_POSTFIX}.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS RelWithDebInfo COMPONENT debug)
 		endif()
 	else()
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
@@ -191,7 +191,7 @@ set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
 include(CMakePackageConfigHelpers)
 configure_package_config_file(CoinConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake
-                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake
+                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION}
                               PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR)
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake"
@@ -199,9 +199,9 @@ write_basic_package_version_file(
   COMPATIBILITY SameMajorVersion
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake)
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION})
 install(EXPORT Coin
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/Coin/cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION}
         NAMESPACE Coin::
         FILE CoinExport.cmake
         COMPONENT development)

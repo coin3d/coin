@@ -48,7 +48,7 @@ SoOffscreenCGData::getResolution(void)
   CGDirectDisplayID display = CGMainDisplayID();
   CGSize size = CGDisplayScreenSize(display);
   return SbVec2f(CGDisplayPixelsWide(display)/size.width,
-                 CGDisplayPixelsHigh(display)/size.height)l
+                 CGDisplayPixelsHigh(display)/size.height);
 #else
   return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
 #endif
