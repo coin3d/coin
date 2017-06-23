@@ -1702,7 +1702,10 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       this->eventHandled(event, action);
       PRIVATE(this)->didmousemove = FALSE;
     }
-    if (PRIVATE(this)->isgrabbing) this->grabEventsCleanup();
+	if (PRIVATE(this)->isgrabbing) {
+	  this->grabEventsCleanup();
+	  PRIVATE(this)->isgrabbing = FALSE;
+	}
     if (PRIVATE(this)->pickedpath) {
       PRIVATE(this)->pickedpath->unref();
       PRIVATE(this)->pickedpath = NULL;
