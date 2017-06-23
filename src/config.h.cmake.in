@@ -394,7 +394,7 @@
 /* #undef HAVE__SNPRINTF */
 
 /* define if the system has _splitpath() */
-/* #undef HAVE__SPLITPATH */
+#cmakedefine HAVE__SPLITPATH */
 
 /* define if _vsnprintf() is available */
 /* #undef HAVE__VSNPRINTF */
