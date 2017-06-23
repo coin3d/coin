@@ -30,9 +30,9 @@ option(HAVE_MANIPULATORS "Manipulator support." ON)
 option(HAVE_SOUND "Sound support." ON)
 option(HAVE_3DS_IMPORT_CAPABILITIES "3ds import capabilities." ON)
 
-option(COIN_LINK_LIBSIMAGE "Link simage library" OFF)
+option(SIMAGE_RUNTIME_LINKING "Runtime linkage of simage library." OFF)
 
-if (COIN_LINK_LIBSIMAGE)
+if(NOT SIMAGE_RUNTIME_LINKING)
 	find_package(simage)
 	if(simage_FOUND)
 		set(HAVE_LIBSIMAGE ON)
