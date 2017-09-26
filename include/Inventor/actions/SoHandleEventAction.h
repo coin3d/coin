@@ -66,6 +66,7 @@ public:
   void setPickRoot(SoNode * node);
   SoNode * getPickRoot(void) const;
   void setPickRadius(const float radiusinpixels);
+  float getPickRadius(void) const;
   const SoPickedPoint * getPickedPoint(void);
   const SoPickedPointList & getPickedPointList(void);
 
