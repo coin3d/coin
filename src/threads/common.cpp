@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file common.h */
+/*! \file Inventor/C/threads/common.h */
 #include <Inventor/C/threads/common.h>
 
 #ifdef HAVE_CONFIG_H
