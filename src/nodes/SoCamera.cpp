@@ -820,9 +820,7 @@ void
 SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
                  SbVec3f & jitteramount) const
 {
-  int vpsize[2];
-  vpsize[0] = vpreg.getViewportSizePixels()[0];
-  vpsize[1] = vpreg.getViewportSizePixels()[1];
+  const int vpsize[2] = { vpreg.getViewportSizePixels()[0], vpreg.getViewportSizePixels()[1] };
   coin_viewvolume_jitter(numpasses, curpass, vpsize, (float*) jitteramount.getValue());
 }
 
