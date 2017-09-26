@@ -1,4 +1,4 @@
-%{
+%top{
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -40,7 +40,7 @@
 #include "scxml/eval-minimum-tab.hpp"
 #else
 #endif // !SCXML_MINIMUM_OP_ADD
-%}
+}
 
 %option outfile="eval-minimum.cpp"
 %option prefix="scxml_minimum_"
