@@ -54,7 +54,7 @@
  
  */
 
-#ifndef __clang__
+#if !defined(__clang__) && (defined(_MSC_VER) && _MSC_VER < 1900)
 
 #undef cosf
 #define cosf(x) NO_SINGLEPREC /* whatever that'll give us a compile error... */
