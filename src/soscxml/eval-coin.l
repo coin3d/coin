@@ -1,4 +1,4 @@
-%{
+%top{
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -31,7 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/* Run 'flex eval-minimum.l' to generate the compilable source files */
+/* Run 'flex eval-coin.l' to generate the compilable source files */
 
 #include <cmath>
 #include <cfloat>
@@ -40,7 +40,7 @@
 #include "soscxml/eval-coin-tab.hpp"
 #else
 #endif // !SCXML_COIN_OP_ADD
-%}
+}
 
 %option outfile="eval-coin.cpp"
 %option prefix="scxml_coin_"
