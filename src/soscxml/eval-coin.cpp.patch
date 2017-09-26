@@ -1,3 +1,5 @@
+NOTE: This patch seems to be obsolete, it currently is unused.
+
 Index: eval-coin.cpp
 ===================================================================
 --- eval-coin.cpp	(revision 12928)
