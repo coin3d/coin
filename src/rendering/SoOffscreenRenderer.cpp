@@ -432,7 +432,7 @@ public:
   size_t bufferbytesize;
 
   CoinOffscreenGLCanvas glcanvas;
-  unsigned int glcanvassize[2];
+  int glcanvassize[2];
 
   int numsubscreens[2];
   // The subscreen size of the current tile. (Less than max if it's a
@@ -1736,9 +1736,8 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   if (renderaction->getNumPasses() > 1) {
     SbVec3f jittervec;
     SbMatrix m;
-    const int vpsize[2] = { this->glcanvassize[0], this->glcanvassize[1] };
     coin_viewvolume_jitter(renderaction->getNumPasses(), renderaction->getCurPass(),
-                           vpsize, (float *)jittervec.getValue());
+                           this->glcanvassize, (float *)jittervec.getValue());
     m.setTranslate(jittervec);
     proj.multRight(m);
   }
