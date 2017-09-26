@@ -205,3 +205,9 @@ install(EXPORT Coin
         NAMESPACE Coin::
         FILE CoinExport.cmake
         COMPONENT development)
+
+# Suppress warning about empty switch statement in Bison-generated files:
+if (MSVC)
+	set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
+	set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
+endif()
