@@ -1,3 +1,4 @@
+%top{
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -50,7 +51,6 @@
  * - remove any error-handling asserts
  * ********************************************************************** */
 
-%{
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +58,9 @@
 #include <Inventor/system/inttypes.h>
 
 #include "steel.h"
+}
 
+%{
 /* @stl_real@
 This is a typedef for the C type float.  It is used so the floating point type
 can be changed at a later date.  It is not likely to happen though, as the
