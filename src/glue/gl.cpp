@@ -2447,11 +2447,10 @@ cc_glglue_instance(int contextid)
             }
             strcpy(ext_strings_buffer + buffer_pos, extension_string);
             buffer_pos += extension_string_length;
-            ext_strings_buffer[buffer_pos++] = ' '; // space separated, overwrites NULL
+            ext_strings_buffer[buffer_pos++] = ' '; // Space separated, overwrites NULL.
           }
-          ext_strings_buffer[++buffer_pos] = '\0'; // NULL terminate
-          gi->extensionsstr = ext_strings_buffer;
-          // FIXME: ext_strings_buffer needs to be freed
+          ext_strings_buffer[++buffer_pos] = '\0';  // NULL terminate.
+          gi->extensionsstr = ext_strings_buffer;   // Handing over ownership, don't free here.
         } else {
           cc_debugerror_postwarning ("cc_glglue_instance",
                                      "glGetIntegerv(GL_NUM_EXTENSIONS) did not return a value, "
@@ -2465,7 +2464,7 @@ cc_glglue_instance(int contextid)
                                    "version: %s, vendor: %s", gi->versionstr, gi->vendorstr);
       }
     }
-    
+
     /* read some limits */
 
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gltmp);
