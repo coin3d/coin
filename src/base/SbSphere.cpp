@@ -205,7 +205,7 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
     return FALSE;
   }
   else {
-    float t = sqrt(sqrdistintersect);
+    float t = sqrtf(sqrdistintersect);
     enter = closestpt - t * l.getDirection();
     exit  = closestpt + t * l.getDirection();
     return TRUE;
