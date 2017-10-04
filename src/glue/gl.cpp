@@ -767,7 +767,7 @@ coin_glglue_extension_available(const char * extensions, const char * ext)
   start = extensions;
   extlen = strlen(ext);
 
-  while (1) {
+  while (start) {
     const char * where = strstr(start, ext);
     if (!where) goto done;
 
