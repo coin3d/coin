@@ -874,7 +874,7 @@ SbViewVolume::intersectionBox(const SbBox3f & box) const
                (i&2)?bmin[1]:bmax[1],
                (i&4)?bmin[2]:bmax[2]);
     int j;
-    for (j = 0; i < 6; j++) {
+    for (j = 0; j < 6; j++) {
       if (!planes[j].isInHalfSpace(pt)) break;
     }
     if (j == 6) {
