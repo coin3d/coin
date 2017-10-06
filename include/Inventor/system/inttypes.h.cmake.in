@@ -76,7 +76,7 @@
    configure?  20010711 mortene. */
 
 /* The <inttypes.h> header file. */
-#cmakedefine HAVE_INTTYPES_H
+#cmakedefine HAVE_INTTYPES_H 1
 /* The <stdint.h> header file. */
 #cmakedefine HAVE_STDINT_H 1
 /* The <sys/types.h> header file. */
