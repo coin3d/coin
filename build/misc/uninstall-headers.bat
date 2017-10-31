@@ -17,7 +17,6 @@ del %COINDIR%\include\Inventor\C\base\rbptree.h
 del %COINDIR%\include\Inventor\C\base\time.h
 del %COINDIR%\include\Inventor\C\base\string.h
 del %COINDIR%\include\Inventor\C\base\list.h
-del %COINDIR%\include\Inventor\C\base\math-undefs.h
 del %COINDIR%\include\Inventor\C\errors\error.h
 del %COINDIR%\include\Inventor\C\errors\debugerror.h
 del %COINDIR%\include\Inventor\C\glue\gl.h
