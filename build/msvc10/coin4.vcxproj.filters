@@ -3142,9 +3142,6 @@
     <ClInclude Include="..\..\include\Inventor\C\base\list.h">
       <Filter>Inventor%255cC%255cbase headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Inventor\C\base\math-undefs.h">
-      <Filter>Inventor%255cC%255cbase headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\Inventor\C\base\memalloc.h">
       <Filter>Inventor%255cC%255cbase headers</Filter>
     </ClInclude>

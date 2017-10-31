@@ -49127,10 +49127,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\base\math-undefs.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\C\base\memalloc.h"
 				>
 			</File>
