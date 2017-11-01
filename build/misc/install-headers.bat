@@ -17,7 +17,6 @@ copy /Y ..\%msvc%\..\..\include\Inventor\C\base\rbptree.h %COINDIR%\include\Inve
 copy /Y ..\%msvc%\..\..\include\Inventor\C\base\time.h %COINDIR%\include\Inventor\C\base\time.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\base\string.h %COINDIR%\include\Inventor\C\base\string.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\base\list.h %COINDIR%\include\Inventor\C\base\list.h >nul:
-copy /Y ..\%msvc%\..\..\include\Inventor\C\base\math-undefs.h %COINDIR%\include\Inventor\C\base\math-undefs.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\errors\error.h %COINDIR%\include\Inventor\C\errors\error.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\errors\debugerror.h %COINDIR%\include\Inventor\C\errors\debugerror.h >nul:
 copy /Y ..\%msvc%\..\..\include\Inventor\C\glue\gl.h %COINDIR%\include\Inventor\C\glue\gl.h >nul:

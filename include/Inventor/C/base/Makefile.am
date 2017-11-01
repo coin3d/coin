@@ -6,8 +6,7 @@ PublicHeaders = \
 	rbptree.h \
 	time.h \
 	string.h \
-	list.h \
-	math-undefs.h
+	list.h
 PrivateHeaders =
 ObsoleteHeaders =
 

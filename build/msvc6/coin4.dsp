@@ -12048,10 +12048,6 @@ SOURCE=..\..\include\Inventor\C\base\string.h
 
 SOURCE=..\..\include\Inventor\C\base\list.h
 # End Source File
-# Begin Source File
-
-SOURCE=..\..\include\Inventor\C\base\math-undefs.h
-# End Source File
 # End Group
 # Begin Group "Inventor\C\errors headers"
 # Set Default_Filter "h"
