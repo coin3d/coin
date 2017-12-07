@@ -40888,9 +40888,6 @@
 				RelativePath="..\..\include\Inventor\C\base\list.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\base\math-undefs.h">
-			</File>
-			<File
 				RelativePath="..\..\include\Inventor\C\base\memalloc.h">
 			</File>
 			<File
