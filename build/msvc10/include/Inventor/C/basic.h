@@ -212,15 +212,6 @@ static const SbBool TRUE = 1;
 
 /* *********************************************************************** */
 
-/* The float-version of the math functions below did not come about
-   until C99, so we don't want to use them internally, for portability
-   reasons. */
-#ifdef COIN_INTERNAL
-#include <Inventor/C/base/math-undefs.h>
-#endif /* COIN_INTERNAL */
-
-/* *********************************************************************** */
-
 /* SO__QUOTE(str)        - use the preprocessor to quote a string.
  * SO__CONCAT(str1,str2) - use the preprocessor to concatenate two strings.
  */
