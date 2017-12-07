@@ -151,6 +151,9 @@ typedef int SbBool;
 #define M_INVLN2 1.4426950408889633870E0 /* 1 / log(2) */
 #endif /* !M_INVLN2 */
 
+/* Documented for Doxygen in SoNode.cpp. */
+typedef uint32_t SbUniqueId;
+
 /* *********************************************************************** */
 
 /* A unique identifier to recognize whether or not we're running under

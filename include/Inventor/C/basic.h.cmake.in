@@ -172,6 +172,27 @@ static const SbBool TRUE = 1;
 #define M_INVLN2 1.4426950408889633870E0 /* 1 / log(2) */
 #endif /* !M_INVLN2 */
 
+/***************************************************************************
+ * COIN_UNIQUE_ID_64
+ *
+ * Set this define to use 64 bit unique id in SoNode. A unique id is used
+ * by nodes to easily track changes in a scene and handle caching. However,
+ * when the application runs for a very long time, the id can overflow and
+ * result in changes not correctly being propagated in the scene. The
+ * likelyhood of this is significantly reduced when using a 64 bit id.
+ *
+ * Default is to have this define set for 64 bit configurations.
+ */
+
+#cmakedefine COIN_UNIQUE_ID_64
+
+/* Documented for Doxygen in SoNode.cpp. */
+#ifdef COIN_UNIQUE_ID_64
+typedef uint64_t SbUniqueId;
+#else
+typedef uint32_t SbUniqueId;
+#endif /* COIN_UNIQUE_ID_64 */
+
 /* *********************************************************************** */
 
 /* A unique identifier to recognize whether or not we're running under
