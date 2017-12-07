@@ -34,6 +34,12 @@ option(HAVE_3DS_IMPORT_CAPABILITIES "3ds import capabilities." ON)
 option(SIMAGE_RUNTIME_LINKING "Runtime linkage of simage library.")
 option(HAVE_MAN "build and install Coin man pages.")
 
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    option(COIN_UNIQUE_ID_64 "Make unique node id 64 bit." ON)
+else()
+    set(COIN_UNIQUE_ID_64 OFF)
+endif()
+
 if(NOT SIMAGE_RUNTIME_LINKING)
 	find_package(simage)
 	if(simage_FOUND)
