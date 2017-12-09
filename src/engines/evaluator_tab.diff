@@ -1,4 +1,5 @@
-Be aware that this file ius a concatenation of two patches.
+Be aware that this file is a concatenation of two patches.
+NOTE: the first one is not used anymore, support for MSVC 6.0 has stopped.
 
 It is necessary to patch the evaluator_tab.c file so Microsoft Visual
 C++ 6.0 can grok it.

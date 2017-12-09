@@ -185,7 +185,7 @@ do { \
   if (!gotNum) { setBadBit(); return FALSE; } \
  \
   char *ce; \
-  s = '\0'; \
+  *s = '\0'; \
   _convertType_ tempVal = _convertFunc_(buf, &ce, 0); \
  \
   if (ce != s) \
@@ -282,7 +282,7 @@ do { \
 gotAll: \
   \
   char *ce; \
-  s = '\0'; \
+  *s = '\0'; \
   double tempVal = _convertFunc_(buf, &ce); \
  \
   if (ce != s) \
