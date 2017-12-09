@@ -375,7 +375,7 @@ SoMultiTextureImageElement::copyMatchInfo(void) const
 
 void
 SoMultiTextureImageElement::setElt(const int unit,
-                                   const uint32_t nodeid,
+                                   const SbUniqueId nodeid,
                                    const SbVec2s &size, const int numComponents,
                                    const unsigned char * bytes,
                                    const Wrap wrapS,
@@ -402,7 +402,7 @@ SoMultiTextureImageElement::setElt(const int unit,
 */
 void
 SoMultiTextureImageElement::setElt(const int unit,
-                                   const uint32_t nodeid,
+                                   const SbUniqueId nodeid,
                                    const SbVec3s & size, const int numComponents,
                                    const unsigned char * bytes,
                                    const Wrap wrapS,

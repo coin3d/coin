@@ -233,7 +233,7 @@ SoTextureCombineElement::copyMatchInfo(void) const
 
 void
 SoTextureCombineElement::setElt(const int unit,
-                                const uint32_t nodeid,
+                                const SbUniqueId nodeid,
                                 const Operation rgboperation,
                                 const Operation alphaoperation,
                                 const Source * rgbsource,

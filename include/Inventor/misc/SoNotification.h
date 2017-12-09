@@ -64,7 +64,7 @@ private:
   SoNotRec * firstnoderec;
   SoField * lastfield;
   SoEngineOutput * lastengine;
-  uint32_t stamp;
+  SbUniqueId stamp;
 };
 
 #endif // !COIN_SONOTIFICATION_H

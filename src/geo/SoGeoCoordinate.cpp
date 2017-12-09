@@ -80,8 +80,8 @@
 
 class SoGeoCoordinateP {
 public:
-  uint32_t originid;
-  uint32_t thisid;
+  SbUniqueId originid;
+  SbUniqueId thisid;
   SbList <SbVec3f> coords;
 };
 
