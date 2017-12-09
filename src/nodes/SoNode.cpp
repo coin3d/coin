@@ -224,11 +224,11 @@ SbUniqueId is not really a class, just a \c typedef.
 // *************************************************************************
 
 /*!
-  \var uint32_t SoNode::uniqueId
+  \var SbUniqueId SoNode::uniqueId
   \COININTERNAL
 */
 /*!
-  \var uint32_t SoNode::nextUniqueId
+  \var SbUniqueId SoNode::nextUniqueId
   \COININTERNAL
 */
 /*!
