@@ -64,7 +64,7 @@ protected:
 
 private:
   SoState * state;
-  uint32_t viewEltNodeId;
+  SbUniqueId viewEltNodeId;
   SbBool stackoverflow;
 };
 
