@@ -1655,14 +1655,14 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   if (!this->isActive.getValue() &&
       (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) ||
        SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL))) {
-    const SoPickedPoint * pp = getPickedPointForStart(action);
+    const SoPickedPoint * pp = this->getPickedPointForStart(action);
     if (pp && this->isPicked(pp->getPath())) {
       this->eventHandled(event, action);
       PRIVATE(this)->otherEventCB.invokeCallbacks(this);
     }
   }
   else if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
-    const SoPickedPoint * pp = getPickedPointForStart(action);
+    const SoPickedPoint * pp = this->getPickedPointForStart(action);
 
     SbBool didpick = FALSE;
 
