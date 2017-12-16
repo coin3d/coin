@@ -341,8 +341,8 @@ SoText2::GLRender(SoGLRenderAction * action)
 
     projmatrix.multVecMatrix(nilpoint, nilpoint);
     nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
-    nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];      
- 
+    nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
+
     // Set new state.
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -354,13 +354,13 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
     float fontsize = SoFontSizeElement::get(state);
-    float xpos = nilpoint[0];      // to get rid of compiler warning..
-    float ypos = nilpoint[1];
-    float rasterx, rastery, rpx, rpy, offsetx, offsety;
+    int xpos = (int) nilpoint[0];
+    int ypos = (int) nilpoint[1];
+    int rasterx, rastery, rpx, rpy, offsetx, offsety;
     int ix=0, iy=0;
     int offvp;
-    int thispos[2];
-    int thissize[2];
+    int bitmappos[2];
+    int bitmapsize[2];
     const unsigned char * buffer = NULL;
     cc_glyph2d * prevglyph = NULL;
     
@@ -387,15 +387,20 @@ SoText2::GLRender(SoGLRenderAction * action)
       SbString str = this->string[i];
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
-        xpos = nilpoint[0];
+        xpos = (int)nilpoint[0];
         break;
       case SoText2::RIGHT:
-        xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i];
+        xpos = (int)nilpoint[0] - PRIVATE(this)->stringwidth[i];
         break;
       case SoText2::CENTER:
-        xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f;
+        xpos = (int)(nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f);
         break;
       }
+
+      int kerningx = 0;
+      int kerningy = 0;
+      int advancex = 0;
+      int advancey = 0;
 
       const char * p = str.getString();
       size_t length = cc_string_utf8_validate_length(p);
@@ -407,37 +412,30 @@ SoText2::GLRender(SoGLRenderAction * action)
         p = cc_string_utf8_next_char(p);
 
         cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
-        
-        buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
-        
-        ix = thissize[0];
-        iy = thissize[1];
-        
-        int advancex, advancey;
+
+        buffer = cc_glyph2d_getbitmap(glyph, bitmapsize, bitmappos);
+
+        ix = bitmapsize[0];
+        iy = bitmapsize[1];
+
+        // Advance & Kerning
+        if (strcharidx > 0)
+          cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         cc_glyph2d_getadvance(glyph, &advancex, &advancey);
 
-        int kerningx, kerningy;
-        if (strcharidx > 0) {
-          cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        } 
-        else {
-          kerningx = 0;
-          kerningy = 0;          
-        }
-
-        rasterx = xpos + kerningx + thispos[0]; 
+        rasterx = xpos + kerningx + bitmappos[0];
         rpx = rasterx >= 0 ? rasterx : 0;
         offvp = rasterx < 0 ? 1 : 0;
         offsetx = rasterx >= 0 ? 0 : rasterx;
-          
-        rastery = ypos + (thispos[1] - thissize[1]);
+        
+        rastery = ypos + (bitmappos[1] - bitmapsize[1]);
         rpy = rastery>= 0 ? rastery : 0;
         offvp = offvp || rastery < 0 ? 1 : 0;
         offsety = rastery >= 0 ? 0 : rastery;
 
-        glRasterPos3f(rpx, rpy, -nilpoint[2]);
+        glRasterPos3f((GLfloat)rpx, (GLfloat)rpy, -nilpoint[2]);
 
-        if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
+        if (offvp) { glBitmap(0,0,0,0, (GLfloat)offsetx, (GLfloat)offsety,NULL); }
 
         if (buffer) {
           if (cc_glyph2d_getmono(glyph)) {
@@ -447,18 +445,18 @@ SoText2::GLRender(SoGLRenderAction * action)
               didenableblend = FALSE;
             }
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
-          } 
+          }
           else {
             if (!didenableblend) {
               glEnable(GL_ALPHA_TEST);
               glAlphaFunc(GL_GREATER, 0.3f);
-          
+
               glEnable(GL_BLEND);
               glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
               didenableblend = TRUE;
             }
             glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-        
+
             int numpixels = ix * iy;
  
             if (numpixels > PRIVATE(this)->pixel_buffer_size) {
@@ -497,8 +495,8 @@ SoText2::GLRender(SoGLRenderAction * action)
         }
         prevglyph = glyph;
       }
-      
-      ypos -= (((int) fontsize) * this->spacing.getValue());
+
+      ypos -= (int)(((int) fontsize) * this->spacing.getValue());
     }
 
     if (prevglyph) {
@@ -511,7 +509,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPopClientAttrib();
     glPopAttrib();
     state->pop();
-      
+
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
     // Pop old GL matrix state.
     glMatrixMode(GL_PROJECTION);
@@ -519,7 +517,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
   }
-  
+
   PRIVATE(this)->unlock();
 
   state->pop();
@@ -801,10 +799,10 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
 void
 SoText2P::buildGlyphCache(SoState * state)
 {
-  if (!this->shouldBuildGlyphCache(state)) { 
-    return; 
+  if (!this->shouldBuildGlyphCache(state)) {
+    return;
   }
-  
+
   this->flushGlyphCache();
 
   // don't unref the old cache until after we've created the new
@@ -813,13 +811,15 @@ SoText2P::buildGlyphCache(SoState * state)
 
   state->push();
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
-  this->cache = new SoGlyphCache(state); 
+  this->cache = new SoGlyphCache(state);
   this->cache->ref();
   SoCacheElement::set(state, this->cache);
   this->cache->readFontspec(state);
 
+  float fontsize = SoFontSizeElement::get(state);
+  int ypos = 0;
+
   const int nrlines = PUBLIC(this)->string.getNum();
-  SbVec2s penpos(0, 0);
 
   const cc_font_specification * fontspec = this->cache->getCachedFontspec();
 
@@ -829,6 +829,7 @@ SoText2P::buildGlyphCache(SoState * state)
     SbString str = PUBLIC(this)->string[i];
     this->positions.append(SbList<SbVec2s>());
 
+    int xpos = 0;
     int actuallength = 0;
     int kerningx = 0;
     int kerningy = 0;
@@ -838,7 +839,7 @@ SoText2P::buildGlyphCache(SoState * state)
     int bitmappos[2];
     const cc_glyph2d * prevglyph = NULL;
     const char * p = str.getString();
-    unsigned int length = cc_string_utf8_validate_length(p);
+    size_t length = cc_string_utf8_validate_length(p);
 
     // fetch all glyphs first
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
@@ -861,27 +862,26 @@ SoText2P::buildGlyphCache(SoState * state)
       (void) cc_glyph2d_getbitmap(glyph, bitmapsize, bitmappos);
 
       // Advance & Kerning
-      if (strcharidx > 0) 
+      if (strcharidx > 0)
         cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-      cc_glyph2d_getadvance(glyph, &advancex, &advancey);           
-      SbVec2s kerning((short) kerningx, (short) kerningy);
-      SbVec2s advance((short) advancex, (short) advancey);
-  
-      SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], 
-                                     (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
+      cc_glyph2d_getadvance(glyph, &advancex, &advancey);
+
+      SbVec2s pos;
+      pos[0] = xpos + kerningx + bitmappos[0];
+      pos[1] = ypos + (bitmappos[1] - bitmapsize[1]);
 
       this->bbox.extendBy(pos);
-      this->bbox.extendBy(pos + SbVec2s(advancex + kerning[0], bitmapsize[1]));
+      this->bbox.extendBy(pos + SbVec2s(bitmapsize[0], bitmapsize[1]));
       this->positions[i].append(pos);
 
       actuallength += (advancex + kerningx);
 
-      penpos += kerning + SbVec2s(advancex,0);
+      xpos += (advancex + kerningx);
       prevglyph = glyph;
     }
 
     this->stringwidth.append(actuallength);
-    penpos = SbVec2s(0, penpos[1] - (short)(SoFontSizeElement::get(state) * PUBLIC(this)->spacing.getValue()));
+    ypos -= (int)(((int)fontsize) * PUBLIC(this)->spacing.getValue());
 
   }
   state->pop();
