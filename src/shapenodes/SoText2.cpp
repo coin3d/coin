@@ -209,6 +209,7 @@ public:
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos, SbBool mono);
   void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  static void setRasterPos3f(GLfloat x, GLfloat y, GLfloat z);
 
 
   SbList <int> stringwidth;
@@ -343,6 +344,22 @@ SoText2::GLRender(SoGLRenderAction * action)
     nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
     nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
 
+    SbVec2s bbsize = PRIVATE(this)->bbox.getSize();
+    const SbVec2s& bbmin = PRIVATE(this)->bbox.getMin();
+    const SbVec2s& bbmax = PRIVATE(this)->bbox.getMax();
+
+    float textscreenoffsetx = nilpoint[0];
+    switch (this->justification.getValue()) {
+    case SoText2::LEFT:
+      break;
+    case SoText2::RIGHT:
+      textscreenoffsetx = nilpoint[0] - bbsize[0];
+      break;
+    case SoText2::CENTER:
+      textscreenoffsetx = (nilpoint[0] - bbsize[0] / 2.0f);
+      break;
+    }
+
     // Set new state.
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -354,11 +371,10 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
     float fontsize = SoFontSizeElement::get(state);
-    int xpos = (int) nilpoint[0];
-    int ypos = (int) nilpoint[1];
-    int rasterx, rastery, rpx, rpy, offsetx, offsety;
+    int xpos = 0;
+    int ypos = 0;
+    int rasterx, rastery;
     int ix=0, iy=0;
-    int offvp;
     int bitmappos[2];
     int bitmapsize[2];
     const unsigned char * buffer = NULL;
@@ -382,18 +398,19 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
     
     SbBool didenableblend = FALSE;
+    SbBool drawPixelBuffer = FALSE;
 
     for (int i = 0; i < nrlines; i++) {
       SbString str = this->string[i];
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
-        xpos = (int)nilpoint[0];
+        xpos = 0;
         break;
       case SoText2::RIGHT:
-        xpos = (int)nilpoint[0] - PRIVATE(this)->stringwidth[i];
+        xpos = bbsize[0] - PRIVATE(this)->stringwidth[i];
         break;
       case SoText2::CENTER:
-        xpos = (int)(nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f);
+        xpos = (bbsize[0] - PRIVATE(this)->stringwidth[i]) / 2;
         break;
       }
 
@@ -424,18 +441,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         cc_glyph2d_getadvance(glyph, &advancex, &advancey);
 
         rasterx = xpos + kerningx + bitmappos[0];
-        rpx = rasterx >= 0 ? rasterx : 0;
-        offvp = rasterx < 0 ? 1 : 0;
-        offsetx = rasterx >= 0 ? 0 : rasterx;
-        
         rastery = ypos + (bitmappos[1] - bitmapsize[1]);
-        rpy = rastery>= 0 ? rastery : 0;
-        offvp = offvp || rastery < 0 ? 1 : 0;
-        offsety = rastery >= 0 ? 0 : rastery;
-
-        glRasterPos3f((GLfloat)rpx, (GLfloat)rpy, -nilpoint[2]);
-
-        if (offvp) { glBitmap(0,0,0,0, (GLfloat)offsetx, (GLfloat)offsety,NULL); }
 
         if (buffer) {
           if (cc_glyph2d_getmono(glyph)) {
@@ -444,45 +450,51 @@ SoText2::GLRender(SoGLRenderAction * action)
               glDisable(GL_ALPHA_TEST);
               didenableblend = FALSE;
             }
+            SoText2P::setRasterPos3f((float)rasterx + textscreenoffsetx, (float)rastery + (int)nilpoint[1], -nilpoint[2]);
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           }
           else {
-            if (!didenableblend) {
-              glEnable(GL_ALPHA_TEST);
-              glAlphaFunc(GL_GREATER, 0.3f);
-
-              glEnable(GL_BLEND);
-              glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-              didenableblend = TRUE;
+            if (!drawPixelBuffer) {
+              int numpixels = bbsize[0] * bbsize[1];
+              if (numpixels > PRIVATE(this)->pixel_buffer_size) {
+                delete[] PRIVATE(this)->pixel_buffer;
+                PRIVATE(this)->pixel_buffer = new unsigned char[numpixels*4];
+                PRIVATE(this)->pixel_buffer_size = numpixels;
+              }
+              memset(PRIVATE(this)->pixel_buffer, 0, numpixels * 4);
+              drawPixelBuffer = TRUE;
             }
-            glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
-            int numpixels = ix * iy;
- 
-            if (numpixels > PRIVATE(this)->pixel_buffer_size) {
-              delete[] PRIVATE(this)->pixel_buffer;
-              PRIVATE(this)->pixel_buffer = new unsigned char[numpixels*4];
-              PRIVATE(this)->pixel_buffer_size = numpixels;
-            }
-            unsigned char * dst = PRIVATE(this)->pixel_buffer;
+            int memx = rasterx - bbmin[0];
+            int memy = bbsize[1] - (bbmax[1] - rastery - 1) - 1;
+
+            assert(memx >= 0 && memx + bitmapsize[0] <= bbsize[0]);
+            assert(memy >= 0 && memy + bitmapsize[1] <= bbsize[1]);
+
+            unsigned char * dst = PRIVATE(this)->pixel_buffer + (memy * bbsize[0] + memx) * 4;
             const unsigned char * src = buffer;
+            int nextlineoffset = (bbsize[0] - bitmapsize[0]) * 4;
 
             // Ouch. This must lead to pretty slow rendering
             if (alpha == 1.0f) {
-              for (int i = 0; i < numpixels; i++) {
-                *dst++ = red; *dst++ = green; *dst++ = blue;
-                // alpha from the gray level pixel value
-                *dst++ = *src++;
+              for (int y = 0; y < iy; y++) {
+                for (int x = 0; x < ix; x++) {
+                  *dst++ = red; *dst++ = green; *dst++ = blue;
+                  // alpha from the gray level pixel value
+                  *dst++ = *src++;
+                }
+                dst += nextlineoffset;
               }
             } else {
-              for (int i = 0; i < numpixels; i++) {
-                *dst++ = red; *dst++ = green; *dst++ = blue;
-                // alpha from the gray level pixel value
-                *dst++ = (((unsigned int)(alpha * 256.0f)) * *src++) >> 8;
+              for (int y = 0; y < iy; y++) {
+                for (int x = 0; x < ix; x++) {
+                  *dst++ = red; *dst++ = green; *dst++ = blue;
+                  // alpha from the gray level pixel value
+                  *dst++ = (((unsigned int)(alpha * 256.0f)) * *src++) >> 8;
+                }
+                dst += nextlineoffset;
               }
             }
-            glDrawPixels(ix,iy,GL_RGBA,GL_UNSIGNED_BYTE,(const GLubyte *)PRIVATE(this)->pixel_buffer);
-
           }
         }
 
@@ -503,6 +515,23 @@ SoText2::GLRender(SoGLRenderAction * action)
       // should be safe to unref here. SoGlyphCache will have a ref'ed
       // instance
       cc_glyph2d_unref(prevglyph);
+    }
+
+    if (drawPixelBuffer) {
+      if (!didenableblend) {
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.3f);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        didenableblend = TRUE;
+      }
+      glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+
+      rastery = (int)nilpoint[1] - bbsize[1] + bbmax[1];
+
+      SoText2P::setRasterPos3f((GLfloat)floor(textscreenoffsetx), (GLfloat)rastery, -nilpoint[2]);
+      glDrawPixels(bbsize[0], bbsize[1], GL_RGBA, GL_UNSIGNED_BYTE, (const GLubyte *)PRIVATE(this)->pixel_buffer);
     }
 
     // pop old state
@@ -907,6 +936,23 @@ SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.extendBy(v3);
 
   center = box.getCenter();
+}
+
+// Sets the raster position for GL raster operations.
+// Handles the special case where the x/y coordinates are negative
+void 
+SoText2P::setRasterPos3f(GLfloat x, GLfloat y, GLfloat z)
+{
+  float rpx = x >= 0 ? x : 0;
+  int offvp = x < 0 ? 1 : 0;
+  float offsetx = x >= 0 ? 0 : x;
+
+  float rpy = y >= 0 ? y : 0;
+  offvp = offvp || y < 0 ? 1 : 0;
+  float offsety = y >= 0 ? 0 : y;
+
+  glRasterPos3f(rpx,rpy,z);
+  if (offvp) { glBitmap(0, 0, 0, 0,offsetx,offsety, NULL); }
 }
 
 #undef PRIVATE
