@@ -859,7 +859,7 @@ SoText2P::buildGlyphCache(SoState * state)
     this->positions.append(SbList<SbVec2s>());
 
     int xpos = 0;
-    int actuallength = 0;
+    SbBox2s linebbox;
     int kerningx = 0;
     int kerningy = 0;
     int advancex = 0;
@@ -899,17 +899,16 @@ SoText2P::buildGlyphCache(SoState * state)
       pos[0] = xpos + kerningx + bitmappos[0];
       pos[1] = ypos + (bitmappos[1] - bitmapsize[1]);
 
-      this->bbox.extendBy(pos);
-      this->bbox.extendBy(pos + SbVec2s(bitmapsize[0], bitmapsize[1]));
+      linebbox.extendBy(pos);
+      linebbox.extendBy(pos + SbVec2s(max(bitmapsize[0], advancex), bitmapsize[1]));
       this->positions[i].append(pos);
-
-      actuallength += (advancex + kerningx);
 
       xpos += (advancex + kerningx);
       prevglyph = glyph;
     }
 
-    this->stringwidth.append(actuallength);
+    this->bbox.extendBy(linebbox);
+    this->stringwidth.append(linebbox.getSize()[0]);
     ypos -= (int)(((int)fontsize) * PUBLIC(this)->spacing.getValue());
 
   }
