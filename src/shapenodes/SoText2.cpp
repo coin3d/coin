@@ -197,7 +197,7 @@
 
 class SoText2P {
 public:
-  SoText2P(SoText2 * textnode) : master(textnode)
+  SoText2P(SoText2 * textnode) : master(textnode), maxwidth(0)
   {
     this->bbox.makeEmpty();
   }
@@ -213,6 +213,7 @@ public:
 
 
   SbList <int> stringwidth;
+  int maxwidth;
   SbList< SbList<SbVec2s> > positions;
   SbBox2s bbox;
 
@@ -348,18 +349,18 @@ SoText2::GLRender(SoGLRenderAction * action)
     const SbVec2s& bbmin = PRIVATE(this)->bbox.getMin();
     const SbVec2s& bbmax = PRIVATE(this)->bbox.getMax();
 
-    float textscreenoffsetx = nilpoint[0];
+    float textscreenoffsetx = nilpoint[0]+bbmin[0];
     switch (this->justification.getValue()) {
     case SoText2::LEFT:
       break;
     case SoText2::RIGHT:
-      textscreenoffsetx = nilpoint[0] - bbsize[0];
+      textscreenoffsetx = nilpoint[0] + bbmin[0] - PRIVATE(this)->maxwidth;
       break;
     case SoText2::CENTER:
-      textscreenoffsetx = (nilpoint[0] - bbsize[0] / 2.0f);
+      textscreenoffsetx = (nilpoint[0] + bbmin[0] - PRIVATE(this)->maxwidth / 2.0f);
       break;
     }
-
+    
     // Set new state.
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -407,10 +408,10 @@ SoText2::GLRender(SoGLRenderAction * action)
         xpos = 0;
         break;
       case SoText2::RIGHT:
-        xpos = bbsize[0] - PRIVATE(this)->stringwidth[i];
+        xpos = PRIVATE(this)->maxwidth - PRIVATE(this)->stringwidth[i];
         break;
       case SoText2::CENTER:
-        xpos = (bbsize[0] - PRIVATE(this)->stringwidth[i]) / 2;
+        xpos = (PRIVATE(this)->maxwidth - PRIVATE(this)->stringwidth[i]) / 2;
         break;
       }
 
@@ -528,9 +529,9 @@ SoText2::GLRender(SoGLRenderAction * action)
       }
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
-      rastery = (int)nilpoint[1] - bbsize[1] + bbmax[1];
+      rastery = (int)floor(nilpoint[1]+0.5) - bbsize[1] + bbmax[1];
 
-      SoText2P::setRasterPos3f((GLfloat)floor(textscreenoffsetx), (GLfloat)rastery, -nilpoint[2]);
+      SoText2P::setRasterPos3f((GLfloat)floor(textscreenoffsetx+0.5), (GLfloat)rastery, -nilpoint[2]);
       glDrawPixels(bbsize[0], bbsize[1], GL_RGBA, GL_UNSIGNED_BYTE, (const GLubyte *)PRIVATE(this)->pixel_buffer);
     }
 
@@ -690,6 +691,7 @@ void
 SoText2P::flushGlyphCache()
 {
   this->stringwidth.truncate(0);
+  this->maxwidth=0;
   this->positions.truncate(0);
   this->bbox.makeEmpty();
 }
@@ -847,6 +849,7 @@ SoText2P::buildGlyphCache(SoState * state)
 
   float fontsize = SoFontSizeElement::get(state);
   int ypos = 0;
+  int maxoverhang = INT_MIN;
 
   const int nrlines = PUBLIC(this)->string.getNum();
 
@@ -858,8 +861,9 @@ SoText2P::buildGlyphCache(SoState * state)
     SbString str = PUBLIC(this)->string[i];
     this->positions.append(SbList<SbVec2s>());
 
-    int xpos = 0;
     SbBox2s linebbox;
+    int xpos = 0;
+    int actuallength = 0;
     int kerningx = 0;
     int kerningy = 0;
     int advancex = 0;
@@ -900,18 +904,38 @@ SoText2P::buildGlyphCache(SoState * state)
       pos[1] = ypos + (bitmappos[1] - bitmapsize[1]);
 
       linebbox.extendBy(pos);
-      linebbox.extendBy(pos + SbVec2s(max(bitmapsize[0], advancex), bitmapsize[1]));
+      linebbox.extendBy(pos + SbVec2s(bitmapsize[0], bitmapsize[1]));
       this->positions[i].append(pos);
+
+      actuallength += (advancex + kerningx);
 
       xpos += (advancex + kerningx);
       prevglyph = glyph;
     }
 
     this->bbox.extendBy(linebbox);
-    this->stringwidth.append(linebbox.getSize()[0]);
+    this->stringwidth.append(actuallength);
+    if (actuallength > this->maxwidth) this->maxwidth=actuallength;
+
+    // bitmap of last character can end before or beyond starting position of next character
+    if (!linebbox.isEmpty())
+    {
+      int overhang = linebbox.getMax()[0] - actuallength;
+      if (overhang > maxoverhang) maxoverhang = overhang;
+    }
+
     ypos -= (int)(((int)fontsize) * PUBLIC(this)->spacing.getValue());
 
   }
+
+  // extent bbox to include maxoverhang at the maxwidth string
+  // this is needed for right-aligned text which gets aligned at the maxwidth
+  // position, because there can be other strings with bitmaps going beyond
+  if (maxoverhang > INT_MIN)
+  {
+    this->bbox.extendBy(SbVec2s(this->maxwidth + maxoverhang, this->bbox.getMax()[1]));
+  }
+
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
 
