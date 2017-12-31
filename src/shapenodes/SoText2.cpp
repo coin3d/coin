@@ -388,7 +388,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     unsigned char red   = (unsigned char) (diffuse[0] * 255.0f);
     unsigned char green = (unsigned char) (diffuse[1] * 255.0f);
     unsigned char blue  = (unsigned char) (diffuse[2] * 255.0f);
-    const float alpha = 1.0f - SoLazyElement::getTransparency(state, 0);
+    const unsigned int alpha = (unsigned int)((1.0f - SoLazyElement::getTransparency(state, 0)) * 256);
     
     state->push();
     
@@ -477,24 +477,16 @@ SoText2::GLRender(SoGLRenderAction * action)
             int nextlineoffset = (bbsize[0] - bitmapsize[0]) * 4;
 
             // Ouch. This must lead to pretty slow rendering
-            if (alpha == 1.0f) {
-              for (int y = 0; y < iy; y++) {
-                for (int x = 0; x < ix; x++) {
-                  *dst++ = red; *dst++ = green; *dst++ = blue;
-                  // alpha from the gray level pixel value
-                  *dst++ = *src++;
-                }
-                dst += nextlineoffset;
+            for (int y = 0; y < iy; y++) {
+              for (int x = 0; x < ix; x++) {
+                *dst++ = red; *dst++ = green; *dst++ = blue;
+                // alpha from the gray level pixel value, blended with current value (because glyph bitmaps can overlap)
+                int srcval = *src;
+                int oldval = *dst;
+                *dst = ((oldval * (256 - srcval) + alpha * srcval) >> 8);
+                src++; dst++;
               }
-            } else {
-              for (int y = 0; y < iy; y++) {
-                for (int x = 0; x < ix; x++) {
-                  *dst++ = red; *dst++ = green; *dst++ = blue;
-                  // alpha from the gray level pixel value
-                  *dst++ = (((unsigned int)(alpha * 256.0f)) * *src++) >> 8;
-                }
-                dst += nextlineoffset;
-              }
+              dst += nextlineoffset;
             }
           }
         }
