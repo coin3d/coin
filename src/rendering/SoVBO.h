@@ -52,9 +52,9 @@ class SoVBO {
 
   static void init(void);
 
-  void setBufferData(const GLvoid * data, intptr_t size, uint32_t dataid = 0);
-  void * allocBufferData(intptr_t size, uint32_t dataid = 0);
-  uint32_t getBufferDataId(void) const;
+  void setBufferData(const GLvoid * data, intptr_t size, SbUniqueId dataid = 0);
+  void * allocBufferData(intptr_t size, SbUniqueId dataid = 0);
+  SbUniqueId getBufferDataId(void) const;
   void getBufferData(const GLvoid *& data, intptr_t & size);
   void bindBuffer(uint32_t contextid);
 
@@ -79,7 +79,7 @@ class SoVBO {
   GLenum usage;
   const GLvoid * data;
   intptr_t datasize;
-  uint32_t dataid;
+  SbUniqueId dataid;
   SbBool didalloc;
 
   SbHash<uint32_t, GLuint> vbohash;

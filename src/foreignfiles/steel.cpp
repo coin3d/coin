@@ -1,6 +1,65 @@
-#line 2 "steel.cpp"
+#line 1 "steel.cpp"
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
 
-#line 4 "steel.cpp"
+/* ********************************************************************** *
+ * TODO:
+ * - API to get file position data when encountering errors
+ * - implement writing
+ * - read/write the two color extensions (binary only)
+ * - be robust for corrupt files
+ * - wtf does "A facet normal coordinate may have a leading minus sign;
+ *   a vertex coordinate may not." for stl ascii files mean?  do I need to
+ *   take special care because of this?  why are there no proper formal
+ *   specs for the stl file formats?
+ *   UPDATE: it probably means that all vertices must lie in the positive
+ *   octant in the worldspace - negative coordinates in any dimension is
+ *   not allowed.  might be sensible, given that STL files are generally
+ *   created for use by 3D rinters.
+ * - figure out how to support gzipped files (in combination with flex,
+ *   memory buffer techniques will probably have to be used)
+ * - cr+lf on DOS/unix for ascii files - is this a problem?
+ * - remove any error-handling asserts
+ * ********************************************************************** */
+
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <Inventor/system/inttypes.h>
+
+#include "steel.h"
+
+#line 62 "steel.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -27,11 +86,89 @@
 
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
-#define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_MINOR_VERSION 6
+#define YY_FLEX_SUBMINOR_VERSION 3
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
+
+    #define yy_create_buffer stl_yy_create_buffer
+
+    #define yy_delete_buffer stl_yy_delete_buffer
+
+    #define yy_scan_buffer stl_yy_scan_buffer
+
+    #define yy_scan_string stl_yy_scan_string
+
+    #define yy_scan_bytes stl_yy_scan_bytes
+
+    #define yy_init_buffer stl_yy_init_buffer
+
+    #define yy_flush_buffer stl_yy_flush_buffer
+
+    #define yy_load_buffer_state stl_yy_load_buffer_state
+
+    #define yy_switch_to_buffer stl_yy_switch_to_buffer
+
+    #define yypush_buffer_state stl_yypush_buffer_state
+
+    #define yypop_buffer_state stl_yypop_buffer_state
+
+    #define yyensure_buffer_stack stl_yyensure_buffer_stack
+
+    #define yylex stl_yylex
+
+    #define yyrestart stl_yyrestart
+
+    #define yylex_init stl_yylex_init
+
+    #define yylex_init_extra stl_yylex_init_extra
+
+    #define yylex_destroy stl_yylex_destroy
+
+    #define yyget_debug stl_yyget_debug
+
+    #define yyset_debug stl_yyset_debug
+
+    #define yyget_extra stl_yyget_extra
+
+    #define yyset_extra stl_yyset_extra
+
+    #define yyget_in stl_yyget_in
+
+    #define yyset_in stl_yyset_in
+
+    #define yyget_out stl_yyget_out
+
+    #define yyset_out stl_yyset_out
+
+    #define yyget_leng stl_yyget_leng
+
+    #define yyget_text stl_yyget_text
+
+    #define yyget_lineno stl_yyget_lineno
+
+    #define yyset_lineno stl_yyset_lineno
+
+    #define yywrap stl_yywrap
+
+    #define yyalloc stl_yyalloc
+
+    #define yyrealloc stl_yyrealloc
+
+    #define yyfree stl_yyfree
+
+    #define yytext stl_yytext
+
+    #define yyleng stl_yyleng
+
+    #define yyin stl_yyin
+
+    #define yyout stl_yyout
+
+    #define yy_flex_debug stl_yy_flex_debug
+
+    #define yylineno stl_yylineno
 
 /* First, we deal with  platform-specific or compiler-specific issues. */
 
@@ -107,56 +244,38 @@ typedef unsigned int flex_uint32_t;
 
 #endif /* ! FLEXINT_H */
 
-#ifdef __cplusplus
-
-/* The "const" storage-class-modifier is valid. */
-#define YY_USE_CONST
-
-#else	/* ! __cplusplus */
-
-/* C99 requires __STDC__ to be defined as 1. */
-#if defined (__STDC__)
-
-#define YY_USE_CONST
-
-#endif	/* defined (__STDC__) */
-#endif	/* ! __cplusplus */
-
-#ifdef YY_USE_CONST
+/* TODO: this is always defined, so inline it */
 #define yyconst const
+
+#if defined(__GNUC__) && __GNUC__ >= 3
+#define yynoreturn __attribute__((__noreturn__))
 #else
-#define yyconst
+#define yynoreturn
 #endif
 
 /* Returned upon end-of-file. */
 #define YY_NULL 0
 
-/* Promotes a possibly negative, possibly signed char to an unsigned
- * integer for use as an array index.  If the signed char is negative,
- * we want to instead treat it as an 8-bit unsigned char, hence the
- * double cast.
+/* Promotes a possibly negative, possibly signed char to an
+ *   integer in range [0..255] for use as an array index.
  */
-#define YY_SC_TO_UI(c) ((unsigned int) (unsigned char) c)
+#define YY_SC_TO_UI(c) ((YY_CHAR) (c))
 
 /* Enter a start condition.  This macro really ought to take a parameter,
  * but we do it the disgusting crufty way forced on us by the ()-less
  * definition of BEGIN.
  */
 #define BEGIN (yy_start) = 1 + 2 *
-
 /* Translate the current start state into a value that can be later handed
  * to BEGIN to return to the state.  The YYSTATE alias is for lex
  * compatibility.
  */
 #define YY_START (((yy_start) - 1) / 2)
 #define YYSTATE YY_START
-
 /* Action number for EOF rule of a given start state. */
 #define YY_STATE_EOF(state) (YY_END_OF_BUFFER + state + 1)
-
 /* Special action meaning "start processing a new file". */
 #define YY_NEW_FILE stl_yyrestart(stl_yyin  )
-
 #define YY_END_OF_BUFFER_CHAR 0
 
 /* Size of default input buffer. */
@@ -181,6 +300,11 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
+
 extern int stl_yyleng;
 
 extern FILE *stl_yyin, *stl_yyout;
@@ -188,8 +312,9 @@ extern FILE *stl_yyin, *stl_yyout;
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
-
+    
     #define YY_LESS_LINENO(n)
+    #define YY_LINENO_REWIND_TO(ptr)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -204,13 +329,7 @@ extern FILE *stl_yyin, *stl_yyout;
 		YY_DO_BEFORE_ACTION; /* set up stl_yytext again */ \
 		} \
 	while ( 0 )
-
 #define unput(c) yyunput( c, (yytext_ptr)  )
-
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
@@ -224,7 +343,7 @@ struct yy_buffer_state
 	/* Size of input buffer in bytes, not including room for EOB
 	 * characters.
 	 */
-	yy_size_t yy_buf_size;
+	int yy_buf_size;
 
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
@@ -252,7 +371,7 @@ struct yy_buffer_state
 
     int yy_bs_lineno; /**< The line count. */
     int yy_bs_column; /**< The column count. */
-    
+
 	/* Whether to try to fill the input buffer when we reach the
 	 * end of it.
 	 */
@@ -280,7 +399,7 @@ struct yy_buffer_state
 /* Stack of input buffers. */
 static size_t yy_buffer_stack_top = 0; /**< index of top of stack. */
 static size_t yy_buffer_stack_max = 0; /**< capacity of stack. */
-static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
+static YY_BUFFER_STATE * yy_buffer_stack = NULL; /**< Stack as an array. */
 
 /* We provide macros for accessing buffer states in case in the
  * future we want to put the buffer states in a more general
@@ -291,7 +410,6 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 #define YY_CURRENT_BUFFER ( (yy_buffer_stack) \
                           ? (yy_buffer_stack)[(yy_buffer_stack_top)] \
                           : NULL)
-
 /* Same as previous macro, but useful when we know that the buffer stack is not
  * NULL or when we need an lvalue. For internal use only.
  */
@@ -303,7 +421,7 @@ static int yy_n_chars;		/* number of characters read into yy_ch_buf */
 int stl_yyleng;
 
 /* Points to current character in buffer. */
-static char *yy_c_buf_p = (char *) 0;
+static char *yy_c_buf_p = NULL;
 static int yy_init = 0;		/* whether we need to initialize */
 static int yy_start = 0;	/* start state number */
 
@@ -312,30 +430,28 @@ static int yy_start = 0;	/* start state number */
  */
 static int yy_did_buffer_switch_on_eof;
 
-void stl_yyrestart (FILE *input_file  );
-void stl_yy_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE stl_yy_create_buffer (FILE *file,int size  );
-void stl_yy_delete_buffer (YY_BUFFER_STATE b  );
-void stl_yy_flush_buffer (YY_BUFFER_STATE b  );
-void stl_yypush_buffer_state (YY_BUFFER_STATE new_buffer  );
-void stl_yypop_buffer_state (void );
+void stl_yyrestart ( FILE *input_file  );
+void stl_yy_switch_to_buffer ( YY_BUFFER_STATE new_buffer  );
+YY_BUFFER_STATE stl_yy_create_buffer ( FILE *file, int size  );
+void stl_yy_delete_buffer ( YY_BUFFER_STATE b  );
+void stl_yy_flush_buffer ( YY_BUFFER_STATE b  );
+void stl_yypush_buffer_state ( YY_BUFFER_STATE new_buffer  );
+void stl_yypop_buffer_state ( void );
 
-static void stl_yyensure_buffer_stack (void );
-static void stl_yy_load_buffer_state (void );
-static void stl_yy_init_buffer (YY_BUFFER_STATE b,FILE *file  );
-
+static void stl_yyensure_buffer_stack ( void );
+static void stl_yy_load_buffer_state ( void );
+static void stl_yy_init_buffer ( YY_BUFFER_STATE b, FILE *file  );
 #define YY_FLUSH_BUFFER stl_yy_flush_buffer(YY_CURRENT_BUFFER )
 
-YY_BUFFER_STATE stl_yy_scan_buffer (char *base,yy_size_t size  );
-YY_BUFFER_STATE stl_yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE stl_yy_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE stl_yy_scan_buffer ( char *base, yy_size_t size  );
+YY_BUFFER_STATE stl_yy_scan_string ( const char *yy_str  );
+YY_BUFFER_STATE stl_yy_scan_bytes ( const char *bytes, int len  );
 
-void *stl_yyalloc (yy_size_t  );
-void *stl_yyrealloc (void *,yy_size_t  );
-void stl_yyfree (void *  );
+void *stl_yyalloc ( yy_size_t  );
+void *stl_yyrealloc ( void *, yy_size_t  );
+void stl_yyfree ( void *  );
 
 #define yy_new_buffer stl_yy_create_buffer
-
 #define yy_set_interactive(is_interactive) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){ \
@@ -345,7 +461,6 @@ void stl_yyfree (void *  );
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_is_interactive = is_interactive; \
 	}
-
 #define yy_set_bol(at_bol) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){\
@@ -355,31 +470,31 @@ void stl_yyfree (void *  );
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = at_bol; \
 	}
-
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
 
-#define stl_yywrap(n) 1
+#define stl_yywrap() (/*CONSTCOND*/1)
 #define YY_SKIP_YYWRAP
+typedef flex_uint8_t YY_CHAR;
 
-typedef unsigned char YY_CHAR;
-
-FILE *stl_yyin = (FILE *) 0, *stl_yyout = (FILE *) 0;
+FILE *stl_yyin = NULL, *stl_yyout = NULL;
 
 typedef int yy_state_type;
 
 extern int stl_yylineno;
-
 int stl_yylineno = 1;
 
 extern char *stl_yytext;
+#ifdef yytext_ptr
+#undef yytext_ptr
+#endif
 #define yytext_ptr stl_yytext
 
-static yy_state_type yy_get_previous_state (void );
-static yy_state_type yy_try_NUL_trans (yy_state_type current_state  );
-static int yy_get_next_buffer (void );
-static void yy_fatal_error (yyconst char msg[]  );
+static yy_state_type yy_get_previous_state ( void );
+static yy_state_type yy_try_NUL_trans ( yy_state_type current_state  );
+static int yy_get_next_buffer ( void );
+static void yynoreturn yy_fatal_error ( const char* msg  );
 
 /* Done after the current pattern has been matched and before the
  * corresponding action - sets up stl_yytext.
@@ -387,11 +502,10 @@ static void yy_fatal_error (yyconst char msg[]  );
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
 	(yytext_ptr) -= (yy_more_len); \
-	stl_yyleng = (size_t) (yy_cp - (yytext_ptr)); \
+	stl_yyleng = (int) (yy_cp - (yytext_ptr)); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-
 #define YY_NUM_RULES 13
 #define YY_END_OF_BUFFER 14
 /* This struct is not used in this scanner,
@@ -401,7 +515,7 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[142] =
+static const flex_int16_t yy_accept[142] =
     {   0,
         0,    0,   14,   12,    8,   10,    9,   12,   12,   12,
        12,   12,   12,   12,    8,    0,    0,    0,    0,    0,
@@ -421,7 +535,7 @@ static yyconst flex_int16_t yy_accept[142] =
         0
     } ;
 
-static yyconst flex_int32_t yy_ec[256] =
+static const YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
@@ -453,7 +567,7 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[43] =
+static const YY_CHAR yy_meta[43] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -462,7 +576,7 @@ static yyconst flex_int32_t yy_meta[43] =
         1,    1
     } ;
 
-static yyconst flex_int16_t yy_base[146] =
+static const flex_int16_t yy_base[146] =
     {   0,
         0,   40,  328,  331,   80,  331,  331,    0,    0,    1,
         0,    2,    2,  324,    0,    5,    1,   15,   23,   30,
@@ -482,7 +596,7 @@ static yyconst flex_int16_t yy_base[146] =
       331,   46,   24,   15,    0
     } ;
 
-static yyconst flex_int16_t yy_def[146] =
+static const flex_int16_t yy_def[146] =
     {   0,
       142,  142,  141,  141,  141,  141,  141,  141,  141,  141,
       141,  141,  141,  143,    5,  141,  141,  141,  141,  141,
@@ -502,7 +616,7 @@ static yyconst flex_int16_t yy_def[146] =
         0,  141,  141,  141,  141
     } ;
 
-static yyconst flex_int16_t yy_nxt[374] =
+static const flex_int16_t yy_nxt[374] =
     {   0,
        80,    5,    6,    7,   49,   50,   49,   50,   23,   23,
        30,    8,    9,   27,   10,   59,   22,   11,   24,   26,
@@ -547,7 +661,7 @@ static yyconst flex_int16_t yy_nxt[374] =
       141,  141,  141
     } ;
 
-static yyconst flex_int16_t yy_chk[374] =
+static const flex_int16_t yy_chk[374] =
     {   0,
       145,    1,    1,    1,   41,   41,   49,   49,    9,   17,
        22,    1,    1,   13,    1,  144,    8,    1,   10,   12,
@@ -609,66 +723,8 @@ static int yy_more_len = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *stl_yytext;
 #line 1 "steel.l"
-/**************************************************************************\
- * Copyright (c) Kongsberg Oil & Gas Technologies AS
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- * 
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * 
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * 
- * Neither the name of the copyright holder nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-\**************************************************************************/
-/* ********************************************************************** *
- * TODO:
- * - API to get file position data when encountering errors
- * - implement writing
- * - read/write the two color extensions (binary only)
- * - be robust for corrupt files
- * - wtf does "A facet normal coordinate may have a leading minus sign;
- *   a vertex coordinate may not." for stl ascii files mean?  do I need to
- *   take special care because of this?  why are there no proper formal
- *   specs for the stl file formats?
- *   UPDATE: it probably means that all vertices must lie in the positive
- *   octant in the worldspace - negative coordinates in any dimension is
- *   not allowed.  might be sensible, given that STL files are generally
- *   created for use by 3D rinters.
- * - figure out how to support gzipped files (in combination with flex,
- *   memory buffer techniques will probably have to be used)
- * - cr+lf on DOS/unix for ascii files - is this a problem?
- * - remove any error-handling asserts
- * ********************************************************************** */
-#line 45 "steel.l"
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include "coindefs.h"
 
-#include <Inventor/system/inttypes.h>
-
-#include "steel.h"
-
+#line 64 "steel.l"
 /* @stl_real@
 This is a typedef for the C type float.  It is used so the floating point type
 can be changed at a later date.  It is not likely to happen though, as the
@@ -732,8 +788,9 @@ static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_re
 #define STL_PUBLIC_FLAGS 0x000000ff
 #define STL_NO_PENDING   ((STL_ERROR) - 1)
 #define YY_DECL          int stl_scan(stl_reader * reader)
+#line 791 "steel.cpp"
 #define YY_NO_INPUT 1
-#line 727 "steel.cpp"
+#line 793 "steel.cpp"
 
 #define INITIAL 0
 
@@ -744,41 +801,41 @@ static int stl_parse_real_triple(char * text, stl_real * a, stl_real * b, stl_re
  */
 #include <unistd.h>
 #endif
-
+    
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
 #endif
 
-static int yy_init_globals (void );
+static int yy_init_globals ( void );
 
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
-int stl_yylex_destroy (void );
+int stl_yylex_destroy ( void );
 
-int stl_yyget_debug (void );
+int stl_yyget_debug ( void );
 
-void stl_yyset_debug (int debug_flag  );
+void stl_yyset_debug ( int debug_flag  );
 
-YY_EXTRA_TYPE stl_yyget_extra (void );
+YY_EXTRA_TYPE stl_yyget_extra ( void );
 
-void stl_yyset_extra (YY_EXTRA_TYPE user_defined  );
+void stl_yyset_extra ( YY_EXTRA_TYPE user_defined  );
 
-FILE *stl_yyget_in (void );
+FILE *stl_yyget_in ( void );
 
-void stl_yyset_in  (FILE * in_str  );
+void stl_yyset_in  ( FILE * _in_str  );
 
-FILE *stl_yyget_out (void );
+FILE *stl_yyget_out ( void );
 
-void stl_yyset_out  (FILE * out_str  );
+void stl_yyset_out  ( FILE * _out_str  );
 
-int stl_yyget_leng (void );
+			int stl_yyget_leng ( void );
 
-char *stl_yyget_text (void );
+char *stl_yyget_text ( void );
 
-int stl_yyget_lineno (void );
+int stl_yyget_lineno ( void );
 
-void stl_yyset_lineno (int line_number  );
+void stl_yyset_lineno ( int _line_number  );
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -786,26 +843,29 @@ void stl_yyset_lineno (int line_number  );
 
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
-extern "C" int stl_yywrap (void );
+extern "C" int stl_yywrap ( void );
 #else
-extern int stl_yywrap (void );
+extern int stl_yywrap ( void );
 #endif
+#endif
+
+#ifndef YY_NO_UNPUT
+    
 #endif
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy (char *,yyconst char *,int );
+static void yy_flex_strncpy ( char *, const char *, int );
 #endif
 
 #ifdef YY_NEED_STRLEN
-static int yy_flex_strlen (yyconst char * );
+static int yy_flex_strlen ( const char * );
 #endif
 
 #ifndef YY_NO_INPUT
-
 #ifdef __cplusplus
-static int yyinput (void );
+static int yyinput ( void );
 #else
-static int input (void );
+static int input ( void );
 #endif
 
 #endif
@@ -825,7 +885,7 @@ static int input (void );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO do { if (fwrite( stl_yytext, stl_yyleng, 1, stl_yyout )) {} } while (0)
+#define ECHO do { if (fwrite( stl_yytext, (size_t) stl_yyleng, 1, stl_yyout )) {} } while (0)
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -836,7 +896,7 @@ static int input (void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		size_t n; \
+		int n; \
 		for ( n = 0; n < max_size && \
 			     (c = getc( stl_yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -849,7 +909,7 @@ static int input (void );
 	else \
 		{ \
 		errno=0; \
-		while ( (result = fread(buf, 1, max_size, stl_yyin))==0 && ferror(stl_yyin)) \
+		while ( (result = (int) fread(buf, 1, (yy_size_t) max_size, stl_yyin)) == 0 && ferror(stl_yyin)) \
 			{ \
 			if( errno != EINTR) \
 				{ \
@@ -904,7 +964,7 @@ extern int stl_yylex (void);
 
 /* Code executed at the end of each rule. */
 #ifndef YY_BREAK
-#define YY_BREAK break;
+#define YY_BREAK /*LINTED*/break;
 #endif
 
 #define YY_RULE_SETUP \
@@ -917,15 +977,10 @@ extern int stl_yylex (void);
  */
 YY_DECL
 {
-	register yy_state_type yy_current_state;
-	register char *yy_cp, *yy_bp;
-	register int yy_act;
+	yy_state_type yy_current_state;
+	char *yy_cp, *yy_bp;
+	int yy_act;
     
-#line 137 "steel.l"
-
-
-#line 918 "steel.cpp"
-
 	if ( !(yy_init) )
 		{
 		(yy_init) = 1;
@@ -952,12 +1007,18 @@ YY_DECL
 		stl_yy_load_buffer_state( );
 		}
 
-	while ( 1 )		/* loops until end-of-file is reached */
+	{
+#line 148 "steel.l"
+
+
+#line 1014 "steel.cpp"
+
+	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
 		(yy_more_len) = 0;
 		if ( (yy_more_flag) )
 			{
-			(yy_more_len) = (yy_c_buf_p) - (yytext_ptr);
+			(yy_more_len) = (int) ((yy_c_buf_p) - (yytext_ptr));
 			(yy_more_flag) = 0;
 			}
 		yy_cp = (yy_c_buf_p);
@@ -975,7 +1036,7 @@ YY_DECL
 yy_match:
 		do
 			{
-			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
+			YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)] ;
 			if ( yy_accept[yy_current_state] )
 				{
 				(yy_last_accepting_state) = yy_current_state;
@@ -985,9 +1046,9 @@ yy_match:
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
 				if ( yy_current_state >= 142 )
-					yy_c = yy_meta[(unsigned int) yy_c];
+					yy_c = yy_meta[yy_c];
 				}
-			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
 		while ( yy_current_state != 141 );
@@ -1015,7 +1076,7 @@ case 1:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 139 "steel.l"
+#line 150 "steel.l"
 {
 	  char * ptr = stl_yytext;
 	  while ( *ptr == ' ' || *ptr == '\t' ) ptr++;
@@ -1037,7 +1098,7 @@ case 2:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 155 "steel.l"
+#line 166 "steel.l"
 {
 	  reader->hickups = 0; /* reset flex hickup counter */
 	  assert(reader->facet != NULL);
@@ -1053,7 +1114,7 @@ case 3:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 165 "steel.l"
+#line 176 "steel.l"
 {
 	  reader->vertex = 0;
 	}
@@ -1063,7 +1124,7 @@ case 4:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 169 "steel.l"
+#line 180 "steel.l"
 {
 	  stl_real x = 0.0f, y = 0.0f, z = 0.0f;
 	  assert(reader->facet != NULL);
@@ -1096,7 +1157,7 @@ case 5:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 196 "steel.l"
+#line 207 "steel.l"
 {
 	}
 	YY_BREAK
@@ -1105,7 +1166,7 @@ case 6:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 199 "steel.l"
+#line 210 "steel.l"
 {
 	  reader->pending = STL_NO_PENDING;
 	  return STL_FACET;
@@ -1116,7 +1177,7 @@ case 7:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 204 "steel.l"
+#line 215 "steel.l"
 {
 	  char * ptr = stl_yytext;
 	  if ( reader->info != NULL ) {
@@ -1140,20 +1201,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 225 "steel.l"
+#line 236 "steel.l"
 {
 	}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 228 "steel.l"
+#line 239 "steel.l"
 {
 	}
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 231 "steel.l"
+#line 242 "steel.l"
 {
 	  reader->linenum++;
 	}
@@ -1163,14 +1224,14 @@ case 11:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up stl_yytext again */
 YY_RULE_SETUP
-#line 235 "steel.l"
+#line 246 "steel.l"
 {
 	  /* SIM extension - enable commenting out lines with # */
 	}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 239 "steel.l"
+#line 250 "steel.l"
 {
 	  /* 8k into sphere.stl, flex needs some help to get going again... */
 	  if ( reader->hickups < 32 ) {
@@ -1184,7 +1245,7 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 251 "steel.l"
+#line 262 "steel.l"
 {
 	  reader->error = "premature end of file";
 	  reader->pending = STL_ERROR;
@@ -1193,10 +1254,10 @@ case YY_STATE_EOF(INITIAL):
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 257 "steel.l"
+#line 268 "steel.l"
 ECHO;
 	YY_BREAK
-#line 1190 "steel.cpp"
+#line 1260 "steel.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1326,6 +1387,7 @@ ECHO;
 			"fatal flex scanner internal error--no action found" );
 	} /* end of action switch */
 		} /* end of scanning one token */
+	} /* end of user's declarations */
 } /* end of stl_yylex */
 
 /* yy_get_next_buffer - try to read in a new buffer
@@ -1337,9 +1399,9 @@ ECHO;
  */
 static int yy_get_next_buffer (void)
 {
-    	register char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
-	register char *source = (yytext_ptr);
-	register int number_to_move, i;
+    	char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
+	char *source = (yytext_ptr);
+	int number_to_move, i;
 	int ret_val;
 
 	if ( (yy_c_buf_p) > &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] )
@@ -1368,7 +1430,7 @@ static int yy_get_next_buffer (void)
 	/* Try to read more data. */
 
 	/* First move last chars to start of buffer. */
-	number_to_move = (int) ((yy_c_buf_p) - (yytext_ptr)) - 1;
+	number_to_move = (int) ((yy_c_buf_p) - (yytext_ptr) - 1);
 
 	for ( i = 0; i < number_to_move; ++i )
 		*(dest++) = *(source++);
@@ -1388,7 +1450,7 @@ static int yy_get_next_buffer (void)
 			{ /* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
-			YY_BUFFER_STATE b = YY_CURRENT_BUFFER;
+			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
 
 			int yy_c_buf_p_offset =
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
@@ -1404,11 +1466,11 @@ static int yy_get_next_buffer (void)
 
 				b->yy_ch_buf = (char *)
 					/* Include room in for 2 EOB chars. */
-					stl_yyrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
+					stl_yyrealloc((void *) b->yy_ch_buf,(yy_size_t) (b->yy_buf_size + 2)  );
 				}
 			else
 				/* Can't grow it, we don't own it. */
-				b->yy_ch_buf = 0;
+				b->yy_ch_buf = NULL;
 
 			if ( ! b->yy_ch_buf )
 				YY_FATAL_ERROR(
@@ -1426,7 +1488,7 @@ static int yy_get_next_buffer (void)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), (size_t) num_to_read );
+			(yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -1450,10 +1512,10 @@ static int yy_get_next_buffer (void)
 	else
 		ret_val = EOB_ACT_CONTINUE_SCAN;
 
-	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+	if (((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
-		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
-		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) stl_yyrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+		int new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
+		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) stl_yyrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,(yy_size_t) new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
 	}
@@ -1471,15 +1533,15 @@ static int yy_get_next_buffer (void)
 
     static yy_state_type yy_get_previous_state (void)
 {
-	register yy_state_type yy_current_state;
-	register char *yy_cp;
+	yy_state_type yy_current_state;
+	char *yy_cp;
     
 	yy_current_state = (yy_start);
 	yy_current_state += YY_AT_BOL();
 
 	for ( yy_cp = (yytext_ptr) + YY_MORE_ADJ; yy_cp < (yy_c_buf_p); ++yy_cp )
 		{
-		register YY_CHAR yy_c = (*yy_cp ? yy_ec[YY_SC_TO_UI(*yy_cp)] : 1);
+		YY_CHAR yy_c = (*yy_cp ? yy_ec[YY_SC_TO_UI(*yy_cp)] : 1);
 		if ( yy_accept[yy_current_state] )
 			{
 			(yy_last_accepting_state) = yy_current_state;
@@ -1489,9 +1551,9 @@ static int yy_get_next_buffer (void)
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
 			if ( yy_current_state >= 142 )
-				yy_c = yy_meta[(unsigned int) yy_c];
+				yy_c = yy_meta[yy_c];
 			}
-		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 		}
 
 	return yy_current_state;
@@ -1504,10 +1566,10 @@ static int yy_get_next_buffer (void)
  */
     static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
 {
-	register int yy_is_jam;
-    	register char *yy_cp = (yy_c_buf_p);
+	int yy_is_jam;
+    	char *yy_cp = (yy_c_buf_p);
 
-	register YY_CHAR yy_c = 1;
+	YY_CHAR yy_c = 1;
 	if ( yy_accept[yy_current_state] )
 		{
 		(yy_last_accepting_state) = yy_current_state;
@@ -1517,13 +1579,17 @@ static int yy_get_next_buffer (void)
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
 		if ( yy_current_state >= 142 )
-			yy_c = yy_meta[(unsigned int) yy_c];
+			yy_c = yy_meta[yy_c];
 		}
-	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 	yy_is_jam = (yy_current_state == 141);
 
-	return yy_is_jam ? 0 : yy_current_state;
+		return yy_is_jam ? 0 : yy_current_state;
 }
+
+#ifndef YY_NO_UNPUT
+
+#endif
 
 #ifndef YY_NO_INPUT
 #ifdef __cplusplus
@@ -1549,7 +1615,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			int offset = (yy_c_buf_p) - (yytext_ptr);
+			int offset = (int) ((yy_c_buf_p) - (yytext_ptr));
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1573,7 +1639,7 @@ static int yy_get_next_buffer (void)
 				case EOB_ACT_END_OF_FILE:
 					{
 					if ( stl_yywrap( ) )
-						return EOF;
+						return 0;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;
@@ -1681,7 +1747,7 @@ static void stl_yy_load_buffer_state  (void)
 	/* yy_ch_buf has to be 2 characters longer than the size given because
 	 * we need to put in 2 end-of-buffer characters.
 	 */
-	b->yy_ch_buf = (char *) stl_yyalloc(b->yy_buf_size + 2  );
+	b->yy_ch_buf = (char *) stl_yyalloc((yy_size_t) (b->yy_buf_size + 2)  );
 	if ( ! b->yy_ch_buf )
 		YY_FATAL_ERROR( "out of dynamic memory in stl_yy_create_buffer()" );
 
@@ -1823,7 +1889,7 @@ void stl_yypop_buffer_state (void)
  */
 static void stl_yyensure_buffer_stack (void)
 {
-	int num_to_alloc;
+	yy_size_t num_to_alloc;
     
 	if (!(yy_buffer_stack)) {
 
@@ -1831,15 +1897,15 @@ static void stl_yyensure_buffer_stack (void)
 		 * scanner will even need a stack. We use 2 instead of 1 to avoid an
 		 * immediate realloc on the next call.
          */
-		num_to_alloc = 1;
+      num_to_alloc = 1; /* After all that talk, this was set to 1 anyways... */
 		(yy_buffer_stack) = (struct yy_buffer_state**)stl_yyalloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
 		if ( ! (yy_buffer_stack) )
 			YY_FATAL_ERROR( "out of dynamic memory in stl_yyensure_buffer_stack()" );
-								  
+
 		memset((yy_buffer_stack), 0, num_to_alloc * sizeof(struct yy_buffer_state*));
-				
+
 		(yy_buffer_stack_max) = num_to_alloc;
 		(yy_buffer_stack_top) = 0;
 		return;
@@ -1848,7 +1914,7 @@ static void stl_yyensure_buffer_stack (void)
 	if ((yy_buffer_stack_top) >= ((yy_buffer_stack_max)) - 1){
 
 		/* Increase the buffer to prepare for a possible push. */
-		int grow_size = 8 /* arbitrary grow size */;
+		yy_size_t grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = (yy_buffer_stack_max) + grow_size;
 		(yy_buffer_stack) = (struct yy_buffer_state**)stl_yyrealloc
@@ -1868,9 +1934,9 @@ static void stl_yyensure_buffer_stack (void)
 #define YY_EXIT_FAILURE 2
 #endif
 
-static void yy_fatal_error (yyconst char* msg )
+static void yynoreturn yy_fatal_error (const char* msg )
 {
-    	(void) fprintf( stderr, "%s\n", msg );
+			(void) fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
 
@@ -1898,7 +1964,7 @@ static void yy_fatal_error (yyconst char* msg )
  */
 int stl_yyget_lineno  (void)
 {
-        
+    
     return stl_yylineno;
 }
 
@@ -1936,29 +2002,29 @@ char *stl_yyget_text  (void)
 }
 
 /** Set the current line number.
- * @param line_number
+ * @param _line_number line number
  * 
  */
-void stl_yyset_lineno (int  line_number )
+void stl_yyset_lineno (int  _line_number )
 {
     
-    stl_yylineno = line_number;
+    stl_yylineno = _line_number;
 }
 
 /** Set the input stream. This does not discard the current
  * input buffer.
- * @param in_str A readable stream.
+ * @param _in_str A readable stream.
  * 
  * @see stl_yy_switch_to_buffer
  */
-void stl_yyset_in (FILE *  in_str )
+void stl_yyset_in (FILE *  _in_str )
 {
-        stl_yyin = in_str ;
+        stl_yyin = _in_str ;
 }
 
-void stl_yyset_out (FILE *  out_str )
+void stl_yyset_out (FILE *  _out_str )
 {
-        stl_yyout = out_str ;
+        stl_yyout = _out_str ;
 }
 
 int stl_yyget_debug  (void)
@@ -1966,9 +2032,9 @@ int stl_yyget_debug  (void)
         return stl_yy_flex_debug;
 }
 
-void stl_yyset_debug (int  bdebug )
+void stl_yyset_debug (int  _bdebug )
 {
-        stl_yy_flex_debug = bdebug ;
+        stl_yy_flex_debug = _bdebug ;
 }
 
 static int yy_init_globals (void)
@@ -1977,10 +2043,10 @@ static int yy_init_globals (void)
      * This function is called from stl_yylex_destroy(), so don't allocate here.
      */
 
-    (yy_buffer_stack) = 0;
+    (yy_buffer_stack) = NULL;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
-    (yy_c_buf_p) = (char *) 0;
+    (yy_c_buf_p) = NULL;
     (yy_init) = 0;
     (yy_start) = 0;
 
@@ -1989,8 +2055,8 @@ static int yy_init_globals (void)
     stl_yyin = stdin;
     stl_yyout = stdout;
 #else
-    stl_yyin = (FILE *) 0;
-    stl_yyout = (FILE *) 0;
+    stl_yyin = NULL;
+    stl_yyout = NULL;
 #endif
 
     /* For future reference: Set errno on error, since we are called by
@@ -2026,18 +2092,19 @@ int stl_yylex_destroy  (void)
  */
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy (char* s1, yyconst char * s2, int n )
+static void yy_flex_strncpy (char* s1, const char * s2, int n )
 {
-	register int i;
+		
+	int i;
 	for ( i = 0; i < n; ++i )
 		s1[i] = s2[i];
 }
 #endif
 
 #ifdef YY_NEED_STRLEN
-static int yy_flex_strlen (yyconst char * s )
+static int yy_flex_strlen (const char * s )
 {
-	register int n;
+	int n;
 	for ( n = 0; s[n]; ++n )
 		;
 
@@ -2047,11 +2114,12 @@ static int yy_flex_strlen (yyconst char * s )
 
 void *stl_yyalloc (yy_size_t  size )
 {
-	return (void *) malloc( size );
+			return malloc(size);
 }
 
 void *stl_yyrealloc  (void * ptr, yy_size_t  size )
 {
+		
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
 	 * that use void* generic pointers.  It works with the latter
@@ -2059,18 +2127,17 @@ void *stl_yyrealloc  (void * ptr, yy_size_t  size )
 	 * any pointer type to void*, and deal with argument conversions
 	 * as though doing an assignment.
 	 */
-	return (void *) realloc( (char *) ptr, size );
+	return realloc(ptr, size);
 }
 
 void stl_yyfree (void * ptr )
 {
-	free( (char *) ptr );	/* see stl_yyrealloc() for (char *) cast */
+			free( (char *) ptr );	/* see stl_yyrealloc() for (char *) cast */
 }
 
 #define YYTABLES_NAME "yytables"
 
-#line 257 "steel.l"
-
+#line 268 "steel.l"
 
 
 #ifndef FALSE
@@ -2228,7 +2295,7 @@ stl_reader_binary_facet(stl_reader * reader)
 
 static
 int
-stl_writer_put_binary_facet(stl_writer * writer, stl_facet * COIN_UNUSED_ARG(facet))
+stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
 {
   int writeok = 1;
   union {
@@ -2583,7 +2650,7 @@ stl_facet_get_vertex3(stl_facet * facet, stl_real * x, stl_real * y, stl_real * 
  */
 
 void
-stl_facet_set_padding(stl_facet * facet, unsigned int COIN_UNUSED_ARG(padding))
+stl_facet_set_padding(stl_facet * facet, unsigned int padding)
 {
   assert(facet != NULL);
 } /* stl_facet_set_padding() */

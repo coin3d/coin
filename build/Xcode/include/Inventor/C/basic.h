@@ -151,6 +151,24 @@ typedef int SbBool;
 #define M_INVLN2 1.4426950408889633870E0 /* 1 / log(2) */
 #endif /* !M_INVLN2 */
 
+/***************************************************************************
+ * COIN_UNIQUE_ID_UINT32
+ *
+ * Set this define for backwards compatibility where unique id is a 32 bit
+ * unsigned integer. To address integer overruns that result in changes not
+ * correctly being propagated in the scene, unique id type was changed to
+ * 64 bit.
+ *
+ * Default is to typedef SbUniqueId to uint64_t.
+ */
+
+/* Documented for Doxygen in SoNode.cpp. */
+#ifndef COIN_UNIQUE_ID_UINT32
+typedef uint64_t SbUniqueId;
+#else
+typedef uint32_t SbUniqueId;
+#endif /* COIN_UNIQUE_ID_UINT32 */
+
 /* *********************************************************************** */
 
 /* A unique identifier to recognize whether or not we're running under
