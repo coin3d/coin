@@ -177,6 +177,18 @@
   documentation of SoType::fromName().
 */
 
+/*!
+\class SbUniqueId SbBasic.h Inventor/SbBasic.h
+\brief SbUniqueId is an integer type for node identifiers.
+\ingroup base
+
+SbUniqueId is meant to be a "32/64 bit portable" way of defining an
+integer type that is used for storing unique node identifiers.
+
+SbUniqueId is not really a class, just a \c typedef.
+*/
+
+
 // *************************************************************************
 
 #include <Inventor/nodes/SoNode.h>
@@ -212,11 +224,11 @@
 // *************************************************************************
 
 /*!
-  \var uint32_t SoNode::uniqueId
+  \var SbUniqueId SoNode::uniqueId
   \COININTERNAL
 */
 /*!
-  \var uint32_t SoNode::nextUniqueId
+  \var SbUniqueId SoNode::nextUniqueId
   \COININTERNAL
 */
 /*!
@@ -286,7 +298,7 @@
 
 // *************************************************************************
 
-uint32_t SoNode::nextUniqueId = 1;
+SbUniqueId SoNode::nextUniqueId = 1;
 int SoNode::nextActionMethodIndex = 0;
 SoType SoNode::classTypeId STATIC_SOTYPE_INIT;
 static void * sonode_mutex = NULL;
@@ -1339,7 +1351,7 @@ SoNode::grabEventsCleanup(void)
 
   \sa SoNode::getNextNodeId()
 */
-uint32_t
+SbUniqueId
 SoNode::getNodeId(void) const
 {
   return this->uniqueId;
@@ -1457,7 +1469,7 @@ SoNode::copyThroughConnection(void) const
 
   \sa SoNode::getNodeId
 */
-uint32_t
+SbUniqueId
 SoNode::getNextNodeId(void)
 {
   return SoNode::nextUniqueId;

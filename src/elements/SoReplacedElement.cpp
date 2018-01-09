@@ -153,7 +153,7 @@ SoReplacedElement::getElement(SoState * const state, const int stackIndex,
   Returns the node identifier for the node that previously updated the
   SoReplacedElement.
 */
-uint32_t
+SbUniqueId
 SoReplacedElement::getNodeId(void) const
 {
   return this->nodeId;

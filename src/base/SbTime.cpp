@@ -64,6 +64,12 @@
 
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
+#  ifndef SIM_TIMEVAL_TV_SEC_T
+#    define SIM_TIMEVAL_TV_SEC_T long
+#  endif // !SIM_TIMEVAL_TV_SEC_T
+#  ifndef SIM_TIMEVAL_TV_USEC_T
+#    define SIM_TIMEVAL_TV_USEC_T long
+#  endif // !SIM_TIMEVAL_TV_USEC_T
 #endif // HAVE_WINDOWS_H
 
 #include <Inventor/errors/SoDebugError.h>
@@ -312,12 +318,6 @@ SbTime::getValue(time_t & sec, long & usec) const
 void
 SbTime::getValue(struct timeval * tv) const
 {
-  // FIXME: the below gives a warning with MSVC 7 on 64-bit Windows,
-  // as the struct timeval::tv_sec value seems to be of type long
-  // there. Ditto for the tv_usec value further below.
-  //
-  // I guess we need a configure check to find the correct type to
-  // cast to here, but investigate. 20050525 mortene.
   tv->tv_sec = static_cast<SIM_TIMEVAL_TV_SEC_T>(this->dtime);
   double us = fmod(this->dtime, 1.0) * 1000000.0;
   tv->tv_usec = static_cast<SIM_TIMEVAL_TV_USEC_T>(us + (us < 0.0 ? -0.5 : 0.5));
