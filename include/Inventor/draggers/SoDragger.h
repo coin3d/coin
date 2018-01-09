@@ -178,6 +178,8 @@ protected:
   // possible to construct draggers which can handle Motion3 events.
   void updateDraggerCache(const SoPath * path);
 
+  virtual const SoPickedPoint* getPickedPointForStart(SoHandleEventAction* action);
+
 private:
   void updateElements(class SoState * state);
   SbBool isPicked(SoPath * path);
