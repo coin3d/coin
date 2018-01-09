@@ -1603,6 +1603,23 @@ SoDragger::setCameraInfo(SoAction * action)
   PRIVATE(this)->viewvolume = SoViewVolumeElement::get(state);
 }
 
+/*!
+  Interaction with the dragger will be started, if the returned
+  picked point belongs to the dragger. A derived class can override
+  this method to change the condition when the dragger starts interaction,
+  e.g. it can return the picked point on the dragger from the 
+  picked point list of the action, even if it is covered by other
+  (semi) transparent objects.
+  The default implementation returns the foremost picked point
+  from the action.
+  This method is not present in Open Inventor.
+  */
+const SoPickedPoint*
+SoDragger::getPickedPointForStart(SoHandleEventAction* action)
+{
+	return action->getPickedPoint();
+}
+
 // Documented in superclass. Overridden to detect picks on dragger.
 void
 SoDragger::handleEvent(SoHandleEventAction * action)
@@ -1638,14 +1655,14 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   if (!this->isActive.getValue() &&
       (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) ||
        SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL))) {
-    const SoPickedPoint * pp = action->getPickedPoint();
+    const SoPickedPoint * pp = this->getPickedPointForStart(action);
     if (pp && this->isPicked(pp->getPath())) {
       this->eventHandled(event, action);
       PRIVATE(this)->otherEventCB.invokeCallbacks(this);
     }
   }
   else if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
-    const SoPickedPoint * pp = action->getPickedPoint();
+    const SoPickedPoint * pp = this->getPickedPointForStart(action);
 
     SbBool didpick = FALSE;
 
