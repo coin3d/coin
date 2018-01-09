@@ -2229,6 +2229,7 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
           kit = (SoBaseKit *)PRIVATE(orgkit)->instancelist[i]->getValue();
           SbBool didexist = kit != NULL;
           if (!didexist) {
+            if (!makeifneeded) continue;
             orgkit->makePart(i);
             kit = (SoBaseKit *)PRIVATE(orgkit)->instancelist[i]->getValue();
           }
