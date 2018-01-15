@@ -469,24 +469,33 @@ SoText2::GLRender(SoGLRenderAction * action)
             int memx = rasterx - bbmin[0];
             int memy = bbsize[1] - (bbmax[1] - rastery - 1) - 1;
 
-            assert(memx >= 0 && memx + bitmapsize[0] <= bbsize[0]);
-            assert(memy >= 0 && memy + bitmapsize[1] <= bbsize[1]);
+            if (memx >= 0 && memx + bitmapsize[0] <= bbsize[0] &&
+                memy >= 0 && memy + bitmapsize[1] <= bbsize[1]) {
 
-            unsigned char * dst = PRIVATE(this)->pixel_buffer + (memy * bbsize[0] + memx) * 4;
-            const unsigned char * src = buffer;
-            int nextlineoffset = (bbsize[0] - bitmapsize[0]) * 4;
+              unsigned char * dst = PRIVATE(this)->pixel_buffer + (memy * bbsize[0] + memx) * 4;
+              const unsigned char * src = buffer;
+              int nextlineoffset = (bbsize[0] - bitmapsize[0]) * 4;
 
-            // Ouch. This must lead to pretty slow rendering
-            for (int y = 0; y < iy; y++) {
-              for (int x = 0; x < ix; x++) {
-                *dst++ = red; *dst++ = green; *dst++ = blue;
-                // alpha from the gray level pixel value, blended with current value (because glyph bitmaps can overlap)
-                int srcval = *src;
-                int oldval = *dst;
-                *dst = ((oldval * (256 - srcval) + alpha * srcval) >> 8);
-                src++; dst++;
+              // Ouch. This must lead to pretty slow rendering
+              for (int y = 0; y < iy; y++) {
+                for (int x = 0; x < ix; x++) {
+                  *dst++ = red; *dst++ = green; *dst++ = blue;
+                  // alpha from the gray level pixel value, blended with current value (because glyph bitmaps can overlap)
+                  int srcval = *src;
+                  int oldval = *dst;
+                  *dst = ((oldval * (256 - srcval) + alpha * srcval) >> 8);
+                  src++; dst++;
+                }
+                dst += nextlineoffset;
               }
-              dst += nextlineoffset;
+            } else {
+              static SbBool once = TRUE;
+              if (once) {
+                SoDebugError::post("SoText2::GLRender",
+                	               "Unable to copy glyph to memory buffer. Position [%d,%d], size [%d,%d], buffer size [%d,%d]",
+                	               memx, memy, bitmapsize[0], bitmapsize[1], bbsize[0], bbsize[1]);
+                once = FALSE;
+              }
             }
           }
         }
