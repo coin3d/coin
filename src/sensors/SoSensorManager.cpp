@@ -454,8 +454,25 @@ SoSensorManager::processTimerQueue(void)
                          "start: %d elements", PRIVATE(this)->timerqueue.getLength());
 #endif // debug
 
+  // Make sure that the PRIVATE(this)->processingtimerqueue
+  // is reset even when the function is left after an unhandled exception
+  // from the sensor's callback function.
+  class FlagReset {
+  public:
+  	FlagReset(SbBool& flag) : myflag(flag) {}
+    ~FlagReset() {
+      if (this->myflag) {
+        SoDebugError::post("SoSensorManager::processTimerQueue",
+                           "Unexpected function exit. Unhandled Exception?");
+        this->myflag = FALSE;
+      }
+    }
+    SbBool& myflag;
+  };
+
   assert(PRIVATE(this)->reschedulelist.getLength() == 0);
   PRIVATE(this)->processingtimerqueue = TRUE;
+  FlagReset fr(PRIVATE(this)->processingtimerqueue);
 
   LOCK_TIMER_QUEUE(this);
 
@@ -535,7 +552,24 @@ SoSensorManager::processDelayQueue(SbBool isidle)
                          "start: %d elements", PRIVATE(this)->delayqueue.getLength());
 #endif // debug
 
+  // Make sure that the PRIVATE(this)->processingdelayqueue
+  // is reset even when the function is left after an unhandled exception
+  // from the sensor's callback function.
+  class FlagReset {
+  public:
+  	FlagReset(SbBool& flag) : myflag(flag) {}
+    ~FlagReset() {
+      if (this->myflag) {
+        SoDebugError::post("SoSensorManager::processDelayQueue",
+                           "Unexpected function exit. Unhandled Exception?");
+        this->myflag = FALSE;
+      }
+    }
+    SbBool& myflag;
+  };
+
   PRIVATE(this)->processingdelayqueue = TRUE;
+  FlagReset fr(PRIVATE(this)->processingdelayqueue);
 
   // triggerdict is used to store sensors that has already been
   // triggered. A sensor should only be triggered once during a call
@@ -626,7 +660,24 @@ SoSensorManager::processImmediateQueue(void)
                          PRIVATE(this)->immediatequeue.getLength());
 #endif // debug
 
+  // Make sure that the PRIVATE(this)->processingimmediatequeue
+  // is reset even when the function is left after an unhandled exception
+  // from the sensor's callback function.
+  class FlagReset {
+  public:
+  	FlagReset(SbBool& flag) : myflag(flag) {}
+    ~FlagReset() {
+      if (this->myflag) {
+        SoDebugError::post("SoSensorManager::processImmediateQueue",
+                           "Unexpected function exit. Unhandled Exception?");
+        this->myflag = FALSE;
+      }
+    }
+    SbBool& myflag;
+  };
+
   PRIVATE(this)->processingimmediatequeue = TRUE;
+  FlagReset fr(PRIVATE(this)->processingimmediatequeue);
 
   // FIXME: implement some better logic to break out of the
   // processing loop. Right now we break out if more than 10000
