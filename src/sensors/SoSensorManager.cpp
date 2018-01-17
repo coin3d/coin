@@ -459,7 +459,7 @@ SoSensorManager::processTimerQueue(void)
   // from the sensor's callback function.
   class FlagReset {
   public:
-  	FlagReset(SbBool& flag) : myflag(flag) {}
+    FlagReset(SbBool& flag) : myflag(flag) {}
     ~FlagReset() {
       if (this->myflag) {
         SoDebugError::post("SoSensorManager::processTimerQueue",
@@ -557,7 +557,7 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // from the sensor's callback function.
   class FlagReset {
   public:
-  	FlagReset(SbBool& flag) : myflag(flag) {}
+    FlagReset(SbBool& flag) : myflag(flag) {}
     ~FlagReset() {
       if (this->myflag) {
         SoDebugError::post("SoSensorManager::processDelayQueue",
@@ -665,7 +665,7 @@ SoSensorManager::processImmediateQueue(void)
   // from the sensor's callback function.
   class FlagReset {
   public:
-  	FlagReset(SbBool& flag) : myflag(flag) {}
+    FlagReset(SbBool& flag) : myflag(flag) {}
     ~FlagReset() {
       if (this->myflag) {
         SoDebugError::post("SoSensorManager::processImmediateQueue",
