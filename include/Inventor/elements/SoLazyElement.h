@@ -227,8 +227,8 @@ protected:
     const int32_t * colorindexarray;
     int32_t transptype;
     SbBool istransparent;
-    uint32_t diffusenodeid;
-    uint32_t transpnodeid;
+    SbUniqueId diffusenodeid;
+    SbUniqueId transpnodeid;
     int32_t stipplenum;
     VertexOrdering vertexordering;
     SbBool twoside;
@@ -288,13 +288,13 @@ public:
   uint32_t * getPackedColors(void) const {
     return this->array;
   }
-  SbBool diffuseMatch(const uint32_t nodeid) const {
+  SbBool diffuseMatch(const SbUniqueId nodeid) const {
     return nodeid == this->diffuseid;
   }
-  SbBool transpMatch(const uint32_t nodeid) const {
+  SbBool transpMatch(const SbUniqueId nodeid) const {
     return nodeid == this->transpid;
   }
-  void setNodeIds(const uint32_t diffuse, const uint32_t transp) {
+  void setNodeIds(const SbUniqueId diffuse, const SbUniqueId transp) {
     this->diffuseid = diffuse;
     this->transpid = transp;
   }
@@ -303,15 +303,15 @@ public:
   }
   void reallocate(const int32_t size);
 
-  uint32_t getDiffuseId(void) const {
+  SbUniqueId getDiffuseId(void) const {
     return this->diffuseid;
   }
-  uint32_t getTranspId(void) const {
+  SbUniqueId getTranspId(void) const {
     return this->transpid;
   }
 private:
-  uint32_t transpid;
-  uint32_t diffuseid;
+  SbUniqueId transpid;
+  SbUniqueId diffuseid;
   uint32_t * array;
   int32_t arraysize;
 };

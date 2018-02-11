@@ -1232,12 +1232,12 @@ void
 SoGLLazyElement::updateColorVBO(SoVBO * vbo)
 {
   if (this->colorpacker) {
-    uint32_t maxid = this->colorpacker->getDiffuseId();
-    uint32_t tid = this->colorpacker->getTranspId();
+    SbUniqueId maxid = this->colorpacker->getDiffuseId();
+    SbUniqueId tid = this->colorpacker->getTranspId();
     if (tid > maxid) {
       maxid = tid;
     }
-    uint32_t vboid = vbo->getBufferDataId();
+    SbUniqueId vboid = vbo->getBufferDataId();
     if (vboid != maxid) {
       const int n = this->coinstate.numdiffuse;
       // need to update the VBO
