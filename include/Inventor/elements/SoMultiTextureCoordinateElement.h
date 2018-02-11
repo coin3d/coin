@@ -108,7 +108,7 @@ public:
     UnitData();
     UnitData(const UnitData & org);
 
-    uint32_t nodeid;
+    SbUniqueId nodeid;
     CoordType whatKind;
     SoTextureCoordinateFunctionCB * funcCB;
     void * funcCBData;

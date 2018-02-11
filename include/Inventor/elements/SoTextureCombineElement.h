@@ -109,7 +109,7 @@ public:
   SoElement * copyMatchInfo(void) const;
 
   virtual void setElt(const int unit,
-                      const uint32_t nodeid,
+                      const SbUniqueId nodeid,
                       const Operation rgboperation,
                       const Operation alphaoperation,
                       const Source * rgbsource,
@@ -127,7 +127,7 @@ public:
     UnitData();
     UnitData(const UnitData & org);
 
-    uint32_t nodeid;
+    SbUniqueId nodeid;
     Source rgbsource[3];
     Source alphasource[3];
     Operand rgboperand[3];
