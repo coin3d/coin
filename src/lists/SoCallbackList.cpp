@@ -40,7 +40,7 @@
   method for triggering the callback functions.
 */
 
-/*! \file SoCallbackList.h */
+/*! \file Inventor/lists/SoCallbackList.h */
 #include <Inventor/lists/SoCallbackList.h>
 
 #if COIN_DEBUG

@@ -449,7 +449,7 @@ SoText2::GLRender(SoGLRenderAction * action)
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           } 
           else {
-            if (!didenableblend) { 
+            if (!didenableblend) {
               glEnable(GL_BLEND);
               glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
               didenableblend = TRUE;

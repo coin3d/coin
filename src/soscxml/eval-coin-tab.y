@@ -34,7 +34,7 @@
 /*
  * Generate the compilable source files this way:
  *
- * bison eval-minimum-tab.y
+ * bison eval-coin-tab.y
  */
 
 #ifdef HAVE_CONFIG_H

@@ -133,7 +133,7 @@ public:
   SoElement * copyMatchInfo(void) const;
 
   virtual void setElt(const int unit,
-                      const uint32_t nodeid,
+                      const SbUniqueId nodeid,
                       const SbVec2s & size, const int numComponents,
                       const unsigned char * bytes,
                       const Wrap wrapS, 
@@ -141,7 +141,7 @@ public:
                       const Model model, 
                       const SbColor & blendColor);
   virtual void setElt(const int unit,
-                      const uint32_t nodeid,
+                      const SbUniqueId nodeid,
                       const SbVec3s & size, const int numComponents,
                       const unsigned char * bytes,
                       const Wrap wrapS, 
@@ -156,7 +156,7 @@ public:
   public:
     UnitData();
     UnitData(const UnitData & org);
-    uint32_t nodeid;
+    SbUniqueId nodeid;
     SbVec3s size;
     int numComponents;
     const unsigned char * bytes;

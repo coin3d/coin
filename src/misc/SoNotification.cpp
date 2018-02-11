@@ -187,7 +187,7 @@ SoNotList::getLastEngineOutput(void) const
 /*!
   Returns the time stamp when the notification started.
 */
-uint32_t
+SbUniqueId
 SoNotList::getTimeStamp(void) const
 {
   return this->stamp;

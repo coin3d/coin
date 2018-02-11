@@ -107,7 +107,7 @@ SoGLViewingMatrixElement::pop(SoState * stateptr,
   SoGLModelMatrixElement to detect a change in the viewing matrix
   inside an SoTransformSeparator node.
 */
-uint32_t
+SbUniqueId
 SoGLViewingMatrixElement::getNodeId(SoState * const state)
 {
   const SoReplacedElement *elem = (const SoReplacedElement*)
