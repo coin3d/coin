@@ -85,3 +85,11 @@ if(@simage_FOUND@)
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/CoinExport.cmake")
+
+# export "coin-config --have-feature" equivalent info
+set(Coin_HAVE_3DS_IMPORT_CAPABILITIES @FEAT_HAVE_3DS@)
+set(Coin_HAVE_VRML97 @FEAT_HAVE_VRML97@)
+set(Coin_HAVE_SOUND @FEAT_HAVE_SOUND@)
+set(Coin_HAVE_SUPERGLU @FEAT_HAVE_SUPERGLU@)
+set(Coin_HAVE_THREADS @FEAT_HAVE_THREADS@)
+set(Coin_HAVE_SAFETHREAD @FEAT_HAVE_SAFETHREAD@)

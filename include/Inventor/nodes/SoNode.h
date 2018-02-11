@@ -116,7 +116,7 @@ public:
   virtual void startNotify(void);
   virtual void notify(SoNotList * l);
 
-  uint32_t getNodeId(void) const;
+  SbUniqueId getNodeId(void) const;
   virtual SoChildList * getChildren(void) const;
 
   virtual void writeInstance(SoOutput * out);
@@ -133,7 +133,7 @@ public:
   static void initClass(void);
   static void initClasses(void);
 
-  static uint32_t getNextNodeId(void);
+  static SbUniqueId getNextNodeId(void);
   static int getActionMethodIndex(const SoType type);
 
   static void getBoundingBoxS(SoAction * action, SoNode * node);
@@ -166,8 +166,8 @@ protected:
 
   static void setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask);
 
-  uint32_t uniqueId;
-  static uint32_t nextUniqueId;
+  SbUniqueId uniqueId;
+  static SbUniqueId nextUniqueId;
   static int nextActionMethodIndex;
 
 private:
