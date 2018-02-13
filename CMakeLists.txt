@@ -6,7 +6,59 @@ set (COIN_MICRO_VERSION 0)
 set (COIN_BETA_VERSION "a")
 set (COIN_VERSION "${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}${COIN_BETA_VERSION}")
 
+# option controlled helper for cmake variable dumping during config
+function(dump_variable)
+  if (COIN_VERBOSE)
+    foreach(f ${ARGN})
+      message("${f} = ${${f}}")
+    endforeach()
+  endif(COIN_VERBOSE)
+endfunction(dump_variable)
+
+# modifies the install directory passed by postfix, either substituting 'Coin' 
+# with 'Coin${COIN_MAJOR_VERSION}' or adding the same versioned name after the 
+# postfix part.
+#
+# Example: 
+# versionize(INCLUDEDIR DOCDIR) will modify
+#
+# CMAKE_INSTALL_DOCDIR          'share/doc/Coin'          --> 'share/doc/Coin4'
+# CMAKE_INSTALL_FULL_DOCDIR     '<prefix>/share/doc/Coin' --> '<prefix>/share/doc/Coin4'
+#
+# CMAKE_INSTALL_INCLUDEDIR      'include'          --> 'include/Coin4'
+# CMAKE_INSTALL_FULL_INCLUDEDIR '<prefix>/include' --> '<prefix>/include/Coin4'
+function(versionize)
+  foreach(dir ${ARGN})
+    set(name      "CMAKE_INSTALL_${dir}")
+    set(full-name "CMAKE_INSTALL_FULL_${dir}")
+    if(${name} MATCHES ${PROJECT_NAME})
+      string(REPLACE "${PROJECT_NAME}" "${PROJECT_NAME}${COIN_MAJOR_VERSION}" value      "${${name}}")
+      string(REPLACE "${PROJECT_NAME}" "${PROJECT_NAME}${COIN_MAJOR_VERSION}" full-value "${${full-name}}")
+    else()
+      set(value      "${${name}}/${PROJECT_NAME}${COIN_MAJOR_VERSION}")
+      set(full-value "${CMAKE_INSTALL_PREFIX}/${value}")
+    endif()
+    set(${name}      ${value}      PARENT_SCOPE)
+    set(${full-name} ${full-value} PARENT_SCOPE)
+  endforeach()
+endfunction()
+
+option(COIN_VERBOSE          "Add verbose debugging information during the configure process")
+option(COIN_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise.")
+
 include(GNUInstallDirs)
+
+if (COIN_MULTIPLE_VERSION)
+  # modifies the installation path for both the distributed includes and docs
+  versionize(INCLUDEDIR DOCDIR)
+endif (COIN_MULTIPLE_VERSION)
+
+dump_variable(
+CMAKE_INSTALL_INCLUDEDIR
+CMAKE_INSTALL_FULL_INCLUDEDIR
+CMAKE_INSTALL_DOCDIR
+CMAKE_INSTALL_FULL_DOCDIR
+)
 
 option(COIN_BUILD_SHARED_LIBS "Build shared library when ON, static when OFF." ON)
 if(WIN32)
