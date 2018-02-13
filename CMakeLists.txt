@@ -45,6 +45,7 @@ endfunction()
 
 option(COIN_VERBOSE          "Add verbose debugging information during the configure process")
 option(COIN_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise.")
+option(COIN_QT_HELP          "Generate QTHelp Documentation files")
 
 include(GNUInstallDirs)
 
