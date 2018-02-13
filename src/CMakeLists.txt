@@ -199,7 +199,7 @@ write_basic_package_version_file(
   COMPATIBILITY SameMajorVersion
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION})
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION} COMPONENT development)
 install(EXPORT Coin
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION}
         NAMESPACE Coin::
