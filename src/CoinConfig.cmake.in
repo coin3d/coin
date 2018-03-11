@@ -10,9 +10,14 @@ cmake_minimum_required(VERSION 2.8.12)
 set(COIN_VERSION @COIN_MAJOR_VERSION@.@COIN_MINOR_VERSION@.@COIN_MICRO_VERSION@)
 @PACKAGE_INIT@
 
-set_and_check(COINDIR "@PACKAGE_COINDIR@")
+set_and_check(COINDIR          "@PACKAGE_COINDIR@")
 set_and_check(Coin_INCLUDE_DIR "@PACKAGE_COIN_INCLUDE_DIR@")
-set_and_check(Coin_LIB_DIR "@PACKAGE_COIN_LIB_DIR@")
+set_and_check(Coin_LIB_DIR     "@PACKAGE_COIN_LIB_DIR@")
+
+# optional directory from documentation component
+if (EXISTS "@PACKAGE_COIN_DOC_DIR@/")
+  set(Coin_DOC_DIR     "@PACKAGE_COIN_DOC_DIR@")
+endif()
 
 set(COIN_NAME @CMAKE_PROJECT_NAME@)
 
@@ -93,3 +98,4 @@ set(Coin_HAVE_SOUND @FEAT_HAVE_SOUND@)
 set(Coin_HAVE_SUPERGLU @FEAT_HAVE_SUPERGLU@)
 set(Coin_HAVE_THREADS @FEAT_HAVE_THREADS@)
 set(Coin_HAVE_SAFETHREAD @FEAT_HAVE_SAFETHREAD@)
+

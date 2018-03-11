@@ -186,13 +186,20 @@ if(MSVC)
 endif()
 
 # Support find_package(Coin NO_MODULE).
+dump_variable(
+CMAKE_INSTALL_DOCDIR
+CMAKE_INSTALL_INCLUDEDIR
+CMAKE_INSTALL_LIBDIR
+CMAKE_INSTALL_PREFIX
+)
+set(COIN_DOC_DIR ${CMAKE_INSTALL_DOCDIR})
 set(COIN_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
 include(CMakePackageConfigHelpers)
 configure_package_config_file(CoinConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake
                               INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION}
-                              PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR)
+                              PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR COIN_DOC_DIR)
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake"
   VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}
