@@ -104,7 +104,7 @@ lazyelement_cleanup(void)
 } // extern "C"
 
 // helper functions to handle default diffuse/transp values
-static uint32_t
+static SbUniqueId
 get_diffuse_node_id(SoNode * node, const int numdiffuse,
                     const SbColor * color)
 {
@@ -112,7 +112,7 @@ get_diffuse_node_id(SoNode * node, const int numdiffuse,
   return node->getNodeId();
 }
 
-static uint32_t
+static SbUniqueId
 get_transp_node_id(SoNode * node, const int numtransp,
                    const float * transp)
 {

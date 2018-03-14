@@ -116,7 +116,7 @@ expression    : expression ';' subexpression
               | subexpression { root_node = $1; $$ = $1; }
               ;
 
-subexpression : { $$ = NULL }
+subexpression : { $$ = NULL; }
               | fltlhs '=' fltstatement { $$ = so_eval_create_binary(ID_ASSIGN_FLT, $1, $3); }
               | veclhs '=' vecstatement { $$ = so_eval_create_binary(ID_ASSIGN_VEC, $1, $3); }
               ;

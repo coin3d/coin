@@ -94,8 +94,8 @@ public:
     int32_t flatshading;
     int32_t alphatestfunc;
     float alphatestvalue;
-    uint32_t diffusenodeid;
-    uint32_t transpnodeid;
+    SbUniqueId diffusenodeid;
+    SbUniqueId transpnodeid;
     uint32_t reserved[4];
   } GLState;
 

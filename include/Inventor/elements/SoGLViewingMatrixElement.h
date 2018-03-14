@@ -51,7 +51,7 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  static uint32_t getNodeId(SoState * const state);
+  static SbUniqueId getNodeId(SoState * const state);
   static SbMatrix getResetMatrix(SoState * state);
 
 protected:
