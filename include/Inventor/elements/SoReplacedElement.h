@@ -51,7 +51,7 @@ public:
 
   virtual SoElement * copyMatchInfo() const;
 
-  uint32_t getNodeId() const;
+  SbUniqueId getNodeId() const;
 
   virtual void print(FILE * file) const;
 
@@ -59,7 +59,7 @@ protected:
   static  SoElement * getElement(SoState * const state,
                                  const int stackIndex, SoNode * const node);
 
-  uint32_t nodeId;
+  SbUniqueId nodeId;
 };
 
 #endif // !COIN_SOREPLACEDELEMENT_H

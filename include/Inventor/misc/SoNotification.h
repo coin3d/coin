@@ -54,7 +54,7 @@ public:
   SoNotRec * getFirstRecAtNode(void) const;
   SoField * getLastField(void) const;
   SoEngineOutput * getLastEngineOutput(void) const;
-  uint32_t getTimeStamp(void) const;
+  SbUniqueId getTimeStamp(void) const;
 
   void print(FILE * const file = stdout) const;
 
@@ -64,7 +64,7 @@ private:
   SoNotRec * firstnoderec;
   SoField * lastfield;
   SoEngineOutput * lastengine;
-  uint32_t stamp;
+  SbUniqueId stamp;
 };
 
 #endif // !COIN_SONOTIFICATION_H

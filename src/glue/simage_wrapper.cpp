@@ -279,7 +279,7 @@ simage_wrapper(void)
 #ifdef SIMAGE_RUNTIME_LINKING
     {
       int idx;
-      char * simage_dll_name = "simage1";
+      const char * simage_dll_name = "simage1";
 
 #ifdef COIN_SYSTEM_LIBRARY_NAME
       {
