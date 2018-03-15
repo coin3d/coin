@@ -1,4 +1,4 @@
-# This is a sample build configuration for C++ â€“ Make.
+# This is a sample build configuration for C++ – Make.
 # Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
 # Only use spaces to indent your .yml configuration.
 # -----
@@ -10,10 +10,5 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - echo "This script runs on all branches that don't have any specific pipeline assigned in 'branches'."
-  branches:
-    master:
-      - step:
-          script:
-            - cmake .
-            - make
+          - cmake .
+          - make
