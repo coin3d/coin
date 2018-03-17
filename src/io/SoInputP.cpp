@@ -131,14 +131,19 @@ SoInputP::getTopOfStackPopOnEOF(void)
 //  brackets [], single ' or double " quotes, sharp #, backslash
 //  \\ plus +, period . or ampersand &.
 //
-//  In addition to this, we found ',' to be an invalid character in
-//  VRML 1.0 names. This was made apparent when reading the following
-//  fields on an unknown node:
+//  In addition to this, we found ',', '(', ')' and '|' to be
+//  invalid characters in VRML 1.0 names. This was made apparent 
+//  when reading the following fields on an unknown node and
+//  bit masks:
 //
 //   fields [SFString test, SFFloat length]
 //
+//   FontStyle { family SANS style (BOLD|ITALIC) size 10 }
+//
 //  If ',' is to be a valid character in a name, then the name
-//  of the first field would become 'test,', and not just 'test'
+//  of the first field would become 'test,', and not just 'test'.
+//  Likewise, the name of the first bit in the bitmask would
+//  become 'BOLD|ITALIC)' instead of just 'BOLD'.
 //
 // The grammar for VRML2 identifiers is:
 //
@@ -149,12 +154,12 @@ SoInputP::getTopOfStackPopOnEOF(void)
 //  Id ::= IdFirstChar | IdFirstChar IdRestChars ;
 //
 //  IdFirstChar ::= Any ISO-10646 character encoded using UTF-8
-//  except: 0x30-0x39, 0x0-0x20, 0x22, 0x23, 0x27, 0x2b, 0x2c,
-//  0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f ;
+//  except: 0x30-0x39, 0x0-0x20, 0x22, 0x23, 0x27, 0x28, 0x29, 0x2b,
+//  0x2c, 0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x7f ;
 //
 //  IdRestChars ::= Any number of ISO-10646 characters except:
-//  0x0-0x20, 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d,
-//  0x7b, 0x7d, 0x7f ;
+//  0x0-0x20, 0x22, 0x23, 0x27, 0x28, 0x29, 0x2c, 0x2e, 0x5b,
+//  0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x7f ;
 
 SbBool
 SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
@@ -172,13 +177,13 @@ SoInputP::isNameStartCharVRML1(unsigned char c, SbBool validIdent)
   static int isNameStartCharVRML1Initialized = FALSE;
   if (!isNameStartCharVRML1Initialized) {
     const unsigned char invalid_vrml1[] = {
-      0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2e, 0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-    //'"',  '#',  ''',  '+',  ',',  '.',  '\',  '{',  '}'
+      0x22, 0x23, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2e, 0x5c, 0x7b, 0x7c, 0x7d, 0x00 }; // 0x7d = 125
+    //'"',  '#',  ''',  '(',  ')',  '+',  ',',  '.',  '\',  '{',  '|',  '}'
 
     // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
     const unsigned char valid_ident_invalid_vrml1[] = {
-      0x22, 0x23, 0x26, 0x27, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-    //'"',  '#',   '&', ''',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '}'
+      0x22, 0x23, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x00 }; // 0x7d = 125
+    //'"',  '#',   '&', ''',  '(',  ')',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '|',  '}'
 
     for (int c = 0; c < 256; ++c) {
       invalid_vrml1_table[c] = 0;
@@ -209,8 +214,8 @@ SoInputP::isNameStartCharVRML2(unsigned char c, SbBool validIdent)
   static int isNameStartCharVRML2Initialized = FALSE;
   if (!isNameStartCharVRML2Initialized) {
     const unsigned char invalid_vrml2[] = {
-      0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
-    //'"',  '#',  ''',  '+',  ',',  '-',  '.',  '[',  '\',  ']',  '{',  '}',  ''
+      0x22, 0x23, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+    //'"',  '#',  ''',  '(',  ')',  '+',  ',',  '-',  '.',  '[',  '\',  ']',  '{',  ,'|',  '}',  ''
 
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
@@ -267,13 +272,13 @@ SoInputP::isNameCharVRML1(unsigned char c, SbBool validIdent)
   static int isNameCharVRML1Initialized = FALSE;
   if (!isNameCharVRML1Initialized) {
     const unsigned char invalid_vrml1[] = {
-      0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2e, 0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-    //'"',  '#',  ''',  '+',  ',',  '.',  '\',  '{',  '}'
+      0x22, 0x23, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2e, 0x5c, 0x7b, 0x7c, 0x7d, 0x00 }; // 0x7d = 125
+    //'"',  '#',  ''',  '(',  ')',  '+',  ',',  '.',  '\',  '{',  ,'|',  '}'
 
     // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
     const unsigned char valid_ident_invalid_vrml1[] = {
-      0x22, 0x23, 0x26, 0x27, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-    //'"',  '#',   '&', ''',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '}'
+      0x22, 0x23, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x00 }; // 0x7d = 125
+    //'"',  '#',   '&', ''',  '(',  ')',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  ,'|',  '}'
 
     for (int c = 0; c < 256; ++c) {
       invalid_vrml1_table[c] = 0;
@@ -304,8 +309,8 @@ SoInputP::isNameCharVRML2(unsigned char c, SbBool validIdent)
   if (!isNameCharVRML2Initialized) {
     // Compared to isIdentStartChar, '+' and '-' have now become valid characters.
     const unsigned char invalid_vrml2[] = {
-      0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
-    //'"',  '#',  ''',  ',',  '.',  '[',  '\',  ']',  '{',  '}',  ''
+      0x22, 0x23, 0x27, 0x28, 0x29, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+    //'"',  '#',  ''',  '(',  ')',  ',',  '.',  '[',  '\',  ']',  '{',  ,'|',  '}',  ''
 
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
