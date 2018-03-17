@@ -12,3 +12,9 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - cmake .
           - make
+  branches:
+    issue*:
+      - step:
+          script:
+            - cmake .
+            - make
