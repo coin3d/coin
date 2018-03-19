@@ -71,7 +71,7 @@ void test_all_files(const std::string & search_directory,
                     std::vector<std::string> & suffixes,
                     test_files_CB * testFunction);
 bool testCorrectFile(SoNode * root, const std::string & filename);
-bool testInCorrectFile(SoNode * root, const std::string & filename);
+bool testIncorrectFile(SoNode * root, const std::string & filename);
 bool testOutOfSpecFile(SoNode * root, const std::string & filename);
 
 } } } } // namespace
