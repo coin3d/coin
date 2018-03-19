@@ -437,7 +437,7 @@ TestSuite::testCorrectFile(SoNode * root, const std::string & filename) {
 }
 
 bool
-TestSuite::testInCorrectFile(SoNode * root, const std::string & filename) {
+TestSuite::testIncorrectFile(SoNode * root, const std::string & filename) {
     BOOST_CHECK_MESSAGE(root == NULL, (std::string("Managed to read an incorrect file ") + filename).c_str());
     return root != NULL;
 }

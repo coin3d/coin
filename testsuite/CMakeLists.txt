@@ -56,7 +56,7 @@ if(COIN_BUILD_TESTS)
     # - "slackers" with testOutOfSpecFile
     # However, those folders are not in the repository.
     create_file_test("models" "testCorrectFile" "incorrect")
-    create_file_test("models/io/incorrect" "testInCorrectFile")
+    create_file_test("models/io/incorrect" "testIncorrectFile")
 
     # Include all extracted '*Tests.cpp' files in the target.
     FILE(GLOB TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")

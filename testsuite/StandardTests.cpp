@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(loadCorrectfiles)
 
 BOOST_AUTO_TEST_CASE(loadIncorrectfiles)
 {
-  TestSuite::test_all_files("killers",standardSuffixes,&TestSuite::testInCorrectFile);
+  TestSuite::test_all_files("killers",standardSuffixes,&TestSuite::testIncorrectFile);
 }
 
 BOOST_AUTO_TEST_CASE(loadOutOfSpecFilesWhichWeAccept)
