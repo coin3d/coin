@@ -1,25 +1,25 @@
 
 macro(create_testsuite input)
-	get_filename_component(FLNAME "${input}" NAME_WE)
-	get_filename_component(FLPATH "${input}" PATH)
+    get_filename_component(FLNAME "${input}" NAME_WE)
+    get_filename_component(FLPATH "${input}" PATH)
     string(REGEX REPLACE ".*[/\\]" "" FLSUBFLD "${FLPATH}")
     set(COIN_STR_TEST_CLASS "${FLNAME}")
-	file(READ ${CMAKE_SOURCE_DIR}/${input} f0)
+    file(READ ${CMAKE_SOURCE_DIR}/${input} f0)
     if(f0 MATCHES "#ifdef[ \t]+COIN_TEST_SUITE")
-	    # message(STATUS "Parse: ${CMAKE_SOURCE_DIR}/${input} - ${FLPATHSUB}${FLNAME}Test.cpp")
+        # message(STATUS "Parse: ${CMAKE_SOURCE_DIR}/${input} - ${FLPATHSUB}${FLNAME}Test.cpp")
         # get first include from file, which we assume is include to tested class
-  	    string(REGEX MATCH "[\n\r]+#include[ \t]<[^\n]+" iclass "${f0}")
+        string(REGEX MATCH "[\n\r]+#include[ \t]<[^\n]+" iclass "${f0}")
         # get block between '#ifdef COIN_TEST_SUITE' and '#endif'
-	    string(REGEX REPLACE ".*#ifdef[ \t]+COIN_TEST_SUITE" "" f1 "${f0}")
-	    string(REGEX REPLACE "#endif[ \t/!]+COIN_TEST_SUITE.*" "" f2 "${f1}")
+        string(REGEX REPLACE ".*#ifdef[ \t]+COIN_TEST_SUITE" "" f1 "${f0}")
+        string(REGEX REPLACE "#endif[ \t/!]+COIN_TEST_SUITE.*" "" f2 "${f1}")
         # get all #include statements within COIN_TEST_SUITE code block
-  	    string(REGEX MATCHALL "#include[ \t]<[^\n]+" i0 "${f2}")
-	    string(REPLACE ";" "\n" COIN_STR_TEST_INCL "${i0}")
+        string(REGEX MATCHALL "#include[ \t]<[^\n]+" i0 "${f2}")
+        string(REPLACE ";" "\n" COIN_STR_TEST_INCL "${i0}")
         set(COIN_STR_TEST_INCL "${iclass}\n${COIN_STR_TEST_INCL}")
         # remove #inlcude statements from test code string (moved to ${COIN_STR_TEST_INCL})
-	    string(REGEX REPLACE "[\n\r ]*#include[ \t]<[^\n]+" "" COIN_STR_TEST_CODE "${f2}")
+        string(REGEX REPLACE "[\n\r ]*#include[ \t]<[^\n]+" "" COIN_STR_TEST_CODE "${f2}")
         # generate new test code file with extacted snippets
-	    configure_file(TestSuiteTemplate.cmake.in "${FLSUBFLD}${FLNAME}Test.cpp")
+        configure_file(TestSuiteTemplate.cmake.in "${FLSUBFLD}${FLNAME}Test.cpp")
     endif()
 endmacro()
 
@@ -59,3 +59,10 @@ include_directories(../include/Inventor/annex)
 include_directories(${CMAKE_BINARY_DIR}/include)
 add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${TEST_SOURCES})
 target_link_libraries(CoinTests Coin)
+
+# Many warnings are generated from test macros on macOS with Xcode.
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
+if(DISABLE_WARNING_TAUTOLOGCOMPARE)
+    target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
+endif()
