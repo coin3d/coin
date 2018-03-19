@@ -40,35 +40,38 @@ macro(create_file_test input testfunc)
     configure_file(TestSuiteTemplate.cmake.in "${TESTSUITENAME}Test.cpp")
 endmacro()
 
+option(COIN_BUILD_TESTS "Build unit tests when ON, skips them when OFF." ON)
 
-# Parse all source files for embedded '#ifdef COIN_TEST_SUITE' and extract those blocks
-# to spearate test source files.
-file(GLOB_RECURSE COIN_SRC_FILES RELATIVE ${CMAKE_SOURCE_DIR} ../src/*.cpp)
-foreach(INPUTFILE ${COIN_SRC_FILES})
-    create_testsuite(${INPUTFILE})
-endforeach(INPUTFILE)
+if(COIN_BUILD_TESTS)
+    # Parse all source files for embedded '#ifdef COIN_TEST_SUITE' and extract those blocks
+    # to spearate test source files.
+    file(GLOB_RECURSE COIN_SRC_FILES RELATIVE ${CMAKE_SOURCE_DIR} ../src/*.cpp)
+    foreach(INPUTFILE ${COIN_SRC_FILES})
+        create_testsuite(${INPUTFILE})
+    endforeach(INPUTFILE)
 
-# Create test cases for all scenes under models folder (this replaces StandardTests.cpp).
-# The original StandardTests.cpp also tested additional folders:
-# - "killers" with testInCorrectFile
-# - "slackers" with testOutOfSpecFile
-# However, those folders are not in the repository.
-create_file_test("models" "testCorrectFile" "incorrect")
-create_file_test("models/io/incorrect" "testInCorrectFile")
+    # Create test cases for all scenes under models folder (this replaces StandardTests.cpp).
+    # The original StandardTests.cpp also tested additional folders:
+    # - "killers" with testInCorrectFile
+    # - "slackers" with testOutOfSpecFile
+    # However, those folders are not in the repository.
+    create_file_test("models" "testCorrectFile" "incorrect")
+    create_file_test("models/io/incorrect" "testInCorrectFile")
 
-# Include all extracted '*Tests.cpp' files in the target.
-FILE(GLOB TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
+    # Include all extracted '*Tests.cpp' files in the target.
+    FILE(GLOB TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
 
-include_directories(.)
-include_directories(../include)
-include_directories(../include/Inventor/annex)
-include_directories(${CMAKE_BINARY_DIR}/include)
-add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${TEST_SOURCES})
-target_link_libraries(CoinTests Coin)
+    include_directories(.)
+    include_directories(../include)
+    include_directories(../include/Inventor/annex)
+    include_directories(${CMAKE_BINARY_DIR}/include)
+    add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${TEST_SOURCES})
+    target_link_libraries(CoinTests Coin)
 
-# Many warnings are generated from test macros on macOS with Xcode.
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
-if(DISABLE_WARNING_TAUTOLOGCOMPARE)
-    target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
+    # Many warnings are generated from test macros on macOS with Xcode.
+    include(CheckCXXCompilerFlag)
+    CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
+    if(DISABLE_WARNING_TAUTOLOGCOMPARE)
+        target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
+    endif()
 endif()
