@@ -265,6 +265,7 @@ unset(COIN_INTERNAL_DOCUMENTATION_FILES CACHE)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(data)
+add_subdirectory(testsuite)
 
 # CPACK global settings
 set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS runtime)
