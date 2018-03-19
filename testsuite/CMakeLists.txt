@@ -25,14 +25,19 @@ endmacro()
 
 macro(create_file_test input testfunc)
     file(GLOB_RECURSE COIN_IV_FILES RELATIVE ${CMAKE_SOURCE_DIR} ../${input}/*.wrl ../${input}/*.wrml ../${input}/*.gz ../${input}/*.iv)
+    string(REGEX REPLACE "[\\./\\-]+" "" TESTSUITENAME "${input}")
     set(COIN_STR_TEST_INCL "")
     set(COIN_STR_TEST_CODE "")
-    set(COIN_STR_TEST_CLASS "${input}")
+    set(COIN_STR_TEST_CLASS "${TESTSUITENAME}")
+    set(extra_macro_args ${ARGN})
+    list(LENGTH extra_macro_args num_extra_args)
     foreach(INPUTFILE ${COIN_IV_FILES})
-        string(REGEX REPLACE "[\\./\\-]+" "_" TESTNAME "${INPUTFILE}")
-        set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); }")
+        if(${num_extra_args} EQUAL 0 OR NOT ("${INPUTFILE}" MATCHES "${extra_macro_args}"))
+            string(REGEX REPLACE "[\\./\\-]+" "_" TESTNAME "${INPUTFILE}")
+            set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); }")
+        endif()
     endforeach(INPUTFILE)
-    configure_file(TestSuiteTemplate.cmake.in "${input}Test.cpp")
+    configure_file(TestSuiteTemplate.cmake.in "${TESTSUITENAME}Test.cpp")
 endmacro()
 
 
@@ -48,7 +53,8 @@ endforeach(INPUTFILE)
 # - "killers" with testInCorrectFile
 # - "slackers" with testOutOfSpecFile
 # However, those folders are not in the repository.
-create_file_test("models" "testCorrectFile")
+create_file_test("models" "testCorrectFile" "incorrect")
+create_file_test("models/io/incorrect" "testInCorrectFile")
 
 # Include all extracted '*Tests.cpp' files in the target.
 FILE(GLOB TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
