@@ -23,18 +23,22 @@ macro(create_testsuite input)
     endif()
 endmacro()
 
-macro(create_file_test input testfunc)
+macro(create_file_test input testfunc filter)
     file(GLOB_RECURSE COIN_IV_FILES RELATIVE ${CMAKE_SOURCE_DIR} ../${input}/*.wrl ../${input}/*.wrml ../${input}/*.gz ../${input}/*.iv)
     string(REGEX REPLACE "[\\./\\-]+" "" TESTSUITENAME "${input}")
     set(COIN_STR_TEST_INCL "")
-    set(COIN_STR_TEST_CODE "const char *anyError[] = { \"error\", 0 };\n")
+    set(COIN_STR_TEST_CODE "const char *readError[] = { \"Coin read error:\", 0 };\n")
     set(COIN_STR_TEST_CLASS "${TESTSUITENAME}")
     set(extra_macro_args ${ARGN})
     list(LENGTH extra_macro_args num_extra_args)
     foreach(INPUTFILE ${COIN_IV_FILES})
         if(${num_extra_args} EQUAL 0 OR NOT ("${INPUTFILE}" MATCHES "${extra_macro_args}"))
             string(REGEX REPLACE "[\\./\\-]+" "_" TESTNAME "${INPUTFILE}")
-            set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { PushMessageSuppressFilters(anyError); ResetReadErrorCount(); test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); PopMessageSuppressFilters(); }")
+            if (${filter})
+                set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { PushMessageSuppressFilters(readError); ResetReadErrorCount(); test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); PopMessageSuppressFilters(); }")
+            else()
+                set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { ResetReadErrorCount(); test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); }")
+            endif()
         endif()
     endforeach(INPUTFILE)
     configure_file(TestSuiteTemplate.cmake.in "${TESTSUITENAME}Test.cpp")
@@ -55,9 +59,9 @@ if(COIN_BUILD_TESTS)
     # - "killers" with testInCorrectFile
     # - "slackers" with testOutOfSpecFile
     # However, those folders are not in the repository.
-    create_file_test("models" "testCorrectFile" "incorrect")
+    create_file_test("models" "testCorrectFile" false "incorrect")
     # bug039.iv and bug055-5.iv contain errors but load anyway: ignore for now
-    create_file_test("models/io/incorrect" "testIncorrectFile" "(bug039|bug055-5)")
+    create_file_test("models/io/incorrect" "testIncorrectFile" true "(bug039|bug055-5)")
 
     # Include all extracted '*Tests.cpp' files in the target.
     FILE(GLOB TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
