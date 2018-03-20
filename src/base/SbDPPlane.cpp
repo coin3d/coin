@@ -447,15 +447,16 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
   const float YMin = -YMax;
 
 #ifdef TEST_SUITE_QUICK
-  const int XSteps = 6;
-  const int YSteps = 6;
+  const int XSteps = 4;
+  const int YSteps = 4;
 #endif //TEST_SUITE_QUICK
 #ifdef TEST_SUITE_THOROUG
-  const int XSteps = 10;
-  const int YSteps = 10;
+  const int XSteps = 6;
+  const int YSteps = 6;
 #endif //TEST_SUITE_THOROUG
 #ifdef TEST_SUITE_EXPANSIVE
-  const int XSteps = 100;
+  const int XSteps = 10;
+  const int YSteps = 10;
 #endif //TEST_SUITE_EXPANSIVE
 
   int count=0;
