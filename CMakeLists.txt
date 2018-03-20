@@ -187,7 +187,9 @@ check_include_file(X11/Xlib.h HAVE_X11_AVAILABLE)
 
 include(CheckLibraryExists)
 check_library_exists(dl dlopen "" HAVE_DL_LIB)
-check_library_exists(GL glXChooseVisual "" HAVE_GLX)
+if(NOT (HAVE_WGL OR HAVE_AGL OR HAVE_CGL))
+	check_library_exists(GL glXChooseVisual "" HAVE_GLX)
+endif()
 check_library_exists(pthread pthread_create "" USE_PTHREAD)
 
 include(CheckSymbolExists)
@@ -265,6 +267,7 @@ unset(COIN_INTERNAL_DOCUMENTATION_FILES CACHE)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(data)
+add_subdirectory(testsuite)
 
 # CPACK global settings
 set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS runtime)

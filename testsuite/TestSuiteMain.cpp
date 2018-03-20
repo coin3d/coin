@@ -30,42 +30,29 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#define BOOST_TEST_NO_LIB 1
-#include <boost/test/unit_test.hpp>
-
-#include <assert.h>
-#include <stdio.h>
+#define BOOST_TEST_MODULE CoinTests
+#define BOOST_TEST_NO_MAIN
+#define BOOST_TEST_ALTERNATIVE_INIT_API
+#include <boost/test/included/unit_test.hpp>
 #include <iostream>
+namespace utf = boost::unit_test;
 
-#include <Inventor/nodes/SoNode.h>
-
-#include <TestSuiteUtils.h>
-#include <TestSuiteMisc.h>
-
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include "TestSuiteUtils.h"
 
 using namespace SIM::Coin3D::Coin;
 
-namespace {
-  const char * standardSuffixes_initializer [] = { ".wrl", "wrml", "wrl.gz", "wrml.gz", ".iv" };
-  static std::vector<std::string> standardSuffixes(standardSuffixes_initializer,&standardSuffixes_initializer[sizeof(standardSuffixes_initializer)/sizeof(standardSuffixes_initializer[0])]);
-}
 
-
-BOOST_AUTO_TEST_SUITE(StandardTests);
-
-BOOST_AUTO_TEST_CASE(loadCorrectfiles)
+int main(int argc, char* argv[])
 {
-  TestSuite::test_all_files("models",standardSuffixes,&TestSuite::testCorrectFile);
-}
+    SoDB::init();
+    SoInteraction::init();
+    TestSuite::Init();
 
-BOOST_AUTO_TEST_CASE(loadIncorrectfiles)
-{
-  TestSuite::test_all_files("killers",standardSuffixes,&TestSuite::testIncorrectFile);
-}
+    int rc = utf::unit_test_main(init_unit_test, argc, argv);
 
-BOOST_AUTO_TEST_CASE(loadOutOfSpecFilesWhichWeAccept)
-{
-  TestSuite::test_all_files("slackers",standardSuffixes,&TestSuite::testOutOfSpecFile);
-}
+    SoDB::finish();
 
-BOOST_AUTO_TEST_SUITE_END();
+    return rc;
+}

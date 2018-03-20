@@ -40,7 +40,7 @@ class SoNode;
 
 namespace SIM { namespace Coin3D { namespace Coin { namespace TestSuite {
 
-typedef bool test_files_CB(SoNode * root, std::string & filename);
+typedef bool test_files_CB(SoNode * root, const std::string & filename);
 
 void Init(void);
 
@@ -65,9 +65,14 @@ int GetMemoryErrorCount(void);
 SoNode * ReadInventorFile(const char * filename);
 int WriteInventorFile(const char * filename, SoNode * root);
 
+void test_file(const std::string & filename,
+                    test_files_CB * testFunction);
 void test_all_files(const std::string & search_directory,
                     std::vector<std::string> & suffixes,
                     test_files_CB * testFunction);
+bool testCorrectFile(SoNode * root, const std::string & filename);
+bool testIncorrectFile(SoNode * root, const std::string & filename);
+bool testOutOfSpecFile(SoNode * root, const std::string & filename);
 
 } } } } // namespace
 
