@@ -1657,84 +1657,79 @@ BOOST_AUTO_TEST_CASE(checkWriteWithMultiref)
 /*
        Correct output file if dont_mangle_names:
 
-       #VRML V1.0 ascii
+#VRML V1.0 ascii
 
-       DEF root Separator {
-         DEF +0 Separator {
-         }
-         USE +0
-         Separator {
-           DEF MyName Separator {
-           }
-           DEF MyName+1 Separator {
-           }
-         }
-         USE MyName
-         Separator {
-           DEF MyName Separator {
-           }
-           USE MyName+1
-         }
-         USE MyName+1
-         DEF MyName Separator {
-         }
-         USE MyName
-         Separator {
-           Separator {
-             DEF MyName+2 Separator {
-             }
-             USE MyName+2
-           }
-           DEF MyName+3 Separator {
-           }
-           USE MyName
-         }
-       }
+VRMLGroup {
+  children 
+    DEF root VRMLGroup {
+      children [ 
+        DEF _+0 VRMLGroup {
+        },
+        USE _+0,
+        DEF _+1 VRMLGroup {
+          children [ 
+            DEF MyName VRMLGroup {
+            },
+            DEF MyName+2 VRMLGroup {
+            } ]
+        },
+        USE MyName,
+        DEF _+3 VRMLGroup {
+          children [ 
+            DEF MyName+4 VRMLGroup {
+            },
+            USE MyName+2 ]
+        },
+        USE MyName+2,
+        DEF MyName+5 VRMLGroup {
+        },
+        USE MyName+5,
+        DEF _+6 VRMLGroup {
+          children [ 
+            DEF _+7 VRMLGroup {
+              children [ 
+                DEF MyName+8 VRMLGroup {
+                },
+                USE MyName+8 ]
+            },
+            DEF MyName+9 VRMLGroup {
+            },
+            USE MyName+5 ]
+        } ]
+    }
+}
     */
 
 	   /* correct outputfile for default OIV behavoir:
-	   #VRML V1.0 ascii
-
+#VRML V1.0 ascii
 
 DEF root Separator {
-
-  DEF +0 Separator {
-
+  DEF _+0 Separator {
   }
-  USE +0
+  USE _+0
   Separator {
-
     DEF MyName Separator {
-
     }
     DEF MyName+1 Separator {
-
     }
   }
   USE MyName
   Separator {
-
     DEF MyName+2 Separator {
-
     }
     USE MyName+1
   }
   USE MyName+1
   DEF MyName+3 Separator {
-
   }
   USE MyName+3
   Separator {
-
     Separator {
-
       DEF MyName+4 Separator {
-
       }
       USE MyName+4
     }
     DEF MyName+5 Separator {
-
     }
     USE MyName+3
   }
@@ -1773,18 +1768,22 @@ DEF root Separator {
 	   if(dont_mangle_output_names(scenegraph)) {
 		   node_names.append("_+0");
 		   node_names.append("_+0");
-		   node_names.append("MyName");
-		   node_names.append("MyName+1");
-		   node_names.append("MyName");
-		   node_names.append("MyName");
-		   node_names.append("MyName+1");
-		   node_names.append("MyName+1");
-		   node_names.append("MyName");
+		   node_names.append("_+1");
 		   node_names.append("MyName");
 		   node_names.append("MyName+2");
-		   node_names.append("MyName+2");
-		   node_names.append("MyName+3");
 		   node_names.append("MyName");
+		   node_names.append("_+3");
+		   node_names.append("MyName+4");
+		   node_names.append("MyName+2");
+		   node_names.append("MyName+2");
+		   node_names.append("MyName+5");
+		   node_names.append("MyName+5");
+		   node_names.append("_+6");
+		   node_names.append("_+7");
+		   node_names.append("MyName+8");
+		   node_names.append("MyName+8");
+		   node_names.append("MyName+9");
+		   node_names.append("MyName+5");
 	   }
 	   else {
 		   node_names.append("_+0");

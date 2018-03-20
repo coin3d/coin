@@ -32,40 +32,15 @@
 
 #define BOOST_TEST_NO_LIB 1
 #include <boost/test/unit_test.hpp>
-
-#include <assert.h>
-#include <stdio.h>
+#include <boost/intrusive_ptr.hpp>
+#include <cassert>
+#include <cstdio>
 #include <iostream>
-
-#include <Inventor/nodes/SoNode.h>
-
-#include <TestSuiteUtils.h>
-#include <TestSuiteMisc.h>
-
-
+#include "TestSuiteUtils.h"
+#include "TestSuiteMisc.h"
 using namespace SIM::Coin3D::Coin;
-
-namespace {
-  const char * standardSuffixes_initializer [] = { ".wrl", "wrml", "wrl.gz", "wrml.gz", ".iv" };
-  static std::vector<std::string> standardSuffixes(standardSuffixes_initializer,&standardSuffixes_initializer[sizeof(standardSuffixes_initializer)/sizeof(standardSuffixes_initializer[0])]);
-}
-
-
-BOOST_AUTO_TEST_SUITE(StandardTests);
-
-BOOST_AUTO_TEST_CASE(loadCorrectfiles)
-{
-  TestSuite::test_all_files("models",standardSuffixes,&TestSuite::testCorrectFile);
-}
-
-BOOST_AUTO_TEST_CASE(loadIncorrectfiles)
-{
-  TestSuite::test_all_files("killers",standardSuffixes,&TestSuite::testIncorrectFile);
-}
-
-BOOST_AUTO_TEST_CASE(loadOutOfSpecFilesWhichWeAccept)
-{
-  TestSuite::test_all_files("slackers",standardSuffixes,&TestSuite::testOutOfSpecFile);
-}
-
+using namespace SIM::Coin3D::Coin::TestSuite;
+@COIN_STR_TEST_INCL@
+BOOST_AUTO_TEST_SUITE(@COIN_STR_TEST_CLASS@_TestSuite);
+@COIN_STR_TEST_CODE@
 BOOST_AUTO_TEST_SUITE_END();
