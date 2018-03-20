@@ -80,7 +80,7 @@ should_filter(const SbString & msg)
   filterset * filters = messagefilters;
   while (filters != NULL) {
     for (int i = 0; filters->filters[i] != NULL; ++i) {
-      if (msg.find(filters->filters[i])) {
+      if (msg.find(filters->filters[i]) >= 0) {
         return 1;
       }
     }
@@ -432,7 +432,8 @@ TestSuite::test_all_files(const std::string & search_directory,
 
 bool
 TestSuite::testCorrectFile(SoNode * root, const std::string & filename) {
-    BOOST_CHECK_MESSAGE(root != NULL, (std::string("failed to read file ") + filename).c_str());
+    BOOST_CHECK_MESSAGE((root != NULL) && (GetReadErrorCount() == 0), (std::string("failed to read file ") + filename).c_str());
+    ResetReadErrorCount();
     return root != NULL;
 }
 
