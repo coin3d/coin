@@ -740,8 +740,10 @@ SbRotation::print(FILE * fp) const
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbTypeInfo.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec4f.h>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
+#include <stdio.h>
 
 typedef SbRotation ToTest;
 BOOST_AUTO_TEST_CASE(operatorBrackets)
@@ -768,7 +770,9 @@ BOOST_AUTO_TEST_CASE(operatorBrackets)
 BOOST_AUTO_TEST_CASE(toString) {
   ToTest val(SbVec3f(0, -1, 0),  1);
   SbString str("0 -1 0  1");
-  BOOST_CHECK_MESSAGE(str == val.toString(),
+  SbVec4f expected(0.f, -1.f, 0.f, 1.f), actual;
+  sscanf(val.toString().getString(), "%f %f %f  %f", &actual[0], &actual[1], &actual[2], &actual[3]);
+  BOOST_CHECK_MESSAGE(actual.equals(expected, 0.000001f),
                       std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
 
 }
