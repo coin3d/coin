@@ -25,7 +25,8 @@ Separator {
   EventCallback { }
   ExtSelection { }
   FaceSet { }
-  File { }
+  # provide include file to avoid warning during test
+  File { name "cone.iv" }
   Font { }
   FontStyle { }
   Group { }
