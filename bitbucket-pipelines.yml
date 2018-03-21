@@ -8,13 +8,12 @@ image: ilssim/cmake-boost-qt5
 pipelines:
   default:
     - step:
-        script: # Modify the commands below to build your repository.
-          - cmake .
+        name: Build, install, test and package
+        script:
+          - cmake . -DCPACK_OUTPUT_FILE_PREFIX=dist
           - make
-
-  branches:
-    issue*:
-      - step:
-          script:
-            - cmake .
-            - make
+          - sudo make install
+          - testsuite/CoinTests
+          - make package
+        artifacts:
+          - dist/**
