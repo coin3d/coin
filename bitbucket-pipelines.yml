@@ -1,4 +1,4 @@
-# This is a sample build configuration for C++ â€“ Make.
+# This is a sample build configuration for C++ – Make.
 # Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
 # Only use spaces to indent your .yml configuration.
 # -----
@@ -10,9 +10,9 @@ pipelines:
     - step:
         name: Build, install, test and package
         script:
-          - cmake . -DCPACK_OUTPUT_FILE_PREFIX=dist
-          - make
-          - sudo make install
+          - cmake . -DCPACK_OUTPUT_FILE_PREFIX=dist -DCMAKE_INSTALL_PREFIX=inst
+          - make install
+          - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:inst/lib
           - testsuite/CoinTests
           - make package
         artifacts:
