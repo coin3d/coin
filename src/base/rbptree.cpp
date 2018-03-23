@@ -667,7 +667,7 @@ BOOST_AUTO_TEST_CASE(rbptree_stress)
   cc_rbptree tree;
   cc_rbptree_init(&tree);
 
-  int i, c;
+  int i;
   for (int c = 0; c < FILL_TIMES; ++c) {
     SbList<void *> values;
     for (i = 0; i < FILL_COUNT; ++i) {
