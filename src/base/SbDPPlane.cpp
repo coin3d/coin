@@ -438,12 +438,12 @@ BOOST_AUTO_TEST_CASE(signCorrect)
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
 {
   const float delX = 1;
-  const float delY = .1;
+  const float delY = .1f;
 
-  const float XMax = pow(2,FLT_MAX_EXP/3);
+  const float XMax = pow(2.f,FLT_MAX_EXP/3);
   const float XMin = -XMax;
 
-  const float YMax = pow(2,FLT_MAX_EXP/3);
+  const float YMax = pow(2.f,FLT_MAX_EXP/3);
   const float YMin = -YMax;
 
 #ifdef TEST_SUITE_QUICK
