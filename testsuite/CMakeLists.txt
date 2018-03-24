@@ -72,6 +72,9 @@ if(COIN_BUILD_TESTS)
     include_directories(${CMAKE_BINARY_DIR}/include)
     add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${TEST_SOURCES})
     target_link_libraries(CoinTests Coin)
+    if (USE_PTHREAD)
+      target_link_libraries(CoinTests pthread)
+    endif()
 
     # Many warnings are generated from test macros on macOS with Xcode.
     include(CheckCXXCompilerFlag)
