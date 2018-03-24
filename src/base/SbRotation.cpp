@@ -749,7 +749,7 @@ typedef SbRotation ToTest;
 BOOST_AUTO_TEST_CASE(operatorBrackets)
 {
   const int FLOAT_SENSITIVITY = 1;
-  const float SQRT2 = sqrt(2)/2;
+  const float SQRT2 = sqrt(2.f)/2.f;
   SbRotation rot(0,-SQRT2,0,SQRT2);
 
   for (int i=0;i<4;++i) {

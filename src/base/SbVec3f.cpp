@@ -629,7 +629,7 @@ SbVec3f::print(FILE * fp) const
 
 typedef SbVec3f ToTest;
 BOOST_AUTO_TEST_CASE(toString) {
-  ToTest val(1.0/3,2,3);
+  ToTest val(1.0f/3,2,3);
   SbString str("0.33333334 2 3");
   BOOST_CHECK_MESSAGE(str == val.toString(),
                       std::string("Mismatch between ") +  val.toString().getString() + " and control string " + str.getString());
@@ -639,7 +639,7 @@ BOOST_AUTO_TEST_CASE(toString) {
 BOOST_AUTO_TEST_CASE(fromString) {
   ToTest foo;
   SbString test = "0.333333343 -2 -3.0";
-  ToTest trueVal(0.333333343,-2,-3);
+  ToTest trueVal(0.333333343f,-2,-3);
   SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
                       std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
