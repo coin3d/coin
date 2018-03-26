@@ -1,0 +1,68 @@
+###############################################################################
+# CPACK Configuration for Linux Debian 9 with host target
+# See also:
+# https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_debian_package_file_names
+# https://www.debian.org/doc/debian-policy/#document-ch-controlfields (5.6.12. Version)
+# This configuration is not tested with lintian (https://packages.debian.org/it/sid/lintian)
+# libcoin80_3.1.4~abc9f50-7_amd64.deb 
+
+# this macro define a component package according to Debian specifications for
+# COMPONENT NAME, SECTION and FILE NAME POSTFIX (third optional argument)
+macro(component COMPONENT SECTION)
+  if (${ARGC} GREATER 2)
+    set(CPACK_DEBIAN_${COMPONENT}_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-${ARGV2}")
+  else()
+    set(CPACK_DEBIAN_${COMPONENT}_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
+  endif()
+  set(CPACK_DEBIAN_${COMPONENT}_FILE_NAME    "${CPACK_DEBIAN_${COMPONENT}_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
+  set(CPACK_DEBIAN_${COMPONENT}_PACKAGE_SECTION   ${SECTION})
+endmacro(component)
+
+if (CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "x86_64")
+  set(DEB_ARCH "amd64")
+endif()
+
+###############################################################################
+# CPACK general settings
+set(CPACK_CMAKE_GENERATOR               "@CMAKE_GENERATOR@")
+set(CPACK_INSTALL_CMAKE_PROJECTS        "@PROJECT_BINARY_DIR@;@PROJECT_NAME@;ALL;/")
+set(CPACK_COMPONENTS_ALL                "development;documentation;runtime")
+set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS "runtime")
+set(CPACK_GENERATOR                     "DEB")
+ 
+set(CPACK_PACKAGE_DESCRIPTION_FILE      "@CMAKE_CURRENT_SOURCE_DIR@/DESCRIPTION.txt")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY   "@PROJECT_DESCRIPTION@")
+set(CPACK_PACKAGE_NAME                  "@PROJECT_NAME@@PROJECT_VERSION_MAJOR@")
+set(CPACK_PACKAGE_RELOCATABLE           "true")
+set(CPACK_PACKAGE_VERSION_MAJOR         "@PROJECT_VERSION_MAJOR@")
+set(CPACK_PACKAGE_VERSION_MINOR         "@PROJECT_VERSION_MINOR@")
+set(CPACK_PACKAGE_VERSION_PATCH         "@PROJECT_VERSION_PATCH@")
+set(CPACK_PACKAGE_VERSION               "@PROJECT_VERSION@")
+set(CPACK_PACKAGE_FILE_NAME             "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@")
+set(CPACK_RESOURCE_FILE_LICENSE         "@PROJECT_SOURCE_DIR@/COPYING")
+set(CPACK_RESOURCE_FILE_README          "@PROJECT_SOURCE_DIR@/README")
+set(CPACK_PACKAGE_CONTACT               "@COIN_CONTACT@")
+
+###############################################################################
+# CPACK Debian
+set(CPACK_DEB_COMPONENT_INSTALL                "ON")
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE              "${COIN_URL}")
+component(RUNTIME libs)
+component(DEVELOPMENT libdevel dev)
+component(DOCUMENTATION doc doc)
+
+# set(CPACK_DEBIAN_PACKAGE_NAME                  "${CPACK_PACKAGE_NAME}")
+# set(CPACK_DEBIAN_PACKAGE_SECTION               "devel")
+# # docs
+# set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME    "${CPACK_PACKAGE_NAME}-doc")
+# set(CPACK_DEBIAN_DOCUMENTATION_FILE_NAME       "${CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
+# set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_SECTION "doc")
+# # devel
+# set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_DEPENDS   "${CPACK_DEBIAN_PACKAGE_NAME}")
+# set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME      "${CPACK_PACKAGE_NAME}-dev")
+# set(CPACK_DEBIAN_DEVELOPMENT_FILE_NAME         "${CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
+# set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_SECTION   "libdevel")
+# # libs
+# set(CPACK_DEBIAN_RUNTIME_PACKAGE_NAME          "${CPACK_PACKAGE_NAME}")
+# set(CPACK_DEBIAN_RUNTIME_FILE_NAME             "${CPACK_DEBIAN_RUNTIME_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
+# set(CPACK_DEBIAN_RUNTIME_PACKAGE_SECTION       "libs")
