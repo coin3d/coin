@@ -277,6 +277,7 @@ unset(COIN_INTERNAL_DOCUMENTATION_FILES CACHE)
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(data)
+add_subdirectory(examples)
 add_subdirectory(testsuite)
 
 # CPACK section moved in the package-config directory. 
