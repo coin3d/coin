@@ -11,7 +11,7 @@
 #
 #   2) Set the commented variables according to the target OS
 #
-#   3) Complete with the other settings OS specific
+#   3) Complete with the other variables / settings OS specific
 
 ###############################################################################
 # CPACK general settings
@@ -23,7 +23,7 @@ set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS "runtime")
 
 set(CPACK_PACKAGE_DESCRIPTION_FILE      "@CMAKE_CURRENT_SOURCE_DIR@/DESCRIPTION.txt")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY   "@PROJECT_DESCRIPTION@")
-set(CPACK_PACKAGE_NAME                  "@PROJECT_NAME@")
+set(CPACK_PACKAGE_NAME                  "@PROJECT_NAME@@PROJECT_VERSION_MAJOR@")
 # set(CPACK_PACKAGE_RELOCATABLE         "XXXX")
 set(CPACK_PACKAGE_VERSION_MAJOR         "@PROJECT_VERSION_MAJOR@")
 set(CPACK_PACKAGE_VERSION_MINOR         "@PROJECT_VERSION_MINOR@")

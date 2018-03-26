@@ -1,16 +1,15 @@
 This directory is aimed to decouple project building from packaging since 
-maintainer rules are generally independent from the developer ones and strongly
-OS specific.
+maintainer rules are generally independent from the developer ones and 
+strongly OS specific.
 
-So the idea is to provide this space for hosting OS targeted CPack  template 
-files, ready to be instantiated by a CMake configure_file() call.
+This source directory will contain CPack configuration templates postfixed 
+with '*.cmake.in'.
 
-The CMakeLists.txt will automatically configure every template postfixed with
-'*.cmake.in' .
+Usual cmake config invocation will automatically configure every template 
+present in this directory producing in the  corresponding binary directory a 
+file postfixed with '*.cmake'.
 
-The configured CPack configuration will be ready in the CMAKE_CURRENT_BINARY_DIR.
-The package will be produced by the following command:
+These CPack configurations can be used to finally produce the package with the 
+following command:
 
-cpack --config </path/to/the/produced/config>
-
-Giampiero Gabbiani
+cpack --config <config name>
