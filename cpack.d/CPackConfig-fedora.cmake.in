@@ -1,0 +1,53 @@
+###############################################################################
+# CPACK Configuration for Linux Fedora 27 with host target
+# See also http://fedoraproject.org/wiki/Packaging:Naming
+# This configuration tested with rpmlint (https://github.com/rpm-software-management/rpmlint)
+
+# this macro define a component package according to Fedora specifications for
+# COMPONENT NAME, GROUP and FILE NAME POSTFIX (third optional argument)
+macro(component COMPONENT GROUP)
+  if (${ARGC} GREATER 2)
+    set(CPACK_RPM_${COMPONENT}_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-${ARGV2}")
+  else()
+    set(CPACK_RPM_${COMPONENT}_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
+  endif()
+  set(CPACK_RPM_${COMPONENT}_FILE_NAME "${CPACK_RPM_${COMPONENT}_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-1${DIST}.@CMAKE_HOST_SYSTEM_PROCESSOR@.rpm")
+  set(CPACK_RPM_${COMPONENT}_PACKAGE_GROUP ${GROUP})
+endmacro(component)
+
+# see https://fedoraproject.org/wiki/Packaging:DistTag?rd=Packaging/DistTag
+set(DIST ".fc27")
+
+###############################################################################
+# CPACK general settings
+set(CPACK_CMAKE_GENERATOR               "@CMAKE_GENERATOR@")
+set(CPACK_INSTALL_CMAKE_PROJECTS        "@PROJECT_BINARY_DIR@;@PROJECT_NAME@;ALL;/")
+set(CPACK_COMPONENTS_ALL                "development;documentation;runtime")
+set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS "runtime")
+set(CPACK_GENERATOR                     "RPM")
+
+set(CPACK_PACKAGE_DESCRIPTION_FILE      "@CMAKE_CURRENT_SOURCE_DIR@/DESCRIPTION.txt")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY   "@PROJECT_DESCRIPTION@")
+set(CPACK_PACKAGE_NAME                  "@PROJECT_NAME@@PROJECT_VERSION_MAJOR@")
+set(CPACK_PACKAGE_RELOCATABLE           "true")
+set(CPACK_PACKAGE_VERSION_MAJOR         "@PROJECT_VERSION_MAJOR@")
+set(CPACK_PACKAGE_VERSION_MINOR         "@PROJECT_VERSION_MINOR@")
+set(CPACK_PACKAGE_VERSION_PATCH         "@PROJECT_VERSION_PATCH@")
+set(CPACK_PACKAGE_VERSION               "@PROJECT_VERSION@")
+set(CPACK_PACKAGE_FILE_NAME             "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-1${DIST}.@CMAKE_HOST_SYSTEM_PROCESSOR@.rpm")
+set(CPACK_RESOURCE_FILE_LICENSE         "@PROJECT_SOURCE_DIR@/COPYING")
+set(CPACK_RESOURCE_FILE_README          "@PROJECT_SOURCE_DIR@/README")
+set(CPACK_PACKAGE_CONTACT               "@COIN_CONTACT@")
+
+###############################################################################
+# RPM settings
+set(CPACK_RPM_COMPONENT_INSTALL                   "ON")
+set(CPACK_RPM_PACKAGE_LICENSE                     "BSD")
+set(CPACK_RPM_PACKAGE_URL                         "@COIN_URL@")
+set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/lib64/cmake")
+set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE            "@CMAKE_CURRENT_SOURCE_DIR@/fedora_post_uninstall.sh")
+set(CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE          "@CMAKE_CURRENT_SOURCE_DIR@/fedora_post_uninstall.sh")
+set(CPACK_RPM_DOCUMENTATION_PACKAGE_ARCHITECTURE  "noarch")
+component(RUNTIME       "System Environment/Libraries")
+component(DEVELOPMENT   "Development/Libraries" devel)
+component(DOCUMENTATION "Documentation" doc)
