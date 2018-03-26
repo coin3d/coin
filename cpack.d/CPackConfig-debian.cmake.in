@@ -1,10 +1,9 @@
 ###############################################################################
-# CPACK Configuration for Linux Debian 9 with host target
+# Unofficial CPACK configuration for Linux Debian 9
 # See also:
 # https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_debian_package_file_names
 # https://www.debian.org/doc/debian-policy/#document-ch-controlfields (5.6.12. Version)
-# This configuration is not tested with lintian (https://packages.debian.org/it/sid/lintian)
-# libcoin80_3.1.4~abc9f50-7_amd64.deb 
+# This configuration is _NOT_ tested with lintian (https://packages.debian.org/it/sid/lintian)
 
 # this macro define a component package according to Debian specifications for
 # COMPONENT NAME, SECTION and FILE NAME POSTFIX (third optional argument)
@@ -50,19 +49,3 @@ set(CPACK_DEBIAN_PACKAGE_HOMEPAGE              "${COIN_URL}")
 component(RUNTIME libs)
 component(DEVELOPMENT libdevel dev)
 component(DOCUMENTATION doc doc)
-
-# set(CPACK_DEBIAN_PACKAGE_NAME                  "${CPACK_PACKAGE_NAME}")
-# set(CPACK_DEBIAN_PACKAGE_SECTION               "devel")
-# # docs
-# set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME    "${CPACK_PACKAGE_NAME}-doc")
-# set(CPACK_DEBIAN_DOCUMENTATION_FILE_NAME       "${CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
-# set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_SECTION "doc")
-# # devel
-# set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_DEPENDS   "${CPACK_DEBIAN_PACKAGE_NAME}")
-# set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME      "${CPACK_PACKAGE_NAME}-dev")
-# set(CPACK_DEBIAN_DEVELOPMENT_FILE_NAME         "${CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
-# set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_SECTION   "libdevel")
-# # libs
-# set(CPACK_DEBIAN_RUNTIME_PACKAGE_NAME          "${CPACK_PACKAGE_NAME}")
-# set(CPACK_DEBIAN_RUNTIME_FILE_NAME             "${CPACK_DEBIAN_RUNTIME_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-0_@DEB_ARCH@.deb")
-# set(CPACK_DEBIAN_RUNTIME_PACKAGE_SECTION       "libs")

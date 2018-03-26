@@ -1,7 +1,8 @@
 ###############################################################################
-# CPACK Configuration for Linux Fedora 27 with host target
+# Unoffical CPACK configuration for Linux Fedora 27 
 # See also http://fedoraproject.org/wiki/Packaging:Naming
-# This configuration tested with rpmlint (https://github.com/rpm-software-management/rpmlint)
+# Tested with rpmlint (https://github.com/rpm-software-management/rpmlint) and
+# used by the auhtor in Fedora 27
 
 # this macro define a component package according to Fedora specifications for
 # COMPONENT NAME, GROUP and FILE NAME POSTFIX (third optional argument)
