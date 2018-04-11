@@ -1,21 +1,16 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(Coin)
-# mimics the common behvior of cmake 3.*
-set(PROJECT_DESCRIPTION "OpenGL-based 3D graphics library, compatible with Open Inventor 2.1 API")
-set(PROJECT_VERSION_MAJOR 4)
-set(PROJECT_VERSION_MINOR 0)
-set(PROJECT_VERSION_PATCH 0)
-set(PROJECT_VERSION_TWEAK "a")
-set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${PROJECT_VERSION_TWEAK}")
-# others
-set(COIN_CONTACT "coin-support@coin3d.org")
-set(COIN_URL "https://bitbucket.org/Coin3D/coin")
-# end of mimics
-set (COIN_MAJOR_VERSION ${PROJECT_VERSION_MAJOR})
-set (COIN_MINOR_VERSION ${PROJECT_VERSION_MINOR})
-set (COIN_MICRO_VERSION ${PROJECT_VERSION_PATCH})
-set (COIN_BETA_VERSION  ${PROJECT_VERSION_TWEAK})
-set (COIN_VERSION "${PROJECT_VERSION}")
+set (COIN_MAJOR_VERSION 4)
+set (COIN_MINOR_VERSION 0)
+set (COIN_MICRO_VERSION 0)
+set (COIN_BETA_VERSION "a")
+set (COIN_VERSION "${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}${COIN_BETA_VERSION}")
+
+# get rid of OpenGL GLVND warning from CMake 3.11
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.11")
+  cmake_policy(SET CMP0072 NEW)
+endif()
+
 # option controlled helper for cmake variable dumping during config
 function(dump_variable)
   if (COIN_VERBOSE)
