@@ -91,6 +91,7 @@ option(HAVE_SOUND "Sound support." ON)
 option(HAVE_3DS_IMPORT_CAPABILITIES "3ds import capabilities." ON)
 option(SIMAGE_RUNTIME_LINKING "Runtime linkage of simage library.")
 option(HAVE_MAN "build and install Coin man pages.")
+option(USE_EXTERNAL_EXPAT "use a system expat" ON)
 
 if(NOT SIMAGE_RUNTIME_LINKING)
 	find_package(simage)
@@ -99,6 +100,10 @@ if(NOT SIMAGE_RUNTIME_LINKING)
 	else()
 		set(HAVE_LIBSIMAGE OFF)
 	endif()
+endif()
+
+if (USE_EXTERNAL_EXPAT)
+	find_package(EXPAT)
 endif()
 
 # Checks all specified types for existence and sets variable and sets a variable HAVE_<type_name>

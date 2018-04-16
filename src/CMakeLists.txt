@@ -50,6 +50,9 @@ if(COIN_BUILD_SINGLE_LIB)
 	endif()
 else()
 	if(COIN_BUILD_SHARED_LIBS)
+		if(NOT EXPAT_FOUND)
+			set(expat_target $<TARGET_OBJECTS:expat>)
+		endif()
 		if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 			set(COIN_SOURCE tidbits.cpp ${CMAKE_CURRENT_BINARY_DIR}/Coin.rc)
 		else()
@@ -68,7 +71,7 @@ else()
 			$<TARGET_OBJECTS:engines>
 			$<TARGET_OBJECTS:errors>
 			$<TARGET_OBJECTS:events>
-			$<TARGET_OBJECTS:expat>
+			${expat_target}
 			$<TARGET_OBJECTS:fields>
 			$<TARGET_OBJECTS:fonts>
 			$<TARGET_OBJECTS:foreignfiles>
@@ -112,7 +115,7 @@ else()
 			$<TARGET_OBJECTS:engines>
 			$<TARGET_OBJECTS:errors>
 			$<TARGET_OBJECTS:events>
-			$<TARGET_OBJECTS:expat>
+			${expat_target}
 			$<TARGET_OBJECTS:fields>
 			$<TARGET_OBJECTS:fonts>
 			$<TARGET_OBJECTS:foreignfiles>
@@ -153,6 +156,10 @@ endif()
 
 if(HAVE_LIBSIMAGE)
 	target_link_libraries(Coin simage::simage)
+endif()
+
+if (EXPAT_FOUND)
+	target_link_libraries(Coin ${EXPAT_LIBRARIES})
 endif()
 
 find_package(OpenGL)
