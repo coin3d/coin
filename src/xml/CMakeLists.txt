@@ -1,4 +1,6 @@
-add_subdirectory(expat)
+if(NOT EXPAT_FOUND)
+	add_subdirectory(expat)
+endif()
 
 # source files
 set(COIN_XML_FILES
