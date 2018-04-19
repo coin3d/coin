@@ -4,6 +4,15 @@
 # https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_debian_package_file_names
 # https://www.debian.org/doc/debian-policy/#document-ch-controlfields (5.6.12. Version)
 # NOT tested with lintian (https://packages.debian.org/it/sid/lintian)
+#
+# NOTE: CMake/CPack versions < v3.6 do not provide a DEB generator able to 
+# manage package component filenames correctly. 
+# In such a situation there will be a mismatch between the component PACKAGE 
+# NAME and the  corresponding component PACKAGE FILE NAME.
+#
+# Example for DEVELOPMENT component:
+# package NAME      'libsimage-dev' (OK)
+# package FILE NAME 'libsimage-1.7.1a-690_amd64-development.deb' (WRONG)
 cmake_policy(SET CMP0012 NEW)
 
 include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
@@ -18,11 +27,15 @@ config_package(NAME "lib@PROJECT_NAME@" LOWCASE)
 #
 # ARCH
 #   the architecture for the generate package file
+#   default - DEB_ARCH
 #
 # builds the package file name according to Debian rules
 macro(set_filename)
   set(oneValueArgs COMPONENT ARCH)
   cmake_parse_arguments(OPT "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+  if (NOT OPT_ARCH)
+    set(OPT_ARCH "${DEB_ARCH}")
+  endif()
   set(_version_part_ "${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${OPT_ARCH}")
   if (OPT_COMPONENT)
     set(CPACK_DEBIAN_${OPT_COMPONENT}_FILE_NAME "${CPACK_DEBIAN_${OPT_COMPONENT}_PACKAGE_NAME}-${_version_part_}.deb")
