@@ -19,7 +19,6 @@ pipelines:
           - cd target
           - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCOIN_MULTIPLE_VERSION=ON -DCOIN_QT_HELP=ON -DCOIN_THREADSAFE=ON -DSIMAGE_RUNTIME_LINKING=ON -DCOIN_BUILD_TESTS=OFF
           - make
-          #- make test
           # creates package rpms with build number equal to the number of commits on the source branch
           - cpack --config cpack.d/fedora.cmake
           # duplicates the artifacts with a build number equal to 'last'
