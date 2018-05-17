@@ -1,19 +1,44 @@
-# This is a sample build configuration for C++ – Make.
-# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
-# Only use spaces to indent your .yml configuration.
+# Build configuration for Coin3D/coin package creation and upload.
+#
+# For automatical artifacts upload into the Downloads 
+# directory in the repository owner settings:
+#   - application password with write capabilities on the BitBucket project
+#   - secured environment variable named BB_AUTH_STRING containing:
+#     <repo owner>:<application password> 
 # -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: ilssim/cmake-boost-qt5
+# The custom docker image from Docker Hub must contain all the pre-reqs for 
+# the project plus mercurial binaries.
 
 pipelines:
   default:
+    # fedora build
     - step:
-        name: Build, install, test and package
+        image: ggabbiani/fedora-coin:latest
         script:
-          - cmake . -DCPACK_OUTPUT_FILE_PREFIX=dist -DCMAKE_INSTALL_PREFIX=inst
-          - make install
-          - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:inst/lib
-          - testsuite/CoinTests
-          - make package
-        artifacts:
-          - dist/**
+          - mkdir target
+          - cd target
+          - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCOIN_MULTIPLE_VERSION=ON -DCOIN_QT_HELP=ON -DCOIN_THREADSAFE=ON -DSIMAGE_RUNTIME_LINKING=ON -DCOIN_BUILD_TESTS=OFF
+          - make
+          #- make test
+          # creates package rpms with build number equal to the number of commits on the source branch
+          - cpack --config cpack.d/fedora.cmake
+          # duplicates the artifacts with a build number equal to 'last'
+          - for i in $(cat cpack.d/artifacts.list); do cp $i $(echo $i|sed -e 's/[0-9]\+\.fc27/last\.fc27/g'); done
+          # uploads all the package rpms to the download area
+          - ls *.rpm | sed -e "s/simage/--form files=\@\"simage/g" -e "s/\.rpm/\.rpm\"/g"|xargs curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads"
+    # ubuntu build
+    #- step:
+        #image: ggabbiani/ubuntu-coin:latest
+        #script: # Modify the commands below to build your repository.
+          #- mkdir target
+          #- cd target
+          #- cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel
+          #- make
+          #- make test
+          ## creates package debians with build number equal to the number of commits on the source branch
+          ## for ubuntu images just use the debian cpack config
+          #- cpack --config cpack.d/debian.cmake
+          ## duplicates the artifacts with a build number equal to 'last'
+          #- for i in $(cat cpack.d/artifacts.list); do cp $i $(echo $i|sed -e 's/[0-9]\+_amd64/last_amd64/g'); done
+          ## uploads artifacts to the download area
+          #- ls *.deb | sed -e "s/libsimage/--form files=\@\"libsimage/g" -e "s/\.deb/\.deb\"/g"|xargs curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads"
