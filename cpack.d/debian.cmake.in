@@ -18,6 +18,34 @@ cmake_policy(SET CMP0012 NEW)
 include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
 config_package(NAME "lib@PROJECT_NAME@" LOWCASE)
 
+# resets the artifact list
+macro(list_reset)
+  set(ARTIFACTS "")
+  execute_process(
+    COMMAND rm artifacts.list
+    WORKING_DIRECTORY @CMAKE_CURRENT_BINARY_DIR@
+  )
+endmacro(list_reset)
+
+# adds an ENTRY to the artifact list
+macro(list_add ENTRY)
+  list(APPEND ARTIFACTS ${ENTRY})
+  execute_process(
+    COMMAND echo ${ENTRY}
+    WORKING_DIRECTORY @CMAKE_CURRENT_BINARY_DIR@
+    OUTPUT_FILE last.list
+  )
+endmacro(list_add)
+
+# store the artifact list to file
+macro(list_save)
+  execute_process(
+    COMMAND echo ${ARTIFACTS}
+    WORKING_DIRECTORY @CMAKE_CURRENT_BINARY_DIR@
+    OUTPUT_FILE artifacts.list
+  )
+endmacro(list_save)
+
 # set_filename ([COMPONENT component_name] [ARCH architecture])
 # 
 # COMPONENT
@@ -39,8 +67,10 @@ macro(set_filename)
   set(_version_part_ "${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${OPT_ARCH}")
   if (OPT_COMPONENT)
     set(CPACK_DEBIAN_${OPT_COMPONENT}_FILE_NAME "${CPACK_DEBIAN_${OPT_COMPONENT}_PACKAGE_NAME}-${_version_part_}.deb")
+    list_add("${CPACK_DEBIAN_${OPT_COMPONENT}_FILE_NAME}")
   else()
     set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${_version_part_}")
+    list_add("${CPACK_PACKAGE_FILE_NAME}")
   endif()
 endmacro(set_filename)
 
@@ -67,6 +97,8 @@ set_filename()
 set(CPACK_DEB_COMPONENT_INSTALL   "ON")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "${PROJECT_URL}")
 
+list_reset()
 component(RUNTIME       libs     "${DEB_ARCH}"    )
 component(DEVELOPMENT   libdevel "${DEB_ARCH}" dev)
 component(DOCUMENTATION doc       all          doc)
+list_save()
