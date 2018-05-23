@@ -40,6 +40,6 @@ pipelines:
             # for ubuntu images just use the debian cpack config
             - cpack --config cpack.d/debian.cmake
             # duplicates the artifacts with a build number equal to 'last'
-            - for i in $(cat cpack.d/artifacts.list); do cp $i $(echo $i|sed -e 's/[0-9]\+_amd64/last_amd64/g' -e 's/[0-9]\+_all/last_ll/g'); done
+            - for i in $(cat cpack.d/artifacts.list); do cp $i $(echo $i|sed -e 's/[0-9]\+_amd64/last_amd64/g' | sed -e 's/[0-9]\+_all/last_all/g'); done
             # uploads artifacts to the download area
             - ls *.deb | sed -e "s/libsimage/--form files=\@\"libsimage/g" -e "s/\.deb/\.deb\"/g"|xargs curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads"
