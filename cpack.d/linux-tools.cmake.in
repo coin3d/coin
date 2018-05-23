@@ -1,0 +1,29 @@
+##############################################################################
+# CPACK configuration tools for Linux
+#
+
+# resets the artifact list
+macro(artifacts_reset)
+  set(ARTIFACTS_LIST "artifacts.list")
+  set(ARTIFACTS "")
+  if (EXISTS "${ARTIFACTS_LIST}")
+    execute_process(
+      COMMAND rm "${ARTIFACTS_LIST}"
+      WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+    )
+  endif()
+endmacro(artifacts_reset)
+
+# adds an ENTRY to the artifact list
+macro(artifacts_add ENTRY)
+  list(APPEND ARTIFACTS ${ENTRY})
+endmacro(artifacts_add)
+
+# store the artifact list to file
+macro(artifacts_save)
+  execute_process(
+    COMMAND echo ${ARTIFACTS}
+    WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+    OUTPUT_FILE "${ARTIFACTS_LIST}"
+  )
+endmacro(artifacts_save)
