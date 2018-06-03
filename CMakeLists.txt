@@ -7,7 +7,7 @@ set (COIN_BETA_VERSION "a")
 set (COIN_VERSION "${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}${COIN_BETA_VERSION}")
 
 # get rid of OpenGL GLVND warning from CMake 3.11
-if (NOT CMAKE_VERSION VERSION_LESS "3.11")
+if (NOT CMAKE_VERSION VERSION_LESS "3.11") # CMake 3.5 has no VERSION_GREATER_EQUAL
   cmake_policy(SET CMP0072 NEW)
 endif()
 
@@ -278,3 +278,53 @@ add_subdirectory(testsuite)
 # ############################################################################
 # New CPACK section, please see the README file inside cpack.d directory.
 add_subdirectory(cpack.d)
+
+# ############################################################################
+# Legacy cmake statements, packagers should refer and populate the cpack.d 
+# drop-in directory
+# ############################################################################
+# CPACK global settings
+set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS runtime)
+# CPACK Debian
+set(CPACK_DEB_COMPONENT_INSTALL ON)
+set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME "libcoin80-doc")
+set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_SECTION "doc")
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_DEPENDS "libcoin80")
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME "libcoin80-dev")
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_SECTION "libdevel")
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://bitbucket.org/Coin3D/coin")
+set(CPACK_DEBIAN_PACKAGE_NAME "libcoin80")
+set(CPACK_DEBIAN_PACKAGE_SECTION "devel")
+set(CPACK_DEBIAN_RUNTIME_PACKAGE_NAME "libcoin80-dev")
+set(CPACK_DEBIAN_RUNTIME_PACKAGE_SECTION "libs")
+# CPACK Windows
+set(CPACK_NSIS_PACKAGE_NAME "Coin ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}")
+set(CPACK_NSIS_URL_INFO_ABOUT ${CPACK_DEBIAN_PACKAGE_HOMEPAGE})
+# CPACK generic
+set(CPACK_PACKAGE_CONTACT "coin-support@coin3d.org")
+set(CPACK_PACKAGE_DISPLAY_NAME "Coin ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "Coin-${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}")
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}${COIN_MAJOR_VERSION}")
+set(CPACK_PACKAGE_VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION})
+set(CPACK_PACKAGE_VERSION_MAJOR ${COIN_MAJOR_VERSION})
+set(CPACK_PACKAGE_VERSION_MINOR ${COIN_MINOR_VERSION})
+set(CPACK_PACKAGE_VERSION_PATCH ${COIN_MICRO_VERSION})
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/COPYING)
+# CPACK RPM
+set(CPACK_RPM_COMPONENT_INSTALL ON)
+set(CPACK_RPM_PACKAGE_GROUP "Development/Libraries")
+set(CPACK_RPM_PACKAGE_LICENSE "BSD")
+set(CPACK_RPM_PACKAGE_NAME "${PROJECT_NAME}${COIN_MAJOR_VERSION}")
+set(CPACK_RPM_PACKAGE_URL ${CPACK_DEBIAN_PACKAGE_HOMEPAGE})
+set(CPACK_RPM_DEVELOPMENT_PACKAGE_NAME "${PROJECT_NAME}${COIN_MAJOR_VERSION}-devel")
+set(CPACK_RPM_DEVELOPMENT_PACKAGE_REQUIRES "${PROJECT_NAME}${COIN_MAJOR_VERSION}")
+set(CPACK_RPM_RUNTIME_PACKAGE_PROVIDES "${PROJECT_NAME}${COIN_MAJOR_VERSION}")
+# workaround for erroneous inclusion of system directories
+# see https://stackoverflow.com/questions/24983181/cpack-generates-rpms-with-files-entries-that-conflict-with-the-rpm-spec-how-to
+set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/lib64/cmake")
+
+if(WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
+endif()
+
+include(CPack)
