@@ -208,10 +208,12 @@ SoEvent::getPosition(void) const
   \sa getNormalizedPosition(), getTime(), wasShiftDown(), wasCtrlDown(),
   \sa wasAltDown()
  */
-const SbVec2s
+const SbVec2s &
 SoEvent::getPosition(const SbViewportRegion & vpRgn) const
 {
-  return SbVec2s(this->positionofevent - vpRgn.getViewportOriginPixels());
+  positionVP = SbVec2s(this->positionofevent - vpRgn.getViewportOriginPixels());
+  
+  return positionVP;
 }
 
 /*!
@@ -221,16 +223,18 @@ SoEvent::getPosition(const SbViewportRegion & vpRgn) const
 
   \sa getPosition(), getTime(), wasShiftDown(), wasCtrlDown(), wasAltDown()
  */
-const SbVec2f
+const SbVec2f &
 SoEvent::getNormalizedPosition(const SbViewportRegion & vpRgn) const
 {
   SbVec2s p = this->positionofevent - vpRgn.getViewportOriginPixels();
   SbVec2s s = vpRgn.getViewportSizePixels();
 
-  return SbVec2f(
-               static_cast<float>(p[0])/static_cast<float>(s[0]),
-               static_cast<float>(p[1])/static_cast<float>(s[1])
-               );
+  positionVPNorm = SbVec2f(
+                           static_cast<float>(p[0])/static_cast<float>(s[0]),
+                           static_cast<float>(p[1])/static_cast<float>(s[1])
+                           );
+
+  return positionVPNorm;
 }
 
 /*!

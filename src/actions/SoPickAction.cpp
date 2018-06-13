@@ -122,7 +122,7 @@ SoPickAction::setViewportRegion(const SbViewportRegion & newregion)
   Returns the viewport region used by the action.
  */
 const SbViewportRegion &
-SoPickAction::getViewportRegion(void)
+SoPickAction::getViewportRegion(void) const
 {
   return this->vpRegion;
 }

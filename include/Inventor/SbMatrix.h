@@ -89,7 +89,7 @@ public:
                     SbVec3f & scaleFactor, SbRotation & scaleOrientation,
                     const SbVec3f & center) const;
   SbBool factor(SbMatrix & r, SbVec3f & s, SbMatrix & u, SbVec3f & t,
-                SbMatrix & proj);
+                SbMatrix & proj) const;
   SbBool LUDecomposition(int index[4], float & d);
   void LUBackSubstitution(int index[4], float b[4]) const;
   SbMatrix transpose(void) const;
