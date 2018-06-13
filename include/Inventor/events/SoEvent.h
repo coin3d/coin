@@ -35,6 +35,7 @@
 
 #include <Inventor/SoType.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec2f.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/events/SoSubEvent.h>
 
@@ -56,8 +57,8 @@ public:
 
   void setPosition(const SbVec2s & p);
   const SbVec2s & getPosition(void) const;
-  const SbVec2s getPosition(const SbViewportRegion & vpRgn) const;
-  const SbVec2f getNormalizedPosition(const SbViewportRegion & vpRgn) const;
+  const SbVec2s & getPosition(const SbViewportRegion & vpRgn) const;
+  const SbVec2f & getNormalizedPosition(const SbViewportRegion & vpRgn) const;
 
   void setShiftDown(SbBool isDown);
   SbBool wasShiftDown(void) const;
@@ -69,6 +70,8 @@ public:
 private:
   SbTime timeofevent;
   SbVec2s positionofevent;
+  mutable SbVec2s positionVP;
+  mutable SbVec2f positionVPNorm;
 
   static void initEvents(void);
 
