@@ -49,7 +49,7 @@ public:
   static void initClass(void);
 
   void setViewportRegion(const SbViewportRegion & newregion);
-  const SbViewportRegion & getViewportRegion(void);
+  const SbViewportRegion & getViewportRegion(void) const;
 
   void enableCulling(const SbBool flag);
   SbBool isCullingEnabled(void) const;

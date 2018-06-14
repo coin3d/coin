@@ -218,7 +218,7 @@ SbPList::fit(void)
   item is not present.
 */
 int
-SbPList::find(void * item) const
+SbPList::find(const void * item) const
 {
   for (int i = 0; i < this->numitems; i++)
     if (this->itembuffer[i] == item) return i;

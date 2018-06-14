@@ -1174,7 +1174,7 @@ SbMatrix::getTransform(SbVec3f & translation,
  */
 SbBool
 SbMatrix::factor(SbMatrix & COIN_UNUSED_ARG(r), SbVec3f & COIN_UNUSED_ARG(s), SbMatrix & COIN_UNUSED_ARG(u), SbVec3f & COIN_UNUSED_ARG(t),
-                 SbMatrix & COIN_UNUSED_ARG(proj))
+                 SbMatrix & COIN_UNUSED_ARG(proj)) const
 {
   // FIXME: not implemented, not documented. 1998MMDD mortene.
   COIN_STUB();

@@ -40,7 +40,7 @@
 class COIN_DLL_API SoSFTime : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFTime, SbTime, SbTime);
+  SO_SFIELD_HEADER(SoSFTime, SbTime, const SbTime &);
 
 public:
   static void initClass(void);
