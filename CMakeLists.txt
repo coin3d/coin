@@ -6,6 +6,15 @@ set (COIN_MICRO_VERSION 0)
 set (COIN_BETA_VERSION "a")
 set (COIN_VERSION "${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}${COIN_BETA_VERSION}")
 
+############################################################################
+# these will be removed after upgrading CMake minimum version
+set(PROJECT_VERSION_MAJOR "${COIN_MAJOR_VERSION}")
+set(PROJECT_VERSION_MINOR "${COIN_MINOR_VERSION}")
+set(PROJECT_VERSION_PATCH "${COIN_MICRO_VERSION}")
+set(PROJECT_VERSION       "${COIN_VERSION}")
+set(PROJECT_DESCRIPTION   "A high-level 3D visualization library with Open Inventor 2.1 API")
+############################################################################
+
 # get rid of OpenGL GLVND warning from CMake 3.11
 if (NOT CMAKE_VERSION VERSION_LESS "3.11") # CMake 3.5 has no VERSION_GREATER_EQUAL
   cmake_policy(SET CMP0072 NEW)
