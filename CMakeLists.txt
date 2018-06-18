@@ -196,18 +196,16 @@ check_include_file(superglu.h HAVE_SUPERGLU)
 check_include_file(windows.h HAVE_WINDOWS_H)
 check_include_file(X11/Xlib.h HAVE_X11_AVAILABLE)
 
-if(NOT HAVE_OPENGL_GL_H)
-	check_include_file(GL/gl.h _have_gl_gl_h)
-	if (NOT _have_gl_gl_h)
-		unset(_have_gl_gl_h CACHE)
-		set(_old_required_includes ${CMAKE_REQUIRED_INCLUDES})
-		set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} /usr/local/include)  # FreeBSD, mostly
+# On FreeBSD (possibly other BSDs as well), GL/gl.h does not live
+# in the standard search paths. Test for it explicitly.
+if(CMAKE_SYSTEM MATCHES "FreeBSD")
+	if(NOT HAVE_OPENGL_GL_H)
+		include_directories(/usr/local/include)
 		check_include_file(GL/gl.h _have_gl_gl_h)
-		set(CMAKE_REQUIRED_INCLUDES ${_old_required_includes})
-		if(_have_gl_gl_h)
-			include_directories(/usr/local/include)
+		if (NOT _have_gl_gl_h)
+			message(WARNING "No GL/gl.h found")
 		endif()
-	endif()
+    endif()
 endif()
 
 include(CheckLibraryExists)
