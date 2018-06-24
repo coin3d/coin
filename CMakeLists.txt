@@ -58,15 +58,15 @@ function(versionize)
 endfunction()
 
 option(COIN_VERBOSE          "Add verbose debugging information during the configure process")
-option(COIN_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise.")
+option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise.")
 option(COIN_QT_HELP          "Generate QTHelp Documentation files")
 
 include(GNUInstallDirs)
 
-if (COIN_MULTIPLE_VERSION)
+if (HAVE_MULTIPLE_VERSION)
   # modifies the installation path for both the distributed includes and docs
   versionize(INCLUDEDIR DOCDIR)
-endif (COIN_MULTIPLE_VERSION)
+endif (HAVE_MULTIPLE_VERSION)
 
 dump_variable(
 CMAKE_INSTALL_INCLUDEDIR
