@@ -24,7 +24,7 @@ pipelines:
             # creates package rpms with build number equal to the number of commits on the source branch
             - cpack --config cpack.d/fedora.cmake
             # duplicates the artifacts with a build number equal to 'last'
-            - for i in $(cat cpack.d/artifacts.list); do cp $i $(echo $i|sed -e 's/[0-9]\+\.fc27/last\.fc27/g'); done
+            - for i in $(cat cpack.d/artifacts.list); do cp $i $(echo $i|sed -e 's/[0-9]\+\.fc/last\.fc/g'); done
             # uploads all the package rpms to the download area
             - ls *.rpm | sed -e "s/coin/--form files=\@\"coin/g" -e "s/\.rpm/\.rpm\"/g"|xargs curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads"
       # ubuntu build
