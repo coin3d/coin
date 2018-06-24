@@ -18,7 +18,7 @@ pipelines:
           script:
             - mkdir target
             - cd target
-            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCOIN_MULTIPLE_VERSION=ON -DCOIN_QT_HELP=ON -DCOIN_THREADSAFE=ON -DSIMAGE_RUNTIME_LINKING=ON -DCOIN_BUILD_TESTS=OFF
+            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DHAVE_MULTIPLE_VERSION=ON -DCOIN_QT_HELP=ON -DCOIN_THREADSAFE=ON -DSIMAGE_RUNTIME_LINKING=ON -DCOIN_BUILD_TESTS=OFF
             - make
             #- make test
             # creates package rpms with build number equal to the number of commits on the source branch
@@ -33,7 +33,7 @@ pipelines:
           script:
             - mkdir target
             - cd target
-            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCOIN_MULTIPLE_VERSION=ON -DCOIN_QT_HELP=ON -DCOIN_THREADSAFE=ON -DSIMAGE_RUNTIME_LINKING=ON -DCOIN_BUILD_TESTS=OFF
+            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DHAVE_MULTIPLE_VERSION=ON -DCOIN_QT_HELP=ON -DCOIN_THREADSAFE=ON -DSIMAGE_RUNTIME_LINKING=ON -DCOIN_BUILD_TESTS=OFF
             - make
             #- make test
             # creates package debians with build number equal to the number of commits on the source branch
