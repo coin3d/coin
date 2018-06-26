@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#if defined (_POSIX_SOURCE) || defined(__APPLE__)
+#if defined (_POSIX_SOURCE) || defined(__APPLE__) || defined(__FreeBSD__)
 #define USE_POSIX
 #elif defined(_WIN32)
 #define USE_WIN32
