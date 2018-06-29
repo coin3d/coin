@@ -1806,6 +1806,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
   SoFullPath * path;
   if (pathtoextend) {
     path = (SoFullPath *)pathtoextend->copy();
+    path->ref();
     // pop off nodes beyond this kit node
     if (path->containsNode(this)) while (path->getTail() != this && path->getLength()) path->pop();
     else if (path->getLength()) {
@@ -1815,6 +1816,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
         SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
                                   "pathtoextend is illegal");
 #endif // COIN_DEBUG
+        path->unref();
         return NULL;
       }
       path->append(this); // this should be safe now
@@ -1822,8 +1824,8 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
   }
   else {
     path = (SoFullPath *)new SoPath(this);
+    path->ref();
   }
-  path->ref();
 
   SoBaseKit * kit = this;
   int partNum;
