@@ -860,7 +860,7 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
 
     // Connect from the SoFieldConverter output to the slave field.
     SoEngineOutput * converteroutput =
-      conv->getOutput(SoType::badType()); // dummy type
+      conv->getOutput(this->getTypeId());
     converteroutput->addConnection(this);
 
     // Remember the connection from the slave field to the
@@ -975,7 +975,7 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
 
     // Connect from the SoFieldConverter output to the slave field.
     SoEngineOutput * converteroutput =
-      conv->getOutput(SoType::badType()); // dummy type
+      conv->getOutput(this->getTypeId());
     converteroutput->addConnection(this);
 
     // Remember the connection from the slave field to the
