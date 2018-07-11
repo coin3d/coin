@@ -409,7 +409,7 @@
 #define OPENAL_RUNTIME_LINKING 1
 
 /* define this to the dynamic library name of OpenGL */
-#define OPENGL_SYSTEM_LIBRARY_NAME "libGL.so"
+#define OPENGL_SYSTEM_LIBRARY_NAME "@OPENGL_gl_LIBRARY@@CMAKE_SHARED_LIBRARY_SUFFIX@"
 
 /* Name of package */
 #define PACKAGE "Coin"
