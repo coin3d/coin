@@ -79,7 +79,7 @@
 #define COIN_VERSION "4.0.0a"
 
 /* define this to the dynamic library extension suffix on this system */
-#define DYNAMIC_LIBRARY_EXTENSION ".so"
+#define DYNAMIC_LIBRARY_EXTENSION "@CMAKE_SHARED_LIBRARY_SUFFIX@"
 
 /* define for runtime linking with fontconfig */
 #define FONTCONFIG_RUNTIME_LINKING 1
