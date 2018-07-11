@@ -1,4 +1,19 @@
-configure_file(config.h.cmake.in config.h)
+# The following two-stage generation of config.h replaces configure_file(config.h.cmake.in config.h)
+# and is necessary for the proper definition of COIN_SYSTEM_LIBRARY_NAME in config.h.
+# Ref. https://public.kitware.com/pipermail/cmake/2015-April/060350.html
+# Deal with @...@ configurable items:
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/config.h_at_configured
+    @ONLY
+    )
+# Deal with items configured with generator expressions:
+  file(GENERATE
+    OUTPUT
+    ${CMAKE_CURRENT_BINARY_DIR}/config.h
+    INPUT
+    ${CMAKE_CURRENT_BINARY_DIR}/config.h_at_configured
+    )
 configure_file(setup.h.cmake.in setup.h)
 if(WIN32)
 	configure_file(Coin.rc.cmake.in Coin.rc)
