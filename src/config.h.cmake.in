@@ -52,7 +52,7 @@
 #define COIN_MINOR_VERSION @COIN_MINOR_VERSION@
 
 /* define this to the dynamic library name of Coin */
-#define COIN_SYSTEM_LIBRARY_NAME "libCoin.so"
+#define COIN_SYSTEM_LIBRARY_NAME "$<TARGET_FILE_NAME:Coin>"
 
 /* System dependent thread ID type */
 #define COIN_THREADID_TYPE pthread_t
