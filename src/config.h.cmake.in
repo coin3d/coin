@@ -76,7 +76,7 @@
 /* #undef COIN_UNDEF_IN_PATH_HACK */
 
 /* define this to the full libCoin major.minor.micro version number */
-#define COIN_VERSION "4.0.0a"
+#define COIN_VERSION "@COIN_VERSION@"
 
 /* define this to the dynamic library extension suffix on this system */
 #define DYNAMIC_LIBRARY_EXTENSION "@CMAKE_SHARED_LIBRARY_SUFFIX@"
@@ -448,7 +448,7 @@
 #cmakedefine USE_W32THREAD
 
 /* Version number of package */
-#define VERSION "4.0.0a"
+#define VERSION "@COIN_VERSION@"
 
 /* Define to 1 if the X Window System is missing or not being used. */
 /* #undef X_DISPLAY_MISSING */
