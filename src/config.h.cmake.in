@@ -52,7 +52,7 @@
 #define COIN_MINOR_VERSION @COIN_MINOR_VERSION@
 
 /* define this to the dynamic library name of Coin */
-#define COIN_SYSTEM_LIBRARY_NAME "libCoin.so"
+#define COIN_SYSTEM_LIBRARY_NAME "$<TARGET_FILE_NAME:Coin>"
 
 /* System dependent thread ID type */
 #define COIN_THREADID_TYPE pthread_t
@@ -76,10 +76,10 @@
 /* #undef COIN_UNDEF_IN_PATH_HACK */
 
 /* define this to the full libCoin major.minor.micro version number */
-#define COIN_VERSION "4.0.0a"
+#define COIN_VERSION "@COIN_VERSION@"
 
 /* define this to the dynamic library extension suffix on this system */
-#define DYNAMIC_LIBRARY_EXTENSION ".so"
+#define DYNAMIC_LIBRARY_EXTENSION "@CMAKE_SHARED_LIBRARY_SUFFIX@"
 
 /* define for runtime linking with fontconfig */
 #define FONTCONFIG_RUNTIME_LINKING 1
@@ -394,7 +394,7 @@
 /* #undef HAVE__SNPRINTF */
 
 /* define if the system has _splitpath() */
-#cmakedefine HAVE__SPLITPATH */
+#cmakedefine HAVE__SPLITPATH
 
 /* define if _vsnprintf() is available */
 /* #undef HAVE__VSNPRINTF */
@@ -409,7 +409,7 @@
 #define OPENAL_RUNTIME_LINKING 1
 
 /* define this to the dynamic library name of OpenGL */
-#define OPENGL_SYSTEM_LIBRARY_NAME "libGL.so"
+#define OPENGL_SYSTEM_LIBRARY_NAME "@OPENGL_gl_LIBRARY@@CMAKE_SHARED_LIBRARY_SUFFIX@"
 
 /* Name of package */
 #define PACKAGE "Coin"
@@ -448,7 +448,7 @@
 #cmakedefine USE_W32THREAD
 
 /* Version number of package */
-#define VERSION "4.0.0a"
+#define VERSION "@COIN_VERSION@"
 
 /* Define to 1 if the X Window System is missing or not being used. */
 /* #undef X_DISPLAY_MISSING */
