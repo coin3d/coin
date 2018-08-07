@@ -851,16 +851,28 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
 
     if (!append) this->disconnect();
 
+    SoField * converterinput = conv->getInput(mastertype);
+    SoEngineOutput * converteroutput = conv->getOutput(thistype);
+
+#if COIN_DEBUG
+    if (converterinput == NULL) {
+      SoDebugError::post("SoField::connectFrom",
+                         "input field returned from field converter is NULL");
+      return FALSE;
+    } else if (converteroutput == NULL) {
+      SoDebugError::post("SoField::connectFrom",
+                         "output returned from field converter is NULL");
+      return FALSE;
+    }
+#endif // COIN_DEBUG
+
     // Link up the input SoField of the SoFieldConverter to the master
     // field by recursively calling connectFrom().
-    SoField * converterinput = conv->getInput(mastertype);
     // the converter engine should always be notified upon connection
     // as it will never have a default value read in from a file.
     converterinput->connectFrom(master, FALSE);
 
     // Connect from the SoFieldConverter output to the slave field.
-    SoEngineOutput * converteroutput =
-      conv->getOutput(this->getTypeId());
     converteroutput->addConnection(this);
 
     // Remember the connection from the slave field to the
@@ -966,16 +978,28 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
 
     if (!append) this->disconnect();
 
+    SoField * converterinput = conv->getInput(mastertype);
+    SoEngineOutput * converteroutput = conv->getOutput(thistype);
+
+#if COIN_DEBUG
+    if (converterinput == NULL) {
+      SoDebugError::post("SoField::connectFrom",
+                         "input field returned from field converter is NULL");
+      return FALSE;
+    } else if (converteroutput == NULL) {
+      SoDebugError::post("SoField::connectFrom",
+                         "output returned from field converter is NULL");
+      return FALSE;
+    }
+#endif // COIN_DEBUG
+
     // Link up the input SoField of the SoFieldConverter to the master
     // SoEngineOutput by recursively calling connectFrom().
-    SoField * converterinput = conv->getInput(mastertype);
     // the converter engine should always be notified upon connection
     // as it will never have a default value read in from a file
     converterinput->connectFrom(master, FALSE);
 
     // Connect from the SoFieldConverter output to the slave field.
-    SoEngineOutput * converteroutput =
-      conv->getOutput(this->getTypeId());
     converteroutput->addConnection(this);
 
     // Remember the connection from the slave field to the
