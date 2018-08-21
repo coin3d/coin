@@ -50,7 +50,7 @@ pipelines:
             - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"fedora-build.tgz" --form files=@"fedora-build-$(hg id --num --rev tip).tgz"
       # ubuntu build
       - step:
-          image: ggabbiani/ubuntu-coin:latest
+          image: ggabbiani/coin:ubuntu
           script:
             - mkdir target
             - cd target
