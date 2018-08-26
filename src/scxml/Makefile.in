@@ -95,7 +95,7 @@ LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 scxml_lst_AR = $(AR) $(ARFLAGS)
 scxml_lst_LIBADD =
-am__scxml_lst_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
+am__scxml_lst_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
 	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
 	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
 	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
@@ -113,7 +113,7 @@ am__scxml_lst_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
 	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
 	all-scxml2-cpp.cpp
 am__objects_1 = SbStringConvert.$(OBJEXT) ScXML.$(OBJEXT) \
-	ScXMLObject.$(OBJEXT) ScXMLEvent.$(OBJEXT) \
+	ScXMLP.$(OBJEXT) ScXMLObject.$(OBJEXT) ScXMLEvent.$(OBJEXT) \
 	ScXMLEventTarget.$(OBJEXT) ScXMLStateMachine.$(OBJEXT) \
 	ScXMLDocument.$(OBJEXT) ScXMLElt.$(OBJEXT) \
 	ScXMLScxmlElt.$(OBJEXT) ScXMLInitialElt.$(OBJEXT) \
@@ -139,7 +139,7 @@ am__objects_2 = all-scxml-cpp.$(OBJEXT) all-scxml2-cpp.$(OBJEXT)
 am_scxml_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_scxml_lst_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
 	ScXMLCommonP.h eval-minimum.h eval-coin.h all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp \
+	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
 	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
 	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
 	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
@@ -161,7 +161,7 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libscxml_la_LIBADD =
 am__libscxml_la_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
-	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLP.cpp ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
 	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
 	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
 	ScXMLAbstractStateElt.cpp ScXMLStateElt.cpp \
@@ -177,7 +177,7 @@ am__libscxml_la_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
 	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
 	all-scxml2-cpp.cpp
-am__objects_6 = SbStringConvert.lo ScXML.lo ScXMLObject.lo \
+am__objects_6 = SbStringConvert.lo ScXML.lo ScXMLP.lo ScXMLObject.lo \
 	ScXMLEvent.lo ScXMLEventTarget.lo ScXMLStateMachine.lo \
 	ScXMLDocument.lo ScXMLElt.lo ScXMLScxmlElt.lo \
 	ScXMLInitialElt.lo ScXMLAbstractStateElt.lo ScXMLStateElt.lo \
@@ -197,7 +197,7 @@ am__objects_7 = all-scxml-cpp.lo all-scxml2-cpp.lo
 am_libscxml_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml_la_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
 	ScXMLCommonP.h eval-minimum.h eval-coin.h all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp \
+	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
 	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
 	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
 	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
@@ -216,9 +216,9 @@ am__EXTRA_libscxml_la_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
 libscxml_la_OBJECTS = $(am_libscxml_la_OBJECTS)
 libscxml@SUFFIX@LINKHACK_la_LIBADD =
 am__libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = SbStringConvert.cpp \
-	ScXML.cpp ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
-	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
-	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
+	ScXML.cpp ScXMLP.cpp ScXMLObject.cpp ScXMLEvent.cpp \
+	ScXMLEventTarget.cpp ScXMLStateMachine.cpp ScXMLDocument.cpp \
+	ScXMLElt.cpp ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
 	ScXMLAbstractStateElt.cpp ScXMLStateElt.cpp \
 	ScXMLParallelElt.cpp ScXMLFinalElt.cpp ScXMLOnEntryElt.cpp \
 	ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp ScXMLHistoryElt.cpp \
@@ -236,19 +236,19 @@ am_libscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST =  \
 	SbStringConvert.h ScXMLP.h ScXMLCommonP.h eval-minimum.h \
 	eval-coin.h all-scxml-cpp.cpp all-scxml2-cpp.cpp \
-	SbStringConvert.cpp ScXML.cpp ScXMLObject.cpp ScXMLEvent.cpp \
-	ScXMLEventTarget.cpp ScXMLStateMachine.cpp ScXMLDocument.cpp \
-	ScXMLElt.cpp ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
-	ScXMLAbstractStateElt.cpp ScXMLStateElt.cpp \
-	ScXMLParallelElt.cpp ScXMLFinalElt.cpp ScXMLOnEntryElt.cpp \
-	ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp ScXMLHistoryElt.cpp \
-	ScXMLExecutableElt.cpp ScXMLEventElt.cpp ScXMLIfElt.cpp \
-	ScXMLElseIfElt.cpp ScXMLElseElt.cpp ScXMLLogElt.cpp \
-	ScXMLDataModelElt.cpp ScXMLDataElt.cpp ScXMLAssignElt.cpp \
-	ScXMLValidateElt.cpp ScXMLSendElt.cpp ScXMLInvokeElt.cpp \
-	ScXMLParamElt.cpp ScXMLFinalizeElt.cpp ScXMLContentElt.cpp \
-	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
-	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	SbStringConvert.cpp ScXML.cpp ScXMLP.cpp ScXMLObject.cpp \
+	ScXMLEvent.cpp ScXMLEventTarget.cpp ScXMLStateMachine.cpp \
+	ScXMLDocument.cpp ScXMLElt.cpp ScXMLScxmlElt.cpp \
+	ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
 	ScXMLECMAScriptEvaluator.cpp
 libscxml@SUFFIX@LINKHACK_la_OBJECTS =  \
@@ -311,6 +311,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnEntryElt.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExitElt.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLOnExitElt.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ScXMLP.Plo ./$(DEPDIR)/ScXMLP.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLParallelElt.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLParallelElt.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLParamElt.Plo \
@@ -617,6 +618,7 @@ RegularSources = \
         SbStringConvert.cpp \
         \
         ScXML.cpp \
+        ScXMLP.cpp \
         ScXMLObject.cpp \
         ScXMLEvent.cpp \
         ScXMLEventTarget.cpp \
@@ -873,6 +875,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnEntryElt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExitElt.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLOnExitElt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLP.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParallelElt.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParallelElt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLParamElt.Plo@am__quote@

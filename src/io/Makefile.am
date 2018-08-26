@@ -1,5 +1,6 @@
 RegularSources = \
 	SoInput.cpp \
+	SoInputP.cpp \
 	SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp \
 	SoOutput.cpp \
