@@ -11,6 +11,7 @@ LinkHackSources = \
 	all-actions-cpp.cpp
 RegularSources = \
 	SoAction.cpp \
+	SoActionP.cpp \
 	SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp \
 	SoGLRenderAction.cpp \

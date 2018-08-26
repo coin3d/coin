@@ -2,6 +2,7 @@ RegularSources = \
         SbStringConvert.cpp \
         \
         ScXML.cpp \
+        ScXMLP.cpp \
         ScXMLObject.cpp \
         ScXMLEvent.cpp \
         ScXMLEventTarget.cpp \
