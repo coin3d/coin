@@ -21,18 +21,16 @@ endif()
 
 add_definitions(-DCOIN_INTERNAL -DHAVE_CONFIG_H)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(-DCOIN_DEBUG=1)
-else()
-    add_definitions(-DCOIN_DEBUG=0)
-endif()
+add_compile_options(-DCOIN_DEBUG=$<CONFIG:Debug>)
 
-include_directories(BEFORE ${CMAKE_BINARY_DIR}/data)
-include_directories(BEFORE ../include/Inventor/annex)
-include_directories(BEFORE .)
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-include_directories(BEFORE ../include)
-include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
+include_directories(
+	${CMAKE_BINARY_DIR}/include
+	${CMAKE_SOURCE_DIR}/include
+	${CMAKE_CURRENT_BINARY_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_SOURCE_DIR}/include/Inventor/annex
+	${CMAKE_BINARY_DIR}/data
+)
 
 if(COIN_BUILD_SINGLE_LIB)
 	if(WIN32 AND COIN_BUILD_SHARED_LIBS)
@@ -54,7 +52,7 @@ set(SUBDIRS
 
 foreach(SUBDIR ${SUBDIRS})
     add_subdirectory(${SUBDIR})
-endforeach(SUBDIR)
+endforeach()
 add_subdirectory(doc)
 
 if(COIN_BUILD_SINGLE_LIB)
@@ -164,9 +162,9 @@ else()
 endif()
  
 if(COIN_BUILD_SHARED_LIBS)
-	target_compile_definitions(Coin INTERFACE -DCOIN_DLL)
+	target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_DLL)
 else()
-	target_compile_definitions(Coin INTERFACE -DCOIN_NOT_DLL)
+	target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_NOT_DLL)
 endif()
 
 if(HAVE_LIBSIMAGE)
@@ -179,32 +177,30 @@ endif()
 
 find_package(OpenGL)
 target_link_libraries(Coin ${OPENGL_LIBRARIES})
-target_include_directories(Coin INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
+target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
 
-set_target_properties(Coin PROPERTIES VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION})
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
 
-install(TARGETS Coin EXPORT Coin
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
 )
 
 if(COIN_BUILD_SHARED_LIBS)
-	install(TARGETS	Coin EXPORT Coin LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+	install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
 endif()
 
 if(MSVC)
 	if(COIN_BUILD_SHARED_LIBS)
-		if(${CMAKE_MAJOR_VERSION} GREATER 2 AND ${CMAKE_MINOR_VERSION} GREATER 0)
-			install(FILES $<TARGET_PDB_FILE:Coin> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
-		else()
-			install(FILES ${PROJECT_BINARY_DIR}/src/Debug/Coin${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug COMPONENT debug)
-			install(FILES ${PROJECT_BINARY_DIR}/src/RelWithDebInfo/Coin${CMAKE_RELWITHDEBINFO_POSTFIX}.pdb DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS RelWithDebInfo COMPONENT debug)
-		endif()
+		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
 	else()
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
 		set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
 	endif()
+	# Suppress warning about empty switch statement in Bison-generated files:
+	set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
+	set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
 endif()
 
 # Support find_package(Coin NO_MODULE).
@@ -213,24 +209,31 @@ set(COIN_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
 include(CMakePackageConfigHelpers)
-configure_package_config_file(CoinConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake
-                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION}
-                              PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR COIN_DOC_DIR)
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake"
-  VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VERSION}
+
+configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake
+	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+	PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR COIN_DOC_DIR
+)
+
+write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake
+	VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CoinConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/CoinConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION} COMPONENT development)
-install(EXPORT Coin
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Coin-${COIN_VERSION}
-        NAMESPACE Coin::
-        FILE CoinExport.cmake
-        COMPONENT development)
 
-# Suppress warning about empty switch statement in Bison-generated files:
-if (MSVC)
-	set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
-	set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
-endif()
+# To make the component usable not only from the install directory but also from the build directory
+export(
+	TARGETS ${PROJECT_NAME}
+	FILE ${PROJECT_NAME_LOWER}-export.cmake
+)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+	COMPONENT development
+)
+
+install(EXPORT ${PROJECT_NAME}
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+	NAMESPACE ${PROJECT_NAME}::
+	FILE ${PROJECT_NAME_LOWER}-export.cmake
+	COMPONENT development
+)
