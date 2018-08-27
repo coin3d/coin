@@ -25,7 +25,7 @@
 #cmakedefine COIN_INT8_T @COIN_INT8_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INTPTR_T intptr_t
+#cmakedefine COIN_INTPTR_T @COIN_INTPTR_T@
 
 /* Define when building Mac OS X framework */
 #cmakedefine COIN_MACOSX_FRAMEWORK
@@ -70,7 +70,7 @@
 #cmakedefine COIN_UINT8_T @COIN_UINT8_T@
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINTPTR_T uintptr_t
+#cmakedefine COIN_UINTPTR_T @COIN_UINTPTR_T@
 
 /* define to "remove" conflicting IN_PATH define from <sys/unistd.h> */
 /* #undef COIN_UNDEF_IN_PATH_HACK */
@@ -205,7 +205,7 @@
 #cmakedefine HAVE_INT8_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_INTPTR_T 1
+#cmakedefine HAVE_INTPTR_T 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #cmakedefine HAVE_INTTYPES_H 1
@@ -343,7 +343,7 @@
 #cmakedefine HAVE_UINT8_T 1
 
 /* define this if the type is available on the system */
-#define HAVE_UINTPTR_T 1
+#cmakedefine HAVE_UINTPTR_T 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine HAVE_UNISTD_H 1
