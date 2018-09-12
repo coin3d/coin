@@ -137,7 +137,7 @@ spidermonkey(void)
   /* Be optimistic. */
   sm->available = 1;
 
-#if SPIDERMONKEY_RUNTIME_LINKING
+#ifdef SPIDERMONKEY_RUNTIME_LINKING
 
   {
     unsigned int idx;
