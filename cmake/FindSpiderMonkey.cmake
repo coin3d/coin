@@ -1,31 +1,31 @@
-# Find the SPIDERMONKEY header files and libraries
-#
-#  SPIDERMONKEY_INCLUDE_DIR    - where to find jsapi.h, etc.
-#  SPIDERMONKEY_LIBRARIES      - SpiderMonkey libraries to link against
-#  SPIDERMONKEY_FOUND          - True if SpiderMonkey found.
-#  SPIDERMONKEY_VERSION        - version string of the library found
-#
+# - Try to find the SpiderMonkey library
+# Once done this will define
+#  SPIDERMONKEY_FOUND - True if SpiderMonkey found.
+#  SPIDERMONKEY_INCLUDE_DIRS - The SpiderMonkey include directories.
+#  SPIDERMONKEY_LIBRARIES - The libraries needed to use SpiderMonkey
+#  SPIDERMONKEY_DEFINITIONS - Compiler switches required for using SpiderMonkey
+#  SPIDERMONKEY_VERSION - Version of the SpiderMonkey library
 
-if(SPIDERMONKEY_INCLUDE_DIR AND SPIDERMONKEY_LIBRARIES)
-  set(Spidermonkey_FIND_QUIETLY TRUE)
+if(SPIDERMONKEY_INCLUDE_DIRS AND SPIDERMONKEY_LIBRARIES)
+  set(SpiderMonkey_FIND_QUIETLY TRUE)
 endif()
 
 if(SPIDERMONKEY_ROOT)
   set(include_PATHS PATHS "${SPIDERMONKEY_ROOT}/include" NO_DEFAULT_PATH)
   set(library_PATHS PATHS "${SPIDERMONKEY_ROOT}/lib" NO_DEFAULT_PATH)
 else()
-  set(include_PATHS PATHS "/usr/include/;/usr/local/include/")
+  set(include_PATHS PATHS /usr/include /usr/local/include)
 endif()
 
 find_path(
   SPIDERMONKEY_INCLUDE_DIR
-  js/jsapi.h
+  NAMES jsapi.h
   ${include_PATHS}
   PATH_SUFFIXES
-    mozjs-60 mozjs-52 mozjs-45 mozjs-38 mozjs-31 mozjs-24
+    mozjs-60 mozjs-52 mozjs-45 mozjs-38 mozjs-31 mozjs-24 mozjs-17.0 js-17.0 js-1.7.0
 )
 
-string(REGEX REPLACE "^.*mozjs-([0-9]+).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
+string(REGEX REPLACE "^.*js-([0-9]+[.]?[0-9]?[.]?[0-9]?).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
 
 find_library(
   SPIDERMONKEY_LIBRARY
@@ -33,24 +33,18 @@ find_library(
   ${library_PATHS}
 )
 
-set(SPIDERMONKEY_LIBRARIES ${SPIDERMONKEY_LIBRARY})
-
-set(CMAKE_REQUIRED_INCLUDES ${SPIDERMONKEY_INCLUDE_DIR})
-set(CMAKE_REQUIRED_DEFINITIONS ${SPIDERMONKEY_DEFINITIONS})
-list(APPEND CMAKE_REQUIRED_LIBRARIES ${SPIDERMONKEY_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
+# handle the QUIETLY and REQUIRED arguments and set SPIDERMONKEY_FOUND to TRUE
+# if all listed variables are TRUE
 find_package_handle_standard_args(
-  Spidermonkey
+  SpiderMonkey
   DEFAULT_MSG
-  SPIDERMONKEY_LIBRARIES
+  SPIDERMONKEY_LIBRARY
   SPIDERMONKEY_INCLUDE_DIR)
 
-if(SPIDERMONKEY_FOUND)
-  message(STATUS "Found SpiderMonkey ${SPIDERMONKEY_VERSION} in ${SPIDERMONKEY_INCLUDE_DIR}")
-endif()
-
-list(REMOVE_ITEM CMAKE_REQUIRED_LIBRARIES ${SPIDERMONKEY_LIBRARY})
-list(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
 mark_as_advanced(SPIDERMONKEY_INCLUDE_DIR SPIDERMONKEY_LIBRARY)
-mark_as_advanced(SPIDERMONKEY_JS_CONFIG_HEADER_PATH)
+
+set(SPIDERMONKEY_LIBRARIES ${SPIDERMONKEY_LIBRARY})
+set(SPIDERMONKEY_INCLUDE_DIRS ${SPIDERMONKEY_INCLUDE_DIR})
+
