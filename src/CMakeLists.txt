@@ -29,6 +29,17 @@ include_directories(
   ${CMAKE_BINARY_DIR}/data
 )
 
+# add include dirs for non targets
+if(NOT "${COIN_TARGET_INCLUDE_DIRECTORIES}" STREQUAL "")
+  include_directories("${COIN_TARGET_INCLUDE_DIRECTORIES}")
+endif()
+# add include dirs for targets
+foreach(tgt ${COIN_TARGET_LINK_LIBRARIES})
+  if(TARGET ${tgt} )
+    include_directories($<TARGET_PROPERTY:${tgt},INTERFACE_INCLUDE_DIRECTORIES>)
+  endif()
+endforeach()
+
 set(COIN_SOURCE tidbits.cpp CACHE INTERNAL "COIN_SOURCE")
 set(SUBDIRS
   extensions xml actions base bundles caches details draggers elements
@@ -41,18 +52,6 @@ set(SUBDIRS
 foreach(SUBDIR ${SUBDIRS})
   add_subdirectory(${SUBDIR})
 endforeach()
-
-# we cannot use target_link_libraries when we build object libraries, so we have to add include dirs manually
-if(TARGET glue)
-  # add include dirs for non targets
-  target_include_directories(glue INTERFACE "${COIN_TARGET_INCLUDE_DIRECTORIES}")
-  # add include dirs for targets
-  foreach(tgt ${COIN_TARGET_LINK_LIBRARIES})
-    if(TARGET ${tgt})
-      target_include_directories(glue INTERFACE $<TARGET_PROPERTY:${tgt},INTERFACE_INCLUDE_DIRECTORIES>)
-    endif()
-  endforeach()
-endif()
 add_subdirectory(doc)
 
 if(COIN_BUILD_SHARED_LIBS)
@@ -117,27 +116,33 @@ else()
   )
 endif()
 
-if(COIN_BUILD_SHARED_LIBS)
-  target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_DLL)
-else()
-  target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_NOT_DLL)
+if(WIN32)
+  if(COIN_BUILD_SHARED_LIBS)
+    target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_DLL)
+  else()
+    target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_NOT_DLL)
+  endif()
 endif()
 
-#if(HAVE_LIBSIMAGE)
-# target_link_libraries(${PROJECT_NAME} simage::simage)
-#endif()
-#
-#if (EXPAT_FOUND)
-# target_link_libraries(${PROJECT_NAME} ${EXPAT_LIBRARIES})
-#endif()
-#
-#find_package(OpenGL)
-#target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+if(MSVC)
+  if(NOT COIN_BUILD_SHARED_LIBS)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
+  endif()
+  # Suppress warning about empty switch statement in Bison-generated files:
+  set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
+  set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
+endif()
+
 target_include_directories(${PROJECT_NAME} PRIVATE "${COIN_TARGET_INCLUDE_DIRECTORIES}")
 target_link_libraries(${PROJECT_NAME} PRIVATE "${COIN_TARGET_LINK_LIBRARIES}")
 target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+
+# ############################################################################
+# Install binaries and config package
+# ############################################################################
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
@@ -147,18 +152,9 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
 
 if(COIN_BUILD_SHARED_LIBS)
   install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
-endif()
-
-if(MSVC)
-  if(COIN_BUILD_SHARED_LIBS)
+  if(MSVC)
     install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
-  else()
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
   endif()
-  # Suppress warning about empty switch statement in Bison-generated files:
-  set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
-  set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
 endif()
 
 # Support find_package(Coin NO_MODULE).
@@ -195,3 +191,4 @@ install(EXPORT ${PROJECT_NAME}
   FILE ${PROJECT_NAME_LOWER}-export.cmake
   COMPONENT development
 )
+

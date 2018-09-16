@@ -10,61 +10,32 @@ project(Coin VERSION ${COIN_MAJOR_VERSION}.${COIN_MINOR_VERSION}.${COIN_MICRO_VE
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 string(TIMESTAMP COIN_BUILD_YEAR "%Y")
-math(EXPR COIN_SO_VERSION ${COIN_MAJOR_VERSION}*20)
+math(EXPR COIN_SO_VERSION ${PROJECT_VERSION_MAJOR}*20)
 
-############################################################################
+# ############################################################################
 # these will be removed after upgrading CMake minimum version
 set(PROJECT_DESCRIPTION   "A high-level 3D visualization library with Open Inventor 2.1 API")
-############################################################################
+# ############################################################################
 
 # get rid of OpenGL GLVND warning from CMake 3.11
 if (NOT CMAKE_VERSION VERSION_LESS "3.11") # CMake 3.5 has no VERSION_GREATER_EQUAL
   cmake_policy(SET CMP0072 NEW)
 endif()
 
-# option controlled helper for cmake variable dumping during config
-function(dump_variable)
-  if (COIN_VERBOSE)
-    foreach(f ${ARGN})
-      message("${f} = ${${f}}")
-    endforeach()
-  endif(COIN_VERBOSE)
-endfunction(dump_variable)
+# ############################################################################
+# Prevent insource builds, as they often cause severe build problems
+# ############################################################################
 
-# modifies the install directory passed by postfix, either substituting 'Coin' 
-# with 'Coin${COIN_MAJOR_VERSION}' or adding the same versioned name after the 
-# postfix part.
-#
-# Example: 
-# versionize(INCLUDEDIR DOCDIR) will modify
-#
-# CMAKE_INSTALL_DOCDIR          'share/doc/Coin'          --> 'share/doc/Coin4'
-# CMAKE_INSTALL_FULL_DOCDIR     '<prefix>/share/doc/Coin' --> '<prefix>/share/doc/Coin4'
-#
-# CMAKE_INSTALL_INCLUDEDIR      'include'          --> 'include/Coin4'
-# CMAKE_INSTALL_FULL_INCLUDEDIR '<prefix>/include' --> '<prefix>/include/Coin4'
-function(versionize)
-  foreach(dir ${ARGN})
-    set(name      "CMAKE_INSTALL_${dir}")
-    set(full-name "CMAKE_INSTALL_FULL_${dir}")
-    if(${name} MATCHES ${PROJECT_NAME})
-      string(REPLACE "${PROJECT_NAME}" "${PROJECT_NAME}${COIN_MAJOR_VERSION}" value      "${${name}}")
-      string(REPLACE "${PROJECT_NAME}" "${PROJECT_NAME}${COIN_MAJOR_VERSION}" full-value "${${full-name}}")
-    else()
-      set(value      "${${name}}/${PROJECT_NAME}${COIN_MAJOR_VERSION}")
-      set(full-value "${CMAKE_INSTALL_PREFIX}/${value}")
-    endif()
-    set(${name}      ${value}      PARENT_SCOPE)
-    set(${full-name} ${full-value} PARENT_SCOPE)
-  endforeach()
-endfunction()
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(FATAL_ERROR "${CMAKE_PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake <path_to_${CMAKE_PROJECT_NAME}> [options]' from there.")
+endif()
 
-option(COIN_VERBOSE          "Add verbose debugging information during the configure process")
-option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise.")
-option(COIN_QT_HELP          "Generate QTHelp Documentation files")
+# ############################################################################
+# Include necessary submodules
+# ############################################################################
 
-# add path for Coin specific helper scripts
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+# Add path for Coin specific helper scripts
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 include(CheckCSourceRuns)
 include(CheckIncludeFile)
@@ -75,47 +46,32 @@ include(CheckStructHasMember)
 include(CheckTypeSize)
 include(CMakeDependentOption)
 include(GNUInstallDirs)
+include(FeatureSummary)
+include(CoinCMakeUtilities)
 
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
-  message(FATAL_ERROR "${CMAKE_PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake <path_to_${CMAKE_PROJECT_NAME}> [options]' from there.")
-endif()
+# ############################################################################
+# Provide options to customise the build
+# ############################################################################
 
-set(CMAKE_BUILD_TYPE Release) # has no effect for multi configuration generators (VisualStudio, Xcode)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+option(COIN_BUILD_SHARED_LIBS "Build shared library when ON (default), static when OFF." ON)
+option(COIN_BUILD_TESTS "Build unit tests when ON (default), skips them when OFF." ON)
+option(COIN_BUILD_DOCUMENTATION "Create and install API documentation (requires Doxygen)" ON)
+cmake_dependent_option(COIN_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API (depends on COIN_BUILD_DOCUMENTATION)" OFF "COIN_BUILD_DOCUMENTATION" OFF)
+cmake_dependent_option(COIN_BUILD_DOCUMENTATION_MAN "Build and install Coin man pages." OFF "COIN_BUILD_DOCUMENTATION" OFF)
+cmake_dependent_option(COIN_BUILD_DOCUMENTATION_QTHELP "Generate QtHelp documentation files" OFF "COIN_BUILD_DOCUMENTATION" OFF)
+cmake_dependent_option(COIN_BUILD_DOCUMENTATION_CHM "Create compressed HTML help (requires HTML help compiler)" OFF "COIN_BUILD_DOCUMENTATION" OFF)
 
-if (HAVE_MULTIPLE_VERSION)
-  # modifies the installation path for both the distributed includes and docs
-  versionize(INCLUDEDIR DOCDIR)
-endif (HAVE_MULTIPLE_VERSION)
-
-dump_variable(
-CMAKE_INSTALL_INCLUDEDIR
-CMAKE_INSTALL_FULL_INCLUDEDIR
-CMAKE_INSTALL_DOCDIR
-CMAKE_INSTALL_FULL_DOCDIR
-)
-
-option(COIN_BUILD_SHARED_LIBS "Build shared library when ON, static when OFF." ON)
-option(COIN_BUILD_TESTS "Build unit tests when ON, skips them when OFF." ON)
-
-option(COIN_THREADSAFE "Thread safe traversals." OFF)
-option(COIN_HAVE_JAVASCRIPT "JavaScript capabilities." ON)
-option(HAVE_VRML97 "VRML97 support." ON)
-option(HAVE_NODEKITS "Nodekit support." ON)
-cmake_dependent_option(HAVE_DRAGGERS "Dragger support." ON "HAVE_NODEKITS" OFF)
-cmake_dependent_option(HAVE_MANIPULATORS "Manipulator support." ON "HAVE_NODEKITS" OFF)
-option(HAVE_SOUND "Sound support." ON)
-option(HAVE_3DS_IMPORT_CAPABILITIES "3ds import capabilities." ON)
-option(HAVE_MAN "Build and install Coin man pages." OFF)
+option(COIN_THREADSAFE "Enable thread safe render traversals." OFF)
+option(HAVE_VRML97 "Enable VRML97 support." ON)
+cmake_dependent_option(COIN_HAVE_JAVASCRIPT "Enable JavaScript capabilities for VRML97." ON "HAVE_VRML97" OFF)
+option(HAVE_NODEKITS "Enable NodeKit support." ON)
+cmake_dependent_option(HAVE_DRAGGERS "Enable Dragger support." ON "HAVE_NODEKITS" OFF)
+cmake_dependent_option(HAVE_MANIPULATORS "Enable Manipulator support." ON "HAVE_NODEKITS" OFF)
+option(HAVE_SOUND "Enable OpenAL sound support." ON)
+option(HAVE_3DS_IMPORT_CAPABILITIES "Enable 3ds import capabilities." ON)
 option(USE_EXTERNAL_EXPAT "Use system install of expat." OFF)
-option(USE_EXCEPTIONS "(g++ only) compile with exceptions." ON)
-if(WIN32)
-  option(USE_SUPERGLU "Use superglu library when ON (default), GLU implementation of platform when OFF." ON)
-else()
-  option(USE_SUPERGLU "Use superglu library when ON, GLU implementation of platform when OFF (default)." OFF)
-endif()
+option(USE_EXCEPTIONS "Compile with exceptions (g++ only)." ON)
+option(USE_SUPERGLU "Use superglu library when ON, GLU implementation of platform when OFF (default)." OFF)
 
 option(FONTCONFIG_RUNTIME_LINKING   "Enable FontConfig runtime linking when ON (default), disable when OFF." ON)
 option(FREETYPE_RUNTIME_LINKING     "Enable FreeType runtime linking when ON (default), disable when OFF." ON)
@@ -126,17 +82,25 @@ option(ZLIB_RUNTIME_LINKING         "Enable ZLib runtime linking when ON (defaul
 option(GLU_RUNTIME_LINKING          "Enable GLU runtime linking when ON (default), disable when OFF." ON)
 option(SPIDERMONKEY_RUNTIME_LINKING "Enable SpiderMonkey runtime linking when ON (default), disable when OFF." ON)
 
-# fail early if one of the required packages cannot be found
+option(COIN_VERBOSE "Add verbose debugging information during the configure process." OFF)
+option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
 
-## Only needed if Coin's local Boost includes are removed and system installation is used.
-##set(Boost_USE_STATIC_LIBS   ON)
-##set(Boost_USE_MULTITHREADED ON)
+if(HAVE_MULTIPLE_VERSION)
+  # Modifies the installation path for both the distributed includes and docs
+  versionize(INCLUDEDIR DOCDIR)
+  dump_variable(CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_FULL_INCLUDEDIR CMAKE_INSTALL_DOCDIR CMAKE_INSTALL_FULL_DOCDIR)
+endif()
+
+# ############################################################################
+# Find all necessary and optional Coin3D dependencies
+# ############################################################################
+
+# Fail early if one of the required packages cannot be found
+
+# This is needed when Coins local Boost includes are removed and system installation of Boost is used.
 #find_package(Boost REQUIRED) # almost any Boost will do
 #list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIRS})
 
-if(COIN_BUILD_SHARED_LIBS)
-  set(keyword_PRIVATE PRIVATE)
-endif()
 # As not all CMake FindXXX modules and config packages provide target support,
 # we should define them on our own.
 find_package(OpenGL REQUIRED)
@@ -158,17 +122,50 @@ if(OPENGL_FOUND)
   endif()
 endif()
 
-if(HAVE_SOUND)
-  if(NOT OPENAL_RUNTIME_LINKING)
-    find_package(OpenAL)
-    if(OpenAL_FOUND)
-      set(HAVE_OPENAL 1)
-      #include_directories(${OPENAL_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${OPENAL_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${OPENAL_LIBRARY})
-      check_include_file(AL/al.h HAVE_AL_AL_H)
-      check_include_file(OpenAL/al.h HAVE_OPENAL_AL_H)
+set(CMAKE_THREAD_PREFER_PTHREAD 1)
+find_package(Threads)
+if(Threads_FOUND)
+  set(HAVE_THREADS 1)
+  if(CMAKE_USE_WIN32_THREADS_INIT)
+    set(USE_W32THREAD 1)
+    set(COIN_THREADID_TYPE DWORD)
+  elseif(CMAKE_USE_PTHREADS_INIT)
+    set(USE_PTHREAD 1)
+    set(COIN_THREADID_TYPE pthread_t)
+  endif()
+  #include_directories(${THREADS_INCLUDE_DIRS})
+  if (NOT TARGET Threads::Threads)
+    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${THREADS_INCLUDE_DIRS})
+    list(APPEND COIN_TARGET_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+  else()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES Threads::Threads)
+  endif()
+endif()
+
+if(USE_EXTERNAL_EXPAT)
+  find_package(EXPAT)
+  if(EXPAT_FOUND)
+    set(HAVE_EXPAT 1)
+    #include_directories(${EXPAT_INCLUDE_DIRS})
+    if (NOT TARGET EXPAT::EXPAT)
+      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${EXPAT_INCLUDE_DIRS})
+      list(APPEND COIN_TARGET_LINK_LIBRARIES ${EXPAT_LIBRARIES})
+    else()
+      list(APPEND COIN_TARGET_LINK_LIBRARIES EXPAT::EXPAT)
     endif()
+  endif()
+endif()
+
+if(USE_SUPERGLU)
+  find_package(superglu)
+  if(superglu_FOUND)
+    set(HAVE_SUPERGLU 1)
+    set(GLU_RUNTIME_LINKING OFF)
+    list(REMOVE_ITEM COIN_TARGET_LINK_LIBRARIES ${OPENGL_glu_LIBRARY})
+    if(TARGET OpenGL::GLU)
+      list(REMOVE_ITEM COIN_TARGET_LINK_LIBRARIES OpenGL::GLU)
+    endif()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES superglu::GLU)
   endif()
 endif()
 
@@ -185,6 +182,20 @@ endif()
 # #include_directories(${BISON_INCLUDE_DIRS})
 # #list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${BISON_INCLUDE_DIRS})
 #endif()
+
+if(HAVE_SOUND)
+  if(NOT OPENAL_RUNTIME_LINKING)
+    find_package(OpenAL)
+    if(OpenAL_FOUND)
+      set(HAVE_OPENAL 1)
+      #include_directories(${OPENAL_INCLUDE_DIRS})
+      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${OPENAL_INCLUDE_DIRS})
+      list(APPEND COIN_TARGET_LINK_LIBRARIES ${OPENAL_LIBRARY})
+      check_include_file(AL/al.h HAVE_AL_AL_H)
+      check_include_file(OpenAL/al.h HAVE_OPENAL_AL_H)
+    endif()
+  endif()
+endif()
 
 if(NOT ZLIB_RUNTIME_LINKING)
   find_package(ZLIB)
@@ -214,26 +225,6 @@ if(NOT LIBBZIP2_RUNTIME_LINKING)
   endif()
 endif()
 
-set(CMAKE_THREAD_PREFER_PTHREAD 1)
-find_package(Threads)
-if(Threads_FOUND)
-  set(HAVE_THREADS 1)
-  if(CMAKE_USE_WIN32_THREADS_INIT)
-    set(USE_W32THREAD 1)
-    set(COIN_THREADID_TYPE DWORD)
-  elseif(CMAKE_USE_PTHREADS_INIT)
-    set(USE_PTHREAD 1)
-    set(COIN_THREADID_TYPE pthread_t)
-  endif()
-  #include_directories(${THREADS_INCLUDE_DIRS})
-  if (NOT TARGET Threads::Threads)
-    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${THREADS_INCLUDE_DIRS})
-    list(APPEND COIN_TARGET_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
-  else()
-    list(APPEND COIN_TARGET_LINK_LIBRARIES Threads::Threads)
-  endif()
-endif()
-
 if(NOT FREETYPE_RUNTIME_LINKING)
   find_package(Freetype)
   if(Freetype_FOUND)
@@ -245,16 +236,18 @@ if(NOT FREETYPE_RUNTIME_LINKING)
     else()
       list(APPEND COIN_TARGET_LINK_LIBRARIES Freetype::Freetype)
     endif()
+    check_include_file(ft2build.h HAVE_FREETYPE_H)
   endif()
 endif()
 
 if(NOT FONTCONFIG_RUNTIME_LINKING)
-  find_package(FontConfig)
+  find_package(Fontconfig)
   if(FONTCONFIG_FOUND)
     set(HAVE_FONTCONFIG 1)
     #include_directories(${FONTCONFIG_INCLUDE_DIR})
     list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${FONTCONFIG_INCLUDE_DIR})
     list(APPEND COIN_TARGET_LINK_LIBRARIES ${FONTCONFIG_LIBRARY})
+    check_include_file(fontconfig/fontconfig.h HAVE_FONTCONFIG_H)
   endif()
 endif()
 
@@ -263,23 +256,9 @@ if(HAVE_VRML97 AND COIN_HAVE_JAVASCRIPT)
     find_package(SpiderMonkey)
     if(SPIDERMONKEY_FOUND)
       set(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING 1)
-      #include_directories(${SPIDERMONKEY_INCLUDE_DIR})
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${SPIDERMONKEY_INCLUDE_DIR})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${SPIDERMONKEY_LIBRARY})
-    endif()
-  endif()
-endif()
-
-if(USE_EXTERNAL_EXPAT)
-  find_package(EXPAT)
-  if(EXPAT_FOUND)
-    set(HAVE_EXPAT 1)
-    #include_directories(${EXPAT_INCLUDE_DIRS})
-    if (NOT TARGET EXPAT::EXPAT)
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${EXPAT_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${EXPAT_LIBRARIES})
-    else()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${keyword_PRIVATE} EXPAT::EXPAT)
+      #include_directories(${SPIDERMONKEY_INCLUDE_DIRS})
+      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${SPIDERMONKEY_INCLUDE_DIRS})
+      list(APPEND COIN_TARGET_LINK_LIBRARIES ${SPIDERMONKEY_LIBRARIES})
     endif()
   endif()
 endif()
@@ -294,36 +273,23 @@ if(NOT SIMAGE_RUNTIME_LINKING)
   endif()
 endif()
 
-if(USE_SUPERGLU)
-  find_package(superglu)
-  if(superglu_FOUND)
-    set(HAVE_SUPERGLU 1)
-    set(GLU_RUNTIME_LINKING OFF)
-    list(REMOVE_ITEM COIN_TARGET_LINK_LIBRARIES ${OPENGL_glu_LIBRARY})
-    if(TARGET OpenGL::GLU)
-      list(REMOVE_ITEM COIN_TARGET_LINK_LIBRARIES OpenGL::GLU)
-    endif()
-    list(APPEND COIN_TARGET_LINK_LIBRARIES ${keyword_PRIVATE} superglu::GLU)
-  endif()
+message(STATUS "${COIN_TARGET_INCLUDE_DIRECTORIES}")
+message(STATUS "${COIN_TARGET_LINK_LIBRARIES}")
+
+# ##########################################################################
+# Setup build environment
+# ##########################################################################
+
+if(NOT CMAKE_BUILD_TYPE)
+  # Has no effect for multi configuration generators (VisualStudio, Xcode).
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose type of build, options are Debug, Release, RelWithDebInfo, MinSizeRel." FORCE)
 endif()
+# Set common output directories for all targets built.
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Checks all specified types for existence and sets variable and sets a variable HAVE_<type_name>
-# if so. Additionally a variable named <type_name> is set to the size of the type.
-# Moreover, ${TYPE_VARIABLE} will be set to the first type matching the specified ${TYPE_SIZE}.
-include(CheckTypeSize)
-macro(find_int_type_with_size TYPE_VARIABLE TYPE_SIZE)
-  set(${TYPE_VARIABLE} "")
-  foreach(TYPE ${ARGN})
-    string(TOUPPER ${TYPE} TYPE_VAR)
-    string(REPLACE " " "_" TYPE_VAR ${TYPE_VAR})
-    check_type_size(${TYPE} ${TYPE_VAR})
-    if((${TYPE_VAR} STREQUAL ${TYPE_SIZE}) AND (NOT ${TYPE_VARIABLE}))
-      set(${TYPE_VARIABLE} ${TYPE})
-      break()
-    endif()
-  endforeach(TYPE ${ARGN})
-endmacro()
-
+# Checks for existence of specified types and set variable to the first type found
 find_int_type_with_size(COIN_INT8_T 1 "int8_t" "char")
 find_int_type_with_size(COIN_UINT8_T 1 "uint8_t" "u_int8_t" "unsigned char")
 find_int_type_with_size(COIN_INT16_T 2 "int16_t" "short" "int")
@@ -349,7 +315,7 @@ if(MSVC)
     add_definitions(-DCOIN_MAKE_DLL)
   endif()
 
-  # enable C++ exception handling (for code that uses boost in SbByteBuffer)
+  # Enable C++ exception handling (for code that uses boost in SbByteBuffer)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS)
@@ -361,7 +327,7 @@ set(HAVE_GZDOPEN 1)
 if(WIN32)
   set(HAVE_WIN32_API 1)
   set(HAVE_WGL 1)
-  # on Windows the major version number is part of the library name
+  # On Windows the major version number is part of the library name
   if(COIN_BUILD_SHARED_LIBS)
     set(CMAKE_RELEASE_POSTFIX ${PROJECT_VERSION_MAJOR})
     set(CMAKE_MINSIZEREL_POSTFIX ${PROJECT_VERSION_MAJOR})
@@ -380,13 +346,14 @@ elseif(APPLE)
   set(CMAKE_SHARED_LINKER_FLAGS "-framework CoreFoundation -framework CoreGraphics")
   set(HAVE_GZDOPEN)
 
-  # let's enable all OS X specific code
+  # Let's enable all OS X specific code
   set(COIN_MACOSX_FRAMEWORK 1)
   set(COIN_MACOS_10 1)
   set(COIN_MACOS_10_3 1)
 else()
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
+
 include_directories(${CMAKE_BINARY_DIR}/include)
 
 check_include_file(inttypes.h HAVE_INTTYPES_H)
@@ -403,7 +370,8 @@ check_include_file(ieeefp.h HAVE_IEEEFP_H)
 check_include_file(time.h HAVE_TIME_H)
 check_include_files("stdlib.h;stdarg.h;string.h;float.h" STDC_HEADERS)
 
-# I do not have any FreeBSD knowledge, but should this not be handled already by the find_package(OpenGL) and the following include_directories call?
+# I do not have any FreeBSD knowledge, but should this not have been handled already by the 
+# find_package(OpenGL) and the following include_directories call?
 
 # On FreeBSD (possibly other BSDs as well), GL/gl.h does not live
 # in the standard search paths. Test for it explicitly.
@@ -441,7 +409,6 @@ else()
 
   check_include_file(X11/Xlib.h HAVE_X11_AVAILABLE)
 endif()
-check_include_file(fontconfig.h HAVE_FONTCONFIG_H)
 
 if(HAVE_WINDOWS_H)
   check_include_files("windows.h;GL/gl.h" HAVE_GL_GL_H)
@@ -559,7 +526,7 @@ endif()
 
 check_struct_has_member("struct timespec" tv_nsec pthread.h HAVE_PTHREAD_TIMESPEC_NSEC)
 
-## setting SIM_TIMEVAL_TV_SEC_T & SIM_TIMEVAL_TV_USEC_T for determining correct variable size
+# Setting SIM_TIMEVAL_TV_SEC_T & SIM_TIMEVAL_TV_USEC_T for determining correct variable size
 if(WIN32)
   set(CMAKE_EXTRA_INCLUDE_FILES winsock2.h)
 else()
@@ -638,6 +605,10 @@ else()
   set(FEAT_HAVE_SAFETHREAD 0)
 endif()
 
+# ############################################################################
+# Setup targets in subdirectories
+# ############################################################################
+
 # COIN_DOCUMENTATION_FILES is filled with all source files.
 unset(COIN_DOCUMENTATION_FILES CACHE)
 # COIN_INTERNAL_DOCUMENTATION_FILES is filled with source files that are not part of the public API.
@@ -654,6 +625,23 @@ if(COIN_BUILD_TESTS)
   enable_testing()
   add_subdirectory(testsuite)
 endif()
+
+add_feature_info(ThreadSafe COIN_THREADSAFE "Thread safe render traversals.")
+add_feature_info(VRML97 HAVE_VRML97 "VRML97 support.")
+add_feature_info(JavaScript COIN_HAVE_JAVASCRIPT "JavaScript capabilities.")
+add_feature_info(NodeKits HAVE_NODEKITS "NodeKit support.")
+add_feature_info(Draggers HAVE_DRAGGERS "Dragger support.")
+add_feature_info(Manipulators HAVE_MANIPULATORS "Manipulator support.")
+add_feature_info(Sound HAVE_SOUND "Sound support.")
+add_feature_info(3dsImport HAVE_3DS_IMPORT_CAPABILITIES "3ds import capabilities.")
+add_feature_info(Expat USE_EXTERNAL_EXPAT "Use system install of expat.")
+add_feature_info(Exceptions USE_EXCEPTIONS "Compile with exceptions (g++ only).")
+add_feature_info(SuperGLU USE_SUPERGLU "Use superglu library.")
+feature_summary(WHAT ALL
+                INCLUDE_QUIET_PACKAGES
+                DESCRIPTION "Enabled Features:"
+                VAR enabledFeaturesText)
+message(STATUS "${enabledFeaturesText}")
 
 # ############################################################################
 # New CPACK section, please see the README file inside cpack.d directory.
