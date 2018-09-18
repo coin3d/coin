@@ -3,16 +3,16 @@
 # Ref. https://public.kitware.com/pipermail/cmake/2015-April/060350.html
 # Deal with @...@ configurable items:
   configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/config.h_at_configured
+    "${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/config.h_at_configured"
     @ONLY
     )
 # Deal with items configured with generator expressions:
   file(GENERATE
     OUTPUT
-    ${CMAKE_CURRENT_BINARY_DIR}/config.h
+    "${CMAKE_CURRENT_BINARY_DIR}/config.h"
     INPUT
-    ${CMAKE_CURRENT_BINARY_DIR}/config.h_at_configured
+    "${CMAKE_CURRENT_BINARY_DIR}/config.h_at_configured"
     )
 configure_file(setup.h.cmake.in setup.h)
 
@@ -20,13 +20,13 @@ add_definitions(-DCOIN_INTERNAL -DHAVE_CONFIG_H)
 
 add_compile_options(-DCOIN_DEBUG=$<CONFIG:Debug>)
 
-include_directories(
-  ${CMAKE_BINARY_DIR}/include
-  ${CMAKE_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_SOURCE_DIR}/include/Inventor/annex
-  ${CMAKE_BINARY_DIR}/data
+include_directories(BEFORE
+  "${CMAKE_BINARY_DIR}/include"
+  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_CURRENT_BINARY_DIR}"
+  "${CMAKE_CURRENT_SOURCE_DIR}"
+  "${CMAKE_SOURCE_DIR}/include/Inventor/annex"
+  "${CMAKE_BINARY_DIR}/data"
 )
 
 # add include dirs for non targets
@@ -58,7 +58,7 @@ if(COIN_BUILD_SHARED_LIBS)
   set(COIN_LIBRARY_TYPE SHARED)
   if(WIN32)
     configure_file(${PROJECT_NAME}.rc.cmake.in ${PROJECT_NAME}.rc)
-    set(COIN_SOURCE ${COIN_SOURCE} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc)
+    set(COIN_SOURCE ${COIN_SOURCE} "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc")
   endif()
 else()
   set(COIN_LIBRARY_TYPE STATIC)
@@ -164,12 +164,12 @@ set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
 include(CMakePackageConfigHelpers)
 
-configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake
+configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake"
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
   PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR COIN_DOC_DIR
 )
 
-write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
@@ -180,7 +180,7 @@ export(
   FILE ${PROJECT_NAME_LOWER}-export.cmake
 )
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
   COMPONENT development
 )

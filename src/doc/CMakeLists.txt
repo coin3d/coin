@@ -43,7 +43,7 @@ if(COIN_BUILD_DOCUMENTATION)
   file(GLOB_RECURSE DOX *.dox*)
   set(COIN_DOCUMENTATION_FILES
     ${COIN_DOCUMENTATION_FILES}
-    ${CMAKE_SOURCE_DIR}/docs/releases.dox
+    "${CMAKE_SOURCE_DIR}/docs/releases.dox"
     ${DOX}
     CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
   )
@@ -78,9 +78,9 @@ if(COIN_BUILD_DOCUMENTATION)
     set(DOXYGEN_EXCLUDE_SYMBOLS "${DOXYGEN_EXCLUDE_SYMBOLS}                         ${XF} \\\n")
   endforeach()
 
-  set(DOXYFILE ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-  set(DOXYGEN_OUTPUT ${CMAKE_BINARY_DIR}/html/index.html)
-  configure_file(${CMAKE_SOURCE_DIR}/docs/coin.doxygen.cmake.in ${DOXYFILE} @ONLY)
+  set(DOXYFILE "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
+  set(DOXYGEN_OUTPUT "${CMAKE_BINARY_DIR}/html/index.html")
+  configure_file("${CMAKE_SOURCE_DIR}/docs/coin.doxygen.cmake.in" ${DOXYFILE} @ONLY)
 
 # ############################################################################
 # Setup documentation targets
@@ -90,7 +90,7 @@ if(COIN_BUILD_DOCUMENTATION)
     COMMAND ${CMAKE_COMMAND} -E echo_append "Generating API documentation with Doxygen "
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
     COMMAND ${CMAKE_COMMAND} -E echo "done."
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
     DEPENDS ${DOXYFILE}
   )
   add_custom_target(documentation ALL DEPENDS ${DOXYGEN_OUTPUT})
@@ -99,14 +99,14 @@ if(COIN_BUILD_DOCUMENTATION)
 # Install built documentation files
 # ############################################################################
   if(GENERATE_HTMLHELP)
-    install(FILES ${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.chm DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+    install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.chm" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
   endif()
   if(GENERATE_QHP)
-    install(FILES ${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.qch DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+    install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.qch" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
   endif()
   if(DOXYGEN_GENERATE_MAN)
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/man/man3 DESTINATION ${CMAKE_INSTALL_MANDIR} COMPONENT documentation)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/man/man3" DESTINATION ${CMAKE_INSTALL_MANDIR} COMPONENT documentation)
     message(STATUS "CMAKE_INSTALL_MANDIR ${CMAKE_INSTALL_MANDIR}")
   endif()
-  install(DIRECTORY ${CMAKE_BINARY_DIR}/html DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+  install(DIRECTORY "${CMAKE_BINARY_DIR}/html" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
 endif()
