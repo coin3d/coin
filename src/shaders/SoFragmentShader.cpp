@@ -35,7 +35,7 @@
   \brief The SoFragmentShader class is used for setting up fragment shader programs.
   \ingroup shaders
 
-  See \link coin_shaders Shaders in Coin \endlink for more information
+  See \ref coin_shaders "Shaders in Coin" for more information
   on how to set up a scene graph with shaders.
 
   <b>FILE FORMAT/DEFAULTS:</b>

@@ -43,7 +43,7 @@
   Here is a scenegraph example showing how enviroment mapping can be
   applied to an object:
 
-  <code>
+  \code
   #Inventor V2.1 ascii
 
   Separator {
@@ -55,7 +55,7 @@
 
     Cube {} # the enviromentally mapped object
   }
-  </code>
+  \endcode
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

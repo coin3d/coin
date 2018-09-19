@@ -1,17 +1,17 @@
 /*!
 \page coin_new_features New Features in Coin
-- @subpage coin400 "New Features in Coin v4.0.0"
-- @subpage coin313 "New Features in Coin v3.1.3"
-- @subpage coin312 "New Features in Coin v3.1.2"
-- @subpage coin311 "New Features in Coin v3.1.1"
-- @subpage coin310 "New Features in Coin v3.1.0"
-- @subpage coin300 "New Features in Coin v3.0.0"
-- @subpage coin250 "New Features in Coin v2.5.0"
-- @subpage coin240 "New Features in Coin v2.4.0"
-- @subpage coin230 "New Features in Coin v2.3.0"
-- @subpage coin220 "New Features in Coin v2.2.0"
-- @subpage coin210 "New Features in Coin v2.1.0"
-- @subpage coin200 "New Features in Coin v2.0.0"
+- \subpage coin400 "New Features in Coin v4.0.0"
+- \subpage coin313 "New Features in Coin v3.1.3"
+- \subpage coin312 "New Features in Coin v3.1.2"
+- \subpage coin311 "New Features in Coin v3.1.1"
+- \subpage coin310 "New Features in Coin v3.1.0"
+- \subpage coin300 "New Features in Coin v3.0.0"
+- \subpage coin250 "New Features in Coin v2.5.0"
+- \subpage coin240 "New Features in Coin v2.4.0"
+- \subpage coin230 "New Features in Coin v2.3.0"
+- \subpage coin220 "New Features in Coin v2.2.0"
+- \subpage coin210 "New Features in Coin v2.1.0"
+- \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
 
@@ -191,7 +191,7 @@ New nodes:
 - SoFragmentShader
 - SoGeometryShader
 
-See also the \link coin_shaders "Shaders in Coin"\endlink page for more
+See also the \ref coin_shaders "Shaders in Coin" page for more
 information.
 
 \section shadownodes Generic Shadow Rendering Functionality
@@ -212,7 +212,7 @@ giving great performance increases.  However, this is not universally
 enabled - it is necessary to organize the scene graphs in specific ways
 for VBOs to be used.
 
-See the \link vbo_rendering VBO Rendering in Coin \endlink page for a
+See the \ref vbo_rendering "VBO Rendering in Coin" page for a
 detailed description.
 
 Relevant classes:
@@ -235,7 +235,7 @@ branch stay closer in sync over a longer period, and that the
 incompatibility divergence will happen around major new feature sets
 instead of around minor details.
 
-New Sb*-classes: \break
+New Sb*-classes: \n
 SbBox2i32, SbBox3i32, SbBox3d, SbVec2b, SbVec2ub, SbVec2us, SbVec2i32,
 SbVec2ui32, SbVec3b, SbVec3ub, SbVec3us, SbVec3i32, SbVec3ui32,
 SbVec4b, SbVec4ub, SbVec4s, SbVec4us, SbVec4i32, SbVec4ui32, SbXfBox3d
@@ -248,7 +248,7 @@ this was also a TGS compatibility move.
 The exact same reasoning as for the Sb*-classes goes for the field
 classes.
 
-New field classes: \break
+New field classes: \n
 SoSFBox2s, SoSFBox2i32, SoSFBox2d, SoSFBox2d, SoSFBox3i32, SoSFBox3d,
 SoSFColorRGBA, SoSFDouble, SoSFVec2b, SoSFVec2i32, SoSFVec2d,
 SoSFVec3b, SoSFVec3i32, SoSFVec4b, SoSFVec4ub, SoSFVec4s, SoSFVec4us,

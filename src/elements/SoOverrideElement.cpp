@@ -478,7 +478,7 @@ SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 /*!
   Returns normal vector override value.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
@@ -491,7 +491,7 @@ SoOverrideElement::getNormalVectorOverride(SoState * const state)
 /*!
   Returns normal binding override value.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
@@ -780,7 +780,7 @@ SoOverrideElement::setTransparencyTypeOverride(SoState * const state,
 /*!
   Can be used to set normal vector override.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
@@ -795,7 +795,7 @@ SoOverrideElement::setNormalVectorOverride(SoState * const state,
 /*!
   Can be used to set normal binding override.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */

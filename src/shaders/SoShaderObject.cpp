@@ -34,7 +34,7 @@
   \class SoShaderObject SoShaderObject.h Inventor/nodes/SoShaderObject.h
   \brief The SoShaderObject class is the superclass for all shader classes in Coin.
 
-  See \link coin_shaders Shaders in Coin \endlink for more information
+  See \ref coin_shaders "Shaders in Coin" for more information
   on how to set up a scene graph with shaders.
 
   \ingroup shaders

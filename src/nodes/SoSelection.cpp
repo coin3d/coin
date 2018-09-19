@@ -115,7 +115,7 @@
   the interaction kit "add-on". Before using this node, you should
   therefore call SoInteraction::init(). If you're using one of the
   standard GUI-toolkits (SoXt / SoQt / SoWin) SoInteraction::init()
-  will be called for you from the So[Xt|Qt|Win]::init() method and you
+  will be called for you from the So[Xt|Qt|Win]\::init() method and you
   don't have to worry about it.
 
   With regard to using multiple SoSelection nodes at the same time in
@@ -131,7 +131,7 @@
   scene graph active at the same time, the SoHandleEventAction
   traversals that you intend for selection-change on one SoSelection
   node will also affect all the other SoSelection nodes in the scene
-  -- usually delesecting everything below them since you will be
+  -- usually deselecting everything below them since you will be
   clicking outside the selectable objects.  You'll therefore also have
   to manually override that behaviour, if you want selection change on
   one SoSelection node to not affect the others.

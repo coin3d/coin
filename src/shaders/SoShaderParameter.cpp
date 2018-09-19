@@ -65,7 +65,7 @@
   uniform float shininess;
   \endverbatim
 
-  See \link coin_shaders Shaders in Coin \endlink for more information.
+  See \ref coin_shaders "Shaders in Coin" for more information.
 
   \ingroup shaders
 */

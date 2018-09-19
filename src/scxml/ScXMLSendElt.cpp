@@ -54,7 +54,7 @@
   The &lt;send&gt; element sends \b external events.  State machines have
   typically two event queues - one internal, and one external.  The internal
   event queue has full priority over the external event queue.
-  State machines \i can send external events to itself, but it is more
+  State machines \e can send external events to itself, but it is more
   likely internal events are what you want.  To send internal events, see the
   \c &lt;event&gt; element implemented in ScXMLEventElt.
   To send an external event to the containing state machine, do not specify

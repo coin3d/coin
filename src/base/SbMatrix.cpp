@@ -881,7 +881,7 @@ SbMatrix::setScale(const SbVec3f & s)
 
 /*!
   Make this matrix into a pure translation matrix (no scale or rotation
-  components) with the given vector \t as the translation.
+  components) with the given vector \a t as the translation.
 
   \sa setRotate(), setScale().
  */
