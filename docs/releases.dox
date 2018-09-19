@@ -141,7 +141,7 @@ feature category.
 
 \section geonodes Geographical Data Support
 
-The Geopgraphic Data Support nodes are partly based on GeoVRML
+The Geographic Data Support nodes are partly based on GeoVRML
 (http://www.geovrml.org/), and partly based on our own UTM-nodes which
 can be found in the SmallChange library.
 
@@ -228,7 +228,7 @@ needed, one by one, causing the stable branch of Coin and the
 development branch of Coin to diverge and become more and more
 incompatible as time went by.  Also, extension nodes were created in
 peripheral libraries that used these new classes from the Coin
-development branch, and consequently couldn't be built gainst the
+development branch, and consequently couldn't be built against the
 stable branch of Coin.  With this preemptive class set expansion, we
 hope to cause that the Coin stable branch and the Coin development
 branch stay closer in sync over a longer period, and that the
@@ -313,7 +313,7 @@ There had also been various optimization work on rendering traversal
 code, file i/o and other things.
 
 For v2.4.1, SoExtSelection LASSO and RECTANGLE select could be aborted
-by the end-user by hiting the 'END' key.  No API-changes was needed
+by the end-user by hitting the 'END' key.  No API-changes was needed
 for this of course.
 
 For v2.4.2, we hacked in support for compressed textures through an
