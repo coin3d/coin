@@ -65,7 +65,7 @@
 
   Usually application programmers won't manually ref() and unref()
   nodes a lot, because you pass the nodes directly to
-  SoGroup::addChild() or So*Viewer::setSceneGraph() or something
+  SoGroup::addChild() or So\@Gui\@Viewer\::setSceneGraph() or something
   similar.  These functions will ref() the nodes they are passed, and
   unref() them when they are finished with them.
 

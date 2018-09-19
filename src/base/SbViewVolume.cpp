@@ -273,7 +273,7 @@ SbViewVolume::projectPointToLine(const SbVec2f & pt,
   Project the \a src point to a normalized set of screen coordinates in
   the projection plane and place the result in \a dst.
 
-  It is safe to let \a src and \dst be the same SbVec3f instance.
+  It is safe to let \a src and \a dst be the same SbVec3f instance.
   
   The z-coordinate of \a dst is monotonically increasing for points
   closer to the far plane. Note however that this is not a linear
@@ -535,7 +535,7 @@ SbViewVolume::zVector(void) const
   Return a copy SbViewVolume with narrowed depth by supplying
   parameters for new near and far clipping planes.
 
-  \a nearval and \farval should be relative to the current clipping
+  \a nearval and \a farval should be relative to the current clipping
   planes. A value of 1.0 is at the current near plane. A value of 0.0
   is at the current far plane.
 

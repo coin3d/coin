@@ -271,8 +271,8 @@ SoInput::~SoInput(void)
 }
 
 /*!
-  Adds a ROUTE from /a fromnode's \fromfield, to \a tonode's
-  tofield. This makes it possible to defines ROUTEs in files
+  Adds a ROUTE from \a fromnode's \a fromfield, to \a tonode's
+  \a tofield. This makes it possible to defines ROUTEs in files
   before the \a fromnode or \a tonode is parsed.
 
   \COIN_FUNCTION_EXTENSION

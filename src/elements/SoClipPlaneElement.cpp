@@ -120,7 +120,7 @@ SoClipPlaneElement::getNum() const
 }
 
 /*!
-  Returns the \index'th plane.
+  Returns the \a index'th plane.
 */
 const SbPlane &
 SoClipPlaneElement::get(const int index,

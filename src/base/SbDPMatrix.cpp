@@ -761,7 +761,7 @@ SbDPMatrix::setScale(const SbVec3d & s)
 
 /*!
   Make this matrix into a pure translation matrix (no scale or rotation
-  components) with the given vector \t as the translation.
+  components) with the given vector \a t as the translation.
 
   \sa setRotate(), setScale().
  */
@@ -1218,7 +1218,7 @@ SbDPMatrix::multMatrixVec(const SbVec3d & src, SbVec3d & dst) const
   Multiplication is done with the vector on the left side of the
   expression, i.e. dst = src * M.
 
-  It is safe to let \a src and \dst be the same SbVec3d instance.
+  It is safe to let \a src and \a dst be the same SbVec3d instance.
 
   \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
 */
