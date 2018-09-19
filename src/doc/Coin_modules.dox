@@ -502,7 +502,7 @@
   \defgroup XML XML related functions and objects
 
   \brief
-  Coin now has its own XML parser that also canb be used from client code.
+  Coin now has its own XML parser that also can be used from client code.
 */
 
 // *************************************************************************
