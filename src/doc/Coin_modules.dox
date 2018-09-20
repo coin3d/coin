@@ -136,7 +136,7 @@
   during action traversals of scene graphs.
   
   \details
-  One element usually corresponts to one item of information, or
+  One element usually corresponds to one item of information, or
   sometimes a group of related information values. The elements work
   like a stack that is pushed and popped as the action traverses in
   and out of SoSeparator nodes, and the action will always just
@@ -188,7 +188,7 @@
   \defgroup events Event Classes
 
   \brief
-  These classes are te event types you can send to a scene graph
+  These classes are the event types you can send to a scene graph
   through the SoHandleEventAction.
   
   \details
@@ -306,7 +306,7 @@
   level (but please stop trimming before you trim away all meaning).
   If there is nothing really custom in what you want to implement,
   then it is likely that implementing it as a nodekit is what you
-  ought to do.  However, if you do have to do somethingcustom that
+  ought to do.  However, if you do have to do something custom that
   Coin doesn't support, then implement that part as a custom node, and
   then, if it seems worthwhile, implement the nodekit you need to
   bundle up this custom part with an auxiliary support structure to
@@ -462,7 +462,7 @@
   \defgroup VRMLnodes VRML97 Classes
 
   \brief
-  Nodes implementaing the VRML97 standard.
+  Nodes implementing the VRML97 standard.
 
   \details
   This is the set of items specified by VRML97, also known as VRML2.0.

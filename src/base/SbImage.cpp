@@ -36,7 +36,6 @@
   \ingroup base
 
   \COIN_CLASS_EXTENSION
-
   \since Coin 1.0
 */
 

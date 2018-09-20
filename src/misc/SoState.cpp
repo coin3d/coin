@@ -40,7 +40,7 @@
   instances of classes derived from SoElement).
 
   For more information on the inner workings of traversal states in
-  Coin, we recommend the book «The Inventor Toolmaker» (ISBN
+  Coin, we recommend the book &laquo;The Inventor Toolmaker&raquo; (ISBN
   0-201-62493-1), also available at SGI's <a
   href="http://techpubs.sgi.com/library">online library</a>. Search
   for "Toolmaker".

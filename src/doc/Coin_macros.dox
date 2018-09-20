@@ -31,8 +31,6 @@
 \**************************************************************************/
 
 /*!
-  \page macros_nodes
-
   <h2>Node Macros</h2>
 
   - \ref SO_NODE_HEADER
@@ -57,7 +55,7 @@
   object creation and type identification.
 
   \sa SO_NODE_SOURCE
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_ABSTRACT_HEADER(classname)
@@ -69,7 +67,7 @@
   the object creation part is omitted.
 
   \sa SO_NODE_ABSTRACT_SOURCE
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_INIT_CLASS(classname, parentclass, parentname)
@@ -82,7 +80,7 @@
   and fill it with its field values.
 
   \sa SO_NODE_INIT_ABSTRACT_CLASS
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_INIT_ABSTRACT_CLASS(classname, parentclass, parentname)
@@ -94,7 +92,7 @@
   class) for type identification purposes.
 
   \sa SO_NODE_INIT_CLASS
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_SOURCE(classname)
@@ -106,7 +104,7 @@
   extension nodes.
 
   \sa SO_NODE_HEADER
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_ABSTRACT_SOURCE(classname)
@@ -118,7 +116,7 @@
   file for abstract extension nodes.
 
   \sa SO_NODE_ABSTRACT_HEADER
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_CONSTRUCTOR(classname)
@@ -128,7 +126,7 @@
   Place this in the node constructor.  It sets up the fielddata object
   for the node class.
 
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_IS_FIRST_INSTANCE()
@@ -140,7 +138,7 @@
   extra initialization needs to be done that can't be done in the
   initClass() function.
 
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_ADD_FIELD(field, defaultvalue)
@@ -151,7 +149,7 @@
   value.  For use in the constructor, below the \ref
   SO_NODE_CONSTRUCTOR macro.
 
-  \ingroup nodes
+  \ingroup macros
 */
 
 #define SO_NODE_DEFINE_ENUM_VALUE(enumname, enumvalue)
@@ -161,6 +159,6 @@
   This macro associates enum names with values, used for file
   input/output.
 
-  \ingroup nodes
+  \ingroup macros
 */
 
