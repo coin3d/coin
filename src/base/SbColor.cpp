@@ -34,6 +34,7 @@
   \class SbColor SbColor.h Inventor/SbColor.h
   \brief The SbColor class contains the red, green and blue components
   which make up a color value.
+
   \ingroup base
 
   This class is used within other classes in Coin.  It inherits the

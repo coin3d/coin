@@ -33,6 +33,7 @@
 /*!
   \class SoPSVectorOutput SoPSVectorOutput.h Inventor/Annex/HardCopy/SoPSVectorOutput.h
   \brief The SoPSVectorOutput class is used for writing Postscript.
+
   \ingroup hardcopy
 
   \since Coin 2.1

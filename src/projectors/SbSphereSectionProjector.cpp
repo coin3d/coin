@@ -33,6 +33,7 @@
 /*!
   \class SbSphereSectionProjector SbSphereSectionProjector.h Inventor/projectors/SbSphereSectionProjector.h
   \brief The SbSphereSectionProjector projects 2D points to a sliced sphere.
+
   \ingroup projectors
 
   The projection sphere for this class is sliced by a clipping

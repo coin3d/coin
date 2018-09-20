@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLNormalInterpolator SoVRMLNormalInterpolator.h Inventor/VRMLnodes/SoVRMLNormalInterpolator.h
   \brief The SoVRMLNormalInterpolator class is used to interpolate normals.
+
   \ingroup VRMLnodes
   
   \WEB3DCOPYRIGHT

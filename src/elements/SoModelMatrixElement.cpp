@@ -33,6 +33,7 @@
 /*!
   \class SoModelMatrixElement Inventor/elements/SoModelMatrixElement.h
   \brief The SoModelMatrixElement class is used to manage the current transformation.
+
   \ingroup elements
 
   SoModelMatrixElement contains the object-to-world matrix.

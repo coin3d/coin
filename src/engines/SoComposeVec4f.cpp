@@ -33,6 +33,7 @@
 /*!
   \class SoComposeVec4f SoComposeVec4f.h Inventor/engines/SoComposeVec4f.h
   \brief The SoComposeVec4f class is used to compose 4D vectors from four floats.
+
   \ingroup engines
 */
 

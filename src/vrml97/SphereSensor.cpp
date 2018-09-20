@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLSphereSensor SoVRMLSphereSensor.h Inventor/VRMLnodes/SoVRMLSphereSensor
   \brief The SoVRMLSphereSensor class maps pointer motion into rotations on a sphere.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

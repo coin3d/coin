@@ -33,6 +33,7 @@
 /*!
   \class SoVertexShader SoVertexShader.h Inventor/nodes/SoVertexShader.h
   \brief The SoVertexShader class is used for setting up vertex shader programs.
+
   \ingroup shaders
 
   See \ref coin_shaders "Shaders in Coin" for more information

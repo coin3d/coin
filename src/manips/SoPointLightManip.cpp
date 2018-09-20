@@ -39,6 +39,7 @@
 /*!
   \class SoPointLightManip SoPointLightManip.h Inventor/manips/SoPointLightManip.h
   \brief The SoPointLightManip class is used to manipulate point light nodes.
+
   \ingroup manips
 
   A manipulator is used by replacing the node you want to edit in the

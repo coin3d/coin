@@ -33,6 +33,7 @@
 /*!
   \class SoShadowStyleElement SoShadowStyleElement.h Inventor/annex/FXViz/elements/SoShadowStyleElement.h
   \brief The SoShadowStyleElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

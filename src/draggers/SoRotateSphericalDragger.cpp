@@ -39,6 +39,7 @@
 /*!
   \class SoRotateSphericalDragger SoRotateSphericalDragger.h Inventor/draggers/SoRotateSphericalDragger.h
   \brief The SoRotateSphericalDragger class is for rotating geometry in any direction.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

@@ -33,6 +33,7 @@
 /*!
   \class SbPlaneProjector SbPlaneProjector.h Inventor/projectors/SbPlaneProjector.h
   \brief The SbPlaneProjector class projects 2D points to 3D points in a plane.
+
   \ingroup projectors
 
   The 3D projection of the 2D coordinates is for this projector class

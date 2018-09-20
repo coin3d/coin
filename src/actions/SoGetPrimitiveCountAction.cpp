@@ -33,6 +33,7 @@
 /*!
   \class SoGetPrimitiveCountAction SoGetPrimitiveCountAction.h Inventor/actions/SoGetPrimitiveCountAction.h
   \brief The SoGetPrimitiveCountAction class counts the primitives in a scene.
+
   \ingroup actions
 
   Apply this action to a scene if you need to know the number of

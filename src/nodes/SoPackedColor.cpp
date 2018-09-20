@@ -33,6 +33,7 @@
 /*!
   \class SoPackedColor SoPackedColor.h Inventor/nodes/SoPackedColor.h
   \brief The SoPackedColor class is a node for setting diffuse and transparency material values.
+
   \ingroup nodes
 
   This node provides a convenient way of setting diffuse colors and

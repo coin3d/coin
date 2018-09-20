@@ -38,6 +38,7 @@
 /*!
   \class SoCylinder SoCylinder.h Inventor/nodes/SoCylinder.h
   \brief The SoCylinder class is for rendering cylinder shapes.
+
   \ingroup nodes
 
   Insert a cylinder shape into the scenegraph. The cylinder is

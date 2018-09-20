@@ -33,6 +33,7 @@
 /*!
   \class SoPointSizeElement Inventor/elements/SoPointSizeElement.h
   \brief The SoPointSizeElement changes the pointsize setting of the render state.
+
   \ingroup elements
 
   Requests from the scenegraph to change the pointsize when rendering

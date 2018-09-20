@@ -33,6 +33,7 @@
 /*!
   \class SoListenerOrientationElement Inventor/elements/SoListenerOrientationElement.h
   \brief The SoListenerOrientationElement holds the orientation of the current listener.
+
   \ingroup elements
 
   This orientation is set by SoListener nodes and SoCamera Nodes during

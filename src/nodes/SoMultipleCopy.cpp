@@ -33,6 +33,7 @@
 /*!
   \class SoMultipleCopy SoMultipleCopy.h Inventor/nodes/SoMultipleCopy.h
   \brief The SoMultipleCopy class redraws it's children multiple times at different transformations.
+
   \ingroup nodes
 
   The SoMultipleCopy group node duplicates it's children nodes /

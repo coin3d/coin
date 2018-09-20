@@ -33,6 +33,7 @@
 /*!
   \class SoReplacedElement Inventor/elements/SoReplacedElement.h
   \brief The SoReplacedElement class is an abstract element superclass.
+
   \ingroup elements
 
   This is the superclass of all elements where the new element data \e

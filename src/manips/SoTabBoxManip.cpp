@@ -39,6 +39,7 @@
 /*!
   \class SoTabBoxManip SoTabBoxManip.h Inventor/manips/SoTabBoxManip.h
   \brief The SoTabBoxManip class wraps an SoTabBoxDragger.
+
   \ingroup manips
 
   The SoTabBoxManip provides a convenient mechanism for the

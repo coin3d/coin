@@ -33,6 +33,7 @@
 /*!
   \class SbCylinderProjector SbCylinderProjector.h Inventor/projectors/SbCylinderProjector.h
   \brief The SbCylinderProjector class is the abstract base class for mapping to cylindrical surfaces.
+
   \ingroup projectors
 
   The cylinder projectors map 2D points to various surface types based

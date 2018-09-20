@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLViewpoint SoVRMLViewpoint.h Inventor/VRMLnodes/SoVRMLViewpoint.h
   \brief The SoVRMLViewpoint class is a perspective camera class.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
   \brief The SoTextureCoordinateCube class autogenerates cubemapped texture coordinated for shapes.
+
   \ingroup nodes
 
   The cube used for reference when mapping is the boundingbox for the shape.

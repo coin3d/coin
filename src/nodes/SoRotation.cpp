@@ -33,6 +33,7 @@
 /*!
   \class SoRotation SoRotation.h Inventor/nodes/SoRotation.h
   \brief The SoRotation class specifies a rotation transformation.
+
   \ingroup nodes
 
   Use nodes of this class type to re-orient geometry data within the

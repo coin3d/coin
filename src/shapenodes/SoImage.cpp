@@ -33,6 +33,7 @@
 /*!
   \class SoImage SoImage.h Inventor/nodes/SoImage.h
   \brief The SoImage class draws a 2D image on the viewport.
+
   \ingroup nodes
 
   An image can be specified either by using the image field, or by

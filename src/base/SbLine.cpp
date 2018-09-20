@@ -33,6 +33,7 @@
 /*!
   \class SbLine SbLine.h Inventor/SbLine.h
   \brief The SbLine class represents a line in 3D space.
+
   \ingroup base
 
   SbLine provides a way of specifying a directed line, through a 3D

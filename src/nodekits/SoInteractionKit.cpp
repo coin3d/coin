@@ -39,6 +39,7 @@
 /*!
   \class SoInteractionKit SoInteractionKit.h Inventor/nodekits/SoInteractionKit.h
   \brief The SoInteractionKit class is a base class for draggers.
+
   \ingroup nodekits
 
   This nodekit class makes it possible to set surrogate paths for

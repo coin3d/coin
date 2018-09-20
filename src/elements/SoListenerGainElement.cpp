@@ -33,6 +33,7 @@
 /*!
   \class SoListenerGainElement Inventor/elements/SoListenerGainElement.h
   \brief The SoListenerGainElement class stores the SoListener gain during a scene graph traversal.
+
   \ingroup elements
 
   This gain is set by SoListener nodes during audio rendering.

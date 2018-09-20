@@ -33,6 +33,7 @@
 /*!
   \class SoOnOff SoOnOff.h Inventor/engines/SoOnOff.h
   \brief The SoOnOff engine is a simple on/off switch.
+
   \ingroup engines
 */
 

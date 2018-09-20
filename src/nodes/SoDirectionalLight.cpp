@@ -33,6 +33,7 @@
 /*!
   \class SoDirectionalLight SoDirectionalLight.h Inventor/nodes/SoDirectionalLight.h
   \brief The SoDirectionalLight class is a node type for specifying directional light sources.
+
   \ingroup nodes
 
   A directional light source provides a model of light sources which

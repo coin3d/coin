@@ -51,6 +51,7 @@
 /*!
   \class SbVec3d SbVec3d.h Inventor/SbVec3d.h
   \brief The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.
+
   \ingroup base
 
   This vector class provides storage for a 3 dimensional double

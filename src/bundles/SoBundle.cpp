@@ -44,6 +44,7 @@
 /*!
   \class SoBundle include/Inventor/bundles/SoBundle.h
   \brief The SoBundle class is the superclass for all bundle classes.
+
   \ingroup bundles
 */
 // FIXME: document class properly (write general explanation of what

@@ -33,6 +33,7 @@
 /*!
   \class SoMFInt32 SoMFInt32.h Inventor/fields/SoMFInt32.h
   \brief The SoMFInt32 class is a container for 32-bit integer values.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

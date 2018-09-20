@@ -33,6 +33,7 @@
 /*!
   \class SoBumpMapCoordinate SoBumpMapCoordinate.h Inventor/nodes/SoBumpMapCoordinate.h
   \brief The SoBumpMapCoordinate class is a node for providing bump map coordinates to shape nodes.
+
   \ingroup nodes
 
   When encountering nodes of this type during traversal, the

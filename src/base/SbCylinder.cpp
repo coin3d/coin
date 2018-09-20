@@ -33,6 +33,7 @@
 /*!
   \class SbCylinder SbCylinder.h Inventor/SbCylinder.h
   \brief The SbCylinder class is a representation of a cylinder.
+
   \ingroup base
 
   This class is used within other classes in Coin. It contains data to

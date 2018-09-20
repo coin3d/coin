@@ -33,6 +33,7 @@
 /*!
   \class SoTexture2 SoTexture2.h Inventor/nodes/SoTexture2.h
   \brief The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scenegraph.
+
   \ingroup nodes
 
   Shape nodes within the scope of SoTexture2 nodes in the scenegraph

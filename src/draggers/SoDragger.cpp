@@ -39,6 +39,7 @@
 /*!
   \class SoDragger SoDragger.h Inventor/draggers/SoDragger.h
   \brief The SoDragger class is the base class for all draggers.
+
   \ingroup draggers
 
   Draggers is a mechanism used for letting the end-users of your

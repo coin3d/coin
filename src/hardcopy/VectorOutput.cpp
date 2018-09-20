@@ -41,6 +41,7 @@
 /*!
   \class SoVectorOutput SoVectorOutput.h Inventor/annex/HardCopy/SoVectorOutput.h
   \brief The SoVectorOutput class is used for setting vector output file.
+
   \ingroup hardcopy
 
   SoVectorizeAction will create an SoVectorOutput which will output

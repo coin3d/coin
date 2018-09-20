@@ -33,6 +33,7 @@
 /*!
   \class SoVertexShape SoVertexShape.h Inventor/nodes/SoVertexShape.h
   \brief The SoVertexShape class is the superclass for all vertex based shapes.
+
   \ingroup nodes
 
   Basically, every polygon-, line- or point-based shape will inherit

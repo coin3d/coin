@@ -33,6 +33,7 @@
 /*!
   \class SoShadowGroup SoShadowGroup.h FXViz/nodes/SoShadowGroup.h
   \brief The SoShadowGroup node is a group node used for shadow rendering.
+
   \ingroup fxviz
 
   Children of this node can recieve shadows, and cast shadows on other children.

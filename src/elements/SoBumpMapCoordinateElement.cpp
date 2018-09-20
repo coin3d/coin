@@ -33,6 +33,7 @@
 /*!
   \class SoBumpMapCoordinateElement Inventor/elements/SoBumpMapCoordinateElement.h
   \brief The SoBumpMapCoordinateElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

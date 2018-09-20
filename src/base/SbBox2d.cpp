@@ -34,6 +34,7 @@
   \class SbBox2d Inventor/SbBox2d.h
   \brief The SbBox2d class is a 2 dimensional box with double precision
   corner coordinates.
+
   \ingroup base
 
   This box class is used by many other classes in Coin for data

@@ -33,6 +33,7 @@
 /*!
   \class SoGLModelMatrixElement Inventor/elements/SoGLModelMatrixElement.h
   \brief The SoGLModelMatrixElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

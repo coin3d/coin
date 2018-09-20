@@ -33,6 +33,7 @@
 /*!
   \class SoGetBoundingBoxAction SoGetBoundingBoxAction.h Inventor/actions/SoGetBoundingBoxAction.h
   \brief The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.
+
   \ingroup actions
 
   If this action is applied to a path or scene graph root, it will

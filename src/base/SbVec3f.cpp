@@ -33,6 +33,7 @@
 /*!
   \class SbVec3f SbVec3f.h Inventor/SbVec3f.h
   \brief The SbVec3f class is a 3 dimensional vector with floating point coordinates.
+
   \ingroup base
 
   This vector class is used by many other classes in

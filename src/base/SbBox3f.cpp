@@ -33,6 +33,7 @@
 /*!
   \class SbBox3f SbBox3f.h Inventor/SbBox3f.h
   \brief The SbBox3f class is an abstraction for an axis aligned 3 dimensional box.
+
   \ingroup base
 
   This box abstraction class is used by other entities in the Coin

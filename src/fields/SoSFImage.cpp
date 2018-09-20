@@ -33,6 +33,7 @@
 /*!
   \class SoSFImage SoSFImage.h Inventor/fields/SoSFImage.h
   \brief The SoSFImage class is used to store pixel images.
+
   \ingroup fields
 
   The SoSFImage class provides storage for inline 2D image

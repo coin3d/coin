@@ -33,6 +33,7 @@
 /*!
   \class SoFontSizeElement Inventor/elements/SoFontSizeElement.h
   \brief The SoFontSizeElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

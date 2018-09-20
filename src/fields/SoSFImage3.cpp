@@ -33,6 +33,7 @@
 /*!
   \class SoSFImage3 SoSFImage3.h Inventor/fields/SoSFImage3.h
   \brief The SoSFImage3 class is used to store 3D (volume) images.
+
   \ingroup fields
 
   The SoSFImage3 class provides storage for inline 3D image maps. 3D

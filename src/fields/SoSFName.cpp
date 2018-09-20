@@ -33,6 +33,7 @@
 /*!
   \class SoSFName SoSFName.h Inventor/fields/SoSFName.h
   \brief The SoSFName class is a container for an SbName.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

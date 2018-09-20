@@ -33,6 +33,7 @@
 /*!
   \class SoSearchAction SoSearchAction.h Inventor/actions/SoSearchAction.h
   \brief The SoSearchAction class provides methods for searching through scene graphs.
+
   \ingroup actions
 
   Nodes can be searched for by pointer, type, and name, or a

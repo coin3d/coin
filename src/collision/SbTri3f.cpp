@@ -34,6 +34,7 @@
   \class SbTri3f collision/SbTri3f.h
   \brief A class that at this point in time has one purpose - figuring out
   if two triangles intersect each other.
+
   \ingroup base
 
   This class is so limited in functionality that it is not included in the

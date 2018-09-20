@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLIndexedFaceSet SoVRMLIndexedFaceSet.h Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h
   \brief The SoVRMLIndexedFaceSet class is used for representing a generic 3D shape.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

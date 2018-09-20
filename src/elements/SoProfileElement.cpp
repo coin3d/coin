@@ -33,6 +33,7 @@
 /*!
   \class SoProfileElement Inventor/elements/SoProfileElement.h
   \brief The SoProfileElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

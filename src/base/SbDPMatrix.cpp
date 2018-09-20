@@ -33,6 +33,7 @@
 /*!
   \class SbDPMatrix SbDPMatrix.h Inventor/SbDPMatrix.h
   \brief The SbDPMatrix class is a 4x4 dimensional representation of a double-precision matrix.
+
   \ingroup base
 
   This class is like the SbMatrix class, but uses double-precision

@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLGroup SoVRMLGroup.h Inventor/VRMLnodes/SoVRMLGroup.h
   \brief The SoVRMLGroup class is used for grouping VRML nodes.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

@@ -33,6 +33,7 @@
 /*!
   \class SoListenerPositionElement Inventor/elements/SoListenerPositionElement.h
   \brief The SoListenerPositionElement holds the position of the current listener.
+
   \ingroup elements
 
   This position is set by SoListener nodes and SoCamera Nodes during audio

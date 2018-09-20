@@ -33,6 +33,7 @@
 /*!
   \class SbSpherePlaneProjector SbSpherePlaneProjector.h Inventor/projectors/SbSpherePlaneProjector.h
   \brief The SbSpherePlaneProjector class projects 2D points to a half-sphere and a plane.
+
   \ingroup projectors
 
   This projector uses a plane along with the half-sphere of

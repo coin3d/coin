@@ -39,6 +39,7 @@
 /*!
   \class SoTransformManip SoTransformManip.h Inventor/manips/SoTransformManip.h
   \brief The SoTransformManip class is used to manipulate transformations.
+
   \ingroup manips
 
   A manipulator is used by replacing the node you want to edit in the

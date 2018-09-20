@@ -33,6 +33,7 @@
 /*!
   \class SoLocalBBoxMatrixElement Inventor/elements/SoLocalBBoxMatrixElement.h
   \brief The SoLocalBBoxMatrixElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

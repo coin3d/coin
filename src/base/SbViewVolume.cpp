@@ -33,6 +33,7 @@
 /*!
   \class SbViewVolume SbViewVolume.h Inventor/SbViewVolume.h
   \brief The SbViewVolume class is a viewing volume in 3D space.
+
   \ingroup base
 
   This class contains the necessary information for storing a view
