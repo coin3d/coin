@@ -33,6 +33,7 @@
 /*!  
   \class SoFont SoFont.h Inventor/nodes/SoFont.h
   \brief The SoFont class is an appearance node for setting fonts.
+
   \ingroup nodes
 
   Successive text rendering nodes (like SoText2, SoText3, SoAsciiText,

@@ -33,6 +33,7 @@
 /*!
   \class SoSelection SoSelection.h Inventor/nodes/SoSelection.h
   \brief The SoSelection class manages a list of selected nodes.
+
   \ingroup nodes
 
   Inserting an SoSelection node in your scene graph enables you to let

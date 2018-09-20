@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCombine SoTextureCombine.h Inventor/nodes/SoTextureCombine.h
   \brief The SoTextureCombine class is a node for setting texture combine functions.
+
   \ingroup nodes
 
   This node is more or less an exact mapping of the OpenGL

@@ -33,6 +33,7 @@
 /*!
   \class SoGetMatrixAction SoGetMatrixAction.h Inventor/actions/SoGetMatrixAction.h
   \brief The SoGetMatrixAction class is an action for accumulating the transformation matrix of a subgraph.
+
   \ingroup actions
 
   This action makes it easy to calculate and convert to and from the

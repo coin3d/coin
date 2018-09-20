@@ -33,6 +33,7 @@
 /*!
   \class SoPointDetail SoPointDetail.h Inventor/details/SoPointDetail.h
   \brief The SoPointDetail class is for storing detailed information for a single 3D point.
+
   \ingroup details
 
   Instances of this class are used among other things for storing

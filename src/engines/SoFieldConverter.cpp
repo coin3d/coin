@@ -33,6 +33,7 @@
 /*!
   \class SoFieldConverter SoFieldConverter.h Inventor/engines/SoFieldConverter.h
   \brief The SoFieldConverter class is the abstract base class for field converters.
+
   \ingroup engines
 
   When fields of different types are attempted connected, the Coin

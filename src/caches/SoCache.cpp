@@ -41,6 +41,7 @@
 /*!
   \class SoCache Inventor/caches/SoCache.h
   \brief The SoCache class is the superclass for all internal cache classes.
+
   \ingroup caches
 
   It organizes reference counting to make it possible to share cache

@@ -33,6 +33,7 @@
 /*!
   \class SbXfBox3f SbXfBox3f.h Inventor/SbXfBox3f.h
   \brief The SbXfBox3f class is a 3 dimensional box with floating point coordinates and an attached transformation.
+
   \ingroup base
 
   This box class is used by many other classes in Coin

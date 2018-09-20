@@ -33,6 +33,7 @@
 /*!
   \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
   \brief The SoGLTextureEnabledElement class is an element which controls whether texturing is enabled or not.
+
   \ingroup elements
 
   \sa SoGLTexture3EnabledElement

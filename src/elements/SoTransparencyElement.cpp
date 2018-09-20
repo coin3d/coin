@@ -33,6 +33,7 @@
 /*!
   \class SoTransparencyElement Inventor/elements/SoTransparencyElement.h
   \brief The SoTransparencyElement is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

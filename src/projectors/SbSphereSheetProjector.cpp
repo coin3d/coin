@@ -33,6 +33,7 @@
 /*!
   \class SbSphereSheetProjector SbSphereSheetProjector.h Inventor/projectors/SbSphereSheetProjector.h
   \brief The SbSphereSheetProjector class projects 2D points to 3D points on a sheet covering a spherical shape.
+
   \ingroup projectors
 
   The following stand-alone example shows how screen space coordinates

@@ -33,6 +33,7 @@
 /*!
   \class SoMaterialBindingElement Inventor/elements/SoMaterialBindingElement.h
   \brief The SoMaterialBindingElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

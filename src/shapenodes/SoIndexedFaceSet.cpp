@@ -33,6 +33,7 @@
 /*!
   \class SoIndexedFaceSet SoIndexedFaceSet.h Inventor/nodes/SoIndexedFaceSet.h
   \brief The SoIndexedFaceSet class is used to handle generic indexed facesets.
+
   \ingroup nodes
 
   Faces are specified using the coordIndex field. Each face must be

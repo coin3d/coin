@@ -33,6 +33,7 @@
 /*!
   \class SoState Inventor/misc/SoState.h
   \brief The SoState class manages the Coin scenegraph traversal state data.
+
   \ingroup general
 
   The SoState class is used by actions derived from the SoAction

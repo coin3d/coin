@@ -33,6 +33,7 @@
 /*!
   \class SoDiffuseColorElement Inventor/elements/SoDiffuseColorElement.h
   \brief The SoDiffuseColorElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

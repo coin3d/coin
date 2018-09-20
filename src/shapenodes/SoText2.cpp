@@ -33,6 +33,7 @@
 /*!
   \class SoText2 SoText2.h Inventor/nodes/SoText2.h
   \brief The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.
+
   \ingroup nodes
 
   SoText2 text is not scaled according to the distance from the

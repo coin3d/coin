@@ -33,6 +33,7 @@
 /*!
   \class SoMultiTextureEnabledElement Inventor/elements/SoMultiTextureEnabledElement.h
   \brief The SoMultiTextureEnabledElement class is an element which stores whether texturing is enabled or not.
+
   \ingroup elements
 
   \COIN_CLASS_EXTENSION

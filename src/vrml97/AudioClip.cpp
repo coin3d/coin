@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLAudioClip SoVRMLAudioClip.h Inventor/VRMLnodes/SoVRMLAudioClip.h
   \brief The SoVRMLAudioClip class is used to load and store audio data.
+
   \ingroup VRMLnodes
   \ingroup sound
 

@@ -33,6 +33,7 @@
 /*!
   \class SoGLRenderAction SoGLRenderAction.h Inventor/actions/SoGLRenderAction.h
   \brief The SoGLRenderAction class renders the scene graph with OpenGL calls.
+
   \ingroup actions
 
   Applying this method at a root node for a scene graph, path or

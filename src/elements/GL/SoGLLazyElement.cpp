@@ -33,6 +33,7 @@
 /*!
   \class SoGLLazyElement Inventor/elements/SoGLLazyElement.h
   \brief The SoGLLazyElement class is meant to optimize GL rendering.
+
   \ingroup elements
 
   This is just a wrap-around implementation for compatibility. It should

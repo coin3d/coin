@@ -33,6 +33,7 @@
 /*!
   \class SoVertexAttributeBindingElement Inventor/elements/SoVertexAttributeBindingElement.h
   \brief The SoVertexAttributeBindingElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

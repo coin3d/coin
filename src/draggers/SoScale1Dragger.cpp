@@ -39,6 +39,7 @@
 /*!
   \class SoScale1Dragger SoScale1Dragger.h Inventor/draggers/SoScale1Dragger.h
   \brief The SoScale1Dragger class provides a mechanism for the end-user to scale in one dimension.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

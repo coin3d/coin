@@ -34,6 +34,7 @@
   \class SoFieldContainer SoFieldContainer.h Inventor/fields/SoFieldContainer.h
   \brief The SoFieldContainer class is a base class for all classes that
   contain fields.
+
   \ingroup general
 
   The classes containing fields in Coin are the node and engine

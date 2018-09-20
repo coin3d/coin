@@ -33,6 +33,7 @@
 /*!
   \class SoInterpolateVec3f SoInterpolateVec3f.h Inventor/engines/SoInterpolateVec3f.h
   \brief The SoInterpolateVec3f class is used to interpolate between pairs of 3D vectors.
+
   \ingroup engines
 */
 

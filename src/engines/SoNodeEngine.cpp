@@ -33,6 +33,7 @@
 /*!
   \class SoNodeEngine SoNodeEngine.h Inventor/engines/SoNodeEngine.h
   \brief SoNodeEngine is the base class for Coin node engines.
+
   \ingroup engines
 
   Node engines have the same functionality as normal engines, except

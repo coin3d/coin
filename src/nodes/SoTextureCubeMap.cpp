@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCubeMap SoTextureCubeMap.h Inventor/nodes/SoTextureCubeMap.h
   \brief The SoTextureCubeMap class is used to map a cube map onto subsequent shape nodes.
+
   \ingroup nodes
 
   Shape nodes within the scope of SoTextureCubeMap nodes in the scenegraph

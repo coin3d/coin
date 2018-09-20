@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCoordinateNormalMap SoTextureCoordinateNormalMap.h Inventor/nodes/SoTextureCoordinateNormalMap.h
   \brief The SoTextureCoordinateNormalMap class generates texture coordinates by projecting onto a surrounding texture.
+
   \ingroup nodes
 
   The texture specifying the enviroment will be mapped around the 

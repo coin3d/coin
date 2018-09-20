@@ -39,6 +39,7 @@
 /*!
   \class SoNodeKitDetail SoNodeKitDetail.h Inventor/details/SoNodeKitDetail.h
   \brief The SoNodeKitDetail class is yet to be documented.
+
   \ingroup details
 
   When a pick action is executed and geometry within a nodekit is hit,

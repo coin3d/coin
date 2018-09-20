@@ -33,6 +33,7 @@
 /*!
   \class SoGLViewportRegionElement Inventor/elements/SoGLViewportRegionElement.h
   \brief The SoGLViewportRegionElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

@@ -33,6 +33,7 @@
 /*!
   \class SoUnits SoUnits.h Inventor/nodes/SoUnits.h
   \brief The SoUnits class is a node for setting unit types.
+
   \ingroup nodes
 
   Even though Coin doesn't care what units you are using in your scene

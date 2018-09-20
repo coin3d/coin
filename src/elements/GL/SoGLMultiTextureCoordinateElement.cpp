@@ -33,6 +33,7 @@
 /*!
   \class SoGLMultiTextureCoordinateElement Inventor/elements/SoGLMultiTextureCoordinateElement.h
   \brief The SoGLMultiTextureCoordinateElement class stores the current gltexture coordinates for several units.
+
   \ingroup elements
 */
 

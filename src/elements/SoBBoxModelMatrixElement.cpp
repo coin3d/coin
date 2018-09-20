@@ -35,6 +35,7 @@
   \brief The SoBBoxModelMatrixElement class keeps track of the current model
   matrix during a scene graph traversal.  It is used by amongst others the
   SoGetBoundingBoxAction class.
+
   \ingroup elements
 */
 

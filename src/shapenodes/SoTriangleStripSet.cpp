@@ -33,6 +33,7 @@
 /*!
   \class SoTriangleStripSet SoTriangleStripSet.h Inventor/nodes/SoTriangleStripSet.h
   \brief The SoTriangleStripSet class is used to render and control non-indexed triangle strips.
+
   \ingroup nodes
 
   Triangle strips are specified using the numVertices field.

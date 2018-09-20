@@ -33,6 +33,7 @@
 /*!
   \class SoFieldData SoFieldData.h Inventor/fields/SoFieldData.h
   \brief The SoFieldData class is a container for a prototype set of fields.
+
   \ingroup fields
 
   This class is instantiated once for each class of objects which use

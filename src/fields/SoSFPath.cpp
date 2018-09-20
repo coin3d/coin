@@ -43,6 +43,7 @@
 /*!
   \class SoSFPath SoSFPath.h Inventor/fields/SoSFPath.h
   \brief The SoSFPath class is a container for a single path.
+
   \ingroup fields
 
   This field container stores a pointer to a Coin path. It takes care

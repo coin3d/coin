@@ -33,6 +33,7 @@
 /*!
   \class SoTexture2Transform SoTexture2Transform.h Inventor/nodes/SoTexture2Transform.h
   \brief The SoTexture2Transform class is used to define 2D texture transformations.
+
   \ingroup nodes
 
   Textures applied to shapes in the scene can be transformed by

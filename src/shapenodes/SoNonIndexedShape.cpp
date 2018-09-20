@@ -33,6 +33,7 @@
 /*!
   \class SoNonIndexedShape SoNonIndexedShape.h Inventor/nodes/SoNonIndexedShape.h
   \brief The SoNonIndexedShape class is the superclass for all non-indexed vertex based shapes.
+
   \ingroup nodes
   
   It contains the (now obsoleted) startIndex field and a convenience

@@ -33,6 +33,7 @@
 /*!
   \class SoSFBox3s SoSFBox3s.h Inventor/fields/SoSFBox3s.h
   \brief The SoSFBox3s class is a container for an SbBox3s vector.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

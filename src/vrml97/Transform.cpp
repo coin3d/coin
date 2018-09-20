@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLTransform SoVRMLTransform.h Inventor/VRMLnodes/SoVRMLTransform.h
   \brief The SoVRMLTransform class is a grouping node that defines a transformation for its children.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

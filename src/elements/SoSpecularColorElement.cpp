@@ -33,6 +33,7 @@
 /*!
   \class SoSpecularColorElement Inventor/elements/SoSpecularColorElement.h
   \brief The SoSpecularColorElement is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

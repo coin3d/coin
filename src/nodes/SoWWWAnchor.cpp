@@ -33,6 +33,7 @@
 /*!
   \class SoWWWAnchor SoWWWAnchor.h Inventor/nodes/SoWWWAnchor.h
   \brief The SoWWWAnchor class adds URL callbacks to the highlighted geometry.
+
   \ingroup nodes
 
   In addition to highlighting geometry under the cursor, the application

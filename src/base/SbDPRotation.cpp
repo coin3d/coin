@@ -34,6 +34,7 @@
   \class SbDPRotation SbDPRotation.h Inventor/SbDPRotation.h
   \brief The SbDPRotation class represents a rotation in 3D space
   using double precision data.
+
   \ingroup base
 
   SbDPRotation is used extensively throughout the Coin library.

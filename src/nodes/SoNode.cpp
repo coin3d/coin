@@ -33,6 +33,7 @@
 /*!
   \class SoNode SoNode.h Inventor/nodes/SoNode.h
   \brief The SoNode class is the base class for nodes used in scene graphs.
+
   \ingroup nodes
 
   Coin is a \e retained \e mode 3D visualization library (built on top

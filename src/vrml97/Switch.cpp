@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLSwitch SoVRMLSwitch.h Inventor/VRMLnodes/SoVRMLSwitch.h
   \brief The SoVRMLSwitch class is a group node for traversing selected children.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

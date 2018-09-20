@@ -33,6 +33,7 @@
 /*!
   \class SoHandleEventAction SoHandleEventAction.h Inventor/actions/SoHandleEventAction.h
   \brief The SoHandleEventAction class distributes user events to the scene.
+
   \ingroup actions
 
   This is the action used by the GUI viewer classes to pass

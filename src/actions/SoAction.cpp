@@ -33,6 +33,7 @@
 /*!
   \class SoAction SoAction.h Inventor/actions/SoAction.h
   \brief The SoAction class is the base class for all traversal actions.
+
   \ingroup actions
 
   Applying actions is the basic mechanism in Coin for executing

@@ -34,6 +34,7 @@
   \class SbColor4f SbColor4f.h Inventor/SbColor4f.h
   \brief The SbColor4f class contains the red, green, blue and alpha
   components which make up a color value.
+
   \ingroup base
 
   This class is used internally within other classes in Coin.  It contains

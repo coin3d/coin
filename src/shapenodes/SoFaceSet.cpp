@@ -33,6 +33,7 @@
 /*!
   \class SoFaceSet SoFaceSet.h Inventor/nodes/SoFaceSet.h
   \brief The SoFaceSet class is used to render and organize non-indexed polygonal face data.
+
   \ingroup nodes
 
   Faces are specified using the numVertices field. Coordinates,

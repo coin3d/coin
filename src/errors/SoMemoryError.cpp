@@ -33,6 +33,7 @@
 /*!
   \class SoMemoryError SoMemoryError.h Inventor/errors/SoMemoryError.h
   \brief The SoMemoryError class is used to inform of problems with memory allocation.
+
   \ingroup errors
 
   Modern operating systems takes care of handling most out of memory

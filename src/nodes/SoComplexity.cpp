@@ -33,6 +33,7 @@
 /*!
   \class SoComplexity SoComplexity.h Inventor/nodes/SoComplexity.h
   \brief The SoComplexity class is a node type which is used to set the tradeoff between quality and performance.
+
   \ingroup nodes
 
   By inserting SoComplexity nodes in the scene graph, you can control

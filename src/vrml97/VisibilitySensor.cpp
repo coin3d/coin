@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLVisibilitySensor SoVRMLVisibilitySensor.h Inventor/VRMLnodes/SoVRMLVisibilitySensor.h
   \brief The SoVRMLVisibilitySensor class will generate events based on visibility.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

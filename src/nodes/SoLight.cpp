@@ -33,6 +33,7 @@
 /*!
   \class SoLight SoLight.h Inventor/nodes/SoLight.h
   \brief The SoLight class is the base class for light emitting nodes.
+
   \ingroup nodes
 
   This node type is abstract and does not in itself provide any light

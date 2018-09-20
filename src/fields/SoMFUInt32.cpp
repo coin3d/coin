@@ -33,6 +33,7 @@
 /*!
   \class SoMFUInt32 SoMFUInt32.h Inventor/fields/SoMFUInt32.h
   \brief The SoMFUInt32 class is a container for 32-bit unsigned integer values.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

@@ -33,6 +33,7 @@
 /*!
   \class SoBumpMap SoBumpMap.h Inventor/nodes/SoBumpMap.h
   \brief The SoBumpMap class is used to map a bump map onto subsequent shapes.
+
   \ingroup nodes
 
   SoBumpMap has support for two types of maps. If the image is a three

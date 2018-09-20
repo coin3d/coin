@@ -54,6 +54,7 @@
 /*!
   \class SoVRMLScript SoVRMLScript.h Inventor/VRMLnodes/SoVRMLScript.h
   \brief The SoVRMLScript class is used to control the scene using scripts.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

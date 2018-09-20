@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLPlaneSensor SoVRMLPlaneSensor.h Inventor/VRMLnodes/SoVRMLPlaneSensor
   \brief The SoVRMLPlaneSensor class maps pointer motion into object space translations.
+
   \ingroup VRMLnodes
   
   \WEB3DCOPYRIGHT

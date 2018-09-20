@@ -39,6 +39,7 @@
 /*!
   \class SoTrackballManip SoTrackballManip.h Inventor/manips/SoTrackballManip.h
   \brief The SoTrackballManip wraps an SoTrackballDragger for convenience.
+
   \ingroup manips
 
   The manipulator class takes care of wrapping up the

@@ -33,6 +33,7 @@
 /*!
   \class SoLinearProfile SoLinearProfile.h Inventor/nodes/SoLinearProfile.h
   \brief The SoLinearProfile class is a node for specifying linear profile curves.
+
   \ingroup nodes
 
   Use nodes of this type if you want to set up profiles that are

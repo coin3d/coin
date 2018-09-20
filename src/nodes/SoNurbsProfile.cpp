@@ -33,6 +33,7 @@
 /*!
   \class SoNurbsProfile SoNurbsProfile.h Inventor/nodes/SoNurbsProfile.h
   \brief The SoNurbsProfile class is a node for specifying smooth profile curves.
+
   \ingroup nodes
 
   Use nodes of this type if you want to set up profiles that are

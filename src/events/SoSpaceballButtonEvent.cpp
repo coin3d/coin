@@ -34,6 +34,7 @@
   \class SoSpaceballButtonEvent SoSpaceballButtonEvent.h Inventor/events/SoSpaceballButtonEvent.h
   \brief The SoSpaceballButtonEvent class contains information about
   spaceball button interaction.
+
   \ingroup events
 
   When the user presses any buttons on a spaceball device, these will

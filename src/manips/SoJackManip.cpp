@@ -39,6 +39,7 @@
 /*!
   \class SoJackManip SoJackManip.h Inventor/manips/SoJackManip.h
   \brief The SoJackManip wraps an SoJackDragger for convenience.
+
   \ingroup manips
 
   The manipulator class takes care of wrapping up the SoJackDragger in

@@ -33,6 +33,7 @@
 /*!
   \class SoMaterialBundle include/Inventor/bundles/SoMaterialBundle.h
   \brief The SoMaterialBundle class simplifies material handling.
+
   \ingroup bundles
 
   Every shape node should create (on the stack) an instance of this

@@ -39,6 +39,7 @@
 /*!
   \class SoSceneKit SoSceneKit.h Inventor/nodekits/SoSceneKit.h
   \brief The SoSceneKit class collects node kits needed to set up a scene: camera, light and shapes.
+
   \ingroup nodekits
 
   \NODEKIT_PRE_DIAGRAM

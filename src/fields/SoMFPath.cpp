@@ -39,6 +39,7 @@
 /*!
   \class SoMFPath SoMFPath.h Inventor/fields/SoMFPath.h
   \brief The SoMFPath class is a container for paths.
+
   \ingroup fields
 
   This field container stores an array of pointers to paths. It takes

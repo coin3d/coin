@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLTextureCoordinate SoVRMLTextureCoordinate.h Inventor/VRMLnodes/SoVRMLTextureCoordinate.h
   \brief The SoVRMLTextureCoordinate class binds texture coordinates to vertex-based geometry.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

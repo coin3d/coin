@@ -34,6 +34,7 @@
   \class SoDetail SoDetail.h Inventor/details/SoDetail.h
   \brief The SoDetail class is the superclass for all classes storing
   detailed information about particular shapes.
+
   \ingroup details
 
   Detail information about shapes is used in relation to picking

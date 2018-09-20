@@ -33,6 +33,7 @@
 /*!
   \class SoGate SoGate.h Inventor/engines/SoGate.h
   \brief The SoGate class is used to selectively copy values from input to output.
+
   \ingroup engines
 
   This engine will forward values from the SoGate::input field to the

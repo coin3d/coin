@@ -33,6 +33,7 @@
 /*!
   \class SoGeoOrigin SoGeoOrigin.h Inventor/nodes/SoGeoOrigin.h
   \brief The SoGeoOrigin class is used to specify an absolute geographic location against which geometry is referenced.
+
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>

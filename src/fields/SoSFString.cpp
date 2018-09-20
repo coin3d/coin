@@ -33,6 +33,7 @@
 /*!
   \class SoSFString SoSFString.h Inventor/fields/SoSFString.h
   \brief The SoSFString class is a container for an SbString.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

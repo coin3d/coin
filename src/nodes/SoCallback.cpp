@@ -33,6 +33,7 @@
 /*!
   \class SoCallback SoCallback.h Inventor/nodes/SoCallback.h
   \brief The SoCallback class is a node type which provides a means of setting callback hooks in the scene graph.
+
   \ingroup nodes
 
   By inserting SoCallback nodes in a scene graph, the application
