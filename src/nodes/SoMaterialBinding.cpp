@@ -131,7 +131,7 @@
   Since SGI Open Inventor v2.1, this was disallowed, though -- enough
   colors for all parts must be supplied, or behavior will be
   unspecified (likely to cause a crash, in fact).  Note that the
-  «Inventor Mentor» book contains a description of the \e old, \e
+  &laquo;Inventor Mentor&raquo; book contains a description of the \e old, \e
   invalid behavior in Chapter 5, section "Binding Nodes" (middle of
   page 128 in the 10th printing).
 */
