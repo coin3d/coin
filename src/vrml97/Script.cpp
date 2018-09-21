@@ -157,7 +157,7 @@
 #include <Inventor/VRMLnodes/SoVRMLScript.h>
 #include "coindefs.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SbName.h>

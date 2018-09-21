@@ -59,7 +59,7 @@
 #include <Inventor/nodes/SoFile.h>
 #include "coindefs.h"
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>

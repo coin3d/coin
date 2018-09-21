@@ -38,7 +38,7 @@ class SoElement;
 class SoCacheP;
 
 #include <Inventor/SbBasic.h>
-#include <stddef.h> // for NULL
+#include <cstddef> // for NULL
 
 class COIN_DLL_API SoCache {
 public:

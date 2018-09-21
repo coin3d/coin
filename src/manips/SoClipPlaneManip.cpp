@@ -80,7 +80,7 @@
   #include <Inventor/actions/SoGetBoundingBoxAction.h>
   #include <Inventor/SoInput.h>
   #include <Inventor/manips/SoClipPlaneManip.h>
-  #include <assert.h>
+  #include <cassert>
   
   // *************************************************************************
   

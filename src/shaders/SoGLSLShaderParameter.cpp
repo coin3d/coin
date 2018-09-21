@@ -222,7 +222,7 @@ SoGLSLShaderParameter::set4iv(const SoGLShaderObject * shader,
     shader->GLContext()->glUniform4ivARB(this->location, num, (const GLint*)v);
 }
 
-#include <stdio.h>
+#include <cstdio>
 SbBool
 SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
                                const char * name, GLenum type,

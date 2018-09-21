@@ -44,7 +44,7 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SoType.h>
-#include <stddef.h>
+#include <cstddef>
 
 class SoGLDisplayList;
 class SoState;

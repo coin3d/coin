@@ -67,7 +67,7 @@
 
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>

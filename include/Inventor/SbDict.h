@@ -46,7 +46,7 @@
 
 // *************************************************************************
 
-#include <stddef.h>
+#include <cstddef>
 #include <Inventor/SbBasic.h>
 
 class SbPList;

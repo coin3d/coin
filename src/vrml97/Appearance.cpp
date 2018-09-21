@@ -89,7 +89,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>

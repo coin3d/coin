@@ -354,7 +354,7 @@
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SbHash.h"

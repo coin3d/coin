@@ -34,7 +34,7 @@
 \**************************************************************************/
 
 #include <Inventor/misc/SoNotRec.h>
-#include <stdio.h>
+#include <cstdio>
 
 class SoEngineOutput;
 class SoField;

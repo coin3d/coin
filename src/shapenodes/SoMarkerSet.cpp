@@ -67,8 +67,8 @@
 
 #include <Inventor/nodes/SoMarkerSet.h>
 
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

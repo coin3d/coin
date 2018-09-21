@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <assert.h>
-#include <stddef.h> // NULL definition
+#include <cassert>
+#include <cstddef> // NULL definition
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,

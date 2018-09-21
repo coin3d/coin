@@ -41,7 +41,7 @@
   Inventor-file on stdout:
 
   \code
-  #include <stdio.h>
+  #include <cstdio>
   #include <Inventor/SbLinear.h>
   #include <Inventor/projectors/SbSphereSheetProjector.h>
   #include <Inventor/SoDB.h>
@@ -97,7 +97,7 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <assert.h>
+#include <cassert>
 
 /*!
   \var SbSphereSheetProjector::workingProjPoint

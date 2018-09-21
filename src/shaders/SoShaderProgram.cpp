@@ -205,7 +205,7 @@
 #include <Inventor/nodes/SoShaderProgram.h>
 #include "coindefs.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>

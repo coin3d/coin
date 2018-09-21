@@ -92,9 +92,9 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
 
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
@@ -107,7 +107,7 @@
    dependency exists on that platform aswell. */
 #include <sys/types.h>
 #endif // HAVE_SYS_TYPES_H
-#include <ctype.h>
+#include <cctype>
 
 #include <Inventor/SoInput.h>
 

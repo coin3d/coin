@@ -47,8 +47,8 @@
 
 #include "CoinStaticObjectInDLL.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -36,7 +36,7 @@
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
-#include <stdio.h> // FILE
+#include <cstdio> // FILE
 #ifndef COIN_INTERNAL
  // For Open Inventor compatibility.
  #include <Inventor/SoDB.h>

@@ -83,7 +83,7 @@
 
 #include <Inventor/sensors/SoSensorManager.h>
 
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -163,8 +163,8 @@
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include "coindefs.h"
 
-#include <string.h>
-#include <stdio.h> // for EOF
+#include <cstring>
+#include <cstdio> // for EOF
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAudioRenderAction.h>

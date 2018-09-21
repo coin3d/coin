@@ -33,7 +33,7 @@
 #ifndef COIN_SBLINE_H
 #define COIN_SBLINE_H
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec3f.h>

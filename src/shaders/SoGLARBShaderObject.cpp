@@ -32,7 +32,7 @@
 
 #include "SoGLARBShaderObject.h"
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/errors/SoDebugError.h>
 #include "SoGLARBShaderParameter.h"

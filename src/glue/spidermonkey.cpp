@@ -39,10 +39,10 @@
 
 #ifdef COIN_HAVE_JAVASCRIPT
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
                                                       
 #if !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING)
 #ifdef _WIN32

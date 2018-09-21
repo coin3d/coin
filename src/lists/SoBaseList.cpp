@@ -42,7 +42,7 @@
 
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/misc/SoBase.h>
-#include <assert.h>
+#include <cassert>
 
 // Convenience macro for casting array element from void * to SoBase *.
 #define GET_BASEPTR(idx) ((SoBase *)SbPList::get(idx))

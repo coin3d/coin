@@ -197,8 +197,8 @@ SbUniqueId is not really a class, just a \c typedef.
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

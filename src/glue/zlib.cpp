@@ -36,10 +36,10 @@
 #define ZLIBGLUE_ASSUME_ZLIB 1
 #endif /* !HAVE_CONFIG_H */
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
 #ifdef HAVE_ZLIB /* In case we're _not_ doing runtime linking. */
 #define ZLIBGLUE_ASSUME_ZLIB 1

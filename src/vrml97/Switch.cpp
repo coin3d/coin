@@ -83,7 +83,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLSwitch.h>
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>

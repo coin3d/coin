@@ -82,7 +82,7 @@
 /*! \file SoProto.h */
 #include <Inventor/misc/SoProto.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>

@@ -32,10 +32,10 @@
 
 #include "fonts/glyph3d.h"
 
-#include <float.h> /* FLT_MIN */
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
+#include <cfloat> /* FLT_MIN */
+#include <cstring>
+#include <cassert>
+#include <cstdio>
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/list.h>

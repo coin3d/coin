@@ -185,7 +185,7 @@
 /*! \file SoVRMLAnchor.h */
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/misc/SoState.h>

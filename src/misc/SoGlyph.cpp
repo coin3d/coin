@@ -64,8 +64,8 @@
 #include <Inventor/misc/SoGlyph.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>

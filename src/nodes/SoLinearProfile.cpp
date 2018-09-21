@@ -52,7 +52,7 @@
 #include <Inventor/nodes/SoLinearProfile.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>

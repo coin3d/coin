@@ -55,7 +55,7 @@
 
 #include <Inventor/misc/SoNotRec.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <assert.h>
+#include <cassert>
 
 #if COIN_DEBUG  // for SoNotRec::print() method
 #include <Inventor/misc/SoBase.h>

@@ -224,7 +224,7 @@
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include "coindefs.h"
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>

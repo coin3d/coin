@@ -186,7 +186,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLSpotLight.h>
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SbColor4f.h>

@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <stdio.h>
+#include <cstdio>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
 

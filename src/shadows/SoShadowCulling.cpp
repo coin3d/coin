@@ -50,7 +50,7 @@
 
 #include <Inventor/annex/FXViz/nodes/SoShadowCulling.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>

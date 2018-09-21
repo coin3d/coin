@@ -32,8 +32,8 @@
 
 #include "SoGLARBShaderProgram.h"
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 #include "SoGLARBShaderObject.h"

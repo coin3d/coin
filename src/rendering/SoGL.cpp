@@ -38,9 +38,9 @@
 #include "rendering/SoGL.h"
 #include "coindefs.h"
 
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
+#include <cassert>
+#include <cstdio>
+#include <cstring>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

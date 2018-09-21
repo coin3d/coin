@@ -31,9 +31,9 @@
 \**************************************************************************/
 
 #include "SbPolarStereographic.h"
-#include <math.h>
+#include <cmath>
 #include "SbGeoAngle.h"
-#include <stdio.h>
+#include <cstdio>
 
 SbPolarStereographic::SbPolarStereographic(const SbGeoEllipsoid & ellipsoid,
                                            double FE, double FN)

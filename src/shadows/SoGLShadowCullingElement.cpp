@@ -41,7 +41,7 @@
 */
 
 #include <Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h>
-#include <assert.h>
+#include <cassert>
 #include <Inventor/system/gl.h>
 #include "coindefs.h"
 

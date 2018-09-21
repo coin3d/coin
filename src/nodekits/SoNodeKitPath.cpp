@@ -50,7 +50,7 @@
 
 #include <Inventor/SoNodeKitPath.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>

@@ -36,7 +36,7 @@
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
-#include <stdio.h>
+#include <cstdio>
 
 class SbDict;
 class SbName;

@@ -36,7 +36,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoState.h>
-#include <stdio.h>
+#include <cstdio>
 
 class SoNode;
 

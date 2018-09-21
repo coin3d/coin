@@ -275,7 +275,7 @@
 #include <FXViz/nodes/SoShadowGroup.h>
 #include "coindefs.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/nodes/SoSpotLight.h>
 #include <Inventor/nodes/SoPointLight.h>

@@ -79,7 +79,7 @@
 
 #include <Inventor/nodekits/SoInteractionKit.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>

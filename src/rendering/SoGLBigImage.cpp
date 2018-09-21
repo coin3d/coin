@@ -66,10 +66,10 @@
 #include <Inventor/misc/SoGLBigImage.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

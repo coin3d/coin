@@ -38,8 +38,8 @@
 
 #include <Inventor/annex/Profiler/nodekits/SoScrollingGraphKit.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>

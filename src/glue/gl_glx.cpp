@@ -46,10 +46,10 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cassert>
+#include <cstring>
+#include <cstdio>
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>

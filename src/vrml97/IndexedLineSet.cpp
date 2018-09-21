@@ -114,7 +114,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SoPrimitiveVertex.h>

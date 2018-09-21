@@ -32,7 +32,7 @@
 
 #include "CoinOffscreenGLCanvas.h"
 
-#include <limits.h>
+#include <climits>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/errors/SoDebugError.h>

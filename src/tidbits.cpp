@@ -43,16 +43,16 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <assert.h>
-#include <errno.h>
-#include <math.h> /* isinf(), isnan(), finite() */
-#include <float.h> /* _fpclass(), _isnan(), _finite() */
-#include <locale.h>
-#include <string.h> /* strncasecmp() */
-#include <stdio.h>
-#include <stdlib.h> /* atio() */
-#include <ctype.h> /* tolower() */
-#include <stdlib.h> /* atexit(), putenv(), qsort(), atof() */
+#include <cassert>
+#include <cerrno>
+#include <cmath> /* isinf(), isnan(), finite() */
+#include <cfloat> /* _fpclass(), _isnan(), _finite() */
+#include <clocale>
+#include <cstring> /* strncasecmp() */
+#include <cstdio>
+#include <cstdlib> /* atio() */
+#include <cctype> /* tolower() */
+#include <cstdlib> /* atexit(), putenv(), qsort(), atof() */
 #ifdef HAVE_WINDOWS_H
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
@@ -270,7 +270,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
      characters plus a terminating \0 into a 20-character buffer:
 
      -----8<----------- [snip] ---------------8<----------- [snip] ---------
-     #include <stdio.h>
+     #include <cstdio>
 
      int
      main(void)

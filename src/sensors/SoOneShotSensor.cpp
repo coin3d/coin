@@ -43,7 +43,7 @@
 */
 
 #include <Inventor/sensors/SoOneShotSensor.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   Constructor.

@@ -37,8 +37,8 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/errors/debugerror.h>

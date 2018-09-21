@@ -50,7 +50,7 @@
 
 #include <Inventor/annex/FXViz/nodes/SoShadowStyle.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
