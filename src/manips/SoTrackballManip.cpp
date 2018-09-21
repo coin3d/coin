@@ -51,7 +51,6 @@
 
   <center>
   \image html trackball.png "Example of Trackball Manipulator"
-  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
   </center>
 
   Here's a dead simple, stand-alone example on how to set up an
