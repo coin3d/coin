@@ -635,7 +635,7 @@ SoVRMLAudioClipP::simageVersionOK(const char *functionName)
       SoDebugError::postWarning(functionName,
                                 "This function needs a version of simage that supports"
                                 "the stream interface and parameter access to be able "
-                                "to read audio files. Please visit www.coin3d.org "
+                                "to read audio files. Please visit https://bitbucket.org/Coin3D/ "
                                 "and download the latest version of simage.");
       SoVRMLAudioClipP::staticdata->warnAboutMissingSimage = FALSE;
     }
