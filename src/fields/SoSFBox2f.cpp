@@ -33,6 +33,7 @@
 /*!
   \class SoSFBox2f SoSFBox2f.h Inventor/fields/SoSFBox2f.h
   \brief The SoSFBox2f class is a container for an SbBox2f vector.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

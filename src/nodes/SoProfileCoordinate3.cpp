@@ -33,6 +33,7 @@
 /*!
   \class SoProfileCoordinate3 SoProfileCoordinate3.h Inventor/nodes/SoProfileCoordinate3.h
   \brief The SoProfileCoordinate3 class is a node specifying a set of 3D coordinates for profiles.
+
   \ingroup nodes
 
   Use nodes of this type to provide coordinates to profiles.

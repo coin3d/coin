@@ -33,6 +33,7 @@
 /*!
   \class SoListener SoListener.h Inventor/nodes/SoListener.h
   \brief The SoListener class defines listener attributes used when rendering sound.
+
   \ingroup nodes
   \ingroup sound
 

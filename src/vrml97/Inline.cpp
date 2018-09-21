@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLInline SoVRMLInline.h Inventor/VRMLnodes/SoVRMLInline.h
   \brief The SoVRMLInline class is used to insert VRML files into a scene.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

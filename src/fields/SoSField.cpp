@@ -34,6 +34,7 @@
   \class SoSField SoSField.h Inventor/fields/SoSField.h
   \brief The SoSField class is the base class for fields which contains
   only a single value.
+
   \ingroup fields
 
   All field types which should always contain only a single member

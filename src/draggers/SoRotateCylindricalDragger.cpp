@@ -39,6 +39,7 @@
 /*!
   \class SoRotateCylindricalDragger SoRotateCylindricalDragger.h Inventor/draggers/SoRotateCylindricalDragger.h
   \brief The SoRotateCylindricalDragger class is for rotating geometry around a single axis.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

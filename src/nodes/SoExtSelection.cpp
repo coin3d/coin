@@ -33,6 +33,7 @@
 /*!
   \class SoExtSelection SoExtSelection.h Inventor/nodes/SoExtSelection.h
   \brief The SoExtSelection class can be used for extended selection functionality.
+
   \ingroup nodes
 
   This class enables you to select geometry by specifying a lasso (a

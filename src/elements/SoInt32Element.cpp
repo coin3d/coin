@@ -33,6 +33,7 @@
 /*!
   \class SoInt32Element SoInt32Element.h Inventor/elements/SoInt32Element.h
   \brief The SoInt32Element class is the base class for elements that simply store a 32-bit integer.
+
   \ingroup elements
 
   This is the superclass of elements where the new element data \e

@@ -33,6 +33,7 @@
 /*!
   \class SoShapehintsElement Inventor/elements/SoCacheHintElement.h
   \brief The SoCacheHintElement class is yet to be documented.
+
   \ingroup elements
 
   Please note that this is an experimental class. The API might change

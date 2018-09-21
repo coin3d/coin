@@ -33,6 +33,7 @@
 /*!
   \class SoTexture2 SoTexture2.h Inventor/nodes/SoTexture2.h
   \brief The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scenegraph.
+
   \ingroup nodes
 
   Shape nodes within the scope of SoTexture2 nodes in the scenegraph
@@ -313,8 +314,8 @@
   Targa (.tga), PIC (.pic), SGI RGB (.rgb, .bw) and XWD (.xwd).
 
   For more information about the simage library, including download
-  and build instructions, see the <a href="http://www.coin3d.org">Coin
-  www-pages</a>.
+  and build instructions, see the <a href="https://bitbucket.org/Coin3D/">Coin
+  repository</a>.
 */
 /*!
   \var SoSFImage SoTexture2::image

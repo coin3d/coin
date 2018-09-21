@@ -33,6 +33,7 @@
 /*!
   \class SoVertexProperty SoVertexProperty.h Inventor/nodes/SoVertexProperty.h
   \brief The SoVertexProperty class collects the functionality of various appearance nodes.
+
   \ingroup nodes
 
   Instead of reading data from the current state stack of the

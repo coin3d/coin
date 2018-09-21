@@ -33,6 +33,7 @@
 /*!
   \class SoGLViewingMatrixElement Inventor/elements/SoGLViewingMatrixElement.h
   \brief The SoGLViewingMatrixElement class is used to store the current viewing matrix.
+
   \ingroup elements
 
   The viewing matrix contains the inverse camera coordinate system

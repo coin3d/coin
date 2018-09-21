@@ -33,6 +33,7 @@
 /*!
   \class SbList SbList.h Inventor/lists/SbList.h
   \brief The SbList class is a template container class for lists.
+
   \ingroup base
 
   SbList is an extension of the Coin library versus the original Open

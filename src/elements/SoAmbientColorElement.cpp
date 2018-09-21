@@ -33,6 +33,7 @@
 /*!
   \class SoAmbientColorElement Inventor/elements/SoAmbientColorElement.h
   \brief The SoAmbientColorElement class is yet to be documented.
+
   \ingroup elements
 */
 

@@ -33,6 +33,7 @@
 /*!
   \class SoGroup SoGroup.h Inventor/nodes/SoGroup.h
   \brief The SoGroup class is a node which managed other node instances.
+
   \ingroup nodes
 
   The internal scene data structures in Coin are managed as directed

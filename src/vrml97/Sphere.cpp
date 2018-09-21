@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLSphere SoVRMLSphere.h Inventor/VRMLnodes/SoVRMLSphere.h
   \brief The SoVRMLSphere class is used to represent a spherical 3D object.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

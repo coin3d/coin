@@ -50,6 +50,7 @@
   \class SbVec4d SbVec4d.h Inventor/SbVec4d.h
   \brief The SbVec4d class is a 4 dimensional vector with double precision
   floating point coordinates.
+
   \ingroup base
 
   This vector class is not by many other classes in

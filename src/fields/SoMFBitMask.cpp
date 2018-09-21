@@ -33,6 +33,7 @@
 /*!
   \class SoMFBitMask SoMFBitMask.h Inventor/fields/SoMFBitMask.h
   \brief The SoMFBitMask class is a container for a set of bitmasks.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

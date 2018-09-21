@@ -33,6 +33,7 @@
 /*!
   \class SoSelectOne SoSelectOne.h Inventor/engines/SoSelectOne.h
   \brief The SoSelectOne class is used to select one value from a set of values.
+
   \ingroup engines
 
   The output field will be the index'th value of the input multivalue

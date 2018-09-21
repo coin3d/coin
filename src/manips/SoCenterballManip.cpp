@@ -39,6 +39,7 @@
 /*!
   \class SoCenterballManip SoCenterballManip.h Inventor/manips/SoCenterballManip.h
   \brief The SoCenterballManip wraps an SoCenterballDragger for convenience.
+
   \ingroup manips
 
   The manipulator class takes care of wrapping up the

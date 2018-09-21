@@ -31,9 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \page macros_nodes
-
-  <h2>Node Macros</h2>
+  \page macros_nodes Node Macros
 
   - \ref SO_NODE_HEADER
   - \ref SO_NODE_ABSTRACT_HEADER

@@ -33,6 +33,7 @@
 /*!
   \class SbDPViewVolume SbDPViewVolume.h Inventor/SbDPViewVolume.h
   \brief The SbDPViewVolume class is a double precision viewing volume in 3D space.
+
   \ingroup base
 
   This class contains the necessary information for storing a view
@@ -419,7 +420,7 @@ SbDPViewVolume::projectPointToLine(const SbVec2d& pt,
   Project the \a src point to a normalized set of screen coordinates in
   the projection plane and place the result in \a dst.
 
-  It is safe to let \a src and \dst be the same SbVec3d instance.
+  It is safe to let \a src and \a dst be the same SbVec3d instance.
   
   The z-coordinate of \a dst is monotonically increasing for points
   closer to the far plane. Note however that this is not a linear
@@ -958,7 +959,7 @@ SbDPViewVolume::zVector(void) const
   Return a copy SbDPViewVolume with narrowed depth by supplying parameters
   for new near and far clipping planes.
 
-  \a nearval and \farval should be relative to the current clipping
+  \a nearval and \a farval should be relative to the current clipping
   planes. A value of 1.0 is at the current near plane. A value of
   0.0 is at the current far plane.
 

@@ -33,6 +33,7 @@
 /*!
   \class SoLineSet SoLineSet.h Inventor/nodes/SoLineSet.h
   \brief The SoLineSet class is used to render and organize non-indexed polylines.
+
   \ingroup nodes
 
   Polylines are specified using the numVertices field. Coordinates,

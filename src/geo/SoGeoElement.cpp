@@ -33,6 +33,7 @@
 /*!
   \class SoGeoElement Inventor/elements/SoGeoElement.h
   \brief The SoGeoElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

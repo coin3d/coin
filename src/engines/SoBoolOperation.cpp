@@ -33,6 +33,7 @@
 /*!
   \class SoBoolOperation SoBoolOperation.h Inventor/engines/SoBoolOperation.h
   \brief The SoBoolOperation engine evaluates expressions of boolean logic.
+
   \ingroup engines
 
   The multivalue fields SoBoolOperation::a and SoBoolOperation::b are

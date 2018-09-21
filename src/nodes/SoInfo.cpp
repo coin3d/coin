@@ -33,6 +33,7 @@
 /*!
   \class SoInfo SoInfo.h Inventor/nodes/SoInfo.h
   \brief The SoInfo class is a node for holding text information.
+
   \ingroup nodes
 
   This is simply a placeholder for textual information about a

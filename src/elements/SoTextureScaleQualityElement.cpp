@@ -33,6 +33,7 @@
 /*!
   \class SoTextureScaleQualityElement /elements/SoTextureScaleQualityElement.h
   \brief The SoTextureScaleQualityElement class is yet to be documented.
+
   \ingroup elements
 
   This is currently an internal Coin element. The header file is not

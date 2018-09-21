@@ -33,6 +33,7 @@
 /*!
   \class SbDict SbDict.h Inventor/SbDict.h
   \brief The SbDict class organizes a dictionary of keys and values.
+
   \ingroup base
 
   It uses hashing to quickly insert and find entries in the dictionary.

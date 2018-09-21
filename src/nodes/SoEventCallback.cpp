@@ -33,6 +33,7 @@
 /*!
   \class SoEventCallback SoEventCallback.h Inventor/nodes/SoEventCallback.h
   \brief The SoEventCallback class provides functionality for catching events.
+
   \ingroup nodes
 
   Use SoEventCallback nodes in the scenegraph for catching user

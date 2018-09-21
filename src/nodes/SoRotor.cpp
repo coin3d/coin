@@ -33,6 +33,7 @@
 /*!
   \class SoRotor SoRotor.h Inventor/nodes/SoRotor.h
   \brief The SoRotor class is a node used to animate rotations.
+
   \ingroup nodes
 
   Insert this node in your hierarchy to apply a continuous rotation

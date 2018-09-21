@@ -34,6 +34,7 @@
   \class SoKeyboardEvent SoKeyboardEvent.h Inventor/events/SoKeyboardEvent.h
   \brief The SoKeyboardEvent class contains information about
   keyboard interaction.
+
   \ingroup events
 
   When the user presses any keys on the keyboard, these will be translated

@@ -39,6 +39,7 @@
 /*!
   \class SoCameraKit SoCameraKit.h Inventor/nodekits/SoCameraKit.h
   \brief The SoCameraKit class is a node kit with a transform and a camera.
+
   \ingroup nodekits
 
   \NODEKIT_PRE_DIAGRAM

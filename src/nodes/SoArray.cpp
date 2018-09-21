@@ -33,6 +33,7 @@
 /*!
   \class SoArray SoArray.h Inventor/nodes/SoArray.h
   \brief The SoArray class is a group node for setting up regular arrays of subgraphs.
+
   \ingroup nodes
 
   SoArray presents a convenient way of duplicating a node (typically a

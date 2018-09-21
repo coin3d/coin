@@ -33,6 +33,7 @@
 /*!
   \class SoPolygonOffset SoPolygonOffset.h Inventor/nodes/SoPolygonOffset.h
   \brief The SoPolygonOffset class is a node type for "layering" rendering primitives.
+
   \ingroup nodes
 
   A common problem with realtime 3D rendering systems is that rendered

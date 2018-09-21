@@ -36,6 +36,7 @@
 /*!
   \class SoDetailList SoDetailList.h Inventor/lists/SoDetailList.h
   \brief The SoDetailList class is a container for pointers to SoDetail objects.
+
   \ingroup details
 
   This list class will delete the details when destructed/truncated,

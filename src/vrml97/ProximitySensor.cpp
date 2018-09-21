@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLProximitySensor SoVRMLProximitySensor.h Inventor/VRMLnodes/SoVRMLProximitySensor.h
   \brief The SoVRMLProximitySensor class is used to generate events when the viewer enters or exits a region.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

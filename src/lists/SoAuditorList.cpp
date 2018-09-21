@@ -33,6 +33,7 @@
 /*!
   \class SoAuditorList SoAuditorList.h Inventor/lists/SoAuditorList.h
   \brief The SoAuditorList class is used to keep track of auditors for certain object classes.
+
   \ingroup general
 
   This class is mainly for internal use (from SoBase) and it should

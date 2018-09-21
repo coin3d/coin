@@ -33,6 +33,7 @@
 /*!
   \class SbCylinderSectionProjector SbCylinderSectionProjector.h Inventor/projectors/SbCylinderSectionProjector.h
   \brief The SbCylinderSectionProjector projects 2D points to a sliced cylinder.
+
   \ingroup projectors
 
   The projection cylinder for this class is sliced by a clipping plane

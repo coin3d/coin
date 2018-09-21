@@ -39,6 +39,7 @@
 /*!
   \class SoDirectionalLightManip SoDirectionalLightManip.h Inventor/manips/SoDirectionalLightManip.h
   \brief The SoDirectionalLightManip class is used to manipulate SoDirectionalLight nodes.
+
   \ingroup manips
 
   A manipulator is used by replacing the node you want to edit in the

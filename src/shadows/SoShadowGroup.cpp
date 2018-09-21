@@ -33,6 +33,7 @@
 /*!
   \class SoShadowGroup SoShadowGroup.h FXViz/nodes/SoShadowGroup.h
   \brief The SoShadowGroup node is a group node used for shadow rendering.
+
   \ingroup fxviz
 
   Children of this node can recieve shadows, and cast shadows on other children.
@@ -551,7 +552,7 @@ public:
 
     memset(buf, 0, 500);
     buf[7] = 255; /* set maximum pixel value to 255 */
-    strcpy((char *)buf+8, "http://www.coin3d.org");
+    strcpy((char *)buf+8, "https://bitbucket.org/Coin3D/");
     fwrite(buf, 1, 500, fp);
 
     tmpbuf = (unsigned char *) malloc(width);

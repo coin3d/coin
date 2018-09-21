@@ -33,6 +33,7 @@
 /*!
   \class SoSceneManager SoSceneManager.h Inventor/SoSceneManager.h
   \brief The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.
+
   \ingroup general
 
   The renderarea class from the GUI toolkit you are using uses this

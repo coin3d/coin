@@ -33,6 +33,7 @@
 /*!
   \class SbCylinderPlaneProjector SbCylinderPlaneProjector.h Inventor/projectors/SbCylinderPlaneProjector.h
   \brief The SbCylinderPlaneProjector class projects 2D points to a half-cylinder and a plane.
+
   \ingroup projectors
 
   This projector uses a plane along with the half-cylinder of

@@ -33,6 +33,7 @@
 /*!
   \class SbXfBox3d SbXfBox3d.h Inventor/SbXfBox3d.h
   \brief The SbXfBox3d class is a 3 dimensional box with double precision coordinates and an attached transformation.
+
   \ingroup base
 
   It provides storage for two box corners with double precision floating

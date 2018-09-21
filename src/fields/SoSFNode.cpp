@@ -42,6 +42,7 @@
 /*!
   \class SoSFNode SoSFNode.h Inventor/fields/SoSFNode.h
   \brief The SoSFNode class is a container for a single node.
+
   \ingroup fields
 
   This field container stores a pointer to a Coin node. It takes care

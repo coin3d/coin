@@ -38,6 +38,7 @@
 /*!
   \class SoMFEngine SoMFEngine.h Inventor/fields/SoMFEngine.h
   \brief The SoMFEngine class is a container for engines.
+
   \ingroup fields
 
   This field container stores an array of pointers to engines. It takes

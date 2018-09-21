@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLCylinder SoVRMLCylinder.h Inventor/VRMLnodes/SoVRMLCylinder.h
   \brief The SoVRMLCylinder class is used to represent a cylinder object.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

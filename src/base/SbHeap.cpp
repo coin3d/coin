@@ -33,6 +33,7 @@
 /*!
   \class SbHeap SbHeap.h Inventor/SbHeap.h
   \brief The SbHeap class is a generic heap class.
+
   \ingroup base
 
   FIXME: write doc

@@ -34,6 +34,7 @@
   \class SbBox2s SbBox2s.h Inventor/SbBox2s.h
   \brief The SbBox2s class is a 2 dimensional box with short
   integer coordinates.
+
   \ingroup base
 
   This box class is used by other classes in Coin for data
