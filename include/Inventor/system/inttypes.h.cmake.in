@@ -95,8 +95,8 @@
 #cmakedefine HAVE_UINT32_T 1
 #cmakedefine HAVE_INT64_T 1
 #cmakedefine HAVE_UINT64_T 1
-#define HAVE_INTPTR_T 1
-#define HAVE_UINTPTR_T 1
+#cmakedefine HAVE_INTPTR_T 1
+#cmakedefine HAVE_UINTPTR_T 1
 
 /* The type which the configure script found to match the given
    bitwidth. */
@@ -108,8 +108,8 @@
 #cmakedefine COIN_UINT32_T @COIN_UINT32_T@
 #cmakedefine COIN_INT64_T @COIN_INT64_T@
 #cmakedefine COIN_UINT64_T @COIN_UINT64_T@
-#define COIN_INTPTR_T intptr_t
-#define COIN_UINTPTR_T uintptr_t
+#cmakedefine COIN_INTPTR_T @COIN_INTPTR_T@
+#cmakedefine COIN_UINTPTR_T @COIN_UINTPTR_T@
 
 #endif /* (end wrapper) ! COIN_CONFIGURE_BUILD */
 
