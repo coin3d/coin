@@ -1,8 +1,8 @@
-1 TYPELIB "Coin.rc"
+1 TYPELIB "@PROJECT_NAME@.rc"
 
 1 VERSIONINFO
- FILEVERSION @COIN_MAJOR_VERSION@, @COIN_MINOR_VERSION@, @COIN_MICRO_VERSION@, 0
- PRODUCTVERSION @COIN_MAJOR_VERSION@, @COIN_MINOR_VERSION@, @COIN_MICRO_VERSION@, 0
+ FILEVERSION @PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@, 0
+ PRODUCTVERSION @PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@, 0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -19,16 +19,16 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Kongsberg Oil & Gas Technologies AS"
             VALUE "FileDescription", "Coin3D, 3D graphics rendering library - https://bitbucket.org/Coin3D/"
-            VALUE "FileVersion","@COIN_MAJOR_VERSION@, @COIN_MINOR_VERSION@, @COIN_MICRO_VERSION@, @COIN_BETA_VERSION@"
-            VALUE "InternalName", "Coin"
+            VALUE "FileVersion","@PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@, @COIN_BETA_VERSION@"
+            VALUE "InternalName", "@PROJECT_NAME@"
             VALUE "LegalCopyright", "Copyright (c) @COIN_BUILD_YEAR@ Kongsberg Oil & Gas Technologies AS"
 #ifdef _DEBUG
-            VALUE "OriginalFilename", "Coind.dll"
+            VALUE "OriginalFilename", "@PROJECT_NAME@@PROJECT_VERSION_MAJOR@d.dll"
 #else
-            VALUE "OriginalFilename", "Coin.dll"
+            VALUE "OriginalFilename", "@PROJECT_NAME@@PROJECT_VERSION_MAJOR@.dll"
 #endif
             VALUE "ProductName", "Coin3D"
-            VALUE "ProductVersion","@COIN_MAJOR_VERSION@, @COIN_MINOR_VERSION@, @COIN_MICRO_VERSION@, @COIN_BETA_VERSION@"
+            VALUE "ProductVersion","@PROJECT_VERSION_MAJOR@, @PROJECT_VERSION_MINOR@, @PROJECT_VERSION_PATCH@, @COIN_BETA_VERSION@"
         END
     END
     BLOCK "VarFileInfo"
