@@ -34,7 +34,7 @@
 
 #include <Inventor/misc/SoTranSender.h>
 #include <coindefs.h> // COIN_STUB
-#include <stdlib.h>
+#include <cstdlib>
 
 SoTranSender::SoTranSender(SoOutput * COIN_UNUSED_ARG(output))
 {

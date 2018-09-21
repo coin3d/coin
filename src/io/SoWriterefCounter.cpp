@@ -32,7 +32,7 @@
 
 #include "io/SoWriterefCounter.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SoOutput.h>

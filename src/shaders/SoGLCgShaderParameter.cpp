@@ -34,9 +34,9 @@
 #include "SoGLCgShaderObject.h"
 #include "coindefs.h"
 
-#include <string.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstring>
+#include <cstdio>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 

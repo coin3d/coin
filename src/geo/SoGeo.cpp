@@ -56,10 +56,10 @@
 #include "SbGeoAngle.h"
 #include "SbGeoEllipsoid.h"
 
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 
 void
 SoGeo::init(void)

@@ -32,11 +32,11 @@
 
 #include <SoDebug.h>
 
-#include <stdarg.h>
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdarg>
+#include <cassert>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/nodes/SoNode.h>

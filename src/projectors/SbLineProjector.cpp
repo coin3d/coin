@@ -46,7 +46,7 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbVec2f.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   \var SbLineProjector::line

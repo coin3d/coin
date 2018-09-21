@@ -47,7 +47,7 @@
 
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/SbName.h>
-#include <stddef.h>
+#include <cstddef>
 
 SO_DETAIL_SOURCE(SoFaceDetail);
 

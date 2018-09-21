@@ -33,8 +33,8 @@
 #include "io/SoOutput_Writer.h"
 #include "coindefs.h"
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

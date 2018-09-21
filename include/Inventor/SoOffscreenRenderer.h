@@ -40,7 +40,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 class SoBase;
 class SoGLRenderAction;

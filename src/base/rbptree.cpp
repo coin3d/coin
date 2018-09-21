@@ -655,7 +655,7 @@ cc_rbptree_debug(const cc_rbptree * t)
 
 #ifdef COIN_TEST_SUITE
 
-#include <math.h>
+#include <cmath>
 #include <Inventor/lists/SbList.h>
 
 #define FILL_TIMES (50)

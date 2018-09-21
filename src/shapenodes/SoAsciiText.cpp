@@ -138,8 +138,8 @@
 #include <Inventor/nodes/SoAsciiText.h>
 #include "coindefs.h"
 
-#include <string.h>
-#include <float.h> // FLT_MIN
+#include <cstring>
+#include <cfloat> // FLT_MIN
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

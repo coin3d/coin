@@ -6,11 +6,11 @@
     coin-config --build extractfont extractfont.cpp -lsimage1
  */
 
-#include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cctype>
 
 #define SIMAGE_DLL
 

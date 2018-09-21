@@ -66,7 +66,7 @@
   \code
   #include <Inventor/Xt/SoXt.h>
   #include <Inventor/sensors/SoTimerSensor.h>
-  #include <stdio.h>
+  #include <cstdio>
   
   static void
   timeSensorCallback(void * data, SoSensor * sensor)
@@ -96,7 +96,7 @@
 
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 #include <Inventor/SoDB.h>
-#include <assert.h>
+#include <cassert>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

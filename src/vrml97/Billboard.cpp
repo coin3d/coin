@@ -168,8 +168,8 @@
 
 #include <Inventor/VRMLnodes/SoVRMLBillboard.h>
 
-#include <math.h>
-#include <float.h>
+#include <cmath>
+#include <cfloat>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoSearchAction.h>

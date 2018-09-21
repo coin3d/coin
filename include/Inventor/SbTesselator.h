@@ -36,7 +36,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/tools/SbPimplPtr.h>
 #include <Inventor/SbVec3f.h>
-#include <stddef.h>
+#include <cstddef>
 
 typedef void SbTesselatorCB(void * v0, void * v1, void * v2, void * data);
 

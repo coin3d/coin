@@ -34,10 +34,10 @@
 #include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
 #include "coindefs.h"
 
-#include <assert.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
 #include <boost/scoped_array.hpp>
 

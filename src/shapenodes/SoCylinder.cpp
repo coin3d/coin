@@ -92,7 +92,7 @@
 #include <Inventor/nodes/SoCylinder.h>
 #include "coindefs.h"
 
-#include <math.h>
+#include <cmath>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

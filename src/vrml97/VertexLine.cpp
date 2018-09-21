@@ -61,7 +61,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLVertexLine.h>
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>

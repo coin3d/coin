@@ -34,7 +34,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <stdio.h>
+#include <cstdio>
 
 class SoBase;
 

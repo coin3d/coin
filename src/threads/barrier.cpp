@@ -47,9 +47,9 @@
 /*! \file barrier.h */
 #include <Inventor/C/threads/barrier.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cassert>
 
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/condvar.h>

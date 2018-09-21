@@ -41,8 +41,8 @@
 
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 
-#include <stdio.h>
-#include <math.h> // for floor() and ceil()
+#include <cstdio>
+#include <cmath> // for floor() and ceil()
 
 #include <Inventor/errors/SoDebugError.h>
 

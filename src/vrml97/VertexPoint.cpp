@@ -54,7 +54,7 @@
 #include <Inventor/VRMLnodes/SoVRMLVertexPoint.h>
 #include "coindefs.h"
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>

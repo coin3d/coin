@@ -47,8 +47,8 @@
 /*! \file wpool.h */
 #include <Inventor/C/threads/wpool.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/threads/worker.h>
 #include <Inventor/C/threads/mutex.h>

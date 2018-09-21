@@ -311,10 +311,10 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <assert.h>
-#include <string.h> // memset(), memcpy()
-#include <math.h> // for ceil()
-#include <limits.h> // SHRT_MAX
+#include <cassert>
+#include <cstring> // memset(), memcpy()
+#include <cmath> // for ceil()
+#include <climits> // SHRT_MAX
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>

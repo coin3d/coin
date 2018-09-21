@@ -32,7 +32,7 @@
 
 #include "misc/SoCompactPathList.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SoFullPath.h>
 #include <Inventor/lists/SoPathList.h>

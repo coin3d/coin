@@ -47,8 +47,8 @@
 /*! \file worker.h */
 #include <Inventor/C/threads/worker.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/mutex.h>

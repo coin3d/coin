@@ -32,7 +32,7 @@
 
 #include "misc/SoPick.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>

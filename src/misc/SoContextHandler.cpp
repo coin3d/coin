@@ -60,7 +60,7 @@
 /*! \file SoContextHandler.h */
 #include <Inventor/misc/SoContextHandler.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>

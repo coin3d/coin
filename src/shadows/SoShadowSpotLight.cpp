@@ -142,7 +142,7 @@
 
 #include <Inventor/annex/FXViz/nodes/SoShadowSpotLight.h>
 
-#include <stdio.h>
+#include <cstdio>
 #include <Inventor/actions/SoGLRenderAction.h>
 
 #include "nodes/SoSubNodeP.h"

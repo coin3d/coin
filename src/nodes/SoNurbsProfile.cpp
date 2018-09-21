@@ -152,7 +152,7 @@
 
 #include <Inventor/nodes/SoNurbsProfile.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

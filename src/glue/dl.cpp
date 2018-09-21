@@ -107,12 +107,12 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <assert.h>
-#include <stddef.h> /* NULL definition. */
-#include <stdlib.h> /* atoi() */
-#include <errno.h>
-#include <string.h> /* strlen(), strcpy(), strerror() */
-#include <stdio.h>  /* snprintf() */
+#include <cassert>
+#include <cstddef> /* NULL definition. */
+#include <cstdlib> /* atoi() */
+#include <cerrno>
+#include <cstring> /* strlen(), strcpy(), strerror() */
+#include <cstdio>  /* snprintf() */
 #ifdef HAVE_LIBGEN_H
 #include <libgen.h> /* dirname() */
 #endif /* HAVE_LIBGEN_H */

@@ -46,7 +46,7 @@
 
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoDB.h>
-#include <assert.h>
+#include <cassert>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

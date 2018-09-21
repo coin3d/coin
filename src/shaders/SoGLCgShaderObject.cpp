@@ -32,7 +32,7 @@
 
 #include "shaders/SoGLCgShaderObject.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 

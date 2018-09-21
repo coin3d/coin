@@ -46,7 +46,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

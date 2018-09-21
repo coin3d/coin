@@ -34,8 +34,8 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 class SoAction;
 class SoTypeList;

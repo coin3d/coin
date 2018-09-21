@@ -32,7 +32,7 @@
 
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include "SoGLShaderProgram.h"

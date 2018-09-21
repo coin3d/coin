@@ -75,8 +75,8 @@
 #include <Inventor/nodes/SoCone.h>
 #include "coindefs.h"
 
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
