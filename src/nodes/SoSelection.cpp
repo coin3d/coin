@@ -614,7 +614,7 @@ SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  Removes \a f from the list og finish callbacks.
+  Removes \a f from the list of finish callbacks.
   
   \sa addFinishCallback()
 */
