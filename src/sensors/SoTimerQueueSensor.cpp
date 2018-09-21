@@ -33,6 +33,7 @@
 /*!
   \class SoTimerQueueSensor SoTimerQueueSensor.h Inventor/sensors/SoTimerQueueSensor.h
   \brief The SoTimerQueueSensor class is the abstract base class for sensors triggering on certain timer events.
+
   \ingroup sensors
 
   Timer sensors triggers upon specific points in time.

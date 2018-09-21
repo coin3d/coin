@@ -34,6 +34,7 @@
   \class SbBox2i32 SbBox2i32.h Inventor/SbBox2i32.h
   \brief The SbBox2i32 class is a 2 dimensional box with 32-bit
   integer coordinates.
+
   \ingroup base
 
   This box class is used by other classes in Coin for data

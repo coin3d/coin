@@ -33,6 +33,7 @@
 /*!
   \class SoOutput SoOutput.h Inventor/SoOutput.h
   \brief The SoOutput class is an abstraction of an output stream.
+
   \ingroup general
 
   SoOutput offers the ability to write basic types to a file or a

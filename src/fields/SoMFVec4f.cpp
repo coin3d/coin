@@ -33,6 +33,7 @@
 /*!
   \class SoMFVec4f SoMFVec4f.h Inventor/fields/SoMFVec4f.h
   \brief The SoMFVec4f class is a container for SbVec4f vectors.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

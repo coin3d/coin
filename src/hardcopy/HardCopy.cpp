@@ -118,6 +118,7 @@
 /*!
   \class SoHardCopy SoHardCopy.h Inventor/annex/HardCopy/SoHardCopy.h
   \brief The SoHardCopy class is a static class for initializing the hardcopy support.
+
   \ingroup hardcopy
 */
 

@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLAnchor SoVRMLAnchor.h Inventor/VRMLnodes/SoVRMLAnchor.h
   \brief The SoVRMLAnchor class is used for linking to other URL resources.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

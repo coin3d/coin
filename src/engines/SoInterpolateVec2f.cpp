@@ -33,6 +33,7 @@
 /*!
   \class SoInterpolateVec2f SoInterpolateVec2f.h Inventor/engines/SoInterpolateVec2f.h
   \brief The SoInterpolateVec2f class is used to interpolate between pairs of 2D vectors.
+
   \ingroup engines
 */
 

@@ -33,6 +33,7 @@
 /*!
   \class SoWWWAnchor SoWWWAnchor.h Inventor/nodes/SoWWWAnchor.h
   \brief The SoWWWAnchor class adds URL callbacks to the highlighted geometry.
+
   \ingroup nodes
 
   In addition to highlighting geometry under the cursor, the application
@@ -43,7 +44,7 @@
   #Inventor V2.1 ascii
   
   WWWAnchor {
-     name "http://www.coin3d.org/Coin/egg.iv"
+     name "https://bitbucket.org/Coin3D/coin/egg.iv"
      description "Easter Egg"
   
      Separator {
@@ -100,9 +101,9 @@
   assure that the URL works with all browsers, the coordinates are
   divided by commas sent as the hex representation.
 
-  If a model by the name of sim.wrl resided at www.coin3d.org and the
+  If a model by the name of sim.wrl resided at https://bitbucket.org/Coin3D/ and the
   picked point had the coordinates [1.5, 10, 6.77], the resulting URL
-  would be "http://www.coin3d.org/sim.wrl?1.5%2c10%2c6.77".
+  would be "https://bitbucket.org/Coin3D/sim.wrl?1.5%2c10%2c6.77".
 */
 
 

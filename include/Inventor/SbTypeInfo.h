@@ -59,6 +59,8 @@
   \since Coin 2.5
 */
 
+#ifndef DOXYGEN_SKIP_THIS
+
 #include <Inventor/system/inttypes.h>
 #include <Inventor/C/basic.h>
 
@@ -1408,5 +1410,7 @@ struct SbTypeInfo<SoMFVec4us> {
 // *************************************************************************
 
 // } } } // namespace SIM::Coin3D::Coin
+
+#endif // !DOXYGEN_SKIP_THIS
 
 #endif // !COIN_SBTYPEINFO_H

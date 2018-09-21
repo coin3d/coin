@@ -33,6 +33,7 @@
 /*!
   \class SoEngineOutput SoEngine.h Inventor/engines/SoEngine.h
   \brief The SoEngineOutput class is the output slots in SoEngine instances.
+
   \ingroup engines
 
   SoEngineOutput has methods for convenient handling of the

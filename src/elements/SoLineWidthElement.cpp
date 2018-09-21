@@ -33,6 +33,7 @@
 /*!
   \class SoLineWidthElement Inventor/elements/SoLineWidthElement.h
   \brief The SoLineWidthElement class changes the linewidth setting of the render state.
+
   \ingroup elements
 
   Requests from the scenegraph to change the linewidth when rendering

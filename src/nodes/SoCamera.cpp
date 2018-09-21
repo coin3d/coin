@@ -33,6 +33,7 @@
 /*!
   \class SoCamera SoCamera.h Inventor/nodes/SoCamera.h
   \brief The SoCamera class is the abstract base class for camera definition nodes.
+
   \ingroup nodes
 
   To be able to view a scene, one needs to have a camera in the scene

@@ -33,6 +33,7 @@
 /*!
   \class SoEvent SoEvent.h Inventor/events/SoEvent.h
   \brief The SoEvent class is the base class for all Coin events.
+
   \ingroup events
 
   Coin contains its own set of event classes, independent of the underlying

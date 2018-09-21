@@ -39,6 +39,7 @@
 /*!
   \class SoTrackballDragger SoTrackballDragger.h Inventor/draggers/SoTrackballDragger.h
   \brief The SoTrackballDragger provides the end-user with rotation and scaling interaction possibilities.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

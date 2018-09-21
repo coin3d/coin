@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLTimeSensor SoVRMLTimeSensor.h Inventor/VRMLnodes/SoVRMLTimeSensor.h
   \brief The SoVRMLTimeSensor class is a multi-purpose time event generator.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

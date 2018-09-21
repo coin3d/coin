@@ -33,6 +33,7 @@
 /*!
   \class SoPrimitiveVertex SoPrimitiveVertex.h Inventor/SoPrimitiveVertex.h
   \brief The SoPrimitiveVertex class represents a single vertex of a generated primitive.
+
   \ingroup general
 
   Instances of SoPrimitiveVertex are constructed when generating

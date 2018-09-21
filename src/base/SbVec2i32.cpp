@@ -34,6 +34,7 @@
   \class SbVec2i32 SbVec2i32.h Inventor/SbVec2i32.h
   \brief The SbVec2i32 class is a 2 dimensional vector with 32-bit signed 
   integer coordinates.
+
   \ingroup base
 
   This vector class is used by many other classes in

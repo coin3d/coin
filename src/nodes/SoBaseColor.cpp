@@ -33,6 +33,7 @@
 /*!
   \class SoBaseColor SoBaseColor.h Inventor/nodes/SoBaseColor.h
   \brief The SoBaseColor class provides a node type for convenient setting of the base material color.
+
   \ingroup nodes
 
   If you want to just set the diffuse color of the following geometry,

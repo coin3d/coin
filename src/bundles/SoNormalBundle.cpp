@@ -33,6 +33,7 @@
 /*!
   \class SoNormalBundle include/Inventor/bundles/SoNormalBundle.h
   \brief The SoNormalBundle class simplifies normal handling.
+
   \ingroup bundles
 
   This class is currently not used in Coin but is provided for

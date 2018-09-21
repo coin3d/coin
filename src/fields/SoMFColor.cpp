@@ -33,6 +33,7 @@
 /*!
   \class SoMFColor SoMFColor.h Inventor/fields/SoMFColor.h
   \brief The SoMFColor class is a container for SbColor values.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

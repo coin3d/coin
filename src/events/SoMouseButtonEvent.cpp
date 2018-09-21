@@ -34,6 +34,7 @@
   \class SoMouseButtonEvent SoMouseButtonEvent.h Inventor/events/SoMouseButtonEvent.h
   \brief The SoMouseButtonEvent class contains information about
   mousebutton interaction.
+
   \ingroup events
 
   When the user presses any buttons on the mouse, these will be

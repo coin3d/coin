@@ -33,6 +33,7 @@
 /*!
   \class SoSFFloat SoSFFloat.h Inventor/fields/SoSFFloat.h
   \brief The SoSFFloat class is a container for a floating point value.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

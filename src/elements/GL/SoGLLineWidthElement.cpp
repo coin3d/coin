@@ -33,6 +33,7 @@
 /*!
   \class SoGLLineWidthElement Inventor/elements/SoGLLineWidthElement.h
   \brief The SoGLLineWidthElement class changes the linewidth setting of the OpenGL render state.
+
   \ingroup elements
 
   Requests from the scenegraph to change the linewidth when rendering
@@ -56,7 +57,7 @@
 
   Another, perhaps more convenient, way of acquiring the OpenGL
   implementation limits with regard to pointsizes is to use the
-  So*GLWidget::getPointSizeLimits() method in the GUI "glue" interface
+  So\@Gui\@GLWidget\::getPointSizeLimits() method in the GUI "glue" interface
   library you are using (SoQt, SoXt, SoGtk, SoWin, ...).
 */
 

@@ -33,6 +33,7 @@
 /*!
   \class SoInteraction SoInteraction.h Inventor/SoInteraction.h
   \brief The SoInteraction class takes care of initalizing internal classes.
+
   \ingroup general
 
   SoInteraction is present for the sole purpose of providing an

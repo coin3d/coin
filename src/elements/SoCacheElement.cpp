@@ -33,6 +33,7 @@
 /*!
   \class SoCacheElement Inventor/elements/SoCacheElement.h
   \brief The SoCacheElement class stores and manages the open caches.
+
   \ingroup elements
 */
 

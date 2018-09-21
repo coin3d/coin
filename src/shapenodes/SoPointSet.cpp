@@ -33,6 +33,7 @@
 /*!
   \class SoPointSet SoPointSet.h Inventor/nodes/SoPointSet.h
   \brief The SoPointSet class is used to display a set of 3D points.
+
   \ingroup nodes
 
   This node either uses the coordinates currently on the state

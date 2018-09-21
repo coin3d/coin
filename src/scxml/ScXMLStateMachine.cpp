@@ -660,10 +660,10 @@ ScXMLStateMachine::isFinished(void) const
 
 
 /*!
-  This method returns the current event during event processing, and NULL
+  This method returns the current event during event processing, and \c NULL
   when not processing events.
 
-  Event processing is in special cases done with NULL as the current event,
+  Event processing is in special cases done with \c NULL as the current event,
   as for instance during state machine initialization.
 */
 
@@ -671,7 +671,7 @@ ScXMLStateMachine::isFinished(void) const
 
 /*!
   Returns the number of active states in the state machine.  This number
-  should currently be 1, but in the future, when <parallel> is implemented,
+  should currently be 1, but in the future, when &lt;parallel&gt; is implemented,
   it can be more.
 */
 int

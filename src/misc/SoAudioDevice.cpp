@@ -33,6 +33,7 @@
 /*!
   \class SoAudioDevice Inventor/misc/SoAudioDevice.h
   \brief The SoAudioDevice class is used to control an audio device.
+
   \ingroup general
   \ingroup sound
 

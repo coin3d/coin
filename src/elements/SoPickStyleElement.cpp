@@ -33,6 +33,7 @@
 /*!
   \class SoPickStyleElement Inventor/elements/SoPickStyleElement.h
   \brief The SoPickStyleElement is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

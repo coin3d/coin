@@ -39,6 +39,7 @@
 /*!
   \class SoCenterballDragger SoCenterballDragger.h Inventor/draggers/SoCenterballDragger.h
   \brief The SoCenterballDragger class is a dragger you can rotate and translate.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

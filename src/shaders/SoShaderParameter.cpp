@@ -65,7 +65,7 @@
   uniform float shininess;
   \endverbatim
 
-  See \link coin_shaders Shaders in Coin \endlink for more information.
+  See \ref coin_shaders "Shaders in Coin" for more information.
 
   \ingroup shaders
 */
@@ -79,6 +79,7 @@
   \class SoShaderParameter1f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter1f class is used to define a floating point value as
          shader parameter.
+
   \ingroup shaders
 */
 
@@ -92,6 +93,7 @@
   \class SoShaderParameter1i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter1i class is used to define an integer value as
          shader parameter.
+
   \ingroup shaders
 */
 
@@ -105,6 +107,7 @@
   \class SoShaderParameter2f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter2f class is used to define a two-dimensional floating
          point value as shader parameter.
+
   \ingroup shaders
 */
 
@@ -118,6 +121,7 @@
   \class SoShaderParameter2i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter2i class is used to define a two-dimensional integer
          value as shader parameter.
+
   \ingroup shaders
 */
 
@@ -131,6 +135,7 @@
   \class SoShaderParameter3f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter3f class is used to define a three-dimensional floating
          point value as shader parameter.
+
   \ingroup shaders
 */
 
@@ -144,6 +149,7 @@
   \class SoShaderParameter3i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter3i class is used to define a three-dimensional integer
          value as shader parameter.
+
   \ingroup shaders
 */
 
@@ -157,6 +163,7 @@
   \class SoShaderParameter4f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter4f class is used to define a four-dimensional floating
          point value as shader parameter.
+
   \ingroup shaders
 */
 
@@ -170,6 +177,7 @@
   \class SoShaderParameter4i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameter4i class is used to define a four-dimensional integer
          value as shader parameter.
+
   \ingroup shaders
 */
 
@@ -183,6 +191,7 @@
   \class SoShaderParameterArray1f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray1f class is used to define a floating point array as
          shader parameter.
+
   \ingroup shaders
 */
 
@@ -196,6 +205,7 @@
   \class SoShaderParameterArray1i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray1i class is used to define an integer array as 
          shader parameter.
+
   \ingroup shaders
 */
 
@@ -209,6 +219,7 @@
   \class SoShaderParameterArray2f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray2f class is used to define a two-dimensional floating
          point array as shader parameter.
+
   \ingroup shaders
 */
 
@@ -222,6 +233,7 @@
   \class SoShaderParameterArray2i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray2i class is used to define a two-dimensional integer
          array as shader parameter.
+
   \ingroup shaders
 */
 
@@ -235,6 +247,7 @@
   \class SoShaderParameterArray3f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray3f class is used to define a three-dimensional floating
          point array as shader parameter.
+
   \ingroup shaders
 */
 
@@ -248,6 +261,7 @@
   \class SoShaderParameterArray3i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray3i class is used to define a three-dimensional integer
          array as shader parameter.
+
   \ingroup shaders
 */
 
@@ -261,6 +275,7 @@
   \class SoShaderParameterArray4f SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray4f class is used to define a four-dimensional floating
          point array as shader parameter.
+
   \ingroup shaders
 */
 
@@ -274,6 +289,7 @@
   \class SoShaderParameterArray4i SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterArray4i class is used to define a four-dimensional integer
          array as shader parameter.
+
   \ingroup shaders
 */
 
@@ -286,6 +302,7 @@
 /*!
   \class SoShaderParameterMatrix SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterMatrix class is used to define a matrix as shader parameter.
+
   \ingroup shaders
 */
 
@@ -299,6 +316,7 @@
   \class SoShaderParameterMatrixArray SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterMatrixArray class is used to define a matrix array as 
          shader parameter.
+
   \ingroup shaders
 */
 

@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLPointLight SoVRMLPointLight.h Inventor/VRMLnodes/SoVRMLPointLight.h
   \brief The SoVRMLPointLight class is used to represent a point light.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

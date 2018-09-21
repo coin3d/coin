@@ -33,6 +33,7 @@
 /*!
   \class SoGLMultiTextureMatrixElement Inventor/elements/SoGLMultiTextureMatrixElement.h
   \brief The SoGLMultiTextureMatrixElement class is used to update the OpenGL texture matrix.
+
   \ingroup elements
 
   Since (for some weird reason) most OpenGL implementations have a very

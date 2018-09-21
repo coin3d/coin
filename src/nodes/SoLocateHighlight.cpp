@@ -33,6 +33,7 @@
 /*!
   \class SoLocateHighlight SoLocateHighlight.h Inventor/nodes/SoLocateHighlight.h
   \brief The SoLocateHighlight class highlights geometry under the cursor.
+
   \ingroup nodes
 
   Note: this node is supposed to draw to the front buffer. However, in

@@ -33,6 +33,7 @@
 /*!
   \class SoNode SoNode.h Inventor/nodes/SoNode.h
   \brief The SoNode class is the base class for nodes used in scene graphs.
+
   \ingroup nodes
 
   Coin is a \e retained \e mode 3D visualization library (built on top
@@ -65,7 +66,7 @@
 
   Usually application programmers won't manually ref() and unref()
   nodes a lot, because you pass the nodes directly to
-  SoGroup::addChild() or So*Viewer::setSceneGraph() or something
+  SoGroup::addChild() or So\@Gui\@Viewer\::setSceneGraph() or something
   similar.  These functions will ref() the nodes they are passed, and
   unref() them when they are finished with them.
 

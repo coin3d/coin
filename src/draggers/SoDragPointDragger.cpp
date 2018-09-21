@@ -39,6 +39,7 @@
 /*!
   \class SoDragPointDragger SoDragPointDragger.h Inventor/draggers/SoDragPointDragger.h
   \brief The SoDragPointDragger class provides mechanisms for moving a point in 3D.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

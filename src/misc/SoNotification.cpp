@@ -33,6 +33,7 @@
 /*!
   \class SoNotList SoNotification.h Inventor/misc/SoNotification.h
   \brief The SoNotList class is a list of SoNotRec notification records.
+
   \ingroup general
 */
 

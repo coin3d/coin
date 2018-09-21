@@ -33,6 +33,7 @@
 /*!
   \class SoTransform SoTransform.h Inventor/nodes/SoTransform.h
   \brief The SoTransform class is the "all-purpose" transformation node type.
+
   \ingroup nodes
 
   Like SoMatrixTransform, nodes of this type gives the application

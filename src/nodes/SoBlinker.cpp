@@ -33,6 +33,7 @@
 /*!
   \class SoBlinker SoBlinker.h Inventor/nodes/SoBlinker.h
   \brief The SoBlinker class is a cycling switch node.
+
   \ingroup nodes
 
   This switch node cycles its children SoBlinker::speed number of

@@ -33,6 +33,7 @@
 /*!
   \class SoAnnotation SoAnnotation.h Inventor/nodes/SoAnnotation.h
   \brief The SoAnnotation node draws all its child geometry on top of other geometry.
+
   \ingroup nodes
 
   This group-type node uses delayed rendering in combination with

@@ -33,6 +33,7 @@
 /*!
   \class SoDataSensor SoDataSensor.h Inventor/sensors/SoDataSensor.h
   \brief The SoDataSensor class is the abstract base class for sensors monitoring changes in a scene graph.
+
   \ingroup sensors
 
   If you need to know when a particular entity (as a field or a node)

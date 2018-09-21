@@ -33,6 +33,7 @@
 /*!
   \class SbTime SbTime.h Inventor/SbTime.h
   \brief The SbTime class instances represents time values.
+
   \ingroup base
 
   SbTime is a convenient way of doing system independent

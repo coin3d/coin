@@ -33,6 +33,7 @@
 /*!
   \class SoLightModel SoLightModel.h Inventor/nodes/SoLightModel.h
   \brief The SoLightModel class is a node for specifying the model for geometry lighting.
+
   \ingroup nodes
 
   Use nodes of this type to set up how lighting should affect

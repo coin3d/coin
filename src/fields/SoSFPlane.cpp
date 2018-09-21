@@ -33,6 +33,7 @@
 /*!
   \class SoSFPlane SoSFPlane.h Inventor/fields/SoSFPlane.h
   \brief The SoSFPlane class is a container for an SbPlane value.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

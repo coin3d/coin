@@ -33,6 +33,7 @@
 /*!
   \class SoShuttle SoShuttle.h Inventor/nodes/SoShuttle.h
   \brief The SoShuttle class is used to oscillate between two translations.
+
   \ingroup nodes
 
   A smooth transition between translation0 and translation1 is created

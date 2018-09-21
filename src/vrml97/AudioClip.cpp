@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLAudioClip SoVRMLAudioClip.h Inventor/VRMLnodes/SoVRMLAudioClip.h
   \brief The SoVRMLAudioClip class is used to load and store audio data.
+
   \ingroup VRMLnodes
   \ingroup sound
 
@@ -634,7 +635,7 @@ SoVRMLAudioClipP::simageVersionOK(const char *functionName)
       SoDebugError::postWarning(functionName,
                                 "This function needs a version of simage that supports"
                                 "the stream interface and parameter access to be able "
-                                "to read audio files. Please visit www.coin3d.org "
+                                "to read audio files. Please visit https://bitbucket.org/Coin3D/ "
                                 "and download the latest version of simage.");
       SoVRMLAudioClipP::staticdata->warnAboutMissingSimage = FALSE;
     }

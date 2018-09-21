@@ -33,6 +33,7 @@
 /*!
   \class SoSeparator SoSeparator.h Inventor/nodes/SoSeparator.h
   \brief The SoSeparator class is a state-preserving group node.
+
   \ingroup nodes
 
   Subgraphs parented by SoSeparator nodes will not affect the state,
