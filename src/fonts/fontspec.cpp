@@ -32,7 +32,7 @@
 
 #include "fonts/fontspec.h"
 
-#include <string.h>
+#include <cstring>
 
 #include "glue/freetype.h"
 

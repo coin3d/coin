@@ -154,7 +154,7 @@
 
 #include <Inventor/nodes/SoLevelOfDetail.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>

@@ -121,9 +121,9 @@
 #include <Inventor/VRMLnodes/SoVRMLText.h>
 #include "coindefs.h"
 
-#include <float.h> // FLT_MIN
-#include <stddef.h>
-#include <string.h>
+#include <cfloat> // FLT_MIN
+#include <cstddef>
+#include <cstring>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/VRMLnodes/SoVRMLFontStyle.h>

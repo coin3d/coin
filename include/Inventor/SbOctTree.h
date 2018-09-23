@@ -36,7 +36,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbBox3f.h>
-#include <stdio.h>
+#include <cstdio>
 
 class SbSphere;
 class SbOctTreeNode;

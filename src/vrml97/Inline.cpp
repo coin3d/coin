@@ -127,7 +127,7 @@
 #include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include "coindefs.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSeparator.h>

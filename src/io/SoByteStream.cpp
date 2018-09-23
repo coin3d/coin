@@ -34,7 +34,7 @@
 
 #include <Inventor/misc/SoByteStream.h>
 #include <coindefs.h> // COIN_STUB
-#include <stdlib.h>
+#include <cstdlib>
 
 
 SoByteStream::SoByteStream(void)

@@ -32,7 +32,7 @@
 
 #include "SoGLShaderProgram.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include "SoGLShaderObject.h"
 #include "SoGLARBShaderProgram.h"

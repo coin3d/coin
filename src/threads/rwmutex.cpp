@@ -61,8 +61,8 @@
 /*! \file rwmutex.h */
 #include <Inventor/C/threads/rwmutex.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/threads/mutex.h>

@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <assert.h>
+#include <cassert>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/C/tidbits.h>

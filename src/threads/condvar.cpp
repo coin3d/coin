@@ -47,9 +47,9 @@
 /*! \file condvar.h */
 #include <Inventor/C/threads/condvar.h>
 
-#include <stdlib.h>
-#include <assert.h>
-#include <errno.h>
+#include <cstdlib>
+#include <cassert>
+#include <cerrno>
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>

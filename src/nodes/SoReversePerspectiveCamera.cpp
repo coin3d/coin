@@ -70,7 +70,7 @@
 
 #include <Inventor/nodes/SoReversePerspectiveCamera.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/errors/SoDebugError.h>
 

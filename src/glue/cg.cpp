@@ -33,10 +33,10 @@
 #include "glue/cg.h"
 #include "coindefs.h"
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/errors/debugerror.h>

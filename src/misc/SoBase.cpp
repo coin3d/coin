@@ -65,8 +65,8 @@
 
 #include <Inventor/misc/SoBase.h>
 
-#include <assert.h>
-#include <string.h>
+#include <cassert>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>

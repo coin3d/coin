@@ -33,7 +33,7 @@
 #include <Inventor/C/threads/sync.h>
 #include "coindefs.h"
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/C/threads/mutex.h>
 

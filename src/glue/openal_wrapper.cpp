@@ -38,10 +38,10 @@
 #define OPENALWRAPPER_ASSUME_OPENAL 0
 #endif /* !HAVE_CONFIG_H */
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>

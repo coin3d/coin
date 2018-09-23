@@ -40,7 +40,7 @@
 
 #include <Inventor/misc/SoNormalGenerator.h>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Inventor/errors/SoDebugError.h>
 

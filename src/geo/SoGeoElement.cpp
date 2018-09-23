@@ -42,7 +42,7 @@
 
 #include <Inventor/elements/SoGeoElement.h>
 #include <Inventor/nodes/SoGeoOrigin.h>
-#include <assert.h>
+#include <cassert>
 
 
 class SoGeoElementP {

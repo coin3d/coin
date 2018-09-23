@@ -303,7 +303,7 @@
 #include <Inventor/VRMLnodes/SoVRMLViewpoint.h>
 #include "coindefs.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 

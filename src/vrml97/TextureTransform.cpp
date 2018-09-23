@@ -123,7 +123,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLTextureTransform.h>
 
-#include <math.h>
+#include <cmath>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>

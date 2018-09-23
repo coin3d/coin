@@ -65,7 +65,7 @@
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/SbClip.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #define PUBLIC(obj) ((obj)->publ)
 

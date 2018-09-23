@@ -45,8 +45,8 @@
 
 /* ********************************************************************** */
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 #include <windows.h>
 
 #include <Inventor/C/errors/debugerror.h>

@@ -43,7 +43,7 @@
 */
 
 #include <Inventor/SoPrimitiveVertex.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 /*!
   Default constructor, sets up a "void" instance.

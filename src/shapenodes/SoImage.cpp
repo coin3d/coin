@@ -47,7 +47,7 @@
   SoImage:
 
   \code
-  #include <stdlib.h>
+  #include <cstdlib>
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
   #include <Inventor/nodes/SoSeparator.h>

@@ -55,7 +55,7 @@
 */
 
 #include <Inventor/SoFullPath.h>
-#include <assert.h>
+#include <cassert>
 
 
 /*!

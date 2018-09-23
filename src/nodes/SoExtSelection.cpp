@@ -77,10 +77,10 @@
 /*! \file SoExtSelection.h */
 #include <Inventor/nodes/SoExtSelection.h>
 
-#include <float.h>
-#include <math.h>
-#include <limits.h>
-#include <string.h> // memset()
+#include <cfloat>
+#include <cmath>
+#include <climits>
+#include <cstring> // memset()
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

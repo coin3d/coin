@@ -35,11 +35,11 @@
 #include "coindefs.h"
 #include "fonts/fontlib_wrapper.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <stddef.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cassert>
+#include <cstddef>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

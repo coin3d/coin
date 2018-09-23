@@ -115,7 +115,7 @@
 
 #include <Inventor/nodes/SoCamera.h>
 
-#include <float.h> // for FLT_EPSILON
+#include <cfloat> // for FLT_EPSILON
 
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoCallbackAction.h>

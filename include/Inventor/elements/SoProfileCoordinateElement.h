@@ -36,7 +36,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
-#include <assert.h>
+#include <cassert>
 
 /*
  * TODO

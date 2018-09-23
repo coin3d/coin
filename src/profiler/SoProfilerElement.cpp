@@ -41,7 +41,7 @@
 
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/errors/SoDebugError.h>

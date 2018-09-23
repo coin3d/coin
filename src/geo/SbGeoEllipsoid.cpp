@@ -32,7 +32,7 @@
 
 #include "SbGeoEllipsoid.h"
 #include <Inventor/SbString.h>
-#include <stdio.h>
+#include <cstdio>
 
 SbGeoEllipsoid::SbGeoEllipsoid(void)
 {

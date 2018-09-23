@@ -32,7 +32,7 @@
 
 #include "common.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <Inventor/C/tidbits.h>
 
 /* ********************************************************************** */

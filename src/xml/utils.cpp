@@ -34,11 +34,11 @@
 
 #include <Inventor/C/basic.h>
 #include <Inventor/C/XML/types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cassert>
+#include <cstring>
+#include <cctype>
 
 char *
 cc_xml_load_file(const char * path)

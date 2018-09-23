@@ -33,7 +33,7 @@
 #include "SoGLShaderObject.h"
 #include "coindefs.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include "SoGLARBShaderObject.h"
 #include "SoGLCgShaderObject.h"

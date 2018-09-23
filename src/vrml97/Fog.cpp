@@ -121,7 +121,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLFog.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/sensors/SoFieldSensor.h>

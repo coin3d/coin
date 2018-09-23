@@ -57,11 +57,11 @@
 /*! \file mutex.h */
 #include <Inventor/C/threads/mutex.h>
 
-#include <stdlib.h>
-#include <assert.h>
-#include <stddef.h>
-#include <errno.h>
-#include <float.h>
+#include <cstdlib>
+#include <cassert>
+#include <cstddef>
+#include <cerrno>
+#include <cfloat>
 
 #include <Inventor/C/base/time.h>
 #include <Inventor/C/errors/debugerror.h>

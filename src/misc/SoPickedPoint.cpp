@@ -45,7 +45,7 @@
 
 #include <Inventor/SoPickedPoint.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoViewportRegionElement.h>

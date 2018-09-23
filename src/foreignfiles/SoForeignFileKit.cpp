@@ -39,8 +39,8 @@
 /*! \file SoForeignFileKit.h */
 #include <ForeignFiles/SoForeignFileKit.h>
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSeparator.h>

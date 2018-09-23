@@ -743,7 +743,7 @@ SbRotation::print(FILE * fp) const
 #include <Inventor/SbVec4f.h>
 #include <boost/lexical_cast.hpp>
 #include <cassert>
-#include <stdio.h>
+#include <cstdio>
 
 typedef SbRotation ToTest;
 BOOST_AUTO_TEST_CASE(operatorBrackets)

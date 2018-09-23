@@ -200,7 +200,7 @@
 
 #include <Inventor/nodes/SoFont.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>

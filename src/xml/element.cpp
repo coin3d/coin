@@ -37,10 +37,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 
 #include <Inventor/C/base/string.h>
 #include <Inventor/lists/SbList.h>

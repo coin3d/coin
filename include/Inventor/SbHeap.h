@@ -35,7 +35,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
-#include <stddef.h>
+#include <cstddef>
 
 typedef struct
 {

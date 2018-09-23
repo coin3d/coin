@@ -32,7 +32,7 @@
 
 #include "shapenodes/soshape_primdata.h"
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SoPrimitiveVertex.h>

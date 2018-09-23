@@ -36,7 +36,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <stddef.h> // NULL
+#include <cstddef> // NULL
 
 #ifndef COIN_INTERNAL
 #include <Inventor/actions/SoCallbackAction.h>

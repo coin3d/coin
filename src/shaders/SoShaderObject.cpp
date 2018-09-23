@@ -104,7 +104,7 @@
 
 #include <Inventor/nodes/SoShaderObject.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>

@@ -43,7 +43,7 @@
 */
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
-#include <float.h>
+#include <cfloat>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

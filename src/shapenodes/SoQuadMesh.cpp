@@ -164,8 +164,8 @@
 
 #include <Inventor/nodes/SoQuadMesh.h>
 
-#include <math.h> // ilogb
-#include <float.h> // _logb
+#include <cmath> // ilogb
+#include <cfloat> // _logb
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

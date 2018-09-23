@@ -67,10 +67,10 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <stdarg.h>
+#include <cstdlib>
+#include <cassert>
+#include <cstring>
+#include <cstdarg>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)

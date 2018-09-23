@@ -710,7 +710,7 @@ cc_string_utf8_validate_length(const char * str)
 
 
 #if defined HAVE_WINDOWS_H
-#include <Windows.h> // for WideCharToMultiByte
+#include <windows.h> // for WideCharToMultiByte
 #endif
 
 void cc_string_set_wtext(cc_string * me, const wchar_t * text)

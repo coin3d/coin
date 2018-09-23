@@ -34,7 +34,7 @@
 #include "SoGLARBShaderObject.h"
 #include "coindefs.h"
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/errors/SoDebugError.h>
 

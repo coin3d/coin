@@ -99,8 +99,8 @@
 #include <Inventor/nodes/SoText2.h>
 #include "coindefs.h"
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -32,8 +32,8 @@
 
 #include "shapenodes/soshape_trianglesort.h"
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
