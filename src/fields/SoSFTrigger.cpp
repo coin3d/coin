@@ -33,6 +33,7 @@
 /*!
   \class SoSFTrigger SoSFTrigger.h Inventor/fields/SoSFTrigger.h
   \brief The SoSFTrigger class is the "void" class used for detecting field changes.
+
   \ingroup fields
 
   Connect this field to a master field (or engine output) to detect

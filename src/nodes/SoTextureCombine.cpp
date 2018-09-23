@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCombine SoTextureCombine.h Inventor/nodes/SoTextureCombine.h
   \brief The SoTextureCombine class is a node for setting texture combine functions.
+
   \ingroup nodes
 
   This node is more or less an exact mapping of the OpenGL
@@ -55,8 +56,7 @@
   to textured geometry. A lightmap can look like this:
   
   <center>
-  \image html lightmap.jpg "Rendering of an Example LigntMap"
-  <img src="http://doc.coin3d.org/images/Coin/nodes/lightmap.jpg">
+  \image html lightmap.jpg "Rendering of an Example LightMap"
   </center>
   
   The example below just shows how to apply the lightmap to a cube,

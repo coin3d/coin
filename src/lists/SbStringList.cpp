@@ -33,6 +33,7 @@
 /*!
   \class SbStringList SbStringList.h Inventor/lists/SbStringList.h
   \brief The SbStringList class is a container for arrays of SbString pointers.
+
   \ingroup base
 
   Note that upon using the equality and inequality operators, the

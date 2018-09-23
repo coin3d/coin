@@ -33,6 +33,7 @@
 /*!
   \class SbPlane SbPlane.h Inventor/SbLinear.h
   \brief The SbPlane class represents a plane in 3D space.
+
   \ingroup base
 
   SbPlane is used by many other classes in Coin.  It provides a way of

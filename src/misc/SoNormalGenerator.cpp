@@ -33,6 +33,7 @@
 /*!
   \class SoNormalGenerator include/Inventor/misc/SoNormalGenerator.h
   \brief The SoNormalGenerator class is used to generate normals.
+
   \ingroup general
 
   FIXME: document properly

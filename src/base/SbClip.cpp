@@ -40,6 +40,7 @@
 /*!
   \class SbClip SbClip.h include/Inventor/base/SbClip.h
   \brief The SbClip class is a generic polygon clipper class.
+
   \ingroup base
 
   It is used by first adding all vertices in the polygon, and then

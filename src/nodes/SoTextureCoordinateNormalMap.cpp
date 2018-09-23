@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCoordinateNormalMap SoTextureCoordinateNormalMap.h Inventor/nodes/SoTextureCoordinateNormalMap.h
   \brief The SoTextureCoordinateNormalMap class generates texture coordinates by projecting onto a surrounding texture.
+
   \ingroup nodes
 
   The texture specifying the enviroment will be mapped around the 
@@ -43,7 +44,7 @@
   Here is a scenegraph example showing how enviroment mapping can be
   applied to an object:
 
-  <code>
+  \code
   #Inventor V2.1 ascii
 
   Separator {
@@ -55,7 +56,7 @@
 
     Cube {} # the enviromentally mapped object
   }
-  </code>
+  \endcode
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

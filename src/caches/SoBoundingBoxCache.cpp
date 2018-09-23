@@ -33,6 +33,7 @@
 /*!
   \class SoBoundingBoxCache Inventor/caches/SoBoundingBoxCache.h
   \brief The SoBoundingBoxCache class is used to cache bounding boxes.
+
   \ingroup caches
 */
 

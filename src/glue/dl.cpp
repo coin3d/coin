@@ -199,7 +199,7 @@ Type cstyle_cast(FARPROC procaddr)
 
   First of all, Coin requires \b OpenGL. Depending on the OpenGL
   version, features in Coin are turned on and off. If a feature Coin
-  is supposed to suport does not seem to produce any result, make sure
+  is supposed to support does not seem to produce any result, make sure
   to check that the underlying OpenGL version does support that
   feature. OpenGL is linked into Coin both at linktime and runtime.
   Features added to OpenGL later than the oldest version of OpenGL we
@@ -217,7 +217,7 @@ Type cstyle_cast(FARPROC procaddr)
   Some platforms have GLU libraries that don't behave properly in certain
   respects, and some Coin users have particular needs wrt Coin's use of GLU.
   For these users, we (at Kongsberg Oil & Gas Technologies) have created a fork
-  og GLU that we have named \b SuperGLU that we have tweaked in certain ways.
+  of GLU that we have named \b SuperGLU that we have tweaked in certain ways.
   This library can be checked out into the Coin source code directory, which
   will be detected at configure-time and linked statically into Coin and used
   instead of the GLU libraries on the host system.
@@ -230,7 +230,7 @@ Type cstyle_cast(FARPROC procaddr)
 
   Coin uses \b libz (aka \b zlib) and \b libbzip2 to read and/or write
   files compressed with either of those compression techniques.  Both
-  libraries can ble linked with Coin at linktime or loaded at runtime,
+  libraries can be linked with Coin at linktime or loaded at runtime,
   and this is controlled at configure-time.  They can also be disabled
   if compressed file input/output is not wanted.  The libz library is
   likely to be pulled in as a dependency from other libraries as well,
@@ -270,11 +270,11 @@ Type cstyle_cast(FARPROC procaddr)
   in the boost headers and therefore do not require a link library to
   pull their implementation from at runtime.
 
-  For XML reading, Coin uses the \b expat library, which has also been
+  For XML reading, Coin uses the \b Expat library, which has also been
   integrated directly into Coin, so also here there are no extra
-  linktime or runtime dependencies to other libraries. The expat API
+  linktime or runtime dependencies to other libraries. The Expat API
   is not exposed in the Coin API, it is hidden, but Coin provides its
-  own XML DOM API that is a wrapper over the expat engine.
+  own XML DOM API that is a wrapper over the Expat engine.
 
   The last thing to mention here is hardly a library, but we mention
   it anyway. Coin uses \b flex and \b bison to generate some parsers
@@ -298,37 +298,33 @@ Type cstyle_cast(FARPROC procaddr)
   Simage is loaded at runtime or (if specified) linked at linktime
   with Coin.
 
-  Simage can use QImage from \b Qt to add support for the file formats
-  Qt supports.
+  Simage can use:
 
-  Simage can use \b GDI+ (gdiplus) under MS Windows to add support for
-  the file formats supported by GDI+.
+  \li \b QImage from \b Qt to add support for the file formats Qt supports.
 
-  Simage can use \b QuickTime under Mac OS X to add support for the file
-  formats QuickTime supports.
+  \li \b GDI+ (gdiplus) under MS Windows to add support for the file formats supported by GDI+.
 
-  Simage can use \b libungif or \b giflib for GIF file support.
+  \li \b QuickTime under Mac OS X to add support for the file formats QuickTime supports.
 
-  Simage can use \b libjpeg for JPEG file support.
+  \li \b libungif or \b giflib for GIF file support.
 
-  Simage can use \b libpng for PNG file support.  This will also require that
-  \b zlib is used.
+  \li \b libjpeg for JPEG file support.
 
-  Simage can use \b libtiff for TIFF file support.
+  \li \b libpng for PNG file support.  This will also require that \b zlib is used.
 
-  Simage can use \b JASPER support for JPEG 2000 file support.
+  \li \b libtiff for TIFF file support.
 
-  Simage can use \b mpeg2enc for MPEG2 encoding.
+  \li \b JASPER support for JPEG 2000 file support.
 
-  Simage can use \b vfw (Video for Windows) for AVI video encoding.
+  \li \b mpeg2enc for MPEG2 encoding.
 
-  Simage can use \b libogg, \b libvorbis and \b libvorbisfile for Ogg
-  Vorbis support.  This is for VRML97 sound support in Coin.
+  \li \b vfw (Video for Windows) for AVI video encoding.
 
-  Simage can use \b libsndfile for VRML97 sound support in Coin.
+  \li \b libogg, \b libvorbis and \b libvorbisfile for Ogg Vorbis support.  This is for VRML97 sound support in Coin.
 
-  Simage can use \b libguile for a Guile (Scheme) binding for the
-  Simage library API.
+  \li \b libsndfile for VRML97 sound support in Coin.
+
+  \li \b libguile for a Guile (Scheme) binding for the Simage library API.
 
 */
 

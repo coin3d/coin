@@ -33,6 +33,7 @@
 /*!
   \class SoSwitch SoSwitch.h Inventor/nodes/SoSwitch.h
   \brief The SoSwitch class is a group node which selects one child subgraph for traversal.
+
   \ingroup nodes
 
   Which child to traverse is controlled by the application programmer

@@ -33,6 +33,7 @@
 /*!
   \class SoFontStyle SoFontStyle.h Inventor/nodes/SoFontStyle.h
   \brief The SoFontStyle class changes the appearance of fonts for text rendering nodes.
+
   \ingroup nodes
 
   Successive text rendering nodes will use fonts with the style

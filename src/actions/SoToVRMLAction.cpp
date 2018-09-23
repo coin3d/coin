@@ -33,6 +33,7 @@
 /*!
   \class SoToVRMLAction SoToVRMLAction.h Inventor/actions/SoToVRMLAction.h
   \brief The SoToVRMLAction class builds a new scene graph using only VRML 1.0 nodes.
+
   \ingroup actions
 
   This action is used for converting a scene graph of VRML2/VRML97

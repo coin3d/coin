@@ -45,8 +45,8 @@
 
   The cc_glglue interface is part of the public API of Coin, but is
   not documented on the public documentation pages at
-  http://doc.coin3d.org yet. The status for client application usage
-  is "unofficial, use at own risk, interface may change without
+  https://coin3d.bitbucket.io/Coin/ yet. The status for client application
+  usage is "unofficial, use at own risk, interface may change without
   warning for major version number upgrade releases".
 
   Coin programmer's responsibilities
@@ -117,7 +117,7 @@
   influencing the OpenGL binding:
 
   - COIN_DEBUG_GLGLUE: set equal to "1" to make the wrapper
-    initalization spit out lots of info about the underlying OpenGL
+    initialization spit out lots of info about the underlying OpenGL
     implementation.
 
   - COIN_PREFER_GLPOLYGONOFFSET_EXT: when set to "1" and both

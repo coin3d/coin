@@ -33,6 +33,7 @@
 /*!
   \class SoError SoError.h Inventor/errors/SoError.h
   \brief The SoError class is the base class for all the error handling classes.
+
   \ingroup errors
 
   The default error handler just prints messages on the standard error

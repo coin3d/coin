@@ -39,6 +39,7 @@
 /*!
   \class SoSpotLightDragger SoSpotLightDragger.h Inventor/draggers/SoSpotLightDragger.h
   \brief The SoSpotLightDragger class provides interactive geometry for manipulating a spotlight.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

@@ -33,6 +33,7 @@
 /*!
   \class SoCacheHint SoCacheHint.h Inventor/nodes/SoCacheHint.h
   \brief The SoCacheHint class is a node containing hints about how to cache geometry.
+
   \ingroup nodes
 
   The SoCacheHint node is used to set up clues to the rendering

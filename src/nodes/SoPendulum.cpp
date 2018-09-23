@@ -33,6 +33,7 @@
 /*!
   \class SoPendulum SoPendulum.h Inventor/nodes/SoPendulum.h
   \brief The SoPendulum class is used to create oscillating rotations.
+
   \ingroup nodes
 
   A smooth transition between rotation0 and rotation1 is created using

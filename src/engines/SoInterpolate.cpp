@@ -33,6 +33,7 @@
 /*!
   \class SoInterpolate SoInterpolate.h Inventor/engines/SoInterpolate.h
   \brief The SoInterpolate class is the base class for all interpolator engines.
+
   \ingroup engines
 
   Interpolators are used to linearly interpolate between two values.

@@ -33,6 +33,7 @@
 /*!
   \class SoCoordinate3 SoCoordinate3.h Inventor/nodes/SoCoordinate3.h
   \brief The SoCoordinate3 class is a node for providing coordinates to shape nodes.
+
   \ingroup nodes
 
   When encountering nodes of this type during traversal, the

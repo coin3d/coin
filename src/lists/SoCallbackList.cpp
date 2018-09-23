@@ -33,6 +33,7 @@
 /*!
   \class SoCallbackList SoCallbackList.h Inventor/lists/SoCallbackList.h
   \brief The SoCallbackList is a container for callback function pointers.
+
   \ingroup general
 
   This list stores callback function pointers (along with

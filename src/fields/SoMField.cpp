@@ -33,6 +33,7 @@
 /*!
   \class SoMField SoMField.h Inventor/fields/SoMField.h
   \brief The SoMField class is the base class for fields which can contain multiple values.
+
   \ingroup fields
 
   All field types which may contain more than one member

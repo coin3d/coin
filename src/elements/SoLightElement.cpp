@@ -33,6 +33,7 @@
 /*!
   \class SoLightElement Inventor/elements/SoLightElement.h
   \brief The SoLightElement class manages the currently active light sources.
+
   \ingroup elements
 */
 

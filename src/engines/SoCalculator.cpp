@@ -34,6 +34,7 @@
 /*!
   \class SoCalculator Inventor/engines/SoCalculator.h
   \brief General purpose calculator for floats and 3D float vectors.
+
   \ingroup engines
 
   The SoCalculator uses the values from the input fields (which are

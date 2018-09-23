@@ -33,6 +33,7 @@
 /*!
   \class SbDPLine SbDPLine.h Inventor/SbDPLine.h
   \brief The SbDPLine class represents a line using double precision coordinates.
+
   \ingroup base
 
   SbDPLine is used by many other classes in Coin.  It provides a way of

@@ -38,6 +38,7 @@
 /*!
   \class SoCube SoCube.h Inventor/nodes/SoCube.h
   \brief The SoCube class is for rendering cubes.
+
   \ingroup nodes
 
   Insert a cube shape into the scenegraph. The cube is rendered with

@@ -34,6 +34,7 @@
   \class SoBase SoBase.h Inventor/misc/SoBase.h
   \brief The SoBase class is the top-level superclass for a number
   of class-hierarchies.
+
   \ingroup general
 
   SoBase provides the basic interfaces and methods for doing reference

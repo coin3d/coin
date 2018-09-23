@@ -33,6 +33,7 @@
 /*!
   \class SoCallbackAction SoCallbackAction.h Inventor/actions/SoCallbackAction.h
   \brief The SoCallbackAction class invokes callbacks at specific nodes.
+
   \ingroup actions
 
   This action has mechanisms for tracking traversal position and

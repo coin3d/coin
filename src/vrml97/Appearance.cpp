@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLAppearance SoVRMLAppearance.h Inventor/VRMLnodes/SoVRMLAppearance.h
   \brief The SoVRMLAppearance class specifies visual properties for shapes.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

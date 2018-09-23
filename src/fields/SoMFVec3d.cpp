@@ -33,6 +33,7 @@
 /*!
   \class SoMFVec3d SoMFVec3d.h Inventor/fields/SoMFVec3d.h
   \brief The SoMFVec3d class is a container for SbVec3d vectors.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

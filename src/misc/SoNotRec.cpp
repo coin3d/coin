@@ -34,6 +34,7 @@
 /*!
   \class SoNotRec SoNotRec.h Inventor/misc/SoNotification.h
   \brief The SoNotRec class specifies records for notification lists.
+
   \ingroup general
 
   \sa SoNotification

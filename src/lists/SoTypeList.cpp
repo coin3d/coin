@@ -35,6 +35,7 @@
 /*!
   \class SoTypeList SoTypeList.h Inventor/lists/SoTypeList.h
   \brief The SoTypeList class is a container class for arrays of SoType objects.
+
   \ingroup general
 
   \sa SbList

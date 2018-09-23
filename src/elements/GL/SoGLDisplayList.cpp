@@ -33,6 +33,7 @@
 /*!
   \class SoGLDisplayList Inventor/elements/SoGLCacheContextElement.h
   \brief The SoGLDisplayList class stores and manages OpenGL display lists.
+
   \ingroup elements
 
   The TEXTURE_OBJECT type is not directly supported in Coin. We handle

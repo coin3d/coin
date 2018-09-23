@@ -33,6 +33,7 @@
 /*!
   \class SoDrawStyleElement Inventor/elements/SoDrawStyleElement.h
   \brief The SoDrawStyleElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

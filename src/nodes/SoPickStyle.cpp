@@ -33,6 +33,7 @@
 /*!
   \class SoPickStyle SoPickStyle.h Inventor/nodes/SoPickStyle.h
   \brief The SoPickStyle class is a node for setting up how to do picking.
+
   \ingroup nodes
 
   By default, all geometry in a scene is available for picking. Upon

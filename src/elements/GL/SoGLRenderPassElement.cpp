@@ -33,6 +33,7 @@
 /*!
   \class SoGLRenderPassElement Inventor/elements/SoGLRenderPassElement.h
   \brief The SoGLRenderPassElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

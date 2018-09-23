@@ -33,6 +33,7 @@
 /*!
   \class SoSensor SoSensor.h Inventor/sensors/SoSensor.h
   \brief The SoSensor class is the abstract base class for all sensors.
+
   \ingroup sensors
 
   Sensors is a mechanism in Coin for scheduling jobs to be run upon

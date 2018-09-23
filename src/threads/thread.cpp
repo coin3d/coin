@@ -338,6 +338,7 @@ cc_thread_init(void)
 /*
   \class SbThread Inventor/threads/SbThread.h
   \brief A class for managing threads.
+
   \ingroup threads
 
   This class provides a portable framework around the tasks of

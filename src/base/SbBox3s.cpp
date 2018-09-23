@@ -34,6 +34,7 @@
   \class SbBox3s SbBox3s.h Inventor/SbBox3s.h
   \brief The SbBox3s class is a 3 dimensional box with short
   integer coordinates.
+
   \ingroup base
 
   This box class is used by other classes in Coin for data

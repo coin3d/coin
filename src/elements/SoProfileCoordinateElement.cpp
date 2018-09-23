@@ -33,6 +33,7 @@
 /*!
   \class SoProfileCoordinateElement Inventor/elements/SoProfileCoordinateElement.h
   \brief The SoProfileCoordinateElement class is yet to be documented.
+
   \ingroup elements
 
   FIXME: write doc.

@@ -33,6 +33,7 @@
 /*!
   \class SoPathSwitch SoPathSwitch.h Inventor/nodes/SoPathSwitch.h
   \brief The SoPathSwitch class traverses only when current path matches a configurable path.
+
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>

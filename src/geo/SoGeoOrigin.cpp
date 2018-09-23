@@ -33,6 +33,7 @@
 /*!
   \class SoGeoOrigin SoGeoOrigin.h Inventor/nodes/SoGeoOrigin.h
   \brief The SoGeoOrigin class is used to specify an absolute geographic location against which geometry is referenced.
+
   \ingroup nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -218,8 +219,8 @@
   \var SoSFVec3d SoGeoOrigin::geoCoords
 
   Used for specifying the geographic coordinates. For the GD system this should
-  be <latitude> <longitude> <elevation>. For UTM it is <easting> <northing> <elevation>,
-  and for GC it is simply <x> <y> <z>.
+  be &lt;latitude&gt; &lt;longitude&gt; &lt;elevation&gt;. For UTM it is &lt;easting&gt; &lt;northing&gt; &lt;elevation&gt;,
+  and for GC it is simply &lt;x&gt; &lt;y&gt; &lt;z&gt;.
 
 */
 

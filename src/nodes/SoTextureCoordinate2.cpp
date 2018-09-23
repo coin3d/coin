@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCoordinate2 SoTextureCoordinate2.h Inventor/nodes/SoTextureCoordinate2.h
   \brief The SoTextureCoordinate2 class contains a set of coordinates for the mapping of 2D textures.
+
   \ingroup nodes
 
   When encountering nodes of this type during traversal, the

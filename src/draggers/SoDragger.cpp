@@ -39,16 +39,17 @@
 /*!
   \class SoDragger SoDragger.h Inventor/draggers/SoDragger.h
   \brief The SoDragger class is the base class for all draggers.
+
   \ingroup draggers
 
   Draggers is a mechanism used for letting the end-users of your
   application code interact with elements in 3D, by scaling, rotating
   or translating geometry or other instances in the scene (like
-  cameras or lightsources).
+  cameras or light sources).
 
   For a very thorough introduction and tutorial to the dragger classes
-  and general concepts, we advise you to consult «The Inventor
-  Mentor», ISBN 0-201-62495-8, chapter 15.
+  and general concepts, we advise you to consult &laquo;The Inventor
+  Mentor&raquo;, ISBN 0-201-62495-8, chapter 15.
 
   This is the common superclass for all dragger classes.
 
@@ -105,7 +106,6 @@
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
   #include <Inventor/draggers/SoTransformBoxDragger.h>
   #include <Inventor/nodes/SoSeparator.h>
-
 
   int
   main(int argc, char ** argv)

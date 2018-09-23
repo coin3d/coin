@@ -33,10 +33,10 @@
 /*!
   \class SbImage SbImage.h Inventor/SbImage.h
   \brief The SbImage class is an abstract datatype for 2D and 3D images.
+
   \ingroup base
 
   \COIN_CLASS_EXTENSION
-
   \since Coin 1.0
 */
 

@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLExtrusion SoVRMLExtrusion.h Inventor/VRMLnodes/SoVRMLExtrusion.h
   \brief The SoVRMLExtrusion class is a a geometry node for extruding a cross section along a spine.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

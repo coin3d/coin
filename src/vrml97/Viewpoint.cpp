@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLViewpoint SoVRMLViewpoint.h Inventor/VRMLnodes/SoVRMLViewpoint.h
   \brief The SoVRMLViewpoint class is a perspective camera class.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT
@@ -206,7 +207,7 @@
     specifies a "#ViewpointName".
 
   Both of these mechanisms override the jump field value of the
-  specified Viewpoint node (#ViewpointName) and assume that jump is
+  specified Viewpoint node ("#ViewpointName") and assume that jump is
   TRUE when binding to the new Viewpoint. The behaviour of the viewer
   transition to the newly bound Viewpoint depends on the currently
   bound NavigationInfo node's type field value (see SoVRMLNavigationInfo).

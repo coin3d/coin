@@ -34,6 +34,7 @@
   \class SbVec2d SbVec2d.h Inventor/SbVec2d.h
   \brief The SbVec2d class is a 2 dimensional vector with double precision
   floating point coordinates.
+
   \ingroup base
 
   This vector class is used by many other classes in

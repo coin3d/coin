@@ -33,6 +33,7 @@
 /*!
   \class SoVectorizePSAction SoVectorizePSAction.h Inventor/annex/HardCopy/SoVectorizePSAction.h
   \brief The SoVectorizePSAction class is used for rendering to a Postscript file.
+
   \ingroup hardcopy
 
   \since Coin 2.1

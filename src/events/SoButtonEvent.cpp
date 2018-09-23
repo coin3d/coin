@@ -33,6 +33,7 @@
 /*!
   \class SoButtonEvent SoButtonEvent.h Inventor/events/SoButtonEvent.h
   \brief The SoButtonEvent class is the base class for all button events.
+
   \ingroup events
 
   The event classes which results from the user pushing buttons on

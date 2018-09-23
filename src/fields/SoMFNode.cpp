@@ -40,6 +40,7 @@
 /*!
   \class SoMFNode SoMFNode.h Inventor/fields/SoMFNode.h
   \brief The SoMFNode class is a container for nodes.
+
   \ingroup fields
 
   This field container stores an array of pointers to nodes. It takes

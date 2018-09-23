@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCoordinateBundle include/Inventor/bundles/SoTextureCoordinateBundle.h
   \brief The SoTextureCoordinateBundle class simplifies texture coordinate handling.
+
   \ingroup bundles
 
   It is unlikely that application programmers should need to know how

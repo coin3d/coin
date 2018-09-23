@@ -33,6 +33,7 @@
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
   \brief SbBool is a compiler portable boolean type.
+
   \ingroup base
 
   SbBool is meant to be a "compiler portable" way of defining a
@@ -48,6 +49,7 @@
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h
   \brief The SoDB class keeps track of internal global data.
+
   \ingroup general
 
   This class collects various methods for initializing, setting and

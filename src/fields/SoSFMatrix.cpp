@@ -33,6 +33,7 @@
 /*!
   \class SoSFMatrix SoSFMatrix.h Inventor/fields/SoSFMatrix.h
   \brief The SoSFMatrix class is a container for an SbMatrix.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
