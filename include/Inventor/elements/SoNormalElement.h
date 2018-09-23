@@ -35,7 +35,7 @@
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
-#include <assert.h>
+#include <cassert>
 
 class COIN_DLL_API SoNormalElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

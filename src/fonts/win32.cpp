@@ -33,8 +33,8 @@
 #include "coindefs.h"
 #include "fonts/win32.h"
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -103,11 +103,11 @@ static int flww32_calcfontsize(float complexity);
 
 /* ************************************************************************* */
 
-#include <string.h>
-#include <math.h>
-#include <stdio.h>
-#include <stddef.h>
-#include <ctype.h>
+#include <cstring>
+#include <cmath>
+#include <cstdio>
+#include <cstddef>
+#include <cctype>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

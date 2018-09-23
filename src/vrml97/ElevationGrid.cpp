@@ -271,7 +271,7 @@
 #include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
 #include "coindefs.h"
 
-#include <float.h>
+#include <cfloat>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>

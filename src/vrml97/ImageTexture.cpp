@@ -113,7 +113,7 @@
   #include <Inventor/SoDB.h>
   #include <Inventor/SoInput.h>
   #include <Inventor/SoOutput.h>
-  #include <assert.h>
+  #include <cassert>
 
   int main(int argc, char ** argv)
   {
@@ -185,7 +185,7 @@
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
 #include "coindefs.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>

@@ -44,8 +44,8 @@
 
 #include <Inventor/nodes/SoShape.h>
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -49,7 +49,7 @@
 
 #include <Inventor/lock/SoLockMgr.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/SbString.h>
 

@@ -258,8 +258,8 @@
 #include <Inventor/nodes/SoSceneTexture2.h>
 #include "coindefs.h"
 
-#include <assert.h>
-#include <string.h>
+#include <cassert>
+#include <cstring>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoFieldSensor.h>

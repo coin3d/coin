@@ -110,7 +110,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>

@@ -42,7 +42,7 @@
 // should of course be used. 20000308 mortene.
 
 #include <Inventor/projectors/SbCylinderSheetProjector.h>
-#include <float.h> // FLT_EPSILON
+#include <cfloat> // FLT_EPSILON
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -107,7 +107,7 @@ SbCylinderSheetProjector::project(const SbVec2f & point)
   //
   //
   // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
-  // #include <stdio.h>
+  // #include <cstdio>
   // #include <Inventor/SbLinear.h>
   // #include <Inventor/projectors/SbCylinderSheetProjector.h>
   // #include <Inventor/SoDB.h>

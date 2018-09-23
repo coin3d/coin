@@ -52,7 +52,7 @@
   interface.
 */
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/SoDB.h>

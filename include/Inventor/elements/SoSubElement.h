@@ -48,7 +48,7 @@
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h>
 #include <Inventor/C/tidbits.h>
-#include <assert.h>
+#include <cassert>
 // Include SoElement.h to be Open Inventor compatible at compile-time.
 #include <Inventor/elements/SoElement.h>
 

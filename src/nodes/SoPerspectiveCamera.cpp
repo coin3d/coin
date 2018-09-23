@@ -57,7 +57,7 @@
 
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <Inventor/SbSphere.h>
 #include <Inventor/errors/SoDebugError.h>

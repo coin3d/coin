@@ -42,8 +42,8 @@
 
 #include <Inventor/misc/SoProtoInstance.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

@@ -36,15 +36,13 @@
 #define FREETYPEGLUE_ASSUME_FREETYPE 1
 #endif /* !HAVE_CONFIG_H */
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
-#include <string.h>
-#include <math.h>
-#include <stdio.h>
-#include <stddef.h>
+#include <cmath>
+#include <cstddef>
 
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H

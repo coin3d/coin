@@ -54,7 +54,7 @@
 
 // *************************************************************************
 
-#include <string.h> /* strcmp used in assert() */
+#include <cstring> /* strcmp used in assert() */
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>

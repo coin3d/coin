@@ -49,8 +49,8 @@
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
-#include <assert.h>
-#include <stdio.h> // fprintf()
+#include <cassert>
+#include <cstdio> // fprintf()
 
 #include <Inventor/lists/SoTypeList.h>
 #if COIN_DEBUG

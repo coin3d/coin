@@ -47,8 +47,8 @@
 /*! \file recmutex.h */
 #include <Inventor/C/threads/recmutex.h>
 
-#include <stdlib.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cassert>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/threads/mutex.h>

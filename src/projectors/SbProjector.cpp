@@ -59,7 +59,7 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbPlane.h>
-#include <assert.h>
+#include <cassert>
 #include "coindefs.h"
 
 /*!

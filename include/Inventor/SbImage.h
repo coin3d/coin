@@ -36,7 +36,7 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3s.h>
 #include <Inventor/SbString.h>
-#include <stddef.h> // for NULL
+#include <cstddef> // for NULL
 
 class SbImage;
 

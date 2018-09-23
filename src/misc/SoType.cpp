@@ -131,9 +131,9 @@
 /*! \file SoType.h */
 #include <Inventor/SoType.h>
 
-#include <assert.h>
-#include <stdlib.h> // NULL
-#include <string.h> // strcmp()
+#include <cassert>
+#include <cstdlib> // NULL
+#include <cstring> // strcmp()
 #include <cctype>   // toupper()
 
 #include <Inventor/errors/SoDebugError.h>
@@ -778,7 +778,7 @@ SoType::isDerivedFrom(const SoType parent) const
   superclass:
 
   \code
-  #include <stdio.h>
+  #include <cstdio>
   #include <Inventor/SoDB.h>
   #include <Inventor/lists/SoTypeList.h>
 

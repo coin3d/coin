@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 #include "SbUTMProjection.h"
-#include <stdio.h>
+#include <cstdio>
 
 SbUTMProjection::SbUTMProjection(const int utmzone,
                                  const SbGeoEllipsoid & ellipsoid,

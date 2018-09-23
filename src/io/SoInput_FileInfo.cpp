@@ -32,8 +32,8 @@
 
 #include "io/SoInput_FileInfo.h"
 
-#include <string.h>
-#include <math.h> // pow()
+#include <cstring>
+#include <cmath> // pow()
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

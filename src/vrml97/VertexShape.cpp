@@ -73,7 +73,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
 
-#include <stddef.h>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLNormal.h>

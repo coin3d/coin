@@ -211,10 +211,10 @@
 
 // *************************************************************************
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h> /* SHRT_MAX */
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <climits> /* SHRT_MAX */
 
 #ifdef HAVE_AGL
 #include <AGL/agl.h>
@@ -4461,8 +4461,8 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
   #include <Inventor/C/glue/gl.h>
   #include <Inventor/elements/SoGLCacheContextElement.h>
   #include <Inventor/SoDB.h>
-  #include <assert.h>
-  #include <stdio.h>
+  #include <cassert>
+  #include <cstdio>
 
   int
   main(void)

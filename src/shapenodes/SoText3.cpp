@@ -127,8 +127,8 @@
 
 #include <Inventor/nodes/SoText3.h>
 
-#include <string.h>
-#include <float.h> // FLT_MAX, FLT_MIN
+#include <cstring>
+#include <cfloat> // FLT_MAX, FLT_MIN
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

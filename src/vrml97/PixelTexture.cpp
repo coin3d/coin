@@ -91,8 +91,8 @@
 
 #include <Inventor/VRMLnodes/SoVRMLPixelTexture.h>
 
-#include <assert.h>
-#include <stddef.h>
+#include <cassert>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SoInput.h>

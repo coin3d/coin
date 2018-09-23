@@ -35,7 +35,7 @@
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec3f.h>
-#include <stddef.h>
+#include <cstddef>
 
 class SbPlane;
 class SbVec2f;

@@ -47,7 +47,7 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <float.h>
+#include <cfloat>
 
 /*!
   Default constructor. See

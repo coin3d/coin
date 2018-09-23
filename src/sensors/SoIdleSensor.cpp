@@ -43,7 +43,7 @@
 */
 
 #include <Inventor/sensors/SoIdleSensor.h>
-#include <assert.h>
+#include <cassert>
 
 /*!
   Default constructor.

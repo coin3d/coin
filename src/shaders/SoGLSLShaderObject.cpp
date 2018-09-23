@@ -33,8 +33,8 @@
 #include "shaders/SoGLSLShaderObject.h"
 #include "coindefs.h"
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 
@@ -225,13 +225,13 @@ SoGLSLShaderObject::didOpenGLErrorOccur(const SbString & source)
   return retCode;
 }
 
-#include <stdio.h>
+#include <cstdio>
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/actions/SoAction.h>
-#include <stdio.h>
+#include <cstdio>
 
 void
 SoGLSLShaderObject::updateCoinParameter(SoState * COIN_UNUSED_ARG(state), const SbName & name, SoShaderParameter * param, const int value)

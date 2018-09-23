@@ -45,7 +45,7 @@
 
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
-#include <string.h>
+#include <cstring>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>

@@ -32,7 +32,7 @@
 
 #include "SoGLShaderParameter.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include "SoGLARBShaderParameter.h"
 #include "SoGLCgShaderParameter.h"

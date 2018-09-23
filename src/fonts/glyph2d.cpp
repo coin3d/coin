@@ -32,9 +32,9 @@
 
 #include "fonts/fontlib_wrapper.h"
 
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
+#include <cstring>
+#include <cassert>
+#include <cstdio>
 
 #include <Inventor/C/base/string.h>
 

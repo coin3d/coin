@@ -152,7 +152,7 @@
 
 #include <Inventor/nodes/SoMaterial.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/actions/SoCallbackAction.h>

@@ -70,8 +70,8 @@
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 
-#include <stdlib.h>
-#include <float.h>
+#include <cstdlib>
+#include <cfloat>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

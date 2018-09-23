@@ -326,9 +326,9 @@
 
 #include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
 
-#include <float.h>
-#include <math.h>
-#include <string.h>
+#include <cfloat>
+#include <cmath>
+#include <cstring>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/lists/SbList.h>

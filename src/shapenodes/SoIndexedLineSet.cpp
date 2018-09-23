@@ -60,7 +60,7 @@
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
 
-#include <assert.h>
+#include <cassert>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
