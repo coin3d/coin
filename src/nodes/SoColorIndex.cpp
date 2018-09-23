@@ -33,6 +33,7 @@
 /*!
   \class SoColorIndex SoColorIndex.h Inventor/nodes/SoColorIndex.h
   \brief The SoColorIndex class is used to specify color indices for subsequent shapes.
+
   \ingroup nodes
 
   This node should only be used in OpenGL color-index mode, and only

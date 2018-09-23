@@ -33,6 +33,7 @@
 /*!
   \class SbMatrix SbMatrix.h Inventor/SbMatrix.h
   \brief The SbMatrix class is a 4x4 dimensional representation of a matrix.
+
   \ingroup base
 
   SbMatrix is used by many other classes in Coin.  It provides storage
@@ -881,7 +882,7 @@ SbMatrix::setScale(const SbVec3f & s)
 
 /*!
   Make this matrix into a pure translation matrix (no scale or rotation
-  components) with the given vector \t as the translation.
+  components) with the given vector \a t as the translation.
 
   \sa setRotate(), setScale().
  */

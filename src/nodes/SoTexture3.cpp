@@ -33,6 +33,7 @@
 /*!
   \class SoTexture3 SoTexture3.h Inventor/nodes/SoTexture3.h
   \brief The SoTexture3 class is used to map a 3D texture onto geometry.
+
   \ingroup nodes
 
   Shape nodes within the scope of SoTexture3 nodes in the scenegraph

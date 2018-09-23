@@ -51,6 +51,7 @@
   \class SbVec3s SbVec3s.h Inventor/SbVec3s.h
   \brief The SbVec3s class is a 3 dimensional vector with short integer
   coordinates.
+
   \ingroup base
 
   This vector class provides storage for a 3 dimensional vector

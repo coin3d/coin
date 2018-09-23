@@ -33,6 +33,7 @@
 /*!
   \class SoDecomposeVec3f SoDecomposeVec3f.h Inventor/engines/SoDecomposeVec3f.h
   \brief The SoDecomposeVec3f class is used to decompose 3D vectors into three floats.
+
   \ingroup engines
 */
 

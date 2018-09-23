@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLBackground SoVRMLBackground.h Inventor/VRMLnodes/SoVRMLBackground.h
   \brief The SoVRMLBackground class is used for specifying a viewer panorama.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

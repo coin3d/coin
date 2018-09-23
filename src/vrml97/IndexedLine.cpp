@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLIndexedLine SoVRMLIndexedLine.h Inventor/VRMLnodes/SoVRMLIndexedLine.h
   \brief The SoVRMLIndexedLine class is an abstract superclass for lines specified with indices.
+
   \ingroup VRMLnodes
 
   \COININTERNAL

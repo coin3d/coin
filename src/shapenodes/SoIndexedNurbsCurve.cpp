@@ -33,6 +33,7 @@
 /*!
   \class SoIndexedNurbsCurve SoIndexedNurbsCurve.h Inventor/nodes/SoIndexedNurbsCurve.h
   \brief The SoIndexedNurbsCurve class is a node for representing smooth curves.
+
   \ingroup nodes
 
   Explaining NURBS is beyond the scope of this documentation. If you

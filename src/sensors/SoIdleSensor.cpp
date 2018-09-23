@@ -33,6 +33,7 @@
 /*!
   \class SoIdleSensor SoIdleSensor.h Inventor/sensors/SoIdleSensor.h
   \brief The SoIdleSensor class is a sensor which will trigger as soon as the application is idle.
+
   \ingroup sensors
 
   An SoIdleSensor differs from an SoOneShotSensor in that it will not

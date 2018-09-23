@@ -33,6 +33,7 @@
 /*!
   \class SoSFRotation SoSFRotation.h Inventor/fields/SoSFRotation.h
   \brief The SoSFRotation class is a container for an SbRotation.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

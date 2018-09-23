@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLCone SoVRMLCone.h Inventor/VRMLnodes/SoVRMLCone.h
   \brief The SoVRMLCone class is used to represent a Cone object.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

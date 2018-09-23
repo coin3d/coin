@@ -33,6 +33,7 @@
 /*!
   \class SoBaseList SoBaseList.h Inventor/lists/SoBaseList.h
   \brief The SoBaseList class is a container for pointers to SoBase derived objects.
+
   \ingroup general
 
   The additional capability of the SoBaseList class over its parent

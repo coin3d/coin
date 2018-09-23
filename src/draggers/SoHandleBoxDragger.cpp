@@ -39,6 +39,7 @@
 /*!
   \class SoHandleBoxDragger SoHandleBoxDragger.h Inventor/draggers/SoHandleBoxDragger.h
   \brief The SoHandleBoxDragger class provides support for interactive scaling and translation.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

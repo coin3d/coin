@@ -33,6 +33,7 @@
 /*!
   \class SoMaterial SoMaterial.h Inventor/nodes/SoMaterial.h
   \brief The SoMaterial class is a node type for setting up material values for scene geometry.
+
   \ingroup nodes
 
   After traversing an SoMaterial node, subsequent shape nodes with

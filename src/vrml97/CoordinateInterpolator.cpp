@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLCoordinateInterpolator SoVRMLCoordinateInterpolator.h Inventor/VRMLnodes/SoVRMLCoorinateInterpolator.h
   \brief The SoVRMLCoordinateInterpolator class is used to interpolate 3D coordinates.
+
   \ingroup VRMLnodes
   
   \WEB3DCOPYRIGHT

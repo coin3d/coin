@@ -51,6 +51,7 @@
 /*!
   \class SbVec3d SbVec3d.h Inventor/SbVec3d.h
   \brief The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.
+
   \ingroup base
 
   This vector class provides storage for a 3 dimensional double
@@ -93,7 +94,7 @@
 
   Constructs an SbVec3d instance from an SbVec3b instance.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 /*!
@@ -101,7 +102,7 @@
 
   Constructs an SbVec3d instance from an SbVec3s instance.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 /*!
@@ -109,7 +110,7 @@
 
   Constructs an SbVec3d instance from an SbVec3i32 instance.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 /*!
@@ -381,7 +382,7 @@ SbVec3d::setValue(const SbVec3f & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 SbVec3d &
@@ -396,7 +397,7 @@ SbVec3d::setValue(const SbVec3b & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 SbVec3d &
@@ -411,7 +412,7 @@ SbVec3d::setValue(const SbVec3s & v)
 /*!
   Sets this vector to the vector \a v.
 
-  \Coin 2.5
+  \since Coin 2.5
 */
 
 SbVec3d &

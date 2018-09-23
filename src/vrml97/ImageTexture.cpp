@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLImageTexture SoVRMLImageTexture.h Inventor/VRMLnodes/SoVRMLImageTexture.h
   \brief The SoVRMLImageTexture class is used for mapping a texture file onto geometry.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

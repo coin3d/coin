@@ -33,6 +33,7 @@
 /*!
   \class SoOverrideElement Inventor/elements/SoOverrideElement.h
   \brief The SoOverrideElement maintains a list of overridable elements and a list over which elements should be overridden.
+
   \ingroup elements
 
   Only certain elements can be overridden.
@@ -478,7 +479,7 @@ SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 /*!
   Returns normal vector override value.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
@@ -491,7 +492,7 @@ SoOverrideElement::getNormalVectorOverride(SoState * const state)
 /*!
   Returns normal binding override value.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
@@ -780,7 +781,7 @@ SoOverrideElement::setTransparencyTypeOverride(SoState * const state,
 /*!
   Can be used to set normal vector override.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
@@ -795,7 +796,7 @@ SoOverrideElement::setNormalVectorOverride(SoState * const state,
 /*!
   Can be used to set normal binding override.
 
-  \CLASS_FUNCTION_EXTENSION
+  \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */

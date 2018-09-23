@@ -33,6 +33,7 @@
 /*!
   \class SoUpgrader SoUpgrader.h
   \brief The SoUpgrader class is used to support Inventor files with version < 2.1.
+
   \ingroup nodes
 
   This class is needed since some nodes in earlier versions of

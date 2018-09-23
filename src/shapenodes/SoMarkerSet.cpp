@@ -33,6 +33,7 @@
 /*!
   \class SoMarkerSet SoMarkerSet.h Inventor/nodes/SoMarkerSet.h
   \brief The SoMarkerSet class displays a set of 2D bitmap markers in 3D.
+
   \ingroup nodes
 
   This node uses the coordinates currently on the state (or in the

@@ -33,6 +33,7 @@
 /*!
   \class SoGetBoundingBoxAction SoGetBoundingBoxAction.h Inventor/actions/SoGetBoundingBoxAction.h
   \brief The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.
+
   \ingroup actions
 
   If this action is applied to a path or scene graph root, it will
@@ -261,7 +262,7 @@ SoGetBoundingBoxAction::initClass(void)
 
   You would usually want to pass in a viewport region equal to the
   layout of the current renderarea canvas. If you have a viewer or
-  So@Gui@RenderArea available, you can get hold of the viewport region
+  So\@Gui\@RenderArea available, you can get hold of the viewport region
   data simply by doing
 
   \code

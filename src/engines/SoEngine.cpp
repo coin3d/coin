@@ -33,6 +33,7 @@
 /*!
   \class SoEngine SoEngine.h Inventor/engines/SoEngine.h
   \brief SoEngine is the base class for Coin engines.
+
   \ingroup engines
 
   Engines enables the application programmers to make complex
@@ -249,7 +250,7 @@ SoEngine::getOutput(const SbName & outputname) const
 }
 
 /*!
-  Sets \outputname to the name of \a output. Returns \c FALSE if no
+  Sets \a outputname to the name of \a output. Returns \c FALSE if no
   such output is contained within the engine instance.
 */
 SbBool

@@ -57,6 +57,7 @@
   \struct cc_error error.h Inventor/C/errors/error.h
   \typedef struct cc_error cc_error
   \brief The cc_error type is an internal Coin structure for error management.
+
   \ingroup errors
 
   This is a Coin extension.

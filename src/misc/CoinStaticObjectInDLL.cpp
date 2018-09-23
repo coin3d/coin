@@ -166,13 +166,12 @@ CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
 
                "The depends.exe program that comes with VisualC++ is a\n"
                "good tool for tracking things like this down. Make sure\n"
-               "you inspect the complete path of each loaded dll.\n\n"
+               "you inspect the complete path of each loaded DLL.\n\n"
 
                "If you are completely lost as how to find and fix\n"
                "this problem on your own, try the\n"
-               "<coin-discuss@coin3d.org> mailing list (or the support\n"
-               "address <coin-support@coin3d.org> if you hold a Coin\n"
-               "Professional Edition License).\n",
+               "<https://groups.google.com/forum/#!forum/coin3d-discuss>\n"
+               "mailing list (or the support address <coin-support@coin3d.org>).\n",
 
 
                "Fatal error!", MB_OK | MB_ICONERROR | MB_TASKMODAL);

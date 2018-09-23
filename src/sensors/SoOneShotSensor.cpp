@@ -33,6 +33,7 @@
 /*!
   \class SoOneShotSensor SoOneShotSensor.h Inventor/sensors/SoOneShotSensor.h
   \brief The SoOneShotSensor class is a sensor which will trigger once.
+
   \ingroup sensors
 
   Since SoOneShotSensor is a subclass of SoDelayQueueSensor, it will

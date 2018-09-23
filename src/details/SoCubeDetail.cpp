@@ -33,6 +33,7 @@
 /*!
   \class SoCubeDetail SoCubeDetail.h Inventor/details/SoCubeDetail.h
   \brief The SoCubeDetail class contains information about the parts of a SoCube shape.
+
   \ingroup details
 
   Instances of this class are used for storing information about hit

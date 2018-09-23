@@ -39,6 +39,7 @@
 /*!
   \class SoTransformBoxManip SoTransformBoxManip.h Inventor/manips/SoTransformBoxManip.h
   \brief The SoTransformBoxManip wraps an SoTransformBoxDragger for convenience.
+
   \ingroup manips
 
   The manipulator class takes care of wrapping up the

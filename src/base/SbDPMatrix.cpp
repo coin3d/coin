@@ -33,6 +33,7 @@
 /*!
   \class SbDPMatrix SbDPMatrix.h Inventor/SbDPMatrix.h
   \brief The SbDPMatrix class is a 4x4 dimensional representation of a double-precision matrix.
+
   \ingroup base
 
   This class is like the SbMatrix class, but uses double-precision
@@ -761,7 +762,7 @@ SbDPMatrix::setScale(const SbVec3d & s)
 
 /*!
   Make this matrix into a pure translation matrix (no scale or rotation
-  components) with the given vector \t as the translation.
+  components) with the given vector \a t as the translation.
 
   \sa setRotate(), setScale().
  */
@@ -1218,7 +1219,7 @@ SbDPMatrix::multMatrixVec(const SbVec3d & src, SbVec3d & dst) const
   Multiplication is done with the vector on the left side of the
   expression, i.e. dst = src * M.
 
-  It is safe to let \a src and \dst be the same SbVec3d instance.
+  It is safe to let \a src and \a dst be the same SbVec3d instance.
 
   \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
 */

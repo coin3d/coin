@@ -39,6 +39,7 @@
 /*!
   \class SoRotateDiscDragger SoRotateDiscDragger.h Inventor/draggers/SoRotateDiscDragger.h
   \brief The SoRotateDiscDragger class is for rotating geometry around a single axis.
+
   \ingroup draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT

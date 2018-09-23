@@ -33,6 +33,7 @@
 /*!
   \class SbSphere SbSphere.h Inventor/SbSphere.h
   \brief The SbSphere class is a representation of a sphere.
+
   \ingroup base
 
   This class is used within many other classes in Coin. It contains

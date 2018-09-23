@@ -33,6 +33,7 @@
 /*!
   \class SoSFBool SoSFBool.h Inventor/fields/SoSFBool.h
   \brief The SoSFBool class is a container for an SbBool value.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

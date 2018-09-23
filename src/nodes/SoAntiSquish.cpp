@@ -33,6 +33,7 @@
 /*!
   \class SoAntiSquish SoAntiSquish.h Inventor/nodes/SoAntiSquish.h
   \brief The SoAntiSquish class is used to reset to uniform scaling.
+
   \ingroup nodes
 
   When traversed, this node replaces the scale vector of the matrix

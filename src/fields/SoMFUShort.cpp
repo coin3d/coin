@@ -33,6 +33,7 @@
 /*!
   \class SoMFUShort SoMFUShort.h Inventor/fields/SoMFUShort.h
   \brief The SoMFUShort class is a container for unsigned short integer values.
+
   \ingroup fields
 
   This field supports application data sharing through a

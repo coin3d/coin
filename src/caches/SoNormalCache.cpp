@@ -33,6 +33,7 @@
 /*!
   \class SoNormalCache SoNormalCache.h Inventor/caches/SoNormalCache.h
   \brief The SoNormalCache class is used to hold cached normals.
+
   \ingroup caches
 
   As an extension to the original SGI Open Inventor v2.1 API, it is

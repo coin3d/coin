@@ -75,6 +75,7 @@ using std::printf;
 /*!
   \struct cc_string string.h Inventor/C/base/string.h
   \brief The cc_string type is a C ADT for ASCII string management.
+
   \ingroup base
 
   This is a Coin extension.

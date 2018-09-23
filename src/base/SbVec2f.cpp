@@ -33,6 +33,7 @@
 /*!
   \class SbVec2f SbVec2f.h Inventor/SbVec2f.h
   \brief The SbVec2f class is a 2 dimensional vector with floating point coordinates.
+
   \ingroup base
 
   This vector class is used by many other classes in

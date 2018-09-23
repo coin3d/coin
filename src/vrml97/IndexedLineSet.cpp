@@ -39,6 +39,7 @@
 /*!
   \class SoVRMLIndexedLineSet SoVRMLIndexedLineSet.h Inventor/VRMLnodes/SoVRMLIndexedLineSet.h
   \brief The SoVRMLIndexedLineSet class is used to represent a generic 3D line shape.
+
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT

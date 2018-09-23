@@ -33,6 +33,7 @@
 /*!
   \class SoNormal SoNormal.h Inventor/nodes/SoNormal.h
   \brief The SoNormal class is a node for providing normals to the state.
+
   \ingroup nodes
 
   Coin will automatically calculate normals for you if no SoNormal

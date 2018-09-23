@@ -33,6 +33,7 @@
 /*!
   \class SoTextureScalePolicy SoTextureScalePolicy.h Inventor/nodes/SoTextureScalePolicy.h
   \brief The SoTextureScalePolicy class is a node for controlling the texture scale policy.
+
   \ingroup nodes
 
   If a texture map is of size != 2^n, it must be scaled before OpenGL

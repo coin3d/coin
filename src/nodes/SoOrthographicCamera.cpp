@@ -33,6 +33,7 @@
 /*!
   \class SoOrthographicCamera SoOrthographicCamera.h Inventor/nodes/SoOrthographicCamera.h
   \brief The SoOrthographicCamera class defines a camera node with orthographic rendering.
+
   \ingroup nodes
 
   Orthographic rendering will not give a particularly realistic

@@ -33,6 +33,7 @@
 /*!
   \class SoOffscreenRenderer SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
   \brief The SoOffscreenRenderer class is used for rendering scenes in offscreen buffers.
+
   \ingroup general
 
   If you want to render to a memory buffer instead of an on-screen
@@ -1122,7 +1123,7 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
   unsigned char buf[BUFSIZE];
   (void)memset(buf, 0, BUFSIZE);
   buf[7] = 255; // set maximum pixel value to 255
-  strcpy((char *)buf+8, "http://www.coin3d.org");
+  strcpy((char *)buf+8, "https://bitbucket.org/Coin3D/");
   const size_t wrote = fwrite(buf, 1, BUFSIZE, fp);
   assert(wrote == BUFSIZE);
 
@@ -1262,7 +1263,7 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
           pixelsize[1]-scaledsize[1],
           scaledsize[0],
           pixelsize[1]);
-  fprintf(fp, "%%%%Creator: Coin <http://www.coin3d.org>\n");
+  fprintf(fp, "%%%%Creator: Coin <https://bitbucket.org/Coin3D/>\n");
   fprintf(fp, "%%%%EndComments\n");
 
   fprintf(fp, "\n");

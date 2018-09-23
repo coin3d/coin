@@ -33,6 +33,7 @@
 /*!
   \class SoTextureCoordinateEnvironment SoTextureCoordinateEnvironment.h Inventor/nodes/SoTextureCoordinateEnvironment.h
   \brief The SoTextureCoordinateEnvironment class generates texture coordinates by projecting onto a surrounding texture.
+
   \ingroup nodes
 
   The texture specifying the enviroment will be mapped around the 
@@ -43,19 +44,19 @@
   Here is a scenegraph example showing how enviroment mapping can be
   applied to an object:
 
-  <code>
+  \code
   #Inventor V2.1 ascii
 
   Separator {
 
     Texture2 {
-      filename "ocean.jpg" # the enviroment, in this case ocean
+      filename "ocean.jpg" # the environment, in this case ocean
     }
     TextureCoordinateEnvironment {}
 
-    Cube {} # the enviromentally mapped object
+    Cube {} # the environmentally mapped object
   }
-  </code>
+  \endcode
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

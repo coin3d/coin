@@ -33,6 +33,7 @@
 /*!
   \class SoDrawStyle SoDrawStyle.h Inventor/nodes/SoDrawStyle.h
   \brief The SoDrawStyle class specificies common rendering properties for shapes.
+
   \ingroup nodes
 
   Use SoDrawStyle nodes to influence how shape nodes following them in

@@ -33,6 +33,7 @@
 /*!
   \class SoClipPlane SoClipPlane.h Inventor/nodes/SoClipPlane.h
   \brief The SoClipPlane class is a node type for specifying clipping planes.
+
   \ingroup nodes
 
   A scene graph \e without any SoClipPlane nodes uses six clipping

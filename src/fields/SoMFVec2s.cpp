@@ -33,6 +33,7 @@
 /*!
   \class SoMFVec2s SoMFVec2s.h Inventor/fields/SoMFVec2s.h
   \brief The SoMFVec2s class is a container for SbVec2s vectors.
+
   \ingroup fields
 
   This field is used where nodes, engines or other field containers

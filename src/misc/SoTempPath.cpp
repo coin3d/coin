@@ -33,6 +33,7 @@
 /*!
   \class SoTempPath Inventor/misc/SoTempPath.h
   \brief The SoTempPath class is used to store temporary paths.
+
   \ingroup general
 
   The path simply turns off auditing in the constructor, and leaves

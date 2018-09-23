@@ -49,8 +49,6 @@ set(COIN_SHADERS_INTERNAL_FILES
 	SoGLShaderProgram.h
 	SoGLShaderProgram.cpp
 	SoGLShaderProgramElement.cpp
-	SoShader.h
-	SoShader.cpp
 )
 
 # build library

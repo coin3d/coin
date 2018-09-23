@@ -33,6 +33,7 @@
 /*!
   \class SoEnvironment SoEnvironment.h Inventor/nodes/SoEnvironment.h
   \brief The SoEnvironment class is a node for specifying global rendering parameters.
+
   \ingroup nodes
 
   This node type provides the application programmer with the ability

@@ -33,6 +33,7 @@
 /*!
   \class SoAudioRenderAction SoAudioRenderAction.h Inventor/actions/SoAudioRenderAction.h
   \brief The SoAudioRenderAction class renders the aural parts of the scene graph.
+
   \ingroup actions
 
   Applying this method at a root node for a scene graph, path or

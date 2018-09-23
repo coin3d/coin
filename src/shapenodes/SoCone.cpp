@@ -38,6 +38,7 @@
 /*!
   \class SoCone SoCone.h Inventor/nodes/SoCone.h
   \brief The SoCone class is for rendering cone shapes.
+
   \ingroup nodes
 
   Insert a cone shape into the scenegraph. The cone is rendered with
