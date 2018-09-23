@@ -188,7 +188,7 @@ SoChildList::truncate(const int length)
 	 tamer. */
       this->parent->startNotify();
       for (int k=0; k < this->auditors.getLength(); k++) {
-        for (int j=length; j < n; j++) {
+        for (int j=n-1; j >= length; --j) {
           this->auditors[k]->removeIndex(this->parent, j);
         }
       }
