@@ -92,7 +92,7 @@ install:
       fi
       sudo apt-get install gcc-multilib -y
       sudo apt-get install g++-multilib -y
-  -cmd: |
+  - cmd: |
       set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;%PATH%
 
 before_build:
