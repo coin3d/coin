@@ -38,6 +38,7 @@
 #endif //HAVE_CONFIG_H
 
 #include "SoAction.cpp"
+#include "SoActionP.cpp"
 #include "SoBoxHighlightRenderAction.cpp"
 #include "SoCallbackAction.cpp"
 #include "SoGLRenderAction.cpp"
