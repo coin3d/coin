@@ -57,6 +57,8 @@
 #include "winconfig.h"
 #elif defined(HAVE_EXPAT_CONFIG_H)
 #include <expat_config.h>
+#elif defined(HAVE_CONFIG_H)
+#include <config.h>
 #endif /* ndef _WIN32 */
 
 #include "ascii.h"
