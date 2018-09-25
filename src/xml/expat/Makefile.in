@@ -118,6 +118,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/xmlparse.Plo ./$(DEPDIR)/xmlparse.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/xmlrole.Plo ./$(DEPDIR)/xmlrole.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/xmltok.Plo ./$(DEPDIR)/xmltok.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/loadlibrary.Plo ./$(DEPDIR)/loadlibrary.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/xmltok_impl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/xmltok_impl.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/xmltok_ns.Plo ./$(DEPDIR)/xmltok_ns.Po
@@ -388,7 +389,8 @@ target_vendor = @target_vendor@
 RegularSources = \
 	xmlparse.c \
 	xmlrole.c \
-	xmltok.c
+	xmltok.c \
+	loadlibrary.c
 
 LinkHackSources = \
 	all-expat-c.c
@@ -397,7 +399,6 @@ PublicHeaders =
 PrivateHeaders = \
         xmltok_ns.c \
         xmltok_impl.c \
-        amigaconfig.h\
         ascii.h \
         asciitab.h \
         expat.h \
@@ -405,8 +406,8 @@ PrivateHeaders = \
         iasciitab.h \
         internal.h \
         latin1tab.h \
-        macconfig.h \
         nametab.h \
+        siphash.h \
         utf8tab.h \
         winconfig.h \
         xmlrole.h \
@@ -549,6 +550,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmlrole.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/loadlibrary.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/loadlibrary.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_impl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_impl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmltok_ns.Plo@am__quote@
