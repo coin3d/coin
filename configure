@@ -21229,7 +21229,6 @@ fi
 
 
 if $sim_ac_enable_system_expat; then
-
 $as_echo "#define HAVE_SYSTEM_EXPAT 1" >>confdefs.h
 
 
@@ -29020,6 +29019,15 @@ fi
 
 fi
 # unset sim_ac_want_libbzip2
+
+fi
+
+# *******************************************************************
+# * EXPAT specific stuff.
+# *******************************************************************
+if test x"$sim_ac_have_win32_api" = x"false" && test x"$sim_ac_enable_system_expat" = x"false"; then
+
+$as_echo "#define XML_DEV_URANDOM 1" >>confdefs.h
 
 fi
 
