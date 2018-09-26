@@ -477,5 +477,8 @@
 /* Define to 1 if the X Window System is missing or not being used. */
 #undef X_DISPLAY_MISSING
 
+/* Define to extract entropy from /dev/urandom */
+#undef XML_DEV_URANDOM
+
 /* define for runtime linking with zlib */
 #undef ZLIB_RUNTIME_LINKING
