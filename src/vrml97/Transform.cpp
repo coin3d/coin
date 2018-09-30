@@ -314,6 +314,8 @@ SoVRMLTransform::getTranslationSpaceMatrix(SbMatrix & matrix,
   matrix.multRight(tmp);
   tmp.setRotate(this->rotation.getValue());
   matrix.multRight(tmp);
+  tmp.setTranslate(this->center.getValue());
+  matrix.multRight(tmp);
   tmp.setTranslate(this->translation.getValue());
   matrix.multRight(tmp);
   inverse = matrix.inverse();
