@@ -38,7 +38,7 @@ static DWORD WINAPI
 cc_w32thread_thread_proc(LPVOID lpParameter)
 {
   cc_thread *thread = (cc_thread *)lpParameter;
-  return (DWORD) thread->func(thread->closure);
+  return (DWORD) reinterpret_cast<uintptr_t>(thread->func(thread->closure));
 }
 
 static int
