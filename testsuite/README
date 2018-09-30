@@ -1,0 +1,79 @@
+Coin Test-Suite Instructions
+
+The test-suite uses Boost.Test from Boost v1.34.0.  All test-code
+must conform to this.
+
+Test-code is written in the implementation file of the component to
+be tested.  The test-code is wrapped inside a define-wrapper like this:
+
+  #ifdef COIN_TEST_SUITE
+
+  BOOST_AUTO_TEST_CASE(name)
+  {
+    // test-code ...
+  }
+
+  #endif // COIN_TEST_SUITE
+
+Note the comment behind the #endif-directive.  It is necessary to
+include the COIN_TEST_SUITE token for the extractor to be able to
+detect the end of the testsuite block.
+
+One Coin-component implementation file may have multiple test-suite
+blocks, it is not limited to one.
+
+You can also add/implement utility functions outside the
+BOOST_AUTO_TEST_CASE blocks to structure code better.
+
+Every file that includes test-suite blocks need to have as the first
+#include-file the header that declares the component implemented in
+the cpp-file.  Otherwise the test-suite part won't be able to compile.
+You can add #include-directives in the COIN_TESTSUITE_BLOCK though,
+and get compilation to work that way.
+
+Only public parts of the API can be tested in this test-suite because
+it is built separately outside Coin and then linked with Coin.
+
+When a new cpp-file gets its first test-case, the test-suite does not
+know anything about that.  To make the test-suite include the new
+tests, the test-suite makefile must be updated.  You can do this
+by running "make makefile-update" in the testsuite/ build directory.
+This should add the new files (and remove any obsoleted ones) so the
+next time you build the test-suite it should be updated.  The make-rule
+for "makefile-update" runs first a script called "makemakefile.sh"
+which updates the source-directory Makefile.in file, and then runs
+config.status on that makefile to get the Makefile file in the testsuite
+build directory updated.  Commit the updated Makefile.in to svn, but
+remember to also commit the updated files with test-cases as well..
+
+To work with only a subset of the tests in the total testsuite (to
+speed things up while doing development), you can run
+"make makefile-update" with a filter to reduce the number of tests
+the testsuite will be built up of.  Running for instance
+"make makefile-update filter=Dragger" will reduce the test set to
+those found in files that contain the word "Dragger" in their filename.
+
+Test-case blocks are extracted from the source files by a script.
+This script is hooked into the makefile, with dependencies between
+the original cpp-file and the extracted/generated cpp-file.  Running
+make should trigger updating if any changes have been made in the
+original cpp-files with the test-code, so this updating is automatic.
+The thing that doesn't get updated automatically is the *list* of
+files that actually contain test-case code, which you must trigger
+manual updating of by running "make makefile-update" as mentioned above.
+
+Run the tests by running "make testsuite-run" in the top-level directory,
+or by running "make" in the testsuite directory (after building Coin, of 
+course).
+
+If the test-suite crashes (as opposed to just reporting errors),
+running "make verbose" might be helpful to figure out exactly which
+test-case is the one that causes the problem, or "make debug" to make
+the testsuite run in gdb so you end up in the debugger when the
+testsuite crashes.  This works only on platforms that use gcc and gdb
+as the compiler/debugger suite (Linux, OS X, unixes...) and is not
+supported on Windows for now.
+
+That's it.
+
+/2008-11-16 larsa

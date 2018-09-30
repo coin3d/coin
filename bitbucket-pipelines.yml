@@ -1,0 +1,69 @@
+# Build configuration for Coin3D/coin package creation and upload.
+#
+# For automatical artifacts upload into the Downloads 
+# directory in the repository owner settings:
+#   - application password with write capabilities on the BitBucket project
+#   - secured environment variable named BB_AUTH_STRING containing:
+#     <repo owner>:<application password> 
+# -----
+# The custom docker image from Docker Hub must contain all the pre-reqs for 
+# the project plus mercurial binaries.
+
+pipelines:
+  custom: # manual trigger
+    manual-trigger:
+      # debian build
+      - step:
+          image: ggabbiani/coin:debian
+          script:
+            - mkdir target
+            - cd target
+            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DHAVE_MULTIPLE_VERSION=ON -DCOIN_BUILD_DOCUMENTATION_QTHELP=ON -DCOIN_THREADSAFE=ON -DCOIN_BUILD_TESTS=OFF
+            - make
+            #- make test
+            # creates package debians with build number equal to the number of commits on the source branch
+            - cd cpack.d
+            - cpack --config debian.cmake
+            # pack the artifacts into a single tarball
+            - tar -czf debian-build-$(hg id --num --rev tip).tgz $(cat artifacts.list) artifacts.list
+            # creates 'last' archive
+            - cp debian-build-$(hg id --num --rev tip).tgz debian-build.tgz
+            # uploads both resulting tarballs to the download area
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"debian-build.tgz" --form files=@"debian-build-$(hg id --num --rev tip).tgz"
+      # fedora build
+      - step:
+          image: ggabbiani/coin:fedora
+          script:
+            - mkdir target
+            - cd target
+            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DHAVE_MULTIPLE_VERSION=ON -DCOIN_BUILD_DOCUMENTATION_QTHELP=ON -DCOIN_THREADSAFE=ON -DCOIN_BUILD_TESTS=OFF
+            - make
+            #- make test
+            # creates package rpms with build number equal to the number of commits on the source branch
+            - cd cpack.d
+            - cpack --config fedora.cmake
+            # pack the artifacts into a single tarball
+            - tar -czf fedora-build-$(hg id --num --rev tip).tgz $(cat artifacts.list) artifacts.list
+            # creates 'last' archive
+            - cp fedora-build-$(hg id --num --rev tip).tgz fedora-build.tgz
+            # uploads both resulting tarballs to the download area
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"fedora-build.tgz" --form files=@"fedora-build-$(hg id --num --rev tip).tgz"
+      # ubuntu build
+      - step:
+          image: ggabbiani/coin:ubuntu
+          script:
+            - mkdir target
+            - cd target
+            - cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DHAVE_MULTIPLE_VERSION=ON -DCOIN_BUILD_DOCUMENTATION_QTHELP=ON -DCOIN_THREADSAFE=ON -DCOIN_BUILD_TESTS=OFF
+            - make
+            #- make test
+            # creates package debians with build number equal to the number of commits on the source branch
+            # for ubuntu images just use the debian cpack config
+            - cd cpack.d
+            - cpack --config debian.cmake
+            # pack the artifacts into a single tarball
+            - tar -czf ubuntu-build-$(hg id --num --rev tip).tgz $(cat artifacts.list) artifacts.list
+            # creates 'last' archive
+            - cp ubuntu-build-$(hg id --num --rev tip).tgz ubuntu-build.tgz
+            # uploads both resulting tarballs to the download area
+            - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"ubuntu-build.tgz" --form files=@"ubuntu-build-$(hg id --num --rev tip).tgz"
