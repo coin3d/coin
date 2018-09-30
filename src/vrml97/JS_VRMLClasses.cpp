@@ -110,7 +110,7 @@ struct CoinVrmlJs {
 struct CoinVrmlJs_SensorInfo {
   SbList <JSObject *> objects;
 };
-SbHash<unsigned long, void *> * CoinVrmlJs_sensorinfohash = NULL;
+SbHash<uintptr_t, void *> * CoinVrmlJs_sensorinfohash = NULL;
 
 
 const char * CoinVrmlJs_SFColorAliases[] = {"r", "g", "b"};
@@ -674,7 +674,7 @@ static void SFNode_deleteCB(void * COIN_UNUSED_ARG(data), SoSensor * sensor)
 {
   SoNode * node = ((SoNodeSensor *) sensor)->getAttachedNode();
   void * tmp;
-  if(!CoinVrmlJs_sensorinfohash->get((unsigned long) node, tmp)) {
+  if(!CoinVrmlJs_sensorinfohash->get(reinterpret_cast<uintptr_t>(node), tmp)) {
     assert(FALSE && "Trying to delete an unregistered SoNodeSensor. Internal error.");
     return;
   }
@@ -690,7 +690,7 @@ static void SFNode_deleteCB(void * COIN_UNUSED_ARG(data), SoSensor * sensor)
 
   // Store the sensor-pointer so that it can be properly deleted later
   nodesensorstobedeleted->append((SoNodeSensor *) sensor);
-  CoinVrmlJs_sensorinfohash->erase((unsigned long) node);
+  CoinVrmlJs_sensorinfohash->erase(reinterpret_cast<uintptr_t>(node));
   delete si;
 }
 
@@ -1428,13 +1428,13 @@ static void attachSensorToNode(SoNode * node, JSObject * obj)
 {
   // Has the hash-table been initialized?
   if (!CoinVrmlJs_sensorinfohash) {
-    CoinVrmlJs_sensorinfohash = new SbHash<unsigned long, void *>;
+    CoinVrmlJs_sensorinfohash = new SbHash<uintptr_t, void *>;
     coin_atexit(deleteSensorInfoHash, CC_ATEXIT_NORMAL);
   }
 
   // Is a sensor already attached to this SoNode?
   void * tmp;
-  if (CoinVrmlJs_sensorinfohash->get((unsigned long) node, tmp)) {
+  if (CoinVrmlJs_sensorinfohash->get(reinterpret_cast<uintptr_t>(node), tmp)) {
     CoinVrmlJs_SensorInfo * si = (CoinVrmlJs_SensorInfo *) tmp;
     si->objects.append(obj);
   }
@@ -1444,7 +1444,7 @@ static void attachSensorToNode(SoNode * node, JSObject * obj)
     ns->attach(node);
     CoinVrmlJs_SensorInfo * si = new CoinVrmlJs_SensorInfo;
     si->objects.append(obj);
-    CoinVrmlJs_sensorinfohash->put((unsigned long) node, si);
+    CoinVrmlJs_sensorinfohash->put(reinterpret_cast<uintptr_t>(node), si);
   }
 }
 
