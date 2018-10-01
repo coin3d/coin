@@ -144,6 +144,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVE
 # Install binaries and config package
 # ############################################################################
 
+if(UNIX OR MINGW)
+  configure_file(${CMAKE_SOURCE_DIR}/Coin.pc.cmake.in ${CMAKE_BINARY_DIR}/Coin.pc @ONLY)
+  install(FILES ${CMAKE_BINARY_DIR}/Coin.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+endif()
+
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
