@@ -6,7 +6,7 @@ datarootdir=@datarootdir@
 datadir=${datarootdir}
 
 Name: Coin
-Description: a high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
+Description: A high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
 Version: @COIN_VERSION@
 Requires:
 Conflicts:
