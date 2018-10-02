@@ -3,6 +3,7 @@ set(COIN_EXPAT_FILES
 	xmlparse.c
 	xmlrole.c
 	xmltok.c
+	loadlibrary.c
 )
 
 # build library

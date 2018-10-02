@@ -4,14 +4,14 @@
 RegularSources = \
 	xmlparse.c \
 	xmlrole.c \
-	xmltok.c
+	xmltok.c \
+	loadlibrary.c
 LinkHackSources = \
 	all-expat-c.c
 PublicHeaders =
 PrivateHeaders = \
         xmltok_ns.c \
         xmltok_impl.c \
-        amigaconfig.h\
         ascii.h \
         asciitab.h \
         expat.h \
@@ -19,8 +19,8 @@ PrivateHeaders = \
         iasciitab.h \
         internal.h \
         latin1tab.h \
-        macconfig.h \
         nametab.h \
+        siphash.h \
         utf8tab.h \
         winconfig.h \
         xmlrole.h \
