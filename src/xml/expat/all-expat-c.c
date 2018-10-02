@@ -4,5 +4,6 @@
 #include "xmltok.c"
 #include "xmlparse.c"
 #include "xmlrole.c"
+#include "loadlibrary.c"
 
 #endif //USE_SYSTEM_EXPAT

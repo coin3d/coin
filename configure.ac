@@ -2460,6 +2460,13 @@ if test -f include/Inventor/SbBasic.h; then
 fi
 
 # *******************************************************************
+# * EXPAT specific stuff.
+# *******************************************************************
+if test x"$sim_ac_have_win32_api" = x"false" && test x"$sim_ac_enable_system_expat" = x"false"; then
+  AC_DEFINE([XML_DEV_URANDOM], 1, [Define to extract entropy from /dev/urandom])
+fi
+
+# *******************************************************************
 # * Platform-specific stuff.
 # *******************************************************************
 
