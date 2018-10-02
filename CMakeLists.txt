@@ -17,8 +17,8 @@ math(EXPR COIN_SO_VERSION ${PROJECT_VERSION_MAJOR}*20)
 set(PROJECT_DESCRIPTION   "A high-level 3D visualization library with Open Inventor 2.1 API")
 # ############################################################################
 
-# get rid of OpenGL GLVND warning from CMake 3.11
-if (NOT CMAKE_VERSION VERSION_LESS "3.11") # CMake 3.5 has no VERSION_GREATER_EQUAL
+if(POLICY CMP0072)
+  # get rid of OpenGL GLVND warning from CMake 3.11
   cmake_policy(SET CMP0072 NEW)
 endif()
 
