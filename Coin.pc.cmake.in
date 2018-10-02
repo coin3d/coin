@@ -8,13 +8,19 @@ datadir=${datarootdir}
 docdir=${datarootdir}/doc/@PROJECT_NAME_LOWER@
 infodir=${datarootdir}/info
 mandir=${datarootdir}/man
-htmldir=${docdir}
+htmldir=${docdir}/html
 
 Name: @PROJECT_NAME@
 Description: A high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
 Version: @PROJECT_VERSION@
 Requires:
 Conflicts:
-Libs: -L${libdir} @COIN_EXTRA_LDFLAGS@ @COIN_EXTRA_LIBS@
+Libs: -L${libdir} -lCoin @COIN_EXTRA_LDFLAGS@ @COIN_EXTRA_LIBS@
 Cflags: -I${includedir} @COIN_EXTRA_CFLAGS@ @COIN_EXTRA_CPPFLAGS@
 
+have_3ds_import=@FEAT_HAVE_3DS@
+have_vrml97=@FEAT_HAVE_VRML97@
+have_sound=@FEAT_HAVE_SOUND@
+have_superglu=@FEAT_HAVE_SUPERGLU@
+have_threads=@FEAT_HAVE_THREADS@
+have_threadsafe=@FEAT_HAVE_SAFETHREAD@

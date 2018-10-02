@@ -23,7 +23,7 @@ if (NOT CMAKE_VERSION VERSION_LESS "3.11") # CMake 3.5 has no VERSION_GREATER_EQ
 endif()
 
 # ############################################################################
-# Prevent insource builds, as they often cause severe build problems
+# Prevent in-source builds, as they often cause severe build problems
 # ############################################################################
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -321,9 +321,6 @@ if(MSVC)
   if(COIN_BUILD_MSVC_MP)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
   endif ()
-  if(COIN_BUILD_SHARED_LIBS)
-    add_definitions(-DCOIN_MAKE_DLL)
-  endif()
 
   # Enable C++ exception handling (for code that uses boost in SbByteBuffer)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
@@ -337,18 +334,24 @@ set(HAVE_GZDOPEN 1)
 if(WIN32)
   set(HAVE_WIN32_API 1)
   set(HAVE_WGL 1)
-  # On Windows the major version number is part of the library name
-  if(COIN_BUILD_SHARED_LIBS)
-    set(CMAKE_RELEASE_POSTFIX ${PROJECT_VERSION_MAJOR})
-    set(CMAKE_MINSIZEREL_POSTFIX ${PROJECT_VERSION_MAJOR})
-    set(CMAKE_RELWITHDEBINFO_POSTFIX ${PROJECT_VERSION_MAJOR})
-    set(CMAKE_DEBUG_POSTFIX ${PROJECT_VERSION_MAJOR}d)
+  if(MINGW)
+    set(COIN_DEFAULT_SHARED_POSTFIX "")
+    set(COIN_DEFAULT_STATIC_POSTFIX "")
   else()
-    set(CMAKE_RELEASE_POSTFIX ${PROJECT_VERSION_MAJOR}s)
-    set(CMAKE_MINSIZEREL_POSTFIX ${PROJECT_VERSION_MAJOR}s)
-    set(CMAKE_RELWITHDEBINFO_POSTFIX ${PROJECT_VERSION_MAJOR}s)
-    set(CMAKE_DEBUG_POSTFIX ${PROJECT_VERSION_MAJOR}sd)
+    # On Windows the major version number is part of the library name
+    set(COIN_DEFAULT_SHARED_POSTFIX ${PROJECT_VERSION_MAJOR})
+    set(COIN_DEFAULT_STATIC_POSTFIX ${PROJECT_VERSION_MAJOR}s)
   endif()
+  if(COIN_BUILD_SHARED_LIBS)
+    set(COIN_DEFAULT_POSTFIX ${COIN_DEFAULT_SHARED_POSTFIX})
+    add_definitions(-DCOIN_MAKE_DLL)
+  else()
+    set(COIN_DEFAULT_POSTFIX ${COIN_DEFAULT_STATIC_POSTFIX})
+  endif()
+  set(CMAKE_RELEASE_POSTFIX ${COIN_DEFAULT_POSTFIX})
+  set(CMAKE_MINSIZEREL_POSTFIX ${COIN_DEFAULT_POSTFIX})
+  set(CMAKE_RELWITHDEBINFO_POSTFIX ${COIN_DEFAULT_POSTFIX})
+  set(CMAKE_DEBUG_POSTFIX ${COIN_DEFAULT_POSTFIX}d)
 elseif(APPLE)
   cmake_policy(SET CMP0042 NEW)
   configure_file(Info.plist.in Info.plist)
