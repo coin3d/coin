@@ -84,12 +84,11 @@ install:
       if [ "$CMAKE_PLATFORM" == "x86" ]
       then
         sudo apt-get install freeglut3-dev:i386 -y
-        sudo apt-get install doxygen:i386 -y
       elif [ "$CMAKE_PLATFORM" == "x64" ]
       then
         sudo apt-get install freeglut3-dev -y
-        sudo apt-get install doxygen -y
       fi
+      sudo apt-get install doxygen -y
       sudo apt-get install gcc-multilib -y
       sudo apt-get install g++-multilib -y
   - cmd: |
