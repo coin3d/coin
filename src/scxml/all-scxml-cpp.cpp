@@ -35,6 +35,7 @@
 
 // Infrastructure
 #include "ScXML.cpp"
+#include "ScXMLP.cpp"
 #include "ScXMLObject.cpp"
 #include "ScXMLEvent.cpp"
 #include "ScXMLEventTarget.cpp"

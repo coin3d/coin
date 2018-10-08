@@ -65,12 +65,6 @@
 
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
-#  ifndef SIM_TIMEVAL_TV_SEC_T
-#    define SIM_TIMEVAL_TV_SEC_T long
-#  endif // !SIM_TIMEVAL_TV_SEC_T
-#  ifndef SIM_TIMEVAL_TV_USEC_T
-#    define SIM_TIMEVAL_TV_USEC_T long
-#  endif // !SIM_TIMEVAL_TV_USEC_T
 #endif // HAVE_WINDOWS_H
 
 #include <Inventor/errors/SoDebugError.h>
@@ -79,14 +73,6 @@
 #include <Inventor/C/threads/thread.h>
 
 #include "coindefs.h"
-
-#ifndef SIM_TIMEVAL_TV_SEC_T
-#define SIM_TIMEVAL_TV_SEC_T time_t
-#endif // !SIM_TIMEVAL_TV_SEC_T
-
-#ifndef SIM_TIMEVAL_TV_USEC_T
-#define SIM_TIMEVAL_TV_USEC_T time_t
-#endif // !SIM_TIMEVAL_TV_USEC_T
 
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::strlen;
@@ -1080,6 +1066,3 @@ SbTime::print(FILE * fp) const
                static_cast<long int>(tm.tv_usec));
 #endif // COIN_DEBUG
 }
-
-#undef SIM_TIMEVAL_TV_SEC_T
-#undef SIM_TIMEVAL_TV_USEC_T
