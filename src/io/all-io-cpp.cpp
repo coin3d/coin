@@ -32,6 +32,7 @@
 
 #include "SoByteStream.cpp"
 #include "SoInput.cpp"
+#include "SoInputP.cpp"
 #include "SoInput_FileInfo.cpp"
 #include "SoInput_Reader.cpp"
 #include "SoOutput.cpp"

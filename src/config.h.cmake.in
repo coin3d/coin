@@ -52,7 +52,11 @@
 #define COIN_MINOR_VERSION @COIN_MINOR_VERSION@
 
 /* define this to the dynamic library name of Coin */
-#define COIN_SYSTEM_LIBRARY_NAME "$<TARGET_FILE_NAME:Coin>"
+#ifdef _DEBUG
+#define COIN_SYSTEM_LIBRARY_NAME "@COIN_DEBUG_SYSTEM_LIBRARY_NAME@"
+#else
+#define COIN_SYSTEM_LIBRARY_NAME "@COIN_RELEASE_SYSTEM_LIBRARY_NAME@"
+#endif
 
 /* System dependent thread ID type */
 #define COIN_THREADID_TYPE @COIN_THREADID_TYPE@
@@ -461,6 +465,9 @@
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #cmakedefine X_DISPLAY_MISSING 1
+
+/* Define to extract entropy from /dev/urandom. */
+#cmakedefine XML_DEV_URANDOM
 
 /* define for runtime linking with zlib */
 #cmakedefine ZLIB_RUNTIME_LINKING 1
