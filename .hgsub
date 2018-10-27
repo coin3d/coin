@@ -1,3 +1,3 @@
 build/general = ../generalmsvcgeneration
 include/boost = ../boost-header-libs-full
-cpack.d = https://bitbucket.org/ggabbiani/cpack.d
+cpack.d = https://bitbucket.org/coin3d/cpack.d
