@@ -1,8 +1,8 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-bindir=${exec_prefix}/bin
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include
+bindir=${exec_prefix}/@CMAKE_INSTALL_BINDIR@
+libdir=${exec_prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
 datarootdir=${prefix}/share
 datadir=${datarootdir}
 docdir=${datarootdir}/doc/@PROJECT_NAME_LOWER@
