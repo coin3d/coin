@@ -90,7 +90,7 @@ if(COIN_BUILD_DOCUMENTATION)
     COMMAND ${CMAKE_COMMAND} -E echo_append "Generating API documentation with Doxygen "
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
     COMMAND ${CMAKE_COMMAND} -E echo "done."
-    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
     DEPENDS ${DOXYFILE}
   )
   add_custom_target(documentation ALL DEPENDS ${DOXYGEN_OUTPUT})
@@ -98,15 +98,16 @@ if(COIN_BUILD_DOCUMENTATION)
 # ############################################################################
 # Install built documentation files
 # ############################################################################
-  install(DIRECTORY "${CMAKE_BINARY_DIR}/html" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation REGEX ".*\\.(chm|qch)" EXCLUDE)
-  if(GENERATE_HTMLHELP)
-    install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.chm" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
-  endif()
-  if(GENERATE_QHP)
-    install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.qch" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
-  endif()
-  if(DOXYGEN_GENERATE_MAN)
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/man/man3" DESTINATION ${CMAKE_INSTALL_MANDIR} COMPONENT documentation)
-    message(STATUS "CMAKE_INSTALL_MANDIR ${CMAKE_INSTALL_MANDIR}")
+  if(NOT COIN_BUILD_MAC_FRAMEWORK)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/html" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation REGEX ".*\\.(chm|qch)" EXCLUDE)
+    if(COIN_BUILD_DOCUMENTATION_CHM)
+      install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.chm" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+    endif()
+    if(COIN_BUILD_DOCUMENTATION_QTHELP)
+      install(FILES "${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}.qch" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation)
+    endif()
+    if(COIN_BUILD_DOCUMENTATION_MAN)
+      install(DIRECTORY "${CMAKE_BINARY_DIR}/man/man3" DESTINATION ${CMAKE_INSTALL_MANDIR} COMPONENT documentation)
+    endif()
   endif()
 endif()
