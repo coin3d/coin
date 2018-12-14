@@ -329,7 +329,7 @@ if(MSVC)
   # Enable C++ exception handling (for code that uses boost in SbByteBuffer)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
-  add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS)
+  add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -D_USE_MATH_DEFINES)
 else()
   option(COIN_BUILD_SINGLE_LIB "Build only one library when ON, multiple when OFF." OFF)
 endif()
