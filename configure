@@ -3426,7 +3426,7 @@ else
 fi
 
 
-sim_ac_framework_version="C"
+sim_ac_framework_version="D"
 
 MAC_FRAMEWORK=$sim_ac_framework
 
