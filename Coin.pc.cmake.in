@@ -3,11 +3,11 @@ exec_prefix=${prefix}
 bindir=${exec_prefix}/@CMAKE_INSTALL_BINDIR@
 libdir=${exec_prefix}/@CMAKE_INSTALL_LIBDIR@
 includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
-datarootdir=${prefix}/share
+datarootdir=${prefix}/@CMAKE_INSTALL_DATAROOTDIR@
 datadir=${datarootdir}
-docdir=${datarootdir}/doc/@PROJECT_NAME_LOWER@
-infodir=${datarootdir}/info
-mandir=${datarootdir}/man
+docdir=@CMAKE_INSTALL_DOCDIR@
+infodir=@CMAKE_INSTALL_INFODIR@
+mandir=@CMAKE_INSTALL_MANDIR@
 htmldir=${docdir}/html
 
 Name: @PROJECT_NAME@
