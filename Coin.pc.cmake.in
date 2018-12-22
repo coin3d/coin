@@ -1,13 +1,13 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-bindir=${exec_prefix}/bin
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include
-datarootdir=${prefix}/share
-datadir=${datarootdir}
-docdir=${datarootdir}/doc/@PROJECT_NAME_LOWER@
-infodir=${datarootdir}/info
-mandir=${datarootdir}/man
+bindir=@CMAKE_INSTALL_FULL_BINDIR@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+datarootdir=@CMAKE_INSTALL_FULL_DATAROOTDIR@
+datadir=@CMAKE_INSTALL_FULL_DATADIR@
+docdir=@CMAKE_INSTALL_FULL_DOCDIR@
+infodir=@CMAKE_INSTALL_FULL_INFODIR@
+mandir=@CMAKE_INSTALL_FULL_MANDIR@
 htmldir=${docdir}/html
 
 Name: @PROJECT_NAME@
