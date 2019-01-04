@@ -10,6 +10,7 @@ cmake_minimum_required(VERSION 2.8.12)
 set(COIN_VERSION @COIN_MAJOR_VERSION@.@COIN_MINOR_VERSION@.@COIN_MICRO_VERSION@)
 @PACKAGE_INIT@
 
+if(OFF)
 set_and_check(COINDIR "@PACKAGE_COINDIR@")
 set_and_check(Coin_INCLUDE_DIR "@PACKAGE_COIN_INCLUDE_DIR@")
 set_and_check(Coin_LIB_DIR "@PACKAGE_COIN_LIB_DIR@")
@@ -76,13 +77,15 @@ endif()
 set(Coin_LIBRARY ${Coin_LIBRARY} CACHE FILEPATH "The Coin library")
 mark_as_advanced(Coin_LIBRARY_RELEASE Coin_LIBRARY_DEBUG)
 
+endif()
 include(CMakeFindDependencyMacro)
 
-if(@simage_FOUND@)
+set(_simage_FOUND @simage_FOUND@)
+if(_simage_FOUND)
 	find_dependency(simage)
 endif()
 
-include("${CMAKE_CURRENT_LIST_DIR}/coin-export.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/${COIN_CONFIG_FILE_BASENAME}-export.cmake")
 
 # export "coin-config --have-feature" equivalent info
 set(Coin_HAVE_3DS_IMPORT_CAPABILITIES @FEAT_HAVE_3DS@)
