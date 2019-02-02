@@ -141,6 +141,11 @@ source_group("Source Files\\vrml97"                    REGULAR_EXPRESSION ".*/sr
 source_group("Source Files\\xml"                       REGULAR_EXPRESSION ".*/src/xml/.*[.](h|c|cpp)")
 source_group("Source Files\\xml\\expat"                REGULAR_EXPRESSION ".*/src/xml/expat/.*[.](h|c|cpp)")
 
+# As CMake does not support deep header hierarchies for framework generation we tweak the
+# installation paths for the install commands.  To make sure the symbolic links for versioned
+# Binaries, Headers, and Resources are properly created we add at headers and resources to
+# the target.
+
 if(COIN_BUILD_SHARED_LIBS)
   set(COIN_LIBRARY_TYPE SHARED)
 else()
@@ -151,13 +156,13 @@ set(ADDITIONAL_HDRS ${CMAKE_SOURCE_DIR}/include/SoWinEnterScope.h ${CMAKE_SOURCE
 
 # Create the library target
 if(COIN_BUILD_SINGLE_LIB)
-  add_library(${PROJECT_NAME} ${COIN_LIBRARY_TYPE} ${COIN_SOURCE} ${COMMON_HDRS} ${ADDITIONAL_HDRS})
+  add_library(${PROJECT_NAME} ${COIN_LIBRARY_TYPE} ${COIN_SOURCE} ${COMMON_HDRS} ${ADDITIONAL_HDRS} ${COMMON_RESOURCES})
 else()
   if(NOT HAVE_EXPAT)
     set(expat_target $<TARGET_OBJECTS:expat>)
   endif()
 
-  add_library(${PROJECT_NAME} ${COIN_LIBRARY_TYPE} ${COIN_SOURCE} ${COMMON_HDRS} ${ADDITIONAL_HDRS}
+  add_library(${PROJECT_NAME} ${COIN_LIBRARY_TYPE} ${COIN_SOURCE} ${COMMON_HDRS} ${ADDITIONAL_HDRS} ${COMMON_RESOURCES}
     $<TARGET_OBJECTS:3ds>
     $<TARGET_OBJECTS:actions>
     $<TARGET_OBJECTS:base>
@@ -221,13 +226,121 @@ if(WIN32)
     set_property(SOURCE scxml/eval-minimum-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
     set_property(SOURCE soscxml/eval-coin-tab.cpp APPEND PROPERTY COMPILE_FLAGS /wd4065)
   endif()
+elseif(APPLE)
+  if(COIN_BUILD_MAC_FRAMEWORK)
+    # Set the framework target properties just to make sure the relevant links inside the framework 
+    # are created.  Because the default framework name differs from the project name we change the
+    # output name property.
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+      FRAMEWORK TRUE
+      FRAMEWORK_VERSION ${COIN_MAC_FRAMEWORK_VERSION}
+      #PUBLIC_HEADER "${COIN_PUBLIC_HEADERS}" # does not work recursively
+      #PRIVATE_HEADER "${COIN_PRIVATE_HEADERS}" # does not work recursively
+      RESOURCE "${CMAKE_BINARY_DIR}/version.plist" # does not work recursively
+      MACOSX_FRAMEWORK_IDENTIFIER org.coin3d.Coin.framework
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${PROJECT_VERSION}
+      MACOSX_FRAMEWORK_BUNDLE_VERSION ${PROJECT_VERSION}
+      MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_BINARY_DIR}/Info.plist"
+      OUTPUT_NAME ${COIN_MAC_FRAMEWORK_NAME}
+    )
+    # adapt install directory to allow distribution of dylibs/frameworks in users
+    # framework/application bundle
+    set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_NAME_DIR "@rpath")
+    if(NOT CMAKE_SKIP_BUILD_RPATH)
+      if(CMAKE_VERSION VERSION_LESS 3.9)
+        set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
+      else()
+        set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_NAME_DIR TRUE)
+      endif()
+    endif()
+  endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${COIN_TARGET_INCLUDE_DIRECTORIES}")
 target_link_libraries(${PROJECT_NAME} PRIVATE "${COIN_TARGET_LINK_LIBRARIES}")
-target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
+if(NOT COIN_BUILD_MAC_FRAMEWORK)
+  target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>)
+endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+
+# Setting up a framework means adding all the files and links under a framework
+# directory. A single install command then moves the entire contents of the
+# framework directory to the COIN_MAC_FRAMEWORK_PREFIX directory (/Library/Frameworks
+# by default)
+# As the PUBLIC_HEADER and RESOURCE options of install target do not support
+# directory structure creation when building a framework we set the MACOSX_PACKAGE_LOCATION
+# property on the source files and add them to the target. This does however not work
+# for the generated documentation files.
+# All non standard links must be created manually.
+if(COIN_BUILD_MAC_FRAMEWORK)
+
+# determine which subdirectory this file (header, resource) should be installed into.
+function(set_macosx_properties _removable_prefixes _install_prefix _source_files)
+  foreach(_file ${_source_files})
+    get_filename_component(_loc "${_file}" DIRECTORY)
+    foreach(_prefix ${_removable_prefixes})
+      string(REPLACE "${_prefix}" "" _loc "${_loc}")
+    endforeach()
+    set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_install_prefix}${_loc})
+  endforeach()
+endfunction()
+
+# ############################################################################
+# Add framework headers
+# ############################################################################
+  set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor"  "Headers" "${COMMON_HDRS}")
+
+# ############################################################################
+# Add framework data files
+# ############################################################################
+  set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
+
+# ############################################################################
+# Add framework documentation files
+# ############################################################################
+
+  if(COIN_BUILD_DOCUMENTATION)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+      COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation
+      COMMAND ${CMAKE_COMMAND} -E create_symlink ./Versions/Current/Documentation $<TARGET_FILE_DIR:${PROJECT_NAME}>/../../Documentation
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/html $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation/html)
+    if(COIN_BUILD_DOCUMENTATION_QTHELP)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+      COMMAND ${CMAKE_COMMAND} -E remove $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.qch
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/html/${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.qch $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation)
+    endif()
+    if(COIN_BUILD_DOCUMENTATION_MAN)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/man/man3 $<TARGET_FILE_DIR:${PROJECT_NAME}>/Documentation/man)
+    endif()
+  endif()
+
+# ############################################################################
+# Add framework links
+# ############################################################################
+
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ./Versions/Current/Libraries $<TARGET_FILE_DIR:${PROJECT_NAME}>/../../Libraries
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../${COIN_MAC_FRAMEWORK_NAME} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${COIN_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../${COIN_MAC_FRAMEWORK_NAME} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${COIN_SO_VERSION}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../${COIN_MAC_FRAMEWORK_NAME} $<TARGET_FILE_DIR:${PROJECT_NAME}>/Libraries/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/include
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../../Headers $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/include/Inventor
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../../SoQt.framework/Headers $<TARGET_FILE_DIR:${PROJECT_NAME}>/Headers/Qt
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
+
+# ############################################################################
+# Install framework target
+# ############################################################################
+
+  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+    FRAMEWORK DESTINATION . COMPONENT development
+  )
+
+else()
 
 # ############################################################################
 # Install headers
@@ -244,24 +357,39 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVE
   install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
 
 # ############################################################################
-# Install binaries and config package
+# Install target
 # ############################################################################
 
-if(UNIX OR MINGW)
-  configure_file(${CMAKE_SOURCE_DIR}/Coin.pc.cmake.in ${CMAKE_BINARY_DIR}/Coin.pc @ONLY)
-  install(FILES ${CMAKE_BINARY_DIR}/Coin.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+    #PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
+    #PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
+    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development
+  )
+
+  if(COIN_BUILD_SHARED_LIBS)
+    install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+    if(MSVC)
+      install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+    endif()
+  endif()
 endif()
 
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-)
+# ############################################################################
+# Install config package and pkgconfig file
+# ############################################################################
 
-if(COIN_BUILD_SHARED_LIBS)
-  install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
-  if(MSVC)
-    install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+if(COIN_BUILD_MAC_FRAMEWORK)
+  set(COIN_CONFIG_PACKAGE_LOCATION ${COIN_MAC_FRAMEWORK_PREFIX}/${COIN_MAC_FRAMEWORK_NAME}.framework/Versions/${COIN_MAC_FRAMEWORK_VERSION}/Resources/CMake)
+  string(TOLOWER ${COIN_MAC_FRAMEWORK_NAME} COIN_CONFIG_PACKAGE_BASENAME)
+else()
+  set(COIN_CONFIG_PACKAGE_LOCATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
+  string(TOLOWER ${PROJECT_NAME} COIN_CONFIG_PACKAGE_BASENAME)
+  if(UNIX OR MINGW)
+    configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
+    install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
   endif()
 endif()
 
@@ -270,14 +398,15 @@ set(COIN_DOC_DIR ${CMAKE_INSTALL_DOCDIR})
 set(COIN_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
+
 include(CMakePackageConfigHelpers)
 
-configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake"
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config.cmake"
+  INSTALL_DESTINATION ${COIN_CONFIG_PACKAGE_LOCATION}
   PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR COIN_DOC_DIR
 )
 
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
@@ -285,18 +414,17 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOW
 # To make the component usable not only from the install directory but also from the build directory
 export(
   TARGETS ${PROJECT_NAME}
-  FILE ${PROJECT_NAME_LOWER}-export.cmake
+  FILE ${COIN_CONFIG_PACKAGE_BASENAME}-export.cmake
 )
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config-version.cmake"
+  DESTINATION ${COIN_CONFIG_PACKAGE_LOCATION}
   COMPONENT development
 )
 
 install(EXPORT ${PROJECT_NAME}
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+  DESTINATION ${COIN_CONFIG_PACKAGE_LOCATION}
   NAMESPACE ${PROJECT_NAME}::
-  FILE ${PROJECT_NAME_LOWER}-export.cmake
+  FILE ${COIN_CONFIG_PACKAGE_BASENAME}-export.cmake
   COMPONENT development
 )
-

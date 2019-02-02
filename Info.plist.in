@@ -23,6 +23,6 @@
 	<key>CFBundleVersion</key>
 	<string>@COIN_VERSION@</string>
 	<key>NSHumanReadableCopyright</key>
-  <string>Copyright (C) Kongsberg Oil &amp; Gas Technologies</string>
+	<string>Copyright (C) Kongsberg Oil &amp; Gas Technologies</string>
 </dict>
 </plist>

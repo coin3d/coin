@@ -85,6 +85,8 @@ option(SPIDERMONKEY_RUNTIME_LINKING "Enable SpiderMonkey runtime linking when ON
 option(COIN_VERBOSE "Add verbose debugging information during the configure process." OFF)
 option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
 
+cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." ON "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
+
 if(HAVE_MULTIPLE_VERSION)
   # Modifies the installation path for both the distributed includes and docs
   versionize(INCLUDEDIR DOCDIR)
@@ -362,14 +364,40 @@ if(WIN32)
   set(COIN_RELEASE_SYSTEM_LIBRARY_NAME Coin${CMAKE_RELEASE_POSTFIX}${COIN_LIBRARY_SUFFIX})
   set(COIN_DEBUG_SYSTEM_LIBRARY_NAME Coin${CMAKE_DEBUG_POSTFIX}${COIN_LIBRARY_SUFFIX})
 elseif(APPLE)
-  cmake_policy(SET CMP0042 NEW)
+  if(POLICY CMP0042)
+    # get rid of MACOSX_RPATH warning on Mac OS X from CMake 3.12.2
+    cmake_policy(SET CMP0042 NEW)
+  endif()
+
+  if(POLICY CMP0068)
+    # get rid of BUILD_WITH_INSTALL_RPATH warning on Mac OS X from CMake 3.12.2
+    cmake_policy(SET CMP0068 NEW)
+  endif()
+
   configure_file(Info.plist.in Info.plist)
   configure_file(version.plist.in version.plist)
-  set(CMAKE_SHARED_LINKER_FLAGS "-framework CoreFoundation -framework CoreGraphics")
   set(HAVE_GZDOPEN)
 
+  list(APPEND COIN_TARGET_LINK_LIBRARIES "-framework CoreFoundation" "-framework CoreGraphics")
+
+  set(COIN_MAC_FRAMEWORK ${COIN_BUILD_MAC_FRAMEWORK})
+  set(COIN_MAC_FRAMEWORK_NAME "Inventor")
+  set(COIN_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
+  set(COIN_MAC_FRAMEWORK_VERSION "D") # Coin 4 will be "D", to allow parallel installations of Coin3 (if that compiles!)
+
+  # package config *.pc entries
+  if(COIN_BUILD_MAC_FRAMEWORK)
+    set(COIN_PKGCFG_FRAMEWORK_DIR "${COIN_MAC_FRAMEWORK_PREFIX}/${COIN_MAC_FRAMEWORK_NAME}.framework")
+    set(COIN_PKGCFG_INCLUDE_DIR "\${frameworkdir}/Versions/${COIN_MAC_FRAMEWORK_VERSION}/Resources/include")
+    set(COIN_EXTRA_CPPFLAGS "-F${COIN_MAC_FRAMEWORK_PREFIX}")
+    set(COIN_EXTRA_FP_LDFLAGS "-Wl,-F${COIN_MAC_FRAMEWORK_PREFIX}")
+    set(COIN_EXTRA_LDFLAGS "${COIN_EXTRA_FP_LDFLAGS} -Wl,-framework,${COIN_MAC_FRAMEWORK_NAME} -Wl,-framework,OpenGL")
+  else()
+    set(COIN_EXTRA_LDFLAGS " -lCoin -Wl,-framework,OpenGL")
+  endif()
+
   # Let's enable all OS X specific code
-  set(COIN_MACOSX_FRAMEWORK 1)
+  set(COIN_MACOSX_FRAMEWORK ${COIN_BUILD_MAC_FRAMEWORK})
   set(COIN_MACOS_10 1)
   set(COIN_MACOS_10_3 1)
 
@@ -622,7 +650,7 @@ if(HAVE_SUPERGLU)
 else()
   set(FEAT_HAVE_SUPERGLU 0)
 endif()
-if(USE_PTHREAD OR USE_W32THREAD)
+if(HAVE_THREADS)
   set(FEAT_HAVE_THREADS 1)
 else()
   set(FEAT_HAVE_THREADS 0)
