@@ -228,7 +228,9 @@ if(WIN32)
   endif()
 elseif(APPLE)
   if(COIN_BUILD_MAC_FRAMEWORK)
-    # Set the framework target properties just to make sure the relevant links inside the framework are created.  Because the default framework name differs from the project name we change the output name property.
+    # Set the framework target properties just to make sure the relevant links inside the framework 
+    # are created.  Because the default framework name differs from the project name we change the
+    # output name property.
     set_target_properties(${PROJECT_NAME} PROPERTIES
       FRAMEWORK TRUE
       FRAMEWORK_VERSION ${COIN_MAC_FRAMEWORK_VERSION}
@@ -241,7 +243,8 @@ elseif(APPLE)
       MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_BINARY_DIR}/Info.plist"
       OUTPUT_NAME ${COIN_MAC_FRAMEWORK_NAME}
     )
-    # adapt install directory to allow distribution of dylibs/frameworks in users framework/application bundle
+    # adapt install directory to allow distribution of dylibs/frameworks in users
+    # framework/application bundle
     set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_NAME_DIR "@rpath")
     if(NOT CMAKE_SKIP_BUILD_RPATH)
       if(CMAKE_VERSION VERSION_LESS 3.9)
@@ -334,7 +337,7 @@ endfunction()
 # ############################################################################
 
   install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
-    FRAMEWORK DESTINATION ${COIN_MAC_FRAMEWORK_PREFIX}
+    FRAMEWORK DESTINATION . COMPONENT development
   )
 
 else()
@@ -375,15 +378,15 @@ else()
 endif()
 
 # ############################################################################
-# Install binaries and config package
+# Install config package and pkgconfig file
 # ############################################################################
 
 if(COIN_BUILD_MAC_FRAMEWORK)
-  set(COIN_INSTALL_CMAKE_CONFIG_DIR ${COIN_MAC_FRAMEWORK_NAME}.framework/Versions/${COIN_MAC_FRAMEWORK_VERSION}/Resources/CMake)
-  string(TOLOWER ${COIN_MAC_FRAMEWORK_NAME} COIN_CONFIG_FILE_BASENAME)
+  set(COIN_CONFIG_PACKAGE_LOCATION ${COIN_MAC_FRAMEWORK_PREFIX}/${COIN_MAC_FRAMEWORK_NAME}.framework/Versions/${COIN_MAC_FRAMEWORK_VERSION}/Resources/CMake)
+  string(TOLOWER ${COIN_MAC_FRAMEWORK_NAME} COIN_CONFIG_PACKAGE_BASENAME)
 else()
-  set(COIN_INSTALL_CMAKE_CONFIG_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
-  string(TOLOWER ${PROJECT_NAME} COIN_CONFIG_FILE_BASENAME)
+  set(COIN_CONFIG_PACKAGE_LOCATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
+  string(TOLOWER ${PROJECT_NAME} COIN_CONFIG_PACKAGE_BASENAME)
   if(UNIX OR MINGW)
     configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
     install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
@@ -395,14 +398,15 @@ set(COIN_DOC_DIR ${CMAKE_INSTALL_DOCDIR})
 set(COIN_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 set(COIN_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 set(COINDIR ${CMAKE_INSTALL_PREFIX})
+
 include(CMakePackageConfigHelpers)
 
-configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_FILE_BASENAME}-config.cmake"
-  INSTALL_DESTINATION ${COIN_INSTALL_CMAKE_CONFIG_DIR}
+configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config.cmake"
+  INSTALL_DESTINATION ${COIN_CONFIG_PACKAGE_LOCATION}
   PATH_VARS COINDIR COIN_INCLUDE_DIR COIN_LIB_DIR COIN_DOC_DIR
 )
 
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_FILE_BASENAME}-config-version.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
@@ -410,17 +414,17 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_FILE
 # To make the component usable not only from the install directory but also from the build directory
 export(
   TARGETS ${PROJECT_NAME}
-  FILE ${COIN_CONFIG_FILE_BASENAME}-export.cmake
+  FILE ${COIN_CONFIG_PACKAGE_BASENAME}-export.cmake
 )
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_FILE_BASENAME}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_FILE_BASENAME}-config-version.cmake"
-  DESTINATION ${COIN_INSTALL_CMAKE_CONFIG_DIR}
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${COIN_CONFIG_PACKAGE_BASENAME}-config-version.cmake"
+  DESTINATION ${COIN_CONFIG_PACKAGE_LOCATION}
   COMPONENT development
 )
 
 install(EXPORT ${PROJECT_NAME}
-  DESTINATION ${COIN_INSTALL_CMAKE_CONFIG_DIR}
+  DESTINATION ${COIN_CONFIG_PACKAGE_LOCATION}
   NAMESPACE ${PROJECT_NAME}::
-  FILE ${COIN_CONFIG_FILE_BASENAME}-export.cmake
+  FILE ${COIN_CONFIG_PACKAGE_BASENAME}-export.cmake
   COMPONENT development
 )
