@@ -336,10 +336,13 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 PublicHeaders = \
-	SbPimplPtr.h SbPimplPtr.hpp \
-	SbLazyPimplPtr.h SbLazyPimplPtr.hpp
+	SbPimplPtr.h \
+	SbLazyPimplPtr.h 
 
-PrivateHeaders = 
+PrivateHeaders = \
+	SbPimplPtr.hpp \
+	SbLazyPimplPtr.hpp
+
 ObsoleteHeaders = 
 
 # **************************************************************************
