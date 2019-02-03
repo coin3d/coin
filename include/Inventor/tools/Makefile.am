@@ -1,8 +1,10 @@
 
 PublicHeaders = \
-	SbPimplPtr.h SbPimplPtr.hpp \
-	SbLazyPimplPtr.h SbLazyPimplPtr.hpp
-PrivateHeaders =
+	SbPimplPtr.h \
+	SbLazyPimplPtr.h
+PrivateHeaders = \
+	SbPimplPtr.hpp \
+	SbLazyPimplPtr.hpp
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Include-Common(tools, tools)
