@@ -297,7 +297,6 @@ uninstall-local:
 	  "$$baseincdir/upgraders" \
 	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/MPEG" \
-	  "$$baseincdir/XML" \
 	  "$$baseincdir/C/XML" \
 	  "$$baseincdir/C/base" \
 	  "$$baseincdir/C/errors" \
