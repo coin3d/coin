@@ -2349,7 +2349,6 @@ AC_CONFIG_FILES([
         include/Inventor/C/glue/Makefile
         include/Inventor/C/threads/Makefile
         include/Inventor/VRMLnodes/Makefile
-        include/Inventor/XML/Makefile
         include/Inventor/actions/Makefile
         include/Inventor/bundles/Makefile
         include/Inventor/caches/Makefile
