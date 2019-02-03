@@ -96,7 +96,6 @@ source_group("Header Files\\Inventor\\sensors"                   REGULAR_EXPRESS
 source_group("Header Files\\Inventor\\system"                    REGULAR_EXPRESSION ".*/include/Inventor/system/.*[.]h")
 source_group("Header Files\\Inventor\\threads"                   REGULAR_EXPRESSION ".*/include/Inventor/threads/.*[.]h")
 source_group("Header Files\\Inventor\\VRMLnodes"                 REGULAR_EXPRESSION ".*/include/Inventor/VRMLnodes/.*[.]h")
-source_group("Header Files\\Inventor\\XML"                       REGULAR_EXPRESSION ".*/include/Inventor/XML/.*[.]h")
 
 source_group("Source Files\\3ds"                       REGULAR_EXPRESSION ".*/src/3ds/.*[.](h|c|cpp)")
 source_group("Source Files\\actions"                   REGULAR_EXPRESSION ".*/src/actions/.*[.](h|c|cpp)")
