@@ -347,7 +347,7 @@ else()
 
   install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/Inventor/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor COMPONENT development FILES_MATCHING PATTERN "*.h")
   install(DIRECTORY ${CMAKE_BINARY_DIR}/include/Inventor/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor COMPONENT development FILES_MATCHING PATTERN "*.h")
-  install(FILES ${CMAKE_SOURCE_DIR}/include/SoWinEnterScope.h ${CMAKE_SOURCE_DIR}/include/SoWinLeaveScope.h ${CMAKE_SOURCE_DIR}/include/SoDebug.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor COMPONENT development)
+  install(FILES ${CMAKE_SOURCE_DIR}/include/SoWinEnterScope.h ${CMAKE_SOURCE_DIR}/include/SoWinLeaveScope.h ${CMAKE_SOURCE_DIR}/include/SoDebug.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development)
 
 # ############################################################################
 # Install data files
