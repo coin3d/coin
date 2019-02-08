@@ -1374,6 +1374,17 @@ if $coin_can_do_runtime_linking; then
                      [should be defined if there is some way of doing dynamic linking])
 fi
 
+# *******************************************************************
+# * Check for Boost headers (up to now only header only libraries are
+# * used in Coin.
+# *******************************************************************
+
+AX_BOOST_BASE([1.45.0], [
+  CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+  LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $BOOST_CPPFLAGS"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $BOOST_LDFLAGS"
+], [])
 
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
@@ -1728,6 +1739,13 @@ else
   ],[
     SIM_AC_CONFIGURATION_SETTING([bzip2 support], [No])
   ])
+fi
+
+# *******************************************************************
+# * EXPAT specific stuff.
+# *******************************************************************
+if test x"$sim_ac_have_win32_api" = x"false" && test x"$sim_ac_enable_system_expat" = x"false"; then
+  AC_DEFINE([XML_DEV_URANDOM], 1, [Define to extract entropy from /dev/urandom])
 fi
 
 # *******************************************************************
@@ -2456,13 +2474,6 @@ if test -f include/Inventor/SbBasic.h; then
   else
     rm include/Inventor/SbBasic.h
   fi
-fi
-
-# *******************************************************************
-# * EXPAT specific stuff.
-# *******************************************************************
-if test x"$sim_ac_have_win32_api" = x"false" && test x"$sim_ac_enable_system_expat" = x"false"; then
-  AC_DEFINE([XML_DEV_URANDOM], 1, [Define to extract entropy from /dev/urandom])
 fi
 
 # *******************************************************************

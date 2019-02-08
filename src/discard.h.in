@@ -126,6 +126,9 @@
 /* define if bcopy() is available */
 #undef HAVE_BCOPY
 
+/* define if the Boost library is available */
+#undef HAVE_BOOST
+
 /* Define to use bzip2 */
 #undef HAVE_BZIP2
 
@@ -498,11 +501,11 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define to 1 if the X Window System is missing or not being used. */
-#undef X_DISPLAY_MISSING
-
 /* Define to extract entropy from /dev/urandom */
 #undef XML_DEV_URANDOM
+
+/* Define to 1 if the X Window System is missing or not being used. */
+#undef X_DISPLAY_MISSING
 
 /* define for runtime linking with zlib */
 #undef ZLIB_RUNTIME_LINKING

@@ -1,3 +1,2 @@
 build/general = ../generalmsvcgeneration
-include/boost = ../boost-header-libs-full
 cpack.d = ../cpack.d
