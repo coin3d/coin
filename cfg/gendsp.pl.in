@@ -925,6 +925,7 @@ _EODSP
         open(FILE, "cd ${src_dir} && find src/Inventor -name '${template}' |");
         $templatepath = <FILE>;
 	chop($templatepath);
+	next if (!$templatepath);
         $templatepath = &Unix2Dos("../../${templatepath}");
 	close(FILE);
         # print STDERR "TEMPLATE '${template}' - $templatepath\n  :: TARGET '${file}'\n";

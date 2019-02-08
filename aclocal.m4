@@ -7606,42 +7606,5346 @@ fi
 INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 AC_SUBST([INSTALL_STRIP_PROGRAM])])
 
-m4_include([../simacros/bin/../cfg/m4/bz2.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_debug.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_exceptions.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_functionname.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_profiling.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_rtti.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_symbols.m4])
-m4_include([../simacros/bin/../cfg/m4/compile_warnings.m4])
-m4_include([../simacros/bin/../cfg/m4/compiler_capabilities.m4])
-m4_include([../simacros/bin/../cfg/m4/configuration_summary.m4])
-m4_include([../simacros/bin/../cfg/m4/cpp_search_order.m4])
-m4_include([../simacros/bin/../cfg/m4/dates.m4])
-m4_include([../simacros/bin/../cfg/m4/dl.m4])
-m4_include([../simacros/bin/../cfg/m4/doxygen_detection.m4])
-m4_include([../simacros/bin/../cfg/m4/errors.m4])
-m4_include([../simacros/bin/../cfg/m4/exit.m4])
-m4_include([../simacros/bin/../cfg/m4/fontconfig.m4])
-m4_include([../simacros/bin/../cfg/m4/freetype.m4])
-m4_include([../simacros/bin/../cfg/m4/gendsp.m4])
-m4_include([../simacros/bin/../cfg/m4/general.m4])
-m4_include([../simacros/bin/../cfg/m4/mac.m4])
-m4_include([../simacros/bin/../cfg/m4/macro_quoting.m4])
-m4_include([../simacros/bin/../cfg/m4/mathlib.m4])
-m4_include([../simacros/bin/../cfg/m4/misc_compiler.m4])
-m4_include([../simacros/bin/../cfg/m4/nprintf.m4])
-m4_include([../simacros/bin/../cfg/m4/openal.m4])
-m4_include([../simacros/bin/../cfg/m4/opengl.m4])
-m4_include([../simacros/bin/../cfg/m4/packagemaker.m4])
-m4_include([../simacros/bin/../cfg/m4/project.m4])
-m4_include([../simacros/bin/../cfg/m4/pthread.m4])
-m4_include([../simacros/bin/../cfg/m4/sim.m4])
-m4_include([../simacros/bin/../cfg/m4/simage.m4])
-m4_include([../simacros/bin/../cfg/m4/sourcedir.m4])
-m4_include([../simacros/bin/../cfg/m4/spidermonkey.m4])
-m4_include([../simacros/bin/../cfg/m4/uniqify_option_list.m4])
-m4_include([../simacros/bin/../cfg/m4/w32api.m4])
-m4_include([../simacros/bin/../cfg/m4/wrapmsvc.m4])
-m4_include([../simacros/bin/../cfg/m4/x11.m4])
-m4_include([../simacros/bin/../cfg/m4/zlib.m4])
+# ===========================================================================
+#      https://www.gnu.org/software/autoconf-archive/ax_boost_base.html
+# ===========================================================================
+#
+# SYNOPSIS
+#
+#   AX_BOOST_BASE([MINIMUM-VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+#
+# DESCRIPTION
+#
+#   Test for the Boost C++ libraries of a particular version (or newer)
+#
+#   If no path to the installed boost library is given the macro searchs
+#   under /usr, /usr/local, /opt and /opt/local and evaluates the
+#   $BOOST_ROOT environment variable. Further documentation is available at
+#   <http://randspringer.de/boost/index.html>.
+#
+#   This macro calls:
+#
+#     AC_SUBST(BOOST_CPPFLAGS) / AC_SUBST(BOOST_LDFLAGS)
+#
+#   And sets:
+#
+#     HAVE_BOOST
+#
+# LICENSE
+#
+#   Copyright (c) 2008 Thomas Porschberg <thomas@randspringer.de>
+#   Copyright (c) 2009 Peter Adolphs
+#
+#   Copying and distribution of this file, with or without modification, are
+#   permitted in any medium without royalty provided the copyright notice
+#   and this notice are preserved. This file is offered as-is, without any
+#   warranty.
+
+#serial 42
+
+# example boost program (need to pass version)
+m4_define([_AX_BOOST_BASE_PROGRAM],
+          [AC_LANG_PROGRAM([[
+#include <boost/version.hpp>
+]],[[
+(void) ((void)sizeof(char[1 - 2*!!((BOOST_VERSION) < ($1))]));
+]])])
+
+AC_DEFUN([AX_BOOST_BASE],
+[
+AC_ARG_WITH([boost],
+  [AS_HELP_STRING([--with-boost@<:@=ARG@:>@],
+    [use Boost library from a standard location (ARG=yes),
+     from the specified location (ARG=<path>),
+     or disable it (ARG=no)
+     @<:@ARG=yes@:>@ ])],
+    [
+     AS_CASE([$withval],
+       [no],[want_boost="no";_AX_BOOST_BASE_boost_path=""],
+       [yes],[want_boost="yes";_AX_BOOST_BASE_boost_path=""],
+       [want_boost="yes";_AX_BOOST_BASE_boost_path="$withval"])
+    ],
+    [want_boost="yes"])
+
+
+AC_ARG_WITH([boost-libdir],
+  [AS_HELP_STRING([--with-boost-libdir=LIB_DIR],
+    [Force given directory for boost libraries.
+     Note that this will override library path detection,
+     so use this parameter only if default library detection fails
+     and you know exactly where your boost libraries are located.])],
+  [
+   AS_IF([test -d "$withval"],
+         [_AX_BOOST_BASE_boost_lib_path="$withval"],
+    [AC_MSG_ERROR([--with-boost-libdir expected directory name])])
+  ],
+  [_AX_BOOST_BASE_boost_lib_path=""])
+
+BOOST_LDFLAGS=""
+BOOST_CPPFLAGS=""
+AS_IF([test "x$want_boost" = "xyes"],
+      [_AX_BOOST_BASE_RUNDETECT([$1],[$2],[$3])])
+AC_SUBST(BOOST_CPPFLAGS)
+AC_SUBST(BOOST_LDFLAGS)
+])
+
+
+# convert a version string in $2 to numeric and affect to polymorphic var $1
+AC_DEFUN([_AX_BOOST_BASE_TONUMERICVERSION],[
+  AS_IF([test "x$2" = "x"],[_AX_BOOST_BASE_TONUMERICVERSION_req="1.20.0"],[_AX_BOOST_BASE_TONUMERICVERSION_req="$2"])
+  _AX_BOOST_BASE_TONUMERICVERSION_req_shorten=`expr $_AX_BOOST_BASE_TONUMERICVERSION_req : '\([[0-9]]*\.[[0-9]]*\)'`
+  _AX_BOOST_BASE_TONUMERICVERSION_req_major=`expr $_AX_BOOST_BASE_TONUMERICVERSION_req : '\([[0-9]]*\)'`
+  AS_IF([test "x$_AX_BOOST_BASE_TONUMERICVERSION_req_major" = "x"],
+        [AC_MSG_ERROR([You should at least specify libboost major version])])
+  _AX_BOOST_BASE_TONUMERICVERSION_req_minor=`expr $_AX_BOOST_BASE_TONUMERICVERSION_req : '[[0-9]]*\.\([[0-9]]*\)'`
+  AS_IF([test "x$_AX_BOOST_BASE_TONUMERICVERSION_req_minor" = "x"],
+        [_AX_BOOST_BASE_TONUMERICVERSION_req_minor="0"])
+  _AX_BOOST_BASE_TONUMERICVERSION_req_sub_minor=`expr $_AX_BOOST_BASE_TONUMERICVERSION_req : '[[0-9]]*\.[[0-9]]*\.\([[0-9]]*\)'`
+  AS_IF([test "X$_AX_BOOST_BASE_TONUMERICVERSION_req_sub_minor" = "X"],
+        [_AX_BOOST_BASE_TONUMERICVERSION_req_sub_minor="0"])
+  _AX_BOOST_BASE_TONUMERICVERSION_RET=`expr $_AX_BOOST_BASE_TONUMERICVERSION_req_major \* 100000 \+  $_AX_BOOST_BASE_TONUMERICVERSION_req_minor \* 100 \+ $_AX_BOOST_BASE_TONUMERICVERSION_req_sub_minor`
+  AS_VAR_SET($1,$_AX_BOOST_BASE_TONUMERICVERSION_RET)
+])
+
+dnl Run the detection of boost should be run only if $want_boost
+AC_DEFUN([_AX_BOOST_BASE_RUNDETECT],[
+    _AX_BOOST_BASE_TONUMERICVERSION(WANT_BOOST_VERSION,[$1])
+    succeeded=no
+
+
+    AC_REQUIRE([AC_CANONICAL_HOST])
+    dnl On 64-bit systems check for system libraries in both lib64 and lib.
+    dnl The former is specified by FHS, but e.g. Debian does not adhere to
+    dnl this (as it rises problems for generic multi-arch support).
+    dnl The last entry in the list is chosen by default when no libraries
+    dnl are found, e.g. when only header-only libraries are installed!
+    AS_CASE([${host_cpu}],
+      [x86_64],[libsubdirs="lib64 libx32 lib lib64"],
+      [ppc64|s390x|sparc64|aarch64|ppc64le],[libsubdirs="lib64 lib lib64"],
+      [libsubdirs="lib"],
+    )
+
+    dnl allow for real multi-arch paths e.g. /usr/lib/x86_64-linux-gnu. Give
+    dnl them priority over the other paths since, if libs are found there, they
+    dnl are almost assuredly the ones desired.
+    AS_CASE([${host_cpu}],
+      [i?86],[multiarch_libsubdir="lib/i386-${host_os}"],
+      [multiarch_libsubdir="lib/${host_cpu}-${host_os}"]
+    )
+
+    dnl first we check the system location for boost libraries
+    dnl this location ist chosen if boost libraries are installed with the --layout=system option
+    dnl or if you install boost with RPM
+    AS_IF([test "x$_AX_BOOST_BASE_boost_path" != "x"],[
+        AC_MSG_CHECKING([for boostlib >= $1 ($WANT_BOOST_VERSION) includes in "$_AX_BOOST_BASE_boost_path/include"])
+         AS_IF([test -d "$_AX_BOOST_BASE_boost_path/include" && test -r "$_AX_BOOST_BASE_boost_path/include"],[
+           AC_MSG_RESULT([yes])
+           BOOST_CPPFLAGS="-I$_AX_BOOST_BASE_boost_path/include"
+           for _AX_BOOST_BASE_boost_path_tmp in $multiarch_libsubdir $libsubdirs; do
+                AC_MSG_CHECKING([for boostlib >= $1 ($WANT_BOOST_VERSION) lib path in "$_AX_BOOST_BASE_boost_path/$_AX_BOOST_BASE_boost_path_tmp"])
+                AS_IF([test -d "$_AX_BOOST_BASE_boost_path/$_AX_BOOST_BASE_boost_path_tmp" && test -r "$_AX_BOOST_BASE_boost_path/$_AX_BOOST_BASE_boost_path_tmp" ],[
+                        AC_MSG_RESULT([yes])
+                        BOOST_LDFLAGS="-L$_AX_BOOST_BASE_boost_path/$_AX_BOOST_BASE_boost_path_tmp";
+                        break;
+                ],
+      [AC_MSG_RESULT([no])])
+           done],[
+      AC_MSG_RESULT([no])])
+    ],[
+        if test X"$cross_compiling" = Xyes; then
+            search_libsubdirs=$multiarch_libsubdir
+        else
+            search_libsubdirs="$multiarch_libsubdir $libsubdirs"
+        fi
+        for _AX_BOOST_BASE_boost_path_tmp in /usr /usr/local /opt /opt/local ; do
+            if test -d "$_AX_BOOST_BASE_boost_path_tmp/include/boost" && test -r "$_AX_BOOST_BASE_boost_path_tmp/include/boost" ; then
+                for libsubdir in $search_libsubdirs ; do
+                    if ls "$_AX_BOOST_BASE_boost_path_tmp/$libsubdir/libboost_"* >/dev/null 2>&1 ; then break; fi
+                done
+                BOOST_LDFLAGS="-L$_AX_BOOST_BASE_boost_path_tmp/$libsubdir"
+                BOOST_CPPFLAGS="-I$_AX_BOOST_BASE_boost_path_tmp/include"
+                break;
+            fi
+        done
+    ])
+
+    dnl overwrite ld flags if we have required special directory with
+    dnl --with-boost-libdir parameter
+    AS_IF([test "x$_AX_BOOST_BASE_boost_lib_path" != "x"],
+          [BOOST_LDFLAGS="-L$_AX_BOOST_BASE_boost_lib_path"])
+
+    AC_MSG_CHECKING([for boostlib >= $1 ($WANT_BOOST_VERSION)])
+    CPPFLAGS_SAVED="$CPPFLAGS"
+    CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+    export CPPFLAGS
+
+    LDFLAGS_SAVED="$LDFLAGS"
+    LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
+    export LDFLAGS
+
+    AC_REQUIRE([AC_PROG_CXX])
+    AC_LANG_PUSH(C++)
+        AC_COMPILE_IFELSE([_AX_BOOST_BASE_PROGRAM($WANT_BOOST_VERSION)],[
+        AC_MSG_RESULT(yes)
+    succeeded=yes
+    found_system=yes
+        ],[
+        ])
+    AC_LANG_POP([C++])
+
+
+
+    dnl if we found no boost with system layout we search for boost libraries
+    dnl built and installed without the --layout=system option or for a staged(not installed) version
+    if test "x$succeeded" != "xyes" ; then
+        CPPFLAGS="$CPPFLAGS_SAVED"
+        LDFLAGS="$LDFLAGS_SAVED"
+        BOOST_CPPFLAGS=
+        if test -z "$_AX_BOOST_BASE_boost_lib_path" ; then
+            BOOST_LDFLAGS=
+        fi
+        _version=0
+        if test -n "$_AX_BOOST_BASE_boost_path" ; then
+            if test -d "$_AX_BOOST_BASE_boost_path" && test -r "$_AX_BOOST_BASE_boost_path"; then
+                for i in `ls -d $_AX_BOOST_BASE_boost_path/include/boost-* 2>/dev/null`; do
+                    _version_tmp=`echo $i | sed "s#$_AX_BOOST_BASE_boost_path##" | sed 's/\/include\/boost-//' | sed 's/_/./'`
+                    V_CHECK=`expr $_version_tmp \> $_version`
+                    if test "x$V_CHECK" = "x1" ; then
+                        _version=$_version_tmp
+                    fi
+                    VERSION_UNDERSCORE=`echo $_version | sed 's/\./_/'`
+                    BOOST_CPPFLAGS="-I$_AX_BOOST_BASE_boost_path/include/boost-$VERSION_UNDERSCORE"
+                done
+                dnl if nothing found search for layout used in Windows distributions
+                if test -z "$BOOST_CPPFLAGS"; then
+                    if test -d "$_AX_BOOST_BASE_boost_path/boost" && test -r "$_AX_BOOST_BASE_boost_path/boost"; then
+                        BOOST_CPPFLAGS="-I$_AX_BOOST_BASE_boost_path"
+                    fi
+                fi
+                dnl if we found something and BOOST_LDFLAGS was unset before
+                dnl (because "$_AX_BOOST_BASE_boost_lib_path" = ""), set it here.
+                if test -n "$BOOST_CPPFLAGS" && test -z "$BOOST_LDFLAGS"; then
+                    for libsubdir in $libsubdirs ; do
+                        if ls "$_AX_BOOST_BASE_boost_path/$libsubdir/libboost_"* >/dev/null 2>&1 ; then break; fi
+                    done
+                    BOOST_LDFLAGS="-L$_AX_BOOST_BASE_boost_path/$libsubdir"
+                fi
+            fi
+        else
+            if test "x$cross_compiling" != "xyes" ; then
+                for _AX_BOOST_BASE_boost_path in /usr /usr/local /opt /opt/local ; do
+                    if test -d "$_AX_BOOST_BASE_boost_path" && test -r "$_AX_BOOST_BASE_boost_path" ; then
+                        for i in `ls -d $_AX_BOOST_BASE_boost_path/include/boost-* 2>/dev/null`; do
+                            _version_tmp=`echo $i | sed "s#$_AX_BOOST_BASE_boost_path##" | sed 's/\/include\/boost-//' | sed 's/_/./'`
+                            V_CHECK=`expr $_version_tmp \> $_version`
+                            if test "x$V_CHECK" = "x1" ; then
+                                _version=$_version_tmp
+                                best_path=$_AX_BOOST_BASE_boost_path
+                            fi
+                        done
+                    fi
+                done
+
+                VERSION_UNDERSCORE=`echo $_version | sed 's/\./_/'`
+                BOOST_CPPFLAGS="-I$best_path/include/boost-$VERSION_UNDERSCORE"
+                if test -z "$_AX_BOOST_BASE_boost_lib_path" ; then
+                    for libsubdir in $libsubdirs ; do
+                        if ls "$best_path/$libsubdir/libboost_"* >/dev/null 2>&1 ; then break; fi
+                    done
+                    BOOST_LDFLAGS="-L$best_path/$libsubdir"
+                fi
+            fi
+
+            if test -n "$BOOST_ROOT" ; then
+                for libsubdir in $libsubdirs ; do
+                    if ls "$BOOST_ROOT/stage/$libsubdir/libboost_"* >/dev/null 2>&1 ; then break; fi
+                done
+                if test -d "$BOOST_ROOT" && test -r "$BOOST_ROOT" && test -d "$BOOST_ROOT/stage/$libsubdir" && test -r "$BOOST_ROOT/stage/$libsubdir"; then
+                    version_dir=`expr //$BOOST_ROOT : '.*/\(.*\)'`
+                    stage_version=`echo $version_dir | sed 's/boost_//' | sed 's/_/./g'`
+                        stage_version_shorten=`expr $stage_version : '\([[0-9]]*\.[[0-9]]*\)'`
+                    V_CHECK=`expr $stage_version_shorten \>\= $_version`
+                    if test "x$V_CHECK" = "x1" && test -z "$_AX_BOOST_BASE_boost_lib_path" ; then
+                        AC_MSG_NOTICE(We will use a staged boost library from $BOOST_ROOT)
+                        BOOST_CPPFLAGS="-I$BOOST_ROOT"
+                        BOOST_LDFLAGS="-L$BOOST_ROOT/stage/$libsubdir"
+                    fi
+                fi
+            fi
+        fi
+
+        CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+        export CPPFLAGS
+        LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
+        export LDFLAGS
+
+        AC_LANG_PUSH(C++)
+            AC_COMPILE_IFELSE([_AX_BOOST_BASE_PROGRAM($WANT_BOOST_VERSION)],[
+            AC_MSG_RESULT(yes)
+        succeeded=yes
+        found_system=yes
+            ],[
+            ])
+        AC_LANG_POP([C++])
+    fi
+
+    if test "x$succeeded" != "xyes" ; then
+        if test "x$_version" = "x0" ; then
+            AC_MSG_NOTICE([[We could not detect the boost libraries (version $1 or higher). If you have a staged boost library (still not installed) please specify \$BOOST_ROOT in your environment and do not give a PATH to --with-boost option.  If you are sure you have boost installed, then check your version number looking in <boost/version.hpp>. See http://randspringer.de/boost for more documentation.]])
+        else
+            AC_MSG_NOTICE([Your boost libraries seems to old (version $_version).])
+        fi
+        # execute ACTION-IF-NOT-FOUND (if present):
+        ifelse([$3], , :, [$3])
+    else
+        AC_DEFINE(HAVE_BOOST,,[define if the Boost library is available])
+        # execute ACTION-IF-FOUND (if present):
+        ifelse([$2], , :, [$2])
+    fi
+
+    CPPFLAGS="$CPPFLAGS_SAVED"
+    LDFLAGS="$LDFLAGS_SAVED"
+
+])
+
+# **************************************************************************
+# SIM_AC_HAVE_LIBBZIP2_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Variables:
+#   sim_ac_have_libbzip2
+#   sim_ac_libbzip2_cppflags
+#   sim_ac_libbzip2_cflags
+#   sim_ac_libbzip2_cxxflags
+#   sim_ac_libbzip2_ldflags
+#   sim_ac_libbzip2_libs
+#
+# Authors:
+#   Lars J. Aas <larsa@coin3d.org>
+#
+
+# **************************************************************************
+
+AC_DEFUN([SIM_AC_HAVE_LIBBZIP2_IFELSE],
+[: ${sim_ac_have_libbzip2=false}
+AC_MSG_CHECKING([for bzip2 (library)])
+AC_ARG_WITH(
+  [zlib],
+  [AC_HELP_STRING([--with-bzip2=PATH], [enable/disable bzip2 support])],
+  [case $withval in
+  yes | "") sim_ac_want_libbzip2=true ;;
+  no)       sim_ac_want_libbzip2=false ;;
+  *)        sim_ac_want_libbzip2=true
+            sim_ac_libbzip2_path=$withval ;;
+  esac],
+  [sim_ac_want_libbzip2=true])
+case $sim_ac_want_libbzip2 in
+true)
+  $sim_ac_have_libbzip2 && break
+  sim_ac_libbzip2_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_libbzip2_save_LDFLAGS=$LDFLAGS
+  sim_ac_libbzip2_save_LIBS=$LIBS
+  sim_ac_libbzip2_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_libbzip2_debug=true
+  # test -z "$sim_ac_libbzip2_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_libbzip2_path=$prefix
+  sim_ac_libbzip2_name=bz2
+  if test -n "$sim_ac_libbzip2_path"; then
+    for sim_ac_libbzip2_candidate in \
+      `( ls $sim_ac_libbzip2_path/lib/bzip2*.lib;
+         ls $sim_ac_libbzip2_path/lib/bzip2*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_libbzip2_candidate in
+      *d.lib)
+        $sim_ac_libbzip2_debug &&
+          sim_ac_libbzip2_name=`basename $sim_ac_libbzip2_candidate .lib` ;;
+      *.lib)
+        sim_ac_libbzip2_name=`basename $sim_ac_libbzip2_candidate .lib` ;;
+      esac
+    done
+    sim_ac_libbzip2_cppflags="-I$sim_ac_libbzip2_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_libbzip2_cppflags"
+    sim_ac_libbzip2_ldflags="-L$sim_ac_libbzip2_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_libbzip2_ldflags"
+    # unset sim_ac_libbzip2_candidate
+    # unset sim_ac_libbzip2_path
+  fi
+  sim_ac_libbzip2_libs="-l$sim_ac_libbzip2_name"
+  LIBS="$sim_ac_libbzip2_libs $LIBS"
+  AC_TRY_LINK(
+    [#include <bzlib.h>],
+    [(void)BZ2_bzlibVersion();],
+    [sim_ac_have_libbzip2=true])
+  CPPFLAGS=$sim_ac_libbzip2_save_CPPFLAGS
+  LDFLAGS=$sim_ac_libbzip2_save_LDFLAGS
+  LIBS=$sim_ac_libbzip2_save_LIBS
+  # unset sim_ac_libbzip2_debug
+  # unset sim_ac_libbzip2_name
+  # unset sim_ac_libbzip2_save_CPPFLAGS
+  # unset sim_ac_libbzip2_save_LDFLAGS
+  # unset sim_ac_libbzip2_save_LIBS
+  ;;
+esac
+if $sim_ac_want_libbzip2; then
+  if $sim_ac_have_libbzip2; then
+    AC_MSG_RESULT([success ($sim_ac_libbzip2_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_libbzip2
+])
+
+# EOF **********************************************************************
+
+# Usage:
+#   SIM_AC_COMPILE_DEBUG([ACTION-IF-DEBUG[, ACTION-IF-NOT-DEBUG]])
+#
+# Description:
+#   Let the user decide if compilation should be done in "debug mode".
+#   If compilation is not done in debug mode, all assert()'s in the code
+#   will be disabled.
+#
+#   Also sets enable_debug variable to either "yes" or "no", so the
+#   configure.in writer can add package-specific actions. Default is "yes".
+#   This was also extended to enable the developer to set up the two first
+#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
+#   concept.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+
+AC_DEFUN([SIM_AC_COMPILE_DEBUG], [
+AC_REQUIRE([SIM_AC_CHECK_SIMIAN_IFELSE])
+
+AC_ARG_ENABLE(
+  [debug],
+  AC_HELP_STRING([--enable-debug], [compile in debug mode [[default=yes]]]),
+  [case "${enableval}" in
+    yes) enable_debug=true ;;
+    no)  enable_debug=false ;;
+    true | false) enable_debug=${enableval} ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-debug) ;;
+  esac],
+  [enable_debug=true])
+
+if $enable_debug; then
+  DSUFFIX=d
+  if $sim_ac_simian; then
+    case $CXX in
+    *wrapmsvc* )
+      # uninitialized checks
+      if test ${sim_ac_msc_major_version-0} -gt 6; then
+        SIM_AC_CC_COMPILER_OPTION([/RTCu], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /RTCu"])
+        SIM_AC_CXX_COMPILER_OPTION([/RTCu], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /RTCu"])
+        # stack frame checks
+        SIM_AC_CC_COMPILER_OPTION([/RTCs], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /RTCs"])
+        SIM_AC_CXX_COMPILER_OPTION([/RTCs], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /RTCs"])
+      fi
+      ;;
+    esac
+  fi
+
+  ifelse([$1], , :, [$1])
+else
+  DSUFFIX=
+  CPPFLAGS="$CPPFLAGS -DNDEBUG"
+  ifelse([$2], , :, [$2])
+fi
+AC_SUBST(DSUFFIX)
+])
+
+# Usage:
+#   SIM_AC_COMPILER_OPTIMIZATION
+#
+# Description:
+#   Let the user decide if optimization should be attempted turned off
+#   by stripping off an "-O[0-9]" option.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# FIXME: this is pretty much just a dirty hack. Unfortunately, this
+# seems to be the best we can do without fixing Autoconf to behave
+# properly wrt setting optimization options. 20011021 mortene.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_COMPILER_OPTIMIZATION], [
+AC_ARG_ENABLE(
+  [optimization],
+  AC_HELP_STRING([--enable-optimization],
+                 [allow compilers to make optimized code [[default=yes]]]),
+  [case "${enableval}" in
+    yes) sim_ac_enable_optimization=true ;;
+    no)  sim_ac_enable_optimization=false ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-optimization) ;;
+  esac],
+  [sim_ac_enable_optimization=true])
+
+if $sim_ac_enable_optimization; then
+  case $CXX in
+  *wrapmsvc* )
+    CFLAGS="/Ox $CFLAGS"
+    CXXFLAGS="/Ox $CXXFLAGS"
+    ;;
+  esac
+  :
+else
+  CFLAGS="`echo $CFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/-O[[0-9]]*[[ ]]*//'`"
+fi
+])
+
+# Usage:
+#   SIM_AC_EXCEPTION_HANDLING
+#
+# Description:
+#   Let the user decide if C++ exception handling should be compiled
+#   in. With older compilers the libraries/executables will use a lot
+#   less space if they have exception handling support disabled, on
+#   modern compilers the difference is negligible.
+#
+#   Note: this macro must be placed after AC_PROG_CXX in the
+#   configure.in script.
+#
+#   Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+#
+
+AC_DEFUN([SIM_AC_EXCEPTION_HANDLING], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [exceptions],
+  AC_HELP_STRING([--enable-exceptions],
+                 [(g++ only) compile with exceptions [[default=yes]]]),
+  [case "${enableval}" in
+    yes) enable_exceptions=yes ;;
+    no)  enable_exceptions=no ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-exceptions) ;;
+  esac],
+  [enable_exceptions=yes])
+
+if test x"$enable_exceptions" = x"no"; then
+  if test "x$GXX" = "xyes"; then
+    unset _exception_flag
+    dnl This is for GCC >= 2.8
+    SIM_AC_CXX_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
+    if test x"${_exception_flag+set}" != x"set"; then
+      dnl For GCC versions < 2.8
+      SIM_AC_CXX_COMPILER_OPTION([-fno-handle-exceptions],
+                                 [_exception_flag=-fno-handle-exceptions])
+    fi
+    if test x"${_exception_flag+set}" != x"set"; then
+      AC_MSG_WARN([couldn't find a valid option for avoiding exception handling])
+    else
+      CXXFLAGS="$CXXFLAGS $_exception_flag"
+    fi
+  fi
+else
+  if $BUILD_WITH_MSVC; then
+    SIM_AC_CXX_COMPILER_OPTION([/EHsc], [CXXFLAGS="$CXXFLAGS /EHsc"])
+  else
+    if test x"$GXX" != x"yes"; then
+      AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
+    fi
+  fi
+  AC_DEFINE([USE_EXCEPTIONS], 1, [Define to make Coin use/catch exceptions at some particular places.])
+fi
+])
+
+
+# Usage:
+#   SIM_AC_COMPILER_FUNCTIONNAME_VAR(compiler-id)
+#
+# Side-effects, defines these in config.h:
+#
+#     HAVE_$compilerid_VAR___func__              (1 if exists)
+#     HAVE_$compilerid_VAR___PRETTY_FUNCTION__   (1 if exists)
+#     HAVE_$compilerid_VAR___FUNCTION__          (1 if exists)
+#
+# (Note that only one of these will be defined.)
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#   Morten Eriksen <mortene@sim.no>
+
+AC_DEFUN([SIM_AC_COMPILER_FUNCTIONNAME_VAR], [
+AC_MSG_CHECKING([for function name variable for $1 compiler])
+sim_ac_var_functionname=
+
+# * __func__ is the identifier used by compilers which are
+#   compliant with the C99 ISO/IEC 9899:1999 standard.
+#
+# * GCC uses __PRETTY_FUNCTION__
+#
+# * Visual C++ uses __FUNCDNAME__, __FUNCSIG__, and __FUNCTION__.
+#
+
+for i in "__func__" "__PRETTY_FUNCTION__" "__FUNCTION__"; do
+if test -z "$sim_ac_var_functionname"; then
+  AC_TRY_COMPILE(
+    [#include <stdio.h>],
+    [(void)printf("%s\n", $i)],
+    [sim_ac_var_functionname=$i]
+  )
+fi
+done
+
+if test -z "$sim_ac_var_functionname"; then
+  AC_MSG_RESULT(none)
+else
+  AC_MSG_RESULT($sim_ac_var_functionname)
+  AC_DEFINE_UNQUOTED(HAVE_$1_COMPILER_FUNCTION_NAME_VAR,
+                     $sim_ac_var_functionname,
+                     [The $1 compiler has a variable containing the current function name])
+fi
+])
+
+
+# Usage:
+#   SIM_AC_CHECK_VAR_FUNCTIONNAME
+#
+# Convenience wrapper for the above function.
+AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
+  AC_LANG_PUSH(C++)
+  SIM_AC_COMPILER_FUNCTIONNAME_VAR(CPP)
+  AC_LANG_POP(C++)
+  AC_LANG_PUSH(C)
+  SIM_AC_COMPILER_FUNCTIONNAME_VAR(C)
+  AC_LANG_POP(C)
+])
+
+# Usage:
+#   SIM_AC_PROFILING_SUPPORT
+#
+# Description:
+#   Let the user decide if profiling code should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if they don't contain profiling code information, and they will also
+#   execute faster.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+#
+
+AC_DEFUN([SIM_AC_PROFILING_SUPPORT], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [profile],
+  AC_HELP_STRING([--enable-profile],
+                 [(GCC only) turn on inclusion of profiling code [[default=no]]]),
+  [case "${enableval}" in
+    yes) enable_profile=yes ;;
+    no)  enable_profile=no ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-profile) ;;
+  esac],
+  [enable_profile=no])
+
+if test x"$enable_profile" = x"yes"; then
+  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
+    CFLAGS="$CFLAGS -pg"
+    CXXFLAGS="$CXXFLAGS -pg"
+    LDFLAGS="$LDFLAGS -pg"
+  else
+    AC_MSG_WARN([--enable-profile only has effect when using GNU gcc or g++])
+  fi
+fi
+])
+
+
+# Usage:
+#   SIM_AC_RTTI_SUPPORT
+#
+# Description:
+#   Let the user decide if RTTI should be compiled in. The compiled
+#   libraries/executables will use a lot less space if they don't
+#   contain RTTI.
+#
+#   Note: this macro must be placed after AC_PROG_CXX in the
+#   configure.in script.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [rtti],
+  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [[default=yes]]]),
+  [case "${enableval}" in
+    yes) enable_rtti=yes ;;
+    no)  enable_rtti=no ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-rtti) ;;
+  esac],
+  [enable_rtti=yes])
+
+if test x"$enable_rtti" = x"no"; then
+  if test x"$GXX" = x"yes"; then
+    CXXFLAGS="$CXXFLAGS -fno-rtti"
+  else
+    AC_MSG_WARN([--enable-rtti only has effect when using GNU g++])
+  fi
+fi
+])
+
+# Usage:
+#   SIM_AC_DEBUGSYMBOLS
+#
+# Description:
+#   Let the user decide if debug symbol information should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if stripped for their symbol information.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_DEBUGSYMBOLS], [
+AC_ARG_ENABLE(
+  [symbols],
+  AC_HELP_STRING([--enable-symbols],
+                 [include symbol debug information [[default=yes]]]),
+  [case "${enableval}" in
+    yes) enable_symbols=yes ;;
+    no)  enable_symbols=no ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-symbols) ;;
+  esac],
+  [enable_symbols=yes])
+
+# weird seds to don't mangle options like -fno-gnu-linker and -fvolatile-global
+if test x"$enable_symbols" = x"no"; then
+  CFLAGS="`echo $CFLAGS | sed 's/ -g / /g' | sed 's/^-g / /g' | sed 's/ -g$/ /g' | sed 's/^-g$/ /'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/ -g / /g' | sed 's/^-g / /g' | sed 's/ -g$/ /g' | sed 's/^-g$/ /'`"
+fi
+]) # SIM_AC_DEBUGSYMBOLS
+
+
+# Usage:
+#   SIM_AC_COMPILER_WARNINGS
+#
+# Description:
+#   Take care of making a sensible selection of warning messages
+#   to turn on or off.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] find out how to get GCC's
+#     -Werror-implicit-function-declaration option to work as expected
+#
+#   * [larsa:20010504] rename to SIM_AC_COMPILER_WARNINGS and clean up
+#     the macro
+
+AC_DEFUN([SIM_AC_COMPILER_WARNINGS], [
+AC_ARG_ENABLE(
+  [warnings],
+  AC_HELP_STRING([--enable-warnings],
+                 [turn on warnings when compiling [[default=yes]]]),
+  [case "${enableval}" in
+    yes) enable_warnings=yes ;;
+    no)  enable_warnings=no ;;
+    *) AC_MSG_ERROR([bad value "$enableval" for --enable-warnings]) ;;
+  esac],
+  [enable_warnings=yes])
+
+if test x"$enable_warnings" = x"yes"; then
+
+  for sim_ac_try_cc_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar"; do
+
+    if test x"$GCC" = x"yes"; then
+      SIM_AC_CC_COMPILER_OPTION([$sim_ac_try_cc_warning_option],
+                                [CFLAGS="$CFLAGS $sim_ac_try_cc_warning_option"])
+    fi
+  done
+
+  for sim_ac_try_cxx_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
+    if test x"$GXX" = x"yes"; then
+      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_try_cxx_warning_option],
+                                 [CXXFLAGS="$CXXFLAGS $sim_ac_try_cxx_warning_option"])
+    fi
+
+  done
+
+  case $host in
+  *-*-irix*)
+    ### Turn on all warnings ######################################
+    # we try to catch settings like CC="CC -n32" too, even though the
+    # -n32 option belongs to C[XX]FLAGS
+    case $CC in
+    cc | "cc "* | CC | "CC "* )
+      SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CFLAGS="$CFLAGS -fullwarn"])
+      ;;
+    esac
+    case $CXX in
+    CC | "CC "* )
+      SIM_AC_CXX_COMPILER_OPTION([-fullwarn], [CXXFLAGS="$CXXFLAGS -fullwarn"])
+      ;;
+    esac
+
+    ### Turn off specific (bogus) warnings ########################
+
+    ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+    ##
+    ## 3115: ``type qualifiers are meaningless in this declaration''.
+    ## 3262: unused variables.
+    ##
+    ### SGI MipsPro v7.30 #########################################
+    ##
+    ## 1174: "The function was declared but never referenced."
+    ## 1209: "The controlling expression is constant." (kill warning on
+    ##       if (0), assert(FALSE), etc).
+    ## 1375: Non-virtual destructors in base classes.
+    ## 3201: Unused argument to a function.
+    ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
+    ##       Coin/src/engines has lots of shitty code which needs this).
+    ## 1506: Implicit conversion from "unsigned long" to "long".
+    ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
+    ##       this warning to avoid all the output clutter when compiling
+    ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
+    ## 1169: External/internal linkage conflicts with a previous declaration.
+    ##       We get this for the "friend operators" in SbString.h
+
+    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1375,3201,1110,1506,1169,1210"
+
+    case $CC in
+    cc | "cc "* | CC | "CC "* )
+      SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
+                                [CFLAGS="$CFLAGS $sim_ac_bogus_warnings"])
+    esac
+    case $CXX in
+    CC | "CC "* )
+      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_bogus_warnings],
+                                 [CXXFLAGS="$CXXFLAGS $sim_ac_bogus_warnings"])
+      ;;
+    esac
+  ;;
+  esac
+fi
+])
+
+# **************************************************************************
+#
+# SIM_AC_DETECT_COMMON_COMPILER_FLAGS
+#
+# Sets sim_ac_compiler_CFLAGS and sim_ac_compiler_CXXFLAGS
+#
+
+AC_DEFUN([SIM_AC_DETECT_COMMON_COMPILER_FLAGS], [
+
+AC_REQUIRE([SIM_AC_CHECK_PROJECT_BETA_STATUS_IFELSE])
+AC_REQUIRE([SIM_AC_CHECK_SIMIAN_IFELSE])
+
+sim_ac_simian=false
+
+SIM_AC_COMPILE_DEBUG([
+  if test x"$GCC" = x"yes"; then
+    # no auto string.h-functions
+    SIM_AC_CC_COMPILER_OPTION([-fno-builtin], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -fno-builtin"])
+    SIM_AC_CXX_COMPILER_OPTION([-fno-builtin], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -fno-builtin"])
+
+    # disallow non-standard scoping of for()-variables
+    SIM_AC_CXX_COMPILER_OPTION([-fno-for-scoping], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -fno-for-scope"])
+
+    SIM_AC_CC_COMPILER_OPTION([-finline-functions], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -finline-functions"])
+    SIM_AC_CXX_COMPILER_OPTION([-finline-functions], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -finline-functions"])
+
+    if $sim_ac_simian; then
+      if $sim_ac_source_release; then :; else
+      # break build on warnings, except for in official source code releases
+        if test x"$enable_werror" = x"no"; then :; else
+          SIM_AC_CC_COMPILER_OPTION([-Werror], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Werror"])
+          SIM_AC_CXX_COMPILER_OPTION([-Werror], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Werror"])
+        fi
+      fi
+    fi
+
+    # warn on missing return-value
+    SIM_AC_CC_COMPILER_OPTION([-Wreturn-type], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wreturn-type"])
+    SIM_AC_CXX_COMPILER_OPTION([-Wreturn-type], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wreturn-type"])
+
+    SIM_AC_CC_COMPILER_OPTION([-Wchar-subscripts], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wchar-subscripts"])
+    SIM_AC_CXX_COMPILER_OPTION([-Wchar-subscripts], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wchar-subscripts"])
+
+    SIM_AC_CC_COMPILER_OPTION([-Wparentheses], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS -Wparentheses"])
+    SIM_AC_CXX_COMPILER_OPTION([-Wparentheses], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS -Wparentheses"])
+
+  else
+    case $CXX in
+    *wrapmsvc* )
+      if $sim_ac_simian; then
+        if $sim_ac_source_release; then :; else
+          # break build on warnings, except for in official source code releases
+          SIM_AC_CC_COMPILER_OPTION([/WX], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /WX"])
+          SIM_AC_CXX_COMPILER_OPTION([/WX], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /WX"])
+        fi
+      fi
+
+      # warning level 3
+      SIM_AC_CC_COMPILER_OPTION([/W3], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /W3"])
+      SIM_AC_CXX_COMPILER_OPTION([/W3], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /W3"])
+      
+      ;;
+    esac
+  fi
+])
+
+ifelse($1, [], :, $1)
+
+])
+
+AC_DEFUN([SIM_AC_COMPILER_NOBOOL], [
+sim_ac_nobool_CXXFLAGS=
+sim_ac_have_nobool=false
+AC_MSG_CHECKING([whether $CXX accepts /noBool])
+if $BUILD_WITH_MSVC && test x$sim_ac_msvc_version = x6; then
+  SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
+    [/noBool],
+    [int temp],
+    [SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET(
+      [/noBool],
+      [bool res = true],
+      [],
+      [sim_ac_have_nobool=true])])
+fi
+
+if $sim_ac_have_nobool; then
+  sim_ac_nobool_CXXFLAGS="/noBool"
+  AC_MSG_RESULT([yes])
+  ifelse([$1], , :, [$1])
+else
+  AC_MSG_RESULT([no])
+  ifelse([$2], , :, [$2])
+fi
+])
+
+
+# Usage:
+#   SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS
+#
+# Description:
+#   Check for the known causes that would make the current C++ compiler
+#   unusable for building Coin or Coin-related projects.
+#
+#   Exits the configure script if any of them fail.
+#
+
+AC_DEFUN([SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS], [
+  SIM_AC_COMPILER_CPLUSPLUS_ENV_OK
+  SIM_AC_COMPILER_INLINE_FOR
+  SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR
+  SIM_AC_COMPILER_CRAZY_GCC296_BUG
+  SIM_AC_COMPILER_BUILTIN_EXPECT
+])
+
+
+# Usage:
+#     SIM_AC_COMPILER_CPLUSPLUS_ENV_OK
+#
+# Description:
+#   Checks that the C++ compiler environment can compile, link and run an
+#   executable. We do this before the other checks, so we can smoke out
+#   a fubar environment before trying anything else, because otherwise the
+#   error message from the failing check would be bogus.
+#
+#   (I.e. we've had reports from people that the GCC 2.96 crazy-bug checks
+#   hits, even though they didn't have GCC 2.96. Upon closer inspection,
+#   the reason for failure was simply that some other part of the compiler
+#   environment was fubar.)
+
+AC_DEFUN([SIM_AC_COMPILER_CPLUSPLUS_ENV_OK], [
+AC_LANG_PUSH(C++)
+
+AC_CACHE_CHECK(
+  [if the C++ compiler environment is ok],
+  sim_cv_c_compiler_env_ok,
+  [AC_TRY_RUN([
+// Just any old C++ source code. It might be useful
+// to try to add in more standard C++ features that
+// we depend on, like classes using templates (or
+// even multiple templates), etc etc.  -mortene.
+
+#include <stdio.h>
+
+class myclass {
+public:
+  myclass(void) { value = 0.0f; }
+  float value;
+};
+
+int
+main(void)
+{
+  myclass proj;
+  proj.value = 42;
+  return 0;
+}
+],
+  [sim_cv_c_compiler_env_ok=true],
+  [sim_cv_c_compiler_env_ok=false],
+  [sim_cv_c_compiler_env_ok=true
+   AC_MSG_WARN([can't check for fully working C++ environment when cross-compiling, assuming it's ok])])
+])
+
+AC_LANG_POP
+
+if $sim_cv_c_compiler_env_ok; then
+  :
+else
+  SIM_AC_ERROR(c--fubarenvironment)
+fi
+])
+
+
+# Usage:
+#   SIM_AC_COMPILER_INLINE_FOR( [ACTION-IF-OK [, ACTION-IF-FAILS ] ] )
+#
+# Description:
+#   Check if the compiler supports for(;;){} loops inside inlined
+#   constructors.
+#
+#   This smokes out the useless HPUX 10.20 CC compiler.
+#
+
+AC_DEFUN([SIM_AC_COMPILER_INLINE_FOR], [
+
+AC_LANG_PUSH(C++)
+AC_CACHE_CHECK(
+  [if the compiler handles for() loops in inlined constructors],
+  sim_cv_c_inlinefor,
+  [AC_TRY_COMPILE([
+class TestClass {
+public:
+  TestClass(int);
+};
+
+inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
+],
+                 [TestClass t(0);],
+                 [sim_cv_c_inlinefor=yes],
+                 [sim_cv_c_inlinefor=no])
+])
+AC_LANG_POP
+
+if test x"$sim_cv_c_inlinefor" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  SIM_AC_ERROR([c--inlinefor])
+  $2
+fi
+])
+
+
+# Usage:
+#   SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR( [ACTION-IF-OK [, ACTION-IF-FAILS ] ] )
+#
+# Description:
+#   Check if the compiler crashes on switch() statements inside virtual
+#   destructors.
+#
+#   This smokes out a particular patch-level version of the CC compiler
+#   for Sun WorkShop 6 (update 1 C++ 5.2 Patch 109508-01 2001/01/31).
+#
+
+AC_DEFUN([SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR], [
+
+AC_LANG_PUSH(C++)
+AC_CACHE_CHECK(
+  [if the compiler handles switch statements in virtual destructors],
+  sim_cv_c_virtualdestrswitch,
+  [AC_TRY_COMPILE([
+class hepp { virtual ~hepp(); };
+hepp::~hepp() { switch(0) { } }
+],
+[],
+                  [sim_cv_c_virtualdestrswitch=yes],
+                  [sim_cv_c_virtualdestrswitch=no])])
+AC_LANG_POP
+
+if test x"$sim_cv_c_virtualdestrswitch" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  SIM_AC_ERROR([c--vdest])
+  $2
+fi
+])
+
+
+# Usage:
+#     SIM_AC_COMPILER_CRAZY_GCC296_BUG([ACTION-IF-OK [, ACTION-IF-FAILS ]])
+#
+# Description:
+#   Tries to smoke out some completely fubar bug in g++ of GCC 2.96
+#   (at least) when -O2 (or higher, probably) optimization on. The reason
+#   we check specifically for this bug is because this compiler version
+#   is pretty well spread because it was part of a Red Hat Linux release.
+#
+
+AC_DEFUN([SIM_AC_COMPILER_CRAZY_GCC296_BUG], [
+
+AC_LANG_PUSH(C++)
+AC_CACHE_CHECK(
+  [if this is a version of GCC with a known nasty optimization bug],
+  sim_cv_c_gcctwonightysixbug,
+  [AC_TRY_RUN([
+#include <stdio.h>
+
+class myclass {
+public:
+  float value;
+  float & ref();
+};
+
+myclass
+hepp(const float v0, const float v1)
+{
+  myclass proj;
+
+  proj.ref() = 0.0f;
+  proj.ref() = -(v1+v0);
+
+  return proj;
+}
+
+float &
+myclass::ref()
+{
+  return this->value;
+}
+
+int
+main(void)
+{
+  myclass proj = hepp(2.0f, 4.0f);
+  return (proj.ref() < 0.0f) ? 0 : 1;
+}
+],
+  [sim_cv_c_gcctwonightysixbug=false],
+  [sim_cv_c_gcctwonightysixbug=true],
+  [sim_cv_c_gcctwonightysixbug=false
+   AC_MSG_WARN([can't check for GCC bug when cross-compiling, assuming it's ok])])
+])
+AC_LANG_POP
+
+
+if $sim_cv_c_gcctwonightysixbug; then
+  SIM_AC_ERROR(c--gcc296bug)
+  $2
+else
+  ifelse([$1], , :, [$1])
+fi
+])
+
+# **************************************************************************
+# SIM_AC_COMPILER_BUILTIN_EXPECT
+
+AC_DEFUN([SIM_AC_COMPILER_BUILTIN_EXPECT], [
+AC_LANG_PUSH(C++)
+AC_MSG_CHECKING([for __builtin_expect()])
+sim_ac_builtin_expect=false
+AC_TRY_LINK([
+  #include <assert.h>
+], [
+  if ( __builtin_expect(!!(1), 1) ? 1 : 0 ) {
+    /* nada */
+  }
+], [sim_ac_builtin_expect=true])
+
+sim_ac_assert_uses_builtin_expect=false
+if $sim_ac_builtin_expect; then
+  AC_MSG_RESULT([found])
+  AC_DEFINE([HAVE___BUILTIN_EXPECT], 1, [Define if compiler has __builtin_expect() macro])
+
+  AC_MSG_CHECKING([if assert() uses __builtin_expect()])
+  cat <<EOF > conftest.c
+#include <assert.h>
+
+int main(int argc, char ** argv) {
+  assert(argv);
+}
+EOF
+  if test x"$CPP" = x; then
+    AC_MSG_ERROR([cpp not detected - aborting.  notify maintainer at coin-support@coin3d.org.])
+  fi
+  echo "$CPP $CPPFLAGS conftest.c" >&AS_MESSAGE_LOG_FD
+  sim_ac_builtin_expect_line=`$CPP $CPPFLAGS conftest.c 2>&AS_MESSAGE_LOG_FD | grep "__builtin_expect"`
+  if test x"$sim_ac_builtin_expect_line" = x""; then
+    AC_MSG_RESULT([no])
+  else
+    sim_ac_assert_uses_builtin_expect=true
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([HAVE_ASSERT_WITH_BUILTIN_EXPECT], 1, [Define if assert() uses __builtin_expect()])
+  fi
+else
+  AC_MSG_RESULT([not found])
+fi
+
+AC_LANG_POP
+]) # SIM_AC_COMPILER_BUILTIN_EXPECT
+
+
+# **************************************************************************
+# configuration_summary.m4
+#
+# This file contains some utility macros for making it easy to have a short
+# summary of the important configuration settings printed at the end of the
+# configure run.
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
+
+# **************************************************************************
+# SIM_AC_CONFIGURATION_SETTING( DESCRIPTION, SETTING )
+#
+# This macro registers a configuration setting to be dumped by the
+# SIM_AC_CONFIGURATION_SUMMARY macro.
+
+AC_DEFUN([SIM_AC_CONFIGURATION_SETTING],
+[ifelse($#, 2, [], [m4_fatal([SIM_AC_CONFIGURATION_SETTING: takes two arguments])])
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|$1:$2"
+else
+  sim_ac_configuration_settings="$1:$2"
+fi
+]) # SIM_AC_CONFIGURATION_SETTING
+
+# **************************************************************************
+# SIM_AC_CONFIGURATION_WARNING( WARNING )
+#
+# This macro registers a configuration warning to be dumped by the
+# SIM_AC_CONFIGURATION_SUMMARY macro.
+
+AC_DEFUN([SIM_AC_CONFIGURATION_WARNING],
+[ifelse($#, 1, [], [m4_fatal([SIM_AC_CONFIGURATION_WARNING: takes one argument])])
+if test x"${sim_ac_configuration_warnings+set}" = x"set"; then
+  sim_ac_configuration_warnings="$sim_ac_configuration_warnings|$1"
+else
+  sim_ac_configuration_warnings="$1"
+fi
+]) # SIM_AC_CONFIGURATION_WARNING
+
+# **************************************************************************
+# SIM_AC_CONFIGURATION_SUMMARY
+#
+# This macro dumps the settings and warnings summary.
+
+AC_DEFUN([SIM_AC_CONFIGURATION_SUMMARY],
+[ifelse($#, 0, [], [m4_fatal([SIM_AC_CONFIGURATION_SUMMARY: takes no arguments])])
+sim_ac_settings="$sim_ac_configuration_settings"
+sim_ac_num_settings=`echo "$sim_ac_settings" | tr -d -c "|" | wc -c`
+sim_ac_maxlength=0
+while test $sim_ac_num_settings -ge 0; do
+  sim_ac_description=`echo "$sim_ac_settings" | cut -d: -f1`
+  sim_ac_length=`echo "$sim_ac_description" | wc -c`
+  if test $sim_ac_length -gt $sim_ac_maxlength; then
+    sim_ac_maxlength=`expr $sim_ac_length + 0`
+  fi
+  sim_ac_settings=`echo $sim_ac_settings | cut -d"|" -f2-`
+  sim_ac_num_settings=`expr $sim_ac_num_settings - 1`
+done
+
+sim_ac_maxlength=`expr $sim_ac_maxlength + 3`
+sim_ac_padding=`echo "                                             " |
+  cut -c1-$sim_ac_maxlength`
+
+sim_ac_num_settings=`echo "$sim_ac_configuration_settings" | tr -d -c "|" | wc -c`
+echo ""
+echo "$PACKAGE configuration settings:"
+while test $sim_ac_num_settings -ge 0; do
+  sim_ac_setting=`echo $sim_ac_configuration_settings | cut -d"|" -f1`
+  sim_ac_description=`echo "$sim_ac_setting" | cut -d: -f1`
+  sim_ac_status=`echo "$sim_ac_setting" | cut -d: -f2-`
+  # hopefully not too many terminals are too dumb for this
+  printf "$sim_ac_padding $sim_ac_status\r  $sim_ac_description:\n"
+  sim_ac_configuration_settings=`echo $sim_ac_configuration_settings | cut -d"|" -f2-`
+  sim_ac_num_settings=`expr $sim_ac_num_settings - 1`
+done
+
+if test x${sim_ac_configuration_warnings+set} = xset; then
+sim_ac_num_warnings=`echo "$sim_ac_configuration_warnings" | tr -d -c "|" | wc -c`
+echo ""
+echo "$PACKAGE configuration warnings:"
+while test $sim_ac_num_warnings -ge 0; do
+  sim_ac_warning=`echo "$sim_ac_configuration_warnings" | cut -d"|" -f1`
+  echo "  * $sim_ac_warning"
+  sim_ac_configuration_warnings=`echo $sim_ac_configuration_warnings | cut -d"|" -f2-`
+  sim_ac_num_warnings=`expr $sim_ac_num_warnings - 1`
+done
+fi
+]) # SIM_AC_CONFIGURATION_SUMMARY
+
+
+# CPP_AC_SEARCH_ORDER_FILTER( VARIABLE, LIST )
+#
+# This macro filters out system directories from a list. This macro was made
+# to avoid passing -I options to the gcc3 compiler that are possibly already
+# one of gcc3's system directories. This would cause the preprocessor to
+# issue a "warning: changing search order for system directory ..." message
+# that could break some configure scripts and produce annoying warning
+# messages for every source file compiled.
+#
+# Authors:
+#   Tamer Fahmy <tamer@tammura.at>
+#
+
+AC_DEFUN([CPP_AC_SEARCH_ORDER_FILTER], [
+if test x"$GCC" = x"yes"; then
+ sim_ac_save_cpp=$CPP
+ CPP="cpp"
+ case $host_os in
+  darwin*) CPP="cpp3"
+    ;;
+  esac
+  cpp_sys_dirs=`$CPP -v <<EOF 2>&1 | sed -n -e \
+  '/#include <...> search starts here:/,/End of search list./{
+    /#include <...> search starts here:/b
+    /End of search list./b
+    s/ /-I/
+    p
+  }'
+EOF`
+  result=
+  for inc_path in $2; do
+    additem=true
+    for sys_dir in $cpp_sys_dirs; do
+      if test x$inc_path = x$sys_dir; then
+        additem=false
+        break
+      fi
+    done
+    $additem && result="$result $inc_path"
+  done
+  $1=$result
+  CPP=$sim_ac_save_cpp
+fi
+]) # CPP_AC_SEARCH_ORDER_FILTER
+
+
+# Usage:
+#  SIM_AC_DATE_ISO8601([variable])
+#  SIM_AC_DATE_RFC822([variable])
+#
+# Description:
+#   This macro sets the given variable to a strings representing
+#   the current date in the ISO8601-compliant format "YYYYMMDD" or in
+#   the RFC822-compliant format "Day, DD Mon YYYY HH:MM:SS +0X00".
+#
+# Authors:
+#   Morten Eriksen <mortene@sim.no>
+#   Lars J. Aas <larsa@sim.no>
+
+AC_DEFUN([SIM_AC_DATE_ISO8601], [
+  eval "$1=\"`date +%Y%m%d`\""
+])
+
+AC_DEFUN([SIM_AC_DATE_RFC822], [
+  eval "$1=\"`date '+%a, %d %b %Y %X %z'`\""
+  eval "$1_DAYSTRING=\"`date '+%a'`\""
+  eval "$1_NODAYSTRING=\"`date '+%d %b %Y %X %z'`\""
+])
+
+# old alias
+# AU_DEFUN([SIM_AC_ISO8601_DATE], [SIM_AC_DATE_ISO8601])
+AC_DEFUN([SIM_AC_ISO8601_DATE], [SIM_AC_DATE_ISO8601([$1])])
+
+
+# SIM_AC_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# ----------------------------------------------------------
+#
+#  Try to find the dynamic link loader library. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_dl_cppflags (extra flags the compiler needs for dl lib)
+#    $sim_ac_dl_ldflags  (extra flags the linker needs for dl lib)
+#    $sim_ac_dl_libs     (link libraries the linker needs for dl lib)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_DL], [
+AC_ARG_WITH(
+  [dl],
+  [AC_HELP_STRING(
+    [--with-dl=DIR],
+    [include support for the dynamic link loader library [default=yes]])],
+  [],
+  [with_dl=yes])
+
+if test x"$with_dl" != xno; then
+  if test x"$with_dl" != xyes; then
+    sim_ac_dl_cppflags="-I${with_dl}/include"
+    sim_ac_dl_ldflags="-L${with_dl}/lib"
+  fi
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_dl_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_dl_ldflags"
+
+  # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
+  # HAVE_DLFCN_H symbol set up in config.h automatically.
+  AC_CHECK_HEADERS([dlfcn.h])
+
+  sim_ac_dl_avail=false
+
+  AC_MSG_CHECKING([for the dl library])
+  # At least under FreeBSD, dlopen() et al is part of the C library.
+  # On HP-UX, dlopen() might reside in a library "svld" instead of "dl".
+  for sim_ac_dl_libcheck in "" "-ldl" "-lsvld"; do
+    if $sim_ac_dl_avail; then :; else
+      LIBS="$sim_ac_dl_libcheck $sim_ac_save_libs"
+      AC_TRY_LINK([
+#ifdef HAVE_DLFCN_H
+#include <dlfcn.h>
+#endif /* HAVE_DLFCN_H */
+],
+                  [(void)dlopen(0L, 0); (void)dlsym(0L, "Gunners!"); (void)dlclose(0L);],
+                  [sim_ac_dl_avail=true
+                   sim_ac_dl_libs="$sim_ac_dl_libcheck"
+                  ])
+    fi
+  done
+
+  if $sim_ac_dl_avail; then
+    if test x"$sim_ac_dl_libs" = x""; then
+      AC_MSG_RESULT(yes)
+    else
+      AC_MSG_RESULT($sim_ac_dl_cppflags $sim_ac_dl_ldflags $sim_ac_dl_libs)
+    fi
+  else
+    AC_MSG_RESULT(not available)
+  fi
+
+  if $sim_ac_dl_avail; then
+    ifelse([$1], , :, [$1])
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    ifelse([$2], , :, [$2])
+  fi
+fi
+])
+
+# SIM_AC_CHECK_LOADLIBRARY([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# -------------------------------------------------------------------
+#
+#  Try to use the Win32 dynamic link loader methods LoadLibrary(),
+#  GetProcAddress() and FreeLibrary().
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_LOADLIBRARY], [
+AC_ARG_ENABLE(
+  [loadlibrary],
+  [AC_HELP_STRING([--disable-loadlibrary], [don't use run-time link bindings under Win32])],
+  [case $enableval in
+  yes | true ) sim_ac_win32_loadlibrary=true ;;
+  *) sim_ac_win32_loadlibrary=false ;;
+  esac],
+  [sim_ac_win32_loadlibrary=true])
+
+if $sim_ac_win32_loadlibrary; then
+  # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
+  # HAVE_DLFCN_H symbol set up in config.h automatically.
+  AC_CHECK_HEADERS([windows.h])
+
+  AC_CACHE_CHECK([whether the Win32 LoadLibrary() method is available],
+    sim_cv_lib_loadlibrary_avail,
+    [AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+],
+                 [(void)LoadLibrary(0L); (void)GetProcAddress(0L, 0L); (void)FreeLibrary(0L); ],
+                 [sim_cv_lib_loadlibrary_avail=yes],
+                 [sim_cv_lib_loadlibrary_avail=no])])
+
+  if test x"$sim_cv_lib_loadlibrary_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+fi
+])
+
+# SIM_AC_CHECK_DLD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# ----------------------------------------------------------
+#
+#  Try to find the dynamic link loader library available on HP-UX 10.
+#  If it is found, this shell variable is set:
+#
+#    $sim_ac_dld_libs     (link libraries the linker needs for dld lib)
+#
+#  The $LIBS var will also be modified accordingly.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_DLD], [
+  sim_ac_dld_libs="-ldld"
+
+  sim_ac_save_libs=$LIBS
+  LIBS="$sim_ac_dld_libs $LIBS"
+
+  AC_CACHE_CHECK([whether the DLD shared library loader is available],
+    sim_cv_lib_dld_avail,
+    [AC_TRY_LINK([#include <dl.h>],
+                 [(void)shl_load("allyourbase", 0, 0L); (void)shl_findsym(0L, "arebelongtous", 0, 0L); (void)shl_unload((shl_t)0);],
+                 [sim_cv_lib_dld_avail=yes],
+                 [sim_cv_lib_dld_avail=no])])
+
+  if test x"$sim_cv_lib_dld_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    LIBS=$sim_ac_save_libs
+    ifelse([$2], , :, [$2])
+  fi
+])
+
+
+# SIM_AC_CHECK_DYLD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# -------------------------------------------------------------------
+#
+#  Try to use the Mac OS X dynamik link editor method
+#  NSLookupAndBindSymbol()
+#
+# Author: Karin Kosina, <kyrah@sim.no>
+
+AC_DEFUN([SIM_AC_CHECK_DYLD], [
+AC_ARG_ENABLE(
+  [dyld],
+  [AC_HELP_STRING([--disable-dyld],
+                  [don't use run-time link bindings under Mac OS X])],
+  [case $enableval in
+  yes | true ) sim_ac_dyld=true ;;
+  *) sim_ac_dyld=false ;;
+  esac],
+  [sim_ac_dyld=true])
+
+if $sim_ac_dyld; then
+
+  AC_CHECK_HEADERS([mach-o/dyld.h])
+
+  AC_CACHE_CHECK([whether we can use Mach-O dyld],
+    sim_cv_dyld_avail,
+    [AC_TRY_LINK([
+#ifdef HAVE_MACH_O_DYLD_H
+#include <mach-o/dyld.h>
+#endif /* HAVE_MACH_O_DYLD_H */
+],
+                 [(void)NSLookupAndBindSymbol("foo");],
+                 [sim_cv_dyld_avail=yes],
+                 [sim_cv_dyld_avail=no])])
+
+  if test x"$sim_cv_dyld_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+fi
+])
+
+# Usage:
+#  SIM_AC_DOXYGEN_TOOL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+# Description:
+#   This macro locates the doxygen executable. If it is found, the
+#   variable $sim_ac_doxygen_exe is set to the full path- and
+#   executable name (if not found, it is set to "false") and
+#   $sim_ac_doxygen_avail is set to the version number (if not
+#   found, it is set to "no").
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_DOXYGEN_TOOL], [
+AC_ARG_WITH(
+  [doxygen],
+  AC_HELP_STRING([--with-doxygen=DIR],
+                 [DIR is the directory where the doxygen executable resides]),
+  [],
+  [with_doxygen=yes])
+
+sim_ac_doxygen_avail=no
+
+if test x"$with_doxygen" != xno; then
+  sim_ac_path=$PATH
+  if test x"$with_doxygen" != xyes; then
+    sim_ac_path=${with_doxygen}:$PATH
+  fi
+
+  AC_PATH_PROG([sim_ac_doxygen_exe], [doxygen], [false], [$sim_ac_path])
+  if test x"$sim_ac_doxygen_exe" = xfalse; then
+    ifelse([$2], , :, [$2])
+  else
+    sim_ac_doxygen_avail=`$sim_ac_doxygen_exe -help 2> /dev/null | head -1 | sed 's%[[^ ]]\+ [[^ ]]\+ %%'`
+    $1
+  fi
+fi
+])
+
+
+# **************************************************************************
+# SIM_AC_ERROR_MESSAGE_FILE( FILENAME )
+#   Sets the error message file.  Default is $ac_aux_dir/m4/errors.txt.
+#
+# SIM_AC_ERROR( ERROR [, ERROR ...] )
+#   Fetches the error messages from the error message file and displays
+#   them on stderr. The configure process will subsequently exit.
+#
+# SIM_AC_WARN( ERROR [, ERROR ...] )
+#   As SIM_AC_ERROR, but will not exit after displaying the message(s).
+#
+# SIM_AC_WITH_ERROR( WITHARG )
+#   Invokes AC_MSG_ERROR in a consistent way for problems with the --with-*
+#   $withval argument.
+#
+# SIM_AC_ENABLE_ERROR( ENABLEARG )
+#   Invokes AC_MSG_ERROR in a consistent way for problems with the --enable-*
+#   $enableval argument.
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+
+AC_DEFUN([SIM_AC_ERROR_MESSAGE_FILE], [
+sim_ac_message_file=$1
+]) # SIM_AC_ERROR_MESSAGE_FILE
+
+AC_DEFUN([SIM_AC_ONE_MESSAGE], [
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
+if test -f $sim_ac_message_file; then
+  sim_ac_message="`sed -n -e '/^!$1$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
+  if test x"$sim_ac_message" = x""; then
+    AC_MSG_ERROR([no message named '$1' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)])
+  else
+    eval "echo >&2 \"$sim_ac_message\""
+  fi
+else
+  AC_MSG_ERROR([file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)])
+fi
+]) # SIM_AC_ONE_MESSAGE
+
+AC_DEFUN([_SIM_AC_ERROR], [
+SIM_AC_ONE_MESSAGE([$1])
+ifelse([$2], , , [
+echo >&2 ""
+_SIM_AC_ERROR(m4_shift($@))])
+]) # _SIM_AC_ERROR
+
+AC_DEFUN([SIM_AC_ERROR], [
+echo >&2 ""
+_SIM_AC_ERROR($@)
+echo >&2 ""
+AC_MSG_ERROR([aborting])
+]) # SIM_AC_ERROR
+
+AC_DEFUN([SIM_AC_WARN], [
+echo >&2 ""
+_SIM_AC_ERROR($@)
+echo >&2 ""
+]) # SIM_AC_WARN
+
+AC_DEFUN([SIM_AC_WITH_ERROR], [
+AC_MSG_ERROR([invalid value "${withval}" for "$1" configure argument])
+]) # SIM_AC_WITH_ERROR
+
+AC_DEFUN([SIM_AC_ENABLE_ERROR], [
+AC_MSG_ERROR([invalid value "${enableval}" for "$1" configure argument])
+]) # SIM_AC_ENABLE_ERROR
+
+
+# SIM_AC_STRIP_EXIT_DECLARATION
+#
+# Autoconf adds a declaration of exit() to confdefs.h, which causes
+# configure tests to fail later on when configuring for Visual C++
+# compilers.  This macro edits out the exit-declaration (which we
+# really don't need anyway) from the confdefs.h file.
+#
+# Typically, it should be inserted as early as possible, but after
+# AC_PROG_CXX / AC_PROG_CXXCPP.
+#
+# 2007-05-30 larsa
+
+AC_DEFUN([SIM_AC_STRIP_EXIT_DECLARATION], [
+mv confdefs.h confdefs.old
+egrep -v "void.*exit" confdefs.old >confdefs.h
+rm -f confdefs.old
+])
+
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_FONTCONFIG([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the Fontconfig header files, and gives you
+# the necessary CPPFLAGS in $sim_ac_fontconfig_cppflags, and also sets the
+# config.h define HAVE_FONTCONFIG_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_FONTCONFIG],
+[sim_ac_fontconfig_header_avail=false
+AC_MSG_CHECKING([how to include fontconfig.h])
+if test x"$with_fontconfig" != x"no"; then
+  sim_ac_fontconfig_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_fontconfig_cppflags=
+
+  if test x"$with_fontconfig" != xyes && test x"$with_fontconfig" != x""; then
+    sim_ac_fontconfig_cppflags="-I${with_fontconfig}/include -I${with_fontconfig}/include/fontconfig"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+
+  SIM_AC_CHECK_HEADER_SILENT([fontconfig/fontconfig.h], [
+    sim_ac_fontconfig_header_avail=true
+    sim_ac_fontconfig_header=fontconfig.h
+    AC_DEFINE([HAVE_FONTCONFIG_H], 1, [define that the Fontconfig header is available])
+  ])
+
+  CPPFLAGS="$sim_ac_fontconfig_save_CPPFLAGS"
+  if $sim_ac_fontconfig_header_avail; then
+    if test x"$sim_ac_fontconfig_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_fontconfig_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_fontconfig_cppflags, @%:@include <$sim_ac_fontconfig_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_FONTCONFIG
+
+
+# **************************************************************************
+# SIM_AC_HAVE_FONTCONFIG_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+#  Try to find the Fontconfig development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_fontconfig_cppflags (extra flags the compiler needs for fontconfig)
+#    $sim_ac_fontconfig_ldflags  (extra flags the linker needs for fontconfig)
+#    $sim_ac_fontconfig_libs     (link libraries the linker needs for fontconfig)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_fontconfig_avail is set to "yes" if the
+#  fontconfig development system is found.
+#
+#  Download Fontconfig from www.fontconfig.org
+#
+# Authors:
+#   Tamer Fahmy <tamer@tammura.at>
+#
+
+AC_DEFUN([SIM_AC_HAVE_FONTCONFIG_IFELSE],
+[: ${sim_ac_have_fontconfig=false}
+AC_ARG_WITH(
+  [fontconfig],
+  [AC_HELP_STRING([--with-fontconfig=PATH], [enable/disable Fontconfig support])],
+  [case $withval in
+  yes | "") sim_ac_want_fontconfig=true ;;
+  no)       sim_ac_want_fontconfig=false ;;
+  *)        sim_ac_want_fontconfig=true
+            sim_ac_fontconfig_path=$withval ;;
+  esac],
+  [sim_ac_want_fontconfig=true])
+case $sim_ac_want_fontconfig in
+true)
+  $sim_ac_have_fontconfig && break
+  sim_ac_fontconfig_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_fontconfig_save_LDFLAGS=$LDFLAGS
+  sim_ac_fontconfig_save_LIBS=$LIBS
+
+  sim_ac_fontconfig_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_fontconfig_debug=true
+  # test -z "$sim_ac_fontconfig_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_fontconfig_path=$prefix
+  sim_ac_fontconfig_name=fontconfig
+  sim_ac_fontconfig_libs="-l$sim_ac_fontconfig_name"
+  if test -n "$sim_ac_fontconfig_path"; then
+    for sim_ac_fontconfig_candidate in \
+      `( ls $sim_ac_fontconfig_path/lib/fontconfig*.lib;
+         ls $sim_ac_fontconfig_path/lib/fontconfig*d.lib;
+         ls $sim_ac_fontconfig_path/lib/libfontconfig*.lib;
+         ls $sim_ac_fontconfig_path/lib/libfontconfig*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_fontconfig_candidate in
+      *d.lib)
+        $sim_ac_fontconfig_debug &&
+          sim_ac_fontconfig_name=`basename $sim_ac_fontconfig_candidate .lib` ;;
+      *.lib)
+        sim_ac_fontconfig_name=`basename $sim_ac_fontconfig_candidate .lib` ;;
+      esac
+    done
+    sim_ac_fontconfig_cppflags="-I$sim_ac_fontconfig_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+    sim_ac_fontconfig_ldflags="-L$sim_ac_fontconfig_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_fontconfig_ldflags"
+    sim_ac_fontconfig_libs="-l$sim_ac_fontconfig_name"
+    # unset sim_ac_fontconfig_candidate
+    # unset sim_ac_fontconfig_path
+  fi
+
+  SIM_AC_CHECK_HEADER_FONTCONFIG([CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"])
+
+  AC_MSG_CHECKING([for Fontconfig])
+  LIBS="$sim_ac_fontconfig_libs $LIBS"
+  AC_TRY_LINK(
+    [#include <fontconfig/fontconfig.h>],
+    [FcGetVersion();],
+    [sim_ac_have_fontconfig=true])
+
+  CPPFLAGS=$sim_ac_fontconfig_save_CPPFLAGS
+  LDFLAGS=$sim_ac_fontconfig_save_LDFLAGS
+  LIBS=$sim_ac_fontconfig_save_LIBS
+  # unset sim_ac_fontconfig_debug
+  # unset sim_ac_fontconfig_name
+  # unset sim_ac_fontconfig_save_CPPFLAGS
+  # unset sim_ac_fontconfig_save_LDFLAGS
+  # unset sim_ac_fontconfig_save_LIBS
+  ;;
+esac
+if $sim_ac_want_fontconfig; then
+  if $sim_ac_have_fontconfig; then
+    AC_MSG_RESULT([success ($sim_ac_fontconfig_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_fontconfig
+])
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_FREETYPE([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the FreeType header files, and gives you
+# the necessary CPPFLAGS in $sim_ac_freetype_cppflags, and also sets the
+# config.h define HAVE_FREETYPE_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_FREETYPE],
+[sim_ac_freetype_header_avail=false
+AC_MSG_CHECKING([how to include ft2build.h])
+if test x"$with_freetype" != x"no"; then
+  sim_ac_freetype_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_freetype_cppflags=
+
+  if test x"$with_freetype" != xyes && test x"$with_freetype" != x""; then
+    sim_ac_freetype_cppflags="-I${with_freetype}/include -I${with_freetype}/include/freetype2"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+
+  SIM_AC_CHECK_HEADER_SILENT([ft2build.h], [
+    sim_ac_freetype_header_avail=true
+    sim_ac_freetype_header=ft2build.h
+    AC_DEFINE([HAVE_FREETYPE_H], 1, [define that the FreeType header is available])
+  ])
+
+  CPPFLAGS="$sim_ac_freetype_save_CPPFLAGS"
+  if $sim_ac_freetype_header_avail; then
+    if test x"$sim_ac_freetype_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_freetype_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_freetype_cppflags, @%:@include <$sim_ac_freetype_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_FREETYPE
+
+
+# Usage:
+#  SIM_AC_HAVE_FREETYPE_IFELSE ( IF-FOUND, IF-NOT-FOUND )
+#
+#  Try to find the Freetype development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_freetype_cppflags (extra flags the compiler needs for freetype)
+#    $sim_ac_freetype_ldflags  (extra flags the linker needs for freetype)
+#    $sim_ac_freetype_libs     (link libraries the linker needs for freetype)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_freetype_avail is set to "yes" if the
+#  freetype development system is found.
+#
+#  Download Freetype from www.freetype.org
+#
+# Authors: Pål-Robert Engnæs, <preng@sim.no>
+#          <Code copied from check_openal.m4>
+#
+
+AC_DEFUN([SIM_AC_HAVE_FREETYPE_IFELSE],
+[: ${sim_ac_have_freetype=false}
+AC_ARG_WITH(
+  [freetype],
+  [AC_HELP_STRING([--with-freetype=PATH], [enable/disable Freetype support])],
+  [case $withval in
+  yes | "") sim_ac_want_freetype=true ;;
+  no)       sim_ac_want_freetype=false ;;
+  *)        sim_ac_want_freetype=true
+            sim_ac_freetype_path=$withval ;;
+  esac],
+  [sim_ac_want_freetype=true])
+case $sim_ac_want_freetype in
+true)
+  $sim_ac_have_freetype && break
+  sim_ac_freetype_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_freetype_save_LDFLAGS=$LDFLAGS
+  sim_ac_freetype_save_LIBS=$LIBS
+
+  sim_ac_freetype_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_freetype_debug=true
+  # test -z "$sim_ac_freetype_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_freetype_path=$prefix
+  sim_ac_freetype_name=freetype
+  sim_ac_freetype_libs="-l$sim_ac_freetype_name"
+  if test -n "$sim_ac_freetype_path"; then
+    for sim_ac_freetype_candidate in \
+      `( ls $sim_ac_freetype_path/lib/freetype*.lib;
+         ls $sim_ac_freetype_path/lib/freetype*d.lib;
+         ls $sim_ac_freetype_path/lib/libfreetype*.lib;
+         ls $sim_ac_freetype_path/lib/libfreetype*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_freetype_candidate in
+      *d.lib)
+        $sim_ac_freetype_debug &&
+          sim_ac_freetype_name=`basename $sim_ac_freetype_candidate .lib` ;;
+      *.lib)
+        sim_ac_freetype_name=`basename $sim_ac_freetype_candidate .lib` ;;
+      esac
+    done
+    sim_ac_freetype_cppflags="-I$sim_ac_freetype_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+    sim_ac_freetype_ldflags="-L$sim_ac_freetype_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+    sim_ac_freetype_libs="-l$sim_ac_freetype_name"
+    # unset sim_ac_freetype_candidate
+    # unset sim_ac_freetype_path
+  fi
+
+  SIM_AC_CHECK_HEADER_FREETYPE([CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"])
+
+  AC_MSG_CHECKING([for FreeType])
+  LIBS="$sim_ac_freetype_libs $LIBS"
+  AC_TRY_LINK(
+    [#include <ft2build.h>
+     #include FT_FREETYPE_H],
+    [FT_Library lib;
+     unsigned long check_for_required_constants = FT_ENCODING_ADOBE_LATIN_1;
+     FT_Init_FreeType(&lib);],
+    [sim_ac_have_freetype=true])
+
+  CPPFLAGS=$sim_ac_freetype_save_CPPFLAGS
+  LDFLAGS=$sim_ac_freetype_save_LDFLAGS
+  LIBS=$sim_ac_freetype_save_LIBS
+  # unset sim_ac_freetype_debug
+  # unset sim_ac_freetype_name
+  # unset sim_ac_freetype_save_CPPFLAGS
+  # unset sim_ac_freetype_save_LDFLAGS
+  # unset sim_ac_freetype_save_LIBS
+  ;;
+esac
+if $sim_ac_want_freetype; then
+  if $sim_ac_have_freetype; then
+    AC_MSG_RESULT([success ($sim_ac_freetype_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_freetype
+])
+
+ **************************************************************************
+# gendsp.m4
+#
+# macros:
+#   SIM_AC_MSVC_DSP_ENABLE_OPTION
+#   SIM_AC_MSVC_DSP_SETUP(PROJECT, Project, project, extra-args)
+#
+# authors:
+#   Lars J. Aas <larsa@coin3d.org>
+
+# **************************************************************************
+AC_DEFUN([SIM_AC_MSVC_DSP_ENABLE_OPTION], [
+AC_ARG_ENABLE([msvcdsp],
+  [AC_HELP_STRING([--enable-msvcdsp], [build .dsp, not library])],
+  [case $enableval in
+  no | false) sim_ac_make_dsp=false ;;
+  *)          sim_ac_make_dsp=true ;;
+  esac],
+  [sim_ac_make_dsp=false])
+
+if $sim_ac_make_dsp; then
+  enable_dependency_tracking=no
+  enable_libtool_lock=no
+fi
+]) # SIM_AC_MSVC_DSP_ENABLE_OPTION
+
+# **************************************************************************
+AC_DEFUN([SIM_AC_MSVC_DSP_SETUP], [
+AC_REQUIRE([SIM_AC_MSVC_DSP_ENABLE_OPTION])
+$1_DSP_LIBDIRS=
+$1_DSP_LIBS=
+$1_DSP_INCS=
+$1_LIB_DSP_DEFS=
+$1_DSP_DEFS=
+
+if $sim_ac_make_dsp; then
+  SIM_AC_CONFIGURATION_SETTING([$2 build type], [msvc .dsp])
+
+  # -DHAVE_CONFIG_H is set up in $DEFS too late for us to use, and some
+  # include directives are usually set up in the Makefile.am files
+  for arg in -DHAVE_CONFIG_H $4 $CPPFLAGS $LDFLAGS $LIBS; do
+    case $arg in
+    -L* )
+      libdir=`echo $arg | cut -c3-`
+      $1_DSP_LIBDIRS="[$]$1_DSP_LIBDIRS $libdir"
+      ;;
+    -l* )
+      libname=`echo $arg | cut -c3-`
+      for libdir in [$]$1_DSP_LIBDIRS; do
+        if test -f $libdir/$libname.lib; then
+          # lib is not in any standard location - use full path
+          libname=`cygpath -w "$libdir/$libname" 2>/dev/null || echo "$libdir/$libname"`
+          break
+        fi
+      done
+      if test x"[$]$1_DSP_LIBS" = x""; then
+        $1_DSP_LIBS="$libname.lib"
+      else
+        $1_DSP_LIBS="[$]$1_DSP_LIBS $libname.lib"
+      fi
+      ;;
+    -I* )
+      incdir=`echo $arg | cut -c3-`
+      incdir=`cygpath -w "$incdir" 2>/dev/null || echo "$incdir"`
+      if test x"[$]$1_DSP_INCS" = x""; then
+        $1_DSP_INCS="/I \"$incdir\""
+      else
+        $1_DSP_INCS="[$]$1_DSP_INCS /I \"$incdir\""
+      fi
+      ;;
+    -D$1_DEBUG* | -DNDEBUG )
+      # Defines that vary between release/debug configurations can't be
+      # set up dynamically in <lib>_DSP_DEFS - they must be static in the
+      # gendsp.pl script.  We therefore catch them here so we can ignore
+      # checking for them below.
+      ;;
+    -D*=* | -D* )
+      define=`echo $arg | cut -c3-`
+      if test x"[$]$1_DSP_DEFS" = x""; then
+        $1_DSP_DEFS="/D \"$define\""
+      else
+        $1_DSP_DEFS="[$]$1_DSP_DEFS /D \"$define\""
+      fi
+      if (echo $define | grep _MAKE_DLL) >/dev/null 2>&1; then
+        :
+      else
+        if test x"[$]$1_DSP_DEFS" = x""; then
+          $1_LIB_DSP_DEFS="/D \"$define\""
+        else
+          $1_LIB_DSP_DEFS="[$]$1_LIB_DSP_DEFS /D \"$define\""
+        fi
+      fi
+      ;;
+    esac
+  done
+
+  CC=[$]$3_build_dir/cfg/gendsp.pl
+  CXX=[$]$3_build_dir/cfg/gendsp.pl
+  CXXLD=[$]$3_build_dir/cfg/gendsp.pl
+  # Yes, this is totally bogus stuff, but don't worry about it.  As long
+  # as gendsp.pl recognizes it...  20030219 larsa
+  CPPFLAGS="$CPPFLAGS -Ddspfile=[$]$3_build_dir/$3[$]$1_MAJOR_VERSION.dsp"
+  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=[$]$3_build_dir/$3[$]$1_MAJOR_VERSION.dsp"
+  LIBFLAGS="$LIBFLAGS -o $3[$]$1_MAJOR_VERSION.so.0"
+
+  # this can't be set up at the point the libtool script is generated
+  mv libtool libtool.bak
+  sed -e "s%^CC=\"gcc\"%CC=\"[$]$3_build_dir/cfg/gendsp.pl\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"[$]$3_build_dir/cfg/gendsp.pl\"%" \
+      <libtool.bak >libtool
+  rm -f libtool.bak
+  chmod 755 libtool
+fi
+
+AC_SUBST([$1_DSP_LIBS])
+AC_SUBST([$1_DSP_INCS])
+AC_SUBST([$1_DSP_DEFS])
+AC_SUBST([$1_LIB_DSP_DEFS])
+])
+
+
+# SIM_AC_DYNLIB_EXT
+# --------------------------------------------
+# Find out what the shared library suffix is on this platform.
+#
+# (Consider this a hack -- the "shrext_cmds" variable from Libtool
+# is undocumented and not guaranteed to stick around forever. We've
+# already had to change this once (it used to be called "shrext")).
+#
+# Sets the sim_ac_shlibext variable to the extension name.
+
+AC_DEFUN([SIM_AC_DYNLIB_EXT],
+[
+AC_MSG_CHECKING([for shared library suffix])
+eval "sim_ac_shlibext=$shrext_cmds"
+AC_MSG_RESULT($sim_ac_shlibext)
+if test x"$sim_ac_shlibext" = x""; then
+  AC_MSG_WARN([Could not figure out library suffix! (Has there been a change to the Libtool version used?)])
+fi
+])
+
+
+# SIM_AC_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# --------------------------------------------------------------------------
+# Modified AC_CHECK_HEADER to use AC_TRY_COMPILE instead of AC_TRY_CPP,
+# as we can get false positives and/or false negatives when running under
+# Cygwin, using the Microsoft Visual C++ compiler (the configure script will
+# pick the GCC preprocessor).
+
+AC_DEFUN([SIM_AS_TR_CPP],
+[m4_ifdef([AS_TR_CPP],[AS_TR_CPP([$1])],[AC_TR_CPP([$1])])])
+
+AC_DEFUN([SIM_AC_CHECK_HEADER],
+[AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you have headers in a nonstandard directory <include dir>])
+AC_CACHE_CHECK(
+  [for $1],
+  ac_Header,
+  [AC_TRY_COMPILE([#include <$1>],
+    [],
+    [AC_VAR_SET([ac_Header], yes)],
+    [AC_VAR_SET([ac_Header], no)])])
+if test AC_VAR_GET(ac_Header) = yes; then
+  ifelse([$2], , :, [$2])
+else
+  ifelse([$3], , :, [$3])
+fi
+AC_VAR_POPDEF([ac_Header])
+])# SIM_AC_CHECK_HEADER
+
+
+# SIM_AC_CHECK_HEADERS(HEADER-FILE...
+#                  [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# ----------------------------------------------------------
+AC_DEFUN([SIM_AC_CHECK_HEADERS],
+[for ac_header in $1
+do
+SIM_AC_CHECK_HEADER(
+  [$ac_header],
+  [AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(HAVE_$ac_header)) $2],
+  [$3])
+done
+])# SIM_AC_CHECK_HEADERS
+
+
+# SIM_AC_CHECK_SIZEOF(TYPE, [INCLUDES])
+# --------------------------------------------
+AC_DEFUN([SIM_AC_CHECK_SIZEOF],
+[
+AC_CHECK_TYPE([$1], [
+  _AC_COMPUTE_INT([sizeof ($1)],
+                  [sim_ac_bytesize],
+                  [AC_INCLUDES_DEFAULT([$2])])
+], [sim_ac_bytesize=0], [$2])
+])# SIM_AC_CHECK_SIZEOF
+
+
+# SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE(if-found, if-not-found, prefix
+# --------------------
+AC_DEFUN([SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE],
+[
+m4_define([SIM_AC_DEF_PREFIX], ifelse([$3], [], [COIN], [$3]))
+AC_CHECK_HEADERS([inttypes.h stdint.h sys/types.h stddef.h])
+AC_MSG_CHECKING([standard bytesize typedefs])
+AC_TRY_COMPILE([
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
+], [
+  int8_t int8var;
+  uint8_t uint8var;
+  int16_t int16var;
+  uint16_t uint16var;
+  int32_t int32var;
+  uint32_t uint32var;
+  int64_t int64var;
+  uint64_t uint64var;
+  intptr_t intptrvar;
+  uintptr_t uintptrvar;
+],
+[sim_ac_have_have_bytesize_types=true],
+[sim_ac_have_have_bytesize_types=false])
+
+if $sim_ac_have_have_bytesize_types; then
+  AC_MSG_RESULT([available])
+  AC_DEFINE_UNQUOTED([HAVE_INT8_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[]_INT8_T, [int8_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT8_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[]_UINT8_T, [uint8_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INT16_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[]_INT16_T, [int16_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT16_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[]_UINT16_T, [uint16_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INT32_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[_INT32_T], [int32_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT32_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[_UINT32_T], [uint32_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INT64_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[_INT64_T], [int64_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINT64_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[_UINT64_T], [uint64_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INTPTR_T], [1], [define this if the type is available on the system])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[_INTPTR_T], [intptr_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINTPTR_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED(SIM_AC_DEF_PREFIX[_UINTPTR_T], [uintptr_t], [define this to a type of the indicated bitwidth])
+  $1
+else
+  AC_MSG_RESULT([not available])
+  $2
+fi
+])# SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE
+
+# SIM_AC_BYTESIZE_TYPE(TYPEDEFTYPE, BYTESIZE, ALTERNATE_TYPELIST,
+#                     [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# ----------------------------------------------------------
+AC_DEFUN([SIM_AC_BYTESIZE_TYPE],
+[sim_ac_searching=true
+m4_define([SIM_AC_DEF_PREFIX], ifelse([$6], [], [COIN], [$6]))
+AC_MSG_CHECKING([for $1 type or equivalent])
+for sim_ac_type in $1 $3
+do
+  if $sim_ac_searching; then
+    AC_TRY_COMPILE([
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
+], [
+      /* establish that type '$1' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      $sim_ac_type variable = 0;
+], [
+      AC_TRY_COMPILE([
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
+], [
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof($1) equals $2 */
+      switch ( switchval ) {
+      case sizeof($sim_ac_type): break;
+      case $2: break;
+      }
+], [
+      # compile time success means we *haven't* found the type of right size
+      :
+], [
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      AC_MSG_RESULT([$sim_ac_type])
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "$1"; then
+        AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(have_$1), 1, [define this if the type is available on the system])
+      fi
+      AC_DEFINE_UNQUOTED(SIM_AC_DEF_PREFIX[]SIM_AS_TR_CPP(_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
+])])
+  fi
+done
+
+if $sim_ac_searching; then
+  AC_MSG_RESULT([no type found])
+  ifelse([$5], , :, [$5])
+else
+  # ac_msg_result invoked above
+  ifelse([$4], , :, [$4])
+fi
+])# SIM_AC_BYTESIZE_TYPE
+
+# SIM_AC_DEFINE_BYTESIZE_TYPES
+# ----------------------------------------------------------
+#
+AC_DEFUN([SIM_AC_DEFINE_BYTESIZE_TYPES], [
+SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([
+], [
+  SIM_AC_BYTESIZE_TYPE(int8_t, 1, [char], [], AC_MSG_ERROR([could not find 8-bit type]), $1)
+  SIM_AC_BYTESIZE_TYPE(uint8_t, 1, [u_int8_t "unsigned char"], [], AC_MSG_ERROR([could not find unsigned 8-bit type]), $1)
+
+  SIM_AC_BYTESIZE_TYPE(int16_t, 2, [short int], [], AC_MSG_ERROR([could not find 16-bit type]), $1)
+  SIM_AC_BYTESIZE_TYPE(uint16_t, 2, [u_int16_t "unsigned short" "unsigned int"], [], AC_MSG_ERROR([could not find unsigned 16-bit type]), $1)
+
+  SIM_AC_BYTESIZE_TYPE(int32_t, 4, [int long], [], AC_MSG_ERROR([could not find 32-bit type]), $1)
+  SIM_AC_BYTESIZE_TYPE(uint32_t, 4, [u_int32_t "unsigned int" "unsigned long"], [], AC_MSG_ERROR([could not find unsigned 32-bit type]), $1)
+
+  SIM_AC_BYTESIZE_TYPE(int64_t, 8, [long int "long long" __int64], [], AC_MSG_WARN([could not find 64-bit type]), $1)
+  SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned 64-bit type]), $1)
+
+  SIM_AC_BYTESIZE_TYPE(intptr_t, sizeof(void *), [int long "long long" __int64], [], AC_MSG_WARN([could not find int-pointer type]), $1)
+  SIM_AC_BYTESIZE_TYPE(uintptr_t, sizeof(void *), [u_intptr_t "_W64 unsigned int" "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned int-pointer type]), $1)
+], [$1])
+])# SIM_AC_DEFINE_BYTESIZE_TYPES
+
+#**************************************************************************
+# SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER(includes, struct name, member name, variable, if-error)
+
+AC_DEFUN([SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER], [
+AC_MSG_CHECKING([type of $2::$3])
+cat > conftest.cpp << _ACEOF
+#include "confdefs.h"
+$1
+int main(int argc, char **argv) { return 0; }
+_ACEOF
+sim_ac_struct_contents="`$CXXCPP $CPPFLAGS conftest.cpp 2>/dev/null | sed -e '1,/struct[[ \t]]*$2/ d' | sed -e '/}/,\$ d'`"
+rm conftest.cpp
+# canonicalize contents:
+sim_ac_struct_contents="`echo { \$sim_ac_struct_contents }`"
+# extract type declaration type
+sim_ac_member_type="`echo $sim_ac_struct_contents | sed -e 's/^.*[[{\\;]] *\\([[^{\\;]]*\\) $3 *;.*/\\1/'`"
+if test -z "$sim_ac_member_type"; then
+  AC_MSG_RESULT([<unknown type>])
+  $5
+else
+  AC_MSG_RESULT([$sim_ac_member_type])
+  AC_DEFINE_UNQUOTED([$4], [$sim_ac_member_type], [The type $2::$3 is declared as.])
+fi
+]) # SIM_AC_CHECK_TYPEOF_STRUCT_MEMBER
+
+# **************************************************************************
+# SIM_AC_MACOS10_DEPLOYMENT_TARGET
+
+AC_DEFUN([SIM_AC_MACOS10_DEPLOYMENT_TARGET], [
+
+# might not case on host_os here in case of crosscompiling in the future...
+case "$host_os" in
+darwin*)
+  AC_MSG_CHECKING([OS X deployment target])
+  cat > conftest.c << EOF
+int VerOSX = __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__;
+EOF
+  # The " *"-parts of the last sed-expression on the next line are necessary
+  # because at least the Solaris/CC preprocessor adds extra spaces before and
+  # after the trailing semicolon.
+  sim_ac_macos10_deployment_target_code=`$CXXCPP $CPPFLAGS conftest.c 2>/dev/null | grep '^int VerOSX' | sed 's%^int VerOSX = %%' | sed 's% *;.*$%%'`
+  rm -f conftest.c
+
+  case "$sim_ac_macos10_deployment_target_code" in
+  10* )
+    sim_ac_macos10_deployment_version_string=`echo $sim_ac_macos10_deployment_target_code | sed -e 's/^\(.\)\(.\)\(.\)\(.\)/\1\2.\3.\4/;'`
+    sim_ac_macos10_deployment_target_major_version=`echo $sim_ac_macos10_deployment_target_code | cut -c1-2`
+    sim_ac_macos10_deployment_target_minor_version=`echo $sim_ac_macos10_deployment_target_code | cut -c3`
+    sim_ac_macos10_deployment_target_micro_version=`echo $sim_ac_macos10_deployment_target_code | cut -c4`
+    AC_MSG_RESULT($sim_ac_macos10_deployment_target_version_string)
+    ;;
+  * )
+    :
+    AC_MSG_RESULT([-])
+    ;;
+  esac
+  ;;
+esac
+]) # SIM_AC_MACOS10_DEPLOYMENT_TARGET
+
+# **************************************************************************
+# SIM_AC_MAC_CPP_ADJUSTMENTS
+#
+# Add --no-cpp-precomp if necessary. Without this option, the
+# Apple preprocessor is used on Mac OS X platforms, and it is
+# known to be very buggy.  It's better to use this option, so
+# the GNU preprocessor is preferred.
+#
+
+
+AC_DEFUN([SIM_AC_MAC_CPP_ADJUSTMENTS],
+[case $host_os in
+darwin*)
+  if test x"$GCC" = x"yes"; then
+    # FIXME: create a SIM_AC_CPP_OPTION macro
+    SIM_AC_CC_COMPILER_OPTION([-no-cpp-precomp], [CPPFLAGS="$CPPFLAGS -no-cpp-precomp"])
+  fi
+  ;;
+esac
+]) # SIM_AC_MAC_CPP_ADJUSTMENTS
+
+
+# **************************************************************************
+# This macro sets up the MAC_FRAMEWORK automake conditional, depending on
+# the host OS and whether $sim_ac_prefer_framework has been overridden or
+# not.
+
+AC_DEFUN([SIM_AC_MAC_FRAMEWORK],
+[case $host_os in
+darwin*)
+  : ${sim_ac_prefer_framework=true}
+  ;;
+esac
+: ${sim_ac_prefer_framework=false}
+# This AM_CONDITIONAL can be used to make Mac OS X specific make-rules
+# related to installing proper Frameworks instead.
+AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_prefer_framework])
+
+if $sim_ac_prefer_framework; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_MAC_FRAMEWORK
+
+
+# Usage:
+#  SIM_AC_UNIVERSAL_BINARIES([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Determine whether we should build Universal Binaries. If yes, these
+#  shell variables are set:
+#
+#    $sim_ac_enable_universal (true if we are building Universal Binaries)
+#    $sim_ac_universal_flags (extra flags needed for Universal Binaries)
+#
+#  The CFLAGS and CXXFLAGS variables will also be modified accordingly.
+#
+#  Note that when building Universal Binaries, dependency tracking will
+#  be turned off.
+#
+#  Important: This macro must be called _before_ AM_INIT_AUTOMAKE.
+#
+# Author: Karin Kosina <kyrah@sim.no>.
+
+AC_DEFUN([SIM_AC_UNIVERSAL_BINARIES], [
+
+sim_ac_enable_universal=false
+
+
+case $host_os in
+  darwin* )
+    AC_ARG_ENABLE(
+      [universal],
+      AC_HELP_STRING([--enable-universal], [build Universal Binaries]), [
+        case $enableval in
+          yes | true) sim_ac_enable_universal=true ;;
+          *) ;;
+        esac])
+
+    AC_MSG_CHECKING([whether we should build Universal Binaries])
+    if $sim_ac_enable_universal; then
+      AC_MSG_RESULT([yes])
+      SIM_AC_CONFIGURATION_SETTING([Build Universal Binaries], [Yes])
+
+      # need to build against Universal Binary SDK on PPC
+      if test x"$host_cpu" = x"powerpc"; then
+        sim_ac_universal_sdk_flags="-isysroot /Developer/SDKs/MacOSX10.4u.sdk"
+      fi
+
+      sim_ac_universal_flags="-arch i386 -arch ppc $sim_ac_universal_sdk_flags"
+
+      CFLAGS="$sim_ac_universal_flags $CFLAGS"
+      CXXFLAGS="$sim_ac_universal_flags $CXXFLAGS"
+
+      # disable dependency tracking since we can't use -MD when cross-compiling
+      enable_dependency_tracking=no
+    else
+      AC_MSG_RESULT([no])
+      SIM_AC_CONFIGURATION_SETTING([Build Universal Binaries], [No (default)])
+    fi
+esac
+]) # SIM_AC_UNIVERSAL_BINARIES
+
+
+# Usage:
+#   SIM_AC_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+# Description:
+#   Find out how to quote strings within macros.
+#
+#   The variable sim_ac_quote_hash will be set to "yes" if we
+#   can do ANSI C string quoting within macros using the hash
+#   symbol.
+#
+#   The variable sim_ac_quote_apostrophes will be set to "yes"
+#   if we can do string quoting within macros using apostrophes.
+#   Note that the string quoting check with apostrophes will
+#   not be performed if the hash quoting works.
+#
+#   ACTION-IF-FOUND will be performed if any method works,
+#   otherwise ACTION-IF-NOT-FOUND will be run.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_CHECK_MACRO_QUOTE], [
+
+sim_ac_quote_hash=no
+sim_ac_quote_apostrophes=
+AC_CACHE_CHECK(
+  [whether quoting in macros can be done with hash symbol],
+  sim_cv_quote_hash,
+  [AC_TRY_RUN([#include <string.h>
+               #define TEST_QUOTE(str) #str
+               int main(void) { return strcmp("sim", TEST_QUOTE(sim)); }],
+              [sim_cv_quote_hash=yes],
+              [sim_cv_quote_hash=no],
+              [AC_MSG_WARN([can't check macroquoting when crosscompiling, assumes ANSI C])
+              sim_cv_quote_hash=yes])])
+
+if test x"$sim_cv_quote_hash" = x"yes"; then
+  sim_ac_quote_hash=yes
+  $1
+else
+  AC_CACHE_CHECK(
+    [whether quoting in macros can be done with apostrophes],
+    sim_cv_quote_apostrophes,
+    [AC_TRY_RUN([#include <string.h>
+                 #define TEST_QUOTE(str) "str"
+                 int main(void) { return strcmp("sim", TEST_QUOTE(sim)); }],
+                [sim_cv_quote_apostrophes=yes],
+                [sim_cv_quote_apostrophes=no],
+                [sim_cv_quote_apostrophes=yes])])
+  if test x"$sim_cv_quote_apostrophes" = x"yes"; then
+    sim_ac_quote_apostrophes=yes
+    $1
+  else
+    sim_ac_quote_apostrophes=no
+    $2
+  fi
+fi
+])
+
+# Usage:
+#   SIM_AC_CHECK_MATHLIB([ACTION-IF-OK[, ACTION-IF-NOT-OK]])
+#
+# Description:
+#   Check if linker needs to explicitly link with the library with
+#   math functions. Sets environment variable $sim_ac_libm to the
+#   necessary linklibrary, plus includes this library in the LIBS
+#   env variable.
+#
+# Notes:
+#   There is a macro AC_CHECK_LIBM in the libtool distribution, but it
+#   does at least not work with SGI MIPSpro CC v7.30.
+#
+# Authors:
+#   Lars Jørgen Aas, <larsa@sim.no>
+#   Morten Eriksen, <mortene@sim.no>
+#   Rupert Kittinger, <kittinger@mechanik.tu-graz.ac.at>
+#
+
+AC_DEFUN([SIM_AC_CHECK_MATHLIB],
+[sim_ac_libm=
+
+# It is on purpose that we avoid caching, as this macro could be
+# run twice from the same configure-script: once for the C compiler,
+# once for the C++ compiler.
+
+AC_MSG_CHECKING(for math functions library)
+
+sim_ac_mathlib_test=UNDEFINED
+# BeOS and MSWin platforms has implicit math library linking,
+# and ncr-sysv4.3 might use -lmw (according to AC_CHECK_LIBM in
+# libtool.m4).
+for sim_ac_math_chk in "" -lm -lmw; do
+  if test x"$sim_ac_mathlib_test" = xUNDEFINED; then
+    sim_ac_store_libs=$LIBS
+    LIBS="$sim_ac_store_libs $sim_ac_math_chk"
+    SIM_AC_MATHLIB_READY_IFELSE([sim_ac_mathlib_test=$sim_ac_math_chk])
+    LIBS=$sim_ac_store_libs
+  fi
+done
+
+if test x"$sim_ac_mathlib_test" != xUNDEFINED; then
+  if test x"$sim_ac_mathlib_test" != x""; then
+    sim_ac_libm=$sim_ac_mathlib_test
+    LIBS="$sim_ac_libm $LIBS"
+    AC_MSG_RESULT($sim_ac_mathlib_test)
+  else
+    AC_MSG_RESULT([no explicit linkage necessary])
+  fi
+  $1
+else
+  AC_MSG_RESULT([failed!])
+  $2
+fi
+])# SIM_AC_CHECK_MATHLIB
+
+# **************************************************************************
+# SIM_AC_MATHLIB_READY_IFELSE( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
+
+AC_DEFUN([SIM_AC_MATHLIB_READY_IFELSE],
+[
+# It is on purpose that we avoid caching, as this macro could be
+# run twice from the same configure-script: once for the C compiler,
+# once for the C++ compiler.
+
+AC_TRY_LINK(
+    [#include <math.h>
+    #include <stdlib.h>
+    #include <stdio.h>],
+    [char s[16];
+    /*
+    SGI IRIX MIPSpro compilers may "fold" math
+    functions with constant arguments already
+    at compile time.
+
+    It is also theoretically possible to do this
+    for atof(), so to be _absolutely_ sure the
+    math functions aren't replaced by constants at
+    compile time, we get the arguments from a guaranteed
+    non-constant source (stdin).
+    */
+    printf("> %g\n",fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin))));
+    printf("> %g\n",pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin))));
+    printf("> %g\n",exp(atof(fgets(s,15,stdin))));
+    printf("> %g\n",sin(atof(fgets(s,15,stdin))))],
+    [sim_ac_mathlib_ready=true],
+    [sim_ac_mathlib_ready=false])
+
+if ${sim_ac_mathlib_ready}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_MATHLIB_READY_IFELSE()
+
+
+#   Use this file to store miscellaneous macros related to checking
+#   compiler features.
+
+# Usage:
+#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#
+# Description:
+#
+#   Check whether the current C or C++ compiler can handle a
+#   particular command-line option.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+#   * [mortene:19991218] improve macros by catching and analyzing
+#     stderr (at least to see if there was any output there)?
+#
+
+AC_DEFUN([SIM_AC_COMPILER_OPTION], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
+AC_MSG_RESULT([$sim_ac_accept_result])
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in arg 2 or arg 3.
+if test $sim_ac_accept_result = yes; then
+  ifelse([$2], , :, [$2])
+else
+  ifelse([$3], , :, [$3])
+fi
+])
+
+AC_DEFUN([SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [$2], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in arg 3 or arg 4.
+if test $sim_ac_accept_result = yes; then
+  ifelse([$3], , :, [$3])
+else
+  ifelse([$4], , :, [$4])
+fi
+])
+
+
+AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG(C)
+AC_MSG_CHECKING([whether $CC accepts $1])
+SIM_AC_COMPILER_OPTION([$1], [$2], [$3])
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CC_COMPILER_BEHAVIOR_OPTION_QUIET], [
+AC_LANG_SAVE
+AC_LANG(C)
+SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET([$1], [$2], [$3], [$4])
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG(C++)
+AC_MSG_CHECKING([whether $CXX accepts $1])
+SIM_AC_COMPILER_OPTION([$1], [$2], [$3])
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_BEHAVIOR_OPTION_QUIET], [
+AC_LANG_SAVE
+AC_LANG(C++)
+SIM_AC_COMPILER_BEHAVIOR_OPTION_QUIET([$1], [$2], [$3], [$4])
+AC_LANG_RESTORE
+])
+
+# Usage:
+#  SIM_AC_CHECK_SNPRINTF
+#
+# Description:
+#   Find out which of these "safe" and non-standard functions are
+#   available on the system: snprintf(), vsnprintf(), _snprintf()
+#   and _vsnprintf().
+#
+#   The variables sim_ac_snprintf_avail, sim_ac_vsnprintf_avail,
+#   sim_ac__snprintf_avail and sim_ac__vsnprintf_avail are set to either
+#   "yes" or "no" according to their availability, and HAVE_SNPRINTF
+#   etc will be defined properly.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_CHECK_NPRINTF], [
+AC_PREREQ([2.14])
+
+sim_ac_snprintf_avail=no
+sim_ac__snprintf_avail=no
+sim_ac_vsnprintf_avail=no
+sim_ac__vsnprintf_avail=no
+
+AC_CACHE_CHECK(
+  [whether snprintf() is available],
+  sim_cv_func_snprintf,
+  [AC_TRY_LINK([#include <stdio.h>],
+               [char buf[128]; (void)snprintf(buf, 127, "%s", "tjo-bing");],
+               [sim_cv_func_snprintf=yes],
+               [sim_cv_func_snprintf=no])])
+
+sim_ac_snprintf_avail=$sim_cv_func_snprintf
+
+
+AC_CACHE_CHECK(
+  [whether vsnprintf() is available],
+  sim_cv_func_vsnprintf,
+  [AC_TRY_LINK([
+#include <stdio.h>
+#include <stdarg.h>
+
+void
+hepp(int dummy, ...)
+{
+  va_list argptr;
+  char buf[128];
+
+  va_start(argptr, dummy);
+  (void)vsnprintf(buf, 127, "%s %s", argptr);
+  va_end(argptr);
+}
+], [
+  hepp(0, "tjo-bing", "hepp");
+],
+               [sim_cv_func_vsnprintf=yes],
+               [sim_cv_func_vsnprintf=no])])
+
+sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
+
+# We're not interested in _snprintf() unless snprintf() is unavailable.
+if test x"$sim_ac_snprintf_avail" = x"no"; then
+  AC_CACHE_CHECK(
+    [whether _snprintf() is available],
+    sim_cv_func__snprintf,
+    [AC_TRY_LINK([#include <stdio.h>],
+                 [char buf[128]; (void)_snprintf(buf, 127, "%s", "tjo-bing");],
+                 [sim_cv_func__snprintf=yes],
+                 [sim_cv_func__snprintf=no])])
+  sim_ac__snprintf_avail=$sim_cv_func__snprintf
+fi
+
+# We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
+if test x"$sim_ac_vsnprintf_avail" = xno; then
+  AC_CACHE_CHECK(
+    [whether _vsnprintf() is available],
+    sim_cv_func__vsnprintf,
+    [AC_TRY_LINK([
+#include <stdio.h>
+#include <stdarg.h>
+
+void
+hepp(int dummy, ...)
+{
+  va_list argptr;
+  char buf[128];
+
+  va_start(argptr, dummy);
+  (void)_vsnprintf(buf, 127, "%s %s", argptr);
+  va_end(argptr);
+}
+], [
+  hepp(0, "tjo-bing", "hepp");
+],
+                 [sim_cv_func__vsnprintf=yes],
+                 [sim_cv_func__vsnprintf=no])])
+  sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
+fi
+
+test x"$sim_ac_snprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE_SNPRINTF],1,
+    [define if snprintf() is available])
+test x"$sim_ac_vsnprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE_VSNPRINTF],1,
+    [define if vsnprintf() is available])
+test x"$sim_ac__snprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE__SNPRINTF],1,
+    [define if _snprintf() is available])
+test x"$sim_ac__vsnprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE__VSNPRINTF],1,
+    [define if _vsnprintf() is available])
+])
+
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_AL([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the AL header file, and gives you
+# the necessary CPPFLAGS in $sim_ac_al_cppflags, and also sets the
+# config.h defines HAVE_AL_AL_H or HAVE_OPENAL_AL_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_AL],
+[sim_ac_al_header_avail=false
+AC_MSG_CHECKING([how to include al.h])
+if test x"$with_openal" != x"no"; then
+  sim_ac_al_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_al_cppflags=
+
+  if test x"$with_openal" != xyes && test x"$with_openal" != x""; then
+    sim_ac_al_cppflags="-I${with_openal}/include"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"
+
+  SIM_AC_CHECK_HEADER_SILENT([AL/al.h], [
+    sim_ac_al_header_avail=true
+    sim_ac_al_header=AL/al.h
+    AC_DEFINE([HAVE_AL_AL_H], 1, [define if the AL header should be
+included as AL/al.h])
+  ], [
+    SIM_AC_CHECK_HEADER_SILENT([OpenAL/al.h], [
+      sim_ac_al_header_avail=true
+      sim_ac_al_header=OpenAL/al.h
+      AC_DEFINE([HAVE_OPENAL_AL_H], 1, [define if the AL header should
+be included as OpenAL/al.h])
+    ])
+  ])
+
+  CPPFLAGS="$sim_ac_al_save_CPPFLAGS"
+  if $sim_ac_al_header_avail; then
+    if test x"$sim_ac_al_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_al_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_al_cppflags, @%:@include <$sim_ac_al_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_AL
+
+
+# Usage:
+#  SIM_AC_HAVE_OPENAL_IFELSE ( IF-FOUND, IF-NOT-FOUND )
+#
+#  Try to find the OpenAL development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_openal_cppflags (extra flags the compiler needs for openal)
+#    $sim_ac_openal_ldflags  (extra flags the linker needs for openal)
+#    $sim_ac_openal_libs     (link libraries the linker needs for openal)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_openal_avail is set to "yes" if the
+#  openal development system is found.
+#
+#  Download OpenAL from www.openal.org
+#
+# Authors: Thomas Hammer, <thammer@sim.no>
+#          Peder Blekken, <pederb@sim.no>
+#          Karin Kosina,  <kyrah@sim.no>
+
+AC_DEFUN([SIM_AC_HAVE_OPENAL_IFELSE],
+[: ${sim_ac_have_openal=false}
+AC_ARG_WITH(
+  [openal],
+  [AC_HELP_STRING([--with-openal=PATH], [enable/disable OpenAL support])],
+  [case $withval in
+  yes | "") sim_ac_want_openal=true ;;
+  no)       sim_ac_want_openal=false ;;
+  *)        sim_ac_want_openal=true
+            sim_ac_openal_path=$withval ;;
+  esac],
+  [sim_ac_want_openal=true])
+case $sim_ac_want_openal in
+true)
+  $sim_ac_have_openal && break
+  sim_ac_openal_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_openal_save_LDFLAGS=$LDFLAGS
+  sim_ac_openal_save_LIBS=$LIBS
+
+case $host_os in
+darwin*)
+  sim_ac_openal_libs="-Wl,-framework,OpenAL"
+;;
+*)
+  sim_ac_openal_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_openal_debug=true
+  # test -z "$sim_ac_openal_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_openal_path=$prefix
+  sim_ac_openal_name=openal
+  sim_ac_openal_libs="-l$sim_ac_openal_name"
+  if test -n "$sim_ac_openal_path"; then
+    for sim_ac_openal_candidate in \
+      `( ls $sim_ac_openal_path/lib/openal*.lib;
+         ls $sim_ac_openal_path/lib/openal*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_openal_candidate in
+      *d.lib)
+        $sim_ac_openal_debug &&
+          sim_ac_openal_name=`basename $sim_ac_openal_candidate .lib` ;;
+      *.lib)
+        sim_ac_openal_name=`basename $sim_ac_openal_candidate .lib` ;;
+      esac
+    done
+    sim_ac_openal_cppflags="-I$sim_ac_openal_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
+    sim_ac_openal_ldflags="-L$sim_ac_openal_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
+    sim_ac_openal_libs="-l$sim_ac_openal_name"
+    # unset sim_ac_openal_candidate
+    # unset sim_ac_openal_path
+  fi
+;;
+esac
+
+  SIM_AC_CHECK_HEADER_AL([CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"],
+                         [AC_MSG_WARN([could not find al.h])])
+
+  AC_MSG_CHECKING([for OpenAL])
+  LIBS="$sim_ac_openal_libs $LIBS"
+  AC_TRY_LINK(
+    [#ifdef HAVE_AL_AL_H
+     #include <AL/al.h>
+     #endif
+     #ifdef HAVE_OPENAL_AL_H
+     #include <OpenAL/al.h>
+     #endif],
+    [(void)alGetError();],
+    [sim_ac_have_openal=true],
+    [sim_ac_openal_libs=])
+
+  CPPFLAGS=$sim_ac_openal_save_CPPFLAGS
+  LDFLAGS=$sim_ac_openal_save_LDFLAGS
+  LIBS=$sim_ac_openal_save_LIBS
+  # unset sim_ac_openal_debug
+  # unset sim_ac_openal_name
+  # unset sim_ac_openal_save_CPPFLAGS
+  # unset sim_ac_openal_save_LDFLAGS
+  # unset sim_ac_openal_save_LIBS
+  ;;
+esac
+if $sim_ac_want_openal; then
+  if $sim_ac_have_openal; then
+    AC_MSG_RESULT([success ($sim_ac_openal_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_openal
+])
+
+
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_SILENT([header], [if-found], [if-not-found], [includes])
+#
+# This macro will not output any header checking information, nor will it
+# cache the result, so it can be used multiple times on the same header,
+# trying out different compiler options.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_SILENT],
+[AS_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+m4_ifval([$4],
+         [AC_COMPILE_IFELSE([AC_LANG_SOURCE([$4
+@%:@include <$1>])],
+                            [AS_VAR_SET(ac_Header, yes)],
+                            [AS_VAR_SET(ac_Header, no)])],
+         [AC_PREPROC_IFELSE([AC_LANG_SOURCE([@%:@include <$1>])],
+                            [AS_VAR_SET(ac_Header, yes)],
+                            [AS_VAR_SET(ac_Header, no)])])
+AS_IF([test AS_VAR_GET(ac_Header) = yes], [$2], [$3])
+AS_VAR_POPDEF([ac_Header])
+])# SIM_AC_CHECK_HEADER_SILENT
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_GL([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the GL header file, and gives you the
+# necessary CPPFLAGS in $sim_ac_gl_cppflags, and also sets the config.h
+# defines HAVE_GL_GL_H or HAVE_OPENGL_GL_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_GL],
+[sim_ac_gl_header_avail=false
+AC_MSG_CHECKING([how to include gl.h])
+if test x"$with_opengl" != x"no"; then
+  sim_ac_gl_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_gl_cppflags=
+
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_gl_cppflags="-I${with_opengl}/include"
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
+    fi
+  fi
+
+  # On Mac OS X, GL is part of the optional X11 fraemwork
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if $sim_ac_enable_darwin_x11; then
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
+      fi
+    fi
+    ;;
+  esac
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+
+  # Mac OS X framework (no X11, -framework OpenGL)
+  if $sim_ac_enable_darwin_x11; then :
+  else
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+      sim_ac_gl_header_avail=true
+      sim_ac_gl_header=OpenGL/gl.h
+      AC_DEFINE([HAVE_OPENGL_GL_H], 1, [define if the GL header should be included as OpenGL/gl.h])
+    ])
+  fi
+
+  if $sim_ac_gl_header_avail; then :
+  else
+    SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
+      sim_ac_gl_header_avail=true
+      sim_ac_gl_header=GL/gl.h
+      AC_DEFINE([HAVE_GL_GL_H], 1, [define if the GL header should be included as GL/gl.h])
+    ])
+  fi
+
+  CPPFLAGS="$sim_ac_gl_save_CPPFLAGS"
+  if $sim_ac_gl_header_avail; then
+    if test x"$sim_ac_gl_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_gl_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_gl_cppflags, @%:@include <$sim_ac_gl_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_GL
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_GLU([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the GLU header file, and gives you the
+# necessary CPPFLAGS in $sim_ac_glu_cppflags, and also sets the config.h
+# defines HAVE_GL_GLU_H or HAVE_OPENGL_GLU_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_GLU],
+[sim_ac_glu_header_avail=false
+AC_MSG_CHECKING([how to include glu.h])
+if test x"$with_opengl" != x"no"; then
+  sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_glu_cppflags=
+
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_glu_cppflags="-I${with_opengl}/include"
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_glu_cppflags=-I$sim_ac_gl_hpux/include
+    fi
+  fi
+
+  # On Mac OS X, GL is part of the optional X11 fraemwork
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if $sim_ac_enable_darwin_x11; then
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
+      fi
+    fi
+    ;;
+  esac
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
+
+  # Mac OS X framework (no X11, -framework OpenGL)
+  if $sim_ac_enable_darwin_x11; then :
+  else
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=OpenGL/glu.h
+      AC_DEFINE([HAVE_OPENGL_GLU_H], 1, [define if the GLU header should be included as OpenGL/glu.h])
+    ])
+  fi
+
+  if $sim_ac_glu_header_avail; then :
+  else
+    SIM_AC_CHECK_HEADER_SILENT([GL/glu.h], [
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=GL/glu.h
+      AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
+    ])
+  fi
+
+  CPPFLAGS="$sim_ac_glu_save_CPPFLAGS"
+  if $sim_ac_glu_header_avail; then
+    if test x"$sim_ac_glu_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_glu_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_glu_cppflags, @%:@include <$sim_ac_glu_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_GLU
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_GLEXT([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the GLEXT header file, and gives you the
+# necessary CPPFLAGS in $sim_ac_glext_cppflags, and also sets the config.h
+# defines HAVE_GL_GLEXT_H or HAVE_OPENGL_GLEXT_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_GLEXT],
+[sim_ac_glext_header_avail=false
+AC_MSG_CHECKING([how to include glext.h])
+if test x"$with_opengl" != x"no"; then
+  sim_ac_glext_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_glext_cppflags=
+
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_glext_cppflags="-I${with_opengl}/include"
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_glext_cppflags=-I$sim_ac_gl_hpux/include
+    fi
+  fi
+
+  # On Mac OS X, GL is part of the optional X11 fraemwork
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if $sim_ac_enable_darwin_x11; then
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_darwin_x11/include
+      fi
+    fi
+    ;;
+  esac
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
+
+  # Mac OS X framework (no X11, -framework OpenGL)
+  if $sim_ac_enable_darwin_x11; then :
+  else
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
+      sim_ac_glext_header_avail=true
+      sim_ac_glext_header=OpenGL/glext.h
+      AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
+    ])
+  fi
+
+  if $sim_ac_glext_header_avail; then :
+  else
+    SIM_AC_CHECK_HEADER_SILENT([GL/glext.h], [
+      sim_ac_glext_header_avail=true
+      sim_ac_glext_header=GL/glext.h
+      AC_DEFINE([HAVE_GL_GLEXT_H], 1, [define if the GLEXT header should be included as GL/glext.h])
+    ])
+  fi
+
+  CPPFLAGS="$sim_ac_glext_save_CPPFLAGS"
+  if $sim_ac_glext_header_avail; then
+    if test x"$sim_ac_glext_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_glext_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_glext_cppflags, @%:@include <$sim_ac_glext_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_GLEXT
+
+
+# **************************************************************************
+# SIM_AC_CHECK_OPENGL([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects whether or not it's possible to link against OpenGL
+# (or Mesa), and gives you the necessary modifications to the
+# pre-processor, compiler and linker environment in the envvars
+#
+#                $sim_ac_ogl_cppflags
+#                $sim_ac_ogl_ldflags
+#                $sim_ac_ogl_libs (OpenGL library and all dependencies)
+#                $sim_ac_ogl_lib (basename of OpenGL library)
+#
+# The necessary extra options are also automatically added to CPPFLAGS,
+# LDFLAGS and LIBS.
+#
+# Authors: <larsa@sim.no>, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_OPENGL], [
+
+sim_ac_ogl_cppflags=
+sim_ac_ogl_ldflags=
+sim_ac_ogl_lib=
+sim_ac_ogl_libs=
+
+AC_ARG_WITH(
+  [mesa],
+  AC_HELP_STRING([--with-mesa],
+                 [prefer MesaGL (if found) over OpenGL [[default=no]]]),
+  [],
+  [with_mesa=no])
+
+
+sim_ac_ogl_glnames="GL opengl32"
+sim_ac_ogl_mesaglnames=MesaGL
+
+if test "x$with_mesa" = "xyes"; then
+  sim_ac_ogl_first=$sim_ac_ogl_mesaglnames
+  sim_ac_ogl_second=$sim_ac_ogl_glnames
+else
+  sim_ac_ogl_first=$sim_ac_ogl_glnames
+  sim_ac_ogl_second=$sim_ac_ogl_mesaglnames
+fi
+
+AC_ARG_WITH(
+  [opengl],
+  AC_HELP_STRING([--with-opengl=DIR],
+                 [OpenGL/Mesa installation directory]),
+  [],
+  [with_opengl=yes])
+
+if test x"$with_opengl" != xno; then
+
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_ogl_ldflags=-L$with_opengl/lib
+    # $sim_ac_ogl_cppflags is set up in the SIM_AC_CHECK_HEADER_GL
+    # invocation further below.
+  else
+    # On HP-UX platforms, OpenGL headers and libraries are usually installed
+    # at this location.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_ogl_ldflags=-L$sim_ac_gl_hpux/lib
+    fi
+  fi
+
+  sim_ac_use_framework_option=false;
+  case $host_os in
+  darwin*)
+    AC_REQUIRE([SIM_AC_CHECK_X11])
+    if $sim_ac_enable_darwin_x11; then
+      # Use X11-based GL instead of OpenGL.framework when building against X11
+      sim_ac_gl_darwin_x11=/usr/X11R6
+      if test -d $sim_ac_gl_darwin_x11; then
+        sim_ac_ogl_cppflags=-I$sim_ac_gl_darwin_x11/include
+        sim_ac_ogl_ldflags=-L$sim_ac_gl_darwin_x11/lib
+      fi
+    else
+      SIM_AC_CC_COMPILER_OPTION([-framework OpenGL], [sim_ac_use_framework_option=true])
+    fi
+    ;;
+  esac
+
+  if $sim_ac_use_framework_option; then
+    sim_ac_ogl_ldflags="-Wl,-framework,OpenGL"
+    sim_ac_ogl_lib=OpenGL
+  fi
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_ogl_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_ogl_ldflags"
+
+  SIM_AC_CHECK_HEADER_GL([CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"],
+                         [AC_MSG_WARN([could not find gl.h])])
+
+  sim_ac_glchk_hit=false
+  for sim_ac_tmp_outerloop in barebones withpthreads; do
+    if $sim_ac_glchk_hit; then :; else
+
+      sim_ac_oglchk_pthreadslib=""
+      if test "$sim_ac_tmp_outerloop" = "withpthreads"; then
+        AC_MSG_WARN([couldn't compile or link with OpenGL library -- trying with pthread library in place...])
+        LIBS="$sim_ac_save_libs"
+        SIM_AC_CHECK_PTHREAD([
+          sim_ac_ogl_cppflags="$sim_ac_ogl_cppflags $sim_ac_pthread_cppflags"
+          sim_ac_ogl_ldflags="$sim_ac_ogl_ldflags $sim_ac_pthread_ldflags"
+          sim_ac_oglchk_pthreadslib="$sim_ac_pthread_libs"
+          ],
+          [AC_MSG_WARN([couldn't compile or link with pthread library])
+          ])
+      fi
+
+      AC_MSG_CHECKING([for OpenGL library dev-kit])
+      # Mac OS X uses nada (only LDFLAGS), which is why "" was set first
+      for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
+        if $sim_ac_glchk_hit; then :; else
+          if test -n "${sim_ac_ogl_libcheck}"; then
+            LIBS="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
+          else
+            LIBS="$sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
+          fi
+          AC_TRY_LINK(
+            [#ifdef HAVE_WINDOWS_H
+             #include <windows.h>
+             #endif /* HAVE_WINDOWS_H */
+             #ifdef HAVE_GL_GL_H
+             #include <GL/gl.h>
+             #else /* ! HAVE_GL_GL_H */
+             #ifdef HAVE_OPENGL_GL_H
+             /* Mac OS X */
+             #include <OpenGL/gl.h>
+             #endif /* HAVE_OPENGL_GL_H */
+             #endif /* ! HAVE_GL_GL_H */
+            ],
+            [glPointSize(1.0f);],
+            [
+             sim_ac_glchk_hit=true
+             sim_ac_ogl_libs=$sim_ac_oglchk_pthreadslib
+             if test -n "${sim_ac_ogl_libcheck}"; then
+               sim_ac_ogl_lib=$sim_ac_ogl_libcheck
+               sim_ac_ogl_libs="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib"
+             fi
+            ]
+          )
+        fi
+      done
+      if $sim_ac_glchk_hit; then
+        AC_MSG_RESULT($sim_ac_ogl_cppflags $sim_ac_ogl_ldflags $sim_ac_ogl_libs)
+      else
+        AC_MSG_RESULT([unresolved])
+      fi
+    fi
+  done
+
+  if $sim_ac_glchk_hit; then
+    LIBS="$sim_ac_ogl_libs $sim_ac_save_libs"
+    $1
+  else
+    CPPFLAGS="$sim_ac_save_cppflags"
+    LDFLAGS="$sim_ac_save_ldflags"
+    LIBS="$sim_ac_save_libs"
+    $2
+  fi
+fi
+])
+
+
+# **************************************************************************
+# SIM_AC_GLU_READY_IFELSE( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
+
+AC_DEFUN([SIM_AC_GLU_READY_IFELSE], [
+sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+SIM_AC_CHECK_HEADER_GLU(, [AC_MSG_WARN([could not find glu.h])])
+if test x"$sim_ac_gl_cppflags" != x"$sim_ac_glu_cppflags"; then
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags $sim_ac_glu_cppflags"
+fi
+AC_CACHE_CHECK(
+  [if GLU is available as part of GL library],
+  [sim_cv_glu_ready],
+  [AC_TRY_LINK(
+    [
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#ifdef HAVE_GL_GL_H
+#include <GL/gl.h>
+#else
+#ifdef HAVE_OPENGL_GL_H
+#include <OpenGL/gl.h>
+#endif
+#endif
+#ifdef HAVE_GL_GLU_H
+#include <GL/glu.h>
+#else
+#ifdef HAVE_OPENGL_GLU_H
+#include <OpenGL/glu.h>
+#endif
+#endif
+],
+    [
+gluSphere(0L, 1.0, 1, 1);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
+    [sim_cv_glu_ready=true],
+    [sim_cv_glu_ready=false])])
+
+if $sim_cv_glu_ready; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_GLU_READY_IFELSE()
+
+# Usage:
+#  SIM_AC_CHECK_GLU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to use the OpenGL utility library; GLU. If it is found,
+#  these shell variables are set:
+#
+#    $sim_ac_glu_cppflags (extra flags the compiler needs for GLU)
+#    $sim_ac_glu_ldflags  (extra flags the linker needs for GLU)
+#    $sim_ac_glu_libs     (link libraries the linker needs for GLU)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_glu_avail is set to "yes" if GLU
+#  is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_GLU], [
+sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+SIM_AC_CHECK_HEADER_GLU(, [AC_MSG_WARN([could not find glu.h])])
+if test x"$sim_ac_gl_cppflags" != x"$sim_ac_glu_cppflags"; then
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags $sim_ac_glu_cppflags"
+fi
+sim_ac_glu_avail=no
+
+# It's usually libGLU.so on UNIX systems and glu32.lib on MSWindows.
+sim_ac_glu_names="-lGLU -lglu32"
+sim_ac_glu_mesanames=-lMesaGLU
+
+# with_mesa is set from the SIM_AC_CHECK_OPENGL macro.
+if test "x$with_mesa" = "xyes"; then
+  sim_ac_glu_first=$sim_ac_glu_mesanames
+  sim_ac_glu_second=$sim_ac_glu_names
+else
+  sim_ac_glu_first=$sim_ac_glu_names
+  sim_ac_glu_second=$sim_ac_glu_mesanames
+fi
+
+AC_ARG_WITH(
+  [glu],
+  AC_HELP_STRING([--with-glu=DIR],
+                 [use the OpenGL utility library [[default=yes]]]),
+  [],
+  [with_glu=yes])
+
+if test x"$with_glu" != xno; then
+  if test x"$with_glu" != xyes; then
+    # sim_ac_glu_cppflags="-I${with_glu}/include"
+    sim_ac_glu_ldflags="-L${with_glu}/lib"
+  fi
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_glu_ldflags"
+
+  AC_CACHE_CHECK(
+    [whether GLU is available],
+    sim_cv_lib_glu,
+    [sim_cv_lib_glu=UNRESOLVED
+
+    # Some platforms (like BeOS) have the GLU functionality in the GL
+    # library (and no GLU library present).
+    for sim_ac_glu_libcheck in "" $sim_ac_glu_first $sim_ac_glu_second; do
+      if test "x$sim_cv_lib_glu" = "xUNRESOLVED"; then
+        LIBS="$sim_ac_glu_libcheck $sim_ac_save_libs"
+        AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#ifdef HAVE_GL_GL_H
+#include <GL/gl.h>
+#else
+#ifdef HAVE_OPENGL_GL_H
+#include <OpenGL/gl.h>
+#endif
+#endif
+#ifdef HAVE_GL_GLU_H
+#include <GL/glu.h>
+#else
+#ifdef HAVE_OPENGL_GLU_H
+#include <OpenGL/glu.h>
+#endif
+#endif
+],
+                    [
+gluSphere(0L, 1.0, 1, 1);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
+                    [sim_cv_lib_glu="$sim_ac_glu_libcheck"])
+      fi
+    done
+    if test x"$sim_cv_lib_glu" = x"" &&
+       test x`echo $LDFLAGS | grep -c -- "-Wl,-framework,OpenGL"` = x1; then
+      # just for the visual representation on Mac OS X
+      sim_cv_lib_glu="-Wl,-framework,OpenGL"
+    fi
+  ])
+
+  LIBS="$sim_ac_save_libs"
+
+  CPPFLAGS=$sim_ac_glu_save_CPPFLAGS
+  if test "x$sim_cv_lib_glu" != "xUNRESOLVED"; then
+    if test x"$sim_cv_lib_glu" = x"-Wl,-framework,OpenGL"; then
+      sim_ac_glu_libs=""
+    else
+      sim_ac_glu_libs="$sim_cv_lib_glu"
+    fi
+    LIBS="$sim_ac_glu_libs $sim_ac_save_libs"
+    sim_ac_glu_avail=yes
+    $1
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    $2
+  fi
+fi
+])
+
+
+# Usage:
+#  SIM_AC_GLU_NURBSOBJECT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find out whether the interface struct against the GLU
+#  library NURBS functions is called "GLUnurbs" or "GLUnurbsObj".
+#  (This seems to have changed somewhere between release 1.1 and
+#  release 1.3 of GLU).
+#
+#  The variable $sim_ac_glu_nurbsobject is set to the correct name
+#  if the nurbs structure is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_GLU_NURBSOBJECT], [
+AC_CACHE_CHECK(
+  [what structure to use in the GLU NURBS interface],
+  sim_cv_func_glu_nurbsobject,
+  [sim_cv_func_glu_nurbsobject=NONE
+   for sim_ac_glu_structname in GLUnurbs GLUnurbsObj; do
+    if test "$sim_cv_func_glu_nurbsobject" = NONE; then
+      AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#ifdef HAVE_GL_GL_H
+#include <GL/gl.h>
+#else
+#ifdef HAVE_OPENGL_GL_H
+#include <OpenGL/gl.h>
+#endif
+#endif
+#ifdef HAVE_GL_GLU_H
+#include <GL/glu.h>
+#else
+#ifdef HAVE_OPENGL_GLU_H
+#include <OpenGL/glu.h>
+#endif
+#endif
+],
+                  [
+$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
+gluDeleteNurbsRenderer(hepp);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
+                  [sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname])
+    fi
+  done
+])
+
+if test $sim_cv_func_glu_nurbsobject = NONE; then
+  sim_ac_glu_nurbsobject=
+  $2
+else
+  sim_ac_glu_nurbsobject=$sim_cv_func_glu_nurbsobject
+  $1
+fi
+])
+
+# **************************************************************************
+# SIM_AC_HAVE_GLXGETCURRENTDISPLAY_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether the OpenGL implementation includes the method
+# glXGetCurrentDisplay().
+
+AC_DEFUN([SIM_AC_HAVE_GLXGETCURRENTDISPLAY_IFELSE], [
+AC_CACHE_CHECK(
+  [whether glXGetCurrentDisplay() is available],
+  sim_cv_have_glxgetcurrentdisplay,
+  AC_TRY_LINK([
+#include <GL/gl.h>
+#include <GL/glx.h>
+],
+[(void)glXGetCurrentDisplay();],
+[sim_cv_have_glxgetcurrentdisplay=true],
+[sim_cv_have_glxgetcurrentdisplay=false]))
+
+if ${sim_cv_have_glxgetcurrentdisplay}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLXGETCURRENTDISPLAY_IFELSE()
+
+# **************************************************************************
+# SIM_AC_HAVE_GLX_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether GLX is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_GLX_IFELSE], [
+AC_CACHE_CHECK(
+  [whether GLX is on the system],
+  sim_cv_have_glx,
+  AC_TRY_LINK(
+    [
+#include <GL/glx.h>
+#include <GL/gl.h>
+],
+    [
+(void)glXChooseVisual(0L, 0, 0L);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
+    [sim_cv_have_glx=true],
+    [sim_cv_have_glx=false]))
+
+if ${sim_cv_have_glx=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLX_IFELSE()
+
+# **************************************************************************
+# SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check for glXGetProcAddressARB() function.
+
+AC_DEFUN([SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE], [
+AC_CACHE_CHECK(
+  [for glXGetProcAddressARB() function],
+  sim_cv_have_glxgetprocaddressarb,
+  AC_TRY_LINK(
+    [
+#include <GL/glx.h>
+#include <GL/gl.h>
+],
+    [
+      glXGetProcAddressARB((const GLubyte *)"glClearColor");
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+      glEnd();
+],
+    [sim_cv_have_glxgetprocaddressarb=true],
+    [sim_cv_have_glxgetprocaddressarb=false]))
+
+if ${sim_cv_have_glxgetprocaddressarb=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE()
+
+
+# **************************************************************************
+# SIM_AC_HAVE_WGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether WGL is on the system.
+#
+# This macro has one important side-effect: the variable
+# sim_ac_wgl_libs will be set to the list of libraries
+# needed to link with wgl*() functions.
+
+AC_DEFUN([SIM_AC_HAVE_WGL_IFELSE], [
+sim_ac_save_libs=$LIBS
+sim_ac_wgl_libs="-lgdi32"
+LIBS="$LIBS $sim_ac_wgl_libs"
+
+AC_CACHE_CHECK(
+  [whether WGL is on the system],
+  sim_cv_have_wgl,
+  AC_TRY_LINK(
+    [
+#include <windows.h>
+#include <GL/gl.h>
+],
+    [(void)wglCreateContext(0L);],
+    [sim_cv_have_wgl=true],
+    [sim_cv_have_wgl=false]))
+
+LIBS=$sim_ac_save_libs
+if ${sim_cv_have_wgl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_WGL_IFELSE()
+
+# **************************************************************************
+# SIM_AC_HAVE_AGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether AGL is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_AGL_IFELSE], [
+sim_ac_save_ldflags=$LDFLAGS
+sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL -Wl,-framework,Carbon"
+
+LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+
+# see comment in Coin/src/glue/gl_agl.c: regarding __CARBONSOUND__ define
+
+AC_CACHE_CHECK(
+  [whether AGL is on the system],
+  sim_cv_have_agl,
+  AC_TRY_LINK(
+    [#include <AGL/agl.h>
+     #define __CARBONSOUND__
+     #include <Carbon/Carbon.h>],
+    [AGLContext ctx = NULL;WindowRef wref = aglGetWindowRef(ctx);HIViewRef href = HIViewGetRoot(wref);],
+    [sim_cv_have_agl=true],
+    [sim_cv_have_agl=false]))
+
+LDFLAGS=$sim_ac_save_ldflags
+if ${sim_cv_have_agl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_AGL_IFELSE()
+
+
+AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
+  AC_CACHE_CHECK([whether we can use AGL pBuffers],
+    sim_cv_agl_pbuffer_avail,
+    [AC_TRY_LINK([ #include <AGL/agl.h> ],
+                 [AGLPbuffer pbuffer;],
+                 [sim_cv_agl_pbuffer_avail=yes],
+                 [sim_cv_agl_pbuffer_avail=no])])
+
+  if test x"$sim_cv_agl_pbuffer_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+])
+
+# **************************************************************************
+# SIM_AC_HAVE_CGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether CGL is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_CGL_IFELSE], [
+sim_ac_save_ldflags=$LDFLAGS
+sim_ac_cgl_ldflags="-Wl,-framework,OpenGL"
+
+LDFLAGS="$LDFLAGS $sim_ac_cgl_ldflags"
+
+AC_CACHE_CHECK(
+  [whether CGL is on the system],
+  sim_cv_have_cgl,
+  AC_TRY_LINK(
+    [#include <OpenGL/OpenGL.h>],
+    [CGLGetCurrentContext();],
+    [sim_cv_have_cgl=true],
+    [sim_cv_have_cgl=false]))
+
+LDFLAGS=$sim_ac_save_ldflags
+if ${sim_cv_have_cgl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_CGL_IFELSE()
+
+# Usage:
+#  SIM_AC_PACKAGEMAKER_APP([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+# Description:
+#   This macro locates the PackageMaker app bundle (Mac OS X).
+#   If found, the variable $sim_ac_packagemaker_app is set to the full
+#   path- and app bundle name.
+#   If not found, it is set to "false".
+#
+# Author: Marius Kintel, <kintel@sim.no>
+
+AC_DEFUN([SIM_AC_PACKAGEMAKER_APP], [
+sim_ac_packagemaker_app=false
+if test -d /Developer/Applications/PackageMaker.app; then
+  sim_ac_packagemaker_app=/Developer/Applications/PackageMaker.app
+elif test -d /Developer/Applications/Utilities/PackageMaker.app; then
+  sim_ac_packagemaker_app=/Developer/Applications/Utilities/PackageMaker.app
+fi
+])
+
+#
+# SIM_AC_CHECK_PROJECT_BETA_STATUS_IFELSE( IF-BETA, IF-BONA-FIDE )
+#
+# Sets sim_ac_source_release to true or false
+#
+
+AC_DEFUN([SIM_AC_CHECK_PROJECT_BETA_STATUS_IFELSE], [
+AC_MSG_CHECKING([for project release status])
+case $VERSION in
+*[[a-z]]* )
+  AC_MSG_RESULT([beta / inbetween releases])
+  sim_ac_source_release=false
+  ifelse($1, [], :, $1)
+  ;;
+* )
+  AC_MSG_RESULT([release version])
+  sim_ac_source_release=true
+  ifelse($2, [], :, $2)
+  ;;
+esac
+])
+
+
+# Usage:
+#  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the PTHREAD development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_pthread_cppflags (extra flags the compiler needs for pthread)
+#    $sim_ac_pthread_ldflags  (extra flags the linker needs for pthread)
+#    $sim_ac_pthread_libs     (link libraries the linker needs for pthread)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_pthread_avail is set to "true" if the
+#  pthread development system is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_PTHREAD], [
+
+AC_ARG_WITH(
+  [pthread],
+  AC_HELP_STRING([--with-pthread=DIR],
+                 [pthread installation directory]),
+  [],
+  [with_pthread=yes])
+
+sim_ac_pthread_avail=no
+
+if test x"$with_pthread" != xno; then
+  if test x"$with_pthread" != xyes; then
+    sim_ac_pthread_cppflags="-I${with_pthread}/include"
+    sim_ac_pthread_ldflags="-L${with_pthread}/lib"
+  fi
+
+  # FIXME: should investigate and document the exact meaning of
+  # the _REENTRANT flag. larsa's commit message mentions
+  # "glibc-doc/FAQ.threads.html". Also, kintel points to the
+  # comp.programming.thrads FAQ, which has an entry on the
+  # _REENTRANT define.
+  #
+  # Preferably, it should only be set up when really needed
+  # (as detected by some other configure check).
+  #
+  # 20030306 mortene.
+  sim_ac_pthread_cppflags="-D_REENTRANT ${sim_ac_pthread_cppflags}"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_pthread_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
+
+  sim_ac_pthread_avail=false
+
+  AC_MSG_CHECKING([for POSIX threads])
+  # At least under FreeBSD, we link to pthreads library with -pthread.
+  for sim_ac_pthreads_libcheck in "-lpthread" "-pthread"; do
+    if $sim_ac_pthread_avail; then :; else
+      LIBS="$sim_ac_pthreads_libcheck $sim_ac_save_libs"
+      AC_TRY_LINK([#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#include <pthread.h>],
+                  [(void)pthread_create(0L, 0L, 0L, 0L);],
+                  [sim_ac_pthread_avail=true
+                   sim_ac_pthread_libs="$sim_ac_pthreads_libcheck"
+                  ])
+    fi
+  done
+
+  if $sim_ac_pthread_avail; then
+    AC_MSG_RESULT($sim_ac_pthread_cppflags $sim_ac_pthread_ldflags $sim_ac_pthread_libs)
+  else
+    AC_MSG_RESULT(not available)
+  fi
+
+  if $sim_ac_pthread_avail; then
+    AC_CACHE_CHECK(
+      [the struct timespec resolution],
+      sim_cv_lib_pthread_timespec_resolution,
+      [AC_TRY_COMPILE([#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#include <pthread.h>],
+                      [struct timespec timeout;
+                       timeout.tv_nsec = 0;],
+                      [sim_cv_lib_pthread_timespec_resolution=nsecs],
+                      [sim_cv_lib_pthread_timespec_resolution=usecs])])
+    if test x"$sim_cv_lib_pthread_timespec_resolution" = x"nsecs"; then
+      AC_DEFINE([HAVE_PTHREAD_TIMESPEC_NSEC], 1, [define if pthread's struct timespec uses nsecs and not usecs])
+    fi
+  fi
+
+  if $sim_ac_pthread_avail; then
+    ifelse([$1], , :, [$1])
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    ifelse([$2], , :, [$2])
+  fi
+fi
+]) # SIM_AC_CHECK_PTHREAD
+
+#
+# SIM_AC_CHECK_SIMIAN_IFELSE( IF-SIMIAN, IF-NOT-SIMIAN )
+#
+# Sets $sim_ac_simian to true or false
+#
+
+AC_DEFUN([SIM_AC_CHECK_SIMIAN_IFELSE], [
+AC_MSG_CHECKING([if user is simian])
+case `hostname -d 2>/dev/null || domainname 2>/dev/null || hostname` in
+*.sim.no | sim.no )
+  sim_ac_simian=true
+  ;;
+* )
+  if grep -ls "domain.*sim\\.no" /etc/resolv.conf >/dev/null; then
+    sim_ac_simian=true
+    :
+  else
+    sim_ac_simian=false
+    :
+  fi
+  ;;
+esac
+
+if $sim_ac_simian; then
+  AC_MSG_RESULT([probably])
+  ifelse($1, [], :, $1)
+else
+  AC_MSG_RESULT([probably not])
+  ifelse($2, [], :, $2)
+fi])
+
+
+# **************************************************************************
+# SIM_AC_HAVE_SIMAGE_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Description:
+#   This macro locates the simage development system.  If it is found, the
+#   set of variables listed below are set up as described and made available
+#   to the configure script.
+#
+#   The $sim_ac_simage_desired variable can be set to false externally to
+#   make SoXt default to be excluded.
+#
+# Autoconf Variables:
+# > $sim_ac_simage_desired   true | false (defaults to true)
+# < $sim_ac_simage_avail     true | false
+# < $sim_ac_simage_cppflags  (extra flags the compiler needs for simage)
+# < $sim_ac_simage_ldflags   (extra flags the linker needs for simage)
+# < $sim_ac_simage_libs      (link libraries the linker needs for simage)
+# < $sim_ac_simage_version   (the libsimage version)
+#
+# Authors:
+#   Morten Eriksen <mortene@coin3d.org>
+#   Lars J. Aas <larsa@coin3d.org>
+#
+# TODO:
+# - rework variable name convention
+# - clean up shell scripting redundancy
+# - support debug symbols simage library
+#
+
+AC_DEFUN([SIM_AC_HAVE_SIMAGE_IFELSE],
+[AC_PREREQ([2.14a])
+
+# official variables
+sim_ac_simage_avail=false
+sim_ac_simage_cppflags=
+sim_ac_simage_ldflags=
+sim_ac_simage_libs=
+sim_ac_simage_version=
+
+# internal variables
+: ${sim_ac_simage_desired=true}
+sim_ac_simage_extrapath=
+
+AC_ARG_WITH(
+  simage,
+  AC_HELP_STRING([--with-simage=DIR],
+                 [use simage for loading texture files]),
+  [case $withval in
+   yes) sim_ac_simage_desired=true ;;
+   no)  sim_ac_simage_desired=false ;;
+   *)   sim_ac_simage_desired=true
+        sim_ac_simage_extrapath=$withval ;;
+  esac],
+  [])
+
+if $sim_ac_simage_desired; then
+  sim_ac_path=$PATH
+  test -z "$sim_ac_simage_extrapath" ||
+    sim_ac_path=$sim_ac_simage_extrapath/bin:$sim_ac_path
+  test x"$prefix" = xNONE ||
+    sim_ac_path=$sim_ac_path:$prefix/bin
+
+  AC_PATH_PROG(sim_ac_simage_configcmd, simage-config, false, $sim_ac_path)
+
+  if test "X$sim_ac_simage_configcmd" = "Xfalse"; then :; else
+    test -n "$CONFIG" &&
+      $sim_ac_simage_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
+      sim_ac_simage_configcmd="$sim_ac_simage_configcmd --alternate=$CONFIG"
+  fi
+
+  if $sim_ac_simage_configcmd; then
+    sim_ac_simage_cppflags=`$sim_ac_simage_configcmd --cppflags`
+    sim_ac_simage_ldflags=`$sim_ac_simage_configcmd --ldflags`
+    sim_ac_simage_libs=`$sim_ac_simage_configcmd --libs`
+    sim_ac_simage_version=`$sim_ac_simage_configcmd --version`
+    AC_CACHE_CHECK([whether the simage library is available],
+      sim_cv_simage_avail,
+      [sim_ac_save_cppflags=$CPPFLAGS
+      sim_ac_save_ldflags=$LDFLAGS
+      sim_ac_save_libs=$LIBS
+      CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
+      LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
+      LIBS="$sim_ac_simage_libs $LIBS"
+      AC_TRY_LINK(
+        [#include <simage.h>],
+        [(void)simage_read_image(0L, 0L, 0L, 0L);],
+        [sim_cv_simage_avail=true],
+        [sim_cv_simage_avail=false])
+      CPPFLAGS=$sim_ac_save_cppflags
+      LDFLAGS=$sim_ac_save_ldflags
+      LIBS=$sim_ac_save_libs
+    ])
+    sim_ac_simage_avail=$sim_cv_simage_avail
+  else
+    locations=`IFS=:
+               for p in $sim_ac_path; do echo " -> $p/simage-config"; done`
+    AC_MSG_WARN([cannot find 'simage-config' at any of these locations:
+$locations])
+  fi
+fi
+
+if $sim_ac_simage_avail; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+])
+
+# EOF **********************************************************************
+
+# *******************************************************************
+# SIM_AC_RELATIVE_SRC_DIR
+#
+# Sets $sim_ac_relative_src_dir to the relative path to the source
+# directory, and $sim_ac_relative_src_dir_p to true or false depending
+# on whether a relative path can be used or not (in case of different
+# drives).
+#
+# Author:
+#   Lars J. Aas <larsa@sim.no>
+
+
+AC_DEFUN([SIM_AC_RELATIVE_SRC_DIR], [
+
+temp_build_dir=`pwd`
+temp_src_dir=`cd "$srcdir"; pwd`
+
+temp_up=""
+temp_down=""
+
+while test "$temp_build_dir" != "$temp_src_dir"; do
+  srclen=`echo "$temp_src_dir" | wc -c`
+  buildlen=`echo "$temp_build_dir" | wc -c`
+  if test $srclen -gt $buildlen; then
+    # cut source tail, insert into temp_up
+    temp_src_tail=`echo "$temp_src_dir" | sed -e 's,.*/,,g'`
+    temp_src_dir=`echo "$temp_src_dir" | sed -e 's,/[[^/]]*\$,,g'`
+    if test x"$temp_up" = "x"; then
+      temp_up="$temp_src_tail"
+    else
+      temp_up="$temp_src_tail/$temp_up"
+    fi
+  else
+    # cut build tail, increase temp_down
+    temp_build_dir=`echo "$temp_build_dir" | sed -e 's,/[[^/]]*\$,,g'`
+    if test x"$temp_down" = "x"; then
+      temp_down=..
+    else
+      temp_down="../$temp_down"
+    fi
+  fi
+done
+
+if test x"$temp_down" = "x"; then
+  if test x"$temp_up" = "x"; then
+    sim_ac_relative_src_dir="."
+  else
+    sim_ac_relative_src_dir="$temp_up"
+  fi
+else
+  if test x"$temp_up" = "x"; then
+    sim_ac_relative_src_dir="$temp_down"
+  else
+    sim_ac_relative_src_dir="$temp_down/$temp_up"
+  fi
+fi
+
+# this gives false positives on windows, but that's ok for now...
+if test -f $sim_ac_relative_src_dir/$ac_unique_file; then
+  sim_ac_relative_src_dir_p=true;
+else
+  sim_ac_relative_src_dir_p=false;
+fi
+
+AC_SUBST(ac_unique_file) # useful to have to check the relative path
+AC_SUBST(sim_ac_relative_src_dir)
+AC_SUBST(sim_ac_relative_src_dir_p)
+
+]) # SIM_AC_RELATIVE_SRC_DIR
+
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_SPIDERMONKEY([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the SpiderMonkey header files, and gives you
+# the necessary CPPFLAGS in $sim_ac_spidermonkey_cppflags, and also sets the
+# config.h define HAVE_SPIDERMONKEY_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_SPIDERMONKEY],
+[sim_ac_spidermonkey_header_avail=false
+AC_MSG_CHECKING([how to include spidermonkey's jsapi.h])
+if test x"$with_spidermonkey" != x"no"; then
+  sim_ac_spidermonkey_tmp_CPPFLAGS=$CPPFLAGS
+
+  if $BUILD_WITH_MSVC; then
+    if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey}"
+    fi
+  else
+    if test x"$with_spidermonkey" != xyes && test x"$with_spidermonkey" != x""; then
+      # Including both the base AND the 'build' directory because SpiderMonkey puts its autogenerated
+      # headerfile 'jsautocfg.h' in the build dir. This is not needed when compiling on windows.
+      sim_ac_spidermonkey_cppflags="-I${with_spidermonkey} -I${with_spidermonkey}/${sim_ac_spidermonkey_build_dir}"
+    fi
+  fi
+
+  if $BUILD_WITH_MSVC; then
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DXP_WIN -DWIN32"
+  else
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags -DCROSS_COMPILE"
+  fi
+
+
+  SIM_AC_CHECK_HEADER_SILENT([jsapi.h], [
+    sim_ac_spidermonkey_header_avail=true
+    sim_ac_spidermonkey_header=jsapi.h
+    AC_DEFINE([HAVE_SPIDERMONKEY_H], 1, [define that the Spidermonkey header is available])
+  ])
+
+  CPPFLAGS="$sim_ac_spidermonkey_tmp_CPPFLAGS"
+  if $sim_ac_spidermonkey_header_avail; then
+    if test x"$sim_ac_spidermonkey_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_spidermonkey_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_spidermonkey_cppflags, @%:@include <$sim_ac_spidermonkey_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([failed])
+    SIM_AC_ERROR([spidermonkey-unavailable])
+    $2
+  fi
+
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_SPIDERMONKEY
+
+
+# **************************************************************************
+# SIM_AC_HAVE_SPIDERMONKEY_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+#  Try to find the Spidermonkey development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_spidermonkey_cppflags (extra flags the compiler needs for spidermonkey)
+#    $sim_ac_spidermonkey_ldflags  (extra flags the linker needs for spidermonkey)
+#    $sim_ac_spidermonkey_libs     (link libraries the linker needs for spidermonkey)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_spidermonkey_avail is set to "yes" if the
+#  spidermonkey development system is found.
+#
+#  Download SpiderMonkey from www.mozilla.org/js/spidermonkey
+#
+# Authors:
+#   Øystein Handegard <handegar@sim.no> (heavily based on Tamer Fahmy's Fontconfig.m4 script)
+#
+
+AC_DEFUN([SIM_AC_HAVE_SPIDERMONKEY_IFELSE],
+[: ${sim_ac_have_spidermonkey=false}
+AC_ARG_WITH(
+  [spidermonkey],
+  [AC_HELP_STRING([--with-spidermonkey=PATH], [enable/disable Spidermonkey support])],
+  [case $withval in
+  yes | "") sim_ac_want_spidermonkey=true ;;
+  no)       sim_ac_want_spidermonkey=false ;;
+  *)        sim_ac_want_spidermonkey=true
+            sim_ac_spidermonkey_path=$withval ;;
+  esac],
+  [sim_ac_want_spidermonkey=true])
+case $sim_ac_want_spidermonkey in
+true)
+  $sim_ac_have_spidermonkey && break
+  sim_ac_spidermonkey_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_spidermonkey_save_LDFLAGS=$LDFLAGS
+  sim_ac_spidermonkey_save_LIBS=$LIBS
+
+  sim_ac_spidermonkey_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_spidermonkey_debug=true
+
+  sim_ac_spidermonkey_name=
+  sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
+
+  sim_ac_spidermonkey_build_dir=lib
+
+  if test -n "$sim_ac_spidermonkey_path"; then
+
+  # Trying all SpiderMonkey platforms.
+  # NOTE: This have check not been tested on IRIX, SunOS or HPUX [20050908 handegar]
+  for sim_ac_spidermonkey_build_dir in \
+    "Debug" "Release" \
+    "Linux_All_OPT.OBJ" "Linux_All_DBG.OBJ" \
+    "Darwin_OPT.OBJ" "Darwin_DBG.OBJ" \
+    "IRIX_DBG.OBJ" "IRIX_OPT.OBJ" \
+    "SunOS_DBG.OBJ" "SunOS_OPT.OBJ" \
+    "HPUX_DBG.OBJ" "HPUX_OPT.OBJ"
+    do
+      for sim_ac_spidermonkey_candidate in \
+        `( ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/js32.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libjs.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/js*.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/js*d.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libjs.dylib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libjs*.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libjs*d.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libjs*.so;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libjs*.a;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libsmjs*.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libsmjs*d.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libsmjs*.so;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/libsmjs*.a;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/smjs*.lib;
+           ls $sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir/smjs*d.lib;) 2>/dev/null`; do
+        case $sim_ac_spidermonkey_candidate in
+        *d.lib)
+          $sim_ac_spidermonkey_debug &&
+            sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .lib` ;;
+        *.lib)
+          sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .lib` ;;
+        *.dylib) # Mac OS X
+          sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .dylib`
+          sim_ac_spidermonkey_name=`echo $sim_ac_spidermonkey_name | cut -c4-`
+          ;;
+        *.so) # Unix style
+          sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .so`
+          sim_ac_spidermonkey_name=`echo $sim_ac_spidermonkey_name | cut -c4-`
+          ;;
+        *.a) # Unix style
+          sim_ac_spidermonkey_name=`basename $sim_ac_spidermonkey_candidate .a`
+          sim_ac_spidermonkey_name=`echo $sim_ac_spidermonkey_name | cut -c4-`
+          ;;
+        esac
+      done
+      if test "$sim_ac_spidermonkey_name" != ""; then break; fi
+    done
+
+    sim_ac_spidermonkey_cppflags="$sim_ac_spidermonkey_cppflags -I$sim_ac_spidermonkey_path"
+    CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"
+
+    sim_ac_spidermonkey_ldflags="-L$sim_ac_spidermonkey_path/$sim_ac_spidermonkey_build_dir"
+
+    LDFLAGS="$LDFLAGS $sim_ac_spidermonkey_ldflags"
+    sim_ac_spidermonkey_libs="-l$sim_ac_spidermonkey_name"
+    # unset sim_ac_spidermonkey_candidate
+    # unset sim_ac_spidermonkey_path
+  fi
+
+  SIM_AC_CHECK_HEADER_SPIDERMONKEY([CPPFLAGS="$CPPFLAGS $sim_ac_spidermonkey_cppflags"])
+
+  AC_MSG_CHECKING([for Spidermonkey])
+
+  if $BUILD_WITH_MSVC; then
+    CPPFLAGS="$CPPFLAGS -DXP_WIN -DWIN32"
+  else
+    CPPFLAGS="$CPPFLAGS -DCROSS_COMPILE"
+  fi
+
+  LIBS="$sim_ac_spidermonkey_libs $LIBS"
+  AC_TRY_LINK(
+    [#include <jsapi.h>],
+    [JSVersion ver = JS_GetVersion((void *) 0);],
+    [sim_ac_have_spidermonkey=true])
+
+  CPPFLAGS=$sim_ac_spidermonkey_save_CPPFLAGS
+  LDFLAGS=$sim_ac_spidermonkey_save_LDFLAGS
+  LIBS=$sim_ac_spidermonkey_save_LIBS
+  # unset sim_ac_spidermonkey_debug
+  # unset sim_ac_spidermonkey_name
+  # unset sim_ac_spidermonkey_save_CPPFLAGS
+  # unset sim_ac_spidermonkey_save_LDFLAGS
+  # unset sim_ac_spidermonkey_save_LIBS
+  ;;
+esac
+if $sim_ac_want_spidermonkey; then
+  if $sim_ac_have_spidermonkey; then
+    AC_MSG_RESULT([success ($sim_ac_spidermonkey_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    SIM_AC_ERROR([spidermonkey-unavailable])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_spidermonkey
+])
+
+# **************************************************************************
+# SIM_AC_UNIQIFY_OPTION_LIST( VARIABLE, LIST )
+#
+# This macro filters out redundant commandline options. It is heavily based
+# on the SIM_AC_UNIQIFY_LIST macro, but has been extended to support
+# spaces (i.e. for instance "-framework OpenGL" as needed on Mac OS X).
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#   Karin Kosina <kyrah@sim.no>
+#   Tamer Fahmy <tamer@tammura.at>
+
+AC_DEFUN([SIM_AC_UNIQIFY_OPTION_LIST], [
+sim_ac_save_prefix=$prefix
+sim_ac_save_exec_prefix=$exec_prefix
+test x"$prefix" = xNONE && prefix=/usr/local
+test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
+sim_ac_uniqued_list=
+eval paramlist='"$2"'
+sim_ac_sed_expr="[s,\(-[_a-zA-Z0-9][%_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1%%%%%\2,g]"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
+  eval sim_ac_eval_item="$sim_ac_item"
+  eval sim_ac_eval_item="$sim_ac_eval_item"
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      eval sim_ac_eval_uniq="$sim_ac_uniq"
+      eval sim_ac_eval_uniq="$sim_ac_eval_uniq"
+      test x"$sim_ac_eval_item" = x"$sim_ac_eval_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+$1=`echo $sim_ac_uniqued_list | sed 's/%%%%%/ /g'`
+prefix=$sim_ac_save_prefix
+exec_prefix=$sim_ac_save_exec_prefix
+# unset sim_ac_save_prefix
+# unset sim_ac_save_exec_prefix
+# unset sim_ac_eval_item
+# unset sim_ac_eval_uniq
+]) # SIM_AC_UNIQIFY_OPTION_LIST
+
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_TLHELP32_H:
+#
+#   Check for tlhelp32.h.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_TLHELP32_H], [
+# At least with MSVC++, these headers needs windows.h to have been included first.
+AC_CHECK_HEADERS([tlhelp32.h], [], [], [
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+])
+]) # SIM_AC_CHECK_HEADER_TLHELP32_H
+
+
+# **************************************************************************
+# SIM_AC_CHECK_FUNC__SPLITPATH:
+#
+#   Check for the _splitpath() macro/function.
+
+AC_DEFUN([SIM_AC_CHECK_FUNC__SPLITPATH], [
+AC_MSG_CHECKING([for _splitpath()])
+AC_LINK_IFELSE(
+[AC_LANG_PROGRAM([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+#include <stdlib.h>
+], [
+  char filename[[100]];
+  char drive[[100]];
+  char dir[[100]];
+  _splitpath(filename, drive, dir, NULL, NULL);
+])], [
+  AC_DEFINE([HAVE__SPLITPATH], 1, [define if the system has _splitpath()])
+  AC_MSG_RESULT([found])
+], [
+  AC_MSG_RESULT([not found])
+])
+]) # SIM_AC_CHECK_FUNC__SPLITPATH
+
+
+# **************************************************************************
+# SIM_AC_CHECK_WIN32_API:
+#
+#   Check if the basic Win32 API is available.
+#
+#   Defines HAVE_WIN32_API, and sets sim_ac_have_win32_api to
+#   either true or false.
+
+AC_DEFUN([SIM_AC_CHECK_WIN32_API], [
+sim_ac_have_win32_api=false
+AC_MSG_CHECKING([if the Win32 API is available])
+AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([
+#include <windows.h>
+],
+[
+  /* These need to be as basic as possible. I.e. they should be
+     available on all Windows versions. That means NT 3.1 and later,
+     Win95 and later, WinCE 1.0 and later), their definitions should
+     be available from windows.h, and should be linked in from kernel32.
+
+     The ones below are otherwise rather random picks.
+  */
+  (void)CreateDirectory(NULL, NULL);
+  (void)RemoveDirectory(NULL);
+  SetLastError(0);
+  (void)GetLastError();
+  (void)LocalAlloc(0, 1);
+  (void)LocalFree(NULL);
+  return 0;
+])],
+[sim_ac_have_win32_api=true])
+
+if $sim_ac_have_win32_api; then
+  AC_DEFINE([HAVE_WIN32_API], [1], [Define if the Win32 API is available])
+  AC_MSG_RESULT([yes])
+else
+  AC_MSG_RESULT([no])
+fi
+]) # SIM_AC_CHECK_WIN32_API
+
+
+# **************************************************************************
+# SIM_AC_SETUP_MSVC_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# This macro invokes IF-FOUND if the wrapmsvc wrapper can be run, and
+# IF-NOT-FOUND if not.
+#
+# Authors:
+#   Morten Eriksen <mortene@coin3d.org>
+#   Lars J. Aas <larsa@coin3d.org>
+
+# **************************************************************************
+
+AC_DEFUN([SIM_AC_MSVC_DISABLE_OPTION], [
+AC_ARG_ENABLE([msvc],
+  [AC_HELP_STRING([--disable-msvc], [don't require MS Visual C++ on Cygwin])],
+  [case $enableval in
+  no | false) sim_ac_try_msvc=false ;;
+  *)          sim_ac_try_msvc=true ;;
+  esac],
+  [sim_ac_try_msvc=true])
+])
+
+# **************************************************************************
+# Usage:
+#  SIM_AC_MSC_VERSION
+#
+# Find version number of the Visual C++ compiler. sim_ac_msc_version will
+# contain the full version number string, and sim_ac_msc_major_version
+# will contain only the Visual C++ major version number and
+# sim_ac_msc_minor_version will contain the minor version number.
+
+AC_DEFUN([SIM_AC_MSC_VERSION], [
+
+AC_MSG_CHECKING([version of Visual C++ compiler])
+
+cat > conftest.c << EOF
+int VerMSC = _MSC_VER;
+EOF
+
+# The " *"-parts of the last sed-expression on the next line are necessary
+# because at least the Solaris/CC preprocessor adds extra spaces before and
+# after the trailing semicolon.
+sim_ac_msc_version=`$CXXCPP $CPPFLAGS conftest.c 2>/dev/null | grep '^int VerMSC' | sed 's%^int VerMSC = %%' | sed 's% *;.*$%%'`
+
+sim_ac_msc_minor_version=0
+if test $sim_ac_msc_version -ge 1500; then
+  sim_ac_msc_major_version=9
+elif test $sim_ac_msc_version -ge 1400; then
+  sim_ac_msc_major_version=8
+elif test $sim_ac_msc_version -ge 1300; then
+  sim_ac_msc_major_version=7
+  if test $sim_ac_msc_version -ge 1310; then
+    sim_ac_msc_minor_version=1
+  fi
+elif test $sim_ac_msc_version -ge 1200; then
+  sim_ac_msc_major_version=6
+elif test $sim_ac_msc_version -ge 1100; then
+  sim_ac_msc_major_version=5
+else
+  sim_ac_msc_major_version=0
+fi
+
+# compatibility with old version of macro
+sim_ac_msvc_version=$sim_ac_msc_major_version
+
+rm -f conftest.c
+AC_MSG_RESULT($sim_ac_msc_major_version.$sim_ac_msc_minor_version)
+]) # SIM_AC_MSC_VERSION
+
+# **************************************************************************
+# Note: the SIM_AC_SETUP_MSVC_IFELSE macro has been OBSOLETED and
+# replaced by the one below.
+#
+# If the Microsoft Visual C++ cl.exe compiler is available, set us up for
+# compiling with it and to generate an MSWindows .dll file.
+
+AC_DEFUN([SIM_AC_SETUP_MSVCPP_IFELSE],
+[
+AC_REQUIRE([SIM_AC_MSVC_DISABLE_OPTION])
+AC_REQUIRE([SIM_AC_SPACE_IN_PATHS])
+
+: ${BUILD_WITH_MSVC=false}
+if $sim_ac_try_msvc; then
+  if test -z "$CC" -a -z "$CXX"; then
+    AC_MSG_CHECKING([setup for wrapmsvc.exe])
+    case $host in
+      *-cygwin)
+        valid_system=true
+        ;;
+      * )
+        valid_system=false
+        ;;
+    esac
+    if $valid_system; then
+      sim_ac_wrapmsvc=`cd $ac_aux_dir; pwd`/wrapmsvc.exe
+      echo "$as_me:$LINENO: sim_ac_wrapmsvc=$sim_ac_wrapmsvc" >&AS_MESSAGE_LOG_FD
+      if $sim_ac_wrapmsvc >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD; then
+        m4_ifdef([$0_VISITED],
+          [AC_FATAL([Macro $0 invoked multiple times])])
+        m4_define([$0_VISITED], 1)
+        CC=$sim_ac_wrapmsvc
+        CXX=$sim_ac_wrapmsvc
+        export CC CXX
+        BUILD_WITH_MSVC=true
+        AC_MSG_RESULT([working])
+
+        # Robustness: we had multiple reports of Cygwin ''link'' getting in
+        # the way of MSVC link.exe, so do a little sanity check for that.
+        #
+        # FIXME: a better fix would be to call link.exe with full path from
+        # the wrapmsvc wrapper, to avoid any trouble with this -- I believe
+        # that should be possible, using the dirname of the full cl.exe path.
+        # 20050714 mortene.
+        sim_ac_check_link=`type link`
+        AC_MSG_CHECKING([whether Cygwin's /usr/bin/link shadows MSVC link.exe])
+        case x"$sim_ac_check_link" in
+        x"link is /usr/bin/link"* )
+          AC_MSG_RESULT(yes)
+          SIM_AC_ERROR([cygwin-link])
+          ;;
+        * )
+          AC_MSG_RESULT(no)
+          ;;
+        esac
+
+      else
+        AC_MSG_RESULT([not working])
+        SIM_AC_ERROR([no-msvc++])
+      fi
+    else
+      AC_MSG_RESULT([not a cygwin host])
+    fi
+  fi
+fi
+export BUILD_WITH_MSVC
+AC_SUBST(BUILD_WITH_MSVC)
+
+if $BUILD_WITH_MSVC; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_SETUP_MSVC_IFELSE
+
+# **************************************************************************
+# SIM_AC_SETUP_MSVCRT
+#
+# This macro sets up compiler flags for the MS Visual C++ C library of
+# choice.
+
+AC_DEFUN([SIM_AC_SETUP_MSVCRT],
+[sim_ac_msvcrt_LDFLAGS=""
+sim_ac_msvcrt_LIBS=""
+
+AC_ARG_WITH([msvcrt],
+  [AC_HELP_STRING([--with-msvcrt=<crt>],
+                  [set which C run-time library to build against])],
+  [case `echo "$withval" | tr "[A-Z]" "[a-z]"` in
+  default | singlethread-static | ml | /ml | libc | libc\.lib )
+    sim_ac_msvcrt=singlethread-static
+    sim_ac_msvcrt_CFLAGS="/ML"
+    sim_ac_msvcrt_CXXFLAGS="/ML"
+    ;;
+  default-debug | singlethread-static-debug | mld | /mld | libcd | libcd\.lib )
+    sim_ac_msvcrt=singlethread-static-debug
+    sim_ac_msvcrt_CFLAGS="/MLd"
+    sim_ac_msvcrt_CXXFLAGS="/MLd"
+    ;;
+  multithread-static | mt | /mt | libcmt | libcmt\.lib )
+    sim_ac_msvcrt=multithread-static
+    sim_ac_msvcrt_CFLAGS="/MT"
+    sim_ac_msvcrt_CXXFLAGS="/MT"
+    ;;
+  multithread-static-debug | mtd | /mtd | libcmtd | libcmtd\.lib )
+    sim_ac_msvcrt=multithread-static-debug
+    sim_ac_msvcrt_CFLAGS="/MTd"
+    sim_ac_msvcrt_CXXFLAGS="/MTd"
+    ;;
+  multithread-dynamic | md | /md | msvcrt | msvcrt\.lib )
+    sim_ac_msvcrt=multithread-dynamic
+    sim_ac_msvcrt_CFLAGS="/MD"
+    sim_ac_msvcrt_CXXFLAGS="/MD"
+    ;;
+  multithread-dynamic-debug | mdd | /mdd | msvcrtd | msvcrtd\.lib )
+    sim_ac_msvcrt=multithread-dynamic-debug
+    sim_ac_msvcrt_CFLAGS="/MDd"
+    sim_ac_msvcrt_CXXFLAGS="/MDd"
+    ;;
+  *)
+    SIM_AC_ERROR([invalid-msvcrt])
+    ;;
+  esac],
+  [sim_ac_msvcrt=singlethread-static])
+
+AC_MSG_CHECKING([MSVC++ C library choice])
+AC_MSG_RESULT([$sim_ac_msvcrt])
+
+$1
+]) # SIM_AC_SETUP_MSVCRT
+
+# **************************************************************************
+# SIM_AC_SPACE_IN_PATHS
+
+AC_DEFUN([SIM_AC_SPACE_IN_PATHS], [
+sim_ac_full_builddir=`pwd`
+sim_ac_full_srcdir=`cd $srcdir; pwd`
+if test -z "`echo $sim_ac_full_srcdir | tr -cd ' '`"; then :; else
+  AC_MSG_WARN([Detected space character in the path leading up to the Coin source directory - this will probably cause random problems later. You are advised to move the Coin source directory to another location.])
+  SIM_AC_CONFIGURATION_WARNING([Detected space character in the path leading up to the Coin source directory - this will probably cause random problems later. You are advised to move the Coin source directory to another location.])
+fi
+if test -z "`echo $sim_ac_full_builddir | tr -cd ' '`"; then :; else
+  AC_MSG_WARN([Detected space character in the path leading up to the Coin build directory - this will probably cause random problems later. You are advised to move the Coin build directory to another location.])
+  SIM_AC_CONFIGURATION_WARNING([Detected space character in the path leading up to the Coin build directory - this will probably cause random problems later. You are advised to move the Coin build directory to another location.])
+fi
+]) # SIM_AC_SPACE_IN_PATHS
+
+# EOF **********************************************************************
+
+# Usage:
+#  SIM_AC_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_x11_cppflags (extra flags the compiler needs for X11)
+#    $sim_ac_x11_ldflags  (extra flags the linker needs for X11)
+#    $sim_ac_x11_libs     (link libraries the linker needs for X11)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_x11_avail is set to "yes" if
+#  the X11 development system is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_X11], [
+AC_REQUIRE([AC_PATH_XTRA])
+
+sim_ac_enable_darwin_x11=false
+
+case $host_os in
+  darwin* )
+    AC_ARG_ENABLE([darwin-x11],
+      AC_HELP_STRING([--enable-darwin-x11],
+                     [enable X11 on Darwin [[default=--disable-darwin-x11]]]),
+      [case "${enableval}" in
+        yes | true) sim_ac_enable_darwin_x11=true ;;
+        no | false) sim_ac_enable_darwin_x11=false; no_x=yes ;;
+        *) SIM_AC_ENABLE_ERROR([--enable-darwin-x11]) ;;
+      esac],
+      [sim_ac_enable_darwin_x11=false; no_x=yes])
+  ;;
+esac
+
+sim_ac_x11_avail=no
+
+if test x"$no_x" != xyes; then
+
+  #  *** DEBUG ***
+  #  Keep this around, as it can be handy when testing on new systems.
+  # echo "X_CFLAGS: $X_CFLAGS"
+  # echo "X_PRE_LIBS: $X_PRE_LIBS"
+  # echo "X_LIBS: $X_LIBS"
+  # echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
+  # echo
+  # exit 0
+
+  sim_ac_x11_cppflags="$X_CFLAGS"
+  sim_ac_x11_ldflags="$X_LIBS"
+  sim_ac_x11_libs="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_x11_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_x11_ldflags"
+  LIBS="$sim_ac_x11_libs $LIBS"
+
+  AC_CACHE_CHECK(
+    [whether we can link against X11],
+    sim_cv_lib_x11_avail,
+    [AC_TRY_LINK([#include <X11/Xlib.h>],
+                 [(void)XOpenDisplay(0L);],
+                 [sim_cv_lib_x11_avail=yes],
+                 [sim_cv_lib_x11_avail=no])])
+
+  if test x"$sim_cv_lib_x11_avail" = x"yes"; then
+    sim_ac_x11_avail=yes
+    $1
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    $2
+  fi
+fi
+])
+
+# Usage:
+#  SIM_AC_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 shared memory extension. If it is found, this
+#  shell variable is set:
+#
+#    $sim_ac_x11shmem_libs   (link libraries the linker needs for X11 Shm)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_x11shmem_avail is set to "yes" if the X11 shared
+#  memory extension is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
+
+AC_DEFUN([SIM_AC_CHECK_X11SHMEM], [
+
+sim_ac_x11shmem_avail=no
+sim_ac_x11shmem_libs="-lXext"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_x11shmem_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 shared memory extension is available],
+  sim_cv_lib_x11shmem_avail,
+  [AC_TRY_LINK([#include <X11/Xlib.h>
+               #include <X11/extensions/XShm.h>],
+               [(void)XShmQueryVersion(0L, 0L, 0L, 0L);],
+               [sim_cv_lib_x11shmem_avail=yes],
+               [sim_cv_lib_x11shmem_avail=no])])
+
+if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
+  sim_ac_x11shmem_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
+# Usage:
+#  SIM_AC_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 miscellaneous utilities extension. If it is
+#  found, this shell variable is set:
+#
+#    $sim_ac_x11mu_libs   (link libraries the linker needs for X11 MU)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_x11mu_avail is set to "yes" if the X11 miscellaneous
+#  utilities extension is found.
+#  CPPFLAGS and LDFLAGS might also be modified, if library is found in a
+#  non-standard location.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+
+AC_DEFUN([SIM_AC_CHECK_X11MU], [
+
+sim_ac_x11mu_avail=no
+sim_ac_x11mu_cppflags=""
+sim_ac_x11mu_ldflags=""
+sim_ac_x11mu_libs="-lXmu"
+
+sim_ac_save_libs=$LIBS
+sim_ac_save_cppflags=$CPPFLAGS
+sim_ac_save_ldflags=$LDFLAGS
+
+LIBS="$sim_ac_x11mu_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 miscellaneous utilities library is available],
+  sim_cv_lib_x11mu_avail,
+  [AC_TRY_LINK([#include <X11/Xlib.h>
+                #include <X11/Xmu/Xmu.h>
+                #include <X11/Xmu/StdCmap.h>],
+               [(void)XmuAllStandardColormaps(0L);],
+               [sim_cv_lib_x11mu_avail=yes],
+               [sim_cv_lib_x11mu_avail=maybe])])
+
+if test x"$sim_cv_lib_x11mu_avail" = xyes; then
+  sim_ac_x11mu_avail=yes
+else
+  # On HP-UX, Xmu might be located under /usr/contrib/X11R6/
+  mudir=/usr/contrib/X11R6
+  if test -d $mudir; then
+    sim_ac_x11mu_cppflags="-I$mudir/include"
+    sim_ac_x11mu_ldflags="-L$mudir/lib"
+    CPPFLAGS="$sim_ac_x11mu_cppflags $CPPFLAGS"
+    LDFLAGS="$sim_ac_x11mu_ldflags $LDFLAGS"
+
+    AC_CACHE_CHECK(
+      [once more whether the X11 miscellaneous utilities library is available],
+      sim_cv_lib_x11mu_contrib_avail,
+      [AC_TRY_LINK([#include <X11/Xlib.h>
+                    #include <X11/Xmu/Xmu.h>
+                    #include <X11/Xmu/StdCmap.h>],
+                   [(void)XmuAllStandardColormaps(0L);],
+                   [sim_cv_lib_x11mu_contrib_avail=yes],
+                   [sim_cv_lib_x11mu_contrib_avail=no])])
+    if test x"$sim_cv_lib_x11mu_contrib_avail" = xyes; then
+      sim_ac_x11mu_avail=yes
+    else
+      sim_ac_x11mu_cppflags=""
+      sim_ac_x11mu_ldflags=""
+    fi
+  fi
+fi
+
+if test x"$sim_ac_x11mu_avail" = xyes; then
+  :
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  CPPFLAGS=$sim_ac_save_cppflags
+  LDFLAGS=$sim_ac_save_ldflags
+  $2
+fi
+])
+
+# Usage:
+#  SIM_AC_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 extension device library. Sets this
+#  shell variable:
+#
+#    $sim_ac_x11xid_libs   (link libraries the linker needs for X11 XID)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_x11xid_avail is set to "yes" if the X11 extension
+#  device library is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
+
+AC_DEFUN([SIM_AC_CHECK_X11XID], [
+
+sim_ac_x11xid_avail=no
+sim_ac_x11xid_libs="-lXi"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_x11xid_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 extension device library is available],
+  sim_cv_lib_x11xid_avail,
+  [AC_TRY_LINK([#include <X11/extensions/XInput.h>],
+               [(void)XOpenDevice(0L, 0);],
+               [sim_cv_lib_x11xid_avail=yes],
+               [sim_cv_lib_x11xid_avail=no])])
+
+if test x"$sim_cv_lib_x11xid_avail" = x"yes"; then
+  sim_ac_x11xid_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
+# Usage:
+#  SIM_AC_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the Xt intrinsic library. Sets this shell variable:
+#
+#    $sim_ac_xt_libs   (link library the linker needs for X Intrinsic)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_xt_avail is set to "yes" if the X11 Intrinsic
+#  library is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_CHECK_X_INTRINSIC], [
+
+sim_ac_xt_avail=no
+sim_ac_xt_libs="-lXt"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_xt_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 Intrinsic library is available],
+  sim_cv_lib_xt_avail,
+  [AC_TRY_LINK([#include <X11/Intrinsic.h>],
+               [(void)XtVaCreateWidget("", 0L, 0L);],
+               [sim_cv_lib_xt_avail=yes],
+               [sim_cv_lib_xt_avail=no])])
+
+if test x"$sim_cv_lib_xt_avail" = xyes; then
+  sim_ac_xt_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
+# Usage:
+#   SIM_AC_CHECK_LIBXPM( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
+#
+# Description:
+#   This macro checks for libXpm.
+#
+# Variables:
+#   $sim_ac_xpm_avail      yes | no
+#   $sim_ac_xpm_libs       [link-line libraries]
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
+
+AC_DEFUN([SIM_AC_CHECK_LIBXPM], [
+
+sim_ac_xpm_avail=no
+sim_ac_xpm_libs="-lXpm"
+
+AC_CACHE_CHECK(
+  [whether libXpm is available],
+  sim_cv_lib_xpm_avail,
+  [sim_ac_save_libs=$LIBS
+  LIBS="$sim_ac_xpm_libs $LIBS"
+  AC_TRY_LINK([#include <X11/xpm.h>],
+              [(void)XpmLibraryVersion();],
+              [sim_cv_lib_xpm_avail=yes],
+              [sim_cv_lib_xpm_avail=no])
+  LIBS="$sim_ac_save_libs"])
+
+if test x"$sim_cv_lib_xpm_avail" = x"yes"; then
+  sim_ac_xpm_avail=yes
+  LIBS="$sim_ac_xpm_libs $LIBS"
+  $1
+else
+  ifelse([$2], , :, [$2])
+fi
+])
+
+
+# Usage:
+#  SIM_AC_CHECK_X11_XP([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the Xp library for printing functionality. Sets this
+#  shell variable:
+#
+#    $sim_ac_xp_libs   (link library the linker needs for the Xp library)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_xp_avail is set to "yes" if the Xp library is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_AC_CHECK_X11_XP], [
+sim_ac_xp_avail=no
+sim_ac_xp_libs="-lXp"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_xp_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 printing library is available],
+  sim_cv_lib_xp_avail,
+  [AC_TRY_LINK([#include <X11/extensions/Print.h>],
+               [XpEndJob(0L);],
+               [sim_cv_lib_xp_avail=yes],
+               [sim_cv_lib_xp_avail=no])])
+
+if test x"$sim_cv_lib_xp_avail" = xyes; then
+  sim_ac_xp_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
+# SIM_AC_CHECK_X11_ATHENA( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
+
+AC_DEFUN([SIM_AC_CHECK_X11_ATHENA], [
+sim_ac_athena_avail=no
+sim_ac_athena_libs="-lXaw"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_athena_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 Athena widgets library is available],
+  sim_cv_lib_athena_avail,
+  [AC_TRY_LINK([#include <X11/Xfuncproto.h>
+                #include <X11/Xaw/XawInit.h>],
+               [XawInitializeWidgetSet();],
+               [sim_cv_lib_athena_avail=yes],
+               [sim_cv_lib_athena_avail=no])])
+
+if test x"$sim_cv_lib_athena_avail" = xyes; then
+  sim_ac_athena_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
+# SIM_AC_X11_READY( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
+
+AC_DEFUN([SIM_AC_CHECK_X11_READY],
+[AC_CACHE_CHECK(
+  [if X11 linkage is ready],
+  [sim_cv_x11_ready],
+  [AC_TRY_LINK(
+    [#include <X11/Xlib.h>],
+    [(void)XOpenDisplay(0L);],
+    [sim_cv_x11_ready=true],
+    [sim_cv_x11_ready=false])])
+if ${sim_cv_x11_ready}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_X11_READY()
+
+# **************************************************************************
+# SIM_AC_HAVE_LIBZLIB_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Variables:
+#   sim_ac_have_libzlib
+#   sim_ac_zlib_cppflags
+#   sim_ac_zlib_ldflags
+#   sim_ac_zlib_libs
+#
+# Authors:
+#   Lars J. Aas <larsa@coin3d.org>
+#   Morten Eriksen <mortene@coin3d.org>
+#
+# Todo:
+# - use AS_UNSET to unset internal variables to avoid polluting the environment
+#
+
+# **************************************************************************
+
+AC_DEFUN([SIM_AC_HAVE_LIBZLIB_IFELSE],
+[: ${sim_ac_have_libzlib=false}
+AC_MSG_CHECKING([for zlib])
+AC_ARG_WITH(
+  [zlib],
+  [AC_HELP_STRING([--with-zlib=PATH], [enable/disable zlib support])],
+  [case $withval in
+  yes | "") sim_ac_want_libzlib=true ;;
+  no)       sim_ac_want_libzlib=false ;;
+  *)        sim_ac_want_libzlib=true
+            sim_ac_libzlib_path=$withval ;;
+  esac],
+  [sim_ac_want_libzlib=true])
+case $sim_ac_want_libzlib in
+true)
+  $sim_ac_have_libzlib && break
+  sim_ac_libzlib_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_libzlib_save_LDFLAGS=$LDFLAGS
+  sim_ac_libzlib_save_LIBS=$LIBS
+  sim_ac_libzlib_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_libzlib_debug=true
+  # test -z "$sim_ac_libzlib_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_libzlib_path=$prefix
+  sim_ac_libzlib_name=z
+  if test -n "$sim_ac_libzlib_path"; then
+    for sim_ac_libzlib_candidate in \
+      `( ls $sim_ac_libzlib_path/lib/zlib*.lib;
+         ls $sim_ac_libzlib_path/lib/zlib*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_libzlib_candidate in
+      *d.lib)
+        $sim_ac_libzlib_debug &&
+          sim_ac_libzlib_name=`basename $sim_ac_libzlib_candidate .lib` ;;
+      *.lib)
+        sim_ac_libzlib_name=`basename $sim_ac_libzlib_candidate .lib` ;;
+      esac
+    done
+    sim_ac_libzlib_cppflags="-I$sim_ac_libzlib_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_libzlib_cppflags"
+    sim_ac_libzlib_ldflags="-L$sim_ac_libzlib_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
+    # unset sim_ac_libzlib_candidate
+    # unset sim_ac_libzlib_path
+  fi
+  sim_ac_libzlib_libs="-l$sim_ac_libzlib_name"
+  LIBS="$sim_ac_libzlib_libs $LIBS"
+  AC_TRY_LINK(
+    [#include <zlib.h>],
+    [(void)zlibVersion();],
+    [sim_ac_have_libzlib=true])
+  CPPFLAGS=$sim_ac_libzlib_save_CPPFLAGS
+  LDFLAGS=$sim_ac_libzlib_save_LDFLAGS
+  LIBS=$sim_ac_libzlib_save_LIBS
+  # unset sim_ac_libzlib_debug
+  # unset sim_ac_libzlib_name
+  # unset sim_ac_libzlib_save_CPPFLAGS
+  # unset sim_ac_libzlib_save_LDFLAGS
+  # unset sim_ac_libzlib_save_LIBS
+  ;;
+esac
+if $sim_ac_want_libzlib; then
+  if $sim_ac_have_libzlib; then
+    AC_MSG_RESULT([success ($sim_ac_libzlib_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_libzlib
+])
+
+# Usage:
+#  SIM_AC_CHECK_ZLIB_READY([ACTION-IF-READY[, ACTION-IF-NOT-READY]])
+#
+#  Try to link code which needs the ZLIB development system.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_ZLIB_READY], [
+AC_MSG_CHECKING([if we can use zlib without explicit linkage])
+sim_ac_zlib_ready=false
+AC_TRY_LINK(
+  [#include <zlib.h>],
+  [(void)zlibVersion();],
+  [sim_ac_zlib_ready=true])
+if $sim_ac_zlib_ready; then
+  AC_MSG_RESULT([yes])
+  $1
+else
+  AC_MSG_RESULT([no])
+  $2
+fi
+# unset sim_ac_zlib_ready
+])
+
+# EOF **********************************************************************
+

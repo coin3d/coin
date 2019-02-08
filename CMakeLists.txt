@@ -100,8 +100,8 @@ endif()
 # Fail early if one of the required packages cannot be found
 
 # This is needed when Coins local Boost includes are removed and system installation of Boost is used.
-#find_package(Boost REQUIRED) # almost any Boost will do
-#list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIRS})
+find_package(Boost REQUIRED) # almost any Boost will do
+list(APPEND COIN_TARGET_LINK_LIBRARIES Boost::boost)
 
 # As not all CMake FindXXX modules and config packages provide target support,
 # we should explicitly check for them on.

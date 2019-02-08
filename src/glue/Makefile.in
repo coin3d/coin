@@ -45,46 +45,7 @@ subdir = src/glue
 DIST_COMMON = $(libglueinc_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/../simacros/bin/../cfg/m4/bz2.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_debug.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_exceptions.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_functionname.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_profiling.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_rtti.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_symbols.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compile_warnings.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/compiler_capabilities.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/configuration_summary.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/cpp_search_order.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/dates.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/dl.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/doxygen_detection.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/errors.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/exit.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/fontconfig.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/freetype.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/gendsp.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/general.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/mac.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/macro_quoting.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/mathlib.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/misc_compiler.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/nprintf.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/openal.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/opengl.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/packagemaker.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/project.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/pthread.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/sim.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/simage.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/sourcedir.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/spidermonkey.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/uniqify_option_list.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/w32api.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/wrapmsvc.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/x11.m4 \
-	$(top_srcdir)/../simacros/bin/../cfg/m4/zlib.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -224,6 +185,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BOOST_CPPFLAGS = @BOOST_CPPFLAGS@
+BOOST_LDFLAGS = @BOOST_LDFLAGS@
 BUILD_3DS_CAPABILITIES_FALSE = @BUILD_3DS_CAPABILITIES_FALSE@
 BUILD_3DS_CAPABILITIES_TRUE = @BUILD_3DS_CAPABILITIES_TRUE@
 BUILD_HTMLPAGES_FALSE = @BUILD_HTMLPAGES_FALSE@
