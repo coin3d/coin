@@ -540,7 +540,7 @@ SoTexture3::filenameSensorCB(void * data, SoSensor *)
 
   thisp->setReadStatus(TRUE);
   if ((thisp->filenames.getNum()<=0) ||
-      (thisp->filenames[0].getLength() && !thisp->loadFilenames()) {
+      (thisp->filenames[0].getLength() && !thisp->loadFilenames())) {
     thisp->setReadStatus(FALSE);
   }
 }
