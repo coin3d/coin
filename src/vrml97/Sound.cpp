@@ -715,7 +715,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
   if ( PRIVATE(this)->playing &&
-       ( (!isactive) ) || (!SoSoundElement::isPartOfActiveSceneGraph(state))) {
+       ( (!isactive) || (!SoSoundElement::isPartOfActiveSceneGraph(state)) ) ) {
 #ifdef HAVE_THREADS
       PRIVATE(this)->syncmutex.unlock();
 #endif
@@ -726,7 +726,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     return;
   }
 
-  // if we got here then we're either allready playing, or we should be
+  // if we got here then we're either already playing, or we should be
 
   if (!PRIVATE(this)->hasValidAlSource())
     PRIVATE(this)->generateAlSource();
