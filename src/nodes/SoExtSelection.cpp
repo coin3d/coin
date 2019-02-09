@@ -1531,11 +1531,11 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 
   SbBool full = FALSE;
   switch (PUBLIC(this)->lassoPolicy.getValue()) {
-  case SoExtSelection::FULL_BBOX:
+  case SoExtSelection::FULL_BBOX: /* fall through intended */
     full = TRUE;
   case SoExtSelection::PART_BBOX:
     return testBBox(action, projmatrix, shape, rectbbox, full);
-  case SoExtSelection::FULL:
+  case SoExtSelection::FULL: /* fall through intended */
     full = TRUE;
   case SoExtSelection::PART:
     return testPrimitives(action, projmatrix, shape, rectbbox, full);
