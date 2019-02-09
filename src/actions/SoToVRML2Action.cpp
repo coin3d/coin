@@ -305,7 +305,7 @@ class SoToVRML2ActionP {
 public:
   SoToVRML2ActionP(void)
     : master(NULL),nodefuse(FALSE),reuseAppearanceNodes(FALSE),reuseGeometryNodes(FALSE),
-      vrml2path(NULL),vrml2root(NULL),bboxaction(NULL),vrmlcoords(NULL),vrmlnormals(NULL),vrmlcolors(NULL),vrmltexcoords(NULL)
+      bboxaction(NULL),vrml2path(NULL),vrml2root(NULL),vrmlcoords(NULL),vrmlnormals(NULL),vrmlcolors(NULL),vrmltexcoords(NULL)
   {}
 
   ~SoToVRML2ActionP(void)
