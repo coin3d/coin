@@ -1121,12 +1121,14 @@ SoInput::read(SbName & n, SbBool validIdent)
         for (int i = 1; i < strlength; i++)
           if (!SoInputP::isNameCharVRML1(s[i], validIdent)) return FALSE;
       }
+      break;
     case VRML2:
       if (validIdent && strlength > 0) {
         if (!SoInputP::isNameStartCharVRML2(s[0], validIdent)) return FALSE;
         for (int i = 1; i < strlength; i++)
           if (!SoInputP::isNameCharVRML2(s[i], validIdent)) return FALSE;
       }
+      break;
     default:
       assert(!"invalid code path");
       break;
