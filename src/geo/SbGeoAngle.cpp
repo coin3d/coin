@@ -55,10 +55,10 @@ SbGeoAngle::SbGeoAngle(const double deg,
                        const double sec,
                        const char direction)
 {
-  assert(direction == 'N' ||
-         direction == 'S' ||
-         direction == 'E' ||
-         direction == 'W' &&
+  assert(((direction == 'N') ||
+         (direction == 'S') ||
+         (direction == 'E') ||
+         (direction == 'W')) &&
          "direction must be either N, S, E or W");
 
   this->a = deg * M_PI / 180.0;
