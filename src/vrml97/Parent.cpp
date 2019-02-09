@@ -406,7 +406,7 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
 {
   int i;
   SbBool needcopy = TRUE;
-  unsigned int numChildren = cl.getLength();
+  int numChildren = cl.getLength();
   if (numChildren && (numnodes == numChildren)) {
     const SoNode ** clarr = (const SoNode**) cl.getArrayPtr();
     for (i = 0; i < numnodes; i++) {
