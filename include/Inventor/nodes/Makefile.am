@@ -83,6 +83,7 @@ PublicHeaders = \
 	SoProfileCoordinate3.h \
 	SoQuadMesh.h \
 	SoResetTransform.h \
+	SoReversePerspectiveCamera.h \
 	SoRotation.h \
 	SoRotationXYZ.h \
 	SoRotor.h \
@@ -132,8 +133,8 @@ PublicHeaders = \
 	SoTriangleStripSet.h \
 	SoUnits.h \
 	SoVertexProperty.h \
-        SoVertexAttribute.h \
-        SoVertexAttributeBinding.h \
+	SoVertexAttribute.h \
+	SoVertexAttributeBinding.h \
 	SoVertexShape.h \
 	SoWWWAnchor.h \
 	SoWWWInline.h \
