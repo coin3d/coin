@@ -133,7 +133,7 @@ coin_create_normalization_cube_map(const int size)
       for(i = 0; i < size; i++) {
         tmpvec[0] = ((float)i)+offset-halfsize;
         tmpvec[1] = halfsize;
-        tmpvec[2] = ((j+offset-halfsize));
+        tmpvec[2] = ((float)j)+offset-halfsize;
 
         coin_pack_to_01(tmpvec);
 
