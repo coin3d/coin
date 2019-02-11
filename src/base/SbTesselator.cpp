@@ -672,8 +672,8 @@ SbTesselator::PImpl::cutTriangle(Vertex * t)
 SbTesselator::PImpl::tessfloat_t
 SbTesselator::PImpl::area(Vertex * v)
 {
-  return static_cast<tessfloat_t>(fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
-                     (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X]))));
+  return static_cast<tessfloat_t>(fabs((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
+                     (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
 }
 
 //
