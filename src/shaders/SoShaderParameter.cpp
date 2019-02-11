@@ -903,7 +903,7 @@ void SoShaderParameterArray4f::updateParameter(SoGLShaderObject *shader)
       buffer[4*i+0] = this->value[i][0];
       buffer[4*i+1] = this->value[i][1];
       buffer[4*i+2] = this->value[i][2];
-      buffer[4*i+3] = this->value[i][2];
+      buffer[4*i+3] = this->value[i][3];
     }
   }
 
