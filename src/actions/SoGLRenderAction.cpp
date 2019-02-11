@@ -1612,9 +1612,9 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
     SbVec3f center;
 
     if (bboxcache && bboxcache->isValid(state)) {
-      if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
-      center = bboxcache->getProjectedBox().getCenter();
       bbox = bboxcache->getProjectedBox();
+      if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
+      else center = bbox.getCenter();
     }
     else {
       tailshape->computeBBox(action, bbox, center);
