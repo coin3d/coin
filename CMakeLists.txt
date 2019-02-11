@@ -318,6 +318,7 @@ find_int_type_with_size(COIN_INTPTR_T ${CMAKE_SIZEOF_VOID_P} "intptr_t" "int" "l
 find_int_type_with_size(COIN_UINTPTR_T ${CMAKE_SIZEOF_VOID_P} "uintptr_t" "u_intptr_t" "_W64 unsigned int" "unsigned int" "unsigned long" "u_int64_t" "unsigned long long" "unsigned __int64")
 
 if(MSVC)
+  option(COIN_BUILD_MSVC_STATIC_RUNTIME "Build against the static Microsoft Visual C runtime library." OFF)
   option(COIN_BUILD_SINGLE_LIB "Build only one library when ON, multiple when OFF." ON)
   if (MSVC_VERSION GREATER 1500 OR MSVC_VERSION EQUAL 1500)
     option(COIN_BUILD_MSVC_MP "Enable build with multiple processes in Visual Studio" ON)
@@ -331,6 +332,7 @@ if(MSVC)
   # Enable C++ exception handling (for code that uses boost in SbByteBuffer)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
+  coin_msvc_link_type_crt(${COIN_BUILD_MSVC_STATIC_RUNTIME})
   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -D_USE_MATH_DEFINES)
 else()
   option(COIN_BUILD_SINGLE_LIB "Build only one library when ON, multiple when OFF." OFF)
@@ -468,21 +470,6 @@ if(HAVE_OPENGL_GL_H)
   check_include_file(OpenGL/glext.h HAVE_OPENGL_GLEXT_H)
   check_include_file(OpenGL/CGLCurrent.h HAVE_OPENGL_CGLCURRENT_H)
 endif()
-
-# I do not have any FreeBSD knowledge, but should the following check not have been handled already by the 
-# find_package(OpenGL) and a include_directories(${OPENGL_INCLUDE_DIR}) call? Check with the reporter.
-
-# On FreeBSD (possibly other BSDs as well), GL/gl.h does not live
-# in the standard search paths. Test for it explicitly.
-#if(CMAKE_SYSTEM MATCHES "FreeBSD")
-#  if(NOT HAVE_OPENGL_GL_H)
-#    include_directories(/usr/local/include)
-#    check_include_file(GL/gl.h _have_gl_gl_h)
-#    if (NOT _have_gl_gl_h)
-#      message(WARNING "No GL/gl.h found")
-#    endif()
-#  endif()
-#endif()
 
 check_symbol_exists(CGL_VERSION_1_0 OpenGL/OpenGL.h HAVE_CGL)
 set(HAVE_CGL_PBUFFER ${HAVE_CGL})

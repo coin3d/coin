@@ -58,3 +58,26 @@ macro(find_int_type_with_size TYPE_VARIABLE TYPE_SIZE)
   endforeach()
 endmacro()
 
+
+# Replace the link type of the MSVCRT libraries
+# statically: /MT|/MTd
+# dynamically: /MD|/MDd
+macro(coin_msvc_link_type_crt _static_crt)
+  set(_vars         CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
+  set(_vars ${vars} CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+  if(${_static_crt})
+    message(STATUS "setting static runtime options")
+    foreach(_flags ${_vars})
+      if(${_flags} MATCHES "/MD")
+        string(REGEX REPLACE "/MD" "/MT" ${_flags} "${${_flags}}")
+      endif()
+    endforeach()
+  else()
+    message(STATUS "setting dynamic runtime options")
+    foreach(_flags ${_vars})
+      if(${_flags} MATCHES "/MT")
+        string(REGEX REPLACE "/MT" "/MD" ${_flags} "${${_flags}}")
+      endif()
+    endforeach()
+  endif()
+endmacro()
