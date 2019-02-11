@@ -99,12 +99,16 @@ endif()
 
 # Fail early if one of the required packages cannot be found
 
-# This is needed when Coins local Boost includes are removed and system installation of Boost is used.
-find_package(Boost REQUIRED) # almost any Boost will do
-list(APPEND COIN_TARGET_LINK_LIBRARIES Boost::boost)
-
 # As not all CMake FindXXX modules and config packages provide target support,
 # we should explicitly check for them on.
+find_package(Boost REQUIRED) # almost any Boost will do
+# Boost::boost - Target for header only dependencies (Boost include directory)
+if(NOT TARGET Boost::boost)
+  list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES "${Boost_INCLUDE_DIRS}")
+else()
+  list(APPEND COIN_TARGET_LINK_LIBRARIES Boost::boost)
+endif
+
 find_package(OpenGL REQUIRED)
 if(OPENGL_FOUND)
   set(HAVE_OPENGL 1)
