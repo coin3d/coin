@@ -107,7 +107,7 @@ if(NOT TARGET Boost::boost)
   list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES "${Boost_INCLUDE_DIRS}")
 else()
   list(APPEND COIN_TARGET_LINK_LIBRARIES Boost::boost)
-endif
+endif()
 
 find_package(OpenGL REQUIRED)
 if(OPENGL_FOUND)
