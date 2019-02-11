@@ -314,7 +314,7 @@ SbBox2d::findIntersection(const SbVec2d & a, const SbVec2d & b, SbVec2d & ia, Sb
   else blocka += 2;
   if ( a[1] < this->minpt[1] ) blocka += 0;
   else if ( a[1] <= this->maxpt[1] ) blocka += 3;
-  else blocka = +6;
+  else blocka += 6;
   if ( b[0] < this->minpt[0] ) blockb += 0;
   else if ( b[0] <= this->maxpt[0] ) blockb += 1;
   else blockb += 2;
