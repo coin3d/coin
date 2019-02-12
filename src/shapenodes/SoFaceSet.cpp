@@ -570,8 +570,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
     // check if we can render things using glDrawArrays
     if (SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY) &&
-        (PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
-        (PRIVATE(this)->primitivetype == GL_QUADS) &&
+        ((PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
+        (PRIVATE(this)->primitivetype == GL_QUADS)) &&
         (nbind != PER_FACE) &&
         (mbind != PER_FACE) &&
         !tb.isFunction()) {

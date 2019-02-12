@@ -675,7 +675,8 @@ SbTime::parsedate(const char * const date)
     dateptr += 2;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_mday = atoi(dateptr);
-    while (*dateptr != '-') dateptr++; dateptr++;
+    while (*dateptr != '-') dateptr++;
+    dateptr++;
 
     int i;
     for (i=0; i < 12; i++) {
