@@ -198,7 +198,7 @@
 
 class SoText2P {
 public:
-  SoText2P(SoText2 * textnode) : master(textnode), maxwidth(0)
+  SoText2P(SoText2 * textnode) : maxwidth(0), master(textnode)
   {
     this->bbox.makeEmpty();
   }
