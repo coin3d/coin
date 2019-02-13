@@ -1687,7 +1687,7 @@ SoInput::addDirectoryIdx(const int idx, const char * dirName)
 
   SbString * ns = new SbString(dirName);
   if (idx == -1) dirs->append(ns);
-  else if (idx != -1) dirs->insert(ns, idx);
+  else dirs->insert(ns, idx);
 }
 
 /*!

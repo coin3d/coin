@@ -314,7 +314,7 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
   }
 
   // handle array
-  if ((this->cacheType == CG_ARRAY)) {
+  if (this->cacheType == CG_ARRAY) {
     int dim = glue_cgGetArrayDimension(this->cgParameter);
 
     if (dim != 1) {

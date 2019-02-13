@@ -297,7 +297,7 @@ GLUWrapper_gluNurbsSurface(void * nurb, /* this is really of type "GLUnurbs *" *
   }
 
   cc_string_sprintf(&tmp,
-                    "(sKnotCount - sOrder) × (tKnotCount - tOrder) => %d control points\n",
+                    "(sKnotCount - sOrder) * (tKnotCount - tOrder) => %d control points\n",
                     (sKnotCount - sOrder) * (tKnotCount - tOrder));
   cc_string_append_string(&s, &tmp);
 
@@ -365,7 +365,7 @@ GLUWrapper(void)
 #ifdef GLU_RUNTIME_LINKING
 
   {
-    char * libname;
+    const char * libname;
 
 #ifndef GLU_IS_PART_OF_GL
 
@@ -390,7 +390,7 @@ GLUWrapper(void)
       GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
     }
-    libname = (char *)possiblelibnames[idx-1];
+    libname = possiblelibnames[idx-1];
 
 #elif (defined HAVE_OPENGL_GLU_H)
 
