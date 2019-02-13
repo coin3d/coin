@@ -114,7 +114,7 @@ SoComposeVec4f::evaluate()
     xVal=i<numX?x[i]:x[numX-1];
     yVal=i<numY?y[i]:y[numY-1];
     zVal=i<numZ?z[i]:z[numZ-1];
-    wVal=i<numW?w[i]:w[numZ-1];
+    wVal=i<numW?w[i]:w[numW-1];
 
     SO_ENGINE_OUTPUT(vector,SoMFVec4f,set1Value(i,xVal,yVal,zVal,wVal));
   }
