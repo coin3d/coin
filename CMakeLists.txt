@@ -22,6 +22,11 @@ if(POLICY CMP0072)
   cmake_policy(SET CMP0072 NEW)
 endif()
 
+if(POLICY CMP0075)
+  # get rid of CMAKE_REQUIRED_LIBRARIES warning from CMake 3.12.2
+  cmake_policy(SET CMP0075 NEW)
+endif()
+
 # ############################################################################
 # Prevent in-source builds, as they often cause severe build problems
 # ############################################################################
@@ -38,6 +43,7 @@ endif()
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
 include(CheckCSourceRuns)
+include(CheckCXXSourceCompiles)
 include(CheckIncludeFile)
 include(CheckIncludeFiles)
 include(CheckLibraryExists)
@@ -86,6 +92,8 @@ option(COIN_VERBOSE "Add verbose debugging information during the configure proc
 option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
 
 cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." ON "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
+cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
+cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
 if(HAVE_MULTIPLE_VERSION)
   # Modifies the installation path for both the distributed includes and docs
@@ -109,22 +117,47 @@ else()
   list(APPEND COIN_TARGET_LINK_LIBRARIES Boost::boost)
 endif()
 
-find_package(OpenGL REQUIRED)
-if(OPENGL_FOUND)
-  set(HAVE_OPENGL 1)
-  set(OPENGL_SYSTEM_LIBRARY_NAME "${OPENGL_gl_LIBRARY}${CMAKE_SHARED_LIBRARY_SUFFIX}")
-  if(OpenGL_GLU_FOUND)
-    set(HAVE_GLU 1)
+if(COIN_BUILD_MAC_X11)
+  find_package(X11 REQUIRED)
+  # On Mac OS X, GLX is provided as a separate OpenGL implementation, different
+  # from the standard OpenGL framework which provides support for GLUT and native
+  # Mac OS X applications.
+  if(X11_FOUND)
+    find_path(X11_GL_INCLUDE_PATH GL/glx.h ${X11_INC_SEARCH_PATH})
+    if(NOT X11_GL_INCLUDE_PATH)
+      message(FATAL_ERROR "Could not find GL/glx.h")
+    endif()
+
+    find_library(X11_GL_LIB GL ${X11_LIB_SEARCH_PATH})
+    if(NOT X11_GL_LIB)
+      message(FATAL_ERROR "Could not find libGL.dylib")
+    endif()
+
+    find_library(X11_GLU_LIB GLU ${X11_LIB_SEARCH_PATH})
+    if(NOT X11_GLU_LIB)
+      message(FATAL_ERROR "Could not find libGLU.dylib")
+    endif()
+    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${X11_INCLUDE_DIR} ${X11_GL_INCLUDE_PATH})
+    list(APPEND COIN_TARGET_LINK_LIBRARIES ${X11_LIBRARIES} ${X11_GL_LIB} ${X11_GLU_LIB})
   endif()
-  if(APPLE)
-    set(GLU_IS_PART_OF_GL 1)
-  endif()
-  #include_directories("${OPENGL_INCLUDE_DIR}")
-  if (NOT TARGET OpenGL::GL)
-    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES "${OPENGL_INCLUDE_DIR}")
-    list(APPEND COIN_TARGET_LINK_LIBRARIES "${OPENGL_gl_LIBRARY}" "${OPENGL_glu_LIBRARY}")
-  else()
-    list(APPEND COIN_TARGET_LINK_LIBRARIES OpenGL::GL OpenGL::GLU)
+else()
+  find_package(OpenGL REQUIRED)
+  if(OPENGL_FOUND)
+    set(HAVE_OPENGL 1)
+    set(OPENGL_SYSTEM_LIBRARY_NAME "${OPENGL_gl_LIBRARY}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    if(OpenGL_GLU_FOUND)
+      set(HAVE_GLU 1)
+    endif()
+    if(APPLE)
+      set(GLU_IS_PART_OF_GL 1)
+    endif()
+    #include_directories("${OPENGL_INCLUDE_DIR}")
+    if (NOT TARGET OpenGL::GL)
+      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES "${OPENGL_INCLUDE_DIR}")
+      list(APPEND COIN_TARGET_LINK_LIBRARIES "${OPENGL_gl_LIBRARY}" "${OPENGL_glu_LIBRARY}")
+    else()
+      list(APPEND COIN_TARGET_LINK_LIBRARIES OpenGL::GL OpenGL::GLU)
+    endif()
   endif()
 endif()
 
@@ -345,7 +378,7 @@ endif()
 set(HAVE_GZDOPEN 1)
 if(WIN32)
   set(HAVE_WIN32_API 1)
-  set(HAVE_WGL 1)
+  #set(HAVE_WGL 1)
   if(MINGW)
     set(COIN_DEFAULT_SHARED_POSTFIX "")
     set(COIN_DEFAULT_STATIC_POSTFIX "")
@@ -451,36 +484,81 @@ else()
     check_include_file(dlfcn.h HAVE_DLFCN_H)
   endif()
   check_library_exists(dld shl_load "" HAVE_DLD_LIB)
+endif()
 
-  check_include_file(X11/Xlib.h HAVE_X11_AVAILABLE)
+set(CMAKE_REQUIRED_INCLUDES ${COIN_TARGET_INCLUDE_DIRECTORIES})
+if(WIN32)
+  set(CMAKE_REQUIRED_LIBRARIES ${COIN_TARGET_LINK_LIBRARIES} gdi32)
+  check_cxx_source_compiles("
+    #include <windows.h>
+    #include <GL/gl.h>
+    int main() { (void)wglCreateContext(0L); return 0; }
+  " HAVE_WGL)
+elseif(APPLE)
+  set(CMAKE_REQUIRED_LIBRARIES ${COIN_TARGET_LINK_LIBRARIES})
+  if(COIN_BUILD_MAC_X11)
+    check_cxx_source_compiles("
+      #include <GL/gl.h>
+      #include <GL/glx.h>
+      int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
+    " HAVE_GLX)
+  else()
+    if(COIN_BUILD_MAC_AGL)
+      set(CMAKE_REQUIRED_LIBRARIES ${COIN_TARGET_LINK_LIBRARIES} "-Wl,-framework,ApplicationServices" "-Wl,-framework,AGL" "-Wl,-framework,Carbon")
+      check_cxx_source_compiles("
+        #include <AGL/agl.h>
+        #define __CARBONSOUND__
+        #include <Carbon/Carbon.h>
+        int main() { AGLContext ctx; WindowRef wref = aglGetWindowRef(ctx); HIViewRef href = HIViewGetRoot(wref); return 0; }
+      " HAVE_AGL)
+      check_cxx_source_compiles("
+        #include <AGL/agl.h>
+        int main() { AGLPBuffer pbuffer; return 0; }
+      " HAVE_AGL_PBUFFER)
+    endif()
+    set(CMAKE_REQUIRED_LIBRARIES ${COIN_TARGET_LINK_LIBRARIES})
+    check_cxx_source_compiles("
+      #include <OpenGL/OpenGL.h>
+      int main() { CGLGetCurrentContext(); return 0; }
+    " HAVE_CGL)
+    check_cxx_source_compiles("
+      #include <OpenGL/OpenGL.h>
+      int main() { CGLPBuffer pbuffer; return 0; }
+    " HAVE_CGL_PBUFFER)
+  endif()
+endif()
+
+if(NOT (HAVE_WGL OR HAVE_AGL OR HAVE_CGL OR HAVE_GLX))
+  check_cxx_source_compiles("
+    #include <GL/gl.h>
+    #include <GL/glx.h>
+    int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
+  " HAVE_GLX)
+  if (NOT TARGET OpenGL::GLX)
+    list(APPEND COIN_TARGET_LINK_LIBRARIES "${OPENGL_glx_LIBRARY}")
+  else()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES OpenGL::GLX)
+  endif()
 endif()
 
 # Checks specific OpenGL configurations
-set(CMAKE_REQUIRED_INCLUDES "${OPENGL_INCLUDE_DIR}")
 if(HAVE_WINDOWS_H)
   check_include_files("windows.h;GL/gl.h" HAVE_GL_GL_H)
   check_include_files("windows.h;GL/glu.h" HAVE_GL_GLU_H)
   check_include_files("windows.h;GL/gl.h;GL/glext.h" HAVE_GL_GLEXT_H)
+elseif(APPLE AND NOT COIN_BUILD_MAC_X11)
+  check_include_file(OpenGL/gl.h HAVE_OPENGL_GL_H)
+  check_include_file(OpenGL/glu.h HAVE_OPENGL_GLU_H)
+  check_include_file(OpenGL/glext.h HAVE_OPENGL_GLEXT_H)
+  check_include_file(OpenGL/CGLCurrent.h HAVE_OPENGL_CGLCURRENT_H)
 else()
   check_include_files("GL/gl.h" HAVE_GL_GL_H)
   check_include_files("GL/glu.h" HAVE_GL_GLU_H)
   check_include_files("GL/gl.h;GL/glext.h" HAVE_GL_GLEXT_H)
-  check_include_files("GL/glx.h" HAVE_GLX_H)
 endif()
 
-check_include_file(OpenGL/gl.h HAVE_OPENGL_GL_H)
-if(HAVE_OPENGL_GL_H)
-  check_include_file(OpenGL/glu.h HAVE_OPENGL_GLU_H)
-  check_include_file(OpenGL/glext.h HAVE_OPENGL_GLEXT_H)
-  check_include_file(OpenGL/CGLCurrent.h HAVE_OPENGL_CGLCURRENT_H)
-endif()
-
-check_symbol_exists(CGL_VERSION_1_0 OpenGL/OpenGL.h HAVE_CGL)
-set(HAVE_CGL_PBUFFER ${HAVE_CGL})
-
-if(NOT (HAVE_WGL OR HAVE_AGL OR HAVE_CGL))
-  check_library_exists(GL glXChooseVisual "" HAVE_GLX)
-endif()
+set(CMAKE_REQUIRED_INCLUDES)
+set(CMAKE_REQUIRED_LIBRARIES)
 
 if(HAVE_WINDOWS_H)
   set(SIM_INCLUDE_WINDOWS_H "#include <windows.h>")
@@ -510,7 +588,6 @@ elseif(HAVE_OPENGL_GLEXT_H)
 else()
   set(SIM_INCLUDE_GLEXT_H "/* #include <GL/glext.h> - not found on system */")
 endif()
-set(CMAKE_REQUIRED_INCLUDES)
 
 check_symbol_exists(va_copy stdarg.h HAVE_VA_COPY_MACRO)
 check_symbol_exists(strncasecmp string.h HAVE_STRNCASECMP)
@@ -594,12 +671,6 @@ if(HAVE_TIMEVAL_TV_USEC)
   endif()
 endif()
 set(CMAKE_EXTRA_INCLUDE_FILES)
-
-if(HAVE_X11_AVAILABLE)
-  set(X_DISPLAY_MISSING 0)
-else()
-  set(X_DISPLAY_MISSING 1)
-endif()
 
 if(HAVE_WINDLL_RUNTIME_BINDING OR HAVE_DYLD_RUNTIME_BINDING OR HAVE_DLD_LIB OR HAVE_DL_LIB)
   set(HAVE_DYNAMIC_LINKING 1)
