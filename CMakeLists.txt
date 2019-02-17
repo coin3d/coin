@@ -529,16 +529,17 @@ elseif(APPLE)
 endif()
 
 if(NOT (HAVE_WGL OR HAVE_AGL OR HAVE_CGL OR HAVE_GLX))
-  check_cxx_source_compiles("
-    #include <GL/gl.h>
-    #include <GL/glx.h>
-    int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
-  " HAVE_GLX)
   if (NOT TARGET OpenGL::GLX)
     list(APPEND COIN_TARGET_LINK_LIBRARIES "${OPENGL_glx_LIBRARY}")
   else()
     list(APPEND COIN_TARGET_LINK_LIBRARIES OpenGL::GLX)
   endif()
+  set(CMAKE_REQUIRED_LIBRARIES ${COIN_TARGET_LINK_LIBRARIES})
+  check_cxx_source_compiles("
+    #include <GL/gl.h>
+    #include <GL/glx.h>
+    int main() { (void)glXChooseVisual(0L, 0, 0L); glEnd(); return 0; }
+  " HAVE_GLX)
 endif()
 
 # Checks specific OpenGL configurations
