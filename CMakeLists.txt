@@ -423,6 +423,7 @@ elseif(APPLE)
   set(COIN_MAC_FRAMEWORK_NAME "Inventor")
   set(COIN_MAC_FRAMEWORK_PREFIX "${CMAKE_INSTALL_PREFIX}")
   set(COIN_MAC_FRAMEWORK_VERSION "D") # Coin 4 will be "D", to allow parallel installations of Coin3 (if that compiles!)
+  set(PACKAGING_FRAMEWORK_NAME ${COIN_MAC_FRAMEWORK_NAME})
 
   # package config *.pc entries
   if(COIN_BUILD_MAC_FRAMEWORK)
