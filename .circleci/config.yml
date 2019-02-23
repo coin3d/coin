@@ -19,6 +19,6 @@ jobs:
       - run:
           name: configuring, building and installing
           command: |
-          mkdir installed
-          cmake -H. -Bbuildit -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_DOCUMENTATION=OFF -DCMAKE_INSTALL_PREFIX=/Library/Frameworks -DCOIN_BUILD_SINGLE_LIB=ON -DCOIN_BUILD_MAC_FRAMEWORK=ON
-          cmake --build buildit --target install --config Release -- -j 4
+            mkdir installed
+            cmake -H. -Bbuildit -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_DOCUMENTATION=OFF -DCMAKE_INSTALL_PREFIX=/Library/Frameworks -DCOIN_BUILD_SINGLE_LIB=ON -DCOIN_BUILD_MAC_FRAMEWORK=ON
+            cmake --build buildit --target install --config Release -- -j 4
