@@ -524,7 +524,7 @@ elseif(APPLE)
     " HAVE_CGL)
     check_cxx_source_compiles("
       #include <OpenGL/OpenGL.h>
-      int main() { CGLPBuffer pbuffer; return 0; }
+      int main() { CGLPBufferObj pbuffer; return 0; }
     " HAVE_CGL_PBUFFER)
   endif()
 endif()
