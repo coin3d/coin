@@ -22,7 +22,7 @@ find_path(
   NAMES jsapi.h
   ${include_PATHS}
   PATH_SUFFIXES
-    js-1.7.0
+    js-1.8.5 js-1.7.0 js
 )
 
 string(REGEX REPLACE "^.*js-([0-9]+[.]?[0-9]?[.]?[0-9]?).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
