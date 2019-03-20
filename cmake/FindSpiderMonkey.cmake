@@ -26,6 +26,18 @@ find_path(
 )
 
 string(REGEX REPLACE "^.*js-([0-9]+[.]?[0-9]?[.]?[0-9]?).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
+# dedicated workaround to find version string when not embedded in the includedir (<= 1.8.5)
+if(${SPIDERMONKEY_VERSION} STREQUAL ${SPIDERMONKEY_INCLUDE_DIR})
+  if(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h)
+    set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h")
+  elseif(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsconfig.h)
+    set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsconfig.h")
+  else()
+    message(ERROR "unknown location of the header with the version string")
+  endif()
+  file(STRINGS ${VERS_FILE} VERS_STRING REGEX "#define JS_VERSION .*")
+  string(REGEX REPLACE "#define JS_VERSION \(.*\)" "\\1" SPIDERMONKEY_VERSION ${VERS_STRING})
+endif()
 
 find_library(
   SPIDERMONKEY_LIBRARY
