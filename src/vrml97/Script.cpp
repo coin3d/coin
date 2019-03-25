@@ -771,7 +771,7 @@ SoVRMLScriptP::initialize(void)
         if (SoVRMLScriptP::debug()) {
           SoDebugError::postInfo("SoVRMLScriptP::initialize",
                                  "Only the SpiderMonkey Javascript engine "
-                                 "currently supported.");
+                                 "is currently supported.");
         }
         continue;
       }
