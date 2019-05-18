@@ -29,7 +29,7 @@ include_directories(BEFORE
 
 # add include dirs for non targets
 if(NOT "${COIN_TARGET_INCLUDE_DIRECTORIES}" STREQUAL "")
-  include_directories("${COIN_TARGET_INCLUDE_DIRECTORIES}")
+  include_directories(${COIN_TARGET_INCLUDE_DIRECTORIES})
 endif()
 # add include dirs for targets
 foreach(_tgt ${COIN_TARGET_LINK_LIBRARIES})
@@ -255,8 +255,8 @@ elseif(APPLE)
   endif()
 endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE "${COIN_TARGET_INCLUDE_DIRECTORIES}")
-target_link_libraries(${PROJECT_NAME} PRIVATE "${COIN_TARGET_LINK_LIBRARIES}")
+target_include_directories(${PROJECT_NAME} PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES})
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
