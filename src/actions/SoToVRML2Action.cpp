@@ -468,6 +468,12 @@ public:
                           const SoPrimitiveVertex * v2,
                           const SoPrimitiveVertex * v3);
 
+  // Convert nodes to SoVRMLIndexedLineSet via linesegment cb
+  static SoCallbackAction::Response sotoils_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response post_lines_cb(void *, SoCallbackAction *, const SoNode *);
+  static void linesegment_cb(void * userdata, SoCallbackAction * action,
+                          const SoPrimitiveVertex * v1,
+                          const SoPrimitiveVertex * v2);
 };
 
 #define PRIVATE(p) (p->pimpl)
@@ -509,12 +515,18 @@ SoToVRML2Action::SoToVRML2Action(void)
   PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::unsupported_cb, &PRIVATE(this).get())
 #define ADD_TRIANGLE_CB(_node_) \
   PRIVATE(this)->cbaction.addTriangleCallback(_node_::getClassTypeId(), SoToVRML2ActionP::triangle_cb, &PRIVATE(this).get())
+#define ADD_LINE_CB(_node_) \
+  PRIVATE(this)->cbaction.addLineSegmentCallback(_node_::getClassTypeId(), SoToVRML2ActionP::linesegment_cb, &PRIVATE(this).get())
 #define ADD_SHAPE_CB(_node_, _cb_) \
   ADD_PRE_CB(_node_, _cb_); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
   add_shape_handled(_node_::getClassTypeId(), shapehandledlist);
 
 #define ADD_SO_TO_IFS(_node_) \
   ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb); \
+  add_shape_handled(_node_::getClassTypeId(), shapehandledlist);
+
+#define ADD_SO_TO_ILS(_node_) \
+  ADD_PRE_CB(_node_, sotoils_cb); ADD_LINE_CB(_node_); ADD_POST_CB(_node_, post_lines_cb); \
   add_shape_handled(_node_::getClassTypeId(), shapehandledlist);
 
   SoTypeList shapehandledlist;
@@ -571,10 +583,11 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_SO_TO_IFS(SoQuadMesh);
   ADD_SO_TO_IFS(SoTriangleStripSet);
 
-  ADD_SO_TO_IFS(SoNurbsCurve);
   ADD_SO_TO_IFS(SoNurbsSurface);
-  ADD_SO_TO_IFS(SoIndexedNurbsCurve);
   ADD_SO_TO_IFS(SoIndexedNurbsSurface);
+
+  ADD_SO_TO_ILS(SoNurbsCurve);
+  ADD_SO_TO_ILS(SoIndexedNurbsCurve);
 
   // find all shapes not handled earlier, and add generic triangle
   // handling for them
@@ -598,8 +611,10 @@ SoToVRML2Action::SoToVRML2Action(void)
 #undef ADD_POST_CB
 #undef ADD_UNSUPPORTED
 #undef ADD_TRIANGLE_CB
+#undef ADD_LINE_CB
 #undef ADD_SHAPE_CB
 #undef ADD_SO_TO_IFS
+#undef ADD_SO_TO_ILS
 }
 
 SoToVRML2Action::~SoToVRML2Action(void)
@@ -1962,6 +1977,133 @@ SoToVRML2ActionP::sowwwinl_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG
   inl->bboxSize = oldinl->bboxSize.getValue();
 
   THISP(closure)->get_current_tail()->addChild(inl);
+  return SoCallbackAction::CONTINUE;
+}
+
+// Convert nodes to ils
+SoCallbackAction::Response
+SoToVRML2ActionP::sotoils_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  SoToVRML2ActionP * thisp = THISP(closure);
+
+  thisp->didpush = FALSE;
+  // push state to handle SoVertexProperty node
+  if ( node->isOfType(SoVertexShape::getClassTypeId()) ) {
+    SoNode * vpnode = coin_assert_cast<const SoVertexShape *>(node)->vertexProperty.getValue();
+    SoVertexProperty * vp = coin_safe_cast<SoVertexProperty *>(vpnode);
+    if ( vp ) {
+      action->getState()->push();
+      vp->callback(action);
+      thisp->didpush = TRUE;
+    }
+  }
+  thisp->bsptree = new SbBSPTree;
+
+  thisp->coordidx = new SbList <int32_t>;
+
+  if ( action->getMaterialBinding() != SoMaterialBinding::OVERALL ) {
+    const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
+    if ( colorElem->getNumDiffuse() > 1 ) {
+      thisp->coloridx = new SbList <int32_t>;
+    }
+  }
+
+  thisp->do_post_primitives = TRUE;
+
+  return SoCallbackAction::CONTINUE;
+}
+
+void
+SoToVRML2ActionP::linesegment_cb(void * closure, SoCallbackAction * COIN_UNUSED_ARG(action),
+                             const SoPrimitiveVertex * v1,
+                             const SoPrimitiveVertex * v2)
+{
+  SoToVRML2ActionP * thisp = THISP(closure);
+  assert(thisp->bsptree);
+
+  SoPrimitiveVertex const * const arr[2] = {v1, v2};
+  for (int i = 0; i < 2; i++) {
+    const SoPrimitiveVertex * v = arr[i];
+    thisp->coordidx->append(thisp->bsptree->addPoint(v->getPoint()));
+    if (thisp->coloridx) thisp->coloridx->append(v->getMaterialIndex());
+  }
+  thisp->coordidx->append(-1);
+  if (thisp->coloridx) thisp->coloridx->append(-1);
+}
+
+SoCallbackAction::Response
+SoToVRML2ActionP::post_lines_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  SoToVRML2ActionP * thisp = THISP(closure);
+  if ( !thisp->do_post_primitives ) return SoCallbackAction::CONTINUE;
+  thisp->do_post_primitives = FALSE;
+
+  SoVRMLGeometry * is;
+  if ( action->getDrawStyle() == SoDrawStyle::POINTS ) {
+    SoVRMLPointSet * ps = NEW_NODE(SoVRMLPointSet, node);
+    is = ps;
+
+    ps->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
+      thisp->bsptree->numPoints());
+
+    if ( thisp->coloridx ) {
+      // Copy the colors from the state
+      SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
+      if ( colorElem->getNumDiffuse() == thisp->bsptree->numPoints() ) {
+        if ( colorElem->isPacked() ) {
+          ps->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+            colorElem->getNumDiffuse());
+        }
+        else {
+          ps->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+            colorElem->getNumDiffuse());
+        }
+      }
+    }
+
+  }
+  else {
+    SoVRMLIndexedLineSet * ils = NEW_NODE(SoVRMLIndexedLineSet, node);
+    is = ils;
+
+    ils->coord = thisp->get_or_create_coordinate(thisp->bsptree->getPointsArrayPtr(),
+      thisp->bsptree->numPoints());
+
+    if ( thisp->coloridx ) {
+      // Copy the colors from the state
+      const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
+      if ( colorElem->isPacked() ) {
+        ils->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+          colorElem->getNumDiffuse());
+      }
+      else {
+        ils->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+          colorElem->getNumDiffuse());
+      }
+
+      // Index
+      ils->colorIndex.setValues(0, thisp->coloridx->getLength(),
+        thisp->coloridx->getArrayPtr());
+    }
+
+    ils->coordIndex.setValues(0, thisp->coordidx->getLength(),
+      thisp->coordidx->getArrayPtr());
+  }
+
+  delete thisp->bsptree; thisp->bsptree = NULL;
+  delete thisp->bsptreetex; thisp->bsptreetex = NULL;
+  delete thisp->bsptreenormal; thisp->bsptreenormal = NULL;
+
+  delete thisp->coordidx; thisp->coordidx = NULL;
+  delete thisp->normalidx; thisp->normalidx = NULL;
+  delete thisp->texidx; thisp->texidx = NULL;
+  delete thisp->coloridx; thisp->coloridx = NULL;
+
+  thisp->insert_shape(action, is);
+
+  if ( thisp->didpush ) {
+    action->getState()->pop();
+  }
   return SoCallbackAction::CONTINUE;
 }
 
