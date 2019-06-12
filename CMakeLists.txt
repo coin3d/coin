@@ -61,7 +61,7 @@ include(CoinCMakeUtilities)
 
 option(COIN_BUILD_SHARED_LIBS "Build shared library when ON (default), static when OFF." ON)
 option(COIN_BUILD_TESTS "Build unit tests when ON (default), skips them when OFF." ON)
-option(COIN_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." ON)
+option(COIN_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." OFF)
 cmake_dependent_option(COIN_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_MAN "Build Coin man pages." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_QTHELP "Build QtHelp documentation." OFF "COIN_BUILD_DOCUMENTATION" OFF)
@@ -91,7 +91,7 @@ option(SPIDERMONKEY_RUNTIME_LINKING "Enable SpiderMonkey runtime linking when ON
 option(COIN_VERBOSE "Add verbose debugging information during the configure process." OFF)
 option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
 
-cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." ON "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
+cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." OFF "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
