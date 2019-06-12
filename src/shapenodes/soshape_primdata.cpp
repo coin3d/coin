@@ -91,10 +91,8 @@ soshape_primdata::beginShape(SoShape * shapeptr, SoAction * actionptr,
   this->shape = shapeptr;
   this->action = actionptr;
   this->shapetype = shapetypearg;
-  // this is a hack. Only one of these will be used, and the
-  // other one is an illegal cast.
-  this->faceDetail = (SoFaceDetail *)detail;
-  this->lineDetail = (SoLineDetail *)detail;
+  this->faceDetail = (detail && detail->isOfType(SoFaceDetail::getClassTypeId())) ? (SoFaceDetail*)detail : NULL;
+  this->lineDetail = (detail && detail->isOfType(SoLineDetail::getClassTypeId())) ? (SoLineDetail*)detail : NULL;
   this->counter = 0;
 
   SoState * state = action->getState();
@@ -310,7 +308,7 @@ void
 soshape_primdata::setVertex(const int idx, const SoPrimitiveVertex * const v)
 {
   this->vertsArray[idx] = *v;
-  if (this->faceDetail) {
+  if (this->faceDetail || this->lineDetail) {
     SoPointDetail * pd = (SoPointDetail *)v->getDetail();
     assert(pd);
     this->pointDetails[idx] = * pd;
