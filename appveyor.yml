@@ -32,6 +32,7 @@ environment:
 #
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       CMAKE_GENERATOR: 'Visual Studio 10 2010'
+      CMAKE_ARCHITECTURE: Win32
       CMAKE_CONFIGURATION: Release
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc10
@@ -39,7 +40,8 @@ environment:
       platform: x86
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      CMAKE_GENERATOR: 'Visual Studio 10 2010 Win64'
+      CMAKE_GENERATOR: 'Visual Studio 10 2010'
+      CMAKE_ARCHITECTURE: x64
       CMAKE_CONFIGURATION: Release
       CMAKE_PLATFORM: x64
       COMPILER_ID: msvc10
@@ -48,6 +50,7 @@ environment:
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       CMAKE_GENERATOR: 'Visual Studio 14 2015'
+      CMAKE_ARCHITECTURE: Win32
       CMAKE_CONFIGURATION: Release
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc14
@@ -55,7 +58,8 @@ environment:
       platform: x86
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      CMAKE_GENERATOR: 'Visual Studio 14 2015 Win64'
+      CMAKE_GENERATOR: 'Visual Studio 14 2015'
+      CMAKE_ARCHITECTURE: x64
       CMAKE_CONFIGURATION: Release
       CMAKE_PLATFORM: x64
       COMPILER_ID: msvc14
@@ -64,17 +68,37 @@ environment:
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       CMAKE_GENERATOR: 'Visual Studio 15 2017'
+      CMAKE_ARCHITECTURE: Win32
       CMAKE_CONFIGURATION: Release
       CMAKE_PLATFORM: x86
-      COMPILER_ID: msvc17
+      COMPILER_ID: msvc15
       configuration: Release
       platform: x86
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      CMAKE_GENERATOR: 'Visual Studio 15 2017 Win64'
+      CMAKE_GENERATOR: 'Visual Studio 15 2017'
+      CMAKE_ARCHITECTURE: x64
       CMAKE_CONFIGURATION: Release
       CMAKE_PLATFORM: x64
-      COMPILER_ID: msvc17
+      COMPILER_ID: msvc15
+      configuration: Release
+      platform: x64
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
+      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+      CMAKE_ARCHITECTURE: Win32
+      CMAKE_CONFIGURATION: Release
+      CMAKE_PLATFORM: x86
+      COMPILER_ID: msvc16
+      configuration: Release
+      platform: x86
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
+      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+      CMAKE_ARCHITECTURE: x64
+      CMAKE_CONFIGURATION: Release
+      CMAKE_PLATFORM: x64
+      COMPILER_ID: msvc16
       configuration: Release
       platform: x64
 
@@ -91,7 +115,7 @@ install:
       sudo apt-get install gcc-multilib -y
       sudo apt-get install g++-multilib -y
   - cmd: |
-      set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;%PATH%
+      set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;%APPVEYOR_BUILD_FOLDER%\downloads\cmake-3.14.5\bin;%PATH%
 
 before_build:
   - cmd: |
@@ -108,7 +132,11 @@ before_build:
       set DOWNLOAD_ADDRESS_SUPERGLU=https://ci.appveyor.com/api/projects/%APPVEYOR_ACCOUNT_NAME%/superglu/artifacts/%DOWNLOAD_FILE_SUPERGLU%
       curl -fsSL -G -o "%DOWNLOAD_FILE_SUPERGLU%" "%DOWNLOAD_ADDRESS_SUPERGLU%" --data-urlencode "branch=default" --data-urlencode "job=Environment: APPVEYOR_BUILD_WORKER_IMAGE=%APPVEYOR_BUILD_WORKER_IMAGE%, CMAKE_GENERATOR=%CMAKE_GENERATOR%, CMAKE_CONFIGURATION=%CMAKE_CONFIGURATION%, CMAKE_PLATFORM=%CMAKE_PLATFORM%, COMPILER_ID=%COMPILER_ID%, configuration=%CMAKE_CONFIGURATION%, platform=%CMAKE_PLATFORM%"
       7z x %DOWNLOAD_FILE_SUPERGLU% -o%APPVEYOR_BUILD_FOLDER%\downloads
-      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -DCMAKE_CONFIGURATION_TYPES=%CMAKE_CONFIGURATION% -DCMAKE_TRY_COMPILE_CONFIGURATION=%CMAKE_CONFIGURATION% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DBOOST_ROOT=C:\Libraries\boost_1_69_0
+      set DOWNLOAD_FILE_CMAKE=cmake-3.14.5-win64-x64.zip
+      set DOWNLOAD_ADDRESS_CMAKE=https://github.com/Kitware/CMake/releases/download/v3.14.5/%DOWNLOAD_FILE_CMAKE%
+      curl -fsSL -G -o "%DOWNLOAD_FILE_CMAKE%" "%DOWNLOAD_ADDRESS_CMAKE%"
+      7z x %DOWNLOAD_FILE_CMAKE% -o%APPVEYOR_BUILD_FOLDER%\downloads\cmake-3.14.5
+      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_CONFIGURATION_TYPES=%CMAKE_CONFIGURATION% -DCMAKE_TRY_COMPILE_CONFIGURATION=%CMAKE_CONFIGURATION% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DBOOST_ROOT=C:\Libraries\boost_1_69_0
   - sh: |
       BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-4.0.0-src.tar.gz
       tar -czvf $BUILD_SOURCE_ARCHIVE $APPVEYOR_BUILD_FOLDER/*
@@ -116,7 +144,7 @@ before_build:
       mkdir $APPVEYOR_BUILD_FOLDER/downloads
       export CFLAGS=$CMAKE_ARCH_FLAGS
       export CXXFLAGS=$CMAKE_ARCH_FLAGS
-      cmake -H. -Bbuild -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_CONFIGURATION -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_PREFIX_PATH=$APPVEYOR_BUILD_FOLDER/downloads/Coin3D
+      cmake -H. -Bbuild -G "$CMAKE_GENERATOR" -A $CMAKE_ARCHITECTURE -DCMAKE_BUILD_TYPE=$CMAKE_CONFIGURATION -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_PREFIX_PATH=$APPVEYOR_BUILD_FOLDER/downloads/Coin3D
 
 build_script:
   - cmd: |
