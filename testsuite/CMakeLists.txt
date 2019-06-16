@@ -69,6 +69,7 @@ target_include_directories(CoinTests PRIVATE
 	${CMAKE_SOURCE_DIR}/include
 	${CMAKE_SOURCE_DIR}/include/Inventor/annex
 	${CMAKE_BINARY_DIR}/include
+	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
