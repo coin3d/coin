@@ -115,7 +115,7 @@ install:
       sudo apt-get install gcc-multilib -y
       sudo apt-get install g++-multilib -y
   - cmd: |
-      set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;%APPVEYOR_BUILD_FOLDER%\downloads\cmake-3.14.5\bin;%PATH%
+      set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;%APPVEYOR_BUILD_FOLDER%\downloads\cmake-3.14.5-win64-x64\bin;%PATH%
 
 before_build:
   - cmd: |
@@ -135,7 +135,7 @@ before_build:
       set DOWNLOAD_FILE_CMAKE=cmake-3.14.5-win64-x64.zip
       set DOWNLOAD_ADDRESS_CMAKE=https://github.com/Kitware/CMake/releases/download/v3.14.5/%DOWNLOAD_FILE_CMAKE%
       curl -fsSL -G -o "%DOWNLOAD_FILE_CMAKE%" "%DOWNLOAD_ADDRESS_CMAKE%"
-      7z x %DOWNLOAD_FILE_CMAKE% -o%APPVEYOR_BUILD_FOLDER%\downloads\cmake-3.14.5
+      7z x %DOWNLOAD_FILE_CMAKE% -o%APPVEYOR_BUILD_FOLDER%\downloads
       cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_CONFIGURATION_TYPES=%CMAKE_CONFIGURATION% -DCMAKE_TRY_COMPILE_CONFIGURATION=%CMAKE_CONFIGURATION% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DBOOST_ROOT=C:\Libraries\boost_1_69_0
   - sh: |
       BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-4.0.0-src.tar.gz
