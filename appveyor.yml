@@ -84,23 +84,23 @@ environment:
       configuration: Release
       platform: x64
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      CMAKE_GENERATOR: 'Visual Studio 16 2019'
-      CMAKE_ARCHITECTURE: Win32
-      CMAKE_CONFIGURATION: Release
-      CMAKE_PLATFORM: x86
-      COMPILER_ID: msvc16
-      configuration: Release
-      platform: x86
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      CMAKE_GENERATOR: 'Visual Studio 16 2019'
-      CMAKE_ARCHITECTURE: x64
-      CMAKE_CONFIGURATION: Release
-      CMAKE_PLATFORM: x64
-      COMPILER_ID: msvc16
-      configuration: Release
-      platform: x64
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_CONFIGURATION: Release
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc16
+#      configuration: Release
+#      platform: x86
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_CONFIGURATION: Release
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc16
+#      configuration: Release
+#      platform: x64
 
 install:
   - sh: |
