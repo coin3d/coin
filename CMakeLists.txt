@@ -96,9 +96,18 @@ cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. De
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
 if(HAVE_MULTIPLE_VERSION)
-  # Modifies the installation path for both the distributed includes and docs
-  versionize(INCLUDEDIR DOCDIR)
-  dump_variable(CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_FULL_INCLUDEDIR CMAKE_INSTALL_DOCDIR CMAKE_INSTALL_FULL_DOCDIR)
+  # Modifies the installation path for distributed includes, docs and datadir
+  versionize(INCLUDEDIR DOCDIR DATADIR)
+  dump_variable(
+    CMAKE_INSTALL_DATADIR
+    CMAKE_INSTALL_FULL_DATADIR
+    CMAKE_INSTALL_INCLUDEDIR
+    CMAKE_INSTALL_FULL_INCLUDEDIR 
+    CMAKE_INSTALL_DOCDIR 
+    CMAKE_INSTALL_FULL_DOCDIR
+  )
+else()
+  set(CMAKE_INSTALL_DATADIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")
 endif()
 
 # ############################################################################
