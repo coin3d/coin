@@ -354,8 +354,8 @@ else()
 # Install data files
 # ############################################################################
 
-  install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
-
+  install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
+  
 # ############################################################################
 # Install target
 # ############################################################################
@@ -366,7 +366,7 @@ else()
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
     #PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
     #PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
-    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development
+    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development
   )
 
   if(COIN_BUILD_SHARED_LIBS)
