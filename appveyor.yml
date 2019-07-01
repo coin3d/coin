@@ -126,18 +126,18 @@ build_script:
       cmake --build build --target INSTALL --config Release -- %BUILD_TOOL_OPTIONS%
   - sh: |
       BUILD_TOOL_OPTIONS=-j4
-      cmake --build build_debug   --target install --config Debug -- $BUILD_TOOL_OPTIONS
+      cmake --build build_debug   --target install --config Debug   -- $BUILD_TOOL_OPTIONS
       cmake --build build_release --target install --config Release -- $BUILD_TOOL_OPTIONS
 
 after_build:
   - cmd: |
       cd %APPVEYOR_BUILD_FOLDER%
-      set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%-4.0.0-%COMPILER_ID%-%CMAKE_PLATFORM%-%CMAKE_CONFIGURATION%.zip
+      set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%-4.0.0-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
       7z a -tzip %BUILD_ARCHIVE% Coin3D
       appveyor PushArtifact %BUILD_ARCHIVE%
   - sh: |
       cd $APPVEYOR_BUILD_FOLDER
-      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-4.0.0-$COMPILER_ID-$CMAKE_PLATFORM-$CMAKE_CONFIGURATION.tar.gz
+      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-4.0.0-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       tar -czvf $BUILD_ARCHIVE Coin3D/*
       appveyor PushArtifact $BUILD_ARCHIVE
 
