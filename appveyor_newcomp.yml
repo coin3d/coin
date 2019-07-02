@@ -2,10 +2,14 @@ version: 4.0.0-{branch}-ci-{build}
 
 branches:
   only:
-  - default
+    - default
 
 #shallow clone does not work when subrepos are involved!
 #shallow_clone: true
+
+skip_commits:
+  files:
+    - appveyor_oldcomp.yml
 
 environment:
   BB_AUTH_STRING:
@@ -152,10 +156,10 @@ test_script:
 on_success:
   - cmd: |
       cd %APPVEYOR_BUILD_FOLDER%
-      curl --user %BB_AUTH_STRING% https://api.bitbucket.org/2.0/repositories/Coin3D/%APPVEYOR_PROJECT_SLUG%/downloads --form files=@%BUILD_ARCHIVE% --form files=@%BUILD_SOURCE_ARCHIVE%
+      curl --user %BB_AUTH_STRING% https://api.bitbucket.org/2.0/repositories/Coin3D/coin/downloads --form files=@%BUILD_ARCHIVE% --form files=@%BUILD_SOURCE_ARCHIVE%
   - sh: |
       cd $APPVEYOR_BUILD_FOLDER
-      curl --user $BB_AUTH_STRING  https://api.bitbucket.org/2.0/repositories/Coin3D/$APPVEYOR_PROJECT_SLUG/downloads  --form files=\@$BUILD_ARCHIVE --form files=\@$BUILD_SOURCE_ARCHIVE
+      curl --user $BB_AUTH_STRING  https://api.bitbucket.org/2.0/repositories/Coin3D/coin/downloads --form files=\@$BUILD_ARCHIVE --form files=\@$BUILD_SOURCE_ARCHIVE
 
 notifications:
   - provider: Email
