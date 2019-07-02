@@ -95,7 +95,7 @@ install:
 
 before_build:
   - cmd: |
-      set BUILD_SOURCE_ARCHIVE=%APPVEYOR_PROJECT_NAME%-4.0.0-src.zip
+      set BUILD_SOURCE_ARCHIVE=coin-4.0.0-src.zip
       7z a -tzip %BUILD_SOURCE_ARCHIVE% %APPVEYOR_BUILD_FOLDER%
       appveyor PushArtifact %BUILD_SOURCE_ARCHIVE%
       mkdir %APPVEYOR_BUILD_FOLDER%\downloads
@@ -114,7 +114,7 @@ before_build:
       7z x %DOWNLOAD_FILE_CMAKE% -o%APPVEYOR_BUILD_FOLDER%\downloads
       cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DBOOST_ROOT=C:\Libraries\boost_1_69_0
   - sh: |
-      BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-4.0.0-src.tar.gz
+      BUILD_SOURCE_ARCHIVE=coin-4.0.0-src.tar.gz
       tar -czvf $BUILD_SOURCE_ARCHIVE $APPVEYOR_BUILD_FOLDER/*
       appveyor PushArtifact $BUILD_SOURCE_ARCHIVE
       mkdir $APPVEYOR_BUILD_FOLDER/downloads
@@ -136,12 +136,12 @@ build_script:
 after_build:
   - cmd: |
       cd %APPVEYOR_BUILD_FOLDER%
-      set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%-4.0.0-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
+      set BUILD_ARCHIVE=coin-4.0.0-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
       7z a -tzip %BUILD_ARCHIVE% Coin3D
       appveyor PushArtifact %BUILD_ARCHIVE%
   - sh: |
       cd $APPVEYOR_BUILD_FOLDER
-      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-4.0.0-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
+      BUILD_ARCHIVE=coin-4.0.0-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       tar -czvf $BUILD_ARCHIVE Coin3D/*
       appveyor PushArtifact $BUILD_ARCHIVE
 
