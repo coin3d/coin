@@ -63,7 +63,7 @@
   and a Color node for geometric shape will result in the Color node
   being ignored. Details on lighting equations can be found in 4.14,
   Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.14>).
+  (<http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.14>).
 
 */
 

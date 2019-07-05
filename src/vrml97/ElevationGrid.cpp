@@ -197,7 +197,7 @@
   is TRUE.  See Figure 6.5 for a depiction of the ElevationGrid node.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/ElevationGrid.gif">
+  <img src="http://www.web3d.org/documents/specifications/14772/V2.0/Images/ElevationGrid.gif">
   Figure 6.5
   </center>
 

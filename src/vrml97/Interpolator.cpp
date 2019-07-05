@@ -49,7 +49,7 @@
   For more information, a detailed discussion of interpolators is
   available in section 4.6.8 of the VRML97 specification:
 
-  <http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.8>
+  <http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.8>
 */
 
 /*!
