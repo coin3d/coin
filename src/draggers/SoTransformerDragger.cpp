@@ -1207,7 +1207,6 @@ SoTransformerDragger::dragStart(void)
       t->translation = myline.getClosestPoint(startpt);
 
       this->setAllPartSwitches(SO_SWITCH_NONE, SO_SWITCH_NONE, SO_SWITCH_NONE);
-      SbString str;
       str.sprintf("translator%dSwitch", PRIVATE(this)->whatnum);
       this->setSwitchValue(str.getString(), 1);
       this->setSwitchValue("translateBoxFeedbackSwitch", SO_SWITCH_ALL);
@@ -1247,7 +1246,6 @@ SoTransformerDragger::dragStart(void)
         PRIVATE(this)->constraintState = CONSTRAINT_WAIT;
       }
 
-      SbString str;
       str.sprintf("scale%dSwitch", PRIVATE(this)->whatnum);
       this->setAllPartSwitches(0, SO_SWITCH_NONE, SO_SWITCH_NONE);
       this->setSwitchValue(str.getString(), 1);
@@ -2064,7 +2062,6 @@ SoTransformerDragger::setDynamicScaleSwitches(const SoEvent *event)
     changed = TRUE;
     PRIVATE(this)->shiftDown = !PRIVATE(this)->shiftDown;
   }
-  SbString str;
   if (PRIVATE(this)->constraintState == CONSTRAINT_WAIT) {
     this->setSwitchValue("xAxisFeedbackSwitch", 1);
     this->setSwitchValue("yAxisFeedbackSwitch", 1);
@@ -2073,6 +2070,7 @@ SoTransformerDragger::setDynamicScaleSwitches(const SoEvent *event)
   }
   else if (PRIVATE(this)->constraintState >= CONSTRAINT_X) {
     int which = PRIVATE(this)->constraintState - CONSTRAINT_X;
+    SbString str;
     str.sprintf("%cAxisFeedbackSwitch", 'x' + which);
     this->setSwitchValue(str.getString(), 0);
     str.sprintf("%cAxisFeedbackSwitch", 'x' + (which+1)%3);

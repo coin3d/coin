@@ -401,10 +401,8 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
     free(PRIVATE(this)->freeimage);
     PRIVATE(this)->freeimage = NULL;
   }
-  if (PRIVATE(this)->deleteimage) {
-    delete[] PRIVATE(this)->deleteimage;
-    PRIVATE(this)->deleteimage = NULL;
-  }
+  delete[] PRIVATE(this)->deleteimage;
+  PRIVATE(this)->deleteimage = NULL;
   // set new data
   switch (copypolicy) {
   default:

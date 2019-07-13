@@ -491,7 +491,7 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
                 //A bit arbitrary, this holds
                 const float tol = .03f;
                 BOOST_CHECK_MESSAGE(
-                                    floatEquals(fp1.getDistance(fv2),dp1.getDistance(dv2),tol)||
+                                    floatEquals(fp1.getDistance(fv2),(float)dp1.getDistance(dv2),tol)||
                                     fabs(fp1.getDistance(fv2)-dp1.getDistance(dv2))/fabs(dp1.getDistanceFromOrigin())<tol,
                                     "Distance from plane is significantly different");
                 for (int y4=0;y4<YSteps;++y4) {
