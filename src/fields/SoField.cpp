@@ -230,7 +230,7 @@ public:
 
   void removeConverter(const void * item)
   {
-    SbBool ok = this->maptoconverter.erase(item);
+    size_t ok = this->maptoconverter.erase(item);
     assert(ok);
   }
 
@@ -411,7 +411,7 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
   CC_MUTEX_LOCK(sofield_mutex);
 
   char ** bufptrptr = NULL;
-  int ok = SoFieldP::ptrhash->get(static_cast<char *>(bufptr), bufptrptr);
+  SbBool ok = SoFieldP::ptrhash->get(static_cast<char *>(bufptr), bufptrptr);
   assert(ok);
 
   // If *bufptrptr contains a NULL pointer, this is the first
@@ -427,8 +427,8 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
     newbuf = static_cast<char *>(realloc(bufptr, size));
   }
   if (newbuf != bufptr) {
-    ok = SoFieldP::ptrhash->erase(static_cast<char *>(bufptr));
-    assert(ok);
+    size_t isok = SoFieldP::ptrhash->erase(static_cast<char *>(bufptr));
+    assert(isok);
     *bufptrptr = newbuf;
     SoFieldP::ptrhash->put(newbuf, bufptrptr);
   }
@@ -1376,7 +1376,7 @@ SoField::get(SbString & valuestring)
   char * bufferptr = NULL; // indicates that initial buffer is on the stack
 
   CC_MUTEX_LOCK(sofield_mutex);
-  int ok = SoFieldP::getReallocHash()->put(initbuffer, &bufferptr);
+  SbBool ok = SoFieldP::getReallocHash()->put(initbuffer, &bufferptr);
   assert(ok);
   CC_MUTEX_UNLOCK(sofield_mutex);
 
@@ -1403,8 +1403,8 @@ SoField::get(SbString & valuestring)
   if (bufferptr) { free(bufferptr); }
 
   CC_MUTEX_LOCK(sofield_mutex);
-  ok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);
-  assert(ok);
+  size_t isok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);
+  assert(isok);
   CC_MUTEX_UNLOCK(sofield_mutex);
 }
 

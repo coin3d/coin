@@ -320,30 +320,30 @@ SoDataSensor::notify(SoNotList * l)
 
   if (this->getPriority() == 0) {
     this->triggerfield = l->getLastField();
-    SoNotRec * record = l->getFirstRecAtNode();
-    this->triggernode = (SoNode *) (record ? record->getBase() : NULL);
+    SoNotRec * firstrecord = l->getFirstRecAtNode();
+    this->triggernode = (SoNode *) (firstrecord ? firstrecord->getBase() : NULL);
 
     if (this->findpath && this->triggernode) {
-      const SoNotRec * record = l->getLastRec();
+      const SoNotRec * lastrecord = l->getLastRec();
       // find last record with node base (we know there's at least one
       // because of triggernode)
-      while (!record->getBase()->isOfType(SoNode::getClassTypeId())) {
-        record = record->getPrevious();
+      while (!lastrecord->getBase()->isOfType(SoNode::getClassTypeId())) {
+        lastrecord = lastrecord->getPrevious();
       }
       // create path down to triggernode
-      this->triggerpath = new SoPath((SoNode*)record->getBase());
+      this->triggerpath = new SoPath((SoNode*)lastrecord->getBase());
       this->triggerpath->ref();
-      while (record->getBase() != this->triggernode) {
-        record = record->getPrevious();
-        this->triggerpath->append((SoNode*) record->getBase());
+      while (lastrecord->getBase() != this->triggernode) {
+        lastrecord = lastrecord->getPrevious();
+        this->triggerpath->append((SoNode*) lastrecord->getBase());
       }
     }
 
-    this->triggeroperationtype = record ? record->getOperationType() : SoNotRec::UNSPECIFIED;
-    this->triggerindex = record ? record->getIndex() : -1;
-    this->triggerfieldnumindices = record ? record->getFieldNumIndices() : 0;
-    this->triggergroupchild = (SoNode *) (record ? record->getGroupChild() : NULL);
-    this->triggergroupprevchild = (SoNode *) (record ? record->getGroupPrevChild() : NULL);
+    this->triggeroperationtype = firstrecord ? firstrecord->getOperationType() : SoNotRec::UNSPECIFIED;
+    this->triggerindex = firstrecord ? firstrecord->getIndex() : -1;
+    this->triggerfieldnumindices = firstrecord ? firstrecord->getFieldNumIndices() : 0;
+    this->triggergroupchild = (SoNode *) (firstrecord ? firstrecord->getGroupChild() : NULL);
+    this->triggergroupprevchild = (SoNode *) (firstrecord ? firstrecord->getGroupPrevChild() : NULL);
   }
   this->schedule();
 }

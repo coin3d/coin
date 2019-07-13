@@ -301,9 +301,9 @@ namespace {
 
   bool
   compare_suffix(const std::string & input ,const std::string & suffix) {
-    int suffixLength = suffix.size();
+    size_t suffixLength = suffix.size();
 
-    int n = input.size();
+	size_t n = input.size();
     if (n<suffixLength)
       return false;
 
@@ -392,7 +392,7 @@ TestSuite::test_file(const std::string & filename,
                           test_files_CB * testFunction)
 {
   std::string basepath = coin_getcwd();
-  int n = filename.find_last_of(DIRECTORY_SEPARATOR);
+  size_t n = filename.find_last_of(DIRECTORY_SEPARATOR);
   std::string dir = filename.substr(0,n);
   std::string file = filename.substr(n+1,filename.size()-n-1);
   coin_chdir(dir);

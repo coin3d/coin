@@ -61,9 +61,9 @@ SoRenderManagerP::SoRenderManagerP(SoRenderManager * publ)
 
 SoRenderManagerP::~SoRenderManagerP()
 {
-  if (this->getmatrixaction) delete this->getmatrixaction;
-  if (this->getbboxaction) delete this->getbboxaction;
-  if (this->searchaction) delete this->searchaction;
+  delete this->getmatrixaction;
+  delete this->getbboxaction;
+  delete this->searchaction;
 }
 
 // Internal callback.

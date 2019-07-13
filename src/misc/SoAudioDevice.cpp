@@ -127,7 +127,7 @@ SoAudioDevice::instance()
 void
 SoAudioDeviceP::clean()
 {
-  if (SoAudioDeviceP::singleton) { delete SoAudioDeviceP::singleton; }
+  delete SoAudioDeviceP::singleton;
   SoAudioDeviceP::singleton = NULL;
 }
 

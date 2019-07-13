@@ -631,19 +631,14 @@ ScXMLCoinLengthFuncExprDataObj::ScXMLCoinLengthFuncExprDataObj(ScXMLDataObj * ob
 
 ScXMLCoinLengthFuncExprDataObj::~ScXMLCoinLengthFuncExprDataObj(void)
 {
-  if (this->expr) {
-    delete this->expr;
-    this->expr = NULL;
-  }
+  delete this->expr;
+  this->expr = NULL;
 }
 
 void
 ScXMLCoinLengthFuncExprDataObj::setExpr(ScXMLDataObj * obj)
 {
-  if (this->expr) {
-    delete this->expr;
-    this->expr = NULL;
-  }
+  delete this->expr;
   this->expr = obj;
 }
 

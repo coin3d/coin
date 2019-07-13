@@ -835,7 +835,7 @@ public:
 
   ~ShapeData()
   {
-    if (this->primitives) { delete this->primitives; }
+    delete this->primitives;
   }
 
   PrimitiveData * getPrimitives(void);
@@ -1012,10 +1012,7 @@ SoIntersectionDetectionAction::PImpl::reset(void)
     delete data;
   }
   this->shapedata.truncate(0);
-  if (this->traverser != NULL) {
-    delete this->traverser;
-    this->traverser = NULL;
-  }
+  delete this->traverser;
   this->traverser = new SoCallbackAction;
 #ifdef HAVE_DRAGGERS
   this->traverser->addPreCallback(SoDragger::getClassTypeId(),
