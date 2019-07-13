@@ -287,8 +287,8 @@ SoRenderManager::~SoRenderManager()
 
   if (PRIVATE(this)->deleteglaction) delete PRIVATE(this)->glaction;
   if (PRIVATE(this)->deleteaudiorenderaction) delete PRIVATE(this)->audiorenderaction;
-  if (PRIVATE(this)->rootsensor) delete PRIVATE(this)->rootsensor;
-  if (PRIVATE(this)->redrawshot) delete PRIVATE(this)->redrawshot;
+  delete PRIVATE(this)->rootsensor;
+  delete PRIVATE(this)->redrawshot;
 
   if (PRIVATE(this)->superimpositions != NULL) {
     while (PRIVATE(this)->superimpositions->getLength() > 0) {

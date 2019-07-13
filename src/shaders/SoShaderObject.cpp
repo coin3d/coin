@@ -433,13 +433,13 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
 
     switch (this->cachedSourceType) {
     case SoShaderObject::ARB_PROGRAM:
-      shaderobject = (SoGLShaderObject *)new SoGLARBShaderObject(cachecontext);
+      shaderobject = new SoGLARBShaderObject(cachecontext);
       break;
     case SoShaderObject::CG_PROGRAM:
-      shaderobject = (SoGLShaderObject*) new SoGLCgShaderObject(cachecontext);
+      shaderobject = new SoGLCgShaderObject(cachecontext);
       break;
     case SoShaderObject::GLSL_PROGRAM:
-      shaderobject = (SoGLShaderObject*) new SoGLSLShaderObject(cachecontext);
+      shaderobject = new SoGLSLShaderObject(cachecontext);
       break;
     default:
       assert(FALSE && "This shouldn't happen!");

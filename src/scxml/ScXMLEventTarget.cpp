@@ -75,7 +75,7 @@ public:
   {
     delete [] this->targettype; this->targettype = NULL;
     delete [] this->targetname; this->targetname = NULL;
-    if (event) { delete this->event; this->event = NULL; }
+    delete this->event; this->event = NULL;
   }
 
   char * targettype;

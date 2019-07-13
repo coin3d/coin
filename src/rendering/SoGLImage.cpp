@@ -412,7 +412,7 @@ halve_image(const int width, const int height, const int depth, const int nc,
     s2 = depth==1?newheight:newdepth;
     for (int j = 0; j < s2; j++) {
       for (int i = 0; i < s1; i++) {
-        for (int j = 0; j < nc; j++) {
+        for (int k = 0; k < nc; k++) {
           *dst = (src[0] + src[nc] + src[blocksize] + src[blocksize+nc] + 2) >> 2;
           dst++; src++;
         }
@@ -1648,7 +1648,6 @@ SoGLImageP::createGLDisplayList(SoState *state)
   dl->ref();
 
   if (bytes) {
-    SbBool is3D = (size[2]==0)?FALSE:TRUE;
     if (is3D) {
       dl->setTextureTarget((int) GL_TEXTURE_3D);
     }
