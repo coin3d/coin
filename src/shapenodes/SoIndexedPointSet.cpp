@@ -142,7 +142,7 @@ SoIndexedPointSet::SoIndexedPointSet()
 */
 SoIndexedPointSet::~SoIndexedPointSet()
 {
-  if (this->vaindexer) delete this->vaindexer;
+  delete this->vaindexer;
 }
 
 // doc from parent
@@ -577,10 +577,8 @@ SoIndexedPointSet::notify(SoNotList * list)
   SoField * f = list->getLastField();
   if (f == &this->coordIndex) {
     LOCK_VAINDEXER(this);
-    if (this->vaindexer) {
-      delete this->vaindexer;
-      this->vaindexer = NULL;
-    }
+    delete this->vaindexer;
+    this->vaindexer = NULL;
     UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);

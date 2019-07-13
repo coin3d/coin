@@ -355,10 +355,8 @@ namespace {
 
   void
   SbName_atexit(void) {
-    if (emptyname != NULL) {
-      delete emptyname;
-      emptyname = NULL;
-    }
+    delete emptyname;
+    emptyname = NULL;
   }
 }
 

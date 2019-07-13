@@ -531,8 +531,7 @@ SoVRMLSound::~SoVRMLSound(void)
     PRIVATE(this)->currentAudioClip->unref();
   PRIVATE(this)->currentAudioClip = NULL;
 
-  if (PRIVATE(this)->audioBuffer != NULL)
-    delete[] PRIVATE(this)->audioBuffer;
+  delete[] PRIVATE(this)->audioBuffer;
 
 #ifdef HAVE_SOUND
   assert(!PRIVATE(this)->hasValidAlSource());

@@ -731,7 +731,7 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 void
 SoVRMLScript::initFieldData(void)
 {
-  if (this->fielddata) delete this->fielddata;
+  delete this->fielddata;
   this->fielddata = new SoFieldData;
   this->fielddata->addField(this, "url", &this->url);
   this->fielddata->addField(this, "directOutput", &this->directOutput);

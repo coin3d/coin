@@ -101,8 +101,8 @@ void
 cc_xml_attr_delete_x(cc_xml_attr * attr)
 {
   assert(attr);
-  if (attr->name) delete [] attr->name;
-  if (attr->value) delete [] attr->value;
+  delete [] attr->name;
+  delete [] attr->value;
   delete attr;
 }
 
@@ -116,10 +116,8 @@ cc_xml_attr_delete_x(cc_xml_attr * attr)
 void
 cc_xml_attr_set_name_x(cc_xml_attr * attr, const char * name)
 {
-  if (attr->name) {
-    delete [] attr->name;
-    attr->name = NULL;
-  }
+  delete [] attr->name;
+  attr->name = NULL;
   if (name) attr->name = cc_xml_strdup(name);
 }
 
@@ -141,10 +139,8 @@ cc_xml_attr_get_name(const cc_xml_attr * attr)
 void
 cc_xml_attr_set_value_x(cc_xml_attr * attr, const char * value)
 {
-  if (attr->value) {
-    delete [] attr->value;
-    attr->value = NULL;
-  }
+  delete [] attr->value;
+  attr->value = NULL;
   if (value) attr->value = cc_xml_strdup(value);
 }
 

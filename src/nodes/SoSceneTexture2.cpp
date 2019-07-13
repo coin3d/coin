@@ -919,11 +919,9 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       this->glcontextsize.setValue(-1,-1);
       this->glcontext = NULL;
     }
-    if (this->glaction) {
-      // Note: Recreating the glaction (below) will also get us a new contextid.
-      delete this->glaction;
-      this->glaction = NULL;
-    }
+    // Note: Recreating the glaction (below) will also get us a new contextid.
+    delete this->glaction;
+    this->glaction = NULL;
     this->glimagevalid = FALSE;
   }
   if (size == SbVec2s(0,0)) return;

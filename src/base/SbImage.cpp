@@ -744,15 +744,15 @@ BOOST_AUTO_TEST_CASE(copyConstruct)
   int tmp2;
 
 
-  for (int i=0;i<sizeof(buf); ++i) {
+  for (size_t i=0;i<sizeof(buf); ++i) {
     BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==bar.getValue(tmp1,tmp2)[i],"Input value error");
   }
 
-  for (int i=0;i<sizeof(buf); ++i) {
+  for (size_t i=0;i<sizeof(buf); ++i) {
     foo.getValue(tmp1,tmp2)[i]=sizeof(buf)-i;
   }
 
-  for (int i=0;i<sizeof(buf); ++i) {
+  for (size_t i=0;i<sizeof(buf); ++i) {
     BOOST_CHECK_MESSAGE(foo.getValue(tmp1,tmp2)[i]==sizeof(buf)-bar.getValue(tmp1,tmp2)[i],"Error after changing second buffer");
   }
 

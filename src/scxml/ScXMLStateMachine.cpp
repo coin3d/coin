@@ -119,10 +119,8 @@ public:
 
   ~PImpl(void)
   {
-    if (this->description) {
-      delete this->description;
-      this->description = NULL;
-    }
+    delete this->description;
+    this->description = NULL;
   }
 
   ScXMLStateMachine * pub;

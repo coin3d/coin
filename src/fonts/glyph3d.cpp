@@ -382,7 +382,7 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
     g->bbox[2] = cc_max(coordptr[(*edgeptr)*2], g->bbox[2]);
     g->bbox[3] = cc_max(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
 
-    *edgeptr++;
+    edgeptr++;
   }
 
 }

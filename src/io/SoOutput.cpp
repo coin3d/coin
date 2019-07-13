@@ -261,7 +261,7 @@ public:
     return this->writer;
   }
   void setWriter(SoOutput_Writer * writerptr) {
-    if (this->writer) delete this->writer;
+    delete this->writer;
     this->writer = writerptr;
   }
 private:

@@ -619,9 +619,7 @@ SoToVRML2Action::SoToVRML2Action(void)
 
 SoToVRML2Action::~SoToVRML2Action(void)
 {
-  if (PRIVATE(this)->bboxaction) {
-    delete PRIVATE(this)->bboxaction;
-  }
+  delete PRIVATE(this)->bboxaction;
   if (PRIVATE(this)->vrml2path) {
     PRIVATE(this)->vrml2path->unref();
   }

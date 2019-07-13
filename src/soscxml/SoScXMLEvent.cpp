@@ -155,10 +155,8 @@ SoScXMLEvent::~SoScXMLEvent(void)
 void
 SoScXMLEvent::setSoEvent(const SoEvent * soevent)
 {
-  if (this->soeventptr) {
-    delete this->soeventptr;
-    this->soeventptr = NULL;
-  }
+  delete this->soeventptr;
+  this->soeventptr = NULL;
   if (soevent) {
     SoEvent * newevent =
       static_cast<SoEvent *>(soevent->getTypeId().createInstance());
@@ -257,10 +255,8 @@ SoScXMLEvent::copyContents(const ScXMLEvent * rhs)
 {
   assert(rhs && rhs->isOfType(SoScXMLEvent::getClassTypeId()));
   inherited::copyContents(rhs);
-  if (this->soeventptr) {
-    delete this->soeventptr;
-    this->soeventptr = NULL;
-  }
+  delete this->soeventptr;
+  this->soeventptr = NULL;
   const SoScXMLEvent * sorhs = static_cast<const SoScXMLEvent *>(rhs);
   if (sorhs->soeventptr) {
     SoEvent * newevent =

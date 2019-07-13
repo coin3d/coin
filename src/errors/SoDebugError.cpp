@@ -120,7 +120,7 @@ using std::memcpy;
       #include <signal.h>
       #define COIN_DEBUGGER_BREAK(x) ::raise(SIGINT)
     #else
-      #define COIN_DEBUGGER_BREAK(x) assert(0 && x)
+      #define COIN_DEBUGGER_BREAK(x) assert(0 && (x))
     #endif
   #endif
 #endif
