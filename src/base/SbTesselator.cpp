@@ -173,7 +173,7 @@ public:
   Vertex * headV, * tailV;
   int numVerts;
   SbVec3f polyNormal;
-  int X,Y;
+  int X, Y;
   int polyDir;
   void (*callback)(void * v0, void * v1, void * v2, void * data);
   void * callbackData;
@@ -184,22 +184,20 @@ public:
   void cutTriangle(Vertex * t);
   void calcPolygonNormal(void);
 
-  SbBool circleCenter(const SbVec3f &a, const SbVec3f &b,
-                      const SbVec3f &c, tessfloat_t &cx, tessfloat_t &cy, tessfloat_t &sqr_r);
-  tessfloat_t circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c);
   tessfloat_t circleSize(Vertex * v);
   SbBool clippable(Vertex * v);
   SbBool isTriangle(Vertex * v);
   SbBool pointInTriangle(Vertex * p, Vertex * t);
-  tessfloat_t signed_area(Vertex * t);
+  tessfloat_t signedArea(Vertex * t);
 
   static tessfloat_t heap_evaluate(void * v);
   static int heap_compare(void * v0, void * v1);
 
+  tessfloat_t squaredCircleRadius(const forcedfloat_t * a, const forcedfloat_t * b, const forcedfloat_t * c);
   SbBool pointInTriangle(const forcedfloat_t * p,
                          const forcedfloat_t * a, const forcedfloat_t * b, const forcedfloat_t * c);
-  bool pointOnEdge(tessfloat_t x, tessfloat_t y,
-                  const forcedfloat_t * v0, const forcedfloat_t * v1);
+  SbBool pointOnEdge(tessfloat_t x, tessfloat_t y,
+                     const forcedfloat_t * v0, const forcedfloat_t * v1);
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -219,7 +217,7 @@ SbTesselator::PImpl::heap_evaluate(void * v)
   Vertex * vertex = static_cast<Vertex *>(v);
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
-    if ((fabs(vertex->thisp->signed_area(vertex)) > vertex->thisp->epsilon) &&
+    if ((fabs(vertex->thisp->signedArea(vertex)) > vertex->thisp->epsilon) &&
         vertex->thisp->isTriangle(vertex) &&
         vertex->thisp->clippable(vertex)) {
 #if 0 // testing code to avoid empty triangles
@@ -501,28 +499,31 @@ SbTesselator::setCallback(SbTesselatorCB * func, void *data)
 // Checks the distance of point p(x,y) to edge v0->v1.
 // The point is on the edge if its distance is less than epsilon.
 // Algorithm from comp.graphics.algorithms FAQ
-bool
-SbTesselator::PImpl::pointOnEdge(double x, double y,
+SbBool
+SbTesselator::PImpl::pointOnEdge(tessfloat_t x, tessfloat_t y,
                                  const forcedfloat_t *v0,
                                  const forcedfloat_t *v1)
 {
-  double C = v1[X] - v0[X];
-  double D = v1[Y] - v0[Y];
+  tessfloat_t C = v1[X] - v0[X];
+  tessfloat_t D = v1[Y] - v0[Y];
 
-  double dot = (x - v0[X]) * C + (y - v0[Y]) * D;
-  double norm = C * C + D * D;
-  double t = -1;
-  if (norm != 0.0f)
+  tessfloat_t dot = (x - v0[X]) * C + (y - v0[Y]) * D;
+  tessfloat_t norm = C * C + D * D;
+  tessfloat_t t = -1;
+  if (norm != 0.0)
     t = dot / norm;
 
-  t = SbClamp(t, 0., 1.);
+  if (t < 0.0)
+    t = 0.0;
+  if (t > 1.0)
+    t = 1.0;
 
-  double px = v0[X] + t * C;
-  double py = v0[Y] + t * D;
-  double dx = x - px;
-  double dy = y - py;
+  tessfloat_t px = v0[X] + t * C;
+  tessfloat_t py = v0[Y] + t * D;
+  tessfloat_t dx = x - px;
+  tessfloat_t dy = y - py;
 
-  return fabs(dx * dx + dy * dy) < epsilon;
+  return fabs(dx * dx + dy * dy) < epsilon*epsilon;
 }
 
 // see: https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
@@ -569,7 +570,7 @@ SbBool SbTesselator::PImpl::pointInTriangle(Vertex* pt, Vertex* t)
 SbBool
 SbTesselator::PImpl::isTriangle(Vertex *v)
 {
-  return (signed_area(v) * polyDir > 0.0) ? TRUE : FALSE;
+  return (signedArea(v) * polyDir > 0.0) ? TRUE : FALSE;
 }
 
 //
@@ -632,19 +633,18 @@ SbTesselator::PImpl::cutTriangle(Vertex *t)
 // Returns the signed area of the triangle starting with t
 //
 SbTesselator::PImpl::tessfloat_t
-SbTesselator::PImpl::signed_area(Vertex *t)
+SbTesselator::PImpl::signedArea(Vertex *t)
 {
-  return 0.5f*((t->next->v[X] - t->v[X]) * (t->next->next->v[Y] - t->v[Y]) -
-               (t->next->v[Y] - t->v[Y]) * (t->next->next->v[X] - t->v[X]));
+  return 0.5*((t->next->v[X] - t->v[X]) * (t->next->next->v[Y] - t->v[Y]) -
+              (t->next->v[Y] - t->v[Y]) * (t->next->next->v[X] - t->v[X]));
 }
 
 //
-// Returns the center of the circle through points a, b, c.
-// Algorithm from comp.graphics.algorithms FAQ
+// Returns the square of the radius of the circle through points a, b, c in projection plane.
+// Algorithm for calulating the center of the circle from comp.graphics.algorithms FAQ
 //
-SbBool
-SbTesselator::PImpl::circleCenter(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c,
-                                  tessfloat_t &cx, tessfloat_t &cy, tessfloat_t &sqr_r)
+SbTesselator::PImpl::tessfloat_t
+SbTesselator::PImpl::squaredCircleRadius(const forcedfloat_t * a, const forcedfloat_t * b, const forcedfloat_t * c)
 {
   tessfloat_t A = b[X] - a[X];
   tessfloat_t B = b[Y] - a[Y];
@@ -656,25 +656,13 @@ SbTesselator::PImpl::circleCenter(const SbVec3f &a, const SbVec3f &b, const SbVe
 
   tessfloat_t G = 2.0 * (A * (c[Y] - b[Y]) - B * (c[X] - b[X]));
 
-  if (G != 0.0f) {
+  if (G != 0.0) {
     tessfloat_t val = 1.0 / G;
-    cx = (D * E - B * F) * val;
-    cy = (A * F - C * E) * val;
-    sqr_r = (a[X] - cx) * (a[X] - cx) + (a[Y] - cy) * (a[Y] - cy);
-    return TRUE;
-  }
-  return FALSE;
-}
-
-//
-// Returns the square of the radius of the circle through a, b, c
-//
-SbTesselator::PImpl::tessfloat_t
-SbTesselator::PImpl::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
-{
-  tessfloat_t cx, cy, sqr_r;
-  if (circleCenter(a, b, c, cx, cy, sqr_r)) {
-    return sqr_r;
+    tessfloat_t cx = (D * E - B * F) * val;
+    tessfloat_t cy = (A * F - C * E) * val;
+    tessfloat_t rx = a[X] - cx;
+    tessfloat_t ry = a[Y] - cy;
+    return (rx * rx + ry * ry);
   }
   return FLT_MAX;
 }
@@ -682,7 +670,7 @@ SbTesselator::PImpl::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3
 SbTesselator::PImpl::tessfloat_t
 SbTesselator::PImpl::circleSize(Vertex *t)
 {
-  return circleSize(t->v, t->next->v, t->next->next->v);
+  return squaredCircleRadius(t->v.getValue(), t->next->v.getValue(), t->next->next->v.getValue());
 }
 
 void
