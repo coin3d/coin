@@ -207,7 +207,10 @@ public:
 int
 SbTesselator::PImpl::heap_compare(void * h0, void * h1)
 {
-  if (heap_evaluate(h0) > heap_evaluate(h1)) return -1;
+  double val0 = heap_evaluate(h0);
+  double val1 = heap_evaluate(h1);
+  if (val0 > val1) return -1;
+  if (val0 == val1) return 0;
   return 1;
 }
 
@@ -226,7 +229,7 @@ SbTesselator::PImpl::heap_evaluate(void * v)
       if (vertex->weight != FLT_MAX &&
           v2->thisp->keepVertices &&
           v2->thisp->numVerts > 4 &&
-          fabs(v2->thisp->signed_area(v2)) < v2->thisp->epsilon) {
+          fabs(v2->thisp->signedArea(v2)) < v2->thisp->epsilon) {
         vertex->weight = 0.0f; // cut immediately!
       }
 
@@ -496,6 +499,40 @@ SbTesselator::setCallback(SbTesselatorCB * func, void *data)
 // PRIVATE FUNCTIONS:
 //
 
+#if 1
+//From http://totologic.blogspot.se/2014/01/accurate-point-in-triangle-test.html
+//p is the testpoint, all other points are corners of the triangle
+SbBool SbTesselator::PImpl::pointInTriangle(Vertex *pt, Vertex *t)
+{
+  const SbVec3f& p = pt->v;
+  const SbVec3f& p1 = t->v;
+  const SbVec3f& p2 = t->next->v;
+  const SbVec3f& p3 = t->next->next->v;
+
+  bool isWithinTriangle = false;
+
+  // Based on Barycentric coordinates
+  double denominator = ((p2[Y] - p3[Y]) * (p1[X] - p3[X]) + (p3[X] - p2[X]) * (p1[Y] - p3[Y]));
+
+  double a = ((p2[Y] - p3[Y]) * (p[X] - p3[X]) + (p3[X] - p2[X]) * (p[Y] - p3[Y])) / denominator;
+  double b = ((p3[Y] - p1[Y]) * (p[X] - p3[X]) + (p1[X] - p3[X]) * (p[Y] - p3[Y])) / denominator;
+  double c = 1.0 - a - b;
+
+  // The point is within the triangle or on the border if 0 <= a <= 1 and 0 <= b <= 1 and 0 <= c <= 1
+  if (a >= 0.0 && a <= 1.0 && b >= 0.0 && b <= 1.0 && c >= 0.0 && c <= 1.0)
+  {
+      isWithinTriangle = true;
+  }
+
+  // The point is within the triangle
+  //if (a > 0f && a < 1f && b > 0f && b < 1f && c > 0f && c < 1f)
+  //{
+  //  isWithinTriangle = true;
+  //}
+
+  return isWithinTriangle;
+}
+#else
 // Checks the distance of point p(x,y) to edge v0->v1.
 // The point is on the edge if its distance is less than epsilon.
 // Algorithm from comp.graphics.algorithms FAQ
@@ -562,6 +599,7 @@ SbBool SbTesselator::PImpl::pointInTriangle(Vertex* pt, Vertex* t)
 
   return false;
 }
+#endif
 
 //
 // Check if v points to a legal triangle (normal is right way)
@@ -673,6 +711,10 @@ SbTesselator::PImpl::circleSize(Vertex *t)
   return squaredCircleRadius(t->v.getValue(), t->next->v.getValue(), t->next->next->v.getValue());
 }
 
+//
+// Calculate surface normal using Newell's method.
+// See https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
+//
 void
 SbTesselator::PImpl::calcPolygonNormal()
 {
