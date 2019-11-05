@@ -122,7 +122,7 @@
       - http://www.apache.org
 
 
-   6) Caolán McNamara's (GNU GPL?):
+   6) Caolï¿½n McNamara's (GNU GPL?):
 
       - http://www.csn.ul.ie/~caolan/publink/snprintf-1.1.tar.gz
 
@@ -867,7 +867,7 @@ double
 coin_ntoh_double_bytes(const char * value)
 {
   union {
-    float d64;
+    double d64;
     uint64_t u64;
   } val;
 
