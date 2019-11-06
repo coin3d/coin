@@ -122,7 +122,7 @@
       - http://www.apache.org
 
 
-   6) Caolï¿½n McNamara's (GNU GPL?):
+   6) Caolán McNamara's (GNU GPL?):
 
       - http://www.csn.ul.ie/~caolan/publink/snprintf-1.1.tar.gz
 
