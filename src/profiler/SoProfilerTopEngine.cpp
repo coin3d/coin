@@ -52,14 +52,10 @@ class SoProfilerTopEngineP {
 public:
   SoProfilerTopEngineP(void) : datasize(0), data(NULL) { }
   ~SoProfilerTopEngineP(void) {
-    if (data) {
-      delete [] data;
-      data = NULL;
-    }
-    //if (tmpdata) {
-    //  delete [] tmpdata;
-    //  tmpdata = NULL;
-    //}
+    delete [] data;
+    data = NULL;
+    //delete [] tmpdata;
+    //tmpdata = NULL;
   }
 
   struct StatDataItem {
@@ -460,10 +456,8 @@ SoProfilerTopEngine::evaluate(void)
     SO_ENGINE_OUTPUT(this->prettyText, SoMFString, set1Value(c, entryline));
   }
 
-  if (olddata) {
-    delete [] olddata;
-    // olddata = NULL;
-  }
+  delete [] olddata;
+  // olddata = NULL;
 }
 
 #undef PRIVATE

@@ -688,17 +688,17 @@ namespace {
 
     for ( int k = 0; k <= d; k++ ) {
       for ( int l = 0; l <= d-k; l++ ) {
-        SbVec3f v(ders[k][l][0], ders[k][l][1], ders[k][l][2]);
+        SbVec3f v1(ders[k][l][0], ders[k][l][1], ders[k][l][2]);
         for ( int j = 1; j <= l; j++ )
-          v = v - Bin[l][j]*ders[0][j][3]*skl[k][l-j];
+          v1 = v1 - Bin[l][j]*ders[0][j][3]*skl[k][l-j];
         for ( int i = 1; i <= k; i++ ) {
           SbVec3f v2(0.0f, 0.0f, 0.0f);
-          v = v - Bin[k][i]*ders[i][0][3]*skl[k-i][l];
+          v1 = v1 - Bin[k][i]*ders[i][0][3]*skl[k-i][l];
           for ( int j = 1; j <= l; j++ )
             v2 = v2 + Bin[l][j]*ders[i][j][3]*skl[k-i][l-j];
-          v = v - Bin[k][i]*v2;
+          v1 = v1 - Bin[k][i]*v2;
         }
-        skl[k][l] = v/ders[0][0][3];
+        skl[k][l] = v1/ders[0][0][3];
         //char buffer[1024];
         //sprintf(buffer, "skl[%d][%d]: %g %g %g\tpv: %g %g %g\n", k, l, skl[k][l][0], skl[k][l][1], skl[k][l][2], pv[0], pv[1], pv[2]);
         //OutputDebugString(buffer);

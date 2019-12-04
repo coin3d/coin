@@ -70,7 +70,7 @@
   activation).
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/Images/cylinder.gif">
+  <img src="http://www.web3d.org/documents/specifications/14772/V2.0/Images/cylinder.gif">
   Figure 6.4
   </center>
 

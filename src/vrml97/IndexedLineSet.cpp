@@ -109,7 +109,7 @@
   Material shall be used to draw the lines. Details on lighting
   equations as they affect IndexedLineSet nodes are described in 4.14,
   Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.14>).  
+  (<http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.14>).  
 
 */
 
@@ -544,10 +544,8 @@ SoVRMLIndexedLineSet::notify(SoNotList * list)
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) {
     LOCK_VAINDEXER(this);
-    if (PRIVATE(this)->vaindexer) {
-      delete PRIVATE(this)->vaindexer;
-      PRIVATE(this)->vaindexer = NULL;
-    }
+    delete PRIVATE(this)->vaindexer;
+    PRIVATE(this)->vaindexer = NULL;
     UNLOCK_VAINDEXER(this);
   }
   inherited::notify(list);

@@ -357,9 +357,9 @@ sopick_pick_cube(const float width,
   int cnt = 0;
   // test intersection with all six planes
   for (int i = 0; i < 3; i++) {
-    for (float j = -1.0f; j <= 1.0f; j += 2.0f) {
+    for (int j = -1; j <= 1; j += 2) {
       SbVec3f norm(0, 0, 0);
-      norm[i] = j;
+      norm[i] = (float)j;
       SbVec3f isect;
 
       SbPlane plane(norm, size[i]);
@@ -387,13 +387,13 @@ sopick_pick_cube(const float width,
             switch (i) {
             default: // just to avoid warnings
             case 0:
-              if (j > 0.0f) s = 1.0f - s;
+              if (j > 0) s = 1.0f - s;
               break;
             case 1:
-              if (j > 0.0f) t = 1.0f - t;
+              if (j > 0) t = 1.0f - t;
               break;
             case 2:
-              if (j < 0.0f) s = 1.0f - s;
+              if (j < 0) s = 1.0f - s;
               break;
             }
             pp->setObjectTextureCoords(SbVec4f(s, t, 0.0f, 1.0f));

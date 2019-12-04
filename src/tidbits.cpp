@@ -867,7 +867,7 @@ double
 coin_ntoh_double_bytes(const char * value)
 {
   union {
-    float d64;
+    double d64;
     uint64_t u64;
   } val;
 

@@ -29,7 +29,7 @@ include_directories(BEFORE
 
 # add include dirs for non targets
 if(NOT "${COIN_TARGET_INCLUDE_DIRECTORIES}" STREQUAL "")
-  include_directories("${COIN_TARGET_INCLUDE_DIRECTORIES}")
+  include_directories(${COIN_TARGET_INCLUDE_DIRECTORIES})
 endif()
 # add include dirs for targets
 foreach(_tgt ${COIN_TARGET_LINK_LIBRARIES})
@@ -255,8 +255,8 @@ elseif(APPLE)
   endif()
 endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE "${COIN_TARGET_INCLUDE_DIRECTORIES}")
-target_link_libraries(${PROJECT_NAME} PRIVATE "${COIN_TARGET_LINK_LIBRARIES}")
+target_include_directories(${PROJECT_NAME} PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES})
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
@@ -354,8 +354,8 @@ else()
 # Install data files
 # ############################################################################
 
-  install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
-
+  install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
+  
 # ############################################################################
 # Install target
 # ############################################################################
@@ -366,7 +366,7 @@ else()
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
     #PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
     #PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development
-    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME} COMPONENT development
+    RESOURCE DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development
   )
 
   if(COIN_BUILD_SHARED_LIBS)
@@ -390,6 +390,7 @@ else()
   if(UNIX OR MINGW)
     configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
     install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+    install(FILES ${CMAKE_SOURCE_DIR}/bin/coin-config DESTINATION ${CMAKE_INSTALL_BINDIR})
   endif()
 endif()
 

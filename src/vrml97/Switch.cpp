@@ -53,7 +53,7 @@
 
   The Switch grouping node traverses zero or one of the nodes
   specified in the choice field.  4.6.5, Grouping and children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-VRML97/part1/concepts.html#4.6.5>),
+  (<http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.5>),
   describes details on the types of nodes that are legal values for
   choice.
 

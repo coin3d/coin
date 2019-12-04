@@ -671,7 +671,7 @@ BOOST_AUTO_TEST_CASE(rbptree_stress)
   for (int c = 0; c < FILL_TIMES; ++c) {
     SbList<void *> values;
     for (i = 0; i < FILL_COUNT; ++i) {
-      void * entry = reinterpret_cast<void *>(rand());
+      void * entry = reinterpret_cast<void *>(static_cast<uintptr_t>(rand()));
       cc_rbptree_insert(&tree, entry, NULL);
       values.append(entry);
     }
@@ -688,7 +688,7 @@ BOOST_AUTO_TEST_CASE(rbptree_stress)
   for (int c = 0; c < FILL_TIMES; ++c) {
     SbList<void *> values;
     for (i = 0; i < FILL_COUNT; ++i) {
-      void * entry = reinterpret_cast<void *>(((c & 2) == 0) ? i : (FILL_COUNT - i));
+      void * entry = reinterpret_cast<void *>(static_cast<uintptr_t>(((c & 2) == 0) ? i : (FILL_COUNT - i)));
       cc_rbptree_insert(&tree, entry, NULL);
       values.append(entry);
     }

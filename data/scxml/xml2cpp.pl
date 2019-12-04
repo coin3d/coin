@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl
 
 if (scalar(@ARGV) != 3) {
     print STDOUT "Usage: $0 <input.xml> <output.cpp> <buffername>\n";

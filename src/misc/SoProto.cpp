@@ -72,7 +72,7 @@
   the node returned from SoProtoInstance::getRootNode().
 
   See
-  http://www.web3d.org/technicalinfo/specifications/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.8
+  http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.8
   for more information about PROTOs in VRML97.
 
 */

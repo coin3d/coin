@@ -259,7 +259,7 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   size_t size;
 
   if ( text == NULL ) text = emptystring;
-  len = cc_string_strnlen(text,end);
+  len = (int)cc_string_strnlen(text,end);
   if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG
@@ -544,7 +544,7 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
   SbBool expand;
 
   do {
-    length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, args);
+    length = coin_vsnprintf(me->pointer, (unsigned int)me->bufsize, formatstr, args);
     expand = (length == -1);
     if ( expand ) {
       /* Note: On MSWindows, using Microsoft's CRT, _vsnprintf(),

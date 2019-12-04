@@ -333,6 +333,7 @@ void SoStream::ungetChar(const char c)
     }
     assert(FALSE && "Strange playing with file pointer.");
     setBadBit();
+	break;
   case FILE_STREAM:
     STUB;
     return;
@@ -363,6 +364,7 @@ void SoStream::putChar(const char c)
       }
     buffer[bufPos++] = c;
   }
+  break;
   default:
     STUB;
   }
@@ -389,7 +391,7 @@ size_t SoStream::readBinaryArray(void *buf, size_t size)
     return fread(buf, 1, size, filep);
   case SO_INPUT_WRAP: {
     size_t pos = soinput->getNumBytesRead();
-    if (soinput->readBinaryArray(static_cast<unsigned char*>(buf), size))  return size;
+    if (soinput->readBinaryArray(static_cast<unsigned char*>(buf), (int)size))  return size;
     else  return soinput->getNumBytesRead() - pos;
   }
   default:
@@ -478,13 +480,13 @@ SbBool SoStream::writeToStream(SoStream &stream)
 }
 size_t SoStream::readFromStream(SoStream &stream, size_t bytes)
 {
-  int al;
+  size_t al;
   if (bytes > 1048576) al = 1048576;
   else al = bytes;
   void *temp = malloc(al);
   size_t trans = 0;
   do {
-    if (trans+al > bytes)  al = bytes - trans;
+    if (trans+al > bytes)  al = (bytes - trans);
     size_t amount = stream.readBuffer(temp, al);
     size_t written = this->writeBuffer(temp, amount);
     trans += written;
@@ -537,7 +539,7 @@ SbBool SoStream::writeStream(const SoStream COIN_UNUSED_ARG(&stream))
 void SoStream::setPos(size_t pos)
 {
   switch (streamType) {
-  case FILE_STREAM:  fseek(filep, pos, SEEK_SET); break;
+  case FILE_STREAM:  fseek(filep, (long)pos, SEEK_SET); break;
   case MEMORY:  if (pos > bufferSize) setBadBit();
                 else bufPos = pos;
                 break;
@@ -579,7 +581,7 @@ size_t SoStream::getSize() const
 {
   switch (streamType) {
   case FILE_STREAM : {
-    size_t cpos = ftell(filep);
+    long cpos = ftell(filep);
     fseek(filep, 0, SEEK_END);
     size_t size = ftell(filep);
     fseek(filep, cpos, SEEK_SET);
