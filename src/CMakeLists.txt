@@ -390,6 +390,7 @@ else()
   if(UNIX OR MINGW)
     configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
     install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+    install(FILES ${CMAKE_SOURCE_DIR}/bin/coin-config DESTINATION ${CMAKE_INSTALL_BINDIR})
   endif()
 endif()
 
