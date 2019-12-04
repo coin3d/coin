@@ -511,7 +511,7 @@ public:
     unsigned char tmp[2];
     tmp[0] = (unsigned char)(val >> 8);
     tmp[1] = (unsigned char)(val & 0xff);
-    return fwrite(&tmp, 2, 1, fp);
+    return (int)fwrite(&tmp, 2, 1, fp);
   }
 
   int dumpBitmap(const char * filename) const {
@@ -1508,7 +1508,6 @@ SoShadowGroupP::setVertexShader(SoState * state)
   }
   for (i = 0; i < numshadowlights; i++) {
     SoShadowLightCache * cache = this->shadowlights[i];
-    SbString str;
     str.sprintf("shadowCoord%d = gl_TextureMatrix[%d] * pos;\n", i, cache->texunit); // in light space
     gen.addMainStatement(str);
 
@@ -1643,9 +1642,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     }
   }
 
-  SbString str;
   if (numshadowlights) {
 #ifdef DISTRIBUTE_FACTOR
+    SbString str;
     str.sprintf("const float DISTRIBUTE_FACTOR = %.1f;\n", DISTRIBUTE_FACTOR);
     gen.addDeclaration(str, FALSE);
 #endif
@@ -1901,8 +1900,9 @@ SoShadowGroupP::setFragmentShader(SoState * state)
   }
   SoShaderParameter1i * texmap =
     new SoShaderParameter1i();
-  str.sprintf("textureMap0");
-  texmap->name = str;
+  SbString str0;
+  str0.sprintf("textureMap0");
+  texmap->name = str0;
   texmap->value = 0;
 
   SoShaderParameter1i * texmap1 = NULL;
@@ -1922,7 +1922,8 @@ SoShadowGroupP::setFragmentShader(SoState * state)
       this->texunit1->value = 0;
     }
     texmap1 = new SoShaderParameter1i();
-    str.sprintf("textureMap1");
+	SbString str;
+	str.sprintf("textureMap1");
     texmap1->name = str;
     texmap1->value = 1;
   }

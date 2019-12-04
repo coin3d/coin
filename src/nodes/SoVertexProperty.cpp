@@ -345,7 +345,7 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   SoVertexProperty::doAction(action);
 }
 
-#define TEST_OVERRIDE(bit, flags) ((SoOverrideElement::bit & flags) != 0)
+#define TEST_OVERRIDE(bit, flags) ((SoOverrideElement::bit & (flags)) != 0)
 
 // Documented in superclass.
 void

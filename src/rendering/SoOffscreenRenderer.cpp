@@ -888,12 +888,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                     SoOffscreenRendererP::debugTileOutputPrefix(), x, y);
 
           FILE * f = fopen(s.getString(), "wb");
-          assert(f);
-          SbBool w = SoOffscreenRendererP::writeToRGB(f, fullsize[0], fullsize[1],
-                                                      nrcomp, this->buffer);
-          assert(w);
-          const int r = fclose(f);
-          assert(r == 0);
+		  if (f) {
+            SbBool w = SoOffscreenRendererP::writeToRGB(f, fullsize[0], fullsize[1],
+                                                        nrcomp, this->buffer);
+            assert(w);
+            const int r = fclose(f);
+            assert(r == 0);
+		  }
 
           // This is sometimes useful to enable during debugging to
           // see the exact order and position of the tiles. Not

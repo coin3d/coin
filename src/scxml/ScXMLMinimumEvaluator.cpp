@@ -201,10 +201,8 @@ ScXMLInExprDataObj::~ScXMLInExprDataObj(void)
 void
 ScXMLInExprDataObj::setStateId(const char * stateidstr)
 {
-  if (this->stateid) {
-    delete [] this->stateid;
-    this->stateid = NULL;
-  }
+  delete [] this->stateid;
+  this->stateid = NULL;
   if (stateidstr) {
     this->stateid = new char [strlen(stateidstr) + 1];
     strcpy(this->stateid, stateidstr);
@@ -279,14 +277,10 @@ ScXMLAppendOpExprDataObj::ScXMLAppendOpExprDataObj(ScXMLDataObj * lhsptr, ScXMLD
 
 ScXMLAppendOpExprDataObj::~ScXMLAppendOpExprDataObj(void)
 {
-  if (this->lhs) {
-    delete this->lhs;
-    this->lhs = NULL;
-  }
-  if (this->rhs) {
-    delete this->rhs;
-    this->rhs = NULL;
-  }
+  delete this->lhs;
+  this->lhs = NULL;
+  delete this->rhs;
+  this->rhs = NULL;
 }
 
 void

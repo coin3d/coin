@@ -2440,7 +2440,7 @@ cc_glglue_instance(int contextid)
           int buffer_pos = 0;
           for (int i_string = 0 ; i_string < num_strings ; i_string++) {
             const char * extension_string = (char *)glGetStringi (GL_EXTENSIONS, i_string);
-            int extension_string_length = strlen(extension_string);
+            int extension_string_length = (int)strlen(extension_string);
             if (buffer_pos + extension_string_length + 1 > buffer_size) {
               buffer_size += 1024;
               ext_strings_buffer = (char *)realloc(ext_strings_buffer, buffer_size * sizeof (char));

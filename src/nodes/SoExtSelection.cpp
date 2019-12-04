@@ -2111,8 +2111,8 @@ SoExtSelectionP::pointCB(void *userData,
   if(!thisp->primcbdata.allshapes){
     // FIXME: what does this value actually represent? (And what's up
     // with the "-1"?) Please explain. 20041028 mortene.
-    const double v = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
-    if (thisp->offscreenskipcounter < v) {
+    const double val = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
+    if (thisp->offscreenskipcounter < val) {
       ++thisp->offscreenskipcounter;
       return;
     }

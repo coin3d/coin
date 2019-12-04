@@ -452,8 +452,8 @@ ScXMLIfElt::execute(ScXMLStateMachine * statemachine) const
       if (res->isOfType(ScXMLBoolDataObj::getClassTypeId())) {
         boolres = static_cast<ScXMLBoolDataObj *>(res);
         if (boolres->getBool()) {
-          for (int i = 0; i < this->getNumExecutables(elseif); ++i) {
-            ScXMLExecutableElt * executable = this->getExecutable(elseif, i);
+          for (int j = 0; j < this->getNumExecutables(elseif); ++j) {
+            ScXMLExecutableElt * executable = this->getExecutable(elseif, j);
             executable->execute(statemachine);
           }
           return;

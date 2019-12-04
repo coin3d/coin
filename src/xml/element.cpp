@@ -130,9 +130,9 @@ void
 cc_xml_elt_delete_x(cc_xml_elt * elt)
 {
   assert(elt);
-  if (elt->type) delete [] elt->type;
-  if (elt->data) delete [] elt->data;
-  if (elt->cdata) delete [] elt->cdata;
+  delete [] elt->type;
+  delete [] elt->data;
+  delete [] elt->cdata;
   if (elt->attributes.getLength() > 0) {
     const int num = elt->attributes.getLength();
     for (int i = 0; i < num; ++i) {
@@ -159,10 +159,8 @@ void
 cc_xml_elt_set_type_x(cc_xml_elt * elt, const char * type)
 {
   assert(elt);
-  if (elt->type) {
-    delete [] elt->type;
-    elt->type = NULL;
-  }
+  delete [] elt->type;
+  elt->type = NULL;
   if (type) elt->type = cc_xml_strdup(type);
 }
 
@@ -198,15 +196,11 @@ cc_xml_elt_set_cdata_x(cc_xml_elt * elt, const char * cdata)
       // but we can run through anyways
     }
   }
-  if ( elt->cdata ) {
-    delete [] elt->cdata;
-    elt->cdata = NULL;
-  }
+  delete [] elt->cdata;
+  elt->cdata = NULL;
   if ( cdata ) elt->cdata = cc_xml_strdup(cdata);
-  if ( elt->data ) {
-    delete [] elt->data;
-    elt->data = NULL;
-  }
+  delete [] elt->data;
+  elt->data = NULL;
   // Update data to whitespace-stripped cdata
   if( cdata) {
     const char * startptr = elt->cdata;
@@ -566,7 +560,7 @@ cc_xml_elt_get_integer(const cc_xml_elt * elt, int * value)
   assert(value != NULL);
   if ( data == NULL ) return FALSE;
   if ( sscanf(data, "%d", value) == 1 ) return TRUE;
-  return false;
+  return FALSE;
 }
 
 int

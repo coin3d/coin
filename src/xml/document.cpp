@@ -370,9 +370,9 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
 {
   assert(doc);
   if (doc->parser) { cc_xml_doc_delete_parser_x(doc); }
-  if (doc->xmlversion) delete [] doc->xmlversion;
-  if (doc->xmlencoding) delete [] doc->xmlencoding;
-  if (doc->filename) delete [] doc->filename;
+  delete [] doc->xmlversion;
+  delete [] doc->xmlencoding;
+  delete [] doc->filename;
   if (doc->root) cc_xml_elt_delete_x(doc->root);
   delete doc;
 }
@@ -574,10 +574,7 @@ void
 cc_xml_doc_set_filename_x(cc_xml_doc * doc, const char * path)
 {
   assert(doc);
-  if (doc->filename) {
-    delete [] doc->filename;
-    doc->filename = NULL;
-  }
+  delete [] doc->filename;
   doc->filename = cc_xml_strdup(path);
 }
 
