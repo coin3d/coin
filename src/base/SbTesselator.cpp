@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -129,29 +129,13 @@
 
 class SbTesselator::PImpl {
 public:
-
-#if 1 // enable this to do double-precision internal calculations
-  typedef double tessfloat_t;
-#else // or else do single-precision calculations.
-  // FIXME: we should normally want do to double-precision, but this
-  // is kept around for now since there are suspected bugs in the
-  // tessellation code which are easier to reproduce with
-  // single-precision calculations.  -mortene.
-  typedef float tessfloat_t;
-#endif
-
-  // this type is for internal real values which is forced by external
-  // factors to be single-precision floats. (e.g. coming into the api
-  // as an SbVec3f.)
-  typedef float forcedfloat_t;
-
   struct Vertex {
     SbTesselator::PImpl * thisp;
 
     SbVec3f v;
     void * data;
 
-    tessfloat_t weight;
+    double weight;
     int dirtyweight;
 
     Vertex * prev, * next;
@@ -161,7 +145,7 @@ public:
   cc_heap * heap;
   SbBSPTree bsptree;
   SbList <int> clippablelist;
-  tessfloat_t epsilon;
+  double epsilon;
   SbBox3f bbox;
 
   Vertex * newVertex(void);
@@ -173,9 +157,9 @@ public:
   Vertex * headV, * tailV;
   int numVerts;
   SbVec3f polyNormal;
-  int X,Y;
+  int X, Y;
   int polyDir;
-  void (*callback)(void * v0,void * v1,void * v2,void * data);
+  void (*callback)(void * v0, void * v1, void * v2, void * data);
   void * callbackData;
   SbBool hasNormal;
   SbBool keepVertices;
@@ -184,52 +168,46 @@ public:
   void cutTriangle(Vertex * t);
   void calcPolygonNormal(void);
 
-  SbBool circleCenter(const SbVec3f &a, const SbVec3f &b,
-                      const SbVec3f &c, tessfloat_t &cx, tessfloat_t &cy);
-  tessfloat_t circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c);
-  tessfloat_t circleSize(Vertex * v);
-  tessfloat_t dot2D(const SbVec3f &v1, const SbVec3f &v2);
+  double circleSize(Vertex * v);
   SbBool clippable(Vertex * v);
-  SbBool isTriangle(Vertex * v);
   SbBool pointInTriangle(Vertex * p, Vertex * t);
-  tessfloat_t area(Vertex * t);
+  SbBool pointInTriangle(Vertex * p, Vertex * v0, Vertex * v1, Vertex * v2);
+  SbBool pointOnEdge(Vertex * p, Vertex * e0, Vertex * e1);
+  double area(Vertex * t);
 
-  static tessfloat_t heap_evaluate(void * v);
+  static double heap_evaluate(void * v);
   static int heap_compare(void * v0, void * v1);
-
-  static bool point_on_edge(tessfloat_t x, tessfloat_t y,
-                            const forcedfloat_t * v0,
-                            const forcedfloat_t * v1,
-                            int X, int Y, tessfloat_t eps);
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************
-
+// strict weak ordering is needed
 int
 SbTesselator::PImpl::heap_compare(void * h0, void * h1)
 {
-  if (heap_evaluate(h0) > heap_evaluate(h1)) return -1;
-  return 1;
+  return heap_evaluate(h0) < heap_evaluate(h1) ? 1 : 0;
 }
 
-SbTesselator::PImpl::tessfloat_t
+double
 SbTesselator::PImpl::heap_evaluate(void * v)
 {
   Vertex * vertex = static_cast<Vertex *>(v);
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
-    if ((vertex->thisp->area(vertex) > vertex->thisp->epsilon) &&
-        vertex->thisp->isTriangle(vertex) &&
-        vertex->thisp->clippable(vertex)) {
+    double area = vertex->thisp->area(vertex);
+    bool istriangle = area * vertex->thisp->polyDir > 0.0f;
+    bool isclippable = istriangle ? vertex->thisp->clippable(vertex) : false;
+    if ((fabs(area) > vertex->thisp->epsilon) &&
+        istriangle &&
+        isclippable) {
 #if 0 // testing code to avoid empty triangles
       vertex->weight = vertex->thisp->circleSize(vertex);
       Vertex *v2 = vertex->next;
       if (vertex->weight != FLT_MAX &&
           v2->thisp->keepVertices &&
           v2->thisp->numVerts > 4 &&
-          fabs(v2->thisp->area(v2)) < PRIVATE(thisp)->epsilon) {
+          fabs(v2->thisp->area(v2)) < v2->thisp->epsilon) {
         vertex->weight = 0.0f; // cut immediately!
       }
 
@@ -288,7 +266,7 @@ SbTesselator::~SbTesselator()
   area.
 */
 void
-SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
+SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f & normal)
 {
   PRIVATE(this)->cleanUp();
   PRIVATE(this)->keepVertices = keepVerts;
@@ -309,7 +287,7 @@ SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
   vertex in the callback-function.
 */
 void
-SbTesselator::addVertex(const SbVec3f &v,void *data)
+SbTesselator::addVertex(const SbVec3f & v, void * data)
 {
   if (PRIVATE(this)->tailV &&
       !PRIVATE(this)->keepVertices &&
@@ -358,8 +336,6 @@ SbTesselator::endPolygon(void)
     }
   }
 
-  PImpl::Vertex *v;
-
   if (PRIVATE(this)->numVerts > 3) {
     PRIVATE(this)->calcPolygonNormal();
 
@@ -367,34 +343,36 @@ SbTesselator::endPolygon(void)
     int projection;
     if (fabs(PRIVATE(this)->polyNormal[0]) > fabs(PRIVATE(this)->polyNormal[1]))
       if (fabs(PRIVATE(this)->polyNormal[0]) > fabs(PRIVATE(this)->polyNormal[2]))
-        projection=OYZ;
-      else projection=OXY;
+        projection = OYZ;
+      else
+        projection = OXY;
     else
       if (fabs(PRIVATE(this)->polyNormal[1]) > fabs(PRIVATE(this)->polyNormal[2]))
-        projection=OXZ;
-      else projection=OXY;
+        projection = OXZ;
+      else
+        projection = OXY;
 
     switch (projection) {
     case OYZ:
-      PRIVATE(this)->X=1;
-      PRIVATE(this)->Y=2;
-      PRIVATE(this)->polyDir=static_cast<int>(PRIVATE(this)->polyNormal[0]/fabs(PRIVATE(this)->polyNormal[0]));
+      PRIVATE(this)->X = 1;
+      PRIVATE(this)->Y = 2;
+      PRIVATE(this)->polyDir = PRIVATE(this)->polyNormal[0] > 0 ? 1 : -1;
       break;
     case OXY:
-      PRIVATE(this)->X=0;
-      PRIVATE(this)->Y=1;
-      PRIVATE(this)->polyDir=static_cast<int>(PRIVATE(this)->polyNormal[2]/fabs(PRIVATE(this)->polyNormal[2]));
+      PRIVATE(this)->X = 0;
+      PRIVATE(this)->Y = 1;
+      PRIVATE(this)->polyDir = PRIVATE(this)->polyNormal[2] > 0 ? 1 : -1;
       break;
     case OXZ:
-      PRIVATE(this)->X=2;
-      PRIVATE(this)->Y=0;
-      PRIVATE(this)->polyDir=static_cast<int>(PRIVATE(this)->polyNormal[1]/fabs(PRIVATE(this)->polyNormal[1]));
+      PRIVATE(this)->X = 2;
+      PRIVATE(this)->Y = 0;
+      PRIVATE(this)->polyDir = PRIVATE(this)->polyNormal[1] > 0 ? 1 : -1;
       break;
     }
 
     // find epsilon based on bbox
     SbVec3f d;
-    PRIVATE(this)->bbox.getSize(d[0],d[1],d[2]);
+    PRIVATE(this)->bbox.getSize(d[0], d[1], d[2]);
     PRIVATE(this)->epsilon = SbMin(d[PRIVATE(this)->X], d[PRIVATE(this)->Y]) * FLT_EPSILON * FLT_EPSILON;
 
     //Make loop
@@ -408,7 +386,7 @@ SbTesselator::endPolygon(void)
     // use two loops to add points to bsptree and heap, since the heap
     // requires that the bsptree is fully set up to evaluate
     // correctly.
-    v = PRIVATE(this)->headV;
+    PImpl::Vertex* v = PRIVATE(this)->headV;
     do {
       PRIVATE(this)->bsptree.addPoint(SbVec3f(v->v[PRIVATE(this)->X],
                                               v->v[PRIVATE(this)->Y],
@@ -423,7 +401,10 @@ SbTesselator::endPolygon(void)
 
     while (PRIVATE(this)->numVerts > 4) {
       v = static_cast<PImpl::Vertex *>(cc_heap_get_top(PRIVATE(this)->heap));
-      if (PImpl::heap_evaluate(v) == FLT_MAX) break;
+
+      if (PImpl::heap_evaluate(v) == FLT_MAX)
+        break;
+
       cc_heap_remove(PRIVATE(this)->heap, v->next);
       PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[PRIVATE(this)->X],
                                                  v->next->v[PRIVATE(this)->Y],
@@ -433,12 +414,10 @@ SbTesselator::endPolygon(void)
 
       v->prev->dirtyweight = 1;
       v->dirtyweight = 1;
-
-      (void) cc_heap_remove(PRIVATE(this)->heap, v->prev);
-      (void) cc_heap_remove(PRIVATE(this)->heap, v);
-
-      cc_heap_add(PRIVATE(this)->heap, v->prev);
-      cc_heap_add(PRIVATE(this)->heap, v);
+      cc_heap_update(PRIVATE(this)->heap, v->prev);
+      v->prev->dirtyweight = 1;
+      v->dirtyweight = 1;
+      cc_heap_update(PRIVATE(this)->heap, v);
     }
 
     // remember that headV and tailV are not valid anymore!
@@ -447,8 +426,10 @@ SbTesselator::endPolygon(void)
     // must handle special case when only four vertices remain
     //
     if (PRIVATE(this)->numVerts == 4) {
-      SbTesselator::PImpl::tessfloat_t v0 = SbMax(PImpl::heap_evaluate(v), PImpl::heap_evaluate(v->next->next));
-      SbTesselator::PImpl::tessfloat_t v1 = SbMax(PImpl::heap_evaluate(v->next), PImpl::heap_evaluate(v->prev));
+      v->next->dirtyweight = 1;
+      v->next->next->dirtyweight = 1;
+      double v0 = SbMax(PImpl::heap_evaluate(v), PImpl::heap_evaluate(v->next->next));
+      double v1 = SbMax(PImpl::heap_evaluate(v->next), PImpl::heap_evaluate(v->prev));
 
       // abort if vertices should not be kept
       if (v0 == v1 && v0 == FLT_MAX && !PRIVATE(this)->keepVertices) return;
@@ -484,7 +465,7 @@ SbTesselator::endPolygon(void)
   Sets the callback function for this tessellator.
 */
 void
-SbTesselator::setCallback(SbTesselatorCB * func, void *data)
+SbTesselator::setCallback(SbTesselatorCB * func, void * data)
 {
   PRIVATE(this)->callback = func;
   PRIVATE(this)->callbackData = data;
@@ -492,152 +473,144 @@ SbTesselator::setCallback(SbTesselatorCB * func, void *data)
 
 // *************************************************************************
 
-bool
-SbTesselator::PImpl::point_on_edge(tessfloat_t x, tessfloat_t y,
-                                   const forcedfloat_t * v0,
-                                   const forcedfloat_t * v1,
-                                   int X, int Y, tessfloat_t eps)
-{
-  if (x < v0[X] && x < v1[X]) return false;
-  if (x > v0[X] && x > v1[X]) return false;
-  if (y < v0[Y] && y < v1[Y]) return false;
-  if (y > v0[Y] && y > v1[Y]) return false;
-
-  if (v0[X] == v1[X]) {
-    if (fabs(x-v0[X]) <= eps) return true;
-    return false;
-  }
-
-  tessfloat_t ny = v0[Y] + (x-v0[X])*(v1[Y]-v0[Y])/(v1[X]-v0[X]);
-
-  if (fabs(y-ny) <= eps) {
-    return true;
-  }
-  return false;
-}
-
 //
 // PRIVATE FUNCTIONS:
 //
 
-//
-// Checks if the point p lies inside the triangle
-// starting with t.
+#if 1
+//From http://totologic.blogspot.se/2014/01/accurate-point-in-triangle-test.html
+//p is the testpoint, all other points are corners of the triangle
+SbBool SbTesselator::PImpl::pointInTriangle(Vertex * pt, Vertex * t)
+{
+  const SbVec3f& p = pt->v;
+  const SbVec3f& p1 = t->v;
+  const SbVec3f& p2 = t->next->v;
+  const SbVec3f& p3 = t->next->next->v;
+
+  bool isWithinTriangle = FALSE;
+
+  // Based on Barycentric coordinates
+  float denominator = 1 / ((p2[Y] - p3[Y]) * (p1[X] - p3[X]) + (p3[X] - p2[X]) * (p1[Y] - p3[Y]));
+
+  float a = ((p2[Y] - p3[Y]) * (p[X] - p3[X]) + (p3[X] - p2[X]) * (p[Y] - p3[Y])) * denominator;
+  float b = ((p3[Y] - p1[Y]) * (p[X] - p3[X]) + (p1[X] - p3[X]) * (p[Y] - p3[Y])) * denominator;
+  float c = 1 - a - b;
+
+  // The point is within the triangle or on the border if 0 <= a <= 1 and 0 <= b <= 1 and 0 <= c <= 1
+  if (a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1)
+  {
+      isWithinTriangle = TRUE;
+  }
+  // The point is within the triangle
+  //if (a > 0f && a < 1f && b > 0f && b < 1f && c > 0f && c < 1f)
+  //{
+  //  isWithinTriangle = TRUE;
+  //}
+
+  return isWithinTriangle;
+}
+#else
+// Checks the distance of point pt(x,y) to edge e0->e1.
+// The point is on the edge if its distance is less than epsilon.
 // Algorithm from comp.graphics.algorithms FAQ
-//
 SbBool
-SbTesselator::PImpl::pointInTriangle(Vertex *p, Vertex *t)
+SbTesselator::PImpl::pointOnEdge(Vertex * pt, Vertex * e0, Vertex * e1)
 {
-  tessfloat_t x,y;
-  SbBool tst = FALSE;
+  const SbVec3f& p = pt->v;
+  const SbVec3f& v0 = e0->v;
+  const SbVec3f& v1 = e1->v;
 
-  x = p->v[X];
-  y = p->v[Y];
+  double C = v1[X] - v0[X];
+  double D = v1[Y] - v0[Y];
 
-  const forcedfloat_t * v1 = t->v.getValue();
-  const forcedfloat_t * v2 = t->next->next->v.getValue();
+  double dot = (p[X] - v0[X]) * C + (p[Y] - v0[Y]) * D;
+  double norm = C * C + D * D;
+  double t = -1;
+  if (norm != 0.0)
+    t = dot / norm;
 
-  if ((((v1[Y] <= y) && (y < v2[Y])) || ((v2[Y] <= y)  && (y < v1[Y]))) &&
-      (x < (v2[X] - v1[X]) * (y - v1[Y]) / (v2[Y] - v1[Y]) + v1[X])) {
-    tst = !tst;
-  }
+  if (t < 0.0)
+    t = 0.0;
+  if (t > 1.0)
+    t = 1.0;
 
-  v2 = v1;
-  v1 = t->next->v.getValue();
+  double px = v0[X] + t * C;
+  double py = v0[Y] + t * D;
+  double dx = p[X] - px;
+  double dy = p[Y] - py;
 
-  if ((((v1[Y] <= y) && (y < v2[Y])) || ((v2[Y] <= y)  && (y < v1[Y]))) &&
-      (x < (v2[X] - v1[X]) * (y - v1[Y]) / (v2[Y] - v1[Y]) + v1[X])) {
-    tst = !tst;
-  }
-
-  v2 = v1;
-  v1 = t->next->next->v.getValue();
-
-  if ((((v1[Y] <= y) && (y < v2[Y])) || ((v2[Y] <= y)  && (y < v1[Y]))) &&
-      (x < (v2[X] - v1[X]) * (y - v1[Y]) / (v2[Y] - v1[Y]) + v1[X])) {
-    tst = !tst;
-  }
-
-  // the pointInTriangle test might fail for vertices that are on one
-  // of the triangle edges. Do a point_on_edge test for all three
-  // edges to handle this case. Example model that fails without this
-  // test:
-  //
-  //  ShapeHints { faceType UNKNOWN_FACE_TYPE vertexOrdering CLOCKWISE }
-  //  IndexedFaceSet {
-  //    vertexProperty
-  //    VertexProperty {
-  //      vertex [ -0.3 0.05 0.0,
-  //                0.3   0.05  0.0,
-  //                0.3   0.1   0.0,
-  //                0.5   0.0   0.0,
-  //                0.3  -0.1   0.0,
-  //                0.3  -0.05  0.0,
-  //               -0.3  -0.05  0.0,
-  //               -0.3  -0.1   0.0,
-  //               -0.5   0.0   0.0,
-  //               -0.3   0.1   0.0 ]
-  //    }
-  //    coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1]
-  if (!tst) {
-    if (point_on_edge(x, y, t->v.getValue(),
-                      t->next->v.getValue(), X, Y, this->epsilon)) {
-      return TRUE;
-    }
-    if (point_on_edge(x, y, t->next->v.getValue(),
-                      t->next->next->v.getValue(), X, Y, this->epsilon)) {
-      return TRUE;
-    }
-    if (point_on_edge(x, y, t->next->next->v.getValue(),
-                      t->v.getValue(), X, Y, this->epsilon)) {
-      return TRUE;
-    }
-  }
-  return tst;
+  return fabs(dx * dx + dy * dy) < epsilon*epsilon;
 }
 
-
-//
-// Check if v points to a legal triangle (normal is right way)
-// (i.e convex or concave corner)
-//
-SbBool
-SbTesselator::PImpl::isTriangle(Vertex * v)
+// see: https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+// p is the testpoint, and the other points are corners in the triangle
+SbBool SbTesselator::PImpl::pointInTriangle(Vertex * pt, Vertex * v0, Vertex * v1, Vertex * v2)
 {
-  return (((v->next->v[X]-v->v[X]) * (v->next->next->v[Y]-v->v[Y]) -
-           (v->next->v[Y]-v->v[Y]) * (v->next->next->v[X]-v->v[X])) *
-          this->polyDir > 0.0) ? TRUE : FALSE;
+  const SbVec3f& p = pt->v;
+  const SbVec3f& a = v0->v;
+  const SbVec3f& b = v1->v;
+  const SbVec3f& c = v2->v;
+
+  double x = p[X] - a[X];
+  double y = p[Y] - a[Y];
+  bool s_ab = (b[X] - a[X]) * y - (b[Y] - a[Y]) * x > 0;
+
+  if ((c[X] - a[X]) * y - (c[Y] - a[Y]) * x > 0 == s_ab)
+    return FALSE;
+
+  if ((c[X] - b[X]) * (p[Y] - b[Y]) - (c[Y] - b[Y]) * (p[X] - b[X]) > 0 != s_ab)
+    return FALSE;
+
+  return TRUE;
 }
+
+SbBool SbTesselator::PImpl::pointInTriangle(Vertex * pt, Vertex * t)
+{
+  if (pointInTriangle(pt, t, t->next, t->next->next))
+    return TRUE;
+
+  // The pointInTriangle test might fail for vertices that are on one
+  // of the triangle edges. Do a pointOnEdge test for all three
+  // edges to handle this case.
+  if (pointOnEdge(pt, t, t->next))
+    return TRUE;
+  if (pointOnEdge(pt, t->next, t->next->next))
+    return TRUE;
+  if (pointOnEdge(pt, t->next->next, t))
+    return TRUE;
+
+  return false;
+}
+#endif
 
 //
 // Check if there are no intersection to the triangle
-// pointed to by v. (no other vertices are inside the triangle)
+// pointed to by t. (no other vertices are inside the triangle)
 //
 SbBool
-SbTesselator::PImpl::clippable(Vertex * v)
+SbTesselator::PImpl::clippable(Vertex * t)
 {
   SbBox3f boundingbox;
   boundingbox.makeEmpty();
-  boundingbox.extendBy(SbVec3f(v->v[X], v->v[Y], 0.0f));
-  boundingbox.extendBy(SbVec3f(v->next->v[X], v->next->v[Y], 0.0f));
-  boundingbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 0.0f));
+  boundingbox.extendBy(SbVec3f(t->v[X], t->v[Y], 0.0f));
+  boundingbox.extendBy(SbVec3f(t->next->v[X], t->next->v[Y], 0.0f));
+  boundingbox.extendBy(SbVec3f(t->next->next->v[X], t->next->next->v[Y], 0.0f));
 
   SbSphere sphere;
   sphere.circumscribe(boundingbox);
 
-  SbList <int> & l = this->clippablelist;
+  SbList <int> & l = clippablelist;
   l.truncate(0);
-  this->bsptree.findPoints(sphere, l);
+  bsptree.findPoints(sphere, l);
   for (int i = 0; i < l.getLength(); i++) {
-    Vertex * vtx = static_cast<Vertex*>(this->bsptree.getUserData(l[i]));
-    if (vtx != v && vtx != v->next && vtx != v->next->next) {
-      if (pointInTriangle(vtx, v)) { return FALSE; }
+    Vertex * vtx = static_cast<Vertex*>(bsptree.getUserData(l[i]));
+    if (vtx != t && vtx != t->next && vtx != t->next->next) {
+      if (pointInTriangle(vtx, t))
+        return FALSE;
     }
   }
   return TRUE;
 }
-
-
 
 //
 // Call the callback-function for the triangle starting with t
@@ -648,13 +621,13 @@ SbTesselator::PImpl::emitTriangle(Vertex * t)
   assert(t);
   assert(t->next);
   assert(t->next->next);
-  assert(this->callback);
+  assert(callback);
 
-  this->callback(t->data, t->next->data, t->next->next->data,
-                 this->callbackData);
-  this->cutTriangle(t);
+  callback(t->data, t->next->data, t->next->next->data, callbackData);
+  cutTriangle(t);
 }
 
+//
 // Cuts t->next out of the triangle vertex list.
 //
 // FIXME: bad design, this should have been a method on
@@ -667,104 +640,67 @@ SbTesselator::PImpl::cutTriangle(Vertex * t)
 }
 
 //
-// Return the area of the triangle starting with v
+// Returns the two times the signed area of the triangle starting with t
 //
-SbTesselator::PImpl::tessfloat_t
-SbTesselator::PImpl::area(Vertex * v)
+double
+SbTesselator::PImpl::area(Vertex * t)
 {
-  return static_cast<tessfloat_t>(fabs((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
-                     (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
+  return 0.5*((t->next->v[X] - t->v[X]) * (t->next->next->v[Y] - t->v[Y]) -
+              (t->next->v[Y] - t->v[Y]) * (t->next->next->v[X] - t->v[X]));
 }
 
 //
-// Returns the center of the circle through points a, b, c.
+// Returns the square of the radius of the circum circle through points starting at vertex t in projection plane.
+// Algorithm for calulating the center of the circle from comp.graphics.algorithms FAQ
 //
-SbBool
-SbTesselator::PImpl::circleCenter(const SbVec3f &a, const SbVec3f &b,
-                                  const SbVec3f &c, tessfloat_t &cx, tessfloat_t &cy)
+double
+SbTesselator::PImpl::circleSize(Vertex * t)
 {
-  tessfloat_t d1, d2, d3, c1, c2, c3;
-  SbVec3f tmp1, tmp2;
+  const SbVec3f& a = t->v;
+  const SbVec3f& b = t->next->v;
+  const SbVec3f& c = t->next->next->v;
 
-  tmp1 = b - a;
-  tmp2 = c - a;
-  d1 = dot2D(tmp1, tmp2);
+  double A = b[X] - a[X];
+  double B = b[Y] - a[Y];
+  double C = c[X] - a[X];
+  double D = c[Y] - a[Y];
 
-  tmp1 = b - c;
-  tmp2 = a - c;
-  d2 = dot2D(tmp1, tmp2);
+  double E = A * (a[X] + b[X]) + B * (a[Y] + b[Y]);
+  double F = C * (a[X] + c[X]) + D * (a[Y] + c[Y]);
 
-  tmp1 = a - b;
-  tmp2 = c - b;
-  d3 = dot2D(tmp1, tmp2);
+  double G = 2 * (A * (c[Y] - b[Y]) - B * (c[X] - b[X]));
 
-  c1 = d2 * d3;
-  c2 = d3 * d1;
-  c3 = d1 * d2;
-
-  SbVec3f tmp4(c);
-  tmp1 = a;
-  tmp2 = b;
-  tmp1 *= float(c2+c3);
-  tmp2 *= float(c3+c1);
-  tmp4 *= float(c1+c2);
-  tmp4 += tmp1;
-  tmp4 += tmp2;
-
-  tessfloat_t div = 2.0f*(c1+c2+c3);
-  if (div != 0.0f) {
-    tessfloat_t val = 1.0f / div;
-    cx = tmp4[X] * val;
-    cy = tmp4[Y] * val;
-    return TRUE;
-  }
-  return FALSE;
-}
-
-//
-// Returns the square of the radius of the circle through a, b, c
-//
-SbTesselator::PImpl::tessfloat_t
-SbTesselator::PImpl::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
-{
-  tessfloat_t cx, cy;
-  if (circleCenter(a, b, c, cx, cy)) {
-    tessfloat_t t1, t2;
-    t1 = a[X] - cx;
-    t2 = a[Y] - cy;
-    return t1*t1+t2*t2;
+  if (G != 0) {
+    double val = 1 / G;
+    double cx = (D * E - B * F) * val;
+    double cy = (A * F - C * E) * val;
+    double rx = a[X] - cx;
+    double ry = a[Y] - cy;
+    return rx * rx + ry * ry;
   }
   return FLT_MAX;
 }
 
-SbTesselator::PImpl::tessfloat_t
-SbTesselator::PImpl::circleSize(Vertex *v)
-{
-  return circleSize(v->v, v->next->v, v->next->next->v);
-}
-
-SbTesselator::PImpl::tessfloat_t
-SbTesselator::PImpl::dot2D(const SbVec3f &v1, const SbVec3f &v2)
-{
-  return v1[X] * v2[X] + v1[Y] * v2[Y];
-}
-
+//
+// Calculate surface normal using Newell's method.
+// See https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
+//
 void
 SbTesselator::PImpl::calcPolygonNormal()
 {
-  assert(this->numVerts > 3);
+  assert(numVerts > 3);
 
-  this->polyNormal.setValue(0.0f, 0.0f, 0.0f);
+  polyNormal.setValue(0.0f, 0.0f, 0.0f);
   SbVec3f vert1, vert2;
-  Vertex *currvertex = this->headV;
+  Vertex *currvertex = headV;
   vert2 = currvertex->v;
 
   while (currvertex->next != NULL && currvertex != tailV) {
     vert1 = vert2;
     vert2 = currvertex->next->v;
-    this->polyNormal[0] += (vert1[1] - vert2[1]) * (vert1[2] + vert2[2]);
-    this->polyNormal[1] += (vert1[2] - vert2[2]) * (vert1[0] + vert2[0]);
-    this->polyNormal[2] += (vert1[0] - vert2[0]) * (vert1[1] + vert2[1]);
+    polyNormal[0] += (vert1[1] - vert2[1]) * (vert1[2] + vert2[2]);
+    polyNormal[1] += (vert1[2] - vert2[2]) * (vert1[0] + vert2[0]);
+    polyNormal[2] += (vert1[0] - vert2[0]) * (vert1[1] + vert2[1]);
     currvertex = currvertex->next;
   }
   vert1 = vert2;
@@ -790,20 +726,20 @@ SbTesselator::PImpl::calcPolygonNormal()
 SbTesselator::PImpl::Vertex *
 SbTesselator::PImpl::newVertex()
 {
-  assert(this->currVertex <= this->vertexStorage.getLength());
-  if (this->currVertex == this->vertexStorage.getLength()) {
+  assert(currVertex <= vertexStorage.getLength());
+  if (currVertex == vertexStorage.getLength()) {
     Vertex * v = new Vertex;
-    this->vertexStorage.append(v);
+    vertexStorage.append(v);
   }
-  return this->vertexStorage[currVertex++];
+  return vertexStorage[currVertex++];
 }
 
 void
 SbTesselator::PImpl::cleanUp()
 {
-  this->headV = this->tailV = NULL;
-  this->currVertex = 0;
-  this->numVerts = 0;
+  headV = tailV = NULL;
+  currVertex = 0;
+  numVerts = 0;
 }
 
 // *************************************************************************
