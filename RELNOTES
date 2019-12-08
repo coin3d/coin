@@ -8,6 +8,53 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.0.0
+==========
+
+Kongsberg Oil & Gas Technologies AS ended Coin as a commercial product
+and re-licensed it under the BSD 3-clause license as a service to the
+user community.
+
+Build system was migrated from GNU Autotools to CMake.
+
+Support for UNICODE text added.  Starting with Coin 4.0 strings are UTF-8
+encoded.  New greater than and less than operators added to SbString.
+
+New SoReversePerspectiveCamera node added.
+View volume and projectors now support reverse perspective camera settings.
+
+New getRadius method in SoRayPickAction.
+
+New virtual method getPickedPointForStart in SoDragger to allow dragging
+of (partially) covered objects by derived draggers.
+
+New SoAlphaTest node to control alpha test settings.
+
+New public API for converting geo coordinates created.
+
+SoTextureCoordinateObject implemented for linear texture functions that
+can be used for projective texture mapping.
+
+In addition to Cg shaders support for GLSL/ARB shaders was added to
+SoShaderStateMatrixParameter.
+
+Support for linePatternScaleFactor was added to SoDrawStyle.
+
+The DISABLE policy is now supported in SoSelection node.
+
+API in SbMatrix, SoPickAction, SoEvent, SoSFTime, SbPList has changed to
+improve conformance to Open Inventor 2.1 API.
+
+Auto-linking to the Coin library when using Microsoft Visual C++ compilers.
+
+The expat sources under coin/src/xml/expat were updated to version 2.2.6.
+
+The local Boost includes under coin/include/Boost were removed and a new
+configure option --with-boost was added to Autotools.
+
+Support for BitBucket and AppVeyor as continuous integration service providers
+has been added.
+
 Coin 3.1.3
 ==========
 
