@@ -19,7 +19,6 @@ LinkHackSources = \
 	all-rendering-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
-	SbHash.h \
 	SoGL.h \
         SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h \
@@ -28,10 +27,7 @@ PrivateHeaders = \
 	SoOffscreenCGData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
-        SoRenderManagerP.h \
-	cppmangle.icc \
-	systemsanity.icc \
-        CoinResources.h
+        SoRenderManagerP.h
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(rendering, rendering)

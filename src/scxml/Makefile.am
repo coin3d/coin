@@ -53,8 +53,7 @@ RegularSources = \
         ScXMLECMAScriptEvaluator.cpp
 
 LinkHackSources = \
-        all-scxml-cpp.cpp \
-        all-scxml2-cpp.cpp
+        all-scxml-cpp.cpp
 
 PublicHeaders =
 
@@ -62,16 +61,13 @@ PrivateHeaders = \
         SbStringConvert.h \
         ScXMLP.h \
         ScXMLCommonP.h \
-        eval-minimum.h \
-        eval-coin.h
+        eval-minimum.h
 
 ObsoleteHeaders =
 
 EXTRA_DIST = \
         eval-minimum.l \
-        eval-minimum-tab.y \
-        eval-coin.l \
-        eval-coin-tab.y
+        eval-minimum-tab.y
 
 generate:
 	( cd $(srcdir) && \

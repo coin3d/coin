@@ -70,7 +70,7 @@ am__objects_2 = all-geo-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_geo_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_geo_lst_SOURCES_DIST = SoGeo.h SbGeoAngle.h SbGeoEllipsoid.h \
+am__EXTRA_geo_lst_SOURCES_DIST = SbGeoAngle.h SbGeoEllipsoid.h \
 	SbGeoProjection.h SbUTMProjection.h SbPolarStereographic.h \
 	all-geo-cpp.cpp SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
 	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
@@ -94,12 +94,11 @@ am__objects_7 = all-geo-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_libgeo_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libgeo_la_SOURCES_DIST = SoGeo.h SbGeoAngle.h \
-	SbGeoEllipsoid.h SbGeoProjection.h SbUTMProjection.h \
-	SbPolarStereographic.h all-geo-cpp.cpp SoGeo.cpp \
-	SoGeoOrigin.cpp SoGeoLocation.cpp SoGeoElement.cpp \
-	SoGeoSeparator.cpp SoGeoCoordinate.cpp SbGeoAngle.cpp \
-	SbGeoEllipsoid.cpp SbGeoProjection.cpp \
+am__EXTRA_libgeo_la_SOURCES_DIST = SbGeoAngle.h SbGeoEllipsoid.h \
+	SbGeoProjection.h SbUTMProjection.h SbPolarStereographic.h \
+	all-geo-cpp.cpp SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp \
+	SoGeoElement.cpp SoGeoSeparator.cpp SoGeoCoordinate.cpp \
+	SbGeoAngle.cpp SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp
 libgeo_la_OBJECTS = $(am_libgeo_la_OBJECTS)
 libgeo@SUFFIX@LINKHACK_la_LIBADD =
@@ -109,10 +108,10 @@ am__libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeo.cpp SoGeoOrigin.cpp \
 	SbGeoProjection.cpp SbPolarStereographic.cpp \
 	SbUTMProjection.cpp all-geo-cpp.cpp
 am_libgeo@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGeo.h \
-	SbGeoAngle.h SbGeoEllipsoid.h SbGeoProjection.h \
-	SbUTMProjection.h SbPolarStereographic.h all-geo-cpp.cpp \
-	SoGeo.cpp SoGeoOrigin.cpp SoGeoLocation.cpp SoGeoElement.cpp \
+am__EXTRA_libgeo@SUFFIX@LINKHACK_la_SOURCES_DIST = SbGeoAngle.h \
+	SbGeoEllipsoid.h SbGeoProjection.h SbUTMProjection.h \
+	SbPolarStereographic.h all-geo-cpp.cpp SoGeo.cpp \
+	SoGeoOrigin.cpp SoGeoLocation.cpp SoGeoElement.cpp \
 	SoGeoSeparator.cpp SoGeoCoordinate.cpp SbGeoAngle.cpp \
 	SbGeoEllipsoid.cpp SbGeoProjection.cpp \
 	SbPolarStereographic.cpp SbUTMProjection.cpp
@@ -437,7 +436,6 @@ LinkHackSources = \
 
 PublicHeaders = 
 PrivateHeaders = \
-	SoGeo.h \
 	SbGeoAngle.h \
 	SbGeoEllipsoid.h \
 	SbGeoProjection.h \

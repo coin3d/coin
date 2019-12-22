@@ -42,7 +42,6 @@ PublicHeaders =
 PrivateHeaders = \
 	SbHash.h \
 	SoConfigSettings.h \
-	SoGL.h \
 	SoGenerate.h \
 	SoPick.h \
 	SoShaderGenerator.h \
@@ -53,8 +52,7 @@ PrivateHeaders = \
 	CoinStaticObjectInDLL.h \
         SoSceneManagerP.h \
 	cppmangle.icc \
-	systemsanity.icc \
-        CoinResources.h
+	systemsanity.icc
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
