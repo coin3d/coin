@@ -206,12 +206,12 @@ EXTRA_DIST = \
 	build/msvc6/data/shaders/lights/SpotLight.h \
 	build/msvc6/data/shaders/lights/DirSpotLight.h \
 	build/msvc6/data/shaders/vsm/VsmLookup.h \
-	build/msvc6/docs/coin3.doxygen \
-	build/msvc6/coin3.dsp \
-	build/msvc6/coin3.dsw \
-	build/msvc6/coin3_install.dsp \
-	build/msvc6/coin3_uninstall.dsp \
-	build/msvc6/coin3_docs.dsp \
+	build/msvc6/docs/coin4.doxygen \
+	build/msvc6/coin4.dsp \
+	build/msvc6/coin4.dsw \
+	build/msvc6/coin4_install.dsp \
+	build/msvc6/coin4_uninstall.dsp \
+	build/msvc6/coin4_docs.dsp \
 	build/msvc6/include/Inventor/C/basic.h \
 	build/msvc6/include/Inventor/system/gl-headers.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
@@ -245,12 +245,12 @@ EXTRA_DIST = \
 	build/msvc7/data/shaders/lights/SpotLight.h \
 	build/msvc7/data/shaders/lights/DirSpotLight.h \
 	build/msvc7/data/shaders/vsm/VsmLookup.h \
-	build/msvc7/docs/coin3.doxygen \
-	build/msvc7/coin3.sln \
-	build/msvc7/coin3.vcproj \
-	build/msvc7/coin3_install.vcproj \
-	build/msvc7/coin3_uninstall.vcproj \
-	build/msvc7/coin3_docs.vcproj \
+	build/msvc7/docs/coin4.doxygen \
+	build/msvc7/coin4.sln \
+	build/msvc7/coin4.vcproj \
+	build/msvc7/coin4_install.vcproj \
+	build/msvc7/coin4_uninstall.vcproj \
+	build/msvc7/coin4_docs.vcproj \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl-headers.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
@@ -284,12 +284,12 @@ EXTRA_DIST = \
 	build/msvc8/data/shaders/lights/SpotLight.h \
 	build/msvc8/data/shaders/lights/DirSpotLight.h \
 	build/msvc8/data/shaders/vsm/VsmLookup.h \
-	build/msvc8/docs/coin3.doxygen \
-	build/msvc8/coin3.sln \
-	build/msvc8/coin3.vcproj \
-	build/msvc8/coin3_install.vcproj \
-	build/msvc8/coin3_uninstall.vcproj \
-	build/msvc8/coin3_docs.vcproj \
+	build/msvc8/docs/coin4.doxygen \
+	build/msvc8/coin4.sln \
+	build/msvc8/coin4.vcproj \
+	build/msvc8/coin4_install.vcproj \
+	build/msvc8/coin4_uninstall.vcproj \
+	build/msvc8/coin4_docs.vcproj \
 	build/msvc8/include/Inventor/C/basic.h \
 	build/msvc8/include/Inventor/system/gl-headers.h \
 	build/msvc8/include/Inventor/system/inttypes.h \
@@ -323,12 +323,12 @@ EXTRA_DIST = \
 	build/msvc9/data/shaders/lights/SpotLight.h \
 	build/msvc9/data/shaders/lights/DirSpotLight.h \
 	build/msvc9/data/shaders/vsm/VsmLookup.h \
-	build/msvc9/docs/coin3.doxygen \
-	build/msvc9/coin3.sln \
-	build/msvc9/coin3.vcproj \
-	build/msvc9/coin3_install.vcproj \
-	build/msvc9/coin3_uninstall.vcproj \
-	build/msvc9/coin3_docs.vcproj \
+	build/msvc9/docs/coin4.doxygen \
+	build/msvc9/coin4.sln \
+	build/msvc9/coin4.vcproj \
+	build/msvc9/coin4_install.vcproj \
+	build/msvc9/coin4_uninstall.vcproj \
+	build/msvc9/coin4_docs.vcproj \
 	build/msvc9/include/Inventor/C/basic.h \
 	build/msvc9/include/Inventor/system/gl-headers.h \
 	build/msvc9/include/Inventor/system/inttypes.h \

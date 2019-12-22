@@ -309,7 +309,6 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 SUBDIRS = Inventor
 EXTRA_DIST = \
-	boost.README \
 	SoWinEnterScope.h \
 	SoWinLeaveScope.h \
 	SoDebug.h

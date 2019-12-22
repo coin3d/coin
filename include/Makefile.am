@@ -3,7 +3,6 @@
 SUBDIRS = Inventor
 
 EXTRA_DIST = \
-	boost.README \
 	SoWinEnterScope.h \
 	SoWinLeaveScope.h \
 	SoDebug.h

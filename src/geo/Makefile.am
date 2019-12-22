@@ -18,7 +18,6 @@ LinkHackSources = \
 
 PublicHeaders =
 PrivateHeaders = \
-	SoGeo.h \
 	SbGeoAngle.h \
 	SbGeoEllipsoid.h \
 	SbGeoProjection.h \

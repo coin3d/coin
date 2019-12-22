@@ -71,8 +71,7 @@ am__scxml_lst_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
 	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
 	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
-	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp
+	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp
 am__objects_1 = SbStringConvert.$(OBJEXT) ScXML.$(OBJEXT) \
 	ScXMLP.$(OBJEXT) ScXMLObject.$(OBJEXT) ScXMLEvent.$(OBJEXT) \
 	ScXMLEventTarget.$(OBJEXT) ScXMLStateMachine.$(OBJEXT) \
@@ -94,26 +93,25 @@ am__objects_1 = SbStringConvert.$(OBJEXT) ScXML.$(OBJEXT) \
 	ScXMLMinimumEvaluator.$(OBJEXT) eval-minimum.$(OBJEXT) \
 	eval-minimum-tab.$(OBJEXT) ScXMLXPathEvaluator.$(OBJEXT) \
 	ScXMLECMAScriptEvaluator.$(OBJEXT)
-am__objects_2 = all-scxml-cpp.$(OBJEXT) all-scxml2-cpp.$(OBJEXT)
+am__objects_2 = all-scxml-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_scxml_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_scxml_lst_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
-	ScXMLCommonP.h eval-minimum.h eval-coin.h all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
-	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
-	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
-	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
-	ScXMLAbstractStateElt.cpp ScXMLStateElt.cpp \
-	ScXMLParallelElt.cpp ScXMLFinalElt.cpp ScXMLOnEntryElt.cpp \
-	ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp ScXMLHistoryElt.cpp \
-	ScXMLExecutableElt.cpp ScXMLEventElt.cpp ScXMLIfElt.cpp \
-	ScXMLElseIfElt.cpp ScXMLElseElt.cpp ScXMLLogElt.cpp \
-	ScXMLDataModelElt.cpp ScXMLDataElt.cpp ScXMLAssignElt.cpp \
-	ScXMLValidateElt.cpp ScXMLSendElt.cpp ScXMLInvokeElt.cpp \
-	ScXMLParamElt.cpp ScXMLFinalizeElt.cpp ScXMLContentElt.cpp \
-	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
-	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	ScXMLCommonP.h eval-minimum.h all-scxml-cpp.cpp \
+	SbStringConvert.cpp ScXML.cpp ScXMLP.cpp ScXMLObject.cpp \
+	ScXMLEvent.cpp ScXMLEventTarget.cpp ScXMLStateMachine.cpp \
+	ScXMLDocument.cpp ScXMLElt.cpp ScXMLScxmlElt.cpp \
+	ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
 	ScXMLECMAScriptEvaluator.cpp
 scxml_lst_OBJECTS = $(am_scxml_lst_OBJECTS)
@@ -136,8 +134,7 @@ am__libscxml_la_SOURCES_DIST = SbStringConvert.cpp ScXML.cpp \
 	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
 	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
-	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp
+	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp
 am__objects_6 = SbStringConvert.lo ScXML.lo ScXMLP.lo ScXMLObject.lo \
 	ScXMLEvent.lo ScXMLEventTarget.lo ScXMLStateMachine.lo \
 	ScXMLDocument.lo ScXMLElt.lo ScXMLScxmlElt.lo \
@@ -152,26 +149,25 @@ am__objects_6 = SbStringConvert.lo ScXML.lo ScXMLP.lo ScXMLObject.lo \
 	ScXMLAnchorElt.lo ScXMLScriptElt.lo ScXMLEvaluator.lo \
 	ScXMLMinimumEvaluator.lo eval-minimum.lo eval-minimum-tab.lo \
 	ScXMLXPathEvaluator.lo ScXMLECMAScriptEvaluator.lo
-am__objects_7 = all-scxml-cpp.lo all-scxml2-cpp.lo
+am__objects_7 = all-scxml-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_libscxml_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml_la_SOURCES_DIST = SbStringConvert.h ScXMLP.h \
-	ScXMLCommonP.h eval-minimum.h eval-coin.h all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
-	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
-	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
-	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
-	ScXMLAbstractStateElt.cpp ScXMLStateElt.cpp \
-	ScXMLParallelElt.cpp ScXMLFinalElt.cpp ScXMLOnEntryElt.cpp \
-	ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp ScXMLHistoryElt.cpp \
-	ScXMLExecutableElt.cpp ScXMLEventElt.cpp ScXMLIfElt.cpp \
-	ScXMLElseIfElt.cpp ScXMLElseElt.cpp ScXMLLogElt.cpp \
-	ScXMLDataModelElt.cpp ScXMLDataElt.cpp ScXMLAssignElt.cpp \
-	ScXMLValidateElt.cpp ScXMLSendElt.cpp ScXMLInvokeElt.cpp \
-	ScXMLParamElt.cpp ScXMLFinalizeElt.cpp ScXMLContentElt.cpp \
-	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
-	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	ScXMLCommonP.h eval-minimum.h all-scxml-cpp.cpp \
+	SbStringConvert.cpp ScXML.cpp ScXMLP.cpp ScXMLObject.cpp \
+	ScXMLEvent.cpp ScXMLEventTarget.cpp ScXMLStateMachine.cpp \
+	ScXMLDocument.cpp ScXMLElt.cpp ScXMLScxmlElt.cpp \
+	ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
+	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
+	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
+	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
+	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
+	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
+	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
+	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
+	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
+	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
 	ScXMLECMAScriptEvaluator.cpp
 libscxml_la_OBJECTS = $(am_libscxml_la_OBJECTS)
@@ -191,25 +187,24 @@ am__libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST = SbStringConvert.cpp \
 	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
 	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
-	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp \
-	all-scxml2-cpp.cpp
+	ScXMLECMAScriptEvaluator.cpp all-scxml-cpp.cpp
 am_libscxml@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libscxml@SUFFIX@LINKHACK_la_SOURCES_DIST =  \
 	SbStringConvert.h ScXMLP.h ScXMLCommonP.h eval-minimum.h \
-	eval-coin.h all-scxml-cpp.cpp all-scxml2-cpp.cpp \
-	SbStringConvert.cpp ScXML.cpp ScXMLP.cpp ScXMLObject.cpp \
-	ScXMLEvent.cpp ScXMLEventTarget.cpp ScXMLStateMachine.cpp \
-	ScXMLDocument.cpp ScXMLElt.cpp ScXMLScxmlElt.cpp \
-	ScXMLInitialElt.cpp ScXMLAbstractStateElt.cpp \
-	ScXMLStateElt.cpp ScXMLParallelElt.cpp ScXMLFinalElt.cpp \
-	ScXMLOnEntryElt.cpp ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp \
-	ScXMLHistoryElt.cpp ScXMLExecutableElt.cpp ScXMLEventElt.cpp \
-	ScXMLIfElt.cpp ScXMLElseIfElt.cpp ScXMLElseElt.cpp \
-	ScXMLLogElt.cpp ScXMLDataModelElt.cpp ScXMLDataElt.cpp \
-	ScXMLAssignElt.cpp ScXMLValidateElt.cpp ScXMLSendElt.cpp \
-	ScXMLInvokeElt.cpp ScXMLParamElt.cpp ScXMLFinalizeElt.cpp \
-	ScXMLContentElt.cpp ScXMLAnchorElt.cpp ScXMLScriptElt.cpp \
-	ScXMLEvaluator.cpp ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
+	all-scxml-cpp.cpp SbStringConvert.cpp ScXML.cpp ScXMLP.cpp \
+	ScXMLObject.cpp ScXMLEvent.cpp ScXMLEventTarget.cpp \
+	ScXMLStateMachine.cpp ScXMLDocument.cpp ScXMLElt.cpp \
+	ScXMLScxmlElt.cpp ScXMLInitialElt.cpp \
+	ScXMLAbstractStateElt.cpp ScXMLStateElt.cpp \
+	ScXMLParallelElt.cpp ScXMLFinalElt.cpp ScXMLOnEntryElt.cpp \
+	ScXMLOnExitElt.cpp ScXMLTransitionElt.cpp ScXMLHistoryElt.cpp \
+	ScXMLExecutableElt.cpp ScXMLEventElt.cpp ScXMLIfElt.cpp \
+	ScXMLElseIfElt.cpp ScXMLElseElt.cpp ScXMLLogElt.cpp \
+	ScXMLDataModelElt.cpp ScXMLDataElt.cpp ScXMLAssignElt.cpp \
+	ScXMLValidateElt.cpp ScXMLSendElt.cpp ScXMLInvokeElt.cpp \
+	ScXMLParamElt.cpp ScXMLFinalizeElt.cpp ScXMLContentElt.cpp \
+	ScXMLAnchorElt.cpp ScXMLScriptElt.cpp ScXMLEvaluator.cpp \
+	ScXMLMinimumEvaluator.cpp eval-minimum.cpp \
 	eval-minimum-tab.cpp ScXMLXPathEvaluator.cpp \
 	ScXMLECMAScriptEvaluator.cpp
 libscxml@SUFFIX@LINKHACK_la_OBJECTS =  \
@@ -295,8 +290,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ScXMLXPathEvaluator.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-scxml-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-scxml2-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-scxml2-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/eval-minimum-tab.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/eval-minimum-tab.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/eval-minimum.Plo \
@@ -632,23 +625,19 @@ RegularSources = \
         ScXMLECMAScriptEvaluator.cpp
 
 LinkHackSources = \
-        all-scxml-cpp.cpp \
-        all-scxml2-cpp.cpp
+        all-scxml-cpp.cpp
 
 PublicHeaders = 
 PrivateHeaders = \
         SbStringConvert.h \
         ScXMLP.h \
         ScXMLCommonP.h \
-        eval-minimum.h \
-        eval-coin.h
+        eval-minimum.h
 
 ObsoleteHeaders = 
 EXTRA_DIST = \
         eval-minimum.l \
-        eval-minimum-tab.y \
-        eval-coin.l \
-        eval-coin-tab.y
+        eval-minimum-tab.y
 
 
 # **************************************************************************
@@ -862,8 +851,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ScXMLXPathEvaluator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml2-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-scxml2-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum-tab.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum-tab.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eval-minimum.Plo@am__quote@

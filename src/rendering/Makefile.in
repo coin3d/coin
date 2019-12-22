@@ -75,11 +75,10 @@ am__objects_2 = all-rendering-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_rendering_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_rendering_lst_SOURCES_DIST = SbHash.h SoGL.h SoGLNurbs.h \
+am__EXTRA_rendering_lst_SOURCES_DIST = SoGL.h SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h SoVBO.h SoVertexArrayIndexer.h \
 	SoOffscreenCGData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	SoRenderManagerP.h cppmangle.icc systemsanity.icc \
-	CoinResources.h all-rendering-cpp.cpp SoGL.cpp \
+	SoRenderManagerP.h all-rendering-cpp.cpp SoGL.cpp \
 	SoGLBigImage.cpp SoGLDriverDatabase.cpp SoGLImage.cpp \
 	SoGLCubeMapImage.cpp SoGLNurbs.cpp SoRenderManager.cpp \
 	SoRenderManagerP.cpp SoOffscreenRenderer.cpp \
@@ -108,11 +107,10 @@ am__objects_7 = all-rendering-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_librendering_la_OBJECTS = $(am__objects_8)
-am__EXTRA_librendering_la_SOURCES_DIST = SbHash.h SoGL.h SoGLNurbs.h \
+am__EXTRA_librendering_la_SOURCES_DIST = SoGL.h SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h SoVBO.h SoVertexArrayIndexer.h \
 	SoOffscreenCGData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	SoRenderManagerP.h cppmangle.icc systemsanity.icc \
-	CoinResources.h all-rendering-cpp.cpp SoGL.cpp \
+	SoRenderManagerP.h all-rendering-cpp.cpp SoGL.cpp \
 	SoGLBigImage.cpp SoGLDriverDatabase.cpp SoGLImage.cpp \
 	SoGLCubeMapImage.cpp SoGLNurbs.cpp SoRenderManager.cpp \
 	SoRenderManagerP.cpp SoOffscreenRenderer.cpp \
@@ -129,11 +127,10 @@ am__librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGL.cpp \
 	SoOffscreenWGLData.cpp SoVBO.cpp SoVertexArrayIndexer.cpp \
 	CoinOffscreenGLCanvas.cpp all-rendering-cpp.cpp
 am_librendering@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h \
-	SoGL.h SoGLNurbs.h CoinOffscreenGLCanvas.h SoVBO.h \
+am__EXTRA_librendering@SUFFIX@LINKHACK_la_SOURCES_DIST = SoGL.h \
+	SoGLNurbs.h CoinOffscreenGLCanvas.h SoVBO.h \
 	SoVertexArrayIndexer.h SoOffscreenCGData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h SoRenderManagerP.h \
-	cppmangle.icc systemsanity.icc CoinResources.h \
 	all-rendering-cpp.cpp SoGL.cpp SoGLBigImage.cpp \
 	SoGLDriverDatabase.cpp SoGLImage.cpp SoGLCubeMapImage.cpp \
 	SoGLNurbs.cpp SoRenderManager.cpp SoRenderManagerP.cpp \
@@ -470,7 +467,6 @@ LinkHackSources = \
 
 PublicHeaders = 
 PrivateHeaders = \
-	SbHash.h \
 	SoGL.h \
         SoGLNurbs.h \
 	CoinOffscreenGLCanvas.h \
@@ -479,10 +475,7 @@ PrivateHeaders = \
 	SoOffscreenCGData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
-        SoRenderManagerP.h \
-	cppmangle.icc \
-	systemsanity.icc \
-        CoinResources.h
+        SoRenderManagerP.h
 
 ObsoleteHeaders = 
 

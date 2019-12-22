@@ -88,15 +88,15 @@ am__objects_2 = all-misc-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_misc_lst_SOURCES_DIST = SbHash.h SoConfigSettings.h SoGL.h \
+am__EXTRA_misc_lst_SOURCES_DIST = SbHash.h SoConfigSettings.h \
 	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
 	SoDBP.h SoBaseP.h AudioTools.h CoinStaticObjectInDLL.h \
 	SoSceneManagerP.h cppmangle.icc systemsanity.icc \
-	CoinResources.h all-misc-cpp.cpp AudioTools.cpp \
-	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
-	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
-	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
-	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+	all-misc-cpp.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
+	SoAudioDevice.cpp SoBase.cpp SoBaseP.cpp SoChildList.cpp \
+	SoCompactPathList.cpp SoConfigSettings.cpp \
+	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
+	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -136,15 +136,15 @@ am__objects_7 = all-misc-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmisc_la_SOURCES_DIST = SbHash.h SoConfigSettings.h SoGL.h \
+am__EXTRA_libmisc_la_SOURCES_DIST = SbHash.h SoConfigSettings.h \
 	SoGenerate.h SoPick.h SoShaderGenerator.h SoCompactPathList.h \
 	SoDBP.h SoBaseP.h AudioTools.h CoinStaticObjectInDLL.h \
 	SoSceneManagerP.h cppmangle.icc systemsanity.icc \
-	CoinResources.h all-misc-cpp.cpp AudioTools.cpp \
-	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
-	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
-	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
-	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+	all-misc-cpp.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
+	SoAudioDevice.cpp SoBase.cpp SoBaseP.cpp SoChildList.cpp \
+	SoCompactPathList.cpp SoConfigSettings.cpp \
+	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
+	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -168,15 +168,14 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.cpp \
 	SoEventManager.cpp all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SbHash.h \
-	SoConfigSettings.h SoGL.h SoGenerate.h SoPick.h \
-	SoShaderGenerator.h SoCompactPathList.h SoDBP.h SoBaseP.h \
-	AudioTools.h CoinStaticObjectInDLL.h SoSceneManagerP.h \
-	cppmangle.icc systemsanity.icc CoinResources.h \
-	all-misc-cpp.cpp AudioTools.cpp CoinStaticObjectInDLL.cpp \
-	SoAudioDevice.cpp SoBase.cpp SoBaseP.cpp SoChildList.cpp \
-	SoCompactPathList.cpp SoConfigSettings.cpp \
-	SoContextHandler.cpp SoDB.cpp SoDebug.cpp SoFullPath.cpp \
-	SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
+	SoConfigSettings.h SoGenerate.h SoPick.h SoShaderGenerator.h \
+	SoCompactPathList.h SoDBP.h SoBaseP.h AudioTools.h \
+	CoinStaticObjectInDLL.h SoSceneManagerP.h cppmangle.icc \
+	systemsanity.icc all-misc-cpp.cpp AudioTools.cpp \
+	CoinStaticObjectInDLL.cpp SoAudioDevice.cpp SoBase.cpp \
+	SoBaseP.cpp SoChildList.cpp SoCompactPathList.cpp \
+	SoConfigSettings.cpp SoContextHandler.cpp SoDB.cpp SoDebug.cpp \
+	SoFullPath.cpp SoGenerate.cpp SoGlyph.cpp SoInteraction.cpp \
 	SoJavaScriptEngine.cpp SoLightPath.cpp SoLockManager.cpp \
 	SoNormalGenerator.cpp SoNotRec.cpp SoNotification.cpp \
 	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
@@ -570,7 +569,6 @@ PublicHeaders =
 PrivateHeaders = \
 	SbHash.h \
 	SoConfigSettings.h \
-	SoGL.h \
 	SoGenerate.h \
 	SoPick.h \
 	SoShaderGenerator.h \
@@ -581,8 +579,7 @@ PrivateHeaders = \
 	CoinStaticObjectInDLL.h \
         SoSceneManagerP.h \
 	cppmangle.icc \
-	systemsanity.icc \
-        CoinResources.h
+	systemsanity.icc
 
 ObsoleteHeaders = 
 
