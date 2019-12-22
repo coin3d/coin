@@ -69,7 +69,7 @@
     }
   \endcode
 
-  \since VSG Inventor 2.5
+  \since TGS Inventor 2.5
   \since Coin 1.0
 */
 

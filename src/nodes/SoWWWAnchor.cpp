@@ -70,7 +70,7 @@
     }
   \endcode
 
-  \since Inventor 2.1
+  \since SGI Inventor 2.1
 */
 
 

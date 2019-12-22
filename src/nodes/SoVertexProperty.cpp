@@ -80,7 +80,7 @@
     }
   \endcode
 
-  \since Inventor 2.1
+  \since SGI Inventor 2.1
   \sa SoVertexShape
   \sa SoCoordinate3, SoTextureCoordinate2, SoTextureCoordinate3, SoNormal
   \sa SoPackedColor

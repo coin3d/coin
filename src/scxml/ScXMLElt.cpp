@@ -41,7 +41,7 @@
   It manages XML attributes at the generic level, has utilities for
   checking document containment, and provides some infrastructure hooks.
 
-  \since 2008-11-01
+  \since Coin 3.1
   \ingroup scxml
 */
 
@@ -49,7 +49,7 @@
   \class ScXMLEltReader ScXMLElt.h Inventor/scxml/ScXMLElt.h
   \brief base class for element reader objects
 
-  \since 2008-11-23
+  \since Coin 3.1
   \ingroup scxml
 */
 

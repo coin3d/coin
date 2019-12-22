@@ -1,6 +1,9 @@
-This file contains information about building Coin on Mac OS X.
+For building Coin on macOS platform, you should in general follow the
+instructions in the INSTALL file.
+
+This file contains additional information about building Coin on Mac OS X.
 For more information on getting started, known issues, and more, see
-http://www.coin3d.org/mac/.
+https://bitbucket.org/Coin3D/coin/wiki/Mac%20information%20page.
 
 
 Building Coin
