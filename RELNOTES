@@ -18,7 +18,9 @@ user community.
 Build system was migrated from GNU Autotools to CMake.
 
 Support for UNICODE text added.  Starting with Coin 4.0 strings are UTF-8
-encoded.  New greater than and less than operators added to SbString.
+encoded.
+
+New greater than and less than operators added to SbString.
 
 New SoReversePerspectiveCamera node added.
 View volume and projectors now support reverse perspective camera settings.

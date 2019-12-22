@@ -41,7 +41,7 @@
   navigation system event targets.
 
   \ingroup navigation
-  \since 2009-02-14
+  \since Coin 3.1
 */
 
 #include <cassert>

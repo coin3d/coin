@@ -73,7 +73,7 @@
       [motiontype] {string:exponential,linear}
 
   \ingroup navigation
-  \since 2008-02-14
+  \since Coin 3.1
 */
 
 #include <cassert>

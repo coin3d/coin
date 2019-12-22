@@ -83,7 +83,7 @@
   \sa SoVertexProperty
 
   \since Coin 1.0
-  \since SGI Inventor v2.1
+  \since SGI Inventor 2.1
 */
 
 // *************************************************************************

@@ -2,6 +2,16 @@
 ==                        BUILDING COIN ON WINDOWS                        ==
 ============================================================================
 
+Building Coin on Windows is done by using the CMake build configuration.
+Check out the detailed build instructions in the INSTALL file.
+
+The Autotools build system is still maintained but at a significantly lower
+priority.
+
+============================================================================
+==             OLD INFORMATION ON BUILDING COIN ON WINDOWS                ==
+============================================================================
+
 Microsoft Visual Studio
 =======================
 

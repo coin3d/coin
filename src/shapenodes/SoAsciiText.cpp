@@ -129,7 +129,7 @@
     }
   \endcode
 
-  \since Inventor 2.1
+  \since SGI Inventor 2.1
 */
 
 // FIXME: Write doc about how text is textured. jornskaa 20040716
