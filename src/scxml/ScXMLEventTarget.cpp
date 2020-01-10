@@ -220,10 +220,10 @@ ScXMLEventTarget::registerEventTarget(ScXMLEventTarget * target, const char * se
     if (target == sessionit->second) {
       // already registered
       SoDebugError::post("ScXMLEventTarget::registerEventTarget",
-                         "type/name/session touple already registered for this target");
+                         "type/name/session tuple already registered for this target");
     } else {
       SoDebugError::post("ScXMLEventTarget::registerEventTarget",
-                         "type/name/session touple already registered for another target");
+                         "type/name/session tuple already registered for another target");
     }
   } else {
     SessionMapEntry entry(targetsessionid.getString(), target);

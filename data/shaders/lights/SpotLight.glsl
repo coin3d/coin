@@ -31,7 +31,7 @@ float SpotLight(in vec3 light_position,
 
   spotDot = dot(-VP, light_spotDirection);
 
-  // need to read this variable outside the if statment to work around ATi driver issues
+  // need to read this variable outside the if statement to work around ATi driver issues
   float spotexp = light_spotExponent;
 
   if (spotDot < light_spotCosCutOff)
@@ -45,7 +45,7 @@ float SpotLight(in vec3 light_position,
   nDotVP = max(0.0, dot(normal, VP));
   nDotHV = max(0.0, dot(normal, halfvec));
 
-  // need to read this variable outside the if statment to work around ATi driver issues
+  // need to read this variable outside the if statement to work around ATi driver issues
   float shininess =  gl_FrontMaterial.shininess;
 
   if (nDotVP == 0.0)

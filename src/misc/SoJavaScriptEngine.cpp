@@ -558,7 +558,7 @@ SoJavaScriptEngine::jsval2field(const jsval v, SoField * f) const
         JSString * jsstr = spidermonkey()->JS_ValueToString(PRIVATE(this)->context, v); 
         const char * str = spidermonkey()->JS_GetStringBytes(jsstr);
         SoDebugError::postWarning("SoJavaScriptEngine::jsval2field",
-                                  "convertion of '%s' to SoField type '%s' failed",
+                                  "conversion of '%s' to SoField type '%s' failed",
                                   str, handler.type.getName().getString());
         return FALSE;
       }
