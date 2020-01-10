@@ -1,3 +1,8 @@
+if (POLICY  CMP0054)
+  # CMake version 3.14.5 warns when the policy is not set and uses OLD behaviour
+  cmake_policy(SET CMP0054 NEW)
+endif()
+
 cmake_minimum_required(VERSION 3.0)
 
 set(COIN_MAJOR_VERSION 4)
