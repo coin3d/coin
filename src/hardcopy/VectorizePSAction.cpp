@@ -203,7 +203,7 @@ SoVectorizePSAction::getPSOutput(void) const
 }
 
 static const char * gouraudtriangle[] = {
-  "% the gouraudtriangle PostScript fragement below is free",
+  "% the gouraudtriangle PostScript fragment below is free",
   "% written by Frederic Delhoume (delhoume@ilog.fr)",
   "/bd{bind def}bind def /triangle { aload pop   setrgbcolor  aload pop 5 3",
   "roll 4 2 roll 3 2 roll exch moveto lineto lineto closepath fill } bd",
