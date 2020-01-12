@@ -314,7 +314,7 @@
   Targa (.tga), PIC (.pic), SGI RGB (.rgb, .bw) and XWD (.xwd).
 
   For more information about the simage library, including download
-  and build instructions, see the <a href="https://bitbucket.org/Coin3D/">Coin
+  and build instructions, see the <a href="https://github.com/coin3d/">Coin
   repository</a>.
 */
 /*!

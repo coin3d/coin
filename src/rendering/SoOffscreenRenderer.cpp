@@ -1124,7 +1124,7 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
   unsigned char buf[BUFSIZE];
   (void)memset(buf, 0, BUFSIZE);
   buf[7] = 255; // set maximum pixel value to 255
-  strcpy((char *)buf+8, "https://bitbucket.org/Coin3D/");
+  strcpy((char *)buf+8, "https://github.com/coin3d/");
   const size_t wrote = fwrite(buf, 1, BUFSIZE, fp);
   assert(wrote == BUFSIZE);
 
@@ -1264,7 +1264,7 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
           pixelsize[1]-scaledsize[1],
           scaledsize[0],
           pixelsize[1]);
-  fprintf(fp, "%%%%Creator: Coin <https://bitbucket.org/Coin3D/>\n");
+  fprintf(fp, "%%%%Creator: Coin <https://github.com/coin3d/>\n");
   fprintf(fp, "%%%%EndComments\n");
 
   fprintf(fp, "\n");

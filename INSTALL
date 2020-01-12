@@ -26,18 +26,19 @@ environment](www.cygwin.com) or something equivalent anymore to get through the
 build procedure.  CMake will generate native projects for the build tools like
 Ninja, Make, XCode, or Microsoft Visual Studio/MSBuild.
 
-Mercurial
----------
+Git
+---
 
-To get the sources you need a Mercurial client,
-[Mercurial](https://www.mercurial-scm.org/wiki/Download) or
-[TortoiseHg](https://tortoisehg.bitbucket.io/download/index.html) are a good
-choice.  The Mercurial command `hg` need to be available at the command line.
-Downloading the compressed sources from the
-[Downloads](https://bitbucket.org/Coin3D/coin/downloads/) section of the project
-won't work as the subrepositories are not be properly populated.  Instead of
-doing so you need to clone the repository (using an optional commit id), e.g.
-calling `hg clone -r 30674a9 https://bitbucket.org/Coin3D/coin`.
+To get the sources you need a Git client, [Git](https://www.git-scm.com/download), 
+[Git GUI clients](https://git-scm.com/downloads/guis), or 
+[TortoiseGit](https://tortoisegit.org/download) are a good choice.  
+The Git command `git` need to be available at the command line.  
+Downloading the compressed sources from the 
+[Releases](https://github.com/coin3d/coin/releases/) section of the project
+won't work as the .git directory is not contained in the zip or tar.gz files
+and therefore submodules are not be properly populated.  
+Instead of doing so you need to clone the repository, e.g. calling
+`git clone --recurse-submodules https://github.com/coin3d/coin`.
 
 Boost
 -----
@@ -91,7 +92,7 @@ see "CMake configuration options" on this page.
 Linux
 -----
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local
               -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_DOCUMENTATION=OFF
     (3) cd coin_build
@@ -103,7 +104,7 @@ Linux
 
   or
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local
               -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_DOCUMENTATION=OFF
     (3) cmake --build coin_build --target all --config Release -- -j4
@@ -112,7 +113,7 @@ Linux
         cpack --config debian.cmake
         cpack --config fedora.cmake
 
-1. Get the sources using Mercurial clone command
+1. Get the sources using Git clone command
 
 2. Configure the build
    If you just want a standard installation (or regenerate the Makefiles using
@@ -149,7 +150,7 @@ Linux
 Windows
 -------
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Visual Studio 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:\Coin3D
               -DBOOST_ROOT=C:\Data\Boost-1.56.0 -DCOIN_BUILD_DOCUMENTATION=OFF
     (3) cmake --build coin_build --target ALL_BUILD --config Release -- /nologo
@@ -161,7 +162,7 @@ Windows
 
    or
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Visual Studio 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:\Coin3D
               -DBOOST_ROOT=C:\Data\Boost-1.56.0 -DCOIN_BUILD_DOCUMENTATION=OFF
     (3) MSBuild /p:Configuration=Release /t:ALL_BUILD Coin.sln /nologo
@@ -171,7 +172,7 @@ Windows
     (5) cd coin_build/cpack.d
         cpack --config windows.cmake
 
-1. Get the sources using Mercurial clone command
+1. Get the sources using Git clone command
 
 2. Configure the build
    If you just want a standard installation (or regenerate the build files using
@@ -218,7 +219,7 @@ Windows
 macOS
 -----
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
               -DCOIN_BUILD_DOCUMENTATION=OFF -DCOIN_BUILD_MAC_FRAMEWORK=OFF
     (3) cd coin_build
@@ -230,7 +231,7 @@ macOS
 
    or
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
               -DCOIN_BUILD_DOCUMENTATION=OFF -DCOIN_BUILD_MAC_FRAMEWORK=OFF
     (3) cmake --build coin_build --target all --config Release -- -j4
@@ -239,7 +240,7 @@ macOS
         cpack --config darwin-dmg.cmake
         cpack --config darwin-pkg.cmake
 
-1. Get the sources using Mercurial clone command
+1. Get the sources using Git clone command
 
 2. Configure the build
    If you just want a standard installation (or regenerate the Makefiles using
@@ -312,7 +313,7 @@ Build shared library when ON, static when OFF.  Default is ON.
 Build HTML documentation on all platforms when ON, as well as man pages on
 platforms other than Windows.  Default is OFF.  The latest version of the
 documentation can always be found on the
-[Documentation](https://bitbucket.org/Coin3D/coin/wiki/Documentation) page of
+[Documentation](https://github.com/coin3d/coin/wiki/Documentation) page of
 the wiki.
 
     COIN_BUILD_DOCUMENTATION_MAN
@@ -389,7 +390,7 @@ commands.
 Linux
 -----
 
-    (1) hg clone https://bitbucket.org/Coin3D/soqt soqt
+    (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
     (2) cmake -Hsoqt -Bsoqt_build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
               -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_PREFIX_PATH="/usr/local"
               -DSOQT_BUILD_DOCUMENTATION=OFF
@@ -402,7 +403,7 @@ Linux
 Windows
 -------
 
-    (1) hg clone https://bitbucket.org/Coin3D/soqt soqt
+    (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
     (2) cmake -Hsoqt -Bsoqt_build -G "Visual Studio 2015" -A x64 -DCMAKE_INSTALL_PREFIX=C:\Coin3D
               -DCMAKE_PREFIX_PATH="C:\Coin3D;C:\Qt\5.12.1\msvc2015_64"
               -DBOOST_ROOT=C:\Data\Boost-1.56.0 -DSOQT_BUILD_DOCUMENTATION=OFF
@@ -416,7 +417,7 @@ Windows
 macOS
 -----
 
-    (1) hg clone https://bitbucket.org/Coin3D/soqt soqt
+    (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
     (2) cmake -Hsoqt -Bsoqt_build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
               -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
               -DCMAKE_PREFIX_PATH="/Users/name/Coin3D;/usr/local/Cellar/qt/5.12.1"
@@ -433,13 +434,13 @@ macOS and X11
 To use X11 on macOS you need to provide X11/XQuartz and OpenMotif packages and
 build Coin with an additional option `-DCOIN_BUILD_MAC_X11=ON`.
 
-    (1) hg clone https://bitbucket.org/Coin3D/coin coin
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
     -DCOIN_BUILD_DOCUMENTATION=OFF -DCOIN_BUILD_MAC_FRAMEWORK=OFF
     (3) cmake --build coin_build --target all --config Release -- -j4
     (4) cmake --build coin_build --target install --config Release -- -j4
 
-    (1) hg clone https://bitbucket.org/Coin3D/soxt soxt
+    (1) git clone --recurse-submodules https://github.com/coin3d/soxt soxt
     (2) cmake -Hsoxt -Bsoxt_build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
               -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
               -DCMAKE_PREFIX_PATH="/Users/name/Coin3D" -DSOQT_BUILD_DOCUMENTATION=OFF
@@ -471,7 +472,7 @@ technical support.
 
 Before asking, check that the subject hasn't been discussed and resolved already
 by looking through the coin-discuss mailing list or at the [Coin issue
-tracker](https://bitbucket.org/Coin3D/coin/issues).
+tracker](https://github.com/coin3d/coin/issues).
 
 If you decide to send us an email about the problem or add an entry to the issue
 tracker, you should include all the information that is relevant to the problem

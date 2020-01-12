@@ -46,7 +46,7 @@
   go look at the "extselection" example application in the "nodes/"
   directory of the SoGuiExamples Mercurial repository. Further information and
   links for downloading and building this module should be available at <a
-  href="https://bitbucket.org/Coin3D/soguiexamples">bitbucket.org/Coin3D/soguiexamples</a>.
+  href="https://github.com/coin3d/soguiexamples">github.com/coin3d/soguiexamples</a>.
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API. It is based on the API of VSG (was TGS) Inventor's SoExtSelection,

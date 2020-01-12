@@ -33,7 +33,7 @@
 /*!
   \mainpage
 
-  <a href="https://bitbucket.org/Coin3D/coin/wiki/Home/">Coin</a> is an OpenGL based,
+  <a href="https://github.com/coin3d/coin/wiki/Home/">Coin</a> is an OpenGL based,
   retained mode 3D graphics rendering library. It is implemented in
   C++ and publicly released with the source code open for your
   perusal. The application programmer's interface (API) is fully
@@ -54,15 +54,15 @@
   interfacing Coin with a wide range of windowing systems and GUI toolkits,
   the work now being continued by the open source community.
   <ul>
-  <li><a href="https://bitbucket.org/Coin3D/quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
-  <li><a href="https://bitbucket.org/Coin3D/soqt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
-  <li><a href="https://bitbucket.org/Coin3D/sowin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
+  <li><a href="https://github.com/coin3d/quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
+  <li><a href="https://github.com/coin3d/soqt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
+  <li><a href="https://github.com/coin3d/sowin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
       platforms.</li>
-  <li><a href="https://bitbucket.org/Coin3D/sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
-  <li><a href="https://bitbucket.org/Coin3D/soxt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
+  <li><a href="https://github.com/coin3d/sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
+  <li><a href="https://github.com/coin3d/soxt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
   </ul>
 
-  See <https://bitbucket.org/Coin3D/coin/wiki/Home> for more information about Coin and the
+  See <https://github.com/coin3d/coin/wiki/Home> for more information about Coin and the
   GUI toolkit libraries.
 
   <b>IMPORTANT NOTE: the online documentation for the Coin library is

@@ -213,7 +213,7 @@ SoIndexedMarkerSet::GLRender(SoGLRenderAction * action)
   // Symptom treatment against the complete marker set vanishing for certain
   // view angles. We'll disable the clipping planes temporarily. Individual
   // markers are still clipped using SoCullElement::cullTest() below.
-  // See https://bitbucket.org/Coin3D/coin/pull-requests/52 for a test case.
+  // See https://github.com/coin3d/coin/pull-requests/52 for a test case.
   GLint numPlanes = 0;
   glGetIntegerv(GL_MAX_CLIP_PLANES, &numPlanes);
   SbList<SbBool> planesEnabled;
