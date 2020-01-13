@@ -1,2 +1,0 @@
-build/general = ../generalmsvcgeneration
-cpack.d = ../cpack.d
