@@ -95,6 +95,7 @@ option(SPIDERMONKEY_RUNTIME_LINKING "Enable SpiderMonkey runtime linking when ON
 
 option(COIN_VERBOSE "Add verbose debugging information during the configure process." OFF)
 option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
+option(COIN_USE_CPACK "If enabled the cpack subrepo is mandatory" OFF)
 
 cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." OFF "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
@@ -820,4 +821,6 @@ endif()
 
 # ############################################################################
 # New CPACK section, please see the README file inside cpack.d directory.
-add_subdirectory(cpack.d)
+if (COIN_USE_CPACK)
+  add_subdirectory(cpack.d)
+endif()
