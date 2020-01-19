@@ -229,6 +229,15 @@ coin_default2dfont_get_width(float size)
   else { return COIN_FONT_33_WIDTH; }
 }
 
+int
+coin_default2dfont_get_bearing(float size)
+{
+  if ( size < 14.0f ) { return COIN_FONT_13_BEARING; }
+  else if ( size < 18.0f ) { return COIN_FONT_17_BEARING; }
+  else if ( size < 26.0f ) { return COIN_FONT_25_BEARING; }
+  else { return COIN_FONT_33_BEARING; }
+}
+
 const unsigned char *
 coin_default2dfont_get_data(float size)
 {

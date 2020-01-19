@@ -263,7 +263,7 @@ get_default_bitmap(unsigned int character, float wantedsize)
     bm = (struct cc_font_bitmap *) malloc(sizeof(struct cc_font_bitmap));
     bm->buffer = fontdata + fontheight * 4 * character;
     bm->bearingX = 0;
-    bm->bearingY = fontheight;
+    bm->bearingY = coin_default2dfont_get_bearing(wantedsize);
     bm->rows = fontheight;
     bm->width = coin_default2dfont_get_width(wantedsize);
     bm->pitch = 4;
@@ -881,6 +881,7 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
       /* glyph handle == char value in default font. &255 to avoid
          index out of range. */
       bm = get_default_bitmap(gs->nativeglyphidx & 0xff, (float)fs->sizey);
+      gs->fromdefaultfont = TRUE;
     }
     else if (bm && bm->buffer) {
       buf = (unsigned char *)malloc(bm->pitch * bm->rows);

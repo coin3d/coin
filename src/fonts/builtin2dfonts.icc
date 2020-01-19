@@ -11,6 +11,11 @@
 #define COIN_FONT_25_HEIGHT (27)
 #define COIN_FONT_33_HEIGHT (36)
 
+#define COIN_FONT_13_BEARING (12)
+#define COIN_FONT_17_BEARING (15)
+#define COIN_FONT_25_BEARING (21)
+#define COIN_FONT_33_BEARING (28)
+
 static uint8_t font_data_13[256][COIN_FONT_13_HEIGHT*4] = {
 #include "font13.icc"
 };
