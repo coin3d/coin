@@ -43,7 +43,7 @@
   \ingroup manips
 
   A manipulator is used by replacing the node you want to edit in the
-  graph with the manipulator. Draggers are used to to manipulate the
+  graph with the manipulator. Draggers are used to manipulate the
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
 

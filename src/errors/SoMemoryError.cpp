@@ -55,7 +55,7 @@
   certain things which could happen within the library which are best
   taken care of by internally handling failed attempts at memory
   allocation. An example: the user tries to load a model file which
-  contains a filename pointer to a huge bitmapfile with a texture
+  contains a filename pointer to a huge bitmap file with a texture
   map. The end-user's system does not provide enough memory to load
   the file and prepare the texture image for rendering, though. This
   is a case where it is possible to just emit a warning and

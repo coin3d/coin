@@ -32,7 +32,7 @@
 
 /*!
   \class SoListenerDopplerElement Inventor/elements/SoListenerDopplerElement.h
-  \brief The SoListenerDopplerElement holds the doppler velocity and factor of the current listener.
+  \brief The SoListenerDopplerElement holds the Doppler velocity and factor of the current listener.
 
   \ingroup elements
 
@@ -55,7 +55,7 @@
 /*!
   \fn SoListenerDopplerElement::dopplerVelocity
 
-  The doppler velocity of the listener.
+  The Doppler velocity of the listener.
   It is the application programmer's responsibility to
   set this value. Coin does not update this value
   automatically based on changes in a listener's position.
@@ -64,9 +64,9 @@
 /*!
   \fn SoListenerDopplerElement::dopplerFactor
 
-  The amount of doppler effect applied to the listener. The normal
+  The amount of Doppler effect applied to the listener. The normal
   range would be [0.0f to 1.0f], where 0.0f is default and disable all
-  doppler effects.
+  Doppler effects.
 */
 
 SO_ELEMENT_SOURCE(SoListenerDopplerElement);
@@ -90,10 +90,10 @@ SoListenerDopplerElement::~SoListenerDopplerElement(void)
 {
 }
 
-/*!  Initializes the element to it's default value. The default value
-  for the velocity is (0.0f, 0.0f, 0.0f), in other words, the listener
-  is not moving. The default value for the dopplerFactor is 0.0f, in
-  other words, doppler effect is disabled.  */
+/*!  Initializes the element to its default value. The default value
+  for the velocity is (0.0, 0.0, 0.0), in other words, the listener
+  is not moving. The default value for the dopplerFactor is 0.0, in
+  other words, Doppler effect is disabled.  */
 
 void
 SoListenerDopplerElement::init(SoState * state)
@@ -104,7 +104,7 @@ SoListenerDopplerElement::init(SoState * state)
 }
 
 /*!
-  Sets the current listener's doppler velocity.
+  Sets the current listener's Doppler velocity.
 */
 
 void
@@ -124,7 +124,7 @@ SoListenerDopplerElement::setDopplerVelocity(SoState * const state,
 }
 
 /*!
-  Sets the current listener's doppler factor.
+  Sets the current listener's Doppler factor.
 */
 
 void
@@ -142,7 +142,7 @@ SoListenerDopplerElement::setDopplerFactor(SoState * const state,
   }
 }
 
-//! Returns the current listener's doppler velocity
+//! Returns the current listener's Doppler velocity
 
 const SbVec3f &
 SoListenerDopplerElement::getDopplerVelocity(SoState * const state)
@@ -155,7 +155,7 @@ SoListenerDopplerElement::getDopplerVelocity(SoState * const state)
   return elem->dopplerVelocity;
 }
 
-//! Returns the current listener's doppler factor
+//! Returns the current listener's Doppler factor
 
 float
 SoListenerDopplerElement::getDopplerFactor(SoState * const state)

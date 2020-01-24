@@ -216,10 +216,10 @@ cc_thread_init(void)
   /* needed to quickly generate a thread-id for each thread */
   win32_threadid_idx = TlsAlloc();
   assert(win32_threadid_idx != TLS_OUT_OF_INDEXES); 
-  /* clean-up priority for the thread sub-system in Coin is set so it
+  /* cleanup priority for the thread sub-system in Coin is set so it
      is done very late at exit */
   /* FIXME: not sure if this really needs the "- 2", but I added it
-     to keep the same order wrt the other thread-related clean-up
+     to keep the same order wrt the other thread-related cleanup
      functions, since before I changed hard-coded numbers for
      enumerated values for coin_atexit() invocations. 20060301 mortene. */
   coin_atexit(win32_threadid_idx_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM_VERYLOWPRIORITY);
@@ -256,7 +256,7 @@ cc_thread_init(void)
   <ul>
 
   <li>
-  Coin provides platform-independent thread-handling abstraction
+  Coin provides platform independent thread handling abstraction
   classes. These are classes that the application programmer can
   freely use in her application code to start new threads, control
   their execution, work with mutexes and do other tasks related to
@@ -267,7 +267,7 @@ cc_thread_init(void)
   SbTypedStorage. See their respective documentation for the detailed
   information.
 
-  The classes fully hides the system-specific implementation, which is
+  The classes fully hides the system specific implementation, which is
   either done on top of native Win32 (if on Microsoft Windows), or
   over POSIX threads (on UNIX and UNIX-like systems).
   </li>
@@ -285,11 +285,11 @@ cc_thread_init(void)
   slightly slower on single-threaded invocations.
 
   To get a Coin library built with thread-safe rendering, one must
-  actively re-configure Coin and build a special, local version. For
+  actively reconfigure Coin and build a special, local version. For
   configure-based builds (UNIX and UNIX-like systems, or with Cygwin
   on Microsoft Windows) this is done with the option
   "--enable-threadsafe" to Autoconf configure. To change the
-  configuration and re-build with Visual Studio, you will need to
+  configuration and rebuild with Visual Studio, you will need to
   change the preprocessor directive COIN_THREADSAFE to defined in the
   file src/setup.h located in the same folder as you found your
   solution file.</li>
@@ -309,14 +309,14 @@ cc_thread_init(void)
   in some effort, to be able to utilize multi-pipe rendering with
   Coin. </li>
 
-  <li> Rendering traversals is currently the only operation which we
+  <li> Rendering traversals are currently the only operation which we
   publicly support to be thread-safe. There are other aspects of Coin
   that we know are thread-safe, like most other action traversals
   beside just rendering, but we make no guarantees in this
   regard. </li>
 
   <li> Be careful about using a separate thread for changing Coin
-  structures versus what is used for the application's GUI event
+  structures versus what is used for the applications GUI event
   thread.
 
   We are aware of at least issues with Qt3 (and thereby SoQt), where

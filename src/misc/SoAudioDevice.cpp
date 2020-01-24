@@ -112,7 +112,7 @@ SoAudioDevice::instance()
     SoAudioDeviceP::singleton = new SoAudioDevice();
 
     // Note: there is a known problem with the OpenAL driver on
-    // certain platforms. If clean-up is not done before application
+    // certain platforms. If cleanup is not done before application
     // exit, that is, alcDestroyContext() and alcCloseDevice() is
     // *not* invoked, the application hangs on exit.
     //
@@ -180,7 +180,7 @@ SoAudioDevice::~SoAudioDevice()
 /*!
   Initializes the audio device. Currently, the only supported \a devicetype
   is "OpenAL". The supported \a devicename depends on the OS and on installed
-  soundcards and drivers. On Microsoft Windows, supported device names are
+  sound cards and drivers. On Microsoft Windows, supported device names are
   "DirectSound3D", "DirectSound", and "MMSYSTEM". See OpenAL documentation
   (available from http://www.openal.org/) for further information.
 
@@ -243,7 +243,7 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 
   // Yes, there's both COIN_SOUND_ENABLE and COIN_SOUND_DISABLE -- one
   // should be sufficient, but for compatibility reasons with
-  // exisiting run-time systems, we keep them both.
+  // exisiting runtime systems, we keep them both.
   env = coin_getenv("COIN_SOUND_DISABLE");
   if (env && (atoi(env) > 0)) {
     if (coin_debug_audio()) {
@@ -400,7 +400,7 @@ SoAudioDevice::init(const SbString & devicetype, const SbString & devicename)
 }
 
 /*!
-  returns true if the audio device has been initialized successfully.
+  Returns true if the audio device has been initialized successfully.
  */
 
 SbBool SoAudioDevice::haveSound()

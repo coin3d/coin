@@ -36,19 +36,19 @@
   Elements are mostly internal to Coin, unless you create new extension
   nodes over Coin. Then you will probably need to know about them.
 
-  Elements are part of the design for scenegraph traversal in Coin.
+  Elements are part of the design for scene graph traversal in Coin.
 
   It works like this: any traversal action instantiates and keeps a
   single SoState instance during traversal. The SoState instance uses
   SoElement objects as "memory units" to keep track of the current
-  state for any feature of the scenegraph nodes.
+  state for any feature of the scene graph nodes.
 
   As an example, consider the SoPointSize node: when the SoPointSize
   node is traversed by for instance a SoGLRenderAction, it will itself
   push a SoPointSizeElement onto the SoGLRenderAction's SoState stack.
-  Later, when a SoPointSet node occurs in the scenegraph, it will
-  request the current pointsize value from the SoState by reading off
-  the value of it's SoPointSizeElement.
+  Later, when a SoPointSet node occurs in the scene graph, it will
+  request the current point size value from the SoState by reading off
+  the value of its SoPointSizeElement.
 
   SoSeparator nodes will push and pop elements on and off the state
   stack, so anything that changes state below a SoSeparator node will
@@ -66,7 +66,7 @@
 
   The following is a complete example on how to extend Coin with your
   own traversal elements. First, the class declaration of the new
-  element (ie the header include file):
+  element (i.e. the header include file):
 
   \code
   // [texturefilenameelement.h]
@@ -162,7 +162,7 @@
   }
   \endcode
 
-  And a small, stand-alone test application putting the new element to
+  And a small, standalone test application putting the new element to
   use:
 
   \code
@@ -318,11 +318,11 @@
   This method returns the top instance (in the \a state stack) of the
   element class with stack index \a stackIndex.
 
-  The retuned instance is writable.  To make this instance, some lazy
-  evaluation may have to be perfomed, so use getConstElement() instead
+  The returned instance is writable.  To make this instance, some lazy
+  evaluation may have to be performed, so use getConstElement() instead
   if the instance shouldn't be modified.
 
-  If no instance is available and can not be made, \c NULL is
+  If no instance is available and cannot be made, \c NULL is
   returned.
 
   \sa const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex)
@@ -528,7 +528,7 @@ SoElement::cleanup(void)
 
 /*!
   The constructor.  To create element instances, use SoType::createInstance()
-  for the elements type identifier..
+  for the elements type identifier.
 */
 SoElement::SoElement(void)
   : nextup(NULL),
@@ -572,7 +572,7 @@ SoElement::push(SoState * COIN_UNUSED_ARG(state))
 }
 
 /*!
-  This method is callled when the state is popped, and the depth of
+  This method is called when the state is popped, and the depth of
   the element is bigger than the current state depth. pop() is called
   on the new top of stack, and a pointer to the previous top of stack
   is passed in \a prevTopElement.
@@ -616,7 +616,7 @@ SoElement::matches(const SoElement * COIN_UNUSED_ARG(element)) const
   This function creates a copy of the element that contains enough
   information to enable the matches() function to work.
 
-  Used to help with scenegraph traversal caching operations.
+  Used to help with scene graph traversal caching operations.
 */
 
 /*!
@@ -692,7 +692,7 @@ SoElement::captureThis(SoState * state) const
 /*!
   Sets the type identifier of an instance.
 
-  Note that this is fundamentally different from the SoNode run-time
+  Note that this is fundamentally different from the SoNode runtime
   type system.
 */
 void
@@ -703,10 +703,10 @@ SoElement::setTypeId(const SoType typeId)
 
 /*!
   Returns the type identification of an object derived from a class
-  inheriting SoElement.  This is used for run-time type checking and
+  inheriting SoElement.  This is used for runtime type checking and
   "downward" casting.
 
-  For a more thorough explanation of the run-time type identification
+  For a more thorough explanation of the runtime type identification
   functionality, see the documentation of SoBase::getTypeId().
 */
 const SoType
@@ -761,7 +761,7 @@ SoElement::getNextInStack(void) const
 }
 
 /*!
-  Returns the next free element, ie the next element up in the stack.
+  Returns the next free element, i.e. the next element up in the stack.
 */
 SoElement *
 SoElement::getNextFree(void) const

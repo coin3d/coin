@@ -34,7 +34,7 @@
   \class SoShadowSpotLight SoShadowSpotLight.h Inventor/annex/FXViz/nodes/SoShadowSpotLight.h
   \brief The SoShadowSpotLight class is a node for setting up a spot light which casts shadows.
 
-  This node can be used instead of a normal SpotLight if you need to
+  This node can be used instead of a normal spot light if you need to
   improve the performance by supplying a simplified scene graph to be
   used when rendering the shadow map(s). For instance, the shadow map
   scene graph doesn't need any textures or materials, and any
@@ -59,7 +59,7 @@
     }
   \endcode
 
-  Here is the the example from SoShadowGroup, modified to use SoShadowSpotLight
+  Here is the example from SoShadowGroup, modified to use SoShadowSpotLight
   instead of a normal SoSpotLight. Notice that only the sphere casts shadows.
 
   \code
@@ -126,14 +126,14 @@
   \var SoSFFloat SoShadowSpotLight::nearDistance
 
   Can be used to set a fixed near distance for this spot light. The value in this
-  field will be used if it's set to > 0.0. Default value is -1.0.
+  field will be used if it is set to > 0.0. Default value is -1.0.
 */
 
 /*!
   \var SoSFFloat SoShadowSpotLight::farDistance
 
   Can be used to set a fixed far distance for this spot light. The value in this
-  field will be used if it's set to > 0.0. Default value is -1.0.
+  field will be used if it is set to > 0.0. Default value is -1.0.
 */
 
 

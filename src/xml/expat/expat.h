@@ -800,7 +800,7 @@ XML_GetAttributeInfo(XML_Parser parser);
    detected.  The last call to XML_Parse must have isFinal true; len
    may be zero for this call (or any other).
 
-   Though the return values for these functions has always been
+   Though the return values for these functions have always been
    described as a Boolean value, the implementation, at least for the
    1.95.x series, has always returned exactly one of the XML_Status
    values.

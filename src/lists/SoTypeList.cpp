@@ -102,7 +102,7 @@ SoTypeList::insert(const SoType type, const int insertbefore)
 }
 
 /*!
-  Overridden from parent to return an SoType instance..
+  Overridden from parent to return an SoType instance.
 */
 SoType
 SoTypeList::operator[](const int idx) const

@@ -40,7 +40,7 @@
   subsystem about how Coin should cache vertex data.
 
   Please note that this is an experimental class. The API might change
-  a lot before/if it's included in any official Coin release.
+  a lot before/if it is included in any official Coin release.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

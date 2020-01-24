@@ -122,7 +122,7 @@
   \typedef void SbTesselatorCB(void * v0, void * v1, void * v2, void * data)
 
   The type definition of the callback function which is called for each triangle
-  returned by the tesselator.
+  returned by the tessellator.
 */
 
 // *************************************************************************

@@ -104,7 +104,7 @@ SoDirectionalLightManip::initClass(void)
 }
 
 /*!
-  The constructor sets up the internal SoDiretionalLightDragger used
+  The constructor sets up the internal SoDirectionalLightDragger used
   by the manipulator.
 */
 SoDirectionalLightManip::SoDirectionalLightManip(void)

@@ -66,7 +66,7 @@
   The Coin library also includes a manipulator class,
   SoDirectionalLightManip, which wraps the functionality provided by
   this class inside the necessary mechanisms for connecting it to
-  SoDirectionalLight node instances in a scenegraph.
+  SoDirectionalLight node instances in a scene graph.
 
   \sa SoDirectionalLightManip
 */
@@ -97,7 +97,7 @@
   care of automatically).
 
   It may also of course be connected to any other rotation field
-  controlling the direction of scenegraph geometry, it does not have
+  controlling the direction of scene graph geometry, it does not have
   to part of a SoDirectionalLight node specifically.
 */
 /*!
@@ -136,7 +136,7 @@ SoDirectionalLightDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 

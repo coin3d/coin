@@ -47,7 +47,7 @@
   should be taken to mean more or less detailed in the number of
   polygons / shapes used for rendering it).
 
-  The run-time rendering system then, upon scenegraph traversal, will
+  The runtime rendering system then, upon scene graph traversal, will
   on-the-fly calculate either the distance from the camera to the
   3D-model in question, or the number of pixels in the screen
   projection of the 3D-model. This value is then used to decide which
@@ -61,7 +61,7 @@
   rendering of her 3D-scene.
 
   There is of course a trade-off with the level-of-detail technique:
-  more versions of the same 3D model means the scenegraph will use up
+  more versions of the same 3D model means the scene graph will use up
   more application memory resources. Also, generating the set of less
   and less detailed versions of a 3D model from the original is often
   not a trivial task to do properly. The process is often assisted by
@@ -74,13 +74,13 @@
   technique, as done by the SoLOD node).
 
   The node works by comparing the current projected size of the
-  smallest rectangle covering the bounding box of it's child geometry.
+  smallest rectangle covering the bounding box of its child geometry.
   
 
   Along with this set of models of the same shape, a specification of
   when to switch between them is also provided.
 
-  Example scenegraph layout:
+  Example scene graph layout:
 
   \code
   LevelOfDetail {
@@ -101,7 +101,7 @@
   }
   \endcode
 
-  The way the above sub-scenegraph would work would be the following:
+  The way the above sub-scene graph would work would be the following:
   if the rectangular area around the model's projected bounding box
   covers \e more than 2000 pixels (meaning it will be up pretty close
   to the camera), the most complex version of the model (\c version-0)
@@ -111,13 +111,13 @@
   pixels, the \c version-2 version of the model would be
   used. Finally, if the projected bounding box area would be \e less
   than 50 square pixels, the presumably least detailed version of the
-  modeled would be used.
+  model would be used.
 
   (A common "trick" is to let the last of the SoLevelOfDetail node's
   children be just an empty subgraph, so no geometry will be rendered
   at all if the model is sufficiently far away. This will of course
   have a positive effect on the total rendering time for the complete
-  scenegraph.)
+  scene graph.)
 
   Note that the SoLevelOfDetail::screenArea vector will be influenced
   by preceding SoComplexity nodes in the following way: if
@@ -139,7 +139,7 @@
   SoLevelOfDetail is often "better", in the sense that it's really a
   model's size and visibility in the viewport that determines whether
   we could switch to a less complex version without losing enough
-  detail that it gives a noticable visual degradation.
+  detail that it gives a noticeable visual degradation.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -249,7 +249,7 @@ public:
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.

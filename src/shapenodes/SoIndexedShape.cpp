@@ -38,7 +38,7 @@
 
   This is an abstract class which contains storage for four fields for
   indices to coordinates, normals, materials and texture coordinates
-  for it's subclasses.
+  for its subclasses.
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>

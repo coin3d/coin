@@ -138,8 +138,8 @@ SoGLShapeHintsElement::setElt(VertexOrdering vertexOrderingarg,
 }
 
 /*!
-  Update gl state. Use this is you only want to modify the
-  twoside lighting feature.
+  Update GL state. Use this is you only want to modify the
+  two-side lighting feature.
 */
 
 void

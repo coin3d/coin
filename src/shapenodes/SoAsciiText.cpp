@@ -46,7 +46,7 @@
 
   The complexity of the glyphs is controlled by a preceding
   SoComplexity node with \e Type set to OBJECT_SPACE. Please note
-  that the default builtin 3D font will not be affected by the
+  that the default built-in 3D font will not be affected by the
   SoComplexity node.
 
   This node is different from the SoText2 node in that it rotates,
@@ -55,7 +55,7 @@
   i.e. does not extrude the fonts to have depth.
 
   To get an intuitive feeling for how SoAsciiText works, take a look
-  at this sample Inventor file in examinerviewer:
+  at this sample Inventor file in examiner viewer:
 
   \verbatim
   #Inventor V2.1 ascii
@@ -214,7 +214,7 @@
 /*!  \var SoMFFloat SoAsciiText::width
   Defines the width of each line. The text is scaled to be within the
   specified units. The size of the characters will remain the same;
-  only the the x-positions are scaled. When width <= 0, the width
+  only the X-positions are scaled. When width <= 0, the width
   value is ignored and the text rendered as normal. The exact width of
   the rendered text depends not only on the width field, but also on
   the maximum character width in the rendered string. The string will
@@ -253,7 +253,7 @@ public:
 private:
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.

@@ -4,7 +4,7 @@
 
 ;;; Eval following region
 
-;; Make scene-graph and first viewer
+;; Make scene graph and first viewer
 (define text (new-sotext3))
 
 (define interpolaterotation (new-sointerpolaterotation))

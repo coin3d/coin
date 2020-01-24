@@ -63,7 +63,7 @@ SoPrimitiveVertex::SoPrimitiveVertex(void)
   Copy operator.
 
   When \a pv is copied into this instance, a \e shallow copy is
-  made. Ie, only the reference to the detail instance is copied (if
+  made. I.e., only the reference to the detail instance is copied (if
   any), not the detail itself.
 */
 
@@ -127,7 +127,7 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
 /*!
   \fn uint32_t SoPrimitiveVertex::getPackedColor(void) const
 
-  Returns the rgba packed color for the given vertex.
+  Returns the RGBA packed color for the given vertex.
 
   \since Coin 3.0
 */
@@ -174,8 +174,8 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 
-  Covenience function. Will fill in 0 and 1 in the last two texture
-  coords in the internal SbVec4f texture coordinate instance.
+  Convenience function. Will fill in 0 and 1 in the last two texture
+  coordinates in the internal SbVec4f texture coordinate instance.
 */
 
 /*!
@@ -184,14 +184,14 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 
-  Covenience function. Will fill in 0 and 1 in the last two texture
-  coords in the internal SbVec4f texture coordinate instance.
+  Convenience function. Will fill in 0 and 1 in the last two texture
+  coordinates in the internal SbVec4f texture coordinate instance.
 */
 
 /*!
   \fn void SoPrimitiveVertex::setTextureCoords(const SbVec3f & texcoords)
 
-  Covenience function. Will fill in 1 in the last coord.
+  Convenience function. Will fill in 1 in the last coordinate.
 
   \COIN_FUNCTION_EXTENSION
 
@@ -201,7 +201,7 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
 /*!
   \fn void SoPrimitiveVertex::setTextureCoords(float tx, float ty, float tz)
 
-  Covenience function. Will fill in 1 in the last coord.
+  Convenience function. Will fill in 1 in the last coordinate.
 
   \COIN_FUNCTION_EXTENSION
   \since Coin 2.5
@@ -234,7 +234,7 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
   Used internally from library client code setting up an
   SoPrimitiveVertex instance.
 
-  Note that it's the client's responsibility to do the deallocation of
+  Note that it is the client's responsibility to do the deallocation of
   the detail instance after the SoPrimitiveVertex instance has gone
   out of scope.
 */

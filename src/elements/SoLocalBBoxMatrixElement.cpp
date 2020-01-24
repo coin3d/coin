@@ -101,7 +101,7 @@ SoLocalBBoxMatrixElement::push(SoState * state)
      state->getConstElement(SoModelMatrixElement::getClassStackIndex())
      );
   // FIXME: is this really sensible caching? If push() is called more
-  // often than set() (the only place where it's actually used), I
+  // often than set() (the only place where it is actually used), I
   // guess not. 20020905 mortene.
   this->modelInverseMatrix = modelelem->getModelMatrix().inverse();
 }

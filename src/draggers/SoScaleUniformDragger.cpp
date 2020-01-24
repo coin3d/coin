@@ -51,7 +51,7 @@
   Use this dragger to allow the end-user of your application to scale
   simultaneously along all the axes.
 
-  Scaling with this dragger can only be done in a uniform manner, ie
+  Scaling with this dragger can only be done in a uniform manner, i.e.
   the X, Y and Z components of the SoScaleUniformDragger::scaleFactor
   will always be exactly equal.
 
@@ -106,7 +106,7 @@ SoScaleUniformDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -175,7 +175,7 @@ SoScaleUniformDragger::SoScaleUniformDragger(void)
   this->setPartAsDefault("feedback", "scaleUniformFeedback");
   this->setPartAsDefault("feedbackActive", "scaleUniformFeedbackActive");
 
-  // initialize swich values
+  // initialize switch values
   SoSwitch *sw;
   sw = SO_GET_ANY_PART(this, "scalerSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);

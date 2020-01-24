@@ -85,11 +85,11 @@ ScXMLEvent::~ScXMLEvent(void)
 }
 
 /*!
-  This method is for setting a string that will identifies this particular
+  This method is for setting a string that will identify this particular
   event, having this particular state, and can be used for event matching
   in the SCXML descriptions.
 
-  The string should, according to spec., be a set of tokens consisting
+  The string should, according to the specification, be a set of tokens consisting
   of alphanumeric characters, separated with periods (.). This limitation
   is not enforced by this implementation.
 */

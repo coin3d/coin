@@ -418,7 +418,7 @@ SoModelMatrixElement::pushMatrixElt()
 
 /*!
   virtual method which is called from the static method
-  popMatrix(). Retores model matrix to the matrix returned from
+  popMatrix(). Restores model matrix to the matrix returned from
   pushMatrix().
 */
 void

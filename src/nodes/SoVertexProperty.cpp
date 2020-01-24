@@ -37,10 +37,10 @@
   \ingroup nodes
 
   Instead of reading data from the current state stack of the
-  scenegraph traversal, nodes inheriting SoVertexShape can be set up
+  scene graph traversal, nodes inheriting SoVertexShape can be set up
   with an SoVertexProperty node in the SoVertexShape::vertexProperty
   field. Coordinates, normals, texture coordinates and material /
-  color information will then be fetched from the vertexshape's
+  color information will then be fetched from the vertex shape's
   SoVertexProperty node instead of from the state stack.
 
   The SoVertexProperty node provides fields for duplicating the
@@ -51,21 +51,21 @@
 
   The SoVertexProperty node was introduced fairly late in the design
   of the Inventor API by SGI. The idea behind it was to provide a
-  means to specify the necessary data for vertexshape-derived nodes
+  means to specify the necessary data for vertex shape derived nodes
   which would be more efficient to work with than fetching the data
   from the traversal state stack.
 
-  In practice, the effect is not at all very noticable. Since the use
+  In practice, the effect is not at all very noticeable. Since the use
   of SoVertexProperty nodes in the SoVertexShape::vertexProperty field
   somewhat breaks with the basic design of the Open Inventor API (the
   SoVertexProperty data is not pushed to the traversal state stack),
   you might be better off design-wise by using the usual mechanisms,
-  ie by setting up the individual nodes SoVertexProperty "collects".
+  i.e. by setting up the individual nodes SoVertexProperty "collects".
 
-  One of the drawbacks will for instance be that it's not possible to
+  One of the drawbacks will for instance be that it is not possible to
   share \e parts of the SoVertexProperty node between several shapes,
   which is something that can easily be done when setting up
-  individual state-changing nodes in the scenegraph.
+  individual state changing nodes in the scene graph.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -198,7 +198,7 @@
 /*!
   \var SoMFUInt32 SoVertexProperty::orderedRGBA
 
-  A set of "packed" 32-bit diffusecolor plus transparency
+  A set of "packed" 32-bit diffuse color plus transparency
   values. Works in the same manner as the SoPackedColor::orderedRGBA
   field.
 
@@ -209,7 +209,7 @@
 /*!
   \var SoSFEnum SoVertexProperty::materialBinding
 
-  Defines how to bind the colorvalues specified in the
+  Defines how to bind the color values specified in the
   SoVertexProperty::orderedRGBA set to the parts of the "owner" shape.
   Must be one of the values in the SoVertexProperty::Binding enum.
 

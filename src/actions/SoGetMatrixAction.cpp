@@ -50,7 +50,7 @@
 
   \code
 
-  // First get hold of an SoPath through the scenegraph down to the
+  // First get hold of an SoPath through the scene graph down to the
   // node ("mynode") you want to query about its current world space
   // transformation(s).
 

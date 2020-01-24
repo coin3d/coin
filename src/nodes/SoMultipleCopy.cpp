@@ -32,16 +32,16 @@
 
 /*!
   \class SoMultipleCopy SoMultipleCopy.h Inventor/nodes/SoMultipleCopy.h
-  \brief The SoMultipleCopy class redraws it's children multiple times at different transformations.
+  \brief The SoMultipleCopy class redraws its children multiple times at different transformations.
 
   \ingroup nodes
 
-  The SoMultipleCopy group node duplicates it's children nodes /
+  The SoMultipleCopy group node duplicates its child nodes /
   subgraphs without using additional memory resources.
 
   It can do general transformations (translations, rotation and
-  scaling) for it's children. Apart from transformations, the
-  appearance of it's children will be identical.
+  scaling) for its children. Apart from transformations, the
+  appearance of its children will be identical.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -78,7 +78,7 @@
   A set of geometry transformation matrices.
 
   The number of duplicated redraws of the child geometry will be the
-  same as the number of matrices specified in this field. Ie, each
+  same as the number of matrices specified in this field. I.e., each
   duplication will be transformed according to a transformation
   matrix.
 

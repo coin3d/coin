@@ -46,7 +46,7 @@
   SoTransformBoxDragger in a simple and convenient API for the
   application programmer, making it automatically surround the
   geometry it influences and taking care of the book-keeping routines
-  for it's interaction with the relevant fields of an SoTransformation
+  for its interaction with the relevant fields of an SoTransformation
   node.
 
   <center>
@@ -101,7 +101,7 @@ SoTransformBoxManip::initClass(void)
 /*!
   Default constructor. Allocates an SoTransformBoxDragger and an
   SoSurroundScale node to surround the geometry within our part of the
-  scenegraph.
+  scene graph.
 */
 SoTransformBoxManip::SoTransformBoxManip(void)
 {

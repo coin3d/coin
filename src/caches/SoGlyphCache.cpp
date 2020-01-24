@@ -116,8 +116,8 @@ SoGlyphCache::addGlyph(cc_glyph3d * glyph)
 }
 
 /*!
-  Read and store current fontspec. Will create cache dependencies
-  since some elements are read. We can't read the fontspec in the
+  Read and store current font specification. Will create cache dependencies
+  since some elements are read. We can't read the font specification in the
   constructor since we need to update SoCacheElement before reading
   the elements.
 */
@@ -139,7 +139,7 @@ SoGlyphCache::readFontspec(SoState * state)
 }
 
 /*!
-  Returns the cached fontspec.
+  Returns the cached font specification.
 */
 const cc_font_specification *
 SoGlyphCache::getCachedFontspec(void) const

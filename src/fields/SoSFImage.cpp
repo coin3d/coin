@@ -99,7 +99,7 @@
   Cube { }
   \endcode
 
-  The mini-scenegraph above results in the following mapping on the
+  The mini-scene graph above results in the following mapping on the
   cube:<br>
 
   <center>
@@ -378,14 +378,14 @@ SoSFImage::getValue() const
 
   \e Important \e note: if you call this with \a copypolicy as either
   \c NO_COPY_AND_DELETE or \c NO_COPY_AND_FREE, and your application
-  is running on Mirosoft Windows, be aware that you will get
+  is running on Microsoft Windows, be aware that you will get
   mysterious crashes if your application is not using the same C
-  library run-time as the Coin library.
+  library runtime as the Coin library.
 
   The cause of this is that a memory block would then be allocated by
-  the application on the memory heap of one C library run-time (say,
+  the application on the memory heap of one C library runtime (say,
   for instance \c MSVCRT.LIB), but attempted deallocated in the memory
-  heap of another C library run-time (e.g. \c MSVCRTD.LIB), which
+  heap of another C library runtime (e.g. \c MSVCRTD.LIB), which
   typically leads to hard-to-debug crashes.
 
   \since The CopyPolicy argument was added in Coin 2.0.
@@ -414,7 +414,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
     PRIVATE(this)->image->setValuePtr(size, nc, pixels);
     break;
 
-    // FIXME: as for the "multiple C run-times" problem mentioned in
+    // FIXME: as for the "multiple C runtimes" problem mentioned in
     // the API docs above, would it be possible to put in a check for
     // whether or not the memory block is within the same C library
     // heap as for the Coin library itself? I seem to remember that
@@ -441,7 +441,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
   Return pixel buffer. Return the image size and components in
   \a size and \a nc.
 
-  You can not use this method to set a new image size. Use setValue()
+  You cannot use this method to set a new image size. Use setValue()
   to change the size of the image buffer.
 
   The field's container will not be notified about the changes
@@ -454,7 +454,7 @@ SoSFImage::startEditing(SbVec2s & size, int & nc)
 }
 
 /*!
-  Notify the field's auditors that the image data has been
+  Notify the field's auditors that the image data have been
   modified.
 */
 void

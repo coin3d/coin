@@ -37,7 +37,7 @@
   \ingroup fields
 
   This class is instantiated once for each class of objects which use
-  fields, and which needs to be able to import and export them.
+  fields, and which need to be able to import and export them.
 
   Each field of a class is stored with the name it has been given
   within its "owner" class and a pointer offset to the dynamic
@@ -418,11 +418,11 @@ SoFieldData::getEnumData(const char * enumname, int & num,
 
 /*!
   Read field data from the \a in stream for fields belonging to \a
-  object. Returns \c TRUE if everything went ok, or \c FALSE if any
+  object. Returns \c TRUE if everything went OK, or \c FALSE if any
   error conditions occurs.
 
   \a erroronunknownfield decides whether or not \c FALSE should be
-  returned if a name identifier not recognized as a fieldname of \a
+  returned if a name identifier not recognized as a field name of \a
   object is encountered. Note that \a erroronunknownfield should be \c
   FALSE if \a object is a container with child objects, otherwise the
   code will fail upon the first child name specification.
@@ -762,7 +762,7 @@ SoFieldData::isSame(const SoFieldContainer * c1,
 }
 
 /*!
-  Reads a set of field specifications from \a in for an unknown nodeclass type,
+  Reads a set of field specifications from \a in for an unknown node class type,
   in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
 
   \a numdescriptionsexpected is used for binary format import to know
@@ -916,7 +916,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
 
 
 /*!
-  Write a set of field specifications to \a out for an unknown nodeclass type,
+  Write a set of field specifications to \a out for an unknown node class type,
   in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
  */
 void

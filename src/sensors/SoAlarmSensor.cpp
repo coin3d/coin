@@ -56,7 +56,7 @@ SoAlarmSensor::SoAlarmSensor(void)
 
 /*!
   Constructor taking as parameters the sensor callback function and
-  the userdata which will be passed the callback.
+  the userdata which will be passed to the callback.
 
   \sa setFunction(), setData()
  */
@@ -87,7 +87,7 @@ SoAlarmSensor::setTime(const SbTime & abstime)
 }
 
 /*!
-  Set the alarm to be at a specified offset from the current time.
+  Set the alarm to be triggered at a specified offset from the current time.
 
   Note that you must manually schedule() the sensor after calling this
   method.

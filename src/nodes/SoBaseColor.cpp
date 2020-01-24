@@ -72,7 +72,7 @@
 /*!
   \var SoMFColor SoBaseColor::rgb
 
-  Color values. Default value of field is to have a single grey color.
+  Color values. Default value of field is to have a single gray color.
 */
 
 #ifndef DOXYGEN_SKIP_THIS

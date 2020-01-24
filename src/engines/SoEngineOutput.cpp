@@ -352,7 +352,7 @@ SoEngineOutput::operator[](int i) const
 
 /*!
   Disables notifications on fields connected to this output.  This is
-  done before the engine is evaulated, since the fields we are going
+  done before the engine is evaluated, since the fields we are going
   to write into have already been notified.
 
   \sa doneWriting()
@@ -401,7 +401,7 @@ SoEngineOutput::doneWriting(void) const
   value has changed.
 
   If \a donotify is \c TRUE, propagate the notification to the
-  fields. Otherwise just mark the fields "dirty" for re-evalution.
+  fields. Otherwise just mark the fields "dirty" for re-evaluation.
 
   Note that this method is not part of the original Open Inventor API.
  */

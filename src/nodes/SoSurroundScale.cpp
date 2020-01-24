@@ -67,7 +67,7 @@
   SoSurroundNode than the node at position numNodesUpToReset are not
   to be used for bounding box calculations.
 
-  Here's a complete, stand-alone example which sets up an
+  Here's a complete, standalone example which sets up an
   SoTrackballDragger (connected to a cube), and uses an
   SoSurroundScale node to make it auto-scale to the size of the high
   cube and translates it an offset to one side of the cube:
@@ -137,7 +137,7 @@
   \endcode
 
   It might be easier to see how the SoSurroundScale node works in the
-  above example by looking at the actual scenegraph:
+  above example by looking at the actual scene graph:
 
   \code
   #Inventor V2.1 ascii
@@ -168,7 +168,7 @@
   \endcode
 
   This node is internally used by manipulators to make it possible for
-  them to scale their dragger's geometry to match the scenegraph
+  them to scale their dragger's geometry to match the scene graph
   geometry it is modifying, as is demonstrated above (but outside of
   the context of a manipulator).
 
@@ -176,7 +176,7 @@
   particular piece of geometry surround other geometry of unknown or
   changing extent.
 
-  SoSurroundScale nodes in the scenegraph are often paired up with
+  SoSurroundScale nodes in the scene graph are often paired up with
   SoAntiSquish nodes to get uniform scaling along all three principal
   axes, as has also been done in the above example.
 

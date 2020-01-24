@@ -441,7 +441,7 @@ SoNodekitCatalog::isPublic(const SbName & name) const
 
 /*!
   Return a clone of this catalog. \a type will be used to set the type
-  and defaulttype values of the toplevel \c this entry.
+  and default type values of the top level \c this entry.
 */
 SoNodekitCatalog *
 SoNodekitCatalog::clone(SoType type) const
@@ -483,7 +483,7 @@ static void SoNodekitCatalogPropagateDefaultInit( SoNodekitCatalog * pthis )
                                                
 
 /*!
-  Add a new entry to the catalog. Returns \c TRUE if add was ok.
+  Add a new entry to the catalog. Returns \c TRUE if add was OK.
 */
 SbBool
 SoNodekitCatalog::addEntry(const SbName & name, SoType type,

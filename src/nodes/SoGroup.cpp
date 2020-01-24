@@ -109,7 +109,7 @@
   SoPointLightManip * global_pointlightmanip;
   SoSeparator * global_root;
 
-  // Remove pointlight when clicking right mouse button.
+  // Remove point light when clicking right mouse button.
   static void
   mySelectionC(void * ud, SoEventCallback * n)
   {
@@ -163,7 +163,7 @@
   child nodes (first the SoEventCallback, then the SoCone, then the
   SoPointLightManip). When it then traverses the SoEventCallback, the
   mySelectionC() callback will be invoked, which removes the last
-  child. But the SoHandleEventAction will still continue it's
+  child. But the SoHandleEventAction will still continue its
   traversal as if the global_root node has 3 children -- and the code
   will crash.
 
@@ -225,7 +225,7 @@
 */
 
 // *************************************************************************
-// Note: just static data here, as there's no Cheshire Cat pattern (ie
+// Note: just static data here, as there's no Cheshire Cat pattern (i.e.
 // pimpl-ptr) implemented for SoNode. (The class should be as slim as
 // possible.)
 
@@ -332,7 +332,7 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
   }
 
   // This influences how SoFieldContainer::readInstance() handles
-  // unknown field names inside the node: if it's a group, ignore, as
+  // unknown field names inside the node: if it is a group, ignore, as
   // it can be the name of a node type.
   flags |= SoBase::IS_GROUP;
 

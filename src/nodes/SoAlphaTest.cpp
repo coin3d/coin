@@ -42,7 +42,7 @@
 
   Alpha testing is typically used when rendering textures where all
   pixels are either completely opaque or completely
-  transparent. Transparency sorting propblems are avoided when alpha
+  transparent. Transparency sorting problems are avoided when alpha
   testing is used instead of blending, since depth testing can still
   be enabled and no sorting or delayed rendering is needed.
 
@@ -68,8 +68,8 @@
 */
 
 /*!
- \var SoAlphaTest::Function SoAlphaTest::NONE
- No alpha test is performed.
+  \var SoAlphaTest::Function SoAlphaTest::NONE
+  No alpha test is performed.
 */
 
 /*!

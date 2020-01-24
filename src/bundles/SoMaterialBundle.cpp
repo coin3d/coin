@@ -112,7 +112,7 @@ SoMaterialBundle::sendFirst(void)
   Sends material values with index \a index to GL. Will test
   whether the current index equals \a index before sending.
 
-  \a betweenBeginEnd should be \c TRUE if your program is
+  \a betweenbeginend should be \c TRUE if your program is
   between a glBegin() and glEnd() (it is illegal to change the
   polygon stipple between a glBegin() and glEnd()).
 */

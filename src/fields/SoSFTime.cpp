@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a single time representation.
+  need to store a single time representation.
 
   A field of this type stores its value to file as a floating
   point number.

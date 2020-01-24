@@ -41,13 +41,13 @@
 
   \ingroup nodes
 
-  Insert a cylinder shape into the scenegraph. The cylinder is
-  rendered with the current material, texture and drawstyle settings
+  Insert a cylinder shape into the scene graph. The cylinder is
+  rendered with the current material, texture and draw style settings
   (if any, otherwise the default settings are used).
 
   The SoCylinder node class is provided as a convenient abstraction
   for the application programmer to use "complex" shapes of this type
-  without having to do the tessellation to polygons and other low-level
+  without having to do the tessellation to polygons and other low level
   programming herself.
 
   A cylinder is visualized by the underlying rendering system by first

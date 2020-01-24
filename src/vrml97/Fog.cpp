@@ -283,7 +283,7 @@ fog_bindingchangeCB(void * data, SoSensor * sensor)
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
   // But first, a Coin viewer must support this kind of special node
   // treatment (this applies to 'Background', 'NavigationInfo' and
-  // 'Viewport' nodes aswell) (20030811 handegar)
+  // 'Viewport' nodes as well) (20030811 handegar)
 
   if (sensor == pimpl->setbindsensor) {
     SoDebugError::postWarning("fog_bindingchangeCB", "'set_bind' event not implemented yet");

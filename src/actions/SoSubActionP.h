@@ -45,7 +45,7 @@
 #include "tidbitsp.h" // for coin_atexit()
 
 // Internally, we use this macro instead of SO_ACTION_ADD_METHOD(). It
-// should be used from the constructor, and can not be used from
+// should be used from the constructor, and cannot be used from
 // within initClass() (as the action classes are initialized before
 // the node classes).
 

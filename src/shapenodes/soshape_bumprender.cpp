@@ -232,7 +232,7 @@ SbBool bumphack = TRUE;
 static void
 soshape_bumprender_diffuseprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
 {
-#if 0 // FIXME: clean-up routines not implemented yet (for no good
+#if 0 // FIXME: cleanup routines not implemented yet (for no good
       // reason, really). 20050524 mortene.
   diffuse_programidx * pidx = (diffuse_programidx *) value;
   /* FIXME: There are no pointlight program initialized for diffuse
@@ -246,7 +246,7 @@ soshape_bumprender_diffuseprogramdeletion(unsigned long COIN_UNUSED_ARG(key), vo
 static void
 soshape_bumprender_specularprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
 {
-#if 0 // FIXME: clean-up routines not implemented yet (for no good
+#if 0 // FIXME: cleanup routines not implemented yet (for no good
       // reason, really). 20050524 mortene.
   spec_programidx * pidx = (spec_programidx *) value;
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->pointlight);

@@ -58,8 +58,8 @@
   the SoGeoOrigin position, and all geometry (and the camera) in the
   scene graph will be projected into that coordinate system.
 
-  The coordinate system will always have the Z axis point up from the
-  ground. The Y axis will point towards the north pole, and the X-axis
+  The coordinate system will always have the Z-axis point up from the
+  ground. The Y-axis will point towards the north pole, and the X-axis
   is found using the right hand rule. 
 
   A scene graph should only contain one GeoOrigin node, and all
@@ -67,7 +67,7 @@
   relative to this position. This means that the precision will be
   best if the GeoOrigin position is as close to actual camera position
   as possible. If you move around on a large area, it might therefore
-  be a good idea too actually move the GeoOrigin postition instead of
+  be a good idea too actually move the GeoOrigin position instead of
   the camera.
 
   To place geometry in the scene graph, you can either use an
@@ -80,11 +80,11 @@
 
   The SoGeoCoordinate node on the other hand can contain double
   precision geo-coordinates, and that node will internally recalculate
-  the double precison array to a single precision array which is
+  the double precision array to a single precision array which is
   relative to the SoGeoOrgin node.
 
-  One note regarding UTM projections: Since it's quite common to assume
-  a flat earth when working with UTM data, it's possible to supply a 
+  One note regarding UTM projections: Since it is quite common to assume
+  a flat earth when working with UTM data, it is possible to supply a 
   "FLAT" keyword for UTM coordinate systems:
 
   \code

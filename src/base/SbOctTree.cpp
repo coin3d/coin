@@ -32,7 +32,7 @@
 
 /*!
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h
-  \brief The SbOctTree class defines a generic oct tree for fast geometry searches.
+  \brief The SbOctTree class defines a generic octree for fast geometry searches.
 
   \ingroup base
 
@@ -69,16 +69,16 @@
 */
 /*!
   \var SbOctTreeFuncs::insideboxfunc
-  Should return whether item is either fully or partly inside a box.
+  Should return whether item is either fully or partially inside a box.
  */
 /*!
   \var SbOctTreeFuncs::insidespherefunc
-  Should return whether item is either fully or partly inside a
+  Should return whether item is either fully or partially inside a
   sphere.
  */
 /*!
   \var SbOctTreeFuncs::insideplanesfunc
-  Should return whether item is either fully or partly inside a set of
+  Should return whether item is either fully or partially inside a set of
   planes.
 */
 
@@ -89,7 +89,7 @@
 // Inventor intersection functions won't do. E.g. SbBox3f::pointInside()
 // will return TRUE for all eight child-boxes if the center point of the
 // parent box is tested, which is correct, but not really usable for an
-// oct tree.
+// octree.
 //
 
 static SbBool
@@ -496,7 +496,7 @@ SbOctTree::~SbOctTree()
 }
 
 /*!
-  Restores this oct tree to an empty oct tree. The bounding
+  Restores this octree to an empty octree. The bounding
   box will still be the same though.
 */
 void
@@ -508,7 +508,7 @@ SbOctTree::clear(void)
 }
 
 /*!
-  Adds an item to this oct tree.
+  Adds an item to this octree.
 */
 void
 SbOctTree::addItem(void * const item)
@@ -525,9 +525,9 @@ SbOctTree::addItem(void * const item)
   // dynamically expand / re-structure itself as items are added.
   //
   // An easy, but a bit inefficient, way to do that would be to simply
-  // store a copy of all items in the octtree structure, destruct it,
+  // store a copy of all items in the octree structure, destruct it,
   // restore a new top-level node, and then re-add all items to let a
-  // new octtree structure build itself.
+  // new octree structure build itself.
   //
   // 20050512 mortene.
 #if COIN_DEBUG && 0 // debug
@@ -547,7 +547,7 @@ SbOctTree::addItem(void * const item)
 }
 
 /*!
-  Removes the item from the octtree. The octtree will not be
+  Removes the item from the octree. The octree will not be
   modified/simplified even when all items are removed.
 */
 void
@@ -563,7 +563,7 @@ SbOctTree::removeItem(void * const item)
   If \a removeduplicates is TRUE (the default), \a destarray will not
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
-  your own postprocessing of the array of returned items.
+  your own post processing of the array of returned items.
 
   \DANGEROUS_ALLOC_RETURN
 */
@@ -572,7 +572,7 @@ SbOctTree::findItems(const SbVec3f & pos,
                      SbList <void*> & destarray,
                      const SbBool removeduplicates) const
 {
-  // FIXME: passing in an SbList is dangerous under MS Windows, as
+  // FIXME: passing in an SbList is dangerous under Microsoft Windows, as
   // allocation and deallocation can then happen on different
   // C-library's heaps. The other findItems() functions below have the
   // same problem. 20050512 mortene.
@@ -596,7 +596,7 @@ SbOctTree::findItems(const SbVec3f & pos,
   If \a removeduplicates is TRUE (the default), \a destarray will not
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
-  your own postprocessing of the array of returned items.
+  your own post processing of the array of returned items.
 
   \DANGEROUS_ALLOC_RETURN
 */
@@ -614,7 +614,7 @@ SbOctTree::findItems(const SbBox3f & box, SbList <void*> & destarray,
   If \a removeduplicates is TRUE (the default), \a destarray will not
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
-  your own postprocessing of the array of returned items.
+  your own post processing of the array of returned items.
 
   \DANGEROUS_ALLOC_RETURN
 */
@@ -630,13 +630,13 @@ SbOctTree::findItems(const SbSphere & sphere,
 /*!
   Finds all items inside \a planes. The method
   SbPlane::isInHalfSpace() should be used, and only items which are
-  (partly) inside \e all planes are returned. Items are returned in \a
+  (partially) inside \e all planes are returned. Items are returned in \a
   destarray.
 
   If \a removeduplicates is TRUE (the default), \a destarray will not
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
-  your own postprocessing of the array of returned items.
+  your own post processing of the array of returned items.
 
   \DANGEROUS_ALLOC_RETURN
 */

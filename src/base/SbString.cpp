@@ -135,7 +135,7 @@ SbString::find(const SbString & strarg) const
 }
 
 /*!
-  All occurences of \a str is represented in \a found as indices to
+  All occurrences of \a str is represented in \a found as indices to
   the characters where \a str starts. If 1 or more is found, \c TRUE
   is returned, else \c FALSE is returned.
 
@@ -210,9 +210,8 @@ SbString::upper() const
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized
-  compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
 */
 void
 SbString::print(std::FILE * fp) const

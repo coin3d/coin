@@ -36,7 +36,7 @@
 
   SoProto and SoProtoInstance are mostly internal classes. They're
   designed to read and handle VRML97 PROTOs. However, it's possible to
-  define your protos in C++. You must define your proto in a char
+  define your PROTOs in C++. You must define your PROTO in a char
   array, and read that char array using SoInput::setBuffer() and
   SoDB::readAllVRML(). Example:
 
@@ -66,9 +66,9 @@
 
   \endcode
 
-  Now you can create new instances of the ColorCube proto using
+  Now you can create new instances of the ColorCube PROTO using
   SoProto::findProto() and SoProto::createProtoInstance(). If you want
-  to insert proto instances into your scene graph, you should insert
+  to insert PROTO instances into your scene graph, you should insert
   the node returned from SoProtoInstance::getRootNode().
 
   See

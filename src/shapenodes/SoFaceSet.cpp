@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Faces are specified using the numVertices field. Coordinates,
+  Facesets are specified using the numVertices field. Coordinates,
   normals, materials and texture coordinates are fetched in order from
   the current state or from the vertexProperty node if set. For
   example, if numVertices is set to [3, 4, 5, 3], this node would
@@ -137,7 +137,7 @@ public:
 
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.

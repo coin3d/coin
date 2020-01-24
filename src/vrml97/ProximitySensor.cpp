@@ -278,7 +278,7 @@ SoVRMLProximitySensor::doAction(SoAction * action)
   const SbMatrix & mm = SoModelMatrixElement::get(state);
   const SbMatrix & vm = SoViewingMatrixElement::get(state);
 
-  // FIXME: if it's not possible to invert the matrix, move proximity
+  // FIXME: if it is not possible to invert the matrix, move proximity
   // area to world space and do the testing there.
 
   SbVec3f viewer = vv.getProjectionPoint(); // world space

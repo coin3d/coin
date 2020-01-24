@@ -64,7 +64,7 @@ SoLightPath::SoLightPath(SoNode *headnodeptr, const int approxlength)
 }
 
 /*!
-  A constructor. Supply the appriximate length of the path.
+  A constructor. Supply the approximate length of the path.
 */
 SoLightPath::SoLightPath(const int approxlength)
   : headnode(NULL),
@@ -95,7 +95,7 @@ SoLightPath::setHead(SoNode * const node)
 }
 
 /*!
-  Appends a childindex to the path.
+  Appends a \a childindex to the path.
 */
 void
 SoLightPath::append(const int childindex)
@@ -156,7 +156,7 @@ SoLightPath::getHead(void) const
 }
 
 /*!
-  Returns the indexth node in path.
+  Returns the index'th node in path.
 */
 SoNode *
 SoLightPath::getNode(const int index) const
@@ -180,7 +180,7 @@ SoLightPath::getNode(const int index) const
 }
 
 /*!
-  Returns the child index of the indexth node in the path.
+  Returns the child index of the index'th node in the path.
 */
 int
 SoLightPath::getIndex(const int index) const

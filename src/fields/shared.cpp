@@ -374,7 +374,7 @@ sosfushort_write_value(SoOutput * out, unsigned short val)
 void
 sosfvec2b_write_value(SoOutput * out, SbVec2b v)
 {
-  // FIXME: check how write(char & c) writes it's data (ascii) and see if
+  // FIXME: check how write(char & c) writes its data (ascii) and see if
   // that can be used.  20070520 larsa
   out->write(static_cast<short>(v[0]));
   if (!out->isBinary()) out->write(' ');

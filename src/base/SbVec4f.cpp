@@ -53,7 +53,7 @@
   \ingroup base
 
   This vector class is used by many other classes in
-  Coin. It provides storage for a 3 dimensional homogeneoues
+  Coin. It provides storage for a 3 dimensional homogeneous
   vector (with the 4 components usually referred to as <x, y, z, w>)
   as well as simple floating point arithmetic operations.
 
@@ -409,8 +409,8 @@ SbVec4f::setValue(const SbVec4i32 & v)
 */
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbVec4f::print(FILE * fp) const

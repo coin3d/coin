@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Crude hack to take a directory of gifs, to a scenegraph, and then inline the
-# scenegraph files in a cpp file. Filename for the cpp-file must be supplied
+# Crude hack to take a directory of gifs, to a scene graph, and then inline the
+# scene graph files in a cpp file. Filename for the cpp-file must be supplied
 # as the first argument. REQUIRES that the example in the Texture2
 # documentation, for inlining textures, are built and exist in path as
 # 'inline_texture'.
 
 tmplate='#Inventor V2.1 ascii \n
-# Texture @TEX@ embedded in a scenegraph \n
+# Texture @TEX@ embedded in a scene graph \n
     Texture2{ \n
         filename @TEX@  \n
     } \n

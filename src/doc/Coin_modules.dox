@@ -161,7 +161,7 @@
   
   \details
   The most versatile engine is the SoCalculator engine, which you can
-  write your own mathematical expressions to to get it to do almost
+  write your own mathematical expressions to get it to do almost
   anything.  The other engines are more custom-tailored for specific
   purposes.
 
@@ -490,7 +490,7 @@
   
   \details
   You can use this to e.g. generate scalable PostScript images for
-  printing instead of raster images that will become pixellated when
+  printing instead of raster images that will become pixelated when
   you scale them up.
 
   See below for \ref hardcopy_overview.

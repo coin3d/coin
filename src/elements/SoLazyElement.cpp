@@ -55,7 +55,7 @@
   stack. If this instance is created after you update SoLazyElement
   with a new color, the new color will be sent to OpenGL when you call
   SoMaterialBundle::sendFirst(). This call will also update all other
-  lazy OpenGL state, and it's actually required to either use
+  lazy OpenGL state, and it is actually required to either use
   SoMaterialBundle::sendFirst() or call SoGLLazyElement::send(state,
   SoLazyElement::ALL_MASK) when creating a shape node.
 

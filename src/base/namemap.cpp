@@ -51,7 +51,7 @@ using std::strcmp;
 /* ************************************************************************* */
 
 /*
-  Implementation note: we can not use the cc_dict ADT to simplify this
+  Implementation note: we cannot use the cc_dict ADT to simplify this
   implementation, as cc_dict requires all keys in the hash to be
   unique. That is not necessarily true for a set of strings, as two
   strings can map to the same key (even though the probability is low
@@ -199,7 +199,7 @@ namemap_find_or_add_string(const char * str, SbBool addifnotfound)
 /* ************************************************************************* */
 
 /*!
-  Adds a string to the name hash and returns it's permanent memory
+  Adds a string to the name hash and returns its permanent memory
   address pointer. If the string is already present in the name hash,
   just returns the address pointer.
 */

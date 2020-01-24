@@ -41,7 +41,7 @@
 
   This list class will delete the picked points when
   destructed/truncated, or when a picked point in the list is replaced
-  by another picked point The caller is responsible for allocating the
+  by another picked point. The caller is responsible for allocating the
   picked points passed to the list, but should not deallocate them since
   this will be handled by the list.
 

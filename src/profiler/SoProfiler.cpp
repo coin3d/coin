@@ -46,7 +46,7 @@
   the \ref COIN_PROFILER_OVERLAY environment variable.
 
   This will give you the default profiling graphics, which
-  shows a top-list of node timings categorized by node types, a
+  shows a top list of node timings categorized by node types, a
   scrolling graph of action traversal timings, and a scene graph
   navigator for closer scene graph inspection.
 
@@ -59,7 +59,7 @@
   traversal through the scene graph since the last SoGLRenderAction, up
   to the point where SoProfilerStats is located. Depending of how you
   wish to use the data, either attach sensors to the fields, or connect
-  the the fields on other coin nodes to the fields on SoProfilerStats.
+  the fields on other coin nodes to the fields on SoProfilerStats.
 */
 
 

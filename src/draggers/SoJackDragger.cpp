@@ -54,13 +54,13 @@
   x-z to constrain to one of the principal axes.
 
   Uniform scale operations can be done by dragging any of the 6
-  cubes. Non-uniform scale operations can not be done with this
+  cubes. Non-uniform scale operations cannot be done with this
   dragger.
 
   Rotations are invoked by clicking and dragging the line parts of the
   3 principal "axes" of the dragger geometry.
 
-  <b>NB:</b> How to rotate the dragger might be abit unintuitive for
+  <b>NB:</b> How to rotate the dragger might be a bit unintuitive for
   the end user. If the dragger is to be used 'out of the box', a good
   documentation should be added to your application. An alternative is
   to modify the geometry to increase the affordance of the dragger.
@@ -155,7 +155,7 @@ SoJackDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 

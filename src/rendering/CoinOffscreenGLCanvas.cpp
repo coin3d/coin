@@ -240,7 +240,7 @@ CoinOffscreenGLCanvas::clampToPixelSizeRoof(SbVec2s & s)
 // Activates an offscreen GL context, and returns a guaranteed unique
 // id to use with SoGLRenderAction::setCacheContext().
 //
-// If the given context can not be made current (due to e.g. any error
+// If the given context cannot be made current (due to e.g. any error
 // condition resulting from the attempt at setting up the offscreen GL
 // context), 0 is returned.
 uint32_t
@@ -297,7 +297,7 @@ CoinOffscreenGLCanvas::destructContext(void)
   else {
     if (CoinOffscreenGLCanvas::debug()) {
       SoDebugError::post("CoinOffscreenGLCanvas::destructContext",
-                         "Couldn't activate context -- resource clean-up "
+                         "Couldn't activate context -- resource cleanup "
                          "not complete.");
     }
   }

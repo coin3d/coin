@@ -59,12 +59,12 @@
   Defines the plane cutting the sphere into a projection part.
 */
 /*! \var SbSphereSectionProjector::radialFactor
-  The radialfactor value decides how to calculate rotations outside of
+  The radial factor value decides how to calculate rotations outside of
   the sphere.
   \sa setRadialFactor()
 */
 /*! \var SbSphereSectionProjector::planePoint
-  A point in the plane where the center of the sphere is.
+  A point in the plane where the center of the sphere is located.
 */
 /*! \var SbSphereSectionProjector::planeDir
   Direction of cutting plane.

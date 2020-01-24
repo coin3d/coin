@@ -75,17 +75,17 @@ SbBool coin_is_exiting(void);
 enum coin_atexit_priorities {
   /* Absolute priorities goes first */
 
-  /* clean-ups of client code should be done before any clean-up code
+  /* cleanups of client code should be done before any cleanup code
      within Coin happens, so this is (2^31 - 1): */
   CC_ATEXIT_EXTERNAL = 2147483647,
 
-  /* clean-up code with no particular dependencies should use this
+  /* cleanup code with no particular dependencies should use this
      code: */
   CC_ATEXIT_NORMAL = 0,
 
   /* dynamically loaded libraries should be the last to go, as other
      code in Coin will be dependent on functionality in these in its
-     own clean-up code: */
+     own cleanup code: */
   CC_ATEXIT_DYNLIBS = -2147483647,
 
   /* Relative priorities */
@@ -128,7 +128,7 @@ enum coin_atexit_priorities {
   */
   CC_ATEXIT_SOTYPE  = CC_ATEXIT_NORMAL - 40,
 
-  /* later, in case e.g. some nodes' clean-up depends on the font
+  /* later, in case e.g. some nodes' cleanup depends on the font
      subsystem still being up'n'running: */
   CC_ATEXIT_FONT_SUBSYSTEM = CC_ATEXIT_NORMAL - 100,
 
@@ -138,7 +138,7 @@ enum coin_atexit_priorities {
   /* Just later than FONT_SUBSYSTEM */
   CC_ATEXIT_FONT_SUBSYSTEM_LOWPRIORITY = CC_ATEXIT_FONT_SUBSYSTEM - 1,
 
-  /* still later, so clean-up code can use e.g. SoDebugError to report
+  /* still later, so cleanup code can use e.g. SoDebugError to report
      problems, output debugging info, etc: */
   CC_ATEXIT_MSG_SUBSYSTEM = CC_ATEXIT_NORMAL - 200,
   /*
@@ -147,7 +147,7 @@ enum coin_atexit_priorities {
   */
   CC_ATEXIT_SBNAME = CC_ATEXIT_NORMAL - 500,
 
-  /* needs to happen late, since CC_ATEXIT_NORMAL clean-up routines
+  /* needs to happen late, since CC_ATEXIT_NORMAL cleanup routines
      will for instance often want to dealloc mutexes: */
   CC_ATEXIT_THREADING_SUBSYSTEM = CC_ATEXIT_NORMAL - 1000,
 
@@ -204,7 +204,7 @@ double coin_atof(const char * ptr);
 /* ********************************************************************** */
 
 /*
-  Functions to output ascii85 encoded data. Used for instance for Postscript
+  Functions to output ascii85 encoded data. Used for instance for PostScript
   image rendering.
 */
 void coin_output_ascii85(FILE * fp,

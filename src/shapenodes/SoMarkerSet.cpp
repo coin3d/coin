@@ -1136,8 +1136,8 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 {
   // FIXME: the marker bitmaps are toggled off when the leftmost pixel
   // is outside the left border, and ditto for the bottommost pixel
-  // versus the bottom border. They should be drawn partly until they
-  // are wholly outside the canvas instead. 20011218 mortene.
+  // versus the bottom border. They should be drawn partially until they
+  // are entirely outside the canvas instead. 20011218 mortene.
 
   SoState * state = action->getState();
 
@@ -1370,7 +1370,7 @@ swap_updown(unsigned char *data, int width, int height)
   data is ordered. Does nothing if \a markerIndex is NONE.
 
   Here's a complete usage example which demonstrates how to set up a
-  user-specified marker from a char-map.  Note that the "multi-colored"
+  user specified marker from a character map.  Note that the "multi colored"
   pixmap data is converted to a monochrome bitmap before being passed to
   addMarker() because addMarker() supports only bitmaps.
 

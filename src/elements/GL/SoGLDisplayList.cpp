@@ -113,11 +113,11 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     // -----8<----- [snip] ----------8<----- [snip] ----------8<------
     // #Inventor V2.1 ascii
     //
-    // # This dead simple scenegraph causes the examinerviewer to go blank
+    // # This dead simple scene graph causes the examiner viewer to go blank
     // # on a Linux box with GeForce2 card and version 1.3.1 28.02 of the
     // # NVidia OpenGL drivers. The problem is gone for version 1.3.1 29.60
     // # of the drivers, so this seems _very_ much like a driver bug with
-    // # OpenGL displaylists.
+    // # OpenGL display lists.
     // #
     // # The bug is also present for SGI Inventor.
     // #
@@ -225,7 +225,7 @@ SoGLDisplayList::ref(void)
 
 /*!
   Decrease reference count for this instance. When reference count
-  reaches 0, the instence is deleted.
+  reaches 0, the instance is deleted.
 */
 void
 SoGLDisplayList::unref(SoState * state)

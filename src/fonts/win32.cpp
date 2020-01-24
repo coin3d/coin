@@ -389,7 +389,7 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
 			 leads to less details as it seems like
 			 the Win32 systems tries to 'quantize'
 			 the glyph to match the pixels of the
-			 choosen resolution. */
+			 chosen resolution. */
 		      0, /* let Win32 choose to get correct aspect ratio */
 		      (int) (10 * (angle * 180) / M_PI) , /* escapement */
 		      (int) (10 * (angle * 180) / M_PI) , /* orientation */
@@ -404,7 +404,7 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
 			 Window's raster fonts, this should rather be
 			 OUT_DEFAULT_PRECIS. Then when
 			 GetGlyphOutline() fails on a font, we should
-			 grab it's bitmap by using TextOut() and
+			 grab its bitmap by using TextOut() and
 			 GetDIBits(). 20030610 mortene.
 		      */
 		      OUT_TT_ONLY_PRECIS, /* output precision */
@@ -423,7 +423,7 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
 			  leads to less details as it seems like
 			  the Win32 systems tries to 'quantize'
 			  the glyph to match the pixels of the
-			  choosen resolution. */
+			  chosen resolution. */
 		       0, /* let Win32 choose to get correct aspect ratio */
 		       (int) (10 * (angle * 180) / M_PI) , /* escapement */
 		       (int) (10 * (angle * 180) / M_PI) , /* orientation */
@@ -438,7 +438,7 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
 			  Window's raster fonts, this should rather be
 			  OUT_DEFAULT_PRECIS. Then when
 			  GetGlyphOutlineW() fails on a font, we should
-			  grab it's bitmap by using TextOutW() and
+			  grab its bitmap by using TextOutW() and
 			  GetDIBits(). 20030610 mortene.
 		       */
 		       OUT_TT_ONLY_PRECIS, /* output precision */
@@ -531,7 +531,7 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
     bold = strstr(tmp, " bold");
     italic = strstr(tmp, " italic");
     /* FIXME: Should we also try to handle fontconfig style font specification,
-       ie. "bold:italic"? This has most likely never worked with the previous
+       i.e. "bold:italic"? This has most likely never worked with the previous
        approach. (wiesener 20071016)
     */
     if ( bold || italic)
@@ -894,7 +894,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
      fail.
 
      FIXME: We should eventually allow non-TT fonts to be loaded
-     aswell, by changing the "precision" setting in the call to
+     as well, by changing the "precision" setting in the call to
      CreateFontW() to also allow raster fonts (see FIXME comment where
      CreateFontW() is called). Then, when GetGlyphOutlineW() fails, use
      TextOut() and GetDIBits() to grab a font glyph's bitmap.
@@ -1054,7 +1054,7 @@ flww32_getVerticesFromPath(HDC hdc)
         if (flww32_win9598Me) {
           /* If the current OS is Windows95/98/Me, the last vertex
             must be added before closing the figure-path. If the OS is
-            a newer version (ie. XP/2000/NT), adding the last vertex
+            a newer version (i.e. XP/2000/NT), adding the last vertex
             will lead to a 'gap' which looks quite ugly when
             extruded. The 'flww32_win9598Me' is a static SbBool
             initialized once in 'flww32_initialize()'. */
@@ -1419,7 +1419,7 @@ flww32_buildVertexList(struct cc_font_vector_glyph * newglyph, int size)
     coord = (float *) cc_list_get(flww32_tessellator.vertexlist,i);
 
     /* Must flip and translate glyph due to the W32 coord system
-       which has a y-axis pointing downwards */
+       which has a Y-axis pointing downwards */
     newglyph->vertices[i*2 + 0] = coord[0] / size;
     newglyph->vertices[i*2 + 1] = (-coord[1]) / size;
 

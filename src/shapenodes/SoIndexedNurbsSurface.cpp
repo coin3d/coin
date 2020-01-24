@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  It is very similar to the SoNurbsSurface class, but controlpoints
+  It is very similar to the SoNurbsSurface class, but control points
   can be specified using indices.
 
   <b>FILE FORMAT/DEFAULTS:</b>

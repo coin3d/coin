@@ -322,7 +322,7 @@ SoVectorizeAction::beginViewport(const SbVec2f & start, const SbVec2f & size,
   }
   PRIVATE(this)->reset();
 
-  // this will set up clipping (for postscript, at least)
+  // this will set up clipping (for PostScript, at least)
   this->printViewport();
 
   // set up a SbViewportRegion (used by SoCallbackAction) so that the

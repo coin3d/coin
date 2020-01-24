@@ -37,7 +37,7 @@
   \brief the &lt;assign&gt; SCXML element.
 
   The \c &lt;assign&gt; element is only functional under a profile that
-  has an implementation of The Data Module.  The \c "minimum" profile does
+  has an implementation of the Data Module.  The \c "minimum" profile does
   not implement one, but the \c "x-coin" profile does.
   
   The following attributes are accepted:
@@ -45,7 +45,7 @@
   \li \c dataID
   \li \c expr
 
-  Only one of \c location and \c dataID can be specified at a time.
+  Either \c location or \c dataID can be specified at a time.
 
   If \c dataID is specified, then the target of the assignment is the
   \c &lt;data&gt; element that has the \c ID attribute set to the same
@@ -64,7 +64,7 @@
   Temporary variables are particularly useful for the \c &lt;send&gt; element,
   because the \c namelist attribute can address them with implicit prefix,
   which means the event targets can read them out based on logical names
-  instead of SCXML datamodel addresses.
+  instead of SCXML data model addresses.
 
   \ingroup scxml
   \sa ScXMLDataModelElt, ScXMLDataElt, ScXMLSendElt

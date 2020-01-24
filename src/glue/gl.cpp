@@ -35,7 +35,7 @@
   ===============================================
 
   Creating portable OpenGL applications can be a complicated matter
-  since you have to have both compile-time and run-time tests for
+  since you have to have both compile-time and runtime tests for
   OpenGL version, and what extensions are available. In addition, you
   might not have an entry point to the (extension) function in
   question on your build system.  The cc_glglue abstraction is here
@@ -45,7 +45,7 @@
 
   The cc_glglue interface is part of the public API of Coin, but is
   not documented on the public documentation pages at
-  https://coin3d.github.io/docs/Coin/ yet. The status for client application
+  https://coin3d.github.io/Coin/ yet. The status for client application
   usage is "unofficial, use at own risk, interface may change without
   warning for major version number upgrade releases".
 
@@ -135,9 +135,9 @@
     prefer a "better safe than sorry" strategy.
 
     We might consider changing this strategy to allow it by default,
-    and provide an envvar to turn it off instead -- if we can get
-    confirmation that the assumed NVidia driver bug is indeed NVidia's
-    problem.
+    and provide an environment variable to turn it off instead -- if
+    we can get confirmation that the assumed NVidia driver bug is
+    indeed NVidia's problem.
 
   - COIN_FORCE_GL1_0_ONLY: set to "1" to disallow use of OpenGL1.1+
     and extensions under all circumstances.
@@ -272,7 +272,7 @@ static int COIN_USE_AGL = -1;
 /* Sanity checks for enum extension value assumed to be equal to the
  * final / "proper" / standard OpenGL enum values. (If not, we could
  * end up with hard-to-find bugs because of mismatches with the
- * compiled values versus the run-time values.)
+ * compiled values versus the runtime values.)
  *
  * This doesn't really _fix_ anything, it is just meant as an aid to
  * smoke out platforms where we're getting unexpected enum values.
@@ -951,9 +951,9 @@ glglue_resolve_symbols(cc_glglue * w)
   */
   /*
      FIXME: we've found a bug prevalent in drivers for the "Intel
-     Solano" graphcis chipset / driver. It manifests itself in the way
+     Solano" graphics chipset / driver. It manifests itself in the way
      that visual artifacts are seen when multi-textured polygons are
-     partly outside the canvas view.
+     partially outside the canvas view.
 
      The SoGuiExamples/nodes/textureunit example can be used to
      reproduce the error. The driver info from one confirmed affected
@@ -1974,7 +1974,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 
   /*
-     Option to disable FBO feature even if it's available.
+     Option to disable FBO feature even if it is available.
      FIXME: FBO rendering fails in at least one application. To fix it properly
      we need to reproduce this bug in a minimal testcase. jkg, 2007-09-28
   */
@@ -2187,7 +2187,7 @@ glglue_check_driver(const char * vendor, const char * renderer,
     ------8<---- [snip] -----------8<---- [snip] -----
 
     I observe a bit of strange behaviour on my NT4 systems. I have an
-    appliction which uses the the following bit of code:
+    appliction which uses the following bit of code:
 
     // Define line width
     SoDrawStyle *drawStyle = new SoDrawStyle;
@@ -2245,11 +2245,11 @@ glglue_check_driver(const char * vendor, const char * renderer,
     ------8<---- [snip] -----------8<---- [snip] -----
 
     [The client] works with two screens. One of the screen works as it
-    should, while the otherone has erronious apperance (see uploaded
+    should, while the other one has erroneous appearance (see uploaded
     image). The errors are the stripes on the texture (It should be
-    one continious texture). The texture is wrapped on a rectangle
+    one continuous texture). The texture is wrapped on a rectangle
     (i.e. two large triangles). It is not only the OpenGl part of the
-    window that is weired.  Some buttons are missing and other buttons
+    window that is weird.  Some buttons are missing and other buttons
     have wrong colors++.
 
     ------8<---- [snip] -----------8<---- [snip] -----
@@ -2619,7 +2619,7 @@ cc_glglue_isdirect(const cc_glglue * w)
 
 
 /*!
-  Whether glPolygonOffset() is availble or not: either we're on OpenGL
+  Whether glPolygonOffset() is available or not: either we're on OpenGL
   1.1 or the GL_EXT_polygon_offset extension is available.
 
   Method then available for use:
@@ -2735,7 +2735,7 @@ cc_glglue_glPolygonOffset(const cc_glglue * w,
     if (!isbias) units = 0.000001f;
 
     /* FIXME: shouldn't there be an attempt to convert the other way
-       around too? Ie, if it *is* a "bias" value and we're using the
+       around too? I.e., if it *is* a "bias" value and we're using the
        "real" 1.1 glPolygonOffset() function, try to convert it into a
        valid "units" value? 20020919 mortene. */
   }
@@ -4453,7 +4453,7 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
 /*** Offscreen buffer handling. *********************************************/
 
 /*
-  Below is a stand-alone example that can be compiled and linked with
+  Below is a standalone example that can be compiled and linked with
   the Coin library for testing that the context handling interface
   works:
  */
@@ -4691,7 +4691,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
        dimension settings to be sure.
     */
 
-    /* FIXME: should make a stand-alone test-case (not dependent
+    /* FIXME: should make a standalone test-case (not dependent
        on Coin, only GL, GLX & X11) that demonstrates this problem
        for a) submitting to <linux-bugs@nvidia.com>, and b) to
        test which versions of the NVidia drivers are affected --
@@ -4765,7 +4765,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      where the driver obviously does not take into account the amount
      of memory needed to actually allocate such a large buffer.
 
-     This problem has at least been observed with the MS Windows XP
+     This problem has at least been observed with the Microsoft Windows XP
      software OpenGL renderer, which reports a maximum viewport size
      of 16k x 16k pixels.
 

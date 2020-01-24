@@ -34,7 +34,7 @@
 
 /*!
   \class SoScXMLDollyTarget SoScXMLDollyTarget.h Inventor/scxml/SoScXMLDollyTarget.h
-  \brief SCXML event target service for zoom-behaviour.
+  \brief SCXML event target service for zoom behaviour.
 
   Events:
 
@@ -548,13 +548,13 @@ SoScXMLDollyTarget::jump(SoCamera * camera, float focaldistance)
 
 // *************************************************************************
 /*!
-  Steps the camera relative to its orientation and focal point by diff.
+  Steps the camera relative to its orientation and focal point by \a diff.
 
-  If \a exponential is FALSE, then the diff value is treated as an absolute
+  If \a exponential is FALSE, then the \a diff value is treated as an absolute
   distance value.
 
   If \a mindistance and/or \a maxdistance is anything but 0.0, they are checked
-  against the focaldistance, and the focaldistance will be clamped inside the
+  against the focal distance, and the focal distance will be clamped inside the
   range. Both are not needed, if only one is specified, only that part of the
   range will be used to limit the dollying.
 

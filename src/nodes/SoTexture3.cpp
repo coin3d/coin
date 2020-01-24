@@ -36,11 +36,11 @@
 
   \ingroup nodes
 
-  Shape nodes within the scope of SoTexture3 nodes in the scenegraph
-  (ie below the same SoSeparator and to the righthand side of the
+  Shape nodes within the scope of SoTexture3 nodes in the scene graph
+  (i.e. below the same SoSeparator and to the right hand side of the
   SoTexture3) will have the texture applied according to each shape
   type's individual characteristics.  See the documentation of the
-  various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
+  various shape types (SoFaceSet, SoCube, SoSphere, etc.) for
   information about the specifics of how the textures will be applied.
   An SoTexture3 node will override any previous encountered SoTexture2 nodes
   and vice versa. Mixing of SoTexture3 and SoTextureCoordinate2 (or the other
@@ -135,7 +135,7 @@
 /*!
   \var SoMFString SoTexture3::filenames
   Texture filename(s). Specify either this or use SoTexture3::images, not both.
-  The depth of the volume is specifies by the number of filenames specified.
+  The depth of the volume is specified by the number of filenames specified.
   All images must have the same dimensions and number of components.
   NB! A field sensor is attached to this field internally and reloads all
   images when this field changes. You must therefore be careful when

@@ -4,7 +4,7 @@
 
 ;;; Eval following region
 
-;; Make scene-graph and first viewer
+;; Make scene graph and first viewer
 (define oneshot (new-sooneshot))
 (define root (new-soseparator))
 

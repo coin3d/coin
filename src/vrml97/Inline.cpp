@@ -274,7 +274,7 @@ SoVRMLInline::requestURLData(void)
 }
 
 /*!
-  Returns TRUE if the URL data has been requested.
+  Returns TRUE if the URL data have been requested.
 */
 SbBool
 SoVRMLInline::isURLDataRequested(void) const
@@ -283,7 +283,7 @@ SoVRMLInline::isURLDataRequested(void) const
 }
 
 /*!
-  Returns TRUE if the data has been loaded.
+  Returns TRUE if the data have been loaded.
 */
 SbBool
 SoVRMLInline::isURLDataHere(void) const
@@ -314,7 +314,7 @@ SoVRMLInline::setChildData(SoNode * urldata)
 }
 
 /*!
-  Returns the child data (the scene loaded from the url).
+  Returns the child data (the scene loaded from the URL).
 */
 SoNode *
 SoVRMLInline::getChildData(void) const
@@ -382,7 +382,7 @@ SoVRMLInline::setReadAsSoFile(SbBool enable)
 }
 
 /*!
-  Returns whether Inline nodes is read as SoFile nodes.
+  Returns whether Inline nodes are read as SoFile nodes.
 */
 SbBool
 SoVRMLInline::getReadAsSoFile(void)

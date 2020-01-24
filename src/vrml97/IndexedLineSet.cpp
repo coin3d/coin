@@ -60,9 +60,9 @@
   constructing polylines from 3D vertices specified in the coord
   field. IndexedLineSet uses the indices in its coordIndex field to
   specify the polylines by connecting vertices from the coord
-  field. An index of "- 1" indicates that the current polyline has
+  field. An index of "-1" indicates that the current polyline has
   ended and the next one begins. The last polyline may be (but does
-  not have to be) followed by a "- 1".  IndexedLineSet is specified in
+  not have to be) followed by a "-1".  IndexedLineSet is specified in
   the local coordinate system and is affected by the transformations
   of its ancestors.  
 

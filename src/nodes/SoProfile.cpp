@@ -36,8 +36,8 @@
 
   \ingroup nodes
 
-  Node subclasses of SoProfile specifies profiles for extruded 3D text
-  and nurbs surface data.
+  Node subclasses of SoProfile specify profiles for extruded 3D text
+  and NURBS surface data.
 */
 
 #include <Inventor/nodes/SoProfile.h>

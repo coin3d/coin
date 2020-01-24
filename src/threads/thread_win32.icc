@@ -53,8 +53,8 @@ internal_init(cc_thread * thread)
 
   /* FIXME: thammer 20011108, check PlatformSDK doc for
    * _beginthreadex, _endthreadex, and note about using these with
-   * LIBCMT.LIB "A thread that uses functions from the C run-time
-   * libraries should use the beginthread and endthread C run-time
+   * LIBCMT.LIB "A thread that uses functions from the C runtime
+   * libraries should use the beginthread and endthread C runtime
    * functions for thread management rather than CreateThread and
    * ExitThread. Failure to do so results in small memory leaks when
    * ExitThread is called. " */

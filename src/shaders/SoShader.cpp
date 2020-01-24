@@ -62,7 +62,7 @@
 
   \endcode
 
-  This will render the Cube with the vertex and fragment shaders
+  This will render the cube with the vertex and fragment shaders
   specified in myvertexshader.glsl and myfragmentshader.glsl. Coin
   also supports ARB shaders and Cg shaders (if the Cg library is
   installed). However, we recommend using GLSL since we will focus
@@ -80,7 +80,7 @@
 
   \li coin_two_sided_lighting - Set to 1 for two-sided, 0 for normal
 
-  Example scene graph that renders per-fragment OpenGL Phong lighting
+  Example scene graph that renders per fragment OpenGL Phong lighting
   for one light source. The shaders assume the first light source is a
   directional light. This is the case if you open the file in a standard
   examiner viewer.

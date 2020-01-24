@@ -85,8 +85,8 @@
   If \c delay is specified, it must take the form of \c "{number}s" or
   \c "{number}ms" giving you the option of specifying the delay in
   number of seconds or milliseconds before the event should be sent.
-  For delayed events to be sent, the Coin delayqueue processing must
-  be performed. Most Coin users do that wether they know it or not. If
+  For delayed events to be sent, the Coin delay queue processing must
+  be performed. Most Coin users do that whether they know it or not. If
   \c delay is not specified, the event is passed to the target
   immediately. If a state machine is deleted, any events scheduled to
   be sent out in a delayed manner are going to be missing in action.
@@ -100,7 +100,7 @@
   you can specify \c &lt;data&gt; variables by addressing them with the
   \c _data.{ID} scheme, or you can specify temporary variables, either by
   using the \c coin:temp.{ID} scheme or have the prefix implicit by just
-  specifying the {ID}.  The is the most useful method, since event targets
+  specifying the {ID}.  The latter is the most useful method, since event targets
   do not want to know where in a data model a variable comes from, nor the
   name it had where it was contained.  With temporary variables, the values
   can get names that are intended for the event target instead of the name

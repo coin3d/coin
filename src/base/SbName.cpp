@@ -47,7 +47,7 @@
   structures, like e.g. in hash (dictionary) tables.
 
   Apart from that, mapping identical strings to the same memory
-  address can also save on memory resources, and provide run-time
+  address can also save on memory resources, and provide runtime
   optimizations. String comparisons for SbName objects are very
   efficient, for instance.
 
@@ -138,7 +138,7 @@ SbName::~SbName()
 
   The returned memory pointer for the character string is guaranteed
   to be valid for the remaining life time of the process, even after
-  all SbName instances referencing the string has been destructed.
+  all SbName instances referencing the string have been destructed.
 */
 const char *
 SbName::getString(void) const
@@ -178,7 +178,7 @@ SbName::isIdentStartChar(const char c)
   // function to make an array reference that's out of bounds.
   //
   // FIXME: this needs to be fixed other places isdigit() is used,
-  // aswell as for other is*() function. 20021124 mortene.
+  // as well as for other is*() function. 20021124 mortene.
   const unsigned char uc = static_cast<unsigned char>(c);
 
   if (isdigit(uc)) return FALSE;

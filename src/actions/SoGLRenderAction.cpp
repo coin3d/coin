@@ -37,7 +37,7 @@
   \ingroup actions
 
   Applying this method at a root node for a scene graph, path or
-  pathlist will render all geometry contained within that instance to
+  path list will render all geometry contained within that instance to
   the current OpenGL context.
  */
 
@@ -178,12 +178,12 @@
 
   The highest quality transparency mode in Coin is
   SoGLRenderAction::SORTED_LAYERS_BLEND. It is also the only mode that
-  overrides all other modes in the scenegraph.
+  overrides all other modes in the scene graph.
 
   (One important note about this mode: we've had reports from users
   that some OpenGL drivers -- possibly particular for some Mac OS X
   systems -- significantly degrades rendering performance. So be
-  careful and test your application on a wide variety of run-time
+  careful and test your application on a wide variety of runtime
   systems when using SoGLRenderAction::SORTED_LAYERS_BLEND.)
 
   \sa SoTransparencyType
@@ -204,7 +204,7 @@
   being transparent when using this mode. The reason being that the
   SCREEN_DOOR mode is working on polygons, not pixels. To render
   polygons with dither pattern, a material node has to be inserted
-  into the scenegraph with it's transparency field set.
+  into the scene graph with its transparency field set.
 */
 
 /*!
@@ -351,7 +351,7 @@
   which is guaranteed to do so.
 
   This mode is different from all other modes in that it overrides the
-  SoTransparencyType nodes in the scenegraph; all objects are drawn using
+  SoTransparencyType nodes in the scene graph; all objects are drawn using
   SORTED_LAYERS_BLEND.
 
   There are currently two separate code paths for this mode. Both
@@ -366,7 +366,7 @@
   will therefore only be textured if they are not occluded by another
   transparent surface.
 
-  The second method utilise the \c GL_ARB_fragment_program
+  The second method utilizes the \c GL_ARB_fragment_program
   extension. This extension is currently supported by the GeForceFX
   family and the Radeon 9500 and above. This technique is faster than
   the pure NVIDIA method. The fragment program method will
@@ -401,7 +401,7 @@
   based on depth-peeling which strips away depth layers with each
   successive pass. The number of passes is therefore an indication of
   how deep into the scene transparent surfaces will be rendered with
-  transparency. A higher number will lead to a lower framerate but
+  transparency. A higher number will lead to a lower frame rate but
   higher quality for scenes with a lot of transparent surfaces. The
   default number of passes is '4'. This number can be specified using
   the SoGLRenderAction::setSortedLayersNumPasses() or by letting the
@@ -419,7 +419,7 @@
 */
 
 // FIXME:
-//  todo: - Add debug printout info concerning choosen blend method.
+//  todo: - Add debug printout info concerning chosen blend method.
 //        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
 //        - Investigate whether the TGS method using only EXT_texture_env_combine is a
@@ -532,7 +532,7 @@
 /*!
   \var SoGLRenderAction::TransparentDelayedObjectRenderType SoGLRenderAction::NONSOLID_SEPARATE_BACKFACE_PASS
 
-  Non-solid objects are handled in an extra rendering pass. Backfacing
+  Non-solid objects are handled in an extra rendering pass. Back facing
   polygons are rendered in the first pass, and the front facing in the
   second pass.
 */
@@ -973,7 +973,7 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
   Each SoGLRenderAction has a cache context id. This can be set using
   SoGLRenderAction::setCacheContext(). The cache context id must be
   unique, so that different texture objects and display lists are
-  created for uncompatible GL contexts. For instance, when
+  created for incompatible GL contexts. For instance, when
   SoGLRenderAction traverses an SoTexture2 node, the node checks if it
   has a texture object created for the cache context. If not, a new
   texture object will be created and used when rendering.
@@ -1400,7 +1400,7 @@ SoGLRenderAction::abortNow(void)
   network.
 
   The flag is used to optimize rendering. For instance should the
-  displaylist caching strategy be influenced by this flag to be more
+  display list caching strategy be influenced by this flag to be more
   aggressive with the caching when rendering instructions are passed
   over the network.
 
@@ -1922,7 +1922,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
       // Render all transparent paths that should not be sorted
       this->action->apply(this->transpobjpaths, TRUE);
     }
-    // enable writing again. FIXME: consider if it's ok to push/pop state instead
+    // enable writing again. FIXME: consider if it is OK to push/pop state instead
     if (!this->transpobjdepthwrite) {
       SoDepthBufferElement::set(state, TRUE, TRUE,
                                 SoDepthBufferElement::LEQUAL,
@@ -2006,7 +2006,7 @@ SoGLRenderAction::isRenderingTranspPaths(void) const
 }
 
 /*!
-  Returns TRUE if the action is currently rendering backfacing polygons
+  Returns TRUE if the action is currently rendering back facing polygons
   in NONSOLID_SEPARATE_BACKFACE_PASS mode.
 
   \since Coin 3.0
@@ -2052,14 +2052,14 @@ SoGLRenderActionP::doSortedLayersBlendRendering(const SoState * state, SoNode * 
 
   // The 'sortedlayersblendcounter' must be global so that it can be
   // reached by 'setupNVRegisterCombiners()' at all times during the
-  // scenegraph traversals.
+  // scene graph traversals.
   for(this->sortedlayersblendcounter=0;
       this->sortedlayersblendcounter < this->sortedlayersblendpasses;
       this->sortedlayersblendcounter++) {
 
     // FIXME: A trick here would be to do an occlusion test if
-    // possible (EXT_occlusion_test is more or less free). The choosen
-    // number of passes would then be treated as the the upper number
+    // possible (EXT_occlusion_test is more or less free). The chosen
+    // number of passes would then be treated as the upper number
     // of passes. (20031208 handegar)
     renderOneBlendLayer(state, this->sortedlayersblendcounter > 0,
                         this->sortedlayersblendcounter < (this->sortedlayersblendpasses-1),
@@ -2146,7 +2146,7 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
 
   if(peel) {
     if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
-      // Fragment program clean-up
+      // Fragment program cleanup
       glDisable(GL_FRAGMENT_PROGRAM_ARB);
       glDisable(GL_TEXTURE_RECTANGLE_EXT);
       glDisable(GL_ALPHA_TEST);
@@ -2164,7 +2164,7 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
 
     }
     else {
-      // Regular NViDIA register combiner clean-up
+      // Regular NViDIA register combiner cleanup
       cc_glglue_glActiveTexture(glue, GL_TEXTURE3);
       glDisable(GL_TEXTURE_RECTANGLE_EXT);
       this->texgenEnable(FALSE);
@@ -2483,7 +2483,7 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
       glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
     }
 
-    // The "register combiner"-way if explicitly choosen or FP is unavailable
+    // The "register combiner"-way if explicitly chosen or FP is unavailable
     if(this->usenvidiaregistercombiners) {
       // HILO texture setup
       GLushort HILOtexture[] = {0, 0};

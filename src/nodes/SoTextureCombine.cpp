@@ -43,7 +43,7 @@
   for more information about this extension.
 
   Basically this node lets you specify up to three sources, and a
-  function to combine those sources. In addition to the function, it's
+  function to combine those sources. In addition to the function, it is
   possible to apply simple operands on the sources. In the
   documentation below, the sources will be called Arg0, Arg1, and
   Arg2, just like in the ARB_texture_env_mode specification.
@@ -53,13 +53,13 @@
   This node has many fields, but usually it is sufficient to set only
   one or very few fields. The selected operation decides which
   values you need to set. One common example is to add a light map
-  to textured geometry. A lightmap can look like this:
+  to textured geometry. A light map can look like this:
   
   <center>
   \image html lightmap.jpg "Rendering of an Example LightMap"
   </center>
   
-  The example below just shows how to apply the lightmap to a cube,
+  The example below just shows how to apply the light map to a cube,
   with one light source on each side of the cube. Usually the texture
   coordinates are calculated so that a spot light or a point light is
   simulated.
@@ -69,7 +69,7 @@
   Texture2 { filename "wood.jpg" }
   
   Switch {
-    whichChild -3   # use to toggle lightmap on/off
+    whichChild -3   # use to toggle light map on/off
     TextureUnit {
       unit 1
     }

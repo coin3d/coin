@@ -41,7 +41,7 @@
   type. Translations, rotations and scaling in 2D can all be done.
 
   The default settings of this node's fields equals a "null
-  transform", ie no transformation.
+  transform", i.e. no transformation.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -75,8 +75,8 @@
 /*!
   \var SoSFFloat SoBumpMapTransform::rotation
 
-  Texture coordinate rotation (around z-axis, s is x-axis and t is
-  y-axis).  Defaults to an identity rotation (ie zero rotation).
+  Texture coordinate rotation (around Z-axis, s is X-axis and t is
+  Y-axis).  Defaults to an identity rotation (i.e. zero rotation).
 */
 /*!
   \var SoSFVec2f SoBumpMapTransform::scaleFactor

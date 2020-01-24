@@ -46,7 +46,7 @@
   For each node in the paths, it stores the following information:
 
   1. the number of distinct children at that level
-  2. a child index to each distinct child to be used for IN_PATH travesal
+  2. a child index to each distinct child to be used for IN_PATH traversal
   3. an index to each child's lookup table position
 
   1. and 2. are used for optimized IN_PATH action traversal. 3. is

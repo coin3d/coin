@@ -41,8 +41,8 @@
 
   \ingroup nodes
 
-  Insert a cube shape into the scenegraph. The cube is rendered with
-  the current material, texture and drawstyle settings (if any,
+  Insert a cube shape into the scene graph. The cube is rendered with
+  the current material, texture and draw style settings (if any,
   otherwise the default settings are used).
 
   (Strictly speaking, as you can have different width, height and
@@ -52,7 +52,7 @@
   The SoCube node class is provided as a convenient abstraction for
   the application programmer to use "complex" shapes of this type
   without having to do the calculation and book-keeping of the polygon
-  sides and other low-level programming herself.
+  sides and other low level programming herself.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -89,15 +89,15 @@
 
 /*!
   \var SoSFFloat SoCube::width
-  X axis dimension of cube, defaults to 2.0.
+  X-axis dimension of cube, defaults to 2.0.
 */
 /*!
   \var SoSFFloat SoCube::height
-  Y axis dimension of cube, defaults to 2.0.
+  Y-axis dimension of cube, defaults to 2.0.
 */
 /*!
   \var SoSFFloat SoCube::depth
-  Z axis dimension of cube, defaults to 2.0.
+  Z-axis dimension of cube, defaults to 2.0.
 */
 
 

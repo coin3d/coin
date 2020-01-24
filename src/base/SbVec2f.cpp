@@ -400,7 +400,7 @@ SbVec2f::toString() const
 }
 
 /*!
-  Convert from a string representation, return wether this is a valid conversion
+  Convert from a string representation, return whether this is a valid conversion
 */
 SbBool
 SbVec2f::fromString(const SbString & str)
@@ -411,9 +411,8 @@ SbVec2f::fromString(const SbString & str)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized
-  compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
 */
 void
 SbVec2f::print(FILE * fp) const

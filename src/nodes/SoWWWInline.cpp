@@ -40,7 +40,7 @@
   supplying a callback to a function which will fetch the data of the
   URL.
 
-  As long as no data has been imported, the scenegraph representation
+  As long as no data have been imported, the scene graph representation
   of the node will be that of a bounding box enclosing the geometry we
   expect to fetch from the URL.  The application is naturally also
   responsible for specifying the expected dimensions of the geometry.
@@ -118,7 +118,7 @@
 
 /*!
   \enum SoWWWInline::BboxVisibility
-  Used to enumerate bbox rendering strategies.
+  Used to enumerate bounding box rendering strategies.
 */
 /*!
   \var SoWWWInline::BboxVisibility SoWWWInline::NEVER
@@ -135,7 +135,7 @@
 
 /*!
   \var SoSFString SoWWWInline::name
-  Name of file/URL where children should be read.
+  Name of file/URL where children should be read from.
 */
 
 /*!
@@ -315,7 +315,7 @@ SoWWWInline::isURLDataRequested(void) const
 }
 
 /*!
-  Return \c TRUE if the current child data has been read from file/URL
+  Return \c TRUE if the current child data have been read from file/URL
   and set using setChildData().
 */
 SbBool
@@ -352,7 +352,7 @@ SoWWWInline::setChildData(SoNode * urldata)
 /*!
   Returns the child data for this node. This can be data read from a
   file, from an URL, from the contents of SoWWWInline::alternateRep or
-  that was manually set with SoWWWInline::setChildData().
+  data that was manually set with SoWWWInline::setChildData().
 */
 SoNode *
 SoWWWInline::getChildData(void) const
@@ -581,7 +581,7 @@ SoWWWInline::doAction(SoAction * action)
 }
 
 /*!
-  This method should probably have been private in OIV. It is
+  This method should probably have been private in Open Inventor API. It is
   obsoleted in Coin. Let us know if you need it.
 */
 void

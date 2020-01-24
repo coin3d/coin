@@ -56,16 +56,16 @@
 
   SoSeparator nodes are aggressively caching the results of bounding
   box calculations, so that they are really only re-calculated
-  whenever the scenegraph rooted below any SoSeparator node has been
-  modified. This means that applying this action to scenegraphs, or
-  parts of scenegraphs, should be very quick on successive runs for
+  whenever the scene graph rooted below any SoSeparator node has been
+  modified. This means that applying this action to scene graphs, or
+  parts of scene graphs, should be very quick on successive runs for
   "static" parts of the scene.
 
   Note that the algorithm used is not guaranteed to always give an
   exact bounding box: it combines bounding boxes in pairs and extends
   one of them to contain the other. Since the boxes need not be
   parallel to the principal axes the new box might not be a perfect
-  fit for the box not extended (it's coordinate system has been
+  fit for the box not extended (its coordinate system has been
   changed).
 
   Note also that what is returned from getBoundingBox() will be
@@ -116,7 +116,7 @@
 //
 // ======================================================================
 //
-//  013 Bounding box calculation of the scenegraph given below is
+//  013 Bounding box calculation of the scene graph given below is
 //      sub-optimal.
 //
 //      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
@@ -170,7 +170,7 @@
 //
 //  022 Sub-optimal bounding box calculations.
 //
-//      The fairly simple scenegraph below results in a rather sub-optimal
+//      The fairly simple scene graph below results in a rather sub-optimal
 //      bounding box being calculated. For a good view of how it is, use
 //      the SoGuiExamples/engines/computexfbbox example.
 //
@@ -192,14 +192,14 @@
 //      }
 //      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 //
-//      (Note that this scenegraph does not show a _grave_ bbox error. I
+//      (Note that this scene graph does not show a _grave_ bbox error. I
 //      prioritized getting it as small as possible while still
 //      demonstrating that there *is* an error. I have the original
-//      scenegraph which I constructed this from, where the bbox is _way_
+//      scene graph which I constructed this from, where the bbox is _way_
 //      off.)
 //
 //      UPDATE 20020830 mortene: I used SGI Inventor to check both the
-//      boundingbox of the minimal case above and the larger scene where
+//      bounding box of the minimal case above and the larger scene where
 //      it comes out fairly sub-optimal for us -- and the original SGI
 //      Inventor doesn't make any tighter fit than we are. So there might
 //      be something fundamental about the case above which makes it
@@ -249,19 +249,19 @@ SoGetBoundingBoxAction::initClass(void)
   pixel's depth value against the 3D shapes in the scene.)
 
   To compute an accurate 3D bounding box of a shape rendered in 2D on
-  the screen "surface", you need to "de-project" the screen-space area
+  the screen "surface", you need to "de-project" the screen space area
   it occupies to a 2D rectangle placed at some depth in the
   scene. This "de-projecting" operation needs to know about the
   dimensions of the viewport.
 
   Also, some 3D shapes like for instance SoNurbsSurface, get slightly
-  distorted if there's an SoComplexity node in the scenegraph with the
+  distorted if there's an SoComplexity node in the scene graph with the
   SoComplexity::value field set to SCREEN_SPACE. Then it is also
   necessary to know the viewport region to find out how to accurately
   calculate the bounding box of those shapes.
 
   You would usually want to pass in a viewport region equal to the
-  layout of the current renderarea canvas. If you have a viewer or
+  layout of the current render area canvas. If you have a viewer or
   So\@Gui\@RenderArea available, you can get hold of the viewport region
   data simply by doing
 
@@ -269,12 +269,12 @@ SoGetBoundingBoxAction::initClass(void)
      const SbViewportRegion & vpreg = viewer->getViewportRegion();
   \endcode
 
-  (If you don't have a viewer or renderarea available in your
+  (If you don't have a viewer or render area available in your
   application at the point where you want to get the bounding box, it
   probably doesn't matter much what you set it to. The accuracy of the
   bounding box calculation might be slightly wrong versus the actual
   rendered appearance of the scene, but this is usually not
-  noticable.)
+  noticeable.)
 */
 SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
   : center(0, 0, 0),

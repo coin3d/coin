@@ -51,7 +51,7 @@
 
   The cache element test algorithm in Coin works like this:
 
-  Every element that is read before it's written when a cache is
+  Every element that is read before it is written when a cache is
   created is stored in the SoCache's element list. This is done to
   detect when something outside the cache changes.
 
@@ -263,7 +263,7 @@ SoCache::isValid(const SoState * state) const
 /*!
   Returns the element that caused the invalidation. Returns \e NULL
   if the cache is valid, or if the cache was not invalidated
-  bacause of an element.
+  because of an element.
 */
 const SoElement *
 SoCache::getInvalidElement(const SoState * const state) const

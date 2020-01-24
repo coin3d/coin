@@ -342,7 +342,7 @@ SoVRMLSound::initClass(void)
      www.openal.org is slightly buggy when it comes to buffer
      handling, and for mysterious reasons, if the buffer size is a
      multiple of 4096, everything works almost as it should.  The
-     problem (and this quick-fix) has been aknowledged by the guy in
+     problem (and this quick-fix) has been acknowledged by the guy in
      charge of the Linux version of OpenAL, and it is being worked
      at. 2003-03-10 thammer */
   const char * env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
@@ -487,7 +487,7 @@ SoVRMLSound::SoVRMLSound(void)
             "manufacturer of "
             "your soundcard for a native OpenAL driver (several soundcard"
             "manufacturers offer this).",
-            openal_wrapper()->runtime ? "run-time" : "link-time");
+            openal_wrapper()->runtime ? "runtime" : "link-time");
           if (openal_wrapper()->runtime) {
             SoDebugError::postInfo("SoVRMLSound::SoVRMLSound",
                                    "To get more debug information, "

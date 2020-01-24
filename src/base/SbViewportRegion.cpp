@@ -38,7 +38,7 @@
 
   The SbViewportRegion class contains information to represent a
   subview within a window. It stores information about the origin and
-  size of the subview, aswell as the size of the underlying "full"
+  size of the subview, as well as the size of the underlying "full"
   window.
 
   Available methods include inquiries and manipulation in both
@@ -587,8 +587,8 @@ operator!=(const SbViewportRegion & reg1, const SbViewportRegion & reg2)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbViewportRegion::print(FILE * fp) const

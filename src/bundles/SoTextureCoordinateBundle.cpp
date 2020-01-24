@@ -174,7 +174,7 @@ SoTextureCoordinateBundle::~SoTextureCoordinateBundle()
 }
 
 /*!
-  Returns \e TRUE if texture coordinates is needed during rendering.
+  Returns \e TRUE if texture coordinates are needed during rendering.
 */
 SbBool
 SoTextureCoordinateBundle::needCoordinates() const

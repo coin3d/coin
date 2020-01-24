@@ -48,7 +48,7 @@
   \image html handlebox.png "Screen Shot of Default Dragger"
   </center>
 
-  A handlebox dragger is convenient to use for letting the user
+  A handle box dragger is convenient to use for letting the user
   interact with geometry that can be scaled (uniformly or in a
   non-uniform way) and translated in 3D.
 
@@ -146,7 +146,7 @@ SoHandleBoxDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 

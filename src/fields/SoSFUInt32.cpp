@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a single 32-bit unsigned integer value.
+  need to store a single 32-bit unsigned integer value.
 
   \sa SoMFUInt32
 */

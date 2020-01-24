@@ -37,7 +37,7 @@
   \ingroup elements
 
   Please note that this is an experimental class. The API might change
-  a lot before/if it's included in any official Coin release.
+  a lot before/if it is included in any official Coin release.
 */
 
 #include <Inventor/elements/SoCacheHintElement.h>

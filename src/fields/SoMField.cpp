@@ -142,7 +142,7 @@
   executed, something can go wrong during notification if you have
   application code monitoring changes, and the application code then
   for instance triggers an action or something that tries to use the
-  coordIndex field before it's updated to it's correct size with the
+  coordIndex field before it is updated to its correct size with the
   setNum() call.
 
   (Notification can in this case, as always, be temporarily disabled
@@ -281,7 +281,7 @@ using std::strlen;
 */
 /*!
   \var SbBool SoMField::userDataIsUsed
-  Is \c TRUE if data has been set through a setValuesPointer() call
+  Is \c TRUE if data have been set through a setValuesPointer() call
   and set to \c FALSE through a enableDeleteValues() call.
 */
 
@@ -357,7 +357,7 @@ SoMField::makeRoom(int newnum)
   from \a valuestring, otherwise \c FALSE.
 
   If \a index is larger than the current number of elements in the
-  field, this method will automatically expand the field to accomodate
+  field, this method will automatically expand the field to accommodate
   the new value.
 */
 SbBool
@@ -677,7 +677,7 @@ SoMField::deleteValues(int start, int numarg)
 {
   // Note: this function is overridden in SoMFNode, SoMFEngine and
   // SoMFPath, so if you do any changes here, take a look at those
-  // methods aswell (they are collected in the common template
+  // methods as well (they are collected in the common template
   // MFNodeEnginePath.tpl).
 
   // Don't use getNum(), so we avoid recursive evaluate() calls.
@@ -786,7 +786,7 @@ SoMField::allocValues(int newnum)
   // Important notice: the "non-realloc"-version of this method is
   // found in SoSubField.h. If you make modifications here, do check
   // whether or not they should be matched with modifications in that
-  // method aswell.
+  // method as well.
 
   assert(newnum >= 0);
 

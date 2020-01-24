@@ -56,8 +56,8 @@
   SoTranslate2Dragger) and another part on the axis normal to the
   plane.
 
-  While the dragger is inactive (ie the user is not currently grabbing
-  and / or dragging it's parts), the CTRL keys on the keyboard can be
+  While the dragger is inactive (i.e. the user is not currently grabbing
+  and / or dragging its parts), the CTRL keys on the keyboard can be
   used to switch the orientation of the 2D-plane part and the
   normal-axis part so the normal-axis part points along one of the
   other principal axes.  This is done by position the mouse pointer
@@ -116,7 +116,7 @@ SoDragPointDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 

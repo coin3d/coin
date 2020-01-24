@@ -44,13 +44,13 @@
 /*!
   \fn void SoMultiTextureEnabledElement::set(SoState * state, const SbBool enabled)
   
-  Coin-3 support.
+  \since Coin-3
 */
 
 /*!
   \fn void SoMultiTextureEnabledElement::set(SoState * state, SoNode* node, const SbBool enabled)
   
-  Coin-3 support.
+  \since Coin-3.
 */
 
 #include "SbBasicP.h"

@@ -38,7 +38,7 @@
 
   FIXME: write doc.
 
-  This element is part of the SoLazyElement in some other OI implementetions.
+  This element is part of the SoLazyElement in some other OI implementations.
 */
 
 #include <Inventor/elements/SoShininessElement.h>

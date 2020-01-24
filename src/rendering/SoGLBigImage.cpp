@@ -607,7 +607,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
   if ((div == 1) || (this->cache && level < this->numcachelevels && this->cache[level])) {
     SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
 
-    // FIXME: investigate if it's possible to set the pixel transfer
+    // FIXME: investigate if it is possible to set the pixel transfer
     // mode so that we don't have to copy the data into a temporary
     // image. This is probably fast enough though.  pederb?.
 

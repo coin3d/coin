@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store multiple time representations.
+  need to store multiple time representations.
 
   \sa SoSFTime
 */

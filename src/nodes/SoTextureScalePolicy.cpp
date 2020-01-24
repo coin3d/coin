@@ -38,7 +38,7 @@
 
   If a texture map is of size != 2^n, it must be scaled before OpenGL
   can handle it.  This node enables you to control how/if textures are
-  scaled before it is sent to OpenGL.
+  scaled before they are sent to OpenGL.
 
   Also, if a texture map is bigger than the maximum OpenGL texture
   size (implementation and context dependent), it will be scaled down
@@ -61,7 +61,7 @@
 
 
   The SoTextureScalePolicy::FRACTURE policy is also very handy for
-  using the Coin library's built-in handling of non-power-of-2
+  using the Coin libraries built-in handling of non-power-of-2
   textures. This will then be done completely transparent to the
   application programmer, for maximum convenience. Below is a very
   simple example which demonstrates how to use it. The texture has
@@ -78,7 +78,7 @@
         image 3 3 4  # dimensions 3x3, RGBA (4-component) image
         0xff0000ff 0x00ff00ff 0x0000ffff  # red, green, blue
         0xffff00ff 0xff00ffff 0x00ffffff  # yellow, magenta, cyan
-        0x222222ff 0x777777ff 0xccccccff  # dark, medium and light grey
+        0x222222ff 0x777777ff 0xccccccff  # dark, medium and light gray
      }
      Cube { }
   }

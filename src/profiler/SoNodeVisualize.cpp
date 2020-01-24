@@ -400,7 +400,7 @@ SoNodeVisualize::recalculate() {
 
    If no argument given, visualizes everything
 
-   WARNING: Allthough the default is to visualize everything, it is
+   WARNING: Although the default is to visualize everything, it is
    recommended to set a limit on how deep you want to traverse. If you
    go to deep, the memory requirements, and recalculation may become
    so heavy it grinds to a halt. Additionally it is difficult to see,
@@ -435,11 +435,11 @@ void
 SoNodeVisualize::traverse(SoProfilerStats * stats)
 {
   // FIXME 20071109 rolvs: This is just crammed in here, during the last hours of the hackathon.
-  // And I'm quite sure that a better way to do this alltogeher might be
+  // And I'm quite sure that a better way to do this altogether might be
   // conjured. its also more than possible that I duplicate some functionality somewhere here...
   // And phew. Cut and paste programming. Darn.
 
-  // check if this->node is a cache-separator. In that case, find it's material and set it.
+  // check if this->node is a cache-separator. In that case, find its material and set it.
   //this->getChildrenGeometry()
   assert(stats && "Stats not set.");
   SoMaterial * material = static_cast<SoMaterial *>(this->color.getValue());
@@ -575,7 +575,7 @@ SoNodeVisualize::~SoNodeVisualize()
 }
 
 /*!
-   Standard intialization for node catalog
+   Standard initialization for node catalog
 */
 void
 SoNodeVisualize::initClass(void)
@@ -722,9 +722,9 @@ SoNodeVisualize::nodeNumChildren() {
 }
 
 /*!
-  Resets the datastructure in anticipation of a reanalysis
+  Resets the data structure in anticipation of a reanalysis
 
-  This puts the structure in the same inconsistent structure as the empty constructor
+  This puts the structure in the same inconsistent state as the empty constructor
 */
 void
 SoNodeVisualize::reset() {

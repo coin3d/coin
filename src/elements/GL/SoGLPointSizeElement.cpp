@@ -32,19 +32,19 @@
 
 /*!
   \class SoGLPointSizeElement Inventor/elements/SoGLPointSizeElement.h
-  \brief The SoGLPointSizeElement class changes the pointsize setting of the OpenGL render state.
+  \brief The SoGLPointSizeElement class changes the point size setting of the OpenGL render state.
 
   \ingroup elements
 
-  Requests from the scenegraph to change the pointsize when rendering
+  Requests from the scene graph to change the point size when rendering
   point primitives will be made through this element, which forwards
   it to the appropriate native OpenGL call.
 
   The Coin library does not place any bounds on the values of the
-  pointsize, but be aware that the range and granularity of what is
-  valid pointsizes depends on the underlying OpenGL
+  point size, but be aware that the range and granularity of what is
+  valid point sizes depends on the underlying OpenGL
   implementation. Application programmers using point primitives
-  (typically through the SoPointSet node) should heed these boundary
+  (typically through the SoPointSet node) should consider these boundary
   values. They can be acquired by running the following code from
   within a valid OpenGL context:
 
@@ -56,7 +56,7 @@
   \endcode
 
   Another, perhaps more convenient, way of acquiring the OpenGL
-  implementation limits with regard to pointsizes is to use the
+  implementation limits with regard to point sizes is to use the
   So\@Gui\@GLWidget\::getPointSizeLimits() method in the GUI "glue" interface
   library you are using (SoQt, SoXt, SoGtk, SoWin, ...).
 */
@@ -145,7 +145,7 @@ SoGLPointSizeElement::updategl(void)
 
     // Matthias Koenig reported on coin-discuss that the OpenGL
     // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
-    // lowest pointsize, but it will still set the return value of
+    // lowest point size, but it will still set the return value of
     // glGetError() to GL_INVALID_VALUE if this size is attempted
     // used. So the boundary range fix in the next line of code is a
     // workaround for that OpenGL implementation bug.
@@ -163,7 +163,7 @@ SoGLPointSizeElement::updategl(void)
 
   // 0.0f is used as a "dummy" default value by our superclass and by
   // SoDrawStyle::pointSize, so handle that case outside of the
-  // rangecheck below.
+  // range check below.
 
   if (this->data == 0.0f) { useval = 1.0f; }
 

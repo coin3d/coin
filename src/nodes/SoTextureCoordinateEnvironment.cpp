@@ -36,12 +36,12 @@
 
   \ingroup nodes
 
-  The texture specifying the enviroment will be mapped around the 
-  scenegraph below this node using a sphere. The texture will be mapped
-  onto the scenegraph taking camera position into account. This will
-  lead to an object reflecting its enviroment.
+  The texture specifying the environment will be mapped around the 
+  scene graph below this node using a sphere. The texture will be mapped
+  onto the scene graph taking camera position into account. This will
+  lead to an object reflecting its environment.
 
-  Here is a scenegraph example showing how enviroment mapping can be
+  Here is a scene graph example showing how environment mapping can be
   applied to an object:
 
   \code

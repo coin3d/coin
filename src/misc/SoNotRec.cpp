@@ -50,7 +50,7 @@
 /*!
   \enum SoNotRec::OperationType
 
-  This enum is used to specify the type of the scenegraph operation
+  This enum is used to specify the type of the scene graph operation
   causing the notification.
 */
 

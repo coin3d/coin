@@ -166,7 +166,7 @@ SoProtoInstance::getProtoDefinition(void) const
 }
 
 /*!
-  Returns the PROTO defintion name.
+  Returns the PROTO definition name.
 */
 SbName
 SoProtoInstance::getProtoName(void) const

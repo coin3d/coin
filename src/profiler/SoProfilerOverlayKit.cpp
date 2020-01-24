@@ -133,14 +133,14 @@ SoProfilerOverlayKit::SoProfilerOverlayKit(void)
 }
 
 /*!
-  Desctructor.
+  Destructor.
  */
 SoProfilerOverlayKit::~SoProfilerOverlayKit(void)
 {
 }
 
 /*!
-  Display profiling scenegraph on top of the regular viewport.
+  Display profiling scene graph on top of the regular viewport.
 
   \param node Scene graph to display
  */

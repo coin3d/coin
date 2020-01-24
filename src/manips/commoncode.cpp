@@ -55,7 +55,7 @@
 
 /***************************************************************************/
 
-// FIXME: can we use a macro for the documentation aswell? Check to
+// FIXME: can we use a macro for the documentation as well? Check to
 // see if Doxygen can handle it. 20000427 mortene.
 
 /*!

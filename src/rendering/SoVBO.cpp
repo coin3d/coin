@@ -236,7 +236,7 @@ SoVBO::allocBufferData(intptr_t size, SbUniqueId dataid)
 
 /*!
   Sets the buffer data. \a dataid is a unique id used to identify
-  the buffer data. In Coin it's possible to use the node id
+  the buffer data. In Coin it is possible to use the node id
   (SoNode::getNodeId()) to test if a buffer is valid for a node.
 */
 void

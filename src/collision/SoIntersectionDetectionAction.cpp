@@ -44,7 +44,7 @@
   over complex scene graphs is doomed to be a performance killer.
 
   Below is a simple usage example for this class. It was written as a
-  stand-alone framework set up for profiling and optimization of the
+  standalone framework set up for profiling and optimization of the
   SoIntersectionDetectionAction. It tests intersection of all shapes
   against each other for the loaded file.
 
@@ -337,7 +337,7 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
   This will affect all intersection detection action objects in use that
   don't have a locally set value.
 
-  The epsilon value is a worldspace value.
+  The epsilon value is a world space value.
 
   Be aware that increasing the epsilon value can \e dramatically
   increase the number of primitive intersection tests being done to
@@ -407,7 +407,7 @@ SoIntersectionDetectionAction::setTypeEnabled(SoType type, SbBool enable)
 
 /*!
   Returns whether nodes of specific types are enabled or not.  The \a checkgroups
-  argument can be set to TRUE if you wan't the return value to reflect whether
+  argument can be set to TRUE if you want the return value to reflect whether
   the node will be implicit enabled/disabled through the settings controlled by the
   setManipsEnabled() and setDraggersEnabled() functions.
 
@@ -655,7 +655,7 @@ SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb,
 void
 SoIntersectionDetectionAction::apply(SoNode * node)
 {
-  // Keep this around, as it's handy for dumping a stand-alone scene
+  // Keep this around, as it is handy for dumping a standalone scene
   // to work with from an invocation within an application framework.
 #if 0 // disabled
   SoOutput out;
@@ -1067,7 +1067,7 @@ make_scene_graph(const SbBox3f & box, SoCoordinate3 *& coord3, SoIndexedLineSet 
 
 // This is a helper function for debugging purposes: it sets up a
 // small scene graph that shows the geometry of the SbXfBox3f input
-// argument, with the identity tag at it's corner.
+// argument, with the identity tag at its corner.
 static SoSeparator *
 make_scene_graph(const SbXfBox3f & xfbox, const char * tag)
 {
@@ -1160,7 +1160,7 @@ shapeinsideboxfunc(void * const item, const SbBox3f & box)
 }
 
 // Execute full set of intersection detection operations on all the
-// primitives that has been souped up from the scene graph.
+// primitives that have been souped up from the scene graph.
 void
 SoIntersectionDetectionAction::PImpl::doIntersectionTesting(void)
 {

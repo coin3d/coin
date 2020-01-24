@@ -190,9 +190,9 @@ ScXMLElt::getXMLAttribute(const char * attribute) const
 /*!
   This method is called when the file reader has set all the XML
   attributes on the object, and wants the object to handle them and
-  report if the values were ok or if a read error should be produced.
+  report if the values were OK or if a read error should be produced.
 
-  \return TRUE if the attributes are ok, and FALSE on error.
+  \return TRUE if the attributes are OK, and FALSE on error.
 
   This base class implementation does nothing and just returns TRUE.
 */
@@ -204,7 +204,7 @@ ScXMLElt::handleXMLAttributes(void)
 
 /*!
   This method searches the SCXML structure for an element with the
-  given attributevalue for the given attribute.
+  given attribute value for the given attribute.
 
   Returns NULL if nothing was found.
 
@@ -256,7 +256,7 @@ ScXMLElt::setContainer(ScXMLElt * container)
 /*!
   This method returns TRUE if the object is contained within the given
   \a object argument. Also if they are the same, TRUE will be returned.
-  Otherwise, FALSE is retured.
+  Otherwise, FALSE is returned.
 */
 SbBool
 ScXMLElt::isContainedIn(const ScXMLElt * element) const

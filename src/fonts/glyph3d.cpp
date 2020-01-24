@@ -271,7 +271,7 @@ cc_glyph3d_getcoords(const cc_glyph3d * g)
 {
   const float * ptr = cc_flw_get_vector_glyph_coords(g->vectorglyph);
   if (ptr == NULL) {    
-    assert(g->vectorglyph->vertices && "Default vertices has not been initialized as expected!");
+    assert(g->vectorglyph->vertices && "Default vertices have not been initialized as expected!");
     return g->vectorglyph->vertices;
   }
   return ptr;  
@@ -282,7 +282,7 @@ cc_glyph3d_getfaceindices(const cc_glyph3d * g)
 {
   const int * ptr = cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
   if (ptr == NULL) {      
-    assert(g->vectorglyph->faceindices && "Default face indices has not been initialized as expected!");
+    assert(g->vectorglyph->faceindices && "Default face indices have not been initialized as expected!");
     return g->vectorglyph->faceindices; 
   }
   return ptr;
@@ -293,7 +293,7 @@ cc_glyph3d_getedgeindices(const cc_glyph3d * g)
 {
   const int * ptr = cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
   if (ptr == NULL) {    
-    assert(g->vectorglyph->edgeindices && "Default edge indices has not been initialized as expected!");
+    assert(g->vectorglyph->edgeindices && "Default edge indices have not been initialized as expected!");
     return g->vectorglyph->edgeindices; 
   }
   return ptr;

@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Shapes below this node in the scenegraph will have to use its default 
+  Shapes below this node in the scene graph will have to use its default 
   texture coordinates as SoTextureCoordinateDefault cleans out all previously
   defined texture coordinates and texture coordinate functions.
 

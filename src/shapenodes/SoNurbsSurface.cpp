@@ -44,10 +44,10 @@
   "The Inventor Mentor".
 
   Note that knot values should be specified as [0, 1, 2,..., a] rather
-  than [0, 1/a, 2/a,..., 1] to avoid tesselation errors due to
+  than [0, 1/a, 2/a,..., 1] to avoid tessellation errors due to
   floating point precision problems. (Even if the rendered surface
   <i>looks</i> correct, such issues might surface when e.g. doing
-  picking, since the tesselated representation used internally is not
+  picking, since the tessellated representation used internally is not
   the same as the one you see rendered by OpenGL on-screen.)
 
   Each control point has a weight that changes the shape of its basis function.

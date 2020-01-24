@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a single rotation definition.
+  need to store a single rotation definition.
 
   Fields of this type stores their value to file as a rotation axis
   vector plus a rotation angle: "axis0 axis1 axis2 angle".

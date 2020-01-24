@@ -47,14 +47,14 @@
   also possible to achieve the same results by using engines. There
   are a few important differences between sensors and engines, though:
 
-  Engines are considered part of the scene graph, and is written to
+  Engines are considered part of the scene graph, and are written to
   file upon SoWriteAction export operations. Sensors, on the other
   hand, are not included in export operations.
 
-  Engines basically connects fields (and comes with a lot of builtin
+  Engines basically connects fields (and come with a lot of built-in
   functionality for combining and converting inputs and outputs), you
   just decide which engine you want, connect inputs and output and
-  forgets about it. Sensors are a lot more flexible in what you can do
+  forget about it. Sensors are a lot more flexible in what you can do
   when they trigger, as control is transfered internally from Coin to
   your registered callback functions.
 
@@ -126,7 +126,7 @@ SoSensor::SoSensor(void)
 
 /*!
   Constructor taking as parameters the sensor callback function \a
-  func and the user \a data pointer which will be passed the callback.
+  func and the user \a data pointer which will be passed to the callback.
 
   \sa setFunction(), setData()
  */
@@ -167,7 +167,7 @@ SoSensor::getFunction(void) const
 }
 
 /*!
-  Set the user-supplied data pointer which will be used as the first
+  Set the user supplied data pointer which will be used as the first
   argument to the sensor callback function.
 
   \sa getData(), setFunction()
@@ -179,7 +179,7 @@ SoSensor::setData(void * callbackdata)
 }
 
 /*!
-  Returns the user-supplied callback function data pointer.
+  Returns the user supplied callback function data pointer.
 
   \sa setData()
  */

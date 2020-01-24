@@ -60,7 +60,7 @@
   \class SoVertexAttribute Inventor/nodes/SoVertexAttribute.h
   \brief A generic node for providing GL vertex attributes of various types.
 
-  The SoVertexAttribute nodes is used with the SoShaderProgram node to
+  The SoVertexAttribute nodes are used with the SoShaderProgram node to
   send vertex attributes to the vertex shader.
 
   \verbatim
@@ -254,7 +254,7 @@ SoVertexAttribute::GLRender(SoGLRenderAction * action)
   }
 
   // check if there was an SoShaderProgram node before this node in
-  // the scenegraph
+  // the scene graph
   SoGLShaderProgram * shaderprogram =
     static_cast<SoGLShaderProgram *>(SoGLShaderProgramElement::get(state));
 

@@ -43,7 +43,7 @@
 
   Note that even though the size of the 2D text is not influenced by
   the distance from the camera, the text is still subject to the usual
-  rules with regard to the depthbuffer, so it \e will be obscured by
+  rules with regard to the depth buffer, so it \e will be obscured by
   graphics laying in front of it.
 
   The text will be \e positioned according to the current transformation.
@@ -82,7 +82,7 @@
   two separate SoText2 nodes, one for each font, since it will have to
   recalculate glyph bitmap ids and positions for each call to \c GLrender().
 
-  SoScale nodes can not be used to influence the dimensions of the
+  SoScale nodes cannot be used to influence the dimensions of the
   rendering output of SoText2 nodes.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -169,7 +169,7 @@
   \enum SoText2::Justification
 
   Enum contains the various options for how the horizontal text layout
-  text should be done. Valid values are LEFT, RIGHT and CENTER.
+  should be done. Valid values are LEFT, RIGHT and CENTER.
 */
 
 
@@ -177,7 +177,7 @@
   \var SoMFString SoText2::string
 
   The set of strings to render.  Each string in the multiple value
-  field will be rendered on it's own line.
+  field will be rendered on its own line.
 
   The default value of the field is a single empty string.
 */
@@ -243,7 +243,7 @@ public:
 private:
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.

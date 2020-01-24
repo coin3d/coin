@@ -34,7 +34,7 @@
   \class SoShadowDirectionalLight SoShadowDirectionalLight.h Inventor/annex/FXViz/nodes/SoShadowDirectionalLight.h
   \brief The SoShadowDirectionalLight class is a node for setting up a directional light which casts shadows.
 
-  Directional lights usually affect everything, but since it's not
+  Directional lights usually affect everything, but since it is not
   always feasible to use one shadow map for the entire scene
   graph. This node has some extra features to work around this.
   
@@ -55,7 +55,7 @@
   The example scene graph below demonstrates how you can use this node
   to create shadows on a large number of objects, and still get decent
   precision when zooming in. To further reduce the volume covered by
-  the shadowmap, you can set \a maxShadowDistance to some number > 0.
+  the shadow map, you can set \a maxShadowDistance to some number > 0.
   This is the distance from the camera where shadows will be visible.
 
   \code

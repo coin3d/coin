@@ -218,10 +218,10 @@ SbViewVolume::getMatrix(void) const
 
 /*!
   Returns a matrix which will translate the view volume camera back to
-  origo, and rotate the camera so it'll point along the negative z axis.
+  origo, and rotate the camera so it'll point along the negative Z-axis.
 
   Note that the matrix will \a not include the rotation necessary to
-  make the camera up vector point along the positive y axis (i.e.
+  make the camera up vector point along the positive Y-axis (i.e.
   camera roll is not accounted for).
 
   \sa getMatrices(), getMatrix()
@@ -432,7 +432,7 @@ SbViewVolume::narrow(const SbBox3f & box) const
   Set up the view volume as a rectangular box for orthographic
   parallel projections.
 
-  The line of sight will be along the negative z axis, through the
+  The line of sight will be along the negative Z-axis, through the
   center of the plane defined by the point
 
       [(right+left)/2, (top+bottom)/2, 0]
@@ -453,7 +453,7 @@ SbViewVolume::ortho(float left, float right,
 // function. 20010824 mortene.
 /*!
   Set up the view volume for perspective projections. The line of
-  sight will be through origo along the negative z axis.
+  sight will be through origo along the negative Z-axis.
 
   \sa ortho().
 */
@@ -670,8 +670,8 @@ SbViewVolume::getDepth(void) const
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbViewVolume::print(FILE * fp) const
@@ -757,7 +757,7 @@ SbViewVolume::intersect(const SbVec3f & p) const
 
 /*!  
   Returns TRUE if the line segment \a p0, \a p1 may intersect
-  volume. Be aware that it's not 100% certain that the line segment
+  volume. Be aware that it is not 100% certain that the line segment
   intersects the volume even if this function returns TRUE.
   
   \a closestpoint is set to the closest point on the line

@@ -109,7 +109,7 @@ ScXMLObject::initClass(void)
 /*!
   \brief Does the opposite of initClass, deallocates any class
   specific resources and resets the class to an uninitialized state
-  with respect to the Coin typesystem
+  with respect to the Coin type system
  */
 void
 ScXMLObject::cleanClass(void)

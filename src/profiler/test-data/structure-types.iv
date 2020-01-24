@@ -1,7 +1,7 @@
 #Inventor V2.1 ascii
 
 # Use this file to check that we get timing correct for nodes when
-# there are various structure-type (ie group) nodes, and when there
+# there are various structure-type (i.e. group) nodes, and when there
 # are nodekits cumulating lots of nodes below them.
 
 Group {

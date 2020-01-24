@@ -116,7 +116,7 @@
   colour value is for the nadir which is not specified in the
   groundAngle field. If the last groundAngle is less than pi/2, the
   region between the last groundAngle and the equator is
-  non-existant. The ground colour is linearly interpolated between the
+  non-existent. The ground colour is linearly interpolated between the
   specified groundColor values.
 
   The backUrl, bottomUrl, frontUrl, leftUrl, rightUrl, and topUrl
@@ -515,7 +515,7 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   SbRotation rot(tmp);
 
   if (vrmlbackground_viewup_set) {
-    // create a rotation from the positive Y axis to the new view up
+    // create a rotation from the positive Y-axis to the new view up
     SbRotation r2(SbVec3f(0.0f, 1.0f, 0.0f), 
                   SbVec3f(vrmlbackground_viewup[0],
                           vrmlbackground_viewup[1],
@@ -1026,7 +1026,7 @@ background_bindingchangeCB(void * data, SoSensor * sensor)
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
   // But first, a Coin viewer must support this kind of special node
   // treatment (this applies to 'Fog', 'NavigationInfo' and 'Viewport'
-  // nodes aswell) (11Aug2003 handegar)
+  // nodes as well) (11Aug2003 handegar)
 
   if (sensor == pimpl->setbindsensor) {
     SoDebugError::postWarning("background_bindingchangeCB", "'set_bind' event not implemented yet");

@@ -59,7 +59,7 @@
   type.  The material field, if specified, shall contain a VRMLMaterial
   node. If the material field is NULL or unspecified, lighting is off
   (all lights are ignored during rendering of the object that
-  references this Appearance) and the unlit object colour is (1, 1,
+  references this Appearance) and the unlit object color is (1, 1,
   1). Details of the VRML lighting model are in 4.14, Lighting model
   (<http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.14>).
 

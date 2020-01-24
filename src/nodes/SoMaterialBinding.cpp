@@ -37,7 +37,7 @@
   \ingroup nodes
 
   The material binding specified in nodes of this type decides how the
-  material values of SoMaterial nodes are mapped on the builtin
+  material values of SoMaterial nodes are mapped on the built-in
   geometry shape nodes.
 
   The exact meaning of a binding depends on what particular shape type

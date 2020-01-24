@@ -37,7 +37,7 @@
   \ingroup base
 
   This class is used within many other classes in Coin. It contains
-  the data neccessary to represent a sphere (a 3D point and a radius).
+  the data necessary to represent a sphere (a 3D point and a radius).
 
   \sa SbCylinder */
 
@@ -223,8 +223,8 @@ SbSphere::pointInside(const SbVec3f &p) const
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbSphere::print(FILE * fp) const

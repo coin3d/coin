@@ -62,7 +62,7 @@
   actual value is unspecified, and you should not depend on it.
 */
 SbDPRotation::SbDPRotation(void)
-  // This translates to zero rotation around the positive Z axis.
+  // This translates to zero rotation around the positive Z-axis.
   : quat(0.0f, 0.0f, 0.0f, 1.0f)
 {
 }
@@ -89,7 +89,7 @@ SbDPRotation::SbDPRotation(const SbVec3d & axis, const double radians)
   The array must be ordered as follows:
 
   q[0] = x, q[1] = y, q[2] = z and q[3] = w, where the quaternion is
-  specified by q=w+xi+yj+zk.
+  specified by q = w + xi + yj + zk.
  */
 SbDPRotation::SbDPRotation(const double q[4])
 {
@@ -429,9 +429,9 @@ SbDPRotation::setValue(const SbVec3d & rotateFrom, const SbVec3d & rotateTo)
     // Ok, so they are parallel and pointing in the opposite direction
     // of each other.
     else {
-      // Try crossing with x axis.
+      // Try crossing with X-axis.
       SbVec3d t = from.cross(SbVec3d(1.0f, 0.0f, 0.0f));
-      // If not ok, cross with y axis.
+      // If not ok, cross with Y-axis.
       if (t.normalize() == 0.0) {
         t = from.cross(SbVec3d(0.0f, 1.0f, 0.0f));
         (void) t.normalize();
@@ -502,7 +502,7 @@ operator==(const SbDPRotation & q1, const SbDPRotation & q2)
 /*!
   \relates SbDPRotation
 
-  Check if the two rotations are unequal.
+  Check if the two rotations are not equal.
 
   \sa equals().
  */
@@ -629,8 +629,8 @@ SbDPRotation::identity(void)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbDPRotation::print(FILE * fp) const

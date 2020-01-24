@@ -45,7 +45,7 @@
   The manipulator class takes care of wrapping up the SoJackDragger in
   a simple and convenient API for the application programmer, making
   it automatically surround the geometry it influences and taking care
-  of the book-keeping routines for it's interaction with the relevant
+  of the book-keeping routines for its interaction with the relevant
   fields of an SoTransformation node.
 
   <center>
@@ -75,9 +75,9 @@ SoJackManip::initClass(void)
 }
 
 /*!
-  Default constructor. Allocates an SoCenterballDragger and an
+  Default constructor. Allocates an SoJackDragger and an
   SoSurroundScale node to surround the geometry within our part of the
-  scenegraph.
+  scene graph.
 */
 SoJackManip::SoJackManip(void)
 {

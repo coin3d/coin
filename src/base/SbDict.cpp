@@ -159,7 +159,7 @@ SbDict::clear(void)
   Inserts a new entry into the dictionary. \a key should be
   a unique number, and \a value is the generic user data.
 
-  \e If \a key does not exist in the dictionary, a new entry
+  If \a key does not exist in the dictionary, a new entry
   is created and \c TRUE is returned. Otherwise, the generic user
   data is changed to \a value, and \c FALSE is returned.
 */

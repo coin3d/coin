@@ -204,7 +204,7 @@ SoNodeKitPath::pop(void)
 /*!
   Appends \a childKit to the path. childKit should be a part in the
   tail nodekit of this path. In effect, the path from the tail to first
-  occurrance of \a childKit will be appended to the path.
+  occurrence of \a childKit will be appended to the path.
 */
 void
 SoNodeKitPath::append(SoBaseKit * childKit)

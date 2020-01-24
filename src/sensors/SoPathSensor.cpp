@@ -36,8 +36,8 @@
 
   \ingroup sensors
 
-  If you need to know when a path changes (i.e. nodes in the path has
-  been removed, or new nodes is added), use this sensor to get a
+  If you need to know when a path changes (i.e. nodes in the path have
+  been removed, or new nodes are added), use this sensor to get a
   notification.
 
   You can also use this sensor to detect when some node in the path
@@ -101,7 +101,7 @@ SoPathSensor::SoPathSensor(void)
 
 /*!
   Constructor taking as parameters the sensor callback function and
-  the userdata which will be passed the callback.
+  the userdata which will be passed to the callback.
 
   \sa setFunction(), setData()
  */

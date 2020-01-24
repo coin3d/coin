@@ -52,7 +52,7 @@ extern "C" {
      use. We need these for casting from the void-pointer return of
      dlsym().
 
-     Note specifically for MSWindows that we do _not_ use the APIENTRY
+     Note specifically for Microsoft Windows that we do _not_ use the APIENTRY
      keyword in the function typedefs, as that would set them up with
      the __stdcall calling convention -- and simage functions are
      built with the __cdecl calling convention.
@@ -91,7 +91,7 @@ extern "C" {
 
   /* This define is set up in the simage_wrapper.cpp file, according to
      whether or not we link static at compile-time or dynamic at
-     run-time to the simage library. */
+     runtime to the simage library. */
 #if !defined(SIMAGEWRAPPER_ASSUME_SIMAGE)
   /* This wrapping of the enum and typedefs is necessary to avoid
      multiple definitions (they are copy'n'pasted from the simage.h

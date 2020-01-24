@@ -38,7 +38,7 @@
 
   When applied to a scene, this action writes its contents to the
   stream contained within an SoOutput instance. This can be a file, a
-  memory buffer or a system filehandle like \c stdout, for instance.
+  memory buffer or a system file handle like \c stdout, for instance.
 
   \e All information considered part of the scene graph should be
   written out, including not only nodes, but also the nodes' field
@@ -50,7 +50,7 @@
   SoDB::readAll() method (SoDB also contains a few other import
   methods you can use).
 
-  Here's a complete, stand-alone usage example which shows how to
+  Here's a complete, standalone usage example which shows how to
   write a scene graph to a memory buffer:
 
   \code
@@ -269,7 +269,7 @@ SoWriteAction::beginTraversal(SoNode * node)
 
   Compact path lists are not implemented in Coin (yet), but if they
   are, SoWriteAction should return \c FALSE here -- it would only be
-  extra overhead for the SoWriteAction to have pathlists compacted
+  extra overhead for the SoWriteAction to have path lists compacted
   before traversal.
 
   Seems like a silly optimization to me, though.. :^/  20000306 mortene.

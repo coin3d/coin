@@ -67,12 +67,12 @@
 
 /*!
   \var SoMFNode SoVRMLParent::addChildren
-  An event in that is used to add children to this node.
+  An eventIn that is used to add children to this node.
 */
 
 /*!
   \var SoMFNode SoVRMLParent::removeChildren
-  An event in that is used to remove children from this node.
+  An eventIn that is used to remove children from this node.
 */
 
 // *************************************************************************

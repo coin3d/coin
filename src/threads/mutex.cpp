@@ -134,7 +134,7 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
    excessive mutex construction. */
 
 /* don't hide 'static' these to hide them in file-scope, as they are
-   used from rwmutex.cpp and recmutex.cpp aswell. */
+   used from rwmutex.cpp and recmutex.cpp as well. */
 unsigned int cc_debug_mtxcount = 0;
 const char * COIN_DEBUG_MUTEX_COUNT = "COIN_DEBUG_MUTEX_COUNT";
 
@@ -182,7 +182,7 @@ cc_mutex_destruct(cc_mutex * mutex)
 
 /**************************************************************************/
 
-/*! Locks the the \a mutex specified. */
+/*! Locks the \a mutex specified. */
 void
 cc_mutex_lock(cc_mutex * mutex)
 {
@@ -281,7 +281,7 @@ cc_mutex_init(void)
   assert(h && "GetModuleHandle('kernel32.dll') failed!");
 
   /* This function is unsupported in Win95/98/Me and NT <=3.51, but we
-     still want to use it if it's available, since it can provide
+     still want to use it if it is available, since it can provide
      major speed-ups for certain aspects of Win32 mutex handling. */
   cc_mutex_TryEnterCriticalSection = (cc_mutex_TryEnterCriticalSection_func)
     GetProcAddress(h, "TryEnterCriticalSection");
@@ -293,7 +293,7 @@ cc_mutex_init(void)
     /* atexit priority makes this callback trigger after other cleanup
        functions. */
     /* FIXME: not sure if this really needs the "- 1", but I added it
-       to keep the same order wrt the other thread-related clean-up
+       to keep the same order wrt the other thread-related cleanup
        functions, since before I changed hard-coded numbers for
        enumerated values for coin_atexit() invocations. 20060301 mortene. */
     coin_atexit((coin_atexit_f*) cc_mutex_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM_LOWPRIORITY);

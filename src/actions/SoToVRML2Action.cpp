@@ -50,7 +50,7 @@
   built using PointSet; if it is LINES IndexedLineSet is used.
 
   Here's a basic usage example of this action, in the form of a
-  complete, stand-alone program:
+  complete, standalone program:
 
   \code
   #include <Inventor/SoDB.h>
@@ -210,7 +210,7 @@ SoToVRML2Action::initClass(void)
 /*!
   \fn SoVRMLGroup * SoToVRML2Action::getVRML2SceneGraph(void) const
 
-  Return a pointer to the root node of the generated scenegraph of
+  Return a pointer to the root node of the generated scene graph of
   only VRML2 / VRML97 nodes.
 
   Will return \c NULL if VRML97 support was not compiled into the

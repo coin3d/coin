@@ -42,7 +42,7 @@
   purposes, of course.
 
   SoInfo nodes does not influence traversal in any way for any of the
-  builtin actions.
+  built-in actions.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

@@ -44,7 +44,7 @@
   \sa SoText3, SoText2, SoAsciiText
 */
 // FIXME: write a full test and usage example to see if this class is
-// actually used properly by it's "client" shape nodes. 20011128 mortene.
+// actually used properly by its "client" shape nodes. 20011128 mortene.
 
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/SbName.h>

@@ -110,7 +110,7 @@ cc_condvar_construct(void)
   return condvar;
 }
 
-/*! Destroys the given \a condvar. */
+/*! Destroys the given conditional variable \a condvar. */
 
 void
 cc_condvar_destruct(cc_condvar * condvar)

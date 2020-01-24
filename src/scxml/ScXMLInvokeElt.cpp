@@ -38,7 +38,7 @@
 
   Important note for SCXML-users on the Coin 3.0 implementation of the
   &lt;invoke&gt; element: The first SCXML-implementation of Coin was based on
-  a draft from february 2007, and the interpretation done of the &lt;invoke&gt;
+  a draft from February 2007, and the interpretation done of the &lt;invoke&gt;
   element was wrong in certain aspects that has become clear in later revisions
   of the standards draft. The SCXML-implementation was for various reasons
   rushed, with a timeframe where no scripting capabilities would be possible to
@@ -49,7 +49,7 @@
   For the current implementation, the navigation code has been moved away from
   being &lt;invoke&gt;-based to being a service communicated to through the
   &lt;send&gt; element to be more standards-conformant. And to make the situation
-  even more ridicilous, that approach will likely be deprecated in the
+  even more ridiculous, that approach will likely be deprecated in the
   not-too-distant future, to be replaced by a pure, inlined, scripting-based
   approach. Those two approaches should however be fully possible to keep alive
   side-by-side for a while, so following the current lead in implementing

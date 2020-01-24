@@ -145,7 +145,7 @@ spidermonkey(void)
     /* FIXME: there's a configure mortene. */
     const char * possiblelibnames[] = {
       NULL, /* is set below */
-      /* MSWindows DLL name */
+      /* Microsoft Windows DLL name */
       "js32",
 
       /* UNIX-style names (SpiderMonkey compiled from source) */

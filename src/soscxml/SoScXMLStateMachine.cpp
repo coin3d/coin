@@ -166,7 +166,7 @@ SbBool
 SoScXMLStateMachine::processSoEvent(const SoEvent * event)
 {
   // FIXME: Not sure if this check should be here and not somewhere else,
-  // but removing this again makes us crash on NULL scenegraphs. kintel 20080729.
+  // but removing this again makes us crash on NULL scene graphs. kintel 20080729.
   if (PRIVATE(this)->scenegraphroot.get()) {
     boost::scoped_ptr<SoScXMLEvent> wrapperevent;
     wrapperevent.reset(new SoScXMLEvent);

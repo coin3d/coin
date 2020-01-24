@@ -88,7 +88,7 @@
 /*!
   \var SbProjector::viewVol
 
-  The viewVol definition.
+  The viewing volume definition.
 */
 /*!
   \var SbProjector::worldToWorking
@@ -105,7 +105,7 @@
 
 
 /*!
-  The constructor initializes the workingspace matrix to an identity
+  The constructor initializes the working space matrix to an identity
   matrix.
  */
 SbProjector::SbProjector(void)
@@ -159,7 +159,7 @@ SbProjector::getWorkingSpace(void) const
 }
 
 /*!
-  From the 2D \a point in normalized screenspace coordinates,
+  From the 2D \a point in normalized screen space coordinates,
   calculate the line passing through the scene.
 
   Typically used for tracking intersection points for the mouse

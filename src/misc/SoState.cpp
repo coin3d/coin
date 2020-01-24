@@ -32,12 +32,12 @@
 
 /*!
   \class SoState Inventor/misc/SoState.h
-  \brief The SoState class manages the Coin scenegraph traversal state data.
+  \brief The SoState class manages the Coin scene graph traversal state data.
 
   \ingroup general
 
   The SoState class is used by actions derived from the SoAction
-  class. It manages the scenegraph state as stacks of elements (ie
+  class. It manages the scene graph state as stacks of elements (i.e.
   instances of classes derived from SoElement).
 
   For more information on the inner workings of traversal states in
@@ -54,7 +54,7 @@
 
   This method returns a pointer to the top element of the given element
   stack.  The element is read-only and must not be changed under any
-  circumstances or strange side-effect will occur.
+  circumstances or strange side-effects will occur.
 
   Note that this function will assert if the element with the given
   stack identity value is not presently on the state stack. To check
@@ -218,8 +218,8 @@ SoState::getAction(void) const
 }
 
 /*!
-  This method returns a modifyable instance of the element on the top of
-  the stack with the given stackindex.  Because of lazy programming,
+  This method returns a modifiable instance of the element on the top of
+  the stack with the given \a stackindex.  Because of lazy programming,
   this function may need to do some work, so SoState::getConstElement()
   should be used instead whenever possible.
 */

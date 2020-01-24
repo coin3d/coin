@@ -59,7 +59,7 @@
   interpolation will run over. The key values should be monotonically
   non-decreasing.
 
-  The field is inherited from it's declaration in the abstract
+  The field is inherited from its declaration in the abstract
   SoVRMLInterpolator class into a range of different VRML interpolator
   nodes.
 
@@ -73,7 +73,7 @@
   The set_fraction field gets an input signal that triggers a
   calculation of the next value_changed eventOut value.
 
-  The field is inherited from it's declaration in the abstract
+  The field is inherited from its declaration in the abstract
   SoVRMLInterpolator class into a range of different VRML interpolator
   nodes.
 */

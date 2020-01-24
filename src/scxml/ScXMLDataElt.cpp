@@ -47,7 +47,7 @@
   \li \c src - not supported
   \li \c expr
 
-  The \c ID attribute is required and specified the variable name.
+  The \c ID attribute is required and specifies the variable name.
   The variable name must be unique for the whole SCXML state machine
   specification.
 

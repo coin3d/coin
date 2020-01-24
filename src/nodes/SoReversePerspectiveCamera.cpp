@@ -45,8 +45,8 @@
   observer appear larger than closer objects. A reverse perspective projection
   is defined by
     - setting the perspective camera position to the projection point behind the scene
-	- setting near / far distance to negative values
-    - rotating the camera orientation by 180 degree around the camera z axis
+    - setting near / far distance to negative values
+    - rotating the camera orientation by 180 degrees around the camera Z-axis
   to compensate the image flip induced by the negative near / far values.
 
   The view volume of the default reverse perspective camera is defined as shown below.

@@ -149,7 +149,7 @@ SoTabPlaneDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -508,7 +508,7 @@ SoTabPlaneDragger::getXYScreenLengths(SbVec2f & COIN_UNUSED_ARG(lengths),
                                       const SbVec2s & COIN_UNUSED_ARG(winsize))
 {
   // FIXME: I found this method just defined in the header file, but
-  // not implemented (!). We should obviously implement it if it's
+  // not implemented (!). We should obviously implement it if it is
   // useful. 20011127 mortene.
   COIN_STUB();
 }

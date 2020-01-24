@@ -36,12 +36,12 @@
 
   \ingroup elements
 
-  This element is only used when the OpenGL canvas is in colorindex
-  mode, ie where colors for individual pixels are fetched from a color
+  This element is only used when the OpenGL canvas is in color index
+  mode, i.e. where colors for individual pixels are fetched from a color
   lookup table ("CLUT"). The usual thing to do is to set up a canvas
-  in RGBA truecolor mode.
+  in RGBA true color mode.
 
-  One common use for colorindex mode OpenGL canvases is to use one in
+  One common use for color index mode OpenGL canvases is to use one in
   the overlay planes (which are usually limited to only 2 or 4
   available colors), if supported by the OpenGL hardware and / or
   driver.

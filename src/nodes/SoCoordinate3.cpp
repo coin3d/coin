@@ -38,7 +38,7 @@
 
   When encountering nodes of this type during traversal, the
   coordinates it contains will be put on the state stack for later use
-  by shape nodes of types which needs coordinate sets (like SoFaceSet
+  by shape nodes of types which need coordinate sets (like SoFaceSet
   nodes or SoPointSet nodes).
 
   Note that an SoCoordinate3 node will \e replace the coordinates

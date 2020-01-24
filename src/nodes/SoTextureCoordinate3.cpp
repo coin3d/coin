@@ -36,13 +36,13 @@
 
   \ingroup nodes
 
-  When encountering nodes of this type during traversal, the
+  When encountering a node of this type during traversal, the
   coordinates it contains will be put on the state stack. Some shape
   nodes can then use these coordinates for explicit, detailed control
   of how 3D textures are mapped.
 
   (If 3D textures are used without any SoTextureCoordinate3 nodes in
-  the scenegraph leading up to a shape node, the shape types have
+  the scene graph leading up to a shape node, the shape types have
   default fallbacks. So SoTextureCoordinate3 nodes are only necessary
   to use if you are not satisfied with the default mapping.)
 
@@ -88,7 +88,7 @@
   empty set.
 
   Texture coordinates are usually specified in normalized coordinates,
-  ie in the range [0, 1]. Coordinates outside the [0, 1] range can be
+  i.e. in the range [0, 1]. Coordinates outside the [0, 1] range can be
   used to repeat the texture across a surface.
 
   \sa SoTexture3::wrapR, SoTexure3::wrapS, SoTexture3::wrapT 

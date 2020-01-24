@@ -339,7 +339,7 @@ ScXML::getEvaluatorTypeForProfile(SbName profilename)
 /*!
   This function reads in an SCXML document from a file.
 
-  \returns an ScXMLDocument-derived statemachine object hierarchy.
+  \returns an ScXMLDocument-derived state machine object hierarchy.
 */
 ScXMLStateMachine *
 ScXML::readFile(const char * filename)
@@ -359,7 +359,7 @@ ScXML::readFile(const char * filename)
 /*!
   This function reads in an SCXML document residing in memory.
 
-  \returns an ScXMLDocument-derived statemachine object hierarchy.
+  \returns an ScXMLDocument-derived state machine object hierarchy.
 */
 ScXMLStateMachine *
 ScXML::readBuffer(const SbByteBuffer & bufferdata)

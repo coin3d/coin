@@ -48,7 +48,7 @@
 
   A common use of this action is to extract geometry of non-primitive
   shapes as triangles.  A full-fledged example that demonstrates this
-  on a scenegraph with two spheres follows:
+  on a scene graph with two spheres follows:
 
   \code
    #include <Inventor/SoDB.h>
@@ -129,7 +129,7 @@
      root->unref();
 
      // [the generated SoCoordinate3 and SoIndexedFaceSet nodes would now
-     // typically be used in a scenegraph in a viewer, or written to disk
+     // typically be used in a scene graph in a viewer, or written to disk
      // or something]
 
      return 0;
@@ -653,7 +653,7 @@ SoCallbackAction::getCoordinate3(const int index) const
 }
 
 /*!
-  Returns a coordinate quartuplet from the current state pool of
+  Returns a coordinate quadruplet from the current state pool of
   coordinates.
 */
 const SbVec4f &
@@ -699,7 +699,7 @@ SoCallbackAction::getPointSize(void) const
 }
 
 /*!
-  Returns current fontname setting.
+  Returns current font name setting.
 */
 const SbName &
 SoCallbackAction::getFontName(void) const
@@ -708,7 +708,7 @@ SoCallbackAction::getFontName(void) const
 }
 
 /*!
-  Returns current fontsize setting.
+  Returns current font size setting.
 */
 float
 SoCallbackAction::getFontSize(void) const
@@ -717,7 +717,7 @@ SoCallbackAction::getFontSize(void) const
 }
 
 /*!
-  Returns current lightmodel setting.
+  Returns current light model setting.
 */
 SoLightModel::Model
 SoCallbackAction::getLightModel(void) const
@@ -753,7 +753,7 @@ SoCallbackAction::getMaterial(SbColor & ambient, SbColor & diffuse,
 }
 
 /*!
-  Returns current materialbinding setting.
+  Returns current material binding setting.
 */
 SoMaterialBinding::Binding
 SoCallbackAction::getMaterialBinding(void) const
@@ -782,7 +782,7 @@ SoCallbackAction::getNormal(const int index) const
 }
 
 /*!
-  Returns current normalbinding setting.
+  Returns current normal binding setting.
 */
 SoNormalBinding::Binding
 SoCallbackAction::getNormalBinding(void) const
@@ -829,7 +829,7 @@ SoCallbackAction::getProfile(void) const
 }
 
 /*!
-  Returns current vertexordering shapehint setting.
+  Returns current vertex ordering shape hint setting.
 
   Please note that this is the vertex ordering set by the SoShapeHints
   node. If you want to find the vertex ordering for VRML nodes you'll
@@ -845,7 +845,7 @@ SoCallbackAction::getVertexOrdering(void) const
 }
 
 /*!
-  Returns current shapetype hint setting.
+  Returns current shape type hint setting.
 
   Please note that this is the shape type set by the SoShapeHints
   node. If you want to find the shape type for VRML nodes you'll
@@ -861,7 +861,7 @@ SoCallbackAction::getShapeType(void) const
 }
 
 /*!
-  Returns current facetype hint setting.
+  Returns current face type hint setting.
 
   Please note that this is the face type set by the SoShapeHints
   node. If you want to find the face type for VRML nodes you'll
@@ -878,7 +878,7 @@ SoCallbackAction::getFaceType(void) const
 }
 
 /*!
-  Returns current creaseangle setting. Please note that this is the
+  Returns current crease angle setting. Please note that this is the
   crease angle value set by the SoShapeHints node. If you want to find
   the crease angle for VRML nodes you'll need to read this directly
   from the creaseAngle field in those nodes.
@@ -934,7 +934,7 @@ SoCallbackAction::getTextureCoordinate4(const int index) const
 }
 
 /*!
-  Returns current texturecoordinate binding setting.
+  Returns current texture coordinate binding setting.
 */
 SoTextureCoordinateBinding::Binding
 SoCallbackAction::getTextureCoordinateBinding(void) const
@@ -985,7 +985,7 @@ SoCallbackAction::getTextureMatrix(void) const
 }
 
 /*!
-  Returns current texturemapping model setting.
+  Returns current texture mapping model setting.
 */
 SoTexture2::Model
 SoCallbackAction::getTextureModel(void) const
@@ -1090,7 +1090,7 @@ SoCallbackAction::getViewportRegion(void) const
 }
 
 /*!
-  Returns current pickstyle setting.
+  Returns current pick style setting.
 */
 SoPickStyle::Style
 SoCallbackAction::getPickStyle(void) const

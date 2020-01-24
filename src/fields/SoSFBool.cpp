@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a boolean on/off or TRUE/FALSE value, like for
+  need to store a boolean on/off or TRUE/FALSE value, like for
   instance as the "on" field of the SoPointLight, SoSpotLight and
   SoDirectionalLight node classes.
 

@@ -79,7 +79,7 @@
   geometry to one in which it no longer intersects the geometry, or
   some other geometry is obstructing the TouchSensor node's geometry,
   an isOver FALSE event is generated. These events are generated only
-  when the pointing device has moved and changed `over' state. Events
+  when the pointing device has moved and changed 'over' state. Events
   are not generated if the geometry itself is animating and moving
   underneath the pointing device.
 

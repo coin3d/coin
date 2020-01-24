@@ -21,7 +21,7 @@
         transnode)))
 
 
-;; Make scene-graph.
+;; Make scene graph.
 (define root (new-soseparator))
 
 (define text-a (new-sotext3))

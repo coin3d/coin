@@ -39,7 +39,7 @@
 
   When the user presses any buttons on a spaceball device, these will
   be translated from a system specific event into a Coin event and
-  sent to the scenegraph by using instances of this class.
+  sent to the scene graph by using instances of this class.
 
   \sa SoEvent, SoButtonEvent, SoMouseButtonEvent, SoKeyboardEvent
   \sa SoEventCallback, SoHandleEventAction */

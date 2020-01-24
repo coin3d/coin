@@ -65,10 +65,10 @@
   how it can be used for generic purposes.
 
   Why another XML parser, you might ask?  First of all, the XML parser
-  is actually a third-party parser, expat.  Coin needed one, and many
+  is actually a 3rd-party parser, Expat.  Coin needed one, and many
   Coin-dependent projects needed one as well.  We therefore needed to
   expose an API for it.  However, integrating a 3rd-party parser into
-  Coin, we can not expose its API directly, or other projects also
+  Coin, we cannot expose its API directly, or other projects also
   using Expat would get conflicts.  We therefore needed to expose the
   XML API with a unique API, hence the API you see here.  It is based
   on a XML DOM API we use(d) in a couple of other projects, but it has
@@ -710,7 +710,7 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
        strncpy(hereptr, strobj, strlength);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
-// macro to copy in a run-time string and advance pointers
+// macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                      \
   do { const int strlength = strlen(str);        \
        strncpy(hereptr, str, strlength);         \
@@ -808,7 +808,7 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
 #define ADVANCE_STRING_LITERAL(str) \
   do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
 
-// macro to increment bytecount for run-time string
+// macro to increment bytecount for runtime string
 #define ADVANCE_STRING(str) \
   do { bytes += strlen(str); } while (0)
 

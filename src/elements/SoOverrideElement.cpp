@@ -62,7 +62,7 @@
   SoVertexProperty node is used to specify diffuse color and
   transparency -- only with the SoMaterial node.)
 
-  Here is a complete, stand-alone example which demonstrates how to
+  Here is a complete, standalone example which demonstrates how to
   accomplish this:
 
   \code
@@ -565,7 +565,7 @@ SoOverrideElement::setCreaseAngleOverride(SoState * const state,
 /*!
   Can be used to set diffuse color override. This will also set the
   transparency override. Since we feel this is a design flaw,
-  it is possible to override this behaviour by setting an environement
+  it is possible to override this behaviour by setting an environment
   value called COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE to 1.
 
   Please note that separate override will not work for the PackedColor

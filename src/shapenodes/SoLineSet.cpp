@@ -67,7 +67,7 @@
 
   The width of the rendered lines can be controlled through the
   insertion of an SoDrawStyle node in front of SoLineSet node(s) in
-  the scenegraph.
+  the scene graph.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

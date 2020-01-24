@@ -38,22 +38,22 @@
   The main API for HardCopy support in Coin is the abstract class
   SoVectorizeAction. SoVectorizeAction will extract geometry from an
   Inventor scene graph, and project the geometry onto a specified
-  page.  Since postscript and other vector based file formats do not
+  page.  Since PostScript and other vector based file formats do not
   support z-buffer or depth clipping, all geometry is rendered using a
   simple painter's algorithm (geometry is sorted based on distance to
   camera).
 
   SoVectorizePSAction inherits SoVectorizeAction, and will output a
-  Postscript file.
+  PostScript file.
 
   Texture-mapped polygons are not supported, since this is not
-  supported by the vector file formats, at least it's not supported in
-  Postscript. Gouraud shading is not supported in the Postscript
+  supported by the vector file formats, at least it is not supported in
+  PostScript. Gouraud shading is not supported in the PostScript
   language (at least not for V2.0), but an approximation is
-  implemeting using an algorithm that divides the triangle into
-  several small (flat-shaded) triangles. The gouraud shading quality
+  implemented using an algorithm that divides the triangle into
+  several small (flat-shaded) triangles. The Gouraud shading quality
   (the number of sub-triangles) is controlled by an epsilon value. The
-  gouraud shading function is written by Frederic Delhoume
+  Gouraud shading function is written by Frederic Delhoume
   (delhoume (at) ilog.fr), and is free (public domain) software.
 
   Typical use of SoVectorizePSAction is shown in the following piece
@@ -68,7 +68,7 @@
     return -1; // unable to open output file
   }
 
-  // to enable gouraud shading. 0.1 is a nice epsilon value
+  // to enable Gouraud shading. 0.1 is a nice epsilon value
   // ps->setGouraudThreshold(0.1f);
 
   // clear to white background. Not really necessary if you
@@ -85,14 +85,14 @@
   // ps->beginStandardPage(SoVectorizeAction::A4, 10.0f);
 
   // calibrate so that text, lines, points and images will have the
-  // same size in the postscript file as on the monitor.
+  // same size in the PostScript file as on the monitor.
   ps->calibrate(viewer->getViewportRegion());
 
-  // apply action on the viewer scenegraph. Remember to use
+  // apply action on the viewer scene graph. Remember to use
   // SoSceneManager's scene graph so that the camera is included.
   ps->apply(viewer->getSceneManager()->getSceneGraph());
 
-  // this will create the postscript file
+  // this will create the PostScript file
   ps->endPage();
 
   // close file

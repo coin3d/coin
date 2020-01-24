@@ -37,7 +37,7 @@
   \ingroup projectors
 
   The 3D projection of the 2D coordinates is for this projector class
-  constrained to lie along a pre-defined line.
+  constrained to lie along a predefined line.
 
   Among other places, this is useful within the translation draggers,
   like for instance SoTranslate1Dragger, where we want to move
@@ -63,7 +63,7 @@
 
 
 /*!
-  Constructor. Intializes the projector instance to use a line from
+  Constructor. Initializes the projector instance to use a line from
   <0, 0, 0> to <0, 1, 0>.
  */
 SbLineProjector::SbLineProjector(void)

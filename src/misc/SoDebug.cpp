@@ -58,7 +58,7 @@ inline unsigned int SbHashFunc(const void * key)
 
 /*!
   \class SoDebug SoDebug.h SoDebug.h
-  The SoDebug class is a small collection of debugging-related functions.
+  The SoDebug class is a small collection of debugging related functions.
 */
 
 // *************************************************************************

@@ -95,7 +95,7 @@
 /*!
   \var SoRenderManager::RenderMode SoRenderManager::AS_IS
 
-  Render primitives as they are described in the scenegraph.
+  Render primitives as they are described in the scene graph.
 */
 
 /*!
@@ -132,7 +132,7 @@
 /*!
   \enum SoRenderManager::StereoMode
 
-  Manages how to render steroscopic images.
+  Manages how to render stereoscopic images.
 */
 
 /*!
@@ -144,10 +144,10 @@
 /*!
   \var SoRenderManager::StereoMode SoRenderManager::ANAGLYPH
 
-  Anaglyph rendering is used to provide a steroscopic 3D effect, when
+  Anaglyph rendering is used to provide a stereoscopic 3D effect, when
   viewed with 3D glasses. The image is made up of two color layers
   which are superimposed on each other, and appears as 3 dimensional
-  when viewed through corresponding colored filters(glases)
+  when viewed through corresponding colored filters (glasses)
 */
 
 /*!
@@ -167,7 +167,7 @@
   \var SoRenderManager::StereoMode SoRenderManager::INTERLEAVED_ROWS
 
   Render every second row as left and right image. If rendered with a
-  polarized projector, polarized filters kan be used to give a 3D
+  polarized projector, polarized filters can be used to give a 3D
   effect.
 */
 
@@ -175,7 +175,7 @@
   \var SoRenderManager::StereoMode SoRenderManager::INTERLEAVED_COLUMNS
 
   Render every second column as left and right image. If rendered with
-  a polarized projector, polarized filters kan be used to give a 3D
+  a polarized projector, polarized filters can be used to give a 3D
   effect.
 */
 
@@ -219,7 +219,7 @@
 /*!
   \var SoRenderManager::AutoClippingStrategy SoRenderManager::VARIABLE_NEAR_PLANE
 
-  Variable adjustment of the nearplane relative to the camera.
+  Variable adjustment of the near plane relative to the camera.
 */
 
 #define PRIVATE(p) (p->pimpl)
@@ -309,7 +309,7 @@ SoRenderManager::~SoRenderManager()
 /*!
   Set the node which is top of the scene graph we're managing.  The \a
   sceneroot node reference count will be increased by 1, and any
-  previously set scene graph top node will have it's reference count
+  previously set scene graph top node will have its reference count
   decreased by 1.
 
   \sa getSceneGraph()
@@ -386,7 +386,7 @@ SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 }
 
 /*!
-  Attaches this SoRenderManagers rootsensor to a scene
+  Attaches this SoRenderManagers root sensor to a scene
 
   \param[in] sceneroot scene to attach to
 
@@ -455,7 +455,7 @@ SoRenderManager::detachClipSensor(void)
 }
 
 /*!
-  Clears buffers with the backgroundcolor set correctly
+  Clears buffers with the background color set correctly
   
   \param[in] color Set to \c TRUE if color buffer should be cleared
   \param[in] depth Set to \c TRUE if depth buffer should be cleared
@@ -645,9 +645,9 @@ SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 /*!
   \copydetails SoRenderManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 
-  \param[in] initmatrices if true, the projection and modelview
-  matrices are reset to identity
-  \param[in] action Renders with a user supplied action
+  \param[in] initmatrices If set to \c TRUE, the projection and modelview
+  matrices are reset to identity.
+  \param[in] action Renders with a user supplied action.
 */
 void
 SoRenderManager::render(SoGLRenderAction * action,
@@ -687,10 +687,10 @@ SoRenderManager::render(SoGLRenderAction * action,
 /*!
   Convenience function for \ref SoRenderManager::renderScene
 
-  \param[in] action Renders with a user supplied action
+  \param[in] action Renders with a user supplied action.
 
-  \param[in] initmatrices if true, the projection and modelview
-  matrices are reset to identity
+  \param[in] initmatrices If set to \c TRUE, the projection and modelview
+  matrices are reset to identity.
 
   \param[in] clearwindow If set to \c TRUE, clear the rendering buffer
   before drawing.
@@ -715,10 +715,10 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
     glLoadIdentity();
   }
 
-  // If there has been changes in the scene graph leading to a node
+  // If there have been changes in the scene graph leading to a node
   // sensor detect and schedule before we've gotten around to serving
   // the current redraw -- remove it. This will prevent infinite loops
-  // in the case of scenegraph modifications between a nodesensor
+  // in the case of scene graph modifications between a node sensor
   // trigger and SoRenderManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
   PRIVATE(this)->lock();
@@ -730,7 +730,7 @@ SoRenderManager::actuallyRender(SoGLRenderAction * action,
     PRIVATE(this)->rootsensor->unschedule();
   }
   PRIVATE(this)->unlock();
-  // Apply the SoGLRenderAction to the scenegraph root.
+  // Apply the SoGLRenderAction to the scene graph root.
   if (PRIVATE(this)->scene) {
     this->renderScene(action, PRIVATE(this)->scene, (uint32_t) mask);
   }
@@ -997,7 +997,7 @@ SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
 }
 
 /*!
-  Initializes stencilbuffers for interleaved stereo
+  Initializes stencil buffers for interleaved stereo
 */
 void
 SoRenderManager::initStencilBufferForInterleavedStereo(void)
@@ -1096,7 +1096,7 @@ SoRenderManager::initStencilBufferForInterleavedStereo(void)
 }
 
 /*!
-  Reinitialize after parameters affecting the OpenGL context has
+  Reinitialize after parameters affecting the OpenGL context have
   changed.
 */
 void
@@ -1108,7 +1108,7 @@ SoRenderManager::reinitialize(void)
 /*!
   Redraw at first opportunity as system becomes idle.
 
-  Multiple calls to this method before an actual redraw has taken
+  Multiple calls to this method before an actual redraw have taken
   place will only result in a single redraw of the scene.
 */
 void
@@ -1130,7 +1130,7 @@ SoRenderManager::scheduleRedraw(void)
   Update window size of our SoGLRenderAction's viewport settings.
 
   Note that this will \e only change the information about window
-  dimensions, the actual viewport size and origin (ie the rectangle
+  dimensions, the actual viewport size and origin (i.e. the rectangle
   which redraws are confined to) will stay the same.
 
   \sa setViewportRegion()
@@ -1232,7 +1232,7 @@ SoRenderManager::setViewportRegion(const SbViewportRegion & newregion)
 }
 
 /*!
-  Returns current viewport region used by the renderaction and the
+  Returns current viewport region used by the render action and the
   event handling.
 
   \sa setViewportRegion()
@@ -1284,9 +1284,9 @@ SoRenderManager::getOverlayColor(void) const
 
 /*!
   Set index of background color in the color lookup table if rendering
-  in colorindex mode.
+  in color index mode.
 
-  Note: colorindex mode is not supported yet in Coin.
+  Note: color index mode is not supported yet in Coin.
  */
 void
 SoRenderManager::setBackgroundIndex(const int index)
@@ -1295,7 +1295,7 @@ SoRenderManager::setBackgroundIndex(const int index)
 }
 
 /*!
-  Returns index of colormap for background filling.
+  Returns index of color map for background filling.
 
   \sa setBackgroundIndex()
  */
@@ -1306,8 +1306,8 @@ SoRenderManager::getBackgroundIndex(void) const
 }
 
 /*!
-  Turn RGB truecolor mode on or off. If you turn truecolor mode off,
-  colorindex mode will be used instead.
+  Turn RGB true color mode on or off. If you turn true color mode off,
+  color index mode will be used instead.
 */
 void
 SoRenderManager::setRGBMode(const SbBool yes)
@@ -1325,7 +1325,7 @@ SoRenderManager::isRGBMode(void) const
 }
 
 /*!
-  Tell the scenemanager that double buffering is used
+  Tell the scene manager that double buffering is used
  */
 void
 SoRenderManager::setDoubleBuffer(const SbBool enable)
@@ -1334,7 +1334,7 @@ SoRenderManager::setDoubleBuffer(const SbBool enable)
 }
 
 /*!
-  returns if the scenemanager is double buffered
+  returns if the scene manager is double buffered
  */
 SbBool
 SoRenderManager::isDoubleBuffer(void) const
@@ -1365,7 +1365,7 @@ SoRenderManager::activate(void)
 }
 
 /*!
-  Deactive rendering and event handling.
+  Deactivate rendering and event handling.
  */
 void
 SoRenderManager::deactivate(void)
@@ -1533,7 +1533,7 @@ SoRenderManager::getGLRenderAction(void) const
 }
 
 /*!
-  This method returns the current autoclipping strategy.
+  This method returns the current auto clipping strategy.
 
   \sa setAutoClipping
 */
@@ -1545,7 +1545,7 @@ SoRenderManager::getAutoClipping(void) const
 }
 
 /*!
-  When the SoRenderManager::FIXED_NEAR_PLANE autoclipping strategy is
+  When the SoRenderManager::FIXED_NEAR_PLANE auto clipping strategy is
   used, you set the value of the near plane distance with this method.
 
   \sa setAutoClipping, getNearPlaneValue, SoRenderManager::AutoClippingStrategy
@@ -1559,7 +1559,7 @@ SoRenderManager::setNearPlaneValue(float value)
 
 /*!
   This method returns the near plane distance value that will be used
-  when the SoRenderManager::FIXED_NEAR_PLANE autoclipping strategy is used.
+  when the SoRenderManager::FIXED_NEAR_PLANE auto clipping strategy is used.
 
   Default value is 0.6.
 
@@ -1681,7 +1681,7 @@ SoRenderManager::enableRealTimeUpdate(const SbBool flag)
 }
 
 /*!
-  Returns whether or not we automatically notifies everything
+  Returns whether or not we automatically notify everything
   connected to the \c realTime field after a redraw.
  */
 SbBool
@@ -1705,7 +1705,7 @@ SoRenderManager::addPreRenderCallback(SoRenderManagerRenderCB * cb, void * data)
 
 
 /*!
-  Removes a prerendercallback.
+  Removes a pre render callback.
 
   \pre The tuple (cb, data) must exactly match an earlier call to
   SoRenderManager::addPreRenderCallback
@@ -1741,7 +1741,7 @@ SoRenderManager::addPostRenderCallback(SoRenderManagerRenderCB * cb, void * data
 }
 
 /*!
-  Removes a postrendercallback.
+  Removes a post render callback.
 
   \pre The tuple (cb, data) must exactly match an earlier call to
   SoRenderManager::addPostRenderCallback

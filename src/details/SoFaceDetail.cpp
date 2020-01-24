@@ -121,7 +121,7 @@ SoFaceDetail::getPoint(const int idx) const
 }
 
 /*!
-  Returns the full array of vertice details for the polygon. The array
+  Returns the full array of vertices details for the polygon. The array
   will contain SoFaceDetail::getNumPoints() elements.
  */
 SoPointDetail *

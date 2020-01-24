@@ -140,7 +140,7 @@ static int flwft_calctessellatorsteps(float complexity);
 /* According to Coin user Ralf Corsepius, at least SunOS4 needs to
    include sys/types.h before netinet/in.h. There have also been a
    problem report for FreeBSD which seems to indicate that the same
-   dependency exists on that platform aswell. */
+   dependency exists on that platform as well. */
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
@@ -272,7 +272,7 @@ static const char * fontfilenames[] = {
      that mess. 20030606 mortene. */
 
   /*
-    Names of some TrueType font files on MS Windows installations.
+    Names of some TrueType font files on Microsoft Windows installations.
 
     FIXME: should provide more information about this -- e.g. is this
     a complete set? Ask Preng why he wrote up exactly these
@@ -445,7 +445,7 @@ cc_flwft_initialize(void)
     }
 #endif /* _WIN32 */
 
-    /* Try current working directory aswell. */
+    /* Try current working directory as well. */
     str = strdup("./");
     assert(str);
     cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
@@ -923,7 +923,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
     return NULL;
   }
 
-  /* render a glyph only if it's in outline format. this won't be the
+  /* render a glyph only if it is in outline format. this won't be the
      case for any of the bitmap font types such as pcf. the variable
      mono needs to be set before the conversion to a 256 gray level
      bitmap in order to propagate the correct format value up the code

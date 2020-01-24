@@ -167,7 +167,7 @@ get_perspective_projection(const double rightminusleft, const double rightplusle
 #if COIN_DEBUG
   if (nearval * farval <= 0.0) {
     SoDebugError::postWarning("SbDPViewVolume::get_perspective_projection",
-                              "Projection frustrum crosses zero. Rendering is unpredicatable.");
+                              "Projection frustum crosses zero. Rendering is unpredictable.");
   }
 #endif // COIN_DEBUG
   SbDPMatrix proj;
@@ -344,10 +344,10 @@ SbDPViewVolume::getMatrix(void) const
 
 /*!
   Returns a matrix which will translate the view volume camera back to
-  origo, and rotate the camera so it'll point along the negative z axis.
+  origo, and rotate the camera so it'll point along the negative Z-axis.
 
   Note that the matrix will \a not include the rotation necessary to
-  make the camera up vector point along the positive y axis (i.e.
+  make the camera up vector point along the positive Y-axis (i.e.
   camera roll is not accounted for).
 
   \sa getMatrices(), getMatrix()
@@ -773,7 +773,7 @@ SbDPViewVolume::narrow(const SbBox3f & box) const
 /*!
   Set up the view volume as a rectangular box for orthographic
   parallel projections. The line of sight will be along the negative
-  z axis, through the center of the plane defined by the point
+  Z-axis, through the center of the plane defined by the point
   <(right+left)/2, (top+bottom)/2, 0>.
 
   \sa perspective().
@@ -837,7 +837,7 @@ SbDPViewVolume::ortho(double left, double right,
 // frustum is set up wrt the input arguments. 20010919 mortene.
 /*!
   Set up the view volume for perspective projections. The line of
-  sight will be through origo along the negative z axis.
+  sight will be through origo along the negative Z-axis.
 
   \sa ortho().
 */
@@ -1155,8 +1155,8 @@ SbDPViewVolume::getDepth(void) const
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbDPViewVolume::print(FILE * fp) const

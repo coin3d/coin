@@ -227,7 +227,8 @@ SbColor4f::getRGB(SbColor &color)
 /*!
   Set the color as a \c hue, \c saturation, \c value triplet.
   The hue component should be normalized to within [0, 1] before you
-  call this method, where 0 is equal to 0° and 1 is equal to 360°.
+  call this method, where a value of 0 corresponds to 0 degrees and a value
+  of 1 corresponds to 360 degrees.
 
   \sa getHSVValue().
  */
@@ -296,7 +297,8 @@ SbColor4f::getHSVValue(float &h, float &s, float &v) const
 /*!
   Set the color as a \c hue, \c saturation, \c value triplet.
   The hue component should be normalized to within [0, 1] before you
-  call this method, where 0 is equal to 0° and 1 is equal to 360°.
+  call this method, where a value of 0 corresponds to 0 degrees and a value
+  of 1 corresponds to 360 degrees.
 
   \sa getHSVValue().
  */

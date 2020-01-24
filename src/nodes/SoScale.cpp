@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Use nodes of this type to apply scaling operations during scenegraph
+  Use nodes of this type to apply scaling operations during scene graph
   traversals for e.g. rendering. Scale values are specified in a
   triple-value vector, with one scale factor for each of the 3
   principal axes.

@@ -74,7 +74,7 @@
   actions), and choose to first do pure Open Inventor organization
   when the node kit is asked to write its contents as a scene graph.
 
-  FIXME: Document autoloading when implemented and tested
+  FIXME: Document auto loading when implemented and tested
 
   \sa SoForeignFileKit, SoSTLFileKit
 */
@@ -326,7 +326,7 @@ SoForeignFileKit::canReadFile(const char * COIN_UNUSED_ARG(filename)) const
 /*!
   Reads the given file into the internal representation.
   If successful, Coin should now be able to render the scene.
-  If you need a pure Coin scenegraph, call convert().
+  If you need a pure Coin scene graph, call convert().
 */
 SbBool
 SoForeignFileKit::readFile(const char * COIN_UNUSED_ARG(filename))

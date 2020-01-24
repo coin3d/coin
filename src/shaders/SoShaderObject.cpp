@@ -329,7 +329,7 @@ SoShaderObject::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  Returns the shader type detected in sourceProgram.
+  Returns the shader type detected in source program.
 */
 SoShaderObject::SourceType
 SoShaderObject::getSourceType(void) const
@@ -346,7 +346,7 @@ SbString SoShaderObject::getSourceProgram(void) const
 }
 
 /*!
-  Used internally to update shader paramters.
+  Used internally to update shader parameters.
 */
 void
 SoShaderObject::updateParameters(SoState * state)
@@ -520,7 +520,7 @@ SoShaderObjectP::checkType(void)
   this->cachedSourceType = SoShaderObject::FILENAME;
 }
 
-// read the file if neccessary and assign content to this->cachedSourceProgram
+// read the file if necessary and assign content to this->cachedSourceProgram
 void
 SoShaderObjectP::readSource(void)
 {
